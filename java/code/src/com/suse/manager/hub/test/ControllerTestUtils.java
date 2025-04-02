@@ -60,6 +60,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 import spark.Request;
 import spark.RequestResponseFactory;
@@ -397,11 +398,6 @@ public class ControllerTestUtils {
         }
     }
 
-    @FunctionalInterface
-    private interface CheckMethod {
-        void checkCompatible(Object modified, Object pristine);
-    }
-
     public void checkEqualModifications(ChannelInfoDetailsJson modifyInfo, Channel ch) {
         checkModifications(modifyInfo, ch, ControllerTestUtils::checkEqualIfModified);
     }
@@ -410,35 +406,36 @@ public class ControllerTestUtils {
         checkModifications(modifyInfo, ch, ControllerTestUtils::checkDifferentIfModified);
     }
 
-    private void checkModifications(ChannelInfoDetailsJson modifyInfo, Channel ch, CheckMethod checkMethod) {
+    private void checkModifications(ChannelInfoDetailsJson modifyInfo, Channel ch,
+                                    BiConsumer<Object, Object> checkMethod) {
         assertEquals(modifyInfo.getLabel(), ch.getLabel());
 
         if (null != modifyInfo.getPeripheralOrgId()) {
-            checkMethod.checkCompatible(modifyInfo.getPeripheralOrgId(), ch.getOrg().getId());
+            checkMethod.accept(modifyInfo.getPeripheralOrgId(), ch.getOrg().getId());
         }
 
-        checkMethod.checkCompatible(modifyInfo.getOriginalChannelLabel(), ch.getOriginal().getLabel());
+        checkMethod.accept(modifyInfo.getOriginalChannelLabel(), ch.getOriginal().getLabel());
 
-        checkMethod.checkCompatible(modifyInfo.getBaseDir(), ch.getBaseDir());
-        checkMethod.checkCompatible(modifyInfo.getName(), ch.getName());
-        checkMethod.checkCompatible(modifyInfo.getSummary(), ch.getSummary());
-        checkMethod.checkCompatible(modifyInfo.getDescription(), ch.getDescription());
-        checkMethod.checkCompatible(modifyInfo.getProductNameLabel(), ch.getProductName().getLabel());
-        checkMethod.checkCompatible(modifyInfo.isGpgCheck(), ch.isGPGCheck());
-        checkMethod.checkCompatible(modifyInfo.getGpgKeyUrl(), ch.getGPGKeyUrl());
-        checkMethod.checkCompatible(modifyInfo.getGpgKeyId(), ch.getGPGKeyId());
-        checkMethod.checkCompatible(modifyInfo.getGpgKeyFp(), ch.getGPGKeyFp());
-        checkMethod.checkCompatible(modifyInfo.getEndOfLifeDate().toString(), ch.getEndOfLife().toString());
+        checkMethod.accept(modifyInfo.getBaseDir(), ch.getBaseDir());
+        checkMethod.accept(modifyInfo.getName(), ch.getName());
+        checkMethod.accept(modifyInfo.getSummary(), ch.getSummary());
+        checkMethod.accept(modifyInfo.getDescription(), ch.getDescription());
+        checkMethod.accept(modifyInfo.getProductNameLabel(), ch.getProductName().getLabel());
+        checkMethod.accept(modifyInfo.isGpgCheck(), ch.isGPGCheck());
+        checkMethod.accept(modifyInfo.getGpgKeyUrl(), ch.getGPGKeyUrl());
+        checkMethod.accept(modifyInfo.getGpgKeyId(), ch.getGPGKeyId());
+        checkMethod.accept(modifyInfo.getGpgKeyFp(), ch.getGPGKeyFp());
+        checkMethod.accept(modifyInfo.getEndOfLifeDate().toString(), ch.getEndOfLife().toString());
 
-        checkMethod.checkCompatible(modifyInfo.getChannelProductProduct(), ch.getProduct().getProduct());
-        checkMethod.checkCompatible(modifyInfo.getChannelProductVersion(), ch.getProduct().getVersion());
-        checkMethod.checkCompatible(modifyInfo.getChannelAccess(), ch.getAccess());
-        checkMethod.checkCompatible(modifyInfo.getMaintainerName(), ch.getMaintainerName());
-        checkMethod.checkCompatible(modifyInfo.getMaintainerEmail(), ch.getMaintainerEmail());
-        checkMethod.checkCompatible(modifyInfo.getMaintainerPhone(), ch.getMaintainerPhone());
-        checkMethod.checkCompatible(modifyInfo.getSupportPolicy(), ch.getSupportPolicy());
-        checkMethod.checkCompatible(modifyInfo.getUpdateTag(), ch.getUpdateTag());
-        checkMethod.checkCompatible(modifyInfo.isInstallerUpdates(), ch.isInstallerUpdates());
+        checkMethod.accept(modifyInfo.getChannelProductProduct(), ch.getProduct().getProduct());
+        checkMethod.accept(modifyInfo.getChannelProductVersion(), ch.getProduct().getVersion());
+        checkMethod.accept(modifyInfo.getChannelAccess(), ch.getAccess());
+        checkMethod.accept(modifyInfo.getMaintainerName(), ch.getMaintainerName());
+        checkMethod.accept(modifyInfo.getMaintainerEmail(), ch.getMaintainerEmail());
+        checkMethod.accept(modifyInfo.getMaintainerPhone(), ch.getMaintainerPhone());
+        checkMethod.accept(modifyInfo.getSupportPolicy(), ch.getSupportPolicy());
+        checkMethod.accept(modifyInfo.getUpdateTag(), ch.getUpdateTag());
+        checkMethod.accept(modifyInfo.isInstallerUpdates(), ch.isInstallerUpdates());
     }
 
     public void createTestChannel(ChannelInfoDetailsJson modifyInfo, User userIn) throws Exception {

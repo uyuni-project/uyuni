@@ -28,6 +28,9 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.iss.IssFactory;
+import com.redhat.rhn.domain.iss.IssMaster;
+import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.Server;
@@ -864,6 +867,104 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("---- BEGIN NEW ROOT CA ----", peripheral.getRootCa());
         assertThrows(IllegalArgumentException.class, () -> hubManager.updateServerData(satAdmin,
                 "peripheral1.domain.com", IssRole.valueOf("PERIPHERAL"), data));
+    }
+
+    @Test
+    public void canDeleteIssV1Slave() throws Exception {
+        IssSlave slave = new IssSlave();
+        slave.setSlave(REMOTE_SERVER_FQDN);
+        slave.setEnabled("Y");
+        slave.setAllowAllOrgs("Y");
+        IssFactory.save(slave);
+
+        IssAccessToken token = createPeripheralRegistration(REMOTE_SERVER_FQDN, null);
+        HubInternalClient internalClient = mock(HubInternalClient.class);
+
+        context().checking(new Expectations() {{
+            allowing(clientFactoryMock).newInternalClient(REMOTE_SERVER_FQDN, token.getToken(), null);
+            will(returnValue(internalClient));
+
+            allowing(internalClient).deleteIssV1Master();
+        }});
+
+        hubManager.deleteIssV1Slave(satAdmin, REMOTE_SERVER_FQDN, false);
+
+        assertNull(IssFactory.lookupSlaveByName(REMOTE_SERVER_FQDN));
+    }
+
+    @Test
+    public void deleteIssV1SlaveDoesNotCallSlaveWhenSettingAsOnlyLocal() throws Exception {
+        IssSlave slave = new IssSlave();
+        slave.setSlave(REMOTE_SERVER_FQDN);
+        slave.setEnabled("Y");
+        slave.setAllowAllOrgs("Y");
+        IssFactory.save(slave);
+
+        createPeripheralRegistration(REMOTE_SERVER_FQDN, null);
+
+        hubManager.deleteIssV1Slave(satAdmin, REMOTE_SERVER_FQDN, true);
+
+        assertNull(IssFactory.lookupSlaveByName(REMOTE_SERVER_FQDN));
+    }
+
+    @Test
+    public void deleteIssV1SlaveDoesNotDeleteIfTheSlaveIsMissing() {
+        IssSlave slave = new IssSlave();
+        slave.setSlave(REMOTE_SERVER_FQDN);
+        slave.setEnabled("Y");
+        slave.setAllowAllOrgs("Y");
+        IssFactory.save(slave);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+            () -> hubManager.deleteIssV1Slave(satAdmin, REMOTE_SERVER_FQDN, true));
+
+        assertEquals(REMOTE_SERVER_FQDN + " is not registered as an ISS v3 peripheral", exception.getMessage());
+    }
+
+    @Test
+    public void deleteIssV1SlaveDoesNotDeleteIfThePeripheralIsMissing() throws Exception {
+        createPeripheralRegistration(REMOTE_SERVER_FQDN, null);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+            () -> hubManager.deleteIssV1Slave(satAdmin, REMOTE_SERVER_FQDN, true));
+
+        assertEquals(REMOTE_SERVER_FQDN + " is not registered as an ISS v1 slave", exception.getMessage());
+    }
+
+    @Test
+    public void canLocallyDeleteIssV1Master() throws Exception {
+        IssMaster hub = new IssMaster();
+        hub.setLabel(REMOTE_SERVER_FQDN);
+        hub.makeDefaultMaster();
+        IssFactory.save(hub);
+
+        IssAccessToken token = createHubRegistration(REMOTE_SERVER_FQDN, null, null);
+
+        hubManager.deleteIssV1Master(token);
+
+        assertNull(IssFactory.lookupMasterByLabel(REMOTE_SERVER_FQDN));
+        assertNull(IssFactory.getCurrentMaster());
+    }
+
+    @Test
+    public void deleteIssV1MasterDoesNotDeleteIfMasterIsMissing() throws Exception {
+        IssAccessToken token = createHubRegistration(REMOTE_SERVER_FQDN, null, null);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+            () -> hubManager.deleteIssV1Master(token));
+        assertEquals(REMOTE_SERVER_FQDN + " is not registered as an ISS v1 master", exception.getMessage());
+    }
+
+    @Test
+    public void deleteIssV1MasterDoesNotDeleteIfHubIsMissing() {
+        IssMaster hub = new IssMaster();
+        hub.setLabel(REMOTE_SERVER_FQDN);
+        hub.makeDefaultMaster();
+        IssFactory.save(hub);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+            () -> hubManager.deleteIssV1Master(getValidToken(REMOTE_SERVER_FQDN)));
+        assertEquals(REMOTE_SERVER_FQDN + " is not registered as an ISS v3 hub", exception.getMessage());
     }
 
     private static IssAccessToken getValidToken(String fdqn) {
