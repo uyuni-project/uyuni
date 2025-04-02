@@ -11,8 +11,7 @@ jobs:
   filter-paths:
     runs-on: ubuntu-latest
     outputs:
-#      require_acceptance_tests: ${{ steps.filter.outputs.java == 'true' || steps.filter.outputs.web == 'true' || steps.filter.outputs.testsuite == 'true' }}
-      require_acceptance_tests: ${{ 0 == 1 }}
+      require_acceptance_tests: ${{ steps.filter.outputs.java == 'true' || steps.filter.outputs.web == 'true' || steps.filter.outputs.testsuite == 'true' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
         with:
