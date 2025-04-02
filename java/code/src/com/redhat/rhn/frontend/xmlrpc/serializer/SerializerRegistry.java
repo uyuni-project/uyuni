@@ -174,6 +174,8 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(ChannelInfoJsonSerializer.class);
         SERIALIZER_CLASSES.add(OrgInfoJsonSerializer.class);
         SERIALIZER_CLASSES.add(MigrationResultSerializer.class);
+        SERIALIZER_CLASSES.add(AccessGroupSerializer.class);
+        SERIALIZER_CLASSES.add(NamespaceSerializer.class);
     }
 
     /**

@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.access;
 
 import com.redhat.rhn.domain.org.Org;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -65,6 +66,7 @@ public class AccessGroup {
         label = labelIn;
         description = descriptionIn;
         org = orgIn;
+        namespaces = new HashSet<>();
     }
 
     public Long getId() {

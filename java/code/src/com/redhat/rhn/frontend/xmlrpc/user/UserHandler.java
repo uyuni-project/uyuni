@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.user;
 
+import static com.redhat.rhn.domain.user.UserFactory.IMPLIEDROLES;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -22,6 +24,8 @@ import com.redhat.rhn.common.util.CryptHelper;
 import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.access.AccessGroup;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -29,6 +33,7 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.DeleteUserException;
@@ -39,6 +44,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchRoleException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.UserNotUpdatedException;
 import com.redhat.rhn.manager.SatManager;
+import com.redhat.rhn.manager.access.AccessGroupManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.user.CreateUserCommand;
 import com.redhat.rhn.manager.user.DeleteSatAdminException;
@@ -52,12 +58,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * UserHandler
@@ -89,16 +96,20 @@ public class UserHandler extends BaseHandler {
     }
 
     private final ServerGroupManager serverGroupManager;
+    private final AccessGroupManager accessGroupManager;
 
     /**
-     * @param serverGroupManagerIn
+     * @param serverGroupManagerIn the server group manager
+     * @param accessGroupManagerIn the RBAC access group manager
      */
-    public UserHandler(ServerGroupManager serverGroupManagerIn) {
+    public UserHandler(ServerGroupManager serverGroupManagerIn, AccessGroupManager accessGroupManagerIn) {
         serverGroupManager = serverGroupManagerIn;
+        accessGroupManager = accessGroupManagerIn;
     }
 
     /**
      * Lists the users in the org.
+     *
      * @param loggedInUser The current user
      * @return Returns a list of userids and logins
      * @throws FaultException A FaultException is thrown if the loggedInUser
@@ -112,7 +123,7 @@ public class UserHandler extends BaseHandler {
      * #array_end()
      */
     @ReadOnly
-    public List listUsers(User loggedInUser) throws FaultException {
+    public List<UserImpl> listUsers(User loggedInUser) throws FaultException {
         // Get the logged in user
         try {
             return UserManager.usersInOrg(loggedInUser);
@@ -132,23 +143,43 @@ public class UserHandler extends BaseHandler {
      *
      * @apidoc.doc Returns a list of the user's roles.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "login", "User's login name.")
-     * @apidoc.returntype #array_single("string", "(role label)")
+     * @apidoc.param #param_desc("string", "login", "user's login name")
+     * @apidoc.returntype #array_single("string", "the role label")
      */
     @ReadOnly
-    public Object[] listRoles(User loggedInUser, String login) throws FaultException {
-        // Get the logged in user
+    public Set<String> listRoles(User loggedInUser, String login) throws FaultException {
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(loggedInUser, login);
-        List roles = new ArrayList<>(); //List of role labels to return
 
-        //Loop through the target users roles and stick the labels into the ArrayList
-        Set roleObjects = target.getPermanentRoles();
-        for (Object roleObjectIn : roleObjects) {
-            Role r = (Role) roleObjectIn;
-            roles.add(r.getLabel());
-        }
+        Set<Role> legacyRoles = new HashSet<>(target.getPermanentRoles());
+        // Hide legacy roles
+        legacyRoles.removeIf(IMPLIEDROLES::contains);
 
-        return roles.toArray();
+        return Stream.concat(
+                legacyRoles.stream().map(Role::getLabel),
+                target.getAccessGroups().stream().map(AccessGroup::getLabel)
+        ).collect(Collectors.toUnmodifiableSet());
+    }
+
+    /**
+     * Lists the effective RBAC permissions of a user.
+     * @param loggedInUser The current user
+     * @param login The login for the user you want to get the roles for
+     * @return Returns a list of roles for the user specified by login
+     * @throws FaultException A FaultException is thrown if the user doesn't have access
+     * to lookup the user corresponding to login or if the user does not exist.
+     *
+     * @apidoc.doc Lists the effective RBAC permissions of a user.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "user's login name")
+     * @apidoc.returntype
+     * #return_array_begin()
+     *     $NamespaceSerializer
+     * #array_end()
+     */
+    @ReadOnly
+    public Set<Namespace> listPermissions(User loggedInUser, String login) throws FaultException {
+        User target = XmlRpcUserHelper.getInstance().lookupTargetUser(loggedInUser, login);
+        return UserManager.getPermittedNamespaces(target).collect(Collectors.toUnmodifiableSet());
     }
 
     /**
@@ -318,15 +349,25 @@ public class UserHandler extends BaseHandler {
     }
 
     /**
-     * Returns all roles that are assignable to a given user
-     * @return all the role labels that are assignable to a user.
+     * Returns all roles that are assignable by a given user
+     * @return all the role labels that are assignable by a user.
      */
     private Set<String> getAssignableRoles(User user) {
-        Set<String> assignableRoles = new LinkedHashSet<>();
-        for (Role r : UserManager.listRolesAssignableBy(user)) {
-            assignableRoles.add(r.getLabel());
+        // Legacy administrative roles
+        Stream<String> legacyRoles = UserManager.listRolesAssignableBy(user).stream().map(Role::getLabel);
+
+        // RBAC roles
+        Stream<AccessGroup> rbacRoles = Stream.empty();
+        if (user.hasRole(RoleFactory.SAT_ADMIN)) {
+            // Satellite admin can assign any role in any org
+            rbacRoles = accessGroupManager.list().stream();
         }
-        return assignableRoles;
+        else if (user.hasRole(RoleFactory.ORG_ADMIN)) {
+            // Org admin can assign any role in the same org
+            rbacRoles = accessGroupManager.list(user.getOrg()).stream();
+        }
+        return Stream.concat(legacyRoles, rbacRoles.map(AccessGroup::getLabel))
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     /**
@@ -356,10 +397,8 @@ public class UserHandler extends BaseHandler {
      *
      * @apidoc.doc Adds a role to a user.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "login", "User login name to update.")
-     * @apidoc.param #param_desc("string", "role", "Role label to add.  Can be any of:
-     * satellite_admin, org_admin, channel_admin, config_admin, system_group_admin, or
-     * activation_key_admin.")
+     * @apidoc.param #param_desc("string", "login", "user login name to update")
+     * @apidoc.param #param_desc("string", "role", "the role label to add")
      * @apidoc.returntype #return_int_success()
      */
     public int addRole(User loggedInUser, String login, String role) throws FaultException {
@@ -367,11 +406,17 @@ public class UserHandler extends BaseHandler {
         if (RoleFactory.SAT_ADMIN.getLabel().equals(role)) {
             return modifySatAdminRole(loggedInUser, login, true);
         }
+
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(loggedInUser, login);
-        // Retrieve the role object corresponding to the role label passed in and
-        // add to user
-        Role r = RoleFactory.lookupByLabel(role);
-        target.addPermanentRole(r);
+        if (RoleFactory.ORG_ADMIN.getLabel().equals(role)) {
+            target.addPermanentRole(RoleFactory.ORG_ADMIN);
+            return 1;
+        }
+
+        // RBAC roles
+        target.getAccessGroups().add(accessGroupManager.lookup(role, target.getOrg())
+                .orElseThrow(() -> new NoSuchRoleException(role)));
+
         UserManager.storeUser(target);
         return 1;
     }
@@ -388,10 +433,8 @@ public class UserHandler extends BaseHandler {
      *
      * @apidoc.doc Remove a role from a user.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "login", "User login name to update.")
-     * @apidoc.param #param_desc("string", "role", "Role label to remove.  Can be any of:
-     * satellite_admin, org_admin, channel_admin, config_admin, system_group_admin, or
-     * activation_key_admin.")
+     * @apidoc.param #param_desc("string", "login", "user login name to update")
+     * @apidoc.param #param_desc("string", "role", "the role label to remove")
      * @apidoc.returntype #return_int_success()
      */
     public int removeRole(User loggedInUser, String login, String role)
@@ -418,10 +461,15 @@ public class UserHandler extends BaseHandler {
             }
         }
 
-        // Retrieve the role object corresponding to the role label passed in and
-        // remove from user
-        Role r = RoleFactory.lookupByLabel(role);
-        target.removePermanentRole(r);
+        // Retrieve the role object corresponding to the role label passed in and remove from user
+        if (RoleFactory.ORG_ADMIN.getLabel().equals(role)) {
+            target.removePermanentRole(RoleFactory.ORG_ADMIN);
+        }
+        else {
+            accessGroupManager.lookup(role, target.getOrg())
+                    .map(g -> target.getAccessGroups().remove(g))
+                    .orElseThrow(() -> new NoSuchRoleException(role));
+        }
 
         UserManager.storeUser(target);
         return 1;
@@ -1098,6 +1146,7 @@ public class UserHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int setReadOnly(User loggedInUser, String login, Boolean readOnly) {
+        // TODO: Replace read-only API user
         //Logged in user must be an org admin.
         ensureOrgAdmin(loggedInUser);
 
