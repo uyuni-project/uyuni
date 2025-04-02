@@ -1,0 +1,2 @@
+- Fix severity levels are missing in api output of
+  errata getDetails method (bsc#1240038)
