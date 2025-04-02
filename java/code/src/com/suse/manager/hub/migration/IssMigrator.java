@@ -11,6 +11,7 @@
 
 package com.suse.manager.hub.migration;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -39,6 +40,8 @@ import java.util.stream.Collectors;
 public class IssMigrator {
 
     private static final Logger LOGGER = LogManager.getLogger(IssMigrator.class);
+
+    private static final LocalizationService LOC = LocalizationService.getInstance();
 
     private final HubManager hubManager;
 
@@ -95,7 +98,7 @@ public class IssMigrator {
             LOGGER.warn("This server does not have any register slaves, nothing to migrate");
 
             result.setResultCode(MigrationResultCode.FAILURE);
-            result.addMessage(MigrationMessageLevel.ERROR, "This server does not have any ISSv1 slave");
+            result.addMessage(MigrationMessageLevel.ERROR, LOC.getMessage("hub.migration.no_slaves"));
 
             return result;
         }
@@ -105,7 +108,7 @@ public class IssMigrator {
             .filter(fqdn -> !slavesMap.containsKey(fqdn))
             .forEach(fqdn -> {
                 LOGGER.warn("Migration data for {} is invalid, such slave does not exist", fqdn);
-                result.addMessage(MigrationMessageLevel.WARN, "Slave %s does not exist".formatted(fqdn));
+                result.addMessage(MigrationMessageLevel.WARN, LOC.getMessage("hub.migration.slave_not_exit", fqdn));
             });
 
         // The migration item is immutable so each step returns the updated version
@@ -174,8 +177,8 @@ public class IssMigrator {
         if (item.migrationData() == null) {
             LOGGER.info("Migration data is missing for slave {}. It will be skipped.", item.slave());
 
-            String message = "Slave %s has no migration data and will not be migrated";
-            result.addMessage(MigrationMessageLevel.INFO, message.formatted(item.slave().getSlave()));
+            String message = LOC.getMessage("hub.migration.no_migration_data", item.slave().getSlave());
+            result.addMessage(MigrationMessageLevel.INFO, message);
 
             return false;
         }
@@ -188,8 +191,8 @@ public class IssMigrator {
         if (!"Y".equals(item.slave().getEnabled())) {
             LOGGER.info("Slave {} is disabled. It will be skipped.", item.slave());
 
-            String message = "Slave %s is currently disabled and will not be migrated";
-            result.addMessage(MigrationMessageLevel.WARN, message.formatted(item.slave().getSlave()));
+            String message = LOC.getMessage("hub.migration.slave_disabled", item.slave().getSlave());
+            result.addMessage(MigrationMessageLevel.WARN, message);
 
             return item.fail();
         }
@@ -206,8 +209,8 @@ public class IssMigrator {
         catch (Exception ex) {
             LOGGER.error("Unable to register server {}", item.fqdn(), ex);
 
-            String message = "Unable to migrate %s: %s";
-            result.addMessage(MigrationMessageLevel.ERROR, message.formatted(item.fqdn(), ex.getMessage()));
+            String message = LOC.getMessage("hub.migration.unable_to_migrate", item.fqdn(), ex.getLocalizedMessage());
+            result.addMessage(MigrationMessageLevel.ERROR, message);
 
             return item.fail();
         }
@@ -242,8 +245,8 @@ public class IssMigrator {
         catch (Exception ex) {
             LOGGER.error("Unable to configure channels for peripheral {}", item.peripheral(), ex);
 
-            String message = "Unable to configure channels for peripheral %s: %s";
-            result.addMessage(MigrationMessageLevel.ERROR, message.formatted(item.fqdn(), ex.getMessage()));
+            String message = LOC.getMessage("hub.migration.fail_channel_config", item.fqdn(), ex.getLocalizedMessage());
+            result.addMessage(MigrationMessageLevel.ERROR, message);
 
             return item.fail();
         }
@@ -282,8 +285,8 @@ public class IssMigrator {
         catch (Exception ex) {
             LOGGER.error("Unable to remove ISSv1 data for {}", item.slave(), ex);
 
-            String message = "Unable remove ISSv1 data for slave %s";
-            result.addMessage(MigrationMessageLevel.ERROR, message.formatted(item.fqdn()));
+            String message = LOC.getMessage("hub.migration.removal_slave", item.fqdn(), ex.getLocalizedMessage());
+            result.addMessage(MigrationMessageLevel.ERROR, message);
         }
 
         return item;
@@ -302,8 +305,8 @@ public class IssMigrator {
         catch (Exception ex) {
             LOGGER.error("Unable to deregister peripheral {}", item.peripheral(), ex);
 
-            String message = "Unable to remove partially migrated peripheral %s: %s";
-            result.addMessage(MigrationMessageLevel.ERROR, message.formatted(item.fqdn(), ex.getMessage()));
+            String message = LOC.getMessage("hub.migration.removal_peripheral", item.fqdn(), ex.getLocalizedMessage());
+            result.addMessage(MigrationMessageLevel.ERROR, message);
         }
 
         return item;
