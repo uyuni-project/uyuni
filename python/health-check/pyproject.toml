@@ -4,7 +4,7 @@
 
 [project]
 name = "health-check"
-description = "Show Uyuni server health metrics and logs"
+description = "Show Uyuni Server health metrics and logs"
 readme = "README.md"
 requires-python = ">=3.11"
 classifiers = [
