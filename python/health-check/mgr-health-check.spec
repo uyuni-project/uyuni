@@ -15,11 +15,14 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+## The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
+
 %{?sle15_python_module_pythons}
 Name:           mgr-health-check
 Version:        5.1.0
 Release:        0
-Summary:        Show Uyuni server health metrics and logs
+Summary:        Show %{productprettyname} Server health metrics and logs
 License:        Apache-2.0 
 URL:            https://github.com/uyuni-project/uyuni
 Source:         %{name}-%{version}.tar.gz
@@ -44,7 +47,7 @@ Provides:       mgr-health-check
 %python_subpackages
 
 %description
-Show Uyuni server health metrics and logs
+Show %{productprettyname} Server health metrics and logs
 
 %prep
 %autosetup -p1

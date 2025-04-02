@@ -1,6 +1,6 @@
 ### mgr-health-check
 
-A tool providing dashboard, metrics and logs from an Uyuni server supportconfig to visualise its health status.
+A tool providing dashboard, metrics and logs from an Uyuni Server supportconfig to visualize its health status.
 
 ## Requirements
 
@@ -19,7 +19,7 @@ pip install .
 
 ## Getting started
 
-This tool builds and deploys the necessary containers to scrape some metrics and logs from an Uyuni server supportconfig directory.
+This tool builds and deploys the necessary containers to scrape some metrics and logs from an Uyuni Server supportconfig directory.
 Execute the `start` phase of the tool as such:
 
 #### Analyze logs from the last 15 days

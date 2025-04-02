@@ -1,11 +1,19 @@
+# SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/health-check-supportconfig-exporter:latest
 
-ARG BASE=registry.suse.com/bci/bci-base:15.6
+ARG BASE=registry.suse.com/bci/bci-base:15.7
 
 FROM $BASE
 
-RUN zypper -n ref
-RUN zypper -n install python311-PyYAML
+RUN zypper --non-interactive ref && zypper --non-interactive up && \
+    zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
+        python311-PyYAML
+
+# LABELs
+ARG PRODUCT=Uyuni
+ARG VENDOR="Uyuni project"
+ARG URL="https://www.uyuni-project.org/"
+ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 
 # Build Service required labels
 # labelprefix=org.opensuse.uyuni.health-check-supportconfig-exporter
@@ -23,4 +31,3 @@ LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
 WORKDIR /opt/
 ENTRYPOINT ["python3.11", "/opt/supportconfig_exporter.py"]
-
