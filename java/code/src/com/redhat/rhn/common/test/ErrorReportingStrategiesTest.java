@@ -19,10 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.ErrorReportingStrategies;
-import com.redhat.rhn.common.RhnError;
-import com.redhat.rhn.common.RhnGeneralException;
-import com.redhat.rhn.common.RhnReportStrategy;
 import com.redhat.rhn.common.RhnRuntimeException;
+import com.redhat.rhn.common.UyuniError;
+import com.redhat.rhn.common.UyuniGeneralException;
+import com.redhat.rhn.common.UyuniReportStrategy;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,10 +35,10 @@ public class ErrorReportingStrategiesTest {
 
     @Test
     public void testValidationReportingStrategyThrowsExceptionOnErrors() {
-        RhnReportStrategy<RhnError> strategy = ErrorReportingStrategies.validationReportingStrategy();
-        List<RhnError> errors = List.of(new RhnError("Test error"));
+        UyuniReportStrategy<UyuniError> strategy = ErrorReportingStrategies.validationReportingStrategy();
+        List<UyuniError> errors = List.of(new UyuniError("Test error"));
 
-        assertThrows(RhnGeneralException.class, () -> strategy.report(errors));
+        assertThrows(UyuniGeneralException.class, () -> strategy.report(errors));
     }
 
     @Test

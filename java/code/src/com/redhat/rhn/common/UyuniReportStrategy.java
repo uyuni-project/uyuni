@@ -12,21 +12,19 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+package com.redhat.rhn.common;
 
-package com.redhat.rhn.common.test;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+/**
+ * Interface for strategy reporting errors
+ * @param <E> the type of errors
+ */
+public interface UyuniReportStrategy<E> {
 
-import com.redhat.rhn.common.RhnError;
-
-import org.junit.jupiter.api.Test;
-
-public class RhnErrorTest {
-
-    @Test
-    public void testGetMessage() {
-        String testMessage = "Test error message";
-        RhnError error = new RhnError(testMessage);
-        assertEquals(testMessage, error.getMessage());
-    }
+    /**
+     * Report a list of errors
+     * @param errors the list of errors
+     */
+    void report(List<E> errors);
 }

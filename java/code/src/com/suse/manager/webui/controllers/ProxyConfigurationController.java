@@ -26,8 +26,8 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndSer
 import static spark.Spark.get;
 import static spark.Spark.post;
 
-import com.redhat.rhn.common.RhnGeneralException;
 import com.redhat.rhn.common.RhnRuntimeException;
+import com.redhat.rhn.common.UyuniGeneralException;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -157,7 +157,7 @@ public class ProxyConfigurationController {
             LOG.error("Failed to apply proxy configuration to minion", e);
             return success(response, ResultJson.error(e.getMessage()));
         }
-        catch (RhnGeneralException e) {
+        catch (UyuniGeneralException e) {
             LOG.error("Failed to apply proxy configuration to minion", e);
             return success(response, ResultJson.error(e.getErrorMessages()));
         }
@@ -187,7 +187,7 @@ public class ProxyConfigurationController {
             LOG.error("Failed to apply proxy configuration to minion", e);
             return internalServerError(response, e.getMessage());
         }
-        catch (RhnGeneralException e) {
+        catch (UyuniGeneralException e) {
             LOG.error("Failed to apply proxy configuration to minion", e);
             return badRequest(response, e.getErrorMessages());
         }

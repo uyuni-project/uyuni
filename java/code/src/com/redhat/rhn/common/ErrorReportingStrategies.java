@@ -27,7 +27,7 @@ import java.util.function.Supplier;
 
 /**
  * This class provides various strategies for error reporting and logging.
- * Base validation reporting strategy throws a {@link RhnGeneralException} if there are errors.
+ * Base validation reporting strategy throws a {@link UyuniGeneralException} if there are errors.
  */
 public class ErrorReportingStrategies {
 
@@ -36,12 +36,12 @@ public class ErrorReportingStrategies {
     }
 
     private static final Map<Object, Logger> OBJ_LOGGER = Collections.synchronizedMap(new WeakHashMap<>());
-    private static final RhnReportStrategy<RhnError> VALIDATION_REPORT_STRATEGY;
+    private static final UyuniReportStrategy<UyuniError> VALIDATION_REPORT_STRATEGY;
 
     static {
         VALIDATION_REPORT_STRATEGY = errors -> {
             if (!errors.isEmpty()) {
-                throw new RhnGeneralException(errors);
+                throw new UyuniGeneralException(errors);
             }
         };
     }
@@ -49,9 +49,9 @@ public class ErrorReportingStrategies {
 
     /**
      * Returns a default validation reporting strategy
-     * @return RhnReportStrategy
+     * @return UyuniReportStrategy
      */
-    public static RhnReportStrategy<RhnError> validationReportingStrategy() {
+    public static UyuniReportStrategy<UyuniError> validationReportingStrategy() {
         return VALIDATION_REPORT_STRATEGY;
     }
 

@@ -40,7 +40,7 @@ import static com.suse.proxy.ProxyContainerImagesEnum.PROXY_TFTPD;
 import static com.suse.utils.Predicates.isAbsent;
 import static java.lang.String.format;
 
-import com.redhat.rhn.common.RhnErrorReport;
+import com.redhat.rhn.common.UyuniErrorReport;
 
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 
@@ -59,7 +59,7 @@ public class ProxyConfigUpdateValidation implements ProxyConfigUpdateContextHand
     private static final String NOT_FOUND_ON_CURRENT_PROXY_CONFIGURATION_MESSAGE =
             "%s not found on current proxy configuration";
 
-    private RhnErrorReport errorReport;
+    private UyuniErrorReport errorReport;
 
     @Override
     public void handle(ProxyConfigUpdateContext context) {

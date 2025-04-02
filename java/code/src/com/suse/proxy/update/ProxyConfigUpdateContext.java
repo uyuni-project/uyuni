@@ -15,7 +15,7 @@
 
 package com.suse.proxy.update;
 
-import com.redhat.rhn.common.RhnErrorReport;
+import com.redhat.rhn.common.UyuniErrorReport;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Pillar;
@@ -41,7 +41,7 @@ public class ProxyConfigUpdateContext {
 
     // Provided data
     private final ProxyConfigUpdateJson request;
-    private final RhnErrorReport errorReport = new RhnErrorReport();
+    private final UyuniErrorReport errorReport = new UyuniErrorReport();
     private final Map<ProxyContainerImagesEnum, RegistryUrl> registryUrls =
             new EnumMap<>(ProxyContainerImagesEnum.class);
     private final SystemManager systemManager;
@@ -102,7 +102,7 @@ public class ProxyConfigUpdateContext {
         return request;
     }
 
-    public RhnErrorReport getErrorReport() {
+    public UyuniErrorReport getErrorReport() {
         return errorReport;
     }
 

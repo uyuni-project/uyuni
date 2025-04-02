@@ -18,14 +18,14 @@ package com.redhat.rhn.common.test;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.common.RhnError;
-import com.redhat.rhn.common.RhnGeneralException;
+import com.redhat.rhn.common.UyuniError;
+import com.redhat.rhn.common.UyuniGeneralException;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class RhnGeneralExceptionTest {
+public class UyuniGeneralExceptionTest {
 
     @Test
     public void testGetErrors() {
@@ -33,11 +33,11 @@ public class RhnGeneralExceptionTest {
         final String dummyError2 = "Error 2";
         String[] expectedMessages = {dummyError1, dummyError2};
 
-        RhnError error1 = new RhnError(dummyError1);
-        RhnError error2 = new RhnError(dummyError2);
+        UyuniError error1 = new UyuniError(dummyError1);
+        UyuniError error2 = new UyuniError(dummyError2);
 
-        List<RhnError> errors = List.of(error1, error2);
-        RhnGeneralException exception = new RhnGeneralException(errors);
+        List<UyuniError> errors = List.of(error1, error2);
+        UyuniGeneralException exception = new UyuniGeneralException(errors);
 
         assertEquals(errors, exception.getErrors());
         assertArrayEquals(expectedMessages, exception.getErrorMessages());
