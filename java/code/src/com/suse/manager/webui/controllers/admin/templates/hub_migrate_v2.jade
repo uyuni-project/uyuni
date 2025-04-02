@@ -1,0 +1,12 @@
+include /templates/common.jade
+
+#migrate-from-v2
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('admin/hub/migrate-from-v2')
+        .then(function(module) {
+            module.renderer("migrate-from-v2");
+        });
