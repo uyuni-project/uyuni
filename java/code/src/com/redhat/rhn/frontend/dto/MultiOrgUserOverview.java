@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.dto;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.

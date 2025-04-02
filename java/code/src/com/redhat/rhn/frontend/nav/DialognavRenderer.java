@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.nav;
 
 import com.redhat.rhn.frontend.html.HtmlTag;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
 
 import java.util.Map;
