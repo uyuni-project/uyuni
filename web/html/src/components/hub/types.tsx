@@ -56,3 +56,39 @@ export type HubDetailData = {
   created: Date;
   modified: Date;
 };
+
+export enum MigrationVersion {
+  v1 = "v1",
+  v2 = "v2",
+}
+
+export type MigrationEntry = {
+  id: number;
+  selected: boolean;
+  disabled: boolean;
+  fqdn: string;
+  accessToken: string | null;
+  rootCA: string | null;
+};
+
+export enum MigrationResultCode {
+  SUCCESS = "SUCCESS",
+  PARTIAL = "PARTIAL",
+  FAILURE = "FAILURE",
+}
+
+export enum MigrationMessageLevel {
+  INFO = "INFO",
+  WARN = "WARN",
+  ERROR = "ERROR",
+}
+
+export type MigrationMessage = {
+  severity: MigrationMessageLevel;
+  message: string;
+};
+
+export type MigrationResult = {
+  resultCode: MigrationResultCode;
+  messageSet: Array<MigrationMessage>;
+};
