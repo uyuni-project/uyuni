@@ -29,15 +29,21 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.hub.HubManager;
 import com.suse.manager.hub.InvalidResponseException;
+import com.suse.manager.hub.migration.IssMigrator;
+import com.suse.manager.hub.migration.IssMigratorFactory;
 import com.suse.manager.model.hub.AccessTokenDTO;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.model.hub.UpdatableServerData;
+import com.suse.manager.model.hub.migration.MigrationResult;
+import com.suse.manager.model.hub.migration.MigrationResultCode;
+import com.suse.manager.model.hub.migration.SlaveMigrationData;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.controllers.admin.beans.CreateTokenRequest;
 import com.suse.manager.webui.controllers.admin.beans.HubRegisterRequest;
+import com.suse.manager.webui.controllers.admin.beans.MigrationEntryDto;
 import com.suse.manager.webui.controllers.admin.beans.PeripheralListData;
 import com.suse.manager.webui.controllers.admin.beans.UpdateRootCARequest;
 import com.suse.manager.webui.controllers.admin.beans.ValidityRequest;
@@ -64,6 +70,9 @@ import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.net.ssl.SSLException;
 
@@ -77,6 +86,8 @@ public class HubApiController {
 
     private final HubManager hubManager;
 
+    private final IssMigratorFactory migratorFactory;
+
     private static final Gson GSON = new GsonBuilder()
         .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
         .serializeNulls()
@@ -86,15 +97,17 @@ public class HubApiController {
      * Default constructor
      */
     public HubApiController() {
-        this(new HubManager());
+        this(new HubManager(), new IssMigratorFactory());
     }
 
     /**
      * Creates an instance with the given dependencies
      * @param hubManagerIn the hub manager
+     * @param migratorFactoryIn the migrator factory
      */
-    public HubApiController(HubManager hubManagerIn) {
+    public HubApiController(HubManager hubManagerIn, IssMigratorFactory migratorFactoryIn) {
         this.hubManager = hubManagerIn;
+        this.migratorFactory = migratorFactoryIn;
     }
 
     /**
@@ -111,6 +124,8 @@ public class HubApiController {
         get("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
         patch("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
         delete("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::deletePeripheral));
+        post("/manager/api/admin/hub/migrate/v1", withProductAdmin(this::migrateFromV1));
+        post("/manager/api/admin/hub/migrate/v2", withProductAdmin(this::migrateFromV2));
         delete("/manager/api/admin/hub/:id", withProductAdmin(this::deleteHub));
         post("/manager/api/admin/hub/:id/root-ca", withProductAdmin(this::updateHubRootCA));
         delete("/manager/api/admin/hub/:id/root-ca", withProductAdmin(this::removeHubRootCA));
@@ -153,7 +168,7 @@ public class HubApiController {
             issRequest = validateRegisterRequest(GSON.fromJson(request.body(), HubRegisterRequest.class));
         }
         catch (JsonSyntaxException ex) {
-            LOGGER.error("Unable to parse JSON request", ex);
+            LOGGER.error("Unable to parse JSON request {}", request, ex);
             return badRequest(response, LOC.getMessage("hub.invalid_request"));
         }
 
@@ -344,6 +359,53 @@ public class HubApiController {
         }
 
         return success(response);
+    }
+
+    private String migrateFromV1(Request request, Response response, User user) {
+        List<MigrationEntryDto> migrationEntries = GSON.fromJson(request.body(),
+            new TypeToken<List<MigrationEntryDto>>() { }.getType());
+
+        // Map the entries to a map of SlaveMigrationData
+        Map<String, SlaveMigrationData> migrationData = migrationEntries.stream()
+            .filter(entry -> entry.isSelected() && !entry.isDisabled())
+            .map(entry -> new SlaveMigrationData(entry.getFqdn(), entry.getAccessToken(), entry.getRootCA()))
+            .collect(Collectors.toMap(SlaveMigrationData::fqdn, Function.identity()));
+
+        // Run migration from v1
+        IssMigrator migrator = migratorFactory.createFor(user);
+        return performMigration(request, response, migrationData, 1, data -> migrator.migrateFromV1(data));
+    }
+
+    private String migrateFromV2(Request request, Response response, User user) {
+        List<MigrationEntryDto> migrationEntries = GSON.fromJson(request.body(),
+            new TypeToken<List<MigrationEntryDto>>() { }.getType());
+
+        // Map the entries to a list of SlaveMigrationData
+        List<SlaveMigrationData> migrationData = migrationEntries.stream()
+            .filter(entry -> entry.isSelected() && !entry.isDisabled())
+            .map(entry -> new SlaveMigrationData(entry.getFqdn(), entry.getAccessToken(), entry.getRootCA()))
+            .toList();
+
+        // Run migration from v2
+        IssMigrator migrator = migratorFactory.createFor(user);
+        return performMigration(request, response, migrationData, 2, data ->  migrator.migrateFromV2(data));
+    }
+
+    private <T> String performMigration(Request request, Response response, T migrationData, int version,
+                                        Function<T, MigrationResult> migration) {
+        try {
+            MigrationResult result = migration.apply(migrationData);
+
+            if (result.getResultCode() == MigrationResultCode.SUCCESS) {
+                FlashScopeHelper.flash(request, LOC.getMessage("hub.migration_success", version));
+            }
+
+            return success(response, result);
+        }
+        catch (Exception ex) {
+            LOGGER.error("Unexpected error while migrating the servers", ex);
+            return internalServerError(response, LOC.getMessage("hub.unexpected_error_migrating", ex.getMessage()));
+        }
     }
 
     private static HubRegisterRequest validateRegisterRequest(HubRegisterRequest parsedRequest) {
