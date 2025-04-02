@@ -6,6 +6,10 @@ FROM $INIT_IMAGE
 
 ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
 
+# Keep in sync with salt/salt.spec
+# For now Uyuni is still on python3-salt but the value can be overridden in the project config
+ARG USEPYTHON="python3"
+
 # Extra packages can be added via project configuration
 ARG EXTRAPACKAGES
 
@@ -56,7 +60,7 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         virtual-host-gatherer-Nutanix \
         virtual-host-gatherer-VMware \
         vim \
-        python3-pygit2 \
+        ${USEPYTHON}-pygit2 \
         ipmitool \
         sssd \
         sssd-dbus \
