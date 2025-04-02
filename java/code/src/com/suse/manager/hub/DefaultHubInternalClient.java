@@ -127,6 +127,11 @@ public class DefaultHubInternalClient implements HubInternalClient {
         invokePost("hub", "syncChannels", channelsIn);
     }
 
+    @Override
+    public void deleteIssV1Master() throws IOException {
+        invokePost("hub/sync/migrate/v1", "deleteMaster", null);
+    }
+
     private <R> R invokeGet(String namespace, String apiMethod, Type responseType)
             throws IOException {
         return invoke(HttpGet.METHOD_NAME, namespace, apiMethod, null, responseType);

@@ -30,6 +30,8 @@ import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.iss.IssFactory;
+import com.redhat.rhn.domain.iss.IssMaster;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
@@ -48,6 +50,7 @@ import com.suse.manager.model.hub.ChannelInfoDetailsJson;
 import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
+import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssPeripheralChannels;
 import com.suse.manager.model.hub.IssRole;
@@ -64,6 +67,7 @@ import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -129,7 +133,8 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
                 Arguments.of(HttpMethod.post, "/hub/sync/channelfamilies", IssRole.HUB),
                 Arguments.of(HttpMethod.post, "/hub/sync/products", IssRole.HUB),
                 Arguments.of(HttpMethod.post, "/hub/sync/repositories", IssRole.HUB),
-                Arguments.of(HttpMethod.post, "/hub/sync/subscriptions", IssRole.HUB)
+                Arguments.of(HttpMethod.post, "/hub/sync/subscriptions", IssRole.HUB),
+                Arguments.of(HttpMethod.post, "/hub/sync/migrate/v1/deleteMaster", IssRole.HUB)
         );
     }
 
@@ -145,8 +150,16 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         return allApiEndpoints().filter(e -> (IssRole.HUB == e.get()[2]));
     }
 
+    private static boolean noHubApis() {
+        return onlyHubApis().findAny().isEmpty();
+    }
+
     private static Stream<Arguments> onlyPeripheralApis() {
         return allApiEndpoints().filter(e -> (IssRole.PERIPHERAL == e.get()[2]));
+    }
+
+    private static boolean noPeripheralApis() {
+        return onlyPeripheralApis().findAny().isEmpty();
     }
 
     @ParameterizedTest
@@ -177,6 +190,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     @ParameterizedTest
     @MethodSource("onlyHubApis")
+    @DisabledIf(value = "noHubApis", disabledReason = "No API can be called only from a Hub")
     public void ensureHubApisNotWorkingWithPeripheral(HttpMethod apiMethod, String apiEndpoint, IssRole apiRole)
             throws Exception {
         String answerKO = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
@@ -191,8 +205,9 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         assertEquals("Token does not allow access to this resource", resultKO.getMessages().get(0));
     }
 
-    //@ParameterizedTest
-    //@MethodSource("onlyPeripheralApis")
+    @ParameterizedTest
+    @MethodSource("onlyPeripheralApis")
+    @DisabledIf(value = "noPeripheralApis", disabledReason = "No API can be called only from a Peripheral")
     public void ensurePeripheralApisNotWorkingWithHub(HttpMethod apiMethod, String apiEndpoint/*, IssRole apiRole*/)
             throws Exception {
         String answerKO = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
@@ -483,8 +498,6 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     @MethodSource("allBaseAndVendorChannelAlreadyPresentCombinations")
     public void checkApiSyncChannel(boolean baseChannelAlreadyPresentInPeripheral,
                                     boolean channelAlreadyPresentInPeripheral) throws Exception {
-        String apiUnderTest = "/hub/syncChannels";
-
         //SUSE Linux Enterprise Server 15 SP7 x86_64
         String vendorBaseChannelTemplateName = "SLES15-SP7-Pool for x86_64";
         String vendorBaseChannelTemplateLabel = "sles15-sp7-pool-x86_64";
@@ -935,5 +948,71 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
         testUtils.checkSyncChannelsApiThrows(DUMMY_SERVER_FQDN, List.of(modifyInfo),
                 "Information about the original channel");
+    }
+
+    @Test
+    public void checkDeleteMaster() throws Exception {
+        String apiUnderTest = "/hub/sync/migrate/v1/deleteMaster";
+
+        IssMaster master = new IssMaster();
+        master.setLabel(DUMMY_SERVER_FQDN);
+        master.makeDefaultMaster();
+        master.setCaCert("/etc/pki/trust/anchors/master.pem");
+
+        IssFactory.save(master);
+        TestUtils.flushAndEvict(master);
+
+        HubFactory hubFactory = new HubFactory();
+        IssHub hub = new IssHub(DUMMY_SERVER_FQDN, "");
+        hubFactory.save(hub);
+
+        String answer = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
+            .withApiEndpoint(apiUnderTest)
+            .withHttpMethod(HttpMethod.post)
+            .withRole(IssRole.HUB)
+            .withBearerTokenInHeaders()
+            .simulateControllerApiCall();
+
+        ResultJson<?> result = Json.GSON.fromJson(answer, ResultJson.class);
+        assertTrue(result.isSuccess(), "Failed: " + answer);
+
+        assertNull(IssFactory.lookupMasterByLabel(DUMMY_SERVER_FQDN));
+        assertNull(IssFactory.getCurrentMaster());
+    }
+
+    @Test
+    public void ensureThrowsWhenMasterIsNotFound() throws Exception {
+        String apiUnderTest = "/hub/sync/migrate/v1/deleteMaster";
+
+        IssMaster master = new IssMaster();
+        // label not matching the hub fqdn
+        master.setLabel("iss-master.unit-test.local");
+        master.makeDefaultMaster();
+        master.setCaCert("/etc/pki/trust/anchors/master.pem");
+
+        IssFactory.save(master);
+        TestUtils.flushAndEvict(master);
+
+        String answer = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
+            .withApiEndpoint(apiUnderTest)
+            .withHttpMethod(HttpMethod.post)
+            .withRole(IssRole.HUB)
+            .withBearerTokenInHeaders()
+            .simulateControllerApiCall();
+
+        ResultJson<?> result = Json.GSON.fromJson(answer, ResultJson.class);
+        assertFalse(result.isSuccess(), "Failed: " + answer);
+        assertNotNull(result.getMessages());
+        assertEquals(1, result.getMessages().size());
+        assertEquals(
+            "dummy-server.unit-test.local is not registered as an ISS v1 master",
+            result.getMessages().get(0)
+        );
+
+        IssMaster reloaded = IssFactory.getCurrentMaster();
+        assertNotNull(reloaded);
+        assertEquals("iss-master.unit-test.local", reloaded.getLabel());
+        assertTrue(reloaded.isDefaultMaster());
+        assertEquals("/etc/pki/trust/anchors/master.pem", reloaded.getCaCert());
     }
 }

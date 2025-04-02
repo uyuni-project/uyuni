@@ -129,6 +129,8 @@ public class HubController {
                 asJson(usingTokenAuthentication(onlyFromHub(this::synchronizeRepositories))));
         post("/hub/sync/subscriptions",
                 asJson(usingTokenAuthentication(onlyFromHub(this::synchronizeSubscriptions))));
+        post("/hub/sync/migrate/v1/deleteMaster",
+                asJson(usingTokenAuthentication(onlyFromHub(this::deleteV1Master))));
     }
 
     private String scheduleProductRefresh(Request request, Response response, IssAccessToken issAccessToken) {
@@ -280,11 +282,11 @@ public class HubController {
             return success(response);
         }
         catch (TokenParsingException ex) {
-            LOGGER.error("Unable to parse the received token for server {}", token.getServerFqdn());
+            LOGGER.error("Unable to parse the received token for server {}", token.getServerFqdn(), ex);
             return badRequest(response, "The specified token is not parseable");
         }
         catch (TaskomaticApiException ex) {
-            LOGGER.error("Unable to schedule root CA certificate update {}", token.getServerFqdn());
+            LOGGER.error("Unable to schedule root CA certificate update {}", token.getServerFqdn(), ex);
             return internalServerError(response, "Unable to schedule root CA certificate update");
         }
     }
@@ -359,5 +361,17 @@ public class HubController {
 
     private String synchronizeSubscriptions(Request request, Response response, IssAccessToken token) {
         return json(response, hubManager.synchronizeSubscriptions(token));
+    }
+
+    private String deleteV1Master(Request request, Response response, IssAccessToken token) {
+
+        try {
+            hubManager.deleteIssV1Master(token);
+            return success(response);
+        }
+        catch (IllegalStateException ex) {
+            LOGGER.error("Invalid fqdn {}", token.getServerFqdn(), ex);
+            return badRequest(response, ex.getMessage());
+        }
     }
 }
