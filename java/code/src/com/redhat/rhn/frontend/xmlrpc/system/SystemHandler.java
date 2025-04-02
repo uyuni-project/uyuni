@@ -47,6 +47,7 @@ import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.supportdata.UploadGeoType;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -9196,6 +9197,45 @@ public class SystemHandler extends BaseHandler {
         }
         catch (LookupException ex) {
             throw new EntityNotExistsFaultException(resultId);
+        }
+    }
+
+    /**
+     * Schedule Action to get and upload support data from the defined system to SCC.
+     * @param loggedInUser the user
+     * @param sid the system ID
+     * @param caseNumber the support case number
+     * @param parameter additional parameter for the tool which collect the data
+     * @param uploadGeo The location of the upload server [EU, US]
+     * @param earliestOccurrence the date when this action should be executed
+     * @return the action
+     *
+     * @apidoc.doc Schedule an action to get and upload support data from the specified system to SCC.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #param_desc("string", "caseNumber", "The SCC case number")
+     * @apidoc.param #param_desc("string", "parameter",
+     * "Additional parameter for the tool which collect the data from the system. Can be empty")
+     * @apidoc.param #param_desc("string", "uploadGeo", "The location of the upload server [EU, US]")
+     * @apidoc.param #param("$date",  "earliestOccurrence")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
+     */
+    public Integer scheduleSupportDataUpload(User loggedInUser, Integer sid, String caseNumber, String parameter,
+                                             String uploadGeo, Date earliestOccurrence) {
+        try {
+            SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
+
+            Action action = ActionManager.scheduleSupportDataAction(loggedInUser, sid.longValue(),
+                    caseNumber, parameter, UploadGeoType.valueOf(uploadGeo), earliestOccurrence);
+            taskomaticApi.scheduleActionExecution(action);
+            return action.getId().intValue();
+        }
+        catch (LookupException e) {
+            throw new NoSuchSystemException();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException eIn) {
+            throw new TaskomaticApiException(eIn.getMessage());
         }
     }
 
