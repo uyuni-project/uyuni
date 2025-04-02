@@ -8,6 +8,8 @@ export default {
   "admin/config/password-policy": () => import("./password-policy/password-policy.renderer"),
   "admin/setup/proxy": () => import("./setup/proxy/proxy.renderer"),
   "admin/hub/register-peripheral": () => import("./hub/register-peripheral.renderer"),
+  "admin/hub/migrate-from-v1": () => import("./hub/migrate-from-v1.renderer"),
+  "admin/hub/migrate-from-v2": () => import("./hub/migrate-from-v2.renderer"),
   "admin/hub/list-tokens": () => import("./hub/list-tokens.renderer"),
   "admin/hub/hub-details": () => import("./hub/hub-details.renderer"),
   "admin/hub/peripherals": () => import("./hub/peripherals.renderer"),
