@@ -1,0 +1,2 @@
+- Install python311-pygit2 inside server-image as needed on
+  SLE15SP7
