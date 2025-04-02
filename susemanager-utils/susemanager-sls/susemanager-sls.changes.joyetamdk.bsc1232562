@@ -1,0 +1,2 @@
+- Correctly switch to Salt Bundle on transactional systems
+  (bsc#1232562)
