@@ -1,4 +1,5 @@
 --
+-- Copyright (c) 2014--2025 SUSE LLC
 -- Copyright (c) 2008--2013 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
@@ -102,6 +103,16 @@ insert into rhnServerGroupType ( id, label, name, permanent, is_base)
 insert into rhnServerGroupType ( id, label, name, permanent, is_base)
    values ( sequence_nextval('rhn_servergroup_type_seq'),
       'ansible_managed', 'Ansible Managed Servers',
+      'N', 'N'
+   );
+
+commit;
+
+-- proxy_entitled type ---------------------------------------------------
+
+insert into rhnServerGroupType ( id, label, name, permanent, is_base)
+   values ( sequence_nextval('rhn_servergroup_type_seq'),
+      'proxy_entitled', 'Proxy',
       'N', 'N'
    );
 

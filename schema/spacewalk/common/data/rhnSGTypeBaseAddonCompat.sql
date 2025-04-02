@@ -1,4 +1,5 @@
 --
+-- Copyright (c) 2009-2025 SUSE LLC
 -- Copyright (c) 2008 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
@@ -48,5 +49,13 @@ values (lookup_sg_type('foreign_entitled'),
 insert into rhnSGTypeBaseAddonCompat (base_id, addon_id)
 values (lookup_sg_type('salt_entitled'),
         lookup_sg_type('ansible_managed'));
+
+insert into rhnSGTypeBaseAddonCompat (base_id, addon_id)
+values (lookup_sg_type('salt_entitled'),
+        lookup_sg_type('proxy_entitled'));
+
+insert into rhnSGTypeBaseAddonCompat (base_id, addon_id)
+values (lookup_sg_type('foreign_entitled'),
+        lookup_sg_type('proxy_entitled'));
 
 commit;
