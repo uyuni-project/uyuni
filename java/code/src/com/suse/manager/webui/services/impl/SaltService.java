@@ -1557,4 +1557,11 @@ public class SaltService implements SystemQuery, SaltApi {
         RunnerCall<List<String>> call = MgrUtilRunner.selectMinions(target, targetType);
         return callSync(call).orElseThrow(() -> new IllegalStateException("Can't get minion list"));
     }
+
+    @Override
+    public Optional<String> configGet(String key) {
+        RunnerCall<String> runnerCall = new RunnerCall<>("config.get",
+                Optional.of(Map.of("key", key)), TypeToken.get(String.class));
+        return callSync(runnerCall);
+    }
 }

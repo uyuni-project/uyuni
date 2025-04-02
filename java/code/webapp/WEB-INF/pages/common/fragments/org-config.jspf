@@ -56,22 +56,6 @@
 </div>
 <div class="form-group">
     <label class="col-lg-3 control-label">
-        <bean:message key="org-config.scapfile-sizelimit.jsp"/>:
-    </label>
-    <div class="col-lg-2">
-        <input type="number"
-               class="form-control"
-               name="scapfile_sizelimit"
-               value="${org.orgConfig.scapFileSizelimit}"
-               id="scapfile_sizelimit"
-               <c:if test = "${edit_disabled}">
-                   disabled="disabled"
-               </c:if>
-        />
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-lg-3 control-label">
         <bean:message key="org-config.scap-retention"/>
     </label>
     <div class="col-lg-6">
