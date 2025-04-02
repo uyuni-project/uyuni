@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.nav;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

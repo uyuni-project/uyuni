@@ -23,7 +23,7 @@ import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.junit.jupiter.api.Test;
 
 /**
