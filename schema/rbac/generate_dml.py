@@ -8,14 +8,15 @@ def process_csv_files(csv_files):
     generating sequential keys using sequences.
 
     Args:
-      csv_files: A list of CSV file paths.
+        csv_files: A list of CSV file paths.
     """
 
     # Print schema creation and search_path setting
     print("""
-SET search_path TO access, public;
 BEGIN;
     """)
+
+    namespace_map = {}  # Store namespaces and their endpoints
 
     for csv_file in csv_files:
         with open(csv_file, 'r', encoding='utf-8') as file:
@@ -30,38 +31,48 @@ BEGIN;
                     namespace = row.get('namespace')
                     access_mode = row.get('access_mode')
                 except Exception as e:
-                    print(row)
+                    print(f"Error processing row: {row}")
+                    continue
 
-                # Generate INSERT statement for endpoint table with sequence for id and duplicate handling
-                endpoint_insert = f"""
-                    INSERT INTO endpoint (class_method, endpoint, http_method, scope, auth_required)
-                    VALUES ('{class_method}', '{endpoint}', '{http_method}', '{scope}', {auth_required})
-                    ON CONFLICT (endpoint, http_method) DO NOTHING;
-                """
-                print(endpoint_insert)
-
-                # Generate INSERT statement for endpointNamespace table with duplicate handling
                 if namespace and access_mode:
-                    check_namespace_exists = f"""
-                        DO $$
-                        BEGIN
-                            IF NOT EXISTS (SELECT 1 FROM namespace WHERE namespace = '{namespace}' AND access_mode = '{access_mode}') THEN
-                                INSERT INTO namespace (namespace, access_mode, description)
-                                VALUES ('{namespace}', '{access_mode}', NULL)
-                                ON CONFLICT DO NOTHING;
-                            END IF;
-                        END $$;
-                    """
-                    print(check_namespace_exists)
+                    namespace_key = (namespace, access_mode)
+                    if namespace_key not in namespace_map:
+                        namespace_map[namespace_key] = []
+                    namespace_map[namespace_key].append((class_method, endpoint, http_method, scope, auth_required))
 
-                    endpoint_namespace_insert = f"""
-                        INSERT INTO endpointNamespace (namespace_id, endpoint_id)
-                        SELECT n.id, e.id
-                        FROM namespace n, endpoint e
-                        WHERE n.namespace = '{namespace}' AND n.access_mode = '{access_mode}' AND e.endpoint = '{endpoint}' AND e.http_method = '{http_method}'
-                        ON CONFLICT DO NOTHING;
-                    """
-                    print(endpoint_namespace_insert)
+    # Generate INSERT statements, ensuring namespaces are inserted first
+    namespace_inserts = []
+    endpoint_inserts = []
+    endpoint_namespace_inserts = []
+
+    for (namespace, access_mode), endpoints in namespace_map.items():
+        namespace_insert = f"""INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('{namespace}', '{access_mode}', NULL)
+    ON CONFLICT (namespace, access_mode) DO NOTHING;"""
+        namespace_inserts.append(namespace_insert)
+
+        for class_method, endpoint, http_method, scope, auth_required in endpoints:
+            endpoint_insert = f"""INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('{class_method}', '{endpoint}', '{http_method}', '{scope}', {auth_required})
+    ON CONFLICT (endpoint, http_method) DO NOTHING;"""
+            endpoint_inserts.append(endpoint_insert)
+
+            endpoint_namespace_insert = f"""INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = '{namespace}' AND ns.access_mode = '{access_mode}'
+    AND ep.endpoint = '{endpoint}' AND ep.http_method = '{http_method}'
+    ON CONFLICT DO NOTHING;"""
+            endpoint_namespace_inserts.append(endpoint_namespace_insert)
+
+    # Output the INSERT statements in the desired order
+    for insert in namespace_inserts:
+        print(insert)
+
+    for insert in endpoint_inserts:
+        print(insert)
+
+    for insert in endpoint_namespace_inserts:
+        print(insert)
 
     print("COMMIT;")
 
