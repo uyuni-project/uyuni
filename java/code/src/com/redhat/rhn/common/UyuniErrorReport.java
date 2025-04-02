@@ -22,8 +22,8 @@ import java.util.List;
 /**
  * Represents a collection of errors that can be reported.
  */
-public class RhnErrorReport {
-    private final List<RhnError> errors = Collections.synchronizedList(new ArrayList<>());
+public class UyuniErrorReport {
+    private final List<UyuniError> errors = Collections.synchronizedList(new ArrayList<>());
 
     /**
      * Registers a new error in the error report.
@@ -31,7 +31,7 @@ public class RhnErrorReport {
      * @param message   The error message.
      */
     public void register(String message) {
-        errors.add(new RhnError(message));
+        errors.add(new UyuniError(message));
     }
 
     /**
@@ -48,15 +48,15 @@ public class RhnErrorReport {
      *
      * @return A copy of the errors list.
      */
-    public List<RhnError> getErrors() {
+    public List<UyuniError> getErrors() {
         return new ArrayList<>(errors);
     }
 
     /**
-     * Logs the errors following a RhnReportStrategy.
+     * Logs the errors following a UyuniReportStrategy.
      * @param strategy The reporting strategy.
      */
-    public void report(RhnReportStrategy<RhnError> strategy) {
+    public void report(UyuniReportStrategy<UyuniError> strategy) {
         strategy.report(errors);
     }
 

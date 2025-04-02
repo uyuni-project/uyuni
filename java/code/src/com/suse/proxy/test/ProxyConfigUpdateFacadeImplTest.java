@@ -18,7 +18,7 @@ package com.suse.proxy.test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.RhnGeneralException;
+import com.redhat.rhn.common.UyuniGeneralException;
 import com.redhat.rhn.testing.MockObjectTestCase;
 
 import com.suse.proxy.update.ProxyConfigUpdateContext;
@@ -58,7 +58,7 @@ public class ProxyConfigUpdateFacadeImplTest extends MockObjectTestCase {
      * The second one registers with 3 errors;
      * The third one registers with 2 errors.
      * It is expected that the process halts after the second handler and the errors are reported in a
-     * {@link RhnGeneralException} with the expected error messages.
+     * {@link UyuniGeneralException} with the expected error messages.
      */
     @Test
     public void testFailWhenUpdateWithError() throws NoSuchFieldException, IllegalAccessException {
@@ -73,9 +73,9 @@ public class ProxyConfigUpdateFacadeImplTest extends MockObjectTestCase {
 
         try {
             proxyConfigUpdate.update(null, null, null);
-            fail("Expected RhnGeneralException to be thrown");
+            fail("Expected UyuniGeneralException to be thrown");
         }
-        catch (RhnGeneralException e) {
+        catch (UyuniGeneralException e) {
             Assertions.assertEquals(expectedErrorMessages.length, e.getErrorMessages().length);
             for (String expectedErrorMessage : expectedErrorMessages) {
                 assertTrue(Arrays.asList(e.getErrorMessages()).contains(expectedErrorMessage));

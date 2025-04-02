@@ -21,24 +21,24 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.RhnError;
-import com.redhat.rhn.common.RhnErrorReport;
-import com.redhat.rhn.common.RhnGeneralException;
-import com.redhat.rhn.common.RhnReportStrategy;
+import com.redhat.rhn.common.UyuniError;
+import com.redhat.rhn.common.UyuniErrorReport;
+import com.redhat.rhn.common.UyuniGeneralException;
+import com.redhat.rhn.common.UyuniReportStrategy;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class RhnErrorReportTest {
+public class UyuniErrorReportTest {
 
     public static final String DUMMY_ERROR_MESSAGE = "dummy error";
-    private RhnErrorReport errorReport;
+    private UyuniErrorReport errorReport;
 
     @BeforeEach
     public void setUp() {
-        errorReport = new RhnErrorReport();
+        errorReport = new UyuniErrorReport();
     }
 
 
@@ -53,7 +53,7 @@ public class RhnErrorReportTest {
     public void testGetErrors() {
         errorReport.register("Test error 1");
         errorReport.register("Test error 2");
-        List<RhnError> errors = errorReport.getErrors();
+        List<UyuniError> errors = errorReport.getErrors();
         assertEquals(2, errors.size());
         assertEquals("Test error 1", errors.get(0).getMessage());
         assertEquals("Test error 2", errors.get(1).getMessage());
@@ -61,7 +61,7 @@ public class RhnErrorReportTest {
 
     @Test
     public void testReportWithStrategy() {
-        RhnReportStrategy<RhnError> strategy = errors -> assertEquals(1, errors.size());
+        UyuniReportStrategy<UyuniError> strategy = errors -> assertEquals(1, errors.size());
         errorReport.register(DUMMY_ERROR_MESSAGE);
         errorReport.report(strategy);
     }
@@ -69,7 +69,7 @@ public class RhnErrorReportTest {
     @Test
     public void testReportWithDefaultStrategyThrowsException() {
         errorReport.register(DUMMY_ERROR_MESSAGE);
-        assertThrows(RhnGeneralException.class, () -> errorReport.report());
+        assertThrows(UyuniGeneralException.class, () -> errorReport.report());
     }
 
     @Test

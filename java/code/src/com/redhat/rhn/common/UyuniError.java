@@ -20,14 +20,14 @@ import java.io.Serializable;
 /**
  * Represents a generic error in scope of uyuni
  */
-public class RhnError implements Serializable {
+public class UyuniError implements Serializable {
     private final String message;
 
     /**
      * Constructor
      * @param messageIn the error message
      */
-    public RhnError(String messageIn) {
+    public UyuniError(String messageIn) {
         this.message = messageIn;
     }
 

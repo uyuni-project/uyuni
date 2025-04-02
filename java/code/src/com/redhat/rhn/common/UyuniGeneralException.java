@@ -19,20 +19,20 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Represents a RHN general exception
+ * Represents a Uyuni general exception
  */
-public class RhnGeneralException extends RuntimeException implements Serializable {
-    private final List<RhnError> errors;
+public class UyuniGeneralException extends RuntimeException implements Serializable {
+    private final List<UyuniError> errors;
 
     /**
      * Constructor with a list of errors
      * @param errorsIn the list of errors
      */
-    public RhnGeneralException(List<RhnError> errorsIn) {
+    public UyuniGeneralException(List<UyuniError> errorsIn) {
         this.errors = errorsIn;
     }
 
-    public List<RhnError> getErrors() {
+    public List<UyuniError> getErrors() {
         return errors;
     }
 
@@ -41,7 +41,7 @@ public class RhnGeneralException extends RuntimeException implements Serializabl
      * @return String array of error messages
      */
     public String[] getErrorMessages() {
-        return errors.stream().map(RhnError::getMessage).toList().toArray(new String[0]);
+        return errors.stream().map(UyuniError::getMessage).toList().toArray(new String[0]);
     }
 
 }

@@ -19,7 +19,7 @@ import static com.redhat.rhn.common.ExceptionMessage.NOT_INSTANTIABLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.RhnError;
+import com.redhat.rhn.common.UyuniError;
 
 import com.suse.proxy.ProxyContainerImagesEnum;
 import com.suse.proxy.update.ProxyConfigUpdateContext;
@@ -62,7 +62,7 @@ public class ProxyConfigUpdateTestUtils {
         assertEquals(expectedErrorMessages.length, context.getErrorReport().getErrors().size());
 
         Set<String> actualErrorMessages =
-                context.getErrorReport().getErrors().stream().map(RhnError::getMessage).collect(Collectors.toSet());
+                context.getErrorReport().getErrors().stream().map(UyuniError::getMessage).collect(Collectors.toSet());
         assertTrue(actualErrorMessages.containsAll(Set.of(expectedErrorMessages)));
     }
 

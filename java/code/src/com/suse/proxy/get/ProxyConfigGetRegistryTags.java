@@ -18,7 +18,7 @@ package com.suse.proxy.get;
 import static com.suse.utils.Predicates.isAbsent;
 import static com.suse.utils.Predicates.isProvided;
 
-import com.redhat.rhn.common.RhnErrorReport;
+import com.redhat.rhn.common.UyuniErrorReport;
 
 import com.suse.manager.api.ParseException;
 import com.suse.proxy.ProxyContainerImagesEnum;
@@ -51,7 +51,7 @@ public class ProxyConfigGetRegistryTags {
     private final String registryUrlAsString;
     private final boolean isExact;
     private final ProxyRegistryUtils proxyRegistryUtils;
-    private RhnErrorReport errorReport;
+    private UyuniErrorReport errorReport;
     private List<String> tags;
 
     /**
@@ -85,7 +85,7 @@ public class ProxyConfigGetRegistryTags {
      * Retrieves the tags from the registry.
      */
     public void retrieveTags() {
-        this.errorReport = new RhnErrorReport();
+        this.errorReport = new UyuniErrorReport();
         try {
             this.tags = isExact ? getTagsFromRegistry() : getCommonTagsFromRegistry();
         }
@@ -194,7 +194,7 @@ public class ProxyConfigGetRegistryTags {
         return isExact;
     }
 
-    public RhnErrorReport getErrorReport() {
+    public UyuniErrorReport getErrorReport() {
         return errorReport;
     }
 

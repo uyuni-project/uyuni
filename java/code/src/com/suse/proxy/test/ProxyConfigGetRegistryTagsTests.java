@@ -22,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.RhnError;
-import com.redhat.rhn.common.RhnErrorReport;
+import com.redhat.rhn.common.UyuniError;
+import com.redhat.rhn.common.UyuniErrorReport;
 import com.redhat.rhn.testing.MockObjectTestCase;
 
 import com.suse.manager.api.ParseException;
@@ -55,12 +55,12 @@ public class ProxyConfigGetRegistryTagsTests extends MockObjectTestCase {
     private static final String DUMMY_REGISTRY_URL = "dummyRegistryUrl.com/at/some/path";
     private ProxyRegistryUtils mockProxyRegistryUtils;
 
-    public static void assertExpectedErrors(String[] expectedErrorMessages, RhnErrorReport rhnErrorReport) {
-        assertTrue(rhnErrorReport.hasErrors());
-        assertEquals(expectedErrorMessages.length, rhnErrorReport.getErrors().size());
+    public static void assertExpectedErrors(String[] expectedErrorMessages, UyuniErrorReport uyuniErrorReport) {
+        assertTrue(uyuniErrorReport.hasErrors());
+        assertEquals(expectedErrorMessages.length, uyuniErrorReport.getErrors().size());
 
         Set<String> actualErrorMessages =
-                rhnErrorReport.getErrors().stream().map(RhnError::getMessage).collect(Collectors.toSet());
+                uyuniErrorReport.getErrors().stream().map(UyuniError::getMessage).collect(Collectors.toSet());
         assertTrue(actualErrorMessages.containsAll(Set.of(expectedErrorMessages)));
     }
 

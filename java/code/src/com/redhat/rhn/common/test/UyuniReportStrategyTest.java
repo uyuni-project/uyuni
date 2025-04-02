@@ -18,16 +18,16 @@ package com.redhat.rhn.common.test;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.redhat.rhn.common.RhnReportStrategy;
+import com.redhat.rhn.common.UyuniReportStrategy;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class RhnReportStrategyTest {
+public class UyuniReportStrategyTest {
 
-    private RhnReportStrategy<String> strategy;
+    private UyuniReportStrategy<String> strategy;
 
     @BeforeEach
     public void setUp() {

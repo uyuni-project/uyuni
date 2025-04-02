@@ -19,7 +19,7 @@ package com.suse.proxy.update;
 import static com.suse.utils.Predicates.isAbsent;
 import static java.lang.String.format;
 
-import com.redhat.rhn.common.RhnErrorReport;
+import com.redhat.rhn.common.UyuniErrorReport;
 
 import com.suse.manager.ssl.SSLCertGenerationException;
 import com.suse.manager.ssl.SSLCertManager;
@@ -102,13 +102,13 @@ public class ProxyConfigUpdateFileAcquisitor implements ProxyConfigUpdateContext
      * @param map               the map to validate
      * @param expectedStructure the expected structure of the map
      * @param parentKey         the parent key of the map
-     * @param rhnErrorReport    the error report to register errors
+     * @param uyuniErrorReport    the error report to register errors
      */
     public void validateProxyConfigFiles(
             Map<String, Object> map,
             Map<String, Object> expectedStructure,
             String parentKey,
-            RhnErrorReport rhnErrorReport
+            UyuniErrorReport uyuniErrorReport
     ) {
         for (Map.Entry<String, Object> entry : expectedStructure.entrySet()) {
             String key = entry.getKey();
@@ -116,26 +116,26 @@ public class ProxyConfigUpdateFileAcquisitor implements ProxyConfigUpdateContext
             String fullKey = parentKey.isEmpty() ? key : parentKey + "." + key;
 
             if (!map.containsKey(key)) {
-                logAndRegisterError(rhnErrorReport, ERROR_MESSAGE_MISSING_ENTRY, fullKey);
+                logAndRegisterError(uyuniErrorReport, ERROR_MESSAGE_MISSING_ENTRY, fullKey);
                 continue;
             }
 
             Object actualValue = map.get(key);
             if (expectedValue instanceof Class) {
                 if (!expectedValue.equals(actualValue.getClass())) {
-                    logAndRegisterError(rhnErrorReport, ERROR_MESSAGE_UNEXPECTED_VALUE, fullKey);
+                    logAndRegisterError(uyuniErrorReport, ERROR_MESSAGE_UNEXPECTED_VALUE, fullKey);
                 }
             }
             else if (expectedValue instanceof Map) {
                 if (!(actualValue instanceof Map)) {
-                    logAndRegisterError(rhnErrorReport, ERROR_MESSAGE_UNEXPECTED_VALUE, fullKey);
+                    logAndRegisterError(uyuniErrorReport, ERROR_MESSAGE_UNEXPECTED_VALUE, fullKey);
                 }
                 else {
                     validateProxyConfigFiles(
                             (Map<String, Object>) actualValue,
                             (Map<String, Object>) expectedValue,
                             fullKey,
-                            rhnErrorReport
+                            uyuniErrorReport
                     );
                 }
             }
@@ -143,9 +143,9 @@ public class ProxyConfigUpdateFileAcquisitor implements ProxyConfigUpdateContext
     }
 
 
-    private void logAndRegisterError(RhnErrorReport rhnErrorReport, String message, Object... args) {
+    private void logAndRegisterError(UyuniErrorReport uyuniErrorReport, String message, Object... args) {
         String formattedMessage = format(message, args);
-        rhnErrorReport.register(formattedMessage);
+        uyuniErrorReport.register(formattedMessage);
         LOG.error(formattedMessage);
     }
 
