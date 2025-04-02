@@ -33,6 +33,8 @@ jobs:
     runs-on: ubuntu-24.04
     needs: filter-paths
     steps:
+      - name: debug
+        run: echo "java: $${{steps.filter.outputs.java}} web: $${{steps.filter.outputs.web}} testsuite: ${{steps.filter.outputs.testsuite}}"
       - name: Yes
         if: ${{ needs.filter-paths.outputs.require_acceptance_tests == 'true' }}
         run: echo Yes
