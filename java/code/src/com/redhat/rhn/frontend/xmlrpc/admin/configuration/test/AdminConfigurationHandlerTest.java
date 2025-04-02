@@ -51,6 +51,7 @@ import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.systemgroup.ServerGroupHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.frontend.xmlrpc.user.UserHandler;
+import com.redhat.rhn.manager.access.AccessGroupManager;
 import com.redhat.rhn.manager.org.MigrationManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -116,7 +117,7 @@ public class AdminConfigurationHandlerTest extends BaseHandlerTestCase {
     private MigrationManager migrationManager = new MigrationManager(serverGroupManager);
     private OrgHandler orgHandler = new OrgHandler(migrationManager);
     private ServerGroupHandler serverGroupHandler = new ServerGroupHandler(xmlRpcSystemHelper, serverGroupManager);
-    private UserHandler userHandler = new UserHandler(serverGroupManager);
+    private UserHandler userHandler = new UserHandler(serverGroupManager, new AccessGroupManager());
     private ActivationKeyHandler activationKeyHandler = new ActivationKeyHandler(serverGroupManager);
     private ChannelHandler channelHandler = new ChannelHandler();
     private ChannelSoftwareHandler channelSoftwareHandler =
