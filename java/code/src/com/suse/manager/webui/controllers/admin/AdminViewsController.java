@@ -150,7 +150,10 @@ public class AdminViewsController {
      * @return the view to show
      */
     public static ModelAndView showISSv3Peripherals(Request request, Response response, User user) {
-        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/list_peripherals.jade");
+        HashMap<Object, Object> dataMap = new HashMap<>();
+        dataMap.put("flashMessage", FlashScopeHelper.flash(request));
+
+        return new ModelAndView(dataMap, "controllers/admin/templates/list_peripherals.jade");
     }
 
     /**
