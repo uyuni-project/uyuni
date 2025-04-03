@@ -4,6 +4,7 @@
 @scope_openscap
 @scope_res
 @rhlike_minion
+@skip_if_github_validation
 Feature: OpenSCAP audit of Red Hat-like Salt minion
   In order to audit a Red Hat-like Salt minion
   As an authorized user
