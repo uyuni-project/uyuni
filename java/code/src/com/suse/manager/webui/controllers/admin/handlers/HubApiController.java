@@ -22,6 +22,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -123,6 +124,7 @@ public class HubApiController {
         delete("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::deletePeripheral));
         post("/manager/api/admin/hub/peripherals/:id/root-ca", withProductAdmin(this::updatePeripheralRootCA));
         delete("/manager/api/admin/hub/peripherals/:id/root-ca", withProductAdmin(this::removePeripheralRootCA));
+        post("/manager/api/admin/hub/peripherals/:id/credentials", withProductAdmin(this::refreshCredentials));
         post("/manager/api/admin/hub/migrate/v1", withProductAdmin(this::migrateFromV1));
         post("/manager/api/admin/hub/migrate/v2", withProductAdmin(this::migrateFromV2));
         delete("/manager/api/admin/hub/:id", withProductAdmin(this::deleteHub));
@@ -152,6 +154,27 @@ public class HubApiController {
 
     private String removePeripheralRootCA(Request request, Response response, User user) {
         return updateServerRootCA(request, response, user, IssRole.PERIPHERAL, false);
+    }
+
+    private String refreshCredentials(Request request, Response response, User user) {
+        long peripheralId = Long.parseLong(request.params("id"));
+
+        try {
+            HubSCCCredentials newCredentials = hubManager.regenerateCredentials(user, peripheralId);
+            return success(response, ResultJson.success(newCredentials.getUsername()));
+        }
+        catch (IllegalArgumentException ex) {
+            LOGGER.warn("Unable to refresh credentials: {}", ex.getMessage());
+            return notFound(response, LOC.getMessage("hub.cannot_find_server"));
+        }
+        catch (CertificateException ex) {
+            LOGGER.error("Unexpected error while processing root certificate #{}", peripheralId, ex);
+            return internalServerError(response, LOC.getMessage("hub.unexpected_error_root_ca"));
+        }
+        catch (IOException ex) {
+            LOGGER.error("Error while attempting to connect to remote server #{}", peripheralId, ex);
+            return internalServerError(response, LOC.getMessage("hub.error_connecting_remote"));
+        }
     }
 
     private String registerPeripheral(Request request, Response response, User satAdmin) {
