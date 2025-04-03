@@ -1,6 +1,6 @@
 export * from "./AddTokenButton";
 export * from "./DeregisterServer";
-export * from "./HubDetailsForm";
+export * from "./ServerDetailsForm";
 export * from "./MigrateSlavesForm";
 export * from "./ModalEditButton";
 export * from "./PeripheralsList";
