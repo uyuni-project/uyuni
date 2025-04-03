@@ -149,6 +149,8 @@ public class CreateUserCommand {
         }
         user.setUsePamAuthentication(usePam); //set it back
         UserManager.resetTemporaryRoles(user, temporaryRoles);
+        // Bypass legacy roles in favor of RBAC
+        UserFactory.IMPLIEDROLES.forEach(legacyRole -> user.addPermanentRole(legacyRole));
         if (org.getOrgConfig().isCreateDefaultSg()) {
             ManagedServerGroup sg = ServerGroupFactory.lookupByNameAndOrg(
                     user.getLogin(), user.getOrg());
