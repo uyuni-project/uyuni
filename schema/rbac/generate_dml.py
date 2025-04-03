@@ -17,6 +17,7 @@ BEGIN;
     """)
 
     namespace_map = {}  # Store namespaces and their endpoints
+    endpoints_without_namespace = [] #Store endpoints with no namespace
 
     for csv_file in csv_files:
         with open(csv_file, 'r', encoding='utf-8') as file:
@@ -39,6 +40,8 @@ BEGIN;
                     if namespace_key not in namespace_map:
                         namespace_map[namespace_key] = []
                     namespace_map[namespace_key].append((class_method, endpoint, http_method, scope, auth_required))
+                else:
+                    endpoints_without_namespace.append((class_method, endpoint, http_method, scope, auth_required))
 
     # Generate INSERT statements, ensuring namespaces are inserted first
     namespace_inserts = []
@@ -63,6 +66,13 @@ BEGIN;
     AND ep.endpoint = '{endpoint}' AND ep.http_method = '{http_method}'
     ON CONFLICT DO NOTHING;"""
             endpoint_namespace_inserts.append(endpoint_namespace_insert)
+
+    # Generate insert statements for endpoints without namespaces
+    for class_method, endpoint, http_method, scope, auth_required in endpoints_without_namespace:
+        endpoint_insert = f"""INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('{class_method}', '{endpoint}', '{http_method}', '{scope}', {auth_required})
+    ON CONFLICT (endpoint, http_method) DO NOTHING;"""
+        endpoint_inserts.append(endpoint_insert)
 
     # Output the INSERT statements in the desired order
     for insert in namespace_inserts:
