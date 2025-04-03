@@ -19,7 +19,6 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
 import static spark.Spark.delete;
 import static spark.Spark.get;
-import static spark.Spark.patch;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -121,9 +120,9 @@ public class HubApiController {
         delete("/manager/api/admin/hub/access-tokens/:id", withProductAdmin(this::deleteAccessToken));
         get("/manager/api/admin/hub/peripherals", withProductAdmin(this::listPaginatedPeripherals));
         post("/manager/api/admin/hub/peripherals", withProductAdmin(this::registerPeripheral));
-        get("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
-        patch("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
         delete("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::deletePeripheral));
+        post("/manager/api/admin/hub/peripherals/:id/root-ca", withProductAdmin(this::updatePeripheralRootCA));
+        delete("/manager/api/admin/hub/peripherals/:id/root-ca", withProductAdmin(this::removePeripheralRootCA));
         post("/manager/api/admin/hub/migrate/v1", withProductAdmin(this::migrateFromV1));
         post("/manager/api/admin/hub/migrate/v2", withProductAdmin(this::migrateFromV2));
         delete("/manager/api/admin/hub/:id", withProductAdmin(this::deleteHub));
@@ -140,25 +139,19 @@ public class HubApiController {
     }
 
     private String updateHubRootCA(Request request, Response response, User user) {
-        UpdateRootCARequest updateRequest;
-        try {
-            updateRequest = validateUpdateRootCARequest(GSON.fromJson(request.body(), UpdateRootCARequest.class));
-        }
-        catch (CertificateException ex) {
-            LOGGER.error("Unable to parse the specified certificate", ex);
-            return badRequest(response, LOC.getMessage("hub.invalid_root_ca"));
-        }
-        catch (JsonSyntaxException ex) {
-            LOGGER.error("Unable to parse JSON request", ex);
-            return badRequest(response, LOC.getMessage("hub.invalid_request"));
-        }
-
-        return updateServerRootCA(request, response, user, IssRole.HUB, updateRequest.getRootCA());
+        return updateServerRootCA(request, response, user, IssRole.HUB, true);
     }
 
     private String removeHubRootCA(Request request, Response response, User user) {
-        // Perform the update using null as value
-        return updateServerRootCA(request, response, user, IssRole.HUB, null);
+        return updateServerRootCA(request, response, user, IssRole.HUB, false);
+    }
+
+    private String updatePeripheralRootCA(Request request, Response response, User user) {
+        return updateServerRootCA(request, response, user, IssRole.PERIPHERAL, true);
+    }
+
+    private String removePeripheralRootCA(Request request, Response response, User user) {
+        return updateServerRootCA(request, response, user, IssRole.PERIPHERAL, false);
     }
 
     private String registerPeripheral(Request request, Response response, User satAdmin) {
@@ -328,7 +321,7 @@ public class HubApiController {
         long serverId = Long.parseLong(request.params("id"));
         IssServer server = hubManager.findServer(user, serverId, issRole);
         if (server == null) {
-            return badRequest(response, LOC.getMessage("hub.cannot_find_server"));
+            return notFound(response, LOC.getMessage("hub.cannot_find_server"));
         }
 
         try {
@@ -342,11 +335,33 @@ public class HubApiController {
         return success(response);
     }
 
-    private String updateServerRootCA(Request request, Response response, User user, IssRole role, String rootCA) {
+    private String updateServerRootCA(Request request, Response response, User user, IssRole role, boolean isUpdate) {
+        String rootCA;
+
+        if (isUpdate) {
+            // If we are performing an update we need to parse the request
+            try {
+                UpdateRootCARequest updateRequest = GSON.fromJson(request.body(), UpdateRootCARequest.class);
+                rootCA = validateUpdateRootCARequest(updateRequest).getRootCA();
+            }
+            catch (CertificateException ex) {
+                LOGGER.error("Unable to parse the specified certificate", ex);
+                return badRequest(response, LOC.getMessage("hub.invalid_root_ca"));
+            }
+            catch (JsonSyntaxException ex) {
+                LOGGER.error("Unable to parse JSON request", ex);
+                return badRequest(response, LOC.getMessage("hub.invalid_request"));
+            }
+        }
+        else {
+            // If it's a deletion, just set the value to null
+            rootCA = null;
+        }
+
         long serverId = Long.parseLong(request.params("id"));
         IssServer server = hubManager.findServer(user, serverId, role);
         if (server == null) {
-            return badRequest(response, LOC.getMessage("hub.cannot_find_server"));
+            return notFound(response, LOC.getMessage("hub.cannot_find_server"));
         }
 
         try {
@@ -454,9 +469,5 @@ public class HubApiController {
             .orElseThrow(() -> new JsonSyntaxException("rootCA is empty"));
 
         return request;
-    }
-
-    private String pass(Request request, Response response, User user) {
-        return success(response, ResultJson.success(request.requestMethod() + ": " + request.uri()));
     }
 }

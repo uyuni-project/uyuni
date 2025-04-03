@@ -34,11 +34,14 @@ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.controllers.admin.beans.HubDetailsData;
 import com.suse.manager.webui.controllers.admin.beans.MigrationEntryDto;
+import com.suse.manager.webui.controllers.admin.beans.PeripheralDetailsData;
 import com.suse.manager.webui.controllers.admin.mappers.PaygResponseMappers;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import org.apache.http.HttpStatus;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -50,6 +53,7 @@ import java.util.stream.Stream;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 import spark.template.jade.JadeTemplateEngine;
 
 /**
@@ -97,6 +101,8 @@ public class AdminViewsController {
             withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::migrateFromV1))), jade);
         get("/manager/admin/hub/peripherals/migrate-from-v2",
             withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::migrateFromV2))), jade);
+        get("/manager/admin/hub/peripherals/:id",
+            withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::showPeripheralDetails))), jade);
         get("/manager/admin/hub/access-tokens",
             withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::listAccessTokens))), jade);
     }
@@ -154,6 +160,28 @@ public class AdminViewsController {
         dataMap.put("flashMessage", FlashScopeHelper.flash(request));
 
         return new ModelAndView(dataMap, "controllers/admin/templates/list_peripherals.jade");
+    }
+
+    /**
+     * Show the details of an ISS v3 Peripheral
+     * @param request http request
+     * @param response http response
+     * @param user current user
+     * @return the view to show
+     */
+    private static ModelAndView showPeripheralDetails(Request request, Response response, User user) {
+        long peripheralId = Long.parseLong(request.params("id"));
+        var peripheralData = Optional.ofNullable(HUB_FACTORY.findPeripheralById(peripheralId))
+            .map(PeripheralDetailsData::new)
+            .orElse(null);
+
+        if (peripheralData == null) {
+            throw Spark.halt(HttpStatus.SC_NOT_FOUND, "Peripheral not found");
+        }
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("peripheral", GSON.toJson(peripheralData));
+        return new ModelAndView(data, "controllers/admin/templates/peripheral_details.jade");
     }
 
     /**

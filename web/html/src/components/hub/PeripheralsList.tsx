@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { LinkButton } from "components/buttons";
 import { DeregisterServer, IssRole, PeripheralListData } from "components/hub";
 import { LargeTextAttachment } from "components/large-text-attachment";
 import { Column } from "components/table/Column";
@@ -29,7 +30,12 @@ export class PeripheralsList extends React.Component<Props> {
         defaultSearchField="fqdn"
         searchField={<SearchField filter={this.searchData} placeholder={t("Filter by FQDN")} />}
       >
-        <Column columnKey="fqdn" comparator={Utils.sortByText} header={t("Peripheral FQDN")} cell={(row) => row.fqdn} />
+        <Column
+          columnKey="fqdn"
+          comparator={Utils.sortByText}
+          header={t("Peripheral FQDN")}
+          cell={(row) => this.renderFqdnLink(row)}
+        />
         <Column
           columnKey="nChannelsSync"
           header={t("N. of synced channels")}
@@ -50,6 +56,17 @@ export class PeripheralsList extends React.Component<Props> {
     );
 
     return componentContent;
+  }
+
+  private renderFqdnLink(row: PeripheralListData): React.ReactNode {
+    return (
+      <LinkButton
+        className="btn-link"
+        text={row.fqdn}
+        title={t("View details of peripheral {fqdn}", row)}
+        href={`/rhn/manager/admin/hub/peripherals/${row.id}`}
+      />
+    );
   }
 
   private renderDownloadRootCA(row: PeripheralListData): React.ReactNode {
