@@ -17,6 +17,9 @@ namespace :cucumber do
   sh "mkdir -p #{result_folder}", verbose: false
   Dir.glob(File.join(Dir.pwd, 'run_sets', '**', '*.yml')).each do |entry|
     Cucumber::Rake::Task.new(File.basename(entry, '.yml').to_sym) do |t|
+      features = YAML.safe_load(File.read(entry))
+      fail "Skipping rake task for #{entry}, the YAML file is empty." if features.nil? || features.empty? # rubocop:disable Style/SignalException
+
       filename = File.basename(entry, '.yml').to_sym
       timestamp = Time.now.strftime('%Y%m%d%H%M%S')
       node_name = ENV.fetch('NODE', nil)
@@ -35,7 +38,6 @@ namespace :cucumber do
       cucumber_opts = %W[#{include_profiles} #{html_results} #{json_results} #{junit_results}] + %w[-f pretty -r features] + include_tags
       # Immediately fail a feature if a scenario on it fails
       cucumber_opts << '--fail-fast' if filename.to_s.include?('core') || filename.to_s.include?('build_validation_init')
-      features = YAML.safe_load(File.read(entry))
       t.cucumber_opts = cucumber_opts + features unless features.nil?
     end
   end
