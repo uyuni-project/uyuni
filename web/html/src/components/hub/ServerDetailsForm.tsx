@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Button } from "components/buttons";
+import { AsyncButton, Button } from "components/buttons";
 import { FromNow, HumanDateTime } from "components/datetime";
 import { HubDetailData, IssRole, IssServerDetailData, PeripheralDetailData } from "components/hub/types";
 import { LargeTextAttachment } from "components/large-text-attachment";
@@ -134,7 +134,19 @@ export class ServerDetailsForm extends React.Component<Props, State> {
               <div className="col-md-2">
                 <strong>{t("Mirror credentials:")}</strong>
               </div>
-              <div className="col-md-10">{this.state.model.sccUsername}</div>
+              <div className="col-md-10">
+                <p>{this.state.model.sccUsername}</p>
+                {this.state.model.role === IssRole.Peripheral && (
+                  <div className="btn-group pull-right">
+                    <AsyncButton
+                      className="btn-default"
+                      text={t("Regenerate credentials")}
+                      icon="fa-refresh"
+                      action={() => this.onRegenerateCredentials()}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </li>
           {this.state.model.role === IssRole.Peripheral && (
@@ -204,6 +216,17 @@ export class ServerDetailsForm extends React.Component<Props, State> {
           ...prevState,
           model: { ...prevState.model, rootCA: value },
         }));
+      },
+      (err) => Network.showResponseErrorToastr(err)
+    );
+  }
+
+  private onRegenerateCredentials(): Promise<void> {
+    const apiUrl = this.getEditFieldApiUrl("credentials", this.state.model);
+    return Network.post(apiUrl).then(
+      (response) => {
+        showInfoToastr(t("Mirror credentials successfully regenerated."));
+        this.setState((prevState) => ({ model: { ...prevState.model, sccUsername: response.data } }));
       },
       (err) => Network.showResponseErrorToastr(err)
     );
