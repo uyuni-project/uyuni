@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { DeregisterServer, HubDetailData, HubDetailsForm, IssRole } from "components/hub";
+import { DeregisterServer, HubDetailData, IssRole, ServerDetailsForm } from "components/hub";
 import { TopPanel } from "components/panels";
 
 export type Props = {
@@ -57,7 +57,7 @@ export class HubDetails extends React.Component<Props, State> {
                 }
               )}
             </p>
-            <HubDetailsForm model={this.state.hub} editable={true} />
+            <ServerDetailsForm model={this.state.hub} editable={true} />
           </>
         )}
       </TopPanel>
