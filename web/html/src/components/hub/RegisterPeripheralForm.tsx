@@ -109,7 +109,8 @@ export class RegisterPeripheralForm extends React.Component<Props, State> {
       })
       .then(
         (response) => {
-          window.pageRenderers?.spaengine?.navigate?.("/rhn/manager/admin/hub/peripherals");
+          const peripheralId = response.data;
+          window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/hub/peripherals/${peripheralId}`);
         },
         (xhr) => this.setState({ messages: Network.responseErrorMessage(xhr) })
       )
