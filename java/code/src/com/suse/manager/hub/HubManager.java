@@ -454,6 +454,71 @@ public class HubManager {
     }
 
     /**
+     * Regenerate the username and the password for an existing peripheral
+     * @param user the user performing the operation
+     * @param peripheralId the id of the peripheral linked to the credentials to refresh
+     * @return the updated credentials
+     * @throws IllegalArgumentException when the peripheral does not exist
+     * @throws CertificateException if the peripheral certificate is not parseable
+     * @throws IOException when the calling the peripheral APIs fails
+     */
+    public HubSCCCredentials regenerateCredentials(User user, long peripheralId)
+        throws CertificateException, IOException {
+        ensureSatAdmin(user);
+
+        IssPeripheral peripheral = hubFactory.findPeripheralById(peripheralId);
+        if (peripheral == null) {
+            throw new IllegalArgumentException("No peripheral found with id " + peripheralId);
+        }
+
+        return regenerateCredentials(peripheral);
+    }
+
+    /**
+     * Regenerate the username and the password for an existing peripheral
+     * @param user the user performing the operation
+     * @param fqdn the fqdn of the peripheral linked to the credentials to refresh
+     * @return the updated credentials
+     * @throws IllegalArgumentException when the peripheral does not exist
+     * @throws CertificateException if the peripheral certificate is not parseable
+     * @throws IOException when the calling the peripheral APIs fails
+     */
+    public HubSCCCredentials regenerateCredentials(User user, String fqdn)
+        throws CertificateException, IOException {
+        ensureSatAdmin(user);
+
+        IssPeripheral peripheral = hubFactory.lookupIssPeripheralByFqdn(fqdn)
+            .orElseThrow(() -> new IllegalArgumentException("No peripheral found with fqdn " + fqdn));
+
+        return regenerateCredentials(peripheral);
+    }
+
+    private HubSCCCredentials regenerateCredentials(IssPeripheral peripheral) throws IOException, CertificateException {
+        // Generate a new credentials for this peripheral
+        HubSCCCredentials newCredentials = generateCredentials(peripheral);
+
+        // If credentials are already connected to the peripheral, update the existing ones rather than creating new
+        if (peripheral.getMirrorCredentials() != null) {
+            HubSCCCredentials existingCredentials = peripheral.getMirrorCredentials();
+            existingCredentials.setUsername(newCredentials.getUsername());
+            existingCredentials.setPassword(newCredentials.getPassword());
+            existingCredentials.setPeripheralUrl(newCredentials.getPeripheralUrl());
+
+            newCredentials = existingCredentials;
+        }
+
+        // Send the new credentials to peripheral
+        IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(peripheral.getFqdn());
+        clientFactory.newInternalClient(peripheral.getFqdn(), accessToken.getToken(), peripheral.getRootCa())
+            .storeCredentials(newCredentials.getUsername(), newCredentials.getPassword());
+
+        // If everything went ok, update the local credentials
+        savePeripheralCredentials(peripheral, newCredentials);
+
+        return newCredentials;
+    }
+
+    /**
      * Set the User and Password for the report database in MgrServerInfo.
      * That trigger also a state apply to set this user in the report database.
      *
@@ -691,6 +756,7 @@ public class HubManager {
             // Generate the scc credentials and send them to the peripheral
             HubSCCCredentials credentials = generateCredentials(peripheral);
             internalApi.storeCredentials(credentials.getUsername(), credentials.getPassword());
+            savePeripheralCredentials(peripheral, credentials);
 
             // Query Report DB connection values and set create a User
             ManagerInfoJson managerInfo = internalApi.getManagerInfo();
@@ -734,16 +800,29 @@ public class HubManager {
         String username = "peripheral-%06d".formatted(peripheral.getId());
         String password = RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom());
 
-        var hubSCCCredentials = CredentialsFactory.createHubSCCCredentials(username, password, peripheral.getFqdn());
+        return CredentialsFactory.createHubSCCCredentials(username, password, peripheral.getFqdn());
+    }
+
+    private void savePeripheralCredentials(IssPeripheral peripheral, HubSCCCredentials hubSCCCredentials) {
         CredentialsFactory.storeCredentials(hubSCCCredentials);
 
         peripheral.setMirrorCredentials(hubSCCCredentials);
         saveServer(peripheral);
-
-        return hubSCCCredentials;
     }
 
     private SCCCredentials saveCredentials(IssHub hub, String username, String password) {
+        SCCCredentials currentCredentials = hub.getMirrorCredentials();
+        // If credentials already exist linked to this hub, just updated them with the new values
+        if (currentCredentials != null) {
+
+            currentCredentials.setUsername(username);
+            currentCredentials.setPassword(password);
+            currentCredentials.setUrl("https://" + hub.getFqdn());
+
+            CredentialsFactory.storeCredentials(currentCredentials);
+            return currentCredentials;
+        }
+
         // Delete any existing SCC Credentials
         CredentialsFactory.listSCCCredentials()
             .forEach(creds -> mirrorCredentialsManager.deleteMirrorCredentials(creds.getId(), null));
