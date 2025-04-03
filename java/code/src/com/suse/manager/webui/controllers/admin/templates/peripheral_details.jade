@@ -1,0 +1,12 @@
+include /templates/common.jade
+
+#peripheral-details
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('admin/hub/peripheral-details')
+        .then(function (module) {
+            module.renderer("peripheral-details", !{peripheral});
+        });
