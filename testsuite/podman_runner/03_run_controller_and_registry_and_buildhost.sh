@@ -16,9 +16,9 @@ sudo -i podman exec buildhost bash -c "sed -e 's/http:\/\/download.opensuse.org/
 sudo -i podman exec buildhost bash -c "sed -e 's/https:\/\/download.opensuse.org/file:\/\/\/mirror\/download.opensuse.org/g' -i /etc/zypp/repos.d/*"
 sudo podman ps
 
-sudo docker pull ghcr.io/$UYUNI_PROJECT/uyuni/opensuse/leap/15.5:master
-sudo docker tag ghcr.io/$UYUNI_PROJECT/uyuni/opensuse/leap/15.5:master localhost:5002/opensuse/leap:15.5
-sudo docker push localhost:5002/opensuse/leap:15.5
+sudo docker pull ghcr.io/$UYUNI_PROJECT/uyuni/opensuse/leap/15.6:master
+sudo docker tag ghcr.io/$UYUNI_PROJECT/uyuni/opensuse/leap/15.6:master localhost:5002/opensuse/leap:15.6
+sudo docker push localhost:5002/opensuse/leap:15.6
 
 sudo docker pull ghcr.io/$UYUNI_PROJECT/uyuni/uyuni-master-testsuite:master
 sudo docker tag ghcr.io/$UYUNI_PROJECT/uyuni/uyuni-master-testsuite:master localhost:5002/cucutest/systemsmanagement/uyuni/master/docker/containers/uyuni-master-testsuite
