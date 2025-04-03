@@ -1,7 +1,8 @@
 REGISTRY=registry.opensuse.org
 VER=master
 BASE_CONTAINER=systemsmanagement/uyuni/master/docker/containers/uyuni-$VER-base
-PGSQL_CONTAINER=systemsmanagement/uyuni/master/docker/containers/uyuni-$VER-pgsql
+# Temporary image to get tests run in the PR
+PGSQL_CONTAINER=home/cbosdonnat/branches/systemsmanagement/uyuni/master/docker/containers/uyuni-$VER-pgsql
 NODEJS_CONTAINER=systemsmanagement/uyuni/master/docker/containers/uyuni-$VER-nodejs
 PUSH2OBS_CONTAINER=systemsmanagement/uyuni/master/docker/containers/uyuni-push-to-obs
 REPORTDB_DOC_CONTAINER=systemsmanagement/uyuni/master/docker/containers/uyuni-$VER-reportdb-docs

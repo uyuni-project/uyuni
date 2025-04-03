@@ -114,26 +114,6 @@ check_database() {
     # Check, if the report DB was already setup
     if egrep -m1 "^report_db_host[[:space:]]*=[[:space:]]*[a-zA-Z0-9_-]+" /etc/rhn/rhn.conf; then
         REPORTDB_EXISTS='y'
-    else
-        # Check, if the DB is local and we should setup the reporting DB automated
-	if egrep -m1 "^db_host[[:space:]]*=[[:space:]]*localhost" /etc/rhn/rhn.conf; then
-            # Do not use 'md5' auth anymore, migrate to 'scram-sha-256' if needed
-            db_migrate_md5_to_scram
-
-            # if the main database is local, we setup the report DB automatically
-            /usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia_susemanager --autogenpw \
-                                          --address '*' --remote '0.0.0.0/0,::/0' && {
-                REPORTDB_EXISTS='y'
-            }
-            
-            if [ $? -ne 0 ]; then
-                echo "Report Database creation has failed. Please check the logs."
-                exit 1
-            fi
-
-        else
-            logger -p user.notice "Database not local - skipping setup of report database"
-        fi
     fi
 
     if [ $REPORTDB_EXISTS == 'y' ]; then

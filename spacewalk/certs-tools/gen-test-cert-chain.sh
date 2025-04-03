@@ -13,8 +13,10 @@ PKEYALGO="rsa"
 ROOTCA="RootCA"
 ORGCA="OrgCa"
 TEAMCA="TeamCA"
-SRVCRT="uyuni-server-cert"
-SRVALTNAME="DNS:*.example.com"
+SRVCRT="server"
+SRVALTNAME="DNS:uyuni-server"
+DBCRT="db"
+DBALTNAME="DNS:uyuni-db,DNS:uyuni-reportdb"
 
 export country="DE"
 export state="STATE"
@@ -76,13 +78,16 @@ CN                      = \${ENV::commonname}
 
 [ req_ca_x509_extensions ]
 basicConstraints = CA:true
+subjectKeyIdentifier = hash
 keyUsage = digitalSignature, keyEncipherment, keyCertSign
 extendedKeyUsage = serverAuth, clientAuth
 # PKIX recommendations harmless if included in all certificates.
 nsComment               = "SSL Generated Certificate"
+authorityKeyIdentifier = keyid, issuer:always
 
 [ req_server_csr_x509_extensions ]
 basicConstraints = CA:false
+subjectKeyIdentifier = hash
 keyUsage = digitalSignature, keyEncipherment
 extendedKeyUsage = serverAuth, clientAuth
 nsCertType = server
@@ -164,6 +169,29 @@ if [ $PKEYALGO = "rsa" ]; then
   openssl rsa -passin pass:$PASSWORD -in $DIR/private/$SRVCRT.key -out $DIR/package/server.key
 else
   openssl ec -passin pass:$PASSWORD -in $DIR/private/$SRVCRT.key -out $DIR/package/server.key
+fi
+
+export commonname=$DBCRT
+export subaltname=$DBALTNAME
+if [ $PKEYALGO = "rsa" ]; then
+  openssl genrsa -out $DIR/private/$commonname.key -passout pass:$PASSWORD -aes256 2048
+else
+  openssl ecparam -genkey -name $PKEYALGO | openssl ec -aes256 -passout pass:$PASSWORD -out $DIR/private/$commonname.key
+fi
+
+openssl req -config $DIR/openssl.cnf -extensions req_server_csr_x509_extensions -new -key $DIR/private/$commonname.key -out $DIR/requests/$commonname.csr -passin pass:$PASSWORD
+
+openssl ca -config $DIR/openssl.cnf -create_serial -extensions req_server_x509_extensions -in $DIR/requests/$commonname.csr -keyfile $DIR/private/$TEAMCA.key \
+        -cert $DIR/certs/$TEAMCA.crt -passin pass:$PASSWORD -out $DIR/certs/$commonname.crt -days 365 -batch
+
+mkdir -p $DIR/package
+openssl x509 -text -in $DIR/$ROOTCA.crt > $DIR/package/root-ca.crt
+cat $DIR/certs/$ORGCA.crt $DIR/certs/$TEAMCA.crt > $DIR/package/intermediate-ca.crt
+cp $DIR/certs/$SRVCRT.crt $DIR/package/db.crt
+if [ $PKEYALGO = "rsa" ]; then
+  openssl rsa -passin pass:$PASSWORD -in $DIR/private/$SRVCRT.key -out $DIR/package/db.key
+else
+  openssl ec -passin pass:$PASSWORD -in $DIR/private/$SRVCRT.key -out $DIR/package/db.key
 fi
 
 echo "Test Certificates in $DIR/package/"
