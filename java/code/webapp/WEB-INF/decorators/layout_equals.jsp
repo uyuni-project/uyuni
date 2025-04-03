@@ -20,7 +20,7 @@
       <jsp:include page="/WEB-INF/includes/header.jsp" />
     </nav>
     <div class="spacewalk-main-column-layout">
-      <aside id="spacewalk-aside" class="navbar-collapse collapse">
+      <aside id="spacewalk-aside" class="navbar-collapse collapse collapse-horizontal">
       </aside>
       <section id="spacewalk-content">
         <decorator:body />

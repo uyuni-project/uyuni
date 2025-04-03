@@ -4,19 +4,19 @@
 @scope_ssm
 @sle_minion
 @scope_visualization
-Feature: Manage a group of systems
+Feature: Manage a group of systems and the Systems Set Manager
 
   Scenario: Log in as org admin user
     Given I am authorized for the "Admin" section
 
 @skip_if_github_validation
-  Scenario: Pre-requisite: enable dummy packages to fake an installation
+  Scenario: Pre-requisite: install dummy packages to allow patching
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
     And I refresh the metadata for "sle_minion"
     And I install old package "andromeda-dummy-1.0" on this "sle_minion"
     And I install old package "virgo-dummy-1.0" on this "sle_minion"
 
-  Scenario: Pre-requisite: ensure that errata are computed
+  Scenario: Pre-requisite: ensure that fake patches are available
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
@@ -56,21 +56,21 @@ Feature: Manage a group of systems
     And I click on "Create Group"
     Then I should see a "System group new-systems-group created." text
 
-  Scenario: Add the SLE minion system to the group
+  Scenario: Add the SLE minion to the group and to SSM
     When I follow the left menu "Systems > System Groups"
     And I follow "new-systems-group"
     And I follow "Target Systems"
     And I check the "sle_minion" client
     And I click on "Add Systems"
     Then I should see a "1 systems were added to new-systems-group server group." text
-    And I click on "Add Selected to SSM"
+    When I click on "Add Selected to SSM"
 
   Scenario: The SLE minion is part of the new group
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Groups" in the content area
     Then I should see a "new-systems-group" text
 
-  Scenario: Apply a patch
+  Scenario: Apply a patch to systems in the system group
     When I follow the left menu "Systems > System Groups"
     And I follow "new-systems-group"
     And I follow first "Patches"
@@ -85,46 +85,47 @@ Feature: Manage a group of systems
     And I click on "Confirm"
     Then I should see a "Patch virgo-dummy-3456 has been scheduled for 1 system" text
 
-  Scenario: Apply a patch in the SSM
+  Scenario: Apply a patch to systems in the SSM
     When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow first "Patches"
-    When I enter "virgo-dummy" as the filtered synopsis
+    When I enter "andromeda-dummy" as the filtered synopsis
     And I click on the filter button
-    When I wait until I see "virgo-dummy-3456" text, refreshing the page
-    Then I should see a "virgo-dummy-3456" link
-    When I follow "virgo-dummy-3456"
+    When I wait until I see "andromeda-dummy-6789" text, refreshing the page
+    Then I should see a "andromeda-dummy-6789" link
+    When I follow "andromeda-dummy-6789"
     And I follow first "Affected Systems"
     And I check the "sle_minion" client
     And I click on "Apply Patches"
     And I click on "Confirm"
-    Then I should see a "Patch virgo-dummy-3456 has been scheduled for 1 system" text
+    Then I should see a "Patch andromeda-dummy-6789 has been scheduled for 1 system" text
 
 @skip_if_github_validation
-  Scenario: Install a package
+  Scenario: Delete a package from systems in the SSM
+    When I follow the left menu "Systems > System Set Manager > Overview"
+    And I follow "Packages"
+    And I follow "Remove"
+    And I wait until I see "andromeda-dummy-2.0-1.1" text, refreshing the page
+    And I enter "virgo-dummy" as the filtered package name
+    And I click on the filter button
+    And I check "virgo-dummy-2.0-1.1" in the list
+    And I click on "Remove Selected Packages"
+    And I click on "Confirm"
+    Then I should see a "Package removals are being scheduled, it may take several minutes for this to complete." text
+
+@skip_if_github_validation
+  Scenario: Install a package to systems in the SSM
     When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Packages"
     And I follow "Install"
     Then I should see a "Fake-RPM-SUSE-Channel" text
     When I follow "Fake-RPM-SUSE-Channel"
-    Then I should see a "andromeda-dummy-2.0-1.1" text
-    And I enter "andromeda-dummy" as the filtered package name
+    Then I should see a "virgo-dummy-2.0-1.1" text
+    And I enter "virgo-dummy" as the filtered package name
     And I click on the filter button
-    When I check "andromeda-dummy-2.0-1.1" in the list
+    When I check "virgo-dummy-2.0-1.1" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "Package installations are being scheduled, it may take several minutes for this to complete." text
-
-@skip_if_github_validation
-  Scenario: Delete a package
-    When I follow the left menu "Systems > System Set Manager > Overview"
-    And I follow "Packages"
-    And I follow "Remove"
-    And I enter "virgo-dummy" as the filtered package name
-    And I click on the filter button
-    And I check "virgo-dummy-1.0-1.2" in the list
-    And I click on "Remove Selected Packages"
-    And I click on "Confirm"
-    Then I should see a "Package removals are being scheduled, it may take several minutes for this to complete." text
 
 @rhlike_minion
   Scenario: Add the Red Hat-like minion to the group in a different way

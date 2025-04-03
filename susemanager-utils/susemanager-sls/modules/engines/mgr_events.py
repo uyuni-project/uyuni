@@ -2,7 +2,7 @@
 """
 mgr_events.py is a SaltStack engine that writes selected events to SUSE
 Manager's PostgreSQL database. Additionally, it sends notifications via the
-LISTEN/NOTIFY mechanism to alert SUSE Manager of newly available events.
+LISTEN/NOTIFY mechanism to alert SUSE Multi-Linux Manager of newly available events.
 
 mgr_events.py tries to keep the I/O low in high load scenarios. Therefore
 events are INSERTed once they come in, but not necessarily COMMITted

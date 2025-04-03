@@ -16,8 +16,6 @@ function onDocumentReadyGeneral(){
 
   // Show character length for textarea
   addTextareaLengthNotification();
-
-  scrollTopBehavior();
 }
 
 let isReady = false;
@@ -43,13 +41,6 @@ function listenForGlobalNotificationChanges() {
   observer.observe(globalNotificationsContainer, {subtree: true, childList: true});
 }
 
-// On section#spacewalk-content scroll
-function scrollTopBehavior() {
-  jQuery(scrollTarget).on("scroll", function () {
-    sstScrollBehavior();
-  });
-}
-
 // A container function for what should be fired
 // to set HTML tag dimensions
 function alignContentDimensions() {
@@ -57,33 +48,28 @@ function alignContentDimensions() {
     return;
   }
 
-  sstStyle();
   navbarToggleMobile();
-}
-
-// empty function by default hooked on window.scroll event
-var sstScrollBehavior = function() {
-  return;
 }
 
 var sstScrollBehaviorSetupIsDone = false; // flag to implement the function one time only
 function sstScrollBehaviorSetup(sst) {
-  sstScrollBehaviorSetupIsDone = true;
-  const adjustSpaceObject = jQuery('<div>').height(sst.outerHeight());
-  var fixedTop = sst.offset().top;
-
-  // override the empty function hooked on window.scroll event                                              │
-  sstScrollBehavior = function() {
-    var currentScroll = jQuery(scrollTarget).scrollTop();
-    if (currentScroll >= fixedTop) {
-      sst.after(adjustSpaceObject);
-      jQuery(sst).addClass('fixed');
-    } else {
-      jQuery(sst).removeClass('fixed');
-      adjustSpaceObject.remove();
-    }
-    sstStyle();
+  if (sstScrollBehaviorSetupIsDone) {
+    return;
   }
+  sstScrollBehaviorSetupIsDone = true;
+
+  const element = sst.get(0);
+  if (!element) {
+    return;
+  }
+
+  // See https://css-tricks.com/how-to-detect-when-a-sticky-element-gets-pinned/
+  const observer = new IntersectionObserver(
+    ([e]) => e.target.classList.toggle("is-sticky", e.intersectionRatio < 1),
+    { threshold: [1] }
+  );
+
+  observer.observe(element);
 }
 
 // when the page scrolls down and the toolbar is going up and hidden,
@@ -126,37 +112,12 @@ function handleSst() {
     });
   }
 
-  // setup the function only if there is the 'spacewalk-section-toolbar'
-  // and the function is not yet setup
-  if (!sstScrollBehaviorSetupIsDone && sst.length > 0) {
-    sstScrollBehaviorSetup(sst);
-  }
+  sstScrollBehaviorSetup(sst);
 }
-
-function sstStyle() {
-  var sst = jQuery('.spacewalk-section-toolbar').first();
-  if (sst.hasClass('fixed')) {
-    sst.css({
-      top: jQuery('header').outerHeight() - 1,
-      left: jQuery('section').offset().left,
-      'min-width': jQuery('section').outerWidth()
-    });
-  }
-  else {
-    sst.css({
-      'min-width': 0
-    });
-  }
-  sst.width(sst.parent().width() - sst.css('padding-left') - sst.css('padding-right'));
-}
-
-jQuery(document).on('click', '.navbar-toggle', function() {
-  jQuery('aside').toggleClass('in collapse');
-});
 
 function navbarToggleMobile() {
   if (window.matchMedia("(max-width: 768px)").matches) {
-    jQuery('aside').addClass('in collapse');
+    jQuery('#spacewalk-aside').removeClass('show');
   }
 };
 

@@ -11277,12 +11277,12 @@ Ak chcete získať podrobnú analýzu, pozrite si súbory záznamov.
         <target state="translated">Boli nájdené systémy s konfliktným ID minion a ID stroja ({0}, {1}). Začlenenie sa bolo prerušené. Prosím, najskôr odstráňte konfliktné systémy ({2}, {3})</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
-        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
-        <target state="translated">Registrácia '{0}' na serveri SUSE Manager zamietnutá. \nAk chcete spravovať klientov dátového centra, musíte nakonfigurovať prihlasovacie údaje SCC v Admin =&gt; Sprievodca nastavením =&gt; prihlasovacie údaje organizácie.</target>
+        <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
+        <target state="needs-adaptation">Registrácia '{0}' na serveri SUSE Manager zamietnutá. \nAk chcete spravovať klientov dátového centra, musíte nakonfigurovať prihlasovacie údaje SCC v Admin =&gt; Sprievodca nastavením =&gt; prihlasovacie údaje organizácie.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
-        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
-        <target state="translated">Registrácia '{0}' na serveri SUSE Manager zamietnutá. \nAk chcete spravovať klientov BYOS (Bring-your-own-Subscription), musíte nakonfigurovať prihlasovacie údaje SCC v Admin =&gt; Sprievodca nastavením =&gt; prihlasovacie údaje organizácie. \n\nAk je začleňovaná inštancia PAYG, uistite sa, že je nainštalovaný balík `python-instance-billing-flavor-check`, a skúste to znova.</target>
+        <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
+        <target state="needs-adaptation">Registrácia '{0}' na serveri SUSE Manager zamietnutá. \nAk chcete spravovať klientov BYOS (Bring-your-own-Subscription), musíte nakonfigurovať prihlasovacie údaje SCC v Admin =&gt; Sprievodca nastavením =&gt; prihlasovacie údaje organizácie. \n\nAk je začleňovaná inštancia PAYG, uistite sa, že je nainštalovaný balík `python-instance-billing-flavor-check`, a skúste to znova.</target>
       </trans-unit>
       <trans-unit id="notification.updateavailable.summary" xml:space="preserve">
         <source>Updates are available.</source>
@@ -11600,90 +11600,90 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         </context-group>
         <target state="translated">Výskyt znakov hesla prekročil povolené maximum {0}.</target>
       </trans-unit>
-    <trans-unit id="api.iss.serverinvocationexception" xml:space="preserve">
+      <trans-unit id="api.iss.serverinvocationexception" xml:space="preserve">
         <source>Unable to invoke the remote server {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Nie je možné vyvolať vzdialený server {0}</target>
+      </trans-unit>
       <trans-unit id="hub.tokenType.issued" xml:space="preserve">
         <source>Issued</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Vydané</target>
+      </trans-unit>
       <trans-unit id="hub.tokenType.consumed" xml:space="preserve">
         <source>Consumed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Spotrebované</target>
+      </trans-unit>
       <trans-unit id="hub.register_peripheral_success" xml:space="preserve">
         <source>Server {0} has been successfully registered as peripheral</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Server {0} bol úspešne zaregistrovaný ako periféria</target>
+      </trans-unit>
       <trans-unit id="hub.invalid_request" xml:space="preserve">
         <source>The request to perform the operation was rejected. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Požiadavka na vykonanie operácie bola zamietnutá. Skontrolujte, prosím, záznamy servera.</target>
+      </trans-unit>
       <trans-unit id="hub.invalid_root_ca" xml:space="preserve">
         <source>The provided certificate is not in valid PEM format.&lt;br/&gt;Please ensure the certificate is correctly encoded as a Base64-encoded ASCII file and enclosed within &lt;code&gt;-----BEGIN CERTIFICATE-----&lt;/code&gt; and &lt;code&gt;-----END CERTIFICATE-----&lt;/code&gt; tags.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Poskytnutý certifikát nie je v platnom formáte PEM.&lt;br/&gt;Uistite sa, že certifikát je správne zakódovaný ako súbor ASCII v kódovaní Base64 a uzavretý vo vnútri značiek &lt;code&gt;-----BEGIN CERTIFICATE-----&lt;/code&gt; a &lt;code&gt;-----END CERTIFICATE-----&lt;/code&gt;.</target>
+      </trans-unit>
       <trans-unit id="hub.unexpected_error_root_ca" xml:space="preserve">
         <source>Unexpected error while processing the root certificate. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Neočakávaná chyba pri spracovaní koreňového certifikátu. Skontrolujte, prosím, záznamy servera.</target>
+      </trans-unit>
       <trans-unit id="hub.unable_issue_token" xml:space="preserve">
         <source>Unable to issue a token for the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Nie je možné vydať token pre vzdialený server. Skontrolujte, prosím, záznamy servera.</target>
+      </trans-unit>
       <trans-unit id="hub.unable_parse_token" xml:space="preserve">
         <source>The token received from the remote server is not valid. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Token prijatý zo vzdialeného servera nie je platný. Skontrolujte, prosím, záznamy servera.</target>
+      </trans-unit>
       <trans-unit id="hub.unable_establish_secure_connection" xml:space="preserve">
         <source>Unable to establish a secure connection with the remote server. Please ensure you are providing the correct root certificate.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Nie je možné nadviazať bezpečné spojenie so vzdialeným serverom. Uistite sa, že ste poskytli správny koreňový certifikát.</target>
+      </trans-unit>
       <trans-unit id="hub.invalid_remote_response" xml:space="preserve">
         <source>Invalid response received from the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Neplatná odpoveď prijatá zo vzdialeného servera. Skontrolujte, prosím, záznamy servera.</target>
+      </trans-unit>
       <trans-unit id="hub.error_connecting_remote" xml:space="preserve">
         <source>An error has occurred while attempting the registration with the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Pri pokuse o registráciu na vzdialenom serveri došlo k chybe. Skontrolujte, prosím, záznamy servera.</target>
+      </trans-unit>
       <trans-unit id="hub.unexpected_error" xml:space="preserve">
         <source>Registration of the remote server failed due to an unexpected error. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Registrácia vzdialeného servera zlyhala z dôvodu neočakávanej chyby. Skontrolujte, prosím, záznamy servera.</target>
+      </trans-unit>
       <trans-unit id="hub.invalid_token_id" xml:space="preserve">
         <source>The specified access token does not exist.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Zadaný prístupový token neexistuje.</target>
+      </trans-unit>
       <trans-unit id="hub.invalid_token_state" xml:space="preserve">
         <source>The specified access token is in an invalid state.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Zadaný prístupový token je v neplatnom stave.</target>
+      </trans-unit>
       <trans-unit id="hub.unable_delete_token" xml:space="preserve">
         <source>Unable to delete a token with the specified id</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Nie je možné vymazať token so zadaným id</target>
+      </trans-unit>
       <trans-unit id="hub.unable_to_issue_token" xml:space="preserve">
         <source>Unable to issue a new token for the specified server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Nie je možné vydať nový token pre zadaný server. Skontrolujte, prosím, záznamy servera.</target>
+      </trans-unit>
       <trans-unit id="hub.unable_to_parse_token" xml:space="preserve">
         <source>Unable to parse the provided token. Please, ensure the token is correct and was generated for this server.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Nie je možné analyzovať zadaný token. Skontrolujte, či je token správny a bol vygenerovaný pre tento server.</target>
+      </trans-unit>
       <trans-unit id="hub.unable_to_store_token" xml:space="preserve">
         <source>Unable to store the token. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Token sa nepodarilo uložiť. Skontrolujte, prosím, záznamy servera.</target>
+      </trans-unit>
       <trans-unit id="hub.cannot_find_server" xml:space="preserve">
         <source>Cannot find a remote server with the specified id.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Nie je možné nájsť vzdialený server so zadaným id.</target>
+      </trans-unit>
       <trans-unit id="hub.unable_to_deregister" xml:space="preserve">
         <source>Unable to deregister: an unexpected error is occurred while contacting the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Nie je možné zrušiť registráciu: pri kontaktovaní vzdialeného servera došlo k neočakávanej chybe. Skontrolujte, prosím, záznamy servera.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

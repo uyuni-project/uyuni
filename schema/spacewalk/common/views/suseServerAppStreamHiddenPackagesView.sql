@@ -18,15 +18,18 @@ CREATE OR REPLACE VIEW suseServerAppStreamHiddenPackagesView AS
 -- and this appstream is not enabled in
 -- a server, it should appear here.
 SELECT DISTINCT sasp.package_id AS pid, sc.server_id AS sid
-FROM rhnserverchannel sc
-    INNER JOIN suseappstream sas ON sas.channel_id = sc.channel_id
-    INNER JOIN suseappstreampackage sasp ON sasp.module_id = sas.id
-    LEFT JOIN suseserverappstream ssa ON ssa.name = sas.name
+FROM rhnServerChannel sc
+    INNER JOIN suseAppStream sas ON sas.channel_id = sc.channel_id
+    INNER JOIN suseAppStreamPackage sasp ON sasp.module_id = sas.id
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM suseServerAppstream ssa
+    WHERE ssa.name = sas.name
         AND ssa.stream = sas.stream
         AND ssa.context = sas.context
         AND ssa.arch = sas.arch
         AND ssa.server_id = sc.server_id
-WHERE ssa.id IS NULL
+)
 
 UNION
 

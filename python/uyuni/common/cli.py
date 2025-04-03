@@ -41,7 +41,7 @@ def getUsernamePassword(cmdlineUsername, cmdlinePassword):
     # Read the username, if not already specified
     tty = io.TextIOWrapper(open("/dev/tty", "r+b", buffering=0))
     while not username:
-        tty.write("SUSE Manager username: ")
+        tty.write("SUSE Multi-Linux Manager username: ")
         try:
             username = tty.readline()
         except KeyboardInterrupt:
@@ -58,7 +58,7 @@ def getUsernamePassword(cmdlineUsername, cmdlinePassword):
     # Now read the password
     while not password:
         try:
-            password = getpass.getpass("SUSE Manager password: ")
+            password = getpass.getpass("SUSE Multi-Linux Manager password: ")
         except KeyboardInterrupt:
             tty.write("\n")
             sys.exit(0)

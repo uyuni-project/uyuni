@@ -39,6 +39,7 @@ import fcntl
 import atexit
 
 from spacewalk.common.rhnConfig import cfg_component
+import logging
 from uyuni.common.fileutils import getUidGid
 
 
@@ -91,6 +92,7 @@ def initLOG(log_file="stderr", level=0, component=""):
         if log_file is None or LOG.file == log_file:
             # Keep the same logging object, change only the log level
             LOG.level = level
+            align_root_logger()
             return
         # We need a different type, so destroy the old one
         LOG = None
@@ -134,6 +136,7 @@ def initLOG(log_file="stderr", level=0, component=""):
     # At this point, LOG is None and log_file is not None
     # Get a new LOG
     LOG = rhnLog(log_file, level, component)
+    align_root_logger()
     return 0
 
 
@@ -152,8 +155,11 @@ def log_debug(level, *args):
 def log_stderr(*args):
     pid = os.getpid()
     for arg in args:
-        # pylint: disable-next=consider-using-f-string
-        sys.stderr.write("SUSE Manager %s %s: %s\n" % (pid, log_time(), arg))
+        sys.stderr.write(
+            # pylint: disable-next=consider-using-f-string
+            "SUSE Multi-Linux Manager %s %s: %s\n"
+            % (pid, log_time(), arg)
+        )
     sys.stderr.flush()
 
 
@@ -304,6 +310,43 @@ def _exit():
 
 
 atexit.register(_exit)
+
+
+def log_level_to_logging_constant(rhnLog_log_level: int):
+    mapping = {
+        0: logging.ERROR,
+        1: logging.WARNING,
+        2: logging.INFO,
+        3: logging.DEBUG,
+    }
+    # 4+: logging.DEBUG
+    return mapping.get(rhnLog_log_level, logging.DEBUG)
+
+
+def align_root_logger():
+    """Align the root logger with LOG.
+
+    Makes sure the root_logger has a single handler with the same destination as
+    LOG.file and a log level that corresponds to LOG.level
+    """
+    # initLOG() not called or didn't finish correctly
+    if LOG is None or LOG.file is None or LOG.level is None:
+        return
+
+    if LOG.file == "stderr":
+        handler = logging.StreamHandler(sys.stderr)
+    elif LOG.file == "stdout":
+        handler = logging.StreamHandler(stream=sys.stdout)
+    else:
+        handler = logging.FileHandler(filename=LOG.file)
+
+    formatter = logging.Formatter(
+        fmt="%(asctime)s - %(name)s - %(message)s", datefmt="%Y/%m/%d %H:%M:%S"
+    )
+    handler.setFormatter(formatter)
+    root_logger = logging.getLogger(None)
+    root_logger.handlers = [handler]
+    root_logger.setLevel(log_level_to_logging_constant(LOG.level))
 
 
 # ------------------------------------------------------------------------------

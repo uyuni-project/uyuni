@@ -174,6 +174,7 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
 end
 
 When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
+  client = 'proxy_nontransactional' if client == 'proxy' && !$is_transactional_server
   select(BASE_CHANNEL_BY_CLIENT[product][client], from: from, exact: false)
 end
 

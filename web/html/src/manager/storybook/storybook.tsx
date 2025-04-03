@@ -5,6 +5,8 @@ import debugUtils from "core/debugUtils";
 import { Button } from "components/buttons";
 import { IconTag } from "components/icontag";
 
+import { useQueryParams } from "utils/hooks";
+
 import { StoryRow } from "./layout";
 import stories from "./stories";
 import styles from "./storybook.module.scss";
@@ -12,11 +14,11 @@ import styles from "./storybook.module.scss";
 const STORAGE_KEY = "storybook-show-code";
 
 export const Storybook = () => {
-  const [_hash, setHash] = useState(window.location.hash);
-  const hash = _hash.replace(/^#/, "");
+  const { tab, story } = useQueryParams();
+
   const normalize = (input: string = "") => input.replaceAll(" ", "-").toLowerCase();
 
-  const activeTabHash = normalize(hash) || normalize(stories[0]?.title);
+  const activeTab = normalize(tab) || normalize(stories[0]?.title);
 
   const [, _invalidate] = useState(0);
   const invalidate = () => _invalidate((ii) => ii + 1);
@@ -32,11 +34,10 @@ export const Storybook = () => {
   };
 
   useEffect(() => {
-    const listener = () => setHash(window.location.hash);
-    window.addEventListener("hashchange", listener);
-    return () => {
-      window.removeEventListener("hashchange", listener);
-    };
+    if (!story) {
+      return;
+    }
+    document.getElementById(story)?.scrollIntoView();
   }, []);
 
   return (
@@ -69,10 +70,16 @@ export const Storybook = () => {
           {stories
             .sort((a, b) => a.title.localeCompare(b.title))
             .map((item) => {
-              const tabHash = normalize(item.title);
+              const tabTitle = normalize(item.title);
+              const href = new URL(window.location.href);
+              href.searchParams.set("tab", tabTitle);
+              href.searchParams.delete("story");
+
               return (
-                <li key={tabHash} className={tabHash === activeTabHash ? "active" : ""}>
-                  <a href={`#${tabHash}`}>{item.title}</a>
+                <li key={tabTitle} className={tabTitle === activeTab ? "active" : ""}>
+                  <a href={href.toString()} className="js-spa">
+                    {item.title}
+                  </a>
                 </li>
               );
             })}
@@ -81,23 +88,30 @@ export const Storybook = () => {
 
       {stories.map((group) => (
         <div key={`${group.title}`}>
-          {normalize(group.title) === activeTabHash &&
-            group.stories?.map((item) => (
-              <Fragment key={`${group.title}-${item.title}`}>
-                <p>
-                  <code>{item.title}</code>
-                </p>
-                <div className={styles.story}>
-                  <div>{item.component ? <item.component /> : null}</div>
-                  {showCode ? (
-                    <pre>
-                      <code>{item.raw}</code>
-                    </pre>
-                  ) : null}
-                </div>
-                <hr />
-              </Fragment>
-            ))}
+          {normalize(group.title) === activeTab &&
+            group.stories?.map((item) => {
+              const storyTitle = normalize(item.title);
+              const href = new URL(window.location.href);
+              href.searchParams.set("story", storyTitle);
+              return (
+                <Fragment key={`${group.title}-${item.title}`}>
+                  <p id={storyTitle}>
+                    <a href={href.toString()}>
+                      <code>{item.title}</code>
+                    </a>
+                  </p>
+                  <div className={styles.story}>
+                    <div>{item.component ? <item.component /> : null}</div>
+                    {showCode ? (
+                      <pre>
+                        <code>{item.raw}</code>
+                      </pre>
+                    ) : null}
+                  </div>
+                  <hr />
+                </Fragment>
+              );
+            })}
         </div>
       ))}
     </>

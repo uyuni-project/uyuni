@@ -123,13 +123,13 @@ REGISTER_THIS_BOX=1
 #     PROFILENAME=`hostname -f`      # FQDN
 PROFILENAME=""   # Empty by default to let it be set automatically.
 
-# SUSE Manager Specific settings:
+# SUSE Multi-Linux Manager Specific settings:
 #
 # - Alternate location of the client tool repos providing 
 #   packages required for registration. Unless they are already installed on the
 #   client this repo is expected to provide them:
 #   ${{CLIENT_REPOS_ROOT}}/sle/VERSION/PATCHLEVEL
-# If empty, the SUSE Manager repositories provided at https://${{HOSTNAME}}/pub/repositories
+# If empty, the SUSE Multi-Linux Manager repositories provided at https://${{HOSTNAME}}/pub/repositories
 # are used.
 CLIENT_REPOS_ROOT=
 {venv_section}
@@ -147,15 +147,15 @@ SCHEDULE_REBOOT_AFTER_TRANSACTION=1
 VENV_ENABLED=0
 
 #
-# do not try to register a SUSE Manager server at itself
+# do not try to register a SUSE Multi-Linux Manager server at itself
 #
 MYNAME=`hostname -f`
 LCMYNAME=`echo $MYNAME | tr '[:upper:]' '[:lower:]'`
 LCHOSTNAME=`echo $HOSTNAME | tr '[:upper:]' '[:lower:]'`
 
 if [ "$LCMYNAME" == "$LCHOSTNAME" ]; then
-    echo "Name of client and of SUSE Manager server are the same."
-    echo "Do not try to register a SUSE Manager server at itself!"
+    echo "Name of client and of SUSE Multi-Linux Manager server are the same."
+    echo "Do not try to register a SUSE Multi-Linux Manager server at itself!"
     echo "Aborting."
     exit 1
 fi
@@ -345,7 +345,7 @@ function test_venv_enabled() {
 
     return """\
 echo
-echo "CLEANING UP OLD SUSE MANAGER REPOSITORIES"
+echo "CLEANING UP OLD SUSE MULTI-LINUX MANAGER REPOSITORIES"
 echo "-------------------------------------------------"
 
 function clean_up_old_trad_repos() {{

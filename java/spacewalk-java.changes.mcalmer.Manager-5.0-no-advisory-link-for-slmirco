@@ -1,0 +1,2 @@
+- Do not show Vendor Advisory link for SL-Micro 6.0 and 6.1
+  products. They are not published yet on the web (bsc#1237770)

@@ -86,7 +86,7 @@ FaultArray = {
     30: _("Invalid value for entry."),
     31: _(
         """
-     This system does not have a valid entitlement for SUSE Manager.
+     This system does not have a valid entitlement for SUSE Multi-Linux Manager.
      Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do
      or login at https://%(hostname)s, and from the "Overview" tab,
      select "Subscription Management" to enable the service for this system.
@@ -153,7 +153,7 @@ on this system."
     55: _(
         """
      The --force mgrpush option is disabled on this server.
-     Please contact your SUSE Manager administrator for more help.
+     Please contact your SUSE Multi-Linux Manager administrator for more help.
      """
     ),
     # 60-70: token errors
@@ -180,7 +180,7 @@ on this system."
      """
     ),
     72: _("""You can not unsubscribe from base channel."""),
-    73: _("""SUSE Manager or Proxy channel can not be subscribed."""),
+    73: _("""SUSE Multi-Linux Manager or Proxy channel can not be subscribed."""),
     # 80-90: server group errors
     80: _("There was an error while trying to join the system to its groups"),
     # 90-100: entitlement errors
@@ -203,17 +203,17 @@ on this system."
     800: _("System Name cannot be less than 1 character"),
     # 1000-1999: Proxy specific errors:
     # issued by a Proxy to the client
-    1000: _("SUSE Manager Proxy error."),
-    1001: _("SUSE Manager Proxy unable to login."),
-    # issued by a SUSE Manager Server/Satellite to the proxy
+    1000: _("SUSE Multi-Linux Manager Proxy error."),
+    1001: _("SUSE Multi-Linux Manager Proxy unable to login."),
+    # issued by a SUSE Multi-Linux Manager Server/Satellite to the proxy
     1002: _(
         """
-     SUSE Manager Proxy system ID does not match a Spacewalk Proxy Server
+     SUSE Multi-Linux Manager Proxy system ID does not match a Spacewalk Proxy Server
      in the database.
      """
     ),
-    1003: _("SUSE Manager Proxy session token is invalid."),
-    1004: _("SUSE Manager Proxy session token has expired."),
+    1003: _("SUSE Multi-Linux Manager Proxy session token is invalid."),
+    1004: _("SUSE Multi-Linux Manager Proxy session token has expired."),
     # 2000-2999: Red Hat Satellite specific errors:
     2001: _(
         PRODUCT_NAME
@@ -224,12 +224,12 @@ on this system."
     ),
     2004: _(
         """
-     This SUSE Manager server is not allowed to use Inter Server Sync on this server
+     This SUSE Multi-Linux Manager server is not allowed to use Inter Server Sync on this server
      """
     ),
     2005: _(
         """
-     Inter Server Sync is disabled on this SUSE Manager Server.
+     Inter Server Sync is disabled on this SUSE Multi-Linux Manager Server.
      """
     ),
     # 3000-3999: XML dumper errors:

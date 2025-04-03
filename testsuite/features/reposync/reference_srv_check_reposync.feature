@@ -38,14 +38,14 @@ Feature: Synchronize product channels
     And I wait until the channel "sle-module-containers15-sp4-pool-x86_64" has been synced
 
 @uyuni
-  Scenario: Reposync of openSUSE Leap 15.5 channels has finished
-    When I wait until the channel "opensuse_leap15_5-x86_64" has been synced
-    And I wait until the channel "opensuse_leap15_5-non-oss-x86_64" has been synced
-    And I wait until the channel "opensuse_leap15_5-non-oss-updates-x86_64" has been synced
-    And I wait until the channel "opensuse_leap15_5-updates-x86_64" has been synced
-    And I wait until the channel "opensuse_leap15_5-backports-updates-x86_64" has been synced
-    And I wait until the channel "opensuse_leap15_5-sle-updates-x86_64" has been synced
-    And I wait until the channel "opensuse_leap15_5-uyuni-client-devel-x86_64" has been synced
+  Scenario: Reposync of openSUSE Leap 15.6 channels has finished
+    When I wait until the channel "opensuse_leap15_6-x86_64" has been synced
+    And I wait until the channel "opensuse_leap15_6-non-oss-x86_64" has been synced
+    And I wait until the channel "opensuse_leap15_6-non-oss-updates-x86_64" has been synced
+    And I wait until the channel "opensuse_leap15_6-updates-x86_64" has been synced
+    And I wait until the channel "opensuse_leap15_6-backports-updates-x86_64" has been synced
+    And I wait until the channel "opensuse_leap15_6-sle-updates-x86_64" has been synced
+    And I wait until the channel "opensuse_leap15_6-uyuni-client-devel-x86_64" has been synced
     And I wait until the channel "uyuni-proxy-devel-leap-x86_64" has been synced
 
 @scc_credentials
@@ -66,6 +66,6 @@ Feature: Synchronize product channels
 
 @uyuni
   Scenario: Reposync of Uyuni client tools has finished
-    When I wait until the channel "opensuse_leap15_5-uyuni-client-x86_64" has been synced
+    When I wait until the channel "opensuse_leap15_6-uyuni-client-x86_64" has been synced
     And I wait until the channel "rockylinux8-uyuni-client-x86_64" has been synced
     And I wait until the channel "ubuntu-2404-amd64-uyuni-client" has been synced

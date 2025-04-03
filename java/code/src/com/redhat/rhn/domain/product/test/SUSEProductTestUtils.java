@@ -92,7 +92,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param family the channel family
      * @return the newly created SUSE product
      */
-    public static SUSEProduct createTestSUSEProduct(ChannelFamily family) throws Exception {
+    public static SUSEProduct createTestSUSEProduct(ChannelFamily family) {
         return createTestSUSEProduct(family, TestUtils.randomString().toLowerCase());
     }
 
@@ -101,9 +101,8 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param family the channel family
      * @param name the product name
      * @return the newly created SUSE product
-     * @throws Exception if anything goes wrong
      */
-    public static SUSEProduct createTestSUSEProduct(ChannelFamily family, String name) throws Exception {
+    public static SUSEProduct createTestSUSEProduct(ChannelFamily family, String name) {
         SUSEProduct product = new SUSEProduct();
         product.setName(name);
         product.setVersion("1");
@@ -511,10 +510,8 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param admin the user
      * @param testDataPath the path to test data
      * @param withRepos set true if repos should be added
-     * @throws Exception
      */
-    public static void createVendorSUSEProductEnvironment(User admin, String testDataPath, boolean withRepos)
-            throws Exception {
+    public static void createVendorSUSEProductEnvironment(User admin, String testDataPath, boolean withRepos) {
         createVendorSUSEProductEnvironment(admin, testDataPath, withRepos, false);
     }
 

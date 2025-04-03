@@ -32,12 +32,11 @@ RES9 = [
     "venv-salt-minion",
 ]
 
-OPENEULER2203 = [
+OPENEULER = [
     "venv-salt-minion",
 ]
 
 PKGLIST15_SALT = [
-    "python3-ply",
     "venv-salt-minion",
 ]
 
@@ -187,13 +186,13 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/1/bootstrap/",
     },
     "SLE-12-SP1-s390x": {
-        "PDID": [1335, 1535, 3046],
+        "PDID": [1335, 3046],
         "BETAPDID": [3050],
         "PKGLIST": PKGLIST12,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/1/bootstrap/",
     },
     "SLE-12-SP1-x86_64": {
-        "PDID": [1322, 1533, 3047],
+        "PDID": [1322, 3047],
         "BETAPDID": [3051],
         "PKGLIST": PKGLIST12,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/1/bootstrap/",
@@ -241,19 +240,19 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/2/bootstrap/",
     },
     "SLE-12-SP2-ppc64le": {
-        "PDID": [1355, 1737, 3045],
+        "PDID": [1355, 3045],
         "BETAPDID": [3049],
         "PKGLIST": PKGLIST12,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/2/bootstrap/",
     },
     "SLE-12-SP2-s390x": {
-        "PDID": [1356, 1738, 3046],
+        "PDID": [1356, 3046],
         "BETAPDID": [3050],
         "PKGLIST": PKGLIST12,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/2/bootstrap/",
     },
     "SLE-12-SP2-x86_64": {
-        "PDID": [1357, 1739, 3047],
+        "PDID": [1357, 3047],
         "BETAPDID": [3051],
         "PKGLIST": PKGLIST12,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/2/bootstrap/",
@@ -271,25 +270,25 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/2/bootstrap/",
     },
     "SLE-12-SP3-aarch64": {
-        "PDID": [1424, 2002, 3044],
+        "PDID": [1424, 3044],
         "BETAPDID": [3048],
         "PKGLIST": PKGLIST12,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/3/bootstrap/",
     },
     "SLE-12-SP3-ppc64le": {
-        "PDID": [1422, 1930, 3045],
+        "PDID": [1422, 3045],
         "BETAPDID": [3049],
         "PKGLIST": PKGLIST12,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/3/bootstrap/",
     },
     "SLE-12-SP3-s390x": {
-        "PDID": [1423, 1931, 3046],
+        "PDID": [1423, 3046],
         "BETAPDID": [3050],
         "PKGLIST": PKGLIST12,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/3/bootstrap/",
     },
     "SLE-12-SP3-x86_64": {
-        "PDID": [1421, 1932, 3047],
+        "PDID": [1421, 3047],
         "BETAPDID": [3051],
         "PKGLIST": PKGLIST12,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/3/bootstrap/",
@@ -313,25 +312,25 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/3/bootstrap/",
     },
     "SLE-12-SP4-aarch64": {
-        "PDID": [1628, 2114, 3044],
+        "PDID": [1628, 3044],
         "BETAPDID": [3048],
         "PKGLIST": PKGLIST12,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/4/bootstrap/",
     },
     "SLE-12-SP4-ppc64le": {
-        "PDID": [1626, 2115, 3045],
+        "PDID": [1626, 3045],
         "BETAPDID": [3049],
         "PKGLIST": PKGLIST12,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/4/bootstrap/",
     },
     "SLE-12-SP4-s390x": {
-        "PDID": [1627, 2116, 3046],
+        "PDID": [1627, 3046],
         "BETAPDID": [3050],
         "PKGLIST": PKGLIST12,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/4/bootstrap/",
     },
     "SLE-12-SP4-x86_64": {
-        "PDID": [1625, 2117, 3047],
+        "PDID": [1625, 3047],
         "BETAPDID": [3051],
         "PKGLIST": PKGLIST12,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/4/bootstrap/",
@@ -430,25 +429,25 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/4/bootstrap/",
     },
     "SLE-15-aarch64": {
-        "PDID": [1589, 2053, 3052],
+        "PDID": [1589, 3052],
         "BETAPDID": [3056],
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/0/bootstrap/",
     },
     "SLE-15-ppc64le": {
-        "PDID": [1588, 2054, 3053],
+        "PDID": [1588, 3053],
         "BETAPDID": [3057],
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_PPC,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/0/bootstrap/",
     },
     "SLE-15-s390x": {
-        "PDID": [1587, 2055, 3054],
+        "PDID": [1587, 3054],
         "BETAPDID": [3058],
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_Z,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/0/bootstrap/",
     },
     "SLE-15-x86_64": {
-        "PDID": [1576, 2056, 3055],
+        "PDID": [1576, 3055],
         "BETAPDID": [3059],
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/0/bootstrap/",
@@ -466,25 +465,25 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/0/bootstrap/",
     },
     "SLE-15-SP1-aarch64": {
-        "PDID": [1769, 3052, 2216],
+        "PDID": [1769, 3052],
         "BETAPDID": [3056],
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/1/bootstrap/",
     },
     "SLE-15-SP1-ppc64le": {
-        "PDID": [1770, 3053, 2217],
+        "PDID": [1770, 3053],
         "BETAPDID": [3057],
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_PPC,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/1/bootstrap/",
     },
     "SLE-15-SP1-s390x": {
-        "PDID": [1771, 3054, 2218],
+        "PDID": [1771, 3054],
         "BETAPDID": [3058],
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_Z,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/1/bootstrap/",
     },
     "SLE-15-SP1-x86_64": {
-        "PDID": [1772, 3055, 2219],
+        "PDID": [1772, 3055],
         "BETAPDID": [3059],
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/1/bootstrap/",
@@ -502,25 +501,25 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/1/bootstrap/",
     },
     "SLE-15-SP2-aarch64": {
-        "PDID": [1943, 3052, 2372],
+        "PDID": [1943, 3052],
         "BETAPDID": [3056],
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/2/bootstrap/",
     },
     "SLE-15-SP2-ppc64le": {
-        "PDID": [1944, 3053, 2373],
+        "PDID": [1944, 3053],
         "BETAPDID": [3057],
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_PPC,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/2/bootstrap/",
     },
     "SLE-15-SP2-s390x": {
-        "PDID": [1945, 3054, 2374],
+        "PDID": [1945, 3054],
         "BETAPDID": [3058],
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_Z,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/2/bootstrap/",
     },
     "SLE-15-SP2-x86_64": {
-        "PDID": [1946, 3055, 2375],
+        "PDID": [1946, 3055],
         "BETAPDID": [3059],
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/2/bootstrap/",
@@ -538,25 +537,25 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/2/bootstrap/",
     },
     "SLE-15-SP3-aarch64": {
-        "PDID": [2142, 3052, 2567],
+        "PDID": [2142, 3052],
         "BETAPDID": [3056],
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/3/bootstrap/",
     },
     "SLE-15-SP3-ppc64le": {
-        "PDID": [2143, 3053, 2568],
+        "PDID": [2143, 3053],
         "BETAPDID": [3057],
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_PPC,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/3/bootstrap/",
     },
     "SLE-15-SP3-s390x": {
-        "PDID": [2144, 3054, 2569],
+        "PDID": [2144, 3054],
         "BETAPDID": [3058],
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_Z,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/3/bootstrap/",
     },
     "SLE-15-SP3-x86_64": {
-        "PDID": [2145, 3055, 2570],
+        "PDID": [2145, 3055],
         "BETAPDID": [3059],
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/3/bootstrap/",
@@ -1355,12 +1354,31 @@ DATA = {
     },
     "openeuler22.03-x86_64-uyuni": {
         "BASECHANNEL": "openeuler2203-x86_64",
-        "PKGLIST": OPENEULER2203,
+        "PKGLIST": OPENEULER,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/openEuler/22.03/bootstrap/",
     },
     "openeuler22.03-aarch64-uyuni": {
         "BASECHANNEL": "openeuler2203-aarch64",
-        "PKGLIST": OPENEULER2203,
+        "PKGLIST": OPENEULER,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/openEuler/22.03/bootstrap/",
+    },
+    "openeuler24.03-SP1-x86_64": {
+        "PDID": [-49, 3041],
+        "BETAPDID": [3043],
+        "PKGLIST": OPENEULER,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/openEuler/24.03/bootstrap/",
+    },
+    "openeuler24.03-SP1-aarch64": {
+        "PDID": [-50, 3040],
+        "BETAPDID": [3042],
+        "PKGLIST": OPENEULER,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/openEuler/24.03/bootstrap/",
+    },
+    "raspberrypios12-arm64": {
+        "PDID": [-48, 3029],
+        "BETAPDID": [3031],
+        "PKGLIST": PKGLISTRASPBERRYPIOS12,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/raspbian/12/bootstrap/",
+        "TYPE": "deb",
     },
 }

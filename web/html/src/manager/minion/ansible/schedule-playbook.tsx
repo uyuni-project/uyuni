@@ -20,14 +20,16 @@ import { AnsiblePath } from "./ansible-path-type";
 
 interface SchedulePlaybookProps {
   playbook: PlaybookDetails;
+  isRecurring?: boolean;
   onBack: () => void;
+  onSelectPlaybook?: (playbook: any) => void;
 }
 
 interface PlaybookArgs {
   flushCache: Boolean;
 }
 
-export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookProps) {
+export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, isRecurring }: SchedulePlaybookProps) {
   const [loading, setLoading] = useState(true);
   const [playbookContent, setPlaybookContent] = useState("");
   const [isTestMode, setTestMode] = useState(false);
@@ -37,6 +39,8 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
   const [playbookArgs, setPlaybookArgs] = useState<PlaybookArgs>({ flushCache: false });
   const [actionChain, setActionChain] = useState<ActionChain | null>(null);
   const [datetime, setDatetime] = useState(localizedMoment());
+
+  const defaultInventory = "-";
 
   useEffect(() => {
     const getInventoryPaths = () => {
@@ -66,7 +70,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
   const schedule = () => {
     return Network.post("/rhn/manager/api/systems/details/ansible/schedule-playbook", {
       playbookPath: playbook.fullPath,
-      inventoryPath: inventoryPath?.text,
+      inventoryPath: inventoryPath?.text === defaultInventory ? null : inventoryPath?.text,
       controlNodeId: playbook.path.minionServerId,
       testMode: isTestMode,
       flushCache: playbookArgs.flushCache,
@@ -76,6 +80,14 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
       .then((res: JsonResult<number>) => (res.success ? res.data : Promise.reject(res)))
       .then((actionId) => setMessages(MsgUtils.info(<ScheduleMessage id={actionId} actionChain={actionChain?.text} />)))
       .catch((res) => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
+  };
+
+  const selectPlaybook = () => {
+    return onSelectPlaybook?.({
+      playbookPath: playbook.fullPath,
+      inventoryPath: inventoryPath?.text === defaultInventory ? null : inventoryPath?.text,
+      flushCache: playbookArgs.flushCache,
+    });
   };
 
   if (loading) return <Loading text={t("Loading playbook contents..")} />;
@@ -101,25 +113,53 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
     </div>,
   ];
 
+  const buttonsRecurring = [
+    <div key="rec-btns" className="btn-group pull-right">
+      <Button
+        icon="fa-angle-left"
+        className="btn-default"
+        text={t("Back")}
+        title={t("Back to playbook list")}
+        handler={onBack}
+      />
+      <Button
+        className="btn-primary"
+        text={t("Select")}
+        title={t("Select the current Playbook")}
+        handler={selectPlaybook}
+      />
+    </div>,
+  ];
+
   return (
     <>
       <Messages items={messages} />
-      <InnerPanel title={t('Playbook "{name}"', { name: playbook.name })} icon="fa-file-text-o" buttons={buttons}>
+      <InnerPanel
+        title={t('Playbook "{name}"', { name: playbook.name })}
+        icon="fa-file-text-o"
+        buttons={isRecurring ? buttonsRecurring : buttons}
+      >
         <div className="panel panel-default">
-          <div className="panel-heading">
-            <div>
-              <h3>{t("Schedule Playbook Execution")}</h3>
-            </div>
-          </div>
-          <div className="panel-body">
-            <ActionSchedule
-              earliest={datetime}
-              actionChains={window.actionChains}
-              onDateTimeChanged={setDatetime}
-              onActionChainChanged={setActionChain}
-              systemIds={[playbook.path.minionServerId]}
-              actionType="ansible.playbook"
-            />
+          {!isRecurring && (
+            <>
+              <div className="panel-heading">
+                <div>
+                  <h3>{t("Schedule Playbook Execution")}</h3>
+                </div>
+              </div>
+              <div className="panel-body">
+                <ActionSchedule
+                  earliest={datetime}
+                  actionChains={window.actionChains}
+                  onDateTimeChanged={setDatetime}
+                  onActionChainChanged={setActionChain}
+                  systemIds={[playbook.path.minionServerId]}
+                  actionType="ansible.playbook"
+                />
+              </div>
+            </>
+          )}
+          <div className="panel_body">
             <Form model={playbookArgs} onChange={setPlaybookArgs} formDirection="form-horizontal">
               <div className="form-group">
                 <div className="col-sm-3 control-label">

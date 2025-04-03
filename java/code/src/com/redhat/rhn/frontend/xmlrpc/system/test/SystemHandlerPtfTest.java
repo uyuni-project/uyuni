@@ -37,7 +37,6 @@ import com.redhat.rhn.frontend.xmlrpc.PtfPackageFault;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -51,7 +50,6 @@ import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
-import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.test.TestSaltApi;
@@ -114,10 +112,9 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
         XmlRpcSystemHelper xmlRpcHelper = new XmlRpcSystemHelper(regularBootstrapper, sshBootstrapper);
 
         ServerGroupManager groupManager = new ServerGroupManager(saltApi);
-        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
 
-        SystemUnentitler unentitler = new SystemUnentitler(monitoringManager, groupManager);
-        SystemEntitler entitler = new SystemEntitler(saltApi, monitoringManager, groupManager);
+        SystemUnentitler unentitler = new SystemUnentitler(saltApi);
+        SystemEntitler entitler = new SystemEntitler(saltApi);
 
         SystemEntitlementManager entitlementManager = new SystemEntitlementManager(unentitler, entitler);
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);

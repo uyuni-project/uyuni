@@ -13,12 +13,15 @@ Feature: Main landing page options and preferences
     Then I should see a "Sign In" text
 
 @uyuni
-  Scenario: Access the About page
+  Scenario: Access the API Documentation
     Given I am not authorized
     When I go to the home page
-    And I follow "About"
-    Then I should see a "About Uyuni" text
+    And I follow "API Documentation"
+    Then I should see a "API Overview" text
 
+# TODO: We need to refactor this to navigate to a doc page
+
+@skip
   Scenario: Access the Copyright Notice
     Given I am not authorized
     When I go to the home page
@@ -30,8 +33,8 @@ Feature: Main landing page options and preferences
     Given I am not authorized
     When I go to the home page
     And I follow "Copyright Notice"
-    And I follow "SUSE MANAGER LICENSE AGREEMENT"
-    Then I should see a "SUSE Manager License Agreement" text
+    And I follow "SUSE Multi-Linux Manager License Agreement"
+    Then I should see a "SUSE Multi-Linux Manager License Agreement" text
 
   Scenario: Log into Uyuni
     Given I am not authorized

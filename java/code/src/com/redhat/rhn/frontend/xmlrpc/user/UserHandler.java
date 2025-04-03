@@ -996,7 +996,7 @@ public class UserHandler extends BaseHandler {
         User targetUser = XmlRpcUserHelper.getInstance().lookupTargetUser(
                 loggedInUser, login);
 
-        if (sgNames == null || sgNames.size() < 1) {
+        if (sgNames == null || sgNames.isEmpty()) {
             throw new IllegalArgumentException("no servergroup names supplied");
         }
 
@@ -1005,8 +1005,7 @@ public class UserHandler extends BaseHandler {
         // prevent adding a bunch of valid groups and then throwing an exception
         // when coming across one that doesn't exist.
         List<ManagedServerGroup> groups = new LinkedList<>();
-        for (Object sgNameIn : sgNames) {
-            String serverGroupName = (String) sgNameIn;
+        for (String serverGroupName : sgNames) {
 
             // Make sure the server group exists:
             ManagedServerGroup group;

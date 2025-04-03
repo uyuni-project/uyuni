@@ -5421,9 +5421,9 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.provisioning.rollback" xml:space="preserve">
+      <trans-unit approved="yes" id="ssm.overview.provisioning.rollback" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; systems for &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;snapshot rollback&lt;/a&gt;</source>
-        <target>&lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;스냅샷 롤백&lt;/a&gt;용 &lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; 시스템</target>
+        <target state="final">&lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;스냅샷 롤백&lt;/a&gt;용 &lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; 시스템</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5530,23 +5530,23 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.misc.hardwareprofiles" xml:space="preserve">
+      <trans-unit approved="yes" id="ssm.overview.misc.hardwareprofiles" xml:space="preserve">
         <source>Update &lt;a href="/rhn/systems/ssm/misc/HardwareRefresh.do"&gt;hardware profiles&lt;/a&gt;</source>
-        <target>&lt;a href="/rhn/systems/ssm/misc/HardwareRefresh.do"&gt;하드웨어 프로필&lt;/a&gt; 업데이트</target>
+        <target state="final">&lt;a href="/rhn/systems/ssm/misc/HardwareRefresh.do"&gt;하드웨어 프로필&lt;/a&gt; 업데이트</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.misc.packageprofiles" xml:space="preserve">
+      <trans-unit approved="yes" id="ssm.overview.misc.packageprofiles" xml:space="preserve">
         <source>Update &lt;a href="/rhn/systems/ssm/misc/SoftwareRefresh.do"&gt;package profiles&lt;/a&gt;</source>
-        <target>&lt;a href="/rhn/systems/ssm/misc/SoftwareRefresh.do"&gt;패키지 프로파일&lt;/a&gt; 업데이트</target>
+        <target state="final">&lt;a href="/rhn/systems/ssm/misc/SoftwareRefresh.do"&gt;패키지 프로파일&lt;/a&gt; 업데이트</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.misc.systempreferences" xml:space="preserve">
+      <trans-unit approved="yes" id="ssm.overview.misc.systempreferences" xml:space="preserve">
         <source>Update &lt;a href="/rhn/systems/ssm/misc/Index.do"&gt;system preferences&lt;/a&gt;</source>
-        <target>&lt;a href="/rhn/systems/ssm/misc/Index.do"&gt;시스템 기본 설정&lt;/a&gt; 업데이트</target>
+        <target state="final">&lt;a href="/rhn/systems/ssm/misc/Index.do"&gt;시스템 기본 설정&lt;/a&gt; 업데이트</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -13185,9 +13185,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         <target>&lt;strong&gt;활성화 키&lt;/strong&gt; 관리</target>
       </trans-unit>
-      <trans-unit id="yourrhn.jsp.tasks.manage_sat_orgs" xml:space="preserve">
+      <trans-unit approved="yes" id="yourrhn.jsp.tasks.manage_sat_orgs" xml:space="preserve">
         <source>Manage &lt;strong&gt;Organizations&lt;/strong&gt;</source>
-        <target>&lt;strong&gt;조직&lt;/strong&gt; 관리</target>
+        <target state="final">&lt;strong&gt;조직&lt;/strong&gt; 관리</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -13829,8 +13829,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.jsp.edit-basechannel-tooltip" xml:space="preserve">
-        <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default SUSE Manager provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its SUSE Manager Default channel.</source>
-        <target>"&lt;strong&gt;{0}&lt;/strong&gt;"을(를) 선택하여 시스템을 SUSE Linux 설치 버전에 해당하는 디폴트 SUSE Manager 채널에 등록합니다. 특정 SUSE 채널 또는 사용자 정의 기본 채널을 선택할 수도 있지만, 시스템이 이 키를 사용할 경우 선택한 채널과는 호환되지 않고, SUSE Manager 디폴트 채널로 되돌아 가게 됨에 유의하시기 바랍니다.</target>
+        <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default @@PRODUCT_NAME@@ provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its @@PRODUCT_NAME@@ Default channel.</source>
+        <target state="needs-adaptation">"&lt;strong&gt;{0}&lt;/strong&gt;"을(를) 선택하여 시스템을 SUSE Linux 설치 버전에 해당하는 디폴트 SUSE Manager 채널에 등록합니다. 특정 SUSE 채널 또는 사용자 정의 기본 채널을 선택할 수도 있지만, 시스템이 이 키를 사용할 경우 선택한 채널과는 호환되지 않고, SUSE Manager 디폴트 채널로 되돌아 가게 됨에 유의하시기 바랍니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -13972,8 +13972,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.childchannels.jsp.note" xml:space="preserve">
-        <source>NOTE: Selected child channels of the "SUSE Manager default" Base channel will be subscribed.</source>
-        <target>참고: "SUSE Manager 기본값" 기본 채널의 선택한 하위 채널이 가입됩니다.</target>
+        <source>NOTE: Selected child channels of the "@@PRODUCT_NAME@@ default" Base channel will be subscribed.</source>
+        <target state="needs-adaptation">참고: "SUSE Manager 기본값" 기본 채널의 선택한 하위 채널이 가입됩니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/childchannels/* pages</context>
         </context-group>
@@ -24832,11 +24832,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>로그인 오류</target>
       </trans-unit>
       <trans-unit id="login.jsp.error.message" xml:space="preserve">
-        <source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your SUSE Manager administrator if the problem persists.</source>
+        <source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your @@PRODUCT_NAME@@ administrator if the problem persists.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">loginerror.jsp</context>
         </context-group>
-        <target>중단된 로그아웃이나 다른 브라우저 탭에서 로그인할 경우 나타날 수 있는 오류입니다. 문제가 해결되지 않으면 SUSE Manager 관리자에게 문의하십시오.</target>
+        <target state="needs-adaptation">중단된 로그아웃이나 다른 브라우저 탭에서 로그인할 경우 나타날 수 있는 오류입니다. 문제가 해결되지 않으면 SUSE Manager 관리자에게 문의하십시오.</target>
       </trans-unit>
       <trans-unit approved="yes" id="login.jsp.error.currentlyLoggedInAs" xml:space="preserve">
         <source>Currently logged in as: {0}</source>
@@ -27340,11 +27340,11 @@ given channel.</source>
         <target>여기에서 선택한 묶음의 스케줄을 설정할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.introparagraph" xml:space="preserve">
-        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on SUSE Manager functionality. Proceed only if you know what you're doing.</source>
+        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target>스케줄을 삭제하시겠습니까? 연결된 묶음은 더 이상 스케줄되지 않게 됩니다. 이는 SUSE Manager 기능에 큰 영향을 미칠 수 있습니다. 삭제로 인한 영향을 잘 이해한 후 계속 실행하십시오.</target>
+        <target state="needs-adaptation">스케줄을 삭제하시겠습니까? 연결된 묶음은 더 이상 스케줄되지 않게 됩니다. 이는 SUSE Manager 기능에 큰 영향을 미칠 수 있습니다. 삭제로 인한 영향을 잘 이해한 후 계속 실행하십시오.</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.schedulenameinuse" xml:space="preserve">
         <source>Schedule name {0} is already in use. Please choose another one.</source>
@@ -28881,9 +28881,9 @@ given channel.</source>
         <source>Subscriptions related to these credentials</source>
         <target>이 인증서 관련 구독</target>
       </trans-unit>
-      <trans-unit id="mirror-credentials.jsp.iss-slave" xml:space="preserve">
+      <trans-unit approved="yes" id="mirror-credentials.jsp.iss-slave" xml:space="preserve">
         <source>This server is configured as a Peripheral server in a Hub configuration. Credentials can only be managed on the Hub server.</source>
-        <target state="needs-adaptation">이 서버는 ISS(서버 간 동기화) 슬레이브로 구성됩니다. 인증서는 ISS 마스터에서만 관리할 수 있습니다.</target>
+        <target state="final">이 서버는 허브 구성에서 주변기기 서버로 설정되어 있습니다. 자격 증명은 허브 서버에서만 관리할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.bt.cancel" xml:space="preserve">
         <source>Cancel</source>
@@ -28930,8 +28930,8 @@ given channel.</source>
         <target state="final">Copyright (c) 2011 - 2025 SUSE LLC.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
-        <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
-        <target>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER 라이선스 계약&lt;/a&gt;</target>
+        <source>&lt;a href="/rhn/help/Eula.do"&gt;@@PRODUCT_NAME@@ License Agreement&lt;/a&gt;</source>
+        <target state="needs-adaptation">&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER 라이선스 계약&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.body.uyuni" xml:space="preserve">
         <source>
@@ -29005,15 +29005,15 @@ given channel.</source>
         <target>채널 레이블</target>
       </trans-unit>
       <trans-unit id="delete_confirm.jsp.summary.sshpush" xml:space="preserve">
-        <source>For Salt minions SUSE Manager will also cleanup any specific configuration installed on the minion.
+        <source>For Salt minions @@PRODUCT_NAME@@ will also cleanup any specific configuration installed on the minion.
               This might take a few extra seconds.</source>
-        <target>Salt minion의 경우 SUSE Manager는 minion에 설치된 특정 구성도 정리합니다.
+        <target state="needs-adaptation">Salt minion의 경우 SUSE Manager는 minion에 설치된 특정 구성도 정리합니다.
               이 작업에는 추가로 몇 초가 걸릴 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup" xml:space="preserve">
-        <source>The selected profiles include Salt systems. SUSE Manager can try to remove the specific configuration from the Salt systems.
+        <source>The selected profiles include Salt systems. @@PRODUCT_NAME@@ can try to remove the specific configuration from the Salt systems.
             In order for this to work the systems must be up and running and reachable. If a system is not reachable it will result in an error.</source>
-        <target>선택한 프로파일에 Salt 시스템이 포함되어 있습니다. SUSE Manager는 Salt 시스템에서 특정 구성을 제거하도록 시도할 수 있습니다.
+        <target state="needs-adaptation">선택한 프로파일에 Salt 시스템이 포함되어 있습니다. SUSE Manager는 Salt 시스템에서 특정 구성을 제거하도록 시도할 수 있습니다.
 이 작업이 작동하려면 시스템을 시작한 후 실행하고 연결할 수 있어야 합니다. 시스템에 연결할 수 없는 경우에는 오류가 발생합니다.</target>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup.type" xml:space="preserve">
@@ -29751,11 +29751,11 @@ given channel.</source>
         <target state="final">보안 업데이트 알 수 없음, 설정에서 사용 중지됨.</target>
       </trans-unit>
       <trans-unit approved="yes" id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve">
-        <source>Collect data of managed clients for SUSE Manager PAYG</source>
+        <source>Collect data of managed clients for @@PRODUCT_NAME@@ PAYG</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="final">SUSE Manager PAYG용 관리형 클라이언트의 데이터 수집</target>
+        <target state="needs-adaptation">SUSE Manager PAYG용 관리형 클라이언트의 데이터 수집</target>
       </trans-unit>
       <trans-unit approved="yes" id="task.status.payg-dimension-computation" xml:space="preserve">
         <source>PAYG Computation</source>

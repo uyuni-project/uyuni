@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# pylint: disable=invalid-name
+# pylint: disable=invalid-name,inconsistent-quotes
 """Configure script for Uyuni proxy httpd container."""
 
 import logging
@@ -85,7 +85,7 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
     httpdConfig = yaml.safe_load(httpdSource).get("httpd")
 
     server_version = config.get("server_version")
-    # Only check version for SUSE Manager, not Uyuni
+    # Only check version for SUSE Multi-Linux Manager, not Uyuni
     matcher = re.fullmatch(r"([0-9]+\.[0-9]+\.)[0-9]+", server_version)
     if matcher:
         major_version = matcher.group(1)
@@ -165,7 +165,7 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
         # Location of locally built, custom packages
         proxy.pkg_dir = /var/spool/rhn-proxy
         
-        # Hostname of Uyuni, SUSE Manager Server or another proxy
+        # Hostname of Uyuni, SUSE Multi-Linux Manager Server or another proxy
         proxy.rhn_parent = {config['server']}
         proxy.proxy_fqdn = {config['proxy_fqdn']}
         

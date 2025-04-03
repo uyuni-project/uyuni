@@ -15,6 +15,7 @@
 package com.suse.manager.webui.utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class SaltConfigChannelState implements SaltState {
     private List<String> includedStates = new ArrayList<>();
 
     /**
-     * @param includedStatesIn the states to be included
+     * @param includedStatesIn the states to be included in order of priority (high to low)
      */
     public SaltConfigChannelState(List<String> includedStatesIn) {
         this.includedStates = includedStatesIn;
@@ -41,7 +42,12 @@ public class SaltConfigChannelState implements SaltState {
     @Override
     public Map<String, Object> getData() {
         Map<String, Object> state = new LinkedHashMap<>();
-        state.put("include", new ArrayList<>(includedStates));
+        List<String> include = new ArrayList<>(includedStates);
+        // since states are ordered highest to lowest priority and salt will execute them in the order of the list,
+        // we need to reverse the list so the highest priority state will run last. This way higher priority states can
+        // override the effects of lower priority states i.e deploying to the same file path
+        Collections.reverse(include);
+        state.put("include", include);
         return state;
     }
 

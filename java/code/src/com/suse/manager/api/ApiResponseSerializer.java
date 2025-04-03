@@ -95,7 +95,4 @@ public abstract class ApiResponseSerializer<T> implements XmlRpcCustomSerializer
 
         return json;
     }
-
-    @Override
-    public abstract Class<T> getSupportedClass();
 }

@@ -15,7 +15,8 @@
 
 package com.suse.manager.webui.controllers;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.jsonError;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -37,7 +38,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -113,7 +113,7 @@ public class ProxyController {
         ProxyContainerConfigJson data = GSON.fromJson(request.body(),
                 new TypeToken<ProxyContainerConfigJson>() { }.getType());
         if (!data.isValid()) {
-            return jsonError(response, HttpStatus.SC_BAD_REQUEST, "Invalid Input Data");
+            return badRequest(response, "Invalid Input Data");
         }
         try {
             byte[] config = systemManager.createProxyContainerConfig(user, data.getProxyFqdn(),
@@ -128,11 +128,11 @@ public class ProxyController {
         catch (SystemsExistException e) {
             String msg = String.format("Cannot create proxy as an existing system has FQDN '%s'", data.getProxyFqdn());
             LOG.error(msg);
-            return jsonError(response, HttpStatus.SC_INTERNAL_SERVER_ERROR, msg);
+            return internalServerError(response, msg);
         }
         catch (RhnRuntimeException e) {
             LOG.error("Failed to generate proxy configuration", e);
-            return jsonError(response, HttpStatus.SC_BAD_REQUEST, e.getMessage());
+            return badRequest(response, e.getMessage());
         }
     }
 
@@ -149,7 +149,7 @@ public class ProxyController {
     public byte[] containerConfigFile(Request request, Response response, User user) {
         String filename = request.params("filename");
         if (!request.session().attributes().contains(filename) || !filename.endsWith("-config.tar.gz")) {
-            return jsonError(response, HttpStatus.SC_BAD_REQUEST, "Configuration file wasn't generated").getBytes();
+            return badRequest(response, "Configuration file wasn't generated").getBytes();
         }
         Object config = request.session().attribute(filename);
         if (config instanceof byte[] data) {
@@ -159,6 +159,6 @@ public class ProxyController {
             response.type("application/gzip");
             return data;
         }
-        return jsonError(response, HttpStatus.SC_BAD_REQUEST, "Invalid configuration file data").getBytes();
+        return badRequest(response, "Invalid configuration file data").getBytes();
     }
 }

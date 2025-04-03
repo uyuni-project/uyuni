@@ -59,7 +59,7 @@
     <header class="navbar-pf navbar">
       <div class="header-content container-fluid">
         <div class="navbar-header d-flex flex-row">
-          <a href="#" class="navbar-toggle">
+          <a class="navbar-toggle" data-bs-toggle="collapse" href="#spacewalk-aside">
             <i class="fa fa-bars" aria-hidden="true"></i>
           </a>
           <div id="breadcrumb">
@@ -82,7 +82,7 @@
     </header>
 
     <div class="spacewalk-main-column-layout">
-      <aside id="spacewalk-aside" class="navbar-collapse in">
+      <aside id="spacewalk-aside" class="navbar-collapse collapse collapse-horizontal show">
         <div id="nav">
           <nav class="collapsed">
             <ul class="level1">
@@ -109,9 +109,6 @@
 
         <footer>
           <div class="wrapper">
-            <div class="footer-copyright">
-              <bean:message key="footer.jsp.copyright" />
-            </div>
             <div class="footer-release">
               <bean:message key="footer.jsp.release" arg0="/docs/${docsLocale}/release-notes/release-notes-server.html" arg1="${rhn:getProductVersion()}" />
             </div>

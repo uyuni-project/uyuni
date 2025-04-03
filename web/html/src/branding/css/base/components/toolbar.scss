@@ -1,11 +1,14 @@
 .spacewalk-section-toolbar {
-  background: transparent;
+  position: sticky;
+  top: -1px;
+  background: $body-background;
   padding: 0;
   border: none;
+  z-index: 200;
+  margin: 0 auto;
 
-  &.fixed {
-    background: $eos-bc-white;
-    border-bottom: 1px solid $eos-bc-gray-300;
+  &.is-sticky {
+    border-bottom: 1px solid $eos-bc-gray-100;
   }
 }
 

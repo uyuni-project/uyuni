@@ -1,0 +1,4 @@
+- Remove requirement of LTSS repositories for generation of the
+  bootstrap repositories since only venv-salt-minion is needed
+- Add bootstrap repository data for Raspberry Pi OS 12 product
+- Add bootstrap repository data for openEuler 24.03-LTS-SP1 product

@@ -15,6 +15,7 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
@@ -457,8 +458,8 @@ public class MinionsAPI {
             }
             else {
                 LOG.warn("Unable to schedule unknown action {}", scheduleRequest.getActionType());
-                return json(GSON, response, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error("Unable to schedule unknown action " + scheduleRequest.getActionType()));
+                return badRequest(response,
+                        "Unable to schedule unknown action " + scheduleRequest.getActionType());
             }
 
             result = chain != null ? chain.getId() : action.getId();

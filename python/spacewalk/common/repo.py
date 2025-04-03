@@ -17,10 +17,14 @@ from collections import namedtuple
 
 import requests
 
+from spacewalk.common import suseLib
+
 # pylint:disable=W0612,W0212,C0301
 
 SPACEWALK_LIB = "/var/lib/spacewalk"
 SPACEWALK_GPG_HOMEDIR = os.path.join(SPACEWALK_LIB, "gpgdir")
+
+logger = logging.getLogger(__name__)
 
 
 class GeneralRepoException(Exception):
@@ -39,6 +43,7 @@ class DpkgRepo:
     PKG_GZ = "Packages.gz"
     PKG_XZ = "Packages.xz"
     PKG_RW = "Packages"
+    GPG_VERIFICATION_FAILED = "GPG verification failed"
 
     class ReleaseEntry:  # pylint: disable=W0612,R0903
         """
@@ -103,6 +108,13 @@ class DpkgRepo:
         self.gpg_verify = gpg_verify
         self.timeout = timeout
 
+    def __repr__(self):
+        return (
+            f"DpkgRepo(url={suseLib.URL(self._url).getURL(stripPw=True)}, "
+            f"proxies={self.proxies}, gpg_verify={self.gpg_verify}, "
+            f"timemout={self.timeout})"
+        )
+
     def append_index_file(self, index_file: str) -> str:
         """
         Append an index file, such as Packages.gz or Packagex.xz etc
@@ -115,17 +127,14 @@ class DpkgRepo:
         path = p_url.path
         if not path.endswith(index_file):
             if index_file in path:
-                logging.error(
-                    # pylint: disable-next=logging-format-interpolation,consider-using-f-string
-                    "URL has already {} mentioned in it. Raising \
-                               GeneralRepoException!".format(
-                        index_file
-                    ),
+                logger.error(
+                    "URL includes '%s' at the wrong place.",
+                    index_file,
                     exc_info=True,
                 )
                 raise GeneralRepoException(
                     # pylint: disable-next=consider-using-f-string
-                    "URL has already {} mentioned in it.".format(index_file)
+                    "URL includes '{}' at the wrong place.".format(index_file)
                 )
             path = os.path.join(path.rstrip("/"), index_file)
 
@@ -150,16 +159,15 @@ class DpkgRepo:
             for cnt_fname in [DpkgRepo.PKG_GZ, DpkgRepo.PKG_XZ, DpkgRepo.PKG_RW]:
                 packages_url = self.append_index_file(cnt_fname)
                 if packages_url.startswith("file://"):
+                    local_path = packages_url.replace("file://", "")
                     try:
-                        with open(packages_url.replace("file://", ""), "rb") as f:
+                        with open(local_path, "rb") as f:
                             self._pkg_index = cnt_fname, f.read()
                             break
                     except FileNotFoundError as ex:
-                        logging.debug(
-                            # pylint: disable-next=logging-format-interpolation,consider-using-f-string
-                            "File not found: {}".format(
-                                packages_url.replace("file://", "")
-                            ),
+                        logger.debug(
+                            "File not found: '%s'",
+                            local_path,
                             exc_info=True,
                         )
                 else:
@@ -189,22 +197,14 @@ class DpkgRepo:
             elif fname == DpkgRepo.PKG_XZ:
                 cnt_data = lzma.decompress(cnt_data)
         except (zlib.error, lzma.LZMAError) as exc:
-            logging.exception(
-                "Exception during decompression of pkg index", exc_info=True
-            )
-            # pylint: disable-next=raise-missing-from
-            raise GeneralRepoException(exc)
+            logger.exception("Could not decompress pkg index '%s'", fname)
+            raise GeneralRepoException from exc
         except Exception as exc:
-            logging.exception(
-                "Unknown exception during decompression of \
-                               pkg index. Raising GeneralRepoException",
-                exc_info=True,
+            logger.exception(
+                "Unhandled exception during decompression of pkg index '%s'.", fname
             )
             raise GeneralRepoException(
-                # pylint: disable-next=consider-using-f-string
-                "Unhandled exception occurred while decompressing {}: {}".format(
-                    fname, exc
-                )
+                f"Unhandled exception during decompressing of pkg index '{fname}': {exc}"
             ) from exc
 
         return cnt_data.decode("utf-8")
@@ -301,12 +301,9 @@ class DpkgRepo:
                     )
                     out = process.wait(timeout=90)
                 else:
-                    logging.error(
-                        # pylint: disable-next=logging-format-interpolation,consider-using-f-string
-                        "Signature file for GPG check could not be accessed: \
-                                   '{}. Raising GeneralRepoException.".format(
-                            release_signature_file
-                        )
+                    logger.error(
+                        "Could not access sinature file '%s' for GPG check.",
+                        release_signature_file,
                     )
                     raise GeneralRepoException(
                         # pylint: disable-next=consider-using-f-string
@@ -315,12 +312,7 @@ class DpkgRepo:
                         )
                     )
             else:
-                logging.error(
-                    # pylint: disable-next=logging-format-interpolation,consider-using-f-string
-                    "No release file found: '{}'. Raising GeneralRepoException.".format(
-                        uri
-                    )
-                )
+                logger.error("No release file found: '%s'.", uri)
                 # pylint: disable-next=consider-using-f-string
                 raise GeneralRepoException("No release file found: {}".format(uri))
         else:
@@ -363,14 +355,11 @@ class DpkgRepo:
                     out = process.wait(timeout=90)
 
         if process.returncode == 0:
-            logging.debug("GPG signature is valid")
+            logger.debug("GPG signature is valid")
             return True
         else:
-            logging.debug(
-                # pylint: disable-next=logging-format-interpolation,consider-using-f-string
-                "GPG signature is invalid. gpg return code: {}".format(
-                    process.returncode
-                )
+            logger.debug(
+                "GPG signature is invalid. gpg return code: %s", process.returncode
             )
             return False
 
@@ -392,13 +381,8 @@ class DpkgRepo:
 
     def _get_release_index_from_file(self) -> typing.Dict[str, "DpkgRepo.ReleaseEntry"]:
         # InRelease files take precedence per uyuni-rfc 00057-deb-repo-sync-gpg-check
-        logging.debug(
-            # pylint: disable-next=logging-format-interpolation,consider-using-f-string
-            "Fetching release file from local filesystem: {}".format(
-                self._url.replace("file://", "")
-            )
-        )
         local_path = self._url.replace("file://", "")
+        logger.debug("Reading release file from local filesystem: '%s'", local_path)
         release_file = None
         if os.access(self._get_parent_url(local_path, 2, "InRelease"), os.R_OK):
             release_file = self._get_parent_url(local_path, 2, "InRelease")
@@ -415,24 +399,17 @@ class DpkgRepo:
         # Repo format is not flat
         if not self.is_flat():
             if self.gpg_verify and not self._has_valid_gpg_signature(local_path):
-                # pylint: disable-next=logging-format-interpolation,consider-using-f-string
-                logging.error("GPG verification failed: {}".format(release_file))
-                logging.error("Raising GeneralRepoException!")
+                logger.error("%s: %s", DpkgRepo.GPG_VERIFICATION_FAILED, release_file)
                 raise GeneralRepoException(
-                    # pylint: disable-next=consider-using-f-string
-                    "GPG verification failed: {}".format(release_file)
+                    f"{DpkgRepo.GPG_VERIFICATION_FAILED}: {release_file}"
                 )
             try:
                 with open(release_file, "rb") as f:
                     self._release = self._parse_release_index(f.read().decode("utf-8"))
             except IOError as ex:
-                logging.exception(
-                    # pylint: disable-next=logging-format-interpolation,consider-using-f-string
-                    "IOError while accessing file: '{}'. Raising \
-                                   GeneralRepoException!".format(
-                        release_file
-                    ),
-                    exc_info=True,
+                logger.exception(
+                    "IOError while accessing file: '%s'.",
+                    release_file,
                 )
                 raise GeneralRepoException(
                     # pylint: disable-next=consider-using-f-string
@@ -446,12 +423,9 @@ class DpkgRepo:
             elif os.access(self._get_parent_url(local_path, 0, "Release"), os.R_OK):
                 release_file = self._get_parent_url(local_path, 0, "Release")
             else:
-                logging.error(
-                    # pylint: disable-next=logging-format-interpolation,consider-using-f-string
-                    "No release file found in '{}'. Raising \
-                                   GeneralRepoException.".format(
-                        self._get_parent_url(local_path, 0)
-                    )
+                logger.error(
+                    "No release file found in '%s'.",
+                    self._get_parent_url(local_path, 0),
                 )
                 raise GeneralRepoException(
                     # pylint: disable-next=consider-using-f-string
@@ -466,26 +440,19 @@ class DpkgRepo:
                     if self.gpg_verify and not self._has_valid_gpg_signature(
                         local_path
                     ):
-                        logging.error(
-                            # pylint: disable-next=logging-format-interpolation,consider-using-f-string
-                            "GPG verification failed: '{}'. \
-                                           Raising GeneralRepoException.".format(
-                                release_file
-                            )
+                        logger.error(
+                            "%s: '%s'.",
+                            DpkgRepo.GPG_VERIFICATION_FAILED,
+                            release_file,
                         )
                         raise GeneralRepoException(
-                            # pylint: disable-next=consider-using-f-string
-                            "GPG verification failed: {}".format(release_file)
+                            f"{DpkgRepo.GPG_VERIFICATION_FAILED}: {release_file}"
                         )
                     self._release = self._parse_release_index(release_file_content)
             except IOError as ex:
-                logging.exception(
-                    # pylint: disable-next=logging-format-interpolation,consider-using-f-string
-                    "IOError while accessing file: '{}'. Raising \
-                                   GeneralRepoException.".format(
-                        release_file
-                    ),
-                    exc_info=True,
+                logger.exception(
+                    "IOError while accessing file: '%s'.",
+                    release_file,
                 )
                 raise GeneralRepoException(
                     # pylint: disable-next=consider-using-f-string
@@ -496,8 +463,7 @@ class DpkgRepo:
 
     def _get_release_index_from_http(self) -> typing.Dict[str, "DpkgRepo.ReleaseEntry"]:
         # InRelease files take precedence per uyuni-rfc 00057-deb-repo-sync-gpg-check
-        # pylint: disable-next=logging-format-interpolation,consider-using-f-string
-        logging.debug("Fetching release file from local http: {}".format(self._url))
+        logger.debug("Fetching release file from local http: %s", self._url)
         resp = requests.get(
             self._get_parent_url(self._url, 2, "InRelease"),
             proxies=self.proxies,
@@ -516,12 +482,9 @@ class DpkgRepo:
                 http.HTTPStatus.OK,
                 http.HTTPStatus.FORBIDDEN,
             ]:
-                logging.error(
-                    # pylint: disable-next=logging-format-interpolation,consider-using-f-string
-                    "Fetching release index failed with http status \
-                               '{}'. Raising GeneralRepoException.".format(
-                        resp.status_code
-                    )
+                logger.error(
+                    "Fetching release index failed with http status '%s'.",
+                    resp.status_code,
                 )
                 raise GeneralRepoException(
                     # pylint: disable-next=consider-using-f-string
@@ -541,12 +504,9 @@ class DpkgRepo:
                 and self.gpg_verify
                 and not self._has_valid_gpg_signature(resp.url, resp)
             ):
-                logging.error(
-                    "Repo has no valid GPG signature. Raising GeneralRepoException."
-                )
+                logger.error("Repo has no valid GPG signature.")
                 raise GeneralRepoException(
-                    # pylint: disable-next=consider-using-f-string
-                    "GPG verification failed: {}".format(resp.url)
+                    f"{DpkgRepo.GPG_VERIFICATION_FAILED}: {resp.url}"
                 )
 
             self._release = self._parse_release_index(resp.content.decode("utf-8"))
@@ -568,12 +528,11 @@ class DpkgRepo:
                     if self.gpg_verify and not self._has_valid_gpg_signature(
                         resp.url, resp
                     ):
-                        logging.error(
+                        logger.error(
                             "Repo has no valid GPG signature. GeneralRepoException will be raised!"
                         )
                         raise GeneralRepoException(
-                            # pylint: disable-next=consider-using-f-string
-                            "GPG verification failed: {}".format(resp.url)
+                            f"{DpkgRepo.GPG_VERIFICATION_FAILED}: {resp.url}"
                         )
                     self._release = self._parse_release_index(
                         resp.content.decode("utf-8")

@@ -24,8 +24,8 @@ Feature: Run Cobbler Sync via WebUI
   @susemanager
   Scenario: Check that the Cobbler Settings Page exists
     When I follow the left menu "Admin > Manager Configuration > Cobbler"
-    Then I should see a "SUSE Manager Configuration - Cobbler. " text
-    And I should see a "Setup your SUSE Manager Cobbler settings below. " text
+    Then I should see a "SUSE Multi-Linux Manager Configuration - Cobbler. " text
+    And I should see a "Setup your SUSE Multi-Linux Manager Cobbler settings below. " text
     And I should see a "Cobbler sync is used to repair or rebuild the contents /srv/tftpboot or /srv/www/cobbler when manual modification of cobbler has occurred. " text
     And I should see a "For more information refer to the 'cobbler' man page. " text
     And I should see a "Run Cobbler Sync" text in the content area
@@ -42,5 +42,7 @@ Feature: Run Cobbler Sync via WebUI
     And I follow the left menu "Admin > Task Engine Status > Last Execution Times"
     Then I should see the correct timestamp for task "Cobbler Sync:"
 
+# flaky test
+@skip_if_github_validation
   Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors

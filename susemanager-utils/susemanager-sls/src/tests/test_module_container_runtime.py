@@ -1,10 +1,17 @@
 """
 Unit tests for the container_runtime module
 """
+import os
+
 from ..modules import container_runtime
 
 from unittest.mock import patch, mock_open, MagicMock
 import pytest
+
+@pytest.fixture(autouse=True)
+def stripped_env(monkeypatch):
+    """Strip env variables that are use by the system under test."""
+    monkeypatch.delenv("container", raising=False)
 
 @pytest.mark.parametrize(
     "mock_read_file_return, mock_exists_return, expected_result",
@@ -13,7 +20,7 @@ import pytest
         ("", {"/proc/vz": True, "/proc/bc": False}, "openvz"),
         ("podman", {"/run/.containerenv": True}, "podman"),
         ("", {"/__runsc_containers__": True}, "gvisor"),
-        ("", {}, None),
+        ("", {"/run/.containerenv": False}, None),
     ],
 )
 def test_get_container_runtime(mock_read_file_return, mock_exists_return, expected_result):

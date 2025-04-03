@@ -973,6 +973,8 @@ public class KickstartFactory extends HibernateFactory {
     /**
      * Fail the kickstart sessions associated with the given actions and servers.
      *
+     * This method does not remove serverAction entries, the caller is supposed to do it.
+     *
      * @param actionsToDelete Actions associated with the kickstart sessions to fail.
      * @param servers Servers assocaited with the kickstart sessions to fail.
      */
@@ -993,7 +995,7 @@ public class KickstartFactory extends HibernateFactory {
             List<KickstartSession> ksSessions = kickstartSessionQuery.list();
             for (KickstartSession ks : ksSessions) {
                 log.debug("Failing kickstart associated with action: {}", ks.getId());
-                ks.markFailed(KICKSTART_CANCELLED_MESSAGE);
+                ks.markFailed(KICKSTART_CANCELLED_MESSAGE, false);
             }
         }
     }

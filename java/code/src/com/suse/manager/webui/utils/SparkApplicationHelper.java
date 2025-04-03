@@ -742,6 +742,17 @@ public class SparkApplicationHelper {
 
     /**
      * Serialize the result and set the response content type to JSON.
+     * @param response the http response
+     * @param result the object to serialize to JSON
+     * @param <T> type of the result
+     * @return a JSON string
+     */
+    public static <T> String result(Response response, ResultJson<T> result) {
+        return result(response, result, new TypeToken<>() { });
+    }
+
+    /**
+     * Serialize the result and set the response content type to JSON.
      * @param gson {@link Gson} object to use for serialization
      * @param response the http response
      * @param result the long to serialize to JSON

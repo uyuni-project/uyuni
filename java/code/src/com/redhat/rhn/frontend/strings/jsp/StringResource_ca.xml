@@ -13831,8 +13831,8 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.jsp.edit-basechannel-tooltip" xml:space="preserve">
-        <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default SUSE Manager provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its SUSE Manager Default channel.</source>
-        <target state="translated">Trieu «lt;stronggt;{0}lt;/stronggt;» per a permetre que els sistemes es registrin al canal proporcionat per defecte del SUSE Manager que correspon a la versió instal·lada de SUSE Linux. En lloc del valor per defecte, podeu triar un canal SUSE proporcionat en particular o un canal base personalitzat, però si un sistema que utilitza aquesta clau no és compatible amb el canal seleccionat, tornarà al seu canal SUSE Manager Default.</target>
+        <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default @@PRODUCT_NAME@@ provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its @@PRODUCT_NAME@@ Default channel.</source>
+        <target state="needs-adaptation">Trieu «lt;stronggt;{0}lt;/stronggt;» per a permetre que els sistemes es registrin al canal proporcionat per defecte del SUSE Manager que correspon a la versió instal·lada de SUSE Linux. En lloc del valor per defecte, podeu triar un canal SUSE proporcionat en particular o un canal base personalitzat, però si un sistema que utilitza aquesta clau no és compatible amb el canal seleccionat, tornarà al seu canal SUSE Manager Default.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -13974,8 +13974,8 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.childchannels.jsp.note" xml:space="preserve">
-        <source>NOTE: Selected child channels of the "SUSE Manager default" Base channel will be subscribed.</source>
-        <target state="translated">NOTA: se subscriuran els canals fills seleccionats del canal base «SUSE Manager default».</target>
+        <source>NOTE: Selected child channels of the "@@PRODUCT_NAME@@ default" Base channel will be subscribed.</source>
+        <target state="needs-adaptation">NOTA: se subscriuran els canals fills seleccionats del canal base «SUSE Manager default».</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/childchannels/* pages</context>
         </context-group>
@@ -24836,8 +24836,8 @@ lt;pgt;El camí a l'arbre ha de ser un camí de disc local al servidor .PRODUCTN
         </context-group>
       </trans-unit>
       <trans-unit id="login.jsp.error.message" xml:space="preserve">
-        <source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your SUSE Manager administrator if the problem persists.</source>
-        <target state="translated">Aquest error pot haver estat causat per una sessió interrompuda o per iniciar sessió des d'una altra pestanya del navegador. Contacteu amb l'administrador del SUSE Manager si el problema persisteix.</target>
+        <source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your @@PRODUCT_NAME@@ administrator if the problem persists.</source>
+        <target state="needs-adaptation">Aquest error pot haver estat causat per una sessió interrompuda o per iniciar sessió des d'una altra pestanya del navegador. Contacteu amb l'administrador del SUSE Manager si el problema persisteix.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">loginerror.jsp</context>
         </context-group>
@@ -27350,8 +27350,8 @@ canal indicat.</target>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.introparagraph" xml:space="preserve">
-        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on SUSE Manager functionality. Proceed only if you know what you're doing.</source>
-        <target state="translated">Esteu segur que voleu suprimir la planificació? La colla associada ja no es programarà. Això pot tenir un gran impacte en la funcionalitat de SUSE Manager. Procedeix només si saps el que estàs fent.</target>
+        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
+        <target state="needs-adaptation">Esteu segur que voleu suprimir la planificació? La colla associada ja no es programarà. Això pot tenir un gran impacte en la funcionalitat de SUSE Manager. Procedeix només si saps el que estàs fent.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
@@ -28896,7 +28896,7 @@ canal indicat.</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.iss-slave" xml:space="preserve">
         <source>This server is configured as a Peripheral server in a Hub configuration. Credentials can only be managed on the Hub server.</source>
-        <target state="needs-adaptation">Aquest servidor està configurat com un esclau de sincronització entre servidors (ISS). Les credencials només es poden gestionar en el màster de l'ISS.</target>
+        <target state="translated">Aquest servidor està configurat com a servidor perifèric en una configuració de concentrador. Les credencials només es poden gestionar al servidor concentrador.</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.bt.cancel" xml:space="preserve">
         <source>Cancel</source>
@@ -28943,8 +28943,8 @@ canal indicat.</target>
         <target state="translated">Copyright (c) 2011 - 2025 SUSE LLC.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
-        <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
-        <target state="translated">lt;a href""/rhn/help/Eula.do"gt;SUSE MANAGER LICENSE AGREEMENTlt;/agt;</target>
+        <source>&lt;a href="/rhn/help/Eula.do"&gt;@@PRODUCT_NAME@@ License Agreement&lt;/a&gt;</source>
+        <target state="needs-adaptation">lt;a href""/rhn/help/Eula.do"gt;SUSE MANAGER LICENSE AGREEMENTlt;/agt;</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.body.uyuni" xml:space="preserve">
         <source>
@@ -29018,15 +29018,15 @@ lt;/pgt;
         <target state="translated">Etiqueta del canal</target>
       </trans-unit>
       <trans-unit id="delete_confirm.jsp.summary.sshpush" xml:space="preserve">
-        <source>For Salt minions SUSE Manager will also cleanup any specific configuration installed on the minion.
+        <source>For Salt minions @@PRODUCT_NAME@@ will also cleanup any specific configuration installed on the minion.
               This might take a few extra seconds.</source>
-        <target state="translated">Per als minions Salt SUSE Manager també netejarà qualsevol configuració específica instal·lada al minion.
+        <target state="needs-adaptation">Per als minions Salt SUSE Manager també netejarà qualsevol configuració específica instal·lada al minion.
               Això pot trigar uns segons més.</target>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup" xml:space="preserve">
-        <source>The selected profiles include Salt systems. SUSE Manager can try to remove the specific configuration from the Salt systems.
+        <source>The selected profiles include Salt systems. @@PRODUCT_NAME@@ can try to remove the specific configuration from the Salt systems.
             In order for this to work the systems must be up and running and reachable. If a system is not reachable it will result in an error.</source>
-        <target state="translated">Els perfils seleccionats inclouen els sistemes Salt. SUSE Manager pot intentar eliminar la configuració específica dels sistemes Salt.
+        <target state="needs-adaptation">Els perfils seleccionats inclouen els sistemes Salt. SUSE Manager pot intentar eliminar la configuració específica dels sistemes Salt.
             Perquè això funcioni, els sistemes han d'estar en funcionament i ser accessibles. Si un sistema no és accessible, es produirà un error.</target>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup.type" xml:space="preserve">
@@ -29768,11 +29768,11 @@ lt;/pgt;
         <target state="translated">Actualitzacions de seguretat desconegudes, desactivades a la configuració.</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve">
-        <source>Collect data of managed clients for SUSE Manager PAYG</source>
+        <source>Collect data of managed clients for @@PRODUCT_NAME@@ PAYG</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="translated">Recull dades de clients gestionats per al SUSE Manager PAYG</target>
+        <target state="needs-adaptation">Recull dades de clients gestionats per al SUSE Manager PAYG</target>
       </trans-unit>
       <trans-unit id="task.status.payg-dimension-computation" xml:space="preserve">
         <source>PAYG Computation</source>

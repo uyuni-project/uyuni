@@ -1,3 +1,5 @@
+import React from "react";
+
 import ReactDOMServer from "react-dom/server";
 
 import { stringToReact } from "./stringToReact";
@@ -7,8 +9,8 @@ describe("stringToReact", () => {
     a: string | JSX.Element | (string | JSX.Element)[],
     b: string | JSX.Element | (string | JSX.Element)[]
   ) => {
-    const aResult = ReactDOMServer.renderToStaticMarkup(<>{a}</>);
-    const bResult = ReactDOMServer.renderToStaticMarkup(<>{b}</>);
+    const aResult = ReactDOMServer.renderToStaticMarkup(<React.Fragment key="a">{a}</React.Fragment>);
+    const bResult = ReactDOMServer.renderToStaticMarkup(<React.Fragment key="b">{b}</React.Fragment>);
 
     return expect(aResult).toEqual(bResult);
   };

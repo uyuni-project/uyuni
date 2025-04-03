@@ -1500,7 +1500,7 @@ def sendMail():
         print("+++ sending log as an email +++")
         headers = {
             # pylint: disable-next=consider-using-f-string
-            "Subject": "SUSE Manager Export report from %s"
+            "Subject": "SUSE Multi-Linux Manager Export report from %s"
             % os.uname()[1],
         }
         # sndr = CFG.get('traceback_mail', 'rhn-satellite')

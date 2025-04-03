@@ -2148,7 +2148,7 @@ public class SystemHandler extends BaseHandler {
                 returnMap.put(val.getKey().getLabel(), val.getValue());
             }
             else {
-                returnMap.put(val.getKey().getLabel(), new String(""));
+                returnMap.put(val.getKey().getLabel(), "");
             }
         }
 

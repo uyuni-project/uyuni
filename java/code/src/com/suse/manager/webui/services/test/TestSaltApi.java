@@ -321,4 +321,8 @@ public class TestSaltApi implements SaltApi {
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public Optional<String> configGet(String key) {
+        throw new UnsupportedOperationException();
+    }
 }

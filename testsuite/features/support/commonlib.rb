@@ -100,6 +100,8 @@ end
 def repeat_until_timeout(timeout: DEFAULT_TIMEOUT, retries: nil, message: nil, report_result: false, dont_raise: false)
   begin
     last_result = nil
+    # When we run the code coverage tracking tool together with our server, its performance decreases.
+    timeout *= 2 if $code_coverage_mode
     Timeout.timeout(timeout) do
       # HACK: Timeout.timeout might not raise Timeout::Error depending on the yielded code block
       # Pitfalls with this method have been long known according to the following articles:
@@ -263,8 +265,9 @@ end
 #
 # @param name [String] The name of the host.
 # @return [Boolean] Returns true if the host is a SUSE host, false otherwise.
-def suse_host?(name)
-  os_family = get_target(name).os_family
+def suse_host?(name, runs_in_container: true)
+  node = get_target(name)
+  os_family = runs_in_container ? node.os_family : node.local_os_family
   %w[sles opensuse opensuse-leap sle-micro suse-microos opensuse-leap-micro].include? os_family
 end
 
@@ -272,19 +275,19 @@ end
 #
 # @param name [String] The host name to check.
 # @return [Boolean] Returns true if the system is a SLE/SL Micro one
-def slemicro_host?(name)
+def slemicro_host?(name, runs_in_container: true)
   node = get_target(name)
-  os_family = node.local_os_family
-  (name.include? 'slemicro') || (name.include? 'micro') || os_family.include?('sle-micro') || os_family.include?('suse-microos')
+  os_family = runs_in_container ? node.os_family : node.local_os_family
+  (name.include? 'slemicro') || (name.include? 'micro') || os_family.include?('sle-micro') || os_family.include?('suse-microos') || os_family.include?('sl-micro')
 end
 
 # Determines if the given host name is a openSUSE Leap Micro host.
 #
 # @param name [String] The host name to check.
 # @return [Boolean] Returns true if the system is a openSUSE Leap Micro one.
-def leapmicro_host?(name)
+def leapmicro_host?(name, runs_in_container: true)
   node = get_target(name)
-  os_family = node.local_os_family
+  os_family = runs_in_container ? node.os_family : node.local_os_family
   os_family.include?('opensuse-leap-micro')
 end
 
@@ -293,8 +296,8 @@ end
 #
 # @param name [String] The host name to check.
 # @return [Boolean] Returns true if the system is a transactional system
-def transactional_system?(name)
-  slemicro_host?(name) || leapmicro_host?(name)
+def transactional_system?(name, runs_in_container: true)
+  slemicro_host?(name, runs_in_container: runs_in_container) || leapmicro_host?(name, runs_in_container: runs_in_container)
 end
 
 # Determines if a given host name belongs to a Red Hat-like distribution.
@@ -303,7 +306,7 @@ end
 # @return [Boolean] true if the host name belongs to a Red Hat-like distribution, false otherwise
 def rh_host?(name)
   os_family = get_target(name).os_family
-  %w[rocky centos redhat alma oracle liberty].include? os_family
+  %w[rocky centos redhat alma oracle liberty almalinux ol rhel].include? os_family
 end
 
 # Determines if the given host name is a Debian-based host.
@@ -346,7 +349,7 @@ end
 # Extracts logs from a given node.
 #
 # @param [Node] node - The node from which to extract the logs.
-# @param [Host] - The host from which to extract the logs.
+# @param [Host] host - The host from which to extract the logs.
 # @raise [ScriptError] if the download of the log archive fails.
 def extract_logs_from_node(node, host)
   begin
@@ -402,15 +405,8 @@ end
 # @param [Node] node The node object representing the system.
 # @return [String] The system ID.
 def get_system_id(node)
-  # TODO: Remove this retrying code when this issue https://github.com/SUSE/spacewalk/issues/24084 is fixed:
-  result = []
-  repeat_until_timeout(message: "The API can't see the system id for '#{node.full_hostname}'", timeout: 10) do
-    result = $api_test.system.search_by_name(node.full_hostname)
-    break if result.any?
-
-    sleep 1
-  end
-  result.first['id']
+  result = $api_test.system.search_by_name(node.full_hostname)
+  result.any? ? result.first['id'] : nil
 end
 
 # Checks if a host has shut down within a specified timeout period.

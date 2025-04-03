@@ -24,7 +24,6 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Vector;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
@@ -89,14 +88,6 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
      * {@inheritDoc}
      */
     @Override
-    public boolean isSecure() {
-        return super.isSecure();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String getHeader(String name) {
         if (name.equalsIgnoreCase("Host")) {
             return getServerName();
@@ -123,7 +114,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
         if (isRequestedSessionIdFromCookie()) {
             retval.append("Requested Session Id came from Cookie\n");
         }
-        else if (isRequestedSessionIdFromUrl()) {
+        else if (isRequestedSessionIdFromURL()) {
             retval.append("Requested Session Id came from Url\n");
         }
 
@@ -193,15 +184,6 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
     @Override
     public Enumeration<Locale> getLocales() {
         return this.locales.elements();
-    }
-
-    /**
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    public Cookie[] getCookies() {
-        return super.getCookies();
     }
 
     /**

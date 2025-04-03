@@ -16,7 +16,17 @@ mkdir -p /target/usr/bin
 mv /usr/bin/salt-broker /target/usr/bin/
 mv /usr/bin/uyuni-configure.py /target/usr/bin/
 
-SITE_PACKAGES=usr/lib/$(ls /usr/lib/ | grep python)/site-packages
+for pyver in $(ls /usr/lib/ | grep python); do
+    if [ -d /usr/lib/$pyver/site-packages/spacewalk ] && [ -d /usr/lib/$pyver/site-packages/spacewalk ] && [ -d /usr/lib/$pyver/site-packages/spacewalk ]; then
+        SITE_PACKAGES=usr/lib/$pyver/site-packages
+    fi
+done
+
+if [ -z $SITE_PACKAGES ]; then
+    echo "ERROR CANNOT FIND CONSISTENT PLACE FOR UYUNI-COMMON-LIBS"
+    exit 1
+fi
+
 mkdir -p /target/$SITE_PACKAGES
 mv /$SITE_PACKAGES/spacewalk /target/$SITE_PACKAGES
 mv /$SITE_PACKAGES/rhn /target/$SITE_PACKAGES

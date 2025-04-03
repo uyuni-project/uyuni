@@ -460,7 +460,7 @@ public abstract class HibernateFactory {
         try {
             session = HibernateFactory.getSession();
 
-            retval = session.get(clazz, id, LockMode.UPGRADE);
+            retval = session.get(clazz, id, LockMode.PESSIMISTIC_WRITE);
         }
         catch (MappingException me) {
             getLogger().error("Mapping not found for {}", clazz.getName(), me);

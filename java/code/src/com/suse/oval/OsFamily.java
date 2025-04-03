@@ -38,7 +38,8 @@ public enum OsFamily {
             oneOf("5.0", "5.1", "5.2", "5.3", "5.4", "5.5", "6.0")),
     REDHAT_ENTERPRISE_LINUX("Red Hat Enterprise Linux", "Red Hat Enterprise Linux", "redhat",
             withPrefix("7.", "8.", "9.")),
-    DEBIAN("Debian", "Debian", "debian", oneOf("10", "11", "12"));
+    UBUNTU("Ubuntu", "ubuntu", "canonical", oneOf("20.04", "22.04", "24.04")),
+    DEBIAN("Debian", "Debian", "debian", oneOf("11", "12"));
 
     private final String vendor;
     private final String fullname;

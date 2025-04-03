@@ -66,10 +66,13 @@ branding/ @uyuni-project/frontend
 testsuite/ @uyuni-project/qe
 .github/scripts/test_covering_pr.js @uyuni-project/qe
 .github/workflows/rubocop.yml @uyuni-project/qe
-.github/workflows/acceptance_tests_common.yml @uyuni-project/qe
+.github/workflows/acceptance_tests_base.yml @uyuni-project/qe
 .github/workflows/acceptance_tests_feedback.yml @uyuni-project/qe
-.github/workflows/acceptance_tests_secondary_parallel.yml @uyuni-project/qe
-.github/workflows/acceptance_tests_secondary.yml @uyuni-project/qe
+.github/workflows/acceptance_tests_parallel.yml @uyuni-project/qe
+.github/workflows/acceptance_tests_sequential.yml @uyuni-project/qe
+.github/workflows/acceptance_tests_scheduler.yml @uyuni-project/qe
+.github/workflows/acceptance_tests_coordinator.yml @uyuni-project/qe
+.github/workflows/recommended_tests.yml @uyuni-project/qe
 .github/workflows/build_containers.yml@uyuni-project/qe
 .github/workflows/test-covering-pr.yml @uyuni-project/qe
 .rubocop.yml @uyuni-project/qe

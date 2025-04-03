@@ -33,6 +33,8 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ansible.InventoryAction;
+import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigUploadAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
@@ -233,7 +235,7 @@ public class ActionManager extends BaseManager {
         params.put("org_id", user.getOrg().getId());
         params.put("aid", aid);
         params.put("include_orphans", user.hasRole(RoleFactory.ORG_ADMIN) ? "Y" : "N");
-        if (m.execute(params).size() < 1) {
+        if (m.execute(params).isEmpty()) {
             returnedAction = null;
         }
 
@@ -577,7 +579,7 @@ public class ActionManager extends BaseManager {
         }
 
         //if this is a pointless action, don't do it.
-        if (a.getConfigFileNameAssociations().size() < 1) {
+        if (a.getConfigFileNameAssociations().isEmpty()) {
             return null;
         }
 
@@ -1670,7 +1672,7 @@ public class ActionManager extends BaseManager {
         kad.setDiskGb(pcmd.getLocalStorageSize());
         kad.setMemMb(pcmd.getMemoryAllocation());
         kad.setDiskPath(pcmd.getFilePath());
-        kad.setVcpus(Long.valueOf(pcmd.getVirtualCpus()));
+        kad.setVcpus(pcmd.getVirtualCpus());
         kad.setGuestName(pcmd.getGuestName());
         kad.setMacAddress(pcmd.getMacAddress());
         kad.setKickstartSessionId(ksSessionId);
@@ -2514,4 +2516,82 @@ public class ActionManager extends BaseManager {
         }
         return ret;
     }
+
+    /**
+     * Schedule an immediate Ansible inventory refresh without a user.
+     *
+     * @param server the server
+     * @param inventoryPath the Ansible inventory
+     * @return the scheduled InventoryAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
+    public static Action scheduleInventoryRefresh(Server server, String inventoryPath)
+            throws TaskomaticApiException {
+        Date earliest = new Date();
+        return scheduleInventoryRefresh(Optional.empty(), server, inventoryPath, earliest);
+    }
+
+    /**
+     * Schedule an Ansible inventory refresh.
+     *
+     * @param user the user
+     * @param server the server
+     * @param earliest The earliest time this action should be run.
+     * @param inventoryPath the Ansible inventory
+     * @return the scheduled InventoryAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
+    public static Action scheduleInventoryRefresh(Optional<User> user, Server server, String inventoryPath,
+                                                       Date earliest) throws TaskomaticApiException {
+        checkSaltOrManagementEntitlement(server.getId());
+
+        InventoryAction action = (InventoryAction) ActionFactory.createAction(
+                ActionFactory.TYPE_INVENTORY);
+
+        InventoryActionDetails details = new InventoryActionDetails();
+        details.setInventoryPath(inventoryPath);
+
+        action.setName(ActionFactory.TYPE_INVENTORY.getName());
+        action.setOrg(server.getOrg());
+        action.setSchedulerUser(user.orElse(null));
+        action.setEarliestAction(earliest);
+        action.setDetails(details);
+
+        ServerAction sa = new ServerAction();
+        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setRemainingTries(REMAINING_TRIES);
+        sa.setServerWithCheck(server);
+        action.addServerAction(sa);
+        sa.setParentActionWithCheck(action);
+
+        ActionFactory.save(action);
+        taskomaticApi.scheduleActionExecution(action);
+        return action;
+    }
+
+    /**
+     * Schedule proxy.apply_proxy_config salt state.
+     *
+     * @param loggedInUser The current user
+     * @param sysids A list of systems ids
+     * @param pillar The pillar passed to the salt state
+     * @return the scheduled action
+     *
+     */
+    public static Action scheduleApplyProxyConfig(User loggedInUser,
+                                                  List<Long> sysids,
+                                                  Optional<Map<String, Object>> pillar)
+            throws TaskomaticApiException {
+        Date earliestAction = new Date();
+        Action action = scheduleApplyStates(loggedInUser, sysids,
+                Collections.singletonList("proxy.apply_proxy_config"),
+                pillar,
+                earliestAction, Optional.empty());
+        action = ActionFactory.save(action);
+        taskomaticApi.scheduleActionExecution(action);
+        return action;
+    }
+
 }

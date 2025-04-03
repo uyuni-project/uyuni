@@ -682,7 +682,7 @@ public class UserManager extends BaseManager {
         // 1542556 - Check all remaining SW admins, not just active.
         if (toDelete.hasRole(RoleFactory.SAT_ADMIN)) {
             if (SatManager.getAllSatAdmins().size() == 1) {
-                log.warn("Cannot delete the last SUSE Manager Administrator");
+                log.warn("Cannot delete the last SUSE Multi-Linux Manager Administrator");
                 throw new DeleteSatAdminException(toDelete);
             }
         }

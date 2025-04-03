@@ -10,7 +10,7 @@
 
 <div class="header-content container-fluid">
   <div class="navbar-header d-flex flex-row">
-    <a href="#" class="navbar-toggle">
+    <a class="navbar-toggle" data-bs-toggle="collapse" href="#spacewalk-aside">
       <i class="fa fa-bars" aria-hidden="true"></i>
     </a>
     <div id="breadcrumb">
@@ -91,14 +91,6 @@
       </c:choose>
         <rhn:icon type="header-signout" />
         </a>
-      </li>
-    </ul>
-  </rhn:require>
-
-  <rhn:require acl="not user_authenticated()">
-    <ul class="nav navbar-nav navbar-controls">
-      <li>
-        <a class="about-link" href="/rhn/help/about.do"><bean:message key="About Spacewalk"/></a>
       </li>
     </ul>
   </rhn:require>

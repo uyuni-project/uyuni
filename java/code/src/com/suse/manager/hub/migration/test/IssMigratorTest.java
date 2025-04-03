@@ -35,9 +35,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
@@ -127,11 +125,9 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
 
         var credentialsManager = mock(MirrorCredentialsManager.class);
         var saltApi = new TestSaltApi();
-        var monitoringManager = new FormulaMonitoringManager(saltApi);
-        var serverGroupManager = new ServerGroupManager(saltApi);
         var sysEntMgr = new SystemEntitlementManager(
-            new SystemUnentitler(monitoringManager, serverGroupManager),
-            new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
+            new SystemUnentitler(saltApi),
+            new SystemEntitler(saltApi)
         );
 
         var hubManager = new HubManager(hubFactory, hubClientFactory, credentialsManager, taskomaticApi, sysEntMgr);

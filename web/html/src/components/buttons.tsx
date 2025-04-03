@@ -66,6 +66,12 @@ type AsyncProps = BaseProps & {
    * Initial state of the button ('failure', 'warning' or 'initial')
    */
   initialValue?: string;
+
+  /**
+   * HTML type attribute for the button ('button', 'submit', 'reset').
+   * Defaults to 'button'.
+   */
+  type?: "button" | "submit" | "reset";
 };
 
 type AsyncState = {
@@ -136,6 +142,7 @@ export class AsyncButton extends _ButtonBase<AsyncProps, AsyncState> {
         className={style}
         disabled={this.state.value === "waiting" || this.props.disabled}
         onClick={this.trigger}
+        type={this.props.type ?? "button"}
       >
         {this.state.value === "waiting" ? (
           <i className={"fa fa-circle-o-notch fa-spin" + margin}></i>
