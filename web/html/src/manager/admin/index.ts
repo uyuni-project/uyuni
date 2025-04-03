@@ -13,4 +13,5 @@ export default {
   "admin/hub/list-tokens": () => import("./hub/list-tokens.renderer"),
   "admin/hub/hub-details": () => import("./hub/hub-details.renderer"),
   "admin/hub/peripherals": () => import("./hub/peripherals.renderer"),
+  "admin/hub/peripheral-details": () => import("./hub/peripheral-details.renderer"),
 };

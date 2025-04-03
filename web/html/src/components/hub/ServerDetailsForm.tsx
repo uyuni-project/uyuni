@@ -1,7 +1,8 @@
 import * as React from "react";
 
+import { Button } from "components/buttons";
 import { FromNow, HumanDateTime } from "components/datetime";
-import { HubDetailData, IssRole, IssServerDetailData } from "components/hub/types";
+import { HubDetailData, IssRole, IssServerDetailData, PeripheralDetailData } from "components/hub/types";
 import { LargeTextAttachment } from "components/large-text-attachment";
 import { showInfoToastr } from "components/toastr";
 
@@ -41,6 +42,7 @@ const roleBasedMessages = {
 type Props = {
   model: IssServerDetailData;
   editable: boolean;
+  onEditChannels?: (peripheralData: PeripheralDetailData) => void;
 };
 
 type State = {
@@ -135,9 +137,48 @@ export class ServerDetailsForm extends React.Component<Props, State> {
               <div className="col-md-10">{this.state.model.sccUsername}</div>
             </div>
           </li>
+          {this.state.model.role === IssRole.Peripheral && (
+            <li className="list-group-item">
+              <div className="row">
+                <div className="col-md-2">
+                  <strong>{t("Synchronized channels:")}</strong>
+                </div>
+                <div className="col-md-10">
+                  <p>{this.getChannelSyncSummary()}</p>
+                  {this.props.editable && (
+                    <div className="btn-group pull-right">
+                      <Button
+                        className="btn-default"
+                        text={t("Edit channels")}
+                        icon="fa-pencil"
+                        handler={() => this.props.onEditChannels?.(this.state.model as PeripheralDetailData)}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </li>
+          )}
         </ul>
       </div>
     );
+  }
+  private getChannelSyncSummary(): string {
+    if (this.state.model.role !== IssRole.Peripheral) {
+      return "";
+    }
+
+    const peripheralData = this.state.model as PeripheralDetailData;
+
+    if (peripheralData.nSyncedChannels === 1) {
+      return t("One syncronized channel");
+    }
+
+    if (peripheralData.nSyncedOrgs === 1) {
+      return t("{nSyncedChannels} syncronized channels, from one organization", peripheralData);
+    }
+
+    return t("{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different organizations", peripheralData);
   }
 
   private onDeleteRootCA(): Promise<void> {
