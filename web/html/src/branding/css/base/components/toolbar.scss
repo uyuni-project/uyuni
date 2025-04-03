@@ -5,8 +5,7 @@
   padding: 0;
   border: none;
   z-index: 200;
-  padding: 0 $content-area-padding-side;
-  margin: 0 calc(-1 * $content-area-padding-side);
+  margin: 0 auto;
 
   &.is-sticky {
     border-bottom: 1px solid $eos-bc-gray-100;
