@@ -553,24 +553,6 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void canGenerateSCCCredentials() throws TaskomaticApiException {
-        String peripheralFqdn = "dummy.peripheral.fqdn";
-
-        IssAccessToken peripheralToken = getValidToken(peripheralFqdn);
-        var peripheral = (IssPeripheral) hubManager.saveNewServer(peripheralToken, IssRole.PERIPHERAL, null, null);
-
-        // Ensure no credentials exists
-        assertEquals(0, CredentialsFactory.listCredentialsByType(HubSCCCredentials.class).stream()
-            .filter(creds -> peripheralFqdn.equals(creds.getPeripheralUrl()))
-            .count());
-
-        HubSCCCredentials hubSCCCredentials = hubManager.generateSCCCredentials(peripheralToken);
-        assertEquals("peripheral-%06d".formatted(peripheral.getId()), hubSCCCredentials.getUsername());
-        assertNotNull(hubSCCCredentials.getPassword());
-        assertEquals(peripheralFqdn, hubSCCCredentials.getPeripheralUrl());
-    }
-
-    @Test
     public void canStoreSCCCredentials() throws TaskomaticApiException {
         IssAccessToken hubToken = getValidToken("dummy.hub.fqdn");
         hubManager.saveNewServer(hubToken, IssRole.HUB, null, null);

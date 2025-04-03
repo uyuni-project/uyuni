@@ -438,20 +438,6 @@ public class HubManager {
     }
 
     /**
-     * Generate SCC credentials for the specified peripheral
-     * @param accessToken the access token granting access and identifying the caller
-     * @return the generated {@link HubSCCCredentials}
-     */
-    public HubSCCCredentials generateSCCCredentials(IssAccessToken accessToken) {
-        ensureValidToken(accessToken);
-
-        IssPeripheral peripheral = hubFactory.lookupIssPeripheralByFqdn(accessToken.getServerFqdn())
-            .orElseThrow(() -> new IllegalArgumentException("Access token does not identify a peripheral server"));
-
-        return generateCredentials(peripheral);
-    }
-
-    /**
      * Store the given SCC credentials into the credentials database
      * @param accessToken the access token granting access and identifying the caller
      * @param username the username
