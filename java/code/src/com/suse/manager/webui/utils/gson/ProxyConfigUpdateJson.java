@@ -58,6 +58,78 @@ public class ProxyConfigUpdateJson {
     private String registryTftpdURL;
     private String registryTftpdTag;
 
+    /**
+     * Default constructor
+     */
+    public ProxyConfigUpdateJson() { }
+
+    /**
+     * Constructor to populate the data
+     *
+     * @param serverIdIn the ID of the target minion
+     * @param parentFqdnIn the FQDN of the server the proxy uses
+     * @param proxyPortIn the SSH port the proxy listens on
+     * @param maxCacheIn the maximum memory cache size
+     * @param emailIn the email of proxy admin
+     * @param useCertsModeIn certificate handling mode
+     * @param rootCAIn CA certificate in PEM format
+     * @param intermediateCAsIn a list of intermediate CAs in PEM format
+     * @param proxyCertIn proxy certificate in PEM format
+     * @param proxyKeyIn proxy private key in PEM format
+     * @param sourceModeIn image source mode
+     * @param registryModeIn registry mode
+     * @param registryBaseURLIn Base image registry
+     * @param registryBaseTagIn Base image tag
+     * @param registryHttpdURLIn Httpd image registry
+     * @param registryHttpdTagIn Httpd image tag
+     * @param registrySaltbrokerURLIn Salt broker image registry
+     * @param registrySaltbrokerTagIn Salt broker image tag
+     * @param registrySquidURLIn Squid image registry
+     * @param registrySquidTagIn Squid image tag
+     * @param registrySshURLIn Ssh image registry
+     * @param registrySshTagIn Ssh image tag
+     * @param registryTftpdURLIn Tftpd image registry
+     * @param registryTftpdTagIn Tftpd image tag
+     */
+
+    public ProxyConfigUpdateJson(
+        Long serverIdIn, String parentFqdnIn,
+        Integer proxyPortIn, Integer maxCacheIn, String emailIn,
+        String useCertsModeIn,
+        String rootCAIn, List<String> intermediateCAsIn, String proxyCertIn, String proxyKeyIn,
+        String sourceModeIn, String registryModeIn,
+        String registryBaseURLIn, String registryBaseTagIn,
+        String registryHttpdURLIn, String registryHttpdTagIn,
+        String registrySaltbrokerURLIn, String registrySaltbrokerTagIn,
+        String registrySquidURLIn, String registrySquidTagIn,
+        String registrySshURLIn, String registrySshTagIn,
+        String registryTftpdURLIn, String registryTftpdTagIn
+        ) {
+        serverId = serverIdIn;
+        parentFqdn = parentFqdnIn;
+        proxyPort = proxyPortIn;
+        maxCache = maxCacheIn;
+        email = emailIn;
+        useCertsMode = useCertsModeIn;
+        rootCA = rootCAIn;
+        intermediateCAs = intermediateCAsIn;
+        proxyCert = proxyCertIn;
+        proxyKey = proxyKeyIn;
+        sourceMode = sourceModeIn;
+        registryMode = registryModeIn;
+        registryBaseURL = registryBaseURLIn;
+        registryBaseTag = registryBaseTagIn;
+        registryHttpdURL = registryHttpdURLIn;
+        registryHttpdTag = registryHttpdTagIn;
+        registrySaltbrokerURL = registrySaltbrokerURLIn;
+        registrySaltbrokerTag = registrySaltbrokerTagIn;
+        registrySquidURL = registrySquidURLIn;
+        registrySquidTag = registrySquidTagIn;
+        registrySshURL = registrySshURLIn;
+        registrySshTag = registrySshTagIn;
+        registryTftpdURL = registryTftpdURLIn;
+        registryTftpdTag = registryTftpdTagIn;
+    }
 
     public String getParentFqdn() {
         return parentFqdn;

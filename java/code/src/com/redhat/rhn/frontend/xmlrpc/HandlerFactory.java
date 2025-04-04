@@ -99,6 +99,7 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.xmlrpc.admin.AdminPaygHandler;
 import com.suse.manager.xmlrpc.iss.HubHandler;
 import com.suse.manager.xmlrpc.maintenance.MaintenanceHandler;
+import com.suse.proxy.update.ProxyConfigUpdateFacadeImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -151,7 +152,8 @@ public class HandlerFactory {
                 regularMinionBootstrapper,
                 sshMinionBootstrapper
         );
-        ProxyHandler proxyHandler = new ProxyHandler(xmlRpcSystemHelper, systemManager);
+        ProxyHandler proxyHandler = new ProxyHandler(xmlRpcSystemHelper, systemManager,
+                                                     new ProxyConfigUpdateFacadeImpl());
         SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
                 systemManager, serverGroupManager, GlobalInstanceHolder.PAYG_MANAGER,
                 GlobalInstanceHolder.ATTESTATION_MANAGER);

@@ -15,7 +15,14 @@
 package com.redhat.rhn.frontend.xmlrpc.proxy.test;
 
 import static com.redhat.rhn.domain.server.ServerFactory.createServerPaths;
+import static com.suse.proxy.ProxyConfigUtils.REGISTRY_MODE_ADVANCED;
+import static com.suse.proxy.ProxyConfigUtils.REGISTRY_MODE_SIMPLE;
+import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_REGISTRY;
+import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_RPM;
+import static com.suse.proxy.ProxyConfigUtils.USE_CERTS_MODE_REPLACE;
 import static java.lang.Math.toIntExact;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -49,7 +56,11 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
+import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
+import com.suse.proxy.update.ProxyConfigUpdateFacade;
+import com.suse.proxy.update.ProxyConfigUpdateFacadeImpl;
 
+import org.hamcrest.Matchers;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
@@ -78,6 +89,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
     );
     private final SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
             saltApi);
+    private final ProxyConfigUpdateFacade proxyConfigUpdateFacade = new ProxyConfigUpdateFacadeImpl();
 
     @BeforeEach
     protected void setUp() {
@@ -98,7 +110,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
     @Test
     public void testActivateProxy() throws Exception {
         User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
-        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager);
+        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager, proxyConfigUpdateFacade);
 
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true,
@@ -115,7 +127,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
     @Test
     public void testActivateSaltProxy() throws Exception {
         User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
-        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager);
+        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager, proxyConfigUpdateFacade);
 
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true,
@@ -143,7 +155,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
         ClientCertificate cert = SystemManager.createClientCertificate(server);
         cert.validate(server.getSecret());
 
-        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager);
+        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager, proxyConfigUpdateFacade);
         int rc = ph.deactivateProxy(cert.toString());
         assertEquals(1, rc);
     }
@@ -165,7 +177,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
         minion.getServerPaths().addAll(proxyPaths);
 
         // call method
-        List<Long> clientIds = new ProxyHandler(xmlRpcSystemHelper, systemManager)
+        List<Long> clientIds = new ProxyHandler(xmlRpcSystemHelper, systemManager, proxyConfigUpdateFacade)
                 .listProxyClients(user, toIntExact(proxy.getId()));
 
         // verify client id is in results
@@ -192,8 +204,9 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
             will(returnValue(dummyConfig));
         }});
 
-        byte[] actual = new ProxyHandler(xmlRpcSystemHelper, mockSystemManager).containerConfig(user, proxy, 8022,
-                server, 2048, email, "ROOT_CA", List.of("CA1", "CA2"), "PROXY_CERT", "PROXY_KEY");
+        byte[] actual = new ProxyHandler(xmlRpcSystemHelper, mockSystemManager, proxyConfigUpdateFacade)
+                        .containerConfig(user, proxy, 8022, server, 2048, email, "ROOT_CA",
+                                         List.of("CA1", "CA2"), "PROXY_CERT", "PROXY_KEY");
         assertEquals(dummyConfig, actual);
     }
 
@@ -218,9 +231,132 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
             will(returnValue(dummyConfig));
         }});
 
-        byte[] actual = new ProxyHandler(xmlRpcSystemHelper, mockSystemManager).containerConfig(user, proxy, 22, server,
+        byte[] actual = new ProxyHandler(xmlRpcSystemHelper, mockSystemManager, proxyConfigUpdateFacade)
+                .containerConfig(user, proxy, 22, server,
                 2048, email, "CACert", "CAKey", "CAPass", List.of("cname1", "cname2"),
                 "DE", "Bayern", "Nurnberg", "ACME", "ACME Tests", "coyote@acme.lab");
         assertEquals(dummyConfig, actual);
+    }
+
+    @Test
+    public void testBootstrapProxyRpm() {
+        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
+
+        SystemManager mockSystemManager = mock(SystemManager.class);
+        ProxyConfigUpdateFacade mockProxyConfigUpdateFacade = mock(ProxyConfigUpdateFacadeImpl.class);
+
+        context().checking(new Expectations() {{
+            oneOf(mockProxyConfigUpdateFacade).update(
+                with(allOf(
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("serverId", equalTo(200L)),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("parentFqdn", equalTo("server.name")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("proxyPort", equalTo(8022)),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("maxCache", equalTo(100)),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("email", equalTo("email@test.com")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("useCertsMode", equalTo(USE_CERTS_MODE_REPLACE)),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("rootCA", equalTo("ca-string")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("intermediateCAs", equalTo(Collections.emptyList())),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("proxyCert", equalTo("cert-string")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("proxyKey", equalTo("cert-key")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("sourceMode", equalTo(SOURCE_MODE_RPM))
+                )),
+                with(equal(mockSystemManager)),
+                with(equal(user))
+            );
+        }});
+
+        ProxyHandler proxyHandler = new ProxyHandler(xmlRpcSystemHelper, mockSystemManager,
+                                                     mockProxyConfigUpdateFacade);
+        proxyHandler.bootstrapProxy(user, 200, "server.name", 8022, 100, "email@test.com", "ca-string",
+                                    Collections.emptyList(), "cert-string", "cert-key");
+    }
+
+    @Test
+    public void testBootstrapProxyRegistrySimple() {
+        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
+
+        SystemManager mockSystemManager = mock(SystemManager.class);
+        ProxyConfigUpdateFacade mockProxyConfigUpdateFacade = mock(ProxyConfigUpdateFacadeImpl.class);
+
+        context().checking(new Expectations() {{
+            oneOf(mockProxyConfigUpdateFacade).update(
+                with(allOf(
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("serverId", equalTo(200L)),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("parentFqdn", equalTo("server.name")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("proxyPort", equalTo(8022)),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("maxCache", equalTo(100)),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("email", equalTo("email@test.com")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("useCertsMode", equalTo(USE_CERTS_MODE_REPLACE)),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("rootCA", equalTo("ca-string")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("intermediateCAs", equalTo(Collections.emptyList())),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("proxyCert", equalTo("cert-string")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("proxyKey", equalTo("cert-key")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("sourceMode", equalTo(SOURCE_MODE_REGISTRY)),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("registryMode", equalTo(REGISTRY_MODE_SIMPLE)),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("registryBaseURL", equalTo("registry-url")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("registryBaseTag", equalTo("tag"))
+                )),
+                with(equal(mockSystemManager)),
+                with(equal(user))
+            );
+        }});
+
+        ProxyHandler proxyHandler = new ProxyHandler(xmlRpcSystemHelper, mockSystemManager,
+                                                     mockProxyConfigUpdateFacade);
+        proxyHandler.bootstrapProxy(user, 200, "server.name", 8022, 100, "email@test.com", "ca-string",
+                                    Collections.emptyList(), "cert-string", "cert-key", "registry-url", "tag");
+    }
+
+
+    @Test
+    public void testBootstrapProxyRegistryAdvanced() {
+        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
+
+        SystemManager mockSystemManager = mock(SystemManager.class);
+        ProxyConfigUpdateFacade mockProxyConfigUpdateFacade = mock(ProxyConfigUpdateFacadeImpl.class);
+
+        context().checking(new Expectations() {{
+            oneOf(mockProxyConfigUpdateFacade).update(
+                with(allOf(
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("serverId", equalTo(200L)),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("parentFqdn", equalTo("server.name")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("proxyPort", equalTo(8022)),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("maxCache", equalTo(100)),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("email", equalTo("email@test.com")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("useCertsMode", equalTo(USE_CERTS_MODE_REPLACE)),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("rootCA", equalTo("ca-string")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("intermediateCAs", equalTo(Collections.emptyList())),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("proxyCert", equalTo("cert-string")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("proxyKey", equalTo("cert-key")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("sourceMode", equalTo(SOURCE_MODE_REGISTRY)),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("registryMode", equalTo(REGISTRY_MODE_ADVANCED)),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("registryBaseURL", equalTo(null)),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("registryBaseTag", equalTo(null)),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("registryHttpdURL", equalTo("http-registry-url")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("registryHttpdTag", equalTo("http-tag")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("registrySaltbrokerURL", equalTo("salt-registry-url")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("registrySaltbrokerTag", equalTo("salt-tag")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("registrySquidURL", equalTo("squid-registry-url")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("registrySquidTag", equalTo("squid-tag")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("registrySshURL", equalTo("ssh-registry-url")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("registrySshTag", equalTo("ssh-tag")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("registryTftpdURL", equalTo("tftpd-registry-url")),
+                    Matchers.<ProxyConfigUpdateJson>hasProperty("registryTftpdTag", equalTo("tftpd-tag"))
+                )),
+                with(equal(mockSystemManager)),
+                with(equal(user))
+            );
+        }});
+
+        ProxyHandler proxyHandler = new ProxyHandler(xmlRpcSystemHelper, mockSystemManager,
+                                                     mockProxyConfigUpdateFacade);
+        proxyHandler.bootstrapProxy(user, 200, "server.name", 8022, 100, "email@test.com", "ca-string",
+                                    Collections.emptyList(), "cert-string", "cert-key",
+                                    "http-registry-url", "http-tag",
+                                    "salt-registry-url", "salt-tag",
+                                    "squid-registry-url", "squid-tag",
+                                    "ssh-registry-url", "ssh-tag",
+                                    "tftpd-registry-url", "tftpd-tag"
+                                    );
     }
 }
