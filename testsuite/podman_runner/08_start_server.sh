@@ -76,3 +76,7 @@ sudo -i podman exec server bash -c "rsync -av /testsuite/dockerfiles/server-all-
 
 # mgrctl should not be installed in this container
 sudo -i podman exec server bash -c "rm -f /usr/bin/mgrctl"
+
+# publish mirrors in apache
+sudo -i podman exec server bash -c "cd /srv/www/htdocs/pub && ln -s /mirror . && chown root:root mirror && chown -R root:root /mirror"
+
