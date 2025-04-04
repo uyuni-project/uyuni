@@ -1631,13 +1631,6 @@
         <target>sistemi selezionati</target>
       </trans-unit>
       <!-- footer.jsp -->
-      <trans-unit id="footer.jsp.copyright" xml:space="preserve">
-        <source>&lt;a href="/rhn/help/Copyright.do"&gt;Copyright Notice&lt;/a&gt;</source>
-        <target>&lt;a href="/rhn/help/Copyright.do"&gt;Informativa sul diritto d'autore&lt;/a&gt;</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/footer.jsp</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="footer.jsp.legalStatement" xml:space="preserve">
         <source>Legal statement</source>
         <context-group name="ctx">
@@ -4519,13 +4512,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
         <target>Abilita il caricamento dei File SCAP dettagliati</target>
-      </trans-unit>
-      <trans-unit id="org-config.scapfile-sizelimit.jsp" xml:space="preserve">
-        <source>SCAP File Upload Size Limit</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
-        </context-group>
-        <target>Limite dimensione caricamento file SCAP</target>
       </trans-unit>
       <trans-unit id="org-config.scap-retention" xml:space="preserve">
         <source>Allow Deletion of SCAP Results</source>
@@ -25606,18 +25592,6 @@ stesso pacchetto in un singolo canale, ciò potrebbe causare però il
         </context-group>
         <target>Questo è il profilo kickstart predefinito della vostra organizzazione.</target>
       </trans-unit>
-      <trans-unit id="help.jsp.about.title" xml:space="preserve">
-        <source>About @@PRODUCT_NAME@@</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="help.jsp.about.summary" xml:space="preserve">
-        <source>@@PRODUCT_NAME@@ allows administrators to efficiently manage the systems on their network. Through a simple user interface, administrators can perform patch management, updates and maintenance. And because @@PRODUCT_NAME@@ is Web-based, it can be accessed from anywhere. @@PRODUCT_NAME@@ or Proxy server options provide advanced capabilities and the ability to get updates directly from SUSE with even greater levels of security and reduced network bandwidth.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="help.jsp.about.overview" xml:space="preserve">
         <source>Overview</source>
         <context-group name="ctx">
@@ -25697,12 +25671,6 @@ stesso pacchetto in un singolo canale, ciò potrebbe causare però il
       <trans-unit id="help.jsp.start" xml:space="preserve">
         <source>Basic setup and configuration with @@PRODUCT_NAME@@</source>
         <target>Impostazione di base e configurazione con @@PRODUCT_NAME@@</target>
-      </trans-unit>
-      <trans-unit id="help.jsp.copyright.title" xml:space="preserve">
-        <source>Copyright Notice</source>
-      </trans-unit>
-      <trans-unit id="help.jsp.eula.title" xml:space="preserve">
-        <source>@@PRODUCT_NAME@@ License Agreement</source>
       </trans-unit>
       <trans-unit id="iprange.emptylist" xml:space="preserve">
         <source>No Ip Ranges Found</source>
@@ -28606,18 +28574,6 @@ caratteri.</target>
       <trans-unit id="activation-key.jsp.config-auto-deploy-highstate-tooltip" xml:space="preserve">
         <source>If the system is registered via Salt, the highstate will be executed on registration if this checkbox is selected.</source>
       </trans-unit>
-      <trans-unit id="help.jsp.about.learnmore" xml:space="preserve">
-        <source>&lt;a href="http://www.suse.com/products/suse-manager" target="_blank"&gt;Click here&lt;/a&gt; to learn more about @@PRODUCT_NAME@@</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="help.jsp.about.learnmore.uyuni" xml:space="preserve">
-        <source>&lt;a href="http://www.uyuni-project.org/" target="_blank"&gt;Click here&lt;/a&gt; to learn more about @@PRODUCT_NAME@@</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.minions" xml:space="preserve">
         <source>Manage &lt;strong&gt;Pending Minions&lt;/strong&gt; ({0})</source>
         <context-group name="ctx">
@@ -28716,31 +28672,6 @@ caratteri.</target>
       </trans-unit>
       <trans-unit id="Bootstrap" xml:space="preserve">
         <source>Bootstrap</source>
-      </trans-unit>
-      <trans-unit id="copyright.jsp.body" xml:space="preserve">
-        <source>
-&lt;p&gt;
-    This software is a modular operating system comprised of numerous components
-    that may be accompanied by separate license terms. The software is a
-    collective work of SUSE; although SUSE does not own the copyright to every
-    component of the software, SUSE owns the collective work copyright for the
-    software.
-&lt;/p&gt;
-&lt;p&gt;
-    This SUSE product includes materials licensed to SUSE under the GNU
-    General Public License (GPL). The GPL requires that SUSE makes available
-    certain source code that corresponds to the GPL-licensed material. The source
-    code is available for download at
-    &lt;a href="https://www.suse.com/download-linux/source-code.html"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
-    Also, for up to three years from SUSE's distribution of the SUSE product, upon
-    request SUSE will mail a copy of the source code. Requests should be sent by
-    e-mail to
-    &lt;a href="mailto:sle_source_request@suse.com"&gt;sle_source_request@suse.com&lt;/a&gt;
-    or as otherwise instructed at
-    &lt;a href="https://www.suse.com/download-linux/source-code.html/"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
-    SUSE may charge a fee to recover its reasonable costs of distribution
-&lt;/p&gt;
-        </source>
       </trans-unit>
       <trans-unit id="Salt" xml:space="preserve">
         <source>Salt</source>
@@ -29463,6 +29394,21 @@ caratteri.</target>
         </context-group>
         <target state="new"/>
   </trans-unit>
-        </body>
+        <trans-unit id="system.event.inventory" xml:space="preserve">
+          <source>Inventory:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ansible_managed" xml:space="preserve">
+        <source>Ansible Managed</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="proxy_entitled" xml:space="preserve">
+        <source>Proxy</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

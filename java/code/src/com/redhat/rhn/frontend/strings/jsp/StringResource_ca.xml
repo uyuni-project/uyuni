@@ -1631,13 +1631,6 @@
         </context-group>
       </trans-unit>
       <!-- footer.jsp -->
-      <trans-unit id="footer.jsp.copyright" xml:space="preserve">
-        <source>&lt;a href="/rhn/help/Copyright.do"&gt;Copyright Notice&lt;/a&gt;</source>
-        <target state="translated">lt;a href""/rhn/help/Copyright.do"gt;Copyright Noticelt;/agt;</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/footer.jsp</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="footer.jsp.legalStatement" xml:space="preserve">
         <source>Legal statement</source>
         <target state="translated">Declaració legal</target>
@@ -4515,13 +4508,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       <trans-unit id="org-config.scapfile-upload.jsp" xml:space="preserve">
         <source>Enable Upload Of Detailed SCAP Files</source>
         <target state="translated">Habilita la pujada de fitxers SCAP detallats</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="org-config.scapfile-sizelimit.jsp" xml:space="preserve">
-        <source>SCAP File Upload Size Limit</source>
-        <target state="translated">Límit de la mida del fitxer SCAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -25775,20 +25761,6 @@ canal indicat.</target>
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="help.jsp.about.title" xml:space="preserve">
-        <source>About @@PRODUCT_NAME@@</source>
-        <target state="translated">Quant al PRODUCTNAMEPRODUCTNAME@@</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="help.jsp.about.summary" xml:space="preserve">
-        <source>@@PRODUCT_NAME@@ allows administrators to efficiently manage the systems on their network. Through a simple user interface, administrators can perform patch management, updates and maintenance. And because @@PRODUCT_NAME@@ is Web-based, it can be accessed from anywhere. @@PRODUCT_NAME@@ or Proxy server options provide advanced capabilities and the ability to get updates directly from SUSE with even greater levels of security and reduced network bandwidth.</source>
-        <target state="translated">El PRODUCTNAMEPRODUCTNAME. permet als administradors gestionar eficientment els sistemes de la seva xarxa. A través d'una interfície d'usuari senzilla, els administradors poden realitzar gestió de patch, actualitzacions i manteniment. I com que el .PRODUCTNAME. està basat en web, es pot accedir des de qualsevol lloc. Les opcions del PRODUCTNAMEPRODUCTNAME. o del servidor intermediari proporcionen capacitats avançades i la capacitat d'obtenir actualitzacions directament des de SUSE amb nivells de seguretat encara més alts i una amplada de banda de xarxa reduïda.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="help.jsp.about.overview" xml:space="preserve">
         <source>Overview</source>
         <target>Visió de conjunt</target>
@@ -25878,14 +25850,6 @@ canal indicat.</target>
       <trans-unit id="help.jsp.start" xml:space="preserve">
         <source>Basic setup and configuration with @@PRODUCT_NAME@@</source>
         <target state="translated">Configuració bàsica amb el  withPRODUCTNAME@@</target>
-      </trans-unit>
-      <trans-unit id="help.jsp.copyright.title" xml:space="preserve">
-        <source>Copyright Notice</source>
-        <target state="translated">Avís de drets d'autor</target>
-      </trans-unit>
-      <trans-unit id="help.jsp.eula.title" xml:space="preserve">
-        <source>@@PRODUCT_NAME@@ License Agreement</source>
-        <target state="translated">Acord de llicència del PRODUCTNAMEPRODUCTNAME@@</target>
       </trans-unit>
       <trans-unit id="iprange.emptylist" xml:space="preserve">
         <source>No Ip Ranges Found</source>
@@ -28968,20 +28932,6 @@ lt;/pgt;
         <source>If the system is registered via Salt, the highstate will be executed on registration if this checkbox is selected.</source>
         <target state="translated">Si el sistema es registra a través de Salt, l'estat alt s'executarà en registrar-se si aquesta casella de selecció està seleccionada.</target>
       </trans-unit>
-      <trans-unit id="help.jsp.about.learnmore" xml:space="preserve">
-        <source>&lt;a href="http://www.suse.com/products/suse-manager" target="_blank"&gt;Click here&lt;/a&gt; to learn more about @@PRODUCT_NAME@@</source>
-        <target state="translated">lt;a href""http://www.suse.com/products/suse-manager" target to"blank"gt;Cliqueu herelt;/agt; per a obtenir més informació sobre PRODUCTNAMEPRODUCTNAME@@</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="help.jsp.about.learnmore.uyuni" xml:space="preserve">
-        <source>&lt;a href="http://www.uyuni-project.org/" target="_blank"&gt;Click here&lt;/a&gt; to learn more about @@PRODUCT_NAME@@</source>
-        <target state="translated">lt;a href""http://www.uyuni-project.org/" target""blank"gt;Cliqueu herelt;/agt; per a obtenir més informació sobre PRODUCTNAMEPRODUCTNAME@@</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.minions" xml:space="preserve">
         <source>Manage &lt;strong&gt;Pending Minions&lt;/strong&gt; ({0})</source>
         <target state="translated">Gestiona lt;stronggt;Minions pendentslt;/stronggt; ({0})</target>
@@ -29109,54 +29059,6 @@ lt;/pgt;
       <trans-unit id="Bootstrap" xml:space="preserve">
         <source>Bootstrap</source>
         <target state="translated">Bootstrap</target>
-      </trans-unit>
-      <trans-unit id="copyright.jsp.body" xml:space="preserve">
-        <source>
-&lt;p&gt;
-    This software is a modular operating system comprised of numerous components
-    that may be accompanied by separate license terms. The software is a
-    collective work of SUSE; although SUSE does not own the copyright to every
-    component of the software, SUSE owns the collective work copyright for the
-    software.
-&lt;/p&gt;
-&lt;p&gt;
-    This SUSE product includes materials licensed to SUSE under the GNU
-    General Public License (GPL). The GPL requires that SUSE makes available
-    certain source code that corresponds to the GPL-licensed material. The source
-    code is available for download at
-    &lt;a href="https://www.suse.com/download-linux/source-code.html"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
-    Also, for up to three years from SUSE's distribution of the SUSE product, upon
-    request SUSE will mail a copy of the source code. Requests should be sent by
-    e-mail to
-    &lt;a href="mailto:sle_source_request@suse.com"&gt;sle_source_request@suse.com&lt;/a&gt;
-    or as otherwise instructed at
-    &lt;a href="https://www.suse.com/download-linux/source-code.html/"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
-    SUSE may charge a fee to recover its reasonable costs of distribution
-&lt;/p&gt;
-        </source>
-        <target state="translated">
-lt;pgt;
-    Aquest programari és un sistema operatiu modular compost per nombrosos components
-    això pot anar acompanyat de termes de llicència separats. El programari és un
-    obra col·lectiva de SUSE; tot i que SUSE no és propietària dels drets d'autor de cada obra
-    El component del programari, SUSE és propietari del copyright de l'obra col·lectiva per a
-    programari.
-lt;/pgt;
-lt;pgt;
-    Aquest producte SUSE inclou materials llicenciats a SUSE sota la GNU
-    Llicència Pública General (GPL). La GPL requereix que SUSE faci disponible
-    cert codi font que correspon al material amb llicència GPL. La font
-    el codi està disponible per baixar a
-    lt;a href."https://www.suse.com/download-linux/source-code.html"gt;https://www.suse.com/download-linux/source-code.htmllt;/agt;.
-    A més, durant fins a tres anys des de la distribució del producte SUSE per part de SUSE
-    SUSE sol·licitarà una còpia del codi font. Les sol·licituds s'han d'enviar per
-    correu electrònic a
-    lt;a href""mailto:slesourcerequest@suse.com"gt;slesourcerequest@suse.comlt;/agt;
-    o tal com s'ha instruït a
-    lt;a href."https://www.suse.com/download-linux/source-code.html/"gt;https://www.suse.com/download-linux/source-code.htmllt;/agt;.
-    SUSE pot cobrar una tarifa per recuperar els seus costos raonables de distribució
-lt;/pgt;
-        </target>
       </trans-unit>
       <trans-unit id="Salt" xml:space="preserve">
         <source>Salt</source>
@@ -29882,6 +29784,21 @@ lt;/pgt;
         </context-group>
         <target state="translated">Crea la distribució</target>
       </trans-unit>
-    </body>
+    <trans-unit id="system.event.inventory" xml:space="preserve">
+          <source>Inventory:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ansible_managed" xml:space="preserve">
+        <source>Ansible Managed</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="proxy_entitled" xml:space="preserve">
+        <source>Proxy</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
