@@ -40,6 +40,7 @@ import com.suse.manager.hub.migration.IssMigratorFactory;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.model.hub.IssPeripheral;
+import com.suse.manager.model.hub.ServerInfoJson;
 import com.suse.manager.model.hub.migration.MigrationResult;
 import com.suse.manager.model.hub.migration.MigrationResultCode;
 import com.suse.manager.model.hub.migration.SlaveMigrationData;
@@ -385,6 +386,8 @@ public class HubHandlerTest extends BaseHandlerTestCase {
             will(throwException(new SSLHandshakeException(sshFailureErrorString)));
 
             allowing(mockDefaultHubInternalClient).deregister();
+            allowing(mockDefaultHubInternalClient).getServerInfo();
+            will(returnValue(new ServerInfoJson()));
         }});
 
         String dummyToken = newHubHandler.generateAccessToken(satAdmin, ConfigDefaults.get().getHostname());
