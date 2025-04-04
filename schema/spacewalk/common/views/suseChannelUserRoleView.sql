@@ -31,6 +31,8 @@ AS
       -- otherwise, if channel is in a family without permissions for the user's org, then user can't subscribe it
       WHEN adminUsers.is_admin_user IS NOT NULL
         THEN NULL
+      WHEN channelAdmins.is_channel_admin IS NOT NULL
+        THEN NULL
       -- otherwise, if channel does not have the "not_globally_subscribable" bit set, user can subscribe it
       WHEN combination.role = 'subscribe' AND notGloballySubscribableChannels.is_not_globally_subscribable IS NULL
         THEN NULL
@@ -64,8 +66,14 @@ AS
         FROM rhnUserGroupMembers m
           JOIN rhnUserGroup g ON g.id = m.user_group_id
           JOIN rhnUserGroupType t ON t.id = g.group_type
-        WHERE t.label = 'channel_admin' OR t.label = 'org_admin') adminUsers
+        WHERE t.label = 'org_admin') adminUsers
      ON (adminUsers.user_id = combination.user_id)
+     LEFT JOIN
+       (SELECT DISTINCT uag.user_id, 1 AS is_channel_admin
+        FROM access.userAccessGroup uag
+          JOIN access.accessGroup ag ON ag.id = uag.group_id
+        WHERE ag.label = 'channel_admin' AND ag.org_id IS NULL) channelAdmins
+     ON (channelAdmins.user_id = combination.user_id)
      LEFT JOIN
        (SELECT DISTINCT ocs.channel_id, ocs.org_id, 1 AS is_not_globally_subscribable
         FROM rhnOrgChannelSettings ocs

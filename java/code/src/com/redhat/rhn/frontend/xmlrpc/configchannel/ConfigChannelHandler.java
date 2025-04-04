@@ -150,8 +150,6 @@ public class ConfigChannelHandler extends BaseHandler {
      */
     public ConfigChannel create(User user, String label, String name, String description, String type,
                                 Map<String, Object> pathInfo) {
-        ensureConfigAdmin(user);
-
         ConfigChannelCreationHelper helper = new ConfigChannelCreationHelper();
         XmlRpcConfigChannelHelper ccHelper = XmlRpcConfigChannelHelper.getInstance();
         try {
@@ -744,7 +742,6 @@ public class ConfigChannelHandler extends BaseHandler {
      *
      */
     public int deleteChannels(User loggedInUser, List<String> labels) {
-        ensureConfigAdmin(loggedInUser);
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
         List<ConfigChannel> channels = configHelper.lookupGlobals(loggedInUser,
                                                                 labels);
