@@ -73,9 +73,9 @@ public class RhnListAction extends RhnAction {
         pc.setFilterData(filterString);
     }
 
-    protected List trackSet(RhnSet set, HttpServletRequest request) {
+    protected List<String> trackSet(RhnSet set, HttpServletRequest request) {
 
-        List newlist = new ArrayList<>();
+        List<String> newlist = new ArrayList<>();
         String hiddenvars = request.getParameter("newset");
         String returnvisit = request.getParameter("returnvisit");
 
@@ -97,9 +97,8 @@ public class RhnListAction extends RhnAction {
              * This is the first time we've displayed the set and
              * need to init newset to the set given to us in the tag
              */
-            Set setlist = set.getElements();
-            for (Object oIn : setlist) {
-                RhnSetElement r = (RhnSetElement) oIn;
+            Set<RhnSetElement> setlist = set.getElements();
+            for (RhnSetElement r : setlist) {
                 //check for id combo values
                 if (r.getElementTwo() == null) {
                     newlist.add(r.getElement().toString());

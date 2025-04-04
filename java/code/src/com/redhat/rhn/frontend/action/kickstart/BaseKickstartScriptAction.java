@@ -103,7 +103,7 @@ public abstract class BaseKickstartScriptAction extends BaseKickstartEditAction 
     @Override
     protected void setupFormValues(RequestContext ctx, DynaActionForm form,
                                    BaseKickstartCommand cmd) {
-        List types = new LinkedList<>();
+        List<Object> types = new LinkedList<>();
         types.add(lvl10n("kickstart.script.pre", KickstartScript.TYPE_PRE));
         types.add(lvl10n("kickstart.script.post", KickstartScript.TYPE_POST));
         ctx.getRequest().setAttribute(TYPES, types);

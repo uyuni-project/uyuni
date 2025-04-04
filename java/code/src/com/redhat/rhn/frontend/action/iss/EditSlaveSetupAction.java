@@ -87,7 +87,7 @@ public class EditSlaveSetupAction extends RhnAction {
                 new ArrayList<>(theSlave.getAllowedOrgs()));
         List<OrgDto> locals = fromOrgs(OrgFactory.lookupAllOrgs());
 
-        Set sessionSet = SessionSetHelper.lookupAndBind(request, getSetDecl()
+        Set<String> sessionSet = SessionSetHelper.lookupAndBind(request, getSetDecl()
                         .getLabel());
         SessionSetHelper helper = new SessionSetHelper(request);
 

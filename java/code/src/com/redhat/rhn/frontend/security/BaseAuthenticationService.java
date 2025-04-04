@@ -41,7 +41,7 @@ public abstract class BaseAuthenticationService implements AuthenticationService
                 uri -> request.getRequestURI().startsWith(uri.toString()));
     }
 
-    protected abstract Set getUnprotectedURIs();
-    protected abstract Set getPostUnprotectedURIs();
-    protected abstract Set getLoginURIs();
+    protected abstract Set<String> getUnprotectedURIs();
+    protected abstract Set<String> getPostUnprotectedURIs();
+    protected abstract Set<String> getLoginURIs();
 }

@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.channel.Copy2ChannelsAction;
+import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -83,7 +84,7 @@ public class SDCCopy2ChannelsAction extends Copy2ChannelsAction {
         User user = ctx.getCurrentUser();
         ConfigurationManager cm = ConfigurationManager.getInstance();
 
-        DataResult rs =  cm.listGlobalChannels(user, null);
+        DataResult<ConfigChannelDto> rs =  cm.listGlobalChannels(user, null);
         Map<String, Object> elabParams = new HashMap<>();
         elabParams.put("user_id", user.getId());
         rs.elaborate(elabParams);
