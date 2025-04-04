@@ -662,6 +662,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static String success(Response response) {
+        response.status(HttpStatus.SC_OK);
         return json(response, ResultJson.success(), new TypeToken<>() { });
     }
 
@@ -673,6 +674,7 @@ public class SparkApplicationHelper {
      * @param <T> the type of data
      */
     public static <T> String success(Response response, T data) {
+        response.status(HttpStatus.SC_OK);
         return json(response, data, new TypeToken<>() { });
     }
 
