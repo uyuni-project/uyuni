@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-04 11:42+0200\n"
-"PO-Revision-Date: 2025-03-28 15:56+0000\n"
+"PO-Revision-Date: 2025-04-04 16:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -5197,10 +5197,8 @@ msgid "Proxy configuration action has been scheduled."
 msgstr "Import obrazu bol naplánovaný."
 
 #: ../html/src/manager/minion/proxy/proxy-config-messages.tsx:25
-#, fuzzy
-#| msgid "Search in configuration channels"
 msgid "Scheduling proxy configuration action..."
-msgstr "Hľadať v konfiguračných kanáloch"
+msgstr "Naplánovanie akcie konfigurácie proxy..."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:114
 #: ../html/src/manager/proxy/container-config.tsx:142
@@ -5385,10 +5383,8 @@ msgstr "Registrovať"
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:437
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:461
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:485
-#, fuzzy
-#| msgid "e.g., 2048"
 msgid "e.g., "
-msgstr "napr. 2048"
+msgstr "napr. "
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:369
 #, fuzzy
@@ -6016,22 +6012,16 @@ msgid "Select a Playbook"
 msgstr "Vybrať filter"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:79
-#, fuzzy
-#| msgid "Playbook Content"
 msgid "Playbook path:"
-msgstr "Obsah scenára"
+msgstr "Cesta scenára:"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:85
-#, fuzzy
-#| msgid "Inventory Path"
 msgid "Inventory path:"
-msgstr "Inventárna cesta"
+msgstr "Inventárna cesta:"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:91
-#, fuzzy
-#| msgid "Flush Ansible fact cache"
 msgid "Flush fact cache:"
-msgstr "Vyprázdniť vyrovnávaciu pamäť faktov Ansible"
+msgstr "Vyprázdniť vyrovnávaciu pamäť faktov:"
 
 #. Value options for filtering by Action Type in recurring actions list
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
