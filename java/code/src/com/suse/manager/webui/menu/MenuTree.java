@@ -31,6 +31,13 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
+import spark.Request;
+import spark.Response;
+import spark.RouteImpl;
+import spark.route.HttpMethod;
+import spark.route.Routes;
+import spark.utils.SparkUtils;
+
 /**
  * The UI Menu Tree.
  */
@@ -455,6 +462,10 @@ public class MenuTree {
                     .withPrimaryUrl("/rhn/manager/admin/hub/peripherals")
                     .addChild(new MenuItem("Peripherals Configuration")
                             .withPrimaryUrl("/rhn/manager/admin/hub/peripherals")
+                            .withAltUrl("/rhn/manager/admin/hub/peripherals/register")
+                            .withAltUrl("/rhn/manager/admin/hub/peripherals/migrate-from-v1")
+                            .withAltUrl("/rhn/manager/admin/hub/peripherals/migrate-from-v2")
+                            .withAltUrl("/rhn/manager/admin/hub/peripherals/:id")
                             .withVisibility(adminRoles.get("satellite")))
                 .addChild(new MenuItem("Hub Details").withPrimaryUrl("/rhn/manager/admin/hub/hub-details")
                     .withVisibility(adminRoles.get("satellite")))
@@ -575,24 +586,24 @@ public class MenuTree {
      * based on the list of urls of the link
      *
      * @param nodes the list of nodes of the menu
-     * @param url the current URL
+     * @param currentUrl the current URL
      * @return the current active {@link MenuItem}
      */
-    public static MenuItem getActiveNode(List<MenuItem> nodes, String url) {
+    public static MenuItem getActiveNode(List<MenuItem> nodes, String currentUrl) {
         MenuItem activeItem = null;
         for (MenuItem item : nodes) {
             if (item.getSubmenu() != null) {
                 // recursive call to iterate in the submenu
-                activeItem = getActiveNode(item.getSubmenu(), url);
+                activeItem = getActiveNode(item.getSubmenu(), currentUrl);
             }
             else {
-                if (url.equalsIgnoreCase(item.getPrimaryUrl())) {
+                if (urlMatches(item.getPrimaryUrl(), currentUrl)) {
                     activeItem = item;
                     return activeItem;
                 }
                 if (item.getUrls() != null && !item.getUrls().isEmpty()) {
                     for (String link : item.getUrls()) {
-                        if (url.equalsIgnoreCase(link)) {
+                        if (urlMatches(link, currentUrl)) {
                             activeItem = item;
                             return activeItem;
                         }
@@ -607,6 +618,29 @@ public class MenuTree {
             }
         }
         return null;
+    }
+
+    private static boolean urlMatches(String menuUrl, String currentUrl) {
+        // Check first a direct match
+        if (currentUrl.equalsIgnoreCase(menuUrl)) {
+            return true;
+        }
+
+        // Check if the url is parameterized and try to match accordingly
+        return isParameterizedUrl(menuUrl) && parameterizedUrlMatches(menuUrl, currentUrl);
+    }
+
+    // Use Spark logic to check if a url is parameterized
+    private static boolean isParameterizedUrl(String template) {
+        return SparkUtils.convertRouteToList(template).stream()
+            .anyMatch(routePart -> SparkUtils.isParam(routePart) || SparkUtils.isSplat(routePart));
+    }
+
+    // Use Spark logic to check if the current url matches a parameterized url
+    private static boolean parameterizedUrlMatches(String template, String currentUrl) {
+        Routes routes = Routes.create();
+        routes.add(HttpMethod.get, new MatchableMenuItemRoute(template));
+        return routes.find(HttpMethod.get, currentUrl, null) != null;
     }
 
     /**
@@ -700,5 +734,18 @@ public class MenuTree {
         public boolean add(MenuItem e) {
             return e.getIsVisible() ? super.add(e) : false;
         }
+    }
+
+    private static class MatchableMenuItemRoute extends RouteImpl {
+
+        MatchableMenuItemRoute(String pathIn) {
+            super(pathIn);
+        }
+
+        @Override
+        public Object handle(Request request, Response response) {
+            throw new UnsupportedOperationException("This route implementation can only be used for patch matching");
+        }
+
     }
 }

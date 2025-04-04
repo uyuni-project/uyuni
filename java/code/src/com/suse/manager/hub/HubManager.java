@@ -17,24 +17,24 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.iss.IssFactory;
+import com.redhat.rhn.domain.iss.IssMaster;
+import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.product.ChannelTemplate;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
-import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
-import com.redhat.rhn.manager.content.ContentSyncException;
-import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -45,17 +45,21 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.model.hub.AccessTokenDTO;
-import com.suse.manager.model.hub.CustomChannelInfoJson;
+import com.suse.manager.model.hub.ChannelInfoDetailsJson;
+import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.model.hub.IssPeripheral;
+import com.suse.manager.model.hub.IssPeripheralChannels;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.ManagerInfoJson;
-import com.suse.manager.model.hub.ModifyCustomChannelInfoJson;
+import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.TokenType;
+import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.controllers.ProductsController;
+import com.suse.manager.webui.controllers.admin.beans.IssV3ChannelResponse;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
@@ -72,11 +76,14 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Business logic to manage ISSv3 Sync
@@ -91,11 +98,9 @@ public class HubManager {
 
     private final SystemEntitlementManager systemEntitlementManager;
 
-    private TaskomaticApi taskomaticApi;
+    private final TaskomaticApi taskomaticApi;
 
     private static final Logger LOG = LogManager.getLogger(HubManager.class);
-
-    private static final String ROOT_CA_FILENAME_TEMPLATE = "%s_%s_root_ca.pem";
 
     /**
      * A Hub deliver custom repositories via organization/repositories SCC endpoint.
@@ -249,6 +254,10 @@ public class HubManager {
         IssRole remoteRole = hubFactory.isISSPeripheral() ? IssRole.HUB : IssRole.PERIPHERAL;
         IssServer server = findServer(user, fqdn, remoteRole);
 
+        if (null == server) {
+            return;
+        }
+
         if (!onlyLocal) {
             IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(server.getFqdn());
             var internalClient = clientFactory.newInternalClient(fqdn, accessToken.getToken(), server.getRootCa());
@@ -266,15 +275,17 @@ public class HubManager {
      * Delete locally all ISS artifacts for the hub or peripheral server identified by the FQDN
      * @param accessToken the token
      * @param fqdn the FQDN
+     * @return the role of the removed server
      */
-    public void deleteIssServerLocal(IssAccessToken accessToken, String fqdn) {
+    public IssRole deleteIssServerLocal(IssAccessToken accessToken, String fqdn) {
         ensureValidToken(accessToken);
         if (hubFactory.isISSPeripheral()) {
             deleteHub(fqdn);
+            return IssRole.HUB;
         }
-        else {
-            deletePeripheral(fqdn);
-        }
+
+        deletePeripheral(fqdn);
+        return IssRole.PERIPHERAL;
     }
 
     private void deletePeripheral(String peripheralFqdn) {
@@ -289,7 +300,9 @@ public class HubManager {
     }
 
     private void deletePeripheral(IssPeripheral peripheral) {
-        CredentialsFactory.removeCredentials(peripheral.getMirrorCredentials());
+        if (null != peripheral.getMirrorCredentials()) {
+            CredentialsFactory.removeCredentials(peripheral.getMirrorCredentials());
+        }
         hubFactory.remove(peripheral);
         hubFactory.removeAccessTokensFor(peripheral.getFqdn());
     }
@@ -305,7 +318,13 @@ public class HubManager {
     }
 
     private void deleteHub(IssHub hub) {
-        CredentialsFactory.removeCredentials(hub.getMirrorCredentials());
+        SCCCredentials mirrorCredentials = hub.getMirrorCredentials();
+        if (null != mirrorCredentials) {
+            // Clear Repository Authentications
+            SCCCachingFactory.lookupRepositoryAuthByCredential(mirrorCredentials)
+                    .forEach(SCCCachingFactory::deleteRepositoryAuth);
+            CredentialsFactory.removeCredentials(mirrorCredentials);
+        }
         hubFactory.remove(hub);
         hubFactory.removeAccessTokensFor(hub.getFqdn());
     }
@@ -348,7 +367,7 @@ public class HubManager {
         ensureSatAdmin(user);
 
         IssPeripheral issPeripheral = hubFactory.lookupIssPeripheralByFqdn(remoteServer).orElseThrow(() ->
-                new IllegalStateException("Server " + remoteServer + " is not registered as peripheral"));
+                new IllegalStateException(remoteServer + " is not registered as peripheral"));
 
         // Generate a token for this server on the remote
         String newLocalToken = issueAccessToken(user, remoteServer);
@@ -370,12 +389,13 @@ public class HubManager {
      * @param password the password of the specified user
      * @param rootCA the optional root CA of the remote server. can be null
      *
+     * @return the registered peripheral
      * @throws CertificateException if the specified certificate is not parseable
      * @throws TokenParsingException if the specified token is not parseable
      * @throws TokenBuildingException if an error occurs while generating the token for the server
      * @throws IOException when connecting to the server fails
      */
-    public void register(User user, String remoteServer, String username, String password, String rootCA)
+    public IssPeripheral register(User user, String remoteServer, String username, String password, String rootCA)
         throws CertificateException, TokenBuildingException, IOException, TokenParsingException,
             TaskomaticApiException {
         ensureSatAdmin(user);
@@ -389,7 +409,7 @@ public class HubManager {
             remoteToken = externalClient.generateAccessToken(ConfigDefaults.get().getHostname());
         }
 
-        registerWithToken(user, remoteServer, rootCA, remoteToken);
+        return registerWithToken(user, remoteServer, rootCA, remoteToken);
     }
 
     /**
@@ -400,12 +420,13 @@ public class HubManager {
      * @param remoteToken the token used to connect to the peripheral server
      * @param rootCA the optional root CA of the peripheral server
      *
+     * @return the registered peripheral
      * @throws CertificateException if the specified certificate is not parseable
      * @throws TokenParsingException if the specified token is not parseable
      * @throws TokenBuildingException if an error occurs while generating the token for the peripheral server
      * @throws IOException when connecting to the peripheral server fails
      */
-    public void register(User user, String remoteServer, String remoteToken, String rootCA)
+    public IssPeripheral register(User user, String remoteServer, String remoteToken, String rootCA)
         throws CertificateException, TokenBuildingException, IOException, TokenParsingException,
             TaskomaticApiException {
         ensureSatAdmin(user);
@@ -413,21 +434,7 @@ public class HubManager {
         // Verify this server is not already registered as hub or peripheral
         ensureServerNotRegistered(remoteServer);
 
-        registerWithToken(user, remoteServer, rootCA, remoteToken);
-    }
-
-    /**
-     * Generate SCC credentials for the specified peripheral
-     * @param accessToken the access token granting access and identifying the caller
-     * @return the generated {@link HubSCCCredentials}
-     */
-    public HubSCCCredentials generateSCCCredentials(IssAccessToken accessToken) {
-        ensureValidToken(accessToken);
-
-        IssPeripheral peripheral = hubFactory.lookupIssPeripheralByFqdn(accessToken.getServerFqdn())
-            .orElseThrow(() -> new IllegalArgumentException("Access token does not identify a peripheral server"));
-
-        return generateCredentials(peripheral);
+        return registerWithToken(user, remoteServer, rootCA, remoteToken);
     }
 
     /**
@@ -444,6 +451,71 @@ public class HubManager {
             .orElseThrow(() -> new IllegalArgumentException("Access token does not identify a hub server"));
 
         return saveCredentials(hub, username, password);
+    }
+
+    /**
+     * Regenerate the username and the password for an existing peripheral
+     * @param user the user performing the operation
+     * @param peripheralId the id of the peripheral linked to the credentials to refresh
+     * @return the updated credentials
+     * @throws IllegalArgumentException when the peripheral does not exist
+     * @throws CertificateException if the peripheral certificate is not parseable
+     * @throws IOException when the calling the peripheral APIs fails
+     */
+    public HubSCCCredentials regenerateCredentials(User user, long peripheralId)
+        throws CertificateException, IOException {
+        ensureSatAdmin(user);
+
+        IssPeripheral peripheral = hubFactory.findPeripheralById(peripheralId);
+        if (peripheral == null) {
+            throw new IllegalArgumentException("No peripheral found with id " + peripheralId);
+        }
+
+        return regenerateCredentials(peripheral);
+    }
+
+    /**
+     * Regenerate the username and the password for an existing peripheral
+     * @param user the user performing the operation
+     * @param fqdn the fqdn of the peripheral linked to the credentials to refresh
+     * @return the updated credentials
+     * @throws IllegalArgumentException when the peripheral does not exist
+     * @throws CertificateException if the peripheral certificate is not parseable
+     * @throws IOException when the calling the peripheral APIs fails
+     */
+    public HubSCCCredentials regenerateCredentials(User user, String fqdn)
+        throws CertificateException, IOException {
+        ensureSatAdmin(user);
+
+        IssPeripheral peripheral = hubFactory.lookupIssPeripheralByFqdn(fqdn)
+            .orElseThrow(() -> new IllegalArgumentException("No peripheral found with fqdn " + fqdn));
+
+        return regenerateCredentials(peripheral);
+    }
+
+    private HubSCCCredentials regenerateCredentials(IssPeripheral peripheral) throws IOException, CertificateException {
+        // Generate a new credentials for this peripheral
+        HubSCCCredentials newCredentials = generateCredentials(peripheral);
+
+        // If credentials are already connected to the peripheral, update the existing ones rather than creating new
+        if (peripheral.getMirrorCredentials() != null) {
+            HubSCCCredentials existingCredentials = peripheral.getMirrorCredentials();
+            existingCredentials.setUsername(newCredentials.getUsername());
+            existingCredentials.setPassword(newCredentials.getPassword());
+            existingCredentials.setPeripheralUrl(newCredentials.getPeripheralUrl());
+
+            newCredentials = existingCredentials;
+        }
+
+        // Send the new credentials to peripheral
+        IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(peripheral.getFqdn());
+        clientFactory.newInternalClient(peripheral.getFqdn(), accessToken.getToken(), peripheral.getRootCa())
+            .storeCredentials(newCredentials.getUsername(), newCredentials.getPassword());
+
+        // If everything went ok, update the local credentials
+        savePeripheralCredentials(peripheral, newCredentials);
+
+        return newCredentials;
     }
 
     /**
@@ -521,6 +593,17 @@ public class HubManager {
     }
 
     /**
+     * Collect data about a Manager Server
+     *
+     * @param user The current user
+     * @return return {@link ManagerInfoJson}
+     */
+    public ManagerInfoJson collectManagerInfo(User user) {
+        ensureSatAdmin(user);
+        return collectManagerInfo();
+    }
+
+    /**
      * Set server details
      *
      * @param token the access token
@@ -528,7 +611,8 @@ public class HubManager {
      * @param role the role which should be changed
      * @param data the new data
      */
-    public void updateServerData(IssAccessToken token, String fqdn, IssRole role, Map<String, String> data) {
+    public void updateServerData(IssAccessToken token, String fqdn, IssRole role, UpdatableServerData data)
+        throws TaskomaticApiException {
         ensureValidToken(token);
         updateServerData(fqdn, role, data);
     }
@@ -540,41 +624,38 @@ public class HubManager {
      * @param fqdn the FQDN identifying the Hub or Peripheral Server
      * @param role the role which should be changed
      * @param data the new data
+     * @throws TaskomaticApiException when it's not possible to schedule the certificate refresh
      */
-    public void updateServerData(User user, String fqdn, IssRole role, Map<String, String> data) {
+    public void updateServerData(User user, String fqdn, IssRole role, UpdatableServerData data)
+        throws TaskomaticApiException {
         ensureSatAdmin(user);
         updateServerData(fqdn, role, data);
     }
 
-    private void updateServerData(String fqdn, IssRole role, Map<String, String> data) {
-        switch (role) {
-            case HUB -> hubFactory.lookupIssHubByFqdn(fqdn).ifPresentOrElse(issHub -> {
-                        if (data.containsKey("root_ca")) {
-                            issHub.setRootCa(data.get("root_ca"));
-                        }
-                        if (data.containsKey("gpg_key")) {
-                            issHub.setGpgKey(data.get("gpg_key"));
-                        }
-                        hubFactory.save(issHub);
-                    },
-                    () -> {
-                        LOG.error("Server {} not found with role {}", fqdn, role);
-                        throw new IllegalArgumentException("Server not found");
-                    });
-            case PERIPHERAL -> hubFactory.lookupIssPeripheralByFqdn(fqdn).ifPresentOrElse(issPeripheral -> {
-                        if (data.containsKey("root_ca")) {
-                            issPeripheral.setRootCa(data.get("root_ca"));
-                        }
-                        hubFactory.save(issPeripheral);
-                    },
-                    ()-> {
-                        LOG.error("Server {} not found with role {}", fqdn, role);
-                        throw new IllegalArgumentException("Server not found");
-                    });
-            default -> {
-                LOG.error("Unknown role {}", role);
-                throw new IllegalArgumentException("Unknown role");
+    private void updateServerData(String fqdn, IssRole role, UpdatableServerData data) throws TaskomaticApiException {
+        Optional<? extends IssServer> server = switch (role) {
+            case HUB -> hubFactory.lookupIssHubByFqdn(fqdn);
+            case PERIPHERAL -> hubFactory.lookupIssPeripheralByFqdn(fqdn);
+        };
+
+        server.ifPresentOrElse(issServer -> {
+            if (data.hasRootCA()) {
+                issServer.setRootCa(data.getRootCA());
             }
+
+            if (data.hasGpgKey() && issServer instanceof IssHub issHub) {
+                issHub.setGpgKey(data.getGpgKey());
+            }
+
+            hubFactory.save(issServer);
+        }, () -> {
+            LOG.error("Server {} not found with role {}", fqdn, role);
+            throw new IllegalArgumentException("Server not found");
+        });
+
+        if (data.hasRootCA()) {
+            String filename = CertificateUtils.computeRootCaFileName(role.getLabel(), fqdn);
+            taskomaticApi.scheduleSingleRootCaCertUpdate(filename, data.getRootCA());
         }
     }
 
@@ -637,28 +718,31 @@ public class HubManager {
                 reportDbName, reportDbHost, reportDbPort);
     }
 
-    private void registerWithToken(User user, String remoteServer, String rootCA, String remoteToken)
+    private IssPeripheral registerWithToken(User user, String remoteServer, String rootCA, String remoteToken)
         throws TokenParsingException, CertificateException, TokenBuildingException, IOException,
             TaskomaticApiException {
         parseAndSaveToken(remoteServer, remoteToken);
 
         IssServer registeredServer = createServer(IssRole.PERIPHERAL, remoteServer, rootCA, null, user);
-        registerToRemote(user, registeredServer, remoteToken, rootCA);
-    }
-
-    private void registerToRemote(User user, IssServer remoteServer, String remoteToken, String rootCA)
-            throws CertificateException, TokenParsingException, TokenBuildingException, IOException {
 
         // Ensure the remote server is a peripheral
-        if (!(remoteServer instanceof IssPeripheral peripheral)) {
-            throw new IllegalStateException("Server " + remoteServer + "is not a peripheral server");
+        if (!(registeredServer instanceof IssPeripheral peripheral)) {
+            throw new IllegalStateException(remoteServer + "is not a peripheral server");
         }
 
+        registerToRemote(user, peripheral, remoteToken, rootCA);
+
+        return peripheral;
+    }
+
+    private void registerToRemote(User user, IssPeripheral peripheral, String remoteToken, String rootCA)
+            throws CertificateException, TokenParsingException, TokenBuildingException, IOException {
+
         // Create a client to connect to the internal API of the remote server
-        var internalApi = clientFactory.newInternalClient(remoteServer.getFqdn(), remoteToken, rootCA);
+        var internalApi = clientFactory.newInternalClient(peripheral.getFqdn(), remoteToken, rootCA);
         try {
             // Issue a token for granting access to the remote server
-            Token localAccessToken = createAndSaveToken(remoteServer.getFqdn());
+            Token localAccessToken = createAndSaveToken(peripheral.getFqdn());
             // Send the local trusted root, if we needed a different certificate to connect
             String localRootCA = rootCA != null ? CertificateUtils.loadLocalTrustedRoot() : null;
             // Send the local GPG key used to sign metadata, if configured.
@@ -672,11 +756,12 @@ public class HubManager {
             // Generate the scc credentials and send them to the peripheral
             HubSCCCredentials credentials = generateCredentials(peripheral);
             internalApi.storeCredentials(credentials.getUsername(), credentials.getPassword());
+            savePeripheralCredentials(peripheral, credentials);
 
             // Query Report DB connection values and set create a User
             ManagerInfoJson managerInfo = internalApi.getManagerInfo();
             Server peripheralServer = getOrCreateManagerSystem(systemEntitlementManager, user,
-                    remoteServer.getFqdn(), Set.of(remoteServer.getFqdn()));
+                    peripheral.getFqdn(), Set.of(peripheral.getFqdn()));
             boolean changed = SystemManager.updateMgrServerInfo(peripheralServer, managerInfo);
             if (changed) {
                 setReportDbUser(user, peripheralServer, false);
@@ -684,21 +769,30 @@ public class HubManager {
             internalApi.scheduleProductRefresh();
         }
         catch (Exception ex) {
-            // cleanup the remote side
-            internalApi.deregister();
+            cleanup(internalApi);
             throw ex;
+        }
+    }
+
+    private void cleanup(HubInternalClient internalApi) {
+        try {
+            // try to clean up the remote side
+            internalApi.deregister();
+        }
+        catch (Exception ex) {
+            LOG.warn("Exception thrown while cleaning up and deregistering from iternalApi: ignoring it.");
         }
     }
 
     private void ensureServerNotRegistered(String peripheralServer) {
         Optional<IssHub> issHub = hubFactory.lookupIssHubByFqdn(peripheralServer);
         if (issHub.isPresent()) {
-            throw new IllegalStateException("Server " + peripheralServer + " is already registered as hub");
+            throw new IllegalStateException(peripheralServer + " is already registered as hub");
         }
 
         Optional<IssPeripheral> issPeripheral = hubFactory.lookupIssPeripheralByFqdn(peripheralServer);
         if (issPeripheral.isPresent()) {
-            throw new IllegalStateException("Server " + peripheralServer + " is already registered as peripheral");
+            throw new IllegalStateException(peripheralServer + " is already registered as peripheral");
         }
     }
 
@@ -706,16 +800,29 @@ public class HubManager {
         String username = "peripheral-%06d".formatted(peripheral.getId());
         String password = RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom());
 
-        var hubSCCCredentials = CredentialsFactory.createHubSCCCredentials(username, password, peripheral.getFqdn());
+        return CredentialsFactory.createHubSCCCredentials(username, password, peripheral.getFqdn());
+    }
+
+    private void savePeripheralCredentials(IssPeripheral peripheral, HubSCCCredentials hubSCCCredentials) {
         CredentialsFactory.storeCredentials(hubSCCCredentials);
 
         peripheral.setMirrorCredentials(hubSCCCredentials);
         saveServer(peripheral);
-
-        return hubSCCCredentials;
     }
 
     private SCCCredentials saveCredentials(IssHub hub, String username, String password) {
+        SCCCredentials currentCredentials = hub.getMirrorCredentials();
+        // If credentials already exist linked to this hub, just updated them with the new values
+        if (currentCredentials != null) {
+
+            currentCredentials.setUsername(username);
+            currentCredentials.setPassword(password);
+            currentCredentials.setUrl("https://" + hub.getFqdn());
+
+            CredentialsFactory.storeCredentials(currentCredentials);
+            return currentCredentials;
+        }
+
         // Delete any existing SCC Credentials
         CredentialsFactory.listSCCCredentials()
             .forEach(creds -> mirrorCredentialsManager.deleteMirrorCredentials(creds.getId(), null));
@@ -761,10 +868,6 @@ public class HubManager {
         hubFactory.saveToken(fqdn, token, TokenType.CONSUMED, parsedToken.getExpirationTime());
     }
 
-    private static String computeRootCaFileName(IssRole role, String serverFqdn) {
-        return String.format(ROOT_CA_FILENAME_TEMPLATE, role.getLabel(), serverFqdn);
-    }
-
     private IssServer lookupServerByFqdnAndRole(String serverFqdn, IssRole role) {
         return switch (role) {
             case HUB -> hubFactory.lookupIssHubByFqdn(serverFqdn).orElse(null);
@@ -781,7 +884,8 @@ public class HubManager {
 
     private IssServer createServer(IssRole role, String serverFqdn, String rootCA, String gpgKey, User user)
             throws TaskomaticApiException {
-        taskomaticApi.scheduleSingleRootCaCertUpdate(computeRootCaFileName(role, serverFqdn), rootCA);
+        String filename = CertificateUtils.computeRootCaFileName(role.getLabel(), serverFqdn);
+        taskomaticApi.scheduleSingleRootCaCertUpdate(filename, rootCA);
         return switch (role) {
             case HUB -> {
                 IssHub hub = new IssHub(serverFqdn, rootCA);
@@ -893,6 +997,69 @@ public class HubManager {
     }
 
     /**
+     * Count the registered peripherals on "this" hub
+     * @param user the SatAdmin
+     * @param pc the page control object
+     * @return the count of registered peripherals entities
+     */
+    public Long countRegisteredPeripherals(User user, PageControl pc) {
+        ensureSatAdmin(user);
+        return hubFactory.countPeripherals(pc);
+    }
+
+    /**
+     * List the peripherals with pagination and filtering, based on the give page control.
+     * @param user the SatAdmin
+     * @param pc the page control object
+     * @return a List of Peripherals entities
+     */
+    public List<IssPeripheral> listRegisteredPeripherals(User user, PageControl pc) {
+        ensureSatAdmin(user);
+        return hubFactory.listPaginatedPeripherals(pc);
+    }
+
+    /**
+     * Remotely collect data about peripheral organizations
+     *
+     * @param user The current user
+     * @param peripheralFqdn the remote peripheral server FQDN
+     * @return return list of {@link OrgInfoJson}
+     */
+    public List<OrgInfoJson> getAllPeripheralOrgs(User user, String peripheralFqdn)
+            throws IOException, CertificateException {
+        ensureSatAdmin(user);
+        IssPeripheral issPeripheral = hubFactory.lookupIssPeripheralByFqdn(peripheralFqdn).orElseThrow(() ->
+                new IllegalStateException(peripheralFqdn + " is not registered as peripheral"));
+        return getPeripheralOrgs(issPeripheral);
+    }
+
+    /**
+     * Get the Peripheral Organizations
+     * @param user the SatAdmin
+     * @param peripheralId the Peripheral ID
+     * @return a List of Organization from the Peripheral
+     * @throws CertificateException Wrong CA
+     * @throws IOException Internal API Call has gone wrong
+     */
+    public List<OrgInfoJson> getPeripheralOrgs(User user, Long peripheralId)
+            throws CertificateException, IOException {
+        ensureSatAdmin(user);
+        IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
+        return getPeripheralOrgs(issPeripheral);
+    }
+
+    private List<OrgInfoJson> getPeripheralOrgs(IssPeripheral issPeripheral)
+            throws CertificateException, IOException {
+        IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn());
+        var internalApi = clientFactory.newInternalClient(
+                issPeripheral.getFqdn(),
+                accessToken.getToken(),
+                issPeripheral.getRootCa()
+        );
+        return internalApi.getAllPeripheralOrgs();
+    }
+
+    /**
      * Collect data about all organizations
      *
      * @param accessToken the accesstoken
@@ -901,6 +1068,83 @@ public class HubManager {
     public List<Org> collectAllOrgs(IssAccessToken accessToken) {
         ensureValidToken(accessToken);
         return OrgFactory.lookupAllOrgs();
+    }
+
+    /**
+     * Remotely collect data about peripheral channels
+     *
+     * @param user The current user
+     * @param peripheralFqdn the remote peripheral server FQDN
+     * @return return list of {@link ChannelInfoJson}
+     */
+    public List<ChannelInfoJson> getAllPeripheralChannels(User user, String peripheralFqdn)
+            throws IOException, CertificateException {
+        ensureSatAdmin(user);
+
+        IssPeripheral issPeripheral = hubFactory.lookupIssPeripheralByFqdn(peripheralFqdn).orElseThrow(() ->
+                new IllegalStateException(peripheralFqdn + " is not registered as peripheral"));
+
+        IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn());
+        var internalClient = clientFactory.newInternalClient(issPeripheral.getFqdn(), accessToken.getToken(),
+                issPeripheral.getRootCa());
+        return internalClient.getAllPeripheralChannels();
+    }
+
+    /**
+     * Get the custom channels of the hub
+     * @param user The SatAdmin
+     * @return a Set of Channels
+     */
+    public Set<IssV3ChannelResponse> getHubCustomChannels(User user) {
+        ensureSatAdmin(user);
+        return ChannelFactory.listCustomBaseChannels(user).stream()
+                .map(this::buildIssV3ChannelResponse)
+                .collect(Collectors.toSet());
+    }
+
+    /**
+     * Get the vendor channels of the hub
+     * @param user The SatAdmin
+     * @return a Set of Channels
+     */
+    public Set<IssV3ChannelResponse> getHubVendorChannels(User user) {
+        ensureSatAdmin(user);
+        return ChannelFactory.listRedHatBaseChannels(user).stream()
+                .map(this::buildIssV3ChannelResponse)
+                .collect(Collectors.toSet());
+    }
+
+    private IssV3ChannelResponse buildIssV3ChannelResponse(Channel channel) {
+        List<IssV3ChannelResponse> children = ChannelFactory.listAllChildrenForChannel(channel).stream()
+                .map(this::buildIssV3ChannelResponse)
+                .toList();
+        List<IssV3ChannelResponse> clones = channel.getClonedChannels() == null ?
+                List.of() :
+                channel.getClonedChannels().stream()
+                        .map(this::buildIssV3ChannelResponse)
+                        .toList();
+        String originalLabel = null;
+        if (channel.getClonedChannels() != null && !channel.getClonedChannels().isEmpty()) {
+            ClonedChannel cloned = channel.getClonedChannels().iterator().next();
+            if (cloned.getOriginal() != null) {
+                originalLabel = cloned.getOriginal().getLabel();
+            }
+        }
+        String parentLabel = channel.getParentChannel() != null ? channel.getParentChannel().getLabel() : null;
+        return new IssV3ChannelResponse(
+                channel.getId(),
+                channel.getName(),
+                channel.getLabel(),
+                channel.getChannelArch().getName(),
+                channel.getOrg() != null ?
+                        new IssV3ChannelResponse.ChannelOrgResponse(
+                                channel.getOrg().getId(), channel.getOrg().getName()) :
+                        null,
+                parentLabel,
+                originalLabel,
+                children,
+                clones
+        );
     }
 
     /**
@@ -915,153 +1159,21 @@ public class HubManager {
     }
 
     /**
-     * Count the registered peripherals on "this" hub
-     * @param user the SatAdmin
-     * @return the count of registered peripherals entities
+     * Synchornize channels from the hub on this peripheral server
+     * @param accessToken the access token
+     * @param channelInfo a set of channel information to create or update the channels
      */
-    public Long countRegisteredPeripherals(User user) {
-        ensureSatAdmin(user);
-        return hubFactory.countPeripherals();
-    }
-
-    /**
-     * List the peripherals with pagination //TODO: and search
-     * @param user the SatAdmin
-     * @param pc the PageControl
-     * @return a List of Peripherals entities
-     */
-    public List<IssPeripheral> listRegisteredPeripherals(User user, PageControl pc) {
-        ensureSatAdmin(user);
-        return hubFactory.listPaginatedPeripherals(pc.getStart() - 1, pc.getPageSize());
-    }
-
-    /**
-     * add vendor channel to peripheral
-     *
-     * @param accessToken            the access token
-     * @param vendorChannelLabelList the vendor channel label list
-     * @return returns a list of the vendor channel that have been added {@link Channel}
-     * the possible return cases are:
-     * 1) empty list: the vendor channel and its base channel were already present in the peripheral (nothing created)
-     * 2) one-channel list: if only the vendor channel was created while the base channel was already present
-     * 3) two-channel list: if both the vendor and the base channel were added to the peripheral
-     */
-    public List<Channel> addVendorChannels(IssAccessToken accessToken, List<String> vendorChannelLabelList) {
+    public void syncChannels(IssAccessToken accessToken, List<ChannelInfoDetailsJson> channelInfo) {
         ensureValidToken(accessToken);
-        ChannelFactory.ensureValidVendorChannels(vendorChannelLabelList);
+        ChannelFactory.ensureValidChannelInfo(channelInfo);
 
-        String mirrorUrl = null;
+        Set<String> syncFinished = new HashSet<>();
+        Map<String, ChannelInfoDetailsJson> channelInfoByLabel = channelInfo.stream()
+                .collect(Collectors.toMap(ChannelInfoDetailsJson::getLabel, v -> v));
 
-        ContentSyncManager csm = new ContentSyncManager();
-        if (csm.isRefreshNeeded(mirrorUrl)) {
-            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
+        for (ChannelInfoDetailsJson info : channelInfo) {
+            ChannelFactory.syncChannel(info, channelInfoByLabel, syncFinished);
         }
-
-        List<String> addedVendorChannelLabels = new ArrayList<>();
-        for (String vendorChannelLabel : vendorChannelLabelList) {
-            //retrieve vendor channel template
-            Optional<ChannelTemplate> vendorChannelTemplate = SUSEProductFactory
-                    .lookupByChannelLabelFirst(vendorChannelLabel);
-
-            if (vendorChannelTemplate.isEmpty()) {
-                throw new InvalidChannelLabelException(vendorChannelLabel,
-                        InvalidChannelLabelException.Reason.IS_MISSING,
-                        "Invalid data: vendor channel label not found", vendorChannelLabel);
-            }
-
-            // get base channel of target channel
-            if (!vendorChannelTemplate.get().isRoot()) {
-                String vendorBaseChannelLabel = vendorChannelTemplate.get().getParentChannelLabel();
-
-                // check if base channel is already added
-                if (!ChannelFactory.doesChannelLabelExist(vendorBaseChannelLabel)) {
-                    // if not, add base channel
-                    addedVendorChannelLabels.add(vendorBaseChannelLabel);
-                }
-            }
-
-            // check if channel is already added
-            if (!ChannelFactory.doesChannelLabelExist(vendorChannelLabel)) {
-                //add target channel
-                addedVendorChannelLabels.add(vendorChannelLabel);
-            }
-        }
-
-        //add target channels
-        addedVendorChannelLabels.forEach(l -> csm.addChannel(l, mirrorUrl));
-
-        return ChannelFactory.listAllChannels()
-                .stream()
-                .filter(e -> addedVendorChannelLabels.contains(e.getLabel()))
-                .toList();
-    }
-
-    /**
-     * add custom channels to peripheral
-     *
-     * @param accessToken               the access token
-     * @param customChannelInfoJsonList the list of custom channel info to add
-     * @return returns a list of the custom channels {@link Channel} that have been added
-     */
-    public List<Channel> addCustomChannels(IssAccessToken accessToken,
-                                           List<CustomChannelInfoJson> customChannelInfoJsonList) {
-        ensureValidToken(accessToken);
-        ChannelFactory.ensureValidCustomChannels(customChannelInfoJsonList);
-
-        String mirrorUrl = null;
-
-        ContentSyncManager csm = new ContentSyncManager();
-        if (csm.isRefreshNeeded(mirrorUrl)) {
-            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
-        }
-
-        List<String> addedChannelsLabelList = new ArrayList<>();
-        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
-            // Create the channel
-            Channel customChannel = ChannelFactory.toCustomChannel(customChannelInfo);
-            ChannelFactory.save(customChannel);
-
-            addedChannelsLabelList.add(customChannel.getLabel());
-        }
-
-        return ChannelFactory.listAllChannels()
-                .stream()
-                .filter(e -> addedChannelsLabelList.contains(e.getLabel()))
-                .toList();
-    }
-
-    /**
-     * modify a peripheral custom channel
-     *
-     * @param accessToken             the access token
-     * @param modifyCustomChannelList the list of custom channels modifications
-     * @return returns a list of the custom channel that have been added {@link Channel}
-     */
-    public List<Channel> modifyCustomChannels(IssAccessToken accessToken,
-                                              List<ModifyCustomChannelInfoJson> modifyCustomChannelList) {
-        ensureValidToken(accessToken);
-        ChannelFactory.ensureValidModifyCustomChannels(modifyCustomChannelList);
-
-        String mirrorUrl = null;
-
-        ContentSyncManager csm = new ContentSyncManager();
-        if (csm.isRefreshNeeded(mirrorUrl)) {
-            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
-        }
-
-        List<String> modifiedChannelsLabelList = new ArrayList<>();
-        for (ModifyCustomChannelInfoJson modifyCustomChannelInfo : modifyCustomChannelList) {
-            // modify the channel
-            Channel customChannel = ChannelFactory.modifyCustomChannel(modifyCustomChannelInfo);
-            ChannelFactory.save(customChannel);
-
-            modifiedChannelsLabelList.add(customChannel.getLabel());
-        }
-
-        return ChannelFactory.listAllChannels()
-                .stream()
-                .filter(e -> modifiedChannelsLabelList.contains(e.getLabel()))
-                .toList();
     }
 
     /**
@@ -1106,5 +1218,159 @@ public class HubManager {
     public boolean synchronizeSubscriptions(IssAccessToken accessToken) {
         ensureValidToken(accessToken);
         return ProductsController.doSynchronizeSubscriptions();
+    }
+
+    /**
+     * Add peripheral channels to synchronize on a peripheral server
+     *
+     * @param user            The current user
+     * @param fqdn            the FQDN identifying the peripheral Server
+     * @param channelLabels   a list of labels of the channels to be added
+     * @param peripheralOrgIdWhenCustomChannel the peripheral org to be set in custom channels
+     */
+    public void addPeripheralChannelsToSync(User user, String fqdn, List<String> channelLabels,
+                                            Long peripheralOrgIdWhenCustomChannel) {
+        ensureSatAdmin(user);
+        IssPeripheral issPeripheral = hubFactory.lookupIssPeripheralByFqdn(fqdn).orElseThrow(() ->
+                new IllegalArgumentException(fqdn + " is not registered as peripheral"));
+
+        Set<Channel> allChannels = new HashSet<>();
+        for (String channelLabel : channelLabels) {
+            Channel channel = ChannelFactory.lookupByLabel(channelLabel);
+            if (null == channel) {
+                throw new IllegalArgumentException(
+                        String.format("Channel with label [%s] does not exist", channelLabel));
+            }
+            Stream.iterate(channel, Objects::nonNull, Channel::getParentChannel).forEach(allChannels::add);
+
+            for (Channel ch : allChannels) {
+                if (ch.isCustom() && (peripheralOrgIdWhenCustomChannel == null)) {
+                    throw new IllegalArgumentException(
+                            String.format("A peripheral OrgID must be specified for custom channel with label [%s]",
+                                    channelLabel));
+                }
+                Long orgId = ch.isVendorChannel() ? null : peripheralOrgIdWhenCustomChannel;
+
+                hubFactory.lookupIssPeripheralChannelsByFqdnAndChannel(issPeripheral, ch)
+                        .ifPresentOrElse(e -> {
+                            e.setPeripheralOrgId(orgId);
+                            hubFactory.save(e);
+                        }, () -> {
+                            IssPeripheralChannels issPeripheralChannel = new IssPeripheralChannels(issPeripheral, ch);
+                            issPeripheralChannel.setPeripheralOrgId(orgId);
+                            hubFactory.save(issPeripheralChannel);
+                        });
+            }
+        }
+    }
+
+    /**
+     * Remove peripheral channels to synchronize on a peripheral server
+     *
+     * @param user          The current user
+     * @param fqdn          the FQDN identifying the peripheral Server
+     * @param channelLabels a list of labels of the channels to be added
+     */
+    public void removePeripheralChannelsToSync(User user, String fqdn, List<String> channelLabels) {
+        ensureSatAdmin(user);
+        IssPeripheral issPeripheral = hubFactory.lookupIssPeripheralByFqdn(fqdn).orElseThrow(() ->
+                new IllegalStateException(fqdn + " is not registered as peripheral"));
+
+        for (String channelLabel : channelLabels) {
+            Channel channel = ChannelFactory.lookupByLabel(channelLabel);
+            if (null == channel) {
+                throw new IllegalArgumentException(
+                        String.format("Channel with label [%s] does not exist", channelLabel));
+            }
+
+            hubFactory.lookupIssPeripheralChannelsByFqdnAndChannel(issPeripheral, channel)
+                    .ifPresent(hubFactory::remove);
+        }
+    }
+
+    /**
+     * Lists current peripheral channels to synchronize on a peripheral server
+     *
+     * @param user The current user
+     * @param fqdn the FQDN identifying the peripheral Server
+     * @return a list of channel labels on success, exception otherwise
+     */
+    public List<IssPeripheralChannels> listPeripheralChannelsToSync(User user, String fqdn) {
+        ensureSatAdmin(user);
+        IssPeripheral issPeripheral = hubFactory.lookupIssPeripheralByFqdn(fqdn).orElseThrow(() ->
+                new IllegalStateException(fqdn + " is not registered as peripheral"));
+
+        return hubFactory.listIssPeripheralChannels(issPeripheral);
+    }
+
+    /**
+     * Synchronize peripheral channels on a peripheral server
+     *
+     * @param user The current user
+     * @param fqdn the FQDN identifying the peripheral Server
+     */
+    public void syncPeripheralChannels(User user, String fqdn) throws CertificateException, IOException {
+        ensureSatAdmin(user);
+
+        IssPeripheral issPeripheral = hubFactory.lookupIssPeripheralByFqdn(fqdn).orElseThrow(() ->
+                new IllegalStateException(fqdn + " is not registered as peripheral"));
+
+        IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn());
+        List<ChannelInfoDetailsJson> channelInfo = hubFactory.listChannelInfoForPeripheral(issPeripheral);
+        var internalClient = clientFactory.newInternalClient(
+                issPeripheral.getFqdn(),
+                accessToken.getToken(),
+                issPeripheral.getRootCa());
+        internalClient.syncChannels(channelInfo);
+    }
+
+    /**
+     * Delete an ISS v1 slave if it's also registered as a ISS v3 peripheral
+     * @param user the user performing the operation
+     * @param fqdn the fully qualified domain name of the slave and corresponding peripheral
+     * @param onlyLocal true to perform the removal only on the local server, false to also delete the master on the
+     * remote slave
+     * @throws CertificateException when it's not possible to use remote server certificate
+     * @throws IOException when the connection with the remote server fails
+     */
+    public void deleteIssV1Slave(User user, String fqdn, boolean onlyLocal) throws CertificateException, IOException {
+        ensureSatAdmin(user);
+
+        IssSlave slave = Optional.ofNullable(IssFactory.lookupSlaveByName(fqdn)).orElseThrow(() ->
+            new IllegalStateException(fqdn + " is not registered as an ISS v1 slave"));
+        IssPeripheral peripheral = hubFactory.lookupIssPeripheralByFqdn(fqdn).orElseThrow(() ->
+            new IllegalStateException(fqdn + " is not registered as an ISS v3 peripheral"));
+
+        if (!onlyLocal) {
+            // Delete the master remotely
+            IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(fqdn);
+            var internalClient = clientFactory.newInternalClient(fqdn, accessToken.getToken(), peripheral.getRootCa());
+            internalClient.deleteIssV1Master();
+        }
+
+        // Delete the slave locally
+        IssFactory.delete(slave);
+    }
+
+    /**
+     * Delete an ISS v1 master if it's also registered as an ISS v3 hub
+     * @param accessToken the access token granting access and identifying the caller
+     * remote slave
+     * @throws IllegalStateException if a master or a hub does not exist with the fqdn identified by the token
+     */
+    public void deleteIssV1Master(IssAccessToken accessToken) {
+        ensureValidToken(accessToken);
+
+        String fqdn = accessToken.getServerFqdn();
+
+        IssMaster master = Optional.ofNullable(IssFactory.lookupMasterByLabel(fqdn)).orElseThrow(() ->
+            new IllegalStateException(fqdn + " is not registered as an ISS v1 master"));
+
+        // Ensure that the server is registered as hub
+        hubFactory.lookupIssHubByFqdn(fqdn).orElseThrow(() ->
+            new IllegalStateException(fqdn + " is not registered as an ISS v3 hub"));
+
+        // Remove the master
+        IssFactory.delete(master);
     }
 }

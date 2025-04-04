@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.redhat.rhn.domain.notification;
@@ -168,7 +164,7 @@ public class UserNotificationFactory extends HibernateFactory {
                 String subject = String.format("%s Notification from %s: %s",
                         MailHelper.PRODUCT_PREFIX,
                         ConfigDefaults.get().getHostname(),
-                        notificationMessageIn.getTypeAsString());
+                        notificationMessageIn.getType().getDescription());
                 NotificationData data = notificationMessageIn.getNotificationData();
                 String message = data.getSummary();
                 if (!StringUtils.isBlank(data.getDetails())) {
@@ -186,9 +182,28 @@ public class UserNotificationFactory extends HibernateFactory {
      * Stores a notification visible for users that match both the given roles and org.
      *
      * @param notificationMessageIn notification to store
-     * @param rolesIn roles to determin which users should see the notification.
-     * @param org org users need to be in to see the notification.
      */
+    public static void storeNotificationMessageFor(NotificationMessage notificationMessageIn) {
+        storeNotificationMessageFor(notificationMessageIn, Set.of(), Optional.empty());
+    }
+
+    /**
+     * Stores a notification visible for users that match both the given roles and org.
+     *
+     * @param notificationMessageIn notification to store
+     * @param rolesIn roles to determin which users should see the notification.
+     */
+    public static void storeNotificationMessageFor(NotificationMessage notificationMessageIn, Set<Role> rolesIn) {
+        storeNotificationMessageFor(notificationMessageIn, rolesIn, Optional.empty());
+    }
+
+        /**
+         * Stores a notification visible for users that match both the given roles and org.
+         *
+         * @param notificationMessageIn notification to store
+         * @param rolesIn roles to determin which users should see the notification.
+         * @param org org users need to be in to see the notification.
+         */
     public static void storeNotificationMessageFor(NotificationMessage notificationMessageIn,
                                                    Set<Role> rolesIn, Optional<Org> org) {
         // only users in the current Org
