@@ -86,7 +86,7 @@ public class SSLCertManager {
             FileUtils.writeStringToFile(caPair.getKey(), tempCaKeyFile.getAbsolutePath());
 
             List<String> command = new ArrayList<>();
-            command.addAll(List.of("rhn-ssl-tool", "--gen-server", "-q", "--no-rpm"));
+            command.addAll(List.of("rhn-ssl-tool", "--gen-server", "-q"));
             command.addAll(List.of("-d", sslBuildDir.getAbsolutePath()));
             command.addAll(List.of("--ca-cert", tempCaCertFile.getName()));
             command.addAll(List.of("--ca-key", tempCaKeyFile.getName()));

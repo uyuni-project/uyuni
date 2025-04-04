@@ -47,7 +47,6 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
     <member>(advanced) <command>mgr-ssl-tool --gen-server --key-only --help</command></member>
     <member>(advanced) <command>mgr-ssl-tool --gen-server --cert-req-only --help</command></member>
     <member>(advanced) <command>mgr-ssl-tool --gen-server --cert-only --help</command></member>
-    <member>(advanced) <command>mgr-ssl-tool --gen-server --rpm-only --help</command></member>
 </simplelist>
 </RefSect1>
 
@@ -191,53 +190,11 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
             <para>generate a web server's SSL private key: <command>--gen-server --key-only <replaceable>...</replaceable></command></para>
             <para>generate a web server's SSL certificate request: <command>--gen-server --cert-req-only <replaceable>...</replaceable></command></para>
             <para>generate/sign a web server's SSL certificate: <command>--gen-server --cert-only <replaceable>...</replaceable></command></para>
-            <para>generate a web server's private RPM (and tar archive used for SUSE Manager Proxy installations): <command>--gen-server --rpm-only <replaceable>...</replaceable></command></para>
-            <para>generate a web server's private RPM using a custom SSL key and certificate: <command>--gen-server --rpm-only --from-server-key=<replaceable>FILE</replaceable> --from-server-cert=<replaceable>FILE</replaceable></command></para>
 
             </listitem>
         </varlistentry></variablelist>
         </msgtext></member>
 
-        <member><msgtext>
-        <variablelist><varlistentry>
-
-            <term>Using a 3rd party CA (rarely done in the SUSE Manager context):</term>
-
-            <listitem>
-            <para><emphasis>DEPRECATED:</emphasis> Use
-            <command>--from-ca-cert</command>,
-            <command>--from-server-key</command> and
-            <command>--from-server-cert</command> parameters instead as
-            described in Advanced options section.
-            </para>
-
-            <listitem>
-            <para></para>
-
-            <para><emphasis>CA public certificate:</emphasis> In the "3rd party
-            CA" case, simply copy the certificate authorities public
-            certificate to the SSL build directory; renaming it to
-            <emphasis>RHN-ORG-TRUSTED-SSL-CERT</emphasis>; and then run
-            <command>--gen-ca --dir BUILD_DIR --rpm-only</command> to package
-            that certificate in an expected manner ready for client deployment.
-            See further instructions in <emphasis>step 2</emphasis>.</para>
-
-            <para><emphasis>Web server's SSL key pair(set):</emphasis> Usually,
-            one creates the web server's SSL private key, certificate-request
-            and certificate in one step. If using a 3rd party CA though, create
-            a web server's SSL private key and certificate-request via
-            <command>--gen-server --key-only --dir BUILD_DIR</command> and
-            <command>--gen-server --cert-req-only --dir BUILD_DIR</command>.
-            Have the 3rd party sign server.csr which will generate a server.crt
-            file. Copy that server.crt file into the
-            <emphasis>BUILD_DIR/MACHINE_NAME</emphasis> directory (where the
-            server.key file was generated). And then create your deployable RPM
-            with <command>--gen-server --rpm-only --dir BUILD_DIR</command>.
-            </para>
-
-            </listitem>
-        </varlistentry></variablelist>
-        </msgtext></member>
     </simplelist></para>
 
     <para>NOTE: each step (<command>--gen-*</command> or <command>--gen-*
@@ -557,49 +514,12 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
                 </listitem>
                 </varlistentry>
                 <varlistentry>
-                <term>--server-rpm</term>
-                <listitem>
-                    <para>(rarely changed) RPM name that houses the web
-                    server's SSL key set (the base filename, not
-                    filename-version-release.noarch.rpm).</para>
-                </listitem>
-                </varlistentry>
-                <varlistentry>
                 <term>--server-tar</term>
                 <listitem>
                     <para>(rarely changed) name of archive (tarball) of the web
                     server's SSL key set and CA SSL public certificate that is
                     used solely by the hosted SUSE Manager installation
                     routines (the base filename, not filename-version-release.tar).</para>
-                </listitem>
-                </varlistentry>
-                <varlistentry>
-                <term>--rpm-packager</term>
-                <listitem>
-                    <para>(rarely used) packager of the generated RPM, such as
-                    "SUSE Manager Admin &lt;rhn-admin@example.com&gt;".</para>
-                </listitem>
-                </varlistentry>
-                <varlistentry>
-                <term>--rpm-vendor</term>
-                <listitem>
-                    <para>(rarely used) vendor of the generated RPM, such as
-                    "IS/IT Example Corp.".</para>
-                </listitem>
-                </varlistentry>
-                <varlistentry>
-                <term>--rpm-only</term>
-                <listitem>
-                    <para>(rarely used) only generate a deployable RPM.
-                    Try <command>--gen-server --rpm-only --help</command> for
-                    more information.</para>
-                </listitem>
-                </varlistentry>
-                <varlistentry>
-                <term>--no-rpm</term>
-                <listitem>
-                    <para>(rarely used) do everything *except* generate an
-                    RPM.</para>
                 </listitem>
                 </varlistentry>
                 <varlistentry>
@@ -645,8 +565,6 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
     <member>BUILD_DIR/MACHINE_NAME/server.key</member>
     <member>BUILD_DIR/MACHINE_NAME/server.csr</member>
     <member>BUILD_DIR/MACHINE_NAME/server.crt</member>
-    <member>BUILD_DIR/MACHINE_NAME/rhn-org-httpd-ssl-key-pair-MACHINE_NAME-VER-REL.src.rpm</member>
-    <member>BUILD_DIR/MACHINE_NAME/rhn-org-httpd-ssl-key-pair-MACHINE_NAME-VER-REL.noarch.rpm</member>
     <member>BUILD_DIR/MACHINE_NAME/rhn-org-httpd-ssl-archive-MACHINE_NAME-VER-REL.tar</member>
 </simplelist>
 </RefSect1>

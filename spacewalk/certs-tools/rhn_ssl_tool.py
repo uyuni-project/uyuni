@@ -38,7 +38,6 @@ import copy
 import os
 import sys
 import glob
-import pwd
 import time
 import shutil
 import getpass
@@ -83,8 +82,6 @@ from .sslToolConfig import (
     LEGACY_SERVER_RPM_NAME2,
     CA_OPENSSL_CNF_NAME,
     SERVER_OPENSSL_CNF_NAME,
-    POST_UNINSTALL_SCRIPT,
-    SERVER_RPM_SUMMARY,
     CA_CERT_RPM_SUMMARY,
 )
 
@@ -850,35 +847,6 @@ def genServerCert(password, d, verbosity=0):
         pass
 
 
-def gen_jabberd_cert(d):
-    """
-    generate the jabberd ssl cert from the server cert and key
-    """
-
-    # pylint: disable-next=invalid-name
-    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))
-    server_key = os.path.join(serverKeyPairDir, d["--server-key"])
-    server_cert = os.path.join(serverKeyPairDir, d["--server-cert"])
-
-    dependencyCheck(server_key)
-    dependencyCheck(server_cert)
-
-    jabberd_ssl_cert_name = os.path.basename(d["--jabberd-ssl-cert"])
-    jabberd_ssl_cert = os.path.join(serverKeyPairDir, jabberd_ssl_cert_name)
-
-    # Create the jabberd cert - need to concatenate the cert and the key
-    # XXX there really should be some better error propagation here
-    fd = None
-    try:
-        fd = os.open(jabberd_ssl_cert, os.O_WRONLY | os.O_CREAT)
-        _copy_file_to_fd(cleanupAbsPath(server_cert), fd)
-        _copy_file_to_fd(cleanupAbsPath(server_key), fd)
-    finally:
-        if fd:
-            os.close(fd)
-    return
-
-
 # pylint: disable-next=invalid-name
 def _disableRpmMacros():
     mac = cleanupAbsPath("~/.rpmmacros")
@@ -1054,12 +1022,10 @@ def genProxyServerTarball_dependencies(d):
     ca_cert = pathJoin(d["--dir"], d["--ca-cert"])
     server_key = pathJoin(serverKeySetDir, d["--server-key"])
     server_cert = pathJoin(serverKeySetDir, d["--server-cert"])
-    jabberd_ssl_cert = pathJoin(serverKeySetDir, d["--jabberd-ssl-cert"])
 
     dependencyCheck(ca_cert)
     dependencyCheck(server_key)
     dependencyCheck(server_cert)
-    dependencyCheck(jabberd_ssl_cert)
 
 
 # pylint: disable-next=invalid-name
@@ -1124,7 +1090,6 @@ def genProxyServerTarball(d, version="1.0", release="1", verbosity=0):
         repr(os.path.basename(d["--ca-cert"])),
         repr(pathJoin(machinename, d["--server-key"])),
         repr(pathJoin(machinename, d["--server-cert"])),
-        repr(os.path.join(machinename, d["--jabberd-ssl-cert"])),
     ]
 
     # pylint: disable-next=invalid-name
@@ -1205,288 +1170,6 @@ Moved to final home:
         )
 
     return tarballFilepath2
-
-
-# pylint: disable-next=invalid-name
-def genServerRpm_dependencies(d):
-    """generates server's SSL key set RPM - dependencies check"""
-
-    # pylint: disable-next=invalid-name
-    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))
-    gendir(serverKeyPairDir)
-
-    server_key_name = os.path.basename(d["--server-key"])
-    server_key = os.path.join(serverKeyPairDir, server_key_name)
-
-    server_cert_name = os.path.basename(d["--server-cert"])
-    server_cert = os.path.join(serverKeyPairDir, server_cert_name)
-
-    server_cert_req_name = os.path.basename(d["--server-cert-req"])
-    # pylint: disable-next=unused-variable
-    server_cert_req = os.path.join(serverKeyPairDir, server_cert_req_name)
-
-    jabberd_ssl_cert_name = os.path.basename(d["--jabberd-ssl-cert"])
-    # pylint: disable-next=unused-variable
-    jabberd_ssl_cert = os.path.join(serverKeyPairDir, jabberd_ssl_cert_name)
-
-    dependencyCheck(server_key)
-    dependencyCheck(server_cert)
-
-    gen_jabberd_cert(d)
-
-
-# pylint: disable-next=invalid-name
-def genServerRpm(d, verbosity=0):
-    """generates server's SSL key set RPM"""
-
-    # pylint: disable-next=invalid-name
-    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))
-
-    server_key_name = os.path.basename(d["--server-key"])
-    server_key = os.path.join(serverKeyPairDir, server_key_name)
-
-    server_cert_name = os.path.basename(d["--server-cert"])
-    server_cert = os.path.join(serverKeyPairDir, server_cert_name)
-
-    server_cert_req_name = os.path.basename(d["--server-cert-req"])
-    server_cert_req = os.path.join(serverKeyPairDir, server_cert_req_name)
-
-    jabberd_ssl_cert_name = os.path.basename(d["--jabberd-ssl-cert"])
-    jabberd_ssl_cert = os.path.join(serverKeyPairDir, jabberd_ssl_cert_name)
-
-    server_rpm_name = os.path.basename(d["--server-rpm"])
-    server_rpm = os.path.join(serverKeyPairDir, server_rpm_name)
-
-    postun_scriptlet = os.path.join(d["--dir"], "postun.scriptlet")
-
-    genServerRpm_dependencies(d)
-
-    if verbosity >= 0:
-        sys.stderr.write("\n...working...\n")
-    # check for old installed RPM.
-    # pylint: disable-next=invalid-name
-    oldHdr = getInstalledHeader(LEGACY_SERVER_RPM_NAME1)
-    if oldHdr and LEGACY_SERVER_RPM_NAME1 != server_rpm_name:
-        sys.stderr.write(
-            # pylint: disable-next=consider-using-f-string
-            """
-** NOTE ** older-styled RPM installed (%s),
-           it needs to be removed before installing the web server's RPM that
-           is about to generated.
-"""
-            % LEGACY_SERVER_RPM_NAME1
-        )
-
-    if not oldHdr:
-        # pylint: disable-next=invalid-name
-        oldHdr = getInstalledHeader(LEGACY_SERVER_RPM_NAME2)
-        if oldHdr and LEGACY_SERVER_RPM_NAME2 != server_rpm_name:
-            sys.stderr.write(
-                # pylint: disable-next=consider-using-f-string
-                """
-** NOTE ** older-styled RPM installed (%s),
-           it needs to be removed before installing the web server's RPM that
-           is about to generated.
-"""
-                % LEGACY_SERVER_RPM_NAME2
-            )
-
-    # check for new installed RPM.
-    # Work out the release number.
-    hdr = getInstalledHeader(server_rpm_name)
-
-    # find RPMs in the directory as well.
-    # pylint: disable-next=consider-using-f-string
-    filenames = glob.glob("%s-*.noarch.rpm" % server_rpm)
-    if filenames:
-        filename = sortRPMs(filenames)[-1]
-        h = get_package_header(filename)
-        if hdr is None:
-            hdr = h
-        else:
-            comp = hdrLabelCompare(h, hdr)
-            if comp > 0:
-                hdr = h
-
-    # pylint: disable-next=unused-variable
-    epo, ver, rel = None, "1.0", "0"
-    if hdr is not None:
-        epo, ver, rel = hdr["epoch"], hdr["version"], hdr["release"]
-
-    # bump the release - and let's not be too smart about it
-    #                    assume the release is a number.
-    if rel:
-        rel = str(int(rel) + 1)
-
-    description = (
-        SERVER_RPM_SUMMARY
-        # pylint: disable-next=consider-using-f-string
-        + """
-Best practices suggests that this RPM should only be installed on the web
-server with this hostname: %s
-"""
-        % d["--set-hostname"]
-    )
-
-    # Determine which jabberd user exists:
-    jabberd_user = None
-    possible_jabberd_users = ["jabberd", "jabber"]
-    for juser_attempt in possible_jabberd_users:
-        try:
-            pwd.getpwnam(juser_attempt)
-            jabberd_user = juser_attempt
-        # pylint: disable-next=bare-except
-        except:
-            # user doesn't exist, try the next
-            pass
-    if jabberd_user is None:
-        print(
-            "WARNING: No jabber/jabberd user on system, skipping "
-            + "jabberd.pem generation."
-        )
-
-    jabberd_cert_string = ""
-    if jabberd_user is not None:
-        # pylint: disable-next=consider-using-f-string
-        jabberd_cert_string = "/etc/pki/spacewalk/jabberd/server.pem:0600,%s,%s=%s" % (
-            jabberd_user,
-            jabberd_user,
-            repr(cleanupAbsPath(jabberd_ssl_cert)),
-        )
-
-    ## build the server RPM
-    args = (
-        # pylint: disable-next=consider-using-f-string
-        os.path.join(CERT_PATH, "gen-rpm.sh") + " "
-        "--name %s --version %s --release %s --packager %s --vendor %s "
-        "--group 'RHN/Security' --summary %s --description %s --postun %s "
-        "/etc/httpd/conf/ssl.key/server.key:0600=%s "
-        "/etc/httpd/conf/ssl.crt/server.crt=%s "
-        "%s "
-        % (
-            repr(server_rpm_name),
-            ver,
-            rel,
-            repr(d["--rpm-packager"]),
-            repr(d["--rpm-vendor"]),
-            repr(SERVER_RPM_SUMMARY),
-            repr(description),
-            repr(cleanupAbsPath(postun_scriptlet)),
-            repr(cleanupAbsPath(server_key)),
-            repr(cleanupAbsPath(server_cert)),
-            jabberd_cert_string,
-        )
-    )
-
-    abs_server_cert_req = cleanupAbsPath(server_cert_req)
-    if os.path.exists(abs_server_cert_req):
-        # pylint: disable-next=consider-using-f-string
-        args += "/etc/httpd/conf/ssl.csr/server.csr=%s" % repr(abs_server_cert_req)
-    else:
-        sys.stderr.write(
-            # pylint: disable-next=consider-using-f-string
-            "WARNING: Not bundling %s to server RPM "
-            "(file not found)." % repr(server_cert_req)
-        )
-
-    # pylint: disable-next=invalid-name,consider-using-f-string
-    serverRpmName = "%s-%s-%s" % (server_rpm, ver, rel)
-
-    if verbosity >= 0:
-        print(
-            # pylint: disable-next=consider-using-f-string
-            """
-Generating web server's SSL key pair/set RPM:
-    %s.src.rpm
-    %s.noarch.rpm"""
-            % (serverRpmName, serverRpmName)
-        )
-        if verbosity > 1:
-            print("Commandline:", args)
-
-    if verbosity >= 4:
-        print("Current working directory:", os.getcwd())
-        print("Writing postun_scriptlet:", postun_scriptlet)
-    # pylint: disable-next=unspecified-encoding
-    open(postun_scriptlet, "w").write(POST_UNINSTALL_SCRIPT)
-
-    _disableRpmMacros()
-    cwd = chdir(serverKeyPairDir)
-    try:
-        ret, out_stream, err_stream = rhn_popen(args)
-    finally:
-        chdir(cwd)
-        _reenableRpmMacros()
-        os.unlink(postun_scriptlet)
-
-    out = out_stream.read()
-    out_stream.close()
-    err = err_stream.read()
-    err_stream.close()
-
-    # pylint: disable-next=consider-using-f-string
-    if ret or not os.path.exists("%s.noarch.rpm" % serverRpmName):
-        raise GenServerRpmException(
-            # pylint: disable-next=consider-using-f-string
-            "web server's SSL key set RPM generation "
-            "failed:\n%s\n%s" % (out, err)
-        )
-    if verbosity > 2:
-        if out:
-            print("STDOUT:", out)
-        if err:
-            print("STDERR:", err)
-
-    # pylint: disable-next=consider-using-f-string
-    os.chmod("%s.noarch.rpm" % serverRpmName, int("0600", 8))
-
-    # generic the tarball necessary for Spacewalk Proxy against hosted installations
-    # pylint: disable-next=invalid-name
-    tarballFilepath = genProxyServerTarball(
-        d, version=ver, release=rel, verbosity=verbosity
-    )
-
-    # write-out latest.txt information
-    latest_txt = os.path.join(serverKeyPairDir, "latest.txt")
-    fo = open(latest_txt, "wb")
-    # pylint: disable-next=consider-using-f-string
-    fo.write(bstr("%s.noarch.rpm\n" % os.path.basename(serverRpmName)))
-    # pylint: disable-next=consider-using-f-string
-    fo.write(bstr("%s.src.rpm\n" % os.path.basename(serverRpmName)))
-    # pylint: disable-next=consider-using-f-string
-    fo.write(bstr("%s\n" % os.path.basename(tarballFilepath)))
-    fo.close()
-    os.chmod(latest_txt, int("0600", 8))
-
-    if verbosity >= 0:
-        print(
-            # pylint: disable-next=consider-using-f-string
-            """
-Deploy the server's SSL key pair/set RPM:
-    (NOTE: the SUSE Multi-Linux Manager or Proxy installers may do this step for you.)
-    The "noarch" RPM needs to be deployed to the machine working as a
-    web server, or SUSE Multi-Linux Manager, or SUSE Multi-Linux Manager Proxy.
-    Presumably %s."""
-            % repr(d["--set-hostname"])
-        )
-
-    # pylint: disable-next=consider-using-f-string
-    return "%s.noarch.rpm" % serverRpmName
-
-
-# Helper function
-def _copy_file_to_fd(filename, fd):
-    # pylint: disable-next=unspecified-encoding
-    f = open(filename)
-    buffer_size = 16384
-    count = 0
-    while 1:
-        buf = f.read(buffer_size)
-        if not buf:
-            break
-        os.write(fd, bstr(buf))
-        count = count + len(buf)
-    return count
 
 
 # pylint: disable-next=invalid-name
@@ -1674,21 +1357,11 @@ def _main():
         elif getOption(options, "cert_only"):
             genServerCert_dependencies(getCAPassword(options, confirmYN=0), DEFS)
             genServerCert(getCAPassword(options, confirmYN=0), DEFS, options.verbose)
-        elif getOption(options, "rpm_only"):
-            if getOption(options, "from_server_key"):
-                _copy_server_ssl_key(DEFS, getOption(options, "from_server_key"))
-            if getOption(options, "from_server_cert"):
-                _copy_server_ssl_cert(DEFS, getOption(options, "from_server_cert"))
-            genServerRpm_dependencies(DEFS)
-            genServerRpm(DEFS, options.verbose)
         else:
             genServer_dependencies(getCAPassword(options, confirmYN=0), DEFS)
             genServerKey(DEFS, options.verbose)
             genServerCertReq(DEFS, options.verbose)
             genServerCert(getCAPassword(options, confirmYN=0), DEFS, options.verbose)
-            gen_jabberd_cert(DEFS)
-            if not getOption(options, "no_rpm"):
-                genServerRpm(DEFS, options.verbose)
 
 
 def main():
