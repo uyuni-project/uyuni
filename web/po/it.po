@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-11 09:51+0100\n"
+"POT-Creation-Date: 2025-04-04 11:51+0200\n"
 "PO-Revision-Date: 2024-04-25 20:43+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web-4-3/it/"
@@ -360,11 +360,11 @@ msgstr "Avanti"
 msgid "Last"
 msgstr ""
 
-#: ../html/src/components/pagination.tsx:93
+#: ../html/src/components/pagination.tsx:94
 msgid "Page <dropdown></dropdown> of {total}"
 msgstr ""
 
-#: ../html/src/components/pagination.tsx:115
+#: ../html/src/components/pagination.tsx:117
 msgid "Page {current} of {total}"
 msgstr ""
 
