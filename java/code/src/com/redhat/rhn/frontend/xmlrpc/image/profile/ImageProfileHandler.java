@@ -63,7 +63,6 @@ public class ImageProfileHandler extends BaseHandler {
      */
     @ReadOnly
     public List<String> listImageProfileTypes(User loggedInUser) {
-        ensureImageAdmin(loggedInUser);
         List<String> imageTypes = new ArrayList<>();
         imageTypes.add(ImageProfile.TYPE_DOCKERFILE);
         if (Config.get().getBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED)) {
@@ -83,7 +82,6 @@ public class ImageProfileHandler extends BaseHandler {
      */
     @ReadOnly
     public List<ImageProfile> listImageProfiles(User loggedInUser) {
-        ensureImageAdmin(loggedInUser);
         return ImageProfileFactory.listImageProfiles(loggedInUser.getOrg());
     }
 
@@ -100,7 +98,6 @@ public class ImageProfileHandler extends BaseHandler {
      */
     @ReadOnly
     public ImageProfile getDetails(User loggedInUser, String label) {
-        ensureImageAdmin(loggedInUser);
         return getValidImageProfile(loggedInUser, label);
     }
 
@@ -127,8 +124,6 @@ public class ImageProfileHandler extends BaseHandler {
      */
     public int create(User loggedInUser, String label, String type, String storeLabel,
             String path, String activationKey, String kiwiOptions) {
-        ensureImageAdmin(loggedInUser);
-
         if (StringUtils.isEmpty(label)) {
             throw new InvalidParameterException("Label cannot be empty.");
         }
@@ -245,7 +240,6 @@ public class ImageProfileHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, String label) {
-        ensureImageAdmin(loggedInUser);
         ImageProfileFactory.delete(getValidImageProfile(loggedInUser, label));
         return 1;
     }
@@ -269,7 +263,6 @@ public class ImageProfileHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int setDetails(User loggedInUser, String label, Map details) {
-        ensureImageAdmin(loggedInUser);
         Set<String> validKeys = new HashSet<>();
         validKeys.add("storeLabel");
         validKeys.add("path");
@@ -361,7 +354,6 @@ public class ImageProfileHandler extends BaseHandler {
      */
     @ReadOnly
     public Map<String, String> getCustomValues(User loggedInUser, String label) {
-        ensureImageAdmin(loggedInUser);
         return getValidImageProfile(loggedInUser, label).getCustomDataValues().stream()
                 .collect(Collectors.toMap(a -> a.getKey().getLabel(), ProfileCustomDataValue::getValue));
     }
