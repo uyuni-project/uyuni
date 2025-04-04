@@ -11684,6 +11684,31 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
         <source>Unable to deregister: an unexpected error is occurred while contacting the remote server. Please check the server logs.</source>
         <target state="translated">No es pot donar de baixa: s'ha produït un error inesperat en contactar amb el servidor remot. Si us plau, comproveu els registres del servidor.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="toolbar.convert.proxy" xml:space="preserve">
+        <source>Convert to Proxy</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Details Convert to Proxy</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.entitle.added.proxy_entitled" xml:space="preserve">
+        <source>&lt;strong&gt;Proxy&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ansible.inventory" xml:space="preserve">
+        <source>Refresh Ansible inventories</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="recurring_action.empty_playbook_path" xml:space="preserve">
+        <source>No Playbook selected</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
