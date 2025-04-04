@@ -408,7 +408,7 @@ public class HubApiController {
         }
         catch (IOException | CertificateException ex) {
             LOGGER.error("Unable to register: error to connect with the remote server {}", server.getFqdn(), ex);
-            internalServerError(response, LOC.getMessage("hub.unable_to_deregister"));
+            return internalServerError(response, LOC.getMessage("hub.unable_to_deregister"));
         }
 
         return success(response);

@@ -55,6 +55,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import redstone.xmlrpc.XmlRpcClient;
@@ -832,7 +833,7 @@ public class TaskomaticApi {
      */
     public void scheduleSingleRootCaCertUpdate(String fileName, String rootCaCertContent)
             throws TaskomaticApiException {
-        scheduleSingleRootCaCertUpdate(singletonMap(fileName, rootCaCertContent));
+        scheduleMultipleRootCaCertUpdate(singletonMap(fileName, rootCaCertContent));
     }
 
     /**
@@ -841,22 +842,65 @@ public class TaskomaticApi {
      * @param filenameToRootCaCertMap maps filename to root ca certificate actual content
      * @throws TaskomaticApiException if there was an error
      */
-    public void scheduleSingleRootCaCertUpdate(Map<String, String> filenameToRootCaCertMap)
+    public void scheduleMultipleRootCaCertUpdate(Map<String, String> filenameToRootCaCertMap)
             throws TaskomaticApiException {
 
         if ((null == filenameToRootCaCertMap) || filenameToRootCaCertMap.isEmpty()) {
             return; // nothing to do: avoid invoke call, to spare a potential exception
         }
 
-        //sanitise map keys and values: XmlRpc actual call does not like null strings
-        //(exception: Cannot invoke "Object.toString()" because "key" is null)
+        //sanitise map keys and values: only valid [filename, content] pairs are considered
         Map<String, String> sanitisedFilenameToRootCaCertMap = filenameToRootCaCertMap.entrySet()
                 .stream()
-                .collect(Collectors.toMap(p -> Objects.toString(p.getKey(), ""),
-                        p -> Objects.toString(p.getValue(), "")));
+                .filter(p -> StringUtils.isNotEmpty(p.getKey()))
+                .filter(p -> StringUtils.isNotEmpty(p.getValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        if (sanitisedFilenameToRootCaCertMap.isEmpty()) {
+            return; // nothing to do: avoid invoke call, to spare a potential exception
+        }
 
         Map<String, Object> paramList = new HashMap<>();
         paramList.put("filename_to_root_ca_cert_map", sanitisedFilenameToRootCaCertMap);
+        invoke(SCHEDULE_SINGLE_SAT_BUNCH_RUN, "root-ca-cert-update-bunch", paramList);
+    }
+
+    /**
+     * Schedule one root ca certificate delete
+     *
+     * @param fileName          filename of the ca certificate
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleSingleRootCaCertDelete(String fileName)
+            throws TaskomaticApiException {
+        scheduleMultipleRootCaCertDelete(List.of(fileName));
+    }
+
+    /**
+     * Schedule multiple root ca certificates delete.
+     *
+     * @param rootCaCertFilenameList maps filename to root ca certificate actual content
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleMultipleRootCaCertDelete(List<String> rootCaCertFilenameList)
+            throws TaskomaticApiException {
+
+        if ((null == rootCaCertFilenameList) || rootCaCertFilenameList.isEmpty()) {
+            return; // nothing to do: avoid invoke call, to spare a potential exception
+        }
+
+        // empty rootCa content deletes caCert file
+        Map<String, String> filenameToRootCaCertMap = rootCaCertFilenameList
+                .stream()
+                .filter(StringUtils::isNotEmpty)
+                .collect(Collectors.toMap(Function.identity(), p -> ""));
+
+        if (filenameToRootCaCertMap.isEmpty()) {
+            return; // nothing to do: avoid invoke call, to spare a potential exception
+        }
+
+        Map<String, Object> paramList = new HashMap<>();
+        paramList.put("filename_to_root_ca_cert_map", filenameToRootCaCertMap);
         invoke(SCHEDULE_SINGLE_SAT_BUNCH_RUN, "root-ca-cert-update-bunch", paramList);
     }
 

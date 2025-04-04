@@ -890,8 +890,10 @@ public class HubManager {
 
     private IssServer createServer(IssRole role, String serverFqdn, String rootCA, String gpgKey, User user)
             throws TaskomaticApiException {
-        String filename = CertificateUtils.computeRootCaFileName(role.getLabel(), serverFqdn);
-        taskomaticApi.scheduleSingleRootCaCertUpdate(filename, rootCA);
+        if (StringUtils.isNotEmpty(rootCA)) {
+            String filename = CertificateUtils.computeRootCaFileName(role.getLabel(), serverFqdn);
+            taskomaticApi.scheduleSingleRootCaCertUpdate(filename, rootCA);
+        }
         return switch (role) {
             case HUB -> {
                 IssHub hub = new IssHub(serverFqdn, rootCA);
