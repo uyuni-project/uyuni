@@ -20,6 +20,10 @@ RUN redis-cli -u "redis://${AWS_REDIS_USER}:${AWS_REDIS_PASS}@${AWS_REDIS_HOST}:
 # Move the backup to the local Redis data directory (it will be mounted to Redis container by default)
 RUN mv $BACKUP_FILE /data/dump.rdb
 
+# Create Redis config for user/pass
+RUN echo "user user on >pass allcommands allkeys" > /data/redis.conf
+RUN echo "requirepass pass" >> /data/redis.conf
+
 # Expose Redis default port
 EXPOSE 6379
 
