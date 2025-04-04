@@ -63,6 +63,7 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "CVE Audit" link in the left menu
     And I should see a "Subscription Matching" link in the left menu
     And I should see a "OpenSCAP" link in the left menu
+    And I should see a "Confidential Computing" link in the left menu
 
   Scenario: The OpenSCAP submenu menu
     When I follow the left menu "Audit > OpenSCAP"
