@@ -78,5 +78,5 @@ sudo -i podman exec server bash -c "rsync -av /testsuite/dockerfiles/server-all-
 sudo -i podman exec server bash -c "rm -f /usr/bin/mgrctl"
 
 # publish mirrors in apache
-sudo -i podman exec server bash -c "cd /srv/www/htdocs/pub && ln -s /mirror . && chown root:root mirror && chown root:root /mirror"
+sudo -i podman exec server bash -c "cd /srv/www/htdocs/pub && ln -s /mirror . && chown root:root mirror && chown -R root:root /mirror"
 
