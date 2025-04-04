@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
+import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 
 import com.suse.manager.api.ApiResponseSerializer;
@@ -42,6 +43,10 @@ import java.util.stream.Collectors;
  *   #prop("string", "creator")
  *   #prop("boolean", "test")
  *   #prop_array("states", "string", "the ordered list of states to be executed by a custom state action")
+ *   #prop("string", "extra_vars")
+ *   #prop("boolean", "flush_cache")
+ *   #prop("string", "inventory_path")
+ *   #prop("string", "playbook_path")
  *   #prop("boolean", "active")
  * #struct_end()
  */
@@ -75,6 +80,13 @@ public class RecurringActionSerializer extends ApiResponseSerializer<RecurringAc
         }
         else if (src.getActionType().equals(RecurringActionType.ActionType.HIGHSTATE)) {
             builder.add("test", ((RecurringHighstate) src.getRecurringActionType()).isTestMode());
+        }
+        else if (src.getActionType().equals(RecurringActionType.ActionType.PLAYBOOK)) {
+            builder.add("extra_vars", ((RecurringPlaybook) src.getRecurringActionType()).getExtraVarsContents());
+            builder.add("flush_cache", ((RecurringPlaybook) src.getRecurringActionType()).isFlushCache());
+            builder.add("inventory_path", ((RecurringPlaybook) src.getRecurringActionType()).getInventoryPath());
+            builder.add("playbook_path", ((RecurringPlaybook) src.getRecurringActionType()).getPlaybookPath());
+            builder.add("test", ((RecurringPlaybook) src.getRecurringActionType()).isTestMode());
         }
 
         return builder.build();

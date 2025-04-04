@@ -4,7 +4,6 @@
 @scope_openscap
 @scope_deblike
 @deblike_minion
-@skip_if_github_validation
 Feature: OpenSCAP audit of Debian-like Salt minion
   In order to audit a Debian-like Salt minion
   As an authorized user

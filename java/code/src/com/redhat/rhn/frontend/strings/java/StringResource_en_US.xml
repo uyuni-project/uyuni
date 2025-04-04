@@ -2238,6 +2238,12 @@ and try again.
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetEdit</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="toolbar.convert.proxy" xml:space="preserve">
+        <source>Convert to Proxy</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Details Convert to Proxy</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="kickstart.iprange.url" xml:space="preserve">
         <source>New systems can be autoinstalled based upon their ip address by appending &lt;code&gt;{0}&lt;/code&gt; to the kernel parameters for an autoinstallation.</source>
         <context-group name="ctx">
@@ -9223,6 +9229,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="system.entitle.added.proxy_entitled" xml:space="preserve">
+        <source>&lt;strong&gt;Proxy&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host" xml:space="preserve">
         <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
@@ -9285,6 +9297,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="ansible.playbook" xml:space="preserve">
         <source>Execute Ansible playbook</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ansible.inventory" xml:space="preserve">
+        <source>Refresh Ansible inventories</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
@@ -9432,6 +9450,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="recurring_action.empty_states_config" xml:space="preserve">
         <source>States configuration must be provided</source>
+      </trans-unit>
+      <trans-unit id="recurring_action.empty_playbook_path" xml:space="preserve">
+        <source>No Playbook selected</source>
       </trans-unit>
       <trans-unit id="recurring_action.action_name_exists" xml:space="preserve">
         <source>Recurring Action with given name already exists</source>

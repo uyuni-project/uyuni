@@ -1,0 +1,7 @@
+- Set default paths for Ansible playbook and inventory
+  on add control node
+- Add filtering option to the system list to filter by
+  Ansible managed systems
+- Display raw playbook output from Ansible in the event details
+- Allow scheduling recurring playbook actions on Ansible
+  control nodes

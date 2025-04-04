@@ -34,6 +34,12 @@ function channelIcon(channel) {
   return <i className={iconClass} title={iconTitle} style={iconStyle} />;
 }
 
+export enum RecurringActionType {
+  CUSTOMSTATE = "CUSTOMSTATE",
+  HIGHSTATE = "HIGHSTATE",
+  PLAYBOOK = "PLAYBOOK",
+}
+
 type RecurringActionsDetailsProps = {
   data?: any;
   minions?: any;
@@ -195,6 +201,31 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
     );
   }
 
+  showPlaybookDetails() {
+    return (
+      <BootstrapPanel title={t("Playbook details")}>
+        <div className="table-responsive">
+          <table className="table">
+            <tbody>
+              <tr>
+                <td>{t("Playbook path")}:</td>
+                <td>{this.state.details.playbookPath}</td>
+              </tr>
+              <tr>
+                <td>{t("Inventory path")}:</td>
+                <td>{this.state.details.inventoryPath ? this.state.details.inventoryPath : "-"}</td>
+              </tr>
+              <tr>
+                <td>{t("Flush fact cache")}:</td>
+                <td>{this.state.details.flushCache ? t("true") : t("false")}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </BootstrapPanel>
+    );
+  }
+
   render() {
     const buttons = [
       <div className="btn-group pull-right">
@@ -234,10 +265,10 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
           content={<span>{t("Are you sure you want to delete this schedule?")}</span>}
           onConfirm={() => this.deleteSchedule(this.props.data)}
         />
-        {window.entityType === "NONE" || this.props.data.actionType !== "HIGHSTATE" ? null : (
+        {window.entityType === "NONE" || this.props.data.actionType !== RecurringActionType.HIGHSTATE ? null : (
           <DisplayHighstate minions={this.state.minions} />
         )}
-        {!(this.props.data.actionType === "CUSTOMSTATE" && this.state.details) ? null : (
+        {!(this.props.data.actionType === RecurringActionType.CUSTOMSTATE && this.state.details) ? null : (
           <div className="row">
             <h3>{t("State configuration for {name}", { name: this.props.data.targetName })}</h3>
             <Table
@@ -272,6 +303,9 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
             </Table>
           </div>
         )}
+        {!(this.props.data.actionType === RecurringActionType.PLAYBOOK && this.state.details)
+          ? null
+          : this.showPlaybookDetails()}
       </TopPanel>
     );
   }

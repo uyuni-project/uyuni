@@ -100,6 +100,8 @@ end
 def repeat_until_timeout(timeout: DEFAULT_TIMEOUT, retries: nil, message: nil, report_result: false, dont_raise: false)
   begin
     last_result = nil
+    # When we run the code coverage tracking tool together with our server, its performance decreases.
+    timeout *= 2 if $code_coverage_mode
     Timeout.timeout(timeout) do
       # HACK: Timeout.timeout might not raise Timeout::Error depending on the yielded code block
       # Pitfalls with this method have been long known according to the following articles:
@@ -304,7 +306,7 @@ end
 # @return [Boolean] true if the host name belongs to a Red Hat-like distribution, false otherwise
 def rh_host?(name)
   os_family = get_target(name).os_family
-  %w[rocky centos redhat alma oracle liberty].include? os_family
+  %w[rocky centos redhat alma oracle liberty almalinux ol rhel].include? os_family
 end
 
 # Determines if the given host name is a Debian-based host.

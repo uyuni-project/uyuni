@@ -278,6 +278,17 @@ When(/^vendor change should be enabled for [^"]* on "([^"]*)"$/) do |host|
   raise ScriptError, 'Vendor change option not found in logs' unless return_code.zero?
 end
 
+When(/^I (start|stop|restart|reload|enable|disable) the "([^"]*)" container$/) do |action, service|
+  node = get_target('server')
+  node.run_local("systemctl #{action} #{service}.service", check_errors: true, verbose: true)
+end
+
+When(/^I wait until "([^"]*)" container is active$/) do |service|
+  node = get_target('server')
+  cmd = "systemctl is-active #{service}"
+  node.run_local_until_ok(cmd)
+end
+
 When(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   cmd = "systemctl is-active #{service}"
@@ -1155,8 +1166,7 @@ When(/^I configure the proxy$/) do
              "TRACEBACK_EMAIL=galaxy-noise@suse.de\n" \
              "INSTALL_MONITORING=n\n" \
              "POPULATE_CONFIG_CHANNEL=y\n" \
-             "RHN_USER=admin\n" \
-             "ACTIVATE_SLP=y\n"
+             "RHN_USER=admin\n"
   settings +=
     if running_k3s?
       "USE_EXISTING_CERTS=y\n" \
@@ -1364,14 +1374,14 @@ Given(/^I can connect to the ReportDB on the Server$/) do
   raise SystemCallError, 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
 end
 
-Given(/^I have a user with admin access to the ReportDB$/) do
+Given(/^I have a user allowed to create roles on the ReportDB$/) do
   users_and_permissions, return_code = get_target('server').run(reportdb_server_query('\\du'))
   raise SystemCallError, 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
 
   # extract only the line for the suma user
   suma_user_permissions = users_and_permissions[/pythia_susemanager(.*)/]
   raise ScriptError, 'ReportDB admin user pythia_susemanager doesn\'t have the required permissions' unless
-    ['Superuser', 'Create role', 'Create DB'].all? { |permission| suma_user_permissions.include? permission }
+    ['Create role'].all? { |permission| suma_user_permissions.include? permission }
 end
 
 When(/^I create a read-only user for the ReportDB$/) do
@@ -1408,8 +1418,12 @@ Then(/^I shouldn't see the read-only user listed on the ReportDB user accounts$/
 end
 
 When(/^I connect to the ReportDB with read-only user from external machine$/) do
+  node = get_target('server')
+  output, _code = node.run_local('dig +short reportdb A')
+  reportdb_ip = output.strip
+
   # connection from the controller to the reportdb in the server
-  $reportdb_ro_conn = PG.connect(host: get_target('server').public_ip, port: 5432, dbname: 'reportdb', user: $reportdb_ro_user, password: 'linux')
+  $reportdb_ro_conn = PG.connect(host: reportdb_ip, port: 5432, dbname: 'reportdb', user: $reportdb_ro_user, password: 'linux')
 end
 
 Then(/^I should be able to query the ReportDB$/) do
@@ -1447,15 +1461,24 @@ Given(/^I know the ReportDB admin user credentials$/) do
 end
 
 Then(/^I should be able to connect to the ReportDB with the ReportDB admin user$/) do
+  node = get_target('server')
+  output, _code = node.run_local('dig +short reportdb A')
+  reportdb_ip = output.strip
+
   # connection from the controller to the reportdb in the server
-  reportdb_admin_conn = PG.connect(host: get_target('server').public_ip, port: 5432, dbname: 'reportdb', user: $reportdb_admin_user, password: $reportdb_admin_password)
+  reportdb_admin_conn = PG.connect(host: reportdb_ip, port: 5432, dbname: 'reportdb', user: $reportdb_admin_user, password: $reportdb_admin_password)
   raise SystemCallError, 'Couldn\'t connect to ReportDB with admin from external machine' unless reportdb_admin_conn.status.zero?
 end
 
 Then(/^I should not be able to connect to product database with the ReportDB admin user$/) do
-  dbname = product.delete(' ').downcase
-  assert_raises PG::ConnectionBad do
-    PG.connect(host: get_target('server').public_ip, port: 5432, dbname: dbname, user: $reportdb_admin_user, password: $reportdb_admin_password)
+  node = get_target('server')
+  output, _code = node.run_local('dig +short db A')
+  db_ip = output.strip
+
+  dbname = 'susemanager'
+  reportdb_admin_conn = PG.connect(host: db_ip, port: 5432, dbname: dbname, user: $reportdb_admin_user, password: $reportdb_admin_password)
+  assert_raises PG::InsufficientPrivilege do
+    reportdb_admin_conn.exec('select * from rhnserver;')
   end
 end
 

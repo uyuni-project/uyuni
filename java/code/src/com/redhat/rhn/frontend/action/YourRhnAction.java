@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
 public class YourRhnAction extends RhnAction {
 
     public static final String ANY_LISTS_SELECTED = "anyListsSelected";
-    private final CloudPaygManager cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
+    private static final CloudPaygManager CLOUD_PAYG_MANAGER = GlobalInstanceHolder.PAYG_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -70,7 +70,7 @@ public class YourRhnAction extends RhnAction {
         request.setAttribute(ANY_LISTS_SELECTED, anyListsSelected);
         request.setAttribute("legends", "yourrhn");
 
-        if (cloudPaygManager.isPaygInstance() && !cloudPaygManager.isCompliant()) {
+        if (CLOUD_PAYG_MANAGER.isPaygInstance() && !CLOUD_PAYG_MANAGER.isCompliant()) {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("message.payg.errornotcompliant"));
         }

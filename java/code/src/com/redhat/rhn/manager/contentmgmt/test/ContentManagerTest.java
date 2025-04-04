@@ -1841,6 +1841,36 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(relativeFilename, sndTgt.getModules().getRelativeFilename());
     }
 
+    @Test
+    public void testChannelNameInEnvironment() {
+        ContentProject cp = new ContentProject();
+        cp.setLabel("sles_15_sp6");
+        cp.setName("SNC SLES 15 SP6");
+
+        String channelName = "SNC SLES 15 SP6";
+
+        ContentEnvironment devEnv = new ContentEnvironment();
+        devEnv.setName("SNC SLES 15 SP6 Dev");
+        devEnv.setLabel("sles_15_sp6_dev");
+        devEnv.setContentProject(cp);
+
+        ContentEnvironment prodEnv = new ContentEnvironment();
+        prodEnv.setLabel("sles_15_sp6_prod");
+        prodEnv.setName("SNC SLES 15 SP6 Prod");
+        prodEnv.setContentProject(cp);
+        prodEnv.setPrevEnvironment(devEnv);
+
+        String expectedFirstEnvName = cp.getLabel() + "-" + devEnv.getLabel() + "-" + channelName;
+        String firstEnvName = ContentManager.channelNameInEnvironment(channelName, devEnv);
+        assertEquals(expectedFirstEnvName, firstEnvName);
+
+        String expectedSecondEnvName = cp.getLabel() + "-" + prodEnv.getLabel() + "-" + channelName;
+        String secondEnvNameWithoutChangingFirstEnv = ContentManager.channelNameInEnvironment(firstEnvName, prodEnv);
+        String secondEnvNameRemovingPrefixFromName = ContentManager.channelNameInEnvironment(channelName, prodEnv);
+        assertEquals(expectedSecondEnvName, secondEnvNameWithoutChangingFirstEnv);
+        assertEquals(expectedSecondEnvName, secondEnvNameRemovingPrefixFromName);
+    }
+
     private void assertBuildFails(String projectLabel) {
         try {
             contentManager.buildProject(projectLabel, empty(), false, user);

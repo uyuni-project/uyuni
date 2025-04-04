@@ -4,6 +4,7 @@
 # or it can be run manually later.
 
 POSTGRESQL=/var/lib/pgsql/data/postgresql.conf
+HBA_FILE=/var/lib/pgsql/data/pg_hba.conf
 SSL_CERT=/etc/pki/tls/certs/spacewalk.crt
 SSL_KEY=/etc/pki/tls/private/pg-spacewalk.key
 
@@ -68,6 +69,7 @@ WORK_MEM=$(bin_rnd $(((TOTAL_MEM_KB - SHARED_BUFFERS) / (3 * MAX_CONNECTIONS))))
 MAINTENANCE_WORK_MEM=$(bin_rnd $(( TOTAL_MEM_KB / 16 < 1048576 ? TOTAL_MEM_KB / 16 : 1048576 ))) # 1GB
 
 # Apply configurations
+postgres_reconfig "listen_addresses" "'*'"
 postgres_reconfig "shared_buffers" "$(to_mb $SHARED_BUFFERS)"
 postgres_reconfig "effective_cache_size" "$(to_mb $EFFECTIVE_CACHE_SIZE)"
 postgres_reconfig "work_mem" "$(to_mb $WORK_MEM)"
@@ -78,6 +80,10 @@ postgres_reconfig "checkpoint_completion_target" "0.9"
 postgres_reconfig "wal_buffers" "16MB"
 postgres_reconfig "constraint_exclusion" "off"
 postgres_reconfig "max_connections" "$MAX_CONNECTIONS"
+
+# log to the stderr instead of the log file
+postgres_reconfig "logging_collector" "off"
+postgres_reconfig "log_destination" "stderr"
 
 if [ "$IS_SSD" -eq 1 ]; then
     postgres_reconfig "random_page_cost" "1.1"
@@ -90,11 +96,17 @@ fi
 postgres_reconfig jit off
 
 if [ -f $SSL_KEY ] ; then
-    chown postgres $SSL_KEY
-    chmod 400 $SSL_KEY
     postgres_reconfig "ssl" "on"
     postgres_reconfig "ssl_cert_file" "'$SSL_CERT'"
     postgres_reconfig "ssl_key_file" "'$SSL_KEY'"
 fi
 
 echo "postgresql.conf updated"
+
+rm /var/lib/pgsql/data/pg_hba.conf
+
+chmod +x /usr/local/bin/docker-entrypoint.sh
+source /usr/local/bin/docker-entrypoint.sh
+pg_setup_hba_conf "$@"
+
+echo "pg_hba.conf updated"

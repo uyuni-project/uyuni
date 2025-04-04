@@ -21,12 +21,14 @@ import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ansible.InventoryAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
@@ -64,6 +66,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
+import com.redhat.rhn.domain.server.AnsibleFactory;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -71,12 +74,14 @@ import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
+import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -713,6 +718,9 @@ public class SaltUtils {
         else if (action.getActionType().equals(ActionFactory.TYPE_COCO_ATTESTATION)) {
             handleCocoAttestationResult(action, serverAction, jsonResult);
         }
+        else if (action.getActionType().equals(ActionFactory.TYPE_INVENTORY)) {
+                handleInventoryRefresh(action, serverAction, jsonResult);
+        }
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
@@ -1117,10 +1125,8 @@ public class SaltUtils {
                     List<List<Object>> files = new ArrayList<>();
                     String imageDir = info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
                     if (!buildInfo.getBundles().isEmpty()) {
-                        buildInfo.getBundles().forEach(bundle -> {
-                            files.add(List.of(bundle.getFilepath(),
-                                    imageDir + bundle.getFilename(), "bundle", bundle.getChecksum()));
-                        });
+                        buildInfo.getBundles().forEach(bundle -> files.add(List.of(bundle.getFilepath(),
+                                    imageDir + bundle.getFilename(), "bundle", bundle.getChecksum())));
                     }
                     else {
                         files.add(List.of(buildInfo.getImage().getFilepath(),
@@ -1720,12 +1726,11 @@ public class SaltUtils {
         // name and EVR are never null due to DB constraints
         // see schema/spacewalk/common/tables/rhnServerPackage.sql
 
-        String sb = p.getName().getName() +
+        return p.getName().getName() +
                 "-" +
                 p.getEvr().toUniversalEvrString() +
                 "." +
                 Optional.ofNullable(p.getArch()).map(PackageArch::toUniversalArchString).orElse("unknown");
-        return sb;
     }
 
     /**
@@ -1884,6 +1889,48 @@ public class SaltUtils {
         if (LOG.isDebugEnabled()) {
             long duration = Duration.between(start, Instant.now()).getSeconds();
             LOG.debug("Hardware profile updated for minion: {} ({} seconds)", server.getMinionId(), duration);
+        }
+    }
+
+    private void handleInventoryRefresh(Action action, ServerAction serverAction, JsonElement jsonResult) {
+        if (jsonResult == null) {
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setResultMsg(
+                    "Error while requesting inventory data from target system: Got no result from system");
+            return;
+        }
+        String inventoryPath = ((InventoryAction) action).getDetails().getInventoryPath();
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+            try {
+                Set<String> inventorySystems = AnsibleManager.parseInventoryAndGetHostnames(
+                        Json.GSON.fromJson(jsonResult, Map.class));
+
+                InventoryPath inventory = AnsibleFactory.lookupAnsibleInventoryPath(
+                                serverAction.getServerId(), inventoryPath)
+                        .orElseThrow(() -> new LookupException("Unable to find Ansible inventory: " +
+                                inventoryPath + " for system " + serverAction.getServerId()));
+
+                Set<Server> systemsToAdd = inventorySystems.stream().map(s -> ServerFactory.findByFqdn(s)
+                        .orElse(null)).filter(Objects::nonNull).collect(Collectors.toSet());
+
+                AnsibleManager.handleInventoryRefresh(inventory, systemsToAdd);
+                AnsibleFactory.saveAnsiblePath(inventory);
+
+                serverAction.setResultMsg("Refreshed Ansible managed systems of inventory: '" + inventoryPath + "'");
+            }
+            catch (JsonSyntaxException e) {
+                LOG.error("Unable to parse Ansible hostnames from json: {}", e.getMessage());
+                serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                serverAction.setResultMsg("Unable to parse hostnames from inventory: " + inventoryPath);
+                }
+            catch (LookupException e) {
+                LOG.error(e.getMessage());
+                serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                serverAction.setResultMsg(e.getMessage());
+            }
+        }
+        else {
+            serverAction.setResultMsg(jsonResult.getAsString());
         }
     }
 

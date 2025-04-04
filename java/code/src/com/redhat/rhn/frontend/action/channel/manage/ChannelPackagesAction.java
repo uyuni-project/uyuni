@@ -50,7 +50,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ChannelPackagesAction extends RhnAction {
 
-    private final String LIST_NAME = "packageList";
+    private static final String LIST_NAME = "packageList";
 
 
     /** {@inheritDoc} */

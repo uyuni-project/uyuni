@@ -12,7 +12,7 @@
 @skip_if_containerized_server
 Feature: Restart the spacewalk services via UI
 
-  Scenario: Restart the SUSE Manager through the WebUI Admin option
+  Scenario: Restart the SUSE Multi-Linux Manager through the WebUI Admin option
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Manager Configuration > Restart"
     And I check "restart"

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -25,6 +25,10 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.function.Supplier;
 
+/**
+ * This class provides various strategies for error reporting and logging.
+ * Base validation reporting strategy throws a {@link UyuniGeneralException} if there are errors.
+ */
 public class ErrorReportingStrategies {
 
     private ErrorReportingStrategies() {
@@ -32,6 +36,24 @@ public class ErrorReportingStrategies {
     }
 
     private static final Map<Object, Logger> OBJ_LOGGER = Collections.synchronizedMap(new WeakHashMap<>());
+    private static final UyuniReportStrategy<UyuniError> VALIDATION_REPORT_STRATEGY;
+
+    static {
+        VALIDATION_REPORT_STRATEGY = errors -> {
+            if (!errors.isEmpty()) {
+                throw new UyuniGeneralException(errors);
+            }
+        };
+    }
+
+
+    /**
+     * Returns a default validation reporting strategy
+     * @return UyuniReportStrategy
+     */
+    public static UyuniReportStrategy<UyuniError> validationReportingStrategy() {
+        return VALIDATION_REPORT_STRATEGY;
+    }
 
     /**
      * Raise and log an exception

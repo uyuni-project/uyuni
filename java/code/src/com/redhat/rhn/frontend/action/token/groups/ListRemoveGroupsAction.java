@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ListRemoveGroupsAction extends BaseListAction<ManagedServerGroup> {
 
-    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -59,7 +59,7 @@ public class ListRemoveGroupsAction extends BaseListAction<ManagedServerGroup> {
         Set<String> set = helper.getSet();
         for (String id : set) {
             Long sgid = Long.valueOf(id);
-            key.removeServerGroup(serverGroupManager.lookup(sgid, user));
+            key.removeServerGroup(SERVER_GROUP_MANAGER.lookup(sgid, user));
         }
 
         getStrutsDelegate().saveMessage(

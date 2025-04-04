@@ -152,7 +152,9 @@ public class ServerHistoryEvent extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object obj) {
-        ServerHistoryEvent that = (ServerHistoryEvent) obj;
+        if (!(obj instanceof ServerHistoryEvent that)) {
+            return false;
+        }
         return new EqualsBuilder().
                 append(this.getId(), that.getId()).
                 append(this.getServer(), that.getServer()).

@@ -31,7 +31,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 public class ScriptRunAction extends ScriptAction {
 
-    private final SaltUtils saltUtils = GlobalInstanceHolder.SALT_UTILS;
+    private static final SaltUtils SALT_UTILS = GlobalInstanceHolder.SALT_UTILS;
 
     /**
      * {@inheritDoc}
@@ -84,7 +84,7 @@ public class ScriptRunAction extends ScriptAction {
     @Override
     public void onCancelAction() {
         if (allServersFinished()) {
-            FileUtils.deleteFile(saltUtils.getScriptPath(getId()));
+            FileUtils.deleteFile(SALT_UTILS.getScriptPath(getId()));
         }
     }
 }
