@@ -1283,6 +1283,13 @@
         </context-group>
         <target state="translated">Testimonis d'accés</target>
       </trans-unit>
-    </body>
+    <trans-unit id="Clients" xml:space="preserve">
+        <source>Clients</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
