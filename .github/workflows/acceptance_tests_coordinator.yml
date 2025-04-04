@@ -1,7 +1,7 @@
 name: TestFlow
 
 on:
-  pull_request_target:
+  pull_request:
     types:
       - opened
       - reopened
@@ -16,30 +16,33 @@ jobs:
     name: Get recommended tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+
+      - name: Run Redis container
+        run: ./testsuite/podman_runner/run_redis.sh
+
+      - name: Get changed files
+        id: changed_files
+        uses: Ana06/get-changed-files@25f79e676e7ea1868813e21465014798211fad8c #v2.3.0
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          filter: '*.java'
+
       - name: Use Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm i ioredis
-      - id: changed_files
-        uses: Ana06/get-changed-files@v2.3.0
-        with:
-          filter: '*.java'
+
+      - name: Install NPM Redis dependency
+        run: npm i ioredis
+
       - id: tests_covering_pr
         name: Tests covering the Pull Request
-        env:
-          REDIS_USER: ${{ secrets.REDIS_USER }}
-          REDIS_PASS: ${{ secrets.REDIS_PASS }}
-          REDIS_HOST: ${{ secrets.REDIS_HOST }}
-          REDIS_PORT: ${{ secrets.REDIS_PORT }}
         run: |
-          recommended_tests=$(node .github/scripts/test_covering_pr.js ${{ steps.changed_files.outputs.added_modified }})
+          recommended_tests=$(node .github/scripts/test_covering_pr.js ${{ steps.changed_files.outputs.all }})
           echo "recommended_tests=$recommended_tests" >> $GITHUB_OUTPUT
           echo "Recommended Tests: $recommended_tests"
+
       - name: Determine if we should run the full test suite
         id: determine_running_full_testsuite
         run: |
@@ -49,31 +52,42 @@ jobs:
           else
             echo "run_full_testsuite=false" >> $GITHUB_OUTPUT
           fi
+
     outputs:
       recommended_tests: ${{ steps.tests_covering_pr.outputs.recommended_tests }}
       run_full_testsuite: ${{ steps.determine_running_full_testsuite.outputs.run_full_testsuite }}
 
-  recommended:
+  recommended-tests:
+    needs: determine_tests
     name: Recommended Tests
-    needs: determine_tests
-    uses: ./.github/workflows/acceptance_tests_recommended.yml
-    secrets: inherit
+    uses: ./.github/workflows/acceptance_tests_base.yml
     with:
-      skip_tests: ${{ needs.determine_tests.outputs.run_full_testsuite == 'true' }}
+      tests: "20_run_recommended_tests.sh"
+      server_id: "recommended"
       recommended_tests: ${{ needs.determine_tests.outputs.recommended_tests }}
+      skip_tests: ${{ needs.determine_tests.outputs.run_full_testsuite == true }}
+    secrets: inherit
 
-  acceptance:
+  acceptance-tests:
+    needs: determine_tests
     name: Acceptance Tests
-    needs: determine_tests
-    uses: ./.github/workflows/acceptance_tests_sequential.yml
-    secrets: inherit
+    uses: ./.github/workflows/acceptance_tests_base.yml
     with:
-      skip_tests: ${{ needs.determine_tests.outputs.run_full_testsuite != 'true' }}
+      tests: "18_run_secondary_tests.sh"
+      server_id: "acceptance"
+      skip_tests: ${{ needs.determine_tests.outputs.run_full_testsuite == false }}
+    secrets: inherit
 
-  additional:
-    name: Additional Tests
+  additional-tests:
     needs: determine_tests
-    uses: ./.github/workflows/acceptance_tests_parallel.yml
-    secrets: inherit
+    name: Additional Tests - ${{ matrix.set }}
+    uses: ./.github/workflows/acceptance_tests_base.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        set: ['1', '2', '3', '4', '5']
     with:
-      skip_tests: ${{ needs.determine_tests.outputs.run_full_testsuite != 'true' }}
+      tests: "22_run_secondary_parallelizable_tests_subset.sh ${{ matrix.set }}"
+      server_id: "additional_${{ matrix.set }}"
+      skip_tests: ${{ needs.determine_tests.outputs.run_full_testsuite == false }}
+    secrets: inherit

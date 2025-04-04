@@ -3,10 +3,10 @@ const Redis = require('ioredis');
 const main = async () => {
     const changedFiles = process.argv.slice(2);
     const redis = new Redis({
-        host: process.env.REDIS_HOST,
-        port: process.env.REDIS_PORT,
-        username: process.env.REDIS_USER,
-        password: process.env.REDIS_PASS,
+        host: 'redis',
+        port: 6379,
+        username: 'user',
+        password: 'pass',
         enableReadyCheck: false
     });
 

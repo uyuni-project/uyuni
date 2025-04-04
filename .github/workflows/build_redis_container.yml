@@ -1,23 +1,16 @@
-name: Controller Test Image
+name: Build Redis container
 
 on:
-  push:
-    branches:
-      - qe-develop
-    paths:
-      - '.github/workflows/build_controller_test_container.yml'
-      - 'testsuite/dockerfiles/controller-dev/Dockerfile'
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+  schedule:
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  controller-test-image:
+  redis-image:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -38,12 +31,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 #v5.7.0
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ci-test-controller-dev
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/redis
 
       - name: Build and push Docker image
         uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 #v6.15.0
         with:
-          context: ./testsuite/dockerfiles/controller-dev/
+          context: ./testsuite/dockerfiles/redis/
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            AWS_REDIS_USER=${{ secrets.REDIS_USER }}
+            AWS_REDIS_PASS=${{ secrets.REDIS_PASS }}
+            AWS_REDIS_HOST=${{ secrets.REDIS_HOST }}
+            AWS_REDIS_PORT=${{ secrets.REDIS_PORT }}
