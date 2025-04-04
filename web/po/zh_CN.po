@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-28 14:20+0100\n"
+"POT-Creation-Date: 2025-04-04 11:47+0200\n"
 "PO-Revision-Date: 2025-03-10 13:56+0000\n"
 "Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -343,19 +343,19 @@ msgstr "创建 {label}"
 msgid "Configuration Channels"
 msgstr "配置通道"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:112
+#: ../html/src/components/datetime/DateTimePicker.tsx:117
 msgid "Previous month"
 msgstr "上个月"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:113
+#: ../html/src/components/datetime/DateTimePicker.tsx:118
 msgid "Next month"
 msgstr "下个月"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:114
+#: ../html/src/components/datetime/DateTimePicker.tsx:119
 msgid "Previous year"
 msgstr "上一年"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:115
+#: ../html/src/components/datetime/DateTimePicker.tsx:120
 msgid "Next year"
 msgstr "下一年"
 
@@ -707,11 +707,11 @@ msgstr "下一页"
 msgid "Last"
 msgstr "最后一页"
 
-#: ../html/src/components/pagination.tsx:93
+#: ../html/src/components/pagination.tsx:94
 msgid "Page <dropdown></dropdown> of {total}"
 msgstr "第 <dropdown></dropdown> 页，共 {total} 页"
 
-#: ../html/src/components/pagination.tsx:115
+#: ../html/src/components/pagination.tsx:117
 msgid "Page {current} of {total}"
 msgstr "第 {current} 页，共 {total} 页"
 

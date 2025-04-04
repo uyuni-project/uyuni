@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-28 14:20+0100\n"
+"POT-Creation-Date: 2025-04-04 11:47+0200\n"
 "PO-Revision-Date: 2025-02-02 16:54+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web-5-0/de/"
@@ -343,19 +343,19 @@ msgstr "{label} erstellen"
 msgid "Configuration Channels"
 msgstr "Konfigurationskanäle"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:112
+#: ../html/src/components/datetime/DateTimePicker.tsx:117
 msgid "Previous month"
 msgstr "Vorheriger Monat"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:113
+#: ../html/src/components/datetime/DateTimePicker.tsx:118
 msgid "Next month"
 msgstr "Nächster Monat"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:114
+#: ../html/src/components/datetime/DateTimePicker.tsx:119
 msgid "Previous year"
 msgstr "Vorheriges Jahr"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:115
+#: ../html/src/components/datetime/DateTimePicker.tsx:120
 msgid "Next year"
 msgstr "Nächstes Jahr"
 
@@ -707,11 +707,11 @@ msgstr "Nächste"
 msgid "Last"
 msgstr "Letzte"
 
-#: ../html/src/components/pagination.tsx:93
+#: ../html/src/components/pagination.tsx:94
 msgid "Page <dropdown></dropdown> of {total}"
 msgstr "Seite <dropdown></dropdown> von {total}"
 
-#: ../html/src/components/pagination.tsx:115
+#: ../html/src/components/pagination.tsx:117
 msgid "Page {current} of {total}"
 msgstr "Seite {current} von {total}"
 

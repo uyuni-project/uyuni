@@ -17,11 +17,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-28 14:20+0100\n"
+"POT-Creation-Date: 2025-04-04 11:47+0200\n"
 "PO-Revision-Date: 2025-03-28 15:56+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
-"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web-5-0/ca/>"
-"\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web-5-0/ca/"
+">\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -352,19 +352,19 @@ msgstr "Crea {label}"
 msgid "Configuration Channels"
 msgstr "Canals de configuració"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:112
+#: ../html/src/components/datetime/DateTimePicker.tsx:117
 msgid "Previous month"
 msgstr "Mes anterior"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:113
+#: ../html/src/components/datetime/DateTimePicker.tsx:118
 msgid "Next month"
 msgstr "Mes següent"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:114
+#: ../html/src/components/datetime/DateTimePicker.tsx:119
 msgid "Previous year"
 msgstr "Any anterior"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:115
+#: ../html/src/components/datetime/DateTimePicker.tsx:120
 msgid "Next year"
 msgstr "Any següent"
 
@@ -718,11 +718,11 @@ msgstr "Següent"
 msgid "Last"
 msgstr "Darrera"
 
-#: ../html/src/components/pagination.tsx:93
+#: ../html/src/components/pagination.tsx:94
 msgid "Page <dropdown></dropdown> of {total}"
 msgstr "Pàgina <dropdown></dropdown> de {total}"
 
-#: ../html/src/components/pagination.tsx:115
+#: ../html/src/components/pagination.tsx:117
 msgid "Page {current} of {total}"
 msgstr "Pàgina {current} de {total}"
 

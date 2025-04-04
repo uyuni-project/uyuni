@@ -17,11 +17,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-28 14:20+0100\n"
+"POT-Creation-Date: 2025-04-04 11:47+0200\n"
 "PO-Revision-Date: 2025-03-28 15:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-5-0/sk/>"
-"\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-5-0/sk/"
+">\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -350,19 +350,19 @@ msgstr "Vytvoriť {label}"
 msgid "Configuration Channels"
 msgstr "Konfiguračné kanály"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:112
+#: ../html/src/components/datetime/DateTimePicker.tsx:117
 msgid "Previous month"
 msgstr "Predchádzajúci mesiac"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:113
+#: ../html/src/components/datetime/DateTimePicker.tsx:118
 msgid "Next month"
 msgstr "Nasledujúci mesiac"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:114
+#: ../html/src/components/datetime/DateTimePicker.tsx:119
 msgid "Previous year"
 msgstr "Predchádzajúci rok"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:115
+#: ../html/src/components/datetime/DateTimePicker.tsx:120
 msgid "Next year"
 msgstr "Nasledujúci rok"
 
@@ -716,11 +716,11 @@ msgstr "Nasledujúca"
 msgid "Last"
 msgstr "Posledná"
 
-#: ../html/src/components/pagination.tsx:93
+#: ../html/src/components/pagination.tsx:94
 msgid "Page <dropdown></dropdown> of {total}"
 msgstr "Stránka <dropdown></dropdown> z {total}"
 
-#: ../html/src/components/pagination.tsx:115
+#: ../html/src/components/pagination.tsx:117
 msgid "Page {current} of {total}"
 msgstr "Stránka {current} z {total}"
 

@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-28 14:20+0100\n"
+"POT-Creation-Date: 2025-04-04 11:47+0200\n"
 "PO-Revision-Date: 2025-04-02 20:56+0000\n"
 "Last-Translator: Zilmar Junior <zilmar.jr@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -359,19 +359,19 @@ msgstr "Canal de configuração de estado"
 msgid "Configuration Channels"
 msgstr "Canais de Configuração"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:112
+#: ../html/src/components/datetime/DateTimePicker.tsx:117
 msgid "Previous month"
 msgstr ""
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:113
+#: ../html/src/components/datetime/DateTimePicker.tsx:118
 msgid "Next month"
 msgstr ""
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:114
+#: ../html/src/components/datetime/DateTimePicker.tsx:119
 msgid "Previous year"
 msgstr ""
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:115
+#: ../html/src/components/datetime/DateTimePicker.tsx:120
 #, fuzzy
 msgid "Next year"
 msgstr "Próximo"
@@ -735,11 +735,11 @@ msgstr "Próximo"
 msgid "Last"
 msgstr "Sobrenome"
 
-#: ../html/src/components/pagination.tsx:93
+#: ../html/src/components/pagination.tsx:94
 msgid "Page <dropdown></dropdown> of {total}"
 msgstr ""
 
-#: ../html/src/components/pagination.tsx:115
+#: ../html/src/components/pagination.tsx:117
 #, fuzzy
 msgid "Page {current} of {total}"
 msgstr "Página {0} de {1}"
