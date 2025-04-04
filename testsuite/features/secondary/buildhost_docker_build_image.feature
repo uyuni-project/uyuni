@@ -4,8 +4,6 @@
 # Basic images do not contain zypper nor the name of the server,
 # so the inspect functionality is not tested here.
 #
-# This feature is a dependency for:
-# - features/secondary/srv_docker_cve_audit.feature
 #
 # This feature depends on:
 # - features/secondary/min_docker_api.feature
@@ -16,8 +14,9 @@
 
 @build_host
 @scope_building_container_images
+@scope_cve_audit
 @no_auth_registry
-Feature: Build container images
+Feature: Build container images and CVE audit them
 
   Scenario: Log in as org admin user
     Given I am authorized
@@ -176,39 +175,61 @@ Feature: Build container images
     And I wait at most 600 seconds until image "suse_real_key" with version "GUI_DOCKERADMIN" is built successfully via API
     And I wait at most 300 seconds until image "suse_real_key" with version "GUI_DOCKERADMIN" is inspected successfully via API
 
-# Do not clean up images because the audit tests needs them
-#@scc_credentials
-#  Scenario: Cleanup: delete all images with key
-#    Given I am authorized as "admin" with password "admin"
-#    When I delete the image "suse_key" with version "latest" via API calls
-#    And I delete the image "suse_key" with version "Latest_key-activation1" via API calls
-#    And I delete the image "suse_real_key" with version "latest" via API calls
-#    And I delete the image "suse_real_key" with version "GUI_BUILT_IMAGE" via API calls
-#    And I delete the image "suse_real_key" with version "GUI_DOCKERADMIN" via API calls
+  Scenario: Schedule channel data refresh for content management
+    When I follow the left menu "Admin > Task Schedules"
+    And I follow "cve-server-channels-default"
+    And I follow "cve-server-channels-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
-#  Scenario: Cleanup: delete images without key
-#    Given I am authorized as "admin" with password "admin"
-#    When I delete the image "suse_simple" with version "latest" via API calls
-#    And I delete the image "suse_simple" with version "Latest_simple" via API calls
+@scc_credentials
+  Scenario: Audit images, searching for a known CVE number
+    When I follow the left menu "Audit > CVE Audit"
+    And I select "1999" from "cveIdentifierYear"
+    And I enter "9999" as "cveIdentifierId"
+    And I click on "Audit Images"
+    Then I should see a "No action required" text
 
-#@scc_credentials
-#  Scenario: Cleanup: delete all profiles with key
-#    When I follow the left menu "Images > Profiles"
-#    And I check "suse_key" in the list
-#    And I check "suse_real_key" in the list
-#    And I click on "Delete"
-#    And I should see a "Are you sure you want to delete selected profiles?" text
-#    And I click on the red confirmation button
-#    And I wait until I see "Image profiles have been deleted" text
+  Scenario: Audit images, searching for an unknown CVE number
+    When I follow the left menu "Audit > CVE Audit"
+    And I select "2012" from "cveIdentifierYear"
+    And I enter "2806" as "cveIdentifierId"
+    And I click on "Audit Images"
+    Then I should see a "The specified CVE number was not found" text
 
-#  Scenario: Cleanup: delete all profiles without key
-#    When I follow the left menu "Images > Profiles"
-#    And I check "suse_simple" in the list
-#    And I check "suse_real_simple" in the list
-#    And I click on "Delete"
-#    And I should see a "Are you sure you want to delete selected profiles?" text
-#    And I click on the red confirmation button
-#    And I wait until I see "Image profiles have been deleted" text
+@scc_credentials
+  Scenario: Cleanup: delete all images with key
+    Given I am authorized as "admin" with password "admin"
+    When I delete the image "suse_key" with version "latest" via API calls
+    And I delete the image "suse_key" with version "Latest_key-activation1" via API calls
+    And I delete the image "suse_real_key" with version "latest" via API calls
+    And I delete the image "suse_real_key" with version "GUI_BUILT_IMAGE" via API calls
+    And I delete the image "suse_real_key" with version "GUI_DOCKERADMIN" via API calls
+
+  Scenario: Cleanup: delete images without key
+    Given I am authorized as "admin" with password "admin"
+    When I delete the image "suse_simple" with version "latest" via API calls
+    And I delete the image "suse_simple" with version "Latest_simple" via API calls
+
+@scc_credentials
+  Scenario: Cleanup: delete all profiles with key
+    When I follow the left menu "Images > Profiles"
+    And I check "suse_key" in the list
+    And I check "suse_real_key" in the list
+    And I click on "Delete"
+    And I should see a "Are you sure you want to delete selected profiles?" text
+    And I click on the red confirmation button
+    And I wait until I see "Image profiles have been deleted" text
+
+  Scenario: Cleanup: delete all profiles without key
+    When I follow the left menu "Images > Profiles"
+    And I check "suse_simple" in the list
+    And I check "suse_real_simple" in the list
+    And I click on "Delete"
+    And I should see a "Are you sure you want to delete selected profiles?" text
+    And I click on the red confirmation button
+    And I wait until I see "Image profiles have been deleted" text
 
   Scenario: Cleanup: Make sure no job is left running on buildhost
     When I wait until no Salt job is running on "build_host"
