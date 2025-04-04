@@ -34,6 +34,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchUserException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.frontend.xmlrpc.user.UserHandler;
+import com.redhat.rhn.manager.access.AccessGroupManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -51,7 +52,7 @@ import java.util.Set;
 
 public class UserHandlerTest extends BaseHandlerTestCase {
 
-    private UserHandler handler = new UserHandler(new ServerGroupManager(new TestSaltApi()));
+    private UserHandler handler = new UserHandler(new ServerGroupManager(new TestSaltApi()), new AccessGroupManager());
 
     @Test
     public void testListUsers() {
@@ -75,15 +76,15 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         int regularRoles = regular.getRoles().size();
         int adminRoles = admin.getRoles().size();
 
-        Object[] result = handler.listRoles(admin, regular.getLogin());
-        assertEquals(regularRoles, result.length);
+        Set<String> result = handler.listRoles(admin, regular.getLogin());
+        assertEquals(regularRoles, result.size());
 
         result = handler.listRoles(admin, admin.getLogin());
-        assertEquals(adminRoles, result.length);
+        assertEquals(adminRoles, result.size());
 
         //make sure regular user can lookup his own roles
         result = handler.listRoles(regular, regular.getLogin());
-        assertEquals(regularRoles, result.length);
+        assertEquals(regularRoles, result.size());
     }
 
     @Test

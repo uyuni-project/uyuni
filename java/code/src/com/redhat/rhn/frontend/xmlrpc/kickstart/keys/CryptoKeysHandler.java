@@ -64,8 +64,6 @@ public class CryptoKeysHandler extends BaseHandler {
             throw new NoSuchUserException();
         }
 
-        ensureOrgOrConfigAdmin(loggedInUser);
-
         Org org = loggedInUser.getOrg();
         KickstartLister lister = KickstartLister.getInstance();
 
@@ -95,8 +93,6 @@ public class CryptoKeysHandler extends BaseHandler {
         if (loggedInUser == null) {
             throw new NoSuchUserException();
         }
-
-        ensureOrgOrConfigAdmin(loggedInUser);
 
         Org org = loggedInUser.getOrg();
         CreateCryptoKeyCommand command = new CreateCryptoKeyCommand(org);
@@ -130,8 +126,6 @@ public class CryptoKeysHandler extends BaseHandler {
         if (loggedInUser == null) {
             throw new NoSuchUserException();
         }
-
-        ensureOrgOrConfigAdmin(loggedInUser);
 
         DeleteCryptoKeyCommand command =
             new DeleteCryptoKeyCommand(loggedInUser, description);
@@ -168,8 +162,6 @@ public class CryptoKeysHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int update(User loggedInUser, String description, String type, String content) {
-        BaseHandler.ensureOrgOrConfigAdmin(loggedInUser);
-
         EditCryptoKeyCommand cmd = new EditCryptoKeyCommand(loggedInUser, description);
         cmd.setType(type);
         cmd.setContents(content);
@@ -203,8 +195,6 @@ public class CryptoKeysHandler extends BaseHandler {
      */
     @ReadOnly
     public CryptoKey getDetails(User loggedInUser, String description) {
-
-        ensureOrgOrConfigAdmin(loggedInUser);
 
         EditCryptoKeyCommand command = new EditCryptoKeyCommand(loggedInUser, description);
 

@@ -56,8 +56,6 @@ public class KickstartTreeHandler extends BaseHandler {
      */
     @ReadOnly
     public KickstartableTreeDetail getDetails(User loggedInUser, String treeLabel) {
-        ensureConfigAdmin(loggedInUser);
-
         KickstartableTree tree = KickstartFactory.lookupKickstartTreeByLabel(treeLabel);
         if (tree == null) {
             throw new InvalidChannelLabelException();
@@ -80,8 +78,6 @@ public class KickstartTreeHandler extends BaseHandler {
      */
     public List list(User loggedInUser,
             String channelLabel) {
-        ensureConfigAdmin(loggedInUser);
-
         return KickstartFactory.lookupKickstartableTrees(getChannel(channelLabel, loggedInUser).getId(),
                 loggedInUser.getOrg());
     }
@@ -160,8 +156,6 @@ public class KickstartTreeHandler extends BaseHandler {
             String basePath, String channelLabel,
             String installType, String kernelOptions, String postKernelOptions) {
 
-        ensureConfigAdmin(loggedInUser);
-
         TreeCreateOperation create = new TreeCreateOperation(loggedInUser);
         create.setBasePath(basePath);
         create.setChannel(getChannel(channelLabel, loggedInUser));
@@ -192,9 +186,6 @@ public class KickstartTreeHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, String treeLabel) {
-
-        ensureConfigAdmin(loggedInUser);
-
         TreeDeleteOperation op = new TreeDeleteOperation(treeLabel, loggedInUser);
         if (op.getTree() == null) {
             throw new InvalidKickstartTreeException("api.kickstart.tree.notfound");
@@ -223,9 +214,6 @@ public class KickstartTreeHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int deleteTreeAndProfiles(User loggedInUser, String treeLabel) {
-
-        ensureConfigAdmin(loggedInUser);
-
         TreeDeleteOperation op = new TreeDeleteOperation(treeLabel, loggedInUser);
         if (op.getTree() == null) {
             throw new InvalidKickstartTreeException("api.kickstart.tree.notfound");
@@ -305,9 +293,6 @@ public class KickstartTreeHandler extends BaseHandler {
      */
     public int update(User loggedInUser, String treeLabel, String basePath,
                       String channelLabel, String installType, String kernelOptions, String postKernelOptions) {
-
-        ensureConfigAdmin(loggedInUser);
-
         TreeEditOperation op = new TreeEditOperation(treeLabel, loggedInUser);
         if (op.getTree() == null) {
             throw new InvalidKickstartTreeException("api.kickstart.tree.notfound");
@@ -341,9 +326,6 @@ public class KickstartTreeHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int rename(User loggedInUser, String originalLabel, String newLabel) {
-
-        ensureConfigAdmin(loggedInUser);
-
         TreeEditOperation op = new TreeEditOperation(originalLabel, loggedInUser);
 
         if (op.getTree() == null) {

@@ -16,8 +16,6 @@ package com.redhat.rhn.frontend.xmlrpc.kickstart.profile;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.Channel;
@@ -32,7 +30,6 @@ import com.redhat.rhn.domain.kickstart.KickstartScript;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.kickstart.RepoInfo;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.kickstart.KickstartIpRangeFilter;
@@ -45,7 +42,6 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidScriptNameException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidScriptTypeException;
 import com.redhat.rhn.frontend.xmlrpc.IpRangeConflictException;
-import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.InvalidUpdateTypeAndNoBaseTreeException;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.InvalidUpdateTypeException;
@@ -169,7 +165,6 @@ public class ProfileHandler extends BaseHandler {
      */
     @ReadOnly
     public Boolean getCfgPreservation(User loggedInUser, String ksLabel) {
-        checkKickstartPerms(loggedInUser);
         KickstartData data = lookupKsData(ksLabel, loggedInUser.getOrg());
         if (data == null) {
             throw new FaultException(-3, "kickstartProfileNotFound",
@@ -194,7 +189,6 @@ public class ProfileHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int setCfgPreservation(User loggedInUser, String ksLabel, Boolean preserve) {
-        checkKickstartPerms(loggedInUser);
         KickstartData data = lookupKsData(ksLabel, loggedInUser.getOrg());
         if (data == null) {
             throw new FaultException(-3, "kickstartProfileNotFound",
@@ -224,7 +218,6 @@ public class ProfileHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int setLogging(User loggedInUser, String ksLabel, Boolean pre, Boolean post) {
-        checkKickstartPerms(loggedInUser);
         KickstartData data = lookupKsData(ksLabel, loggedInUser.getOrg());
         data.setPreLog(pre);
         data.setPostLog(post);
@@ -437,7 +430,6 @@ public class ProfileHandler extends BaseHandler {
      */
     @ReadOnly
     public List<KickstartScript> listScripts(User loggedInUser, String ksLabel) {
-        checkKickstartPerms(loggedInUser);
         KickstartData data = lookupKsData(ksLabel, loggedInUser.getOrg());
 
         ArrayList<KickstartScript> scripts = new ArrayList<>(
@@ -488,7 +480,6 @@ public class ProfileHandler extends BaseHandler {
     public int orderScripts(User loggedInUser, String ksLabel, List<Integer> preScripts,
             List<Integer> postScriptsBeforeRegistration,
             List<Integer> postScriptsAfterRegistration) {
-        checkKickstartPerms(loggedInUser);
         KickstartData data = lookupKsData(ksLabel, loggedInUser.getOrg());
         if (data == null) {
             throw new FaultException(-3, "kickstartProfileNotFound",
@@ -669,7 +660,6 @@ public class ProfileHandler extends BaseHandler {
     public int addScript(User loggedInUser, String ksLabel, String name, String contents,
             String interpreter, String type, Boolean chroot, Boolean template,
             Boolean erroronfail) {
-        checkKickstartPerms(loggedInUser);
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
 
         if (!type.equals("pre") && !type.equals("post")) {
@@ -712,7 +702,6 @@ public class ProfileHandler extends BaseHandler {
      *
      */
     public int removeScript(User loggedInUser, String ksLabel, Integer scriptId) {
-        checkKickstartPerms(loggedInUser);
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
 
         KickstartScript script = KickstartFactory.lookupKickstartScript(
@@ -1040,9 +1029,6 @@ public class ProfileHandler extends BaseHandler {
     */
    @ReadOnly
    public Set listIpRanges(User loggedInUser, String ksLabel) {
-       if (!loggedInUser.hasRole(RoleFactory.CONFIG_ADMIN)) {
-           throw new PermissionCheckFailureException();
-       }
        KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
        return ksdata.getIps();
    }
@@ -1104,9 +1090,6 @@ public class ProfileHandler extends BaseHandler {
     * for the specified kickstart, exception otherwise")
     */
    public int removeIpRange(User loggedInUser, String ksLabel, String ipAddress) {
-       if (!loggedInUser.hasRole(RoleFactory.CONFIG_ADMIN)) {
-           throw new PermissionCheckFailureException();
-       }
        KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
        KickstartIpRangeFilter filter = new KickstartIpRangeFilter();
        for (KickstartIpRange range : ksdata.getIps()) {
@@ -1347,13 +1330,6 @@ public class ProfileHandler extends BaseHandler {
         return results;
     }
 
-    private void checkKickstartPerms(User user) {
-        if (!user.hasRole(RoleFactory.CONFIG_ADMIN)) {
-            throw new PermissionException(LocalizationService.getInstance()
-                    .getMessage("permission.configadmin.needed"));
-        }
-    }
-
     private KickstartData lookupKsData(String label, Org org) {
         return XmlRpcKickstartHelper.getInstance().lookupKsData(label, org);
     }
@@ -1434,10 +1410,6 @@ public class ProfileHandler extends BaseHandler {
      */
     @ReadOnly
     public String[] getAvailableRepositories(User loggedInUser, String ksLabel) {
-        if (!loggedInUser.hasRole(RoleFactory.CONFIG_ADMIN)) {
-            throw new PermissionException(LocalizationService.getInstance()
-                    .getMessage("permission.configadmin.needed"));
-        }
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
         KickstartableTree ksTree = ksData.getKickstartDefaults().getKstree();
 
@@ -1461,10 +1433,6 @@ public class ProfileHandler extends BaseHandler {
      */
     @ReadOnly
     public String[] getRepositories(User loggedInUser, String ksLabel) {
-        if (!loggedInUser.hasRole(RoleFactory.CONFIG_ADMIN)) {
-            throw new PermissionException(LocalizationService.getInstance()
-                    .getMessage("permission.configadmin.needed"));
-        }
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
         KickstartableTree ksTree = ksData.getKickstartDefaults().getKstree();
 
@@ -1490,10 +1458,6 @@ public class ProfileHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int setRepositories(User loggedInUser, String ksLabel, List<String> repoLabels) {
-        if (!loggedInUser.hasRole(RoleFactory.CONFIG_ADMIN)) {
-            throw new PermissionException(LocalizationService.getInstance()
-                    .getMessage("permission.configadmin.needed"));
-        }
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
 
         List<RepoInfo> repoList = RepoInfo.getStandardRepos(

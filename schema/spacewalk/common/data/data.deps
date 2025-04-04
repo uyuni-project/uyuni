@@ -43,4 +43,5 @@ rhnTaskoSchedule           :: rhnTaskoBunch
 rhnTaskoTemplate           :: rhnTaskoBunch rhnTaskoTask
 rhnTemplateString          :: data/rhnTemplateCategory
 reschedule                 :: data/rhnTaskoSchedule
+endpointNamespace          :: endpoint namespace
 

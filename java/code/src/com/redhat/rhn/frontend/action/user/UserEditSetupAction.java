@@ -14,9 +14,11 @@
  */
 package com.redhat.rhn.frontend.action.user;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
@@ -26,6 +28,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
+import com.redhat.rhn.manager.access.AccessGroupManager;
 import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.logging.log4j.LogManager;
@@ -35,6 +38,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -48,6 +52,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UserEditSetupAction extends RhnAction {
 
     private static Logger log = LogManager.getLogger(UserEditSetupAction.class);
+    private static final AccessGroupManager ACCESS_GROUP_MANAGER = GlobalInstanceHolder.ACCESS_GROUP_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -108,10 +113,9 @@ public class UserEditSetupAction extends RhnAction {
     private void setupRoles(HttpServletRequest request, User targetUser) {
         log.debug("setupRoles()");
 
-        Set<Role> orgRoles = targetUser.getOrg().getRoles();
-
+        Set<Role> legacyRoles = targetUser.getOrg().getRoles();
+        List<AccessGroup> rbacGroups = ACCESS_GROUP_MANAGER.list(targetUser.getOrg());
         List<UserRoleStatusBean> adminRoles = new LinkedList<>();
-        List<UserRoleStatusBean> regularRoles = new LinkedList<>();
 
         // Bit of a hack here. We're trying to represent three states to the processing
         // code with a checkbox that can only submit two. (i.e., there's no way to
@@ -124,7 +128,7 @@ public class UserEditSetupAction extends RhnAction {
         // need when processing the form.
         StringBuilder disabledRoles = new StringBuilder();
 
-        for (Role currRole : orgRoles) {
+        for (Role currRole : legacyRoles) {
             log.debug("currRole = {}", currRole.getLabel());
 
             boolean selected = false; // does user have this role?
@@ -163,10 +167,6 @@ public class UserEditSetupAction extends RhnAction {
                 adminRoles.add(new UserRoleStatusBean(uilabel, uivalue, selected,
                         disabled));
             }
-            else {
-                regularRoles.add(new UserRoleStatusBean(uilabel, uivalue, selected,
-                        disabled));
-            }
 
             if (disabled) {
                 if (disabledRoles.length() > 0) {
@@ -176,19 +176,24 @@ public class UserEditSetupAction extends RhnAction {
             }
         }
 
-        boolean hasOrgAdmin = false;
-        if (targetUser.hasPermanentRole(RoleFactory.ORG_ADMIN)) {
-            hasOrgAdmin = true;
-        }
+        var rbacRoles = rbacGroups.stream()
+                .sorted(Comparator.comparing(AccessGroup::getDescription))
+                .map(ag -> new UserRoleStatusBean(
+                                ag.getDescription(),
+                                ag.getLabel(),
+                                targetUser.isMemberOf(ag),
+                                false
+                        )
+                ).toList();
 
         request.setAttribute("adminRoles", adminRoles);
-        request.setAttribute("regularRoles", regularRoles);
+        request.setAttribute("rbacRoles", rbacRoles);
         request.setAttribute("disabledRoles", disabledRoles);
         Set<Role> tempRoles = targetUser.getTemporaryRoles();
         if (!tempRoles.isEmpty()) {
             request.setAttribute("temporaryRoles", UserManager.roleNames(tempRoles));
         }
 
-        request.setAttribute("orgAdmin", hasOrgAdmin);
+        request.setAttribute("orgAdmin", targetUser.hasPermanentRole(RoleFactory.ORG_ADMIN));
     }
 }

@@ -19,6 +19,7 @@ import com.redhat.rhn.common.security.acl.AclFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
+import com.redhat.rhn.manager.access.AccessGroupManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.org.MigrationManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
@@ -68,6 +69,7 @@ public class GlobalInstanceHolder {
     public static final SaltServerActionService SALT_SERVER_ACTION_SERVICE = new SaltServerActionService(
             SALT_API, SALT_UTILS, SALT_KEY_UTILS);
     public static final Access ACCESS = new Access();
+    public static final AccessGroupManager ACCESS_GROUP_MANAGER = new AccessGroupManager();
     public static final AclFactory ACL_FACTORY = new AclFactory(ACCESS);
     // Referenced from JSP
     public static final MenuTree MENU_TREE = new MenuTree(ACL_FACTORY);

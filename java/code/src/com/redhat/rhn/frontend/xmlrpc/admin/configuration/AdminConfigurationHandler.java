@@ -49,6 +49,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.security.auth.login.LoginException;
@@ -213,13 +214,13 @@ public class AdminConfigurationHandler extends BaseHandler {
             LOG.debug("User {} created", name);
         }
 
-        List<Object> existingRoles = Arrays.asList(userHandler.listRoles(loggedInUser, name));
+        Set<String> existingRoles = userHandler.listRoles(loggedInUser, name);
         LOG.debug("existing roles: {}", existingRoles);
         LOG.debug("requested roles: {}", roles);
-        for (Object role: existingRoles) {
+        for (String role: existingRoles) {
             if (!roles.contains(role)) {
                 LOG.debug("Removing role {}", role);
-                userHandler.removeRole(loggedInUser, name, (String)role);
+                userHandler.removeRole(loggedInUser, name, role);
             }
         }
         for (String role: roles) {

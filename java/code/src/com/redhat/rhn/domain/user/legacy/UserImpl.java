@@ -352,6 +352,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     /** {@inheritDoc} */
     @Override
     public boolean hasRole(Role label) {
+        // TODO: Remove all uses with regular roles
         // We use checkRoleSet to get the correct logic for the
         // implied roles.
         return getRoles().contains(label);
@@ -1501,6 +1502,12 @@ public class UserImpl extends BaseDomainHelper implements User {
     @Override
     public void setAccessGroups(Set<AccessGroup> accessGroupsIn) {
         accessGroups = accessGroupsIn;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isMemberOf(AccessGroup accessGroupIn) {
+        return getAccessGroups() != null && getAccessGroups().contains(accessGroupIn);
     }
 }
 
