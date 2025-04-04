@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-04 11:42+0200\n"
-"PO-Revision-Date: 2025-03-28 15:56+0000\n"
+"PO-Revision-Date: 2025-04-04 12:56+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
 "Language: ca\n"
@@ -5129,7 +5129,7 @@ msgstr "Planificació de l'execució de la llibreta"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:128
 msgid "Select the current Playbook"
-msgstr ""
+msgstr "Selecciona el llibre de reproducció actual"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Schedule Playbook Execution"
@@ -5240,16 +5240,12 @@ msgid "Applying the packages states has been "
 msgstr "S'han aplicat els estats dels paquets "
 
 #: ../html/src/manager/minion/proxy/proxy-config-messages.tsx:13
-#, fuzzy
-#| msgid "The image import has been scheduled."
 msgid "Proxy configuration action has been scheduled."
-msgstr "S'ha programat la importació de la imatge."
+msgstr "S'ha programat l'acció de configuració del servidor intermediari."
 
 #: ../html/src/manager/minion/proxy/proxy-config-messages.tsx:25
-#, fuzzy
-#| msgid "Search in configuration channels"
 msgid "Scheduling proxy configuration action..."
-msgstr "Cerca als canals de configuració"
+msgstr "Es programa l'acció de configuració del servidor intermediari..."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:114
 #: ../html/src/manager/proxy/container-config.tsx:142
@@ -5257,20 +5253,20 @@ msgid "Request interrupted or invalid response received from the server."
 msgstr "Sol·licitud de resposta interrompuda o no vàlida rebuda del servidor."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:179
-#, fuzzy
-#| msgid "Configuration"
 msgid "Proxy Configuration"
-msgstr "Configuració"
+msgstr "Configuració del servidor intermediari"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:183
 msgid ""
 "Convert an already onboarded minion to a proxy or update the configuration "
 "of an existing proxy."
 msgstr ""
+"Converteix un minion ja integrat en un servidor intermediari o actualitza la "
+"configuració d'un servidor intermediari existent."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:193
 msgid "Convert Minion to Proxy"
-msgstr ""
+msgstr "Converteix Minion a Proxy"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:198
 #: ../html/src/manager/proxy/container-config.tsx:210
@@ -5305,16 +5301,12 @@ msgid "Max Squid cache size"
 msgstr "Mida màxima de la memòria cau del calamar"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:220
-#, fuzzy
-#| msgid "The maximum value of the Squid cache in Megabytes"
 msgid "The maximum value of the Squid cache in Gigabytes"
-msgstr "El valor màxim de la memòria cau de calamars a Megabytes"
+msgstr "El valor màxim de la memòria cau de Squid en gigabytes"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:223
-#, fuzzy
-#| msgid "e.g., 2048"
 msgid "e.g., 100"
-msgstr "p. ex., 2048"
+msgstr "p. ex., 100"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:230
 #: ../html/src/manager/proxy/container-config.tsx:242
@@ -5335,30 +5327,29 @@ msgstr "p. ex., proxy.admin.mycompany.com"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:241
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:242
-#, fuzzy
-#| msgid "CA certificate"
 msgid "Certificates"
-msgstr "certificat CA"
+msgstr "Certificats"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:250
 msgid "Keep"
-msgstr ""
+msgstr "Mantén"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:251
 msgid "Replace"
-msgstr ""
+msgstr "Reemplaça"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:262
 msgid ""
 "Keeping the current certificates means no changes will be made to the Root "
 "CA, Intermediate CAs, Proxy certificate, or Proxy SSL private key."
 msgstr ""
+"Mantenir els certificats actuals significa que no es faran canvis als CA "
+"d'arrel, als CA intermedis, al certificat d'intermediari o a la clau privada "
+"SSL d'intermediari."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:273
-#, fuzzy
-#| msgid "The root CA"
 msgid "Root CA"
-msgstr "La CA arrel"
+msgstr "CA d'arrel"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:274
 #: ../html/src/manager/proxy/container-config.tsx:269
@@ -5396,41 +5387,33 @@ msgstr "Clau privada SSL del proxy"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:326
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:327
-#, fuzzy
-#| msgid "Sources"
 msgid "Source"
-msgstr "Fonts"
+msgstr "Font"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:335
-#, fuzzy
-#| msgid "Register"
 msgid "Registry"
-msgstr "Registra"
+msgstr "Registre"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:336
 msgid "RPM"
-msgstr ""
+msgstr "RPM"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:344
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:345
-#, fuzzy
-#| msgid "Registration mode"
 msgid "Registry Source"
-msgstr "Mode de registre"
+msgstr "Font del registre"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:352
 msgid "Simple"
-msgstr ""
+msgstr "Simple"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:353
 msgid "Advanced"
-msgstr ""
+msgstr "Avançat"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:361
-#, fuzzy
-#| msgid "Register"
 msgid "Registry URL"
-msgstr "Registra"
+msgstr "URL de registre"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:362
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:389
@@ -5438,16 +5421,12 @@ msgstr "Registra"
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:437
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:461
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:485
-#, fuzzy
-#| msgid "e.g., 2048"
 msgid "e.g., "
-msgstr "p. ex., 2048"
+msgstr "p. ex., "
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:369
-#, fuzzy
-#| msgid "Contains Package"
 msgid "Containers Tag"
-msgstr "Conté el paquet"
+msgstr "Etiqueta de contenidors"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:371
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:398
@@ -5455,54 +5434,52 @@ msgstr "Conté el paquet"
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:446
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:470
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:494
-#, fuzzy
-#| msgid "latest"
 msgid "e.g., latest"
-msgstr "més"
+msgstr "p. ex., el més recent"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:388
 msgid "HTTPD URL"
-msgstr ""
+msgstr "URL HTTPD"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:396
 msgid "HTTPD Tag"
-msgstr ""
+msgstr "Etiqueta HTTPD"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:412
 msgid "Salt Broker URL"
-msgstr ""
+msgstr "URL de Salt Broker"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:420
 msgid "Salt Broker Tag"
-msgstr ""
+msgstr "Etiqueta de Salt Broker"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:436
 msgid "Squid URL"
-msgstr ""
+msgstr "URL de Squid"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:444
 msgid "Squid Tag"
-msgstr ""
+msgstr "Etiqueta de Squid"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:460
 msgid "SSH URL"
-msgstr ""
+msgstr "URL SSH"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:468
 msgid "SSH Tag"
-msgstr ""
+msgstr "Etiqueta SSH"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:484
 msgid "TFTPD URL"
-msgstr ""
+msgstr "URL TFTPD"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:492
 msgid "TFTPD Tag"
-msgstr ""
+msgstr "Etiqueta TFTPD"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:510
 msgid "Apply"
-msgstr ""
+msgstr "Aplica"
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
 #: ../html/src/manager/notifications/notification-messages.tsx:506
@@ -5927,38 +5904,30 @@ msgstr "Cadena de format quars"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:206
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:74
-#, fuzzy
-#| msgid "Playbook Directories"
 msgid "Playbook details"
-msgstr "Directoris de llibres de reproducció"
+msgstr "Detalls del llibre de reproducció"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:211
-#, fuzzy
-#| msgid "Playbook Content"
 msgid "Playbook path"
-msgstr "Contingut del llibre de reproducció"
+msgstr "Camí del llibre de reproducció"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:215
-#, fuzzy
-#| msgid "Inventory Path"
 msgid "Inventory path"
 msgstr "Camí de l'inventari"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:219
-#, fuzzy
-#| msgid "Flush Ansible fact cache"
 msgid "Flush fact cache"
-msgstr "Neteja la memòria cau de fets visibles"
+msgstr "Neteja la memòria cau de fets"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:220
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:93
 msgid "true"
-msgstr ""
+msgstr "cert"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:220
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:93
 msgid "false"
-msgstr ""
+msgstr "fals"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:264
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:235
@@ -6065,34 +6034,24 @@ msgstr ""
 "L'hora programada serà l'hora del servidor."
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:54
-#, fuzzy
-#| msgid "Change Proxy"
 msgid "Change Playbook"
-msgstr "Canvia el servidor intermediari"
+msgstr "Canvia el llibre de reproducció"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:61
-#, fuzzy
-#| msgid "Select a filter"
 msgid "Select a Playbook"
-msgstr "Selecciona un filtre"
+msgstr "Selecciona el llibre de reproducció"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:79
-#, fuzzy
-#| msgid "Playbook Content"
 msgid "Playbook path:"
-msgstr "Contingut del llibre de reproducció"
+msgstr "Camí del llibre de reproducció:"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:85
-#, fuzzy
-#| msgid "Inventory Path"
 msgid "Inventory path:"
-msgstr "Camí de l'inventari"
+msgstr "Camí de l'inventari:"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:91
-#, fuzzy
-#| msgid "Flush Ansible fact cache"
 msgid "Flush fact cache:"
-msgstr "Neteja la memòria cau de fets visibles"
+msgstr "Neteja la memòria cau de fets:"
 
 #. Value options for filtering by Action Type in recurring actions list
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
@@ -6636,7 +6595,7 @@ msgstr "Node de controlNSible"
 
 #: ../html/src/manager/systems/list-filter.tsx:13
 msgid "Ansible Managed"
-msgstr ""
+msgstr "Ansible gestionat"
 
 #: ../html/src/manager/systems/list-filter.tsx:15
 msgid "Container Build Host"
