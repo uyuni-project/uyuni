@@ -19,6 +19,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     SELECT '', '/hub/sync/registerHub', 'POST', 'W', False
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/sync/registerHub' AND http_method = 'POST');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/serverInfo', 'GET', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/serverInfo' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/hub/sync/replaceTokens', 'POST', 'W', False
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/sync/replaceTokens' AND http_method = 'POST');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)

@@ -15,6 +15,7 @@ import com.suse.manager.model.hub.ChannelInfoDetailsJson;
 import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.OrgInfoJson;
+import com.suse.manager.model.hub.ServerInfoJson;
 
 import java.io.IOException;
 import java.util.List;
@@ -103,4 +104,12 @@ public interface HubInternalClient {
      * Deletes the ISSv1 Master
      */
     void deleteIssV1Master() throws IOException;
+
+    /**
+     * checks if the server can be registered as peripheral
+     *
+     * @return information about the server
+     * @throws IOException when the communication fails
+     */
+    ServerInfoJson getServerInfo() throws IOException;
 }

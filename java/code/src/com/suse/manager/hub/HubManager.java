@@ -55,6 +55,7 @@ import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.OrgInfoJson;
+import com.suse.manager.model.hub.ServerInfoJson;
 import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.controllers.ProductsController;
@@ -231,6 +232,18 @@ public class HubManager {
     }
 
     /**
+     * Checks if the server can be registered as peripheral
+     * @param accessToken the access token granting access and identifying the caller
+     * @return return {@link ServerInfoJson}
+     */
+    public ServerInfoJson getServerInfo(IssAccessToken accessToken) {
+        ensureValidToken(accessToken);
+
+        return new ServerInfoJson(hubFactory.countPeripherals() > 0,
+                hubFactory.lookupIssHub().isPresent());
+    }
+
+    /**
      * Save the given remote server as hub or peripheral depending on the specified role
      * @param accessToken the access token granting access and identifying the caller
      * @param role the role of the server
@@ -257,8 +270,54 @@ public class HubManager {
     public void deregister(User user, String fqdn, boolean onlyLocal) throws CertificateException, IOException {
         ensureSatAdmin(user);
 
-        IssRole remoteRole = hubFactory.isISSPeripheral() ? IssRole.HUB : IssRole.PERIPHERAL;
-        IssServer server = findServer(user, fqdn, remoteRole);
+        boolean thisIsISSHub = hubFactory.isISSHub();
+        boolean thisIsISSPeripheral = hubFactory.isISSPeripheral();
+        IssRole serverRole = null;
+
+        if (!thisIsISSHub && thisIsISSPeripheral) {
+            serverRole = IssRole.HUB;
+        }
+        if (thisIsISSHub && !thisIsISSPeripheral) {
+            serverRole = IssRole.PERIPHERAL;
+        }
+        if (thisIsISSHub && thisIsISSPeripheral) {
+            //this is both hub and peripheral: whose server do I have to deregister from?
+
+            //try deregister a peripheral
+            serverRole = IssRole.PERIPHERAL;
+            IssServer server = findServer(user, fqdn, serverRole);
+            if (null == server) {
+                //try deregister a hub
+                serverRole = IssRole.HUB;
+                server = findServer(user, fqdn, serverRole);
+                if (null == server) {
+                    LOG.error("Cannot deregister: server {} not found (neither hub nor peripheral)", fqdn);
+                    throw new IllegalStateException(
+                            "Cannot deregister: server %s not found (neither hub nor peripheral)".formatted(fqdn));
+                }
+            }
+        }
+        if (!thisIsISSHub && !thisIsISSPeripheral) {
+            return; //nothing to do: probably a race condition
+        }
+
+        deregister(user, fqdn, serverRole, onlyLocal);
+    }
+
+    /**
+     * Deregister the server with the given FQDN. The de-registration can be optionally performed also on the
+     * remote server.
+     * @param user the user
+     * @param fqdn the FQDN
+     * @param serverRole the server role (HUB or PERIPHERAL)
+     * @param onlyLocal specify if the de-registration has to be performed also on the remote server
+     * @throws CertificateException when it's not possible to use remote server certificate
+     * @throws IOException when the connection with the remote server fails
+     */
+    public void deregister(User user, String fqdn, IssRole serverRole, boolean onlyLocal)
+            throws CertificateException, IOException {
+        ensureSatAdmin(user);
+        IssServer server = findServer(user, fqdn, serverRole);
 
         if (null == server) {
             return;
@@ -270,7 +329,7 @@ public class HubManager {
             internalClient.deregister();
         }
 
-        switch (remoteRole) {
+        switch (serverRole) {
             case HUB -> deleteHub(fqdn);
             case PERIPHERAL -> deletePeripheral(fqdn);
             default -> throw new IllegalStateException("Role should either be HUB or PERIPHERAL");
@@ -285,13 +344,21 @@ public class HubManager {
      */
     public IssRole deleteIssServerLocal(IssAccessToken accessToken, String fqdn) {
         ensureValidToken(accessToken);
-        if (hubFactory.isISSPeripheral()) {
-            deleteHub(fqdn);
+
+        Optional<IssPeripheral> issPeripheral = hubFactory.lookupIssPeripheralByFqdn(fqdn);
+        if (issPeripheral.isPresent()) {
+            deletePeripheral(issPeripheral.get());
+            return IssRole.PERIPHERAL;
+        }
+
+        Optional<IssHub> issHub = hubFactory.lookupIssHubByFqdn(fqdn);
+        if (issHub.isPresent()) {
+            deleteHub(issHub.get());
             return IssRole.HUB;
         }
 
-        deletePeripheral(fqdn);
-        return IssRole.PERIPHERAL;
+        LOG.info("Peripheral Server with name {} not found", fqdn);
+        return IssRole.PERIPHERAL; //default value?
     }
 
     private void deletePeripheral(String peripheralFqdn) {
@@ -737,9 +804,36 @@ public class HubManager {
                 reportDbName, reportDbHost, reportDbPort);
     }
 
+    private void checkIfRegistrableAsPeripheral(ServerInfoJson serverInfo) throws PeripheralRegistrationException {
+        // if server is already a peripheral, then it has already a hub.
+        // multiple hubs are not allowed: replacing the hub could lead to circular dependencies
+        if (serverInfo.isPeripheral()) {
+            throw new PeripheralRegistrationException(
+                    "Candidate peripheral server already registered to a hub. Deregister it first");
+        }
+
+        // To avoid circular dependencies:
+        // if the server is not a hub (has no peripherals), it can be safely registered
+        // if current node is not subscribed to a hub, it can safely register any server (regardless of it already
+        // having peripherals)
+        if (serverInfo.isHub() && hubFactory.lookupIssHub().isPresent()) {
+            // how can we be sure the server is not our ancestor? Are forests allowed?
+            // with the following throw:
+            // PRO: we avoid mistakenly registering our tree root
+            // CON: we do not allow to register the root of another tree of a forest
+            throw new PeripheralRegistrationException(
+                    "Candidate peripheral server already owns peripherals. Cannot register another server tree");
+        }
+    }
+
     private IssPeripheral registerWithToken(User user, String remoteServer, String rootCA, String remoteToken)
         throws TokenParsingException, CertificateException, TokenBuildingException, IOException,
             TaskomaticApiException {
+
+        var internalApi = clientFactory.newInternalClient(remoteServer, remoteToken, rootCA);
+        ServerInfoJson serverInfo = internalApi.getServerInfo();
+        checkIfRegistrableAsPeripheral(serverInfo);
+
         parseAndSaveToken(remoteServer, remoteToken);
 
         IssServer registeredServer = createServer(IssRole.PERIPHERAL, remoteServer, rootCA, null, user);
