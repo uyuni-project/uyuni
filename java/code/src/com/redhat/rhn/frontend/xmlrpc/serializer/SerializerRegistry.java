@@ -173,6 +173,7 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(MigrationResultSerializer.class);
         SERIALIZER_CLASSES.add(AccessGroupSerializer.class);
         SERIALIZER_CLASSES.add(NamespaceSerializer.class);
+        SERIALIZER_CLASSES.add(ServerInfoJsonSerializer.class);
     }
 
     /**

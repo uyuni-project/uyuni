@@ -55,6 +55,7 @@ import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssPeripheralChannels;
 import com.suse.manager.model.hub.IssRole;
+import com.suse.manager.model.hub.ServerInfoJson;
 import com.suse.manager.model.hub.migration.MigrationMessage;
 import com.suse.manager.model.hub.migration.MigrationResult;
 import com.suse.manager.model.hub.migration.MigrationResultCode;
@@ -706,6 +707,8 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
             will(returnValue(null));
 
             allowing(internalClientMock).scheduleProductRefresh();
+            allowing(internalClientMock).getServerInfo();
+            will(returnValue(new ServerInfoJson()));
         }
 
         private void failingRegistration(SlaveMigrationData data, HubInternalClient internalClientMock)
@@ -724,6 +727,9 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
                 with(anyOf(nullValue(String.class), any(String.class)))
             );
             will(throwException(new IOException("Remote failure")));
+
+            allowing(internalClientMock).getServerInfo();
+            will(returnValue(new ServerInfoJson()));
         }
 
         private void allowChannelSetup(HubInternalClient internalClientMock,
