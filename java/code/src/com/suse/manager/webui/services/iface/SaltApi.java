@@ -519,4 +519,11 @@ public interface SaltApi {
      * @return list of matching minions
      */
      List<String> selectMinions(String target, String targetType);
+
+    /**
+     * Call 'salt-run config.get' to get info on the susemanager.conf configuration file
+     * @param key return key to retrieve from the configuration file
+     * @return retrieved value associated with the key, if any
+     */
+    Optional<String> configGet(String key);
 }

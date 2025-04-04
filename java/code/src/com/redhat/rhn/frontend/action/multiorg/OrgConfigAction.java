@@ -75,15 +75,12 @@ public class OrgConfigAction extends RhnAction {
             org.getOrgConfig().setScapfileUploadEnabled(request.
                     getParameter("scapfile_upload_enabled") != null);
 
-            Long newScapLimit = null;
             Long newScapRetentionPeriod = null;
             try {
-                newScapLimit = Long.parseLong(
-                           request.getParameter("scapfile_sizelimit"));
                 newScapRetentionPeriod = Long.parseLong(
                            request.getParameter(SCAP_RETENTION_PERIOD));
 
-                if (newScapLimit < 0 || newScapRetentionPeriod < 0) {
+                if (newScapRetentionPeriod < 0) {
                     throw new IllegalArgumentException();
                 }
             }
@@ -94,9 +91,6 @@ public class OrgConfigAction extends RhnAction {
 
                 return getStrutsDelegate().forwardParam(mapping.findForward("error"),
                            RequestContext.ORG_ID, org.getId().toString());
-            }
-            if (StringUtils.isNotEmpty(request.getParameter("scapfile_sizelimit"))) {
-                org.getOrgConfig().setScapFileSizelimit(newScapLimit);
             }
             if (StringUtils.isNotEmpty(request.getParameter(SCAP_RETENTION_PERIOD))) {
                 org.getOrgConfig().setScapRetentionPeriodDays(newScapRetentionPeriod);

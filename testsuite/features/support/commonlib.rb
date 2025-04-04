@@ -98,6 +98,8 @@ end
 def repeat_until_timeout(timeout: DEFAULT_TIMEOUT, retries: nil, message: nil, report_result: false, dont_raise: false)
   begin
     last_result = nil
+    # When we run the code coverage tracking tool together with our server, its performance decreases.
+    timeout *= 2 if $code_coverage_mode
     Timeout.timeout(timeout) do
       # HACK: Timeout.timeout might not raise Timeout::Error depending on the yielded code block
       # Pitfalls with this method have been long known according to the following articles:
@@ -301,7 +303,8 @@ end
 # @param name [String] the host name to check
 # @return [Boolean] true if the host name belongs to a Red Hat-like distribution, false otherwise
 def rh_host?(name)
-  (name.include? 'rhlike') || (name.include? 'alma') || (name.include? 'centos') || (name.include? 'liberty') || (name.include? 'oracle') || (name.include? 'rocky')
+  os_family = get_target(name).os_family
+  %w[rocky centos redhat alma oracle liberty].include? os_family
 end
 
 # Determines if the given host name is a Debian-based host.
@@ -309,7 +312,8 @@ end
 # @param name [String] The host name to check.
 # @return [Boolean] Returns true if the host name is Debian-based, false otherwise.
 def deb_host?(name)
-  (name.include? 'deblike') || (name.include? 'debian') || (name.include? 'ubuntu')
+  os_family = get_target(name).os_family
+  %w[debian ubuntu].include? os_family
 end
 
 # Checks if a repository exists.
@@ -327,11 +331,13 @@ end
 # @return [String] The generated repository name.
 def generate_repository_name(repo_url)
   repo_name = repo_url.strip
-  repo_name.sub!(%r{http://download.suse.de/ibs/SUSE:/Maintenance:/}, '')
-  repo_name.sub!(%r{http://download.suse.de/download/ibs/SUSE:/Maintenance:/}, '')
-  repo_name.sub!(%r{http://download.suse.de/download/ibs/SUSE:/}, '')
-  repo_name.sub!(%r{http://.*compute.internal/SUSE:/}, '')
-  repo_name.sub!(%r{http://.*compute.internal/SUSE:/Maintenance:/}, '')
+  repo_name.sub!(%r{http://(download.suse.de|download.opensuse.org|minima-mirror-ci-bv.mgr.*|.*compute.internal)/ibs/SUSE:/Maintenance:/}, '')
+  repo_name.sub!(%r{http://(download.suse.de|download.opensuse.org|minima-mirror-ci-bv.mgr.*|.*compute.internal)/download/ibs/SUSE:/Maintenance:/}, '')
+  repo_name.sub!(%r{http://(download.suse.de|download.opensuse.org|minima-mirror-ci-bv.mgr.*|.*compute.internal)/download/ibs/SUSE:/}, '')
+  repo_name.sub!(%r{http://(download.suse.de|download.opensuse.org|minima-mirror-ci-bv.mgr.*|.*compute.internal)/repositories/systemsmanagement:/}, '')
+  repo_name.sub!(%r{http://(download.suse.de|download.opensuse.org|minima-mirror-ci-bv.mgr.*|.*compute.internal)/SUSE:/}, '')
+  repo_name.sub!(%r{http://(download.suse.de|download.opensuse.org|minima-mirror-ci-bv.mgr.*|.*compute.internal)/ibs/Devel:/Galaxy:/Manager:/}, '')
+  repo_name.sub!(%r{http://(download.suse.de|download.opensuse.org|minima-mirror-ci-bv.mgr.*|.*compute.internal)/SUSE:/Maintenance:/}, '')
   repo_name.gsub!('/', '_')
   repo_name.gsub!(':', '_')
   repo_name[0...64] # HACK: Due to the 64 characters size limit of a repository label
