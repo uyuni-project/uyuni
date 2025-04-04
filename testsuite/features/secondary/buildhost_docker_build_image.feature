@@ -176,38 +176,39 @@ Feature: Build container images
     And I wait at most 600 seconds until image "suse_real_key" with version "GUI_DOCKERADMIN" is built successfully via API
     And I wait at most 300 seconds until image "suse_real_key" with version "GUI_DOCKERADMIN" is inspected successfully via API
 
-@scc_credentials
-  Scenario: Cleanup: delete all images with key
-    Given I am authorized as "admin" with password "admin"
-    When I delete the image "suse_key" with version "latest" via API calls
-    And I delete the image "suse_key" with version "Latest_key-activation1" via API calls
-    And I delete the image "suse_real_key" with version "latest" via API calls
-    And I delete the image "suse_real_key" with version "GUI_BUILT_IMAGE" via API calls
-    And I delete the image "suse_real_key" with version "GUI_DOCKERADMIN" via API calls
+# Do not clean up images because the audit tests needs them
+#@scc_credentials
+#  Scenario: Cleanup: delete all images with key
+#    Given I am authorized as "admin" with password "admin"
+#    When I delete the image "suse_key" with version "latest" via API calls
+#    And I delete the image "suse_key" with version "Latest_key-activation1" via API calls
+#    And I delete the image "suse_real_key" with version "latest" via API calls
+#    And I delete the image "suse_real_key" with version "GUI_BUILT_IMAGE" via API calls
+#    And I delete the image "suse_real_key" with version "GUI_DOCKERADMIN" via API calls
 
-  Scenario: Cleanup: delete images without key
-    Given I am authorized as "admin" with password "admin"
-    When I delete the image "suse_simple" with version "latest" via API calls
-    And I delete the image "suse_simple" with version "Latest_simple" via API calls
+#  Scenario: Cleanup: delete images without key
+#    Given I am authorized as "admin" with password "admin"
+#    When I delete the image "suse_simple" with version "latest" via API calls
+#    And I delete the image "suse_simple" with version "Latest_simple" via API calls
 
-@scc_credentials
-  Scenario: Cleanup: delete all profiles with key
-    When I follow the left menu "Images > Profiles"
-    And I check "suse_key" in the list
-    And I check "suse_real_key" in the list
-    And I click on "Delete"
-    And I should see a "Are you sure you want to delete selected profiles?" text
-    And I click on the red confirmation button
-    And I wait until I see "Image profiles have been deleted" text
+#@scc_credentials
+#  Scenario: Cleanup: delete all profiles with key
+#    When I follow the left menu "Images > Profiles"
+#    And I check "suse_key" in the list
+#    And I check "suse_real_key" in the list
+#    And I click on "Delete"
+#    And I should see a "Are you sure you want to delete selected profiles?" text
+#    And I click on the red confirmation button
+#    And I wait until I see "Image profiles have been deleted" text
 
-  Scenario: Cleanup: delete all profiles without key
-    When I follow the left menu "Images > Profiles"
-    And I check "suse_simple" in the list
-    And I check "suse_real_simple" in the list
-    And I click on "Delete"
-    And I should see a "Are you sure you want to delete selected profiles?" text
-    And I click on the red confirmation button
-    And I wait until I see "Image profiles have been deleted" text
+#  Scenario: Cleanup: delete all profiles without key
+#    When I follow the left menu "Images > Profiles"
+#    And I check "suse_simple" in the list
+#    And I check "suse_real_simple" in the list
+#    And I click on "Delete"
+#    And I should see a "Are you sure you want to delete selected profiles?" text
+#    And I click on the red confirmation button
+#    And I wait until I see "Image profiles have been deleted" text
 
   Scenario: Cleanup: Make sure no job is left running on buildhost
     When I wait until no Salt job is running on "build_host"
