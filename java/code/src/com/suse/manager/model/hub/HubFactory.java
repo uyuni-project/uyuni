@@ -19,6 +19,7 @@ import com.redhat.rhn.frontend.listview.PageControl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
@@ -30,6 +31,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.Tuple;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Root;
 
 public class HubFactory extends HibernateFactory {
 
@@ -158,7 +163,11 @@ public class HubFactory extends HibernateFactory {
      * @return the number of peripherals
      */
     public long countPeripherals(PageControl pc) {
-        return buildQueryFromPageControl("IssPeripheral", Long.class, pc).uniqueResult();
+        if (pc == null) {
+            return countPeripherals();
+        }
+
+        return buildCountQueryFromPageControl(IssPeripheral.class, pc).uniqueResult();
     }
 
     /**
@@ -167,7 +176,11 @@ public class HubFactory extends HibernateFactory {
      * @return a list of paginated peripherals
      */
     public List<IssPeripheral> listPaginatedPeripherals(PageControl pc) {
-        return buildQueryFromPageControl("IssPeripheral", IssPeripheral.class, pc).list();
+        if (pc == null) {
+            return listPeripherals();
+        }
+
+        return buildListQueryFromPageControl(IssPeripheral.class, pc).list();
     }
 
     /**
@@ -438,30 +451,42 @@ public class HubFactory extends HibernateFactory {
         return Optional.empty();
     }
 
-    private static <T> Query<T> buildQueryFromPageControl(String entityName, Class<T> resultClass, PageControl pc) {
-        boolean countQuery = Long.class.equals(resultClass);
-        String hql = "FROM %s e".formatted(entityName);
+    private static <E> Query<Long> buildCountQueryFromPageControl(Class<E> entityClass, PageControl pc) {
+        Session session = getSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+
+        Root<E> root = criteria.from(entityClass);
+
+        criteria.select(builder.count(root));
+
         if (pc.hasFilter()) {
-            hql += " WHERE e.%s LIKE :filter".formatted(pc.getFilterColumn());
+            criteria.where(builder.like(root.get(pc.getFilterColumn()), "%" + pc.getFilterData() + "%"));
         }
 
-        if (countQuery) {
-            hql = "SELECT COUNT(*) " + hql;
-        }
-        else {
-            hql += " ORDER BY e.%s %s".formatted(pc.getSortColumn(), pc.isSortDescending() ? "DESC" : "ASC");
-        }
+        return session.createQuery(criteria);
+    }
 
-        Query<T> query = getSession().createQuery(hql, resultClass);
+    private static <E> Query<E> buildListQueryFromPageControl(Class<E> entityClass, PageControl pc) {
+        Session session = getSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<E> criteria = builder.createQuery(entityClass);
+
+        Root<E> root = criteria.from(entityClass);
+
+        criteria.select(root);
+
         if (pc.hasFilter()) {
-            query.setParameter("filter", "%" + pc.getFilterData() + "%");
+            criteria.where(builder.like(root.get(pc.getFilterColumn()), "%" + pc.getFilterData() + "%"));
         }
 
-        if (!countQuery) {
-            query.setFirstResult(pc.getStart() - 1);
-            query.setMaxResults(pc.getPageSize());
-        }
+        Path<Object> sortColumn = root.get(pc.getSortColumn());
+        criteria.orderBy(pc.isSortDescending() ? builder.desc(sortColumn) : builder.asc(sortColumn));
 
-        return query;
+        return session.createQuery(criteria)
+            .setFirstResult(pc.getStart() - 1)
+            .setMaxResults(pc.getPageSize());
     }
 }
