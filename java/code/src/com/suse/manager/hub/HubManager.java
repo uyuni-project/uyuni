@@ -17,7 +17,6 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.ReportDBCredentials;
@@ -77,9 +76,7 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.text.MessageFormat;
-import java.util.HashSet;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -88,8 +85,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -547,17 +542,6 @@ public class HubManager {
      */
     public ManagerInfoJson collectManagerInfo(IssAccessToken accessToken) {
         ensureValidToken(accessToken);
-        return collectManagerInfo();
-    }
-
-    /**
-     * Collect data about a Manager Server
-     *
-     * @param user The current user
-     * @return return {@link ManagerInfoJson}
-     */
-    public ManagerInfoJson collectManagerInfo(User user) {
-        ensureSatAdmin(user);
         return collectManagerInfo();
     }
 
@@ -1218,7 +1202,7 @@ public class HubManager {
                         .filter(child -> !syncedLabels.contains(child.getChannelLabel()))
                         .map(child -> cloneChannelWithUnsyncedChildren(child, syncedLabels))
                         .collect(Collectors.toList()))
-                .orElse(Collections.emptyList());
+                .orElse(List.of());
         return new ChannelSyncDetail(
                 channel.getChannelId(),
                 channel.getChannelName(),
