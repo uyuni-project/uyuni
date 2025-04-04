@@ -352,6 +352,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     /** {@inheritDoc} */
     @Override
     public boolean hasRole(Role label) {
+        // TODO: Remove all uses with regular roles
         // We use checkRoleSet to get the correct logic for the
         // implied roles.
         return getRoles().contains(label);

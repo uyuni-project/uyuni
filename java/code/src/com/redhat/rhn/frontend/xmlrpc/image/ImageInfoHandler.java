@@ -92,7 +92,6 @@ public class ImageInfoHandler extends BaseHandler {
      */
     @ReadOnly
     public List<ImageInfo> listImages(User loggedInUser) {
-        ensureImageAdmin(loggedInUser);
         return ImageInfoFactory.listImageInfos(loggedInUser.getOrg());
     }
 
@@ -109,7 +108,6 @@ public class ImageInfoHandler extends BaseHandler {
      */
     @ReadOnly
     public ImageOverview getDetails(User loggedInUser, Integer imageId) {
-        ensureImageAdmin(loggedInUser);
         Optional<ImageOverview> opt = ImageInfoFactory.lookupOverviewByIdAndOrg(imageId,
                 loggedInUser.getOrg());
         if (!opt.isPresent()) {
@@ -131,7 +129,6 @@ public class ImageInfoHandler extends BaseHandler {
      */
     @ReadOnly
     public Map<String, Object> getPillar(User loggedInUser, Integer imageId) {
-        ensureImageAdmin(loggedInUser);
         Optional<ImageInfo> opt = ImageInfoFactory.lookupByIdAndOrg(imageId,
                 loggedInUser.getOrg());
         if (!opt.isPresent()) {
@@ -156,7 +153,6 @@ public class ImageInfoHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int setPillar(User loggedInUser, Integer imageId, Map<String, Object> pillarData) {
-        ensureImageAdmin(loggedInUser);
         Optional<ImageInfo> imageOpt = ImageInfoFactory.lookupByIdAndOrg(imageId,
                 loggedInUser.getOrg());
         if (!imageOpt.isPresent()) {
@@ -227,7 +223,6 @@ public class ImageInfoHandler extends BaseHandler {
     public Long importContainerImage(User loggedInUser, String name, String version,
             Integer buildHostId, String storeLabel, String activationKey,
             Date earliestOccurrence) {
-        ensureImageAdmin(loggedInUser);
         if (StringUtils.isEmpty(name)) {
             throw new InvalidParameterException("Image name cannot be empty.");
         }
@@ -275,7 +270,6 @@ public class ImageInfoHandler extends BaseHandler {
      * @apidoc.returntype #param("int", "the ID of the image")
      */
     public Long importOSImage(User loggedInUser, String name, String version, String arch) {
-        ensureImageAdmin(loggedInUser);
         if (StringUtils.isEmpty(name)) {
             throw new InvalidParameterException("Image name cannot be empty.");
         }
@@ -321,7 +315,6 @@ public class ImageInfoHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int deleteImageFile(User loggedInUser, Integer imageId, String file) {
-        ensureImageAdmin(loggedInUser);
         Optional<ImageFile> opt = ImageInfoFactory.lookupImageFile(loggedInUser.getOrg(), file);
 
         if (!opt.isPresent()) {
@@ -357,8 +350,6 @@ public class ImageInfoHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public Long addImageFile(User loggedInUser, Integer imageId, String file, String type, Boolean external) {
-        ensureImageAdmin(loggedInUser);
-
         Optional<ImageInfo> opt = ImageInfoFactory.lookupByIdAndOrg(imageId,
                 loggedInUser.getOrg());
         if (!opt.isPresent()) {
@@ -403,7 +394,6 @@ public class ImageInfoHandler extends BaseHandler {
      */
     public Long scheduleImageBuild(User loggedInUser, String profileLabel, String version,
             Integer buildHostId, Date earliestOccurrence) {
-        ensureImageAdmin(loggedInUser);
         if (StringUtils.isEmpty(profileLabel)) {
             throw new InvalidParameterException("Profile label cannot be empty.");
         }
@@ -441,7 +431,6 @@ public class ImageInfoHandler extends BaseHandler {
      */
     @ReadOnly
     public List<ErrataOverview> getRelevantErrata(User loggedInUser, Integer imageId) {
-        ensureImageAdmin(loggedInUser);
         Optional<ImageOverview> opt = ImageInfoFactory.lookupOverviewByIdAndOrg(imageId,
                 loggedInUser.getOrg());
         if (!opt.isPresent()) {
@@ -479,7 +468,6 @@ public class ImageInfoHandler extends BaseHandler {
     @ReadOnly
     public List<Map<String, Object>> listPackages(User loggedInUser, Integer imageId)
             throws FaultException {
-        ensureImageAdmin(loggedInUser);
         Optional<ImageOverview> opt = ImageInfoFactory.lookupOverviewByIdAndOrg(imageId,
                 loggedInUser.getOrg());
         if (!opt.isPresent()) {
@@ -516,7 +504,6 @@ public class ImageInfoHandler extends BaseHandler {
      */
     @ReadOnly
     public Map<String, String> getCustomValues(User loggedInUser, Integer imageId) {
-        ensureImageAdmin(loggedInUser);
         Optional<ImageOverview> opt = ImageInfoFactory.lookupOverviewByIdAndOrg(imageId,
                 loggedInUser.getOrg());
         if (!opt.isPresent()) {
@@ -538,7 +525,6 @@ public class ImageInfoHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, Integer imageId) {
-        ensureImageAdmin(loggedInUser);
         Optional<ImageInfo> opt = ImageInfoFactory.lookupByIdAndOrg(imageId,
                 loggedInUser.getOrg());
         if (!opt.isPresent()) {

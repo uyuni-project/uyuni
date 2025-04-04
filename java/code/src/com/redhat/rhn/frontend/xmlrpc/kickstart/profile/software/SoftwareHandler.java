@@ -16,15 +16,12 @@ package com.redhat.rhn.frontend.xmlrpc.kickstart.profile.software;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartPackage;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.XmlRpcKickstartHelper;
@@ -60,7 +57,6 @@ public class SoftwareHandler extends BaseHandler {
     @ReadOnly
     public List<String> getSoftwareList(User loggedInUser, String ksLabel) {
 
-        checkKickstartPerms(loggedInUser);
         KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
         List<String> list = new ArrayList<>();
         for (KickstartPackage p : ksdata.getKsPackages()) {
@@ -87,7 +83,6 @@ public class SoftwareHandler extends BaseHandler {
             String ksLabel,
             List<String> packageList) {
 
-        checkKickstartPerms(loggedInUser);
         KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
         Set<KickstartPackage> packages = ksdata.getKsPackages();
         packages.clear();
@@ -129,7 +124,6 @@ public class SoftwareHandler extends BaseHandler {
             Boolean ignoreMissing,
             Boolean noBase) {
 
-        checkKickstartPerms(loggedInUser);
         KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
         ksdata.setNoBase(noBase);
         ksdata.setIgnoreMissing(ignoreMissing);
@@ -152,7 +146,6 @@ public class SoftwareHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int appendToSoftwareList(User loggedInUser, String ksLabel, List<String> packageList) {
-        checkKickstartPerms(loggedInUser);
         KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
         Set<KickstartPackage> packages = ksdata.getKsPackages();
         Long pos = (long) packages.size(); // position package in list
@@ -166,13 +159,6 @@ public class SoftwareHandler extends BaseHandler {
         }
         KickstartFactory.saveKickstartData(ksdata);
         return 1;
-    }
-
-    private void checkKickstartPerms(User user) {
-        if (!user.hasRole(RoleFactory.CONFIG_ADMIN)) {
-            throw new PermissionException(LocalizationService.getInstance()
-                    .getMessage("permission.configadmin.needed"));
-        }
     }
 
     private KickstartData lookupKsData(String label, Org org) {
