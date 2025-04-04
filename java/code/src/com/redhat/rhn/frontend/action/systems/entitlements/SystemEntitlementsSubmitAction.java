@@ -177,7 +177,7 @@ public class SystemEntitlementsSubmitAction extends
             Long sid = element.getElement();
             Server server = ServerFactory.lookupByIdAndOrg(sid, user.getOrg());
             //We are adding the add on entitlement
-            if (add) {
+            if (Boolean.TRUE.equals(add)) {
                 //if the system already has the entitlement, do nothing
                 //  if so, neither success nor failure count will be updated.
                 if (!server.hasEntitlement(ent)) {

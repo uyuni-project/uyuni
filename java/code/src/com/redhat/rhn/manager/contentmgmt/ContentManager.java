@@ -602,8 +602,9 @@ public class ContentManager {
 
         // if current Environment or the next 2 Environments in the chain are building -> FORBID promote
         // as it could affect the build in progress
+        Boolean next = nextEnv.getNextEnvironmentOpt();
         if (isEnvironmentBuilding(of(env)) || isEnvironmentBuilding(of(nextEnv)) ||
-                isEnvironmentBuilding(nextEnv.getNextEnvironmentOpt())) {
+                isEnvironmentBuilding(Boolean.TRUE.equals(next))) {
             throw new ContentManagementException("Build/Promote already in progress");
         }
 

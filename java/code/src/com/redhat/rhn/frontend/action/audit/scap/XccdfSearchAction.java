@@ -84,7 +84,8 @@ public class XccdfSearchAction extends BaseSearchAction {
     }
 
     private Date getPickerDate(HttpServletRequest request, String paramName) {
-        if (getOptionScanDateSearch(request)) {
+        Boolean shouldScan = getOptionScanDateSearch(request);
+        if (Boolean.TRUE.equals(shouldScan)) {
             DatePicker dPick = (DatePicker)request.getAttribute(paramName);
             if (dPick != null) {
                 return dPick.getDate();

@@ -685,7 +685,7 @@ public class ProfileHandler extends BaseHandler {
         script.setData(contents.getBytes());
         script.setInterpreter(interpreter.equals("") ? null : interpreter);
         script.setScriptType(type);
-        script.setChroot(chroot ? "Y" : "N");
+        script.setChroot(Boolean.TRUE.equals(chroot) ? "Y" : "N");
         script.setRaw(!template);
         script.setErrorOnFail(erroronfail);
         script.setKsdata(ksData);
