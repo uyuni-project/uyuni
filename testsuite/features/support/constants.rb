@@ -1790,6 +1790,7 @@ EMPTY_CHANNELS = %w[
   suse-manager-retail-branch-server-5.0-updates-x86_64
   sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
   sle-manager-tools15-beta-pool-x86_64-sp4
+  rhel-x86_64-server-7
   fake-base-channel-suse-like
   fake-base-channel-i586
   test-base-channel-x86_64
