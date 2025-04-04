@@ -511,17 +511,17 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
-        mockTaskomaticApi.setExpectations(1,
-                List.of("tasko.scheduleSingleSatBunchRun"),
-                List.of("root-ca-cert-update-bunch"),
+        mockTaskomaticApi.setExpectations(0,
+                List.of(),
+                List.of(),
                 "hub_dummy2.hub.fqdn_root_ca.pem", "", "");
         hubManager.saveNewServer(getValidToken("dummy2.hub.fqdn"), IssRole.HUB, "", "");
         mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
-        mockTaskomaticApi.setExpectations(1,
-                List.of("tasko.scheduleSingleSatBunchRun"),
-                List.of("root-ca-cert-update-bunch"),
+        mockTaskomaticApi.setExpectations(0,
+                List.of(),
+                List.of(),
                 "hub_dummy3.hub.fqdn_root_ca.pem", "", "");
         hubManager.saveNewServer(getValidToken("dummy3.hub.fqdn"), IssRole.HUB, null, null);
         mockTaskomaticApi.verifyTaskoCall();
@@ -537,17 +537,17 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
-        mockTaskomaticApi.setExpectations(1,
-                List.of("tasko.scheduleSingleSatBunchRun"),
-                List.of("root-ca-cert-update-bunch"),
+        mockTaskomaticApi.setExpectations(0,
+                List.of(),
+                List.of(),
                 "peripheral_dummy2.periph.fqdn_root_ca.pem", "", "");
         hubManager.saveNewServer(getValidToken("dummy2.periph.fqdn"), IssRole.PERIPHERAL, "", "");
         mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
-        mockTaskomaticApi.setExpectations(1,
-                List.of("tasko.scheduleSingleSatBunchRun"),
-                List.of("root-ca-cert-update-bunch"),
+        mockTaskomaticApi.setExpectations(0,
+                List.of(),
+                List.of(),
                 "peripheral_dummy3.periph.fqdn_root_ca.pem", "", "");
         hubManager.saveNewServer(getValidToken("dummy3.periph.fqdn"), IssRole.PERIPHERAL, null, null);
         mockTaskomaticApi.verifyTaskoCall();
