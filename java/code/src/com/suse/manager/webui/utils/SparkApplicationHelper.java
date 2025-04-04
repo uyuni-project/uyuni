@@ -523,7 +523,7 @@ public class SparkApplicationHelper {
                 response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             }
             else {
-                throw (RuntimeException) e;
+                throw e;
             }
         });
 
