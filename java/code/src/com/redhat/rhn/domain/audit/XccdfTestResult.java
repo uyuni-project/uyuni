@@ -21,6 +21,8 @@ import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.org.OrgConfig;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.manager.audit.ScapManager;
+import com.redhat.rhn.manager.audit.scap.RuleResultDiffer;
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 import com.redhat.rhn.manager.audit.scap.file.ScapResultFile;
 
@@ -47,6 +49,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * XccdfTestResult - Class representation of the table rhnXccdfTestResult.
@@ -91,6 +94,12 @@ public class XccdfTestResult implements Serializable {
 
     @Column(name = "end_time")
     private Date endTime;
+
+    @Transient
+    private Long comparableId = null;
+
+    @Transient
+    private String diffIcon = null;
 
     @Column(name = "errors", columnDefinition = "bytea")
     private byte[] errors = {};
@@ -261,6 +270,29 @@ public class XccdfTestResult implements Serializable {
      */
     public String getErrrosContents() {
         return HibernateFactory.getByteArrayContents(this.errors);
+    }
+
+    /**
+     * Return the TestResult with metadata similar to the this one
+     * @return id of testresult
+     */
+    public Long getComparableId() {
+        if (comparableId == null) {
+            comparableId = ScapManager.previousComparableTestResult(id);
+        }
+        return comparableId;
+    }
+
+    /**
+     * Return name of the list icon, which best refers to the state of diff.
+     * The diff between current TestResult and previous comparable TestResult.
+     * @return the result
+     */
+    public String getDiffIcon() {
+        if (diffIcon == null) {
+            diffIcon = new RuleResultDiffer(getComparableId(), id).overallComparison();
+        }
+        return diffIcon;
     }
 
     /**
