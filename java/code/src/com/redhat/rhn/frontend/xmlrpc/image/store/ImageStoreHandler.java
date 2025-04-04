@@ -62,7 +62,6 @@ public class ImageStoreHandler extends BaseHandler {
      */
     public int create(User loggedInUser, String label, String uri, String storeType,
             Map<String, String> credentials) {
-        ensureImageAdmin(loggedInUser);
         if (StringUtils.isEmpty(label)) {
             throw new InvalidParameterException("Label cannot be empty.");
         }
@@ -101,7 +100,6 @@ public class ImageStoreHandler extends BaseHandler {
      */
     @ReadOnly
     public List<ImageStoreType> listImageStoreTypes(User loggedInUser) {
-        ensureImageAdmin(loggedInUser);
         return ImageStoreFactory.listImageStoreTypes();
     }
 
@@ -116,7 +114,6 @@ public class ImageStoreHandler extends BaseHandler {
      */
     @ReadOnly
     public List<ImageStore> listImageStores(User loggedInUser) {
-        ensureImageAdmin(loggedInUser);
         return new ArrayList<>(ImageStoreFactory.listImageStores(loggedInUser.getOrg()));
     }
 
@@ -133,8 +130,6 @@ public class ImageStoreHandler extends BaseHandler {
      */
     @ReadOnly
     public ImageStore getDetails(User loggedInUser, String label) {
-        ensureImageAdmin(loggedInUser);
-
         if (StringUtils.isEmpty(label)) {
             throw new InvalidParameterException("Label cannot be empty.");
         }
@@ -159,7 +154,6 @@ public class ImageStoreHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, String label) {
-        ensureImageAdmin(loggedInUser);
         Optional<ImageStore> store = ImageStoreFactory.lookupBylabelAndOrg(label,
                 loggedInUser.getOrg());
         if (!store.isPresent()) {
@@ -188,7 +182,6 @@ public class ImageStoreHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int setDetails(User loggedInUser, String label, Map details) {
-        ensureImageAdmin(loggedInUser);
         Set<String> validKeys = new HashSet<>();
         validKeys.add("uri");
         validKeys.add("username");

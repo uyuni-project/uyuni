@@ -28,6 +28,12 @@ public class AccessGroupFactory extends HibernateFactory {
     private static final AccessGroupFactory INSTANCE = new AccessGroupFactory();
     private static final Logger LOG = LogManager.getLogger(AccessGroupFactory.class);
 
+    public static final AccessGroup CHANNEL_ADMIN = lookupDefault("channel_admin");
+    public static final AccessGroup CONFIG_ADMIN = lookupDefault("config_admin");
+    public static final AccessGroup SYSTEM_GROUP_ADMIN = lookupDefault("system_group_admin");
+    public static final AccessGroup ACTIVATION_KEY_ADMIN = lookupDefault("activation_key_admin");
+    public static final AccessGroup IMAGE_ADMIN = lookupDefault("image_admin");
+
     private AccessGroupFactory() {
         super();
     }
@@ -90,5 +96,18 @@ public class AccessGroupFactory extends HibernateFactory {
                 .setParameter("label", label)
                 .setParameter("org", org)
                 .uniqueResultOptional();
+    }
+
+    /**
+     * Looks up a default access group by its label.
+     * @param label the label of the access group
+     * @return the access group
+     */
+    public static AccessGroup lookupDefault(String label) {
+        return getSession()
+                .createQuery("SELECT a FROM AccessGroup a WHERE a.label = :label AND a.org IS NULL",
+                        AccessGroup.class)
+                .setParameter("label", label)
+                .uniqueResult();
     }
 }
