@@ -4492,13 +4492,6 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         </context-group>
         <target>Aktivieren Hochladen von detailierten SCAP-Dateien</target>
       </trans-unit>
-      <trans-unit id="org-config.scapfile-sizelimit.jsp" xml:space="preserve">
-        <source>SCAP File Upload Size Limit</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
-        </context-group>
-        <target>SCAP-Datei Hochladen Größenbeschränkung</target>
-      </trans-unit>
       <trans-unit id="org-config.scap-retention" xml:space="preserve">
         <source>Allow Deletion of SCAP Results</source>
         <context-group name="ctx">
