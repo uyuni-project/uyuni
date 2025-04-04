@@ -4527,13 +4527,6 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="org-config.scapfile-sizelimit.jsp" xml:space="preserve">
-        <source>SCAP File Upload Size Limit</source>
-        <target state="translated">Obmedzenie veľkosti nahrávania súborov SCAP</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="org-config.scap-retention" xml:space="preserve">
         <source>Allow Deletion of SCAP Results</source>
         <target state="translated">Umožniť vymazanie výsledkov SCAP</target>
@@ -7105,350 +7098,350 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systems.groups.add.jsp.title" xml:space="preserve">
         <source>System Group Membership</source>
-        <target/>
+        <target state="translated">Členstvo v systémových skupinách</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.removed" xml:space="preserve">
         <source>{0} system groups removed.</source>
-        <target/>
+        <target state="translated">{0} systémové skupiny odstránené.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.added" xml:space="preserve">
         <source>{0} system groups added.</source>
-        <target/>
+        <target state="translated">{0} systémové skupiny pridané.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.remove" xml:space="preserve">
         <source>Leave Selected Groups</source>
-        <target/>
+        <target state="translated">Opustiť vybrané skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.add" xml:space="preserve">
         <source>Join Selected Groups</source>
-        <target/>
+        <target state="translated">Pripojiť vybrané skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.admins.title" xml:space="preserve">
         <source>Group Administrators</source>
-        <target/>
+        <target state="translated">Administrátori skupín</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.admins.summary" xml:space="preserve">
         <source>Checked users may administer the systems in this group.  Org Admins may always administer all systems. System Group Admins are marked with (*) and may modify all aspects of system groups assigned to them.</source>
-        <target/>
+        <target state="translated">Začiarknutí používatelia môžu spravovať systémy v tejto skupine.  Administrátori organizácií môžu vždy spravovať všetky systémy. Administrátori systémových skupín sú označení (*) a môžu upravovať všetky aspekty im pridelených systémových skupín.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.admins.updated" xml:space="preserve">
         <source>Admin list for system group &lt;strong&gt;{0}&lt;/strong&gt; updated.</source>
-        <target/>
+        <target state="translated">Zoznam administrátorov pre systémovú skupinu &lt;strong&gt;{0}&lt;/strong&gt; aktualizovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.erratalist.title" xml:space="preserve">
         <source>Relevant Patches </source>
-        <target/>
+        <target state="translated">Príslušné opravy </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.erratalist.summary" xml:space="preserve">
         <source>The following patches apply to one or more of the systems in this group.</source>
-        <target/>
+        <target state="translated">Nasledujúce opravy sa týkajú jedného alebo viacerých systémov v tejto skupine.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.errata-systems-affected.title" xml:space="preserve">
         <source>Systems Affected By {0} - {1}</source>
-        <target/>
+        <target state="translated">Systémy ovplyvnené {0} - {1}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.errata-systems-affected.summary" xml:space="preserve">
         <source>Below is a list of the systems in the {0} group which are affected by this patch.</source>
-        <target/>
+        <target state="translated">Nižšie je uvedený zoznam systémov v skupine {0}, ktorých sa táto oprava týka.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.target-systems.summary" xml:space="preserve">
         <source>The following are systems that may be added to this group.</source>
-        <target/>
+        <target state="translated">Nasledujúce sú systémy, ktoré môžu byť pridané do tejto skupiny.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.target-systems.added" xml:space="preserve">
         <source>{0} systems were added to &lt;strong&gt;{1}&lt;/strong&gt; server group.</source>
-        <target/>
+        <target state="translated">{0} systémy boli pridané do &lt;strong&gt;{1}&lt;/strong&gt; serverovej skupiny.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.target-systems.add" xml:space="preserve">
         <source>Add Systems</source>
-        <target/>
+        <target state="translated">Pridať systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.systems.summary" xml:space="preserve">
         <source>Below are all the systems that have been added to this system group. To remove a system group membership, check its checkbox and make sure you click the "{0}" button when you are finished with your changes.</source>
-        <target/>
+        <target state="translated">Nižšie sú uvedené všetky systémy, ktoré boli pridané do tejto systémovej skupiny. Ak chcete odstrániť členstvo v systémovej skupine, začiarknite jej začiarkavacie políčko a po dokončení zmien kliknite na tlačidlo "{0}".</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.systems.summary.nonadmin" xml:space="preserve">
         <source>Below are all the systems that have been added to this system group.</source>
-        <target/>
+        <target state="translated">Nižšie sú uvedené všetky systémy, ktoré boli pridané do tejto systémovej skupiny.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.systems.removed" xml:space="preserve">
         <source>{0} systems were removed from &lt;strong&gt;{1}&lt;/strong&gt; server group.</source>
-        <target/>
+        <target state="translated">{0} systémy boli odstránené zo &lt;strong&gt;{1}&lt;/strong&gt; serverovej skupiny.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.systems.remove" xml:space="preserve">
         <source>Remove Systems</source>
-        <target/>
+        <target state="translated">Odstrániť systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.status" xml:space="preserve">
         <source>System Group Status</source>
-        <target/>
+        <target state="translated">Stav systémovej skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.updates" xml:space="preserve">
         <source>Updates:</source>
-        <target/>
+        <target state="translated">Aktualizácie:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.someupdates" xml:space="preserve">
         <source>Software Updates Available</source>
-        <target/>
+        <target state="translated">K dispozícii sú aktualizácie softvéru</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.noupdates" xml:space="preserve">
         <source>No applicable patches</source>
-        <target/>
+        <target state="translated">Žiadne použiteľné opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.updates.critical" xml:space="preserve">
         <source>&lt;strong&gt;&lt;a href="{0}"&gt;Critical: &lt;/a&gt;&lt;/strong&gt; {1}</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;&lt;a href="{0}"&gt;Kritické: &lt;/a&gt;&lt;/strong&gt; {1}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.updates.noncritical" xml:space="preserve">
         <source>&lt;strong&gt;&lt;a href="{0}"&gt;Non-Critical: &lt;/a&gt;&lt;/strong&gt; {1}</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;&lt;a href="{0}"&gt;Nekritické: &lt;/a&gt;&lt;/strong&gt; {1}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.none" xml:space="preserve">
         <source>(none)</source>
-        <target/>
+        <target state="translated">(žiadne)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.properties" xml:space="preserve">
         <source>System Group Properties</source>
-        <target/>
+        <target state="translated">Vlastnosti systémovej skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.editproperties" xml:space="preserve">
         <source>Edit These Properties</source>
-        <target/>
+        <target state="translated">Upraviť tieto vlastnosti</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.admins" xml:space="preserve">
         <source>Admins:</source>
-        <target/>
+        <target state="translated">Administrátori:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.manageadmins" xml:space="preserve">
         <source>Edit group administrators</source>
-        <target/>
+        <target state="translated">Upraviť administrátorov skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.systems" xml:space="preserve">
         <source>Systems:</source>
-        <target/>
+        <target state="translated">Systémy:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.systems.systems" xml:space="preserve">
         <source>{0} System(s)</source>
-        <target/>
+        <target state="translated">{0} Systém(y)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.name" xml:space="preserve">
         <source>Name:</source>
-        <target/>
+        <target state="translated">Názov:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.description" xml:space="preserve">
         <source>Description:</source>
-        <target/>
+        <target state="translated">Popis:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.admincount" xml:space="preserve">
         <source>group administrator(s)</source>
-        <target/>
+        <target state="translated">administrátor(i) skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.delete.title" xml:space="preserve">
         <source>System Group Deletion Confirmation</source>
-        <target/>
+        <target state="translated">Potvrdenie vymazania systémovej skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.delete.subtitle" xml:space="preserve">
         <source>This will delete the following System Group: {1}{0}{2}</source>
-        <target/>
+        <target state="translated">Týmto sa vymaže nasledujúca systémová skupina: {1}{0}{2}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.delete.summary" xml:space="preserve">
         <source>Note that this will only delete the system group itself, {0}not{1} any current systems that happen to be members.</source>
-        <target/>
+        <target state="translated">Treba poznamenať, že sa vymaže len samotná systémová skupina, {0}nie{1}akékoľvek aktuálne systémy, ktoré sú jej členmi.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.delete.confirm" xml:space="preserve">
         <source>Confirm Deletion</source>
-        <target/>
+        <target state="translated">Potvrdiť vymazanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.delete.deleted" xml:space="preserve">
         <source>System group "{0}" deleted.</source>
-        <target/>
+        <target state="translated">Systémová skupina "{0}" vymazaná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.create.header" xml:space="preserve">
         <source>Create System Group</source>
-        <target/>
+        <target state="translated">Vytvoriť systémovú skupinu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.edit.header" xml:space="preserve">
         <source>Edit System Group</source>
-        <target/>
+        <target state="translated">Upraviť systémovú skupinu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.create.summary" xml:space="preserve">
         <source>Create a system group using the form provided. Note that the group will be empty until systems are joined to it. Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
-        <target/>
+        <target state="translated">Vytvorte systémovú skupinu pomocou poskytnutého formulára. Treba poznamenať, že skupina bude prázdna, kým sa do nej nepridajú systémy. Položky označené hviezdičkou (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) sú &lt;strong&gt;povinné&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.create.summaryssm" xml:space="preserve">
         <source>This will create a new system group, and will place the selected systems into the new group. Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
-        <target/>
+        <target state="translated">Týmto sa vytvorí nová systémová skupina a vybrané systémy sa umiestnia do novej skupiny. Položky označené hviezdičkou (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) sú &lt;strong&gt;povinné&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.edit.summary" xml:space="preserve">
         <source>Update group properties using the form provided. Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
-        <target/>
+        <target state="translated">Aktualizujte vlastnosti skupiny pomocou poskytnutého formulára. Položky označené hviezdičkou (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) sú &lt;strong&gt;povinné&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.create.requiredfield" xml:space="preserve">
         <source>Required Field</source>
-        <target/>
+        <target state="translated">Požadované pole</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.create.requirements" xml:space="preserve">
         <source>Both name and description are required for System Groups.</source>
-        <target/>
+        <target state="translated">Názov aj popis sa vyžadujú pre systémové skupiny.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.create.alreadyexists" xml:space="preserve">
         <source>That group name is already in use. Please choose another.</source>
-        <target/>
+        <target state="translated">Tento názov skupiny sa už používa. Vyberte si iný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.create.name" xml:space="preserve">
         <source>Name</source>
-        <target/>
+        <target state="translated">Názov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.create.description" xml:space="preserve">
         <source>Description</source>
-        <target/>
+        <target state="translated">Popis</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>

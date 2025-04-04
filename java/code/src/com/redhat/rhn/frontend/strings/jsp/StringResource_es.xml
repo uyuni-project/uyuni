@@ -4359,13 +4359,6 @@ del rol de Administrador de la organización.</target>
         </context-group>
         <target>Habilitar la carga de archivos SCAP detallados</target>
       </trans-unit>
-      <trans-unit id="org-config.scapfile-sizelimit.jsp" xml:space="preserve">
-        <source>SCAP File Upload Size Limit</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
-        </context-group>
-        <target>Tamaño límite de carga de archivo SCAP</target>
-      </trans-unit>
       <trans-unit id="org-config.scap-retention" xml:space="preserve">
         <source>Allow Deletion of SCAP Results</source>
         <context-group name="ctx">
