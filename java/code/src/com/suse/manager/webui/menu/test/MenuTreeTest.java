@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,16 +7,13 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.manager.webui.menu.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.security.acl.Access;
@@ -50,6 +47,31 @@ public class MenuTreeTest  {
         MenuItem activeNode = MenuTree.getActiveNode(nodes, url);
 
         // check if the active node has the expected label and it is active flagged
+        assertNotNull(activeNode);
+        assertTrue(activeNode.getActive());
+        assertTrue(activeNode.getLabel().equalsIgnoreCase("My Account"));
+        assertFalse(activeNode.getLabel().equalsIgnoreCase("Home"));
+    }
+
+    @Test
+    public void testActiveNodeWithParameters() {
+        // the requested url
+        String url = "/rhn/account/25/details";
+
+        // the menu tree
+        MenuItemList nodes = new MenuItemList();
+        nodes.add(new MenuItem("Home")
+            .addChild(new MenuItem("Overview")
+                .withPrimaryUrl("/rhn/YourRhn.do"))
+            .addChild(new MenuItem("User Account")
+                .addChild(new MenuItem("My Account")
+                    .withPrimaryUrl("/rhn/account/:id/details"))));
+
+        // the TESTED method
+        MenuItem activeNode = MenuTree.getActiveNode(nodes, url);
+
+        // check if the active node has the expected label and it is active flagged
+        assertNotNull(activeNode);
         assertTrue(activeNode.getActive());
         assertTrue(activeNode.getLabel().equalsIgnoreCase("My Account"));
         assertFalse(activeNode.getLabel().equalsIgnoreCase("Home"));
