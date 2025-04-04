@@ -355,20 +355,20 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
 
         int expectedChannelsSynced = 0;
         if (peripheralSyncProd) {
-            hubFactory.save(new IssPeripheralChannels(peripheral, prodBaseChannel, 1));
-            hubFactory.save(new IssPeripheralChannels(peripheral, prodChildChannel, 1));
+            hubFactory.save(new IssPeripheralChannels(peripheral, prodBaseChannel, 1L));
+            hubFactory.save(new IssPeripheralChannels(peripheral, prodChildChannel, 1L));
             expectedChannelsSynced += 2;
         }
 
         if (peripheralSyncTest) {
-            hubFactory.save(new IssPeripheralChannels(peripheral, testBaseChannel, 1));
-            hubFactory.save(new IssPeripheralChannels(peripheral, testChildChannel, 1));
+            hubFactory.save(new IssPeripheralChannels(peripheral, testBaseChannel, 1L));
+            hubFactory.save(new IssPeripheralChannels(peripheral, testChildChannel, 1L));
             expectedChannelsSynced += 2;
         }
 
         if (peripheralSyncDev) {
-            hubFactory.save(new IssPeripheralChannels(peripheral, devBaseChannel, 1));
-            hubFactory.save(new IssPeripheralChannels(peripheral, devChildChannel, 1));
+            hubFactory.save(new IssPeripheralChannels(peripheral, devBaseChannel, 1L));
+            hubFactory.save(new IssPeripheralChannels(peripheral, devChildChannel, 1L));
             expectedChannelsSynced += 2;
         }
 
