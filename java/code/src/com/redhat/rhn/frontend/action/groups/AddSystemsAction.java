@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AddSystemsAction extends BaseListAction<SystemOverview> {
 
-    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -63,7 +63,7 @@ public class AddSystemsAction extends BaseListAction<SystemOverview> {
             servers.add(SystemManager.lookupByIdAndUser(sid, user));
         }
 
-        serverGroupManager.addServers(sg, servers, user);
+        SERVER_GROUP_MANAGER.addServers(sg, servers, user);
         getStrutsDelegate().saveMessage(
                     "systemgroup.target-systems.added",
                         new String [] {String.valueOf(set.size()),

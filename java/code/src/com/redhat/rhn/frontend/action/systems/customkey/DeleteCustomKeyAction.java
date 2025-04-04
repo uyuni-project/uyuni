@@ -35,9 +35,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class DeleteCustomKeyAction extends RhnAction {
 
-    private final String CIKID_PARAM = "cikid";
-    private final String LABEL_PARAM = "label";
-    private final String DESC_PARAM = "description";
+    private static final String CIKID_PARAM = "cikid";
+    private static final String LABEL_PARAM = "label";
+    private static final String DESC_PARAM = "description";
 
     /** {@inheritDoc} */
     @Override

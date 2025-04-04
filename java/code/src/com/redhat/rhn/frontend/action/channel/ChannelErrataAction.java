@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ChannelErrataAction extends RhnAction {
 
-    private final String LIST_NAME = "errataList";
+    private static final String LIST_NAME = "errataList";
 
     /** {@inheritDoc} */
     @Override

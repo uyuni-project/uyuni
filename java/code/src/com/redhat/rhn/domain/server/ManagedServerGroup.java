@@ -29,7 +29,7 @@ import java.util.Set;
 public class ManagedServerGroup extends ServerGroup {
 
     private Set<User> associatedAdmins = new HashSet<>();
-    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /**
      * returns the set of 'non-org-admin' users that have been
@@ -51,7 +51,7 @@ public class ManagedServerGroup extends ServerGroup {
      * @return a set of users
      */
     public Set<User> getAssociatedAdminsFor(User user) {
-        serverGroupManager.validateAdminCredentials(user);
+        SERVER_GROUP_MANAGER.validateAdminCredentials(user);
         return getAssociatedAdmins();
     }
 

@@ -37,8 +37,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CreateCustomKeyAction extends RhnAction {
 
-    private final String LABEL_PARAM = "label";
-    private final String DESC_PARAM = "description";
+    private static final String LABEL_PARAM = "label";
+    private static final String DESC_PARAM = "description";
 
     /** {@inheritDoc} */
     @Override

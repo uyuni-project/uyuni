@@ -15,7 +15,7 @@ Feature: ReportDB
 
   Scenario: Connect to the ReportDB on the server with admin user
     Given I can connect to the ReportDB on the Server
-    And I have a user with admin access to the ReportDB
+    And I have a user allowed to create roles on the ReportDB
 
   Scenario: Create read-only user
     When I create a read-only user for the ReportDB

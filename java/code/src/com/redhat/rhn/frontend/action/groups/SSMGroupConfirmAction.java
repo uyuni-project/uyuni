@@ -60,7 +60,7 @@ public class SSMGroupConfirmAction extends RhnAction
     private String RMV_DATA = "removeSet";
     private String RMV_LIST = "removeList";
 
-    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /**
      * {@inheritDoc}
@@ -123,16 +123,16 @@ public class SSMGroupConfirmAction extends RhnAction
                 servers.add(ServerFactory.lookupById(system.getId()));
             }
             for (SystemGroupOverview group : addList) {
-                ManagedServerGroup msg = serverGroupManager.lookup(group.getId(), user);
+                ManagedServerGroup msg = SERVER_GROUP_MANAGER.lookup(group.getId(), user);
                 Set<Server> difference = new HashSet<>(servers);
                 difference.removeAll(msg.getServers());
-                serverGroupManager.addServers(msg, difference, user);
+                SERVER_GROUP_MANAGER.addServers(msg, difference, user);
             }
             for (SystemGroupOverview group : removeList) {
-                ManagedServerGroup msg = serverGroupManager.lookup(group.getId(), user);
+                ManagedServerGroup msg = SERVER_GROUP_MANAGER.lookup(group.getId(), user);
                 Set<Server> intersection = new HashSet<>(msg.getServers());
                 intersection.retainAll(servers);
-                serverGroupManager.removeServers(msg, intersection, user);
+                SERVER_GROUP_MANAGER.removeServers(msg, intersection, user);
             }
             createSuccessMessage(request, "ssm.groups.changed", null);
             groupSet.clear();

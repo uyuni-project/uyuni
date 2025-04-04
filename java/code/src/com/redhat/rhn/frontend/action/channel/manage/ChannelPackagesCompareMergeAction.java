@@ -98,22 +98,22 @@ public class ChannelPackagesCompareMergeAction extends ChannelPackagesCompareAct
         RhnListSetHelper helper = new RhnListSetHelper(request);
 
         String alphaBarPressed = request.getParameter(
-                AlphaBarHelper.makeAlphaKey(TagHelper.generateUniqueName(listName)));
+                AlphaBarHelper.makeAlphaKey(TagHelper.generateUniqueName(LIST_NAME)));
         if (!requestContext.isSubmitted() && alphaBarPressed == null) {
             set.clear();
             RhnSetManager.store(set);
         }
-        else if (ListTagHelper.getListAction(listName, request) != null) {
-            helper.execute(set, listName, result);
+        else if (ListTagHelper.getListAction(LIST_NAME, request) != null) {
+            helper.execute(set, LIST_NAME, result);
         }
 
         if (!set.isEmpty()) {
             helper.syncSelections(set, result);
-            ListTagHelper.setSelectedAmount(listName, set.size(), request);
+            ListTagHelper.setSelectedAmount(LIST_NAME, set.size(), request);
         }
 
-        ListTagHelper.bindSetDeclTo(listName, RhnSetDecl.PACKAGES_TO_SYNC_CHANNEL, request);
-        TagHelper.bindElaboratorTo(listName, result.getElaborator(), request);
+        ListTagHelper.bindSetDeclTo(LIST_NAME, RhnSetDecl.PACKAGES_TO_SYNC_CHANNEL, request);
+        TagHelper.bindElaboratorTo(LIST_NAME, result.getElaborator(), request);
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI() + "?" + request.getQueryString());
         request.setAttribute(RequestContext.PAGE_LIST, result);
 

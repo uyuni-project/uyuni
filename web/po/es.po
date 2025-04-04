@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-28 14:30+0100\n"
+"POT-Creation-Date: 2025-04-04 11:42+0200\n"
 "PO-Revision-Date: 2025-01-23 14:54+0000\n"
 "Last-Translator: \"Marina J. Donis\" <marinajdonis@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -60,8 +60,8 @@ msgstr "Confirmar eliminación"
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:128
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:94
 msgid "Schedule"
 msgstr "Programación"
@@ -69,7 +69,7 @@ msgstr "Programación"
 #: ../html/src/components/CoCoScansList.tsx:137
 #: ../html/src/components/CoCoScansList.tsx:192
 #: ../html/src/components/package/PackageListActionScheduler.tsx:189
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:218
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:242
 msgid "Back to list"
 msgstr "Volver a la lista"
 
@@ -179,7 +179,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:212
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/all-list.tsx:73
-#: ../html/src/manager/systems/list-filter.tsx:41
+#: ../html/src/manager/systems/list-filter.tsx:43
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:775
 msgid "System"
@@ -355,19 +355,19 @@ msgstr "Crear"
 msgid "Configuration Channels"
 msgstr "Canales de configuración"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:112
+#: ../html/src/components/datetime/DateTimePicker.tsx:117
 msgid "Previous month"
 msgstr ""
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:113
+#: ../html/src/components/datetime/DateTimePicker.tsx:118
 msgid "Next month"
 msgstr ""
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:114
+#: ../html/src/components/datetime/DateTimePicker.tsx:119
 msgid "Previous year"
 msgstr ""
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:115
+#: ../html/src/components/datetime/DateTimePicker.tsx:120
 #, fuzzy
 msgid "Next year"
 msgstr "Siguiente"
@@ -437,8 +437,8 @@ msgstr "Cancelar"
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:24
 #: ../html/src/manager/packages/list.tsx:72
 #: ../html/src/manager/packages/list.tsx:125
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:217
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:220
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:248
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:251
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:222
 #: ../html/src/manager/salt/keys/key-management.tsx:54
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:132
@@ -819,6 +819,7 @@ msgstr "Sistema no registrado"
 #: ../html/src/manager/images/image-import.tsx:314
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:515
 #: ../html/src/manager/proxy/container-config.tsx:390
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:407
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
@@ -845,14 +846,14 @@ msgstr ""
 #: ../html/src/components/hub/TokenTable.tsx:76
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
-#: ../html/src/manager/systems/list-filter.tsx:36
+#: ../html/src/manager/systems/list-filter.tsx:38
 msgid "Yes"
 msgstr "Sí"
 
 #: ../html/src/components/hub/TokenTable.tsx:76
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
-#: ../html/src/manager/systems/list-filter.tsx:37
+#: ../html/src/manager/systems/list-filter.tsx:39
 #, fuzzy
 msgid "No"
 msgstr "Ninguna"
@@ -1135,8 +1136,8 @@ msgstr ""
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:39
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:78
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:63
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:209
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:212
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:240
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:243
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:213
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
@@ -1242,11 +1243,11 @@ msgstr "Siguiente"
 msgid "Last"
 msgstr "Apellido(s)"
 
-#: ../html/src/components/pagination.tsx:93
+#: ../html/src/components/pagination.tsx:94
 msgid "Page <dropdown></dropdown> of {total}"
 msgstr ""
 
-#: ../html/src/components/pagination.tsx:115
+#: ../html/src/components/pagination.tsx:117
 #, fuzzy
 msgid "Page {current} of {total}"
 msgstr "Página {0} de {1}"
@@ -1394,9 +1395,10 @@ msgstr ""
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:91
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:202
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:204
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:103
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:121
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:233
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:235
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:111
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
@@ -1456,7 +1458,7 @@ msgid "There are no states assigned."
 msgstr "No hay ningún estado asignado."
 
 #: ../html/src/components/states-picker.tsx:451
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:251
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:282
 #, fuzzy
 msgid "State Name"
 msgstr "Apellido(s)"
@@ -1466,7 +1468,7 @@ msgid "Channel Name"
 msgstr "Nombre del canal"
 
 #: ../html/src/components/states-picker.tsx:452
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:264
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:295
 #, fuzzy
 msgid "State Label"
 msgstr "Canales de sóftwer"
@@ -1487,7 +1489,7 @@ msgstr "Etiqueta del canal"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:42
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:36
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:52
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:268
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:299
 msgid "Description"
 msgstr "Descripción"
 
@@ -1534,7 +1536,7 @@ msgstr "Redes"
 
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
-#: ../html/src/manager/systems/list-filter.tsx:66
+#: ../html/src/manager/systems/list-filter.tsx:68
 #: ../html/src/manager/systems/virtual-list.tsx:63
 #, fuzzy
 msgid "Virtual Host"
@@ -1548,6 +1550,7 @@ msgstr "Sistemas virtuales alojados"
 #: ../html/src/components/systems.tsx:44
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:608
 #: ../html/src/manager/systems/list-filter.tsx:6
+#: ../html/src/manager/systems/list-filter.tsx:22
 msgid "Proxy"
 msgstr ""
 
@@ -1665,7 +1668,7 @@ msgstr ""
 
 #: ../html/src/components/utils/loading/Loading.tsx:20
 #: ../html/src/manager/appstreams/appstream-packages.tsx:32
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:74
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:106
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:634
@@ -2400,16 +2403,16 @@ msgstr ""
 msgid "HTTP Proxy Password"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:125
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:128
 msgid "Illustration of a proxy server"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:126
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:129
 #: ../html/src/manager/admin/setup/setup-header.tsx:7
 msgid "HTTP Proxy"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:129
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:132
 msgid ""
 "If this server uses an HTTP proxy to access the outside network, you can use "
 "this form to configure it. If that is not the case, move on to "
@@ -2976,6 +2979,7 @@ msgid "Socket/IFL count"
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:306
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:127
 msgid "Select"
 msgstr "Seleccionar"
 
@@ -3957,7 +3961,7 @@ msgstr "Sistemas"
 #: ../html/src/manager/images/image-view.tsx:668
 #: ../html/src/manager/images/image-view.tsx:792
 #: ../html/src/manager/systems/all-list.tsx:103
-#: ../html/src/manager/systems/list-filter.tsx:45
+#: ../html/src/manager/systems/list-filter.tsx:47
 msgid "Packages"
 msgstr "Paquetes"
 
@@ -3965,7 +3969,7 @@ msgstr "Paquetes"
 #: ../html/src/manager/images/image-view.tsx:655
 #: ../html/src/manager/images/image-view.tsx:791
 #: ../html/src/manager/systems/all-list.tsx:90
-#: ../html/src/manager/systems/list-filter.tsx:44
+#: ../html/src/manager/systems/list-filter.tsx:46
 msgid "Patches"
 msgstr "Parches"
 
@@ -4001,7 +4005,7 @@ msgid "Building the image has been "
 msgstr ""
 
 #: ../html/src/manager/images/image-build.tsx:211
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:177
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:217
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:51
 #: ../html/src/manager/systems/proxy.tsx:70
@@ -4388,7 +4392,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:522
 #: ../html/src/manager/images/image-view-overview.tsx:523
 #: ../html/src/manager/images/image-view.tsx:485
-#: ../html/src/manager/systems/list-filter.tsx:26
+#: ../html/src/manager/systems/list-filter.tsx:28
 msgid "Critical updates available"
 msgstr ""
 
@@ -4596,7 +4600,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:652
 #: ../html/src/manager/systems/all-list.tsx:79
-#: ../html/src/manager/systems/list-filter.tsx:43
+#: ../html/src/manager/systems/list-filter.tsx:45
 #: ../html/src/manager/systems/virtual-list.tsx:88
 msgid "Updates"
 msgstr "Actualizaciones"
@@ -4677,13 +4681,8 @@ msgstr ""
 msgid "Sign In"
 msgstr ""
 
-#: ../html/src/manager/login/susemanager/login.tsx:119
-#: ../html/src/manager/login/uyuni/login.tsx:117
-msgid "Copyright Notice"
-msgstr ""
-
-#: ../html/src/manager/login/susemanager/login.tsx:121
-#: ../html/src/manager/login/uyuni/login.tsx:120
+#: ../html/src/manager/login/susemanager/login.tsx:120
+#: ../html/src/manager/login/uyuni/login.tsx:118
 msgid "{productName} release {versionNumber}"
 msgstr ""
 
@@ -4709,10 +4708,6 @@ msgstr ""
 
 #: ../html/src/manager/login/uyuni/login.tsx:46
 msgid "View website"
-msgstr ""
-
-#: ../html/src/manager/login/uyuni/login.tsx:114
-msgid "About"
 msgstr ""
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:76
@@ -4827,7 +4822,7 @@ msgid "Multi"
 msgstr ""
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:102
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:150
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:156
 #, fuzzy
 msgid "Schedule Details"
 msgstr "Detalles del filtro"
@@ -5051,7 +5046,7 @@ msgid "Loading content.."
 msgstr "Información adicional"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:57
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:48
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:50
 #, fuzzy
 msgid "An error occurred while loading data. Please check server logs."
 msgstr "Error al programar la tarea en Taskomatic. Revise los registros."
@@ -5086,53 +5081,58 @@ msgstr ""
 msgid "e.g., /etc/ansible/testing/hosts"
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:81
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:85
 msgid "Nothing configured. Please add paths in the "
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:81
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:93
 msgid "Loading playbook contents.."
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:87
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:200
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:224
 #: ../html/src/manager/state/highstate.tsx:121
 msgid "Test mode"
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:92
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:104
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:122
 msgid "Back to playbook list"
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:110
 msgid "Schedule playbook execution"
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:128
+msgid "Select the current Playbook"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Schedule Playbook Execution"
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:126
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:166
 msgid "Inventory Path"
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:140
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:180
 msgid "Flush Ansible fact cache"
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:141
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:181
 msgid "Clear the fact cache for every host in inventory"
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:149
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:189
 msgid "Playbook Content"
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:169
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:209
 msgid "Action has been successfully added to action chain"
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:176
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:216
 #, fuzzy
 msgid "Playbook execution has been"
 msgstr "La acción se ha "
@@ -5220,6 +5220,254 @@ msgstr ""
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:49
 msgid "Applying the packages states has been "
 msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config-messages.tsx:13
+#, fuzzy
+#| msgid "The action has been <link>scheduled</link>."
+msgid "Proxy configuration action has been scheduled."
+msgstr "La acción se ha <link>programado</link>."
+
+#: ../html/src/manager/minion/proxy/proxy-config-messages.tsx:25
+#, fuzzy
+#| msgid "Search in configuration channels"
+msgid "Scheduling proxy configuration action..."
+msgstr "Buscar en canales de configuración"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:114
+#: ../html/src/manager/proxy/container-config.tsx:142
+msgid "Request interrupted or invalid response received from the server."
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:179
+#, fuzzy
+msgid "Proxy Configuration"
+msgstr "Canales de configuración"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:183
+msgid ""
+"Convert an already onboarded minion to a proxy or update the configuration "
+"of an existing proxy."
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:193
+msgid "Convert Minion to Proxy"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:198
+#: ../html/src/manager/proxy/container-config.tsx:210
+msgid "Parent FQDN"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:199
+#: ../html/src/manager/proxy/container-config.tsx:213
+msgid "The FQDN of the parent (server or proxy) to connect to."
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:201
+#: ../html/src/manager/proxy/container-config.tsx:212
+msgid "e.g., server.domain.com"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:209
+#: ../html/src/manager/proxy/container-config.tsx:221
+msgid "Proxy SSH port"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:210
+#: ../html/src/manager/proxy/container-config.tsx:222
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:499
+msgid "Port range: 1 - 65535"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:219
+#: ../html/src/manager/proxy/container-config.tsx:231
+msgid "Max Squid cache size"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:220
+msgid "The maximum value of the Squid cache in Gigabytes"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:223
+#, fuzzy
+msgid "e.g., 100"
+msgstr "p. ej., SLE12"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:230
+#: ../html/src/manager/proxy/container-config.tsx:242
+msgid "Proxy admin email"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:231
+#: ../html/src/manager/proxy/container-config.tsx:243
+msgid "The container-based proxy administrator email address"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:232
+#: ../html/src/manager/proxy/container-config.tsx:244
+msgid "e.g., proxy.admin@mycompany.com"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:241
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:242
+msgid "Certificates"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:250
+msgid "Keep"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:251
+msgid "Replace"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:262
+msgid ""
+"Keeping the current certificates means no changes will be made to the Root "
+"CA, Intermediate CAs, Proxy certificate, or Proxy SSL private key."
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:273
+msgid "Root CA"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:274
+#: ../html/src/manager/proxy/container-config.tsx:269
+#: ../html/src/manager/proxy/container-config.tsx:278
+#: ../html/src/manager/proxy/container-config.tsx:335
+msgid "To sign the SSL certificate in PEM format"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:283
+#: ../html/src/manager/proxy/container-config.tsx:344
+msgid "Intermediate CAs"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:293
+#: ../html/src/manager/proxy/container-config.tsx:354
+msgid "CA file in PEM format"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:305
+#: ../html/src/manager/proxy/container-config.tsx:365
+msgid "Proxy certificate"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:306
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:315
+#: ../html/src/manager/proxy/container-config.tsx:366
+#: ../html/src/manager/proxy/container-config.tsx:375
+msgid "In PEM format"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:314
+#: ../html/src/manager/proxy/container-config.tsx:374
+msgid "Proxy SSL private key"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:326
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:327
+#, fuzzy
+msgid "Source"
+msgstr "Fuentes"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:335
+#, fuzzy
+msgid "Registry"
+msgstr "Sistema no registrado"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:336
+msgid "RPM"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:344
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:345
+#, fuzzy
+msgid "Registry Source"
+msgstr "Clave de activación"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:352
+msgid "Simple"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:353
+msgid "Advanced"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:361
+#, fuzzy
+msgid "Registry URL"
+msgstr "Sistema no registrado"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:362
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:389
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:413
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:437
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:461
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:485
+#, fuzzy
+msgid "e.g., "
+msgstr "p. ej., SLE12"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:369
+#, fuzzy
+#| msgid "contains"
+msgid "Containers Tag"
+msgstr "contiene"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:371
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:398
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:422
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:446
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:470
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:494
+#, fuzzy
+msgid "e.g., latest"
+msgstr "Actualizaciones"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:388
+msgid "HTTPD URL"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:396
+msgid "HTTPD Tag"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:412
+msgid "Salt Broker URL"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:420
+msgid "Salt Broker Tag"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:436
+msgid "Squid URL"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:444
+msgid "Squid Tag"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:460
+msgid "SSH URL"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:468
+msgid "SSH Tag"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:484
+msgid "TFTPD URL"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:492
+msgid "TFTPD Tag"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:510
+msgid "Apply"
+msgstr "Aplicar"
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
 #: ../html/src/manager/notifications/notification-messages.tsx:506
@@ -5482,10 +5730,6 @@ msgid ""
 "Generation of the proxy configuration in progress: waiting for a response..."
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:142
-msgid "Request interrupted or invalid response received from the server."
-msgstr ""
-
 #: ../html/src/manager/proxy/container-config.tsx:179
 #: ../html/src/manager/proxy/container-config.tsx:195
 msgid "Container Based Proxy Configuration"
@@ -5510,31 +5754,6 @@ msgstr ""
 msgid "e.g., proxy.domain.com"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:210
-msgid "Parent FQDN"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:212
-msgid "e.g., server.domain.com"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:213
-msgid "The FQDN of the parent (server or proxy) to connect to."
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:221
-msgid "Proxy SSH port"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:222
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:499
-msgid "Port range: 1 - 65535"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:231
-msgid "Max Squid cache size"
-msgstr ""
-
 #: ../html/src/manager/proxy/container-config.tsx:232
 msgid "The maximum value of the Squid cache in Megabytes"
 msgstr ""
@@ -5543,18 +5762,6 @@ msgstr ""
 #, fuzzy
 msgid "e.g., 2048"
 msgstr "p. ej., SLE12"
-
-#: ../html/src/manager/proxy/container-config.tsx:242
-msgid "Proxy admin email"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:243
-msgid "The container-based proxy administrator email address"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:244
-msgid "e.g., proxy.admin@mycompany.com"
-msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:251
 #: ../html/src/manager/proxy/container-config.tsx:252
@@ -5573,12 +5780,6 @@ msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:268
 msgid "CA certificate"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:269
-#: ../html/src/manager/proxy/container-config.tsx:278
-#: ../html/src/manager/proxy/container-config.tsx:335
-msgid "To sign the SSL certificate in PEM format"
 msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:277
@@ -5639,142 +5840,150 @@ msgstr ""
 msgid "The root CA"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:344
-msgid "Intermediate CAs"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:354
-msgid "CA file in PEM format"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:365
-msgid "Proxy certificate"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:366
-#: ../html/src/manager/proxy/container-config.tsx:375
-msgid "In PEM format"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:374
-msgid "Proxy SSL private key"
-msgstr ""
-
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:89
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:95
 msgid "Execution time"
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:155
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:161
 #, fuzzy
 msgid "State:"
 msgstr "Estado"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:156
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:162
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:148
 #, fuzzy
 msgid "Active"
 msgstr "Acción"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:156
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:162
 msgid "Inactive"
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:160
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:166
 msgid "Test"
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:161
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:167
 msgid "True"
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:165
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:171
 #, fuzzy
 msgid "Action type"
 msgstr "Acción"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:169
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:175
 #, fuzzy
 msgid "Target type"
 msgstr "Tipo de fuente"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:173
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:179
 #, fuzzy
 msgid "Target name"
 msgstr "Tipo de fuente"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:177
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:183
 #, fuzzy
 msgid "Created by"
 msgstr "Creación"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:182
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:188
 #, fuzzy
 msgid "Created at"
 msgstr "Creación"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:188
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:194
 msgid "Quartz format string"
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:233
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:206
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:74
+#, fuzzy
+msgid "Playbook details"
+msgstr "Nombre del filtro"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:211
+#, fuzzy
+msgid "Playbook path"
+msgstr "Nombre del filtro"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:215
+msgid "Inventory path"
+msgstr ""
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:219
+msgid "Flush fact cache"
+msgstr ""
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:220
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:93
+msgid "true"
+msgstr ""
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:220
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:93
+msgid "false"
+msgstr ""
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:264
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:235
 msgid "Delete Recurring Action Schedule"
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:234
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:265
 #, fuzzy
 msgid "Are you sure you want to delete this schedule?"
 msgstr "¿Confirma que quiere eliminar el perfil seleccionado?"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:242
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:273
 #, fuzzy
 msgid "State configuration for {name}"
 msgstr "Canal de estados de configuración"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:249
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:280
 #, fuzzy
 msgid "Order"
 msgstr "Reordenar"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:79
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:81
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:84
 #, fuzzy
 msgid "Schedule successfully updated."
 msgstr "Se eliminó el filtro correctamente"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:79
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:81
 #, fuzzy
 msgid "Schedule successfully created."
 msgstr "Se eliminó el filtro correctamente"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:90
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:92
 #, fuzzy
 msgid "Action scheduled on selected minions"
 msgstr "programado"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
 #, fuzzy
 msgid "Update "
 msgstr "Actualizar"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
 #, fuzzy
 msgid "Create "
 msgstr "Crear"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:226
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
 #, fuzzy
 msgid "Schedule Recurring Action"
 msgstr "Estado de acción"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:235
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:259
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:194
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:35
 #, fuzzy
 msgid "Action Type"
 msgstr "Acción"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:260
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:283
 msgid "Configure states to execute"
 msgstr ""
 
@@ -5819,14 +6028,37 @@ msgstr ""
 msgid "Group"
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions.tsx:133
+#: ../html/src/manager/recurring/recurring-actions.tsx:134
 msgid "Error when deleting the action. Check if Taskomatic is running"
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions.tsx:148
+#: ../html/src/manager/recurring/recurring-actions.tsx:149
 msgid ""
 "The below times are displayed in the server time zone {timeZone}. The "
 "scheduled time will be the server time."
+msgstr ""
+
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:54
+#, fuzzy
+msgid "Change Playbook"
+msgstr "Cambios"
+
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:61
+#, fuzzy
+msgid "Select a Playbook"
+msgstr "Crear un filtro nuevo"
+
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:79
+#, fuzzy
+msgid "Playbook path:"
+msgstr "Nombre del filtro"
+
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:85
+msgid "Inventory path:"
+msgstr ""
+
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:91
+msgid "Flush fact cache:"
 msgstr ""
 
 #. Value options for filtering by Action Type in recurring actions list
@@ -6138,25 +6370,25 @@ msgid "No Systems."
 msgstr "Sistemas"
 
 #: ../html/src/manager/systems/all-list.tsx:117
-#: ../html/src/manager/systems/list-filter.tsx:46
+#: ../html/src/manager/systems/list-filter.tsx:48
 #, fuzzy
 msgid "Extra Packages"
 msgstr "Paquetes"
 
 #: ../html/src/manager/systems/all-list.tsx:131
-#: ../html/src/manager/systems/list-filter.tsx:47
+#: ../html/src/manager/systems/list-filter.tsx:49
 msgid "Config Diffs"
 msgstr ""
 
 #: ../html/src/manager/systems/all-list.tsx:146
-#: ../html/src/manager/systems/list-filter.tsx:48
+#: ../html/src/manager/systems/list-filter.tsx:50
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:579
 msgid "Base Channel"
 msgstr "Canal de base"
 
 #: ../html/src/manager/systems/all-list.tsx:157
-#: ../html/src/manager/systems/list-filter.tsx:51
+#: ../html/src/manager/systems/list-filter.tsx:53
 #, fuzzy
 msgid "System Type"
 msgstr "Nombre de sistema"
@@ -6197,7 +6429,7 @@ msgid "Loading SSH Private Key.."
 msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:399
-#: ../html/src/manager/systems/list-filter.tsx:13
+#: ../html/src/manager/systems/list-filter.tsx:14
 msgid "Bootstrap"
 msgstr ""
 
@@ -6360,92 +6592,96 @@ msgstr ""
 msgid "Ansible Control Node"
 msgstr ""
 
-#: ../html/src/manager/systems/list-filter.tsx:14
+#: ../html/src/manager/systems/list-filter.tsx:13
+msgid "Ansible Managed"
+msgstr ""
+
+#: ../html/src/manager/systems/list-filter.tsx:15
 #, fuzzy
 msgid "Container Build Host"
 msgstr "Anfitrión de compilación"
 
-#: ../html/src/manager/systems/list-filter.tsx:15
+#: ../html/src/manager/systems/list-filter.tsx:16
 msgid "Foreign"
 msgstr ""
 
-#: ../html/src/manager/systems/list-filter.tsx:16
+#: ../html/src/manager/systems/list-filter.tsx:17
 #, fuzzy
 msgid "Management"
 msgstr "Nodo de gestión"
 
-#: ../html/src/manager/systems/list-filter.tsx:17
+#: ../html/src/manager/systems/list-filter.tsx:18
 msgid "Monitored Host"
 msgstr ""
 
-#: ../html/src/manager/systems/list-filter.tsx:18
+#: ../html/src/manager/systems/list-filter.tsx:19
 #, fuzzy
 msgid "OS Image Build Host"
 msgstr "Anfitrión de compilación"
 
-#: ../html/src/manager/systems/list-filter.tsx:19
+#: ../html/src/manager/systems/list-filter.tsx:20
 msgid "Salt"
 msgstr ""
 
-#: ../html/src/manager/systems/list-filter.tsx:20
+#: ../html/src/manager/systems/list-filter.tsx:21
 #, fuzzy
 msgid "Virtualization Host"
 msgstr "Redes"
 
-#: ../html/src/manager/systems/list-filter.tsx:24
+#: ../html/src/manager/systems/list-filter.tsx:26
 #, fuzzy
 msgid "Actions scheduled"
 msgstr "programado"
 
-#: ../html/src/manager/systems/list-filter.tsx:25
+#: ../html/src/manager/systems/list-filter.tsx:27
 #, fuzzy
 msgid "All updates scheduled"
 msgstr "programado"
 
-#: ../html/src/manager/systems/list-filter.tsx:27
+#: ../html/src/manager/systems/list-filter.tsx:29
 msgid "Kickstart in progress"
 msgstr ""
 
-#: ../html/src/manager/systems/list-filter.tsx:28
+#: ../html/src/manager/systems/list-filter.tsx:30
 msgid "System is up to date"
 msgstr ""
 
-#: ../html/src/manager/systems/list-filter.tsx:29
+#: ../html/src/manager/systems/list-filter.tsx:31
 msgid "System not checking in"
 msgstr ""
 
-#: ../html/src/manager/systems/list-filter.tsx:30
+#: ../html/src/manager/systems/list-filter.tsx:32
 #, fuzzy
 msgid "System not entitled"
 msgstr "Sistema bloqueado"
 
-#: ../html/src/manager/systems/list-filter.tsx:31
+#: ../html/src/manager/systems/list-filter.tsx:33
 msgid "System requires reboot"
 msgstr ""
 
-#: ../html/src/manager/systems/list-filter.tsx:32
+#: ../html/src/manager/systems/list-filter.tsx:34
 msgid "Updates available"
 msgstr ""
 
-#: ../html/src/manager/systems/list-filter.tsx:42
+#: ../html/src/manager/systems/list-filter.tsx:44
 #, fuzzy
 msgid "System Kind"
 msgstr "Nombre de sistema"
 
-#: ../html/src/manager/systems/list-filter.tsx:57
+#: ../html/src/manager/systems/list-filter.tsx:59
 msgid "Requires Reboot"
 msgstr ""
 
-#: ../html/src/manager/systems/list-filter.tsx:61
+#: ../html/src/manager/systems/list-filter.tsx:63
 #, fuzzy
 msgid "Registered Days"
 msgstr "Sistema no registrado"
 
-#: ../html/src/manager/systems/list-filter.tsx:62
+#: ../html/src/manager/systems/list-filter.tsx:64
 msgid "Groups"
 msgstr ""
 
-#: ../html/src/manager/systems/list-filter.tsx:67
+#: ../html/src/manager/systems/list-filter.tsx:69
 #: ../html/src/manager/systems/virtual-list.tsx:71
 #, fuzzy
 msgid "Virtual System"
@@ -7069,10 +7305,6 @@ msgstr ""
 #~ msgstr "Tipo"
 
 #, fuzzy
-#~ msgid "Source"
-#~ msgstr "Fuentes"
-
-#, fuzzy
 #~ msgid "Devices"
 #~ msgstr "Tipo de dispositivo"
 
@@ -7147,9 +7379,6 @@ msgstr ""
 #~ msgid "Partitioning"
 #~ msgstr "Particionado"
 
-#~ msgid "Apply"
-#~ msgstr "Aplicar"
-
 #, fuzzy
 #~ msgid "Remove this level"
 #~ msgstr "Quitar"
@@ -7157,10 +7386,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Instance Details for '{name}'"
 #~ msgstr "Detalles de ejemplar para «{0}»"
-
-#, fuzzy
-#~ msgid "Playbook '{name}'"
-#~ msgstr "Nombre del filtro"
 
 #, fuzzy
 #~ msgid "Pay-as-you-go properties updated successfully"

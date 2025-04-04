@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class GroupDetailAction extends RhnAction {
 
-    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -50,7 +50,7 @@ public class GroupDetailAction extends RhnAction {
 
         User user = rctx.getCurrentUser();
         ManagedServerGroup sg = rctx.lookupAndBindServerGroup();
-        Map<String, String> errataCounts = serverGroupManager.errataCounts(user, sg);
+        Map<String, String> errataCounts = SERVER_GROUP_MANAGER.errataCounts(user, sg);
         errataCounts.putIfAbsent("se", "0");
         errataCounts.putIfAbsent("be", "0");
         errataCounts.putIfAbsent("ee", "0");

@@ -50,8 +50,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class PackageDetailsAction extends RhnAction {
 
-    private final String PACKAGE_NAME = "package_name";
-    private final String PACKAGE_KEY = "package_key";
+    private static final String PACKAGE_NAME = "package_name";
+    private static final String PACKAGE_KEY = "package_key";
 
     /** {@inheritDoc} */
     @Override

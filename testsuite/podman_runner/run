@@ -10,10 +10,14 @@ set -x
 set -e
 
 # Disable firewall so we can connect to debug
-sudo ufw disable
+if command -v ufw &>/dev/null; then
+    sudo ufw disable
+fi
 
 # make sure docker is installed because we need the socket
-dpkg -l | grep "^ii  docker.io" || sudo apt -y install docker.io
+if command -v dpkg &>/dev/null; then
+    dpkg -l | grep "^ii  docker.io" || sudo apt -y install docker.io
+fi
 
 ./00_setup_env.sh
 ./01_setup_tmp_dirs.sh

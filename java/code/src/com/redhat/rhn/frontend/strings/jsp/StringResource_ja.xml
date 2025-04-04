@@ -1631,13 +1631,6 @@
         <target>システムが選択されました</target>
       </trans-unit>
       <!-- footer.jsp -->
-      <trans-unit id="footer.jsp.copyright" xml:space="preserve">
-        <source>&lt;a href="/rhn/help/Copyright.do"&gt;Copyright Notice&lt;/a&gt;</source>
-        <target>&lt;a href="/rhn/help/Copyright.do"&gt;著作権告知&lt;/a&gt;</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/footer.jsp</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="footer.jsp.legalStatement" xml:space="preserve">
         <source>Legal statement</source>
         <context-group name="ctx">
@@ -4519,13 +4512,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
         <target>詳細な SCAP ファイルのアップロードを有効にする</target>
-      </trans-unit>
-      <trans-unit id="org-config.scapfile-sizelimit.jsp" xml:space="preserve">
-        <source>SCAP File Upload Size Limit</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
-        </context-group>
-        <target>SCAP ファイルのアップロードサイズの制限</target>
       </trans-unit>
       <trans-unit id="org-config.scap-retention" xml:space="preserve">
         <source>Allow Deletion of SCAP Results</source>
@@ -25771,20 +25757,6 @@ given channel.</source>
         </context-group>
         <target>これは、ユーザーの組織のデフォルト自動インストールプロファイルです。</target>
       </trans-unit>
-      <trans-unit id="help.jsp.about.title" xml:space="preserve">
-        <source>About @@PRODUCT_NAME@@</source>
-        <target>@@PRODUCT_NAME@@ について</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="help.jsp.about.summary" xml:space="preserve">
-        <source>@@PRODUCT_NAME@@ allows administrators to efficiently manage the systems on their network. Through a simple user interface, administrators can perform patch management, updates and maintenance. And because @@PRODUCT_NAME@@ is Web-based, it can be accessed from anywhere. @@PRODUCT_NAME@@ or Proxy server options provide advanced capabilities and the ability to get updates directly from SUSE with even greater levels of security and reduced network bandwidth.</source>
-        <target>@@PRODUCT_NAME@@ では管理者に対して、効率的なネットワーク内のシステム管理機能を提供します。管理者はシンプルなユーザインターフェイスを介して、パッチの管理や更新、メンテナンスなどを行なうことができます。 @@PRODUCT_NAME@@ は Web ベースの仕組みであることから、どこからでもアクセスすることができます。 @@PRODUCT_NAME@@ ではプロキシサーバのオプションも用意されていることから、より高度なネットワークにも対応し、帯域を削減しながら SUSE からの更新を直接受け取ることができるようになり、セキュリティレベルを大幅に高めることができます。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="help.jsp.about.overview" xml:space="preserve">
         <source>Overview</source>
         <target>概要</target>
@@ -25875,14 +25847,6 @@ given channel.</source>
       <trans-unit id="help.jsp.start" xml:space="preserve">
         <source>Basic setup and configuration with @@PRODUCT_NAME@@</source>
         <target>@@PRODUCT_NAME@@ の基本的なセットアップと設定</target>
-      </trans-unit>
-      <trans-unit id="help.jsp.copyright.title" xml:space="preserve">
-        <source>Copyright Notice</source>
-        <target>著作権通知</target>
-      </trans-unit>
-      <trans-unit id="help.jsp.eula.title" xml:space="preserve">
-        <source>@@PRODUCT_NAME@@ License Agreement</source>
-        <target>@@PRODUCT_NAME@@ ライセンス同意</target>
       </trans-unit>
       <trans-unit id="iprange.emptylist" xml:space="preserve">
         <source>No Ip Ranges Found</source>
@@ -28967,20 +28931,6 @@ given channel.</source>
         <source>If the system is registered via Salt, the highstate will be executed on registration if this checkbox is selected.</source>
         <target>システムを Salt 経由で登録している場合、チェックボックスを選択することで highstate が登録に対して実行されるようになります。</target>
       </trans-unit>
-      <trans-unit id="help.jsp.about.learnmore" xml:space="preserve">
-        <source>&lt;a href="http://www.suse.com/products/suse-manager" target="_blank"&gt;Click here&lt;/a&gt; to learn more about @@PRODUCT_NAME@@</source>
-        <target>@@PRODUCT_NAME@@ に関する詳細は、 &lt;a href="http://www.suse.com/products/suse-manager" target="_blank"&gt;こちら&lt;/a&gt; をご覧ください</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="help.jsp.about.learnmore.uyuni" xml:space="preserve">
-        <source>&lt;a href="http://www.uyuni-project.org/" target="_blank"&gt;Click here&lt;/a&gt; to learn more about @@PRODUCT_NAME@@</source>
-        <target>@@PRODUCT_NAME@@ に関する詳細は、 &lt;a href="http://www.uyuni-project.org/" target="_blank"&gt;こちら&lt;/a&gt; をご覧ください</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.minions" xml:space="preserve">
         <source>Manage &lt;strong&gt;Pending Minions&lt;/strong&gt; ({0})</source>
         <target>&lt;strong&gt;待機中の minion&lt;/strong&gt; ({0}) の管理</target>
@@ -29108,52 +29058,6 @@ given channel.</source>
       <trans-unit id="Bootstrap" xml:space="preserve">
         <source>Bootstrap</source>
         <target>ブートストラップ</target>
-      </trans-unit>
-      <trans-unit approved="yes" id="copyright.jsp.body" xml:space="preserve">
-        <source>
-&lt;p&gt;
-    This software is a modular operating system comprised of numerous components
-    that may be accompanied by separate license terms. The software is a
-    collective work of SUSE; although SUSE does not own the copyright to every
-    component of the software, SUSE owns the collective work copyright for the
-    software.
-&lt;/p&gt;
-&lt;p&gt;
-    This SUSE product includes materials licensed to SUSE under the GNU
-    General Public License (GPL). The GPL requires that SUSE makes available
-    certain source code that corresponds to the GPL-licensed material. The source
-    code is available for download at
-    &lt;a href="https://www.suse.com/download-linux/source-code.html"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
-    Also, for up to three years from SUSE's distribution of the SUSE product, upon
-    request SUSE will mail a copy of the source code. Requests should be sent by
-    e-mail to
-    &lt;a href="mailto:sle_source_request@suse.com"&gt;sle_source_request@suse.com&lt;/a&gt;
-    or as otherwise instructed at
-    &lt;a href="https://www.suse.com/download-linux/source-code.html/"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
-    SUSE may charge a fee to recover its reasonable costs of distribution
-&lt;/p&gt;
-        </source>
-        <target state="final">
-&lt;p&gt;
-    このソフトウェアはモジュール型のオペレーティングシステムであり、それぞれ異なるライセンス
-    条件のもとで提供されるコンポーネントから構成されています。ソフトウェアの集約作業は
-    SUSE 社によるもので、ソフトウェアの各コンポーネントに対しては著作権を所有していない
-    ものの、これらの集約に関わる著作権は保有しています。
-&lt;/p&gt;
-&lt;p&gt;
-    この SUSE 製品には、 GNU General Public License (GPL) で SUSE 社にライセンスされた
-    各種の素材が含まれています。 GPL は SUSE 社に対して、 GPL でライセンスされた素材に
-    対応するソースコードの公開を求めています。ソースコードは
-    &lt;a href="https://www.suse.com/download-linux/source-code.html"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt; からダウンロードすることができます。
-    なお、 SUSE 製品の SUSE 社による配布開始から 3 年間を上限に、リクエストにより
-    ソースコードのコピーをメールで提供させていただいております。リクエストは電子メール
-    &lt;a href="mailto:sle_source_request@suse.com"&gt;sle_source_request@suse.com&lt;/a&gt;
-    宛にお送りいただくか、もしくは
-    &lt;a href="https://www.suse.com/download-linux/source-code.html/"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
-    で示される方法で行なわれます。なお、 SUSE 社から配布するにあたっては、適切な費用を請求させて
-    いただくことがありますので、あらかじめご了承ください。
-&lt;/p&gt;
-        </target>
       </trans-unit>
       <trans-unit id="Salt" xml:space="preserve">
         <source>Salt</source>
@@ -29879,6 +29783,21 @@ given channel.</source>
         </context-group>
         <target state="final">ディストリビューションの作成</target>
       </trans-unit>
-    </body>
+    <trans-unit id="system.event.inventory" xml:space="preserve">
+          <source>Inventory:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ansible_managed" xml:space="preserve">
+        <source>Ansible Managed</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="proxy_entitled" xml:space="preserve">
+        <source>Proxy</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

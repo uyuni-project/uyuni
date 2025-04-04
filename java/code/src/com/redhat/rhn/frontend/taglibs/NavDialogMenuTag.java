@@ -49,14 +49,14 @@ public class NavDialogMenuTag extends TagSupport {
     /** rendering classname which implements the Renderable interface */
     private String renderer;
 
-    private final RenderUtils renderUtils = GlobalInstanceHolder.RENDER_UTILS;
+    private static final RenderUtils RENDER_UTILS = GlobalInstanceHolder.RENDER_UTILS;
 
     /** {@inheritDoc}
      * @throws JspException*/
     @Override
     public int doStartTag() throws JspException {
         try {
-            pageContext.getOut().print(renderUtils.renderNavigationMenu(
+            pageContext.getOut().print(RENDER_UTILS.renderNavigationMenu(
                     pageContext, definition, renderer, mindepth, maxdepth, new HashMap<>()));
         }
         catch (Exception e) {
@@ -145,7 +145,7 @@ public class NavDialogMenuTag extends TagSupport {
     /** {@inheritDoc} */
     protected String renderNav(NavTreeIndex navTreeIndex, Renderable renderable,
             RenderGuard guard, Map<String, String[]> params) {
-        String body = renderUtils.render(
+        String body = RENDER_UTILS.render(
                 navTreeIndex, renderable, guard, params);
         return body;
     }

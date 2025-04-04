@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class GenericIndexAction extends RhnAction {
 
-    private final CloudPaygManager cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
+    private static final CloudPaygManager CLOUD_PAYG_MANAGER = GlobalInstanceHolder.PAYG_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -54,9 +54,9 @@ public class GenericIndexAction extends RhnAction {
         RequestContext rctx = new RequestContext(request);
         User user = rctx.getCurrentUser();
 
-        if (cloudPaygManager.isPaygInstance()) {
-            cloudPaygManager.checkRefreshCache(true);
-            if (!cloudPaygManager.hasSCCCredentials()) {
+        if (CLOUD_PAYG_MANAGER.isPaygInstance()) {
+            CLOUD_PAYG_MANAGER.checkRefreshCache(true);
+            if (!CLOUD_PAYG_MANAGER.hasSCCCredentials()) {
                 String nonCompliantServers = getNonCompliantByosInPayg(user);
                 if (StringUtils.isNotEmpty(nonCompliantServers)) {
                     createErrorMessage(request, "message.payg.errorbyosnosccssm", null);
