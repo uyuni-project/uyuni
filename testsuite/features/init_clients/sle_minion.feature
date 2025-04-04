@@ -4,6 +4,9 @@
 @sle_minion
 Feature: Bootstrap a Salt minion via the GUI
 
+  Scenario: Clean up sumaform leftovers on SLES minion
+    When I perform a full salt minion cleanup on "sle_minion"
+
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 

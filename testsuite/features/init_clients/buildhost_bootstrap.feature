@@ -4,6 +4,9 @@
 @buildhost
 Feature: Bootstrap a build host via the GUI
 
+  Scenario: Clean up sumaform leftovers on build host
+    When I perform a full salt minion cleanup on "build_host"
+
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 

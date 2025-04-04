@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 SUSE LLC
+# Copyright (c) 2023-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'net/http'
@@ -181,4 +181,12 @@ def validate_checksum(file_path, expected_checksum)
   cmd = "sha256sum -b #{file_path} | awk '{print $1}'"
   file_checksum, _code = get_target('server').run(cmd, runs_in_container: false)
   file_checksum.strip == expected_checksum
+end
+
+# This function checks if a given repository URL is a development repository
+#
+# @param repo_url [String] The URL of the repository to check.
+# @return [Boolean] Returns true if the repository is a development repository, false otherwise.
+def devel_repo?(repo_url)
+  repo_url.downcase.include?('devel') || repo_url.downcase.include?('systemsmanagement')
 end

@@ -169,6 +169,11 @@ When(/^I use spacewalk-repo-sync to sync channel "([^"]*)"$/) do |channel|
   $command_output, _code = get_target('server').run_until_ok("spacewalk-repo-sync -c #{channel}")
 end
 
+When(/^I use spacewalk-repo-sync to sync channel "([^"]*)" including "([^"]*)" packages?$/) do |channel, packages|
+  append_includes = packages.split.map { |pkg| "--include #{pkg}" }.join(' ')
+  $command_output, _code = get_target('server').run_until_ok("spacewalk-repo-sync -c #{channel} #{append_includes}")
+end
+
 Then(/^I should get "([^"]*)"$/) do |value|
   raise ScriptError, "'#{value}' not found in output '#{$command_output}'" unless $command_output.include? value
 end
@@ -1104,6 +1109,11 @@ When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without
   log 'Creating the bootstrap repository on the server:'
   log "  #{cmd}"
   get_target('server').run(cmd)
+end
+
+When(/^I create the bootstrap repositories including custom channels$/) do
+  get_target('server').wait_while_process_running('mgr-create-bootstrap-repo')
+  get_target('server').run('mgr-create-bootstrap-repo --auto --force --with-custom-channels', check_errors: false, verbose: true)
 end
 
 When(/^I install "([^"]*)" product on the proxy$/) do |product|
