@@ -18,16 +18,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-04 11:47+0200\n"
-"PO-Revision-Date: 2025-02-02 16:54+0000\n"
+"PO-Revision-Date: 2025-04-05 13:56+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
-"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web-5-0/de/"
-">\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web-5-0/de/>"
+"\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.10.3\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -3357,7 +3357,7 @@ msgstr ""
 #: ../html/src/manager/systems/all-list.tsx:98
 #: ../html/src/manager/systems/list-filter.tsx:45
 msgid "Packages"
-msgstr ""
+msgstr "Pakete"
 
 #: ../html/src/manager/header/search/search.tsx:18
 #: ../html/src/manager/images/image-view.tsx:654
@@ -4861,7 +4861,7 @@ msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:142
 msgid "Request interrupted or invalid response received from the server."
-msgstr ""
+msgstr "Anfrage unterbrochen oder ungültige Antwort vom Server erhalten."
 
 #: ../html/src/manager/proxy/container-config.tsx:179
 #: ../html/src/manager/proxy/container-config.tsx:195
