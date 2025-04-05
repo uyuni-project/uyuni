@@ -219,23 +219,6 @@ public class HubFactory extends HibernateFactory {
     }
 
     /**
-     * List {@link IssPeripheralChannels} objects which reference
-     * the given {@link IssPeripheral} server and {@link Channel}
-     * @param peripheralIn the peripheral server
-     * @param channelIn    the channel
-     * @return return {@link IssPeripheralChannels} or empty
-     */
-    public Optional<IssPeripheralChannels> lookupIssPeripheralChannelsByFqdnAndChannel(IssPeripheral peripheralIn,
-                                                                                       Channel channelIn) {
-        return getSession()
-                .createQuery("FROM IssPeripheralChannels WHERE peripheral = :peripheral AND channel = :channel",
-                        IssPeripheralChannels.class)
-                .setParameter("peripheral", peripheralIn)
-                .setParameter("channel", channelIn)
-                .uniqueResultOptional();
-    }
-
-    /**
      * List {@link IssPeripheralChannels} objects which reference the given {@link Channel}
      * @param channelIn the channel
      * @return return the list of {@link IssPeripheralChannels} objects
@@ -244,18 +227,6 @@ public class HubFactory extends HibernateFactory {
         return getSession()
                 .createQuery("FROM IssPeripheralChannels WHERE channel = :channel", IssPeripheralChannels.class)
                 .setParameter("channel", channelIn)
-                .list();
-    }
-
-    /**
-     * List {@link IssPeripheralChannels} objects for the given {@link IssPeripheral} server
-     * @param peripheralIn the peripheral server
-     * @return return a list of all {@link IssPeripheralChannels} for the peripheral server
-     */
-    public List<IssPeripheralChannels> listIssPeripheralChannels(IssPeripheral peripheralIn) {
-        return getSession()
-                .createQuery("FROM IssPeripheralChannels WHERE peripheral = :peripheral", IssPeripheralChannels.class)
-                .setParameter("peripheral", peripheralIn)
                 .list();
     }
 
