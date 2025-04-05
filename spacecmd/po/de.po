@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-03-28 14:30+0100\n"
-"PO-Revision-Date: 2024-08-25 15:47+0000\n"
+"PO-Revision-Date: 2025-04-05 13:56+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
-"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/spacecmd/de/"
-">\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/spacecmd/de/>"
+"\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.10.3\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -27,125 +27,149 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:51
 msgid "usage: activationkey_addpackages KEY <PACKAGE ...>"
-msgstr ""
+msgstr "Aufruf: activationkey_addpackages SCHLÜSSEL <PAKET ...>"
 
 #: ../src/spacecmd/activationkey.py:86
 msgid "activationkey_removepackages: Remove packages from an activation key"
 msgstr ""
+"activationkey_removepackages: Pakete aus einem Aktivierungsschlüssel "
+"entfernen"
 
 #: ../src/spacecmd/activationkey.py:88
 msgid "usage: activationkey_removepackages KEY <PACKAGE ...>"
-msgstr ""
+msgstr "Aufruf: activationkey_removepackages SCHLÜSSEL <PAKET ...>"
 
 #: ../src/spacecmd/activationkey.py:126
 msgid "activationkey_addgroups: Add groups to an activation key"
 msgstr ""
+"activationkey_addgroups: Gruppen zu einem Aktivierungsschlüssel hinzufügen"
 
 #: ../src/spacecmd/activationkey.py:127
 msgid "usage: activationkey_addgroups KEY <GROUP ...>"
-msgstr ""
+msgstr "Aufruf: activationkey_addgroups SCHLÜSSEL <GRUPPE ...>"
 
 #: ../src/spacecmd/activationkey.py:167
 msgid "activationkey_removegroups: Remove groups from an activation key"
 msgstr ""
+"activationkey_removegroups: Gruppen aus einem Aktivierungsschlüssel entfernen"
 
 #: ../src/spacecmd/activationkey.py:168
 msgid "usage: activationkey_removegroups KEY <GROUP ...>"
-msgstr ""
+msgstr "Aufruf: activationkey_removegroups SCHLÜSSEL <GRUPPE ...>"
 
 #: ../src/spacecmd/activationkey.py:216
 msgid "activationkey_addentitlements: Add entitlements to an activation key"
 msgstr ""
+"activationkey_addentitlements: Ansprüche zu einem Aktivierungsschlüssel "
+"hinzufügen"
 
 #: ../src/spacecmd/activationkey.py:218
 msgid "usage: activationkey_addentitlements KEY <ENTITLEMENT ...>"
-msgstr ""
+msgstr "Aufruf: activationkey_addentitlements SCHLÜSSEL <ANSPRUCH ...>"
 
 #: ../src/spacecmd/activationkey.py:255
 msgid ""
 "activationkey_removeentitlements: Remove entitlements from an activation key"
 msgstr ""
+"activationkey_removeentitlements: Ansprüche aus einem Aktivierungsschlüssel "
+"entfernen"
 
 #: ../src/spacecmd/activationkey.py:257
 msgid "usage: activationkey_removeentitlements KEY <ENTITLEMENT ...>"
-msgstr ""
+msgstr "Aufruf: activationkey_removeentitlements SCHLÜSSEL <ANSPRUCH ...>"
 
 #: ../src/spacecmd/activationkey.py:296
 msgid "activationkey_addchildchannels: Add child channels to an activation key"
 msgstr ""
+"activationkey_addchildchannels: Untergeordnete Kanäle zu einem "
+"Aktivierungsschlüssel hinzufügen"
 
 #: ../src/spacecmd/activationkey.py:298
 msgid "usage: activationkey_addchildchannels KEY <CHANNEL ...>"
-msgstr ""
+msgstr "Aufruf: activationkey_addchildchannels SCHLÜSSEL <KANAL ...>"
 
 #: ../src/spacecmd/activationkey.py:350
 msgid ""
 "activationkey_removechildchannels: Remove child channels from an activation "
 "key"
 msgstr ""
+"activationkey_removechildchannels: Untergeordnete Kanäle aus einem "
+"Aktivierungsschlüssel entfernen"
 
 #: ../src/spacecmd/activationkey.py:352
 msgid "usage: activationkey_removechildchannels KEY <CHANNEL ...>"
-msgstr ""
+msgstr "Aufruf: activationkey_removechildchannels SCHLÜSSEL <KANAL ...>"
 
 #: ../src/spacecmd/activationkey.py:390
 msgid ""
 "activationkey_listchildchannels: List the child channels for an activation "
 "key"
 msgstr ""
+"activationkey_listchildchannels: Untergeordnete Kanäle für einen "
+"Aktivierungsschlüssel auflisten"
 
 #: ../src/spacecmd/activationkey.py:392
 msgid "usage: activationkey_listchildchannels KEY"
-msgstr ""
+msgstr "Aufruf: activationkey_listchildchannels SCHLÜSSEL"
 
 #: ../src/spacecmd/activationkey.py:421
 msgid ""
 "activationkey_listbasechannel: List the base channels for an activation key"
 msgstr ""
+"activationkey_listbasechannel: Basiskanäle für einen Aktivierungsschlüssel "
+"auflisten"
 
 #: ../src/spacecmd/activationkey.py:423
 msgid "usage: activationkey_listbasechannel KEY"
-msgstr ""
+msgstr "Aufruf: activationkey_listbasechannel SCHLÜSSEL"
 
 #: ../src/spacecmd/activationkey.py:451
 msgid "activationkey_listgroups: List the groups for an activation key"
 msgstr ""
+"activationkey_listgroups: Gruppen für einen Aktivierungsschlüssel auflisten"
 
 #: ../src/spacecmd/activationkey.py:453
 msgid "usage: activationkey_listgroups KEY"
-msgstr ""
+msgstr "Aufruf: activationkey_listgroups SCHLÜSSEL"
 
 #: ../src/spacecmd/activationkey.py:484
 msgid ""
 "activationkey_listentitlements: List the entitlements for an activation key"
 msgstr ""
+"activationkey_listentitlements: Ansprüche für einen Aktivierungsschlüssel "
+"auflisten"
 
 #: ../src/spacecmd/activationkey.py:486
 msgid "usage: activationkey_listentitlements KEY"
-msgstr ""
+msgstr "Aufruf: activationkey_listentitlements SCHLÜSSEL"
 
 #: ../src/spacecmd/activationkey.py:515
 msgid "activationkey_listpackages: List the packages for an activation key"
 msgstr ""
+"activationkey_listpackages: Pakete für einen Aktivierungsschlüssel auflisten"
 
 #: ../src/spacecmd/activationkey.py:517
 msgid "usage: activationkey_listpackages KEY"
-msgstr ""
+msgstr "Aufruf: activationkey_listpackages SCHLÜSSEL"
 
 #: ../src/spacecmd/activationkey.py:549
 msgid ""
 "activationkey_listconfigchannels: List the configuration channels for an "
 "activation key"
 msgstr ""
+"activationkey_listconfigchannels: Konfigurationskanäle für einen "
+"Aktivierungsschlüssel auflisten"
 
 #: ../src/spacecmd/activationkey.py:551
 msgid "usage: activationkey_listconfigchannels KEY"
-msgstr ""
+msgstr "Aufruf: activationkey_listconfigchannels SCHLÜSSEL"
 
 #: ../src/spacecmd/activationkey.py:584
 msgid ""
 "activationkey_addconfigchannels: Add config channels to an activation key"
 msgstr ""
+"activationkey_addconfigchannels: Konfigurationskanäle zu einem "
+"Aktivierungsschlüssel hinzufügen"
 
 #: ../src/spacecmd/activationkey.py:586
 msgid ""
@@ -155,16 +179,23 @@ msgid ""
 "  -t add channels to the top of the list\n"
 "  -b add channels to the bottom of the list"
 msgstr ""
+"Aufruf: activationkey_addconfigchannels SCHLÜSSEL <KANAL ...> [Optionen])\n"
+"\n"
+"Optionen:\n"
+"-t Kanäle am Anfang der Liste hinzufügen\n"
+"-b Kanäle am Ende der Liste hinzufügen"
 
 #: ../src/spacecmd/activationkey.py:641
 msgid ""
 "activationkey_removeconfigchannels: Remove config channels from an "
 "activation key"
 msgstr ""
+"activationkey_removeconfigchannels: Konfigurationskanäle aus einem "
+"Aktivierungsschlüssel entfernen"
 
 #: ../src/spacecmd/activationkey.py:643
 msgid "usage: activationkey_removeconfigchannels KEY <CHANNEL ...>"
-msgstr ""
+msgstr "Aufruf: activationkey_removeconfigchannels SCHLÜSSEL <KANAL ...>"
 
 #: ../src/spacecmd/activationkey.py:684
 msgid ""
@@ -178,11 +209,11 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:716
 msgid "New Configuration Channels:"
-msgstr ""
+msgstr "Neue Konfigurationskanäle:"
 
 #: ../src/spacecmd/activationkey.py:730
 msgid "activationkey_create: Create an activation key"
-msgstr ""
+msgstr "activationkey_create: Einen Aktivierungsschlüssel erstellen"
 
 #: ../src/spacecmd/activationkey.py:731
 msgid ""
@@ -195,6 +226,14 @@ msgid ""
 "  -u set key as universal default\n"
 "  -e [enterprise_entitled,virtualization_host]"
 msgstr ""
+"Aufruf: activationkey_create [Optionen])\n"
+"\n"
+"Optionen:\n"
+"  -n NAME\n"
+"  -d BESCHREIBUNG\n"
+"  -b BASISKANAL\n"
+"  -u Schlüssel als universellen Standard festlegen\n"
+"  -e [enterprise_entitled,virtualization_host]"
 
 #: ../src/spacecmd/activationkey.py:752
 msgid "Name (blank to autogenerate):"
@@ -202,12 +241,12 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:753
 msgid "Description [None]:"
-msgstr ""
+msgstr "Beschreibung [Keine]:"
 
 #: ../src/spacecmd/activationkey.py:756 ../src/spacecmd/distribution.py:96
 #: ../src/spacecmd/softwarechannel.py:903
 msgid "Base Channels"
-msgstr ""
+msgstr "Basiskanäle"
 
 #: ../src/spacecmd/activationkey.py:761
 msgid "Base Channel (blank for default):"
@@ -216,11 +255,11 @@ msgstr ""
 #: ../src/spacecmd/activationkey.py:769
 #, python-format
 msgid "%s Entitlement [y/N]:"
-msgstr ""
+msgstr "%s Anspruch [j/N]:"
 
 #: ../src/spacecmd/activationkey.py:773
 msgid "Universal Default [y/N]:"
-msgstr ""
+msgstr "Universeller Standard [j/N]::"
 
 #: ../src/spacecmd/activationkey.py:800
 #, python-format
@@ -229,65 +268,66 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:808
 msgid "activationkey_delete: Delete an activation key"
-msgstr ""
+msgstr "activationkey_delete: Einen Aktivierungsschlüssel löschen"
 
 #: ../src/spacecmd/activationkey.py:809
 msgid "usage: activationkey_delete KEY"
-msgstr ""
+msgstr "Aufruf: activationkey_delete SCHLÜSSEL"
 
 #: ../src/spacecmd/activationkey.py:831 ../src/spacecmd/cryptokey.py:176
 #: ../src/spacecmd/cryptokey.py:235 ../src/spacecmd/custominfo.py:97
 #, python-format
 msgid "No keys matched argument %s"
-msgstr ""
+msgstr "Keine Schlüssel für das Argument %s gefunden"
 
 #: ../src/spacecmd/activationkey.py:837
 msgid "Delete activation key(s) [y/N]:"
-msgstr ""
+msgstr "Aktivierungsschlüssel löschen [j/N]:"
 
 #: ../src/spacecmd/activationkey.py:850
 msgid "activationkey_list: List all activation keys"
-msgstr ""
+msgstr "activationkey_list: Alle Aktivierungsschlüssel auflisten"
 
 #: ../src/spacecmd/activationkey.py:851
 msgid "usage: activationkey_list"
-msgstr ""
+msgstr "Aufruf: activationkey_list"
 
 #: ../src/spacecmd/activationkey.py:875
 msgid "activationkey_listsystems: List systems registered with a key"
 msgstr ""
+"activationkey_listsystems: Mit einem Schlüssel registrierte Systeme auflisten"
 
 #: ../src/spacecmd/activationkey.py:876
 msgid "usage: activationkey_listsystems KEY"
-msgstr ""
+msgstr "Aufruf: activationkey_listsystems SCHLÜSSEL"
 
 #: ../src/spacecmd/activationkey.py:899 ../src/spacecmd/activationkey.py:948
 #, python-format
 msgid "%s is not a valid activation key"
-msgstr ""
+msgstr "%s ist kein gültiger Aktivierungsschlüssel"
 
 #: ../src/spacecmd/activationkey.py:913
 msgid "activationkey_details: Show the details of an activation key"
-msgstr ""
+msgstr "activationkey_details: Details eines Aktivierungsschlüssels anzeigen"
 
 #: ../src/spacecmd/activationkey.py:914
 msgid "usage: activationkey_details KEY ..."
-msgstr ""
+msgstr "Aufruf: activationkey_details SCHLÜSSEL ..."
 
 #: ../src/spacecmd/activationkey.py:961
 #, python-format
 msgid "Key:                    %s"
-msgstr ""
+msgstr "Schlüssel:                    %s"
 
 #: ../src/spacecmd/activationkey.py:962
 #, python-format
 msgid "Description:            %s"
-msgstr ""
+msgstr "Beschreibung:            %s"
 
 #: ../src/spacecmd/activationkey.py:963
 #, python-format
 msgid "Universal Default:      %s"
-msgstr ""
+msgstr "Universeller Standard:      %s"
 
 #: ../src/spacecmd/activationkey.py:964
 #, python-format
@@ -316,11 +356,11 @@ msgstr "Konfigurationskanäle"
 
 #: ../src/spacecmd/activationkey.py:984 ../src/spacecmd/system.py:2995
 msgid "Entitlements"
-msgstr ""
+msgstr "Ansprüche"
 
 #: ../src/spacecmd/activationkey.py:989 ../src/spacecmd/system.py:3001
 msgid "System Groups"
-msgstr ""
+msgstr "Systemgruppen"
 
 #: ../src/spacecmd/activationkey.py:994 ../src/spacecmd/package.py:206
 #: ../src/spacecmd/package.py:264 ../src/spacecmd/softwarechannel.py:1368
@@ -328,7 +368,7 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:1556
 #: ../src/spacecmd/softwarechannel.py:1810
 msgid "Packages"
-msgstr ""
+msgstr "Pakete"
 
 #: ../src/spacecmd/activationkey.py:1012
 msgid "activationkey_enableconfigdeployment: Enable config channel deployment"
@@ -336,7 +376,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1014
 msgid "usage: activationkey_enableconfigdeployment KEY"
-msgstr ""
+msgstr "Aufruf: activationkey_enableconfigdeployment SCHLÜSSEL"
 
 #: ../src/spacecmd/activationkey.py:1041
 msgid ""
