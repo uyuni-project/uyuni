@@ -18,10 +18,10 @@ import java.util.Set;
 
 public class ChannelSyncModel {
     private final List<OrgInfoJson> peripheralOrgs;
-    private final Set<IssV3ChannelResponse> syncedPeripheralCustomChannels;
-    private final Set<IssV3ChannelResponse> syncedPeripheralVendorChannels;
-    private final List<IssV3ChannelResponse> availableCustomChannels;
-    private final List<IssV3ChannelResponse> availableVendorChannels;
+    private final Set<ChannelSyncDetail> syncedPeripheralCustomChannels;
+    private final Set<ChannelSyncDetail> syncedPeripheralVendorChannels;
+    private final List<ChannelSyncDetail> availableCustomChannels;
+    private final List<ChannelSyncDetail> availableVendorChannels;
 
     /**
      * Model for Peripheral Channel Sync get
@@ -34,12 +34,11 @@ public class ChannelSyncModel {
      */
     public ChannelSyncModel(
             List<OrgInfoJson> peripheralOrgsIn,
-            Set<IssV3ChannelResponse> syncedPeripheralCustomChannelsIn,
-            Set<IssV3ChannelResponse> syncedPeripheralVendorChannelsIn,
-            List<IssV3ChannelResponse> availableCustomChannelsIn,
-            List<IssV3ChannelResponse> availableVendorChannelsIn) {
+            Set<ChannelSyncDetail> syncedPeripheralCustomChannelsIn,
+            Set<ChannelSyncDetail> syncedPeripheralVendorChannelsIn,
+            List<ChannelSyncDetail> availableCustomChannelsIn,
+            List<ChannelSyncDetail> availableVendorChannelsIn) {
         this.peripheralOrgs = peripheralOrgsIn;
-        // Group synced custom channels by orgId.
         this.syncedPeripheralCustomChannels = syncedPeripheralCustomChannelsIn;
         this.syncedPeripheralVendorChannels = syncedPeripheralVendorChannelsIn;
         this.availableCustomChannels = availableCustomChannelsIn;
@@ -50,19 +49,19 @@ public class ChannelSyncModel {
         return peripheralOrgs;
     }
 
-    public Set<IssV3ChannelResponse> getSyncedPeripheralCustomChannels() {
+    public Set<ChannelSyncDetail> getSyncedPeripheralCustomChannels() {
         return syncedPeripheralCustomChannels;
     }
 
-    public Set<IssV3ChannelResponse> getSyncedPeripheralVendorChannels() {
+    public Set<ChannelSyncDetail> getSyncedPeripheralVendorChannels() {
         return syncedPeripheralVendorChannels;
     }
 
-    public List<IssV3ChannelResponse> getAvailableCustomChannels() {
+    public List<ChannelSyncDetail> getAvailableCustomChannels() {
         return availableCustomChannels;
     }
 
-    public List<IssV3ChannelResponse> getAvailableVendorChannels() {
+    public List<ChannelSyncDetail> getAvailableVendorChannels() {
         return availableVendorChannels;
     }
 }

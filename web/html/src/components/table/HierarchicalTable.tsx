@@ -1,0 +1,245 @@
+import * as React from "react";
+import { useState } from "react";
+
+import { SearchField } from "./SearchField";
+import { Table, TableRef } from "./Table";
+
+export type HierarchicalRow = {
+  id: string | number;
+  parentId?: string | number | null;
+  level?: number;
+  expanded?: boolean;
+  isLeaf?: boolean;
+  [key: string]: any;
+};
+
+type HierarchicalTableProps = {
+  /**
+   * Array of data items where each element has a unique id and optional parentId
+   */
+  data: Array<HierarchicalRow>;
+
+  /** Function extracting the unique key of the row from the data object */
+  identifier: (row: HierarchicalRow) => string | number;
+
+  /** The search field to show on the table  */
+  searchField?: React.ReactComponentElement<typeof SearchField>;
+
+  /** Other filter fields */
+  additionalFilters?: Array<React.ReactNode>;
+
+  /** Function to determine which column has expand/collapse controls */
+  expandColumnKey?: string;
+
+  /** Initial expanded state of all nodes (true = all expanded, false = all collapsed) */
+  initiallyExpanded?: boolean;
+
+  /** The column key name of the initial sorted column */
+  initialSortColumnKey?: string;
+
+  /** 1 for ascending, -1 for descending */
+  initialSortDirection?: number;
+
+  /** a function that return a css class for each row */
+  cssClassFunction?: Function;
+
+  /** enables item selection. */
+  selectable?: boolean | ((row: any) => boolean);
+
+  /** the handler to call when the table selection is updated */
+  onSelect?: (items: Array<any>) => void;
+
+  /** the identifiers for selected items */
+  selectedItems?: Array<any>;
+
+  /** Indent size in pixels per level */
+  indentSize?: number;
+
+  /** Children node in the table (Column components) */
+  children: React.ReactNode;
+};
+
+export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTableProps>((props, ref) => {
+  const {
+    data,
+    identifier,
+    expandColumnKey,
+    initiallyExpanded = false,
+    indentSize = 20,
+    children,
+    ...tableProps
+  } = props;
+
+  // Initialize row expansion state
+  const [expandedRows, setExpandedRows] = useState<Record<string | number, boolean>>(() => {
+    const initialState: Record<string | number, boolean> = {};
+    data.forEach((row) => {
+      initialState[identifier(row)] = initiallyExpanded;
+    });
+    return initialState;
+  });
+
+  // Build the tree structure
+  const buildTreeStructure = (items: Array<HierarchicalRow>) => {
+    // Create a map of all items by ID
+    const itemMap: Record<string | number, HierarchicalRow> = {};
+
+    // First pass: map all items by their IDs and initialize level to 0
+    items.forEach((item) => {
+      const itemId = identifier(item);
+      itemMap[itemId] = { ...item, level: 0, isLeaf: true };
+    });
+    // Second pass: identify parent-child relationships and mark non-leaves
+    items.forEach((item) => {
+      const parentId = item.parentId;
+      if (parentId != null && itemMap[parentId]) {
+        itemMap[parentId].isLeaf = false;
+      }
+    });
+    // Third pass: calculate the level of each node
+    const calculateLevel = (id: string | number, visited = new Set<string | number>()): number => {
+      // Prevent circular references
+      if (visited.has(id)) return 0;
+      visited.add(id);
+      const item = itemMap[id];
+      if (!item || !item.parentId || !itemMap[item.parentId]) {
+        return 0;
+      }
+      item.level = 1 + calculateLevel(item.parentId, visited);
+      return item.level;
+    };
+
+    // Calculate levels for all items
+    Object.keys(itemMap).forEach((id) => {
+      if (itemMap[id] && itemMap[id].level === 0) {
+        calculateLevel(id);
+      }
+    });
+
+    return Object.values(itemMap);
+  };
+
+  // Determine visible rows based on expanded state
+  const getVisibleRows = (treeData: Array<HierarchicalRow>) => {
+    // Find root nodes (nodes without parents or with parents that don't exist in our data)
+    const rootNodes = treeData.filter((row) => {
+      return !row.parentId || !treeData.some((parent) => identifier(parent) === row.parentId);
+    });
+
+    const visibleRows: Array<HierarchicalRow> = [];
+
+    const addVisibleDescendants = (node: HierarchicalRow) => {
+      visibleRows.push(node);
+      // Only process children if this node is expanded
+      if (expandedRows[identifier(node)]) {
+        // Find all direct children of this node
+        const nodeId = identifier(node);
+        const childNodes = treeData.filter((row) => row.parentId === nodeId);
+        // Process each child recursively
+        childNodes.forEach((child) => addVisibleDescendants(child));
+      }
+    };
+    // Start with root nodes and build the visible tree
+    rootNodes.forEach((root) => addVisibleDescendants(root));
+    return visibleRows;
+  };
+
+  // Handle row expansion toggling
+  const toggleRowExpanded = (rowId: string | number) => {
+    setExpandedRows((prev) => ({
+      ...prev,
+      [rowId]: !prev[rowId],
+    }));
+  };
+
+  // Process the tree structure
+  const treeData = buildTreeStructure(data);
+  const visibleRows = getVisibleRows(treeData);
+
+  // Helper function to render cell content based on row properties
+  const renderCellContent = (row: HierarchicalRow, child: React.ReactElement) => {
+    // Get the cell content (either from custom renderer or from data property)
+    const cellContent = child.props.cell ? child.props.cell(row) : row[child.props.columnKey || ""];
+    // Apply special styling for non-leaf or indented nodes
+    const level = row.level || 0;
+    if (!row.isLeaf || level > 0) {
+      return <span style={{ marginLeft: row.isLeaf ? `${level * indentSize}px` : "0" }}>{cellContent}</span>;
+    }
+    // Return plain content for root-level leaf nodes
+    return cellContent;
+  };
+
+  // Type guard to check if element is a Column component
+  const isColumnElement = (element: React.ReactNode): element is React.ReactElement => {
+    if (!React.isValidElement(element)) return false;
+    return element.props && ("columnKey" in element.props || "header" in element.props || "cell" in element.props);
+  };
+
+  // Add expand/collapse indicator to the specified column
+  const enhancedChildren = React.Children.map(children, (child) => {
+    if (!isColumnElement(child)) return child;
+    // Now TypeScript knows this is a valid element with the expected props
+    if (child.props.columnKey === expandColumnKey) {
+      const cellRenderer = (row: any) => {
+        const rowId = identifier(row);
+        const isExpanded = expandedRows[rowId];
+        const level = row.level || 0;
+        const indent = level * indentSize;
+
+        return (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ width: `${indent}px` }}></div>
+            {!row.isLeaf && (
+              <span
+                className={`fa ${isExpanded ? "fa-caret-down" : "fa-caret-right"}`}
+                style={{ cursor: "pointer", marginRight: "5px" }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleRowExpanded(rowId);
+                }}
+              />
+            )}
+            {renderCellContent(row, child)}
+          </div>
+        );
+      };
+
+      // Type-safe cloning
+      return React.cloneElement(child, {
+        ...child.props,
+        cell: cellRenderer,
+      });
+    }
+    return child;
+  });
+
+  // Custom CSS class function that adds level classes
+  const enhancedCssClassFunction = (row, index) => {
+    let cssClass = props.cssClassFunction ? props.cssClassFunction(row, index) : "";
+    cssClass += ` tree-level-${row.level || 0}`;
+    if (!row.isLeaf) {
+      cssClass += " tree-parent-node";
+    }
+    if (row.isLeaf) {
+      cssClass += " tree-leaf-node";
+    }
+    return cssClass;
+  };
+
+  return (
+    <Table
+      ref={ref}
+      data={visibleRows}
+      identifier={identifier}
+      cssClassFunction={enhancedCssClassFunction}
+      {...tableProps}
+    >
+      {enhancedChildren}
+    </Table>
+  );
+});
+
+HierarchicalTable.defaultProps = {
+  initiallyExpanded: false,
+  indentSize: 20,
+};
