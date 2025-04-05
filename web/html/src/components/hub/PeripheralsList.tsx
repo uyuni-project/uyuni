@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { LinkButton } from "components/buttons";
 import { DeregisterServer, IssRole, PeripheralListData } from "components/hub";
 import { LargeTextAttachment } from "components/large-text-attachment";
 import { Column } from "components/table/Column";
@@ -33,7 +34,7 @@ export class PeripheralsList extends React.Component<Props> {
           columnKey="fqdn"
           comparator={Utils.sortByText}
           header={t("Peripheral FQDN")}
-          cell={(row) => this.renderDetailsLink(row)}
+          cell={(row) => this.renderFqdnLink(row)}
         />
         <Column
           columnKey="nChannelsSync"
@@ -57,15 +58,21 @@ export class PeripheralsList extends React.Component<Props> {
     return componentContent;
   }
 
+  private renderFqdnLink(row: PeripheralListData): React.ReactNode {
+    return (
+      <LinkButton
+        className="btn-link"
+        text={row.fqdn}
+        title={t("View details of peripheral {fqdn}", row)}
+        href={`/rhn/manager/admin/hub/peripherals/${row.id}`}
+      />
+    );
+  }
+
   private renderDownloadRootCA(row: PeripheralListData): React.ReactNode {
     return (
       <LargeTextAttachment value={row.rootCA} filename={row.fqdn + "_CA.pem"} editable={false} hideMessage={true} />
     );
-  }
-
-  private renderDetailsLink(row: PeripheralListData): React.ReactNode {
-    const detailsUrl = "/rhn/manager/admin/hub/peripherals/" + row.id;
-    return <a href={detailsUrl}>{row.fqdn}</a>;
   }
 
   private renderDeregister(row: PeripheralListData): React.ReactNode {

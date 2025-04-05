@@ -9175,6 +9175,39 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="hub.unable_to_deregister" xml:space="preserve">
         <source>Unable to deregister: an unexpected error is occurred while contacting the remote server. Please check the server logs.</source>
       </trans-unit>
+      <trans-unit id="hub.cannot_refresh_certificate" xml:space="preserve">
+        <source>An error occurred while attempting to refresh the root certificate authorities. Please check the server logs.</source>
+      </trans-unit>
+      <trans-unit id="hub.migration_success" xml:space="preserve">
+        <source>The migration from ISSv{0} was completed successfully.</source>
+      </trans-unit>
+      <trans-unit id="hub.unexpected_error_migrating" xml:space="preserve">
+        <source>An expected error happened during the migration process: {0}. Please check the server logs.</source>
+      </trans-unit>
+      <trans-unit id="hub.migration.no_slaves" xml:space="preserve">
+        <source>This server does not have any ISSv1 slave</source>
+      </trans-unit>
+      <trans-unit id="hub.migration.slave_not_exit" xml:space="preserve">
+        <source>Slave {0} does not exist</source>
+      </trans-unit>
+      <trans-unit id="hub.migration.no_migration_data" xml:space="preserve">
+        <source>Slave {0} has no migration data and will not be migrated</source>
+      </trans-unit>
+      <trans-unit id="hub.migration.slave_disabled" xml:space="preserve">
+        <source>Slave {0} is currently disabled and will not be migrated</source>
+      </trans-unit>
+      <trans-unit id="hub.migration.unable_to_migrate" xml:space="preserve">
+        <source>Unable to migrate server {0}: {1}</source>
+      </trans-unit>
+      <trans-unit id="hub.migration.fail_channel_config" xml:space="preserve">
+        <source>Unable to configure channels for peripheral {0}: {1}</source>
+      </trans-unit>
+      <trans-unit id="hub.migration.removal_slave" xml:space="preserve">
+        <source>Unable remove ISSv1 data for slave {0}: {1}</source>
+      </trans-unit>
+      <trans-unit id="hub.migration.removal_peripheral">
+        <source>Unable to remove partially migrated peripheral {0}: {1}</source>
+      </trans-unit>
       <trans-unit id="cveaudit.nav.title" xml:space="preserve">
         <source>CVE Audit</source>
       </trans-unit>

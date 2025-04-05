@@ -40,7 +40,7 @@ public class StateResult {
      * @param e map
      */
     public StateResult(Map.Entry<String, Map<String, Object>> e) {
-        String[] arr = e.getKey().split("_|-");
+        String[] arr = e.getKey().split("_\\|-");
         function = arr[0] + "." + arr[arr.length - 1];
 
         e.getValue().forEach((key, val) -> {

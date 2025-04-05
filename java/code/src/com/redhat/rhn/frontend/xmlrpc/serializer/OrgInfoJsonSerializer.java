@@ -19,10 +19,11 @@ import com.suse.manager.model.hub.OrgInfoJson;
 /**
  * Converts a OrgInfoJson to an XMLRPC &lt;struct&gt;.
  *
- * @apidoc.doc #struct_begin(" org info ")
- * #prop_desc("long", "org_id", "org identifier")
- * #prop_desc("string", "org_name", "org name")
- * #struct_end()
+ * @apidoc.doc
+ *   #struct_begin(" org info ")
+ *     #prop_desc("long", "org_id", "org identifier")
+ *     #prop_desc("string", "org_name", "org name")
+ *   #struct_end()
  */
 public class OrgInfoJsonSerializer extends ApiResponseSerializer<OrgInfoJson> {
 

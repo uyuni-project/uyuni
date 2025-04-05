@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -38,6 +39,47 @@ public class PageControl extends ListControl {
      */
     public PageControl() {
         this(1);
+    }
+
+    /**
+     * Initialize an object with the specified controls
+     * @param startIn the first result
+     * @param pageSizeIn the page size
+     * @param sortColumnIn the column used to sort in ascending order
+     */
+    public PageControl(int startIn, int pageSizeIn, String sortColumnIn) {
+        this(startIn, pageSizeIn, sortColumnIn, false, null, null);
+    }
+
+    /**
+     * Initialize an object with the specified controls
+     * @param startIn the first result
+     * @param pageSizeIn the page size
+     * @param sortColumnIn the column used to sort
+     * @param sortDescendingIn true for descending order
+     */
+    public PageControl(int startIn, int pageSizeIn, String sortColumnIn, boolean sortDescendingIn) {
+        this(startIn, pageSizeIn, sortColumnIn, sortDescendingIn, null, null);
+    }
+
+        /**
+         * Initialize an object with the specified controls
+         * @param startIn the first result
+         * @param pageSizeIn the page size
+         * @param sortColumnIn the column used to sort
+         * @param sortDescendingIn true for descending order
+         * @param filterColumnIn the filter column
+         * @param filterDataIn the filter data
+         */
+    public PageControl(int startIn, int pageSizeIn, String sortColumnIn, boolean sortDescendingIn,
+                       String filterColumnIn, String filterDataIn) {
+        this.start = startIn;
+        this.pageSize = pageSizeIn;
+        this.sortColumn = sortColumnIn;
+        this.sortDescending = sortDescendingIn;
+        this.setFilter(filterColumnIn != null);
+        this.setFilterColumn(filterColumnIn);
+        this.setFilterData(filterDataIn);
     }
 
     /**

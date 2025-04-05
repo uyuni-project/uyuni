@@ -6,7 +6,7 @@ import { FormContext } from "./form/Form";
 import { FormGroup } from "./FormGroup";
 import { Label } from "./Label";
 
-type Validator = (...args: any[]) => boolean | Promise<boolean>;
+export type Validator = (...args: any[]) => boolean | Promise<boolean>;
 
 export type InputBaseProps<ValueType = string> = {
   /** name of the field to map in the form model.

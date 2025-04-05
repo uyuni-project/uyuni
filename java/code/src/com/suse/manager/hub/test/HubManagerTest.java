@@ -65,6 +65,7 @@ import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
+import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParser;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 
@@ -553,24 +554,6 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void canGenerateSCCCredentials() throws TaskomaticApiException {
-        String peripheralFqdn = "dummy.peripheral.fqdn";
-
-        IssAccessToken peripheralToken = getValidToken(peripheralFqdn);
-        var peripheral = (IssPeripheral) hubManager.saveNewServer(peripheralToken, IssRole.PERIPHERAL, null, null);
-
-        // Ensure no credentials exists
-        assertEquals(0, CredentialsFactory.listCredentialsByType(HubSCCCredentials.class).stream()
-            .filter(creds -> peripheralFqdn.equals(creds.getPeripheralUrl()))
-            .count());
-
-        HubSCCCredentials hubSCCCredentials = hubManager.generateSCCCredentials(peripheralToken);
-        assertEquals("peripheral-%06d".formatted(peripheral.getId()), hubSCCCredentials.getUsername());
-        assertNotNull(hubSCCCredentials.getPassword());
-        assertEquals(peripheralFqdn, hubSCCCredentials.getPeripheralUrl());
-    }
-
-    @Test
     public void canStoreSCCCredentials() throws TaskomaticApiException {
         IssAccessToken hubToken = getValidToken("dummy.hub.fqdn");
         hubManager.saveNewServer(hubToken, IssRole.HUB, null, null);
@@ -584,6 +567,65 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("dummy-username", sccCredentials.getUsername());
         assertEquals("dummy-password", sccCredentials.getPassword());
         assertEquals("https://dummy.hub.fqdn", sccCredentials.getUrl());
+    }
+
+    @Test
+    public void canStoreSCCCredentialsWhenTheyAlreadyExist() throws TaskomaticApiException {
+        IssAccessToken hubToken = getValidToken("dummy.hub.fqdn");
+        IssHub hub = (IssHub) hubManager.saveNewServer(hubToken, IssRole.HUB, null, null);
+
+        SCCCredentials sccCredentials = CredentialsFactory.createSCCCredentials("user", "password");
+        CredentialsFactory.storeCredentials(sccCredentials);
+
+        long id = sccCredentials.getId();
+        hub.setMirrorCredentials(sccCredentials);
+        hubFactory.save(hub);
+
+        clearSession();
+
+        sccCredentials = hubManager.storeSCCCredentials(hubToken, "dummy-username", "dummy-password");
+        assertEquals(id, sccCredentials.getId());
+        assertEquals("dummy-username", sccCredentials.getUsername());
+        assertEquals("dummy-password", sccCredentials.getPassword());
+        assertEquals("https://dummy.hub.fqdn", sccCredentials.getUrl());
+    }
+
+    @Test
+    public void canRegenerateSCCCredentialsForAPeripheral()
+        throws TokenException, TaskomaticApiException, CertificateException, IOException {
+        String fqdn = LOCAL_SERVER_FQDN;
+        IssAccessToken token = createPeripheralRegistration(fqdn, null);
+
+        IssPeripheral peripheral = hubFactory.lookupIssPeripheralByFqdn(fqdn)
+            .orElseGet(() -> fail("Peripheral Server not found"));
+
+        long peripheralId = peripheral.getId();
+        long credentialsId = peripheral.getMirrorCredentials().getId();
+        String expectedUsername = "peripheral-%06d".formatted(peripheralId);
+        String previousPassword = peripheral.getMirrorCredentials().getPassword();
+
+        HubInternalClient internalClient = mock(HubInternalClient.class);
+
+        context().checking(new Expectations() {{
+            allowing(clientFactoryMock).newInternalClient(fqdn, token.getToken(), null);
+            will(returnValue(internalClient));
+
+            allowing(internalClient)
+                .storeCredentials(with(equal(expectedUsername)), with(any(String.class)));
+        }});
+
+        clearSession();
+
+        HubSCCCredentials newCredentials = hubManager.regenerateCredentials(satAdmin, peripheralId);
+
+        assertEquals(credentialsId, newCredentials.getId());
+        assertEquals(expectedUsername, newCredentials.getUsername());
+        assertNotEquals(previousPassword, newCredentials.getPassword());
+        assertEquals(fqdn, newCredentials.getPeripheralUrl());
+
+        peripheral = hubFactory.findPeripheralById(peripheralId);
+        assertNotNull(peripheral);
+        assertEquals(newCredentials, peripheral.getMirrorCredentials());
     }
 
     @Test

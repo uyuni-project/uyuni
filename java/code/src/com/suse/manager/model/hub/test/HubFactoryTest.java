@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -355,20 +356,20 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
 
         int expectedChannelsSynced = 0;
         if (peripheralSyncProd) {
-            hubFactory.save(new IssPeripheralChannels(peripheral, prodBaseChannel, 1L));
-            hubFactory.save(new IssPeripheralChannels(peripheral, prodChildChannel, 1L));
+            hubFactory.save(new IssPeripheralChannels(peripheral, prodBaseChannel, 1));
+            hubFactory.save(new IssPeripheralChannels(peripheral, prodChildChannel, 1));
             expectedChannelsSynced += 2;
         }
 
         if (peripheralSyncTest) {
-            hubFactory.save(new IssPeripheralChannels(peripheral, testBaseChannel, 1L));
-            hubFactory.save(new IssPeripheralChannels(peripheral, testChildChannel, 1L));
+            hubFactory.save(new IssPeripheralChannels(peripheral, testBaseChannel, 1));
+            hubFactory.save(new IssPeripheralChannels(peripheral, testChildChannel, 1));
             expectedChannelsSynced += 2;
         }
 
         if (peripheralSyncDev) {
-            hubFactory.save(new IssPeripheralChannels(peripheral, devBaseChannel, 1L));
-            hubFactory.save(new IssPeripheralChannels(peripheral, devChildChannel, 1L));
+            hubFactory.save(new IssPeripheralChannels(peripheral, devBaseChannel, 1));
+            hubFactory.save(new IssPeripheralChannels(peripheral, devChildChannel, 1));
             expectedChannelsSynced += 2;
         }
 
@@ -467,6 +468,90 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
                 fail("Unexpected channel");
             }
         }
+    }
+
+    @Test
+    public void canCountPeripheralWithPaginationControl() {
+        // Create a bunch of peripherals
+        createPeripherals();
+
+        PageControl pc = new PageControl();
+        pc.setFilter(true);
+        pc.setFilterColumn("fqdn");
+
+        assertEquals(5, hubFactory.countPeripherals(null));
+
+        pc.setFilterData("local");
+        assertEquals(3, hubFactory.countPeripherals(pc));
+
+        pc.setFilterData("dev");
+        assertEquals(2, hubFactory.countPeripherals(pc));
+
+        pc.setFilterData("aws");
+        assertEquals(2, hubFactory.countPeripherals(pc));
+
+        pc.setFilterData("test.local");
+        assertEquals(1, hubFactory.countPeripherals(pc));
+
+        pc.setFilterData("gamma");
+        assertEquals(1, hubFactory.countPeripherals(pc));
+
+        pc.setFilterData("03");
+        assertEquals(3, hubFactory.countPeripherals(pc));
+
+        pc.setFilterData("omega");
+        assertEquals(0, hubFactory.countPeripherals(pc));
+    }
+
+    @Test
+    public void canListPeripheralWithPaginationControl() {
+        // Create a bunch of peripherals
+        createPeripherals();
+
+        // Ensure sorting is correct
+        List<IssPeripheral> resultList;
+
+        // First just sort all the items in ascending order
+        resultList = hubFactory.listPaginatedPeripherals(new PageControl(1, 10, "fqdn"));
+        assertNotEmpty(resultList);
+        assertEquals(
+            List.of("alpha", "beta", "delta", "epsilon", "gamma"),
+            resultList.stream().map(ph -> ph.getFqdn().split("-")[0]).toList()
+        );
+
+        // Sort descending and limit
+        resultList = hubFactory.listPaginatedPeripherals(new PageControl(1, 2, "fqdn", true));
+        assertNotEmpty(resultList);
+        assertEquals(
+            List.of("gamma", "epsilon"),
+            resultList.stream().map(ph -> ph.getFqdn().split("-")[0]).toList()
+        );
+
+        // Filter, sort ascending and limit
+        resultList = hubFactory.listPaginatedPeripherals(new PageControl(1, 2, "fqdn", false, "fqdn", "local"));
+        assertNotEmpty(resultList);
+        assertEquals(
+            List.of("alpha", "beta"),
+            resultList.stream().map(ph -> ph.getFqdn().split("-")[0]).toList()
+        );
+
+        // Filter, sort descending and limit, getting second page
+        resultList = hubFactory.listPaginatedPeripherals(new PageControl(2, 1, "fqdn", true, "fqdn", "03"));
+        assertNotEmpty(resultList);
+        assertEquals(
+            List.of("epsilon"),
+            resultList.stream().map(ph -> ph.getFqdn().split("-")[0]).toList()
+        );
+    }
+
+    private void createPeripherals() {
+        Stream.of(
+            new IssPeripheral("alpha-01.dev.local"),
+            new IssPeripheral("beta-03.test.local"),
+            new IssPeripheral("gamma-03.prod.aws"),
+            new IssPeripheral("delta-01.test.aws"),
+            new IssPeripheral("epsilon-03.dev.local")
+        ).forEach(ph -> hubFactory.save(ph));
     }
 
     private static String getRandomFqdn() {

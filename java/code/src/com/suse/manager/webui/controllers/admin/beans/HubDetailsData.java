@@ -12,35 +12,36 @@
 package com.suse.manager.webui.controllers.admin.beans;
 
 import com.suse.manager.model.hub.IssHub;
+import com.suse.manager.model.hub.IssRole;
 
-import java.util.Date;
+import java.util.Optional;
 
 /**
  * The details of a hub
- * @param id the id
- * @param fqdn the fully qualified domain name
- * @param rootCA the root certificate authority, if present
- * @param gpgKey the gpg key used to sign channel metadata, if present
- * @param sccUsername the username for syncing scc data
- * @param created when this hub configuration was registered
- * @param modified when this hub configuration was modified
  */
-public record HubDetailsData(long id, String fqdn, String rootCA, String gpgKey, String sccUsername, Date created,
-                             Date modified) {
+public class HubDetailsData extends IssServerDetailsData {
+
+    private final String gpgKey;
 
     /**
      * Create an instance from the hub entity.
      * @param hub the hub
      */
     public HubDetailsData(IssHub hub) {
-        this(
+        super(
             hub.getId(),
+            IssRole.HUB,
             hub.getFqdn(),
             hub.getRootCa(),
-            hub.getGpgKey(),
-            hub.getMirrorCredentials().getUsername(),
+            Optional.ofNullable(hub.getMirrorCredentials()).map(creds -> creds.getUsername()).orElse(null),
             hub.getCreated(),
             hub.getModified()
         );
+
+        this.gpgKey = hub.getGpgKey();
+    }
+
+    public String getGpgKey() {
+        return gpgKey;
     }
 }

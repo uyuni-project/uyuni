@@ -19,14 +19,15 @@ import com.suse.manager.model.hub.ChannelInfoJson;
 /**
  * Converts a ChannelInfoJson to an XMLRPC &lt;struct&gt;.
  *
- * @apidoc.doc #struct_begin(" channel info ")
- * #prop_desc("long", "id", "the id of the channel")
- * #prop_desc("string", "name", "the name of the channel")
- * #prop_desc("boolean", "label", "the label of the channel")
- * #prop_desc("string", "summary", "the summary of the channel")
- * #prop_desc("long", "org_id", "the organization id of the channel")
- * #prop_desc("long", "parent_channel_id", "the parent channel ID of the channel")
- * #struct_end()
+ * @apidoc.doc
+ *   #struct_begin(" channel info ")
+ *     #prop_desc("long", "id", "the id of the channel")
+ *     #prop_desc("string", "name", "the name of the channel")
+ *     #prop_desc("boolean", "label", "the label of the channel")
+ *     #prop_desc("string", "summary", "the summary of the channel")
+ *     #prop_desc("long", "org_id", "the organization id of the channel")
+ *     #prop_desc("long", "parent_channel_id", "the parent channel ID of the channel")
+ *   #struct_end()
  */
 public class ChannelInfoJsonSerializer extends ApiResponseSerializer<ChannelInfoJson> {
 

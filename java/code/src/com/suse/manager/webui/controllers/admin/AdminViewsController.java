@@ -21,6 +21,8 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.validation.password.PasswordPolicy;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
+import com.redhat.rhn.domain.iss.IssFactory;
+import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.ProxySettingsManager;
@@ -29,14 +31,19 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.admin.PaygAdminManager;
 import com.suse.manager.hub.HubManager;
 import com.suse.manager.model.hub.HubFactory;
+import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.controllers.admin.beans.HubDetailsData;
+import com.suse.manager.webui.controllers.admin.beans.MigrationEntryDto;
+import com.suse.manager.webui.controllers.admin.beans.PeripheralDetailsData;
 import com.suse.manager.webui.controllers.admin.mappers.PaygResponseMappers;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.security.cert.CertificateException;
@@ -46,10 +53,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 import spark.template.jade.JadeTemplateEngine;
 
 /**
@@ -95,9 +104,13 @@ public class AdminViewsController {
         get("/manager/admin/hub/peripherals",
             withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Peripherals))), jade);
         get("/manager/admin/hub/peripherals/register",
-                withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::registerPeripheral))), jade);
+            withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::registerPeripheral))), jade);
+        get("/manager/admin/hub/peripherals/migrate-from-v1",
+            withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::migrateFromV1))), jade);
+        get("/manager/admin/hub/peripherals/migrate-from-v2",
+            withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::migrateFromV2))), jade);
         get("/manager/admin/hub/peripherals/:id",
-            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::detailsISSv3Peripheral))), jade);
+            withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::showPeripheralDetails))), jade);
         get("/manager/admin/hub/access-tokens",
             withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::listAccessTokens))), jade);
     }
@@ -151,7 +164,32 @@ public class AdminViewsController {
      * @return the view to show
      */
     public static ModelAndView showISSv3Peripherals(Request request, Response response, User user) {
-        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/list_peripherals.jade");
+        HashMap<Object, Object> dataMap = new HashMap<>();
+        dataMap.put("flashMessage", FlashScopeHelper.flash(request));
+
+        return new ModelAndView(dataMap, "controllers/admin/templates/list_peripherals.jade");
+    }
+
+    /**
+     * Show the details of an ISS v3 Peripheral
+     * @param request http request
+     * @param response http response
+     * @param user current user
+     * @return the view to show
+     */
+    private static ModelAndView showPeripheralDetails(Request request, Response response, User user) {
+        long peripheralId = Long.parseLong(request.params("id"));
+        var peripheralData = Optional.ofNullable(HUB_FACTORY.findPeripheralById(peripheralId))
+            .map(PeripheralDetailsData::new)
+            .orElse(null);
+
+        if (peripheralData == null) {
+            throw Spark.halt(HttpStatus.SC_NOT_FOUND, "Peripheral not found");
+        }
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("peripheral", GSON.toJson(peripheralData));
+        return new ModelAndView(data, "controllers/admin/templates/peripheral_details.jade");
     }
 
     /**
@@ -257,7 +295,32 @@ public class AdminViewsController {
         return new ModelAndView(new HashMap<>(), "controllers/admin/templates/hub_register_peripheral.jade");
     }
 
+    private static ModelAndView migrateFromV1(Request request, Response response, User user) {
+        // Extract the slaves that can be migrated for this hub, directly loading the access token if available
+        List<IssSlave> issSlaves = IssFactory.listAllIssSlaves();
+        // Using iterate to ensure we have a progressive id from zero to the number of slaves
+        List<MigrationEntryDto> migrationEntries = Stream.iterate(0, i ->  i < issSlaves.size(), i -> i + 1)
+            .map(index -> {
+                IssSlave slave = issSlaves.get(index);
+                return new MigrationEntryDto(index, slave, getAccessTokenIfAvailable(slave.getSlave()));
+            })
+            .toList();
+
+        var data = new HashMap<>(Map.of("migrationEntries", GSON.toJson(migrationEntries)));
+        return new ModelAndView(data, "controllers/admin/templates/hub_migrate_v1.jade");
+    }
+
+    private static ModelAndView migrateFromV2(Request request, Response response, User user) {
+        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/hub_migrate_v2.jade");
+    }
+
     private static ModelAndView listAccessTokens(Request request, Response response, User user) {
         return new ModelAndView(new HashMap<>(), "controllers/admin/templates/iss_token_list.jade");
+    }
+
+    private static IssAccessToken getAccessTokenIfAvailable(String fqdn) {
+        return Optional.ofNullable(HUB_FACTORY.lookupAccessTokenFor(fqdn))
+            .filter(token -> token.isValid() && !token.isExpired())
+            .orElse(null);
     }
 }

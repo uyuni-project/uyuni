@@ -10,6 +10,7 @@ script(type='text/javascript').
         .then(function (module) {
             module.renderer(
                 'peripheral-details',
+                !{peripheral},
                 !{channelsSyncData}
             )
         });

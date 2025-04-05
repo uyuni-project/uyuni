@@ -15,6 +15,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.IOFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidTokenException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
@@ -470,7 +471,7 @@ public class HubHandler extends BaseHandler {
      * @return a {@link ManagerInfoJson} on success, exception otherwise
      * @apidoc.doc Get manager info.
      * @apidoc.param #session_key()
-     * @apidoc.returntype $ManagerInfoSerializer
+     * @apidoc.returntype $ManagerInfoJsonSerializer
      */
     @ReadOnly
     public ManagerInfoJson getManagerInfo(User loggedInUser) {
@@ -688,6 +689,37 @@ public class HubHandler extends BaseHandler {
             throw new InvalidParameterException(logAndGetErrorMessage(ex,
                     "Error while synchronizing channels for {}", fqdn));
         }
+        return 1;
+    }
+
+    /**
+     * Regenerate the username and the password for an existing peripheral.
+     * @param loggedInUser The current user
+     * @param fqdn         the FQDN identifying the peripheral Server
+     * @return 1 on success, exception otherwise
+     *
+     * @apidoc.doc Regenerate the username and the password for an existing peripheral.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc(" string ", " fqdn ", " The FQDN identifying the peripheral server ")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int regenerateSCCCredentials(User loggedInUser, String fqdn) {
+        ensureSatAdmin(loggedInUser);
+
+        try {
+            hubManager.regenerateCredentials(loggedInUser, fqdn);
+        }
+        catch (IllegalArgumentException ex) {
+            throw new InvalidParameterException(logAndGetErrorMessage(ex,
+                "Invalid parameter while regenerating the scc credentials for {}", fqdn));
+        }
+        catch (CertificateException ex) {
+            throw new InvalidCertificateException(logAndGetErrorMessage(ex, "Unable to load the provided certificate"));
+        }
+        catch (IOException ex) {
+            throw new IOFaultException(logAndGetErrorMessage(ex, "Error while calling the peripheral server {}", fqdn));
+        }
+
         return 1;
     }
 
