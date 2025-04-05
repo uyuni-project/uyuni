@@ -22,7 +22,6 @@ type ChannelSyncProps = {
  */
 function flattenChannels(channels: Channel[], isSynced: boolean): FlatChannel[] {
   const flatChannels: FlatChannel[] = [];
-
   /**
    * Process a channel and its children recursively, adding them to the flat array
    * @param channel - The current channel to process
@@ -30,7 +29,6 @@ function flattenChannels(channels: Channel[], isSynced: boolean): FlatChannel[] 
   const processChannel = (channel: Channel): void => {
     // Extract child labels
     const childrenLabels = channel.children.map((child) => child.channelLabel);
-
     // Create a FlatChannel from the current channel
     const flatChannel: FlatChannel = {
       channelId: channel.channelId,
@@ -42,24 +40,22 @@ function flattenChannels(channels: Channel[], isSynced: boolean): FlatChannel[] 
       childrenLabels: childrenLabels,
       synced: isSynced,
     };
-
     // Add the flat channel to our result array
     flatChannels.push(flatChannel);
     // Process all children recursively
     channel.children.forEach((child) => processChannel(child));
   };
-
   // Process all root channels and their children
   channels.forEach((channel) => processChannel(channel));
-
   return flatChannels;
 }
 
-export const renderer = (id: string, channelsSyncData: ChannelSyncProps) => {
-  // TODO: find a better way to get path parameters
-  const pathname = window.location.pathname;
-  const segments = pathname.split("/").filter(Boolean);
-  const peripheralId = Number(segments[segments.length - 1]);
+export const renderer = (
+  id: string,
+  peripheralId: number,
+  peripheralFqdn: string,
+  channelsSyncData: ChannelSyncProps
+) => {
   const flatAvailableCustom = flattenChannels(channelsSyncData.availableCustomChannels, false);
   const flatAvailableVendor = flattenChannels(channelsSyncData.availableVendorChannels, false);
   const flatSyncedCustom = flattenChannels(channelsSyncData.syncedPeripheralCustomChannels, true);
@@ -69,6 +65,7 @@ export const renderer = (id: string, channelsSyncData: ChannelSyncProps) => {
       <MessagesContainer />
       <SyncOrgsToPeripheralChannel
         peripheralId={peripheralId}
+        peripheralFqdn={peripheralFqdn}
         availableOrgs={channelsSyncData.peripheralOrgs}
         availableCustomChannels={flatAvailableCustom}
         availableVendorChannels={flatAvailableVendor}

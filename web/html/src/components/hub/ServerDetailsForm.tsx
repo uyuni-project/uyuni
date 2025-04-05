@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { AsyncButton, Button } from "components/buttons";
+import { AsyncButton, LinkButton } from "components/buttons";
 import { FromNow, HumanDateTime } from "components/datetime";
 import { HubDetailData, IssRole, IssServerDetailData, PeripheralDetailData } from "components/hub/types";
 import { LargeTextAttachment } from "components/large-text-attachment";
@@ -42,7 +42,6 @@ const roleBasedMessages = {
 type Props = {
   model: IssServerDetailData;
   editable: boolean;
-  onEditChannels?: (peripheralData: PeripheralDetailData) => void;
 };
 
 type State = {
@@ -159,11 +158,11 @@ export class ServerDetailsForm extends React.Component<Props, State> {
                   <p>{this.getChannelSyncSummary()}</p>
                   {this.props.editable && (
                     <div className="btn-group pull-right">
-                      <Button
+                      <LinkButton
                         className="btn-default"
                         text={t("Edit channels")}
                         icon="fa-pencil"
-                        handler={() => this.props.onEditChannels?.(this.state.model as PeripheralDetailData)}
+                        href={`/rhn/manager/admin/hub/peripherals/${this.state.model.id}/sync-channels`}
                       />
                     </div>
                   )}

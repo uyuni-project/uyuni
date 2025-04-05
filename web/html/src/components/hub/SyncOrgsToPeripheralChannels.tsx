@@ -2,6 +2,8 @@ import * as React from "react";
 
 import { Button } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
+import { TopPanel } from "components/panels";
+import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table, TableRef } from "components/table/Table";
@@ -14,6 +16,7 @@ import { Channel, FlatChannel, Org } from "./types";
 
 type SyncPeripheralsProps = {
   peripheralId: number;
+  peripheralFqdn: string;
   availableOrgs: Org[];
   availableCustomChannels: FlatChannel[];
   availableVendorChannels: FlatChannel[];
@@ -388,33 +391,55 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     );
 
     return (
-      <div className="container mt-4">
-        <h3>{t("Sync Channels from Hub to Peripheral")}</h3>
-        <ChannelHierarchicalTable
-          channels={allChannels}
-          availableOrgs={availableOrgs}
-          onChannelSelect={this.handleChannelSelect}
-          onOrgSelect={this.handleOrgSelect}
-          loading={loading}
-        />
-        <div className="text-center mt-4 mb-4">
-          <Button
-            className="btn-primary"
-            title={t("Apply Changes")}
-            text={t("Apply Changes")}
-            disabled={loading || (channelsToAdd.length === 0 && channelsToRemove.length === 0)}
-            handler={this.onChannelSyncModalOpen}
+      <TopPanel
+        title={t("{peripheralFqdn} - Peripheral Sync Channels", this.props)}
+        icon="fa-cogs"
+        helpUrl="reference/admin/hub/hub-details.html"
+      >
+        <SectionToolbar>
+          <div className="selector-button-wrapper">
+            <div className="btn-group pull-left">
+              <Button
+                className="btn-default"
+                icon="fa-chevron-left"
+                text={t("Back to details")}
+                handler={() =>
+                  window.pageRenderers?.spaengine?.navigate?.(
+                    `/rhn/manager/admin/hub/peripherals/${this.props.peripheralId}`
+                  )
+                }
+              />
+            </div>
+          </div>
+        </SectionToolbar>
+        <div className="container mt-4">
+          <h3>{t("Sync Channels from Hub to Peripheral")}</h3>
+          <ChannelHierarchicalTable
+            channels={allChannels}
+            availableOrgs={availableOrgs}
+            onChannelSelect={this.handleChannelSelect}
+            onOrgSelect={this.handleOrgSelect}
+            loading={loading}
+          />
+          <div className="text-center mt-4 mb-4">
+            <Button
+              className="btn-primary"
+              title={t("Apply Changes")}
+              text={t("Apply Changes")}
+              disabled={loading || (channelsToAdd.length === 0 && channelsToRemove.length === 0)}
+              handler={this.onChannelSyncModalOpen}
+            />
+          </div>
+          <Dialog
+            id="sync-channel-modal"
+            title={t("Confirm Channel Synchronization Changes")}
+            content={modalContent}
+            isOpen={syncModalOpen}
+            footer={modalFooter}
+            onClose={this.onChannelSyncModalClose}
           />
         </div>
-        <Dialog
-          id="sync-channel-modal"
-          title={t("Confirm Channel Synchronization Changes")}
-          content={modalContent}
-          isOpen={syncModalOpen}
-          footer={modalFooter}
-          onClose={this.onChannelSyncModalClose}
-        />
-      </div>
+      </TopPanel>
     );
   }
 }
