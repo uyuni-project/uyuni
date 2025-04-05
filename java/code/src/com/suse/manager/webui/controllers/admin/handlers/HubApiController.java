@@ -41,6 +41,7 @@ import com.suse.manager.model.hub.migration.MigrationResult;
 import com.suse.manager.model.hub.migration.MigrationResultCode;
 import com.suse.manager.model.hub.migration.SlaveMigrationData;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.manager.webui.controllers.admin.beans.ChannelSyncModel;
 import com.suse.manager.webui.controllers.admin.beans.CreateTokenRequest;
 import com.suse.manager.webui.controllers.admin.beans.HubRegisterRequest;
 import com.suse.manager.webui.controllers.admin.beans.MigrationEntryDto;
@@ -61,6 +62,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -114,22 +116,26 @@ public class HubApiController {
      * initialize all the API Routes for the ISSv3 support
      */
     public void initRoutes() {
-        // Hub management
-        get("/manager/api/admin/hub/access-tokens", withProductAdmin(this::listTokens));
-        post("/manager/api/admin/hub/access-tokens", withProductAdmin(this::createToken));
-        post("/manager/api/admin/hub/access-tokens/:id/validity", withProductAdmin(this::setAccessTokenValidity));
-        delete("/manager/api/admin/hub/access-tokens/:id", withProductAdmin(this::deleteAccessToken));
         get("/manager/api/admin/hub/peripherals", withProductAdmin(this::listPaginatedPeripherals));
         post("/manager/api/admin/hub/peripherals", withProductAdmin(this::registerPeripheral));
         delete("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::deletePeripheral));
         post("/manager/api/admin/hub/peripherals/:id/root-ca", withProductAdmin(this::updatePeripheralRootCA));
         delete("/manager/api/admin/hub/peripherals/:id/root-ca", withProductAdmin(this::removePeripheralRootCA));
         post("/manager/api/admin/hub/peripherals/:id/credentials", withProductAdmin(this::refreshCredentials));
-        post("/manager/api/admin/hub/migrate/v1", withProductAdmin(this::migrateFromV1));
-        post("/manager/api/admin/hub/migrate/v2", withProductAdmin(this::migrateFromV2));
+        get("/manager/api/admin/hub/peripherals/:id/sync-channels",
+                withProductAdmin(this::getPeripheralChannelSyncStatus));
+        post("/manager/api/admin/hub/peripherals/:id/sync-channels",
+                withProductAdmin(this::syncChannelsToPeripheral));
         delete("/manager/api/admin/hub/:id", withProductAdmin(this::deleteHub));
         post("/manager/api/admin/hub/:id/root-ca", withProductAdmin(this::updateHubRootCA));
         delete("/manager/api/admin/hub/:id/root-ca", withProductAdmin(this::removeHubRootCA));
+        post("/manager/api/admin/hub/migrate/v1", withProductAdmin(this::migrateFromV1));
+        post("/manager/api/admin/hub/migrate/v2", withProductAdmin(this::migrateFromV2));
+        get("/manager/api/admin/hub/access-tokens", withProductAdmin(this::listTokens));
+        post("/manager/api/admin/hub/access-tokens", withProductAdmin(this::createToken));
+        post("/manager/api/admin/hub/access-tokens/:id/validity", withProductAdmin(this::setAccessTokenValidity));
+        delete("/manager/api/admin/hub/access-tokens/:id", withProductAdmin(this::deleteAccessToken));
+
     }
 
     private String deleteHub(Request request, Response response, User user) {
@@ -173,6 +179,119 @@ public class HubApiController {
         }
         catch (IOException ex) {
             LOGGER.error("Error while attempting to connect to remote server #{}", peripheralId, ex);
+            return internalServerError(response, LOC.getMessage("hub.error_connecting_remote"));
+        }
+    }
+
+    private String getPeripheralChannelSyncStatus(Request request, Response response, User satAdmin) {
+        long peripheralId = Long.parseLong(request.params("id"));
+        try {
+            ChannelSyncModel syncModel = hubManager.getChannelSyncModelForPeripheral(satAdmin, peripheralId);
+            return json(response, GSON.toJson(syncModel));
+        }
+        catch (CertificateException eIn) {
+            LOGGER.error("Unable to parse the specified root certificate for the peripheral {}", peripheralId, eIn);
+            return badRequest(response, LOC.getMessage("hub.invalid_root_ca"));
+        }
+        catch (IOException eIn) {
+            LOGGER.error("Error while attempting to connect to peripheral server {}", peripheralId, eIn);
+            return internalServerError(response, LOC.getMessage("hub.error_connecting_remote"));
+        }
+    }
+
+    /**
+     * Model for sync channel operations with unified structure
+     */
+    private static class SyncChannelRequest {
+        private List<ChannelOrgGroup> channelsToAdd;
+        private List<String> channelsToRemove;
+
+        public List<ChannelOrgGroup> getChannelsToAdd() {
+            return channelsToAdd;
+        }
+
+        public void setChannelsToAdd(List<ChannelOrgGroup> channelsToAddIn) {
+            this.channelsToAdd = channelsToAddIn;
+        }
+
+        public List<String> getChannelsToRemove() {
+            return channelsToRemove;
+        }
+
+        public void setChannelsToRemove(List<String> channelsToRemoveIn) {
+            this.channelsToRemove = channelsToRemoveIn;
+        }
+    }
+
+    /**
+     * Model for a group of channels associated with a specific organization
+     */
+    private static class ChannelOrgGroup {
+        private List<String> channelLabels;
+        private Long orgId;
+
+        public Long getOrgId() {
+            return orgId;
+        }
+
+        public void setOrgId(Long orgIdIn) {
+            this.orgId = orgIdIn;
+        }
+
+        public List<String> getChannelLabels() {
+            return channelLabels;
+        }
+
+        public void setChannelLabels(List<String> channelLabelsIn) {
+            this.channelLabels = channelLabelsIn;
+        }
+    }
+
+    /**
+     * Unified method to sync and desync channels to/from a peripheral
+     */
+    private String syncChannelsToPeripheral(Request request, Response response, User satAdmin) {
+        try {
+            long peripheralId = Long.parseLong(request.params("id"));
+            SyncChannelRequest syncRequest = GSON.fromJson(request.body(), SyncChannelRequest.class);
+            if (syncRequest == null) {
+                return badRequest(response, LOC.getMessage("hub.invalid_request"));
+            }
+            // Process channels to add (grouped by org)
+            if (syncRequest.getChannelsToAdd() != null && !syncRequest.getChannelsToAdd().isEmpty()) {
+                for (ChannelOrgGroup group : syncRequest.getChannelsToAdd()) {
+                    if (group.getChannelLabels() != null && !group.getChannelLabels().isEmpty()) {
+                        // Execute the sync operation with org ID for each group
+                        hubManager.syncChannelsByLabelForPeripheral(
+                                satAdmin,
+                                peripheralId,
+                                group.getOrgId(), // This can be null for vendor channels
+                                group.getChannelLabels()
+                        );
+                    }
+                }
+            }
+            // Process channels to remove
+            if (syncRequest.getChannelsToRemove() != null && !syncRequest.getChannelsToRemove().isEmpty()) {
+                hubManager.desyncChannelsByLabelForPeripheral(
+                        satAdmin,
+                        peripheralId,
+                        syncRequest.getChannelsToRemove()
+                );
+            }
+            return success(response);
+        }
+        catch (NumberFormatException e) {
+            return badRequest(response, LOC.getMessage("hub.invalid_id"));
+        }
+        catch (CertificateException e) {
+            LOGGER.error("Unable to parse the specified root certificate for the peripheral {}",
+                    request.params("id"), e);
+            return badRequest(response, LOC.getMessage("hub.invalid_root_ca"));
+        }
+        catch (IOException e) {
+            LOGGER.error("Error while attempting to connect to peripheral server {}",
+                    request.params("id"), e);
             return internalServerError(response, LOC.getMessage("hub.error_connecting_remote"));
         }
     }
@@ -493,4 +612,9 @@ public class HubApiController {
 
         return request;
     }
+
+    private String pass(Request request, Response response, User satAdmin) {
+        throw new NotImplementedException();
+    }
+
 }
