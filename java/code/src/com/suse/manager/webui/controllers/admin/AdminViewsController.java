@@ -34,6 +34,7 @@ import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.manager.webui.controllers.admin.beans.ChannelSyncModel;
 import com.suse.manager.webui.controllers.admin.beans.HubDetailsData;
 import com.suse.manager.webui.controllers.admin.beans.MigrationEntryDto;
 import com.suse.manager.webui.controllers.admin.beans.PeripheralDetailsData;
@@ -47,7 +48,6 @@ import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.security.cert.CertificateException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -100,9 +100,9 @@ public class AdminViewsController {
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showProxy))), jade);
 
         get("/manager/admin/hub/hub-details",
-            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Hub))), jade);
+            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showHubDetails))), jade);
         get("/manager/admin/hub/peripherals",
-            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Peripherals))), jade);
+            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::listPeripherals))), jade);
         get("/manager/admin/hub/peripherals/register",
             withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::registerPeripheral))), jade);
         get("/manager/admin/hub/peripherals/migrate-from-v1",
@@ -150,7 +150,7 @@ public class AdminViewsController {
      * @param user current user
      * @return the view to show
      */
-    public static ModelAndView showISSv3Hub(Request request, Response response, User user) {
+    public static ModelAndView showHubDetails(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("hub", GSON.toJson(HUB_FACTORY.lookupIssHub().map(HubDetailsData::new).orElse(null)));
         return new ModelAndView(data, "controllers/admin/templates/hub_details.jade");
@@ -163,7 +163,7 @@ public class AdminViewsController {
      * @param user current user
      * @return the view to show
      */
-    public static ModelAndView showISSv3Peripherals(Request request, Response response, User user) {
+    public static ModelAndView listPeripherals(Request request, Response response, User user) {
         HashMap<Object, Object> dataMap = new HashMap<>();
         dataMap.put("flashMessage", FlashScopeHelper.flash(request));
 
@@ -179,45 +179,27 @@ public class AdminViewsController {
      */
     private static ModelAndView showPeripheralDetails(Request request, Response response, User user) {
         long peripheralId = Long.parseLong(request.params("id"));
-        var peripheralData = Optional.ofNullable(HUB_FACTORY.findPeripheralById(peripheralId))
-            .map(PeripheralDetailsData::new)
-            .orElse(null);
-
+        PeripheralDetailsData peripheralData = Optional.ofNullable(HUB_FACTORY.findPeripheralById(peripheralId))
+                .map(PeripheralDetailsData::new)
+                .orElse(null);
         if (peripheralData == null) {
             throw Spark.halt(HttpStatus.SC_NOT_FOUND, "Peripheral not found");
         }
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("peripheral", GSON.toJson(peripheralData));
-        return new ModelAndView(data, "controllers/admin/templates/peripheral_details.jade");
-    }
-
-    /**
-     * Show iss peripheral tab.
-     * @param request http request
-     * @param response http response
-     * @param user current user
-     * @return the view to showp
-     */
-    public static ModelAndView detailsISSv3Peripheral(Request request, Response response, User user) {
-        Map<String, Object> data = new HashMap<>();
-        List<String> errors = new ArrayList<>();
+        ChannelSyncModel channelSyncModel;
         try {
-            long peripheralId = Long.parseLong(request.params("id"));
-            data.put("channelsSyncData", GSON.toJson(HUB_MANAGER.getChannelSyncModelForPeripheral(user, peripheralId)));
+            channelSyncModel = HUB_MANAGER.getChannelSyncModelForPeripheral(user, peripheralId);
         }
         catch (CertificateException eIn) {
-            errors.add(LOC.getMessage("hub.invalid_root_ca"));
+            throw Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, LOC.getMessage("hub.invalid_root_ca"));
         }
         catch (IOException eIn) {
-            errors.add(LOC.getMessage("hub.error_connecting_remote"));
+            throw Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, LOC.getMessage("hub.error_connecting_remote"));
         }
-        if (!errors.isEmpty()) {
-            data.put("errors", errors);
-        }
+        Map<String, Object> data = new HashMap<>();
+        data.put("peripheral", GSON.toJson(peripheralData));
+        data.put("channelsSyncData", GSON.toJson(channelSyncModel));
         return new ModelAndView(data, "controllers/admin/templates/peripheral_details.jade");
     }
-
 
     /**
      * show list of saved payg ssh connection data
