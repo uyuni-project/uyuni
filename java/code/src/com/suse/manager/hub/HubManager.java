@@ -609,17 +609,6 @@ public class HubManager {
     }
 
     /**
-     * Collect data about a Manager Server
-     *
-     * @param user The current user
-     * @return return {@link ManagerInfoJson}
-     */
-    public ManagerInfoJson collectManagerInfo(User user) {
-        ensureSatAdmin(user);
-        return collectManagerInfo();
-    }
-
-    /**
      * Set server details
      *
      * @param token the access token
