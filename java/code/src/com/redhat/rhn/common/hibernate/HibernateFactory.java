@@ -149,7 +149,7 @@ public abstract class HibernateFactory {
         }
 
         for (Map.Entry<String, Object> entry: parameters.entrySet()) {
-            if (entry.getValue() instanceof Collection c) {
+            if (entry.getValue() instanceof Collection<?> c) {
                 if (c.size() > 1000) {
                     LOG.error("Query executed with Collection larger than 1000");
                 }
@@ -420,12 +420,13 @@ public abstract class HibernateFactory {
      * identifier, or null if there is no such persistent instance. (If the
      * instance, or a proxy for the instance, is already associated with the
      * session, return that instance or proxy.)
+     * @param <T> type of the entity class
      * @param clazz a persistent class
      * @param id an identifier
-     * @return Object persistent instance or null
+     * @return T persistent instance or null
      */
-    public Object getObject(Class clazz, Serializable id) {
-        Object retval = null;
+    public <T> T getObject(Class<T> clazz, Serializable id) {
+        T retval = null;
         Session session = null;
 
         try {
@@ -449,12 +450,13 @@ public abstract class HibernateFactory {
      * the given identifier, or null if there is no such persistent instance.
      * (If the instance, or a proxy for the instance, is already associated
      * with the session, return that instance or proxy.)
+     * @param <T> type of the entity class
      * @param clazz a persistent class
      * @param id an identifier
-     * @return Object persistent instance or null
+     * @return T persistent instance or null
      */
-    protected Object lockObject(Class clazz, Serializable id) {
-        Object retval = null;
+    protected <T> T lockObject(Class<T> clazz, Serializable id) {
+        T retval = null;
         Session session = null;
 
         try {
@@ -727,12 +729,13 @@ public abstract class HibernateFactory {
         return connectionManager.isInitialized();
     }
 
-    protected static DataResult executeSelectMode(String name, String mode, Map params) {
+    @SuppressWarnings("unchecked")
+    protected static <T> DataResult<T> executeSelectMode(String name, String mode, Map<String, Object> params) {
         SelectMode m = ModeFactory.getMode(name, mode);
         return m.execute(params);
     }
 
-    protected static void executeCallableMode(String name, String mode, Map params) {
+    protected static void executeCallableMode(String name, String mode, Map<String, Object> params) {
         CallableMode m = ModeFactory.getCallableMode(name, mode);
         m.execute(params, new HashMap<>());
     }
