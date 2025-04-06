@@ -45,6 +45,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.http.HttpStatus;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.security.cert.CertificateException;
@@ -78,6 +80,7 @@ public class AdminViewsController {
     private static final HubManager HUB_MANAGER = new HubManager();
 
     private static final LocalizationService LOC = LocalizationService.getInstance();
+    private static final Logger LOG = LogManager.getLogger(AdminViewsController.class);
 
     private AdminViewsController() { }
 
@@ -184,6 +187,7 @@ public class AdminViewsController {
                 .map(PeripheralDetailsData::new)
                 .orElse(null);
         if (peripheralData == null) {
+            LOG.error("Peripheral not found");
             throw Spark.halt(HttpStatus.SC_NOT_FOUND, "Peripheral not found");
         }
         Map<String, Object> data = new HashMap<>();
@@ -207,9 +211,11 @@ public class AdminViewsController {
             peripheralFqdn = HUB_FACTORY.findPeripheralById(peripheralId).getFqdn();
         }
         catch (CertificateException eIn) {
+            LOG.error("Unexpected error while processing the root certificate.", eIn);
             throw Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, LOC.getMessage("hub.invalid_root_ca"));
         }
         catch (IOException eIn) {
+            LOG.error("Connecting the remote server failed.", eIn);
             throw Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, LOC.getMessage("hub.error_connecting_remote"));
         }
         Map<String, Object> data = new HashMap<>();
