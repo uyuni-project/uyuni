@@ -55,7 +55,7 @@ public class ConfigFileTag extends TagSupport {
          StringBuilder result = new StringBuilder();
          if (nolink  || id == null) {
              result.append(writeIcon());
-             result.append(StringEscapeUtils.escapeXml(path));
+             result.append(StringEscapeUtils.escapeXml10(path));
          }
          else {
              String url;
@@ -68,7 +68,7 @@ public class ConfigFileTag extends TagSupport {
 
              result.append("<a href=\"" + url + "\">");
              result.append(writeIcon());
-             result.append(StringEscapeUtils.escapeXml(path) + "</a>");
+             result.append(StringEscapeUtils.escapeXml10(path) + "</a>");
          }
          JspWriter writer = pageContext.getOut();
          try {
