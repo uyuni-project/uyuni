@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-04 11:42+0200\n"
-"PO-Revision-Date: 2025-04-05 17:56+0000\n"
+"PO-Revision-Date: 2025-04-06 20:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -5349,10 +5349,8 @@ msgstr "RPM"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:344
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:345
-#, fuzzy
-#| msgid "Registration mode"
 msgid "Registry Source"
-msgstr "Režim registrácie"
+msgstr "Zdroj registra"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:352
 msgid "Simple"
@@ -5363,10 +5361,8 @@ msgid "Advanced"
 msgstr ""
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:361
-#, fuzzy
-#| msgid "Register"
 msgid "Registry URL"
-msgstr "Registrovať"
+msgstr "URL registra"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:362
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:389
@@ -5378,10 +5374,8 @@ msgid "e.g., "
 msgstr "napr. "
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:369
-#, fuzzy
-#| msgid "Contains Package"
 msgid "Containers Tag"
-msgstr "Obsahuje balík"
+msgstr "Značka kontajnerov"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:371
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:398
@@ -5389,10 +5383,8 @@ msgstr "Obsahuje balík"
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:446
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:470
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:494
-#, fuzzy
-#| msgid "latest"
 msgid "e.g., latest"
-msgstr "najnovšie"
+msgstr "napr. najnovšie"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:388
 msgid "HTTPD URL"
@@ -5853,28 +5845,20 @@ msgstr "Reťazec formátu Quartz"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:206
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:74
-#, fuzzy
-#| msgid "Playbook Directories"
 msgid "Playbook details"
-msgstr "Adresáre scenárov"
+msgstr "Podrobnosti scenára"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:211
-#, fuzzy
-#| msgid "Playbook Content"
 msgid "Playbook path"
-msgstr "Obsah scenára"
+msgstr "Cesta scenára"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:215
-#, fuzzy
-#| msgid "Inventory Path"
 msgid "Inventory path"
 msgstr "Inventárna cesta"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:219
-#, fuzzy
-#| msgid "Flush Ansible fact cache"
 msgid "Flush fact cache"
-msgstr "Vyprázdniť vyrovnávaciu pamäť faktov Ansible"
+msgstr "Vyprázdniť vyrovnávaciu pamäť faktov"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:220
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:93
@@ -5991,16 +5975,12 @@ msgstr ""
 "Naplánovaný čas bude časom servera."
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:54
-#, fuzzy
-#| msgid "Change Proxy"
 msgid "Change Playbook"
-msgstr "Zmena proxy"
+msgstr "Zmeniť scenár"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:61
-#, fuzzy
-#| msgid "Select a filter"
 msgid "Select a Playbook"
-msgstr "Vybrať filter"
+msgstr "Vybrať scenár"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:79
 msgid "Playbook path:"
