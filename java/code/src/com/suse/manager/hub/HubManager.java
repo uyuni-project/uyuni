@@ -14,6 +14,7 @@ package com.suse.manager.hub;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -1393,7 +1394,7 @@ public class HubManager {
      */
     private Set<Channel> loadChannelsByLabel(List<String> channelsLabels) {
         List<Long> channelsIds = ChannelFactory.getChannelIds(channelsLabels);
-        return new HashSet<>(ChannelFactory.getSession()
+        return new HashSet<>(HibernateFactory.getSession()
                 .byMultipleIds(Channel.class)
                 .multiLoad(channelsIds));
     }
