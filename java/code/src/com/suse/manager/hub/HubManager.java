@@ -1400,22 +1400,6 @@ public class HubManager {
     }
 
     /**
-     * Include original channels for any cloned channels
-     */
-    private Set<Channel> includeOriginalChannels(List<Channel> channels) {
-        Set<Channel> result = new HashSet<>();
-        for (Channel channel : channels) {
-            result.add(channel);
-            Channel originalChannel = ChannelFactory.lookupOriginalChannel(channel);
-            if (originalChannel != null) {
-                result.add(originalChannel);
-            }
-        }
-
-        return result;
-    }
-
-    /**
      * Synchronize the channels to the peripheral
      */
     private void synchronizeChannels(IssPeripheral peripheral, List<Channel> channelsToSync,

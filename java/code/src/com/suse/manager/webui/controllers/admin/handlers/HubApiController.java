@@ -62,7 +62,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -282,6 +281,7 @@ public class HubApiController {
             return success(response);
         }
         catch (NumberFormatException e) {
+            LOGGER.error("Invalid peripheral id provided");
             return badRequest(response, LOC.getMessage("hub.invalid_id"));
         }
         catch (CertificateException e) {
@@ -612,9 +612,4 @@ public class HubApiController {
 
         return request;
     }
-
-    private String pass(Request request, Response response, User satAdmin) {
-        throw new NotImplementedException();
-    }
-
 }
