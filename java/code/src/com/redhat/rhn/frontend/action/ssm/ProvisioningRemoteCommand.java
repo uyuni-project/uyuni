@@ -328,7 +328,7 @@ public class ProvisioningRemoteCommand extends RhnAction implements
 
         return MessageFormat.format(body,
                 scriptType, servers.size(), servers.size() > 1 ? plrl : sngl,
-                StringEscapeUtils.escapeXml(summary.toString()));
+                StringEscapeUtils.escapeXml10(summary.toString()));
     }
 
 

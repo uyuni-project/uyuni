@@ -60,7 +60,7 @@ public class ConfigChannelTag extends TagSupport {
             result.append("<a href=\"" +
                         ConfigChannelTag.makeConfigChannelUrl(id) + "\">");
             result.append(writeIcon());
-            result.append(StringEscapeUtils.escapeXml(name) + "</a>");
+            result.append(StringEscapeUtils.escapeXml10(name) + "</a>");
         }
         JspWriter writer = pageContext.getOut();
         try {
