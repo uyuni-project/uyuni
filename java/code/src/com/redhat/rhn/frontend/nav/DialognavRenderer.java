@@ -18,7 +18,7 @@ package com.redhat.rhn.frontend.nav;
 import com.redhat.rhn.frontend.html.HtmlTag;
 
 import org.apache.commons.text.StringEscapeUtils;
-import org.apache.commons.lang3.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
 
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -119,7 +119,7 @@ public class DialognavRenderer extends Renderable {
         String href = node.getPrimaryURL();
         String hrefNew = href;
         if (parameters != null) {
-            StrSubstitutor substitutor = new StrSubstitutor(
+            StringSubstitutor substitutor = new StringSubstitutor(
                     ((Map<String, String[]>)parameters).entrySet().stream()
                         .filter(entry -> entry.getValue() != null && entry.getValue().length > 0)
                         .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue()[0])));
