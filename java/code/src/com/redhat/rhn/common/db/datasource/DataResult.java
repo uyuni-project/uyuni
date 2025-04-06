@@ -145,7 +145,7 @@ public class DataResult<T> extends ArrayList<T> {
     public void elaborate(Map<String, Object> values) {
         elabParams = values;
         if (mode != null) {
-            mode.elaborate(this, values);
+            mode.elaborate((List<Object>)this, values);
         }
     }
     /**
@@ -155,10 +155,10 @@ public class DataResult<T> extends ArrayList<T> {
     public void elaborate() {
         if (mode != null) {
             if (getElaborationParams() == null) {
-                mode.elaborate(this, Collections.emptyMap());
+                mode.elaborate((List<Object>)this, Collections.emptyMap());
             }
             else {
-                mode.elaborate(this, getElaborationParams());
+                mode.elaborate((List<Object>)this, getElaborationParams());
             }
 
         }
