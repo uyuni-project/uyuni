@@ -5,6 +5,8 @@ podman system connection ls # Debug
 export CONTAINER_CONNECTION=server # NOTE: this will only apply to the current shell instance  
 echo $CONTAINER_CONNECTION # Debug
 
+#sudo psql -U spacewalk -d susemanager -f suseVEXAnnotations.sql
+
 ssh root@uyuni.test "rm /tmp/vex-processor/ -r"
 
 scp /home/naibu3/Documentos/UCO/TFG/uyuni-VEX/schema/spacewalk/common/tables/suseVEXAnnotations.sql root@uyuni.test:/tmp/
@@ -19,3 +21,7 @@ ssh root@uyuni.test "mgrctl exec  '. /tmp/vex-processor/venv/bin/activate'"
 ssh root@uyuni.test "mgrctl exec  './tmp/vex-processor/venv/bin/pip install pytest'"
 ssh root@uyuni.test "mgrctl exec  './tmp/vex-processor/venv/bin/pip install packageurl-python'"
 ssh root@uyuni.test "mgrctl exec  './tmp/vex-processor/venv/bin/pip install psycopg2'"
+
+#psql -U spacewalk -d susemanager -c "SELECT * FROM rhncve;"
+#psql -U spacewalk -d susemanager -c "SELECT * FROM suseovalplatform;"
+#psql -U spacewalk -d susemanager -c "SELECT * FROM suseovalvulnerablepackage;"
