@@ -391,17 +391,6 @@ public class BaseHandler implements XmlRpcInvocationHandler {
     }
 
     /**
-     * Private helper method to make sure a user has config admin role.
-     * If not, this will throw a generic Permission exception.
-     * @param user The user to check
-     * @throws PermissionCheckFailureException if user is not a config admin.
-     */
-    public static void ensureConfigAdmin(User user)
-        throws PermissionCheckFailureException {
-        ensureUserRole(user, RoleFactory.CONFIG_ADMIN);
-    }
-
-    /**
      * Private helper method to make sure a user has image admin role.
      * If not, this will throw a generic Permission exception.
      * @param user The user to check

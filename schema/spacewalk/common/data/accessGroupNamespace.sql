@@ -9,6 +9,22 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
+-- WebUI permissions
+
+-- Namespace: systems.autoinstallation.*
+-- Namespace: systems.config.*
+-- Namespace: config.*
+-- Permit to 'config_admin'
+INSERT INTO access.accessGroupNamespace
+    SELECT ag.id, ns.id
+    FROM access.accessGroup ag, access.namespace ns
+    WHERE ag.label = 'config_admin'
+    AND (ns.namespace LIKE 'config.%' OR
+        ns.namespace LIKE 'systems.config.%' OR
+        ns.namespace = 'systems.autoinstallation' OR
+        ns.namespace = 'systems.autoinstallation.provisioning')
+    ON CONFLICT DO NOTHING;
+
 -- API permissions
 
 -- Namespace: actionchain

@@ -67,7 +67,6 @@ public class MenuTree {
 
         Map<String, Boolean> adminRoles = new HashMap<>();
         adminRoles.put("org", checkAcl(user, "user_role(org_admin)"));
-        adminRoles.put("config", checkAcl(user, "user_role(config_admin)"));
         adminRoles.put("satellite", checkAcl(user, "user_role(satellite_admin)"));
         adminRoles.put("activationKey", checkAcl(user, "user_role(activation_key_admin)"));
         adminRoles.put("image", checkAcl(user, "user_role(image_admin)"));
@@ -83,7 +82,7 @@ public class MenuTree {
             nodes.add(getSoftwareNode(user, adminRoles));
             nodes.add(getContentManagementNode());
             nodes.add(getAuditNode(user, adminRoles));
-            nodes.add(getConfigurationNode(adminRoles));
+            nodes.add(getConfigurationNode(user, adminRoles));
             nodes.add(getScheduleNode());
             nodes.add(getUsersNode(adminRoles));
             nodes.add(getAdminNode(adminRoles));
@@ -247,34 +246,29 @@ public class MenuTree {
                         .withPrimaryUrl("/rhn/systems/customdata/CustomDataList.do")
                         .withDir("/rhn/systems/customdata"))
                 .addChild(new MenuItem("Kickstart")
+                        .withVisibility(isUserAuthorizedFor(user, "systems.autoinstallation"))
                         .addChild(new MenuItem("Overview")
-                                .withPrimaryUrl("/rhn/kickstart/KickstartOverview.do")
-                                .withVisibility(adminRoles.get("config")))
+                                .withPrimaryUrl("/rhn/kickstart/KickstartOverview.do"))
                         .addChild(new MenuItem("Profiles")
                                 .withPrimaryUrl("/rhn/kickstart/Kickstarts.do")
-                                .withDir("/rhn/kickstart")
-                                .withVisibility(adminRoles.get("config")))
+                                .withDir("/rhn/kickstart"))
                         .addChild(new MenuItem("Bare Metal")
-                                .withPrimaryUrl("/rhn/kickstart/KickstartIpRanges.do")
-                                .withVisibility(adminRoles.get("config")))
+                                .withPrimaryUrl("/rhn/kickstart/KickstartIpRanges.do"))
                         .addChild(new MenuItem("GPG and SSL Keys")
                                 .withPrimaryUrl("/rhn/keys/CryptoKeysList.do")
-                                .withDir("/rhn/keys")
-                                .withVisibility(adminRoles.get("config")))
+                                .withDir("/rhn/keys"))
                         .addChild(new MenuItem("Distributions")
                                 .withPrimaryUrl("/rhn/kickstart/ViewTrees.do")
                                 .withAltUrl("/rhn/kickstart/TreeEdit.do")
                                 .withAltUrl("/rhn/kickstart/TreeCreate.do")
                                 .withAltUrl("/rhn/kickstart/TreeDelete.do")
-                                .withAltUrl("/rhn/kickstart/tree/EditVariables.do")
-                                .withVisibility(adminRoles.get("config")))
+                                .withAltUrl("/rhn/kickstart/tree/EditVariables.do"))
                         .addChild(new MenuItem("File Preservation")
                                 .withPrimaryUrl("/rhn/systems/provisioning/preservation/PreservationList.do")
                                 .withAltUrl("/rhn/systems/provisioning/preservation/PreservationListEdit.do")
                                 .withAltUrl("/rhn/systems/provisioning/preservation/PreservationListCreate.do")
                                 .withAltUrl("/rhn/systems/provisioning/preservation/PreservationListDeleteSubmit.do")
-                                .withAltUrl("/rhn/systems/provisioning/preservation/PreservationListDelete.do")
-                                .withVisibility(adminRoles.get("config")))
+                                .withAltUrl("/rhn/systems/provisioning/preservation/PreservationListDelete.do"))
                         .addChild(new MenuItem("snippets.jsp.toolbar")
                                 .withPrimaryUrl("/rhn/kickstart/cobbler/CustomSnippetList.do")
                                 .withAltUrl("/rhn/kickstart/cobbler/DefaultSnippetList.do")
@@ -284,9 +278,8 @@ public class MenuTree {
                                 .withAltUrl("/rhn/kickstart/cobbler/CobblerSnippetCreate.do")
                                 .withAltUrl("/rhn/kickstart/cobbler/CobblerSnippetDelete.do")
                                 .withAltUrl("/rhn/kickstart/cobbler/CobblerSnippetView.do")
-                                .withAltUrl("/rhn/kickstart/cobbler/DefaultSnippetView.do")
-                                .withVisibility(adminRoles.get("config")))
-                        .withVisibility(adminRoles.get("config")))
+                                .withAltUrl("/rhn/kickstart/cobbler/DefaultSnippetView.do"))
+                        )
                 .addChild(new MenuItem("Virtual Host Managers")
                         .withPrimaryUrl("/rhn/manager/vhms")
                         .withDir("/rhn/manager/vhms")
@@ -423,12 +416,11 @@ public class MenuTree {
                         .withPrimaryUrl("/rhn/manager/audit/confidential-computing"));
     }
 
-    private MenuItem getConfigurationNode(Map<String, Boolean> adminRoles) {
+    private MenuItem getConfigurationNode(User user, Map<String, Boolean> adminRoles) {
         return new MenuItem("config.nav.config").withIcon("spacewalk-icon-software-channel-management")
-            .withVisibility(adminRoles.get("config"))
+            .withVisibility(isUserAuthorizedFor(user, "config.overview"))
             .withDir("/rhn/configuration")
-            .addChild(new MenuItem("common.nav.overview").withPrimaryUrl("/rhn/configuration/Overview.do")
-                    .withVisibility(adminRoles.get("config")))
+            .addChild(new MenuItem("common.nav.overview").withPrimaryUrl("/rhn/configuration/Overview.do"))
             .addChild(new MenuItem("config.nav.channels")
                     .withPrimaryUrl("/rhn/configuration/GlobalConfigChannelList.do")
                     .withDir("/rhn/configuration/channel/")
@@ -438,15 +430,13 @@ public class MenuTree {
                     .withAltUrl("/rhn/configuration/ChannelUploadFiles.do")
                     .withAltUrl("/rhn/configuration/ChannelImportFiles.do")
                     .withAltUrl("/rhn/configuration/ChannelCreateFiles.do")
-                    .withVisibility(adminRoles.get("config")))
+                    .withVisibility(isUserAuthorizedFor(user, "config.channels")))
             .addChild(new MenuItem("config.nav.files").withDir("/rhn/configuration/file")
-                    .withVisibility(adminRoles.get("config"))
+                    .withVisibility(isUserAuthorizedFor(user, "config.files"))
                     .addChild(new MenuItem("config.nav.globalfiles")
-                            .withPrimaryUrl("/rhn/configuration/file/GlobalConfigFileList.do")
-                            .withVisibility(adminRoles.get("config")))
+                            .withPrimaryUrl("/rhn/configuration/file/GlobalConfigFileList.do"))
                     .addChild(new MenuItem("config.nav.localfiles")
-                            .withPrimaryUrl("/rhn/configuration/file/LocalConfigFileList.do")
-                            .withVisibility(adminRoles.get("config")))
+                            .withPrimaryUrl("/rhn/configuration/file/LocalConfigFileList.do"))
             )
             .addChild(new MenuItem("common.nav.systems").withDir("/rhn/configuration/system")
                     .addChild(new MenuItem("config.nav.managed")
@@ -454,8 +444,6 @@ public class MenuTree {
                     .addChild(new MenuItem("config.nav.target")
                             .withPrimaryUrl("/rhn/configuration/system/TargetSystems.do")
                             .withAltUrl("/rhn/configuration/system/TargetSystemsSubmit.do")
-                            .withAltUrl("/rhn/configuration/system/EnableSystemsConfirm.do")
-                            .withAltUrl("/rhn/configuration/system/EnableSystemsConfirmSubmit.do")
                             .withAltUrl("/rhn/configuration/system/Summary.do")));
     }
 

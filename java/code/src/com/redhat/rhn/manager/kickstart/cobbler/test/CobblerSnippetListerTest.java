@@ -16,9 +16,7 @@ package com.redhat.rhn.manager.kickstart.cobbler.test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.kickstart.cobbler.CobblerSnippet;
 import com.redhat.rhn.domain.kickstart.cobbler.test.CobblerSnippetTest;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -34,16 +32,6 @@ import java.util.List;
  * CobblerSnippetListerTest
  */
 public class CobblerSnippetListerTest extends BaseTestCaseWithUser {
-    @Test
-    public void testPerms() {
-        try {
-            CobblerSnippetLister.getInstance().list(user);
-            fail("Yuck permission failures not caught");
-        }
-        catch (PermissionException pe) {
-            //cool permission breakups
-        }
-    }
 
     @Test
     public void testList() {

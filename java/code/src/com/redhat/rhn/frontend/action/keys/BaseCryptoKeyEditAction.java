@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.keys;
 
-import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -24,7 +22,6 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
-import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.kickstart.crypto.BaseCryptoKeyCommand;
 
 import org.apache.commons.lang3.StringUtils;
@@ -60,16 +57,6 @@ public abstract class BaseCryptoKeyEditAction extends RhnAction {
                                  ActionForm formIn,
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
-
-        if (!AclManager.hasAcl("user_role(org_admin) or user_role(config_admin)",
-            request, null)) {
-            //Throw an exception with a nice error message so the user
-            //knows what went wrong.
-            LocalizationService ls = LocalizationService.getInstance();
-            throw new PermissionException("Only Org Admins or Configuration Admins can modify crypto keys",
-                        ls.getMessage("permission.jsp.summary.acl.header"),
-                        ls.getMessage("permission.jsp.summary.acl.reason5"));
-        }
 
         DynaActionForm form = (DynaActionForm) formIn;
         RequestContext ctx = new RequestContext(request);
