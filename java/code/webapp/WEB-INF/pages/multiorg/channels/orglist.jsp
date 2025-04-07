@@ -12,7 +12,7 @@
 <body>
 <rhn:toolbar base="h1" icon="header-channel"
              deletionUrl="/rhn/channels/manage/Delete.do?cid=${param.cid}"
-             deletionAcl="user_role(channel_admin); formvar_exists(cid)"
+             deletionAcl="authorized_for(software.manage.delete); formvar_exists(cid)"
              deletionType="software.channel">
   <bean:message key="channel.edit.jsp.toolbar" arg0="${fn:escapeXml(channel_name)}"/>
 </rhn:toolbar>

@@ -730,6 +730,21 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     SELECT '', '/errata/manage/Edit.do', 'POST', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/errata/manage/Edit.do' AND http_method = 'POST');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/errata/manage/ErrataChannelIntersection.do', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/errata/manage/ErrataChannelIntersection.do' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/errata/manage/ErrataChannelIntersection.do', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/errata/manage/ErrataChannelIntersection.do' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/errata/manage/SelectChannels.do', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/errata/manage/SelectChannels.do' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/errata/manage/SelectChannels.do', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/errata/manage/SelectChannels.do' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/errata/manage/SelectChannelsSubmit.do', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/errata/manage/SelectChannelsSubmit.do' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/errata/manage/DeleteBug.do', 'GET', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/errata/manage/DeleteBug.do' AND http_method = 'GET');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -1132,6 +1147,12 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     SELECT '', '/channels/manage/errata/SyncErrata.do', 'POST', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/channels/manage/errata/SyncErrata.do' AND http_method = 'POST');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/channels/manage/errata/ConfirmSyncPackages.do', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/channels/manage/errata/ConfirmSyncPackages.do' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/channels/manage/errata/ConfirmSyncPackages.do', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/channels/manage/errata/ConfirmSyncPackages.do' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/channels/manage/errata/AddRedHatErrata.do', 'POST', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/channels/manage/errata/AddRedHatErrata.do' AND http_method = 'POST');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -1179,6 +1200,18 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/channels/manage/ChannelPackagesCompareMergeConfirm.do', 'POST', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/channels/manage/ChannelPackagesCompareMergeConfirm.do' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/packages/list', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/packages/list' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/api/packages/list/:binary/:kind', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/api/packages/list/:binary/:kind' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/api/packages/list/:binary/channel/:cid', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/api/packages/list/:binary/channel/:cid' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/api/packages/delete', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/api/packages/delete' AND http_method = 'POST');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/channels/manage/Repositories.do', 'GET', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/channels/manage/Repositories.do' AND http_method = 'GET');

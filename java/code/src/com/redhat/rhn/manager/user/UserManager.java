@@ -29,6 +29,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.security.user.StateChangeException;
+import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.RhnConfiguration;
@@ -722,11 +723,10 @@ public class UserManager extends BaseManager {
     }
 
     /**
-     * TODO: Review
      * Check role for the specified user.
      * @param uid The id of the user to lookup.
      * @param label Role to check.
-     * @return the specified user.
+     * @return {@code True} if the user has the specified role.
      */
     public static boolean hasRole(Long uid, Role label) {
         if (uid == null) {
@@ -734,6 +734,20 @@ public class UserManager extends BaseManager {
         }
 
         return UserFactory.lookupById(uid).hasRole(label);
+    }
+
+    /**
+     * Check RBAC memberships of the specified user.
+     * @param uid The id of the user to lookup.
+     * @param group the access group to check.
+     * @return {@code True} if the user is a member of the access group.
+     */
+    public static boolean isMemberOf(Long uid, AccessGroup group) {
+        if (uid == null) {
+            return false;
+        }
+
+        return UserFactory.lookupById(uid).isMemberOf(group);
     }
 
     /**

@@ -35,6 +35,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
@@ -1225,7 +1226,7 @@ public class ErrataManager extends BaseManager {
      * @param user the user doing the removing
      */
     public static void removeErratumFromChannel(Errata errata, Channel chan, User user) {
-        if (!user.hasRole(RoleFactory.CHANNEL_ADMIN)) {
+        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
             throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
         }
 
@@ -1278,7 +1279,7 @@ public class ErrataManager extends BaseManager {
      */
     public static void removeErratumAndPackagesFromChannel(Set<Errata> excludedErrata, Set<Errata> includedErrata,
                                                            Channel chan, User user) {
-        if (!user.hasRole(RoleFactory.CHANNEL_ADMIN)) {
+        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
             throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
         }
 

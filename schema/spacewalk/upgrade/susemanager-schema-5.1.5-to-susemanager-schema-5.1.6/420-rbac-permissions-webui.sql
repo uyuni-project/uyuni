@@ -24,3 +24,18 @@ INSERT INTO access.accessGroupNamespace
         ns.namespace = 'systems.autoinstallation' OR
         ns.namespace = 'systems.autoinstallation.provisioning')
     ON CONFLICT DO NOTHING;
+
+-- Namespace: software.manage.*
+-- Namespace: patches.manage.*
+-- Namespace: patches.clone
+-- Namespace: users.channels
+-- Permit to 'channel_admin'
+INSERT INTO access.accessGroupNamespace
+    SELECT ag.id, ns.id
+    FROM access.accessGroup ag, access.namespace ns
+    WHERE ag.label = 'channel_admin'
+    AND (ns.namespace LIKE 'software.manage.%' OR
+        ns.namespace LIKE 'patches.manage.%' OR
+        ns.namespace = 'patches.clone' OR
+        ns.namespace = 'users.channels')
+    ON CONFLICT DO NOTHING;

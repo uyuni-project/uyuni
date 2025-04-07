@@ -2091,7 +2091,6 @@
         type="com.redhat.rhn.frontend.action.errata.ErrataAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(channel_admin)"/>
         <forward name="default"
                path="/WEB-INF/pages/errata/published.jsp" />
         <forward name="continue"
@@ -2105,7 +2104,6 @@
         type="com.redhat.rhn.frontend.action.errata.CloneErrataAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(channel_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/errata/cloneerrata.jsp" />
         <forward name="continue"
@@ -2117,7 +2115,6 @@
             input="/WEB-INF/pages/admin/errata/cloneconfirm.jsp"
             type="com.redhat.rhn.frontend.action.errata.CloneConfirmSetupAction"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-            <set-property property="acls" value="user_role(channel_admin)"/>
             <forward name="default"
                      path="/WEB-INF/pages/admin/errata/cloneconfirm.jsp"/>
     </action>
@@ -2129,7 +2126,6 @@
          type="com.redhat.rhn.frontend.action.errata.CloneConfirmAction"
          className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequired" value="true" />
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default"
                   path="/errata/manage/CloneConfirm.do" redirect="true"/>
          <forward name="failure"
@@ -2143,7 +2139,6 @@
         input="/WEB-INF/pages/admin/errata/publisheddeleteconfirm.jsp"
         type="com.redhat.rhn.frontend.action.errata.PublishedDeleteConfirmSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(channel_admin)"/>
         <forward name="default"
                path="/WEB-INF/pages/admin/errata/publisheddeleteconfirm.jsp" />
     </action>
@@ -2154,7 +2149,6 @@
          type="com.redhat.rhn.frontend.action.errata.PublishedDeleteConfirmAction"
          className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequired" value="true" />
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default"
                   path="/errata/manage/Errata.do" redirect="true"/>
      </action>
@@ -2166,7 +2160,6 @@
          parameter="dispatch"
          className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequiredIfSubmitted" value="true" />
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default"
                   path="/WEB-INF/pages/errata/delete.jsp" />
          <forward name="deleted"
@@ -2179,7 +2172,6 @@
              input="/WEB-INF/pages/errata/create.jsp"
              type="com.redhat.rhn.frontend.action.errata.CreateSetupAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-       <set-property property="acls" value="user_role(channel_admin)"/>
        <forward name="default"
                 path="/WEB-INF/pages/errata/create.jsp"/>
      </action>
@@ -2192,7 +2184,6 @@
              type="com.redhat.rhn.frontend.action.errata.CreateAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequired" value="true" />
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default" path="/errata/manage/Create.do"/>
          <forward name="failure" path="/errata/manage/Create.do"/>
          <forward name="success" path="/errata/manage/Edit.do" redirect="true"/>
@@ -2205,7 +2196,7 @@
              type="com.redhat.rhn.frontend.action.errata.EditAction"
              parameter="dispatch"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="acls" value="user_role(channel_admin); errata_editable()"/>
+         <set-property property="acls" value="errata_editable()"/>
          <set-property property="postRequiredIfSubmitted" value="true" />
          <forward name="notified"
              path="/errata/manage/Notify.do" redirect="true"/>
@@ -2218,7 +2209,6 @@
              input="/WEB-INF/pages/errata/erratachannelintersection.jsp"
              type="com.redhat.rhn.frontend.action.errata.ErrataChannelIntersectionAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default" path="/WEB-INF/pages/errata/erratachannelintersection.jsp"/>
      </action>
 
@@ -2228,7 +2218,6 @@
              input="/WEB-INF/pages/errata/addchannels.jsp"
              type="com.redhat.rhn.frontend.action.errata.ChannelSetupAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default" path="/WEB-INF/pages/errata/addchannels.jsp"/>
      </action>
 
@@ -2237,7 +2226,6 @@
              type="com.redhat.rhn.frontend.action.errata.ChannelAction"
              parameter="dispatch"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <set-property property="postRequired" value="true" />
          <forward name="default" path="/errata/manage/SelectChannels.do"
              redirect="true"/>
@@ -2251,7 +2239,6 @@
              input="/WEB-INF/pages/errata/packagepush.jsp"
              type="com.redhat.rhn.frontend.action.errata.PackagePushSetupAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default" path="/WEB-INF/pages/errata/packagepush.jsp"/>
          <forward name="finished" path="/errata/AllErrata.do" redirect="true" />
      </action>
@@ -2264,7 +2251,6 @@
              parameter="dispatch"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequired" value="true" />
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default" path="/errata/manage/PackagePush.do"/>
          <forward name="defaultWithoutRedirect" path="/errata/manage/PackagePush.do" />
      </action>
@@ -2278,7 +2264,6 @@
         <action path="/errata/manage/Notify" scope="request"
             type="com.redhat.rhn.frontend.action.errata.NotifySetupAction"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-            <set-property property="acls" value="user_role(channel_admin)"/>
             <forward name="default" path="/WEB-INF/pages/errata/notify.jsp"/>
         </action>
 
@@ -2288,7 +2273,6 @@
              type="com.redhat.rhn.frontend.action.errata.NotifyAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequired" value="true" />
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default" path="/errata/manage/Errata.do" redirect="true"/>
      </action>
 
@@ -2297,7 +2281,6 @@
              input="/WEB-INF/pages/errata/editchannels.jsp"
              type="com.redhat.rhn.frontend.action.errata.ChannelSetupAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default"
                   path="/WEB-INF/pages/errata/editchannels.jsp"/>
      </action>
@@ -2309,7 +2292,6 @@
             parameter="dispatch"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequired" value="true" />
-         <set-property property="acls" value="user_role(channel_admin)"/>
           <forward name="default" path="/errata/manage/Channels.do"/>
         <forward name="push" path="/errata/manage/AddChannelPackagePush.do" redirect="true"/>
         <forward name="failure" path="/errata/manage/Channels.do"/>
@@ -2320,7 +2302,6 @@
              input="/WEB-INF/pages/errata/addchannelpackagepush.jsp"
              type="com.redhat.rhn.frontend.action.errata.PackagePushSetupAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default" path="/WEB-INF/pages/errata/addchannelpackagepush.jsp"/>
          <forward name="finished" path="/errata/manage/Channels.do" />
      </action>
@@ -2332,7 +2313,6 @@
              type="com.redhat.rhn.frontend.action.errata.PackagePushAction"
              parameter="dispatch"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <set-property property="postRequired" value="true" />
          <forward name="default" path="/errata/manage/AddChannelPackagePush.do" redirect="true"/>
          <forward name="defaultWithoutRedirect" path="/errata/manage/AddChannelPackagePush.do" />
@@ -2341,7 +2321,6 @@
     <action path="/errata/manage/Packages" scope="request"
         type="com.redhat.rhn.frontend.action.errata.BaseErrataSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(channel_admin)"/>
         <forward name="default"
             path="/WEB-INF/pages/errata/packages/packages.jsp"/>
     </action>
@@ -2372,7 +2351,6 @@
              input="/WEB-INF/pages/errata/addpackagepackagepush.jsp"
              type="com.redhat.rhn.frontend.action.errata.PackagePushSetupAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default" path="/WEB-INF/pages/errata/addpackagepackagepush.jsp"/>
          <forward name="finished" path="/errata/manage/AddPackages.do" />
      </action>
@@ -2385,7 +2363,6 @@
              parameter="dispatch"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequired" value="true" />
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default" path="/errata/manage/AddPackagePackagePush.do"/>
          <forward name="defaultWithoutRedirect" path="/errata/manage/AddPackagePackagePush.do" />
      </action>
@@ -2395,7 +2372,6 @@
         input="/WEB-INF/pages/errata/packages/list.jsp"
         type="com.redhat.rhn.frontend.action.errata.ListPackagesAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(channel_admin)"/>
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default" path="/WEB-INF/pages/errata/packages/list.jsp" />
         <forward name="confirm" path="/errata/manage/RemovePackages.do" redirect="true"/>
@@ -2406,7 +2382,6 @@
         input="/WEB-INF/pages/errata/packages/remove.jsp"
         type="com.redhat.rhn.frontend.action.errata.RemovePackagesAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(channel_admin)"/>
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
             path="/WEB-INF/pages/errata/packages/remove.jsp"/>
@@ -7222,7 +7197,7 @@
         input="/WEB-INF/pages/channels/manage/subscribers.jsp"
         type="com.redhat.rhn.frontend.action.channels.SubscribersAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(channel_admin) or user_can_admin_channel();"/>
+        <set-property property="acls" value="user_can_admin_channel();"/>
         <set-property property="mixins"
               value="com.redhat.rhn.common.security.acl.ChannelAclHandler"/>
         <forward name="default" path="/WEB-INF/pages/channels/manage/subscribers.jsp" />
@@ -7235,7 +7210,7 @@
         input="/WEB-INF/pages/channels/manage/subscribers_manage.jsp"
         type="com.redhat.rhn.frontend.action.channels.SubscribersAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(channel_admin) or user_can_admin_channel();"/>
+        <set-property property="acls" value="user_can_admin_channel();"/>
         <set-property property="mixins"
               value="com.redhat.rhn.common.security.acl.ChannelAclHandler"/>
         <forward name="default" path="/WEB-INF/pages/channels/manage/subscribers_manage.jsp" />
@@ -7248,7 +7223,6 @@
         input="/WEB-INF/pages/channels/manage/managers.jsp"
         type="com.redhat.rhn.frontend.action.channels.ManagersSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(channel_admin);"/>
         <forward name="default" path="/WEB-INF/pages/channels/manage/managers.jsp" />
         <forward name="submitted"
                  path="/channels/Managers.do" redirect="true"/>
@@ -7259,7 +7233,6 @@
         input="/WEB-INF/pages/channels/manage/managers_edit.jsp"
         type="com.redhat.rhn.frontend.action.channels.ManagersSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(channel_admin);"/>
         <forward name="default" path="/WEB-INF/pages/channels/manage/managers_edit.jsp" />
         <forward name="submitted"
                  path="/channels/manage/Managers.do" redirect="true"/>

@@ -21,6 +21,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
@@ -314,7 +315,7 @@ public class TaskomaticApi {
      * @throws PermissionException if there was an error
      */
     private void ensureChannelAdminRole(User user) {
-        if (!user.hasRole(RoleFactory.CHANNEL_ADMIN)) {
+        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
             throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
         }
     }
