@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { ChannelSyncProps, flattenChannels } from "manager/admin/hub/sync-channels.renderer";
+
 import { Button } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
 import { TopPanel } from "components/panels";
@@ -26,6 +28,7 @@ type SyncPeripheralsProps = {
 
 type State = {
   peripheralId: number;
+  peripheralFqdn: string;
   syncedChannels: FlatChannel[];
   availableOrgs: Org[];
   availableChannels: FlatChannel[];
@@ -45,22 +48,12 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     const syncedChannels = [...props.syncedCustomChannels, ...props.syncedVendorChannels];
     const availableChannels = [...props.availableCustomChannels, ...props.availableVendorChannels];
 
-    // Initialize sync status for each channel
-    const syncStatus: Record<number, boolean> = {};
-    syncedChannels.forEach((channel) => {
-      syncStatus[channel.channelId] = true;
-    });
-    availableChannels.forEach((channel) => {
-      if (syncStatus[channel.channelId] === undefined) {
-        syncStatus[channel.channelId] = false;
-      }
-    });
-
     this.state = {
       peripheralId: props.peripheralId,
-      syncedChannels,
+      peripheralFqdn: props.peripheralFqdn,
+      syncedChannels: syncedChannels,
       availableOrgs: props.availableOrgs,
-      availableChannels,
+      availableChannels: availableChannels,
       syncModalOpen: false,
       channelsToAdd: [],
       channelsToRemove: [],
@@ -221,13 +214,28 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
         // Refresh the data after successful sync
         return Network.get(endpoint);
       })
-      .then((response: SyncPeripheralsProps) => {
-        this.setStateFromApiProps(response);
+      .then((response) => {
+        response = JSON.parse(response);
+        const flatAvailableCustom = flattenChannels(response.availableCustomChannels, false);
+        const flatAvailableVendor = flattenChannels(response.availableVendorChannels, false);
+        const flatSyncedCustom = flattenChannels(response.syncedPeripheralCustomChannels, true);
+        const flatSyncedVendor = flattenChannels(response.syncedPeripheralVendorChannels, true);
+        const newProps = {
+          peripheralId: this.props.peripheralId,
+          peripheralFqdn: this.props.peripheralFqdn,
+          availableOrgs: response.peripheralOrgs || this.props.availableOrgs,
+          availableCustomChannels: flatAvailableCustom,
+          availableVendorChannels: flatAvailableVendor,
+          syncedCustomChannels: flatSyncedCustom,
+          syncedVendorChannels: flatSyncedVendor,
+        };
+        this.setStateFromApiProps(newProps);
         this.openCloseModalState(false);
       })
       .catch((error) => {
         Network.showResponseErrorToastr(error);
         this.setState({ loading: false });
+        this.openCloseModalState(false);
       });
   };
 

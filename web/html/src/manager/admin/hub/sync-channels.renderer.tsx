@@ -4,7 +4,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 import { Channel, FlatChannel, Org, SyncOrgsToPeripheralChannel } from "components/hub";
 import { MessagesContainer } from "components/toastr";
 
-type ChannelSyncProps = {
+export type ChannelSyncProps = {
   peripheralOrgs: Org[];
   syncedPeripheralCustomChannels: Channel[];
   syncedPeripheralVendorChannels: Channel[];
@@ -20,7 +20,7 @@ type ChannelSyncProps = {
  * @param channels - An array of hierarchical Channel objects
  * @returns An array of FlatChannel objects
  */
-function flattenChannels(channels: Channel[], isSynced: boolean): FlatChannel[] {
+export function flattenChannels(channels: Channel[], isSynced: boolean): FlatChannel[] {
   const flatChannels: FlatChannel[] = [];
   /**
    * Process a channel and its children recursively, adding them to the flat array
