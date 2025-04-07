@@ -14,7 +14,7 @@ type Props<ValueType, RendererProps> = FieldProps<ValueType, RendererProps> & {
 
 export const MultiField = <ValueType, RendererProps>(props: Props<ValueType, RendererProps>) => {
   const sharedFieldConfig = useSharedFieldConfig();
-  const { name, defaultNewItemValue } = props;
+  const { name, defaultNewItemValue, ...rest } = props;
   const [field] = useField<ValueType[]>(props.name);
 
   return (
@@ -23,17 +23,21 @@ export const MultiField = <ValueType, RendererProps>(props: Props<ValueType, Ren
       render={(arrayHelpers) => {
         return (
           <>
-            {field.value?.map((item, index) => (
-              <FieldBase {...props} name={`${props.name}.${index}`} label={index === 0 ? props.label : ""} key={index}>
+            {field.value?.map((_, index) => (
+              <FieldBase
+                {...(rest as FieldProps<ValueType, RendererProps>)}
+                name={`${props.name}.${index}`}
+                label={index === 0 ? props.label : ""}
+                key={index}
+              >
                 <div className={styles.buttons}>
                   <Button
                     className="btn-default btn-sm"
                     handler={() => arrayHelpers.remove(index)}
                     title={t("Remove item")}
                     disabled={props.disabled}
-                  >
-                    <span aria-hidden>-</span>
-                  </Button>
+                    icon="fa-minus"
+                  />
                 </div>
               </FieldBase>
             ))}
@@ -53,8 +57,9 @@ export const MultiField = <ValueType, RendererProps>(props: Props<ValueType, Ren
                     handler={() => arrayHelpers.insert(field.value.length + 1, defaultNewItemValue)}
                     title={t("Add item")}
                     disabled={props.disabled}
+                    icon="fa-plus"
                   >
-                    <span aria-hidden>+</span>
+                    {t("Add item")}
                   </Button>
                 </div>
               </div>
