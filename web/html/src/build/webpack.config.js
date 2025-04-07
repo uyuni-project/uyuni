@@ -11,13 +11,11 @@ const GenerateStoriesPlugin = require("./plugins/generate-stories-plugin");
 
 const DEVSERVER_WEBSOCKET_PATHNAME = "/ws";
 
-module.exports = (env, argv) => {
-  const isProductionMode = argv && argv.mode !== "development";
-  const measurePerformance = env.MEASURE_PERFORMANCE === "true";
-
+module.exports = (env, opts) => {
   let pluginsInUse = [];
+  const isProductionMode = opts.mode === "production";
 
-  if (measurePerformance) {
+  if (opts.measurePerformance) {
     pluginsInUse.push(new SpeedMeasurePlugin());
   }
 
@@ -100,9 +98,16 @@ module.exports = (env, argv) => {
     ];
   }
 
+  if (opts.verbose) {
+    console.log("pluginsInUse:");
+    console.log(pluginsInUse);
+    console.log("webpack mode: " + opts.mode);
+  }
+
   return {
+    mode: opts.mode,
     entry: {
-      "javascript/manager/main": "./manager/index.ts",
+      "javascript/manager/main": path.resolve(__dirname, "../manager/index.ts"),
       "css/updated-susemanager-light": path.resolve(__dirname, "../branding/css/susemanager-light.scss"),
       "css/updated-susemanager-dark": path.resolve(__dirname, "../branding/css/susemanager-dark.scss"),
       "css/updated-uyuni": path.resolve(__dirname, "../branding/css/uyuni.scss"),
@@ -132,7 +137,10 @@ module.exports = (env, argv) => {
               exclude: /node_modules/,
               use: [
                 {
-                  loader: "babel-loader",
+                  loader: require.resolve("babel-loader"),
+                  options: {
+                    configFile: path.resolve(__dirname, "../.babelrc"),
+                  },
                 },
               ],
             },
@@ -145,7 +153,7 @@ module.exports = (env, argv) => {
           use: [
             MiniCssExtractPlugin.loader,
             {
-              loader: "css-loader",
+              loader: require.resolve("css-loader"),
               options: {
                 modules: true,
               },
@@ -156,7 +164,7 @@ module.exports = (env, argv) => {
           // Stylesheets of third party dependencies
           test: /\.css$/,
           include: /node_modules/,
-          use: [{ loader: "style-loader" }, { loader: "css-loader" }],
+          use: [{ loader: require.resolve("style-loader") }, { loader: require.resolve("css-loader") }],
         },
         {
           test: /\.po$/,
@@ -191,7 +199,7 @@ module.exports = (env, argv) => {
             // },
             {
               // Interprets `@import` and `url()` like `import/require()` and will resolve them
-              loader: "css-loader",
+              loader: require.resolve("css-loader"),
               options: {
                 modules: {
                   auto: true,
@@ -203,7 +211,7 @@ module.exports = (env, argv) => {
             },
             {
               // Loader for webpack to process CSS with PostCSS
-              loader: "postcss-loader",
+              loader: require.resolve("postcss-loader"),
               options: {
                 postcssOptions: {
                   plugins: [autoprefixer],
@@ -212,7 +220,7 @@ module.exports = (env, argv) => {
             },
             {
               // Loads a SASS/SCSS file and compiles it to CSS
-              loader: "sass-loader",
+              loader: require.resolve("sass-loader"),
               options: {
                 sassOptions: {
                   loadPaths: path.resolve(__dirname, "../"),
