@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import { ChannelSyncProps, flattenChannels } from "manager/admin/hub/sync-channels.renderer";
-
 import { Button } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
 import { TopPanel } from "components/panels";
@@ -14,24 +12,20 @@ import { showSuccessToastr, showWarningToastr } from "components/toastr";
 import Network from "utils/network";
 
 import ChannelHierarchicalTable from "./HierarchicalChannelsTable";
-import { Channel, FlatChannel, Org } from "./types";
+import { Channel, ChannelSyncProps, FlatChannel, Org } from "./types";
 
 type SyncPeripheralsProps = {
   peripheralId: number;
   peripheralFqdn: string;
   availableOrgs: Org[];
-  availableCustomChannels: FlatChannel[];
-  availableVendorChannels: FlatChannel[];
-  syncedCustomChannels: FlatChannel[];
-  syncedVendorChannels: FlatChannel[];
+  channels: Channel[];
 };
 
 type State = {
   peripheralId: number;
   peripheralFqdn: string;
-  syncedChannels: FlatChannel[];
+  channels: FlatChannel[];
   availableOrgs: Org[];
-  availableChannels: FlatChannel[];
   syncModalOpen: boolean;
   channelsToAdd: number[];
   channelsToRemove: number[];
@@ -39,21 +33,55 @@ type State = {
   channelOrgMapping: Record<number, number>;
 };
 
+/**
+ * Converts a hierarchical array of Channel objects to a flat array of FlatChannel objects.
+ * The resulting array includes all channels and their children, with parent-child
+ * relationships preserved through the childrenIds property.
+ *
+ * @param channels - An array of hierarchical Channel objects
+ * @returns An array of FlatChannel objects
+ */
+function flattenChannels(channels: Channel[]): FlatChannel[] {
+  const flatChannels: FlatChannel[] = [];
+  /**
+   * Process a channel and its children recursively, adding them to the flat array
+   * @param channel - The current channel to process
+   */
+  const processChannel = (channel: Channel): void => {
+    // Extract child labels
+    const childrenLabels = channel.children.map((child) => child.channelLabel);
+    // Create a FlatChannel from the current channel
+    const flatChannel: FlatChannel = {
+      channelId: channel.channelId,
+      channelName: channel.channelName,
+      channelLabel: channel.channelLabel,
+      channelArch: channel.channelArch,
+      channelOrg: channel.channelOrg,
+      parentChannelLabel: channel.parentChannelLabel,
+      childrenLabels: childrenLabels,
+      synced: channel.synced,
+    };
+    // Add the flat channel to our result array
+    flatChannels.push(flatChannel);
+    // Process all children recursively
+    channel.children.forEach((child) => processChannel(child));
+  };
+  // Process all root channels and their children
+  channels.forEach((channel) => processChannel(channel));
+  return flatChannels;
+}
+
 export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripheralsProps, State> {
   private tableRef: React.RefObject<TableRef> = React.createRef();
 
   constructor(props: SyncPeripheralsProps) {
     super(props);
-    // Get the synced and available channels
-    const syncedChannels = [...props.syncedCustomChannels, ...props.syncedVendorChannels];
-    const availableChannels = [...props.availableCustomChannels, ...props.availableVendorChannels];
 
     this.state = {
       peripheralId: props.peripheralId,
       peripheralFqdn: props.peripheralFqdn,
-      syncedChannels: syncedChannels,
+      channels: flattenChannels(props.channels),
       availableOrgs: props.availableOrgs,
-      availableChannels: availableChannels,
       syncModalOpen: false,
       channelsToAdd: [],
       channelsToRemove: [],
@@ -63,24 +91,15 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
   }
 
   componentDidUpdate(prevProps: SyncPeripheralsProps) {
-    if (
-      prevProps.syncedCustomChannels !== this.props.syncedCustomChannels ||
-      prevProps.syncedVendorChannels !== this.props.syncedVendorChannels ||
-      prevProps.availableCustomChannels !== this.props.availableCustomChannels ||
-      prevProps.availableVendorChannels !== this.props.availableVendorChannels
-    ) {
+    if (prevProps.channels !== this.props.channels) {
       this.setStateFromApiProps(this.props);
     }
   }
 
   private setStateFromApiProps(props: SyncPeripheralsProps) {
-    const syncedChannels = [...props.syncedCustomChannels, ...props.syncedVendorChannels];
-    const availableChannels = [...props.availableCustomChannels, ...props.availableVendorChannels];
-
     this.setState({
-      syncedChannels,
       availableOrgs: props.availableOrgs,
-      availableChannels,
+      channels: flattenChannels(props.channels),
       loading: false,
       // Reset change tracking when API data changes
       channelsToAdd: [],
@@ -94,9 +113,9 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
   }
 
   handleChannelSelect = (channelId: number, checked: boolean) => {
-    const { channelsToAdd, channelsToRemove, syncedChannels } = this.state;
-    // Check if the channel is already synced (exists in syncedChannels)
-    const isChannelSynced = syncedChannels.some((channel) => channel.channelId === channelId);
+    const { channelsToAdd, channelsToRemove, channels } = this.state;
+    // Check if the channel is already synced (has synced flag true)
+    const isChannelSynced = channels.some((channel) => channel.channelId === channelId && channel.synced);
     if (checked) {
       // User is checking the channel (wants to sync it)
       if (isChannelSynced) {
@@ -153,8 +172,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
   };
 
   onChannelSyncConfirm = () => {
-    const { peripheralId, channelsToAdd, channelsToRemove, channelOrgMapping } = this.state;
-    const allChannels = [...this.state.syncedChannels, ...this.state.availableChannels];
+    const { peripheralId, channelsToAdd, channelsToRemove, channelOrgMapping, channels } = this.state;
 
     // Check if there's anything to do
     if (channelsToAdd.length === 0 && channelsToRemove.length === 0) {
@@ -168,7 +186,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
 
     // First, group channel IDs by orgId
     channelsToAdd.forEach((id) => {
-      const channel = allChannels.find((c) => c.channelId === id);
+      const channel = channels.find((c) => c.channelId === id);
       if (!channel) return;
 
       // For vendor channels, use null as orgId
@@ -185,7 +203,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     Object.entries(orgGroups).forEach(([orgKey, channelIds]) => {
       const orgId = orgKey === "null" ? null : parseInt(orgKey, 10);
       const channelLabels = channelIds
-        .map((id) => allChannels.find((c) => c.channelId === id)?.channelLabel)
+        .map((id) => channels.find((c) => c.channelId === id)?.channelLabel)
         .filter(Boolean);
       if (channelLabels.length > 0) {
         channelsToAddByOrg.push({
@@ -197,7 +215,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
 
     // Get channel labels to remove
     const channelsToRemoveLabels = channelsToRemove
-      .map((id) => allChannels.find((c) => c.channelId === id)?.channelLabel)
+      .map((id) => channels.find((c) => c.channelId === id)?.channelLabel)
       .filter(Boolean);
 
     const payload = {
@@ -215,19 +233,12 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
         return Network.get(endpoint);
       })
       .then((response) => {
-        response = JSON.parse(response);
-        const flatAvailableCustom = flattenChannels(response.availableCustomChannels, false);
-        const flatAvailableVendor = flattenChannels(response.availableVendorChannels, false);
-        const flatSyncedCustom = flattenChannels(response.syncedPeripheralCustomChannels, true);
-        const flatSyncedVendor = flattenChannels(response.syncedPeripheralVendorChannels, true);
+        const channelSync: ChannelSyncProps = JSON.parse(response);
         const newProps = {
           peripheralId: this.props.peripheralId,
           peripheralFqdn: this.props.peripheralFqdn,
-          availableOrgs: response.peripheralOrgs || this.props.availableOrgs,
-          availableCustomChannels: flatAvailableCustom,
-          availableVendorChannels: flatAvailableVendor,
-          syncedCustomChannels: flatSyncedCustom,
-          syncedVendorChannels: flatSyncedVendor,
+          availableOrgs: channelSync.peripheralOrgs,
+          channels: channelSync.channels,
         };
         this.setStateFromApiProps(newProps);
         this.openCloseModalState(false);
@@ -255,22 +266,11 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
   };
 
   render() {
-    const {
-      syncedChannels,
-      availableChannels,
-      syncModalOpen,
-      availableOrgs,
-      loading,
-      channelsToAdd,
-      channelsToRemove,
-    } = this.state;
-
-    // Combine all channels for the hierarchical table
-    const allChannels = [...availableChannels, ...syncedChannels];
+    const { channels, syncModalOpen, availableOrgs, loading, channelsToAdd, channelsToRemove } = this.state;
 
     // Find channels to add and remove for display in the modal
-    const channelsToAddData = allChannels.filter((channel) => channelsToAdd.includes(channel.channelId));
-    const channelsToRemoveData = allChannels.filter((channel) => channelsToRemove.includes(channel.channelId));
+    const channelsToAddData = channels.filter((channel) => channelsToAdd.includes(channel.channelId));
+    const channelsToRemoveData = channels.filter((channel) => channelsToRemove.includes(channel.channelId));
 
     const searchData = (row, criteria) => {
       const keysToSearch = ["channelLabel"];
@@ -423,7 +423,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
         <div className="container mt-4">
           <h3>{t("Sync Channels from Hub to Peripheral")}</h3>
           <ChannelHierarchicalTable
-            channels={allChannels}
+            channels={channels}
             availableOrgs={availableOrgs}
             onChannelSelect={this.handleChannelSelect}
             onOrgSelect={this.handleOrgSelect}

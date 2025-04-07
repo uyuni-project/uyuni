@@ -6,10 +6,7 @@ import { MessagesContainer } from "components/toastr";
 
 export type ChannelSyncProps = {
   peripheralOrgs: Org[];
-  syncedPeripheralCustomChannels: Channel[];
-  syncedPeripheralVendorChannels: Channel[];
-  availableCustomChannels: Channel[];
-  availableVendorChannels: Channel[];
+  channels: Channel[];
 };
 
 /**
@@ -20,7 +17,7 @@ export type ChannelSyncProps = {
  * @param channels - An array of hierarchical Channel objects
  * @returns An array of FlatChannel objects
  */
-export function flattenChannels(channels: Channel[], isSynced: boolean): FlatChannel[] {
+export function flattenChannels(channels: Channel[]): FlatChannel[] {
   const flatChannels: FlatChannel[] = [];
   /**
    * Process a channel and its children recursively, adding them to the flat array
@@ -38,7 +35,7 @@ export function flattenChannels(channels: Channel[], isSynced: boolean): FlatCha
       channelOrg: channel.channelOrg,
       parentChannelLabel: channel.parentChannelLabel,
       childrenLabels: childrenLabels,
-      synced: isSynced,
+      synced: channel.synced,
     };
     // Add the flat channel to our result array
     flatChannels.push(flatChannel);
@@ -56,10 +53,7 @@ export const renderer = (
   peripheralFqdn: string,
   channelsSyncData: ChannelSyncProps
 ) => {
-  const flatAvailableCustom = flattenChannels(channelsSyncData.availableCustomChannels, false);
-  const flatAvailableVendor = flattenChannels(channelsSyncData.availableVendorChannels, false);
-  const flatSyncedCustom = flattenChannels(channelsSyncData.syncedPeripheralCustomChannels, true);
-  const flatSyncedVendor = flattenChannels(channelsSyncData.syncedPeripheralVendorChannels, true);
+  const channels = flattenChannels(channelsSyncData.channels);
   SpaRenderer.renderNavigationReact(
     <RolesProvider>
       <MessagesContainer />
@@ -67,10 +61,7 @@ export const renderer = (
         peripheralId={peripheralId}
         peripheralFqdn={peripheralFqdn}
         availableOrgs={channelsSyncData.peripheralOrgs}
-        availableCustomChannels={flatAvailableCustom}
-        availableVendorChannels={flatAvailableVendor}
-        syncedCustomChannels={flatSyncedCustom}
-        syncedVendorChannels={flatSyncedVendor}
+        channels={channels}
       />
     </RolesProvider>,
     document.getElementById(id)

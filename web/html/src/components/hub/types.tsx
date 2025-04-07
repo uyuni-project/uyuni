@@ -115,6 +115,7 @@ export type Channel = {
   channelOrg: Org | null;
   parentChannelLabel: string | null; // if null, this is a root channel
   children: Channel[]; // for easy hierarchical references
+  synced: boolean;
 };
 
 export type FlatChannel = {
@@ -126,4 +127,9 @@ export type FlatChannel = {
   parentChannelLabel: string | null; // if null, this is a root channel
   childrenLabels: string[]; // for easy lookup if needed
   synced: boolean; // no need for another class that tells us if the channel is synced or not
+};
+
+export type ChannelSyncProps = {
+  peripheralOrgs: Org[];
+  channels: Channel[];
 };
