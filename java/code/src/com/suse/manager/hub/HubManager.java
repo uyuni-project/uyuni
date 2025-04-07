@@ -14,7 +14,6 @@ package com.suse.manager.hub;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -1159,10 +1158,10 @@ public class HubManager {
         IssPeripheral peripheral = hubFactory.findPeripheralById(peripheralId);
         HubInternalClient client = createClientForPeripheral(peripheral);
         // Prepare channels for synchronization
-        Set<Long> syncedChannelIds = getSyncedChannelIds(peripheral);
-        List<Channel> channelsToSync = prepareChannelsToSync(channelsLabels, syncedChannelIds);
+        Set<String> syncedChannelLabels = getSyncedChannelLabels(peripheral);
+        List<Channel> channelsToSync = prepareChannelsToSync(channelsLabels, syncedChannelLabels);
         // Execute the synchronization
-        synchronizeChannels(peripheral, channelsToSync, syncedChannelIds, orgId, client);
+        synchronizeChannels(peripheral, channelsToSync, syncedChannelLabels, orgId, client);
     }
 
     /**
@@ -1180,18 +1179,18 @@ public class HubManager {
     /**
      * Get the set of channel IDs that are already synced to the peripheral
      */
-    private Set<Long> getSyncedChannelIds(IssPeripheral peripheral) {
+    private Set<String> getSyncedChannelLabels(IssPeripheral peripheral) {
         return peripheral.getPeripheralChannels().stream()
-                .map(pc -> pc.getChannel().getId())
+                .map(pc -> pc.getChannel().getLabel())
                 .collect(Collectors.toSet());
     }
 
     /**
      * Prepare the list of channels to sync, including originals and parent channels
      */
-    private List<Channel> prepareChannelsToSync(List<String> channelsLabels, Set<Long> syncedChannelIds) {
+    private List<Channel> prepareChannelsToSync(List<String> channelsLabels, Set<String> syncedChannelLabels) {
         Set<Channel> requestedChannels = loadChannelsByLabel(channelsLabels);
-        Set<Channel> completeChannelSet = ensureParentChildHierarchy(requestedChannels, syncedChannelIds);
+        Set<Channel> completeChannelSet = ensureParentChildHierarchy(requestedChannels, syncedChannelLabels);
         return sortChannelsByHierarchy(completeChannelSet);
     }
 
@@ -1199,27 +1198,28 @@ public class HubManager {
      * Load channels by their IDs
      */
     private Set<Channel> loadChannelsByLabel(List<String> channelsLabels) {
-        List<Long> channelsIds = ChannelFactory.getChannelIds(channelsLabels);
-        return new HashSet<>(HibernateFactory.getSession()
-                .byMultipleIds(Channel.class)
-                .multiLoad(channelsIds));
+        Set<Channel> channels = new HashSet<>();
+        for (String label : channelsLabels) {
+            channels.add(ChannelFactory.lookupByLabel(label));
+        }
+        return channels;
     }
 
     /**
      * Synchronize the channels to the peripheral
      */
     private void synchronizeChannels(IssPeripheral peripheral, List<Channel> channelsToSync,
-                                     Set<Long> syncedChannelIds, Long orgId, HubInternalClient client)
+                                     Set<String> suncedChannelLabels, Long orgId, HubInternalClient client)
             throws IOException {
         // Create channel associations for new channels
         Set<IssPeripheralChannels> newAssociations = createChannelAssociations(
-                peripheral, channelsToSync, syncedChannelIds, orgId);
+                peripheral, channelsToSync, suncedChannelLabels, orgId);
         if (newAssociations.isEmpty()) {
             return; // Nothing new to sync
         }
         // Prepare channel info objects
         List<ChannelInfoDetailsJson> channelInfoList = prepareChannelInfoObjects(
-                channelsToSync, syncedChannelIds, orgId);
+                channelsToSync, suncedChannelLabels, orgId);
         // Send to peripheral
         client.syncChannels(channelInfoList);
         // Update peripheral with the new associations
@@ -1241,10 +1241,10 @@ public class HubManager {
      * Create channel associations for channels that need to be synced
      */
     private Set<IssPeripheralChannels> createChannelAssociations(
-            IssPeripheral peripheral, List<Channel> channels, Set<Long> syncedChannelIds, Long orgId) {
+            IssPeripheral peripheral, List<Channel> channels, Set<String> syncedChannelLabels, Long orgId) {
         Set<IssPeripheralChannels> newAssociations = new HashSet<>();
         for (Channel channel : channels) {
-            if (!syncedChannelIds.contains(channel.getId())) {
+            if (!syncedChannelLabels.contains(channel.getLabel())) {
                 IssPeripheralChannels association = new IssPeripheralChannels(peripheral, channel, orgId);
                 hubFactory.save(association);
                 newAssociations.add(association);
@@ -1257,10 +1257,10 @@ public class HubManager {
      * Prepare channel info objects for channels that need to be synced
      */
     private List<ChannelInfoDetailsJson> prepareChannelInfoObjects(
-            List<Channel> channels, Set<Long> syncedChannelIds, Long orgId) {
+            List<Channel> channels, Set<String> synchedChannelLabels, Long orgId) {
         List<ChannelInfoDetailsJson> result = new ArrayList<>();
         for (Channel channel : channels) {
-            if (!syncedChannelIds.contains(channel.getId())) {
+            if (!synchedChannelLabels.contains(channel.getLabel())) {
                 // For cloned channels, pass the original channel label
                 Optional<String> originalLabel = getOriginalChannelLabel(channel);
                 ChannelInfoDetailsJson channelInfo = ChannelFactory.toChannelInfo(channel, orgId, originalLabel);
@@ -1295,12 +1295,12 @@ public class HubManager {
     /**
      * Ensures that for each channel, its parent channel is included in the channels to sync
      * @param requestedChannels the channels requested for sync
-     * @param alreadySyncedIds IDs of channels already synced
+     * @param alreadySyncedLabels Labels of channels already synced
      * @return A complete set of channels to sync including all necessary parent channels
      */
-    private Set<Channel> ensureParentChildHierarchy(Set<Channel> requestedChannels, Set<Long> alreadySyncedIds) {
+    private Set<Channel> ensureParentChildHierarchy(Set<Channel> requestedChannels, Set<String> alreadySyncedLabels) {
         Set<Channel> result = new HashSet<>();
-        requestedChannels.forEach(channel -> addChannelWithParents(channel, result, alreadySyncedIds));
+        requestedChannels.forEach(channel -> addChannelWithParents(channel, result, alreadySyncedLabels));
         return result;
     }
 
@@ -1308,11 +1308,11 @@ public class HubManager {
      * Recursively adds a channel and all its parent channels to the result set
      * @param channel the channel to add
      * @param result the set of channels to sync
-     * @param alreadySyncedIds IDs of channels already synced (to avoid reloading)
+     * @param alreadySyncedLabels Labels of channels already synced
      */
-    private void addChannelWithParents(Channel channel, Set<Channel> result, Set<Long> alreadySyncedIds) {
+    private void addChannelWithParents(Channel channel, Set<Channel> result, Set<String> alreadySyncedLabels) {
         // If this channel is already being synced or is already synced, nothing to do
-        if (result.contains(channel) || alreadySyncedIds.contains(channel.getId())) {
+        if (result.contains(channel)) {
             return;
         }
         // First handle the parent if this is a child channel
@@ -1320,7 +1320,7 @@ public class HubManager {
             Channel parentChannel = channel.getParentChannel();
             if (parentChannel != null) {
                 // Recursively ensure the parent is added first
-                addChannelWithParents(parentChannel, result, alreadySyncedIds);
+                addChannelWithParents(parentChannel, result, alreadySyncedLabels);
             }
         }
         // Then add this channel
