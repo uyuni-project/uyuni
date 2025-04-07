@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.systems.duplicate;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.frontend.dto.NetworkDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -71,6 +74,7 @@ public class DuplicateSystemsAction extends RhnAction implements
         helper.setWillClearSet(false);
         helper.execute();
         if (helper.isDispatched()) {
+            ensureRoleBasedAccess(ctx.getCurrentUser(), "systems.list", Namespace.AccessMode.W);
             return mapping.findForward(RhnHelper.CONFIRM_FORWARD);
         }
 

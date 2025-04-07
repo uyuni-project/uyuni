@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.schedule;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFormatter;
 import com.redhat.rhn.frontend.dto.ActionedSystem;
@@ -136,6 +139,7 @@ public class FailedSystemsAction extends RhnAction implements Listable<ActionedS
                                         ActionForm formIn, HttpServletRequest request,
                                         HttpServletResponse response) {
 
+        ensureRoleBasedAccess(new RequestContext(request).getCurrentUser(), "schedule.details", Namespace.AccessMode.W);
         Action action = (Action) request.getAttribute(RequestContext.ACTION);
         try {
             ActionManager.rescheduleAction(action, true);

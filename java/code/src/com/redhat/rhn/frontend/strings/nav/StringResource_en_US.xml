@@ -478,6 +478,12 @@
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="nav.sdc.config.list_channels">
+          <source>List Channels</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+          </context-group>
+        </trans-unit>
         <trans-unit id="nav.sdc.config.subscribe_channels">
           <source>Subscribe to Channels</source>
         <context-group name="ctx">
@@ -489,6 +495,12 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
+        </trans-unit>
+        <trans-unit id="nav.sdc.config.rank_channels_view">
+          <source>View Rankings</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+          </context-group>
         </trans-unit>
         <trans-unit id="nav.sdc.config.centrally_managed_files">
           <source>Centrally-Managed Files</source>

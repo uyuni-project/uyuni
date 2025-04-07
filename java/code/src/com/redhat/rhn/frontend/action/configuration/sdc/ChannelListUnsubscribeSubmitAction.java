@@ -14,8 +14,11 @@
  */
 package com.redhat.rhn.frontend.action.configuration.sdc;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.server.Server;
@@ -96,6 +99,7 @@ public class ChannelListUnsubscribeSubmitAction extends
             ActionForm formIn, HttpServletRequest request,
             HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
+        ensureRoleBasedAccess(context.getCurrentUser(), "systems.config.channels", Namespace.AccessMode.W);
         context.lookupAndBindServer();
         context.copyParamToAttributes(RequestContext.SID);
 
