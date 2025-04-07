@@ -14,13 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.kickstart;
 
-import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.frontend.struts.BaseSetListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.manager.acl.AclManager;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -44,16 +41,6 @@ public abstract class BaseKickstartListSetupAction extends BaseSetListAction {
                                  ActionForm formIn,
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
-
-        if (!AclManager.hasAcl("user_role(org_admin) or user_role(config_admin)",
-            request, null)) {
-            //Throw an exception with a nice error message so the user
-            //knows what went wrong.
-            LocalizationService ls = LocalizationService.getInstance();
-            throw new PermissionException("Only Org Admins or Configuration Admins can list kickstarts",
-                    ls.getMessage("permission.jsp.summary.acl.header"),
-                    ls.getMessage("permission.jsp.summary.acl.reason5"));
-        }
 
         return super.execute(mapping, formIn, request, response);
     }

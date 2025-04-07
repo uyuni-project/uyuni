@@ -19,16 +19,13 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
-import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
-import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.configuration.ConfigurationValidation;
 import com.redhat.rhn.manager.configuration.file.BinaryFileData;
 import com.redhat.rhn.manager.configuration.file.ConfigFileData;
@@ -193,7 +190,7 @@ public class ConfigFileForm extends ScrubbingDynaActionForm {
         ConfigActionHelper.setupRequestAttributes(requestContext, cr.getConfigFile(), cr);
 
         request.setAttribute(REV_DISPLAYABLE, canDisplayContent(cr));
-        request.setAttribute(REV_EDITABLE, canEditContent(u, cr));
+        request.setAttribute(REV_EDITABLE, true);
 
 
     }
@@ -210,24 +207,6 @@ public class ConfigFileForm extends ScrubbingDynaActionForm {
         return (cr.isFile() || cr.isSls() &&
                 !cr.getConfigContent().isBinary() &&
                 cr.getConfigContent().getFileSize() < MAX_EDITABLE_SIZE);
-    }
-
-    /**
-     * You can edit a file IFF:
-     *   - You're a config-admin, and this is a GLOBAL channel
-     *   - You're a system-admin, and this is a LOCAL or SANDBOX channel
-     * @param user logged-in user making the request
-     * @param cr revision to be edited
-     * @return true IFF user has write-access to the file
-     */
-    protected boolean canEditContent(User user, ConfigRevision cr) {
-        ConfigurationManager mgr = ConfigurationManager.getInstance();
-        ConfigChannel cc = cr.getConfigFile().getConfigChannel();
-
-        if (cc.isGlobalChannel()) {
-            return (user.hasRole(RoleFactory.CONFIG_ADMIN));
-        }
-        return (mgr.accessToChannel(user.getId(), cc.getId()));
     }
 
     private boolean isUpload() {

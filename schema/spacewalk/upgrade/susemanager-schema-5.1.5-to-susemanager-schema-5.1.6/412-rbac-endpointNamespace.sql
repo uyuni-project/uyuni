@@ -551,6 +551,21 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'config.systems' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/configuration/system/TargetSystemsSubmit.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'config.systems' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/configuration/system/Summary.do' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'config.systems' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/configuration/system/Summary.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'home.overview.main' AND ns.access_mode = 'R'
     AND ep.endpoint = '/YourRhn.do' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
@@ -2652,6 +2667,21 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'systems.config.channels' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/systems/ssm/config/EnableSubmit.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.config.channels' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/systems/ssm/config/EnableSummary.do' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.config.channels' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/systems/ssm/config/EnableSummary.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.config.channels' AND ns.access_mode = 'W'
     AND ep.endpoint = '/systems/details/configuration/SubscriptionsSetup.do' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
@@ -2867,12 +2897,37 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/kickstart/KickstartScriptCreate.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'W'
     AND ep.endpoint = '/kickstart/KickstartScriptEdit.do' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/kickstart/KickstartScriptEdit.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/kickstart/KickstartScriptDelete.do' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/kickstart/KickstartScriptDelete.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'W'
     AND ep.endpoint = '/kickstart/KickstartScriptOrder.do' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/kickstart/KickstartScriptOrder.do' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
@@ -2893,6 +2948,16 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'W'
     AND ep.endpoint = '/keys/CryptoKeyEdit.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/keys/CryptoKeyDelete.do' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/keys/CryptoKeyDelete.do' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
@@ -4516,18 +4581,33 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'R'
+    WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'W'
     AND ep.endpoint = '/systems/provisioning/preservation/PreservationListCreate.do' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'R'
+    WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'W'
     AND ep.endpoint = '/systems/provisioning/preservation/PreservationListCreate.do' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'R'
+    WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'W'
     AND ep.endpoint = '/systems/provisioning/preservation/PreservationListDeleteSubmit.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/systems/provisioning/preservation/PreservationListDeleteSingle.do' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/systems/provisioning/preservation/PreservationListConfirmDelete.do' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/systems/provisioning/preservation/PreservationListConfirmDelete.do' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep

@@ -13,7 +13,7 @@
                imgAlt="kickstarts.alt.img"
                uploadUrl="/rhn/kickstart/AdvancedModeCreate.do"
                uploadType="kickstart"
-               uploadAcl="user_role(config_admin)"
+               uploadAcl="authorized_for(systems.autoinstallation)"
                helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/systems/autoinst-profiles.html"
                >
   <bean:message key="kickstarts.jsp.toolbar"/>
