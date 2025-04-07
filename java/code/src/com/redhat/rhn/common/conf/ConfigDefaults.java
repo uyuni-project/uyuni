@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,9 +19,13 @@ import com.redhat.rhn.common.validator.HostPortValidator;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
+import com.suse.utils.CertificateUtils;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -868,10 +873,26 @@ public class ConfigDefaults {
         String dbProto = Optional.ofNullable(Config.get().getString(REPORT_DB_PROTO))
                 .orElse("jdbc:postgresql");
         boolean dbSslEnabled = Config.get().getBoolean(REPORT_DB_SSL_ENABLED);
-        String sslrootcert = Config.get().getString(REPORT_DB_SSLROOTCERT);
-        String sslmode = Config.get().getString(REPORT_DB_SSLMODE, "verify-full");
+
+        // If the server with the remote reporting database is registered as a ISSv3 peripheral, the correct root
+        // certificate authority is available in /etc/pki/trust/anchors
+        String sslRootCert = Optional.of(CertificateUtils.computeRootCaFileName("peripheral", host))
+            .map(filename -> {
+                try {
+                    return CertificateUtils.getCertificateSafePath(filename);
+                }
+                catch (IllegalArgumentException e) {
+                    return null;
+                }
+            })
+            .filter(Files::isReadable)
+            .map(Path::toString)
+            // Otherwise, it's only possible to assume the root ca is the same of the current server
+            .orElseGet(() -> Config.get().getString(REPORT_DB_SSLROOTCERT));
+
+        String sslMode = Config.get().getString(REPORT_DB_SSLMODE, "verify-full");
         return buildConnectionString(dbname, dbBackend, host, String.valueOf(port), dbProto,
-                dbSslEnabled, sslrootcert, sslmode);
+                dbSslEnabled, sslRootCert, sslMode);
     }
 
     private String buildConnectionString(String name, String backend, String host, String port, String proto,
