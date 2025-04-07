@@ -14,12 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.kickstart;
 
-import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -55,10 +52,6 @@ public abstract class KickstartVariableAction extends RhnAction {
                                  HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
 
-
-        checkPermissions(request);
-
-
         String cobblerId = getCobblerId(context);
 
         if (isSubmitted((DynaActionForm) formIn)) {
@@ -80,22 +73,7 @@ public abstract class KickstartVariableAction extends RhnAction {
                 request.getParameterMap());
 
     }
-    /**
-     * Checks the permissions for the KS variable pages
-     * @param request the http servlet request.
-     */
-    protected void checkPermissions(HttpServletRequest request) {
-        RequestContext context = new RequestContext(request);
-        User user = context.getCurrentUser();
-        if (!user.hasRole(RoleFactory.CONFIG_ADMIN)) {
-                //Throw an exception with a nice error message so the user
-                //knows what went wrong.
-                LocalizationService ls = LocalizationService.getInstance();
-                throw new PermissionException("Only Org Admins or Configuration Admins can modify kickstarts",
-                        ls.getMessage("permission.jsp.summary.acl.header"),
-                        ls.getMessage("permission.jsp.summary.acl.reason5"));
-        }
-    }
+
     /**
      * {@inheritDoc}
      */
