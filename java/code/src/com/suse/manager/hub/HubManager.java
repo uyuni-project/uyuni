@@ -1209,17 +1209,17 @@ public class HubManager {
      * Synchronize the channels to the peripheral
      */
     private void synchronizeChannels(IssPeripheral peripheral, List<Channel> channelsToSync,
-                                     Set<String> suncedChannelLabels, Long orgId, HubInternalClient client)
+                                     Set<String> syncedChannelLabels, Long orgId, HubInternalClient client)
             throws IOException {
         // Create channel associations for new channels
         Set<IssPeripheralChannels> newAssociations = createChannelAssociations(
-                peripheral, channelsToSync, suncedChannelLabels, orgId);
+                peripheral, channelsToSync, syncedChannelLabels, orgId);
         if (newAssociations.isEmpty()) {
             return; // Nothing new to sync
         }
         // Prepare channel info objects
         List<ChannelInfoDetailsJson> channelInfoList = prepareChannelInfoObjects(
-                channelsToSync, suncedChannelLabels, orgId);
+                channelsToSync, orgId);
         // Send to peripheral
         client.syncChannels(channelInfoList);
         // Update peripheral with the new associations
