@@ -1,18 +1,19 @@
 import * as React from "react";
 import { useState } from "react";
+import yaml from 'js-yaml';
 
 import { ModalButton } from "components/dialog/ModalButton";
 import { Dialog } from "components/dialog/Dialog";
 import { Button } from "components/buttons";
+import AnsibleVarYamlEditor from "./ansible-var-yaml-editor"
 
 type Props = {
-  id?: string;
+  id: string;
   title?: string;
   creatingText?: string;
   onSave?: Function;
   renderContent?: React.ReactNode;
   disableEditing?: boolean;
-  className?: string;
   onCancel?: Function;
   onOpen?: Function;
   collapsible?: boolean;
@@ -20,17 +21,19 @@ type Props = {
   customIconClass?: string;
 };
 
+const EditAnsibleVarsModal = (props: Props) => {
+  const data = yaml.load(props.renderContent);
+  const varsObject = data[0].vars;
 
-
-const EditAnsibleVars = (props: Props) => {
   const [open, setOpen] = useState(false);
-  const [errors, setErrors] = useState(null);
-
+  const onCreateToken = () => {
+    console.log(varsObject);
+  }
   return (
     <>
       <ModalButton
         id="edit-playbbok-vars"
-        text={t("Edit variables Component")}
+        text={t("Edit variables")}
         target="playbbok-vars"
         className="btn-default"
         onClick={() => {
@@ -38,11 +41,11 @@ const EditAnsibleVars = (props: Props) => {
         }}
       />
       <Dialog
-        id="playbbok-vars"
+        id={props.id}
         isOpen={open}
-        title="Edit Variables Component"
+        title="Edit Variables"
         className="modal-lg"
-        content={props.renderContent}
+        content={<AnsibleVarYamlEditor data={varsObject} />}
         onClose={() => setOpen(false)}
         footer={
           <React.Fragment>
@@ -59,11 +62,12 @@ const EditAnsibleVars = (props: Props) => {
                   }}
                 />
                 <Button
-                  id={`modal-cancel-button`}
-                  className="btn-default"
+                  id={`modal-save-button`}
+                  className="btn-primary"
                   text={t("Save")}
                   handler={() => {
                     setOpen(false);
+                    onCreateToken()
                   }}
                 />
               </div>
@@ -75,4 +79,5 @@ const EditAnsibleVars = (props: Props) => {
   );
 };
 
-export default EditAnsibleVars;
+export default EditAnsibleVarsModal;
+
