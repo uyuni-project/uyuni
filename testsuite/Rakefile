@@ -105,8 +105,8 @@ namespace :utils do
     filtered_tests = input_tests.select { |test| filter_tests.include?(test) }
 
     if filtered_tests.empty?
-        filtered_tests = ["features/finishing/srv_debug.feature"]
-        puts "Filtered tests is empty, selecting debug test"
+        filtered_tests = ["features/secondary/srv_users.feature"]
+        puts "Filtered tests is empty, selecting only the users test"
     end
 
     # Log for debugging
