@@ -14,10 +14,13 @@
  */
 package com.redhat.rhn.frontend.action.configuration.files;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorResult;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -303,6 +306,7 @@ public class ManageRevisionSubmit extends RhnSetAction {
     private void checkAcl(RequestContext requestContext) {
         //Throws an exception if the user does not have permission to edit the channel.
         User user = requestContext.getCurrentUser();
+        ensureRoleBasedAccess(user, "config.files", Namespace.AccessMode.W);
         ConfigFile configFile = ConfigActionHelper.getFile(requestContext.getRequest());
         boolean acl = AclManager.hasAcl("config_channel_editable(" +
                 configFile.getConfigChannel().getId() + ")", user,

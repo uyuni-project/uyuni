@@ -10,7 +10,7 @@
 
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
-<rhn:require acl="not system_feature(ftr_package_remove)">
+<rhn:require acl="authorized_for(systems.software.packages, R); not authorized_for(systems.software.packages, W); not system_feature(ftr_package_remove)">
         <h2>
                 <rhn:icon type="header-package-del" title="errata.common.deletepackageAlt" />
                 <bean:message key="packagelist.jsp.installedpackages" />
@@ -21,7 +21,7 @@
                 </p>
         </div>
 </rhn:require>
-<rhn:require acl="system_feature(ftr_package_remove)">
+<rhn:require acl="authorized_for(systems.software.packages, W); system_feature(ftr_package_remove)">
         <h2>
                 <rhn:icon type="header-package-del" title="errata.common.deletepackageAlt" />
                 <bean:message key="packagelist.jsp.removablepackages" />
@@ -42,7 +42,7 @@
     <c:if test="${not empty requestScope.all}">
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <rhn:require acl="system_feature(ftr_package_remove)">
+                <rhn:require acl="authorized_for(systems.software.packages, W); system_feature(ftr_package_remove)">
                     <input type="submit" class="btn btn-danger" name ="dispatch" value='<bean:message key="packagelist.jsp.removepackages"/>'/>
                 </rhn:require>
             </div>

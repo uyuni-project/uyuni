@@ -15,7 +15,10 @@
 
 package com.redhat.rhn.frontend.action.systems.groups;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -76,6 +79,7 @@ public class ListRemoveGroupsAction extends BaseListAction implements Listable<M
             HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
+        ensureRoleBasedAccess(user, "systems.groups.list", Namespace.AccessMode.W);
         Server server = context.lookupAndBindServer();
         List<Server> servers = new LinkedList<>();
         servers.add(server);

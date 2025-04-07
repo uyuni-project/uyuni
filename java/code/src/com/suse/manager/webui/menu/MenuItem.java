@@ -274,7 +274,7 @@ public class MenuItem {
      * @return this MenuItem
      */
     public MenuItem withVisibility(boolean visibilityIn) {
-        this.isVisible = visibilityIn;
+        this.isVisible = this.isVisible && visibilityIn;
         return this;
     }
 

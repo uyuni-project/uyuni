@@ -14,7 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.systems.audit;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -91,6 +94,7 @@ public class ListScapAction extends ScapSetupAction {
 
         int selectionSize = set.size();
         if (context.wasDispatched(DELET_BUT) && selectionSize > 0) {
+            ensureRoleBasedAccess(user, "systems.audit.openscap", Namespace.AccessMode.W);
             Map<String, Long> params = new HashMap<>();
             params.put("sid", sid);
             return getStrutsDelegate().forwardParams(mapping.findForward("submitDelete"),
