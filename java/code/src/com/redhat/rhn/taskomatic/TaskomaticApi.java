@@ -39,7 +39,9 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 
+import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.utils.MinionServerUtils;
+import com.suse.utils.CertificateUtils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -827,6 +829,20 @@ public class TaskomaticApi {
     /**
      * Schedule one root ca certificate update
      *
+     * @param issRoleIn server role: one of HUB, PERIPHERAL
+     * @param fqdn fully qualified domain name of the server
+     * @param rootCaCertContent root ca certificate actual content
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleSingleRootCaCertUpdate(IssRole issRoleIn, String fqdn, String rootCaCertContent)
+            throws TaskomaticApiException {
+        String filename = CertificateUtils.computeRootCaFileName(issRoleIn.getLabel(), fqdn);
+        scheduleSingleRootCaCertUpdate(filename, rootCaCertContent);
+    }
+
+    /**
+     * Schedule one root ca certificate update
+     *
      * @param fileName          filename of the ca certificate
      * @param rootCaCertContent root ca certificate actual content
      * @throws TaskomaticApiException if there was an error
@@ -863,6 +879,20 @@ public class TaskomaticApi {
         Map<String, Object> paramList = new HashMap<>();
         paramList.put("filename_to_root_ca_cert_map", sanitisedFilenameToRootCaCertMap);
         invoke(SCHEDULE_SINGLE_SAT_BUNCH_RUN, "root-ca-cert-update-bunch", paramList);
+    }
+
+
+    /**
+     * Schedule one root ca certificate delete
+     *
+     * @param issRoleIn server role: one of HUB, PERIPHERAL
+     * @param fqdn fully qualified domain name of the server
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleSingleRootCaCertDelete(IssRole issRoleIn, String fqdn)
+            throws TaskomaticApiException {
+        String filename = CertificateUtils.computeRootCaFileName(issRoleIn.getLabel(), fqdn);
+        scheduleSingleRootCaCertDelete(filename);
     }
 
     /**
