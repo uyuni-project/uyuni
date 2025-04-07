@@ -403,13 +403,6 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
         </SectionToolbar>
         <div className="container mt-4">
           <h3>{t("Sync Channels from Hub to Peripheral")}</h3>
-          <ChannelHierarchicalTable
-            channels={channels}
-            availableOrgs={availableOrgs}
-            onChannelSelect={this.handleChannelSelect}
-            onOrgSelect={this.handleOrgSelect}
-            loading={loading}
-          />
           <div className="text-center mt-4 mb-4">
             <Button
               className="btn-primary"
@@ -419,6 +412,13 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
               handler={this.onChannelSyncModalOpen}
             />
           </div>
+          <ChannelHierarchicalTable
+            channels={channels}
+            availableOrgs={availableOrgs}
+            onChannelSelect={this.handleChannelSelect}
+            onOrgSelect={this.handleOrgSelect}
+            loading={loading}
+          />
           <Dialog
             id="sync-channel-modal"
             title={t("Confirm Channel Synchronization Changes")}
