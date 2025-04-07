@@ -104,6 +104,11 @@ namespace :utils do
     # Intersect filter_tests with input_tests to create the filtered set
     filtered_tests = input_tests.select { |test| filter_tests.include?(test) }
 
+    if filtered_tests.empty?
+        filtered_tests = input_tests
+        puts "Filtered tests is empty, selecting all tests"
+    end
+
     # Log for debugging
     puts "Filtered Tests: #{filtered_tests}"
 
