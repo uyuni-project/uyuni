@@ -14,8 +14,11 @@
  */
 package com.redhat.rhn.frontend.action.schedule;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.user.User;
@@ -67,6 +70,7 @@ public class InProgressSystemsAction extends RhnSetAction {
         StrutsDelegate strutsDelegate = getStrutsDelegate();
 
         User user = requestContext.getCurrentUser();
+        ensureRoleBasedAccess(user, "schedule.details", Namespace.AccessMode.W);
         Long aid = requestContext.getParamAsLong("aid");
         Action action = ActionManager.lookupAction(user, aid);
         /*

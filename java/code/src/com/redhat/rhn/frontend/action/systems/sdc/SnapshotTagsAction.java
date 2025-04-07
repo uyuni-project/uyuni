@@ -14,7 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -65,6 +68,7 @@ public class SnapshotTagsAction extends RhnAction {
         RhnListSetHelper helper = new RhnListSetHelper(request);
 
         if (context.wasDispatched("system.history.snapshot.tagRemove")) {
+            ensureRoleBasedAccess(user, "systems.snapshots", Namespace.AccessMode.W);
             helper.updateSet(set, RhnSetDecl.SNAPSHOT_TAGS_TO_DELETE.getLabel());
             if (!set.isEmpty()) {
                 return getStrutsDelegate().forwardParams(

@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.channels;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -83,6 +86,8 @@ public class ManagersSetupAction extends RhnAction implements Listable<UserOverv
         helper.execute();
 
         if (helper.isDispatched()) {
+            // Make sure the operation is allowed by RBAC
+            ensureRoleBasedAccess(user, "software.details.managers", Namespace.AccessMode.W);
             // make sure the user has enough rights to change channel managers
             if (!(UserManager.verifyChannelAdmin(user, currentChan) ||
                     user.hasRole(RoleFactory.CHANNEL_ADMIN))) {
