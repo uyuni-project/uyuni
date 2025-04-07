@@ -400,18 +400,20 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
               />
             </div>
           </div>
+          <div className="selector-button-wrapper">
+            <div className="btn-group pull-left">
+              <Button
+                className="btn-primary"
+                title={t("Apply Changes")}
+                text={t("Apply Changes")}
+                disabled={loading || (channelsToAdd.length === 0 && channelsToRemove.length === 0)}
+                handler={this.onChannelSyncModalOpen}
+              />
+            </div>
+          </div>
         </SectionToolbar>
         <div className="container mt-4">
           <h3>{t("Sync Channels from Hub to Peripheral")}</h3>
-          <div className="text-center mt-4 mb-4">
-            <Button
-              className="btn-primary"
-              title={t("Apply Changes")}
-              text={t("Apply Changes")}
-              disabled={loading || (channelsToAdd.length === 0 && channelsToRemove.length === 0)}
-              handler={this.onChannelSyncModalOpen}
-            />
-          </div>
           <ChannelHierarchicalTable
             channels={channels}
             availableOrgs={availableOrgs}
