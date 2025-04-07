@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-04 11:42+0200\n"
-"PO-Revision-Date: 2025-04-06 20:56+0000\n"
+"PO-Revision-Date: 2025-04-07 17:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -5354,11 +5354,11 @@ msgstr "Zdroj registra"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:352
 msgid "Simple"
-msgstr ""
+msgstr "Jednoduchá"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:353
 msgid "Advanced"
-msgstr ""
+msgstr "Pokročilé"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:361
 msgid "Registry URL"
@@ -5388,43 +5388,43 @@ msgstr "napr. najnovšie"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:388
 msgid "HTTPD URL"
-msgstr ""
+msgstr "HTTPD URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:396
 msgid "HTTPD Tag"
-msgstr ""
+msgstr "Značka HTTPD"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:412
 msgid "Salt Broker URL"
-msgstr ""
+msgstr "Salt Broker URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:420
 msgid "Salt Broker Tag"
-msgstr ""
+msgstr "Značka Salt Broker"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:436
 msgid "Squid URL"
-msgstr ""
+msgstr "Squid URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:444
 msgid "Squid Tag"
-msgstr ""
+msgstr "Značka Squid"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:460
 msgid "SSH URL"
-msgstr ""
+msgstr "SSH URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:468
 msgid "SSH Tag"
-msgstr ""
+msgstr "Značka SSH"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:484
 msgid "TFTPD URL"
-msgstr ""
+msgstr "TFTPD URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:492
 msgid "TFTPD Tag"
-msgstr ""
+msgstr "Značka TFTPD"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:510
 msgid "Apply"
@@ -5863,12 +5863,12 @@ msgstr "Vyprázdniť vyrovnávaciu pamäť faktov"
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:220
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:93
 msgid "true"
-msgstr ""
+msgstr "pravda"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:220
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:93
 msgid "false"
-msgstr ""
+msgstr "nepravda"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:264
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:235
@@ -6529,7 +6529,7 @@ msgstr "Riadiaci uzol Ansible"
 
 #: ../html/src/manager/systems/list-filter.tsx:13
 msgid "Ansible Managed"
-msgstr ""
+msgstr "Spravované Ansible"
 
 #: ../html/src/manager/systems/list-filter.tsx:15
 msgid "Container Build Host"
