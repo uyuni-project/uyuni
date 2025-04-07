@@ -11,8 +11,20 @@
 
 package com.suse.manager.webui.controllers.admin.beans;
 
-import com.suse.manager.model.hub.OrgInfoJson;
+import com.redhat.rhn.domain.org.Org;
 
-import java.util.List;
+/**
+ * The organization data of a channel
+ * @param orgId the organization id
+ * @param orgName the organizationName
+ */
+public record ChannelOrg(Long orgId, String orgName) {
 
-public record ChannelSyncModel(List<OrgInfoJson> peripheralOrgs, List<ChannelSyncDetail> channels) { }
+    /**
+     * Builds an instance from an organization
+     * @param org the organization
+     */
+    public ChannelOrg(Org org) {
+        this(org.getId(), org.getName());
+    }
+}

@@ -57,7 +57,7 @@ public class IssPeripheralChannels extends BaseDomainHelper {
      * @param channelIn the channel to be synchronized
      * @param peripheralOrgIdIn the custom peripheral org id the channel should be assigned to
      */
-    public IssPeripheralChannels(IssPeripheral peripheralIn, Channel channelIn, long peripheralOrgIdIn) {
+    public IssPeripheralChannels(IssPeripheral peripheralIn, Channel channelIn, Long peripheralOrgIdIn) {
         peripheral = peripheralIn;
         channel = channelIn;
         peripheralOrgId = peripheralOrgIdIn;

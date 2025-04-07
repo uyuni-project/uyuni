@@ -41,10 +41,12 @@ import com.suse.manager.model.hub.migration.MigrationResult;
 import com.suse.manager.model.hub.migration.MigrationResultCode;
 import com.suse.manager.model.hub.migration.SlaveMigrationData;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.manager.webui.controllers.admin.beans.ChannelSyncModel;
 import com.suse.manager.webui.controllers.admin.beans.CreateTokenRequest;
 import com.suse.manager.webui.controllers.admin.beans.HubRegisterRequest;
 import com.suse.manager.webui.controllers.admin.beans.MigrationEntryDto;
 import com.suse.manager.webui.controllers.admin.beans.PeripheralListData;
+import com.suse.manager.webui.controllers.admin.beans.SyncChannelRequest;
 import com.suse.manager.webui.controllers.admin.beans.UpdateRootCARequest;
 import com.suse.manager.webui.controllers.admin.beans.ValidityRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
@@ -114,22 +116,26 @@ public class HubApiController {
      * initialize all the API Routes for the ISSv3 support
      */
     public void initRoutes() {
-        // Hub management
-        get("/manager/api/admin/hub/access-tokens", withProductAdmin(this::listTokens));
-        post("/manager/api/admin/hub/access-tokens", withProductAdmin(this::createToken));
-        post("/manager/api/admin/hub/access-tokens/:id/validity", withProductAdmin(this::setAccessTokenValidity));
-        delete("/manager/api/admin/hub/access-tokens/:id", withProductAdmin(this::deleteAccessToken));
         get("/manager/api/admin/hub/peripherals", withProductAdmin(this::listPaginatedPeripherals));
         post("/manager/api/admin/hub/peripherals", withProductAdmin(this::registerPeripheral));
         delete("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::deletePeripheral));
         post("/manager/api/admin/hub/peripherals/:id/root-ca", withProductAdmin(this::updatePeripheralRootCA));
         delete("/manager/api/admin/hub/peripherals/:id/root-ca", withProductAdmin(this::removePeripheralRootCA));
         post("/manager/api/admin/hub/peripherals/:id/credentials", withProductAdmin(this::refreshCredentials));
-        post("/manager/api/admin/hub/migrate/v1", withProductAdmin(this::migrateFromV1));
-        post("/manager/api/admin/hub/migrate/v2", withProductAdmin(this::migrateFromV2));
+        get("/manager/api/admin/hub/peripherals/:id/sync-channels",
+                withProductAdmin(this::getPeripheralChannelSyncStatus));
+        post("/manager/api/admin/hub/peripherals/:id/sync-channels",
+                withProductAdmin(this::syncChannelsToPeripheral));
         delete("/manager/api/admin/hub/:id", withProductAdmin(this::deleteHub));
         post("/manager/api/admin/hub/:id/root-ca", withProductAdmin(this::updateHubRootCA));
         delete("/manager/api/admin/hub/:id/root-ca", withProductAdmin(this::removeHubRootCA));
+        post("/manager/api/admin/hub/migrate/v1", withProductAdmin(this::migrateFromV1));
+        post("/manager/api/admin/hub/migrate/v2", withProductAdmin(this::migrateFromV2));
+        get("/manager/api/admin/hub/access-tokens", withProductAdmin(this::listTokens));
+        post("/manager/api/admin/hub/access-tokens", withProductAdmin(this::createToken));
+        post("/manager/api/admin/hub/access-tokens/:id/validity", withProductAdmin(this::setAccessTokenValidity));
+        delete("/manager/api/admin/hub/access-tokens/:id", withProductAdmin(this::deleteAccessToken));
+
     }
 
     private String deleteHub(Request request, Response response, User user) {
@@ -173,6 +179,56 @@ public class HubApiController {
         }
         catch (IOException ex) {
             LOGGER.error("Error while attempting to connect to remote server #{}", peripheralId, ex);
+            return internalServerError(response, LOC.getMessage("hub.error_connecting_remote"));
+        }
+    }
+
+    private String getPeripheralChannelSyncStatus(Request request, Response response, User satAdmin) {
+        long peripheralId = Long.parseLong(request.params("id"));
+        try {
+            ChannelSyncModel syncModel = hubManager.getChannelSyncModelForPeripheral(satAdmin, peripheralId);
+            return json(response, GSON.toJson(syncModel));
+        }
+        catch (CertificateException eIn) {
+            LOGGER.error("Unable to parse the specified root certificate for the peripheral {}", peripheralId, eIn);
+            return badRequest(response, LOC.getMessage("hub.invalid_root_ca"));
+        }
+        catch (IOException eIn) {
+            LOGGER.error("Error while attempting to connect to peripheral server {}", peripheralId, eIn);
+            return internalServerError(response, LOC.getMessage("hub.error_connecting_remote"));
+        }
+    }
+
+    /**
+     * Unified method to sync and desync channels to/from a peripheral
+     */
+    private String syncChannelsToPeripheral(Request request, Response response, User satAdmin) {
+        try {
+            long peripheralId = Long.parseLong(request.params("id"));
+            SyncChannelRequest syncRequest = GSON.fromJson(request.body(), SyncChannelRequest.class);
+            if (syncRequest == null) {
+                return badRequest(response, LOC.getMessage("hub.invalid_request"));
+            }
+            hubManager.syncChannelsByLabelForPeripheral(
+                                satAdmin,
+                                peripheralId,
+                    syncRequest.getChannelsToAdd(),
+                    syncRequest.getChannelsToRemove()
+            );
+            return success(response);
+        }
+        catch (NumberFormatException e) {
+            LOGGER.error("Invalid peripheral id provided");
+            return badRequest(response, LOC.getMessage("hub.invalid_id"));
+        }
+        catch (CertificateException e) {
+            LOGGER.error("Unable to parse the specified root certificate for the peripheral {}",
+                    request.params("id"), e);
+            return badRequest(response, LOC.getMessage("hub.invalid_root_ca"));
+        }
+        catch (IOException e) {
+            LOGGER.error("Error while attempting to connect to peripheral server {}",
+                    request.params("id"), e);
             return internalServerError(response, LOC.getMessage("hub.error_connecting_remote"));
         }
     }

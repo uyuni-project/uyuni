@@ -11,8 +11,29 @@
 
 package com.suse.manager.webui.controllers.admin.beans;
 
-import com.suse.manager.model.hub.OrgInfoJson;
-
 import java.util.List;
 
-public record ChannelSyncModel(List<OrgInfoJson> peripheralOrgs, List<ChannelSyncDetail> channels) { }
+/**
+ * Model that groups a channel label that you want to sync to an org id
+ */
+public class ChannelOrgGroup {
+    private List<String> channelLabels;
+    private Long orgId;
+
+    public List<String> getChannelLabels() {
+        return channelLabels;
+    }
+
+    public void setChannelLabels(List<String> channelLabelsIn) {
+        channelLabels = channelLabelsIn;
+    }
+
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgIdIn) {
+        orgId = orgIdIn;
+    }
+
+}
