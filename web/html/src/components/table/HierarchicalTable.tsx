@@ -1,9 +1,10 @@
 import * as React from "react";
 import { useState } from "react";
 
+import { Button } from "components/buttons";
+
 import { SearchField } from "./SearchField";
 import { Table, TableRef } from "./Table";
-import { Button } from "components/buttons";
 
 export type HierarchicalRow = {
   id: string | number;
