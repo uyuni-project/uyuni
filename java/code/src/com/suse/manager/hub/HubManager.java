@@ -1256,16 +1256,13 @@ public class HubManager {
     /**
      * Prepare channel info objects for channels that need to be synced
      */
-    private List<ChannelInfoDetailsJson> prepareChannelInfoObjects(
-            List<Channel> channels, Set<String> synchedChannelLabels, Long orgId) {
+    private List<ChannelInfoDetailsJson> prepareChannelInfoObjects(List<Channel> channels, Long orgId) {
         List<ChannelInfoDetailsJson> result = new ArrayList<>();
         for (Channel channel : channels) {
-            if (!synchedChannelLabels.contains(channel.getLabel())) {
-                // For cloned channels, pass the original channel label
-                Optional<String> originalLabel = getOriginalChannelLabel(channel);
-                ChannelInfoDetailsJson channelInfo = ChannelFactory.toChannelInfo(channel, orgId, originalLabel);
-                result.add(channelInfo);
-            }
+            // For cloned channels, pass the original channel label
+            Optional<String> originalLabel = getOriginalChannelLabel(channel);
+            ChannelInfoDetailsJson channelInfo = ChannelFactory.toChannelInfo(channel, orgId, originalLabel);
+            result.add(channelInfo);
         }
         return result;
     }
