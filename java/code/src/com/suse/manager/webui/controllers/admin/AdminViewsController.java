@@ -206,6 +206,7 @@ public class AdminViewsController {
         long peripheralId = Long.parseLong(request.params("id"));
         String peripheralFqdn;
         ChannelSyncModel channelSyncModel;
+
         try {
             channelSyncModel = HUB_MANAGER.getChannelSyncModelForPeripheral(user, peripheralId);
             peripheralFqdn = HUB_FACTORY.findPeripheralById(peripheralId).getFqdn();

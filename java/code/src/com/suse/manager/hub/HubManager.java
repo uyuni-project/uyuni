@@ -59,6 +59,7 @@ import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.controllers.ProductsController;
+import com.suse.manager.webui.controllers.admin.beans.ChannelOrg;
 import com.suse.manager.webui.controllers.admin.beans.ChannelSyncDetail;
 import com.suse.manager.webui.controllers.admin.beans.ChannelSyncModel;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
@@ -86,7 +87,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -1096,248 +1096,54 @@ public class HubManager {
     }
 
     /**
-     * Get the Peripheral Channels
-     * @param user the SatAdmin
-     * @param peripheralId the Peripheral ID
-     * @return a Set of Channels from the Peripheral
-     */
-    public Set<ChannelSyncDetail> getPeripheralChannels(User user, Long peripheralId) {
-        ensureSatAdmin(user);
-        IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
-        return issPeripheral.getPeripheralChannels().stream()
-                .map(entity -> buildIssV3ChannelResponse(entity.getChannel()))
-                .collect(Collectors.toSet());
-    }
-
-    /**
-     * Get the custom channels of the hub
-     * @param user The SatAdmin
-     * @return a Set of Channels
-     */
-    public Set<ChannelSyncDetail> getHubCustomChannels(User user) {
-        ensureSatAdmin(user);
-        return ChannelFactory.listCustomBaseChannels(user).stream()
-                .map(this::buildIssV3ChannelResponse)
-                .collect(Collectors.toSet());
-    }
-
-    /**
-     * Get the vendor channels of the hub
-     * @param user The SatAdmin
-     * @return a Set of Channels
-     */
-    public Set<ChannelSyncDetail> getHubVendorChannels(User user) {
-        ensureSatAdmin(user);
-        return ChannelFactory.listRedHatBaseChannels(user).stream()
-                .map(this::buildIssV3ChannelResponse)
-                .collect(Collectors.toSet());
-    }
-
-    private ChannelSyncDetail buildIssV3ChannelResponse(Channel channel) {
-        List<ChannelSyncDetail> children = ChannelFactory.listAllChildrenForChannel(channel).stream()
-                .map(this::buildIssV3ChannelResponse)
-                .toList();
-        List<ChannelSyncDetail> clones = channel.getClonedChannels() == null ?
-                List.of() :
-                channel.getClonedChannels().stream()
-                        .map(this::buildIssV3ChannelResponse)
-                        .toList();
-        Channel originalChannel = ChannelFactory.lookupOriginalChannel(channel);
-        String originalLabel = originalChannel != null ? originalChannel.getLabel() : null;
-        String parentLabel = channel.getParentChannel() != null ? channel.getParentChannel().getLabel() : null;
-        return new ChannelSyncDetail(
-                channel.getId(),
-                channel.getName(),
-                channel.getLabel(),
-                channel.getChannelArch().getName(),
-                channel.getOrg() != null ?
-                        new ChannelSyncDetail.ChannelOrgResponse(
-                                channel.getOrg().getId(), channel.getOrg().getName()) :
-                        null,
-                parentLabel,
-                originalLabel,
-                children,
-                clones
-        );
-    }
-
-    /**
      * Returns the available and synced channels and a list of organizations from the peripheral
      * @param user the SatAdmin
      * @param peripheralId the Peripheral ID
      * @return the Sync Channel operations model
      */
     public ChannelSyncModel getChannelSyncModelForPeripheral(User user, Long peripheralId)
-            throws CertificateException, IOException {
+        throws CertificateException, IOException {
         // Fetch all required data
         List<OrgInfoJson> peripheralOrgs = getPeripheralOrgs(user, peripheralId);
-        Set<ChannelSyncDetail> syncedChannels = getPeripheralChannels(user, peripheralId);
-        Set<ChannelSyncDetail> hubVendorChannels = getHubVendorChannels(user);
-        Set<ChannelSyncDetail> hubCustomChannels = getHubCustomChannels(user);
-        // Separate custom and vendor channels
-        Map<Boolean, Set<ChannelSyncDetail>> partitionedChannels = partitionChannelsByType(syncedChannels);
-        Set<ChannelSyncDetail> syncedCustomChannels = partitionedChannels.get(true);
-        Set<ChannelSyncDetail> syncedVendorChannels = partitionedChannels.get(false);
-        // Filter to find available channels
-        List<ChannelSyncDetail> availableCustomChannels = filterAvailableChannels(hubCustomChannels, syncedChannels);
-        List<ChannelSyncDetail> availableVendorChannels = filterAvailableChannels(hubVendorChannels, syncedChannels);
-        return new ChannelSyncModel(
-                peripheralOrgs,
-                syncedCustomChannels,
-                syncedVendorChannels,
-                availableCustomChannels,
-                availableVendorChannels
-        );
+
+        IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
+        Set<Long> syncedChannelSet = issPeripheral.getPeripheralChannels().stream()
+            .map(IssPeripheralChannels::getChannel)
+            .map(Channel::getId)
+            .collect(Collectors.toSet());
+
+        List<ChannelSyncDetail> channelDetails = ChannelFactory.listAllBaseChannels(user).stream()
+            .map(channel -> buildChannelSyncDetail(channel, user, syncedChannelSet))
+            .toList();
+
+        return new ChannelSyncModel(peripheralOrgs, channelDetails);
     }
 
-    /**
-     * Partitions channels into custom and vendor sets
-     * @param channels Channels to partition
-     * @return Map with true->custom channels, false->vendor channels
-     */
-    private Map<Boolean, Set<ChannelSyncDetail>> partitionChannelsByType(Set<ChannelSyncDetail> channels) {
-        Map<Boolean, Set<ChannelSyncDetail>> result = new HashMap<>();
-        // Create partitioned lists based on whether channel has an org (custom) or not (vendor)
-        Map<Boolean, List<ChannelSyncDetail>> partitioned = channels.stream()
-                .collect(Collectors.partitioningBy(ch -> ch.getChannelOrg() != null));
-        // Convert lists to sets
-        result.put(true, new HashSet<>(partitioned.get(true)));
-        result.put(false, new HashSet<>(partitioned.get(false)));
-        return result;
-    }
+    private ChannelSyncDetail buildChannelSyncDetail(Channel channel, User user, Set<Long> syncedChannelSet) {
+        List<ChannelSyncDetail> children = ChannelFactory.getAccessibleChildChannels(channel, user).stream()
+            .map(child -> buildChannelSyncDetail(child, user, syncedChannelSet))
+            .toList();
 
-    /**
-     * Filters hub channels to find those available for syncing
-     * @param hubChannels Hub channels to filter
-     * @param syncedChannels Already synced channels
-     * @return List of available channels
-     */
-    private List<ChannelSyncDetail> filterAvailableChannels(
-            Set<ChannelSyncDetail> hubChannels,
-            Set<ChannelSyncDetail> syncedChannels) {
-        // Create sets for quick lookups
-        Set<String> syncedLabels = syncedChannels.stream()
-                .map(ChannelSyncDetail::getChannelLabel)
-                .collect(Collectors.toSet());
-        Map<String, String> childToParentMap = buildChildToParentMap(hubChannels);
-        // Identify channels that are children in the hub set
-        Set<String> childLabels = hubChannels.stream()
-                .filter(ch -> ch.getParentChannelLabel() != null)
-                .map(ChannelSyncDetail::getChannelLabel)
-                .collect(Collectors.toSet());
-        // Common predicates for filtering
-        Predicate<ChannelSyncDetail> isNotSynced =
-                channel -> !syncedLabels.contains(channel.getChannelLabel());
-        Predicate<ChannelSyncDetail> hasNoSyncedAncestor =
-                channel -> !hasAncestorSynced(channel.getChannelLabel(), syncedLabels, childToParentMap);
-        List<ChannelSyncDetail> result = hubChannels.stream()
-                .filter(channel -> !childLabels.contains(channel.getChannelLabel()))
-                .filter(isNotSynced)
-                .filter(hasNoSyncedAncestor)
-                .map(channel -> cloneChannelWithUnsyncedChildren(channel, syncedLabels))
-                .collect(Collectors.toList());
-        Set<String> processedLabels = result.stream()
-                .map(ChannelSyncDetail::getChannelLabel)
-                .collect(Collectors.toSet());
-        List<ChannelSyncDetail> orphanedChildren = hubChannels.stream()
-                .filter(channel -> {
-                    String parentLabel = channel.getParentChannelLabel();
-                    return parentLabel != null && !childToParentMap.containsValue(parentLabel);
-                })
-                .filter(isNotSynced)
-                .filter(hasNoSyncedAncestor)
-                .filter(channel -> !processedLabels.contains(channel.getChannelLabel()))
-                .map(channel -> cloneChannelWithUnsyncedChildren(channel, syncedLabels))
+        List<ChannelSyncDetail> clones = Optional.ofNullable(channel.getClonedChannels()).stream()
+                .flatMap(set -> set.stream())
+                .map(clone -> buildChannelSyncDetail(clone, user, syncedChannelSet))
                 .toList();
-        result.addAll(orphanedChildren);
-        return result;
-    }
 
-    /**
-     * Creates a clone of a channel that only includes unsynced children
-     * @param channel The channel to clone
-     * @param syncedLabels Set of labels for synced channels
-     * @return A new channel with only unsynced children
-     */
-    private ChannelSyncDetail cloneChannelWithUnsyncedChildren(
-            ChannelSyncDetail channel,
-            Set<String> syncedLabels) {
-        // Filter children if they exist
-        List<ChannelSyncDetail> filteredChildren = Optional.ofNullable(channel.getChildren())
-                .map(children -> children.stream()
-                        .filter(child -> !syncedLabels.contains(child.getChannelLabel()))
-                        .map(child -> cloneChannelWithUnsyncedChildren(child, syncedLabels))
-                        .collect(Collectors.toList()))
-                .orElse(List.of());
+        Channel originalChannel = ChannelFactory.lookupOriginalChannel(channel);
+
         return new ChannelSyncDetail(
-                channel.getChannelId(),
-                channel.getChannelName(),
-                channel.getChannelLabel(),
-                channel.getChannelArch(),
-                channel.getChannelOrg(),
-                channel.getParentChannelLabel(),
-                channel.getOriginalChannelLabel(),
-                filteredChildren,
-                channel.getClones()
+            channel.getId(),
+            channel.getName(),
+            channel.getLabel(),
+            channel.getChannelArch().getName(),
+            Optional.ofNullable(channel.getOrg()).map(ChannelOrg::new).orElse(null),
+            Optional.ofNullable(channel.getParentChannel()).map(Channel::getLabel).orElse(null),
+            Optional.ofNullable(originalChannel).map(Channel::getLabel).orElse(null),
+            children,
+            clones,
+            syncedChannelSet.contains(channel.getId())
         );
     }
-
-    /**
-     * Builds a map from child channel label to parent channel label
-     * @param channels Set of channels to process
-     * @return Map of child labels to parent labels
-     */
-    private Map<String, String> buildChildToParentMap(Set<ChannelSyncDetail> channels) {
-        Map<String, String> childToParentMap = new HashMap<>();
-        channels.forEach(channel -> addParentChildRelationships(channel, null, childToParentMap));
-        return childToParentMap;
-    }
-
-    /**
-     * Recursively adds parent-child relationships to the map
-     * @param channel Current channel to process
-     * @param parentLabel Parent label or null if top-level
-     * @param childToParentMap Map to populate
-     */
-    private void addParentChildRelationships(
-            ChannelSyncDetail channel,
-            String parentLabel,
-            Map<String, String> childToParentMap) {
-        String currentLabel = channel.getChannelLabel();
-        if (parentLabel != null) {
-            childToParentMap.put(currentLabel, parentLabel);
-        }
-        if (channel.getChildren() != null) {
-            channel.getChildren().forEach(
-                    child -> addParentChildRelationships(child, currentLabel, childToParentMap)
-            );
-        }
-    }
-
-    /**
-     * Checks if any ancestor of the channel is synced
-     * @param channelLabel Label of channel to check
-     * @param syncedLabels Set of synced labels
-     * @param childToParentMap Child to parent relationship map
-     * @return true if any ancestor is synced
-     */
-    private boolean hasAncestorSynced(
-            String channelLabel,
-            Set<String> syncedLabels,
-            Map<String, String> childToParentMap) {
-        String parentLabel = childToParentMap.get(channelLabel);
-        // If no parent, then no ancestor can be synced
-        if (parentLabel == null) {
-            return false;
-        }
-        // Check if parent is synced
-        if (syncedLabels.contains(parentLabel)) {
-            return true;
-        }
-        // Check parent's ancestors recursively
-        return hasAncestorSynced(parentLabel, syncedLabels, childToParentMap);
-    }
-
 
     /**
      * Sync the channels from "this" hub to the selected peripheral

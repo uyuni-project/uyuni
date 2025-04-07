@@ -8,20 +8,23 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
+
 package com.suse.manager.webui.controllers.admin.beans;
 
-import java.util.List;
+import com.redhat.rhn.domain.org.Org;
 
-public record ChannelSyncDetail(
-    Long channelId,
-    String channelName,
-    String channelLabel,
-    String channelArch,
-    ChannelOrg channelOrg,
-    String parentChannelLabel,
-    String originalChannelLabel,
-    List<ChannelSyncDetail> children,
-    List<ChannelSyncDetail> clones,
-    boolean synced
-) { }
+/**
+ * The organization data of a channel
+ * @param orgId the organization id
+ * @param orgName the organizationName
+ */
+public record ChannelOrg(Long orgId, String orgName) {
 
+    /**
+     * Builds an instance from an organization
+     * @param org the organization
+     */
+    public ChannelOrg(Org org) {
+        this(org.getId(), org.getName());
+    }
+}
