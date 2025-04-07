@@ -142,7 +142,7 @@
   <property name="common.jar.dependencies"
       value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
-             commons-el commons-fileupload commons-io ${commons-lang} commons-text commons-logging ${commons-validator} ${hibernate5deps}
+             commons-el commons-fileupload commons-io ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-validator} ${hibernate5deps}
              ${commons-compress} ${javamail} smtp jdom ${jmock-jars}
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
              bcprov bcpg postgresql-jdbc ongres-scram/client ongres-scram/common
@@ -183,7 +183,7 @@
   <property name="suse-common-jars" value="jade4j jose4j salt-netapi-client spark-core spark-template-jade httpasyncclient simpleclient simpleclient_common simpleclient_hibernate simpleclient_servlet simpleclient_httpserver pgjdbc-ng/pgjdbc-ng pgjdbc-ng/spy netty/netty-common netty/netty-buffer netty/netty-resolver netty/netty-transport netty/netty-codec netty/netty-handler netty/netty-transport-native-unix-common java-saml java-saml-core joda-time woodstox-core-asl xmlsec stax2-api stax-api ${commons-jexl} ical4j ${product-common-jars} ${jaxb}" />
 
   <!-- SUSE extra dependencies: runtime only -->
-  <property name="suse-runtime-jars" value="${commons-lang} commons-text concurrentlinkedhashmap-lru
+  <property name="suse-runtime-jars" value="${commons-lang} apache-commons-text/commons-text concurrentlinkedhashmap-lru
     slf4j/api log4j/log4j-slf4j-impl ${product-runtime-jars} jctools/jctools-core" />
 
   <property name="install.build.jar.dependencies"
@@ -198,7 +198,7 @@
   <property name="install.common.jar.dependencies"
       value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
-             commons-el commons-fileupload commons-io ${commons-lang} commons-text commons-logging ${commons-validator} ${hibernate5deps}
+             commons-el commons-fileupload commons-io ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-validator} ${hibernate5deps}
              ${commons-compress} ${tomcat-jars} ${javamail} jdom jsch
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              postgresql-jdbc ongres-scram/client ongres-scram/common
@@ -210,7 +210,7 @@
       value="antlr objectweb-asm/asm bcel ${c3p0} ${cglib-jar}
              commons-collections commons-beanutils commons-cli commons-codec
              commons-digester commons-discovery commons-el commons-fileupload commons-io
-             ${commons-lang} commons-text commons-logging ${commons-compress}
+             ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-compress}
              ${commons-validator} dom4j ${hibernate5deps} ${jta11-jars}
              ${jaf} ${jasper-jars} ${javamail} ${jaxb} jdom ${other-jars}
              ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc
