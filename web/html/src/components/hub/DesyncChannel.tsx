@@ -52,7 +52,6 @@ export class DesyncChannel extends React.Component<Props, State> {
   }
 
   private getConfirmationMessage(): string {
-    //TODO confirm all channel that will be desynced
     return t("Desync channels?");
   }
 
