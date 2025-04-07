@@ -1346,8 +1346,6 @@ public class HubManager {
                 }
             }
         }
-        // Sort base channels (if needed, e.g., by name or ID)
-        baseChannels.sort(Comparator.comparing(Channel::getLabel));
         // Build the final sorted list
         List<Channel> result = new ArrayList<>(baseChannels);
         // Add children in order, following the parent hierarchy
