@@ -60,8 +60,7 @@ type TableProps = {
   /** The message which is shown when there are no rows to display */
   emptyText?: string;
 
-  /** Indicate whether the data is loading (only effective for tables using SimpleDataPr    searchField,
-ovider) */
+  /** Indicate whether the data is loading (only effective for tables using SimpleDataProvider) */
   loading?: boolean;
 
   /** The message which is shown when the data is loading */

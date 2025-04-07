@@ -70,7 +70,6 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
     ...tableProps
   } = props;
 
-  // Initialize row expansion state
   const [expandedRows, setExpandedRows] = useState<Record<string | number, boolean>>(() => {
     const initialState: Record<string | number, boolean> = {};
     data.forEach((row) => {
@@ -79,7 +78,6 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
     return initialState;
   });
 
-  // Build the tree structure
   const buildTreeStructure = (items: Array<HierarchicalRow>) => {
     // Create a map of all items by ID
     const itemMap: Record<string | number, HierarchicalRow> = {};
@@ -109,7 +107,6 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
       return item.level;
     };
 
-    // Calculate levels for all items
     Object.keys(itemMap).forEach((id) => {
       if (itemMap[id] && itemMap[id].level === 0) {
         calculateLevel(id);
@@ -119,7 +116,6 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
     return Object.values(itemMap);
   };
 
-  // Determine visible rows based on expanded state
   const getVisibleRows = (treeData: Array<HierarchicalRow>) => {
     // Find root nodes (nodes without parents or with parents that don't exist in our data)
     const rootNodes = treeData.filter((row) => {
@@ -144,7 +140,6 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
     return visibleRows;
   };
 
-  // Handle row expansion toggling
   const toggleRowExpanded = (rowId: string | number) => {
     setExpandedRows((prev) => ({
       ...prev,
@@ -152,11 +147,9 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
     }));
   };
 
-  // Process the tree structure
   const treeData = buildTreeStructure(data);
   const visibleRows = getVisibleRows(treeData);
 
-  // Helper function to render cell content based on row properties
   const renderCellContent = (row: HierarchicalRow, child: React.ReactElement) => {
     // Get the cell content (either from custom renderer or from data property)
     const cellContent = child.props.cell ? child.props.cell(row) : row[child.props.columnKey || ""];
@@ -169,16 +162,13 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
     return cellContent;
   };
 
-  // Type guard to check if element is a Column component
   const isColumnElement = (element: React.ReactNode): element is React.ReactElement => {
     if (!React.isValidElement(element)) return false;
     return element.props && ("columnKey" in element.props || "header" in element.props || "cell" in element.props);
   };
 
-  // Add expand/collapse indicator to the specified column
   const enhancedChildren = React.Children.map(children, (child) => {
     if (!isColumnElement(child)) return child;
-    // Now TypeScript knows this is a valid element with the expected props
     if (child.props.columnKey === expandColumnKey) {
       const cellRenderer = (row: any) => {
         const rowId = identifier(row);
@@ -203,8 +193,6 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
           </div>
         );
       };
-
-      // Type-safe cloning
       return React.cloneElement(child, {
         ...child.props,
         cell: cellRenderer,
@@ -213,7 +201,6 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
     return child;
   });
 
-  // Custom CSS class function that adds level classes
   const enhancedCssClassFunction = (row, index) => {
     let cssClass = props.cssClassFunction ? props.cssClassFunction(row, index) : "";
     cssClass += ` tree-level-${row.level || 0}`;

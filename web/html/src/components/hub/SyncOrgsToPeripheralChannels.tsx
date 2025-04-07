@@ -48,9 +48,7 @@ function flattenChannels(channels: Channel[]): FlatChannel[] {
    * @param channel - The current channel to process
    */
   const processChannel = (channel: Channel): void => {
-    // Extract child labels
     const childrenLabels = channel.children.map((child) => child.channelLabel);
-    // Create a FlatChannel from the current channel
     const flatChannel: FlatChannel = {
       channelId: channel.channelId,
       channelName: channel.channelName,
@@ -61,12 +59,9 @@ function flattenChannels(channels: Channel[]): FlatChannel[] {
       childrenLabels: childrenLabels,
       synced: channel.synced,
     };
-    // Add the flat channel to our result array
     flatChannels.push(flatChannel);
-    // Process all children recursively
     channel.children.forEach((child) => processChannel(child));
   };
-  // Process all root channels and their children
   channels.forEach((channel) => processChannel(channel));
   return flatChannels;
 }
@@ -159,46 +154,36 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     const { channelOrgMapping } = this.state;
     const updatedMapping = { ...channelOrgMapping };
     if (orgId !== undefined) {
-      // If an org is selected, update the mapping
       updatedMapping[channelId] = orgId;
     } else {
-      // If no org is selected (cleared), remove the mapping if it exists
       if (channelId in updatedMapping) {
         delete updatedMapping[channelId];
       }
     }
-    // Update the state with the new mapping
     this.setState({ channelOrgMapping: updatedMapping });
   };
 
   onChannelSyncConfirm = () => {
     const { peripheralId, channelsToAdd, channelsToRemove, channelOrgMapping, channels } = this.state;
-
     // Check if there's anything to do
     if (channelsToAdd.length === 0 && channelsToRemove.length === 0) {
       showWarningToastr(t("No changes to apply"));
       return;
     }
-
-    // Group channels to add by orgId
     const channelsToAddByOrg: { orgId: number | null; channelLabels: string[] }[] = [];
     const orgGroups: Record<string, number[]> = {};
-
     // First, group channel IDs by orgId
     channelsToAdd.forEach((id) => {
       const channel = channels.find((c) => c.channelId === id);
       if (!channel) return;
-
       // For vendor channels, use null as orgId
       const orgId = channel.channelOrg ? channelOrgMapping[id] || null : null;
       const key = orgId === null ? "null" : orgId.toString();
-
       if (!orgGroups[key]) {
         orgGroups[key] = [];
       }
       orgGroups[key].push(id);
     });
-
     // Then, convert each group to the required format
     Object.entries(orgGroups).forEach(([orgKey, channelIds]) => {
       const orgId = orgKey === "null" ? null : parseInt(orgKey, 10);
@@ -213,7 +198,6 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       }
     });
 
-    // Get channel labels to remove
     const channelsToRemoveLabels = channelsToRemove
       .map((id) => channels.find((c) => c.channelId === id)?.channelLabel)
       .filter(Boolean);
@@ -256,7 +240,6 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     if (channelsToAdd.length > 0 || channelsToRemove.length > 0) {
       this.openCloseModalState(true);
     } else {
-      // Show a message that no changes are selected
       showWarningToastr(t("Please select at least one channel to add or remove from sync"));
     }
   };
@@ -268,7 +251,6 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
   render() {
     const { channels, syncModalOpen, availableOrgs, loading, channelsToAdd, channelsToRemove } = this.state;
 
-    // Find channels to add and remove for display in the modal
     const channelsToAddData = channels.filter((channel) => channelsToAdd.includes(channel.channelId));
     const channelsToRemoveData = channels.filter((channel) => channelsToRemove.includes(channel.channelId));
 
@@ -306,7 +288,6 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       }
     };
 
-    // Table for channels to add in the modal
     const channelsToAddTable = (
       <>
         <h4 className="mt-4">{t("Channels to Add")}</h4>

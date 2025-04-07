@@ -8,7 +8,6 @@ import { SearchField } from "components/table/SearchField";
 
 import { FlatChannel, Org } from "./types";
 
-// Extended type that includes HierarchicalRow requirements
 type ChannelWithHierarchy = FlatChannel & HierarchicalRow & { markedForOperation: boolean };
 
 type ChannelTableProps = {
@@ -25,12 +24,9 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
   availableOrgs,
   onOrgSelect,
 }) => {
-  // Architecture filtering state
   const [selectedArchs, setSelectedArchs] = useState<string[]>([]);
-  // Search state
   const [searchCriteria, setSearchCriteria] = useState<string>("");
 
-  // Process channels to have proper hierarchical structure - memoized to avoid recalculation
   const hierarchicalData = useMemo(() => {
     // Build lookup map by channel label
     const channelMap: Record<string, number> = {};
@@ -52,7 +48,6 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
     });
   }, [channels]);
 
-  // Filter data based on search criteria and architecture filter
   const filteredData = useMemo(() => {
     return hierarchicalData.filter((channel) => {
       // Apply architecture filter
@@ -68,23 +63,19 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
     });
   }, [hierarchicalData, searchCriteria, selectedArchs]);
 
-  // Handle search change
   const handleSearchChange = useCallback((criteria: string) => {
     setSearchCriteria(criteria);
   }, []);
 
-  // Identifier function for the hierarchical table
   const identifier = useCallback((row: HierarchicalRow): string | number => {
     return row.id;
   }, []);
 
-  // Handle architecture filter changes
   const handleArchFilterChange = useCallback((_, selectedOptions: any) => {
     const selectedValues = Array.isArray(selectedOptions) ? selectedOptions.map((option) => option.value) : [];
     setSelectedArchs(selectedValues);
   }, []);
 
-  // Row class based on sync status and change tracking
   const rowClass = useCallback((row: any) => {
     const channel = row as ChannelWithHierarchy;
     const isCurrentlySynced = channel.synced;
@@ -92,7 +83,6 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
     return className;
   }, []);
 
-  // Render the sync checkbox
   const renderSyncCell = useCallback((row: ChannelWithHierarchy) => {
     const channelId = row.channelId;
     const isCurrentlySynced = row.synced;
@@ -108,19 +98,16 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
     );
   }, []);
 
-  // Render channel label cell
   const renderChannelLabelCell = useCallback((row: any) => {
     const channel = row as ChannelWithHierarchy;
     return channel.channelLabel;
   }, []);
 
-  // Render architecture cell
   const renderArchCell = useCallback((row: any) => {
     const channel = row as ChannelWithHierarchy;
     return channel.channelArch;
   }, []);
 
-  // Render the organization name - memoized
   const renderHubOrgCell = useCallback((row: ChannelWithHierarchy) => {
     return row.channelOrg ? row.channelOrg.orgName : "SUSE";
   }, []);
@@ -154,7 +141,6 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
     [availableOrgs, onOrgSelect]
   );
 
-  // Function to get distinct architectures from channels
   const getDistinctArchsFromData = useCallback((channels: FlatChannel[]) => {
     const archSet = new Set<string>();
     channels.forEach((channel) => archSet.add(channel.channelArch));
@@ -164,7 +150,6 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
     }));
   }, []);
 
-  // Architecture filter component
   const archFilter = useMemo(
     () => (
       <div className="multiple-select-wrapper table-input-search">
@@ -182,7 +167,6 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
     [channels, getDistinctArchsFromData, handleArchFilterChange]
   );
 
-  // Create a searchField with filter for channels
   const searchField = useMemo(
     () => <SearchField placeholder={t("Search channels...")} onSearch={handleSearchChange} />,
     []
@@ -190,7 +174,6 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
 
   return (
     <div className="channel-hierarchy-container">
-      {/* Main table with search and filter */}
       <HierarchicalTable
         data={filteredData}
         identifier={identifier}
