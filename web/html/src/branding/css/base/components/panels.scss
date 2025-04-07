@@ -58,6 +58,25 @@ dl:last-child {
   margin: 0 !important;
 }
 
+.panel {
+  &.panel-trasnparent {
+  background: transparent!important;
+  margin-bottom: 0;
+
+  .panel-heading {
+    padding: 10px 4px;
+    border-top: 1px solid $eos-bc-gray-100;
+
+    &:hover {
+      background-color: $eos-bc-gray-50;
+    }
+  }
+
+  .panel-body {
+    padding: 10px 14px
+  }
+}
+}
 
 @include onSuma {
   @import "panels.suma.scss";
