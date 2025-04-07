@@ -362,18 +362,18 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       <div className="col-lg-12">
         <div className="pull-right btn-group">
           <Button
-            id="sync-modal-confirm"
-            className="btn-primary"
-            text={t("Confirm")}
-            disabled={loading || (channelsToAdd.length === 0 && channelsToRemove.length === 0)}
-            handler={this.onChannelSyncConfirm}
-          />
-          <Button
             id="sync-modal-cancel"
             className="btn-default"
             text={t("Cancel")}
             disabled={loading}
             handler={this.onChannelSyncModalClose}
+          />
+          <Button
+            id="sync-modal-confirm"
+            className="btn-primary"
+            text={t("Confirm")}
+            disabled={loading || (channelsToAdd.length === 0 && channelsToRemove.length === 0)}
+            handler={this.onChannelSyncConfirm}
           />
         </div>
       </div>
