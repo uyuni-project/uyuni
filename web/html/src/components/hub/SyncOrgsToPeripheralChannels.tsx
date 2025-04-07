@@ -379,6 +379,19 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       </div>
     );
 
+    const markedChannels = channels.map((channel) => {
+      const isCurrentlySynced = channel.synced;
+      const isPendingAddition = !isCurrentlySynced && channelsToAdd.includes(channel.channelId);
+      const isPendingRemoval = isCurrentlySynced && channelsToRemove.includes(channel.channelId);
+      const isChecked = (isCurrentlySynced && !isPendingRemoval) || (!isCurrentlySynced && isPendingAddition);
+      return {
+        ...channel,
+        isChecked,
+        isPendingAddition,
+        isPendingRemoval,
+      };
+    });
+
     return (
       <TopPanel
         title={t("{peripheralFqdn} - Peripheral Sync Channels", this.props)}
@@ -415,7 +428,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
         <div className="container mt-4">
           <h3>{t("Sync Channels from Hub to Peripheral")}</h3>
           <ChannelHierarchicalTable
-            channels={channels}
+            channels={markedChannels}
             availableOrgs={availableOrgs}
             onChannelSelect={this.handleChannelSelect}
             onOrgSelect={this.handleOrgSelect}

@@ -8,7 +8,12 @@ import { SearchField } from "components/table/SearchField";
 
 import { FlatChannel, Org } from "./types";
 
-type ChannelWithHierarchy = FlatChannel & HierarchicalRow & { markedForOperation: boolean };
+type ChannelWithHierarchy = FlatChannel &
+  HierarchicalRow & {
+    isChecked: boolean;
+    isPendingAddition?: boolean;
+    isPendingRemoval?: boolean;
+  };
 
 type ChannelTableProps = {
   channels: FlatChannel[];
@@ -76,36 +81,33 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
     setSelectedArchs(selectedValues);
   }, []);
 
-  const rowClass = useCallback((row: any) => {
-    const channel = row as ChannelWithHierarchy;
-    const isCurrentlySynced = channel.synced;
+  const rowClass = useCallback((row: ChannelWithHierarchy) => {
+    const isCurrentlySynced = row.synced;
     let className = isCurrentlySynced ? "synced-channel" : "";
     return className;
   }, []);
 
-  const renderSyncCell = useCallback((row: ChannelWithHierarchy) => {
-    const channelId = row.channelId;
-    const isCurrentlySynced = row.synced;
-    const markedForOperation = row.markedForOperation;
-    // The checkbox should be checked if:
-    // 1. The channel is currently synced AND NOT marked for operation, OR
-    // 2. The channel is NOT currently synced BUT marked for operation
-    const checked = (isCurrentlySynced && !markedForOperation) || (!isCurrentlySynced && markedForOperation);
-    return (
-      <div className="sync-checkbox-container">
-        <input type="checkbox" checked={checked} onChange={(e) => onChannelSelect(channelId, e.target.checked)} />
-      </div>
-    );
+  const renderSyncCell = useCallback(
+    (row: ChannelWithHierarchy) => {
+      const channelId = row.channelId;
+      // Directly use the pre-calculated checkbox state
+      const isChecked = row.isChecked;
+
+      return (
+        <div className="d-flex align-items-center">
+          <input type="checkbox" checked={isChecked} onChange={() => onChannelSelect(channelId, !isChecked)} />
+        </div>
+      );
+    },
+    [onChannelSelect]
+  );
+
+  const renderChannelLabelCell = useCallback((row: ChannelWithHierarchy) => {
+    return row.channelLabel;
   }, []);
 
-  const renderChannelLabelCell = useCallback((row: any) => {
-    const channel = row as ChannelWithHierarchy;
-    return channel.channelLabel;
-  }, []);
-
-  const renderArchCell = useCallback((row: any) => {
-    const channel = row as ChannelWithHierarchy;
-    return channel.channelArch;
+  const renderArchCell = useCallback((row: ChannelWithHierarchy) => {
+    return row.channelArch;
   }, []);
 
   const renderHubOrgCell = useCallback((row: ChannelWithHierarchy) => {

@@ -364,6 +364,7 @@ public class HubFactory extends HibernateFactory {
 
         return tokenRemoved != 0;
     }
+
     /**
      * Count the existing access tokens
      * @return the current number of access tokens
