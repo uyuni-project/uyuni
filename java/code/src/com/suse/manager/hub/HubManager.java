@@ -59,6 +59,7 @@ import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.controllers.ProductsController;
 import com.suse.manager.webui.controllers.admin.beans.ChannelOrg;
+import com.suse.manager.webui.controllers.admin.beans.ChannelOrgGroup;
 import com.suse.manager.webui.controllers.admin.beans.ChannelSyncDetail;
 import com.suse.manager.webui.controllers.admin.beans.ChannelSyncModel;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
@@ -1149,20 +1150,26 @@ public class HubManager {
      * Sync the channels from "this" hub to the selected peripheral
      * @param user the SatAdmin
      * @param peripheralId the peripheral id
-     * @param orgId the org id to sync the channels to
-     * @param channelsLabels the list of channels labels from the hub
+     * @param channelsToAdd the list of channels labels from the hub with the selected org for syncing
+     * @param channelsToRemove the list of channels labels from the hub to desync
      */
-    public void syncChannelsByLabelForPeripheral(User user, Long peripheralId, Long orgId, List<String> channelsLabels)
+    public void syncChannelsByLabelForPeripheral(User user,
+                                                 Long peripheralId,
+                                                 List<ChannelOrgGroup> channelsToAdd,
+                                                 List<String> channelsToRemove)
             throws CertificateException, IOException {
         ensureSatAdmin(user);
-        // Get peripheral and prepare client
         IssPeripheral peripheral = hubFactory.findPeripheralById(peripheralId);
         HubInternalClient client = createClientForPeripheral(peripheral);
-        // Prepare channels for synchronization
         Set<String> syncedChannelLabels = getSyncedChannelLabels(peripheral);
-        List<Channel> channelsToSync = prepareChannelsToSync(channelsLabels, syncedChannelLabels);
-        // Execute the synchronization
-        synchronizeChannels(peripheral, channelsToSync, syncedChannelLabels, orgId, client);
+        // TODO: put this into a transaction for save and removal, commit after the api call, rollback otherwise
+        for (ChannelOrgGroup group : channelsToAdd) {
+            List<Channel> channelsToSync = prepareChannelsToSync(group.getChannelLabels(), syncedChannelLabels);
+            saveChannels(peripheral, channelsToSync, syncedChannelLabels, group.getOrgId());
+        }
+        removeChannelsByLabelForPeripheral(peripheral, channelsToRemove);
+        List<ChannelInfoDetailsJson> fullSyncList = hubFactory.listChannelInfoForPeripheral(peripheral);
+        client.syncChannels(fullSyncList);
     }
 
     /**
@@ -1209,22 +1216,15 @@ public class HubManager {
     /**
      * Synchronize the channels to the peripheral
      */
-    private void synchronizeChannels(IssPeripheral peripheral, List<Channel> channelsToSync,
-                                     Set<String> syncedChannelLabels, Long orgId, HubInternalClient client)
-            throws IOException {
+    private void saveChannels(
+            IssPeripheral peripheral, List<Channel> channelsToSync, Set<String> syncedChannelLabels, Long orgId
+    ) {
         // Create channel associations for new channels
         Set<IssPeripheralChannels> newAssociations = createChannelAssociations(
                 peripheral, channelsToSync, syncedChannelLabels, orgId);
-        if (newAssociations.isEmpty()) {
-            return; // Nothing new to sync
+        if (!newAssociations.isEmpty()) {
+            updatePeripheralChannels(peripheral, newAssociations);
         }
-        // Prepare channel info objects
-        List<ChannelInfoDetailsJson> channelInfoList = prepareChannelInfoObjects(
-                channelsToSync, orgId);
-        // Send to peripheral
-        client.syncChannels(channelInfoList);
-        // Update peripheral with the new associations
-        updatePeripheralChannels(peripheral, newAssociations);
     }
 
     /**
@@ -1242,41 +1242,16 @@ public class HubManager {
      * Create channel associations for channels that need to be synced
      */
     private Set<IssPeripheralChannels> createChannelAssociations(
-            IssPeripheral peripheral, List<Channel> channels, Set<String> syncedChannelLabels, Long orgId) {
+            IssPeripheral peripheral, List<Channel> channels, Set<String> syncedChannelLabels, Long orgId
+    ) {
         Set<IssPeripheralChannels> newAssociations = new HashSet<>();
         for (Channel channel : channels) {
             if (!syncedChannelLabels.contains(channel.getLabel())) {
                 IssPeripheralChannels association = new IssPeripheralChannels(peripheral, channel, orgId);
-                hubFactory.save(association);
                 newAssociations.add(association);
             }
         }
         return newAssociations;
-    }
-
-    /**
-     * Prepare channel info objects for channels that need to be synced
-     */
-    private List<ChannelInfoDetailsJson> prepareChannelInfoObjects(List<Channel> channels, Long orgId) {
-        List<ChannelInfoDetailsJson> result = new ArrayList<>();
-        for (Channel channel : channels) {
-            // For cloned channels, pass the original channel label
-            Optional<String> originalLabel = getOriginalChannelLabel(channel);
-            ChannelInfoDetailsJson channelInfo = ChannelFactory.toChannelInfo(channel, orgId, originalLabel);
-            result.add(channelInfo);
-        }
-        return result;
-    }
-
-    /**
-     * Get the label of the original channel if this is a clone
-     */
-    private Optional<String> getOriginalChannelLabel(Channel channel) {
-        Channel originalChannel = ChannelFactory.lookupOriginalChannel(channel);
-        if (originalChannel != null) {
-            return Optional.of(originalChannel.getLabel());
-        }
-        return Optional.empty();
     }
 
     /**
@@ -1376,18 +1351,8 @@ public class HubManager {
         }
     }
 
-
-    /**
-     * Desync the channels from "this" hub to the selected peripheral
-     * @param user the SatAdmin
-     * @param peripheralId the peripheral id
-     * @param channelsLabels the list of channel labels from the hub to be desynced
-     */
-    public void desyncChannelsByLabelForPeripheral(User user, Long peripheralId, List<String> channelsLabels) {
-        ensureSatAdmin(user);
-        IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
-        Set<IssPeripheralChannels> currentPeripheralChannels = issPeripheral.getPeripheralChannels();
-        // Early return if no channels to work with
+    private void removeChannelsByLabelForPeripheral(IssPeripheral peripheral, List<String> channelsLabels) {
+        Set<IssPeripheralChannels> currentPeripheralChannels = peripheral.getPeripheralChannels();
         if (currentPeripheralChannels == null || currentPeripheralChannels.isEmpty()) {
             return;
         }
@@ -1417,7 +1382,6 @@ public class HubManager {
                     return false;
                 })
                 .collect(Collectors.toSet());
-        // Delete the channels that should be desynced
         hubFactory.deleteChannels(channelsToDelete);
     }
 

@@ -46,6 +46,7 @@ import com.suse.manager.webui.controllers.admin.beans.CreateTokenRequest;
 import com.suse.manager.webui.controllers.admin.beans.HubRegisterRequest;
 import com.suse.manager.webui.controllers.admin.beans.MigrationEntryDto;
 import com.suse.manager.webui.controllers.admin.beans.PeripheralListData;
+import com.suse.manager.webui.controllers.admin.beans.SyncChannelRequest;
 import com.suse.manager.webui.controllers.admin.beans.UpdateRootCARequest;
 import com.suse.manager.webui.controllers.admin.beans.ValidityRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
@@ -199,54 +200,6 @@ public class HubApiController {
     }
 
     /**
-     * Model for sync channel operations with unified structure
-     */
-    private static class SyncChannelRequest {
-        private List<ChannelOrgGroup> channelsToAdd;
-        private List<String> channelsToRemove;
-
-        public List<ChannelOrgGroup> getChannelsToAdd() {
-            return channelsToAdd;
-        }
-
-        public void setChannelsToAdd(List<ChannelOrgGroup> channelsToAddIn) {
-            this.channelsToAdd = channelsToAddIn;
-        }
-
-        public List<String> getChannelsToRemove() {
-            return channelsToRemove;
-        }
-
-        public void setChannelsToRemove(List<String> channelsToRemoveIn) {
-            this.channelsToRemove = channelsToRemoveIn;
-        }
-    }
-
-    /**
-     * Model for a group of channels associated with a specific organization
-     */
-    private static class ChannelOrgGroup {
-        private List<String> channelLabels;
-        private Long orgId;
-
-        public Long getOrgId() {
-            return orgId;
-        }
-
-        public void setOrgId(Long orgIdIn) {
-            this.orgId = orgIdIn;
-        }
-
-        public List<String> getChannelLabels() {
-            return channelLabels;
-        }
-
-        public void setChannelLabels(List<String> channelLabelsIn) {
-            this.channelLabels = channelLabelsIn;
-        }
-    }
-
-    /**
      * Unified method to sync and desync channels to/from a peripheral
      */
     private String syncChannelsToPeripheral(Request request, Response response, User satAdmin) {
@@ -256,28 +209,12 @@ public class HubApiController {
             if (syncRequest == null) {
                 return badRequest(response, LOC.getMessage("hub.invalid_request"));
             }
-            // Process channels to add (grouped by org)
-            if (syncRequest.getChannelsToAdd() != null && !syncRequest.getChannelsToAdd().isEmpty()) {
-                for (ChannelOrgGroup group : syncRequest.getChannelsToAdd()) {
-                    if (group.getChannelLabels() != null && !group.getChannelLabels().isEmpty()) {
-                        // Execute the sync operation with org ID for each group
-                        hubManager.syncChannelsByLabelForPeripheral(
+            hubManager.syncChannelsByLabelForPeripheral(
                                 satAdmin,
                                 peripheralId,
-                                group.getOrgId(), // This can be null for vendor channels
-                                group.getChannelLabels()
-                        );
-                    }
-                }
-            }
-            // Process channels to remove
-            if (syncRequest.getChannelsToRemove() != null && !syncRequest.getChannelsToRemove().isEmpty()) {
-                hubManager.desyncChannelsByLabelForPeripheral(
-                        satAdmin,
-                        peripheralId,
-                        syncRequest.getChannelsToRemove()
-                );
-            }
+                    syncRequest.getChannelsToAdd(),
+                    syncRequest.getChannelsToRemove()
+            );
             return success(response);
         }
         catch (NumberFormatException e) {
