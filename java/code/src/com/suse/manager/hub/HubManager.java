@@ -1161,9 +1161,9 @@ public class HubManager {
         ensureSatAdmin(user);
         IssPeripheral peripheral = hubFactory.findPeripheralById(peripheralId);
         HubInternalClient client = createClientForPeripheral(peripheral);
-        Set<String> syncedChannelLabels = getSyncedChannelLabels(peripheral);
         // TODO: put this into a transaction for save and removal, commit after the api call, rollback otherwise
         for (ChannelOrgGroup group : channelsToAdd) {
+            Set<String> syncedChannelLabels = getSyncedChannelLabels(peripheral);
             List<Channel> channelsToSync = prepareChannelsToSync(group.getChannelLabels(), syncedChannelLabels);
             saveChannels(peripheral, channelsToSync, syncedChannelLabels, group.getOrgId());
         }
