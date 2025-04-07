@@ -342,14 +342,12 @@ public class MenuTree {
                         .withVisibility(isUserAuthorizedFor(user, "patches.manage"))
                         .withPrimaryUrl("/rhn/errata/manage/Errata.do")
                         .withAltUrl("/rhn/errata/manage/Create.do")
-                        .withAltUrl("/rhn/errata/manage/CreateSubmit.do")
-                        .withVisibility(checkAcl(user, "user_role(channel_admin)")))
+                        .withAltUrl("/rhn/errata/manage/CreateSubmit.do"))
                 .addChild(new MenuItem("Clone Errata")
                         .withVisibility(isUserAuthorizedFor(user, "patches.clone"))
                         .withPrimaryUrl("/rhn/errata/manage/CloneErrata.do")
                         .withAltUrl("/rhn/errata/manage/CloneConfirm.do")
-                        .withDir("/rhn/errata/manage/clone")
-                        .withVisibility(checkAcl(user, "user_role(channel_admin)")));
+                        .withDir("/rhn/errata/manage/clone"));
     }
 
     private MenuItem getSoftwareNode(User user, Map<String, Boolean> adminRoles) {
@@ -372,12 +370,12 @@ public class MenuTree {
                             .withAltUrl("/rhn/channels/manage/errata/ConfirmErrataAdd.do"))
                     .addChild(new MenuItem("Packages").withPrimaryUrl("/rhn/manager/packages/list")
                             .withDir("/rhn/manager/packages")
-                            .withVisibility(checkAcl(user, "user_role(channel_admin)")))
+                            .withVisibility(isUserAuthorizedFor(user, "software.manage.packages")))
                     .addChild(new MenuItem("Repositories").withPrimaryUrl("/rhn/channels/manage/repos/RepoList.do")
                             .withAltUrl("/rhn/channels/manage/repos/RepoEdit.do")
                             .withAltUrl("/rhn/channels/manage/repos/RepoCreate.do")
                             .withDir("/rhn/channels/manage/repos")
-                            .withVisibility(checkAcl(user, "user_role(channel_admin)"))))
+                            .withVisibility(isUserAuthorizedFor(user, "software.manage.repos"))))
             .addChild(new MenuItem("Distribution Channel Mapping")
                     .withPrimaryUrl("/rhn/channels/manage/DistChannelMap.do")
                     .withAltUrl("/rhn/channels/manage/DistChannelMapEdit.do")

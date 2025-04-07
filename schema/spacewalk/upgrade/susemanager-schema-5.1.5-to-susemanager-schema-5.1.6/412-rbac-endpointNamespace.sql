@@ -1212,6 +1212,46 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'patches.manage.details' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/errata/manage/ErrataChannelIntersection.do' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'patches.manage.details' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/errata/manage/ErrataChannelIntersection.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'patches.manage.details' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/errata/manage/SelectChannels.do' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'patches.manage.details' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/errata/manage/SelectChannels.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'patches.manage.details' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/errata/manage/SelectChannelsSubmit.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'patches.manage.details' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/errata/manage/PackagePush.do' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'patches.manage.details' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/errata/manage/PackagePush.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'patches.manage.details' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/errata/manage/PackagePushSubmit.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'patches.manage.details' AND ns.access_mode = 'W'
     AND ep.endpoint = '/errata/manage/DeleteBug.do' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
@@ -1881,6 +1921,16 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'software.manage.patches' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/channels/manage/errata/ConfirmSyncPackages.do' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'software.manage.patches' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/channels/manage/errata/ConfirmSyncPackages.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'software.manage.patches' AND ns.access_mode = 'R'
     AND ep.endpoint = '/channels/manage/errata/AddRedHatErrata.do' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
@@ -1958,6 +2008,36 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'software.manage.packages' AND ns.access_mode = 'W'
     AND ep.endpoint = '/channels/manage/ChannelPackagesCompareMergeConfirm.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'software.details.overview' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/channels/Subscribers.do' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'software.details.overview' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/channels/Subscribers.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'software.manage.packages' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/packages/list' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'software.manage.packages' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/packages/list/:binary/:kind' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'software.manage.packages' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/packages/list/:binary/channel/:cid' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'software.manage.packages' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/packages/delete' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep

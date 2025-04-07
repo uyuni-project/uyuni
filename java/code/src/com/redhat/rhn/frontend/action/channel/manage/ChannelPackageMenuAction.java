@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.channel.manage;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -49,7 +50,7 @@ public class ChannelPackageMenuAction extends RhnAction {
         long cid = requestContext.getRequiredParam("cid");
 
         Channel chan = ChannelFactory.lookupByIdAndUser(cid, user);
-        if (!user.hasRole(RoleFactory.CHANNEL_ADMIN) &&
+        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN) &&
                 !UserManager.verifyChannelAdmin(user, chan)) {
             throw new PermissionCheckFailureException(RoleFactory.CHANNEL_ADMIN);
         }

@@ -22,6 +22,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -486,7 +487,7 @@ public class Access extends BaseHandler {
         User user = (User) ctx.get("user");
         if (user != null) {
             List<ChannelPerms> chans = UserManager.channelManagement(user, null);
-            return (user.hasRole(RoleFactory.CHANNEL_ADMIN)) || !chans.isEmpty();
+            return (user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) || !chans.isEmpty();
         }
 
         return false;
