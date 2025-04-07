@@ -12,7 +12,7 @@ type ChannelWithHierarchy = FlatChannel & HierarchicalRow & { markedForOperation
 
 type ChannelTableProps = {
   channels: FlatChannel[];
-  onChannelSelect: (channelId: number, chekced: boolean) => void;
+  onChannelSelect: (channelId: number, checked: boolean) => void;
   onOrgSelect?: (channelId: number, orgId?: number) => void;
   loading?: boolean;
   availableOrgs: Org[];

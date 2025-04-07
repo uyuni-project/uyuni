@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { SearchField } from "./SearchField";
 import { Table, TableRef } from "./Table";
+import { Button } from "components/buttons";
 
 export type HierarchicalRow = {
   id: string | number;
@@ -177,16 +178,12 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
         const indent = level * indentSize;
 
         return (
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div className="d-flex align-items-center">
             <div style={{ width: `${indent}px` }}></div>
             {!row.isLeaf && (
-              <span
+              <Button
                 className={`fa ${isExpanded ? "fa-caret-down" : "fa-caret-right"}`}
-                style={{ cursor: "pointer", marginRight: "5px" }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleRowExpanded(rowId);
-                }}
+                handler={() => toggleRowExpanded(rowId)}
               />
             )}
             {renderCellContent(row, child)}
