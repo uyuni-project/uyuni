@@ -78,6 +78,7 @@ import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1124,7 +1125,7 @@ public class HubManager {
             .toList();
 
         List<ChannelSyncDetail> clones = Optional.ofNullable(channel.getClonedChannels()).stream()
-                .flatMap(set -> set.stream())
+                .flatMap(Collection::stream)
                 .map(clone -> buildChannelSyncDetail(clone, user, syncedChannelSet))
                 .toList();
 

@@ -401,7 +401,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
             </div>
           </div>
           <div className="selector-button-wrapper">
-            <div className="btn-group pull-left">
+            <div className="btn-group pull-right">
               <Button
                 className="btn-primary"
                 title={t("Apply Changes")}
