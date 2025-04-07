@@ -25,6 +25,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.CompressionUtil;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.DistChannelMap;
@@ -1434,7 +1435,7 @@ public class PackageManager extends BaseManager {
      */
     public static void deletePackages(Set<Long> ids, User user) {
 
-        if (!user.hasRole(RoleFactory.CHANNEL_ADMIN)) {
+        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
             throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
         }
 
@@ -1524,7 +1525,7 @@ public class PackageManager extends BaseManager {
      */
     public static void deleteSourcePackages(Set<Long> ids, User user) {
 
-        if (!user.hasRole(RoleFactory.CHANNEL_ADMIN)) {
+        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
             throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
         }
 
