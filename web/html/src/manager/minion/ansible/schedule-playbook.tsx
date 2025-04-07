@@ -11,9 +11,7 @@ import { Messages, MessageType, Utils as MsgUtils } from "components/messages/me
 import { InnerPanel } from "components/panels/InnerPanel";
 import { Toggler } from "components/toggler";
 import { Loading } from "components/utils/loading/Loading";
-import { ModalButton } from "components/dialog/ModalButton";
-import { Dialog } from "components/dialog/Dialog";
-import EditAnsibleVars from "./ansible-edit-variables";
+import EditAnsibleVarsModal from "./edit-ansible-vars-modal";
 
 import { localizedMoment } from "utils";
 import Network, { JsonResult } from "utils/network";
@@ -36,11 +34,11 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
   const [loading, setLoading] = useState(true);
   const [playbookContent, setPlaybookContent] = useState("");
   const [isTestMode, setTestMode] = useState(false);
-  const [messages, setMessages] = useState<MessageType[]>([]);
-  const [inventoryPath, setInventoryPath] = useState<ComboboxItem | null>(null);
-  const [inventories, setInventories] = useState<string[]>([]);
-  const [playbookArgs, setPlaybookArgs] = useState<PlaybookArgs>({ flushCache: false });
-  const [actionChain, setActionChain] = useState<ActionChain | null>(null);
+  const [messages, setMessages] = useState < MessageType[] > ([]);
+  const [inventoryPath, setInventoryPath] = useState < ComboboxItem | null > (null);
+  const [inventories, setInventories] = useState < string[] > ([]);
+  const [playbookArgs, setPlaybookArgs] = useState < PlaybookArgs > ({ flushCache: false });
+  const [actionChain, setActionChain] = useState < ActionChain | null > (null);
   const [datetime, setDatetime] = useState(localizedMoment());
   const [open, setOpen] = useState(false);
 
@@ -192,51 +190,8 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
         <div>
           <div className="d-flex justify-content-between">
             <h3>{t("Playbook Content")}</h3>
-            <ModalButton
-              id="edit-playbbok-vars"
-              text={t("Edit variables")}
-              target="playbbok-vars"
-              className="btn-default"
-              onClick={() => {
-                setOpen(true);
-              }}
-            />
+            <EditAnsibleVarsModal id="anisble-var" renderContent={playbookContent} />
           </div>
-          <Dialog
-            id="playbbok-vars"
-            isOpen={open}
-            title="Edit Variables"
-            className="modal-lg"
-            content={playbookContent}
-            onClose={() => setOpen(false)}
-            footer={
-              <React.Fragment>
-                <div className="btn-group col-lg-6">
-                </div>
-                <div className="col-lg-6">
-                  <div className="pull-right btn-group">
-                    <Button
-                      id={`modal-cancel-button`}
-                      className="btn-default"
-                      text={t("Cancel")}
-                      handler={() => {
-                        setOpen(false);
-                      }}
-                    />
-                    <Button
-                      id={`modal-cancel-button`}
-                      className="btn-default"
-                      text={t("Save")}
-                      handler={() => {
-                        setOpen(false);
-                      }}
-                    />
-                  </div>
-                </div>
-              </React.Fragment>
-            }
-          />
-          <EditAnsibleVars renderContent={playbookContent} />
           <AceEditor
             className="form-control"
             id="playbook-content"
