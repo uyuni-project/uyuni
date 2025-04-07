@@ -1,15 +1,14 @@
 include /templates/common.jade
 
-#peripheral-details
+#create-peripheral
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
 script(type='text/javascript').
-    spaImportReactPage('admin/hub/peripherals/:id')
+    spaImportReactPage('admin/hub/peripheral/create')
         .then(function (module) {
             module.renderer(
-                'peripheral-details',
-                !{peripheral},
+                'create-peripheral'
             )
         });

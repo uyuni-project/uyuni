@@ -8,11 +8,20 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
-
 package com.suse.manager.webui.controllers.admin.beans;
-
-import com.suse.manager.model.hub.OrgInfoJson;
 
 import java.util.List;
 
-public record ChannelSyncModel(List<OrgInfoJson> peripheralOrgs, List<ChannelSyncDetail> channels) { }
+public record ChannelSyncDetail(
+    Long channelId,
+    String channelName,
+    String channelLabel,
+    String channelArch,
+    ChannelOrg channelOrg,
+    String parentChannelLabel,
+    String originalChannelLabel,
+    List<ChannelSyncDetail> children,
+    List<ChannelSyncDetail> clones,
+    boolean synced
+) { }
+

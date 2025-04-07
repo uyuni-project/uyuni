@@ -9208,6 +9208,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="hub.migration.removal_peripheral">
         <source>Unable to remove partially migrated peripheral {0}: {1}</source>
       </trans-unit>
+      <trans-unit id="hub.invalid_id" xml:space="preserve">
+        <source>The specified peripheral id is invalid.</source>
+      </trans-unit>
       <trans-unit id="cveaudit.nav.title" xml:space="preserve">
         <source>CVE Audit</source>
       </trans-unit>

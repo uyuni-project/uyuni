@@ -62,6 +62,13 @@ public class HubFactory extends HibernateFactory {
     }
 
     /**
+     * Delete the peripheral channels
+     * @param issPeripheralChannelsIn the channels
+     */
+    public void deleteChannels(Set<IssPeripheralChannels> issPeripheralChannelsIn) {
+        delete(issPeripheralChannelsIn, IssPeripheralChannels.class);
+    }
+    /**
      * Remove a {@ink IssPeripheral} object
      * @param peripheralIn the object to remove
      */
@@ -357,6 +364,7 @@ public class HubFactory extends HibernateFactory {
 
         return tokenRemoved != 0;
     }
+
     /**
      * Count the existing access tokens
      * @return the current number of access tokens
