@@ -1248,6 +1248,7 @@ public class HubManager {
         for (Channel channel : channels) {
             if (!syncedChannelLabels.contains(channel.getLabel())) {
                 IssPeripheralChannels association = new IssPeripheralChannels(peripheral, channel, orgId);
+                hubFactory.save(association);
                 newAssociations.add(association);
             }
         }
