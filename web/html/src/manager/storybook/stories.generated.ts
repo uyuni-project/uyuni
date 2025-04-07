@@ -72,6 +72,17 @@ export const components_dialog_delete_example_tsx = {
   raw: components_dialog_delete_example_tsx_raw,
 };
 
+import components_formik_Form_example_tsx_component from "components/formik/Form.example.tsx";
+import components_formik_Form_example_tsx_raw from "components/formik/Form.example.tsx?raw";
+
+export const components_formik_Form_example_tsx = {
+  path: "components/formik/Form.example.tsx",
+  title: "Form.example.tsx",
+  groupName: "formik",
+  component: components_formik_Form_example_tsx_component,
+  raw: components_formik_Form_example_tsx_raw,
+};
+
 import components_input_check_Check_example_tsx_component from "components/input/check/Check.example.tsx";
 import components_input_check_Check_example_tsx_raw from "components/input/check/Check.example.tsx?raw";
 
