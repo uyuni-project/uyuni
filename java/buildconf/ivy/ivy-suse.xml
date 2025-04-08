@@ -23,7 +23,7 @@
         <dependency org="suse" name="commons-discovery" rev="0.5" />
         <dependency org="suse" name="commons-el" rev="1.0" />
         <dependency org="suse" name="commons-fileupload" rev="1.5" />
-        <dependency org="suse" name="commons-io" rev="2.15.1" />
+        <dependency org="suse" name="commons-io" rev="2.18.0" />
         <dependency org="suse" name="commons-jexl" rev="2.1.1" />
         <dependency org="suse" name="commons-lang3" rev="3.16.0" />
         <dependency org="suse" name="commons-text" rev="1.10.0" />
