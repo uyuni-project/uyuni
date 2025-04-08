@@ -62,6 +62,7 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -455,8 +456,7 @@ public class UserManager extends BaseManager {
     * @param rolesToAdd List of role labels to add.
     * @param rolesToRemove List of role labels to remove.
     */
-    public static void addRemoveUserRoles(User usr, List<String> rolesToAdd,
-            List<String> rolesToRemove) {
+    public static void addRemoveUserRoles(User usr, List<String> rolesToAdd, List<String> rolesToRemove) {
 
         log.debug("UserManager.updateUserRolesFromRoleLabels()");
 
@@ -472,18 +472,21 @@ public class UserManager extends BaseManager {
             }
         }
 
+        List<String> toAdd = new ArrayList<>(rolesToAdd);
+        List<String> toRemove = new ArrayList<>(rolesToRemove);
+
         // ORG admin role needs to be added last so that others don't get skipped
-        if (rolesToAdd.remove(ORG_ADMIN_LABEL)) {
-            rolesToAdd.add(ORG_ADMIN_LABEL);
+        if (toAdd.remove(ORG_ADMIN_LABEL)) {
+            toAdd.add(ORG_ADMIN_LABEL);
         }
 
-        for (String removeLabel : rolesToRemove) {
+        for (String removeLabel : toRemove) {
             Role removeMe = RoleFactory.lookupByLabel(removeLabel);
             log.debug("Removing role: {}", removeMe.getName());
             usr.removePermanentRole(removeMe);
         }
 
-        for (String addLabel : rolesToAdd) {
+        for (String addLabel : toAdd) {
             Role r = RoleFactory.lookupByLabel(addLabel);
             log.debug("Adding role: {}", r.getName());
             usr.addPermanentRole(r);

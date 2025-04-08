@@ -20,13 +20,8 @@ import com.redhat.rhn.frontend.struts.BaseSetListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
 import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
 
 import java.util.Iterator;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * BaseKickstartListSetupAction - base class for Kickstart Details list pages that show
@@ -35,15 +30,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class BaseKickstartListSetupAction extends BaseSetListAction {
 
-    /** {@inheritDoc} */
-    @Override
-    public ActionForward execute(ActionMapping mapping,
-                                 ActionForm formIn,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response) {
-
-        return super.execute(mapping, formIn, request, response);
-    }
     /**
      * {@inheritDoc}
      */
