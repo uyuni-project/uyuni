@@ -52,20 +52,22 @@ public class AccessGroupManager {
      * @param label the label of the group
      * @param description the description of the group
      * @param org the org to which the group belongs
-     * @param inheritFrom a collection of {@code AccessGroup}s to inherit permissions from
+     * @param copyFrom a collection of {@code AccessGroup}s to copy permissions from
      * @return the created {@code AccessGroup}
      */
-    public AccessGroup create(String label, String description, Org org, Collection<AccessGroup> inheritFrom)
+    public AccessGroup create(String label, String description, Org org, Collection<AccessGroup> copyFrom)
             throws DefaultRoleException {
         if (ORG_ADMIN.getLabel().equals(label) || SAT_ADMIN.getLabel().equals(label) ||
                 lookup(label, null).isPresent()) {
             throw new DefaultRoleException(label + " already exists.");
         }
         AccessGroup group = new AccessGroup(label, description, org);
-        for (AccessGroup parent : inheritFrom) {
+        for (AccessGroup parent : copyFrom) {
             addPermissionsFromRole(group, parent);
+            LOG.debug("Copying permissions from {}.", parent.getLabel());
         }
 
+        LOG.info("Access group {} created.", label);
         AccessGroupFactory.save(group);
         return group;
     }
@@ -81,6 +83,7 @@ public class AccessGroupManager {
         if (group.getOrg() == null) {
             throw new IllegalArgumentException("Default groups cannot be altered.");
         }
+        LOG.info("Access group {} removed.", label);
         AccessGroupFactory.remove(group);
     }
 
@@ -139,7 +142,9 @@ public class AccessGroupManager {
         AccessGroup group = lookup(label, org).orElseThrow();
         for (String ns : namespaces) {
             grantAccess(group, ns, modes);
+            LOG.debug("Access group {} is granted access to namespace {}.", label, ns);
         }
+        LOG.info("Access group {} is granted access to {} namespace(s).", label, namespaces.size());
     }
 
     /**
@@ -166,7 +171,9 @@ public class AccessGroupManager {
         AccessGroup group = lookup(label, org).orElseThrow();
         for (String ns : namespaces) {
             revokeAccess(group, ns, modes);
+            LOG.debug("Access group {} is revoked access to namespace {}.", label, ns);
         }
+        LOG.info("Access group {} is revoked access to {} namespace(s).", label, namespaces.size());
     }
 
     protected void grantAccess(AccessGroup group, String namespace, Set<Namespace.AccessMode> modes)
@@ -189,7 +196,7 @@ public class AccessGroupManager {
         AccessGroupFactory.save(group);
     }
 
-    private void addPermissionsFromRole(AccessGroup addTo, AccessGroup inheritFrom) {
-        addTo.getNamespaces().addAll(inheritFrom.getNamespaces());
+    private void addPermissionsFromRole(AccessGroup addTo, AccessGroup copyFrom) {
+        addTo.getNamespaces().addAll(copyFrom.getNamespaces());
     }
 }
