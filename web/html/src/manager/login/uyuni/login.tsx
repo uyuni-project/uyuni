@@ -37,6 +37,22 @@ const UyuniThemeLogin = (props: ThemeProps) => {
           <div className={styles.content}>
             <div className={`${styles.half} ${styles.left}`}>
               <h1 className={styles.h1}>{product.bodyTitle}</h1>
+              <div style={{
+                padding: "15px",
+                backgroundColor: "rgba(255,255,255,0.1)",
+                borderRadius: "8px",
+                marginBottom: "20px",
+                borderLeft: "4px solid #00a300",
+                animation: "fadeIn 0.8s ease-in-out"
+              }}>
+                <span style={{ fontWeight: "bold", color: "#00a300" }}>
+                  <i className="fa fa-info-circle" style={{ marginRight: "8px" }}></i>
+                  {t("Welcome back!")}
+                </span>
+                <p style={{ marginTop: "8px", marginBottom: "0" }}>
+                  {t("Thank you for using Uyuni to manage your infrastructure.")}
+                </p>
+              </div>
               <p>{t("Discover a new way of managing your servers, packages, patches and more via one interface.")}</p>
               <p>
                 {t("Learn more about {productName}:", {

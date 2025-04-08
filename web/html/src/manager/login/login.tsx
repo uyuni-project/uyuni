@@ -33,7 +33,7 @@ const products = {
   uyuni: {
     productName: "Uyuni",
     headerTitle: "Uyuni",
-    bodyTitle: "Uyuni",
+    bodyTitle: "Welcome to Uyuni",
     url: "https://www.uyuni-project.org/",
     title: "Uyuni login page",
   },
