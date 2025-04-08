@@ -160,7 +160,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     )
     private Set<Namespace> namespaces;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "access.userAccessGroup",
             joinColumns = @JoinColumn(name = "user_id"),
