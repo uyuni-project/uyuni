@@ -1,0 +1,22 @@
+services:
+  devcontainer:
+    build:
+      context: .
+      dockerfile: dev/Dockerfile
+    environment:
+      - JAVA_HOME=/usr/lib64/jvm/java-17-openjdk
+      - ANT_HOME=/usr/share/ant
+    volumes:
+      - ../:/workspace:cached
+    depends_on:
+      - db
+    network_mode: service:db
+    command: sleep infinity
+
+  db:
+    image: registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers/uyuni-master-pgsql-4eclipse
+    ports:
+      - "5432:5432"
+    volumes:
+      - ../:/manager:cached
+    command: "/bin/sh -c /manager/susemanager-utils/testing/docker/scripts/init-pgsql-db4eclipse.sh"
