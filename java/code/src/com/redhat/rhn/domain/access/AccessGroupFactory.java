@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Factory class for RBAC's {@link AccessGroup} entities
@@ -33,6 +34,8 @@ public class AccessGroupFactory extends HibernateFactory {
     public static final AccessGroup SYSTEM_GROUP_ADMIN = lookupDefault("system_group_admin");
     public static final AccessGroup ACTIVATION_KEY_ADMIN = lookupDefault("activation_key_admin");
     public static final AccessGroup IMAGE_ADMIN = lookupDefault("image_admin");
+    public static final Set<AccessGroup> DEFAULT_GROUPS =
+            Set.of(CHANNEL_ADMIN, CONFIG_ADMIN, SYSTEM_GROUP_ADMIN, ACTIVATION_KEY_ADMIN, IMAGE_ADMIN);
 
     private AccessGroupFactory() {
         super();

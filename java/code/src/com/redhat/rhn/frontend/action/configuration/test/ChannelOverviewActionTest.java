@@ -20,11 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.configuration.ChannelSummary;
 import com.redhat.rhn.testing.ConfigTestUtils;
@@ -42,7 +42,7 @@ public class ChannelOverviewActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecuteNoFiles() {
-        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
         ConfigFile cf = ConfigTestUtils.createConfigFile(cc);

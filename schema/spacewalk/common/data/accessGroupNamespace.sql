@@ -732,5 +732,3 @@ INSERT INTO access.accessGroupNamespace
     FROM access.accessGroup ag, access.namespace ns
     WHERE ns.namespace ~ '^api\.virtualhostmanager\.[^.]*$'
     ON CONFLICT DO NOTHING;
-
--- TODO: Add rules for read-only API group
