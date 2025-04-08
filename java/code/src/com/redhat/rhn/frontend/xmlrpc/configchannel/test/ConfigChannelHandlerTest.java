@@ -80,7 +80,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testCreate() {
         try {
-            handler.create(regular, LABEL, NAME, DESCRIPTION);
+            handler.invoke("create", List.of(regular, LABEL, NAME, DESCRIPTION));
             String msg = "Needs to be a config admin.. perm error not detected.";
             fail(msg);
         }

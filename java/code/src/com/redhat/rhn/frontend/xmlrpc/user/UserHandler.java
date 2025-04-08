@@ -410,12 +410,12 @@ public class UserHandler extends BaseHandler {
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(loggedInUser, login);
         if (RoleFactory.ORG_ADMIN.getLabel().equals(role)) {
             target.addPermanentRole(RoleFactory.ORG_ADMIN);
-            return 1;
         }
-
-        // RBAC roles
-        target.getAccessGroups().add(accessGroupManager.lookup(role, target.getOrg())
-                .orElseThrow(() -> new NoSuchRoleException(role)));
+        else {
+            // RBAC roles
+            target.getAccessGroups().add(accessGroupManager.lookup(role, target.getOrg())
+                    .orElseThrow(() -> new NoSuchRoleException(role)));
+        }
 
         UserManager.storeUser(target);
         return 1;

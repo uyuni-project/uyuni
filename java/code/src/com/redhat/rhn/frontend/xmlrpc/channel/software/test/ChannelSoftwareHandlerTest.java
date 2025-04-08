@@ -353,10 +353,10 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
         //Permission
         try {
-            result = csh.listSubscribedSystems(regular, c.getLabel());
+            csh.invoke("listSubscribedSystems", List.of(regular, c.getLabel()));
             fail("Regular user allowed access to channel system list.");
         }
-        catch (PermissionCheckFailureException e) {
+        catch (SecurityException e) {
             //success
         }
     }
@@ -611,15 +611,15 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreateUnauthUser() {
+    public void testCreateUnauthUser() throws Exception {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
         try {
-            csh.create(regular, "api-test-chan-label",
-                   "apiTestChanName", "apiTestSummary", "channel-x86_64", null);
+            csh.invoke("create", List.of(regular, "api-test-chan-label",
+                   "apiTestChanName", "apiTestSummary", "channel-x86_64", ""));
             fail("create did NOT throw an exception");
 
         }
-        catch (PermissionCheckFailureException e) {
+        catch (SecurityException e) {
             // expected
         }
         catch (InvalidChannelLabelException | InvalidParentChannelException | InvalidChannelNameException e) {

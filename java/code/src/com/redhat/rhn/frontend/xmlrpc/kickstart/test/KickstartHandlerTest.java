@@ -34,7 +34,6 @@ import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.test.KickstartableTreeTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartDto;
-import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.InvalidKickstartLabelException;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.InvalidVirtualizationTypeException;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.KickstartHandler;
@@ -47,6 +46,8 @@ import com.redhat.rhn.testing.TestUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+
+import redstone.xmlrpc.XmlRpcFault;
 
 /**
  * KickstartHandlerTest
@@ -136,8 +137,8 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         String newKsProfileLabel = "test-" + TestUtils.randomString();
         String kickstartFileContents = TestUtils.readAll(TestUtils.findTestData(
                 "samplekickstart1.ks"));
-        handler.importFile(user, newKsProfileLabel, KickstartVirtualizationType.XEN_PARAVIRT,
-                treeLabel, kickstartFileContents);
+        handler.invoke("importFile", List.of(user, newKsProfileLabel,
+                KickstartVirtualizationType.XEN_PARAVIRT, treeLabel, kickstartFileContents));
 
         KickstartData newKsProfile = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
                 newKsProfileLabel, admin.getOrg().getId());
@@ -157,12 +158,11 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         String kickstartFileContents = TestUtils.readAll(TestUtils.findTestData(
                 "samplekickstart1.ks"));
         try {
-            handler.importRawFile(regular, newKsProfileLabel,
-                    KickstartVirtualizationType.XEN_PARAVIRT,
-                    testTree.getLabel(), kickstartFileContents);
+            handler.invoke("importRawFile", List.of(regular, newKsProfileLabel,
+                    KickstartVirtualizationType.XEN_PARAVIRT, testTree.getLabel(), kickstartFileContents));
             fail("No permission check failure");
         }
-        catch (PermissionCheckFailureException pe) {
+        catch (SecurityException pe) {
             //cool!
         }
         handler.importRawFile(admin, newKsProfileLabel,
@@ -185,7 +185,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
             runImport(regular, testTree.getLabel());
             fail();
         }
-        catch (PermissionCheckFailureException e) {
+        catch (SecurityException e) {
             // expected
         }
     }
@@ -196,8 +196,9 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
             runImport(admin, "nosuchlabel");
             fail();
         }
-        catch (NoSuchKickstartTreeException e) {
-            // expected
+        catch (XmlRpcFault e) {
+            assertEquals("Unable to locate autoinstallable tree for your organization: nosuchlabel",
+                    e.getMessage());
         }
     }
 
@@ -226,12 +227,11 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
 
         String profileLabel = "new-ks-profile";
         try {
-            handler.createProfileWithCustomUrl(regular, profileLabel,
-                    KickstartVirtualizationType.XEN_PARAVIRT,
-                    testTree.getLabel(), "default", "rootpw");
+            handler.invoke("createProfileWithCustomUrl", List.of(regular, profileLabel,
+                    KickstartVirtualizationType.XEN_PARAVIRT, testTree.getLabel(), "default", "rootpw"));
             fail();
         }
-        catch (PermissionCheckFailureException e) {
+        catch (SecurityException e) {
             // expected
         }
     }

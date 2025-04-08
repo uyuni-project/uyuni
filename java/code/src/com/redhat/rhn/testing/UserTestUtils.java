@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.Role;
@@ -31,6 +32,8 @@ import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.user.UserManager;
+
+import java.util.List;
 
 /**
  * A class that allows us to easily create test users.
@@ -150,6 +153,9 @@ public class UserTestUtils  {
         Long id = createUser(userName, orgName);
         User usr = UserFactory.lookupById(id);
         if (orgAdmin) {
+            usr.getAccessGroups().addAll(List.of(AccessGroupFactory.CHANNEL_ADMIN,
+                    AccessGroupFactory.SYSTEM_GROUP_ADMIN, AccessGroupFactory.IMAGE_ADMIN,
+                    AccessGroupFactory.ACTIVATION_KEY_ADMIN, AccessGroupFactory.CONFIG_ADMIN));
             usr.addPermanentRole(RoleFactory.ORG_ADMIN);
             UserFactory.save(usr);
         }

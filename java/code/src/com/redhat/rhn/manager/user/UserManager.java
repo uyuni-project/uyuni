@@ -18,7 +18,6 @@ import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -179,9 +178,7 @@ public class UserManager extends BaseManager {
                 log.debug("Access restricted for user '{}' to namespace '{}' [{}]",
                         user.getLogin(), namespace, mode);
             }
-            if (ConfigDefaults.get().isRbacEnabled()) {
-                throw new PermissionException("You don't have the necessary permissions to access this resource.");
-            }
+            throw new PermissionException("You don't have the necessary permissions to access this resource.");
         }
     }
 

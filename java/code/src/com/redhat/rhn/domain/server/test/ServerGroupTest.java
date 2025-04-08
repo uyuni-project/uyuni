@@ -21,8 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Pillar;
@@ -71,8 +71,8 @@ public class ServerGroupTest extends RhnBaseTestCase {
      * @param user the user
      */
     public static void checkSysGroupAdminRole(User user) {
-        if (!user.hasRole(RoleFactory.SYSTEM_GROUP_ADMIN)) {
-            user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
+        if (!user.isMemberOf(AccessGroupFactory.SYSTEM_GROUP_ADMIN)) {
+            user.getAccessGroups().add(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
         }
     }
 
