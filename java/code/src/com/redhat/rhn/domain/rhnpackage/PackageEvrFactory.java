@@ -112,7 +112,7 @@ public class PackageEvrFactory {
     public static Optional<PackageEvr> lookupPackageEvrByEvr(
             String epoch, String version, String release, PackageType type) {
         Session session = HibernateFactory.getSession();
-        return (Optional<PackageEvr>) session.getNamedQuery("PackageEvr.lookupByEvr")
+        return session.getNamedQuery("PackageEvr.lookupByEvr")
                 .setParameter("e_in", epoch, StandardBasicTypes.STRING)
                 .setParameter("v_in", version, StandardBasicTypes.STRING)
                 .setParameter("r_in", release, StandardBasicTypes.STRING)
