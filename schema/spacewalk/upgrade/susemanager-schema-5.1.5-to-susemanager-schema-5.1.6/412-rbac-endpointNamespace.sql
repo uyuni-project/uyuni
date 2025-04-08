@@ -642,12 +642,7 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'home.notifications.retry' AND ns.access_mode = 'W'
-    AND ep.endpoint = '/manager/notification-messages/retry-onboarding/:minionId' AND ep.http_method = 'POST'
-    ON CONFLICT DO NOTHING;
-INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
-    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'home.notifications.retry' AND ns.access_mode = 'W'
-    AND ep.endpoint = '/manager/notification-messages/retry-reposync/:channelId' AND ep.http_method = 'POST'
+    AND ep.endpoint = '/manager/notification-messages/retry/:notificationId' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
@@ -3778,6 +3773,21 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'systems.details.proxy' AND ns.access_mode = 'R'
     AND ep.endpoint = '/systems/details/ProxyClients.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.details.proxy' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/systems/details/proxy-config' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.details.proxy' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/systems/details/proxy-config' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.details.proxy' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/systems/details/proxy-config/get-registry-tags' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep

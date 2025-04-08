@@ -43,7 +43,7 @@
              deletionUrl="/rhn/systems/details/DeleteConfirm.do?sid=${system.id}"
              deletionAcl="authorized_for(systems.details.delete);"
              deletionType="system"
-             convertProxyAcl="system_is_convertible_to_proxy()"
+             convertProxyAcl="authorized_for(systems.details.proxy, W); system_is_convertible_to_proxy()"
              convertProxyUrl="/rhn/manager/systems/details/proxy-config?sid=${system.id}">
     <c:if test="${empty system}">
         <decorator:getProperty property="meta.name" />
