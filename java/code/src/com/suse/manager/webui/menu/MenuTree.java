@@ -68,8 +68,6 @@ public class MenuTree {
         Map<String, Boolean> adminRoles = new HashMap<>();
         adminRoles.put("org", checkAcl(user, "user_role(org_admin)"));
         adminRoles.put("satellite", checkAcl(user, "user_role(satellite_admin)"));
-        adminRoles.put("activationKey", checkAcl(user, "user_role(activation_key_admin)"));
-        adminRoles.put("image", checkAcl(user, "user_role(image_admin)"));
 
         MenuItemList nodes = new MenuItemList();
 
@@ -235,8 +233,7 @@ public class MenuTree {
                         .withDir("/rhn/activationkeys/configuration")
                         .withDir("/rhn/activationkeys/groups")
                         .withDir("/rhn/activationkeys/packages")
-                        .withDir("/rhn/activationkeys/systems")
-                        .withVisibility(adminRoles.get("activationKey")))
+                        .withDir("/rhn/activationkeys/systems"))
                 .addChild(new MenuItem("Stored Profiles")
                         .withVisibility(isUserAuthorizedFor(user, "systems.profiles"))
                         .withPrimaryUrl("/rhn/profiles/List.do")
@@ -306,8 +303,7 @@ public class MenuTree {
                 .addChild(new MenuItem("Build")
                         .withVisibility(isUserAuthorizedFor(user, "cm.build"))
                         .withPrimaryUrl("/rhn/manager/cm/build")
-                        .withDir("/rhn/manager/cm/build")
-                        .withVisibility(adminRoles.get("image")))
+                        .withDir("/rhn/manager/cm/build"))
                 .addChild(new MenuItem("Profiles")
                         .withVisibility(isUserAuthorizedFor(user, "cm.profile.list"))
                         .withPrimaryUrl("/rhn/manager/cm/imageprofiles")

@@ -82,6 +82,19 @@ public class Access extends BaseHandler {
     }
 
     /**
+     * Returns true if the User whose uid matches the given uid, is
+     * in the given Role. Requires a uid String in the Context.
+     * @param ctx Context Map to pass in
+     * @param params Parameters to use to fetch from Context
+     * @return true if access is granted, false otherwise
+     */
+    public boolean aclUidAccessGroup(Map<String, Object> ctx, String[] params) {
+        Long uid = getAsLong(ctx.get("uid"));
+        User user = UserFactory.lookupById(uid);
+        return user.isMemberOf(AccessGroupFactory.lookupDefault(params[0]));
+    }
+
+    /**
      * Returns true if current User is in the Role.
      * Requires a User in the Context.
      * @param ctx Context Map to pass in
