@@ -5,6 +5,8 @@ import { Messages, MessageType } from "components/messages/messages";
 
 import Network from "utils/network";
 
+import styles from "./products-scc-dialog.module.scss";
+
 const messageMap = {
   // Nothing for now
 };
@@ -149,7 +151,7 @@ class SCCDialog extends React.Component<Props> {
         <hr />
         <div className="d-block">
           <Messages items={this.state.errors} />
-          <ul id="scc-task-list" className="fa-ul">
+          <ul id="scc-task-list" className={styles.taskList}>
             {this.state.steps.map((s) => {
               return (
                 <li key={s.id}>
@@ -157,11 +159,11 @@ class SCCDialog extends React.Component<Props> {
                     className={
                       s.success != null
                         ? s.success
-                          ? "fa fa-li fa-check text-success"
-                          : "fa fa-li fa-exclamation-triangle text-warning"
+                          ? "fa fa-check text-success"
+                          : "fa fa-exclamation-triangle text-warning"
                         : s.inProgress
-                        ? "fa fa-li fa-spinner fa-spin"
-                        : "fa fa-li fa-circle-o text-muted"
+                        ? "fa fa-spinner fa-spin"
+                        : "fa fa-circle-o text-muted"
                     }
                   />
                   <span>{s.label}</span>
