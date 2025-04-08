@@ -6,10 +6,10 @@
 
                         deletionUrl="/rhn/activationkeys/Delete.do?tid=${param.tid}"
                         deletionType="activationkeys"
-                        deletionAcl = "user_role(activation_key_admin)"
+                        deletionAcl = "authorized_for(systems.activation_keys.delete)"
                         cloneUrl="/rhn/activationkeys/Clone.do?tid=${param.tid}"
                         cloneType="activationkeys"
-                        cloneAcl = "user_role(activation_key_admin)">
+                        cloneAcl = "authorized_for(systems.activation_keys.details)">
 <c:out value="${requestScope.description}"/>
 </rhn:toolbar>
         <rhn:dialogmenu mindepth="0" maxdepth="1"

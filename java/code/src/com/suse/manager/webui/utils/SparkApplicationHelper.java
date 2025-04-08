@@ -293,28 +293,6 @@ public class SparkApplicationHelper {
     }
 
     /**
-     * Use in routes to automatically get the current user, which must be an
-     * Image Admin, in your controller.
-     * Example: <code>Spark.get("/url", withOrgAdmin(Controller::method));</code>
-     * @param route the route
-     * @return the route
-     */
-    public static Route withImageAdmin(RouteWithUser route) {
-        return withRole(route, RoleFactory.IMAGE_ADMIN);
-    }
-
-    /**
-     * Use in routes to automatically get the current user, which must be an
-     * Image Admin, in your controller.
-     * Example: <code>Spark.get("/url", withOrgAdmin(Controller::method));</code>
-     * @param route the route
-     * @return the route
-     */
-    public static TemplateViewRoute withImageAdmin(TemplateViewRouteWithUser route) {
-        return withRole(route, RoleFactory.IMAGE_ADMIN);
-    }
-
-    /**
      * Returns a route that adds a CSRF token to model.
      *
      * The model associated with the input route must contain the data in the form of a Map

@@ -3450,7 +3450,7 @@
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
              <set-property property="postRequiredIfSubmitted" value="true" />
              <set-property property="acls"
-                      value="system_feature(ftr_system_grouping); user_role(org_admin) or user_role(system_group_admin)"/>
+                      value="system_feature(ftr_system_grouping); user_role(org_admin) or authorized_for(systems.groups.join , W)"/>
              <forward name="default"
                       path="/WEB-INF/pages/systems/groups/add.jsp" />
              <forward name="success"
@@ -3464,8 +3464,6 @@
              type="com.redhat.rhn.frontend.action.groups.AdminListAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
              <set-property property="postRequiredIfSubmitted" value="true" />
-             <set-property property="acls"
-                      value="user_role(system_group_admin)"/>
              <forward name="default"
                       path="/WEB-INF/pages/groups/adminlist.jsp" />
              <forward name="submitted"
@@ -3478,8 +3476,6 @@
              type="com.redhat.rhn.frontend.action.groups.AddSystemsAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
              <set-property property="postRequiredIfSubmitted" value="true" />
-             <set-property property="acls"
-                      value="user_role(system_group_admin)"/>
              <forward name="default"
                       path="/WEB-INF/pages/groups/addsystems.jsp" />
              <forward name="success"
@@ -3533,8 +3529,6 @@
              type="com.redhat.rhn.frontend.action.groups.EditGroupAction"
              name="editSystemGroupForm"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-             <set-property property="acls"
-                      value="user_role(system_group_admin)"/>
              <set-property property="postRequiredIfSubmitted" value="true" />
              <forward name="default"
                       path="/WEB-INF/pages/groups/edit.jsp" />
@@ -3551,7 +3545,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         >
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(system_group_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/groups/delete.jsp"/>
         <forward name="success" redirect = "true"
@@ -4147,7 +4140,6 @@
             type="com.redhat.rhn.frontend.action.groups.SSMGroupManageAction"
             name="submittedForm"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-            <set-property property="acls" value="user_role(system_group_admin)"/>
             <set-property property="postRequiredIfSubmitted" value="true" />
             <forward name="default" path="/WEB-INF/pages/groups/ssmmanage.jsp" />
             <forward name="confirm" path="/systems/ssm/groups/Confirm.do" redirect="true" />
@@ -4158,7 +4150,6 @@
             type="com.redhat.rhn.frontend.action.groups.SSMGroupConfirmAction"
             name="submittedForm"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-            <set-property property="acls" value="user_role(system_group_admin)"/>
             <set-property property="postRequiredIfSubmitted" value="true" />
             <forward name="default" path="/WEB-INF/pages/groups/ssmconfirm.jsp" />
             <forward name="success" path="/systems/ssm/groups/Manage.do" redirect="true" />
@@ -4169,7 +4160,6 @@
             type="com.redhat.rhn.frontend.action.groups.EditGroupAction"
             name="editSystemGroupForm"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-            <set-property property="acls" value="user_role(system_group_admin)"/>
             <set-property property="postRequiredIfSubmitted" value="true" />
             <forward name="default" path="/WEB-INF/pages/groups/ssmcreate.jsp" />
             <forward name="success" path="/systems/ssm/groups/Manage.do" redirect="true" />
@@ -4988,7 +4978,6 @@
         type="com.redhat.rhn.frontend.action.token.ActivationKeysListAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/list.jsp"/>
@@ -5004,7 +4993,6 @@
         type="com.redhat.rhn.frontend.action.token.ActivationKeyDetailsAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="create">
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/create.jsp"/>
@@ -5022,7 +5010,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="edit">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/edit.jsp"/>
         <forward name="success" redirect = "true"
@@ -5036,7 +5023,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/delete.jsp"/>
         <forward name="success" redirect = "true"
@@ -5049,7 +5035,6 @@
         input="/WEB-INF/pages/activationkeys/clone.jsp"
         type="com.redhat.rhn.frontend.action.token.ActivationKeyCloneAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/clone.jsp"/>
         <forward name="success" redirect = "true"
@@ -5064,7 +5049,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/packages/listeditpackages.jsp"/>
         <forward name="success" redirect = "true"
@@ -5078,7 +5062,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/configuration/list.jsp"/>
         <forward name="success" redirect = "true"
@@ -5092,7 +5075,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/configuration/subscribe.jsp"/>
         <forward name="rank" redirect = "true"
@@ -5110,7 +5092,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/configuration/rank.jsp"/>
         <forward name="success" redirect = "true"
@@ -5124,7 +5105,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/groups/list.jsp"/>
         <forward name="success" redirect = "true"
@@ -5138,7 +5118,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/groups/add.jsp"/>
         <forward name="success" redirect = "true"
@@ -5152,7 +5131,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/systems//list.jsp"/>
         <forward name="success" redirect = "true"

@@ -22,6 +22,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
@@ -219,7 +220,7 @@ public class RecurringActionManager extends BaseManager {
      * @return list of group recurring actions
      */
     public static List<RecurringAction> listGroupRecurringActions(long groupId, User user) {
-        if (!user.hasRole(RoleFactory.SYSTEM_GROUP_ADMIN)) {
+        if (!user.isMemberOf(AccessGroupFactory.SYSTEM_GROUP_ADMIN)) {
             throw new PermissionException(String.format("User does not have access to group id %d", groupId));
         }
         try {
@@ -261,7 +262,7 @@ public class RecurringActionManager extends BaseManager {
         DataResult<SimpleMinionJson> members;
         switch (type) {
             case GROUP:
-                if (!user.hasRole(RoleFactory.SYSTEM_GROUP_ADMIN)) {
+                if (!user.isMemberOf(AccessGroupFactory.SYSTEM_GROUP_ADMIN)) {
                     throw new PermissionException(String.format("User does not have access to group id %d", id));
                 }
                 members = RecurringActionFactory.listGroupMembers(id, pc, parser);
