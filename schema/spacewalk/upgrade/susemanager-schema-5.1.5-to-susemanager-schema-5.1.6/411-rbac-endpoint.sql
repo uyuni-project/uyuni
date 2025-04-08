@@ -10,6 +10,72 @@
 --
 
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/ping', 'POST', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/ping' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/sync/deregister', 'POST', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/sync/deregister' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/sync/registerHub', 'POST', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/sync/registerHub' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/sync/replaceTokens', 'POST', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/sync/replaceTokens' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/sync/storeCredentials', 'POST', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/sync/storeCredentials' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/sync/setHubDetails', 'POST', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/sync/setHubDetails' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/managerinfo', 'GET', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/managerinfo' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/scheduleProductRefresh', 'POST', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/scheduleProductRefresh' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/storeReportDbCredentials', 'POST', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/storeReportDbCredentials' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/removeReportDbCredentials', 'POST', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/removeReportDbCredentials' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/listAllPeripheralOrgs', 'GET', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/listAllPeripheralOrgs' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/listAllPeripheralChannels', 'GET', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/listAllPeripheralChannels' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/addVendorChannels', 'POST', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/addVendorChannels' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/addCustomChannels', 'POST', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/addCustomChannels' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/modifyCustomChannels', 'POST', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/modifyCustomChannels' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/sync/channelfamilies', 'POST', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/sync/channelfamilies' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/sync/products', 'POST', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/sync/products' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/sync/repositories', 'POST', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/sync/repositories' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/hub/sync/subscriptions', 'POST', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/hub/sync/subscriptions' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/systems/details/proxy-config', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/systems/details/proxy-config' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/systems/details/proxy-config', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/systems/details/proxy-config' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/systems/details/proxy-config/get-registry-tags', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/systems/details/proxy-config/get-registry-tags' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/manager/audit/cve', 'GET', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/audit/cve' AND http_method = 'GET');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -388,11 +454,8 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     SELECT '', '/manager/notification-messages/delete', 'POST', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/notification-messages/delete' AND http_method = 'POST');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-    SELECT '', '/manager/notification-messages/retry-onboarding/:minionId', 'POST', 'W', True
-    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/notification-messages/retry-onboarding/:minionId' AND http_method = 'POST');
-INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-    SELECT '', '/manager/notification-messages/retry-reposync/:channelId', 'POST', 'W', True
-    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/notification-messages/retry-reposync/:channelId' AND http_method = 'POST');
+    SELECT '', '/manager/notification-messages/retry/:notificationId', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/notification-messages/retry/:notificationId' AND http_method = 'POST');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/account/UserDetails.do', 'GET', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/account/UserDetails.do' AND http_method = 'GET');
@@ -744,6 +807,15 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/errata/manage/SelectChannelsSubmit.do', 'POST', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/errata/manage/SelectChannelsSubmit.do' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/errata/manage/PackagePush.do', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/errata/manage/PackagePush.do' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/errata/manage/PackagePush.do', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/errata/manage/PackagePush.do' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/errata/manage/PackagePushSubmit.do', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/errata/manage/PackagePushSubmit.do' AND http_method = 'POST');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/errata/manage/DeleteBug.do', 'GET', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/errata/manage/DeleteBug.do' AND http_method = 'GET');
@@ -1200,6 +1272,12 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/channels/manage/ChannelPackagesCompareMergeConfirm.do', 'POST', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/channels/manage/ChannelPackagesCompareMergeConfirm.do' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/channels/Subscribers.do', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/channels/Subscribers.do' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/channels/Subscribers.do', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/channels/Subscribers.do' AND http_method = 'POST');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/manager/packages/list', 'GET', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/packages/list' AND http_method = 'GET');
