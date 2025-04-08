@@ -102,6 +102,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.persistence.NoResultException;
@@ -1389,7 +1390,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         if (log.isDebugEnabled()) {
             sw.stop();
-            log.debug("Finished Updating errata cache. Took [{}]", sw.getTime());
+            log.debug("Finished Updating errata cache. Took [{}]", sw.getTime(TimeUnit.MILLISECONDS));
         }
     }
 
