@@ -449,7 +449,6 @@ public class UserManager extends BaseManager {
      }
 
     /**
-     * TODO: Review
     * Add and remove the specified roles from the user.
     *
     * @param usr The User who's Roles you want to update
