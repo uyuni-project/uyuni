@@ -379,9 +379,6 @@ public class UserImpl extends BaseDomainHelper implements User {
     @Override
     public void addPermanentRole(Role label) {
         addRole(label, false);
-        AccessGroupFactory.DEFAULT_GROUPS.stream()
-                .filter(ag -> ag.getLabel().equals(label.getLabel())).findFirst()
-                .ifPresent(ag -> UserImpl.this.getAccessGroups().add(ag));
 
         if (RoleFactory.ORG_ADMIN.equals(label)) {
             getAccessGroups().addAll(AccessGroupFactory.DEFAULT_GROUPS);
@@ -421,9 +418,6 @@ public class UserImpl extends BaseDomainHelper implements User {
     @Override
     public void removePermanentRole(Role label) {
         removeRole(label, false);
-        AccessGroupFactory.DEFAULT_GROUPS.stream()
-                .filter(ag -> ag.getLabel().equals(label.getLabel())).findFirst()
-                .ifPresent(ag -> UserImpl.this.getAccessGroups().remove(ag));
     }
 
     /** {@inheritDoc} */
@@ -1519,5 +1513,16 @@ public class UserImpl extends BaseDomainHelper implements User {
     public boolean isMemberOf(AccessGroup accessGroupIn) {
         return getAccessGroups() != null && getAccessGroups().contains(accessGroupIn);
     }
-}
 
+    /** {@inheritDoc} */
+    @Override
+    public void removeFromGroup(AccessGroup accessGroupIn) {
+        accessGroups.remove(accessGroupIn);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void addToGroup(AccessGroup accessGroupIn) {
+        accessGroups.add(accessGroupIn);
+    }
+}

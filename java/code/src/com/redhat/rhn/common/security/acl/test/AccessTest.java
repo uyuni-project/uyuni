@@ -175,7 +175,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         Map<String, Object> context = new HashMap<>();
         User user =  UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
-        user.getAccessGroups().add(AccessGroupFactory.CHANNEL_ADMIN);
+        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
         context.put("user", user);
         boolean rc = acl.evalAcl(context, "user_can_manage_channels()");
         assertTrue(rc);
@@ -328,7 +328,7 @@ public class AccessTest extends BaseTestCaseWithUser {
             User user =  UserTestUtils.findNewUser("testUser",
                     "testOrg" + this.getClass().getSimpleName());
             context.put("user", user);
-            user.getAccessGroups().add(AccessGroupFactory.CHANNEL_ADMIN);
+            user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
 
             Channel chan = ChannelFactoryTest.createBaseChannel(user);
             assertTrue(acl.evalAcl(context, "can_access_channel(" + chan.getId() + ")"));
@@ -344,7 +344,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         User user = UserTestUtils.findNewUser("testUser", "testOrg" + this.getClass().getSimpleName());
         context.put("user", user);
 
-        user.getAccessGroups().add(AccessGroupFactory.CHANNEL_ADMIN);
+        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
         Channel chan = null;
 
         try {

@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.Role;
@@ -71,8 +72,8 @@ public class RoleTest extends RhnBaseTestCase {
         o1.addRole(RoleFactory.CHANNEL_ADMIN);
         o1 = OrgFactory.save(o1);
         assertFalse(usr.hasRole(RoleFactory.CHANNEL_ADMIN));
-        usr.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
-        assertTrue(usr.hasRole(RoleFactory.CHANNEL_ADMIN));
+        usr.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
+        assertTrue(usr.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN));
 
         UserFactory.save(usr);
         User usr2 = UserFactory.lookupById(usr.getId());
@@ -89,10 +90,10 @@ public class RoleTest extends RhnBaseTestCase {
         Org org = OrgFactory.createOrg();
         org.setName("testOrg" + this.getClass().getSimpleName());
         usr.setOrg(org);
-        assertFalse(usr.hasRole(RoleFactory.CHANNEL_ADMIN));
+        assertFalse(usr.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN));
         boolean failed = false;
         try {
-            usr.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+            usr.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
         }
         catch (IllegalArgumentException iae) {
             failed = true;

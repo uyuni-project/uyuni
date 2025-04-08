@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -111,7 +112,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         assertNotNull(result);
         assertEquals(0, result.length);
 
-        regular.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+        regular.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
 
         result = handler.listManageableChannels(regular);
         assertNotNull(result);

@@ -413,7 +413,7 @@ public class UserHandler extends BaseHandler {
         }
         else {
             // RBAC roles
-            target.getAccessGroups().add(accessGroupManager.lookup(role, target.getOrg())
+            target.addToGroup(accessGroupManager.lookup(role, target.getOrg())
                     .orElseThrow(() -> new NoSuchRoleException(role)));
         }
 

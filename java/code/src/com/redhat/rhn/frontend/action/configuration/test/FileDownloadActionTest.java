@@ -17,9 +17,9 @@ package com.redhat.rhn.frontend.action.configuration.test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -33,7 +33,7 @@ public class FileDownloadActionTest extends RhnMockStrutsTestCase {
 
     @Test
         public void testPlaintextExecute() {
-            UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+            UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
 
             ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());
 
@@ -52,7 +52,7 @@ public class FileDownloadActionTest extends RhnMockStrutsTestCase {
 
     @Test
         public void testBinaryExecute() {
-            UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+            UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
 
             ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());
             revision.getConfigContent().setBinary(true);

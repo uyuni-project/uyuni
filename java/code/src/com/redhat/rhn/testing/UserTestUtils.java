@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -81,6 +82,8 @@ public class UserTestUtils  {
         Long orgId = createOrg(orgName);
         Address addr1 = createTestAddress(usr);
         usr = UserFactory.saveNewUser(usr, addr1, orgId);
+        UserFactory.IMPLIEDROLES.forEach(usr::addPermanentRole);
+
         assertTrue(usr.getId() > 0);
         return usr.getId();
     }
@@ -100,6 +103,7 @@ public class UserTestUtils  {
         Address addr1 = createTestAddress(usr);
 
         usr = UserFactory.saveNewUser(usr, addr1, orgId);
+        UserFactory.IMPLIEDROLES.forEach(usr::addPermanentRole);
 
         assertTrue(usr.getId() > 0);
         return usr;
@@ -239,6 +243,15 @@ public class UserTestUtils  {
         Org o = user.getOrg();
         o.addRole(r);
         user.addPermanentRole(r);
+    }
+
+    /**
+     * Simple method to add an access group to a User.
+     * @param user to add group to
+     * @param groupIn the group to add.
+     */
+    public static void addAccessGroup(User user, AccessGroup groupIn) {
+        user.addToGroup(groupIn);
     }
 
     /**

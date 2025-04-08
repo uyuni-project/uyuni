@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.configuration.test;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.config.ConfigRevision;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -31,7 +31,7 @@ public class DeleteRevisionActionTest extends RhnMockStrutsTestCase {
     // struts cases...
     @Test
     public void testExecute() {
-        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
 
         ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());
 

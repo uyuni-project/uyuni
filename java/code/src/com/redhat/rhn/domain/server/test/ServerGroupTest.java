@@ -72,7 +72,7 @@ public class ServerGroupTest extends RhnBaseTestCase {
      */
     public static void checkSysGroupAdminRole(User user) {
         if (!user.isMemberOf(AccessGroupFactory.SYSTEM_GROUP_ADMIN)) {
-            user.getAccessGroups().add(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
+            user.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
         }
     }
 

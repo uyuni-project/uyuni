@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.formula.Formula;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -110,7 +111,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
 
         ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
         assertNotNull(manager.lookup(NAME, admin));
-        regular.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
+        regular.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
         String newDescription = DESCRIPTION + TestUtils.randomString();
         try {
             handler.update(regular, NAME, newDescription);
@@ -125,7 +126,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testListAdministrators() {
-        regular.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
+        regular.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
         ServerGroup group = handler.create(regular, NAME, DESCRIPTION);
         List<User> admins = handler.listAdministrators(regular, group.getName());
         assertTrue(admins.contains(regular));
@@ -162,7 +163,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         handler.addOrRemoveAdmins(admin, group.getName(),
                 Collections.singletonList(regular.getLogin()), true);
 
-        regular.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
+        regular.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
         handler.addOrRemoveAdmins(regular, group.getName(), logins, true);
         List<User> admins = handler.listAdministrators(regular, group.getName());
         assertTrue(admins.contains(newbie));
@@ -256,7 +257,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         logins.add(unpriv.getLogin());
 
         handler.addOrRemoveAdmins(admin, group.getName(), logins, true);
-        regular.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
+        regular.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
 
         Server server1 = ServerFactoryTest.createTestServer(regular, true);
         Server server2 = ServerFactoryTest.createTestServer(regular, true);
