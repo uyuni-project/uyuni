@@ -1,0 +1,2 @@
+- Persist postfix first configuration lock file in /etc/postfix
+  (bsc#1239744)
