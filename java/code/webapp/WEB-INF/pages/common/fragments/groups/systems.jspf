@@ -22,7 +22,7 @@
 <rl:listset name="systemListSet" legend="system">
     <rhn:csrf />
     <c:if test="${not empty requestScope.pageList}">
-        <rhn:require acl="user_role(system_group_admin)">
+        <rhn:require acl="authorized_for(systems.groups.target_systems)">
             <rhn:submitted/>
             <div class="spacewalk-section-toolbar">
                 <div class="action-button-wrapper">

@@ -177,7 +177,7 @@
     </rhn-tab>
   </rhn-tab>
 
-  <rhn-tab name="Groups" acl="authorized_for(systems.groups); system_feature(ftr_system_grouping); user_role(org_admin) or user_role(system_group_admin)" url="/rhn/systems/details/groups/ListRemove.do">
+  <rhn-tab name="Groups" acl="user_role(org_admin) or authorized_for(systems.groups); system_feature(ftr_system_grouping)" url="/rhn/systems/details/groups/ListRemove.do">
     <rhn-tab name="List / Leave" acl="authorized_for(systems.groups.list);" url="/rhn/systems/details/groups/ListRemove.do"/>
     <rhn-tab name="Join" acl="authorized_for(systems.groups.join);" url="/rhn/systems/details/groups/Add.do"/>
   </rhn-tab>

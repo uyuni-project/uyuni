@@ -993,10 +993,7 @@ public class UserManager extends BaseManager {
      * @return true if user can administer system group
      */
     public static boolean canAdministerSystemGroup(User user, ManagedServerGroup group) {
-        return (user != null &&
-                group != null &&
-                SERVER_GROUP_MANAGER.canAccess(user, group) &&
-                user.hasRole(RoleFactory.SYSTEM_GROUP_ADMIN));
+        return (user != null && group != null && SERVER_GROUP_MANAGER.canAccess(user, group));
     }
 
     /**

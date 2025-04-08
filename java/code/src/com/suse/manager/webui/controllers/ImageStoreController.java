@@ -17,20 +17,18 @@ package com.suse.manager.webui.controllers;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.RegistryCredentials;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.ImageStoreType;
 import com.redhat.rhn.domain.image.OSImageStoreUtils;
-import com.redhat.rhn.domain.role.Role;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.webui.errors.NotFoundException;
@@ -66,7 +64,6 @@ import spark.template.jade.JadeTemplateEngine;
 public class ImageStoreController {
 
     private static final Gson GSON = Json.GSON;
-    private static final Role ADMIN_ROLE = RoleFactory.IMAGE_ADMIN;
     private static Logger log = LogManager.getLogger(ImageStoreController.class);
 
     private ImageStoreController() { }
@@ -80,9 +77,9 @@ public class ImageStoreController {
         get("/manager/cm/imagestores",
                 withUserPreferences(withCsrfToken(withUser(ImageStoreController::listView))), jade);
         get("/manager/cm/imagestores/create",
-                withCsrfToken(withImageAdmin(ImageStoreController::createView)), jade);
+                withCsrfToken(withUser(ImageStoreController::createView)), jade);
         get("/manager/cm/imagestores/edit/:id",
-                withCsrfToken(withImageAdmin(ImageStoreController::updateView)), jade);
+                withCsrfToken(withUser(ImageStoreController::updateView)), jade);
 
         get("/manager/api/cm/imagestores", withUser(ImageStoreController::list));
         get("/manager/api/cm/imagestores/type/:type",
@@ -91,11 +88,11 @@ public class ImageStoreController {
         get("/manager/api/cm/imagestores/find/:label",
                 withUser(ImageStoreController::getSingleByLabel));
         post("/manager/api/cm/imagestores/create",
-                withImageAdmin(ImageStoreController::create));
+                withUser(ImageStoreController::create));
         post("/manager/api/cm/imagestores/update/:id",
-                withImageAdmin(ImageStoreController::update));
+                withUser(ImageStoreController::update));
         post("/manager/api/cm/imagestores/delete",
-                withImageAdmin(ImageStoreController::delete));
+                withUser(ImageStoreController::delete));
     }
 
     /**
@@ -108,7 +105,7 @@ public class ImageStoreController {
      */
     public static ModelAndView listView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
-        data.put("is_admin", user.hasRole(ADMIN_ROLE));
+        data.put("is_admin", user.isMemberOf(AccessGroupFactory.IMAGE_ADMIN));
         return new ModelAndView(data, "templates/content_management/list-stores.jade");
     }
 

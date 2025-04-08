@@ -380,28 +380,6 @@ public class BaseHandler implements XmlRpcInvocationHandler {
     }
 
     /**
-     * Private helper method to make sure a user has system group admin role.
-     * If not, this will throw a generic Permission exception.
-     * @param user The user to check
-     * @throws PermissionCheckFailureException if user is not a system group admin
-     */
-    public static void ensureSystemGroupAdmin(User user)
-        throws PermissionCheckFailureException {
-        ensureUserRole(user, RoleFactory.SYSTEM_GROUP_ADMIN);
-    }
-
-    /**
-     * Private helper method to make sure a user has image admin role.
-     * If not, this will throw a generic Permission exception.
-     * @param user The user to check
-     * @throws PermissionCheckFailureException if user is not an image admin.
-     */
-    public static void ensureImageAdmin(User user)
-        throws PermissionCheckFailureException {
-        ensureUserRole(user, RoleFactory.IMAGE_ADMIN);
-    }
-
-    /**
      * Private helper method to make sure a user  the given role..
      * If not, this will throw a generic Permission exception.
      * @param user The user to check
