@@ -65,7 +65,7 @@ artifacts:
     repository: Leap
   - artifact: commons-io
     package: apache-commons-io
-    repository: Leap
+    repository: Leap_sle
   - artifact: commons-jexl
     package: apache-commons-jexl
     jar: commons-jexl\.jar
