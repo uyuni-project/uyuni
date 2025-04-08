@@ -16,7 +16,6 @@
 package com.redhat.rhn.common.security.acl;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
@@ -148,7 +147,7 @@ public class Access extends BaseHandler {
                     user.getId(), params[0], params.length > 1 ? params[1] : "any");
         }
 
-        return !ConfigDefaults.get().isRbacEnabled() || authorized;
+        return authorized;
     }
 
     /**

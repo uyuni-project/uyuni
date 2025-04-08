@@ -19,7 +19,6 @@ import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.ClientCertificateDigester;
 import com.redhat.rhn.common.client.InvalidCertificateException;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.translation.TranslationException;
@@ -115,10 +114,13 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         if (!params.isEmpty() && params.get(0) instanceof String p0 && isSessionKey(p0) &&
                 !myClass.getName().endsWith("AuthHandler") && !myClass.getName().endsWith("SearchHandler")) {
 
-                session = SessionManager.loadSession((String)params.get(0));
-                user = getLoggedInUser((String) params.get(0));
-                params.set(0, user);
-            }
+            session = SessionManager.loadSession((String) params.get(0));
+            user = getLoggedInUser((String) params.get(0));
+            params.set(0, user);
+        }
+        else if (!params.isEmpty() && params.get(0) instanceof User) {
+            user = (User) params.get(0);
+        }
 
 
         //we've found all the methods that have the same number of parameters
@@ -141,14 +143,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
             }
         }
 
-        try {
-            ensureRoleBasedAccess(user, myClass.getCanonicalName(), beanifiedMethod);
-        }
-        catch (SecurityException e) {
-            if (ConfigDefaults.get().isRbacEnabled()) {
-                throw e;
-            }
-        }
+        ensureRoleBasedAccess(user, myClass.getCanonicalName(), beanifiedMethod);
 
         try {
             return foundMethod.invoke(this, converted);
@@ -194,7 +189,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         }
     }
 
-    private void ensureRoleBasedAccess(User user, String className, String methodName) {
+    protected void ensureRoleBasedAccess(User user, String className, String methodName) {
         String apiEndpoint = className + "." + methodName;
         if (user == null) {
             if (!WebEndpointFactory.getUnauthorizedApiMethods().contains(apiEndpoint)) {

@@ -965,12 +965,11 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         new OnboardingFailed(rme.minionId, e.getLocalizedMessage())
                 );
                 if (rme.org == null) {
-                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                            Set.of(RoleFactory.ORG_ADMIN));
+                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage, RoleFactory.ORG_ADMIN);
                 }
                 else {
                     UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                            Set.of(RoleFactory.ORG_ADMIN), of(rme.org));
+                            RoleFactory.ORG_ADMIN, of(rme.org));
                 }
             }
         };

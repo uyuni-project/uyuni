@@ -64,6 +64,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'config.systems', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'config.systems' AND access_mode = 'R');
 INSERT INTO access.namespace (namespace, access_mode, description)
+    SELECT 'config.systems', 'W', NULL
+    WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'config.systems' AND access_mode = 'W');
+INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'home.overview.main', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'home.overview.main' AND access_mode = 'R');
 INSERT INTO access.namespace (namespace, access_mode, description)
@@ -238,14 +241,26 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'schedule.failed', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'schedule.failed' AND access_mode = 'R');
 INSERT INTO access.namespace (namespace, access_mode, description)
+    SELECT 'schedule.failed', 'W', NULL
+    WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'schedule.failed' AND access_mode = 'W');
+INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'schedule.completed', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'schedule.completed' AND access_mode = 'R');
+INSERT INTO access.namespace (namespace, access_mode, description)
+    SELECT 'schedule.completed', 'W', NULL
+    WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'schedule.completed' AND access_mode = 'W');
 INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'schedule.archived', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'schedule.archived' AND access_mode = 'R');
 INSERT INTO access.namespace (namespace, access_mode, description)
+    SELECT 'schedule.archived', 'W', NULL
+    WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'schedule.archived' AND access_mode = 'W');
+INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'schedule.details', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'schedule.details' AND access_mode = 'R');
+INSERT INTO access.namespace (namespace, access_mode, description)
+    SELECT 'schedule.details', 'W', NULL
+    WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'schedule.details' AND access_mode = 'W');
 INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'schedule.action_chains', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'schedule.action_chains' AND access_mode = 'R');
@@ -273,6 +288,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
 INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'software.details.managers', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'software.details.managers' AND access_mode = 'R');
+INSERT INTO access.namespace (namespace, access_mode, description)
+    SELECT 'software.details.managers', 'W', NULL
+    WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'software.details.managers' AND access_mode = 'W');
 INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'software.details.patches', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'software.details.patches' AND access_mode = 'R');
@@ -331,6 +349,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'systems.list', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'systems.list' AND access_mode = 'R');
 INSERT INTO access.namespace (namespace, access_mode, description)
+    SELECT 'systems.list', 'W', NULL
+    WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'systems.list' AND access_mode = 'W');
+INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'systems.software.patches', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'systems.software.patches' AND access_mode = 'R');
 INSERT INTO access.namespace (namespace, access_mode, description)
@@ -342,6 +363,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
 INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'systems.groups.list', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'systems.groups.list' AND access_mode = 'R');
+INSERT INTO access.namespace (namespace, access_mode, description)
+    SELECT 'systems.groups.list', 'W', NULL
+    WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'systems.groups.list' AND access_mode = 'W');
 INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'systems.groups.target_systems', 'W', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'systems.groups.target_systems' AND access_mode = 'W');
@@ -418,11 +442,20 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'systems.groups.systems', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'systems.groups.systems' AND access_mode = 'R');
 INSERT INTO access.namespace (namespace, access_mode, description)
+    SELECT 'systems.groups.systems', 'W', NULL
+    WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'systems.groups.systems' AND access_mode = 'W');
+INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'systems.groups.patches', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'systems.groups.patches' AND access_mode = 'R');
 INSERT INTO access.namespace (namespace, access_mode, description)
+    SELECT 'systems.groups.patches', 'W', NULL
+    WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'systems.groups.patches' AND access_mode = 'W');
+INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'systems.groups.admins', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'systems.groups.admins' AND access_mode = 'R');
+INSERT INTO access.namespace (namespace, access_mode, description)
+    SELECT 'systems.groups.admins', 'W', NULL
+    WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'systems.groups.admins' AND access_mode = 'W');
 INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'systems.groups.config', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'systems.groups.config' AND access_mode = 'R');
@@ -559,6 +592,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'systems.activation_keys.list', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'systems.activation_keys.list' AND access_mode = 'R');
 INSERT INTO access.namespace (namespace, access_mode, description)
+    SELECT 'systems.activation_keys.list', 'W', NULL
+    WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'systems.activation_keys.list' AND access_mode = 'W');
+INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'systems.activation_keys.details', 'W', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'systems.activation_keys.details' AND access_mode = 'W');
 INSERT INTO access.namespace (namespace, access_mode, description)
@@ -634,11 +670,17 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'users.groups', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'users.groups' AND access_mode = 'R');
 INSERT INTO access.namespace (namespace, access_mode, description)
+    SELECT 'users.groups', 'W', NULL
+    WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'users.groups' AND access_mode = 'W');
+INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'users.systems', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'users.systems' AND access_mode = 'R');
 INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'users.channels', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'users.channels' AND access_mode = 'R');
+INSERT INTO access.namespace (namespace, access_mode, description)
+    SELECT 'users.channels', 'W', NULL
+    WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'users.channels' AND access_mode = 'W');
 INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'users.preferences', 'R', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'users.preferences' AND access_mode = 'R');

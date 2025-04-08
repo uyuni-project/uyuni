@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 
 /**
@@ -611,7 +610,7 @@ public class TaskoXmlRpcHandler {
     public int createBootstrapRepoFailedNotification(String identifier, String details) {
         NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                 new CreateBootstrapRepoFailed(identifier, details));
-        UserNotificationFactory.storeNotificationMessageFor(notificationMessage, Set.of(RoleFactory.SAT_ADMIN));
+        UserNotificationFactory.storeNotificationMessageFor(notificationMessage, RoleFactory.SAT_ADMIN);
         return 1;
     }
 }

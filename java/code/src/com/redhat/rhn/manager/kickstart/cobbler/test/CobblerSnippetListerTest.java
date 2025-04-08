@@ -17,9 +17,9 @@ package com.redhat.rhn.manager.kickstart.cobbler.test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.kickstart.cobbler.CobblerSnippet;
 import com.redhat.rhn.domain.kickstart.cobbler.test.CobblerSnippetTest;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSnippetLister;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
@@ -35,7 +35,7 @@ public class CobblerSnippetListerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testList() {
-        user.addPermanentRole(RoleFactory.CONFIG_ADMIN);
+        user.addToGroup(AccessGroupFactory.CONFIG_ADMIN);
         CobblerSnippet snip = CobblerSnippetTest.readOnly();
         List<CobblerSnippet> snips =
             CobblerSnippetLister.getInstance().list(user);

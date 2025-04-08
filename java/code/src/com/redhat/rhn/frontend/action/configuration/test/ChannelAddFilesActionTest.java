@@ -16,8 +16,8 @@ package com.redhat.rhn.frontend.action.configuration.test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -31,7 +31,7 @@ public class ChannelAddFilesActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testUpload() {
-        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
 
@@ -44,7 +44,7 @@ public class ChannelAddFilesActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testImport() {
-        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
 
@@ -57,7 +57,7 @@ public class ChannelAddFilesActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testCreate() {
-        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
 

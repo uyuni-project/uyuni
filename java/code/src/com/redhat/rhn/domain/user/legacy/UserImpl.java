@@ -22,6 +22,7 @@ import com.redhat.rhn.common.util.CryptHelper;
 import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.access.AccessGroup;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.usergroup.UserGroup;
@@ -378,6 +379,10 @@ public class UserImpl extends BaseDomainHelper implements User {
     @Override
     public void addPermanentRole(Role label) {
         addRole(label, false);
+
+        if (RoleFactory.ORG_ADMIN.equals(label)) {
+            getAccessGroups().addAll(AccessGroupFactory.DEFAULT_GROUPS);
+        }
     }
 
     /** {@inheritDoc} */
@@ -1508,5 +1513,21 @@ public class UserImpl extends BaseDomainHelper implements User {
     public boolean isMemberOf(AccessGroup accessGroupIn) {
         return getAccessGroups() != null && getAccessGroups().contains(accessGroupIn);
     }
-}
 
+    /** {@inheritDoc} */
+    @Override
+    public void removeFromGroup(AccessGroup accessGroupIn) {
+        if (accessGroups != null) {
+            accessGroups.remove(accessGroupIn);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void addToGroup(AccessGroup accessGroupIn) {
+        if (accessGroups == null) {
+            accessGroups = new HashSet<>();
+        }
+            accessGroups.add(accessGroupIn);
+    }
+}

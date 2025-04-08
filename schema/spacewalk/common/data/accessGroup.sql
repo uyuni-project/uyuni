@@ -14,4 +14,3 @@ INSERT INTO access.accessGroup(org_id, label, description) VALUES (null, 'image_
 INSERT INTO access.accessGroup(org_id, label, description) VALUES (null, 'config_admin', 'Configuration Administrator');
 INSERT INTO access.accessGroup(org_id, label, description) VALUES (null, 'channel_admin', 'Channel Administrator');
 INSERT INTO access.accessGroup(org_id, label, description) VALUES (null, 'system_group_admin', 'System Group Administrator');
-INSERT INTO access.accessGroup(org_id, label, description) VALUES (null, 'readonly_api_user', 'Read-only API User');

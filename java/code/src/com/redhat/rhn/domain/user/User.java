@@ -651,4 +651,16 @@ public interface User extends Serializable {
      * @return {@code true} if the user is a member of the access group, {@code false} otherwise
      */
     boolean isMemberOf(AccessGroup accessGroupIn);
+
+    /**
+     * Add the user to an access group
+     * @param accessGroupIn the access group
+     */
+    void addToGroup(AccessGroup accessGroupIn);
+
+    /**
+     * Remove the user from an access group
+     * @param accessGroupIn the access group
+     */
+    void removeFromGroup(AccessGroup accessGroupIn);
 }

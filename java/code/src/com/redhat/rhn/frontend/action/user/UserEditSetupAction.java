@@ -176,10 +176,11 @@ public class UserEditSetupAction extends RhnAction {
             }
         }
 
+        LocalizationService loc = LocalizationService.getInstance();
         var rbacRoles = rbacGroups.stream()
                 .sorted(Comparator.comparing(AccessGroup::getDescription))
                 .map(ag -> new UserRoleStatusBean(
-                                ag.getDescription(),
+                                loc.hasMessage(ag.getLabel()) ? loc.getMessage(ag.getLabel()) : ag.getDescription(),
                                 ag.getLabel(),
                                 targetUser.isMemberOf(ag),
                                 false
