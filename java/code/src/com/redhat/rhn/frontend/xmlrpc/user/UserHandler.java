@@ -1146,7 +1146,6 @@ public class UserHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int setReadOnly(User loggedInUser, String login, Boolean readOnly) {
-        // TODO: Replace read-only API user
         //Logged in user must be an org admin.
         ensureOrgAdmin(loggedInUser);
 

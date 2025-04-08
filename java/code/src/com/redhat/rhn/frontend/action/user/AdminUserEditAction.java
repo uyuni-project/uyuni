@@ -182,30 +182,9 @@ public class AdminUserEditAction extends UserEditActionHelper {
             }
         }
 
-        processRBACGroupAssignments(request, targetUser);
-
-        Predicate<String> onlyAdmin =
-                (String r) -> RoleFactory.ORG_ADMIN.getLabel().equals(r) || RoleFactory.SAT_ADMIN.getLabel().equals(r);
-
         try {
-            UserManager.addRemoveUserRoles(targetUser, rolesToAdd.stream().filter(onlyAdmin).toList(),
-                    rolesToRemove.stream().filter(onlyAdmin).toList());
-
-            //if he is an org amin make sure he does NOT
-            // have any subscribed Server Groups, because
-            // by becoming an org admin he is automatically
-            // subscribed to every group... and so his list
-            // will be empty..
-            if (targetUser.hasRole(RoleFactory.ORG_ADMIN) &&
-                    !targetUser.getAssociatedServerGroups().isEmpty()) {
-                Set<User> admins = new HashSet<>();
-                admins.add(targetUser);
-                for (Iterator<ServerGroup> itr = targetUser.getAssociatedServerGroups().iterator(); itr.hasNext();) {
-                    ManagedServerGroup sg = (ManagedServerGroup) itr.next();
-                    GlobalInstanceHolder.SERVER_GROUP_MANAGER.dissociateAdmins(sg, admins, loggedInUser);
-                    itr.remove();
-                }
-            }
+            processRBACGroupAssignments(request, targetUser);
+            processAdminRoleAssignments(request, rolesToAdd, rolesToRemove, targetUser, loggedInUser);
         }
         catch (PermissionException pe) {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
@@ -213,6 +192,32 @@ public class AdminUserEditAction extends UserEditActionHelper {
         }
 
         return errors;
+    }
+
+    private void processAdminRoleAssignments(HttpServletRequest request, List<String> rolesToAdd,
+                                             List<String> rolesToRemove, User target, User loggedInUser) {
+
+        Predicate<String> onlyAdmin =
+                (String r) -> RoleFactory.ORG_ADMIN.getLabel().equals(r) || RoleFactory.SAT_ADMIN.getLabel().equals(r);
+
+        UserManager.addRemoveUserRoles(target, rolesToAdd.stream().filter(onlyAdmin).toList(),
+                rolesToRemove.stream().filter(onlyAdmin).toList());
+
+        //if he is an org amin make sure he does NOT
+        // have any subscribed Server Groups, because
+        // by becoming an org admin he is automatically
+        // subscribed to every group... and so his list
+        // will be empty..
+        if (target.hasRole(RoleFactory.ORG_ADMIN) &&
+                !target.getAssociatedServerGroups().isEmpty()) {
+            Set<User> admins = new HashSet<>();
+            admins.add(target);
+            for (Iterator<ServerGroup> itr = target.getAssociatedServerGroups().iterator(); itr.hasNext();) {
+                ManagedServerGroup sg = (ManagedServerGroup) itr.next();
+                GlobalInstanceHolder.SERVER_GROUP_MANAGER.dissociateAdmins(sg, admins, loggedInUser);
+                itr.remove();
+            }
+        }
     }
 
     private void processRBACGroupAssignments(HttpServletRequest request, User target) {

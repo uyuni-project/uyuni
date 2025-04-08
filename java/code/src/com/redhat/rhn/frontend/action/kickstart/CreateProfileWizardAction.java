@@ -30,7 +30,6 @@ import com.redhat.rhn.manager.kickstart.KickstartWizardHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
@@ -77,19 +76,6 @@ public class CreateProfileWizardAction extends RhnWizardAction {
     public static final String VIRTUALIZATION_TYPE_LABEL_PARAM = "virtualizationTypeLabel";
 
     private static Logger log = LogManager.getLogger(CreateProfileWizardAction.class);
-
-    /**
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-
-        return super.execute(mapping, formIn, request, response);
-    }
 
     @Override
     protected void generateWizardSteps(Map<String, WizardStep> steps) {
