@@ -64,7 +64,6 @@ import redstone.xmlrpc.XmlRpcFault;
 
 /**
  * TaskomaticApi
- * TODO: Review permissions
  */
 public class TaskomaticApi {
 

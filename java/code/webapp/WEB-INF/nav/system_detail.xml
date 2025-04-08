@@ -140,7 +140,6 @@
             <rhn-tab-url>/rhn/systems/details/configuration/SubscriptionsSubmit.do</rhn-tab-url>
         </rhn-tab>
         <rhn-tab name="nav.sdc.config.rank_channels" url="/rhn/systems/details/configuration/RankChannels.do" acl="authorized_for(systems.config.channels, W);"/>
-        <!--TODO: add 'RO (only View, read-only)' option-->
         <rhn-tab name="nav.sdc.config.rank_channels_view" url="/rhn/systems/details/configuration/RankChannels.do" acl="authorized_for(systems.config.channels, R); not authorized_for(systems.config.channels, W)"/>
     </rhn-tab>
   </rhn-tab>
