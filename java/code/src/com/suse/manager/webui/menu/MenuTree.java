@@ -75,12 +75,12 @@ public class MenuTree {
             nodes.add(getHomeNode(user, adminRoles));
             nodes.add(getSystemsNode(user, adminRoles));
             nodes.add(getSaltNode(user, adminRoles));
-            nodes.add(getImagesNode(user, adminRoles));
+            nodes.add(getImagesNode(user));
             nodes.add(getPatchesNode(user));
             nodes.add(getSoftwareNode(user, adminRoles));
             nodes.add(getContentManagementNode());
             nodes.add(getAuditNode(user, adminRoles));
-            nodes.add(getConfigurationNode(user, adminRoles));
+            nodes.add(getConfigurationNode(user));
             nodes.add(getScheduleNode());
             nodes.add(getUsersNode(adminRoles));
             nodes.add(getAdminNode(adminRoles));
@@ -292,7 +292,7 @@ public class MenuTree {
                         .withVisibility(adminRoles.get("org")));
     }
 
-    private MenuItem getImagesNode(User user, Map<String, Boolean> adminRoles) {
+    private MenuItem getImagesNode(User user) {
         return new MenuItem("Images")
                 .withVisibility(isUserAuthorizedFor(user, "cm"))
                 .withIcon("spacewalk-icon-manage-configuration-files")
@@ -410,7 +410,7 @@ public class MenuTree {
                         .withPrimaryUrl("/rhn/manager/audit/confidential-computing"));
     }
 
-    private MenuItem getConfigurationNode(User user, Map<String, Boolean> adminRoles) {
+    private MenuItem getConfigurationNode(User user) {
         return new MenuItem("config.nav.config").withIcon("spacewalk-icon-software-channel-management")
             .withVisibility(isUserAuthorizedFor(user, "config.overview"))
             .withDir("/rhn/configuration")

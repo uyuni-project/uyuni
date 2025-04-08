@@ -54,7 +54,6 @@ public class SystemDetailsEditAction extends RhnAction {
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response) {
-           RequestContext context = new RequestContext(request);
 
         DynaActionForm dynaForm = (DynaActionForm) form;
         if (isSubmitted(dynaForm)) {

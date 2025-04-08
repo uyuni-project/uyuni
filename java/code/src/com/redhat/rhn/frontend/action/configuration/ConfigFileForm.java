@@ -22,7 +22,6 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
@@ -158,8 +157,6 @@ public class ConfigFileForm extends ScrubbingDynaActionForm {
     public void updateFromRevision(HttpServletRequest request, ConfigRevision cr) {
 
         RequestContext requestContext = new RequestContext(request);
-
-        User u = requestContext.getCurrentUser();
 
         set(ConfigFileForm.REV_PATH, cr.getConfigFile().getConfigFileName().getPath());
         if (cr.isSymlink() && cr.getConfigInfo().getTargetFileName() != null) {
