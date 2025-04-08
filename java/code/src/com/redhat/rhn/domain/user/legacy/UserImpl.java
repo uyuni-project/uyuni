@@ -1517,12 +1517,17 @@ public class UserImpl extends BaseDomainHelper implements User {
     /** {@inheritDoc} */
     @Override
     public void removeFromGroup(AccessGroup accessGroupIn) {
-        accessGroups.remove(accessGroupIn);
+        if (accessGroups != null) {
+            accessGroups.remove(accessGroupIn);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void addToGroup(AccessGroup accessGroupIn) {
-        accessGroups.add(accessGroupIn);
+        if (accessGroups == null) {
+            accessGroups = new HashSet<>();
+        }
+            accessGroups.add(accessGroupIn);
     }
 }

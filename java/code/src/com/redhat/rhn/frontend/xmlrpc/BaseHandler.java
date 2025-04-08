@@ -118,7 +118,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
             user = getLoggedInUser((String) params.get(0));
             params.set(0, user);
         }
-        else if (params.get(0) instanceof User) {
+        else if (!params.isEmpty() && params.get(0) instanceof User) {
             user = (User) params.get(0);
         }
 
