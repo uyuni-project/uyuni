@@ -22,7 +22,7 @@
         <dependency org="manager-43" name="commons-discovery" rev="0.4" />
         <dependency org="manager-43" name="commons-el" rev="1.0" />
         <dependency org="manager-43" name="commons-fileupload" rev="1.4" />
-        <dependency org="manager-43" name="commons-io" rev="2.15.1" />
+        <dependency org="manager-43" name="commons-io" rev="2.18.0" />
         <dependency org="manager-43" name="commons-jexl" rev="2.1.1" />
         <dependency org="manager-43" name="commons-lang3" rev="3.8.1" />
         <dependency org="manager-43" name="commons-logging" rev="1.2" />
