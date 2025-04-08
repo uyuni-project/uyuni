@@ -47,6 +47,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -183,9 +184,12 @@ public class AdminUserEditAction extends UserEditActionHelper {
 
         processRBACGroupAssignments(request, targetUser);
 
+        Predicate<String> onlyAdmin =
+                (String r) -> RoleFactory.ORG_ADMIN.getLabel().equals(r) || RoleFactory.SAT_ADMIN.getLabel().equals(r);
+
         try {
-            UserManager.addRemoveUserRoles(targetUser, rolesToAdd,
-                    rolesToRemove);
+            UserManager.addRemoveUserRoles(targetUser, rolesToAdd.stream().filter(onlyAdmin).toList(),
+                    rolesToRemove.stream().filter(onlyAdmin).toList());
 
             //if he is an org amin make sure he does NOT
             // have any subscribed Server Groups, because

@@ -30,7 +30,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * TODO: Review error paths
  * RBAC XML-RPC handler
  * @apidoc.namespace access
  * @apidoc.doc Provides methods to manage Role-Based Access Control
