@@ -203,8 +203,8 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
 
         assertEquals(302, getMockResponse().getStatusCode());
 
-        SystemRecord record = SystemRecord.lookupById(connection, server.getCobblerId());
-        assertNotNull(record);
-        assertNotSame(profile.getId(), record.getProfile().getId());
+        SystemRecord systemRecord = SystemRecord.lookupById(connection, server.getCobblerId());
+        assertNotNull(systemRecord);
+        assertNotSame(profile.getId(), systemRecord.getProfile().getId());
     }
 }
