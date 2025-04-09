@@ -263,9 +263,8 @@ public enum SaltStateGeneratorService {
                             versionParts[0], Long.valueOf(versionParts[1]), branch.getOrg());
         }
 
-        String category = imageOpt.map(image -> "SyncedImage" + image.getId())
+        return imageOpt.map(image -> "SyncedImage" + image.getId())
                           .orElseGet(() -> "LegacySyncedImage-" + name + "-" + version);
-        return category;
     }
 
     /**
