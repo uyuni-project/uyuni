@@ -557,8 +557,7 @@ public class SystemManager extends BaseManager {
             return hostnameMatches;
         }
 
-        List<MinionServer> hwAddrMatches = MinionServerFactory.findEmptyProfilesByHwAddrs(hwAddrs);
-        return hwAddrMatches;
+        return MinionServerFactory.findEmptyProfilesByHwAddrs(hwAddrs);
     }
 
     /**
