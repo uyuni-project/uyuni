@@ -80,3 +80,5 @@ sudo -i podman exec server bash -c "rm -f /usr/bin/mgrctl"
 # publish mirrors in apache
 sudo -i podman exec server bash -c "cd /srv/www/htdocs/pub && ln -s /mirror . && chown root:root mirror && chown -R root:root /mirror"
 
+# put upload files into pub, as expected for the tests
+sudo -i podman exec server bash -c "rsync -av /testsuite/features/upload_files/ /srv/www/htdocs/pub/"
