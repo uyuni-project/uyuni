@@ -364,7 +364,7 @@ public class ActionChainManager {
 
         Set<Long> sidSet = new HashSet<>(sids);
 
-        String summary = "Apply highstate" + (test.isPresent() && test.get() ? " in test-mode" : "");
+        String summary = "Apply highstate" + (test.isPresent() && Boolean.TRUE.equals(test.get()) ? " in test-mode" : "");
         Set<Action> result = createActions(user, ActionFactory.TYPE_APPLY_STATES, summary,
                 earliest, actionChain, null, sidSet);
         for (Action action : result) {

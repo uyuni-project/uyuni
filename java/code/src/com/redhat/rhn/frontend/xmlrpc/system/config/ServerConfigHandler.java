@@ -110,7 +110,7 @@ public class ServerConfigHandler extends BaseHandler {
             Integer sid, Boolean listLocal) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
         Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
-        if (listLocal) {
+        if (Boolean.TRUE.equals(listLocal)) {
             return cm.listFileNamesForSystemQuick(loggedInUser, server, null);
         }
         List<ConfigFileNameDto> files = new LinkedList<>();
@@ -197,7 +197,7 @@ public class ServerConfigHandler extends BaseHandler {
         validKeys.add(ConfigRevisionSerializer.PERMISSIONS);
         validKeys.add(ConfigRevisionSerializer.REVISION);
         validKeys.add(ConfigRevisionSerializer.SELINUX_CTX);
-        if (!isDir) {
+        if (Boolean.FALSE.equals(isDir)) {
             validKeys.add(ConfigRevisionSerializer.CONTENTS);
             validKeys.add(ConfigRevisionSerializer.CONTENTS_ENC64);
             validKeys.add(ConfigRevisionSerializer.MACRO_START);
@@ -209,7 +209,7 @@ public class ServerConfigHandler extends BaseHandler {
         Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
         checkIfLocalPermissible(server);
         ConfigChannel channel;
-        if (commitToLocal) {
+        if (Boolean.TRUE.equals(commitToLocal)) {
             channel = server.getLocalOverride();
         }
         else {
@@ -217,7 +217,7 @@ public class ServerConfigHandler extends BaseHandler {
         }
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
         return configHelper.createOrUpdatePath(loggedInUser, channel, path,
-                isDir ? ConfigFileType.dir() : ConfigFileType.file(), data);
+                Boolean.TRUE.equals(isDir) ? ConfigFileType.dir() : ConfigFileType.file(), data);
     }
 
 
@@ -273,7 +273,7 @@ public class ServerConfigHandler extends BaseHandler {
         Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
         checkIfLocalPermissible(server);
         ConfigChannel channel;
-        if (commitToLocal) {
+        if (Boolean.TRUE.equals(commitToLocal)) {
             channel = server.getLocalOverride();
         }
         else {
@@ -321,7 +321,7 @@ public class ServerConfigHandler extends BaseHandler {
         List<ConfigRevision> revisions = new LinkedList<>();
         for (String path : paths) {
             ConfigFile cf;
-            if (searchLocal) {
+            if (Boolean.TRUE.equals(searchLocal)) {
                 cf = cm.lookupConfigFile(loggedInUser,
                         server.getLocalOverride().getId(), path);
 
@@ -375,7 +375,7 @@ public class ServerConfigHandler extends BaseHandler {
         List<ConfigFile> cfList = new ArrayList<>();
         for (String path : paths) {
             ConfigFile cf;
-            if (deleteFromLocal) {
+            if (Boolean.TRUE.equals(deleteFromLocal)) {
                 cf = cm.lookupConfigFile(loggedInUser,
                         server.getLocalOverride().getId(), path);
             }
@@ -513,7 +513,7 @@ public class ServerConfigHandler extends BaseHandler {
             if (channels.equals(server.getConfigChannelList())) {
                 continue;
             }
-            if (addToTop) {
+            if (Boolean.TRUE.equals(addToTop)) {
                 // Add the existing subscriptions to the end so they will be resubscribed
                 // and their ranks will be overridden
                 channelsToAdd = Stream

@@ -111,7 +111,7 @@ public class ErrataSearchAction extends BaseSearchAction {
          * we'll never have been called with search being blank,
          * therefore normal setup of the form vars will not have happened.
          */
-        if (!StringUtils.isBlank(search) || dateSearch) {
+        if (!StringUtils.isBlank(search) || Boolean.TRUE.equals(dateSearch)) {
             // If doing a dateSearch use the DatePicker values from the
             // request params otherwise use the defaults.
             dates = picker.processDatePickers(dateSearch, true);
@@ -402,26 +402,20 @@ public class ErrataSearchAction extends BaseSearchAction {
             Boolean type = null;
             if (eo.isBugFix()) {
                 type = (Boolean)formIn.get(ERRATA_BUG);
-                if (type != null) {
-                    if (type) {
-                            filteredByType.add(eo);
-                    }
+                if (Boolean.TRUE.equals(type)) {
+                    filteredByType.add(eo);
                 }
             }
             if (eo.isSecurityAdvisory()) {
                 type = (Boolean)formIn.get(ERRATA_SEC);
-                if (type != null) {
-                    if (type) {
-                        filteredByType.add(eo);
-                    }
+                if (Boolean.TRUE.equals(type)) {
+                    filteredByType.add(eo);
                 }
             }
             if (eo.isProductEnhancement()) {
                 type = (Boolean)formIn.get(ERRATA_ENH);
-                if (type != null) {
-                    if (type) {
-                        filteredByType.add(eo);
-                    }
+                if (Boolean.TRUE.equals(type)) {
+                    filteredByType.add(eo);
                 }
             }
         }

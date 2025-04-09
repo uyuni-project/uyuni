@@ -127,9 +127,10 @@ public class ConfigChannelSaltManager {
         finally {
             // channel has been renamed - trash the file structure associated with the old
             // label
-            if (Opt.fold(oldChannelLabel,
-                    () -> false,
-                    label -> !label.equals(channel.getLabel()))) {
+            Boolean shouldRemove = Opt.fold(oldChannelLabel, 
+                                                () -> false, 
+                                                label -> !label.equals(channel.getLabel()));
+            if (Boolean.TRUE.equals(shouldRemove)) {
                 removeConfigChannelFiles(channel.getOrgId(), oldChannelLabel.get());
             }
         }

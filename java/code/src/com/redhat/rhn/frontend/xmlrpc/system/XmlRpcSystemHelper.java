@@ -150,7 +150,7 @@ public class XmlRpcSystemHelper {
     public int bootstrap(User user, BootstrapParameters params, boolean saltSSH)
             throws BootstrapException {
         BootstrapResult result = Stream.of(saltSSH).map(ssh -> {
-            if (ssh) {
+            if (Boolean.TRUE.equals(ssh)) {
                 return sshMinionBootstrapper.bootstrap(params, user, ContactMethodUtil.getSSHMinionDefault());
             }
             else {

@@ -72,7 +72,7 @@ public class ChannelsApiController {
         return doWithoutAutoFlushing(() -> {
             Boolean filterClm = Boolean.parseBoolean(req.queryParams("filterClm"));
             Set<Long> filterOutIds = new HashSet<>();
-            if (filterClm) {
+            if (Boolean.TRUE.equals(filterClm)) {
                 // filtering Content Lifecycle Management target channels
                 filterOutIds.addAll(ContentProjectFactory.listSoftwareEnvironmentTarget().stream()
                         .map(tgt -> tgt.getChannel().getId())

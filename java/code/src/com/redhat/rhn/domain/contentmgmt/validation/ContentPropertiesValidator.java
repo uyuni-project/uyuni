@@ -50,7 +50,8 @@ public class ContentPropertiesValidator {
             result.addFieldError("label", "contentmanagement.label_required");
         }
 
-        if (!isLabelValid(label)) {
+        Boolean isValid = isLabelValid(label);
+        if (!Boolean.TRUE.equals(isValid)) {
             result.addFieldError("label", "contentmanagement.label_invalid");
         }
 
@@ -95,7 +96,8 @@ public class ContentPropertiesValidator {
             result.addFieldError("name", "contentmanagement.name_required");
         }
 
-        if (!isLabelValid(label)) {
+        Boolean isValid = isLabelValid(label);
+        if (!Boolean.TRUE.equals(isValid)) {
             result.addFieldError("label", "contentmanagement.label_invalid");
         }
 

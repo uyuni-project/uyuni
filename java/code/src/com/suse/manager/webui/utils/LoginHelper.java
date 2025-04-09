@@ -136,7 +136,7 @@ public class LoginHelper {
                 RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
                 Boolean useOrgUnit =
                         factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT).getValue();
-                if (useOrgUnit) {
+                if (Boolean.TRUE.equals(useOrgUnit)) {
                     String orgUnitString =
                             (String) request.getAttribute("REMOTE_USER_ORGUNIT");
                     newUserOrg = OrgFactory.lookupByName(orgUnitString);

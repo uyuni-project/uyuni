@@ -201,7 +201,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
             }
         }
         else {
-            if (Config.get().getBoolean(configKey) != newValue) {
+            if (Config.get().getBoolean(configKey) != Boolean.TRUE.equals(newValue)) {
                 Config.get().setBoolean(configKey, newValue.toString());
                 keysToBeUpdated.add(configKey);
             }

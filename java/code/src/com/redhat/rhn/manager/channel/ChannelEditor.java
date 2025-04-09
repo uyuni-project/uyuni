@@ -100,7 +100,7 @@ public class ChannelEditor {
         PackageManager.verifyPackagesChannelArchCompatAndOrgAccess(user,
                 channel, longPackageIds, add);
 
-        if (add) {
+        if (Boolean.TRUE.equals(add)) {
             ChannelManager.addPackages(channel, longPackageIds, user);
         }
         else {

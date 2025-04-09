@@ -1004,7 +1004,7 @@ public class SaltUtils {
                             Map<Boolean, String> moveRes = saltApi.storeMinionScapFiles(
                                     minion, openscapResult.getUploadDir(), action.getId());
                             moveRes.entrySet().stream().findFirst().ifPresent(moved -> {
-                                if (moved.getKey()) {
+                                if (Boolean.TRUE.equals(moved.getKey())) {
                                     Path resultsFile = Paths.get(moved.getValue(),
                                             "results.xml");
                                     try (InputStream resultsFileIn =

@@ -84,7 +84,7 @@ public class KickstartLocaleEditAction extends BaseKickstartEditAction {
         }
 
         if (localeCmd.getKickstartData().isUsingUtc() &&
-            !useUtc) {
+            Boolean.FALSE.equals(useUtc)) {
             localeCmd.doNotUseUtc();
         }
         else if (!localeCmd.getKickstartData().isUsingUtc() &&
