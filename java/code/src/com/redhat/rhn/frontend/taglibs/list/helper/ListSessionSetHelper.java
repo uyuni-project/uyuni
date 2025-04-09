@@ -120,16 +120,14 @@ public class ListSessionSetHelper extends ListSetHelper {
     @Override
     public Collection getAddedKeys() {
         Set preSelected = getPreSelected();
-        Collection result = CollectionUtils.subtract(set, preSelected);
-        return result;
+        return CollectionUtils.subtract(set, preSelected);
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection getRemovedKeys() {
         Set preSelected = getPreSelected();
-        Collection result = CollectionUtils.subtract(preSelected, set);
-        return result;
+        return CollectionUtils.subtract(preSelected, set);
     }
 
     /**

@@ -319,8 +319,7 @@ public class ListTag extends BodyTagSupport {
      * @return number of rows on current page
      */
     public int getPageRowCount() {
-        int retval = pageData == null ? 0 : pageData.size();
-        return retval;
+        return pageData == null ? 0 : pageData.size();
     }
 
     /**
