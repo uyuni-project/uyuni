@@ -108,9 +108,7 @@ public class RhnConfigurationFactory extends HibernateFactory {
      */
     public void update(RhnConfiguration config) {
         Session session = getSession();
-        Transaction tx = session.beginTransaction();
         session.update(config);
-        tx.commit();
     }
 
     /**
@@ -120,9 +118,7 @@ public class RhnConfigurationFactory extends HibernateFactory {
      */
     public void bulkUpdate(List<RhnConfiguration> configs) {
         Session session = getSession();
-        Transaction tx = session.beginTransaction();
         configs.forEach(session::update);
-        tx.commit();
     }
 
     /**
