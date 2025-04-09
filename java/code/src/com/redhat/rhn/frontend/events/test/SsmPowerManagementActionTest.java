@@ -76,7 +76,7 @@ public class SsmPowerManagementActionTest extends BaseTestCaseWithUser {
     public void testAction() {
         SsmPowerManagementAction action = new SsmPowerManagementAction();
         action.execute(new SsmPowerManagementEvent(user.getId(), systemOverviews,
-            Operation.PowerOn));
+            Operation.POWER_ON));
 
         for (Server server : servers) {
             String cobblerName = CobblerSystemCreateCommand
