@@ -439,7 +439,8 @@ INSERT INTO access.accessGroupNamespace
     WHERE ns.namespace ~ '^api\.system\.[^.]*$'
     AND ns.namespace NOT IN (
         'api.system.get_pillar',
-        'api.system.set_pillar'
+        'api.system.set_pillar',
+        'api.system.set_group_membership'
     )
     ON CONFLICT DO NOTHING;
 -- Permit to image_admin
@@ -451,6 +452,13 @@ INSERT INTO access.accessGroupNamespace
         'api.system.get_pillar',
         'api.system.set_pillar'
     )
+    ON CONFLICT DO NOTHING;
+-- Permit to system_group_admin
+INSERT INTO access.accessGroupNamespace
+    SELECT ag.id, ns.id
+    FROM access.accessGroup ag, access.namespace ns
+    WHERE ag.label = 'image_admin'
+    AND ns.namespace = 'api.system.set_group_membership'
     ON CONFLICT DO NOTHING;
 
 -- Namespace: system.appstreams
