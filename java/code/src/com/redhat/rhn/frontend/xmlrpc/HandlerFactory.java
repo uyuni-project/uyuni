@@ -65,8 +65,6 @@ import com.redhat.rhn.frontend.xmlrpc.saltkey.SaltKeyHandler;
 import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
 import com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHandler;
 import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncHandler;
-import com.redhat.rhn.frontend.xmlrpc.sync.master.MasterHandler;
-import com.redhat.rhn.frontend.xmlrpc.sync.slave.SlaveHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.system.appstreams.SystemAppStreamHandler;
@@ -216,8 +214,6 @@ public class HandlerFactory {
         factory.addHandler("schedule", new ScheduleHandler());
         factory.addHandler("subscriptionmatching.pinnedsubscription", new PinnedSubscriptionHandler());
         factory.addHandler("sync.hub", new HubHandler());
-        factory.addHandler("sync.master", new MasterHandler());
-        factory.addHandler("sync.slave", new SlaveHandler());
         factory.addHandler("sync.content", new ContentSyncHandler());
         factory.addHandler("system", systemHandler);
         factory.addHandler("system.appstreams", new SystemAppStreamHandler());
