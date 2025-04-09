@@ -15,3 +15,5 @@ sudo -i podman exec -d -e DATA_SOURCE_NAME="postgresql://user:passwd@localhost:5
 
 sudo -i podman exec rhlike_minion bash -c "sed -e 's/http:\/\/download.opensuse.org/http:\/\/server\/pub\/mirror\/download.opensuse.org/g' -i /etc/yum.repos.d/*"
 sudo -i podman exec rhlike_minion bash -c "sed -e 's/https:\/\/download.opensuse.org/http:\/\/server\/pub\/mirror\/download.opensuse.org/g' -i /etc/yum.repos.d/*"
+sudo -i podman exec rhlike_minion bash -c "echo DEBUG && cat /etc/yum.repos.d/*"
+sudo -i podman exec rhlike_minion bash -c "yum repolist"

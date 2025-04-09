@@ -14,3 +14,5 @@ sudo -i podman exec -d deblike_minion bash -c "prometheus-exporter-exporter -con
 
 sudo -i podman exec deblike_minion bash -c "sed -e 's/http:\/\/download.opensuse.org/http:\/\/server\/pub\/mirror\/download.opensuse.org/g' -i /etc/apt/sources.list.d/*"
 sudo -i podman exec deblike_minion bash -c "sed -e 's/https:\/\/download.opensuse.org/http:\/\/server\/pub\/mirror\/download.opensuse.org/g' -i /etc/apt/sources.list.d/*"
+sudo -i podman exec deblike_minion bash -c "echo DEBUG && cat /etc/apt/sources.list.d/*"
+sudo -i podman exec deblike_minion bash -c "apt-get update"
