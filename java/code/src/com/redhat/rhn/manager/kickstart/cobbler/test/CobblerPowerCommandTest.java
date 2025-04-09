@@ -62,10 +62,10 @@ public class CobblerPowerCommandTest extends BaseTestCaseWithUser {
             SystemRecord systemRecord = SystemRecord.lookupByName(connection, cobblerName);
             String cobblerCommand = null;
             switch (operation) {
-            case PowerOn:
+            case POWER_ON:
                 cobblerCommand = "on";
                 break;
-            case PowerOff:
+            case POWER_OFF:
                 cobblerCommand = "off";
                 break;
             default:

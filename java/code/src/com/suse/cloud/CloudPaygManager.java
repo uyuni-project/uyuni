@@ -130,7 +130,7 @@ public class CloudPaygManager {
     public boolean checkRefreshCache(boolean force) {
         if (complainceInfo != null &&
                 !complainceInfo.isPaygInstance() &&
-                complainceInfo.getCloudProvider() == CloudProvider.None &&
+                complainceInfo.getCloudProvider() == CloudProvider.NONE &&
                 Files.isReadable(PAYG_COMPLIANCE_INFO_JSON)) {
             force = true;
         }
