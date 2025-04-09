@@ -334,6 +334,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'software.manage.packages', 'W', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'software.manage.packages' AND access_mode = 'W');
 INSERT INTO access.namespace (namespace, access_mode, description)
+    SELECT 'software.manage.packages', 'R', NULL
+    WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'software.manage.packages' AND access_mode = 'R');
+INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'software.manage.repos', 'W', NULL
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'software.manage.repos' AND access_mode = 'W');
 INSERT INTO access.namespace (namespace, access_mode, description)

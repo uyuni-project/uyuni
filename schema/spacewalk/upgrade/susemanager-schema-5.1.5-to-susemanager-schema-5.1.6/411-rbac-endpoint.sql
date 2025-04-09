@@ -286,6 +286,12 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     SELECT '', '/configuration/channel/DeployConfirm.do', 'POST', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/configuration/channel/DeployConfirm.do' AND http_method = 'POST');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/configuration/channel/ChannelDeployTasks.do', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/configuration/channel/ChannelDeployTasks.do' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/configuration/channel/ChannelDeployTasks.do', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/configuration/channel/ChannelDeployTasks.do' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/configuration/ChannelCreate.do', 'GET', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/configuration/ChannelCreate.do' AND http_method = 'GET');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -679,8 +685,8 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     SELECT '', '/manager/api/cm/imagestores/create', 'POST', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/api/cm/imagestores/create' AND http_method = 'POST');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-    SELECT '', '/manager/api/cm/imagestores/find/:label', 'GET', 'W', True
-    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/api/cm/imagestores/find/:label' AND http_method = 'GET');
+    SELECT '', '/manager/api/cm/imagestores/find', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/api/cm/imagestores/find' AND http_method = 'GET');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/manager/api/cm/imagestores/update/:id', 'POST', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/api/cm/imagestores/update/:id' AND http_method = 'POST');
@@ -1086,6 +1092,39 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/software/channels/Retired.do', 'POST', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/software/channels/Retired.do' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/software/packages/Details.do', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/software/packages/Details.do' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/software/packages/Dependencies.do', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/software/packages/Dependencies.do' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/software/packages/ChangeLog.do', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/software/packages/ChangeLog.do' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/software/packages/FileList.do', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/software/packages/FileList.do' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/software/packages/NewVersions.do', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/software/packages/NewVersions.do' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/software/packages/InstalledSystems.do', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/software/packages/InstalledSystems.do' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/software/packages/InstalledSystems.do', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/software/packages/InstalledSystems.do' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/software/packages/TargetSystems.do', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/software/packages/TargetSystems.do' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/software/packages/TargetSystems.do', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/software/packages/TargetSystems.do' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/software/packages/TargetSystemsConfirm.do', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/software/packages/TargetSystemsConfirm.do' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/software/packages/TargetSystemsConfirm.do', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/software/packages/TargetSystemsConfirm.do' AND http_method = 'POST');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/channels/ChannelDetail.do', 'GET', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/channels/ChannelDetail.do' AND http_method = 'GET');
@@ -1684,6 +1723,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     SELECT '', '/systems/details/configuration/DiffFileConfirmSubmit.do', 'POST', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/systems/details/configuration/DiffFileConfirmSubmit.do' AND http_method = 'POST');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/systems/details/configuration/ViewDiffResult.do', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/systems/details/configuration/ViewDiffResult.do' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/systems/ssm/config/Subscribe.do', 'GET', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/systems/ssm/config/Subscribe.do' AND http_method = 'GET');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -1692,6 +1734,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/systems/ssm/config/Rank.do', 'GET', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/systems/ssm/config/Rank.do' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/systems/ssm/config/Rank.do', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/systems/ssm/config/Rank.do' AND http_method = 'POST');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/systems/ssm/config/SubscribeConfirm.do', 'GET', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/systems/ssm/config/SubscribeConfirm.do' AND http_method = 'GET');
@@ -2749,6 +2794,12 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     SELECT '', '/systems/customdata/UpdateCustomKey.do', 'POST', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/systems/customdata/UpdateCustomKey.do' AND http_method = 'POST');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/systems/customdata/DeleteCustomKey.do', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/systems/customdata/DeleteCustomKey.do' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/systems/customdata/DeleteCustomKey.do', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/systems/customdata/DeleteCustomKey.do' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/kickstart/KickstartOverview.do', 'GET', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/kickstart/KickstartOverview.do' AND http_method = 'GET');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -3069,6 +3120,54 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/users/ExtAuthSgDetails.do', 'POST', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/users/ExtAuthSgDetails.do' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/download/hubsync/:sccrepoid/getPackage/:file', 'GET', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/download/hubsync/:sccrepoid/getPackage/:file' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/download/hubsync/:sccrepoid/getPackage/:org/:checksum/:file', 'GET', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/download/hubsync/:sccrepoid/getPackage/:org/:checksum/:file' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/download/hubsync/:sccrepoid/repodata/:file', 'GET', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/download/hubsync/:sccrepoid/repodata/:file' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/download/hubsync/:sccrepoid/media.1/:file', 'GET', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/download/hubsync/:sccrepoid/media.1/:file' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/download/:channel/getPackage/:file', 'GET', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/download/:channel/getPackage/:file' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/download/:channel/getPackage/:org/:checksum/:file', 'GET', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/download/:channel/getPackage/:org/:checksum/:file' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/download/:channel/repodata/:file', 'GET', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/download/:channel/repodata/:file' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/download/:channel/media.1/:file', 'GET', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/download/:channel/media.1/:file' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/download/hubsync/:sccrepoid/getPackage/:file', 'HEAD', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/download/hubsync/:sccrepoid/getPackage/:file' AND http_method = 'HEAD');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/download/hubsync/:sccrepoid/getPackage/:org/:checksum/:file', 'HEAD', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/download/hubsync/:sccrepoid/getPackage/:org/:checksum/:file' AND http_method = 'HEAD');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/download/hubsync/:sccrepoid/repodata/:file', 'HEAD', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/download/hubsync/:sccrepoid/repodata/:file' AND http_method = 'HEAD');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/download/hubsync/:sccrepoid/media.1/:file', 'HEAD', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/download/hubsync/:sccrepoid/media.1/:file' AND http_method = 'HEAD');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/download/:channel/getPackage/:file', 'HEAD', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/download/:channel/getPackage/:file' AND http_method = 'HEAD');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/download/:channel/getPackage/:org/:checksum/:file', 'HEAD', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/download/:channel/getPackage/:org/:checksum/:file' AND http_method = 'HEAD');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/download/:channel/repodata/:file', 'HEAD', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/download/:channel/repodata/:file' AND http_method = 'HEAD');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/download/:channel/media.1/:file', 'HEAD', 'W', False
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/download/:channel/media.1/:file' AND http_method = 'HEAD');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/manager/login', 'GET', 'W', False
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/login' AND http_method = 'GET');

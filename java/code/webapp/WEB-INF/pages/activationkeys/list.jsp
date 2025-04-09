@@ -13,7 +13,7 @@
 			imgAlt="activation-keys.common.alt"
 			creationUrl="/rhn/activationkeys/Create.do"
  			creationType="activationkeys"
- 			creationAcl = "authorized_for(system.activation_keys.details)"
+			creationAcl = "authorized_for(systems.activation_keys.details)"
                         helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/systems/activation-keys.html"
 			>
   <bean:message key="activation-keys.jsp.header"/>
