@@ -31,3 +31,29 @@ check_role(user_id_in in numeric, role_in in varchar)
 	return 1;
     end;
 $$ language plpgsql;
+
+create or replace
+        function role_names (user_id_in in numeric)
+	returns varchar
+	as
+$$
+	declare
+		rec record;
+		tmp varchar(4000);
+	begin
+		for rec in (
+			select type_name
+			from rhnUserTypeBase
+			where user_id = user_id_in
+                        and type_label in ('org_admin', 'satellite_admin')
+			order by type_id
+			) loop
+			if tmp is null then
+				tmp := rec.type_name;
+			else
+				tmp := tmp || ', ' || rec.type_name;
+			end if;
+		end loop;
+		return tmp;
+	end;
+$$ language plpgsql;
