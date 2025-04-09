@@ -194,6 +194,7 @@ $$
 			select type_name
 			from rhnUserTypeBase
 			where user_id = user_id_in
+                        and type_label in ('org_admin', 'satellite_admin')
 			order by type_id
 			) loop
 			if tmp is null then
