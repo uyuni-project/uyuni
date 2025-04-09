@@ -27,3 +27,6 @@ WHERE NOT EXISTS (SELECT 1 FROM access.accessGroup WHERE org_id IS NULL AND labe
 
 INSERT INTO access.accessGroup(org_id, label, description) SELECT null, 'system_group_admin', 'System Group Administrator'
 WHERE NOT EXISTS (SELECT 1 FROM access.accessGroup WHERE org_id IS NULL AND label = 'system_group_admin');
+
+INSERT INTO access.accessGroup(org_id, label, description) SELECT null, 'regular_user', 'Regular User'
+WHERE NOT EXISTS (SELECT 1 FROM access.accessGroup WHERE org_id IS NULL AND label = 'regular_user');
