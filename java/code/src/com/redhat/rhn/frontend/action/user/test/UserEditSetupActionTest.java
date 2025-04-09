@@ -73,7 +73,7 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
             assertNotNull(sah.getRequest().getAttribute("rbacRoles"));
             List<UserRoleStatusBean> rbacRoles = (List<UserRoleStatusBean>)
                 sah.getRequest().getAttribute("rbacRoles");
-            assertEquals(5, rbacRoles.size());
+            assertEquals(6, rbacRoles.size());
             UserRoleStatusBean lv = rbacRoles.get(0);
             assertTrue(TestUtils.isLocalized(lv.getName()));
             assertNotNull(sah.getRequest().getAttribute("disabledRoles"));

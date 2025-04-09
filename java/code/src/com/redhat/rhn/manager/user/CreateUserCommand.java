@@ -23,6 +23,7 @@ import com.redhat.rhn.common.util.validation.password.PasswordPolicyCheckFail;
 import com.redhat.rhn.common.util.validation.password.PasswordValidationUtils;
 import com.redhat.rhn.common.validator.ParsedConstraint;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.common.ResetPassword;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
@@ -166,6 +167,9 @@ public class CreateUserCommand {
         for (ServerGroup sg : serverGroups) {
             UserManager.grantServerGroupPermission(user, sg.getId());
         }
+
+        // Add default RBAC role
+        user.addToGroup(AccessGroupFactory.REGULAR_USER);
         UserManager.storeUser(user); //save the user via hibernate
     }
 

@@ -77,7 +77,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, result.size());
 
         result = handler.listRoles(admin, admin.getLogin());
-        assertEquals(6, result.size());
+        assertEquals(7, result.size());
     }
 
     @Test
