@@ -55,8 +55,6 @@ Requires:       spacewalk-html
 Requires:       mgr-push
 Requires:       spacewalk-backend
 Requires:       spacewalk-backend-app
-Requires:       spacewalk-backend-iss
-Requires:       spacewalk-backend-iss-export
 Requires:       spacewalk-backend-package-push-server
 Requires:       spacewalk-backend-server
 Requires:       spacewalk-backend-sql
