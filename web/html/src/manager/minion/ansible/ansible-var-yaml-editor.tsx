@@ -4,7 +4,8 @@ import set from "lodash/set";
 import yaml from "js-yaml";
 import { Panel } from "components/panels/Panel";
 import { DropdownButton } from "components/buttons";
-
+import { Field } from "components/formik/field";
+import { Radio } from "components/input/radio/Radio";
 
 const isDictionary = (obj) => {
   if (typeof obj !== "object" || obj === null || Array.isArray(obj)) return false;
@@ -20,16 +21,13 @@ const isDictionary = (obj) => {
 const variablesList = ["List", "Dictionary", "String", "Boolean"];
 
 // titles for collapse
-const sectionTitles = (obj, prefix = "") => {
+const levelOneTitles = (obj, prefix = "") => {
   let paths: string[] = [];
+
   for (const key in obj) {
     const path = prefix ? `${prefix}.${key}` : key;
-    const val = obj[key];
 
     paths.push(path);
-    if (typeof val === "object" && val !== null && !Array.isArray(val) && !isDictionary(val)) {
-      paths = paths.concat(sectionTitles(val, path));
-    }
   }
   return paths;
 };
@@ -40,13 +38,33 @@ type Props = {
 
 const AnsibleVarYamlEditor = (props: Props) => {
   const [data, setData] = useState(props.data);
-  const [newVarInputs, setNewVarInputs] = useState({});
+  const [newVarInputs, setNewVarInputs] = useState({ radio: "one", });
 
-  const allTitles = sectionTitles(data);
 
-  const generateId = (path: string): string => {
-    return `id_${path.replace(/\./g, "_")}`;
+  const generateId = (path) => {
+    return `id_${path.split(".").join("_")}`;
   };
+
+  function nestedLevelTitles(prefix) {
+    const obj = get(data, prefix);
+    let paths: string[] = [];
+
+    // don't render seconnd level for array or Dictionary
+    if (!obj || typeof obj !== 'object' || Array.isArray(obj) || isDictionary(obj)) return [];
+
+    for (const key in obj) {
+      const path = prefix ? `${prefix}.${key}` : key;
+      const val = obj[key];
+
+      paths.push(path);
+
+      if (typeof val === "object" && val !== null && !Array.isArray(val) && !isDictionary(val)) {
+        paths = paths.concat(nestedLevelTitles(path));
+      }
+    }
+    // console.log('paths02', paths)
+    return paths;
+  }
 
   const handleChange = (path, value) => {
     const newData = JSON.parse(JSON.stringify(data));
@@ -102,7 +120,7 @@ const AnsibleVarYamlEditor = (props: Props) => {
       ));
     }
 
-    // Dictionary variable — render each key and value
+    // Dictionary variable — render each key and value - TODO
     if (isDictionary(value)) {
       return (
         <>
@@ -154,6 +172,31 @@ const AnsibleVarYamlEditor = (props: Props) => {
       );
     }
 
+    if (typeof value == "boolean") {
+      // variable is a boolean
+      console.log("YESSSS", value)
+      return (
+        <div className="row">
+          <div className="col-md-4"></div>
+          <div className="col-md-8">
+            <Radio
+              name="beginner"
+              inline={true}
+              label={t("Level")}
+              required
+              labelClass="col-md-3"
+              divClass="col-md-6"
+              items={[
+                { label: t("Beginner"), value: "beginner" },
+                { label: t("Normal"), value: "normal" },
+                { label: t("Expert"), value: "expert" },
+              ]}
+            />
+            TESt{value}
+          </div>
+        </div>
+      )
+    }
     return null;
   };
 
@@ -166,15 +209,24 @@ const AnsibleVarYamlEditor = (props: Props) => {
       <div className="variable-content">
         <div className="yaml-editor">
           {
-            allTitles.map((path) => (
+            levelOneTitles(data).map((path) => (
               <Panel
                 headingLevel="h5"
                 collapseId={generateId(path)}
                 title={path.split(".").join(" > ")}
                 className="panel-trasnparent"
-                collapsClose={true}
-              >
-                {renderEditor(path)}
+              > {renderEditor(path)}
+                {nestedLevelTitles(path).map((p) => (
+                  <Panel
+                    headingLevel="h5"
+                    collapseId={generateId(p)}
+                    title={p.split(".").join(" > ")}
+                    className="panel-trasnparent"
+                    collapsClose={true}
+                  >{renderEditor(p)}
+                  </Panel>
+                ))
+                }
               </Panel>
             ))
           }

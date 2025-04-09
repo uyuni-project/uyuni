@@ -1335,6 +1335,8 @@ tr.changed > td {
   width: 40%;
   border: 0;
   background-color: $eos-bc-yellow-100;
+  overflow: auto;
+  margin-bottom: 50px;
 
   pre {
     background-color: transparent;
