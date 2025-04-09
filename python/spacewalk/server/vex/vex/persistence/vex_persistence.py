@@ -91,6 +91,25 @@ class VEXDatabaseManager:
                 return result[0]
             logging.warning(f"Package {name} not found in suseOVALVulnerablePackage")  # DEBUG
             return -1
+        
+    def get_annotation(self, platform, cve, package):
+        """Get ID of an existing vulnerable package
+        Args:
+            name: Package name (e.g., "openssl")
+            fix_version: Optional fix version (e.g., "1.1.1k-94.1")
+        Returns:
+            int: Package ID if found, -1 if not found
+        """
+        with self.conn.cursor() as cursor:
+            cursor.execute(
+                sql.SQL(f"SELECT vex_status FROM suseVEXAnnotations WHERE  platform_id = {platform} AND cve_id = {cve} AND vulnerable_pkg_id= {package}")
+            )
+            result = cursor.fetchone()
+            if result:
+                logging.info(f"Found status {result}: {cve}, Platform={platform}, Package{package}")  # DEBUG
+                return result[0]
+            logging.warning(f"{cve} for Platform={platform}, Package{package} not found in suseVEXAnnotations")  # DEBUG
+            return -1
 
     def insert_cve(self, cve_name):
         """Insert a CVE and return its ID
@@ -164,7 +183,7 @@ class VEXDatabaseManager:
                     """), [name, fix_version]
                 )
                 inserted_id = cursor.fetchone()[0]
-                self.conn.commit()  # Explicit commit
+                self.conn.commit()
                 logging.info(f"Inserted new package {name} (fix: {fix_version}) with ID {inserted_id}")
                 return inserted_id
         except Exception as e:
@@ -174,16 +193,28 @@ class VEXDatabaseManager:
 
     def insert_vex_annotation(self, platform_id, cve_id, vulnerable_pkg_id, status):
         """Insert a VEX annotation"""
-        with self.conn.cursor() as cursor:
-            cursor.execute(
-                sql.SQL("""
-                    INSERT INTO suseVEXAnnotations 
-                    (platform_id, cve_id, vulnerable_pkg_id, status)
-                    VALUES (%s, %s, %s, %s)
-                """), [platform_id, cve_id, vulnerable_pkg_id, status]
-            )
-
-
+        existing_anno = self.get_annotation(platform_id, cve_id, vulnerable_pkg_id)
+        if existing_anno != -1:
+            logging.info(f"Annotation already exists with status {existing_anno}")
+            return existing_anno
+        
+        try:
+            with self.conn.cursor() as cursor:
+                cursor.execute(
+                    sql.SQL("""
+                        INSERT INTO suseVEXAnnotations 
+                        (platform_id, cve_id, vulnerable_pkg_id, vex_status)
+                        VALUES (%s, %s, %s, %s)
+                    """), [platform_id, cve_id, vulnerable_pkg_id, status]
+                )
+                self.conn.commit()
+                logging.info(f"Inserted new annotation {status}")
+                return status
+        except Exception as e:
+            self.conn.rollback()
+            logging.error(f"Failed to store annotation: {cve_id}, Platform={platform_id}, Package={vulnerable_pkg_id}")
+            logging.error(e)
+            return -1
 
     def store_vex_object(self, platform_cpe, cve_name, package_name, fix_version=None, status="status"):
         """Main method to store all VEX components"""
