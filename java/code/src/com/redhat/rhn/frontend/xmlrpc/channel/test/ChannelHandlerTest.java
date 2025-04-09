@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.dto.ChannelTreeNode;
@@ -130,7 +129,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         }
         assertTrue(foundChannel);
 
-        regular.removePermanentRole(RoleFactory.CHANNEL_ADMIN);
+        regular.removeFromGroup(AccessGroupFactory.CHANNEL_ADMIN);
     }
 
     @Test

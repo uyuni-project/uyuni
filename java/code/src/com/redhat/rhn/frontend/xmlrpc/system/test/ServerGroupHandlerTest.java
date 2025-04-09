@@ -95,7 +95,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         catch (Exception e) {
             //duplicate check successful.
         }
-        regular.removePermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
+        regular.removeFromGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
         try {
 
             handler.create(regular, NAME + "F", DESCRIPTION + "F");
@@ -132,7 +132,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertTrue(admins.contains(regular));
         assertTrue(admins.contains(admin));
         //now test on permissions
-        regular.removePermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
+        regular.removeFromGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
         try {
             handler.listAdministrators(regular, group.getName());
             fail("Should throw access / permission exception for regular is not a sys admin");

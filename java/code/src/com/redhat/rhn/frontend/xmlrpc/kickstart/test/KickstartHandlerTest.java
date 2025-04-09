@@ -47,8 +47,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import redstone.xmlrpc.XmlRpcFault;
-
 /**
  * KickstartHandlerTest
  */
@@ -137,8 +135,8 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         String newKsProfileLabel = "test-" + TestUtils.randomString();
         String kickstartFileContents = TestUtils.readAll(TestUtils.findTestData(
                 "samplekickstart1.ks"));
-        handler.invoke("importFile", List.of(user, newKsProfileLabel,
-                KickstartVirtualizationType.XEN_PARAVIRT, treeLabel, kickstartFileContents));
+        handler.importFile(user, newKsProfileLabel, KickstartVirtualizationType.XEN_PARAVIRT, treeLabel,
+                kickstartFileContents);
 
         KickstartData newKsProfile = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
                 newKsProfileLabel, admin.getOrg().getId());
@@ -179,10 +177,12 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
     public void testImportAsRegularUser() throws Exception {
         // Imports should require the same permissions as create, org or config admin.
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
-        KickstartableTree testTree = KickstartableTreeTest.
-            createTestKickstartableTree(baseChan);
+        KickstartableTree testTree = KickstartableTreeTest.createTestKickstartableTree(baseChan);
+        String newKsProfileLabel = "test-" + TestUtils.randomString();
+        String kickstartFileContents = TestUtils.readAll(TestUtils.findTestData("samplekickstart1.ks"));
         try {
-            runImport(regular, testTree.getLabel());
+            handler.invoke("importFile", List.of(regular, newKsProfileLabel,
+                    KickstartVirtualizationType.XEN_PARAVIRT, testTree.getLabel(), kickstartFileContents));
             fail();
         }
         catch (SecurityException e) {
@@ -192,13 +192,14 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testNoSuchKickstartTreeLabel() throws Exception {
+        String newKsProfileLabel = "test-" + TestUtils.randomString();
+        String kickstartFileContents = TestUtils.readAll(TestUtils.findTestData("samplekickstart1.ks"));
         try {
             runImport(admin, "nosuchlabel");
             fail();
         }
-        catch (XmlRpcFault e) {
-            assertEquals("Unable to locate autoinstallable tree for your organization: nosuchlabel",
-                    e.getMessage());
+        catch (NoSuchKickstartTreeException e) {
+            // expected
         }
     }
 

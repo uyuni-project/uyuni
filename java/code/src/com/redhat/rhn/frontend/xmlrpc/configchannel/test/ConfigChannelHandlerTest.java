@@ -123,9 +123,8 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         String newName = NAME + TestUtils.randomString();
         String desc = DESCRIPTION + TestUtils.randomString();
         try {
-            handler.update(regular, LABEL, newName, desc);
-            String msg = "Needs to be a config admin/have access.. " +
-                            "perm error not detected.";
+            handler.invoke("update", List.of(regular, LABEL, newName, desc));
+            String msg = "Needs to be a config admin/have access.. perm error not detected.";
             fail(msg);
         }
         catch (Exception e) {

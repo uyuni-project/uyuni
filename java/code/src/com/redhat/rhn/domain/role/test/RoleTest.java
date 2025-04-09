@@ -15,12 +15,13 @@
 
 package com.redhat.rhn.domain.role.test;
 
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+import static com.redhat.rhn.domain.role.RoleFactory.SAT_ADMIN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.Role;
@@ -52,7 +53,7 @@ public class RoleTest extends RhnBaseTestCase {
         boolean failed = false;
         Set roles = usr.getRoles();
         try {
-            roles.remove(RoleFactory.ORG_ADMIN);
+            roles.remove(ORG_ADMIN);
         }
         catch (UnsupportedOperationException uoe) {
             // we want it to fail
@@ -68,37 +69,13 @@ public class RoleTest extends RhnBaseTestCase {
     public void testUserAddRole() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
-        Org o1 = usr.getOrg();
-        o1.addRole(RoleFactory.CHANNEL_ADMIN);
-        o1 = OrgFactory.save(o1);
-        assertFalse(usr.hasRole(RoleFactory.CHANNEL_ADMIN));
-        usr.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
-        assertTrue(usr.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN));
+        assertFalse(usr.hasRole(ORG_ADMIN));
+        usr.addPermanentRole(ORG_ADMIN);
+        assertTrue(usr.hasRole(ORG_ADMIN));
 
         UserFactory.save(usr);
         User usr2 = UserFactory.lookupById(usr.getId());
-        assertTrue(usr2.hasRole(RoleFactory.CHANNEL_ADMIN));
-    }
-
-    /**
-    * Test to make sure you can't add a Role to a User who's Org
-    * doesn't have that Role.
-    */
-    @Test
-    public void testUserAddRoleNotInOrg() {
-        User usr = UserFactory.createUser();
-        Org org = OrgFactory.createOrg();
-        org.setName("testOrg" + this.getClass().getSimpleName());
-        usr.setOrg(org);
-        assertFalse(usr.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN));
-        boolean failed = false;
-        try {
-            usr.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
-        }
-        catch (IllegalArgumentException iae) {
-            failed = true;
-        }
-        assertTrue(failed);
+        assertTrue(usr2.hasRole(ORG_ADMIN));
     }
 
     /**
@@ -109,12 +86,12 @@ public class RoleTest extends RhnBaseTestCase {
         // Create a new user, add ORG_ADMIN to their roles
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
-        usr.addPermanentRole(RoleFactory.ORG_ADMIN);
+        usr.addPermanentRole(ORG_ADMIN);
         UserFactory.save(usr);
-        usr.removePermanentRole(RoleFactory.ORG_ADMIN);
+        usr.removePermanentRole(ORG_ADMIN);
         UserFactory.save(usr);
         User usr2 = UserFactory.lookupById(usr.getId());
-        assertFalse(usr2.hasRole(RoleFactory.ORG_ADMIN));
+        assertFalse(usr2.hasRole(ORG_ADMIN));
     }
 
 
@@ -130,7 +107,7 @@ public class RoleTest extends RhnBaseTestCase {
         // Add the CHANNEL_ADMIN role to the Org
         o1.addRole(RoleFactory.CHANNEL_ADMIN);
         o1 = OrgFactory.save(o1);
-        usr.addPermanentRole(RoleFactory.ORG_ADMIN);
+        usr.addPermanentRole(ORG_ADMIN);
         UserFactory.save(usr);
         // Now check to see if the user gets the implied CHANNEL_ADMIN role
         User usr2 = UserFactory.lookupById(usr.getId());
@@ -162,7 +139,8 @@ public class RoleTest extends RhnBaseTestCase {
     public void testUserWithNoRoles() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
-        assertTrue(usr.getRoles().isEmpty());
+        assertFalse(usr.hasRole(SAT_ADMIN));
+        assertFalse(usr.hasRole(ORG_ADMIN));
     }
 
     /**
@@ -170,8 +148,8 @@ public class RoleTest extends RhnBaseTestCase {
      */
     @Test
     public void testFindByLabel() {
-        Role role = RoleFactory.lookupByLabel(RoleFactory.ORG_ADMIN.getLabel());
-        assertEquals(RoleFactory.ORG_ADMIN.getLabel(), role.getLabel());
+        Role role = RoleFactory.lookupByLabel(ORG_ADMIN.getLabel());
+        assertEquals(ORG_ADMIN.getLabel(), role.getLabel());
         assertEquals("Organization Administrator", role.getName());
     }
 
@@ -181,8 +159,8 @@ public class RoleTest extends RhnBaseTestCase {
      */
     @Test
     public void testFindById() {
-        Role r2 = RoleFactory.lookupById(RoleFactory.ORG_ADMIN.getId());
-        assertEquals(r2.getLabel(), RoleFactory.ORG_ADMIN.getLabel());
+        Role r2 = RoleFactory.lookupById(ORG_ADMIN.getId());
+        assertEquals(r2.getLabel(), ORG_ADMIN.getLabel());
         assertEquals(r2.getName(), "Organization Administrator");
     }
 

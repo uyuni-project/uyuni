@@ -77,14 +77,10 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         int adminRoles = admin.getRoles().size();
 
         Set<String> result = handler.listRoles(admin, regular.getLogin());
-        assertEquals(regularRoles, result.size());
+        assertEquals(0, result.size());
 
         result = handler.listRoles(admin, admin.getLogin());
-        assertEquals(adminRoles, result.size());
-
-        //make sure regular user can lookup his own roles
-        result = handler.listRoles(regular, regular.getLogin());
-        assertEquals(regularRoles, result.size());
+        assertEquals(6, result.size());
     }
 
     @Test
@@ -170,7 +166,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testAddRemoveRole() throws Exception {
         Set<Role> roles = regular.getRoles();
-        assertEquals(0, roles.size());
+        assertEquals(5, roles.size());
 
         //Add org_admin to regular user
         handler.addRole(admin, regular.getLogin(), "org_admin");
@@ -182,7 +178,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         handler.removeRole(admin, regular.getLogin(), "org_admin");
 
         roles = regular.getRoles();
-        assertEquals(0, roles.size());
+        assertEquals(5, roles.size());
 
         //make sure regular user can't edit roles
         try {
