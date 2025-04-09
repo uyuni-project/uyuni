@@ -7,13 +7,13 @@ TOP	= ..
 SUBDIR	= satellite_tools
 SUBDIRS = exporter disk_dumper accounts repo_plugins
 SPACEWALK_FILES	= __init__ connection constants diskImportLib messages \
-            progress_bar req_channels satCerts satsync syncCache \
+            progress_bar req_channels satCerts syncCache \
             sync_handlers \
             syncLib SequenceServer xmlDiskSource \
             xmlSource xmlWireSource rhn_ssl_dbstore \
             satComputePkgHeaders updatePackages reposync \
 	    geniso contentRemove download appstreams
-SCRIPTS = satellite-sync spacewalk-debug \
+SCRIPTS = spacewalk-debug \
 	  rhn-schema-version rhn-charsets \
 	  rhn-ssl-dbstore update-packages rhn-db-stats rhn-schema-stats \
           spacewalk-repo-sync spacewalk-remove-channel \
