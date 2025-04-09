@@ -242,8 +242,9 @@ class CSAFParser(VEX_Parser):
             try:
                 db_manager.connect()
                 
-                vuln_id = vuln.get_id()
-                db_manager.insert_cve(vuln_id) # Insert CVE id if necessary
+                vuln_id = db_manager.insert_cve(vuln.get_id()) # Insert CVE id if necessary
+
+                # TODO: Change status management
 
                 if Status.AFFECTED in vuln.get_statuses():
                     logging.info("Persisting known_affected")
@@ -254,8 +255,9 @@ class CSAFParser(VEX_Parser):
                         logging.info(f"Product -> {product}") # DEBUG
                         logging.info(f"Platform -> {platform}") # DEBUG
                         logging.info(f"Package -> {package}") # DEBUG
-                        db_manager.insert_oval_platform(self.get_product_id_name(platform))
-                        db_manager.insert_vulnerable_package(package)
+                        platform_id = db_manager.insert_oval_platform(self.get_product_id_name(platform))
+                        package_id = db_manager.insert_vulnerable_package(package)
+                        db_manager.insert_vex_annotation(platform_id, vuln_id, package_id, Status.AFFECTED.value)
 
                     # TODO: MANAGE REMEDIATIONS
 
