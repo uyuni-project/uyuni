@@ -100,6 +100,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
                 context.getSystemEntitlementManager(),
                 context.getUser(), context.getProxyFqdn(), fqdns, context.getProxyPort(), proxySshKey.getPublicKey()
         );
+        SystemManager.updateSystemOverview(proxySystem);
         try {
             context.setClientCertificate(SystemManager.createClientCertificate(proxySystem));
         }
@@ -160,6 +161,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
 
             systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.PROXY);
 
+            ServerFactory.save(server);
             return server;
         }
         Server server = ServerFactory.createServer();
