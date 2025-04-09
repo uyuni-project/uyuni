@@ -2749,6 +2749,12 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     SELECT '', '/systems/customdata/UpdateCustomKey.do', 'POST', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/systems/customdata/UpdateCustomKey.do' AND http_method = 'POST');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/systems/customdata/DeleteCustomKey.do', 'GET', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/systems/customdata/DeleteCustomKey.do' AND http_method = 'GET');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/systems/customdata/DeleteCustomKey.do', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/systems/customdata/DeleteCustomKey.do' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/kickstart/KickstartOverview.do', 'GET', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/kickstart/KickstartOverview.do' AND http_method = 'GET');
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)

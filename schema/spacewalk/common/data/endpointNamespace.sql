@@ -4481,6 +4481,16 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.custom_data' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/systems/customdata/DeleteCustomKey.do' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.custom_data' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/systems/customdata/DeleteCustomKey.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'systems.autoinstallation' AND ns.access_mode = 'R'
     AND ep.endpoint = '/kickstart/KickstartOverview.do' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;

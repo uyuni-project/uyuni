@@ -98,6 +98,7 @@ INSERT INTO access.accessGroupNamespace
     ON CONFLICT DO NOTHING;
 
 -- Namespace: software.details.*
+-- Namespace: software.manage.*
 -- Namespace: software.distro
 -- Namespace: software.list
 -- Namespace: software.search
@@ -106,12 +107,12 @@ INSERT INTO access.accessGroupNamespace
     SELECT ag.id, ns.id
     FROM access.accessGroup ag, access.namespace ns
     WHERE (ns.namespace LIKE 'software.details.%' OR
+        ns.namespace LIKE 'software.manage.%' OR
         ns.namespace = 'software.distro' OR
         ns.namespace = 'software.list' OR
         ns.namespace = 'software.search')
     ON CONFLICT DO NOTHING;
 
--- Namespace: software.manage.*
 -- Namespace: patches.manage.*
 -- Namespace: patches.clone
 -- Namespace: users.channels
@@ -120,8 +121,7 @@ INSERT INTO access.accessGroupNamespace
     SELECT ag.id, ns.id
     FROM access.accessGroup ag, access.namespace ns
     WHERE ag.label = 'channel_admin'
-    AND (ns.namespace LIKE 'software.manage.%' OR
-        ns.namespace LIKE 'patches.manage.%' OR
+    AND (ns.namespace LIKE 'patches.manage.%' OR
         ns.namespace = 'patches.clone' OR
         ns.namespace = 'users.channels')
     ON CONFLICT DO NOTHING;
@@ -133,6 +133,7 @@ INSERT INTO access.accessGroupNamespace
 -- Namespace: systems.details.*
 -- Namespace: systems.events
 -- Namespace: systems.formulas
+-- Namespace: systems.groups.*
 -- Namespace: systems.list
 -- Namespace: systems.maintenance
 -- Namespace: systems.profiles
@@ -155,6 +156,7 @@ INSERT INTO access.accessGroupNamespace
         ns.namespace LIKE 'systems.details.%' OR
         ns.namespace = 'systems.events' OR
         ns.namespace = 'systems.formulas' OR
+        ns.namespace LIKE 'systems.groups.%' OR
         ns.namespace = 'systems.list' OR
         ns.namespace = 'systems.maintenance' OR
         ns.namespace = 'systems.profiles' OR
@@ -162,9 +164,9 @@ INSERT INTO access.accessGroupNamespace
         ns.namespace = 'systems.recurring' OR
         ns.namespace = 'systems.search' OR
         ns.namespace = 'systems.snapshots' OR
-        ns.namespace = 'systems.software.%' OR
+        ns.namespace LIKE 'systems.software.%' OR
         ns.namespace = 'systems.ssm' OR
-        ns.namespace = 'systems.states.%' OR
+        ns.namespace LIKE 'systems.states.%' OR
         ns.namespace = 'systems.vhms')
     ON CONFLICT DO NOTHING;
 
@@ -184,15 +186,6 @@ INSERT INTO access.accessGroupNamespace
         ns.namespace LIKE 'users.list.%' OR
         ns.namespace = 'users.preferences' OR
         ns.namespace = 'users.systems')
-    ON CONFLICT DO NOTHING;
-
--- Namespace: systems.groups.*
--- Permit to 'system_group_admin'
-INSERT INTO access.accessGroupNamespace
-    SELECT ag.id, ns.id
-    FROM access.accessGroup ag, access.namespace ns
-    WHERE ag.label = 'system_group_admin'
-    AND ns.namespace LIKE 'systems.groups.%'
     ON CONFLICT DO NOTHING;
 
 -- Namespace: systems.activation_keys.*
