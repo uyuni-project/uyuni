@@ -34,8 +34,9 @@ public class AccessGroupFactory extends HibernateFactory {
     public static final AccessGroup SYSTEM_GROUP_ADMIN = lookupDefault("system_group_admin");
     public static final AccessGroup ACTIVATION_KEY_ADMIN = lookupDefault("activation_key_admin");
     public static final AccessGroup IMAGE_ADMIN = lookupDefault("image_admin");
+    public static final AccessGroup REGULAR_USER = lookupDefault("regular_user");
     public static final Set<AccessGroup> DEFAULT_GROUPS =
-            Set.of(CHANNEL_ADMIN, CONFIG_ADMIN, SYSTEM_GROUP_ADMIN, ACTIVATION_KEY_ADMIN, IMAGE_ADMIN);
+            Set.of(CHANNEL_ADMIN, CONFIG_ADMIN, SYSTEM_GROUP_ADMIN, ACTIVATION_KEY_ADMIN, IMAGE_ADMIN, REGULAR_USER);
 
     private AccessGroupFactory() {
         super();

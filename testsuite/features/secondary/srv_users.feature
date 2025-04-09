@@ -79,15 +79,16 @@ Feature: Manage users
     And I should see a "SUSE Multi-Linux Manager Administrator" text
     And I should see "role_org_admin" as checked
     And I should see a "Organization Administrator" text
-    And the "role_system_group_admin" checkbox should be disabled
-    And I should see a "System Group Administrator - [ Admin Access ]" text
-    And the "role_channel_admin" checkbox should be disabled
-    And I should see a "Channel Administrator - [ Admin Access ]" text
-    And the "role_activation_key_admin" checkbox should be disabled
-    And I should see a "Activation Key Administrator - [ Admin Access ]" text
-    And the "role_config_admin" checkbox should be disabled
-    And I should see a "Configuration Administrator - [ Admin Access ]" text
-    And I should see a "Above roles are granted via the Organization Administrator role." text
+    And I should see "role_system_group_admin" as checked
+    And I should see a "System Group Administrator" text
+    And I should see "role_channel_admin" as checked
+    And I should see a "Channel Administrator" text
+    And I should see "role_activation_key_admin" as checked
+    And I should see a "Activation Key Administrator" text
+    And I should see "role_config_admin" as checked
+    And I should see a "Configuration Administrator" text
+    And I should see "role_regular_user" as checked
+    And I should see a "Regular User" text
 
 @uyuni
   Scenario: Add roles
@@ -104,23 +105,20 @@ Feature: Manage users
     And I should see a "Uyuni Administrator" text
     And I should see "role_org_admin" as checked
     And I should see a "Organization Administrator" text
-    And the "role_system_group_admin" checkbox should be disabled
-    And I should see a "System Group Administrator - [ Admin Access ]" text
-    And the "role_channel_admin" checkbox should be disabled
-    And I should see a "Channel Administrator - [ Admin Access ]" text
-    And the "role_activation_key_admin" checkbox should be disabled
-    And I should see a "Activation Key Administrator - [ Admin Access ]" text
-    And the "role_config_admin" checkbox should be disabled
-    And I should see a "Configuration Administrator - [ Admin Access ]" text
-    And I should see a "Above roles are granted via the Organization Administrator role." text
+    And I should see "role_system_group_admin" as checked
+    And I should see a "System Group Administrator" text
+    And I should see "role_channel_admin" as checked
+    And I should see a "Channel Administrator" text
+    And I should see "role_activation_key_admin" as checked
+    And I should see a "Activation Key Administrator" text
+    And I should see "role_config_admin" as checked
+    And I should see a "Configuration Administrator" text
+    And I should see "role_regular_user" as checked
+    And I should see a "Regular User" text
 
   Scenario: Verify user list
     When I follow the left menu "Users > User List > Active"
     Then table row for "user1" should contain "Organization Administrator"
-    And table row for "user1" should contain "Channel Administrator"
-    And table row for "user1" should contain "Configuration Administrator"
-    And table row for "user1" should contain "System Group Administrator"
-    And table row for "user1" should contain "Activation Key Administrator"
 
   Scenario: Fail to deactivate organization administrator
     When I follow the left menu "Users > User List > Active"
@@ -142,6 +140,7 @@ Feature: Manage users
     And I should see "role_channel_admin" as checked
     And I should see "role_activation_key_admin" as checked
     And I should see "role_config_admin" as checked
+    And I should see "role_regular_user" as checked
 
   Scenario: Deactivate ordinary user
     When I follow the left menu "Users > User List > Active"
