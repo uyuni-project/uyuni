@@ -896,11 +896,9 @@ public class SaltSSHService {
                                                 .getActionChainSLSFileName(actionChainId, entry.getKey(), chunk + 1))
                 ).collect(Collectors.toSet());
 
-        String extraFileRefs = ACTION_STATES + "," + Stream.concat(pkgRefs.stream(),
+        return ACTION_STATES + "," + Stream.concat(pkgRefs.stream(),
                 Stream.concat(actionChainSls.stream(), fileRefs.stream()))
                 .collect(Collectors.joining(","));
-
-        return extraFileRefs;
     }
 
     private Collection<String> gatherSaltFileRefs(Map<String, Object> data) {
