@@ -135,8 +135,8 @@ public class PowerManagementAction extends RhnAction {
                     if (context.wasDispatched(
                         "kickstart.powermanagement.jsp.get_status")) {
                         try {
-                            SystemRecord record = getSystemRecord(user, server);
-                            request.setAttribute(POWER_STATUS_ON, record.getPowerStatus());
+                            SystemRecord systemRecord = getSystemRecord(user, server);
+                            request.setAttribute(POWER_STATUS_ON, systemRecord.getPowerStatus());
                             addMessage(request, "kickstart.powermanagement.saved");
                         }
                         catch (XmlRpcException e) {
@@ -213,17 +213,17 @@ public class PowerManagementAction extends RhnAction {
         SortedMap<String, String> types = setUpPowerTypes(request, strutsDelegate, errors);
 
         if (!types.isEmpty()) {
-            SystemRecord record = getSystemRecord(user, server);
+            SystemRecord systemRecord = getSystemRecord(user, server);
 
-            if (record == null) {
+            if (systemRecord == null) {
                 request.setAttribute(POWER_TYPE, types.get(types.firstKey()));
             }
             else {
-                request.setAttribute(POWER_TYPE, record.getPowerType());
-                request.setAttribute(POWER_ADDRESS, record.getPowerAddress());
-                request.setAttribute(POWER_USERNAME, record.getPowerUsername());
-                request.setAttribute(POWER_PASSWORD, record.getPowerPassword());
-                request.setAttribute(POWER_ID, record.getPowerId());
+                request.setAttribute(POWER_TYPE, systemRecord.getPowerType());
+                request.setAttribute(POWER_ADDRESS, systemRecord.getPowerAddress());
+                request.setAttribute(POWER_USERNAME, systemRecord.getPowerUsername());
+                request.setAttribute(POWER_PASSWORD, systemRecord.getPowerPassword());
+                request.setAttribute(POWER_ID, systemRecord.getPowerId());
             }
         }
     }
