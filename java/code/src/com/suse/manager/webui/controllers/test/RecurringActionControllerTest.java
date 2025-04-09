@@ -375,10 +375,9 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
     private RecurringActionDetailsDto getDetails(Map<String, Object> action) {
         Long actionId = extractActionId(action);
         var request = getRequestWithCsrf("/manager/api/recurringactions/:id/details", actionId);
-        var details = GSON.fromJson(
+        return GSON.fromJson(
             RecurringActionController.getDetails(request, response, user), RecurringActionDetailsDto.class
         );
-        return details;
     }
 
     private Long extractTargetId(Map<String, Object> action) {
