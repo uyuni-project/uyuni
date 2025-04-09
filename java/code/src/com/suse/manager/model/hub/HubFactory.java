@@ -13,17 +13,28 @@ package com.suse.manager.model.hub;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.DatabaseEnumType;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
+import com.redhat.rhn.frontend.listview.PageControl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.Tuple;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Root;
 
 public class HubFactory extends HibernateFactory {
 
@@ -36,18 +47,10 @@ public class HubFactory extends HibernateFactory {
 
     /**
      * Save a {@link IssHub} object
-     * @param issHubIn object to save
+     * @param issServer object to save
      */
-    public void save(IssHub issHubIn) {
-        saveObject(issHubIn);
-    }
-
-    /**
-     * Save a {@link IssPeripheral} object
-     * @param issPeripheralIn object to save
-     */
-    public void save(IssPeripheral issPeripheralIn) {
-        saveObject(issPeripheralIn);
+    public void save(IssServer issServer) {
+        saveObject(issServer);
     }
 
     /**
@@ -58,6 +61,13 @@ public class HubFactory extends HibernateFactory {
         saveObject(issPeripheralChannelsIn);
     }
 
+    /**
+     * Delete the peripheral channels
+     * @param issPeripheralChannelsIn the channels
+     */
+    public void deleteChannels(Set<IssPeripheralChannels> issPeripheralChannelsIn) {
+        delete(issPeripheralChannelsIn, IssPeripheralChannels.class);
+    }
     /**
      * Remove a {@ink IssPeripheral} object
      * @param peripheralIn the object to remove
@@ -74,6 +84,13 @@ public class HubFactory extends HibernateFactory {
         removeObject(hubIn);
     }
 
+    /**
+     * Remove a {@link IssPeripheralChannels} object
+     * @param issPeripheralChannelsIn object to remove
+     */
+    public void remove(IssPeripheralChannels issPeripheralChannelsIn) {
+        removeObject(issPeripheralChannelsIn);
+    }
 
     /**
      * Retrieves a {@link IssHub} by id
@@ -147,16 +164,30 @@ public class HubFactory extends HibernateFactory {
     }
 
     /**
+     * get number of peripheral registered on this server
+     *
+     * @param pc the page control object
+     * @return the number of peripherals
+     */
+    public long countPeripherals(PageControl pc) {
+        if (pc == null) {
+            return countPeripherals();
+        }
+
+        return buildCountQueryFromPageControl(IssPeripheral.class, pc).uniqueResult();
+    }
+
+    /**
      * get the list of all the peripheral servers for a hub
-     * @param offset the first item to retrieve
-     * @param pageSize the maximum number of items to retrieve
+     * @param pc the page control object
      * @return a list of paginated peripherals
      */
-    public List<IssPeripheral> listPaginatedPeripherals(int offset, int pageSize) {
-        return getSession().createQuery("FROM IssPeripheral", IssPeripheral.class)
-            .setFirstResult(offset)
-            .setMaxResults(pageSize)
-            .list();
+    public List<IssPeripheral> listPaginatedPeripherals(PageControl pc) {
+        if (pc == null) {
+            return listPeripherals();
+        }
+
+        return buildListQueryFromPageControl(IssPeripheral.class, pc).list();
     }
 
     /**
@@ -171,6 +202,23 @@ public class HubFactory extends HibernateFactory {
     }
 
     /**
+     * List {@link IssPeripheralChannels} objects which reference
+     * the given {@link IssPeripheral} server and {@link Channel}
+     * @param peripheralIn the peripheral server
+     * @param channelIn    the channel
+     * @return return {@link IssPeripheralChannels} or empty
+     */
+    public Optional<IssPeripheralChannels> lookupIssPeripheralChannelsByFqdnAndChannel(IssPeripheral peripheralIn,
+                                                                                       Channel channelIn) {
+        return getSession()
+                .createQuery("FROM IssPeripheralChannels WHERE peripheral = :peripheral AND channel = :channel",
+                        IssPeripheralChannels.class)
+                .setParameter("peripheral", peripheralIn)
+                .setParameter("channel", channelIn)
+                .uniqueResultOptional();
+    }
+
+    /**
      * List {@link IssPeripheralChannels} objects which reference the given {@link Channel}
      * @param channelIn the channel
      * @return return the list of {@link IssPeripheralChannels} objects
@@ -179,6 +227,18 @@ public class HubFactory extends HibernateFactory {
         return getSession()
                 .createQuery("FROM IssPeripheralChannels WHERE channel = :channel", IssPeripheralChannels.class)
                 .setParameter("channel", channelIn)
+                .list();
+    }
+
+    /**
+     * List {@link IssPeripheralChannels} objects for the given {@link IssPeripheral} server
+     * @param peripheralIn the peripheral server
+     * @return return a list of all {@link IssPeripheralChannels} for the peripheral server
+     */
+    public List<IssPeripheralChannels> listIssPeripheralChannels(IssPeripheral peripheralIn) {
+        return getSession()
+                .createQuery("FROM IssPeripheralChannels WHERE peripheral = :peripheral", IssPeripheralChannels.class)
+                .setParameter("peripheral", peripheralIn)
                 .list();
     }
 
@@ -304,6 +364,7 @@ public class HubFactory extends HibernateFactory {
 
         return tokenRemoved != 0;
     }
+
     /**
      * Count the existing access tokens
      * @return the current number of access tokens
@@ -360,5 +421,80 @@ public class HubFactory extends HibernateFactory {
                 tuple.get("peripheral_id", Long.class)
             ))
             .toList();
+    }
+
+    /**
+     * Return list of {@link ChannelInfoDetailsJson} for a given {@link IssPeripheral} server
+     * @param peripheral the peripheral server
+     * @return return a list of ChannelInfoDetails for synchronization with the peripheral
+     */
+    public List<ChannelInfoDetailsJson> listChannelInfoForPeripheral(IssPeripheral peripheral) {
+        List<IssPeripheralChannels> peripheralChannels = listIssPeripheralChannels(peripheral);
+        Set<Long> channelIds = peripheralChannels.stream()
+                .map(IssPeripheralChannels::getChannel)
+                .map(Channel::getId)
+                .collect(Collectors.toSet());
+        return peripheralChannels.stream()
+                .map(pc -> ChannelFactory.toChannelInfo(
+                        pc.getChannel(),
+                        pc.getPeripheralOrgId(),
+                        findOriginalChannelLabel(pc.getChannel(), channelIds)))
+                .toList();
+    }
+
+    /**
+     * Traverses the chain of cloned channels to find the first "original" channel in the given set
+     * @param channel the starting channel
+     * @param channelIds the set of valid channel IDs
+     * @return an Optional containing the original channel's label if found, or empty if not
+     */
+    private Optional<String> findOriginalChannelLabel(Channel channel, Set<Long> channelIds) {
+        Channel search = channel;
+        while (search.isCloned()) {
+            search = search.asCloned().map(ClonedChannel::getOriginal).orElse(search);
+            if (channelIds.contains(search.getId())) {
+                return Optional.of(search.getLabel());
+            }
+        }
+        return Optional.empty();
+    }
+
+    private static <E> Query<Long> buildCountQueryFromPageControl(Class<E> entityClass, PageControl pc) {
+        Session session = getSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+
+        Root<E> root = criteria.from(entityClass);
+
+        criteria.select(builder.count(root));
+
+        if (pc.hasFilter()) {
+            criteria.where(builder.like(root.get(pc.getFilterColumn()), "%" + pc.getFilterData() + "%"));
+        }
+
+        return session.createQuery(criteria);
+    }
+
+    private static <E> Query<E> buildListQueryFromPageControl(Class<E> entityClass, PageControl pc) {
+        Session session = getSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<E> criteria = builder.createQuery(entityClass);
+
+        Root<E> root = criteria.from(entityClass);
+
+        criteria.select(root);
+
+        if (pc.hasFilter()) {
+            criteria.where(builder.like(root.get(pc.getFilterColumn()), "%" + pc.getFilterData() + "%"));
+        }
+
+        Path<Object> sortColumn = root.get(pc.getSortColumn());
+        criteria.orderBy(pc.isSortDescending() ? builder.desc(sortColumn) : builder.asc(sortColumn));
+
+        return session.createQuery(criteria)
+            .setFirstResult(pc.getStart() - 1)
+            .setMaxResults(pc.getPageSize());
     }
 }

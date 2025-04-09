@@ -213,6 +213,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         Calendar cal = Calendar.getInstance();
         cal.roll(Calendar.DATE, true);
         Date endoflife = new Date(System.currentTimeMillis() + Integer.MAX_VALUE);
+        ChecksumType ct = ChannelFactory.findChecksumTypeByLabel("sha256");
 
         Channel c = new Channel();
         c.setOrg(org);
@@ -230,6 +231,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         c.setEndOfLife(endoflife);
         c.setChannelArch(arch);
         c.setChannelFamily(cfam);
+        c.setChecksumType(ct);
         ChannelFactory.save(c);
         return c;
     }

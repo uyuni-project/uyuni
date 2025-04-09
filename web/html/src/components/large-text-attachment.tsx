@@ -30,12 +30,16 @@ type Props = {
   absentMessage?: string;
   /** Defines if the component allows editing the data */
   editable: boolean;
+  /** Defines if the allows downloading the data */
+  downloadable: boolean;
   /** The title of the editing dialog, used for both modification and creation */
   editDialogTitle: string;
   /** A custom message displayed in the editing dialog, before the form */
   editMessage?: string;
   /** Message displayed on the delete confirmation dialog */
   confirmDeleteMessage: string;
+  /** Enable or disable the component */
+  disabled: boolean;
   /** Callback to invoked when the user confirms on the edit dialog */
   onEdit: (value: string) => Promise<any>;
   /** Callback to invoked when the user confirms on the delete dialog */
@@ -58,12 +62,14 @@ export class LargeTextAttachment extends React.Component<Props, State> {
   static defaultProps: Partial<Props> = {
     filename: "attachment.txt",
     editable: false,
+    downloadable: true,
     hideMessage: false,
     presentMessage: t("Data is present."),
     absentMessage: t("Data is not present."),
     editDialogTitle: t("Edit"),
     editMessage: undefined,
     confirmDeleteMessage: "Are you sure?",
+    disabled: false,
     onEdit: async (_value: string) => undefined,
     onDelete: async () => undefined,
   };
@@ -88,13 +94,14 @@ export class LargeTextAttachment extends React.Component<Props, State> {
       <>
         {!this.props.hideMessage && <p>{valuePresent ? this.props.presentMessage : this.props.absentMessage}</p>}
         <div className={`btn-group${this.props.hideMessage ? "" : " pull-right"}`}>
-          {valuePresent && (
+          {valuePresent && this.props.downloadable && (
             <LinkButton
               text={t("Download")}
               icon="fa-download"
               className="btn-default"
               href={downloadUrl}
               download={this.props.filename}
+              disabled={this.props.disabled}
             />
           )}
           {this.props.editable && (
@@ -103,6 +110,7 @@ export class LargeTextAttachment extends React.Component<Props, State> {
                 text={valuePresent ? t("Edit") : t("Add")}
                 icon={valuePresent ? "fa-edit" : "fa-plus"}
                 className="btn-default"
+                disabled={this.props.disabled}
                 handler={() =>
                   this.setState({ showEditDialog: true, editFormModel: { ...LargeTextAttachment.INITAL_MODEL } })
                 }
@@ -187,6 +195,7 @@ export class LargeTextAttachment extends React.Component<Props, State> {
                     text={t("Delete")}
                     icon="fa-trash"
                     className="btn-default"
+                    disabled={this.props.disabled}
                     handler={() => this.setState({ showDeleteDialog: true })}
                   />
                   {this.state.showDeleteDialog && (

@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { LinkButton } from "components/buttons";
 import { DeregisterServer, IssRole, PeripheralListData } from "components/hub";
 import { LargeTextAttachment } from "components/large-text-attachment";
 import { Column } from "components/table/Column";
@@ -26,35 +27,46 @@ export class PeripheralsList extends React.Component<Props> {
         data="/rhn/manager/api/admin/hub/peripherals"
         identifier={(row: PeripheralListData) => row.id}
         initialSortColumnKey="fqdn"
+        defaultSearchField="fqdn"
         searchField={<SearchField filter={this.searchData} placeholder={t("Filter by FQDN")} />}
       >
-        <Column columnKey="fqdn" comparator={Utils.sortByText} header={t("Peripheral FQDN")} cell={(row) => row.fqdn} />
+        <Column
+          columnKey="fqdn"
+          comparator={Utils.sortByText}
+          header={t("Peripheral FQDN")}
+          cell={(row) => this.renderFqdnLink(row)}
+        />
         <Column
           columnKey="nChannelsSync"
-          comparator={Utils.sortByNumber}
-          header={t("N. of Sync Channels")}
-          cell={(row: PeripheralListData) => row.nChannelsSync}
+          header={t("N. of synced channels")}
+          cell={(row: PeripheralListData) => row.nSyncedChannels}
         />
         <Column
           columnKey="nOrgs"
-          comparator={Utils.sortByNumber}
-          header={t("N. of Sync Orgs")}
-          cell={(row: PeripheralListData) => row.nSyncOrgs}
+          header={t("N. of synced organizations")}
+          cell={(row: PeripheralListData) => row.nSyncedOrgs}
         />
-        <Column
-          columnKey="id"
-          header={t("Download Root CA")}
-          cell={(row: PeripheralListData) => this.renderDownloadRootCA(row)}
-        />
+        <Column header={t("Download Root CA")} cell={(row: PeripheralListData) => this.renderDownloadRootCA(row)} />
         <Column
           columnKey="remove"
-          header={t("Deregister")}
+          header={t("Delete")}
           cell={(row: PeripheralListData) => this.renderDeregister(row)}
         />
       </Table>
     );
 
     return componentContent;
+  }
+
+  private renderFqdnLink(row: PeripheralListData): React.ReactNode {
+    return (
+      <LinkButton
+        className="btn-link"
+        text={row.fqdn}
+        title={t("View details of peripheral {fqdn}", row)}
+        href={`/rhn/manager/admin/hub/peripherals/${row.id}`}
+      />
+    );
   }
 
   private renderDownloadRootCA(row: PeripheralListData): React.ReactNode {

@@ -29,36 +29,41 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.ConnectionManager;
 import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
 import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
+import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.notification.types.HubRegistrationChanged;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.ReportDBHelper;
 
+import com.suse.manager.model.hub.ChannelInfoDetailsJson;
 import com.suse.manager.model.hub.ChannelInfoJson;
-import com.suse.manager.model.hub.CustomChannelInfoJson;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.ManagerInfoJson;
-import com.suse.manager.model.hub.ModifyCustomChannelInfoJson;
 import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
+import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.lang.reflect.Type;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import spark.Request;
 import spark.Response;
@@ -114,12 +119,8 @@ public class HubController {
                 asJson(usingTokenAuthentication(onlyFromHub(this::listAllPeripheralOrgs))));
         get("/hub/listAllPeripheralChannels",
                 asJson(usingTokenAuthentication(onlyFromHub(this::listAllPeripheralChannels))));
-        post("/hub/addVendorChannels",
-                asJson(usingTokenAuthentication(onlyFromHub(this::addVendorChannels))));
-        post("/hub/addCustomChannels",
-                asJson(usingTokenAuthentication(onlyFromHub(this::addCustomChannels))));
-        post("/hub/modifyCustomChannels",
-                asJson(usingTokenAuthentication(onlyFromHub(this::modifyCustomChannels))));
+        post("/hub/syncChannels",
+                asJson(usingTokenAuthentication(onlyFromHub(this::syncChannels))));
         post("/hub/sync/channelfamilies",
                 asJson(usingTokenAuthentication(onlyFromHub(this::synchronizeChannelFamilies))));
         post("/hub/sync/products",
@@ -128,6 +129,8 @@ public class HubController {
                 asJson(usingTokenAuthentication(onlyFromHub(this::synchronizeRepositories))));
         post("/hub/sync/subscriptions",
                 asJson(usingTokenAuthentication(onlyFromHub(this::synchronizeSubscriptions))));
+        post("/hub/sync/migrate/v1/deleteMaster",
+                asJson(usingTokenAuthentication(onlyFromHub(this::deleteV1Master))));
     }
 
     private String scheduleProductRefresh(Request request, Response response, IssAccessToken issAccessToken) {
@@ -143,7 +146,8 @@ public class HubController {
     }
 
     private String setHubDetails(Request request, Response response, IssAccessToken accessToken) {
-        Map<String, String> data = GSON.fromJson(request.body(), Map.class);
+        Type mapType = new TypeToken<Map<String, String>>() { }.getType();
+        UpdatableServerData data = new UpdatableServerData(GSON.fromJson(request.body(), mapType));
 
         try {
             hubManager.updateServerData(accessToken, accessToken.getServerFqdn(), IssRole.HUB, data);
@@ -152,12 +156,22 @@ public class HubController {
             LOGGER.error("Invalid data provided: ", ex);
             return badRequest(response, "Invalid data");
         }
+        catch (TaskomaticApiException ex) {
+            LOGGER.error("Unable to schedule Taskomatic execution to refresh the root ca: ", ex);
+            return internalServerError(response, "Unable to schedule refresh of the root CA certificate");
+        }
         return success(response);
     }
 
     private String deregister(Request request, Response response, IssAccessToken accessToken) {
         // request to delete the local access for the requesting server.
-        hubManager.deleteIssServerLocal(accessToken, accessToken.getServerFqdn());
+        IssRole remoteRole = hubManager.deleteIssServerLocal(accessToken, accessToken.getServerFqdn());
+
+        // Add a notification to inform the user this server has been deregistered
+        var notificationData = new HubRegistrationChanged(false, remoteRole, accessToken.getServerFqdn());
+        var notification = UserNotificationFactory.createNotificationMessage(notificationData);
+        UserNotificationFactory.storeNotificationMessageFor(notification, Set.of(RoleFactory.SAT_ADMIN));
+
         return success(response);
     }
 
@@ -260,14 +274,19 @@ public class HubController {
             hubManager.storeAccessToken(token, tokenToStore);
             hubManager.saveNewServer(token, IssRole.HUB, registerRequest.getRootCA(), registerRequest.getGpgKey());
 
+            // Add a notification to inform the user this server is now a peripheral
+            var notificationData = new HubRegistrationChanged(true, IssRole.HUB, token.getServerFqdn());
+            var notification = UserNotificationFactory.createNotificationMessage(notificationData);
+            UserNotificationFactory.storeNotificationMessageFor(notification, Set.of(RoleFactory.SAT_ADMIN));
+
             return success(response);
         }
         catch (TokenParsingException ex) {
-            LOGGER.error("Unable to parse the received token for server {}", token.getServerFqdn());
+            LOGGER.error("Unable to parse the received token for server {}", token.getServerFqdn(), ex);
             return badRequest(response, "The specified token is not parseable");
         }
         catch (TaskomaticApiException ex) {
-            LOGGER.error("Unable to schedule root CA certificate update {}", token.getServerFqdn());
+            LOGGER.error("Unable to schedule root CA certificate update {}", token.getServerFqdn(), ex);
             return internalServerError(response, "Unable to schedule root CA certificate update");
         }
     }
@@ -305,77 +324,27 @@ public class HubController {
         return success(response, allChannelsInfo);
     }
 
-    private String addVendorChannels(Request request, Response response, IssAccessToken token) {
-        Map<String, String> requestList = GSON.fromJson(request.body(), Map.class);
+    private String syncChannels(Request request, Response response, IssAccessToken token) {
+        Type listType = new TypeToken<List<ChannelInfoDetailsJson>>() { }.getType();
+        List<ChannelInfoDetailsJson> channelInfoList = GSON.fromJson(request.body(), listType);
 
-        if ((null == requestList) || (!requestList.containsKey("vendorchannellabellist"))) {
-            return badRequest(response, "Invalid data: missing vendorchannellabellist entry");
+        if (channelInfoList.isEmpty()) {
+            LOGGER.info("No action to take");
+            return success(response);
         }
 
-        List<String> vendorChannelLabelList = GSON.fromJson(requestList.get("vendorchannellabellist"), List.class);
-        if (vendorChannelLabelList == null || vendorChannelLabelList.isEmpty()) {
-            LOGGER.error("Bad Request: invalid invalid vendor channel label list");
-            return badRequest(response, "Invalid data: invalid vendor channel label list");
+        try {
+            hubManager.syncChannels(token, channelInfoList);
+            return success(response);
         }
-
-        List<ChannelInfoJson> createdVendorChannelInfoList =
-                hubManager.addVendorChannels(token, vendorChannelLabelList)
-                        .stream()
-                        .map(ch -> new ChannelInfoJson(ch.getId(), ch.getName(), ch.getLabel(), ch.getSummary(),
-                                ((null == ch.getOrg()) ? null : ch.getOrg().getId()),
-                                (null == ch.getParentChannel()) ? null : ch.getParentChannel().getId()))
-                        .toList();
-        return success(response, createdVendorChannelInfoList);
-    }
-
-    private String addCustomChannels(Request request, Response response, IssAccessToken token) {
-        Map<String, String> requestList = GSON.fromJson(request.body(), Map.class);
-
-        if ((null == requestList) || (!requestList.containsKey("customchannellist"))) {
-            return badRequest(response, "Invalid data: missing customchannellist entry");
+        catch (IllegalArgumentException ex) {
+            LOGGER.error("Illegal arguments in syncChannels", ex);
+            return badRequest(response, ex.getMessage());
         }
-
-        List<CustomChannelInfoJson> customChannelInfoList = Arrays.asList(
-                GSON.fromJson(requestList.get("customchannellist"), CustomChannelInfoJson[].class));
-
-        if (customChannelInfoList.isEmpty()) {
-            LOGGER.error("Bad Request: invalid custom channels list");
-            return badRequest(response, "Invalid data: invalid custom channels list");
+        catch (Exception e) {
+            LOGGER.error("Internal server error in syncChannels", e);
+            return internalServerError(response, e.getMessage());
         }
-
-        List<ChannelInfoJson> createdCustomChannelsInfoList =
-                hubManager.addCustomChannels(token, customChannelInfoList)
-                        .stream()
-                        .map(ch -> new ChannelInfoJson(ch.getId(), ch.getName(), ch.getLabel(), ch.getSummary(),
-                                ((null == ch.getOrg()) ? null : ch.getOrg().getId()),
-                                (null == ch.getParentChannel()) ? null : ch.getParentChannel().getId()))
-                        .toList();
-        return success(response, createdCustomChannelsInfoList);
-    }
-
-    private String modifyCustomChannels(Request request, Response response, IssAccessToken token) {
-        Map<String, String> requestList = GSON.fromJson(request.body(), Map.class);
-
-        if ((null == requestList) || (!requestList.containsKey("modifycustomchannellist"))) {
-            return badRequest(response, "Invalid data: missing modifycustomchannellist entry");
-        }
-
-        List<ModifyCustomChannelInfoJson> modifyCustomChannelInfoList = Arrays.asList(
-                GSON.fromJson(requestList.get("modifycustomchannellist"), ModifyCustomChannelInfoJson[].class));
-
-        if (modifyCustomChannelInfoList.isEmpty()) {
-            LOGGER.error("Bad Request: invalid modify custom channels list");
-            return badRequest(response, "Invalid data: invalid modify custom channels list");
-        }
-
-        List<ChannelInfoJson> modifiedCustomChannelsInfoList =
-                hubManager.modifyCustomChannels(token, modifyCustomChannelInfoList)
-                        .stream()
-                        .map(ch -> new ChannelInfoJson(ch.getId(), ch.getName(), ch.getLabel(), ch.getSummary(),
-                                ((null == ch.getOrg()) ? null : ch.getOrg().getId()),
-                                (null == ch.getParentChannel()) ? null : ch.getParentChannel().getId()))
-                        .toList();
-        return success(response, modifiedCustomChannelsInfoList);
     }
 
     private String synchronizeChannelFamilies(Request request, Response response, IssAccessToken token) {
@@ -392,5 +361,17 @@ public class HubController {
 
     private String synchronizeSubscriptions(Request request, Response response, IssAccessToken token) {
         return json(response, hubManager.synchronizeSubscriptions(token));
+    }
+
+    private String deleteV1Master(Request request, Response response, IssAccessToken token) {
+
+        try {
+            hubManager.deleteIssV1Master(token);
+            return success(response);
+        }
+        catch (IllegalStateException ex) {
+            LOGGER.error("Invalid fqdn {}", token.getServerFqdn(), ex);
+            return badRequest(response, ex.getMessage());
+        }
     }
 }

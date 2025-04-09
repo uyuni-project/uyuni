@@ -67,7 +67,7 @@ export class DeregisterServer extends React.Component<Props, State> {
 
       case IssRole.Peripheral:
         return t(
-          "Are you sure you want to derigester peripheral {fqdn}? All the current configuration will be lost.",
+          "Are you sure you want to deregister peripheral {fqdn}? All the current configuration will be lost.",
           params
         );
       default:

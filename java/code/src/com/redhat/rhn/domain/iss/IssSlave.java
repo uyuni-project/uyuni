@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,6 +20,7 @@ import com.redhat.rhn.frontend.dto.BaseDto;
 
 import java.util.Date;
 import java.util.Set;
+import java.util.StringJoiner;
 
 /**
  * IssSlave - Class representation of the table rhnissslave.
@@ -221,4 +223,13 @@ public class IssSlave extends BaseDto {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", IssSlave.class.getSimpleName() + "[", "]")
+            .add("id=" + id)
+            .add("slave='" + slave + "'")
+            .add("enabled='" + enabled + "'")
+            .add("allowAllOrgs='" + allowAllOrgs + "'")
+            .toString();
+    }
 }
