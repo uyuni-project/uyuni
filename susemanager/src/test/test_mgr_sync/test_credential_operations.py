@@ -53,7 +53,6 @@ class CredentialOperationsTest(unittest.TestCase):
         self.fake_auth_token = "fake_token"
         self.mgr_sync.auth.token = MagicMock(return_value=self.fake_auth_token)
         self.mgr_sync.config.write = MagicMock()
-        self.mgr_sync.conn.sync.master.hasMaster = MagicMock(return_value=False)
 
     def tearDown(self):
         if os.path.exists("tmp.log"):
@@ -62,7 +61,7 @@ class CredentialOperationsTest(unittest.TestCase):
     def test_list_credentials_no_credentials(self):
         """Test listing credentials with none present"""
         options = get_options("list credentials".split())
-        stubbed_xmlrpm_call = MagicMock(return_value=[])
+        stubbed_xmlrpm_call = MagicMock(side_effect=[False, []])
         # pylint: disable-next=protected-access
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         with ConsoleRecorder() as recorder:
@@ -70,7 +69,7 @@ class CredentialOperationsTest(unittest.TestCase):
 
         self.assertEqual(recorder.stdout, ["No credentials found"])
 
-        stubbed_xmlrpm_call.assert_called_once_with(
+        stubbed_xmlrpm_call.assert_called_with(
             self.mgr_sync.conn.sync.content, "listCredentials", self.fake_auth_token
         )
 
@@ -78,7 +77,7 @@ class CredentialOperationsTest(unittest.TestCase):
         """Test listing credentials"""
         options = get_options("list credentials".split())
         stubbed_xmlrpm_call = MagicMock(
-            return_value=read_data_from_fixture("list_credentials.data")
+            side_effect=[False, read_data_from_fixture("list_credentials.data")]
         )
         # pylint: disable-next=protected-access
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
@@ -90,14 +89,14 @@ bar"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        stubbed_xmlrpm_call.assert_called_once_with(
+        stubbed_xmlrpm_call.assert_called_with(
             self.mgr_sync.conn.sync.content, "listCredentials", self.fake_auth_token
         )
 
     def test_list_credentials_interactive(self):
         """Test listing credentials when interactive mode is set"""
         stubbed_xmlrpm_call = MagicMock(
-            return_value=read_data_from_fixture("list_credentials.data")
+            side_effect=[read_data_from_fixture("list_credentials.data")]
         )
         # pylint: disable-next=protected-access
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
@@ -113,7 +112,7 @@ bar"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        stubbed_xmlrpm_call.assert_called_once_with(
+        stubbed_xmlrpm_call.assert_called_with(
             self.mgr_sync.conn.sync.content, "listCredentials", self.fake_auth_token
         )
 
@@ -125,7 +124,7 @@ bar"""
             return_value=read_data_from_fixture("list_credentials.data")
         )
 
-        stubbed_xmlrpm_call = MagicMock()
+        stubbed_xmlrpm_call = MagicMock(return_value=False)
         # pylint: disable-next=protected-access
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
@@ -134,7 +133,7 @@ bar"""
             with ConsoleRecorder() as recorder:
                 self.assertEqual(0, self.mgr_sync.run(options))
 
-        stubbed_xmlrpm_call.assert_called_once_with(
+        stubbed_xmlrpm_call.assert_called_with(
             self.mgr_sync.conn.sync.content,
             "addCredentials",
             self.fake_auth_token,
@@ -153,7 +152,7 @@ bar"""
             return_value=read_data_from_fixture("list_credentials.data")
         )
 
-        stubbed_xmlrpm_call = MagicMock()
+        stubbed_xmlrpm_call = MagicMock(return_value=False)
         # pylint: disable-next=protected-access
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
@@ -161,7 +160,7 @@ bar"""
         with ConsoleRecorder() as recorder:
             self.assertEqual(0, self.mgr_sync.run(options))
 
-        stubbed_xmlrpm_call.assert_called_once_with(
+        stubbed_xmlrpm_call.assert_called_with(
             self.mgr_sync.conn.sync.content,
             "addCredentials",
             self.fake_auth_token,
@@ -178,7 +177,7 @@ bar"""
             return_value=read_data_from_fixture("list_credentials.data")
         )
 
-        stubbed_xmlrpm_call = MagicMock()
+        stubbed_xmlrpm_call = MagicMock(return_value=False)
         # pylint: disable-next=protected-access
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
@@ -187,7 +186,7 @@ bar"""
             with ConsoleRecorder() as recorder:
                 self.assertEqual(0, self.mgr_sync.run(options))
 
-        stubbed_xmlrpm_call.assert_called_once_with(
+        stubbed_xmlrpm_call.assert_called_with(
             self.mgr_sync.conn.sync.content,
             "deleteCredentials",
             self.fake_auth_token,
@@ -205,14 +204,15 @@ bar"""
         self.mgr_sync._fetch_credentials = MagicMock(
             return_value=read_data_from_fixture("list_credentials.data")
         )
-        stubbed_xmlrpm_call = MagicMock()
+
+        stubbed_xmlrpm_call = MagicMock(side_effect=[False, []])
         # pylint: disable-next=protected-access
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
         with ConsoleRecorder() as recorder:
             self.assertEqual(0, self.mgr_sync.run(options))
 
-        stubbed_xmlrpm_call.assert_called_once_with(
+        stubbed_xmlrpm_call.assert_called_with(
             self.mgr_sync.conn.sync.content,
             "deleteCredentials",
             self.fake_auth_token,
