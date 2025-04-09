@@ -7,42 +7,13 @@ import { Panel } from "components/panels/Panel";
 import { TopPanel } from "components/panels/TopPanel";
 import { MessagesContainer, showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
 
-import { PasswordPolicyProps } from "./password_policy_type";
+import Network from "utils/network";
 
-const updatePolicy = (policyData) => {
-  return fetch("/rhn/manager/api/admin/config/password-policy", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(policyData),
-  }).then((response) => {
-    if (!response.ok) {
-      return response.json().then((errorData) => {
-        throw errorData;
-      });
-    }
-    return response.json();
-  });
-};
-
-const defaultPolicy = () => {
-  return fetch("/rhn/manager/api/admin/config/password-policy/default", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }).then((response) => {
-    if (!response.ok) {
-      return response.json().then((errorData) => {
-        throw errorData;
-      });
-    }
-    return response.json();
-  });
-};
+import { PasswordPolicyData, PasswordPolicyProps } from "./password_policy_type";
 
 const PasswordPolicy = (prop: PasswordPolicyProps) => {
+  const policy_endpoint = "/rhn/manager/api/admin/config/password-policy";
+
   return (
     <TopPanel title={t("Server Configuration - Password Policy")} icon="fa-info-circle">
       <div className="page-summary">
@@ -143,15 +114,15 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
                     title={t("Save Password Policy")}
                     text={t("Save")}
                     icon="fa-save"
-                    action={() =>
-                      updatePolicy(prop.policy)
+                    action={() => {
+                      Network.post(policy_endpoint, prop.policy)
                         .then(() => {
                           showSuccessToastr(t("Password Policy Changed"));
                         })
                         .catch((error) => {
-                          showErrorToastr(error, { autoHide: false });
-                        })
-                    }
+                          showErrorToastr(error);
+                        });
+                    }}
                   />
                   <AsyncButton
                     id="resetButton"
@@ -159,16 +130,21 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
                     title={t("Reset")}
                     text={t("Reset")}
                     icon="fa-refresh"
-                    action={() =>
-                      defaultPolicy()
-                        .then((policy) => {
-                          prop.policy = policy;
-                          showSuccessToastr(t("Password Policy reset to defaults"));
+                    action={() => {
+                      const default_policy_endpoint = "/rhn/manager/api/admin/config/password-policy/default";
+                      Network.get(default_policy_endpoint)
+                        .then((resp) => {
+                          const defaults: PasswordPolicyData = JSON.parse(resp.data);
+                          Network.post(policy_endpoint, defaults)
+                            .then(() => showSuccessToastr(t("Password Policy Reset to Default")))
+                            .catch((error) => showErrorToastr(error));
+                          prop.defaults = defaults;
+                          prop.policy = defaults;
                         })
                         .catch((error) => {
-                          showErrorToastr(error, { autoHide: false });
-                        })
-                    }
+                          showErrorToastr(error);
+                        });
+                    }}
                   />
                 </div>
               </div>
