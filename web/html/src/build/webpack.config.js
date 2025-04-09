@@ -14,6 +14,7 @@ const DEVSERVER_WEBSOCKET_PATHNAME = "/ws";
 module.exports = (env, opts) => {
   let pluginsInUse = [];
   const isProductionMode = opts.mode === "production";
+  const moduleName = isProductionMode ? "[id].[chunkhash]" : "[id]";
 
   if (opts.measurePerformance) {
     pluginsInUse.push(new SpeedMeasurePlugin());
@@ -77,7 +78,7 @@ module.exports = (env, opts) => {
       },
     ]),
     new MiniCssExtractPlugin({
-      chunkFilename: "css/[name].css",
+      chunkFilename: `css/${moduleName}.css`,
     }),
     new GenerateStoriesPlugin({
       inputDir: path.resolve(__dirname, "../manager"),
@@ -113,11 +114,15 @@ module.exports = (env, opts) => {
       "css/updated-uyuni": path.resolve(__dirname, "../branding/css/uyuni.scss"),
     },
     output: {
-      filename: `[name].bundle.js`,
+      // This needs to be constant as it's referenced from layout_head.jsp etc. All uses need to specify cache bust where imported.
+      filename: `[name].js`,
       path: path.resolve(__dirname, "../dist/"),
-      chunkFilename: "javascript/manager/[name].bundle.js",
+      chunkFilename: `javascript/manager/${moduleName}.js`,
       publicPath: "/",
-      hashFunction: "md5",
+    },
+    optimization: {
+      chunkIds: "named",
+      moduleIds: "named",
     },
     node: {
       __filename: true,
