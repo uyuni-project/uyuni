@@ -37,6 +37,15 @@ public class WebEndpointFactory extends HibernateFactory {
         return LOG;
     }
 
+    public static void debugLog(Logger logger) {
+        logger.warn("RBAC accessGroup: {}", getSession().createNativeQuery("SELECT count(*) FROM access.accessGroup").getSingleResult());
+        logger.warn("RBAC namespace: {}", getSession().createNativeQuery("SELECT count(*) FROM access.namespace").getSingleResult());
+        logger.warn("RBAC accessGroupNamespace: {}", getSession().createNativeQuery("SELECT count(*) FROM access.accessGroupNamespace").getSingleResult());
+        logger.warn("RBAC userAccessGroup: {}", getSession().createNativeQuery("SELECT count(*) FROM access.userAccessGroup").getSingleResult());
+        logger.warn("RBAC endpoint: {}", getSession().createNativeQuery("SELECT count(*) FROM access.endpoint").getSingleResult());
+        logger.warn("RBAC endpointNamespace: {}", getSession().createNativeQuery("SELECT count(*) FROM access.endpointNamespace").getSingleResult());
+    }
+
     /**
      * Look up user access table by user ID, path, HTTP method and scope (Web UI or API)
      * @param userId the user ID

@@ -73,6 +73,7 @@ public class AuthorizationFilter implements Filter {
         HttpServletRequest hreq = new RhnHttpServletRequest((HttpServletRequest) request);
         HttpServletResponse hres = (HttpServletResponse) response;
         Set<String> noAuthEndpoints = WebEndpointFactory.getUnauthorizedWebEndpoints();
+        WebEndpointFactory.debugLog(LOG);
 
         try {
             if (hreq.getServletPath().startsWith("/ajax")) {
@@ -84,14 +85,20 @@ public class AuthorizationFilter implements Filter {
             else {
                 handleSparkAccess(hreq, noAuthEndpoints);
             }
-            LOG.debug("Access granted for user '{}' to URI '{}' [{}]",
+            User u = new RequestContext(hreq).getCurrentUser();
+            if (u != null) {
+                u.getAccessGroups().forEach(ag -> {
+                    LOG.warn("RBAC {}: {}", ag.getLabel(), ag.getNamespaces().size());
+                });
+            }
+            LOG.warn("Access granted for user '{}' to URI '{}' [{}]",
                     new RequestContext(hreq).getCurrentUser(), hreq.getRequestURI(), hreq.getMethod());
         }
         catch (PermissionException e) {
             // TODO: Handle PermissionExceptions properly depending on the "Content-Type" and "Accept" headers
             // TODO: possibly pass it down another filter
             // TODO: Review PageFilter
-            LOG.debug("Access restricted for user '{}' to URI '{}' [{}]",
+            LOG.warn("Access restricted for user '{}' to URI '{}' [{}]",
                     new RequestContext(hreq).getCurrentUser(), hreq.getRequestURI(), hreq.getMethod());
             hres.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
             return;
