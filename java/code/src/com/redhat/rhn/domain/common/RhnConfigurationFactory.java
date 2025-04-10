@@ -116,19 +116,18 @@ public class RhnConfigurationFactory extends HibernateFactory {
      * @param configs the configs
      */
     public void bulkUpdate(List<RhnConfiguration> configs) {
-        Session session = getSession();
-        configs.forEach(session::update);
+        configs.forEach(config -> updateConfigurationValue(config.getKey(), config.getValue()));
     }
 
     /**
-     * save a configuration value by key
+     * set a configuration value by key
      *
      * @param keyIn the keys
      * @param value the value
      */
     public void updateConfigurationValue(RhnConfiguration.KEYS keyIn, Object value) {
-        RhnConfiguration entity = getConfiguration(keyIn);
         Session session = getSession();
+        RhnConfiguration entity = getConfiguration(keyIn);
         entity.setValue(String.valueOf(value));
         session.update(entity);
     }
