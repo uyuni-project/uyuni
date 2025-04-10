@@ -83,7 +83,7 @@ public class PasswordPolicyController {
         try {
             service.validatePasswordPolicy(passwordPolicyProperties);
             service.savePasswordPolicy(passwordPolicyProperties);
-            return json(GSON, response, ResultJson.success(""), new TypeToken<>() {
+            return json(GSON, response, ResultJson.success(), new TypeToken<>() {
             });
         }
         catch (ValidatorException e) {
@@ -93,7 +93,7 @@ public class PasswordPolicyController {
                     });
         }
         catch (Exception e) {
-            return json(GSON, response, HttpStatus.SC_BAD_REQUEST, ResultJson.error(e.getMessage()),
+            return json(GSON, response, HttpStatus.SC_INTERNAL_SERVER_ERROR, ResultJson.error(e.getMessage()),
                     new TypeToken<>() {
                     });
         }
@@ -118,7 +118,7 @@ public class PasswordPolicyController {
             ), new TypeToken<>() { });
         }
         catch (Exception e) {
-            return json(GSON, response, HttpStatus.SC_BAD_REQUEST, ResultJson.error(e.getMessage()),
+            return json(GSON, response, HttpStatus.SC_INTERNAL_SERVER_ERROR, ResultJson.error(e.getMessage()),
                     new TypeToken<>() {
                     });
         }
