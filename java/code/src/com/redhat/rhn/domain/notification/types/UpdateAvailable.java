@@ -89,7 +89,7 @@ public class UpdateAvailable implements NotificationData, Serializable {
      */
     public String getReleaseNotesUrl() {
         return managerVersion.isUyuni() ? "https://www.uyuni-project.org/pages/stable-version.html" :
-                "https://www.suse.com/releasenotes/x86_64/SUSE-MANAGER/" +
+                "https://www.suse.com/releasenotes/x86_64/multi-linux-manager/" +
                         managerVersion.getMajor() + "." + managerVersion.getMinor() +
                         "/index.html";
     }

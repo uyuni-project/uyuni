@@ -41,6 +41,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
+@SuppressWarnings("java:S1192")
 public class UpdateAvailableTest extends MockObjectTestCase {
     private static final String FAILED_TO_EXTRACT_VERSION_MESSAGE_PREFIX =
             "Failed to extract version from release notes from";
@@ -143,6 +144,24 @@ public class UpdateAvailableTest extends MockObjectTestCase {
         };
 
         assertFalse(updateAvailable.hasUpdateAvailable());
+    }
+
+    @Test
+    public void testReleaseNotesUrlDataDrivenVersion() {
+        mockConfigDefaults(true, "2024.07");
+
+        UpdateAvailable updateAvailable = new UpdateAvailable();
+        assertEquals("https://www.uyuni-project.org/pages/stable-version.html",
+                updateAvailable.getReleaseNotesUrl());
+    }
+
+    @Test
+    public void testReleaseNotesUrlSemanticVersion() {
+        mockConfigDefaults(false, "5.1.1");
+
+        UpdateAvailable updateAvailable = new UpdateAvailable();
+        assertEquals("https://www.suse.com/releasenotes/x86_64/multi-linux-manager/5.1/index.html",
+                updateAvailable.getReleaseNotesUrl());
     }
 
     /**
@@ -264,7 +283,7 @@ public class UpdateAvailableTest extends MockObjectTestCase {
     }
 
 
-    @SuppressWarnings({"java:S117", "java:S359"})
+    @SuppressWarnings({"java:S1171", "java:S3599"})
     private void mockConfigDefaults(boolean expectedIsUyuni, String expectedProductVersion) {
         ConfigDefaults mockConfigDefaults = context.mock(ConfigDefaults.class);
 
