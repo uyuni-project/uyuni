@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Apr 09 17:03:30 CEST 2025 - rosuna@suse.com
+
+- version 5.0.23-0
+  * Fix: automatic transaction management when saving the password
+    policy (bsc#1240960)
+
+-------------------------------------------------------------------
 Thu Mar 27 16:56:36 CET 2025 - rosuna@suse.com
 
 - version 5.0.22-0
