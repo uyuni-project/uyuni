@@ -73,6 +73,10 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     sssd-krb5 \
     sssd-tools
 
+RUN mkdir -p /usr/lib/postfix/systemd
+COPY config_postfix /usr/lib/postfix/systemd/
+RUN chmod a+x /usr/lib/postfix/systemd/config_postfix
+
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
 
 RUN mkdir -p /etc/postgres_exporter \
