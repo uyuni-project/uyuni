@@ -273,6 +273,13 @@ When(/^I click on "([^"]*)"$/) do |text|
 end
 
 #
+# Click on a button by nav item
+#
+When(/^I click on a button within the item containing "([^"]*)"$/) do |text_in_item|
+  find(:xpath, "//li[.//span[text()='#{text_in_item}']]//button").click
+end
+
+#
 # Click on a button which appears inside of <div> with
 # the given "id"
 When(/^I click on "([^"]*)" in element "([^"]*)"$/) do |text, element_id|
