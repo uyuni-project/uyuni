@@ -16,6 +16,7 @@
 package com.suse.manager.webui.controllers.admin.handlers;
 
 import static com.redhat.rhn.domain.role.RoleFactory.SAT_ADMIN;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
@@ -118,9 +119,7 @@ public class PasswordPolicyController {
             ), new TypeToken<>() { });
         }
         catch (Exception e) {
-            return json(GSON, response, HttpStatus.SC_INTERNAL_SERVER_ERROR, ResultJson.error(e.getMessage()),
-                    new TypeToken<>() {
-                    });
+            return internalServerError(response, e.getMessage());
         }
     }
 
