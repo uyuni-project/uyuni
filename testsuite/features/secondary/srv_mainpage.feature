@@ -19,23 +19,6 @@ Feature: Main landing page options and preferences
     And I follow "API Documentation"
     Then I should see a "API Overview" text
 
-# TODO: We need to refactor this to navigate to a doc page
-
-@skip
-  Scenario: Access the Copyright Notice
-    Given I am not authorized
-    When I go to the home page
-    And I follow "Copyright Notice"
-    Then I should see a "Copyright (c) 2011 - 2025 SUSE LLC." text
-
-@susemanager
-  Scenario: Access the EULA
-    Given I am not authorized
-    When I go to the home page
-    And I follow "Copyright Notice"
-    And I follow "SUSE Multi-Linux Manager License Agreement"
-    Then I should see a "SUSE Multi-Linux Manager License Agreement" text
-
   Scenario: Log into Uyuni
     Given I am not authorized
     When I go to the home page
