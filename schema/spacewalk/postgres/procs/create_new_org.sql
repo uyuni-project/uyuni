@@ -1,4 +1,5 @@
 --
+-- Copyright (c) 2013--2025 SUSE LLC
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
@@ -232,6 +233,20 @@ begin
                         sgt.id, new_org_id
                 from rhnServerGroupType sgt
                 where sgt.label = 'peripheral_server';
+
+        insert into rhnServerGroup
+                ( id, name, description, group_type, org_id )
+                select nextval('rhn_server_group_id_seq'), sgt.name, sgt.name,
+                        sgt.id, new_org_id
+                from rhnServerGroupType sgt
+                where sgt.label = 'ansible_managed';
+
+        insert into rhnServerGroup
+                ( id, name, description, group_type, org_id )
+                select nextval('rhn_server_group_id_seq'), sgt.name, sgt.name,
+                        sgt.id, new_org_id
+                from rhnServerGroupType sgt
+                where sgt.label = 'proxy_entitled';
 
         insert into suseImageStore (id, label, uri, store_type_id, org_id)
         values (

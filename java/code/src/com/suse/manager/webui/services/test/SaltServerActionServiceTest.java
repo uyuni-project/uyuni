@@ -30,11 +30,11 @@ import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
+import com.redhat.rhn.domain.action.ansible.PlaybookAction;
+import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigAction;
-import com.redhat.rhn.domain.action.salt.PlaybookAction;
-import com.redhat.rhn.domain.action.salt.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
@@ -735,7 +735,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     private ServerAction createChildServerAction(Action action, ActionStatus status,
-                                                 long remainingTries) throws Exception {
+                                                 long remainingTries) {
         return createChildServerAction(action, status, minion, remainingTries);
     }
 

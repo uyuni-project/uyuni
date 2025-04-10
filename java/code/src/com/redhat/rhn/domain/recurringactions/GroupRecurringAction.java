@@ -48,7 +48,7 @@ import javax.persistence.Transient;
 public class GroupRecurringAction extends RecurringAction {
 
     private ServerGroup group;
-    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /**
      * Standard constructor
@@ -90,7 +90,7 @@ public class GroupRecurringAction extends RecurringAction {
         }
         try {
             /* Check if user has permission to access the group */
-            serverGroupManager.lookup(group.getId(), user);
+            SERVER_GROUP_MANAGER.lookup(group.getId(), user);
         }
         catch (LookupException e) {
             return false;

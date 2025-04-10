@@ -146,7 +146,7 @@ pprint.pprint(res2.json())
 <h2>XMLRPC Scripts</h2>
 <h3>Perl example:</h3>
 This Perl example shows the <code>system.listUserSystems</code> call being used to get a list of systems a user has access to. In the example below, the name of each system will be printed.
-The <code>Frontier::Client</code> Perl module can be found in the "perl-Frontier-RPC" rpm contained in the newest SUSE Manager channel.
+The <code>Frontier::Client</code> Perl module can be found in the "perl-Frontier-RPC" rpm contained in the newest SUSE Multi-Linux Manager channel.
 <p/>
 
 <pre>

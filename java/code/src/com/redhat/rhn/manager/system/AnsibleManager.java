@@ -18,6 +18,7 @@ package com.redhat.rhn.manager.system;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
@@ -33,26 +34,39 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionChainManager;
+import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.utils.Xor;
 
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class AnsibleManager extends BaseManager {
 
+    private static Logger log = LogManager.getLogger(AnsibleManager.class);
     private final SaltApi saltApi;
 
     /**
@@ -128,10 +142,23 @@ public class AnsibleManager extends BaseManager {
      * @throws LookupException if the user does not have permissions or server not found
      * @throws ValidatorException if the validation fails
      */
-    public static AnsiblePath createAnsiblePath(String typeLabel, long minionServerId, String path, User user) {
+    public AnsiblePath createAnsiblePath(String typeLabel, long minionServerId, String path, User user) {
         MinionServer minionServer = lookupAnsibleControlNode(minionServerId, user);
+        return createAnsiblePath(typeLabel, minionServer, path);
+    }
 
-        validateAnsiblePath(path, of(typeLabel), empty(), minionServerId);
+    /**
+     * Create and save a new ansible path
+     *
+     * @param typeLabel the type label
+     * @param minionServer the minion server
+     * @param path the path
+     * @return the created and saved AnsiblePath
+     * @throws LookupException if the user does not have permissions or server not found
+     * @throws ValidatorException if the validation fails
+     */
+    public AnsiblePath createAnsiblePath(String typeLabel, MinionServer minionServer, String path) {
+        validateAnsiblePath(path, of(typeLabel), empty(), minionServer.getId());
 
         AnsiblePath ansiblePath;
         AnsiblePath.Type type = AnsiblePath.Type.fromLabel(typeLabel);
@@ -148,8 +175,25 @@ public class AnsibleManager extends BaseManager {
 
         ansiblePath.setMinionServer(minionServer);
         ansiblePath.setPath(Path.of(path));
+        ansiblePath = AnsibleFactory.saveAnsiblePath(ansiblePath);
 
-        return AnsibleFactory.saveAnsiblePath(ansiblePath);
+        if (type == AnsiblePath.Type.INVENTORY) {
+            // Schedule inventory refresh
+            try {
+                ActionManager.scheduleInventoryRefresh(ansiblePath.getMinionServer(), ansiblePath.getPath().toString());
+            }
+            catch (TaskomaticApiException e) {
+                log.error("Could not schedule Ansible inventory refresh for minion: {}",
+                        ansiblePath.getMinionServer().getMinionId(), e);
+            }
+
+            // Refresh inotify beacon
+            MinionPillarManager.INSTANCE.generatePillar(minionServer, false,
+                    MinionPillarManager.PillarSubset.GENERAL);
+            saltApi.refreshPillar(new MinionList(minionServer.getMinionId()));
+        }
+
+        return ansiblePath;
     }
 
     /**
@@ -162,12 +206,38 @@ public class AnsibleManager extends BaseManager {
      * @throws LookupException if the user does not have permissions or existing path not found
      * @throws ValidatorException if the validation fails
      */
-    public static AnsiblePath updateAnsiblePath(long existingPathId, String newPath, User user) {
+    public AnsiblePath updateAnsiblePath(long existingPathId, String newPath, User user) {
         AnsiblePath existing = lookupAnsiblePathById(existingPathId, user)
                 .orElseThrow(() -> new LookupException("Ansible path id " + existingPathId + " not found."));
+        if (existing.getPath().toString().equals(newPath)) {
+            // nothing to update
+            return existing;
+        }
         validateAnsiblePath(newPath, empty(), of(existingPathId), existing.getMinionServer().getId());
         existing.setPath(Path.of(newPath));
-        return AnsibleFactory.saveAnsiblePath(existing);
+
+        if (existing.getEntityType() == AnsiblePath.Type.INVENTORY) {
+            // Remove ansible managed systems from changed inventory and schedule inventory refresh
+            try {
+                handleInventoryRefresh((InventoryPath) existing, new HashSet<>());
+                AnsibleFactory.saveAnsiblePath(existing);
+                ActionManager.scheduleInventoryRefresh(existing.getMinionServer(), existing.getPath().toString());
+            }
+            catch (TaskomaticApiException e) {
+                log.error("Could not schedule Ansible inventory refresh for minion: {}",
+                        existing.getMinionServer().getMinionId(), e);
+            }
+
+            // Refresh inotify beacon
+            MinionPillarManager.INSTANCE.generatePillar(existing.getMinionServer(), false,
+                    MinionPillarManager.PillarSubset.GENERAL);
+            saltApi.refreshPillar(new MinionList(existing.getMinionServer().getMinionId()));
+        }
+        else {
+            AnsibleFactory.saveAnsiblePath(existing);
+        }
+
+        return existing;
     }
 
     private static void validateAnsiblePath(String path, Optional<String> typeLabel, Optional<Long> pathId,
@@ -225,10 +295,47 @@ public class AnsibleManager extends BaseManager {
      * @param user the user performing the action
      * @throws LookupException if the user does not have permissions or if entity does not exist
      */
-    public static void removeAnsiblePath(long pathId, User user) {
+    public void removeAnsiblePath(long pathId, User user) {
         AnsiblePath path = lookupAnsiblePathById(pathId, user)
                 .orElseThrow(() -> new LookupException("Ansible path id " + pathId + " not found."));
-        AnsibleFactory.removeAnsiblePath(path);
+
+        if (path.getEntityType() == AnsiblePath.Type.INVENTORY) {
+            // Remove entitlement from managed servers
+            handleInventoryRefresh((InventoryPath) path, new HashSet<>());
+            AnsibleFactory.removeAnsiblePath(path);
+
+            // Refresh inotify beacon
+            MinionPillarManager.INSTANCE.generatePillar(path.getMinionServer(), false,
+                    MinionPillarManager.PillarSubset.GENERAL);
+            saltApi.refreshPillar(new MinionList(path.getMinionServer().getMinionId()));
+        }
+        else {
+            AnsibleFactory.removeAnsiblePath(path);
+        }
+    }
+
+    /**
+     * Remove all ansible paths for given minion server
+     *
+     * @param minionServer the minion server
+     */
+    public void removeAnsiblePaths(MinionServer minionServer) {
+        List<AnsiblePath> paths = AnsibleFactory.listAnsiblePaths(minionServer.getId());
+        Set<Server> systemsToRemove = new HashSet<>();
+        paths.forEach(p -> {
+            if (p.getEntityType() == AnsiblePath.Type.INVENTORY) {
+                systemsToRemove.addAll(((InventoryPath) p).getInventoryServers());
+            }
+            AnsibleFactory.removeAnsiblePath(p);
+        });
+        if (!systemsToRemove.isEmpty()) {
+            List<Server> ansibleManagedSystems = AnsibleFactory.listAnsibleInventoryServersExcludingControlNode(
+                    minionServer.getId());
+            systemsToRemove.removeIf(ansibleManagedSystems::contains);
+            updateAnsibleManagedSystems(new HashSet<>(), systemsToRemove);
+        }
+        MinionPillarManager.INSTANCE.generatePillar(minionServer, false, MinionPillarManager.PillarSubset.GENERAL);
+        saltApi.refreshPillar(new MinionList(minionServer.getMinionId()));
     }
 
     /**
@@ -279,6 +386,7 @@ public class AnsibleManager extends BaseManager {
      * @param controlNodeId control node id
      * @param testMode true if the playbook should be executed as test mode
      * @param flushCache true if --flush-cache flag is to be set
+     * @param extraVars the extra vars
      * @param earliestOccurrence earliestOccurrence
      * @param actionChainLabel the action chain label
      * @param user the user
@@ -287,7 +395,7 @@ public class AnsibleManager extends BaseManager {
      * @throws IllegalArgumentException if playbook path is empty
      */
     public static Long schedulePlaybook(String playbookPath, String inventoryPath, long controlNodeId, boolean testMode,
-            boolean flushCache, Date earliestOccurrence, Optional<String> actionChainLabel, User user)
+            boolean flushCache, String extraVars, Date earliestOccurrence, Optional<String> actionChainLabel, User user)
             throws TaskomaticApiException {
         if (StringUtils.isBlank(playbookPath)) {
             throw new IllegalArgumentException("Playbook path cannot be empty.");
@@ -300,7 +408,7 @@ public class AnsibleManager extends BaseManager {
                 .orElse(null);
 
         return ActionChainManager.scheduleExecutePlaybook(user, controlNode.getId(), playbookPath,
-                inventoryPath, actionChain, earliestOccurrence, testMode, flushCache).getId();
+                inventoryPath, actionChain, earliestOccurrence, testMode, flushCache, extraVars).getId();
     }
 
     /**
@@ -372,6 +480,114 @@ public class AnsibleManager extends BaseManager {
                             throw new IllegalStateException(error);
                         },
                         success -> success));
+    }
+
+    /**
+     * Parse Ansible Inventory content to look for host names
+     *
+     * @param inventoryMap the Ansible Inventory content
+     * @return the Set of hostnames
+     */
+    public static Set<String> parseInventoryAndGetHostnames(Map<String, Map<String, Object>> inventoryMap) {
+        HashSet<String> hostnames = new HashSet<>();
+
+        for (Map.Entry<String, Map<String, Object>> entry : inventoryMap.entrySet()) {
+            String ansibleGroupName = entry.getKey();
+            if (!ansibleGroupName.equals("_meta")) {
+                @SuppressWarnings("unchecked")
+                List<String> hostList = (List<String>)entry.getValue().get("hosts");
+                if (CollectionUtils.isNotEmpty(hostList)) {
+                    hostnames.addAll(hostList);
+                }
+            }
+        }
+
+        return hostnames;
+    }
+
+    /**
+     * Generate the inotify beacon for the given ansible control node based on
+     * the {@link InventoryPath} related to it.
+     *
+     * @param minion the minion server
+     * @return the inotify beacon configuration
+     */
+    public static List<Map<String, Object>> generateBeacon(MinionServer minion) {
+        List<Map<String, Object>> beacon = new ArrayList<>();
+        List<InventoryPath> inventories = AnsibleFactory.listAnsibleInventoryPaths(minion.getId());
+
+        if (!inventories.isEmpty()) {
+            Map<String, Object> files = new HashMap<>();
+            inventories.forEach(i -> files.put(i.getPath().toString(), Map.of("mask", List.of("modify"))));
+            beacon.add(Map.of("files", files));
+            beacon.add(Map.of("interval", 5));
+            beacon.add(Map.of("disable_during_state_run", true));
+        }
+
+        return beacon;
+    }
+
+    /**
+     * Handle add or remove ansible_managed entitlement from systems
+     *
+     * @param inventory the inventory
+     * @param systemsToAdd the systems to add
+     */
+    public static void handleInventoryRefresh(InventoryPath inventory, Set<Server> systemsToAdd) {
+        Set<Server> systemsToRemove = inventory.getInventoryServers();
+        systemsToRemove.removeAll(systemsToAdd);
+
+        // Only remove entitlement from servers if they no longer appear in the list of ansible managed systems
+        List<Server> ansibleManagedSystems = AnsibleFactory.listAnsibleInventoryServersExcludingPath(inventory);
+        systemsToRemove.removeIf(ansibleManagedSystems::contains);
+
+        updateAnsibleManagedSystems(systemsToAdd, systemsToRemove);
+
+        inventory.setInventoryServers(systemsToAdd);
+    }
+
+    /**
+     * Handle add or remove ansible_managed entitlement from systems
+     *
+     * @param systemsToAdd the servers to add
+     * @param systemsToRemove the servers to remove
+     */
+    public static void updateAnsibleManagedSystems(Set<Server> systemsToAdd, Set<Server> systemsToRemove) {
+        SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
+
+        // Add entitlement to servers
+        systemsToAdd.forEach(s -> {
+            if (!s.hasEntitlement(EntitlementManager.ANSIBLE_MANAGED) &&
+                    systemEntitlementManager.canEntitleServer(s, EntitlementManager.ANSIBLE_MANAGED)) {
+                systemEntitlementManager.addEntitlementToServer(s, EntitlementManager.ANSIBLE_MANAGED);
+            }
+        });
+        // Remove entitlement from servers
+        systemsToRemove.forEach(s ->
+                systemEntitlementManager.removeServerEntitlement(s, EntitlementManager.ANSIBLE_MANAGED)
+        );
+    }
+
+    /**
+     * Create default playbook and inventory paths for given minion server
+     *
+     * @param minionServer the minion server
+     */
+    public void createDefaultPaths(MinionServer minionServer) {
+        String inventory = "/etc/ansible/hosts";
+        String playbook = "/etc/ansible/playbooks";
+        try {
+            createAnsiblePath(AnsiblePath.Type.INVENTORY.getLabel(), minionServer, inventory);
+        }
+        catch (ValidatorException e) {
+            log.info(String.format("Inventory path: '%s' already exists. Skipping...", inventory));
+        }
+        try {
+            createAnsiblePath(AnsiblePath.Type.PLAYBOOK.getLabel(), minionServer, playbook);
+        }
+        catch (ValidatorException e) {
+            log.info(String.format("Playbook path: '%s' already exists. Skipping...", playbook));
+        }
     }
 
     private static MinionServer lookupAnsibleControlNode(long systemId, User user) {

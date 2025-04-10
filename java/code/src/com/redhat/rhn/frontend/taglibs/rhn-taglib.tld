@@ -297,6 +297,16 @@
             <required>false</required>
         </attribute>
         <attribute>
+            <name>convertProxyAcl</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>convertProxyUrl</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
             <name>miscAlt</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>

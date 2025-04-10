@@ -47,7 +47,6 @@ import com.suse.utils.Json;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.LoaderOptions;
@@ -58,7 +57,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -228,13 +226,13 @@ public class AnsibleController {
         AnsiblePath currentPath;
         try {
             if (json.getId() == null) {
-                currentPath = AnsibleManager.createAnsiblePath(json.getType(),
+                currentPath = getAnsibleManager().createAnsiblePath(json.getType(),
                         json.getMinionServerId(),
                         json.getPath(),
                         user);
             }
             else {
-                currentPath = AnsibleManager.updateAnsiblePath(json.getId(),
+                currentPath = getAnsibleManager().updateAnsiblePath(json.getId(),
                         json.getPath(),
                         user);
             }
@@ -260,7 +258,7 @@ public class AnsibleController {
         Long ansiblePathId = GSON.fromJson(req.body(), Long.class);
 
         try {
-            AnsibleManager.removeAnsiblePath(ansiblePathId, user);
+            getAnsibleManager().removeAnsiblePath(ansiblePathId, user);
         }
         catch (LookupException e) {
             return result(res, error(LOCAL.getMessage("ansible.entity_not_found")), new TypeToken<>() { });
@@ -311,6 +309,7 @@ public class AnsibleController {
                     params.getControlNodeId(),
                     params.isTestMode(),
                     params.isFlushCache(),
+                    "",
                     params.getEarliest().map(AnsibleController::getScheduleDate).orElse(new Date()),
                     params.getActionChainLabel(),
                     user);
@@ -349,7 +348,7 @@ public class AnsibleController {
                     .map(inventory -> {
                         Map<String, Object> data = new HashMap<>();
 
-                        Set<String> hostvars = parseInventoryAndGetHostnames(inventory);
+                        Set<String> hostvars = AnsibleManager.parseInventoryAndGetHostnames(inventory);
                         List<SimpleMinionJson> registeredServers = new LinkedList<>();
                         List<String> unknownHostNames = new LinkedList<>();
 
@@ -380,29 +379,6 @@ public class AnsibleController {
         catch (LookupException e) {
             return result(res, error(LOCAL.getMessage("ansible.entity_not_found")), new TypeToken<>() { });
         }
-    }
-
-    /**
-     * Parse Ansible Inventory content to look for host names
-     *
-     * @param inventoryMap the Ansible Inventory content
-     * @return the Set of hostnames
-     */
-    public static Set<String> parseInventoryAndGetHostnames(Map<String, Map<String, Object>> inventoryMap) {
-        HashSet<String> hostnames = new HashSet<>();
-
-        for (Map.Entry<String, Map<String, Object>> entry : inventoryMap.entrySet()) {
-            String ansibleGroupName = entry.getKey();
-            if (!ansibleGroupName.equals("_meta")) {
-                @SuppressWarnings("unchecked")
-                List<String> hostList = (List<String>)entry.getValue().get("hosts");
-                if (CollectionUtils.isNotEmpty(hostList)) {
-                    hostnames.addAll(hostList);
-                }
-            }
-        }
-
-        return hostnames;
     }
 
     /**

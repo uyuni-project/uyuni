@@ -481,7 +481,9 @@ public class SparkApplicationHelper {
         Spark.after((requestIn, responseIn) -> {
             boolean committed = false;
             try {
-                if (HibernateFactory.inTransaction()) {
+                //Checking if the response is valid should fix rollback for failing responses (e.g. from controllers)
+                boolean isValidResponse = (responseIn.status() == HttpStatus.SC_OK);
+                if (isValidResponse && HibernateFactory.inTransaction()) {
                     HibernateFactory.commitTransaction();
                 }
                 committed = true;
@@ -736,6 +738,17 @@ public class SparkApplicationHelper {
         response.type("application/json");
         ParameterizedType parameterizedType = new ParameterizedTypeImpl(null, ResultJson.class, type.getType());
         return GSON.toJson(result, parameterizedType);
+    }
+
+    /**
+     * Serialize the result and set the response content type to JSON.
+     * @param response the http response
+     * @param result the object to serialize to JSON
+     * @param <T> type of the result
+     * @return a JSON string
+     */
+    public static <T> String result(Response response, ResultJson<T> result) {
+        return result(response, result, new TypeToken<>() { });
     }
 
     /**

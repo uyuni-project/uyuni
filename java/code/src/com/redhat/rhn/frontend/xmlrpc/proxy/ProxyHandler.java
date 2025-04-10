@@ -14,8 +14,15 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.proxy;
 
+import static com.suse.proxy.ProxyConfigUtils.REGISTRY_MODE_ADVANCED;
+import static com.suse.proxy.ProxyConfigUtils.REGISTRY_MODE_SIMPLE;
+import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_REGISTRY;
+import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_RPM;
+import static com.suse.proxy.ProxyConfigUtils.USE_CERTS_MODE_REPLACE;
 import static java.util.stream.Collectors.toList;
 
+import com.redhat.rhn.common.RhnRuntimeException;
+import com.redhat.rhn.common.UyuniGeneralException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
@@ -33,6 +40,7 @@ import com.redhat.rhn.frontend.xmlrpc.ProxyMissingEntitlementException;
 import com.redhat.rhn.frontend.xmlrpc.ProxyNotActivatedException;
 import com.redhat.rhn.frontend.xmlrpc.ProxySystemIsSatelliteException;
 import com.redhat.rhn.frontend.xmlrpc.SSLCertFaultException;
+import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -42,6 +50,9 @@ import com.suse.manager.ssl.SSLCertData;
 import com.suse.manager.ssl.SSLCertGenerationException;
 import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
+import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
+import com.suse.proxy.update.ProxyConfigUpdateFacade;
+
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -60,15 +71,19 @@ public class ProxyHandler extends BaseHandler {
     private static final Logger LOG = LogManager.getLogger(ProxyHandler.class);
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
     private final SystemManager systemManager;
+    private final ProxyConfigUpdateFacade proxyConfigUpdateFacade;
 
     /**
      * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
      * @param systemManagerIn the system manager
+     * @param proxyConfigUpdateFacadeIn the proxy config update facade
      */
     public ProxyHandler(XmlRpcSystemHelper xmlRpcSystemHelperIn,
-                        SystemManager systemManagerIn) {
+                        SystemManager systemManagerIn,
+                        ProxyConfigUpdateFacade proxyConfigUpdateFacadeIn) {
         xmlRpcSystemHelper = xmlRpcSystemHelperIn;
         systemManager = systemManagerIn;
+        proxyConfigUpdateFacade = proxyConfigUpdateFacadeIn;
     }
 
 
@@ -238,7 +253,7 @@ public class ProxyHandler extends BaseHandler {
      *
      * @apidoc.doc List the clients directly connected to a given Proxy.
      * @apidoc.param #session_key()
-     * @apidoc.param #param("int", "proxyId", "the Proxy ID")
+     * @apidoc.param #param_desc("int", "proxyId", "the Proxy ID")
      * @apidoc.returntype #array_single("int", "clientId")
      */
     @ReadOnly
@@ -269,16 +284,16 @@ public class ProxyHandler extends BaseHandler {
      *
      * @apidoc.doc Compute and download the configuration for proxy containers
      * @apidoc.param #session_key()
-     * @apidoc.param #param("string", "proxyName", "The FQDN of the proxy")
-     * @apidoc.param #param("int", "proxyPort", "The SSH port the proxy listens on")
-     * @apidoc.param #param("string", "server", "The server FQDN the proxy will connect to")
-     * @apidoc.param #param("int", "maxCache", "Max cache size in MB")
-     * @apidoc.param #param("string", "email", "The proxy admin email")
-     * @apidoc.param #param("string", "rootCA", "The root CA used to sign the SSL certificate in PEM format")
+     * @apidoc.param #param_desc("string", "proxyName", "The FQDN of the proxy")
+     * @apidoc.param #param_desc("int", "proxyPort", "The SSH port the proxy listens on")
+     * @apidoc.param #param_desc("string", "server", "The server FQDN the proxy will connect to")
+     * @apidoc.param #param_desc("int", "maxCache", "Max cache size in MB")
+     * @apidoc.param #param_desc("string", "email", "The proxy admin email")
+     * @apidoc.param #param_desc("string", "rootCA", "The root CA used to sign the SSL certificate in PEM format")
      * @apidoc.param #array_single_desc("string", "intermediateCAs",
      *                                  "intermediate CAs used to sign the SSL certificate in PEM format")
-     * @apidoc.param #param("string", "proxyCrt", "proxy CRT content in PEM format")
-     * @apidoc.param #param("string", "proxyKey", "proxy SSL private key in PEM format")
+     * @apidoc.param #param_desc("string", "proxyCrt", "proxy CRT content in PEM format")
+     * @apidoc.param #param_desc("string", "proxyKey", "proxy SSL private key in PEM format")
      *  @apidoc.returntype #array_single("byte", "binary object - package file")
      */
     public byte[] containerConfig(User loggedInUser, String proxyName, Integer proxyPort, String server,
@@ -324,21 +339,21 @@ public class ProxyHandler extends BaseHandler {
      *
      * @apidoc.doc Compute and download the configuration for proxy containers
      * @apidoc.param #session_key()
-     * @apidoc.param #param("string", "proxyName", "The FQDN of the proxy")
-     * @apidoc.param #param("int", "proxyPort", "The SSH port the proxy listens on")
-     * @apidoc.param #param("string", "server", "The server FQDN the proxy will connect to")
-     * @apidoc.param #param("int", "maxCache", "Max cache size in MB")
-     * @apidoc.param #param("string", "email", "The proxy admin email")
-     * @apidoc.param #param("string", "caCrt", "CA certificate to use to sign the SSL certificate in PEM format")
-     * @apidoc.param #param("string", "caKey", "CA private key to use to sign the SSL certificate in PEM format")
-     * @apidoc.param #param("string", "caPassword", "The CA private key password")
+     * @apidoc.param #param_desc("string", "proxyName", "The FQDN of the proxy")
+     * @apidoc.param #param_desc("int", "proxyPort", "The SSH port the proxy listens on")
+     * @apidoc.param #param_desc("string", "server", "The server FQDN the proxy will connect to")
+     * @apidoc.param #param_desc("int", "maxCache", "Max cache size in MB")
+     * @apidoc.param #param_desc("string", "email", "The proxy admin email")
+     * @apidoc.param #param_desc("string", "caCrt", "CA certificate to use to sign the SSL certificate in PEM format")
+     * @apidoc.param #param_desc("string", "caKey", "CA private key to use to sign the SSL certificate in PEM format")
+     * @apidoc.param #param_desc("string", "caPassword", "The CA private key password")
      * @apidoc.param #array_single_desc("string", "cnames", "Proxy alternate cnames to set in the SSL certificate")
-     * @apidoc.param #param("string", "country", "The 2-letter country code to set in the SSL certificate")
-     * @apidoc.param #param("string", "state", "The state to set in the SSL certificate")
-     * @apidoc.param #param("string", "city", "The city to set in the SSL certificate")
-     * @apidoc.param #param("string", "org", "The organization to set in the SSL certificate")
-     * @apidoc.param #param("string", "orgUnit", "The organization unit to set in the SSL certificate")
-     * @apidoc.param #param("string", "sslEmail", "The email to set in the SSL certificate")
+     * @apidoc.param #param_desc("string", "country", "The 2-letter country code to set in the SSL certificate")
+     * @apidoc.param #param_desc("string", "state", "The state to set in the SSL certificate")
+     * @apidoc.param #param_desc("string", "city", "The city to set in the SSL certificate")
+     * @apidoc.param #param_desc("string", "org", "The organization to set in the SSL certificate")
+     * @apidoc.param #param_desc("string", "orgUnit", "The organization unit to set in the SSL certificate")
+     * @apidoc.param #param_desc("string", "sslEmail", "The email to set in the SSL certificate")
      *  @apidoc.returntype #array_single("byte", "binary object - package file")
      */
     public byte[] containerConfig(User loggedInUser, String proxyName, Integer proxyPort, String server,
@@ -362,6 +377,225 @@ public class ProxyHandler extends BaseHandler {
             LOG.error("Failed to generate SSL certificate", e);
             throw new SSLCertFaultException(e.getMessage());
         }
+    }
+
+
+    /**
+     * Deploy a proxy container on given salt minion. It expects that the images are installed as RPMs.
+     *
+     * @param loggedInUser the current user
+     * @param hostId the ID of the target minion
+     * @param parentFqdn the FQDN of the server the proxy uses
+     * @param proxyPort the SSH port the proxy listens on
+     * @param maxCache the maximum memory cache size
+     * @param email the email of proxy admin
+     * @param rootCA CA certificate in PEM format
+     * @param intermediateCAs a list of intermediate CAs in PEM format
+     * @param proxyCert proxy certificate in PEM format
+     * @param proxyKey proxy private key in PEM format
+     *
+     * @return 1 on success
+     *
+     * @apidoc.doc Deploy a proxy container on given salt minion. It expects that the images are installed as RPMs.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "hostId", "The ID of the target minion")
+     * @apidoc.param #param_desc("string", "parentFqdn", "The FQDN of the server the proxy uses")
+     * @apidoc.param #param_desc("int", "proxyPort", "The SSH port the proxy listens on")
+     * @apidoc.param #param_desc("int", "maxCache", "The maximum memory cache size")
+     * @apidoc.param #param_desc("string", "email", "The email of proxy admin")
+     * @apidoc.param #param_desc("string", "rootCA", "CA certificate in PEM format")
+     * @apidoc.param #array_single_desc("string", "intermediateCAs", "A list of intermediate CAs in PEM format")
+     * @apidoc.param #param_desc("string", "proxyCert", "Proxy certificate in PEM format")
+     * @apidoc.param #param_desc("string", "proxyKey", "Proxy private key in PEM format")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int bootstrapProxy(User loggedInUser,
+        Integer hostId, String parentFqdn,
+        Integer proxyPort, Integer maxCache, String email,
+        String rootCA, List<String> intermediateCAs, String proxyCert, String proxyKey) {
+
+        return bootstrapProxy(
+            loggedInUser,
+            hostId, parentFqdn,
+            proxyPort, maxCache, email,
+            rootCA, intermediateCAs, proxyCert, proxyKey,
+            SOURCE_MODE_RPM,
+            null,
+            null, null,
+            null, null,
+            null, null,
+            null, null,
+            null, null,
+            null, null);
+    }
+
+    /**
+     * Deploy a proxy container on given salt minion. Use the given registry for the images.
+     *
+     * @param loggedInUser the current user
+     * @param hostId the ID of the target minion
+     * @param parentFqdn the FQDN of the server the proxy uses
+     * @param proxyPort the SSH port the proxy listens on
+     * @param maxCache the maximum memory cache size
+     * @param email the email of proxy admin
+     * @param rootCA CA certificate in PEM format
+     * @param intermediateCAs a list of intermediate CAs in PEM format
+     * @param proxyCert proxy certificate in PEM format
+     * @param proxyKey proxy private key in PEM format
+     * @param registryBaseURL image registry (e.g. "https://registry.opensuse.org/uyuni/")
+     * @param registryBaseTag image tag (e.g. "latest")
+     *
+     * @return 1 on success
+     *
+     * @apidoc.doc Deploy a proxy container on given salt minion. Use the given registry for the images.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "hostId", "The ID of the target minion")
+     * @apidoc.param #param_desc("string", "parentFqdn", "The FQDN of the server the proxy uses")
+     * @apidoc.param #param_desc("int", "proxyPort", "The SSH port the proxy listens on")
+     * @apidoc.param #param_desc("int", "maxCache", "The maximum memory cache size")
+     * @apidoc.param #param_desc("string", "email", "The email of proxy admin")
+     * @apidoc.param #param_desc("string", "rootCA", "CA certificate in PEM format")
+     * @apidoc.param #array_single_desc("string", "intermediateCAs", "A list of intermediate CAs in PEM format")
+     * @apidoc.param #param_desc("string", "proxyCert", "Proxy certificate in PEM format")
+     * @apidoc.param #param_desc("string", "proxyKey", "Proxy private key in PEM format")
+     * @apidoc.param #param_desc("string", "registryBaseURL",
+     *                           "Image registry (e.g. https://registry.opensuse.org/uyuni/)")
+     * @apidoc.param #param_desc("string", "registryBaseTag", "Image tag (e.g. latest)")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int bootstrapProxy(User loggedInUser,
+        Integer hostId, String parentFqdn,
+        Integer proxyPort, Integer maxCache, String email,
+        String rootCA, List<String> intermediateCAs, String proxyCert, String proxyKey,
+        String registryBaseURL, String registryBaseTag) {
+
+        return bootstrapProxy(
+            loggedInUser,
+            hostId, parentFqdn,
+            proxyPort, maxCache, email,
+            rootCA, intermediateCAs, proxyCert, proxyKey,
+            SOURCE_MODE_REGISTRY,
+            REGISTRY_MODE_SIMPLE,
+            registryBaseURL, registryBaseTag,
+            null, null,
+            null, null,
+            null, null,
+            null, null,
+            null, null);
+    }
+
+    /**
+     * Deploy a proxy container on given salt minion. Allows individual registry for each image.
+     *
+     * @param loggedInUser the current user
+     * @param hostId the ID of the target minion
+     * @param parentFqdn the FQDN of the server the proxy uses
+     * @param proxyPort the SSH port the proxy listens on
+     * @param maxCache the maximum memory cache size
+     * @param email the email of proxy admin
+     * @param rootCA CA certificate in PEM format
+     * @param intermediateCAs a list of intermediate CAs in PEM format
+     * @param proxyCert proxy certificate in PEM format
+     * @param proxyKey proxy private key in PEM format
+     * @param registryHttpdURL Httpd image registry
+     * @param registryHttpdTag Httpd image tag
+     * @param registrySaltbrokerURL Salt broker image registry
+     * @param registrySaltbrokerTag Salt broker image tag
+     * @param registrySquidURL Squid image registry
+     * @param registrySquidTag Squid image tag
+     * @param registrySshURL Ssh image registry
+     * @param registrySshTag Ssh image tag
+     * @param registryTftpdURL Tftpd image registry
+     * @param registryTftpdTag Tftpd image tag
+     *
+     * @return 1 on success
+     *
+     * @apidoc.doc Deploy a proxy container on given salt minion. Allows individual registry for each image.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "hostId", "The ID of the target minion")
+     * @apidoc.param #param_desc("string", "parentFqdn", "The FQDN of the server the proxy uses")
+     * @apidoc.param #param_desc("int", "proxyPort", "The SSH port the proxy listens on")
+     * @apidoc.param #param_desc("int", "maxCache", "The maximum memory cache size")
+     * @apidoc.param #param_desc("string", "email", "The email of proxy admin")
+     * @apidoc.param #param_desc("string", "rootCA", "CA certificate in PEM format")
+     * @apidoc.param #array_single_desc("string", "intermediateCAs", "A list of intermediate CAs in PEM format")
+     * @apidoc.param #param_desc("string", "proxyCert", "Proxy certificate in PEM format")
+     * @apidoc.param #param_desc("string", "proxyKey", "Proxy private key in PEM format")
+     * @apidoc.param #param_desc("string", "registryHttpdURL", "Httpd image registry")
+     * @apidoc.param #param_desc("string", "registryHttpdTag", "Httpd image tag")
+     * @apidoc.param #param_desc("string", "registrySaltbrokerURL", "Salt broker image registry")
+     * @apidoc.param #param_desc("string", "registrySaltbrokerTag", "Salt broker image tag")
+     * @apidoc.param #param_desc("string", "registrySquidURL", "Squid image registry")
+     * @apidoc.param #param_desc("string", "registrySquidTag", "Squid image tag")
+     * @apidoc.param #param_desc("string", "registrySshURL", "Ssh image registry")
+     * @apidoc.param #param_desc("string", "registrySshTag", "Ssh image tag")
+     * @apidoc.param #param_desc("string", "registryTftpdURL", "Tftpd image registry")
+     * @apidoc.param #param_desc("string", "registryTftpdTag", "Tftpd image tag")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int bootstrapProxy(User loggedInUser,
+        Integer hostId, String parentFqdn,
+        Integer proxyPort, Integer maxCache, String email,
+        String rootCA, List<String> intermediateCAs, String proxyCert, String proxyKey,
+        String registryHttpdURL, String registryHttpdTag,
+        String registrySaltbrokerURL, String registrySaltbrokerTag,
+        String registrySquidURL, String registrySquidTag,
+        String registrySshURL, String registrySshTag,
+        String registryTftpdURL, String registryTftpdTag
+        ) {
+
+        return bootstrapProxy(
+            loggedInUser,
+            hostId, parentFqdn,
+            proxyPort, maxCache, email,
+            rootCA, intermediateCAs, proxyCert, proxyKey,
+            SOURCE_MODE_REGISTRY,
+            REGISTRY_MODE_ADVANCED,
+            null, null,
+            registryHttpdURL, registryHttpdTag,
+            registrySaltbrokerURL, registrySaltbrokerTag,
+            registrySquidURL, registrySquidTag,
+            registrySshURL, registrySshTag,
+            registryTftpdURL, registryTftpdTag);
+    }
+
+    private int bootstrapProxy(User loggedInUser,
+        Integer hostId, String parentFqdn,
+        Integer proxyPort, Integer maxCache, String email,
+        String rootCA, List<String> intermediateCAs, String proxyCert, String proxyKey,
+        String sourceMode,
+        String registryMode,
+        String registryBaseURL, String registryBaseTag,
+        String registryHttpdURL, String registryHttpdTag,
+        String registrySaltbrokerURL, String registrySaltbrokerTag,
+        String registrySquidURL, String registrySquidTag,
+        String registrySshURL, String registrySshTag,
+        String registryTftpdURL, String registryTftpdTag
+        ) {
+
+        try {
+            ProxyConfigUpdateJson request = new ProxyConfigUpdateJson(
+                hostId.longValue(), parentFqdn,
+                proxyPort, maxCache, email,
+                USE_CERTS_MODE_REPLACE,
+                rootCA, intermediateCAs, proxyCert, proxyKey,
+                sourceMode,
+                registryMode,
+                registryBaseURL, registryBaseTag,
+                registryHttpdURL, registryHttpdTag,
+                registrySaltbrokerURL, registrySaltbrokerTag,
+                registrySquidURL, registrySquidTag,
+                registrySshURL, registrySshTag,
+                registryTftpdURL, registryTftpdTag
+            );
+
+            proxyConfigUpdateFacade.update(request, systemManager, loggedInUser);
+        }
+        catch (RhnRuntimeException | UyuniGeneralException e) {
+            LOG.error("Failed to apply proxy configuration to minion", e);
+            throw new ValidationException(e.getMessage());
+        }
+        return 1;
     }
 
     private String nullable(String value) {

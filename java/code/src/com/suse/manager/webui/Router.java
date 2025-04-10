@@ -34,6 +34,7 @@ import com.suse.manager.api.HttpApiRegistry;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.hub.HubController;
 import com.suse.manager.hub.HubManager;
+import com.suse.manager.hub.migration.IssMigratorFactory;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.AnsibleController;
@@ -53,6 +54,7 @@ import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.NotificationMessageController;
 import com.suse.manager.webui.controllers.PackageController;
 import com.suse.manager.webui.controllers.ProductsController;
+import com.suse.manager.webui.controllers.ProxyConfigurationController;
 import com.suse.manager.webui.controllers.ProxyController;
 import com.suse.manager.webui.controllers.RecurringActionController;
 import com.suse.manager.webui.controllers.SSOController;
@@ -141,6 +143,8 @@ public class Router implements SparkApplication {
         DownloadController downloadController = new DownloadController(paygManager);
         ConfidentialComputingController confidentialComputingController =
                 new ConfidentialComputingController(attestationManager);
+        ProxyConfigurationController proxyConfigurationController =
+                new ProxyConfigurationController(systemManager);
 
         try {
             URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
@@ -192,6 +196,9 @@ public class Router implements SparkApplication {
 
         // Proxy
         proxyController.initRoutes(proxyController, jade);
+
+        // Proxy Configuration
+        proxyConfigurationController.initRoutes(proxyConfigurationController, jade);
 
         //CSV API
         CSVDownloadController.initRoutes();
@@ -309,7 +316,7 @@ public class Router implements SparkApplication {
         hubController.initRoutes();
 
         // API for the web interface
-        HubApiController hubApiController = new HubApiController(hubManager);
+        HubApiController hubApiController = new HubApiController(hubManager, new IssMigratorFactory());
         hubApiController.initRoutes();
     }
 }

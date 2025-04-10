@@ -89,12 +89,12 @@ public class AlphaBar {
             if (charsEnabled.containsKey(ch.charAt(0))) {
                 Object[] charArg = {ch, charsEnabled.get(ch.charAt(0)).toString()};
                 form = new MessageFormat(charEnabled);
-                target.append(form.format(charArg).toString());
+                target.append(form.format(charArg));
             }
             else {
                 Object[] charArg = {ch};
                 form = new MessageFormat(charDisabled);
-                target.append(form.format(charArg).toString());
+                target.append(form.format(charArg));
             }
 
         }

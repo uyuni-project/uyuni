@@ -40,7 +40,8 @@ public abstract class RecurringActionType implements Serializable {
 
     public enum ActionType {
         HIGHSTATE("Highstate"),
-        CUSTOMSTATE("Custom state");
+        CUSTOMSTATE("Custom state"),
+        PLAYBOOK("Ansible Playbook");
         private final String description;
         ActionType(String descriptionIn) {
             this.description = descriptionIn;

@@ -36,7 +36,7 @@ import com.redhat.rhn.manager.user.UserManager;
 
 import com.suse.cloud.CloudPaygManager;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -62,7 +62,7 @@ public class SystemOverviewAction extends RhnAction {
                                                        UserServerPreferenceId
                                                        .RECEIVE_NOTIFICATIONS};
 
-    private final CloudPaygManager cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
+    private static final CloudPaygManager CLOUD_PAYG_MANAGER = GlobalInstanceHolder.PAYG_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -172,9 +172,9 @@ public class SystemOverviewAction extends RhnAction {
                         .orElse(false));
 
         // Inform user that SUMA cannot manage BYOS instances if SUMA is PAYG and not SCC credentials are set.
-        if (cloudPaygManager.isPaygInstance()) {
-            cloudPaygManager.checkRefreshCache(true);
-            if (s.isDeniedOnPayg() && !cloudPaygManager.hasSCCCredentials()) {
+        if (CLOUD_PAYG_MANAGER.isPaygInstance()) {
+            CLOUD_PAYG_MANAGER.checkRefreshCache(true);
+            if (s.isDeniedOnPayg() && !CLOUD_PAYG_MANAGER.hasSCCCredentials()) {
                 createErrorMessage(request, "message.payg.errorbyosnoscc", null);
             }
         }

@@ -56,7 +56,7 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLookupByLabel() throws Exception {
+    public void testLookupByLabel() {
         ChannelFamily cfam = createTestChannelFamily();
         ChannelFamily cfam2 = ChannelFamilyFactory.lookupByLabel(cfam.getLabel(),
                                                                  cfam.getOrg());
@@ -65,7 +65,7 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLookupByLabelLike() throws Exception {
+    public void testLookupByLabelLike() {
         ChannelFamily cfam = createTestChannelFamily();
         List cfams = ChannelFamilyFactory.lookupByLabelLike(cfam.getLabel(),
                 cfam.getOrg());
@@ -99,22 +99,21 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
         assertEquals(orgfam.getName(), orgfam2.getName());
     }
 
-    public static ChannelFamily createNullOrgTestChannelFamily() throws Exception {
+    public static ChannelFamily createNullOrgTestChannelFamily() {
         User user = UserTestUtils.findNewUser("testUser", "testOrgCreateTestChannelFamily");
         return createTestChannelFamily(user, true);
     }
 
-    public static ChannelFamily createTestChannelFamily() throws Exception {
+    public static ChannelFamily createTestChannelFamily() {
         User user = UserTestUtils.findNewUser("testUser", "testOrgCreateTestChannelFamily");
         return createTestChannelFamily(user);
     }
 
-    public static ChannelFamily createTestChannelFamily(User user) throws Exception {
+    public static ChannelFamily createTestChannelFamily(User user) {
         return createTestChannelFamily(user, false);
     }
 
-    public static ChannelFamily createTestChannelFamily(User user, boolean nullOrg)
-        throws Exception {
+    public static ChannelFamily createTestChannelFamily(User user, boolean nullOrg) {
         return createTestChannelFamily(user, nullOrg, "ChannelFamily");
     }
 

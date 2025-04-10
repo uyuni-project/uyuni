@@ -63,7 +63,7 @@ but it does generate a number of sub-packages.
 
 %package -n spacewalk-html
 Summary:        HTML document files for Spacewalk
-License:        (MPL-2.0 OR Apache-2.0) AND 0BSD AND BSD-3-Clause AND GPL-2.0-only AND ISC AND MIT
+License:        (MPL-2.0 OR Apache-2.0) AND 0BSD AND Apache-2.0 AND BSD-3-Clause AND GPL-2.0-only AND ISC AND MIT
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 Requires:       httpd
@@ -162,7 +162,7 @@ make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
 pushd html/src
 mkdir -p %{buildroot}%{nodejs_sitelib}
 cp -pr node_modules/* %{buildroot}%{nodejs_sitelib}
-node build/yarn/yarn-1.22.17.js build:novalidate
+NODE_OPTIONS="--trace-warnings --trace-deprecation --trace-uncaught --unhandled-rejections=strict" node build.js --check-spec=false
 popd
 rm -rf %{buildroot}%{nodejs_sitelib}
 sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +'%%Y%%m%%d%%H%%M%%S')/" conf/rhn_web.conf
@@ -183,10 +183,10 @@ mkdir -p %{buildroot}%{_sysconfdir}/cron.daily
 
 install -m 644 conf/rhn_web.conf %{buildroot}%{_datadir}/rhn/config-defaults
 
-if grep -F 'product_name' %{_datadir}/rhn/config-defaults/rhn.conf | grep 'SUSE Manager' >/dev/null; then
+if grep -F 'product_name' %{_datadir}/rhn/config-defaults/rhn.conf | grep 'SUSE Multi-Linux Manager' >/dev/null; then
   SUMA_REL=$(echo %{version} | awk -F. '{print $1"."$2}')
   SUMA_FULL_REL=$(sed -n 's/web\.version\s*=\s*\(.*\)/\1/p' %{buildroot}%{_datadir}/rhn/config-defaults/rhn_web.conf)
-  echo "SUSE Manager release $SUMA_REL ($SUMA_FULL_REL)" > %{buildroot}%{_sysconfdir}/susemanager-release
+  echo "SUSE Multi-Linux Manager release $SUMA_REL ($SUMA_FULL_REL)" > %{buildroot}%{_sysconfdir}/susemanager-release
 else
   UYUNI_REL=$(sed -n 's/web\.version.uyuni\s*=\s*\(.*\)/\1/p' %{buildroot}%{_datadir}/rhn/config-defaults/rhn_web.conf)
   echo "Uyuni release $UYUNI_REL" > %{buildroot}%{_sysconfdir}/uyuni-release

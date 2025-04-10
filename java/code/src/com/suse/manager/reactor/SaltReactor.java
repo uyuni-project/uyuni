@@ -294,6 +294,19 @@ public class SaltReactor {
                 }
             );
         }
+        else if (beaconEvent.getBeacon().equals("inotify")) {
+            Optional<MinionServer> minion = MinionServerFactory.findByMinionId(beaconEvent.getMinionId());
+            minion.ifPresent(m -> {
+                // Schedule retrieval of minions from changed inventory
+                try {
+                    ActionManager.scheduleInventoryRefresh(m, beaconEvent.getAdditional());
+                }
+                catch (TaskomaticApiException e) {
+                    LOG.error("Could not schedule Ansible inventory refresh for minion: {}",
+                            m.getMinionId(), e);
+                }
+            });
+        }
         return empty();
     }
 

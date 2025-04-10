@@ -449,7 +449,7 @@ public class ReportDbHibernateFactory {
         try {
             session = getSession();
 
-            retval = session.get(clazz, id, LockMode.UPGRADE);
+            retval = session.get(clazz, id, LockMode.PESSIMISTIC_WRITE);
         }
         catch (MappingException me) {
             getLogger().error("Mapping not found for " + clazz.getName(), me);

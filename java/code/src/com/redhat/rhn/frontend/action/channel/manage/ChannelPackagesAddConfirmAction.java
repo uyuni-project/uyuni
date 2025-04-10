@@ -56,7 +56,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ChannelPackagesAddConfirmAction extends RhnAction {
 
-    private final String LIST_NAME = "packageList";
+    private static final String LIST_NAME = "packageList";
 
 
     /** {@inheritDoc} */

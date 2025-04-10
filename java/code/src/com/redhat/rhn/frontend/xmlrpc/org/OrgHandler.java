@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.org;
 
+import static com.redhat.rhn.GlobalInstanceHolder.SALT_API;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -545,7 +547,8 @@ public class OrgHandler extends BaseHandler {
         Org org = verifyOrgExists(orgId);
         Map<String, Object> result = new HashMap<>();
         result.put("enabled", org.getOrgConfig().isScapfileUploadEnabled());
-        result.put("size_limit", org.getOrgConfig().getScapFileSizelimit());
+        Long sizeLimit = Long.parseLong(SALT_API.configGet("file_recv_max_size").orElse("0"));
+        result.put("size_limit", sizeLimit);
         return result;
     }
 
@@ -567,8 +570,6 @@ public class OrgHandler extends BaseHandler {
      *     #struct_begin("newSettings")
      *         #prop_desc("boolean", "enabled",
      *             "Aggregation of detailed SCAP results is enabled.")
-     *         #prop_desc("int", "size_limit",
-     *             "Limit (in Bytes) for a single SCAP file upload.")
      *     #struct_end()
      * @apidoc.returntype #return_int_success()
      */
@@ -576,7 +577,13 @@ public class OrgHandler extends BaseHandler {
             Map<String, Object> newSettings) {
         Set<String> validKeys = new HashSet<>();
         validKeys.add("enabled");
+
+        // size_limit has been removed as for issue https://github.com/SUSE/spacewalk/pull/26801
+        // this key is kept to ensure backward compatibility, but has no effect
         validKeys.add("size_limit");
+        if (newSettings.containsKey("size_limit")) {
+            log.warn("[size_limit] key has been removed: this setting has no effect");
+        }
         validateMap(validKeys, newSettings);
 
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
@@ -584,11 +591,6 @@ public class OrgHandler extends BaseHandler {
         if (newSettings.containsKey("enabled")) {
             Boolean enabled = (Boolean) newSettings.get("enabled");
             orgConfig.setScapfileUploadEnabled(enabled);
-        }
-        if (newSettings.containsKey("size_limit")) {
-            Long sizeLimit = ((Integer)
-                    newSettings.get("size_limit")).longValue();
-            orgConfig.setScapFileSizelimit(sizeLimit);
         }
         return 1;
     }

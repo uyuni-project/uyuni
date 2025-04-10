@@ -28,6 +28,9 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.iss.IssFactory;
+import com.redhat.rhn.domain.iss.IssMaster;
+import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.Server;
@@ -35,9 +38,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
@@ -58,12 +59,13 @@ import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.TokenType;
-import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
+import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParser;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 
@@ -228,11 +230,8 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
         mockTaskomaticApi = new MockTaskomaticApi();
         SaltApi saltApi = new TestSaltApi();
-        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
-        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager sysEntMgr = new SystemEntitlementManager(
-                new SystemUnentitler(monitoringManager, serverGroupManager),
-                new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
+                new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
         );
 
         hubManager = new HubManager(hubFactory, clientFactoryMock, new MirrorCredentialsManager(), mockTaskomaticApi,
@@ -555,24 +554,6 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void canGenerateSCCCredentials() throws TaskomaticApiException {
-        String peripheralFqdn = "dummy.peripheral.fqdn";
-
-        IssAccessToken peripheralToken = getValidToken(peripheralFqdn);
-        var peripheral = (IssPeripheral) hubManager.saveNewServer(peripheralToken, IssRole.PERIPHERAL, null, null);
-
-        // Ensure no credentials exists
-        assertEquals(0, CredentialsFactory.listCredentialsByType(HubSCCCredentials.class).stream()
-            .filter(creds -> peripheralFqdn.equals(creds.getPeripheralUrl()))
-            .count());
-
-        HubSCCCredentials hubSCCCredentials = hubManager.generateSCCCredentials(peripheralToken);
-        assertEquals("peripheral-%06d".formatted(peripheral.getId()), hubSCCCredentials.getUsername());
-        assertNotNull(hubSCCCredentials.getPassword());
-        assertEquals(peripheralFqdn, hubSCCCredentials.getPeripheralUrl());
-    }
-
-    @Test
     public void canStoreSCCCredentials() throws TaskomaticApiException {
         IssAccessToken hubToken = getValidToken("dummy.hub.fqdn");
         hubManager.saveNewServer(hubToken, IssRole.HUB, null, null);
@@ -586,6 +567,65 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("dummy-username", sccCredentials.getUsername());
         assertEquals("dummy-password", sccCredentials.getPassword());
         assertEquals("https://dummy.hub.fqdn", sccCredentials.getUrl());
+    }
+
+    @Test
+    public void canStoreSCCCredentialsWhenTheyAlreadyExist() throws TaskomaticApiException {
+        IssAccessToken hubToken = getValidToken("dummy.hub.fqdn");
+        IssHub hub = (IssHub) hubManager.saveNewServer(hubToken, IssRole.HUB, null, null);
+
+        SCCCredentials sccCredentials = CredentialsFactory.createSCCCredentials("user", "password");
+        CredentialsFactory.storeCredentials(sccCredentials);
+
+        long id = sccCredentials.getId();
+        hub.setMirrorCredentials(sccCredentials);
+        hubFactory.save(hub);
+
+        clearSession();
+
+        sccCredentials = hubManager.storeSCCCredentials(hubToken, "dummy-username", "dummy-password");
+        assertEquals(id, sccCredentials.getId());
+        assertEquals("dummy-username", sccCredentials.getUsername());
+        assertEquals("dummy-password", sccCredentials.getPassword());
+        assertEquals("https://dummy.hub.fqdn", sccCredentials.getUrl());
+    }
+
+    @Test
+    public void canRegenerateSCCCredentialsForAPeripheral()
+        throws TokenException, TaskomaticApiException, CertificateException, IOException {
+        String fqdn = LOCAL_SERVER_FQDN;
+        IssAccessToken token = createPeripheralRegistration(fqdn, null);
+
+        IssPeripheral peripheral = hubFactory.lookupIssPeripheralByFqdn(fqdn)
+            .orElseGet(() -> fail("Peripheral Server not found"));
+
+        long peripheralId = peripheral.getId();
+        long credentialsId = peripheral.getMirrorCredentials().getId();
+        String expectedUsername = "peripheral-%06d".formatted(peripheralId);
+        String previousPassword = peripheral.getMirrorCredentials().getPassword();
+
+        HubInternalClient internalClient = mock(HubInternalClient.class);
+
+        context().checking(new Expectations() {{
+            allowing(clientFactoryMock).newInternalClient(fqdn, token.getToken(), null);
+            will(returnValue(internalClient));
+
+            allowing(internalClient)
+                .storeCredentials(with(equal(expectedUsername)), with(any(String.class)));
+        }});
+
+        clearSession();
+
+        HubSCCCredentials newCredentials = hubManager.regenerateCredentials(satAdmin, peripheralId);
+
+        assertEquals(credentialsId, newCredentials.getId());
+        assertEquals(expectedUsername, newCredentials.getUsername());
+        assertNotEquals(previousPassword, newCredentials.getPassword());
+        assertEquals(fqdn, newCredentials.getPeripheralUrl());
+
+        peripheral = hubFactory.findPeripheralById(peripheralId);
+        assertNotNull(peripheral);
+        assertEquals(newCredentials, peripheral.getMirrorCredentials());
     }
 
     @Test
@@ -658,8 +698,9 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             TokenParsingException {
         String fqdn = LOCAL_SERVER_FQDN;
         IssAccessToken token = createHubRegistration(fqdn, null, null);
-        hubManager.deleteIssServerLocal(token, fqdn);
+        IssRole remoteRole = hubManager.deleteIssServerLocal(token, fqdn);
 
+        assertEquals(IssRole.HUB, remoteRole);
         assertNull(hubFactory.lookupAccessTokenFor(fqdn));
         assertNull(hubFactory.lookupIssuedToken(fqdn));
         assertTrue(hubFactory.lookupIssHub().isEmpty(), "Failed to remove Hub");
@@ -671,8 +712,9 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             TokenParsingException {
         String fqdn = LOCAL_SERVER_FQDN;
         IssAccessToken token = createPeripheralRegistration(fqdn, null);
-        hubManager.deleteIssServerLocal(token, fqdn);
+        IssRole remoteRole = hubManager.deleteIssServerLocal(token, fqdn);
 
+        assertEquals(IssRole.PERIPHERAL, remoteRole);
         assertNull(hubFactory.lookupAccessTokenFor(fqdn));
         assertNull(hubFactory.lookupIssuedToken(fqdn));
         assertTrue(hubFactory.lookupIssPeripheralByFqdn(fqdn).isEmpty(), "Failed to remove Peripheral");
@@ -830,8 +872,11 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("---- BEGIN ROOT CA ----", hub.getRootCa());
         assertEquals("---- BEGIN GPG PUB KEY -----", hub.getGpgKey());
 
-        Map<String, String> data = Map.of("gpg_key", "---- BEGIN NEW GPG PUB KEY -----",
-                "root_ca", "---- BEGIN NEW ROOT CA ----");
+        UpdatableServerData data = new UpdatableServerData(Map.of(
+            "gpg_key", "---- BEGIN NEW GPG PUB KEY -----",
+            "root_ca", "---- BEGIN NEW ROOT CA ----")
+        );
+
         hubManager.updateServerData(satAdmin, "hub.domain.com", IssRole.valueOf("HUB"), data);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -858,6 +903,104 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("---- BEGIN NEW ROOT CA ----", peripheral.getRootCa());
         assertThrows(IllegalArgumentException.class, () -> hubManager.updateServerData(satAdmin,
                 "peripheral1.domain.com", IssRole.valueOf("PERIPHERAL"), data));
+    }
+
+    @Test
+    public void canDeleteIssV1Slave() throws Exception {
+        IssSlave slave = new IssSlave();
+        slave.setSlave(REMOTE_SERVER_FQDN);
+        slave.setEnabled("Y");
+        slave.setAllowAllOrgs("Y");
+        IssFactory.save(slave);
+
+        IssAccessToken token = createPeripheralRegistration(REMOTE_SERVER_FQDN, null);
+        HubInternalClient internalClient = mock(HubInternalClient.class);
+
+        context().checking(new Expectations() {{
+            allowing(clientFactoryMock).newInternalClient(REMOTE_SERVER_FQDN, token.getToken(), null);
+            will(returnValue(internalClient));
+
+            allowing(internalClient).deleteIssV1Master();
+        }});
+
+        hubManager.deleteIssV1Slave(satAdmin, REMOTE_SERVER_FQDN, false);
+
+        assertNull(IssFactory.lookupSlaveByName(REMOTE_SERVER_FQDN));
+    }
+
+    @Test
+    public void deleteIssV1SlaveDoesNotCallSlaveWhenSettingAsOnlyLocal() throws Exception {
+        IssSlave slave = new IssSlave();
+        slave.setSlave(REMOTE_SERVER_FQDN);
+        slave.setEnabled("Y");
+        slave.setAllowAllOrgs("Y");
+        IssFactory.save(slave);
+
+        createPeripheralRegistration(REMOTE_SERVER_FQDN, null);
+
+        hubManager.deleteIssV1Slave(satAdmin, REMOTE_SERVER_FQDN, true);
+
+        assertNull(IssFactory.lookupSlaveByName(REMOTE_SERVER_FQDN));
+    }
+
+    @Test
+    public void deleteIssV1SlaveDoesNotDeleteIfTheSlaveIsMissing() {
+        IssSlave slave = new IssSlave();
+        slave.setSlave(REMOTE_SERVER_FQDN);
+        slave.setEnabled("Y");
+        slave.setAllowAllOrgs("Y");
+        IssFactory.save(slave);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+            () -> hubManager.deleteIssV1Slave(satAdmin, REMOTE_SERVER_FQDN, true));
+
+        assertEquals(REMOTE_SERVER_FQDN + " is not registered as an ISS v3 peripheral", exception.getMessage());
+    }
+
+    @Test
+    public void deleteIssV1SlaveDoesNotDeleteIfThePeripheralIsMissing() throws Exception {
+        createPeripheralRegistration(REMOTE_SERVER_FQDN, null);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+            () -> hubManager.deleteIssV1Slave(satAdmin, REMOTE_SERVER_FQDN, true));
+
+        assertEquals(REMOTE_SERVER_FQDN + " is not registered as an ISS v1 slave", exception.getMessage());
+    }
+
+    @Test
+    public void canLocallyDeleteIssV1Master() throws Exception {
+        IssMaster hub = new IssMaster();
+        hub.setLabel(REMOTE_SERVER_FQDN);
+        hub.makeDefaultMaster();
+        IssFactory.save(hub);
+
+        IssAccessToken token = createHubRegistration(REMOTE_SERVER_FQDN, null, null);
+
+        hubManager.deleteIssV1Master(token);
+
+        assertNull(IssFactory.lookupMasterByLabel(REMOTE_SERVER_FQDN));
+        assertNull(IssFactory.getCurrentMaster());
+    }
+
+    @Test
+    public void deleteIssV1MasterDoesNotDeleteIfMasterIsMissing() throws Exception {
+        IssAccessToken token = createHubRegistration(REMOTE_SERVER_FQDN, null, null);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+            () -> hubManager.deleteIssV1Master(token));
+        assertEquals(REMOTE_SERVER_FQDN + " is not registered as an ISS v1 master", exception.getMessage());
+    }
+
+    @Test
+    public void deleteIssV1MasterDoesNotDeleteIfHubIsMissing() {
+        IssMaster hub = new IssMaster();
+        hub.setLabel(REMOTE_SERVER_FQDN);
+        hub.makeDefaultMaster();
+        IssFactory.save(hub);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+            () -> hubManager.deleteIssV1Master(getValidToken(REMOTE_SERVER_FQDN)));
+        assertEquals(REMOTE_SERVER_FQDN + " is not registered as an ISS v3 hub", exception.getMessage());
     }
 
     private static IssAccessToken getValidToken(String fdqn) {

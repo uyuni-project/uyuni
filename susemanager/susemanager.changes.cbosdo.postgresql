@@ -1,0 +1,2 @@
+- Remove unused code related to the database move to a separate
+  container

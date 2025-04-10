@@ -4,6 +4,8 @@
 ARG BASE=registry.suse.com/bci/bci-base:15.6
 FROM $BASE AS base
 
+# The name of the package is controlled in the prjconf. This is just the fallback
+ARG PXYRELEASENOTESPKG="release-notes-uyuni-proxy"
 
 ARG PRODUCT_REPO
 
@@ -19,7 +21,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     spacewalk-proxy-redirect \
     spacewalk-proxy-html \
     susemanager-tftpsync-recv \
-    release-notes-susemanager-proxy \
+    ${PXYRELEASENOTESPKG} \
     python3-rhnlib \
     python3-PyYAML && \
     sh remove_unused.sh

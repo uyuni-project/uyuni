@@ -47,13 +47,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ChannelPackagesCompareAction extends ChannelPackagesBaseAction {
 
-    protected final String CHANNEL_LIST = "channel_list";
-    protected final String CHANNEL_NAME = "channel_name";
-    protected final String NO_PACKAGES = "no_packages";
-    protected final String OTHER_CHANNEL = "other_channel";
-    protected final String OTHER_ID = "other_id";
-    protected final String SELECTED_CHANNEL = "selected_channel";
-    protected final String SYNC_TYPE = "sync_type";
+    protected static final String CHANNEL_LIST = "channel_list";
+    protected static final String CHANNEL_NAME = "channel_name";
+    protected static final String NO_PACKAGES = "no_packages";
+    protected static final String OTHER_CHANNEL = "other_channel";
+    protected static final String OTHER_ID = "other_id";
+    protected static final String SELECTED_CHANNEL = "selected_channel";
+    protected static final String SYNC_TYPE = "sync_type";
 
     /** {@inheritDoc} */
     @Override
@@ -116,7 +116,7 @@ public class ChannelPackagesCompareAction extends ChannelPackagesBaseAction {
 
             result = PackageManager.comparePackagesBetweenChannels(cid, scid);
 
-            TagHelper.bindElaboratorTo(listName, result.getElaborator(), request);
+            TagHelper.bindElaboratorTo(LIST_NAME, result.getElaborator(), request);
         }
 
         request.setAttribute(CHANNEL_LIST, chanList);

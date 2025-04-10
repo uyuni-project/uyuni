@@ -54,7 +54,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ChannelPackagesRemoveAction extends RhnAction {
 
-    private final String LIST_ACTION = "packageList";
+    private static final String LIST_ACTION = "packageList";
 
 
     /** {@inheritDoc} */

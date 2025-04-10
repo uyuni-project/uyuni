@@ -60,6 +60,7 @@ import com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler;
 import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringActionHandler;
 import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringCustomStateHandler;
 import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringHighstateHandler;
+import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringPlaybookHandler;
 import com.redhat.rhn.frontend.xmlrpc.saltkey.SaltKeyHandler;
 import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
 import com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHandler;
@@ -98,6 +99,7 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.xmlrpc.admin.AdminPaygHandler;
 import com.suse.manager.xmlrpc.iss.HubHandler;
 import com.suse.manager.xmlrpc.maintenance.MaintenanceHandler;
+import com.suse.proxy.update.ProxyConfigUpdateFacadeImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -150,7 +152,8 @@ public class HandlerFactory {
                 regularMinionBootstrapper,
                 sshMinionBootstrapper
         );
-        ProxyHandler proxyHandler = new ProxyHandler(xmlRpcSystemHelper, systemManager);
+        ProxyHandler proxyHandler = new ProxyHandler(xmlRpcSystemHelper, systemManager,
+                                                     new ProxyConfigUpdateFacadeImpl());
         SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
                 systemManager, serverGroupManager, GlobalInstanceHolder.PAYG_MANAGER,
                 GlobalInstanceHolder.ATTESTATION_MANAGER);
@@ -208,6 +211,7 @@ public class HandlerFactory {
         factory.addHandler("recurring", new RecurringActionHandler());
         factory.addHandler("recurring.highstate", new RecurringHighstateHandler());
         factory.addHandler("recurring.custom", new RecurringCustomStateHandler());
+        factory.addHandler("recurring.playbook", new RecurringPlaybookHandler());
         factory.addHandler("saltkey", new SaltKeyHandler(saltKeyUtils));
         factory.addHandler("schedule", new ScheduleHandler());
         factory.addHandler("subscriptionmatching.pinnedsubscription", new PinnedSubscriptionHandler());
