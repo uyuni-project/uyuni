@@ -49,7 +49,7 @@ public abstract class BaseSystemsAction extends RhnListAction {
         RequestContext requestContext = new RequestContext(request);
 
         User user = requestContext.getCurrentUser();
-        DataResult result = getDataResult(user, null, formIn);
+        DataResult<SystemOverview> result = getDataResult(user, null, formIn);
 
         if (result.isEmpty()) {
             request.setAttribute(SHOW_NO_SYSTEMS, Boolean.TRUE);
@@ -101,7 +101,7 @@ public abstract class BaseSystemsAction extends RhnListAction {
 
     }
 
-    protected abstract DataResult getDataResult(User user,
+    protected abstract DataResult<SystemOverview> getDataResult(User user,
                                                 PageControl pc,
                                                 ActionForm formIn);
 }

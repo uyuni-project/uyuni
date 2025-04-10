@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.MultiOrgUserOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -55,7 +56,7 @@ public class UserListSetupAction extends RhnAction {
         Long canModify =  (user.getOrg().getId().longValue() ==
                            oid.longValue()) &&
                           (user.hasRole(RoleFactory.ORG_ADMIN)) ? 1L : 0L;
-        DataList result = OrgManager.activeUsers(oid);
+        DataList<MultiOrgUserOverview> result = OrgManager.activeUsers(oid);
 
         request.setAttribute("canModify", canModify);
         request.setAttribute("orgName", name);

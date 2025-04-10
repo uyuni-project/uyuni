@@ -22,7 +22,7 @@ import java.util.List;
  * ConfigChannelFilter
  */
 public class ConfigChannelFilter extends BaseConfigFilter {
-    private List fields;
+    private List<String> fields;
 
     /**
      * Create a new filter with "name" added to its filter-criteria

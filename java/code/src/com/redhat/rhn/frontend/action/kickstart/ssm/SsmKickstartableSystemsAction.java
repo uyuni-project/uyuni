@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.kickstart.ssm;
 import com.redhat.rhn.domain.kickstart.KickstartIpRange;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
+import com.redhat.rhn.frontend.dto.kickstart.KickstartDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -64,7 +65,7 @@ public class SsmKickstartableSystemsAction extends RhnAction implements Listable
         if (range.isEmpty()) {
             request.setAttribute(DISABLE_RANGES, Boolean.TRUE);
         }
-        List profiles = KickstartLister.getInstance().
+        List<KickstartDto> profiles = KickstartLister.getInstance().
                         listProfilesForSsm(context.getCurrentUser());
 
         if (profiles.isEmpty()) {

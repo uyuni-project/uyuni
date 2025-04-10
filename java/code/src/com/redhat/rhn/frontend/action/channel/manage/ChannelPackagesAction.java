@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -75,7 +76,7 @@ public class ChannelPackagesAction extends RhnAction {
 
 
 
-        DataResult result = PackageManager.listPackagesInChannelForList(cid);
+        DataResult<PackageOverview> result = PackageManager.listPackagesInChannelForList(cid);
         RhnListSetHelper helper = new RhnListSetHelper(request);
 
         RhnSet set =  RhnSetDecl.PACKAGES_TO_REMOVE.get(user);

@@ -21,7 +21,7 @@ import java.util.List;
  * ConfigSystemFilter
  */
 public class ConfigSystemFilter extends BaseConfigFilter {
-    private List fields;
+    private List<String> fields;
 
     /**
      * Create a new filter with "name" added to its filter-criteria

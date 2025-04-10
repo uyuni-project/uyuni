@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.systems.customkey;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.CustomDataKeyOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -46,7 +47,7 @@ public class CustomKeyListAction extends RhnAction {
         RequestContext requestContext = new RequestContext(request);
         User user =  requestContext.getCurrentUser();
 
-        DataResult result = SystemManager.listDataKeys(user);
+        DataResult<CustomDataKeyOverview> result = SystemManager.listDataKeys(user);
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
         request.setAttribute(RequestContext.PAGE_LIST, result);
 

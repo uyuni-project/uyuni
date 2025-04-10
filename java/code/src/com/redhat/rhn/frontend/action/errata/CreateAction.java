@@ -124,9 +124,9 @@ public class CreateAction extends RhnSetAction {
         //add keywords... split on commas and add separately to list
         String keywordsField = form.getString("keywords");
         if (keywordsField != null) {
-            List keywords = Arrays.asList(keywordsField.split(","));
-            for (Object keywordIn : keywords) {
-                String keyword = (String) keywordIn;
+            List<String> keywords = Arrays.asList(keywordsField.split(","));
+            for (String keywordIn : keywords) {
+                String keyword = keywordIn;
                 keyword = keyword.trim();
                 if (keyword != null && !keyword.isEmpty()) {
                     e.addKeyword(keyword);

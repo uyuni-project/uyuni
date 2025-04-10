@@ -118,7 +118,7 @@ public class LockUnlockSystemAction extends RhnListAction {
 
     private void bindData(RhnListSetHelper listHelper,
                           RhnSet set, HttpServletRequest request) {
-        List result = this.getResult(new RequestContext(request));
+        List<SystemOverview> result = this.getResult(new RequestContext(request));
         if (ListTagHelper.getListAction("systemList", request) != null) {
             listHelper.execute(set, "systemList", result);
         }
@@ -134,14 +134,14 @@ public class LockUnlockSystemAction extends RhnListAction {
         request.setAttribute(RequestContext.PAGE_LIST, result);
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
         TagHelper.bindElaboratorTo("systemList",
-                                   ((DataResult) result).getElaborator(), request);
+                                   ((DataResult<?>) result).getElaborator(), request);
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public List getResult(RequestContext context) {
+    public List<SystemOverview> getResult(RequestContext context) {
         List<SystemOverview> systems = SystemManager.inSet(context.getCurrentUser(),
                                                            RhnSetDecl.SYSTEMS.getLabel());
         for (SystemOverview systemOverview : systems) {

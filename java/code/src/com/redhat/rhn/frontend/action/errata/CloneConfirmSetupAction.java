@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.errata;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnListAction;
@@ -46,7 +47,7 @@ public class CloneConfirmSetupAction extends RhnListAction {
 
         clampListBounds(pc, request, user);
 
-        DataResult dr = getDataResult(user, pc);
+        DataResult<ErrataOverview> dr = getDataResult(user, pc);
 
         request.setAttribute("errataList", dr);
 
@@ -56,7 +57,7 @@ public class CloneConfirmSetupAction extends RhnListAction {
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(User user, PageControl pc) {
+    protected DataResult<ErrataOverview> getDataResult(User user, PageControl pc) {
         return ErrataManager.selectedForCloning(user, pc);
     }
 

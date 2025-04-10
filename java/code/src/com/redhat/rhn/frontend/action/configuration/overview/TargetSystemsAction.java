@@ -59,7 +59,7 @@ public class TargetSystemsAction extends RhnListAction {
 
         clampListBounds(pc, request, user);
 
-        DataResult dr = getDataResult(user, pc);
+        DataResult<ConfigSystemDto> dr = getDataResult(user, pc);
         request.setAttribute(RequestContext.PAGE_LIST, dr);
 
         if (!isSubmitted((DynaActionForm) formIn)) {

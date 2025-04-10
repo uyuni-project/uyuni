@@ -61,7 +61,7 @@ public class RemoveMastersAction extends RhnAction {
         }
 
         ActionForward destination = null;
-        Set sessionSet = null;
+        Set<String> sessionSet = null;
 
         Long mid = getMid(request);
         if (mid == null) {
@@ -109,11 +109,11 @@ public class RemoveMastersAction extends RhnAction {
         return null;
     }
 
-    private List<IssMaster> findSelectedMasters(Set sessionSet, Long midIn) {
+    private List<IssMaster> findSelectedMasters(Set<String> sessionSet, Long midIn) {
         List<IssMaster> masters = new ArrayList<>();
 
         if (sessionSet != null) {
-            for (String mid : (Set<String>) sessionSet) {
+            for (String mid : sessionSet) {
                 IssMaster aMaster = IssFactory.lookupMasterById(Long.parseLong(mid));
                 masters.add(aMaster);
             }
@@ -127,7 +127,7 @@ public class RemoveMastersAction extends RhnAction {
 
     private ActionForward handleDispatchAction(ActionMapping mapping,
                     HttpServletRequest request,
-                    Set sessionSet,
+                    Set<String> sessionSet,
                     List<IssMaster> masters) {
         for (IssMaster master : masters) {
             IssFactory.remove(master);

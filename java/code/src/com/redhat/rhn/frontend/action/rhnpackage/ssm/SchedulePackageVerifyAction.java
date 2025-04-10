@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.rhnpackage.ssm;
 import static com.redhat.rhn.domain.action.ActionFactory.TYPE_PACKAGES_VERIFY;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.DatePicker;
@@ -65,7 +66,7 @@ import javax.servlet.http.HttpServletResponse;
  * Handles the display and capturing of scheduling package verifications for systems in
  * the SSM.
  */
-public class SchedulePackageVerifyAction extends RhnAction implements Listable, MaintenanceWindowsAware {
+public class SchedulePackageVerifyAction extends RhnAction implements Listable<Row>, MaintenanceWindowsAware {
 
     /** Logger instance */
     private static Logger log = LogManager.getLogger(SchedulePackageVerifyAction.class);
@@ -153,7 +154,7 @@ public class SchedulePackageVerifyAction extends RhnAction implements Listable, 
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<Row> getResult(RequestContext context) {
 
         HttpServletRequest request = context.getRequest();
         User user = context.getCurrentUser();
@@ -174,7 +175,7 @@ public class SchedulePackageVerifyAction extends RhnAction implements Listable, 
             RhnSetManager.store(packageSet);
         }
 
-        DataResult results = SystemManager.ssmSystemPackagesToRemove(user,
+        DataResult<Row> results = SystemManager.ssmSystemPackagesToRemove(user,
             RhnSetDecl.SSM_VERIFY_PACKAGES_LIST.getLabel(), false);
 
         TagHelper.bindElaboratorTo("groupList", results.getElaborator(), request);

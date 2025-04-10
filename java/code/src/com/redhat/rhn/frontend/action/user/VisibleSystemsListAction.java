@@ -62,7 +62,7 @@ public class VisibleSystemsListAction extends RhnSetAction {
         User user = new RequestContext(request).getCurrentUser();
 
         //Get a DataResult containing all of the user's systems
-        DataResult dr = getDataResult(user, formIn, request);
+        DataResult<VisibleSystems> dr = getDataResult(user, formIn, request);
 
         //Get the old set
         RhnSet rs = getSetDecl().get(user);

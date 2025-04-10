@@ -19,6 +19,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.sdc.SdcHelper;
+import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -73,7 +74,7 @@ public abstract class BaseSystemPackagesAction extends RhnAction {
             }
             RhnHelper.handleEmptySelection(request);
         }
-        DataResult dataSet = getDataResult(server);
+        DataResult<PackageListItem> dataSet = getDataResult(server);
         // if its a list action update the set and the selections
         if (ListTagHelper.getListAction(LIST_NAME, request) != null) {
             helper.execute(sessionSet,
@@ -115,7 +116,7 @@ public abstract class BaseSystemPackagesAction extends RhnAction {
      * @param server The system.
      * @return List of packages that can be installed..
      */
-    protected abstract DataResult getDataResult(Server server);
+    protected abstract DataResult<PackageListItem> getDataResult(Server server);
 
     /**
      * Basically returns the declaration used to store the set of keys..
