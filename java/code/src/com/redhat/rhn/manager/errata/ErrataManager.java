@@ -55,7 +55,6 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnset.RhnSet;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -1227,7 +1226,7 @@ public class ErrataManager extends BaseManager {
      */
     public static void removeErratumFromChannel(Errata errata, Channel chan, User user) {
         if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
-            throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
+            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
         }
 
         //Since we don't remove the packages, we need to insert those entries
@@ -1280,7 +1279,7 @@ public class ErrataManager extends BaseManager {
     public static void removeErratumAndPackagesFromChannel(Set<Errata> excludedErrata, Set<Errata> includedErrata,
                                                            Channel chan, User user) {
         if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
-            throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
+            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
         }
 
 

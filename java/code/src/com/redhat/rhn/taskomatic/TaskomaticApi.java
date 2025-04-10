@@ -315,7 +315,7 @@ public class TaskomaticApi {
      */
     private void ensureChannelAdminRole(User user) {
         if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
-            throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
+            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
         }
     }
 

@@ -22,6 +22,7 @@ import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.frontend.html.HtmlTag;
 
@@ -62,6 +63,13 @@ public class PermissionException extends RhnRuntimeException  {
      */
     public PermissionException(Role role) {
         this(role, null, null);
+    }
+    /**
+     * Constructor
+     * @param accessGroupIn Cause for the exception (bad role)
+     */
+    public PermissionException(AccessGroup accessGroupIn) {
+        this(accessGroupIn, null, null);
     }
 
     /**
@@ -135,6 +143,18 @@ public class PermissionException extends RhnRuntimeException  {
         //finally set the summary.
         summary.append(ol.render());
         return summary.toString();
+    }
+
+    /**
+     * Constructor
+     * @param accessGroupIn Cause for the exception (bad role)
+     * @param localizedTitleIn The localizedTitle to set.
+     * @param localizedSummaryIn The localizedSummary to set.
+     */
+    public PermissionException(AccessGroup accessGroupIn, String localizedTitleIn, String localizedSummaryIn) {
+        this("You do not have permissions to " +
+                "perform this action. You need to have at least a " + accessGroupIn.getLabel() +
+                " role to perform this action", localizedTitleIn, localizedSummaryIn);
     }
 
     private void addReason(HtmlTag parent, String key, Object[] args) {
