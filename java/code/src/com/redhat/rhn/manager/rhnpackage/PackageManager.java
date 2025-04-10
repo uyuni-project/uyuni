@@ -1436,7 +1436,7 @@ public class PackageManager extends BaseManager {
     public static void deletePackages(Set<Long> ids, User user) {
 
         if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
-            throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
+            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
         }
 
         long start = System.currentTimeMillis();
@@ -1526,7 +1526,7 @@ public class PackageManager extends BaseManager {
     public static void deleteSourcePackages(Set<Long> ids, User user) {
 
         if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
-            throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
+            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
         }
 
         long start = System.currentTimeMillis();
