@@ -19,6 +19,7 @@ import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
 import static com.suse.utils.Opt.consume;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.ContentFilterEntity;
 import com.redhat.rhn.domain.org.Org;
 
 import com.suse.utils.Opt;
@@ -318,7 +319,7 @@ public class ContentProject extends BaseDomainHelper {
      * @return the active Project Filters
      */
     @Transient
-    public List<ContentFilter> getActiveFilters() {
+    public List<ContentFilter<? extends ContentFilterEntity>> getActiveFilters() {
         return getProjectFilters().stream()
                 .filter(f -> f.getState() != ContentProjectFilter.State.DETACHED)
                 .map(ContentProjectFilter::getFilter)
@@ -339,7 +340,7 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @param filter the filter to attach
      */
-    public void attachFilter(ContentFilter<FilterCriteria> filter) {
+    public void attachFilter(ContentFilter<? extends ContentFilterEntity> filter) {
         ContentProjectFilter projectFilter = new ContentProjectFilter(this, filter);
 
         int idx = filters.indexOf(projectFilter);
@@ -366,7 +367,7 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @param filter the filter to detach
      */
-    public void detachFilter(ContentFilter<FilterCriteria> filter) {
+    public void detachFilter(ContentFilter<? extends ContentFilterEntity> filter) {
         ContentProjectFilter projectFilter = new ContentProjectFilter(this, filter);
 
         int idx = filters.indexOf(projectFilter);

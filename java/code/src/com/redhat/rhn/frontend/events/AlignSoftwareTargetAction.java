@@ -18,6 +18,7 @@ package com.redhat.rhn.frontend.events;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.ContentFilterEntity;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -54,7 +55,7 @@ public class AlignSoftwareTargetAction implements MessageAction {
                 .lookupSwEnvironmentTargetById(targetId)
                 .orElseThrow(() -> new EntityNotExistsException(targetId));
         Channel targetChannel = target.getChannel();
-        List<ContentFilter> filters = msg.getFilters();
+        List<ContentFilter<? extends ContentFilterEntity>> filters = msg.getFilters();
 
         try {
             if (!UserManager.verifyChannelAdmin(msg.getUser(), targetChannel)) {

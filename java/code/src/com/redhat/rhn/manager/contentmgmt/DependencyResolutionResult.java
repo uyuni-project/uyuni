@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.manager.contentmgmt;
 
+import com.redhat.rhn.domain.ContentFilterEntity;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 
@@ -27,7 +28,7 @@ import java.util.List;
  * into resolved package filters on-the-go. An instance of this class stores information on this process.
  */
 public class DependencyResolutionResult {
-    private List<ContentFilter> filters;
+    private List<ContentFilter<? extends ContentFilterEntity>> filters;
     private List<Module> modules;
 
     /**
@@ -35,12 +36,13 @@ public class DependencyResolutionResult {
      * @param filtersIn the filter list
      * @param modulesIn the module list
      */
-    public DependencyResolutionResult(List<ContentFilter> filtersIn, List<Module> modulesIn) {
+    public DependencyResolutionResult(List<ContentFilter<? extends ContentFilterEntity>> filtersIn,
+                                      List<Module> modulesIn) {
         this.filters = filtersIn;
         this.modules = modulesIn;
     }
 
-    public List<ContentFilter> getFilters() {
+    public List<ContentFilter<? extends ContentFilterEntity>> getFilters() {
         return filters;
     }
 

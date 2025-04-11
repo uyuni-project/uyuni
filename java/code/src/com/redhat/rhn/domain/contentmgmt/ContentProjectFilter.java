@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.contentmgmt;
 
+import com.redhat.rhn.domain.ContentFilterEntity;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -39,7 +41,7 @@ public class ContentProjectFilter {
     private Long id;
     private State state;
     private ContentProject project;
-    private ContentFilter<FilterCriteria> filter;
+    private ContentFilter<? extends ContentFilterEntity> filter;
 
     /**
      * State of the Source
@@ -64,7 +66,7 @@ public class ContentProjectFilter {
      * @param projectIn the {@link ContentProject}
      * @param filterIn the {@link ContentFilter}
      */
-    public ContentProjectFilter(ContentProject projectIn, ContentFilter<FilterCriteria> filterIn) {
+    public ContentProjectFilter(ContentProject projectIn, ContentFilter<? extends ContentFilterEntity> filterIn) {
         this();
         this.project = projectIn;
         this.filter = filterIn;
@@ -137,7 +139,7 @@ public class ContentProjectFilter {
      */
     @ManyToOne
     @JoinColumn(name = "filter_id")
-    public ContentFilter<FilterCriteria> getFilter() {
+    public ContentFilter<? extends ContentFilterEntity> getFilter() {
         return filter;
     }
 
@@ -146,7 +148,7 @@ public class ContentProjectFilter {
      *
      * @param filterIn the filter
      */
-    public void setFilter(ContentFilter<FilterCriteria> filterIn) {
+    public void setFilter(ContentFilter<? extends ContentFilterEntity> filterIn) {
         this.filter = filterIn;
     }
 

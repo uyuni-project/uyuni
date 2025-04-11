@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.errata;
 
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.ContentFilterEntity;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -39,7 +40,7 @@ import java.util.Set;
 /**
  * Errata - Class representation of the table rhnErrata.
  */
-public class Errata extends BaseDomainHelper implements Selectable {
+public class Errata extends BaseDomainHelper implements Selectable, ContentFilterEntity {
 
     private static Logger log = LogManager.getLogger(Errata.class);
     protected Set<Package> packages;

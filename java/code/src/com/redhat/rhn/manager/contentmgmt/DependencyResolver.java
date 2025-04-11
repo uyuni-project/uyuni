@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.contentmgmt;
 
 import static java.util.stream.Collectors.toList;
 
+import com.redhat.rhn.domain.ContentFilterEntity;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
@@ -95,7 +96,8 @@ public class DependencyResolver {
      * including dependencies
      * @throws DependencyResolutionException if dependency resolution fails for some reason
      */
-    public DependencyResolutionResult resolveFilters(List<ContentFilter> filters) throws DependencyResolutionException {
+    public DependencyResolutionResult resolveFilters(List<ContentFilter<? extends ContentFilterEntity>> filters)
+            throws DependencyResolutionException {
 
         List<ModuleFilter> moduleFilters = filters.stream()
                 .filter(f -> f instanceof ModuleFilter)
@@ -107,7 +109,7 @@ public class DependencyResolver {
             throw new DependencyResolutionException("Modularity is disabled.", new ModularityDisabledException());
         }
 
-        List<ContentFilter> updatedFilters = new ArrayList<>(filters);
+        List<ContentFilter<? extends ContentFilterEntity>> updatedFilters = new ArrayList<>(filters);
 
         // Transform module filters to package filters
         DependencyResolutionResult resolved = null;
@@ -168,7 +170,7 @@ public class DependencyResolver {
      * @param filters the list of enabled filters
      * @return true if modularity is disabled
      */
-    public static boolean isModulesDisabled(Collection<ContentFilter> filters) {
+    public static boolean isModulesDisabled(Collection<ContentFilter<? extends ContentFilterEntity>> filters) {
         return filters.stream()
                 .filter(f -> f instanceof ModuleFilter)
                 .anyMatch(f -> FilterCriteria.Matcher.MODULE_NONE.equals(f.getCriteria().getMatcher()));

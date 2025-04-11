@@ -36,6 +36,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.ContentFilterEntity;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
@@ -737,7 +738,7 @@ public class ContentManager {
      * @param user the user
      */
     private void alignEnvironment(ContentEnvironment env, Channel baseChannel, Stream<Channel> childChannels,
-            List<ContentFilter> filters, boolean async, User user) {
+            List<ContentFilter<? extends ContentFilterEntity>> filters, boolean async, User user) {
         // ensure targets for the sources exist
         List<Pair<Channel, SoftwareEnvironmentTarget>> newSrcTgtPairs =
                 cloneChannelsToEnv(env, baseChannel, childChannels, user);
@@ -969,8 +970,10 @@ public class ContentManager {
      * @param async run this operation asynchronously?
      * @param user the user
      */
-    public void alignEnvironmentTarget(Channel src, SoftwareEnvironmentTarget tgt, List<ContentFilter> filters,
-            boolean async, User user) {
+    public void alignEnvironmentTarget(Channel src,
+                                       SoftwareEnvironmentTarget tgt,
+                                       List<ContentFilter<? extends ContentFilterEntity>> filters,
+                                       boolean async, User user) {
         // adjust the target status
         tgt.setStatus(EnvironmentTarget.Status.BUILDING);
         ContentProjectFactory.save(tgt);
@@ -993,7 +996,10 @@ public class ContentManager {
      * @param tgt the target {@link Channel}
      * @param user the user
      */
-    public void alignEnvironmentTargetSync(Collection<ContentFilter> filters, Channel src, Channel tgt, User user) {
+    public void alignEnvironmentTargetSync(Collection<ContentFilter<? extends ContentFilterEntity>> filters,
+                                           Channel src,
+                                           Channel tgt,
+                                           User user) {
         List<PackageFilter> packageFilters = extractFiltersOfType(filters, PackageFilter.class);
         List<ErrataFilter> errataFilters = extractFiltersOfType(filters, ErrataFilter.class);
 
@@ -1051,12 +1057,17 @@ public class ContentManager {
         // add cache entries for new ones
         Set<Package> newTgtPackages = new HashSet<>(channel.getPackages());
         newTgtPackages.removeAll(oldChannelPackages);
-        ErrataCacheManager.insertCacheForChannelPackages(channel.getId(), null, extractPackageIds(newTgtPackages));
+        ErrataCacheManager.insertCacheForChannelPackages(
+                channel.getId(),
+                null,
+                extractPackageIds(newTgtPackages)
+        );
     }
 
     // helper for extracting certain filter types
     // it's not optimal to run this method multiple times for same collection of filters, but at least it's clear
-    private static <T> List<T> extractFiltersOfType(Collection<ContentFilter> filters, Class<T> type) {
+    private static <T> List<T> extractFiltersOfType(Collection<ContentFilter<? extends ContentFilterEntity>> filters,
+                                                    Class<T> type) {
         return filters.stream()
                 .filter(f -> type.isAssignableFrom(f.getClass()))
                 .map(f -> (T) f)
