@@ -1,5 +1,17 @@
 @import "branding/css/variables.scss";
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 :global(.theme-uyuni.login-page) {
   font-size: 16px;
   background: $uyuni-blue-100;
@@ -83,7 +95,7 @@
       text-align: center;
     }
   }
-  
+
   .footer {
     margin-top: auto;
     display: flex;
@@ -102,7 +114,8 @@
       gap: 16px;
     }
 
-    a, a:hover {
+    a,
+    a:hover {
       color: inherit;
       text-decoration: underline;
     }
