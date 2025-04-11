@@ -9218,6 +9218,10 @@ public class SystemHandler extends BaseHandler {
         try {
             SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
 
+            if (!caseNumber.matches("^\\d+$")) {
+                throw new InvalidParameterException("invalid case number: " + caseNumber);
+            }
+
             Action action = ActionManager.scheduleSupportDataAction(loggedInUser, sid.longValue(),
                     caseNumber, parameter, UploadGeoType.valueOf(uploadGeo), earliestOccurrence);
             taskomaticApi.scheduleActionExecution(action);
