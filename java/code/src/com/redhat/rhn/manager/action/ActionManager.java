@@ -139,6 +139,12 @@ public class ActionManager extends BaseManager {
     // for instance.
     public static final String[] PACKAGES_NOT_REMOVABLE = {"kernel"};
 
+    public static final String NAME_ID = "name_id";
+    public static final String EVR_ID = "evr_id";
+    public static final String ARCH_ID = "arch_id";
+
+    public static final String ACTION_QUERIES = "Action_queries";
+
     /**
      * This was extracted to a constant from the
      * {@link #scheduleAction(User, Server, ActionType, String, Date)} method. At the time
@@ -229,7 +235,7 @@ public class ActionManager extends BaseManager {
         returnedAction = ActionFactory.lookupByUserAndId(user, aid);
 
         //TODO: put this in the hibernate lookup query
-        SelectMode m = ModeFactory.getMode("Action_queries", "visible_to_user");
+        SelectMode m = ModeFactory.getMode(ACTION_QUERIES, "visible_to_user");
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
@@ -277,7 +283,7 @@ public class ActionManager extends BaseManager {
      * @param label Action label to be updated.
      */
     public static void deleteActions(User user, String label) {
-        WriteMode m = ModeFactory.getWriteMode("Action_queries",
+        WriteMode m = ModeFactory.getWriteMode(ACTION_QUERIES,
                 "delete_actions");
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
@@ -292,7 +298,7 @@ public class ActionManager extends BaseManager {
      * @param type Action Type
      */
     public static void deleteActionsByIdAndType(Long id, Integer type) {
-        WriteMode m = ModeFactory.getWriteMode("Action_queries",
+        WriteMode m = ModeFactory.getWriteMode(ACTION_QUERIES,
                 "delete_actions_by_id_and_type");
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
@@ -306,7 +312,7 @@ public class ActionManager extends BaseManager {
      * @param label Action label to be updated.
      */
     public static void archiveActions(User user, String label) {
-        WriteMode m = ModeFactory.getWriteMode("Action_queries",
+        WriteMode m = ModeFactory.getWriteMode(ACTION_QUERIES,
                 "archive_actions");
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
@@ -795,7 +801,7 @@ public class ActionManager extends BaseManager {
      */
     public static DataResult<ScheduledAction> recentlyScheduledActions(User user, PageControl pc,
             long age) {
-        SelectMode m = ModeFactory.getMode("Action_queries",
+        SelectMode m = ModeFactory.getMode(ACTION_QUERIES,
                 "recently_scheduled_action_list");
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
@@ -933,7 +939,7 @@ public class ActionManager extends BaseManager {
      */
     private static DataResult<ScheduledAction> getActions(User user, PageControl pc, String mode,
             String setLabel, boolean noLimit) {
-        SelectMode m = ModeFactory.getMode("Action_queries", mode);
+        SelectMode m = ModeFactory.getMode(ACTION_QUERIES, mode);
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
@@ -1251,7 +1257,7 @@ public class ActionManager extends BaseManager {
         PackageFactory.save(pd);
 
         // this is SOOOO WRONG, we need to get rid of DataSource
-        WriteMode m = ModeFactory.getWriteMode("Action_queries",
+        WriteMode m = ModeFactory.getWriteMode(ACTION_QUERIES,
                 "insert_package_delta_element");
         for (PackageMetadata pm : pkgs) {
             Map<String, Object> params = new HashMap<>();
@@ -1323,7 +1329,7 @@ public class ActionManager extends BaseManager {
         }
 
         // this is SOOOO WRONG, we need to get rid of DataSource
-        m = ModeFactory.getWriteMode("Action_queries",
+        m = ModeFactory.getWriteMode(ACTION_QUERIES,
                 "insert_action_package_delta");
         Map<String, Object> params = new HashMap<>();
         params.put("action_id", action.getId());
@@ -1426,9 +1432,9 @@ public class ActionManager extends BaseManager {
         List<Map<String, Long>> packagesList = new ArrayList<>();
         for (Package pkg : packages) {
             Map<String, Long> pkgMeta = new HashMap<>();
-            pkgMeta.put("name_id", pkg.getPackageName().getId());
-            pkgMeta.put("evr_id", pkg.getPackageEvr().getId());
-            pkgMeta.put("arch_id", pkg.getPackageArch().getId());
+            pkgMeta.put(NAME_ID, pkg.getPackageName().getId());
+            pkgMeta.put(EVR_ID, pkg.getPackageEvr().getId());
+            pkgMeta.put(ARCH_ID, pkg.getPackageArch().getId());
             packagesList.add(pkgMeta);
         }
 
@@ -1530,7 +1536,7 @@ public class ActionManager extends BaseManager {
         params.put("tries", REMAINING_TRIES);
         params.put("parent_id", action.getId());
 
-        WriteMode m = ModeFactory.getWriteMode("Action_queries", "insert_server_actions");
+        WriteMode m = ModeFactory.getWriteMode(ACTION_QUERIES, "insert_server_actions");
         List<Long> sidList = new ArrayList<>();
         sidList.addAll(serverIds);
         m.executeUpdate(params, sidList);
@@ -1830,9 +1836,9 @@ public class ActionManager extends BaseManager {
             Long nameId, Long evrId, Long archId) throws TaskomaticApiException {
         List<Map<String, Long>> packages = new LinkedList<>();
         Map<String, Long> row = new HashMap<>();
-        row.put("name_id", nameId);
-        row.put("evr_id", evrId);
-        row.put("arch_id", archId);
+        row.put(NAME_ID, nameId);
+        row.put(EVR_ID, evrId);
+        row.put(ARCH_ID, archId);
         packages.add(row);
         return schedulePackageInstall(scheduler, srvr, packages, new Date());
     }
@@ -1856,9 +1862,9 @@ public class ActionManager extends BaseManager {
         List<Map<String, Long>> packages = new LinkedList<>();
         for (Package pkg : pkgs) {
             Map<String, Long> row = new HashMap<>();
-            row.put("name_id", pkg.getPackageName().getId());
-            row.put("evr_id", pkg.getPackageEvr().getId());
-            row.put("arch_id", pkg.getPackageArch().getId());
+            row.put(NAME_ID, pkg.getPackageName().getId());
+            row.put(EVR_ID, pkg.getPackageEvr().getId());
+            row.put(ARCH_ID, pkg.getPackageArch().getId());
             packages.add(row);
         }
         Set<Long> serverIds = new HashSet<>();
@@ -1936,18 +1942,18 @@ public class ActionManager extends BaseManager {
         for (Map<String, Long> map : packageMaps) {
 
             Map<String, Long> previous = packageMapsWithoutDuplicated.put(
-                    map.get("name_id").toString(), map);
+                    map.get(NAME_ID).toString(), map);
 
             if (previous != null) {
                 String previousNevra = PackageManager.buildPackageNevra(
-                        previous.get("name_id"),
-                        previous.get("evr_id"),
-                        previous.get("arch_id"));
+                        previous.get(NAME_ID),
+                        previous.get(EVR_ID),
+                        previous.get(ARCH_ID));
 
                 String currentNevra = PackageManager.buildPackageNevra(
-                        map.get("name_id"),
-                        map.get("evr_id"),
-                        map.get("arch_id"));
+                        map.get(NAME_ID),
+                        map.get(EVR_ID),
+                        map.get(ARCH_ID));
 
                 log.warn("Package {}, will be not be installed cause also {} has been " +
                         "provided. This is because " +
@@ -1982,15 +1988,15 @@ public class ActionManager extends BaseManager {
                 Map<String, Map<String, Long>> uPkgMap = new HashMap<>();
                 // For other salt pkg states (pkg.installed), name + arch must be unique.
                 for (Map<String, Long> p : packageMaps) {
-                    long archId = p.getOrDefault("arch_id", noarch);
-                    String name = String.valueOf(p.get("name_id"));
+                    long archId = p.getOrDefault(ARCH_ID, noarch);
+                    String name = String.valueOf(p.get(NAME_ID));
                     if (archId == noarch || archId == all) {
                         if (uPkgMap.keySet().stream().noneMatch(k -> k.startsWith(name + "."))) {
                             uPkgMap.put(name, p);
                         }
                     }
                     else if (!uPkgMap.containsKey(name)) {
-                        String key = name + "." + p.get("arch_id");
+                        String key = name + "." + p.get(ARCH_ID);
                         uPkgMap.put(key, p);
                     }
                 }
@@ -2002,16 +2008,16 @@ public class ActionManager extends BaseManager {
                     return pkgMaps.stream().map(packageMap -> {
                         Map<String, Object> params = new HashMap<>();
                         params.put("action_id", action.getId());
-                        params.put("name_id", packageMap.get("name_id"));
-                        params.put("evr_id", packageMap.get("evr_id"));
-                        params.put("arch_id", packageMap.get("arch_id"));
+                        params.put(NAME_ID, packageMap.get(NAME_ID));
+                        params.put(EVR_ID, packageMap.get(EVR_ID));
+                        params.put(ARCH_ID, packageMap.get(ARCH_ID));
                         params.put("pkg_parameter", packageParameter);
                         return params;
                     });
                 })
                 .collect(toList());
 
-            ModeFactory.getWriteMode("Action_queries", "schedule_action")
+            ModeFactory.getWriteMode(ACTION_QUERIES, "schedule_action")
                 .executeUpdates(paramList);
     }
         }
@@ -2075,9 +2081,9 @@ public class ActionManager extends BaseManager {
         List<Map<String, Long>> packages = new LinkedList<>();
         for (RhnSetElement rse : pkgs.getElements()) {
             Map<String, Long> row = new HashMap<>();
-            row.put("name_id", rse.getElement());
-            row.put("evr_id", rse.getElementTwo());
-            row.put("arch_id", rse.getElementThree());
+            row.put(NAME_ID, rse.getElement());
+            row.put(EVR_ID, rse.getElementTwo());
+            row.put(ARCH_ID, rse.getElementThree());
             // bugzilla: 191000, we forgot to populate the damn LinkedList :(
             packages.add(row);
         }

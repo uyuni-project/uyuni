@@ -59,6 +59,9 @@ import java.util.Set;
  */
 public class KickstartLister extends BaseManager {
 
+    public static final String GENERAL_QUERIES = "General_queries";
+    public static final String ORG_ID = "org_id";
+
     public static final String FAKE_SCRIPT_LABEL = "kickstart.script.order.fakename";
     /**
      * Logger for this class
@@ -93,9 +96,9 @@ public class KickstartLister extends BaseManager {
     public DataResult<KickstartDto> kickstartsInOrg(Org orgIn, PageControl pc) {
         logger.debug("kickstartsInOrg(Org orgIn={}, PageControl pc={}) - start", orgIn.getId(), pc);
 
-        SelectMode m = ModeFactory.getMode("General_queries", "kickstarts_for_org");
+        SelectMode m = ModeFactory.getMode(GENERAL_QUERIES, "kickstarts_for_org");
         Map<String, Object> params = new HashMap<>();
-        params.put("org_id", orgIn.getId());
+        params.put(ORG_ID, orgIn.getId());
         Map<String, Object> elabParams = new HashMap<>();
         DataResult<KickstartDto> returnDataResult = makeDataResult(params, elabParams, pc, m);
         logger.debug("kickstartsInOrg(Org, PageControl) - end - return value={}", returnDataResult);
@@ -110,9 +113,9 @@ public class KickstartLister extends BaseManager {
      */
     public DataResult<KickstartableTreeDto> kickstartTreesInOrg(Org orgIn, PageControl pc) {
         logger.debug("kickstartTreesInOrg(Org orgIn={}, PageControl pc={}) - start", orgIn, pc);
-        SelectMode m = ModeFactory.getMode("General_queries", "kickstart_trees_for_org");
+        SelectMode m = ModeFactory.getMode(GENERAL_QUERIES, "kickstart_trees_for_org");
         Map<String, Object> params = new HashMap<>();
-        params.put("org_id", orgIn.getId());
+        params.put(ORG_ID, orgIn.getId());
         DataResult<KickstartableTreeDto> retval = makeDataResult(params, null, pc, m);
         logger.debug("kickstartTreesInOrg(Org, PageControl) - end - return value={}", retval);
         return retval;
@@ -127,10 +130,10 @@ public class KickstartLister extends BaseManager {
      * @return the kickstart profiles for <code>orgIn</code>
      */
     public DataResult<KickstartScript> scriptsInKickstart(Org orgIn, Long ksIn) {
-        SelectMode m = ModeFactory.getMode("General_queries", "scripts_for_kickstart");
+        SelectMode m = ModeFactory.getMode(GENERAL_QUERIES, "scripts_for_kickstart");
         Map<String, Object> params = new HashMap<>();
         params.put("kickstart_id", ksIn);
-        params.put("org_id", orgIn.getId());
+        params.put(ORG_ID, orgIn.getId());
         Map<String, Object> elabParams = new HashMap<>();
         DataResult<KickstartScript> returnDataResult = makeDataResultNoPagination(params, elabParams, m);
         logger.debug("scriptsInKickstart(KS) - end - return value={}", returnDataResult);
@@ -179,9 +182,9 @@ public class KickstartLister extends BaseManager {
     public DataResult<KickstartIpRangeDto> kickstartIpRangesInOrg(Org orgIn, PageControl pc) {
         logger.debug("kickstartIpRangesInOrg(Org orgIn={}, PageControl pc={}) - start", orgIn, pc);
 
-        SelectMode m = ModeFactory.getMode("General_queries", "org_ks_ip_ranges");
+        SelectMode m = ModeFactory.getMode(GENERAL_QUERIES, "org_ks_ip_ranges");
         Map<String, Object> params = new HashMap<>();
-        params.put("org_id", orgIn.getId());
+        params.put(ORG_ID, orgIn.getId());
         Map<String, Object> elabParams = new HashMap<>();
         DataResult<KickstartIpRangeDto> returnDataResult = makeDataResult(params, elabParams, pc, m);
         logger.debug("kickstartIpRangesInOrg(Org, PageControl) - end - return value={}", returnDataResult);
@@ -197,9 +200,9 @@ public class KickstartLister extends BaseManager {
      */
     public DataResult<CryptoKeyDto> cryptoKeysInOrg(Org orgIn) {
         logger.debug("gpgKeysInOrg(Org orgIn={}) - start", orgIn);
-        SelectMode m = ModeFactory.getMode("General_queries", "crypto_keys_for_org");
+        SelectMode m = ModeFactory.getMode(GENERAL_QUERIES, "crypto_keys_for_org");
         Map<String, Object> params = new HashMap<>();
-        params.put("org_id", orgIn.getId());
+        params.put(ORG_ID, orgIn.getId());
         DataResult<CryptoKeyDto> returnDataResult = makeDataResult(params, new HashMap<>(), null, m);
         logger.debug("gpgKeysInOrg(Org, PageControl) - end - return value=null");
         return returnDataResult;
@@ -214,9 +217,9 @@ public class KickstartLister extends BaseManager {
     public DataResult<FilePreservationDto> preservationListsInOrg(Org orgIn, PageControl pc) {
         logger.debug("preservationListsInOrg(Org orgIn={}, PageControl pc={}) - start", orgIn, pc);
 
-        SelectMode m = ModeFactory.getMode("General_queries", "preservations_for_org");
+        SelectMode m = ModeFactory.getMode(GENERAL_QUERIES, "preservations_for_org");
         Map<String, Object> params = new HashMap<>();
-        params.put("org_id", orgIn.getId());
+        params.put(ORG_ID, orgIn.getId());
         DataResult<FilePreservationDto> returnDataResult = makeDataResult(params, new HashMap<>(), pc, m);
 
         logger.debug("preservationListsInOrg(Org, PageControl) - end - return value={}", returnDataResult);
@@ -233,10 +236,10 @@ public class KickstartLister extends BaseManager {
                                                               PageControl pc) {
         logger.debug("activationKeysForKickstartProfile(Org orgIn={}, PageControl pc={}) - start", orgIn, pc);
 
-        SelectMode m = ModeFactory.getMode("General_queries",
+        SelectMode m = ModeFactory.getMode(GENERAL_QUERIES,
                                            "activation_keys_for_org");
         Map<String, Object> params = new HashMap<>();
-        params.put("org_id", orgIn.getId());
+        params.put(ORG_ID, orgIn.getId());
         DataResult<ActivationKeyDto> returnDataResult = makeDataResult(params, Collections.emptyMap(), pc, m);
 
         logger.debug("activationKeysForKickstartProfile(Org, PageControl) - end - return value={}", returnDataResult);
@@ -252,10 +255,10 @@ public class KickstartLister extends BaseManager {
     public DataResult<ActivationKeyDto> getActiveActivationKeysInOrg(Org orgIn, PageControl pc) {
         logger.debug("activationKeysForKickstartProfile(Org orgIn={}, PageControl pc={}) - start", orgIn, pc);
 
-        SelectMode m = ModeFactory.getMode("General_queries",
+        SelectMode m = ModeFactory.getMode(GENERAL_QUERIES,
                                            "active_activation_keys_for_org");
         Map<String, Object> params = new HashMap<>();
-        params.put("org_id", orgIn.getId());
+        params.put(ORG_ID, orgIn.getId());
         DataResult<ActivationKeyDto> returnDataResult = makeDataResult(params, new HashMap<>(), pc, m);
 
         logger.debug("activationKeysForKickstartProfile(Org, PageControl) - end - return value={}", returnDataResult);
@@ -271,10 +274,10 @@ public class KickstartLister extends BaseManager {
     public DataResult<KickstartOverviewSystemsDto> getSystemsCurrentlyKickstarting(Org orgIn, PageControl pc) {
         logger.debug("getSystemsCurrentlyKickstarting(Org orgIn={}, PageControl pc={}) - start", orgIn, pc);
 
-        SelectMode m = ModeFactory.getMode("General_queries",
+        SelectMode m = ModeFactory.getMode(GENERAL_QUERIES,
                                            "systems_currently_kickstarted_for_org");
         Map<String, Object> params = new HashMap<>();
-        params.put("org_id", orgIn.getId());
+        params.put(ORG_ID, orgIn.getId());
         DataResult<KickstartOverviewSystemsDto> returnDataResult = makeDataResult(params, new HashMap<>(), pc, m);
         logger.debug("getSystemsCurrentlyKickstarting(Org, PageControl) - end - return value={}", returnDataResult);
         return returnDataResult;
@@ -289,10 +292,10 @@ public class KickstartLister extends BaseManager {
     public DataResult<KickstartOverviewSystemsDto> getSystemsScheduledToBeKickstarted(Org orgIn, PageControl pc) {
         logger.debug("getSystemsScheduledToBeKickstarted(Org orgIn={}, PageControl pc={}) - start", orgIn, pc);
 
-        SelectMode m = ModeFactory.getMode("General_queries",
+        SelectMode m = ModeFactory.getMode(GENERAL_QUERIES,
                                      "systems_scheduled_tobe_kickstarted_for_org");
         Map<String, Object> params = new HashMap<>();
-        params.put("org_id", orgIn.getId());
+        params.put(ORG_ID, orgIn.getId());
         DataResult<KickstartOverviewSystemsDto> returnDataResult = makeDataResult(params, new HashMap<>(), pc, m);
         logger.debug("getSystemsScheduledToBeKickstarted(Org, PageControl) - end - return value={}", returnDataResult);
         return returnDataResult;
@@ -308,10 +311,10 @@ public class KickstartLister extends BaseManager {
     public DataResult<KickstartOverviewSummaryDto> getKickstartSummary(Org orgIn, PageControl pc) {
         logger.debug("getKickstartSummary(Org orgIn={}, PageControl pc={}) - start", orgIn, pc);
 
-        SelectMode m = ModeFactory.getMode("General_queries",
+        SelectMode m = ModeFactory.getMode(GENERAL_QUERIES,
                                      "kickstart_summary_for_org");
         Map<String, Object> params = new HashMap<>();
-        params.put("org_id", orgIn.getId());
+        params.put(ORG_ID, orgIn.getId());
         DataResult<KickstartOverviewSummaryDto> returnDataResult = makeDataResultNoPagination(params,
                                                                  new HashMap<>(), m);
         logger.debug("getKickstartSummary(Org, PageControl) - end - return value={}", returnDataResult);
@@ -326,7 +329,7 @@ public class KickstartLister extends BaseManager {
     public DataResult<TimezoneDto> getValidTimezones(Long ksId) {
         logger.debug("getValidTimezones(ksId={}) - start", ksId);
 
-        SelectMode m = ModeFactory.getMode("General_queries",
+        SelectMode m = ModeFactory.getMode(GENERAL_QUERIES,
                                      "valid_timezones_for_kickstart_profile");
         Map<String, Object> params = new HashMap<>();
         params.put("ksid", ksId);
@@ -345,7 +348,7 @@ public class KickstartLister extends BaseManager {
             KickstartInstallType ksInstallType) {
 
         SelectMode m =
-                ModeFactory.getMode("General_queries",
+                ModeFactory.getMode(GENERAL_QUERIES,
                         "valid_timezones_for_kickstart_install_type");
         Map<String, Object> params = new HashMap<>();
         params.put("id", ksInstallType.getId());
