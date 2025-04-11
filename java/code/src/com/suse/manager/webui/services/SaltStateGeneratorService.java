@@ -63,6 +63,7 @@ import com.suse.manager.webui.utils.SaltConfigChannelState;
 import com.suse.manager.webui.utils.SaltPillar;
 import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -224,7 +225,7 @@ public enum SaltStateGeneratorService {
                 bootImage.getKernel().getFilename());
 
         bootImagePillarSync.put("local_path", bootLocalPath);
-        if (isBundle) {
+        if (BooleanUtils.isTrue(isBundle)) {
             bootImagePillarSync.put("kernel_link", "../../" + systemLocalPath + '/' +
                     bootImage.getKernel().getFilename());
             bootImagePillarSync.put("initrd_link", "../../" + systemLocalPath + '/' +
