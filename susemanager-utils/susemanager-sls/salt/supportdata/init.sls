@@ -1,11 +1,10 @@
 install-supportdata-command:
-  pkg.installed:
+  pkg.latest:
 {%- if grains['os_family'] == 'Suse' %}
     - name: supportutils
 {%- else %}
-    - name: sosreport
+    - name: sos
 {%- endif %}
-    - install_recommends: False
 
 
 gather-supportdata:
