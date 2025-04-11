@@ -31,7 +31,6 @@ import com.suse.manager.webui.utils.gson.BootstrapParameters;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * XmlRpcSystemHelper
@@ -149,14 +148,13 @@ public class XmlRpcSystemHelper {
      */
     public int bootstrap(User user, BootstrapParameters params, boolean saltSSH)
             throws BootstrapException {
-        BootstrapResult result = Stream.of(saltSSH).map(ssh -> {
-            if (ssh) {
-                return sshMinionBootstrapper.bootstrap(params, user, ContactMethodUtil.getSSHMinionDefault());
-            }
-            else {
-                return regularMinionBootstrapper.bootstrap(params, user, ContactMethodUtil.getRegularMinionDefault());
-            }
-        }).findAny().orElseThrow(() -> new BootstrapException("No result for " + params.getHost()));
+        BootstrapResult result;
+        if (saltSSH) {
+            result = sshMinionBootstrapper.bootstrap(params, user, ContactMethodUtil.getSSHMinionDefault());
+        }
+        else {
+            result = regularMinionBootstrapper.bootstrap(params, user, ContactMethodUtil.getRegularMinionDefault());
+        }
 
         // Determine the result, throw BootstrapException in case of failure
         if (!result.isSuccess()) {

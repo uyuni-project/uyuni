@@ -201,6 +201,7 @@ import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.xmlrpc.NoSuchHistoryEventException;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -887,7 +888,7 @@ public class SystemHandler extends BaseHandler {
         ret.put("id", channel.getId());
         ret.put("name", channel.getName());
         ret.put("label", channel.getLabel());
-        ret.put("current_base", currentBase ? Integer.valueOf(1) : Integer.valueOf(0));
+        ret.put("current_base", BooleanUtils.isTrue(currentBase) ? Integer.valueOf(1) : Integer.valueOf(0));
         return ret;
     }
 
@@ -1945,7 +1946,7 @@ public class SystemHandler extends BaseHandler {
             List<Server> servers = new ArrayList<>(1);
             servers.add(server);
 
-            if (member) {
+            if (BooleanUtils.isTrue(member)) {
                 //add to server group
                 serverGroupManager.addServers(group, servers, loggedInUser);
             }
@@ -3909,7 +3910,7 @@ public class SystemHandler extends BaseHandler {
             .map(Integer::longValue)
             .collect(toList());
 
-        if (!allowModules) {
+        if (BooleanUtils.isNotTrue(allowModules)) {
             for (Long sid : serverIds) {
                 Server server = SystemManager.lookupByIdAndUser(sid, loggedInUser);
                 for (Channel channel : server.getChannels()) {
@@ -4217,7 +4218,7 @@ public class SystemHandler extends BaseHandler {
 
         List<Long> actionIds = new ArrayList<>();
 
-        if (!allowModules) {
+        if (BooleanUtils.isNotTrue(allowModules)) {
             boolean hasModules = false;
             for (Integer sid : sids) {
                 Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
@@ -5713,7 +5714,7 @@ public class SystemHandler extends BaseHandler {
         if (details.containsKey("auto_errata_update")) {
             Boolean autoUpdate = (Boolean)details.get("auto_errata_update");
 
-            if (autoUpdate) {
+            if (BooleanUtils.isTrue(autoUpdate)) {
                 server.setAutoUpdate("Y");
             }
             else {
@@ -5812,7 +5813,7 @@ public class SystemHandler extends BaseHandler {
                     server);
         }
         else {
-            if (lockStatus) {
+            if (BooleanUtils.isTrue(lockStatus)) {
                 // lock the server, if it isn't already locked.
                 if (server.getLock() == null) {
                     SystemManager.lockServer(loggedInUser, server,
@@ -7411,7 +7412,7 @@ public class SystemHandler extends BaseHandler {
             String interfaceName) {
         Server server = lookupServer(loggedInUser, sid);
 
-        if (!server.existsActiveInterfaceWithName(interfaceName)) {
+        if (BooleanUtils.isNotTrue(server.existsActiveInterfaceWithName(interfaceName))) {
             throw new NoSuchNetworkInterfaceException("No such network interface: " +
                     interfaceName);
         }
