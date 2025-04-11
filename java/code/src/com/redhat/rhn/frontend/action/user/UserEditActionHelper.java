@@ -24,6 +24,7 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.SatManager;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
@@ -57,7 +58,7 @@ public abstract class UserEditActionHelper extends RhnAction {
                     new ActionMessage("error.password_mismatch"));
         }
 
-        Boolean readOnly = (form.get("readonly") != null);
+        boolean readOnly = (form.get("readonly") != null);
         if (!targetUser.isReadOnly()) {
             if (readOnly && targetUser.hasRole(RoleFactory.ORG_ADMIN) &&
                     targetUser.getOrg().numActiveOrgAdmins() < 2) {
@@ -65,7 +66,7 @@ public abstract class UserEditActionHelper extends RhnAction {
                         new ActionMessage("error.readonly_org_admin",
                                 targetUser.getOrg().getName()));
             }
-            if (readOnly && targetUser.hasRole(RoleFactory.SAT_ADMIN) &&
+            if (BooleanUtils.isTrue(readOnly) && targetUser.hasRole(RoleFactory.SAT_ADMIN) &&
                     SatManager.getActiveSatAdmins().size() < 2) {
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("error.readonly_sat_admin",
