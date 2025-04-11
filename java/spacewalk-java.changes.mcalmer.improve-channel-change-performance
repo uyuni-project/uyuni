@@ -1,0 +1,2 @@
+- Improve performance when changing channels on multiple system
+  through SSM (bsc#1239154)
