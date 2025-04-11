@@ -153,6 +153,7 @@ Feature: Recurring Actions
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled" is completed
 
+@skip_if_github_validation
   Scenario: Pre-requisite: downgrade milkyway-dummy to lower version
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
     And I install old package "milkyway-dummy-1.0" on this "sle_minion"
