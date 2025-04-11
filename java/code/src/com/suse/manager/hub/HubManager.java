@@ -311,6 +311,13 @@ public class HubManager {
         }
         hubFactory.remove(peripheral);
         hubFactory.removeAccessTokensFor(peripheral.getFqdn());
+        try {
+            taskomaticApi.scheduleSingleRootCaCertDelete(IssRole.PERIPHERAL, peripheral.getFqdn());
+        }
+        catch (TaskomaticApiException ex) {
+            //if unable to delete ca certificate, just log a warning
+            LOG.warn("Cannot remove ca certificate for peripheral {}", peripheral.getFqdn());
+        }
     }
 
     private void deleteHub(String hubFqdn) {
@@ -333,6 +340,13 @@ public class HubManager {
         }
         hubFactory.remove(hub);
         hubFactory.removeAccessTokensFor(hub.getFqdn());
+        try {
+            taskomaticApi.scheduleSingleRootCaCertDelete(IssRole.HUB, hub.getFqdn());
+        }
+        catch (TaskomaticApiException ex) {
+            //if unable to delete ca certificate, just log a warning
+            LOG.warn("Cannot remove ca certificate for peripheral {}", hub.getFqdn());
+        }
     }
 
     /**
@@ -660,8 +674,7 @@ public class HubManager {
         });
 
         if (data.hasRootCA()) {
-            String filename = CertificateUtils.computeRootCaFileName(role.getLabel(), fqdn);
-            taskomaticApi.scheduleSingleRootCaCertUpdate(filename, data.getRootCA());
+            taskomaticApi.scheduleSingleRootCaCertUpdate(role, fqdn, data.getRootCA());
         }
     }
 
@@ -890,8 +903,9 @@ public class HubManager {
 
     private IssServer createServer(IssRole role, String serverFqdn, String rootCA, String gpgKey, User user)
             throws TaskomaticApiException {
-        String filename = CertificateUtils.computeRootCaFileName(role.getLabel(), serverFqdn);
-        taskomaticApi.scheduleSingleRootCaCertUpdate(filename, rootCA);
+        if (StringUtils.isNotEmpty(rootCA)) {
+            taskomaticApi.scheduleSingleRootCaCertUpdate(role, serverFqdn, rootCA);
+        }
         return switch (role) {
             case HUB -> {
                 IssHub hub = new IssHub(serverFqdn, rootCA);
