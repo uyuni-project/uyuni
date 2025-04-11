@@ -9151,6 +9151,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="hub.unexpected_error" xml:space="preserve">
         <source>Registration of the remote server failed due to an unexpected error. Please check the server logs.</source>
       </trans-unit>
+      <trans-unit id="hub.error_peripheral_not_registrable" xml:space="preserve">
+        <source>The server {0} cannot be registered as a peripheral of this hub</source>
+      </trans-unit>
       <trans-unit id="hub.invalid_token_id" xml:space="preserve">
         <source>The specified access token does not exist.</source>
       </trans-unit>

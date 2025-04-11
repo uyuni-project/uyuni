@@ -29,6 +29,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.hub.HubManager;
 import com.suse.manager.hub.InvalidResponseException;
+import com.suse.manager.hub.PeripheralRegistrationException;
 import com.suse.manager.hub.migration.IssMigrator;
 import com.suse.manager.hub.migration.IssMigratorFactory;
 import com.suse.manager.model.hub.AccessTokenDTO;
@@ -290,6 +291,12 @@ public class HubApiController {
             LOGGER.error("Invalid response received from the remote server {}", remoteServer, ex);
             return internalServerError(response, LOC.getMessage("hub.invalid_remote_response"));
         }
+        catch (PeripheralRegistrationException ex) {
+            LOGGER.error("{} cannot be registered as a peripheral from this hub: {}",
+                    remoteServer, ex.getMessage());
+            return internalServerError(response, LOC.getMessage("hub.error_peripheral_not_registrable",
+                    remoteServer));
+        }
         catch (IOException ex) {
             LOGGER.error("Error while attempting to connect to remote server {}", remoteServer, ex);
             return internalServerError(response, LOC.getMessage("hub.error_connecting_remote"));
@@ -404,11 +411,11 @@ public class HubApiController {
         }
 
         try {
-            hubManager.deregister(user, server.getFqdn(), false);
+            hubManager.deregister(user, server.getFqdn(), issRole, false);
         }
         catch (IOException | CertificateException ex) {
             LOGGER.error("Unable to register: error to connect with the remote server {}", server.getFqdn(), ex);
-            internalServerError(response, LOC.getMessage("hub.unable_to_deregister"));
+            return internalServerError(response, LOC.getMessage("hub.unable_to_deregister"));
         }
 
         return success(response);
