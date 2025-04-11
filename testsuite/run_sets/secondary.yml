@@ -76,5 +76,6 @@
 - features/secondary/srv_cobbler_distro.feature
 - features/secondary/srv_cobbler_buildiso.feature
 - features/secondary/srv_cobbler_profile.feature
+- features/secondary/srv_health_check_supportconfig.feature
 
 ## Secondary features END ##

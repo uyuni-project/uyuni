@@ -639,6 +639,14 @@ When(/^the controller stops mocking a Redfish host$/) do
   `rm -rf /root/DSP2043_2019.1*`
 end
 
+When(/^I setup a health check environment on the controller$/) do
+  `sh #{File.dirname(__FILE__)}/../upload_files/health_check_setup.sh setup`
+end
+
+When(/^I clean the health check environment on the controller$/) do
+  `sh #{File.dirname(__FILE__)}/../upload_files/health_check_setup.sh clean`
+end
+
 When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
   system_name = get_system_name(host)
   # copy state file to server
@@ -1054,6 +1062,22 @@ end
 When(/I copy the distribution inside the container on the server$/) do
   node = get_target('server')
   node.run('mgradm distro copy /tmp/tftpboot-installation/SLE-15-SP4-x86_64 SLE-15-SP4-TFTP', runs_in_container: false)
+end
+
+When(/I generate a supportconfig for the server$/) do
+  node = get_target('server')
+  node.run('mgradm support config', runs_in_container: false)
+  node.run('mv /root/scc_*.tar.gz /root/server-supportconfig.tar.gz', runs_in_container: false)
+end
+
+When(/I obtain and extract the supportconfig from the server$/) do
+  supportconfig_path = "/root/server-supportconfig.tar.gz"
+  test_runner_file = "/root/server-supportconfig.tar.gz"
+  get_target('server').scp_download(supportconfig_path, test_runner_file)
+  `mkdir /root/server-supportconfig && tar xzvf /root/server-supportconfig.tar.gz -C /root/server-supportconfig`
+  `mv /root/server-supportconfig/scc_* /root/server-supportconfig/test-server`
+  `tar xJvf /root/server-supportconfig/test-server/uyuni-server-supportconfig.txz -C /root/server-supportconfig`
+  `mv /root/server-supportconfig/scc_suse_*/ /root/server-supportconfig/uyuni-server-supportconfig/`
 end
 
 When(/I remove the autoinstallation files from the server$/) do
