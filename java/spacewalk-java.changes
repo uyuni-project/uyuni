@@ -1,8 +1,10 @@
 -------------------------------------------------------------------
-Wed Apr 09 17:03:30 CEST 2025 - rosuna@suse.com
+Fri Apr 11 08:59:33 CEST 2025 - rosuna@suse.com
 
-- version 5.0.23-0
-  * Fix: automatic transaction management when saving the password
+- version 5.0.24-0
+  * Fix: refactor usage of js fetch with internal utility and more
+    robust update-only behavior when saving/resetting policy.
+    Automatic transaction management when saving the password
     policy (bsc#1240960)
 
 -------------------------------------------------------------------
