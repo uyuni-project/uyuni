@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-11 13:25+0200\n"
-"PO-Revision-Date: 2025-04-07 17:56+0000\n"
+"PO-Revision-Date: 2025-04-11 16:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.10.3\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -750,10 +750,8 @@ msgid "Confirm Desync"
 msgstr "Potvrdiť vymazanie"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:55
-#, fuzzy
-#| msgid "no child channels"
 msgid "Desync channels?"
-msgstr "žiadne kanály potomkov"
+msgstr "Zrušiť synchronizáciu kanálov?"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:64
 #, fuzzy
@@ -821,10 +819,8 @@ msgid "Set the FQDN of the remote server"
 msgstr ""
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:89
-#, fuzzy
-#| msgid "Migrate"
 msgid "Migrate?"
-msgstr "Migrovať"
+msgstr "Migrovať?"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:95
 #, fuzzy
@@ -849,10 +845,8 @@ msgid "Migration partially succeeded"
 msgstr ""
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:185
-#, fuzzy
-#| msgid " failed"
 msgid "Migration failed"
-msgstr " neúspešné"
+msgstr "Migrácia bola neúspešná"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:193
 msgid ""
@@ -943,16 +937,12 @@ msgstr ""
 "hodnota spôsobí prerušenie spojenia s hubom."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:301
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to delete the current Root Certificate Authority? "
-#| "This change may break the connection with the hub."
 msgid ""
 "Are you sure you want to remove the current Root Certificate Authority for "
 "{fqdn}?"
 msgstr ""
-"Ste si istí, že chcete vymazať aktuálnu koreňovú certifikačnú autoritu? Táto "
-"zmena môže prerušiť spojenie s hubom."
+"Ste si istí, že chcete odstrániť aktuálnu koreňovú certifikačnú autoritu pre "
+"{fqdn}?"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:321
 #: ../html/src/manager/notifications/notifications-list.tsx:339
@@ -1224,10 +1214,8 @@ msgid "Regenerate credentials"
 msgstr "Použiť prihlasovanie údaje"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:155
-#, fuzzy
-#| msgid "no child channels"
 msgid "Synchronized channels:"
-msgstr "žiadne kanály potomkov"
+msgstr "Synchronizované kanály:"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:163
 #, fuzzy
@@ -1339,10 +1327,8 @@ msgid ""
 msgstr ""
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:324
-#, fuzzy
-#| msgid " channels synced"
 msgid "No channels selected to add"
-msgstr " kanály synchronizované"
+msgstr "Nie sú vybrané žiadne kanály na pridanie"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:331
 #, fuzzy
@@ -1351,10 +1337,8 @@ msgid "Channels to Remove"
 msgstr "Názov kanála"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:347
-#, fuzzy
-#| msgid " channels synced"
 msgid "No channels selected to remove"
-msgstr " kanály synchronizované"
+msgstr "Nie sú vybrané žiadne kanály na odstránenie"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:354
 #, fuzzy
@@ -1363,10 +1347,8 @@ msgid "Channel Sync Changes"
 msgstr "Synchronizácia kanála zlyhala"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:355
-#, fuzzy
-#| msgid "Can not contain the following characters: /\\"
 msgid "You are about to make the following changes:"
-msgstr "Nemôže obsahovať nasledujúce znaky: /\\"
+msgstr "Chystáte sa vykonať nasledujúce zmeny:"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:374
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
