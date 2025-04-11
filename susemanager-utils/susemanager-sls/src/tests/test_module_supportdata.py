@@ -168,6 +168,33 @@ def test_supportdata_debian():
         out = supportdata.get()
         assert isinstance(out, dict)
         assert "success" in out
+        assert out["success"] is True
+        assert out["supportdata_dir"] == "/var/log/supportdata"
+
+        supportdata.__salt__["cmd.run_all"].assert_called_once_with(
+            [
+                "/usr/bin/sosreport",
+                "--batch",
+                "--tmp-dir",
+                "/var/log/supportdata",
+            ],
+            python_shell=False,
+        )
+
+
+def test_supportdata_unsupported():
+    """
+    Test getting supportdata from unsupported server
+
+    :return:
+    """
+    supportdata.__grains__["os_family"] = "Unsupported"
+    supportdata.__grains__["os"] = "Unsupported 0.1"
+
+    with patch("os.path.exists", MagicMock(side_effect=[True])):
+        out = supportdata.get()
+        assert isinstance(out, dict)
+        assert "success" in out
         assert out["success"] is False
         assert out["supportdata_dir"] == ""
-        assert out["error"] == "Getting supportdata not supported for Debian 12"
+        assert out["error"] == "Getting supportdata not supported for Unsupported 0.1"

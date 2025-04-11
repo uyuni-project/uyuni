@@ -12,6 +12,7 @@ from datetime import datetime
 # Just for lint and static analysis, will be replaced by salt's loader
 __grains__ = {}
 __salt__ = {}
+__opts__ = {}
 
 __virtualname__ = "supportdata"
 
@@ -44,6 +45,7 @@ def get(cmd_args: str = "", **kwargs) -> Dict[str, Any]:
     mgradm_path = "/usr/bin/mgradm"
     mgrpxy_path = "/usr/bin/mgrpxy"
     sosreport_path = "/usr/sbin/sosreport"
+    sosreport_alt_path = "/usr/bin/sosreport"
     cmd = []
 
     success = False
@@ -66,6 +68,9 @@ def get(cmd_args: str = "", **kwargs) -> Dict[str, Any]:
     elif "RedHat" in __grains__["os_family"]:
         if os.path.exists(sosreport_path):
             cmd = [sosreport_path, "--batch", "--tmp-dir", output_dir]
+    elif "Debian" in __grains__["os_family"]:
+        if os.path.exists(sosreport_alt_path):
+            cmd = [sosreport_alt_path, "--batch", "--tmp-dir", output_dir]
     else:
         error = "Getting supportdata not supported for " + __grains__["os"]
         returncode = 1
@@ -81,9 +86,10 @@ def get(cmd_args: str = "", **kwargs) -> Dict[str, Any]:
         if returncode != 0:
             error = f'Failed to run {cmd[0]}: {ret["stderr"]}'
         else:
-            if __salt__["cp.push_dir"](output_dir):
+            if "master_uri" in __opts__ and __salt__["cp.push_dir"](output_dir):
                 # remove the output dir only when the upload was successful
-                # on salt-ssh it fail and we need to download it explict via scp
+                # with salt-ssh "master_uri" is not in opts and we need to
+                # download it explictly via scp
                 shutil.rmtree(output_dir, ignore_errors=True)
             supportdata_dir = output_dir
             success = True
