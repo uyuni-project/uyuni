@@ -137,6 +137,7 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 import com.suse.utils.Opt;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -3577,7 +3578,7 @@ public class SystemManager extends BaseManager {
             params = new HashMap<>();
             params.put("user_id", user.getId());
             params.put("pref", preference);
-            params.put("value", value ? 1 : 0);
+            params.put("value", BooleanUtils.isTrue(value) ? 1 : 0);
             mode.execute(params, new HashMap<>());
         }
     }
@@ -3605,7 +3606,7 @@ public class SystemManager extends BaseManager {
                 "set_auto_update_bulk");
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
-        params.put("value", value ? "Y" : "N");
+        params.put("value", BooleanUtils.isTrue(value) ? "Y" : "N");
         mode.execute(params, new HashMap<>());
     }
 

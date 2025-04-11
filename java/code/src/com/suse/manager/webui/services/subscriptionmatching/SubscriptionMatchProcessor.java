@@ -30,6 +30,9 @@ import com.suse.matcher.json.MatchJson;
 import com.suse.matcher.json.MessageJson;
 import com.suse.matcher.json.OutputJson;
 import com.suse.matcher.json.ProductJson;
+import com.suse.matcher.json.SystemJson;
+
+import org.apache.commons.lang3.BooleanUtils;
 
 import java.util.Collections;
 import java.util.Date;
@@ -75,6 +78,15 @@ public class SubscriptionMatchProcessor {
         }
     }
 
+    private String getType(SystemJson s) {
+        if (BooleanUtils.isTrue(s.getPhysical())) {
+            return (BooleanUtils.isTrue(s.getVirtualHost()) ? "virtualHost" : "nonVirtual");
+        }
+        else {
+            return "virtualGuest";
+        }
+    }
+
     private Map<String, System> systems(InputJson input, OutputJson output) {
         return input.getSystems().stream()
                 .map(s -> new System(
@@ -84,9 +96,7 @@ public class SubscriptionMatchProcessor {
                     s.getProductIds(),
                     // see https://github.com/SUSE/spacewalk/wiki/
                     // Subscription-counting#definitions
-                    s.getPhysical() ?
-                        (s.getVirtualHost() ? "virtualHost" : "nonVirtual") :
-                        "virtualGuest",
+                        getType(s),
                     output.getMatches().stream()
                         .filter(m -> m.getSystemId().equals(s.getId()))
                         .map(MatchJson::getSubscriptionId)

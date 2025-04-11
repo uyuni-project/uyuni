@@ -93,7 +93,7 @@ public class XccdfSearchAction extends BaseSearchAction {
         return null;
     }
 
-    private Boolean getOptionScanDateSearch(HttpServletRequest request) {
+    private boolean getOptionScanDateSearch(HttpServletRequest request) {
         Object dateSrch = request.getAttribute(SCAN_DATE_SEARCH);
         if (dateSrch instanceof Boolean bool) {
             return bool;
