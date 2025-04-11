@@ -2,7 +2,7 @@
 Module for Getting Supportdata
 """
 
-from typing import Any, Dict
+from typing import Any, Dict, List
 import logging
 import os
 import shutil
@@ -24,6 +24,32 @@ def _get_supportdata_dir():
     return "/var/log/supportdata-" + datetime.now().strftime("%Y%m%d%H%M%S")
 
 
+def _get_command(output_dir: str) -> List[str]:
+    supportconfig_path = "/sbin/supportconfig"
+    mgradm_path = "/usr/bin/mgradm"
+    mgrpxy_path = "/usr/bin/mgrpxy"
+    sosreport_path = "/usr/sbin/sosreport"
+    sosreport_alt_path = "/usr/bin/sosreport"
+    cmd = []
+
+    if "Suse" in __grains__["os_family"]:
+        if os.path.exists(mgradm_path):
+            cmd = [mgradm_path, "support", "config", "--output", output_dir]
+        elif os.path.exists(mgrpxy_path):
+            cmd = [mgrpxy_path, "support", "config", "--output", output_dir]
+        elif os.path.exists(supportconfig_path):
+            cmd = [supportconfig_path, "-R", output_dir]
+    elif "RedHat" in __grains__["os_family"]:
+        if os.path.exists(sosreport_path):
+            cmd = [sosreport_path, "--batch", "--tmp-dir", output_dir]
+    elif "Debian" in __grains__["os_family"]:
+        if os.path.exists(sosreport_alt_path):
+            cmd = [sosreport_alt_path, "--batch", "--tmp-dir", output_dir]
+    else:
+        cmd = None
+    return cmd
+
+
 def get(cmd_args: str = "", **kwargs) -> Dict[str, Any]:
     """
     Collect supportdata like config and logfiles from the system
@@ -41,13 +67,6 @@ def get(cmd_args: str = "", **kwargs) -> Dict[str, Any]:
 
         salt '*'  supportdata.get
     """
-    supportconfig_path = "/sbin/supportconfig"
-    mgradm_path = "/usr/bin/mgradm"
-    mgrpxy_path = "/usr/bin/mgrpxy"
-    sosreport_path = "/usr/sbin/sosreport"
-    sosreport_alt_path = "/usr/bin/sosreport"
-    cmd = []
-
     success = False
     supportdata_dir = ""
     error = None
@@ -58,24 +77,12 @@ def get(cmd_args: str = "", **kwargs) -> Dict[str, Any]:
     output_dir = _get_supportdata_dir()
     extra_args = cmd_args.split()
 
-    if "Suse" in __grains__["os_family"]:
-        if os.path.exists(mgradm_path):
-            cmd = [mgradm_path, "support", "config", "--output", output_dir]
-        elif os.path.exists(mgrpxy_path):
-            cmd = [mgrpxy_path, "support", "config", "--output", output_dir]
-        elif os.path.exists(supportconfig_path):
-            cmd = [supportconfig_path, "-R", output_dir]
-    elif "RedHat" in __grains__["os_family"]:
-        if os.path.exists(sosreport_path):
-            cmd = [sosreport_path, "--batch", "--tmp-dir", output_dir]
-    elif "Debian" in __grains__["os_family"]:
-        if os.path.exists(sosreport_alt_path):
-            cmd = [sosreport_alt_path, "--batch", "--tmp-dir", output_dir]
-    else:
+    cmd = _get_command(output_dir)
+
+    if cmd is None:
         error = "Getting supportdata not supported for " + __grains__["os"]
         returncode = 1
-
-    if len(cmd) > 0:
+    elif len(cmd) > 0:
         os.makedirs(output_dir, exist_ok=True)
         cmd.extend(extra_args)
         log.debug("executing: %s", cmd)
