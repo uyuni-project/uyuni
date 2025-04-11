@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 11 16:45:14 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.2-0
+  * Create /var/spacewalk/* folders in the spec file
+
+-------------------------------------------------------------------
 Mon Oct 14 17:03:05 CEST 2024 - rosuna@suse.com
 
 - version 5.1.1-0
