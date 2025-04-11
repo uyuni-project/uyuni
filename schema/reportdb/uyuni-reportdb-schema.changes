@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 11 17:13:47 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.4-0
+  * Move PostgreSQL to a separate container
+
+-------------------------------------------------------------------
 Thu Dec 12 10:11:07 CET 2024 - rosuna@suse.com
 
 - version 5.1.3-0
