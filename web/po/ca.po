@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-11 13:25+0200\n"
-"PO-Revision-Date: 2025-04-04 12:56+0000\n"
+"PO-Revision-Date: 2025-04-11 16:56+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
 "Language: ca\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.3\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -443,11 +443,11 @@ msgstr "Suprimeix el projecte"
 
 #: ../html/src/components/dialog/delete.example.tsx:17
 msgid "Are you sure you want to delete project "
-msgstr "Esteu segur que voleu suprimir el projecte "
+msgstr "Segur que voleu suprimir el projecte "
 
 #: ../html/src/components/formik/Form.example.tsx:34
 msgid "Field"
-msgstr ""
+msgstr "Camp"
 
 #: ../html/src/components/formik/Form.example.tsx:36
 #: ../html/src/components/input/InputBase.test.tsx:43
@@ -466,7 +466,7 @@ msgstr "Mínim 2 caràcters"
 
 #: ../html/src/components/formik/Form.example.tsx:39
 msgid "Checkbox"
-msgstr ""
+msgstr "Casella de selecció"
 
 #: ../html/src/components/formik/Form.example.tsx:41
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
@@ -483,42 +483,36 @@ msgid "Password"
 msgstr "Contrasenya"
 
 #: ../html/src/components/formik/Form.example.tsx:43
-#, fuzzy
-#| msgid "fa-times"
 msgid "Datetime"
-msgstr "fa-times"
+msgstr "Data i hora"
 
 #: ../html/src/components/formik/Form.example.tsx:45
 msgid "Multiple values"
-msgstr ""
+msgstr "Valors múltiples"
 
 #: ../html/src/components/formik/Form.example.tsx:47
-#, fuzzy
-#| msgid "Loading text"
 msgid "Long text"
-msgstr "S'està carregant text"
+msgstr "Text llarg"
 
 #: ../html/src/components/formik/Form.example.tsx:49
-#, fuzzy
-#| msgid "Changes"
 msgid "Range"
-msgstr "Canvis"
+msgstr "Interval"
 
 #: ../html/src/components/formik/Form.example.tsx:53
 msgid "Radio"
-msgstr ""
+msgstr "Ràdio"
 
 #: ../html/src/components/formik/Form.example.tsx:55
 msgid "One"
-msgstr ""
+msgstr "U"
 
 #: ../html/src/components/formik/Form.example.tsx:56
 msgid "Two"
-msgstr ""
+msgstr "Dos"
 
 #: ../html/src/components/formik/Form.example.tsx:57
 msgid "Three"
-msgstr ""
+msgstr "Tres"
 
 #: ../html/src/components/formik/Form.example.tsx:62
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:108
@@ -540,18 +534,16 @@ msgid "Submit"
 msgstr "Envia"
 
 #: ../html/src/components/formik/field/AsRadio.tsx:41
-#, fuzzy
-#| msgid "Custom State"
 msgid "Custom value"
-msgstr "Estat personalitzat"
+msgstr "Valor personalitzat"
 
 #: ../html/src/components/formik/field/AsRange.tsx:15
 msgid "{rangeInputName} start"
-msgstr ""
+msgstr "Inicia {rangeInputName}"
 
 #: ../html/src/components/formik/field/AsRange.tsx:24
 msgid "{rangeInputName} end"
-msgstr ""
+msgstr "Acaba {rangeInputName}"
 
 #: ../html/src/components/formik/field/FieldBase.tsx:30
 #: ../html/src/components/input/InputBase.tsx:278
@@ -559,17 +551,13 @@ msgid "required"
 msgstr "requerit"
 
 #: ../html/src/components/formik/field/MultiField.tsx:37
-#, fuzzy
-#| msgid "Remove file"
 msgid "Remove item"
-msgstr "Elimina el fitxer"
+msgstr "Elimina l'element"
 
 #: ../html/src/components/formik/field/MultiField.tsx:58
 #: ../html/src/components/formik/field/MultiField.tsx:62
-#, fuzzy
-#| msgid "Add system"
 msgid "Add item"
-msgstr "Afegeix un sistema"
+msgstr "Afegeix-hi un element"
 
 #: ../html/src/components/formula-selection.tsx:135
 msgid " No group"
@@ -717,16 +705,12 @@ msgstr ""
 "rebrà dades d'ella."
 
 #: ../html/src/components/hub/DeregisterServer.tsx:70
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to derigester peripheral {fqdn}? All the current "
-#| "configuration will be lost."
 msgid ""
 "Are you sure you want to deregister peripheral {fqdn}? All the current "
 "configuration will be lost."
 msgstr ""
-"Esteu segur que voleu derogar el perifèric {fqdn}? Es perdrà tota la "
-"configuració actual."
+"Segur que voleu cancel·lar el registre del perifèric {fqdn}? Se'n perdrà "
+"tota la configuració actual."
 
 #: ../html/src/components/hub/DeregisterServer.tsx:86
 msgid "The server {fqdn} has been successfully deregistered."
@@ -734,40 +718,28 @@ msgstr "El servidor {fqdn} s'ha desregistrat correctament."
 
 #: ../html/src/components/hub/DesyncChannel.tsx:36
 #: ../html/src/components/hub/DesyncChannel.tsx:45
-#, fuzzy
-#| msgid "synced"
 msgid "Desync"
-msgstr "sincronitzat"
+msgstr "Dessincronitza"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:37
-#, fuzzy
-#| msgid "Base Channel"
 msgid "Desync Channel"
-msgstr "Canal base"
+msgstr "Dessincronitza el canal"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:42
-#, fuzzy
-#| msgid "Confirm Deletion"
 msgid "Confirm Desync"
-msgstr "Confirma la supressió"
+msgstr "Confirma la dessincronització"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:55
-#, fuzzy
-#| msgid "no child channels"
 msgid "Desync channels?"
-msgstr "no hi ha canals fills"
+msgstr "Voleu dessicronitzar els canals?"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:64
-#, fuzzy
-#| msgid "The server {fqdn} has been successfully deregistered."
 msgid "The channels have been successfully desynced."
-msgstr "El servidor {fqdn} s'ha desregistrat correctament."
+msgstr "Els canals s'han dessincronitzat correctament."
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:131
-#, fuzzy
-#| msgid "Organization"
 msgid "Select Organization"
-msgstr "Organització"
+msgstr "Seleccioneu l'organització"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:161
 #: ../html/src/manager/admin/setup/products/products.tsx:487
@@ -775,14 +747,12 @@ msgid "Filter by architecture"
 msgstr "Filtra per arquitectura"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:173
-#, fuzzy
-#| msgid "Loading child channels.."
 msgid "Search channels..."
-msgstr "S'estan carregant els canals fills.."
+msgstr "Cerca canals..."
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:188
 msgid "Sync"
-msgstr ""
+msgstr "Sincronitza"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:189
 #: ../html/src/components/states-picker.tsx:452
@@ -802,35 +772,29 @@ msgstr "Arquitectura"
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:306
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:343
 msgid "Hub Org"
-msgstr ""
+msgstr "Concentrador d'Org"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:192
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:307
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:344
-#, fuzzy
-#| msgid "N. of Sync Orgs"
 msgid "Sync Org"
-msgstr "N. d'òrgs de sincronització"
+msgstr "Sincronització d'org"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:67
-#, fuzzy
-#| msgid "Audit Servers"
 msgid "Add Server"
-msgstr "Servidors d'auditoria"
+msgstr "Afegeix-hi un servidor"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:69
 msgid "Set the FQDN of the remote server"
-msgstr ""
+msgstr "Estableix el FQDN del servidor remot"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:89
 msgid "Migrate?"
-msgstr ""
+msgstr "Voleu fer la migració?"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:95
-#, fuzzy
-#| msgid "Access Tokens"
 msgid "Access Token"
-msgstr "Testimonis d'accés"
+msgstr "Testimoni d'accés"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:100
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:294
@@ -839,45 +803,44 @@ msgid "Root Certificate Authority"
 msgstr "Autoritat del certificat arrel"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:166
-#, fuzzy
-#| msgid "Peripheral registration in progress: waiting for a response..."
 msgid "Peripheral migration in progress: waiting for a response..."
-msgstr "Registre perifèric en curs: esperant una resposta..."
+msgstr "Migració perifèrica en curs: s'espera una resposta..."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:184
 msgid "Migration partially succeeded"
-msgstr ""
+msgstr "La migració ha tingut un èxit parcial"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:185
-#, fuzzy
-#| msgid " failed"
 msgid "Migration failed"
-msgstr " ha fallat"
+msgstr "La migració ha fallat"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:193
 msgid ""
 "Some of the servers where migrated successfully, but some errors happened "
 "during the process."
 msgstr ""
+"Alguns dels servidors s'han migrat correctament, però s'han produït alguns "
+"errors durant el procés."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:194
 msgid ""
 "The migration process was not successfull and reported the following errors"
 msgstr ""
+"El procés de migració no ha tingut èxit i s'ha informat dels errors següents"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:226
 msgid "This slave is currently disabled and cannot be selected for migration"
 msgstr ""
+"Aquest esclau està actualment desactivat i no es pot seleccionar per a la "
+"migració"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:227
 msgid "Check to migrate this server to a peripheral"
-msgstr ""
+msgstr "Marqueu per migrar aquest servidor a un perifèric"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:246
-#, fuzzy
-#| msgid "undefined"
 msgid "Not defined"
-msgstr "no definit"
+msgstr "No definit"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:251
 #: ../html/src/components/large-text-attachment.tsx:69
@@ -903,19 +866,15 @@ msgstr "Edita"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:252
 msgid "Set access token for {fqdn}"
-msgstr ""
+msgstr "Estableix el testimoni d'accés per a {fqdn}"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:253
-#, fuzzy
-#| msgid "Access Tokens"
 msgid "Access token"
-msgstr "Testimonis d'accés"
+msgstr "Testimoni d'accés"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:282
-#, fuzzy
-#| msgid "No tokens available"
 msgid "Root CA available"
-msgstr "No hi ha testimonis disponibles"
+msgstr "CA d'arrel disponible"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:282
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
@@ -924,35 +883,28 @@ msgstr "No és necessari"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:292
 msgid "The root CA is the same of the hub."
-msgstr ""
+msgstr "La CA d'arrel és la mateixa que la del concentrador."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:293
 msgid "This server has a different root CA."
-msgstr ""
+msgstr "Aquest servidor té una CA d'arrel diferent."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:296
-#, fuzzy
-#| msgid ""
-#| "Ensure the certificate you are providing is correct before proceeding. A "
-#| "wrong value will break the connection with the hub."
 msgid ""
 "Ensure the certificate you are providing for {fqdn} is correct before "
 "proceeding. A wrong value will prevent the connection with the hub."
 msgstr ""
-"Assegureu-vos que el certificat que proporcioneu sigui correcte abans de "
-"procedir. Un valor incorrecte trencarà la connexió amb el hub."
+"Assegureu-vos que el certificat que proporcioneu per a {fqdn} sigui correcte "
+"abans de continuar. Un valor incorrecte impedirà la connexió amb el "
+"concentrador."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:301
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to delete the current Root Certificate Authority? "
-#| "This change may break the connection with the hub."
 msgid ""
 "Are you sure you want to remove the current Root Certificate Authority for "
 "{fqdn}?"
 msgstr ""
-"Esteu segur que voleu suprimir l'actual Autoritat de Certificats Arrel? "
-"Aquest canvi pot trencar la connexió amb el hub."
+"Segur que voleu eliminar l'autoritat de certificació d'arrel actual per a "
+"{fqdn}?"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:321
 #: ../html/src/manager/notifications/notifications-list.tsx:339
@@ -981,16 +933,12 @@ msgid "Peripheral FQDN"
 msgstr "FQDN perifèric"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:41
-#, fuzzy
-#| msgid "N. of Sync Channels"
 msgid "N. of synced channels"
-msgstr "N. dels canals de sincronització"
+msgstr "N. de canals sincronitzats"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:46
-#, fuzzy
-#| msgid "N. of Sync Orgs"
 msgid "N. of synced organizations"
-msgstr "N. d'òrgs de sincronització"
+msgstr "N. d'organitzacions sincronitzades"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:49
 msgid "Download Root CA"
@@ -998,7 +946,7 @@ msgstr "Baixa la CA d'arrel"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:66
 msgid "View details of peripheral {fqdn}"
-msgstr ""
+msgstr "Mostra els detalls del perifèric {fqdn}"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:136
 msgid "Register a new peripheral server"
@@ -1062,7 +1010,7 @@ msgstr "La contrasenya de l'usuari especificat."
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:215
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:216
 msgid "Root CA certificate"
-msgstr "Certificat CA arrel"
+msgstr "Certificat de CA d'arrel"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:218
 msgid ""
@@ -1120,16 +1068,12 @@ msgstr ""
 "personalitzada per a aquest hub."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:17
-#, fuzzy
-#| msgid ""
-#| "A customized Root Certificate Authority is currently configured for this "
-#| "hub."
 msgid ""
 "A customized Root Certificate Authority is currently configured for this "
 "peripheral."
 msgstr ""
-"Actualment hi ha configurada una Autoritat de Certificats Root "
-"personalitzada per a aquest hub."
+"Actualment s'ha configurat una autoritat de certificació d'arrel "
+"personalitzada per a aquest perifèric."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:20
 msgid "This hub is currently using the default Root Certificate Authority."
@@ -1137,12 +1081,11 @@ msgstr ""
 "Aquest centre està utilitzant l'autoritat de certificats Root per defecte."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:21
-#, fuzzy
-#| msgid "This hub is currently using the default Root Certificate Authority."
 msgid ""
 "This peripheral is currently using the default Root Certificate Authority."
 msgstr ""
-"Aquest centre està utilitzant l'autoritat de certificats Root per defecte."
+"Aquest perifèric usa actualment l'autoritat de certificació d'arrel "
+"predeterminada."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:25
 msgid ""
@@ -1153,16 +1096,12 @@ msgstr ""
 "procedir. Un valor incorrecte trencarà la connexió amb el hub."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:28
-#, fuzzy
-#| msgid ""
-#| "Ensure the certificate you are providing is correct before proceeding. A "
-#| "wrong value will break the connection with the hub."
 msgid ""
 "Ensure the certificate you are providing is correct before proceeding. A "
 "wrong value will break the connection with the peripheral."
 msgstr ""
-"Assegureu-vos que el certificat que proporcioneu sigui correcte abans de "
-"procedir. Un valor incorrecte trencarà la connexió amb el hub."
+"Assegureu-vos que el certificat que proporcioneu és correcte abans de "
+"continuar. Un valor incorrecte trencarà la connexió amb el perifèric."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:33
 msgid ""
@@ -1173,16 +1112,12 @@ msgstr ""
 "Aquest canvi pot trencar la connexió amb el hub."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:36
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to delete the current Root Certificate Authority? "
-#| "This change may break the connection with the hub."
 msgid ""
 "Are you sure you want to delete the current Root Certificate Authority? This "
 "change may break the connection with the peripheral."
 msgstr ""
-"Esteu segur que voleu suprimir l'actual Autoritat de Certificats Arrel? "
-"Aquest canvi pot trencar la connexió amb el hub."
+"Assegureu-vos que el certificat que proporcioneu és correcte abans de "
+"continuar. Un valor incorrecte trencarà la connexió amb el perifèric."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:67
 msgid "Server FQDN:"
@@ -1218,38 +1153,32 @@ msgid "Mirror credentials:"
 msgstr "Credencials del mirall:"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:142
-#, fuzzy
-#| msgid "Use credentials"
 msgid "Regenerate credentials"
-msgstr "Utilitza credencials"
+msgstr "Regenera les credencials"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:155
-#, fuzzy
-#| msgid "no child channels"
 msgid "Synchronized channels:"
-msgstr "no hi ha canals fills"
+msgstr "Canals sincronitzats:"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:163
-#, fuzzy
-#| msgid "Edit Channel Ranks"
 msgid "Edit channels"
-msgstr "Edita els ranxos del canal"
+msgstr "Edita els canals"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:185
-#, fuzzy
-#| msgid "has unsynchronized patches"
 msgid "One syncronized channel"
-msgstr "té pedaços no sincronitzats"
+msgstr "Un canal sincronitzat"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:189
 msgid "{nSyncedChannels} syncronized channels, from one organization"
-msgstr ""
+msgstr "{nSyncedChannels} canals sincronitzats, d'una organització"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:192
 msgid ""
 "{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different "
 "organizations"
 msgstr ""
+"{nSyncedChannels} canals sincronitzats, de {nSyncedOrgs} organitzacions "
+"diferents"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:198
 msgid "Root Certificate Authority successfully modified."
@@ -1260,35 +1189,27 @@ msgid "Root Certificate Authority successfully updated."
 msgstr "S'ha actualitzat correctament l'autoritat de certificats arrel."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:227
-#, fuzzy
-#| msgid "Schedule successfully created."
 msgid "Mirror credentials successfully regenerated."
-msgstr "La planificació s'ha creat correctament."
+msgstr "Les credencials de rèplica s'han regenerat correctament."
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:170
-#, fuzzy
-#| msgid "No change"
 msgid "No changes to apply"
-msgstr "Sense canvi"
+msgstr "No hi ha canvis per aplicar"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:215
 msgid "Channels synced correctly to peripheral!"
-msgstr ""
+msgstr "Canals sincronitzats correctament amb el perifèric!"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:243
 msgid "Please select at least one channel to add or remove from sync"
-msgstr ""
+msgstr "Seleccioneu almenys un canal per afegir o eliminar de la sincronització"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:293
-#, fuzzy
-#| msgid "Channels"
 msgid "Channels to Add"
-msgstr "Canals"
+msgstr "Canals per afegir"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:301
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:338
-#, fuzzy
-#| msgid "Filter by name"
 msgid "Filter by Name"
 msgstr "Filtra per nom"
 
@@ -1337,34 +1258,28 @@ msgid ""
 "Some custom channels do not have a sync organization selected. Please select "
 "organizations before confirming."
 msgstr ""
+"Alguns canals personalitzats no tenen una organització de sincronització "
+"seleccionada. Seleccioneu organitzacions abans de confirmar-ho."
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:324
-#, fuzzy
-#| msgid " channels synced"
 msgid "No channels selected to add"
-msgstr " canals sincronitzats"
+msgstr "No s'ha seleccionat cap canal per afegir"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:331
-#, fuzzy
-#| msgid "Channel Name"
 msgid "Channels to Remove"
-msgstr "Nom del canal"
+msgstr "Canals per eliminar"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:347
-#, fuzzy
-#| msgid " channels synced"
 msgid "No channels selected to remove"
-msgstr " canals sincronitzats"
+msgstr "No s'ha seleccionat cap canal per eliminar"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:354
-#, fuzzy
-#| msgid "Channel sync failed"
 msgid "Channel Sync Changes"
-msgstr "Ha fallat la sincronització del canal"
+msgstr "Canvis de sincronització de canals"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:355
 msgid "You are about to make the following changes:"
-msgstr ""
+msgstr "Esteu a punt de fer els canvis següents:"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:374
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
@@ -1381,13 +1296,11 @@ msgstr "Confirmació"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:397
 msgid "{peripheralFqdn} - Peripheral Sync Channels"
-msgstr ""
+msgstr "{peripheralFqdn}: canals de sincronització de perifèrics"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:407
-#, fuzzy
-#| msgid "Back to list"
 msgid "Back to details"
-msgstr "Torna a la llista"
+msgstr "Torna als detalls"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:420
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:421
@@ -1397,13 +1310,11 @@ msgstr "Aplica els canvis"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:429
 msgid "Sync Channels from Hub to Peripheral"
-msgstr ""
+msgstr "Sincronitza canals del concentrador amb el perifèric"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:439
-#, fuzzy
-#| msgid "Confirm Software Channel Change"
 msgid "Confirm Channel Synchronization Changes"
-msgstr "Confirmeu el canvi del canal de programari"
+msgstr "Confirmeu els canvis de sincronització de canals"
 
 #: ../html/src/components/hub/TokenTable.tsx:54
 msgid "No tokens available"
@@ -2442,22 +2353,21 @@ msgstr "Testimonis d'accés"
 
 #: ../html/src/manager/admin/hub/migrate-from-v1.renderer.tsx:14
 msgid "Migrate from ISSv1 Slaves"
-msgstr ""
+msgstr "Migra des d'esclaus ISSv1"
 
 #: ../html/src/manager/admin/hub/migrate-from-v2.renderer.tsx:13
 msgid "Migrate from ISSv2"
-msgstr ""
+msgstr "Migra des d'ISSv2"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:20
 msgid "{fqdn} - Peripheral Details"
-msgstr ""
+msgstr "{fqdn} - Detalls del perifèric"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgstr ""
-"Aquest servidor està actualment registrat com a perifèric del hub {fqdn}. "
+"El servidor {fqdn} està registrat actualment com a perifèric d'aquest "
+"concentrador. "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:26
 msgid "Peripherals Configuration"
@@ -2469,19 +2379,19 @@ msgstr "Afegeix perifèric"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:39
 msgid "Migrate"
-msgstr ""
+msgstr "Migra"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:41
 msgid "Migrate an existing configuration of a previous version of ISS"
-msgstr ""
+msgstr "Migra una configuració existent d'una versió anterior de l'ISS"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:48
 msgid "Migrate ISS v1..."
-msgstr ""
+msgstr "Migra ISS v1..."
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:57
 msgid "Migrate ISS v2..."
-msgstr ""
+msgstr "Migra ISS v2..."
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:57
 msgid ""
@@ -5845,8 +5755,8 @@ msgid ""
 "CA, Intermediate CAs, Proxy certificate, or Proxy SSL private key."
 msgstr ""
 "Mantenir els certificats actuals significa que no es faran canvis als CA "
-"d'arrel, als CA intermedis, al certificat d'intermediari o a la clau privada "
-"SSL d'intermediari."
+"d'arrel, a les CA intermèdies, al certificat d'intermediari o a la clau "
+"privada SSL d'intermediari."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:273
 msgid "Root CA"
@@ -6099,7 +6009,7 @@ msgstr "mostra els detalls"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:242
 msgid "Retry"
-msgstr ""
+msgstr "Torna-ho a provar"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:254
 msgid "Flag as Unread"
@@ -6114,28 +6024,20 @@ msgid "Delete Notification"
 msgstr "Suprimeix la notificació"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:307
-#, fuzzy
-#| msgid "Environment updated successfully"
 msgid "{number} messages status updated successfully"
-msgstr "L'entorn s'ha actualitzat correctament"
+msgstr "L'estat de {number} missatges s'ha actualitzat correctament"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:308
-#, fuzzy
-#| msgid "Filter updated successfully"
 msgid "Message read status updated successfully"
-msgstr "El filtre s'ha actualitzat correctament"
+msgstr "L'estat de lectura del missatge s'ha actualitzat correctament"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:325
-#, fuzzy
-#| msgid "Filter deleted successfully"
 msgid "{number} messages deleted successfully"
-msgstr "El filtre s'ha suprimit correctament"
+msgstr "{number} missatges s'han suprimit correctament"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:326
-#, fuzzy
-#| msgid "Filter deleted successfully"
 msgid "Message deleted successfully"
-msgstr "El filtre s'ha suprimit correctament"
+msgstr "El missatge s'ha suprimit correctament"
 
 #: ../html/src/manager/notifications/notifications.tsx:42
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:339
@@ -6312,7 +6214,7 @@ msgstr "Correu electrònic"
 
 #: ../html/src/manager/proxy/container-config.tsx:334
 msgid "The root CA"
-msgstr "La CA arrel"
+msgstr "La CA d'arrel"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:95
 msgid "Execution time"
