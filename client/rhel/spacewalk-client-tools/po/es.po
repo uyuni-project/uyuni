@@ -38,9 +38,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-04 11:42+0200\n"
-"PO-Revision-Date: 2020-11-21 02:26+0000\n"
-"Last-Translator: Pau Garcia Quiles <pau.garcia@suse.com>\n"
+"POT-Creation-Date: 2025-04-11 13:25+0200\n"
+"PO-Revision-Date: 2025-04-09 23:56+0000\n"
+"Last-Translator: Fran Serrador <serrador@proton.me>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
 "client-tools/es/>\n"
 "Language: es\n"
@@ -48,7 +48,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: ../src/up2date_client/config.py:162
 #, python-format
@@ -60,19 +60,18 @@ msgid "Error: Server Unavailable. Please try later."
 msgstr "Error: El servidor no está disponible. Por favor intente más tarde."
 
 #: ../src/up2date_client/rpcServer.py:181
-#, fuzzy
 msgid "ERROR: can not find server CA file"
-msgstr "ERROR: no se pudo encontrar el archivo RHNS CA"
+msgstr "ERROR: no se puede encontrar el archivo del servidor AC"
 
 #: ../src/up2date_client/up2dateErrors.py:47
 #: ../src/up2date_client/up2dateErrors.py:80
 #, python-format
 msgid "class %s has no attribute '%s'"
-msgstr "La clase %s no tiene atributo '%s'"
+msgstr "la clase %s no tiene atributo '%s'"
 
 #: ../src/up2date_client/up2dateErrors.py:107
 msgid "RPM error.  The message was:\n"
-msgstr "Error RPM. El mensaje fue:\n"
+msgstr "Error RPM.  El mensaje fue:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:114
 msgid "Password error. The message was:\n"
@@ -88,7 +87,7 @@ msgstr "Error al comunicarse con el servidor. El mensaje fue:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:135
 msgid "File Not Found: \n"
-msgstr "Fichero no encontrado: \n"
+msgstr "Archivo no encontrado: \n"
 
 #: ../src/up2date_client/up2dateErrors.py:142
 msgid "Delay error from server.  The message was:\n"
@@ -104,6 +103,9 @@ msgid ""
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
+"\n"
+"Red Hat Network Classic no está mantenido.\n"
+"    "
 
 #: ../src/up2date_client/up2dateErrors.py:197
 msgid "The installation number is invalid"

@@ -29784,21 +29784,21 @@ lt;/pgt;
         </context-group>
         <target state="translated">Crea la distribució</target>
       </trans-unit>
-    <trans-unit id="system.event.inventory" xml:space="preserve">
-          <source>Inventory:</source>
+      <trans-unit id="system.event.inventory" xml:space="preserve">
+        <source>Inventory:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
-        <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ansible_managed" xml:space="preserve">
+        <target state="translated">Inventari:</target>
+      </trans-unit>
+      <trans-unit id="ansible_managed" xml:space="preserve">
         <source>Ansible Managed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Ansible gestionat</target>
+      </trans-unit>
       <trans-unit id="proxy_entitled" xml:space="preserve">
         <source>Proxy</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Servidor intermediari</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
