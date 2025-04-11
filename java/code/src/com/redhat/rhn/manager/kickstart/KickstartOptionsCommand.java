@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartOptionValue;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -134,7 +135,7 @@ public class KickstartOptionsCommand  extends BaseKickstartCommand {
             v.setEnabled(mapIn.containsKey(name));
 
             String[] s = (String[]) mapIn.get(name + "_txt");
-            if ((s != null) && (v.getEnabled())) {
+            if ((s != null) && (BooleanUtils.isTrue(v.getEnabled()))) {
                 v.setArg(s[0]);
             }
 

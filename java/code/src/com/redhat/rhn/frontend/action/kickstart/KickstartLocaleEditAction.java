@@ -19,6 +19,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.kickstart.BaseKickstartCommand;
 import com.redhat.rhn.manager.kickstart.KickstartLocaleCommand;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.List;
@@ -77,17 +78,13 @@ public class KickstartLocaleEditAction extends BaseKickstartEditAction {
                                         "validation.timezone.invalid");
         }
 
-        Boolean useUtc = (Boolean) form.get(USE_UTC);
+        boolean useUtc = BooleanUtils.isTrue((Boolean)form.get(USE_UTC));
 
-        if (useUtc == null) {
-            useUtc = Boolean.FALSE;
-        }
-
-        if (localeCmd.getKickstartData().isUsingUtc() &&
+        if (BooleanUtils.isTrue(localeCmd.getKickstartData().isUsingUtc()) &&
             !useUtc) {
             localeCmd.doNotUseUtc();
         }
-        else if (!localeCmd.getKickstartData().isUsingUtc() &&
+        else if (BooleanUtils.isNotTrue(localeCmd.getKickstartData().isUsingUtc()) &&
                 useUtc) {
             localeCmd.useUtc();
         }

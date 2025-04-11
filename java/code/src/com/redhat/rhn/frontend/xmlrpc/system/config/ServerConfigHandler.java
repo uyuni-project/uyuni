@@ -46,6 +46,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.utils.MinionServerUtils;
 
+import org.apache.commons.lang3.BooleanUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -110,7 +112,7 @@ public class ServerConfigHandler extends BaseHandler {
             Integer sid, Boolean listLocal) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
         Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
-        if (listLocal) {
+        if (BooleanUtils.isTrue(listLocal)) {
             return cm.listFileNamesForSystemQuick(loggedInUser, server, null);
         }
         List<ConfigFileNameDto> files = new LinkedList<>();
@@ -197,7 +199,7 @@ public class ServerConfigHandler extends BaseHandler {
         validKeys.add(ConfigRevisionSerializer.PERMISSIONS);
         validKeys.add(ConfigRevisionSerializer.REVISION);
         validKeys.add(ConfigRevisionSerializer.SELINUX_CTX);
-        if (!isDir) {
+        if (BooleanUtils.isNotTrue(isDir)) {
             validKeys.add(ConfigRevisionSerializer.CONTENTS);
             validKeys.add(ConfigRevisionSerializer.CONTENTS_ENC64);
             validKeys.add(ConfigRevisionSerializer.MACRO_START);
@@ -209,7 +211,7 @@ public class ServerConfigHandler extends BaseHandler {
         Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
         checkIfLocalPermissible(server);
         ConfigChannel channel;
-        if (commitToLocal) {
+        if (BooleanUtils.isTrue(commitToLocal)) {
             channel = server.getLocalOverride();
         }
         else {
@@ -217,7 +219,7 @@ public class ServerConfigHandler extends BaseHandler {
         }
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
         return configHelper.createOrUpdatePath(loggedInUser, channel, path,
-                isDir ? ConfigFileType.dir() : ConfigFileType.file(), data);
+                BooleanUtils.isTrue(isDir) ? ConfigFileType.dir() : ConfigFileType.file(), data);
     }
 
 
@@ -273,7 +275,7 @@ public class ServerConfigHandler extends BaseHandler {
         Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
         checkIfLocalPermissible(server);
         ConfigChannel channel;
-        if (commitToLocal) {
+        if (BooleanUtils.isTrue(commitToLocal)) {
             channel = server.getLocalOverride();
         }
         else {
@@ -321,7 +323,7 @@ public class ServerConfigHandler extends BaseHandler {
         List<ConfigRevision> revisions = new LinkedList<>();
         for (String path : paths) {
             ConfigFile cf;
-            if (searchLocal) {
+            if (BooleanUtils.isTrue(searchLocal)) {
                 cf = cm.lookupConfigFile(loggedInUser,
                         server.getLocalOverride().getId(), path);
 
@@ -375,7 +377,7 @@ public class ServerConfigHandler extends BaseHandler {
         List<ConfigFile> cfList = new ArrayList<>();
         for (String path : paths) {
             ConfigFile cf;
-            if (deleteFromLocal) {
+            if (BooleanUtils.isTrue(deleteFromLocal)) {
                 cf = cm.lookupConfigFile(loggedInUser,
                         server.getLocalOverride().getId(), path);
             }
@@ -513,7 +515,7 @@ public class ServerConfigHandler extends BaseHandler {
             if (channels.equals(server.getConfigChannelList())) {
                 continue;
             }
-            if (addToTop) {
+            if (BooleanUtils.isTrue(addToTop)) {
                 // Add the existing subscriptions to the end so they will be resubscribed
                 // and their ranks will be overridden
                 channelsToAdd = Stream
