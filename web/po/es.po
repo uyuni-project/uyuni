@@ -17,16 +17,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-04 11:51+0200\n"
-"PO-Revision-Date: 2020-09-01 09:07+0000\n"
-"Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
-"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
+"POT-Creation-Date: 2025-04-11 13:33+0200\n"
+"PO-Revision-Date: 2025-04-09 15:56+0000\n"
+"Last-Translator: Fran Serrador <serrador@proton.me>\n"
+"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web-4-3/es/"
+">\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: ../html/javascript/spacewalk-essentials.js:450
 msgid "remaining"
@@ -5151,7 +5152,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:588
 msgid "Proxy"
-msgstr ""
+msgstr "Proxy"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:610
 msgid ""
