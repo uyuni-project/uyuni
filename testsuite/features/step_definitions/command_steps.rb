@@ -1064,6 +1064,21 @@ When(/I copy the distribution inside the container on the server$/) do
   node.run('mgradm distro copy /tmp/tftpboot-installation/SLE-15-SP4-x86_64 SLE-15-SP4-TFTP', runs_in_container: false)
 end
 
+When(/I generate a supportconfig for the server$/) do
+  node = get_target('server')
+  node.run('supportconfig')
+  node.run('mv /var/log/scc_*.txz /root/server-supportconfig.txz')
+end
+
+When(/I obtain and extract the supportconfig from the server$/) do
+  supportconfig_path = '/root/server-supportconfig.txz'
+  test_runner_file = '/root/server-supportconfig.txz'
+  get_target('server').scp_download(supportconfig_path, test_runner_file)
+  `rm -rf /root/server-supportconfig`
+  `mkdir /root/server-supportconfig && tar xJvf /root/server-supportconfig.txz -C /root/server-supportconfig`
+  `mv /root/server-supportconfig/scc_* /root/server-supportconfig/test-server`
+end
+
 When(/I remove the autoinstallation files from the server$/) do
   node = get_target('server')
   node.run('rm -r /tmp/tftpboot-installation', runs_in_container: false)
@@ -1818,8 +1833,33 @@ When(/^I wait until I see "([^"]*)" in file "([^"]*)" on "([^"]*)"$/) do |text, 
   end
 end
 
+When(/^I start the health check tool with supportconfig "([^"]*)" on "([^"]*)"$/) do |supportconfig, host|
+  node = get_target(host)
+  node.run("mgr-health-check -v -s #{supportconfig} start", check_errors: true, verbose: true)
+end
+
+When(/^I stop health check tool on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run('mgr-health-check stop', check_errors: true, verbose: true)
+end
+
 Then(/^the word "([^']*)" does not occur more than (\d+) times in "(.*)" on "([^"]*)"$/) do |word, threshold, path, host|
   count, _ret = get_target(host).run("grep -o -i \'#{word}\' #{path} | wc -l")
   occurences = count.to_i
   raise "The word #{word} occured #{occurences} times, which is more more than #{threshold} times in file #{path}" if occurences > threshold
+end
+
+Then(/^I check that the health check tool exposes metrics on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run("curl -s localhost:9000/metrics.json | python3 -c 'import sys, json; print(json.load(sys.stdin).keys())'", check_errors: true, verbose: true)
+end
+
+Then(/^I check that the health check tool (is|is not) running on "([^"]*)"$/) do |action, host|
+  node = get_target(host)
+  node.run("test $(podman ps | grep health-check | wc -l) == #{action == 'is' ? '4' : '0'}", check_errors: true, verbose: true)
+end
+
+Then(/^I remove test supportconfig on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run('rm /root/server-supportconfig -rf')
 end
