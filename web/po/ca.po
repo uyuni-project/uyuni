@@ -18,16 +18,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-11 13:36+0200\n"
-"PO-Revision-Date: 2025-03-28 15:56+0000\n"
+"PO-Revision-Date: 2025-04-11 16:56+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
-"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web-5-0/ca/"
-">\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web-5-0/ca/>"
+"\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.3\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -446,7 +446,7 @@ msgstr "Suprimeix el projecte"
 
 #: ../html/src/components/dialog/delete.example.tsx:17
 msgid "Are you sure you want to delete project "
-msgstr "Esteu segur que voleu suprimir el projecte "
+msgstr "Segur que voleu suprimir el projecte "
 
 #: ../html/src/components/formula-selection.tsx:135
 msgid " No group"
@@ -5210,7 +5210,7 @@ msgstr "Correu electrònic"
 
 #: ../html/src/manager/proxy/container-config.tsx:334
 msgid "The root CA"
-msgstr "La CA arrel"
+msgstr "La CA d'arrel"
 
 #: ../html/src/manager/proxy/container-config.tsx:344
 msgid "Intermediate CAs"
@@ -6499,7 +6499,7 @@ msgstr "Gràfics"
 
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27
 msgid "Retry"
-msgstr "Torna a intentar"
+msgstr "Torna-ho a provar"
 
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:33
 msgid "Connecting..."
