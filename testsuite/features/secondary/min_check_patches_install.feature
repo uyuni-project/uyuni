@@ -1,7 +1,6 @@
 # Copyright (c) 2015-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_github_validation
 @scope_onboarding
 Feature: Display patches
 

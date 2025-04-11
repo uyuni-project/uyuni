@@ -4,7 +4,6 @@
 # Skip if container. This test is broken
 # This needs to be fixed
 
-@skip_if_github_validation
 @scope_res
 @rhlike_minion
 Feature: Remote command on the Red Hat-like Salt minion

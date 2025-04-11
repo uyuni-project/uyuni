@@ -1,11 +1,9 @@
-# Copyright (c) 2017-2024 SUSE LLC
+# Copyright (c) 2017-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # Basic images do not contain zypper nor the name of the server,
 # so the inspect functionality is not tested here.
 #
-# This feature is a dependency for:
-# - features/secondary/srv_docker_cve_audit.feature
 #
 # This feature depends on:
 # - features/secondary/min_docker_api.feature
@@ -16,8 +14,9 @@
 
 @build_host
 @scope_building_container_images
+@scope_cve_audit
 @no_auth_registry
-Feature: Build container images
+Feature: Build container images and CVE audit them
 
   Scenario: Log in as org admin user
     Given I am authorized
@@ -175,6 +174,21 @@ Feature: Build container images
     Then I wait until I see "GUI_DOCKERADMIN" text
     And I wait at most 600 seconds until image "suse_real_key" with version "GUI_DOCKERADMIN" is built successfully via API
     And I wait at most 300 seconds until image "suse_real_key" with version "GUI_DOCKERADMIN" is inspected successfully via API
+
+@scc_credentials
+  Scenario: Audit images, searching for a known CVE number
+    When I follow the left menu "Audit > CVE Audit"
+    And I select "1999" from "cveIdentifierYear"
+    And I enter "9999" as "cveIdentifierId"
+    And I click on "Audit Images"
+    Then I should see a "No action required" text
+
+  Scenario: Audit images, searching for an unknown CVE number
+    When I follow the left menu "Audit > CVE Audit"
+    And I select "2012" from "cveIdentifierYear"
+    And I enter "2806" as "cveIdentifierId"
+    And I click on "Audit Images"
+    Then I should see a "The specified CVE number was not found" text
 
 @scc_credentials
   Scenario: Cleanup: delete all images with key
