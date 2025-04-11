@@ -60,7 +60,6 @@ public class TestImpl implements TestInterface {
     }
 
     public void setHidden(String hideIn) {
-        // Thread.dumpStack();
         hidden = hideIn;
     }
 

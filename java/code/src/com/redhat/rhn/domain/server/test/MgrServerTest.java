@@ -39,7 +39,7 @@ public class MgrServerTest extends RhnBaseTestCase {
         Server server = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MGR);
-        //flushAndEvict(server);
+
         Server s = ServerFactory.lookupById(server.getId());
         assertNotNull(s, "Server not found");
         assertInstanceOf(MinionServer.class, s, "Server object returned is NOT a MgrServer");

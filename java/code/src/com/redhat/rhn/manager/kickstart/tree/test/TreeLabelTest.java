@@ -41,7 +41,6 @@ public class TreeLabelTest extends BaseTestCaseWithUser {
         // ^([1-zA-Z0-1@.\s]{1,255})$
         // a-zA-Z\d\-\._
         // qr/^[a-zA-Z\d\-\._]*$/
-        // PatternCompiler compiler = new Perl5Compiler();
 
         String regEx = BaseTreeEditOperation.VALIDATE_LABEL_REGEX;
         Pattern pattern = Pattern.compile(regEx);

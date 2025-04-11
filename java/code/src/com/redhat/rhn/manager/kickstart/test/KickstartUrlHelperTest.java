@@ -141,7 +141,6 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
         String expected = "http://spacewalk.example.com/" +
             "ty/" + "";
         String url = helper.getKickstartMediaSessionUrl(session);
-        // "http://spacewalk.example.com/ty/weOyQenH";
         String token = url.substring(url.lastIndexOf("/"));
         token = token.split("/")[1];
         TinyUrl ty = CommonFactory.lookupTinyUrl(token);
@@ -166,7 +165,6 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
         String encodedId = SessionSwap.encodeData(session.getId().toString());
         String expected = "/ty/" + "";
         String url = helper.getKickstartMediaPath(session, new Date());
-        // "/ty/weOyQenH";
         String token = url.substring(url.lastIndexOf("/"));
         token = token.split("/")[1];
         TinyUrl ty = CommonFactory.lookupTinyUrl(token);

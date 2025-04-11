@@ -202,8 +202,6 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
 
     public String executeSubmit(String path, Channel c) {
         String newLabel = "somelabel" + TestUtils.randomString();
-        //KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
-        //tree.setLabel(newLabel);
 
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         setRequestPathInfo(path);
