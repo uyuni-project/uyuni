@@ -1,2 +1,0 @@
-- Fix OpenSCAP audit acceptance tests:
-  comparableId field was missing in XccdfTestResult

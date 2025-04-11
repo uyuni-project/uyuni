@@ -1,2 +1,0 @@
-- Use correct root certificate authority, if available, for
-  connecting to the remote reporting database
