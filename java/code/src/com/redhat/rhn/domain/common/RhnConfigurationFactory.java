@@ -20,7 +20,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.util.List;
 
@@ -108,9 +107,7 @@ public class RhnConfigurationFactory extends HibernateFactory {
      */
     public void update(RhnConfiguration config) {
         Session session = getSession();
-        Transaction tx = session.beginTransaction();
         session.update(config);
-        tx.commit();
     }
 
     /**
@@ -120,9 +117,7 @@ public class RhnConfigurationFactory extends HibernateFactory {
      */
     public void bulkUpdate(List<RhnConfiguration> configs) {
         Session session = getSession();
-        Transaction tx = session.beginTransaction();
         configs.forEach(session::update);
-        tx.commit();
     }
 
     /**
