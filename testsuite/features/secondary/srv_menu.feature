@@ -116,7 +116,7 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "Organizations" link in the left menu
     And I should see a "Users" link in the left menu
     And I should see a "Manager Configuration" link in the left menu
-    And I should see a "ISS Configuration" link in the left menu
+    And I should see a "Hub Configuration" link in the left menu
     And I should see a "Task Schedules" link in the left menu
     And I should see a "Task Engine Status" link in the left menu
     And I should see a "Show Tomcat Logs" link in the left menu
@@ -137,11 +137,12 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "Cobbler" link in the left menu
     And I should see a "Monitoring" link in the left menu
 
-  Scenario: The ISS configuration submenu of the admin menu
-    When I follow the left menu "Admin > ISS Configuration"
-    Then I should see a "ISS Configuration - Master Setup" text
-    And I should see a "Master Setup" link in the left menu
-    And I should see a "Slave Setup" link in the left menu
+  Scenario: The Hub configuration submenu of the admin menu
+    When I follow the left menu "Admin > Hub Configuration"
+    Then I should see a "Peripherals Configuration" text
+    And I should see a "Peripherals Configuration" link in the left menu
+    And I should see a "Hub Details" link in the left menu
+    And I should see a "Access Tokens" link in the left menu
 
   Scenario: The Task Engine Status submenu of the admin menu
     When I follow the left menu "Admin > Task Engine Status"

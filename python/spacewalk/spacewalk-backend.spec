@@ -150,33 +150,6 @@ Requires:       %{name}-server = %{version}-%{release}
 These are the files required for running the /APP handler.
 Calls to /APP are used by internal maintenance tools (rhnpush).
 
-%package iss
-Summary:        Handler for /SAT
-Group:          System/Management
-Requires:       %{name}-server = %{version}-%{release}
-
-%description iss
-%{name} contains the basic code that provides server/backend
-functionality for a variety of XML-RPC receivers. The architecture is
-modular so that you can plug/install additional modules for XML-RPC
-receivers and get them enabled automatically.
-
-This package contains /SAT handler, which provide Inter Spacewalk Sync
-capability.
-
-%package iss-export
-Summary:        Listener for the Server XML dumper
-Group:          System/Management
-Requires:       %{name}-xml-export-libs = %{version}-%{release}
-Requires:       python3-rpm
-
-%description iss-export
-%{name} contains the basic code that provides server/backend
-functionality for a variety of XML-RPC receivers. The architecture is
-modular so that you can plug/install additional modules for XML-RPC
-receivers and get them enabled automatically.
-
-This package contains listener for the Server XML dumper.
 
 %package package-push-server
 Summary:        Listener for rhnpush (non-XMLRPC version)
@@ -276,9 +249,6 @@ for d in usr/share/locale/*; do
   fi
 done
 cd -
-ln -s satellite-sync %{buildroot}%{_bindir}/mgr-inter-sync
-ln -s satellite-sync.8.gz %{buildroot}%{_mandir}/man8/mgr-inter-sync.8.gz
-ln -s rhn-satellite-exporter %{buildroot}%{_bindir}/mgr-exporter
 
 install -m 644 rhn-conf/signing.cnf %{buildroot}%{rhnconf}/signing.conf
 
@@ -494,8 +464,6 @@ fi
 %attr(644,root,%{apache_group}) %config %{apacheconfd}/zz-spacewalk-server-wsgi.conf
 %{rhnroot}/wsgi/app.py*
 %{rhnroot}/wsgi/package_push.py*
-%{rhnroot}/wsgi/sat.py*
-%{rhnroot}/wsgi/sat_dump.py*
 %{rhnroot}/wsgi/xmlrpc.py*
 
 # logs and other stuff
@@ -527,33 +495,6 @@ fi
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_app.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-app
 
-%files iss
-%defattr(-,root,root)
-%{!?_licensedir:%global license %doc}
-%license LICENSE
-%dir %{rhnroot}/server
-%dir %{rhnroot}/server/handlers/sat
-%{rhnroot}/server/handlers/sat/*
-%config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-iss
-
-%files iss-export
-%defattr(-,root,root)
-%{!?_licensedir:%global license %doc}
-%license LICENSE
-%dir %{python3rhnroot}/satellite_exporter
-%{python3rhnroot}/satellite_exporter/__init__.py*
-%{python3rhnroot}/satellite_exporter/satexport.py*
-
-%dir %{rhnroot}/satellite_exporter
-%dir %{rhnroot}/satellite_exporter/handlers
-%{rhnroot}/satellite_exporter/__init__.py*
-%{rhnroot}/satellite_exporter/handlers/__init__.py*
-%{rhnroot}/satellite_exporter/handlers/non_auth_dumper.py*
-%dir %{python3rhnroot}/satellite_exporter/__pycache__/
-%{python3rhnroot}/satellite_exporter/__pycache__/*
-# config files
-%config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-iss-export
-
 %files package-push-server
 %defattr(-,root,root)
 %{!?_licensedir:%global license %doc}
@@ -578,11 +519,7 @@ fi
 %attr(755,root,root) %{_bindir}/rhn-charsets
 %attr(755,root,root) %{_bindir}/rhn-schema-version
 %attr(755,root,root) %{_bindir}/rhn-ssl-dbstore
-%attr(755,root,root) %{_bindir}/satellite-sync
-%{_bindir}/mgr-inter-sync
-%{_bindir}/mgr-exporter
 %attr(755,root,root) %{_bindir}/spacewalk-debug
-%attr(755,root,root) %{_bindir}/rhn-satellite-exporter
 %attr(755,root,root) %{_bindir}/update-packages
 %attr(755,root,root) %{_bindir}/spacewalk-repo-sync
 %attr(755,root,root) %{_bindir}/rhn-db-stats
@@ -604,7 +541,6 @@ fi
 %{python3rhnroot}/satellite_tools/messages.py*
 %{python3rhnroot}/satellite_tools/progress_bar.py*
 %{python3rhnroot}/satellite_tools/req_channels.py*
-%{python3rhnroot}/satellite_tools/satsync.py*
 %{python3rhnroot}/satellite_tools/satCerts.py*
 %{python3rhnroot}/satellite_tools/satComputePkgHeaders.py*
 %{python3rhnroot}/satellite_tools/syncCache.py*
@@ -646,14 +582,11 @@ fi
 %{python3rhnroot}/satellite_tools/disk_dumper/__pycache__/*
 %{python3rhnroot}/satellite_tools/repo_plugins/__pycache__/*
 %config %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_iss.conf
-%{_mandir}/man8/rhn-satellite-exporter.8*
 %{_mandir}/man8/rhn-charsets.8*
 %{_mandir}/man8/rhn-schema-version.8*
 %{_mandir}/man8/rhn-ssl-dbstore.8*
 %{_mandir}/man8/rhn-db-stats.8*
 %{_mandir}/man8/rhn-schema-stats.8*
-%{_mandir}/man8/satellite-sync.8*
-%{_mandir}/man8/mgr-inter-sync.8*
 %{_mandir}/man8/spacewalk-debug.8*
 %{_mandir}/man8/satpasswd.8*
 %{_mandir}/man8/satwho.8*

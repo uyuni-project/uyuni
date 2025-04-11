@@ -28,6 +28,7 @@ import com.suse.manager.api.ReadOnly;
 import com.suse.manager.hub.HubManager;
 import com.suse.manager.hub.migration.IssMigratorFactory;
 import com.suse.manager.model.hub.ChannelInfoJson;
+import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssPeripheralChannels;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.ManagerInfoJson;
@@ -805,5 +806,20 @@ public class HubHandler extends BaseHandler {
 
         return migratorFactory.createFor(loggedInUser)
             .migrateFromV2(migrationDataList);
+    }
+
+    /**
+     * Return if this server is configured as peripheral server
+     * @param loggedInUser the logged in user
+     * @return return true if this is a peripheral server, otherwise false
+     *
+     * @apidoc.doc Check if this server is configured as peripheral server and read data from a Hub
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #param_desc("boolean", "peripheral", "True if this is an ISS peripheral, false otherwise")
+     */
+    public boolean isISSPeripheral(User loggedInUser) {
+        ensureSatAdmin(loggedInUser);
+        HubFactory hubFactory = new HubFactory();
+        return hubFactory.isISSPeripheral();
     }
 }
