@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.schedule;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
+import com.redhat.rhn.domain.access.Namespace;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -61,6 +65,8 @@ public class CompletedActionsSetupAction extends BaseScheduledListAction {
                                          ActionForm formIn, HttpServletRequest request,
                                          HttpServletResponse response) {
 
+        User user = new RequestContext(request).getCurrentUser();
+        ensureRoleBasedAccess(user, "schedule.completed", Namespace.AccessMode.W);
         return archiveAction(mapping, formIn, request, response);
     }
 }

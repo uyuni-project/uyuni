@@ -14,12 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.kickstart;
 
-import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.SELinuxMode;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -57,18 +54,6 @@ public class SystemDetailsEditAction extends RhnAction {
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response) {
-           RequestContext context = new RequestContext(request);
-           User user = context.getCurrentUser();
-
-        if (!user.hasRole(RoleFactory.ORG_ADMIN) &&
-                    !user.hasRole(RoleFactory.CONFIG_ADMIN)) {
-            // Throw an exception with a nice error message so the user
-            // knows what went wrong.
-            LocalizationService ls = LocalizationService.getInstance();
-            throw new PermissionException("Only Org Admins or Configuration Admins can modify kickstarts",
-                    ls.getMessage("permission.jsp.summary.acl.header"),
-                    ls.getMessage("permission.jsp.summary.acl.reason5"));
-        }
 
         DynaActionForm dynaForm = (DynaActionForm) form;
         if (isSubmitted(dynaForm)) {

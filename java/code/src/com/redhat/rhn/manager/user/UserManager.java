@@ -18,7 +18,6 @@ import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -29,6 +28,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.security.user.StateChangeException;
+import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.RhnConfiguration;
@@ -61,6 +61,7 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -106,7 +107,6 @@ public class UserManager extends BaseManager {
         }
         if (user.hasRole(RoleFactory.ORG_ADMIN)) {
             assignable.add(RoleFactory.ORG_ADMIN);
-            assignable.addAll(UserFactory.IMPLIEDROLES);
         }
         return assignable;
     }
@@ -178,9 +178,7 @@ public class UserManager extends BaseManager {
                 log.debug("Access restricted for user '{}' to namespace '{}' [{}]",
                         user.getLogin(), namespace, mode);
             }
-            if (ConfigDefaults.get().isRbacEnabled()) {
-                throw new PermissionException("You don't have the necessary permissions to access this resource.");
-            }
+            throw new PermissionException("You don't have the necessary permissions to access this resource.");
         }
     }
 
@@ -455,8 +453,7 @@ public class UserManager extends BaseManager {
     * @param rolesToAdd List of role labels to add.
     * @param rolesToRemove List of role labels to remove.
     */
-    public static void addRemoveUserRoles(User usr, List<String> rolesToAdd,
-            List<String> rolesToRemove) {
+    public static void addRemoveUserRoles(User usr, List<String> rolesToAdd, List<String> rolesToRemove) {
 
         log.debug("UserManager.updateUserRolesFromRoleLabels()");
 
@@ -472,18 +469,21 @@ public class UserManager extends BaseManager {
             }
         }
 
+        List<String> toAdd = new ArrayList<>(rolesToAdd);
+        List<String> toRemove = new ArrayList<>(rolesToRemove);
+
         // ORG admin role needs to be added last so that others don't get skipped
-        if (rolesToAdd.remove(ORG_ADMIN_LABEL)) {
-            rolesToAdd.add(ORG_ADMIN_LABEL);
+        if (toAdd.remove(ORG_ADMIN_LABEL)) {
+            toAdd.add(ORG_ADMIN_LABEL);
         }
 
-        for (String removeLabel : rolesToRemove) {
+        for (String removeLabel : toRemove) {
             Role removeMe = RoleFactory.lookupByLabel(removeLabel);
             log.debug("Removing role: {}", removeMe.getName());
             usr.removePermanentRole(removeMe);
         }
 
-        for (String addLabel : rolesToAdd) {
+        for (String addLabel : toAdd) {
             Role r = RoleFactory.lookupByLabel(addLabel);
             log.debug("Adding role: {}", r.getName());
             usr.addPermanentRole(r);
@@ -725,7 +725,7 @@ public class UserManager extends BaseManager {
      * Check role for the specified user.
      * @param uid The id of the user to lookup.
      * @param label Role to check.
-     * @return the specified user.
+     * @return {@code True} if the user has the specified role.
      */
     public static boolean hasRole(Long uid, Role label) {
         if (uid == null) {
@@ -733,6 +733,20 @@ public class UserManager extends BaseManager {
         }
 
         return UserFactory.lookupById(uid).hasRole(label);
+    }
+
+    /**
+     * Check RBAC memberships of the specified user.
+     * @param uid The id of the user to lookup.
+     * @param group the access group to check.
+     * @return {@code True} if the user is a member of the access group.
+     */
+    public static boolean isMemberOf(Long uid, AccessGroup group) {
+        if (uid == null) {
+            return false;
+        }
+
+        return UserFactory.lookupById(uid).isMemberOf(group);
     }
 
     /**
@@ -978,10 +992,7 @@ public class UserManager extends BaseManager {
      * @return true if user can administer system group
      */
     public static boolean canAdministerSystemGroup(User user, ManagedServerGroup group) {
-        return (user != null &&
-                group != null &&
-                SERVER_GROUP_MANAGER.canAccess(user, group) &&
-                user.hasRole(RoleFactory.SYSTEM_GROUP_ADMIN));
+        return (user != null && group != null && SERVER_GROUP_MANAGER.canAccess(user, group));
     }
 
     /**

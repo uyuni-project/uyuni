@@ -47,7 +47,6 @@ public class DeltaImageInfoHandler extends BaseHandler {
      */
     @ReadOnly
     public List<DeltaImageInfo> listDeltas(User loggedInUser) {
-        ensureImageAdmin(loggedInUser);
         return ImageInfoFactory.listDeltaImageInfos(loggedInUser.getOrg());
     }
 
@@ -66,7 +65,6 @@ public class DeltaImageInfoHandler extends BaseHandler {
      */
     @ReadOnly
     public DeltaImageInfo getDetails(User loggedInUser, Integer sourceImageId, Integer targetImageId) {
-        ensureImageAdmin(loggedInUser);
         Optional<DeltaImageInfo> opt = ImageInfoFactory.lookupDeltaImageInfo(sourceImageId, targetImageId);
         if (!opt.isPresent()) {
             throw new NoSuchImageException();
@@ -94,8 +92,6 @@ public class DeltaImageInfoHandler extends BaseHandler {
      */
     public Long createDeltaImage(User loggedInUser, Integer sourceImageId, Integer targetImageId,
             String file, Map<String, Object> pillar) {
-        ensureImageAdmin(loggedInUser);
-
         Optional<ImageInfo> sourceOpt = ImageInfoFactory.lookupByIdAndOrg(sourceImageId,
                 loggedInUser.getOrg());
         Optional<ImageInfo> targetOpt = ImageInfoFactory.lookupByIdAndOrg(targetImageId,

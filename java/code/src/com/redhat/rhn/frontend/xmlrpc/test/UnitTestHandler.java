@@ -28,6 +28,11 @@ import java.util.Hashtable;
  */
 public class UnitTestHandler extends BaseHandler {
 
+    @Override
+    protected void ensureRoleBasedAccess(User user, String className, String methodName) {
+        // Bypass RBAC for unit tests
+    }
+
     /**
      * Test returning a hashtable
      *

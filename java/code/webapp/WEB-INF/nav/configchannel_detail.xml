@@ -28,6 +28,6 @@
                  acl="config_channel_type(normal) or config_channel_type(state)">
                 <rhn-tab name="configchannel.nav.systems.subscribed" url="/rhn/configuration/channel/ChannelSystems.do"/>
                 <rhn-tab name="configchannel.nav.systems.target" url="/rhn/configuration/channel/TargetSystems.do"
-                         acl="user_role(config_admin)" />
+                         acl="authorized_for(config.channels)" />
         </rhn-tab>
 </rhn-navi-tree>

@@ -12,7 +12,7 @@
  helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/systems/system-groups.html"
  creationUrl="/rhn/groups/EditGroup.do"
  creationType="group"
- creationAcl="user_role(system_group_admin)">
+ creationAcl="authorized_for(systems.groups.details, W)">
   <bean:message key="grouplist.jsp.header"/>
 </rhn:toolbar>
 

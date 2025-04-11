@@ -19,12 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.dto.ChannelTreeNode;
@@ -111,7 +111,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         assertNotNull(result);
         assertEquals(0, result.length);
 
-        regular.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+        regular.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
 
         result = handler.listManageableChannels(regular);
         assertNotNull(result);
@@ -129,7 +129,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         }
         assertTrue(foundChannel);
 
-        regular.removePermanentRole(RoleFactory.CHANNEL_ADMIN);
+        regular.removeFromGroup(AccessGroupFactory.CHANNEL_ADMIN);
     }
 
     @Test

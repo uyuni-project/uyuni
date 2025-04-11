@@ -23,6 +23,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -101,6 +102,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.persistence.NoResultException;
@@ -204,7 +206,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
         //Verify permissions
         if (!(UserManager.verifyChannelAdmin(loggedInUser, channel) ||
-                loggedInUser.hasRole(RoleFactory.CHANNEL_ADMIN))) {
+                loggedInUser.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN))) {
             throw new PermissionCheckFailureException();
         }
 
@@ -367,9 +369,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
     @ReadOnly
     public List<ChannelArch> listArches(User loggedInUser)
             throws PermissionCheckFailureException {
-        if (!loggedInUser.hasRole(RoleFactory.CHANNEL_ADMIN)) {
-            throw new PermissionCheckFailureException();
-        }
 
         return ChannelManager.getChannelArchitectures();
     }
@@ -544,7 +543,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     public int setDetails(User loggedInUser, Integer channelId, Map<String,
             String> details) {
-        channelAdminPermCheck(loggedInUser);
 
         Channel channel = lookupChannelById(loggedInUser, channelId.longValue());
         Set<String> validKeys = new HashSet<>();
@@ -710,9 +708,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
             throws PermissionCheckFailureException, InvalidChannelLabelException,
             InvalidChannelNameException, InvalidParentChannelException {
 
-        if (!loggedInUser.hasRole(RoleFactory.CHANNEL_ADMIN)) {
-            throw new PermissionCheckFailureException();
-        }
         CreateChannelCommand ccc = new CreateChannelCommand();
         ccc.setArchLabel(archLabel);
         ccc.setLabel(label);
@@ -908,10 +903,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
             String supportPolicy)
         throws FaultException {
 
-        if (!loggedInUser.hasRole(RoleFactory.CHANNEL_ADMIN)) {
-            throw new PermissionCheckFailureException();
-        }
-
         Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
 
         channel.setMaintainerName(maintainerName);
@@ -948,11 +939,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
     @ReadOnly
     public Object[] listSubscribedSystems(User loggedInUser, String channelLabel)
         throws FaultException {
-
-        // Make sure user has access to the orgs channels
-        if (!loggedInUser.hasRole(RoleFactory.CHANNEL_ADMIN)) {
-            throw new PermissionCheckFailureException();
-        }
 
         // Get the channel.
         Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
@@ -1028,7 +1014,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
         //Verify permissions
         if (!(UserManager.verifyChannelAdmin(loggedInUser, channel) ||
-              loggedInUser.hasRole(RoleFactory.CHANNEL_ADMIN))) {
+              loggedInUser.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN))) {
             throw new PermissionCheckFailureException();
         }
 
@@ -1078,7 +1064,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         }
         //Verify permissions
         if (!(UserManager.verifyChannelAdmin(loggedInUser, channel) ||
-              loggedInUser.hasRole(RoleFactory.CHANNEL_ADMIN))) {
+              loggedInUser.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN))) {
             throw new PermissionCheckFailureException();
         }
 
@@ -1119,7 +1105,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         Channel channel = lookupChannelByLabel(loggedInUser.getOrg(), channelLabel);
         //Verify permissions
         if (!(UserManager.verifyChannelAdmin(loggedInUser, channel) ||
-              loggedInUser.hasRole(RoleFactory.CHANNEL_ADMIN))) {
+              loggedInUser.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN))) {
             throw new PermissionCheckFailureException();
         }
 
@@ -1172,7 +1158,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         }
         //Verify permissions
         if (!(UserManager.verifyChannelAdmin(loggedInUser, channel) ||
-              loggedInUser.hasRole(RoleFactory.CHANNEL_ADMIN))) {
+              loggedInUser.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN))) {
             throw new PermissionCheckFailureException();
         }
 
@@ -1282,8 +1268,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     public int removeErrata(User loggedInUser, String channelLabel,
             List<String> errataNames, boolean removePackages) {
-
-        channelAdminPermCheck(loggedInUser);
 
         Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
 
@@ -1406,7 +1390,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         if (log.isDebugEnabled()) {
             sw.stop();
-            log.debug("Finished Updating errata cache. Took [{}]", sw.getTime());
+            log.debug("Finished Updating errata cache. Took [{}]", sw.getTime(TimeUnit.MILLISECONDS));
         }
     }
 
@@ -1633,7 +1617,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     @ReadOnly
     public Object[] listPackagesWithoutChannel(User loggedInUser) {
-        ensureUserRole(loggedInUser, RoleFactory.CHANNEL_ADMIN);
         return PackageFactory.lookupOrphanPackages(loggedInUser.getOrg()).toArray();
     }
 
@@ -1683,7 +1666,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
     public int clone(User loggedInUser, String originalLabel,
             Map<String, String> channelDetails, Boolean originalState) {
 
-        channelAdminPermCheck(loggedInUser);
         // confirm that the user only provided valid keys in the map
         Set<String> validKeys = new HashSet<>();
         validKeys.add("name");
@@ -1715,20 +1697,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
     }
 
     /**
-     * Checks whether a user is an org admin or channnel admin (and thus can admin
-     *          a channel)
-     * @param loggedInUser the user to check
-     */
-    private void channelAdminPermCheck(User loggedInUser) {
-        Role channelRole = RoleFactory.lookupByLabel("channel_admin");
-        Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
-        if (!loggedInUser.hasRole(channelRole) && !loggedInUser.hasRole(orgAdminRole)) {
-            throw new PermissionException("Only Org Admins and Channel Admins can clone or update " +
-                    "channels.");
-        }
-    }
-
-    /**
      * Merge a channel's errata into another channel.
      * @param loggedInUser The current user
      * @param mergeFromLabel the label of the channel to pull the errata from
@@ -1748,7 +1716,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     public Object[] mergeErrata(User loggedInUser, String mergeFromLabel,
             String mergeToLabel) {
-        channelAdminPermCheck(loggedInUser);
 
         Channel mergeFrom = lookupChannelByLabel(loggedInUser, mergeFromLabel);
         Channel mergeTo = lookupChannelByLabel(loggedInUser, mergeToLabel);
@@ -1788,7 +1755,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     public Object[] mergeErrata(User loggedInUser, String mergeFromLabel,
             String mergeToLabel, String startDate, String endDate) {
-        channelAdminPermCheck(loggedInUser);
 
         Channel mergeFrom = lookupChannelByLabel(loggedInUser, mergeFromLabel);
         Channel mergeTo = lookupChannelByLabel(loggedInUser, mergeToLabel);
@@ -1829,8 +1795,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     public Object[] mergeErrata(User loggedInUser, String mergeFromLabel,
             String mergeToLabel, List<String> errataNames) {
-
-        channelAdminPermCheck(loggedInUser);
 
         Channel mergeFrom = lookupChannelByLabel(loggedInUser, mergeFromLabel);
         Channel mergeTo = lookupChannelByLabel(loggedInUser, mergeToLabel);
@@ -1995,7 +1959,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *
      */
     public int regenerateNeededCache(User loggedInUser, String channelLabel) {
-        channelAdminPermCheck(loggedInUser);
         Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
         List<Long> chanList = new ArrayList<>();
         chanList.add(chan.getId());
@@ -2043,7 +2006,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *
      */
     public int regenerateYumCache(User loggedInUser, String channelLabel, Boolean force) {
-        channelAdminPermCheck(loggedInUser);
         lookupChannelByLabel(loggedInUser, channelLabel);
 
         ChannelManager.queueChannelChange(channelLabel,
@@ -2961,7 +2923,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "label", "repository label")
      * @apidoc.returntype #return_int_success()
-    **/
+     */
      public int clearRepoFilters(User loggedInUser, String label) {
          Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
 

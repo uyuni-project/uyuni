@@ -631,39 +631,8 @@ Scenario: Create CLM filter of type Package (Build date) that allows packages wh
 
   Scenario: Cleanup: remove the CLM filters
     When I follow the left menu "Content Lifecycle > Filters"
-    And I click the "africa-patch" item delete button if exists
-    And I click the "andromeda-patch" item delete button if exists
-    And I click the "Antennae-patch" item delete button if exists
-    And I click the "aries-patch" item delete button if exists
-    And I click the "eurasia-patch" item delete button if exists
-    And I click the "asia-patch" item delete button if exists
-    And I click the "cereal" item delete button if exists
-    And I click the "comet-patch" item delete button if exists
-    And I click the "cherry" item delete button if exists
-    And I click the "drummer" item delete button if exists
-    And I click the "earth-patch" item delete button if exists
-    And I click the "galaxy-patch" item delete button if exists
-    And I click the "geminis-patch" item delete button if exists
-    And I click the "hat-patch" item delete button if exists
-    And I click the "Hubble-patch" item delete button if exists
-    And I click the "jupiter-patch" item delete button if exists
-    And I click the "key" item delete button if exists
-    And I click the "mars-patch" item delete button if exists
-    And I click the "mars" item delete button if exists
-    And I click the "mercury-patch" item delete button if exists
-    And I click the "mercury" item delete button if exists
-    And I click the "milkyway-patch" item delete button if exists
-    And I click the "moon-patch" item delete button if exists
-    And I click the "Pinwheel-patch" item delete button if exists
-    And I click the "pluto-patch" item delete button if exists
-    And I click the "potato" item delete button if exists
-    And I click the "ruby 2.7 module" item delete button if exists
-    And I click the "solar" item delete button if exists
-    And I click the "remove fonts packages" item delete button if exists
-    And I click the "Sunflower-patch" item delete button if exists
-    And I click the "Triangulum-patch" item delete button if exists
-    And I click the "venus" item delete button if exists
-    And I click the "Whirlpool-patch" item delete button if exists
+    And I click on "Select unused"
+    And I click on "Delete selected"
     Then I should not see a "remove fonts packages" text
     And I should not see a "africa-patch" text
     And I should not see a "andromeda-patch" text

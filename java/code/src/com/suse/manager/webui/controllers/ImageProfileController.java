@@ -18,7 +18,6 @@ package com.suse.manager.webui.controllers;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
@@ -26,6 +25,7 @@ import static spark.Spark.post;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
@@ -35,8 +35,6 @@ import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.role.Role;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.Token;
@@ -80,7 +78,6 @@ import spark.template.jade.JadeTemplateEngine;
 public class ImageProfileController {
 
     private static final Gson GSON = Json.GSON;
-    private static final Role ADMIN_ROLE = RoleFactory.IMAGE_ADMIN;
 
     private ImageProfileController() { }
 
@@ -93,9 +90,9 @@ public class ImageProfileController {
         get("/manager/cm/imageprofiles",
                 withUserPreferences(withCsrfToken(withUser(ImageProfileController::listView))), jade);
         get("/manager/cm/imageprofiles/create",
-                withCsrfToken(withImageAdmin(ImageProfileController::createView)), jade);
+                withCsrfToken(withUser(ImageProfileController::createView)), jade);
         get("/manager/cm/imageprofiles/edit/:id",
-                withCsrfToken(withImageAdmin(ImageProfileController::updateView)), jade);
+                withCsrfToken(withUser(ImageProfileController::updateView)), jade);
 
         get("/manager/api/cm/imageprofiles", withUser(ImageProfileController::list));
         get("/manager/api/cm/imageprofiles/:id",
@@ -105,11 +102,11 @@ public class ImageProfileController {
         get("/manager/api/cm/imageprofiles/channels/:token",
                 withUser(ImageProfileController::getChannels));
         post("/manager/api/cm/imageprofiles/create",
-                withImageAdmin(ImageProfileController::create));
+                withUser(ImageProfileController::create));
         post("/manager/api/cm/imageprofiles/update/:id",
-                withImageAdmin(ImageProfileController::update));
+                withUser(ImageProfileController::update));
         post("/manager/api/cm/imageprofiles/delete",
-                withImageAdmin(ImageProfileController::delete));
+                withUser(ImageProfileController::delete));
         get("/manager/api/cm/activationkeys",
                 withUser(ImageProfileController::getActivationKeys));
     }
@@ -124,7 +121,7 @@ public class ImageProfileController {
      */
     public static ModelAndView listView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
-        data.put("isAdmin", user.hasRole(ADMIN_ROLE));
+        data.put("isAdmin", user.isMemberOf(AccessGroupFactory.IMAGE_ADMIN));
         return new ModelAndView(data, "templates/content_management/list-profiles.jade");
     }
 

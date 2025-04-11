@@ -15,12 +15,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.test.MockMail;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.notification.types.StateApplyFailed;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -29,9 +29,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 
 public class NotificationFactoryTest extends BaseTestCaseWithUser {
@@ -97,7 +97,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         UserNotificationFactory.setMailer(mailer);
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
-        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.singleton(RoleFactory.CHANNEL_ADMIN));
+        UserNotificationFactory.storeNotificationMessageFor(msg, Set.of(AccessGroupFactory.CHANNEL_ADMIN));
 
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         assertEquals(0, UserNotificationFactory.listUnreadByUser(user).size());
@@ -142,7 +142,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
 
         // Create a notification
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
-        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.singleton(RoleFactory.CHANNEL_ADMIN));
+        UserNotificationFactory.storeNotificationMessageFor(msg, Set.of(AccessGroupFactory.CHANNEL_ADMIN));
 
         msg = TestUtils.reload(msg);
 

@@ -32,6 +32,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -2363,7 +2364,7 @@ public class ChannelManager extends BaseManager {
      */
     public static void removeErrata(Channel chan, Set<Long> errataIds, User user) {
         if (!UserManager.verifyChannelAdmin(user, chan)) {
-            throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
+            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
         }
 
         List<Long> ids = new ArrayList<>(errataIds);
@@ -2427,8 +2428,8 @@ public class ChannelManager extends BaseManager {
      * @return list of errataOverview objects that need to be resynced
      */
     public static List<ErrataOverview> listErrataNeedingResync(Channel c, User user) {
-        if (!user.hasRole(RoleFactory.CHANNEL_ADMIN)) {
-            throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
+        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
+            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
         }
 
         if (c.isCloned()) {
@@ -2449,8 +2450,8 @@ public class ChannelManager extends BaseManager {
      * @return the list of PackageOverview objects
      */
     public static List<PackageOverview> listErrataPackagesForResync(Channel c, User user) {
-        if (!user.hasRole(RoleFactory.CHANNEL_ADMIN)) {
-            throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
+        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
+            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
         }
 
         if (c.isCloned()) {
@@ -2473,8 +2474,8 @@ public class ChannelManager extends BaseManager {
      */
     public static List<PackageOverview> listErrataPackagesForResync(Channel c, User user,
             String setLabel) {
-        if (!user.hasRole(RoleFactory.CHANNEL_ADMIN)) {
-            throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
+        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
+            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
         }
 
         if (c.isCloned()) {

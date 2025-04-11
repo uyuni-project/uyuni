@@ -15,11 +15,8 @@
 
 package com.redhat.rhn.frontend.xmlrpc.kickstart.profile.keys;
 
-import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.Token;
@@ -59,9 +56,6 @@ public class KeysHandler extends BaseHandler {
      */
     @ReadOnly
     public List<ActivationKey> getActivationKeys(User loggedInUser, String ksLabel) {
-
-        checkKickstartPerms(loggedInUser);
-
         // retrieve the data associated with the kickstart profile
         KickstartData data = lookupKsData(ksLabel, loggedInUser.getOrg());
 
@@ -91,9 +85,6 @@ public class KeysHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int addActivationKey(User loggedInUser, String ksLabel, String key) {
-
-        checkKickstartPerms(loggedInUser);
-
         KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
 
         KickstartActivationKeysCommand command = new KickstartActivationKeysCommand(
@@ -123,9 +114,6 @@ public class KeysHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int removeActivationKey(User loggedInUser, String ksLabel, String key) {
-
-        checkKickstartPerms(loggedInUser);
-
         KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
 
         KickstartActivationKeysCommand command = new KickstartActivationKeysCommand(
@@ -139,13 +127,6 @@ public class KeysHandler extends BaseHandler {
         command.store();
 
         return 1;
-    }
-
-    private void checkKickstartPerms(User user) {
-        if (!user.hasRole(RoleFactory.CONFIG_ADMIN)) {
-            throw new PermissionException(LocalizationService.getInstance()
-                    .getMessage("permission.configadmin.needed"));
-        }
     }
 
     private KickstartData lookupKsData(String label, Org org) {
