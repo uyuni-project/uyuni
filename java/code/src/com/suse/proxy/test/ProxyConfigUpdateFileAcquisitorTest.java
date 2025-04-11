@@ -111,7 +111,8 @@ public class ProxyConfigUpdateFileAcquisitorTest extends BaseTestCaseWithUser {
                         "server_ssh_key_pub", "dummyServerSshKeyPub",
                         "server_ssh_push", "dummyServerSshPush",
                         "server_ssh_push_pub", "dummyServerSshPushPub"
-                )
+                ),
+                "replace_fqdns", List.of("masterFqdn")
         );
         mockProxyContainerConfigCreateFacadeMockCreateFiles(expectedProxyConfigFiles);
 
@@ -130,7 +131,8 @@ public class ProxyConfigUpdateFileAcquisitorTest extends BaseTestCaseWithUser {
                 "proxy container configuration did not generate required entry: ca_crt",
                 "proxy container configuration did not generate required entry: server",
                 "proxy container configuration did not generate required entry: httpd",
-                "proxy container configuration did not generate required entry: email"
+                "proxy container configuration did not generate required entry: email",
+                "proxy container configuration did not generate required entry: replace_fqdns"
         };
 
         ProxyConfigUpdateContext proxyConfigUpdateContext = getProxyConfigUpdateContext();
@@ -181,7 +183,8 @@ public class ProxyConfigUpdateFileAcquisitorTest extends BaseTestCaseWithUser {
                         "server_crt", "dummyServerCrt",
                         "server_key", Map.of("unexpected", "map")
                 ),
-                "ssh", "not_a_map"
+                "ssh", "not_a_map",
+                "replace_fqdns", List.of("masterFqdn")
         );
         mockProxyContainerConfigCreateFacadeMockCreateFiles(expectedProxyConfigFiles);
 
