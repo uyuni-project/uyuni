@@ -164,8 +164,9 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
 
             // download the product data from Cloud RMT
             ContentSyncManager csm = new ContentSyncManager(tmpLogDir, mgr);
-            csm.setChannelFamiliesJson(new File(TestUtils.findTestData(CHANNEL_FAMILY).getPath()));
-            csm.setAdditionalProductsJson(new File(TestUtils.findTestData(ADDITIONAL_PRODUCTS).getPath()));
+            ContentSyncManager.setChannelFamiliesJson(new File(TestUtils.findTestData(CHANNEL_FAMILY).getPath()));
+            ContentSyncManager.setAdditionalProductsJson(
+                    new File(TestUtils.findTestData(ADDITIONAL_PRODUCTS).getPath()));
             csm.updateChannelFamilies(csm.readChannelFamilies());
             csm.updateSUSEProducts(csm.getProducts());
             csm.updateRepositories(null);
