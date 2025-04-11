@@ -112,7 +112,7 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
 
     /*
      * Test where 'eth0' doesn't match anything, but there should be a default
-     *  Kickstart set;
+     *  Kickstart set
      */
     @Test
     public void testFindProfileForIpAddressDefault() throws Exception {

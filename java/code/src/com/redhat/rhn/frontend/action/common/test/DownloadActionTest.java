@@ -90,7 +90,6 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
         addRequestParameter("url", "/ks/dist/" + tree.getLabel() + "/Server/" + fileName);
         request.setQueryString("url=/ks/dist/" + tree.getLabel() + "/Server/" + fileName);
         actionPerform();
-        // assertEquals("/kickstart/DownloadFile.do", getActualForward());
         assertNotNull(request.getAttribute("params"));
         // https://dhcp77-150.rhndev.redhat.com/
         // download/package/4ad2199e64aa756a21b9a33fe6f4faf355586b70/

@@ -138,7 +138,6 @@ public class UserTest extends RhnBaseTestCase {
         usr.setLogin(foo);
         assertEquals(foo, usr.getLogin());
 
-        //usr.setOrgId(id);
         assertNotNull(usr.getOrg());
 
         usr.setPassword(foo);

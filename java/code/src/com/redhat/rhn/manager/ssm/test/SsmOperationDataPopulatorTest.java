@@ -46,7 +46,7 @@ public class SsmOperationDataPopulatorTest extends RhnBaseTestCase {
     @Override
     @AfterEach
     public void tearDown() {
-        // Override so the base class' tearDown doesn't rollback the transaction;
+        // Override so the base class' tearDown doesn't rollback the transaction
         // for this class we want the data to be persisted and remain there
     }
 

@@ -73,8 +73,6 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         setRequestPathInfo("/systems/details/Edit");
         TestUtils.saveAndFlush(user.getOrg());
 
-        /*s = ServerFactoryTest.createTestServer(user, true,
-                ServerConstants.getServerGroupTypeEnterpriseEntitled());*/
         s = ServerTestUtils.createTestSystem(user);
         ChannelTestUtils.setupBaseChannelForVirtualization(user, s.getBaseChannel());
 

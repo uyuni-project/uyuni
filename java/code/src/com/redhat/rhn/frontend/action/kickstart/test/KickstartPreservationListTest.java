@@ -67,9 +67,7 @@ public class KickstartPreservationListTest extends BaseKickstartEditTestCase {
         addSelectedItem(list2.getId());
         addDispatchCall(KickstartPreservationListSubmitAction.UPDATE_METHOD);
         setRequestPathInfo("/kickstart/KickstartFilePreservationListsSubmit");
-        //        assertTrue(ksdata.getCryptoKeys() == null);
         actionPerform();
-        //        assertTrue(ksdata.getCryptoKeys().size() == 1);
     }
 
 }

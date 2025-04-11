@@ -394,7 +394,6 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setFriendlyName("SUSE CaaS Platform 4.0");
         product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
         product.setProductId(1340);
-        //product.setChannelFamily(cfsles);
         product.setBase(false);
         product.setReleaseStage(ReleaseStage.released);
         TestUtils.saveAndFlush(product);

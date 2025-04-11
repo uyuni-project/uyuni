@@ -1027,7 +1027,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         server1.addChannel(parent1);
         server1.addChannel(child11);
 
-        Channel parent2 = ChannelFactoryTest.createTestChannel(org2); //ChannelFactoryTest.createTestChannel(user);
+        Channel parent2 = ChannelFactoryTest.createTestChannel(org2);
         parent2.setParentChannel(null);
         Channel child21 = ChannelFactoryTest.createTestChannel(user);
         child21.setParentChannel(parent2);
