@@ -71,6 +71,7 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.errata.Errata;
@@ -103,6 +104,7 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -126,6 +128,7 @@ import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
+import com.suse.salt.netapi.calls.modules.Test;
 import com.suse.salt.netapi.calls.modules.TransactionalUpdate;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.GenericError;
@@ -288,6 +291,9 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_PACKAGES_LOCK.equals(actionType)) {
             return packagesLockAction(minions, (PackageLockAction) actionIn);
         }
+        else if (ActionFactory.TYPE_SUPPORTDATA_GET.equals(actionType)) {
+            return supportDataAction(minions, (SupportDataAction) actionIn);
+        }
         else if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(actionType)) {
             return packagesUpdateAction(minions, (PackageUpdateAction) actionIn);
         }
@@ -371,6 +377,31 @@ public class SaltServerActionService {
             }
             return Collections.emptyMap();
         }
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> supportDataAction(List<MinionSummary> minions,
+                                                                     SupportDataAction action) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+
+        var serverActionsById = action.getServerActions().stream()
+                .collect(Collectors.toMap(sa -> sa.getServerId(), sa -> sa));
+
+        var caseNumber = action.getDetails().getCaseNumber();
+
+        var partitioned = minions.stream().collect(Collectors.partitioningBy(minionSummary -> {
+            var sa = serverActionsById.get(minionSummary.getServerId());
+            var actionPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/" +
+                    ScapFileManager.getActionPath(action.getOrg().getId(), sa.getServerId(), action.getId());
+            var bundleName = caseNumber + "_" + action.getId() + "_" + minionSummary.getMinionId() + ".tar";
+            var bundle = Paths.get(actionPath).resolve(bundleName);
+            return Files.exists(bundle);
+        }));
+
+        var pillar = Optional.ofNullable(action.getDetails().getParameter())
+                .map(p -> Map.of("arguments", (Object)p));
+        ret.put(State.apply(List.of("supportdata"), pillar), partitioned.get(false));
+        ret.put(Test.echo("supportdata"), partitioned.get(true));
+        return ret;
     }
 
     /**
