@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.common.filediff;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;

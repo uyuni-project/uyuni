@@ -17,8 +17,8 @@ package com.redhat.rhn.domain.recurringactions;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -85,7 +85,7 @@ public class GroupRecurringAction extends RecurringAction {
      */
     @Override
     public boolean canAccess(User user) {
-        if (!user.hasRole(RoleFactory.SYSTEM_GROUP_ADMIN)) {
+        if (!user.isMemberOf(AccessGroupFactory.SYSTEM_GROUP_ADMIN)) {
             return false;
         }
         try {

@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.channel;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
@@ -66,6 +69,7 @@ public class TargetSystemsAction extends RhnAction implements Listable<SystemOve
 
 
         if (helper.isDispatched()) {
+            ensureRoleBasedAccess(user, "software.details.systems", Namespace.AccessMode.W);
             Map<String, Object> params = new HashMap<>();
             params.put(RequestContext.CID, cid);
             return getStrutsDelegate().forwardParams(

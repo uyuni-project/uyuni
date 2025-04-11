@@ -14,9 +14,13 @@
  */
 package com.redhat.rhn.frontend.action.kickstart;
 
+import static com.redhat.rhn.domain.access.Namespace.AccessMode.W;
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ProfileDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -69,7 +73,10 @@ public class KickstartPackageProfileSetupAction extends RhnAction implements Lis
         ListHelper helper = new ListHelper(this, request);
         helper.execute();
 
+        User user = new RequestContext(request).getCurrentUser();
+
         if (context.wasDispatched("kickstart.packageprofile.jsp.submit")) {
+            ensureRoleBasedAccess(user, "systems.autoinstallation", W);
             String selected = ListTagHelper.getRadioSelection(helper.getListName(),
                                         request);
             if (StringUtils.isNumeric(selected)) {
@@ -85,6 +92,7 @@ public class KickstartPackageProfileSetupAction extends RhnAction implements Lis
             }
         }
         else if (context.wasDispatched("kickstart.packageprofile.jsp.clear")) {
+            ensureRoleBasedAccess(user, "systems.autoinstallation", W);
             ks.getKickstartDefaults().setProfile(null);
             KickstartFactory.saveKickstartData(ks);
             request.setAttribute("ksid", ks.getId());

@@ -31,7 +31,6 @@ retracted_patches: --tags @scope_retracted_patches
 rhlike: --tags @rhlike_minion
 salt_ssh: --tags @scope_salt_ssh
 salt: --tags @scope_salt
-smdba: --tags @scope_smdba
 spacecmd: --tags @scope_spacecmd
 spacewalk_utils: --tags @scope_spacewalk_utils
 sp_migration: --tags @scope_sp_migration

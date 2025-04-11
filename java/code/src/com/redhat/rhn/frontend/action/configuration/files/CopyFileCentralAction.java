@@ -15,10 +15,8 @@
 package com.redhat.rhn.frontend.action.configuration.files;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
 import com.redhat.rhn.frontend.dto.ConfigChannelDto;
@@ -49,19 +47,6 @@ public class CopyFileCentralAction  extends BaseCopyConfigFileAction {
     @Override
     protected String getType() {
         return BaseCopyConfigFileAction.CENTRAL_TYPE;
-    }
-
-    /**
-     * Only config-admins get to copy files into central channels
-     * {@inheritDoc}
-     */
-    @Override
-    protected String checkPreConditions(RequestContext rctxIn) {
-        User user = rctxIn.getCurrentUser();
-        if (!user.hasRole(RoleFactory.CONFIG_ADMIN)) {
-            throw new PermissionException("Must be a config admin.");
-        }
-        return null;
     }
 
     @Override

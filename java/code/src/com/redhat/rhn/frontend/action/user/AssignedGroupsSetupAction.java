@@ -14,10 +14,12 @@
  */
 package com.redhat.rhn.frontend.action.user;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -34,7 +36,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.user.UserManager;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -100,10 +102,12 @@ public class AssignedGroupsSetupAction extends RhnListAction {
         //If the default system groups were submitted
         if (submit != null &&
                 submit.equals(ls.getMessage("assignedgroups.jsp.submitdefaults"))) {
+            ensureRoleBasedAccess(user, "users.groups", Namespace.AccessMode.W);
             updateDefaults(mapping, formIn, request, response);
         }
         else if (submit != null &&  //else if the update permissions button was clicked
                     submit.equals(ls.getMessage("assignedgroups.jsp.submitpermissions"))) {
+            ensureRoleBasedAccess(user, "users.groups", Namespace.AccessMode.W);
             updatePerm(mapping, formIn, request, response);
             dr = UserManager.getSystemGroups(user, null);
             ListTagHelper.setSelectedAmount(LIST_NAME, set.size(), request);

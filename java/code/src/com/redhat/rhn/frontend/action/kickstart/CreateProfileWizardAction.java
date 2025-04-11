@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.kickstart;
 
-import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -27,13 +25,11 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.frontend.struts.wizard.RhnWizardAction;
 import com.redhat.rhn.frontend.struts.wizard.WizardStep;
-import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.kickstart.KickstartWizardHelper;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
@@ -80,29 +76,6 @@ public class CreateProfileWizardAction extends RhnWizardAction {
     public static final String VIRTUALIZATION_TYPE_LABEL_PARAM = "virtualizationTypeLabel";
 
     private static Logger log = LogManager.getLogger(CreateProfileWizardAction.class);
-
-    /**
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-
-        if (!AclManager.hasAcl("user_role(org_admin) or user_role(config_admin)",
-                request, null)) {
-            //Throw an exception with a nice error message so the user
-            //knows what went wrong.
-            LocalizationService ls = LocalizationService.getInstance();
-            throw new PermissionException("Only Org Admins or Configuration Admins can modify kickstarts",
-                    ls.getMessage("permission.jsp.summary.acl.header"),
-                    ls.getMessage("permission.jsp.summary.acl.reason5"));
-        }
-
-        return super.execute(mapping, formIn, request, response);
-    }
 
     @Override
     protected void generateWizardSteps(Map<String, WizardStep> steps) {

@@ -16,10 +16,8 @@ package com.redhat.rhn.frontend.xmlrpc.kickstart.snippet;
 
 
 import com.redhat.rhn.domain.kickstart.cobbler.CobblerSnippet;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
-import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSnippetLister;
 
 import com.suse.manager.api.ReadOnly;
@@ -33,13 +31,6 @@ import java.util.List;
  * @apidoc.doc Provides methods to create kickstart files
  */
 public class SnippetHandler extends BaseHandler {
-
-
-    private void verifyKSAdmin(User user) {
-        if (!user.hasRole(RoleFactory.CONFIG_ADMIN)) {
-            throw new PermissionCheckFailureException(RoleFactory.CONFIG_ADMIN);
-        }
-    }
 
     /**
      * list all cobbler snippets for a user.  Includes default and custom snippets
@@ -55,7 +46,6 @@ public class SnippetHandler extends BaseHandler {
      */
     @ReadOnly
     public List<CobblerSnippet> listAll(User loggedInUser) {
-        verifyKSAdmin(loggedInUser);
         return CobblerSnippetLister.getInstance().list(loggedInUser);
     }
 
@@ -74,7 +64,6 @@ public class SnippetHandler extends BaseHandler {
      */
     @ReadOnly
     public List<CobblerSnippet> listCustom(User loggedInUser) {
-        verifyKSAdmin(loggedInUser);
         return CobblerSnippetLister.getInstance().listCustom(loggedInUser);
     }
 
@@ -93,7 +82,6 @@ public class SnippetHandler extends BaseHandler {
      */
     @ReadOnly
     public List<CobblerSnippet> listDefault(User loggedInUser) {
-        verifyKSAdmin(loggedInUser);
         return CobblerSnippetLister.getInstance().listDefault(loggedInUser);
     }
 
@@ -114,7 +102,6 @@ public class SnippetHandler extends BaseHandler {
      *            $SnippetSerializer
      */
     public CobblerSnippet createOrUpdate(User loggedInUser, String name, String contents) {
-        verifyKSAdmin(loggedInUser);
         CobblerSnippet snip = CobblerSnippet.loadEditableIfExists(name,
                 loggedInUser.getOrg());
         return CobblerSnippet.createOrUpdate(snip == null, name, contents,
@@ -135,7 +122,6 @@ public class SnippetHandler extends BaseHandler {
      *            #return_int_success()
      */
     public int delete(User loggedInUser, String name) {
-        verifyKSAdmin(loggedInUser);
         CobblerSnippet snip = CobblerSnippet.loadEditableIfExists(name,
                 loggedInUser.getOrg());
         if (snip != null) {

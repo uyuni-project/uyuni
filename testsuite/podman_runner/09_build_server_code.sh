@@ -33,7 +33,7 @@ sudo -i podman exec server bash -c "cd /java && ant -f manager-build.xml ivy || 
 sudo -i podman exec server bash -c "cd /java && ant -f manager-build.xml -Ddeploy.mode=local refresh-branding-jar deploy"
 sudo -i podman exec server bash -c "cd /java && ant -f manager-build.xml apidoc-jsp"
 sudo -i podman exec server bash -c "mkdir /usr/share/susemanager/www/tomcat/webapps/rhn/apidoc/ && rsync -av /java/build/reports/apidocs/jsp/ /usr/share/susemanager/www/tomcat/webapps/rhn/apidoc/"
-sudo -i podman exec server bash -c "set -xe;cd /web/html/src;[ -d dist ] || mkdir dist;yarn install --force --ignore-optional --production=true --frozen-lockfile;yarn autoclean --force;yarn build:novalidate; rsync -a dist/ /usr/share/susemanager/www/htdocs/"
+sudo -i podman exec server bash -c "set -xe;cd /web/html/src;[ -d dist ] || mkdir dist;yarn install --force --ignore-optional --production=true --frozen-lockfile;yarn autoclean --force;yarn build --check-spec=false; rsync -a dist/ /usr/share/susemanager/www/htdocs/"
 sudo -i podman exec server bash -c "rctomcat restart"
 sudo -i podman exec server bash -c "rctaskomatic restart"
 
@@ -43,3 +43,4 @@ sudo -i podman exec server bash -c "cp /client/tools/mgr-push/rhnpushrc /etc/sys
 
 sudo -i podman exec server bash -c "cd /susemanager-utils/susemanager-sls/; cp -R modules/* /usr/share/susemanager/modules; cp -R salt/* /usr/share/susemanager/salt; cp -R src/modules/* /usr/share/susemanager/salt/_modules; cp -R src/grains/* /usr/share/susemanager/salt/_grains; cp -R src/states/* /usr/share/susemanager/salt/_states; cp -R src/beacons/* /usr/share/susemanager/salt/_beacons; cp -R salt-ssh/* /usr/share/susemanager/salt-ssh"
 sudo -i podman exec server bash -c "cd /susemanager/; cp src/mgr-salt-ssh /usr/bin/; chmod a+x /usr/bin/mgr-salt-ssh"
+sudo -i podman exec server bash -c "cd /susemanager/src; cp mgr_sync/*.py /usr/lib/python3.6/site-packages/spacewalk/susemanager/mgr_sync/; cp *.py /usr/lib/python3.6/site-packages/spacewalk/susemanager/; mv /usr/lib/python3.6/site-packages/spacewalk/susemanager/mgr_bootstrap_data.py /usr/share/susemanager/"

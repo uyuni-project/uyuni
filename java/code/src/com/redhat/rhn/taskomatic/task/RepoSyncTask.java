@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,6 +19,7 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
@@ -27,18 +29,17 @@ import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFailed;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFinished;
 import com.redhat.rhn.domain.notification.types.NotificationData;
-import com.redhat.rhn.domain.role.RoleFactory;
 
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Used for syncing repos (like yum repos) to a channel.
@@ -71,7 +72,7 @@ public class RepoSyncTask extends RhnJavaJob {
                     new ChannelSyncFailed(null, null, LocalizationService.getInstance()
                             .getMessage("notification.channelsyncfailed.notcompliant")));
             UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                    Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.empty());
+                    Set.of(AccessGroupFactory.CHANNEL_ADMIN));
             return;
         }
 
@@ -117,7 +118,7 @@ public class RepoSyncTask extends RhnJavaJob {
 
             UserNotificationFactory.storeNotificationMessageFor(
                 UserNotificationFactory.createNotificationMessage(notificationData),
-                Collections.singleton(RoleFactory.CHANNEL_ADMIN),
+                Set.of(AccessGroupFactory.CHANNEL_ADMIN),
                 Optional.ofNullable(channel.getOrg())
             );
         }

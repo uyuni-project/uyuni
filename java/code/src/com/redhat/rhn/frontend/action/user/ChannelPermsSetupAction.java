@@ -15,7 +15,7 @@
 package com.redhat.rhn.frontend.action.user;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.dto.ChannelPerms;
@@ -71,7 +71,7 @@ public class ChannelPermsSetupAction extends RhnListAction {
         request.setAttribute("user", user);
         request.setAttribute("role", "subscribe");
         request.setAttribute("userIsChannelAdmin",
-                user.hasRole(RoleFactory.CHANNEL_ADMIN));
+                user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN));
         form.set("selectedChannels", dr.stream()
                 .filter(ChannelPerms::isHasPerm)
                 .map(p -> String.valueOf(p.getId())).toArray(String[]::new));

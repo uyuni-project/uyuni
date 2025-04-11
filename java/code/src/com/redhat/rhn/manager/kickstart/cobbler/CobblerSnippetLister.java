@@ -14,9 +14,7 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler;
 
-import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.kickstart.cobbler.CobblerSnippet;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.BaseManager;
 
@@ -86,10 +84,6 @@ public class CobblerSnippetLister extends BaseManager {
      * @return the snippets accessible to the user.
      */
     private List<CobblerSnippet> listSnippets(User user, boolean common) {
-        if (!user.hasRole(RoleFactory.CONFIG_ADMIN)) {
-            throw new PermissionException(RoleFactory.CONFIG_ADMIN);
-        }
-
         if (common) {
             List<CobblerSnippet> snippetFiles = new LinkedList<>();
             loadDefaultSnippets(CobblerSnippet.getCobblerSnippetsDir(),

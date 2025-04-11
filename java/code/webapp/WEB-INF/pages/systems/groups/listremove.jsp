@@ -3,7 +3,7 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 
 
-<rhn:require acl="user_role(org_admin) or user_role(system_group_admin)">
+<rhn:require acl="user_role(org_admin) or authorized_for(systems.groups)">
  <c:set var="msg_key" value="systems.groups.jsp.noGroups" />
  <c:set var="msg_arg0" value="/rhn/systems/details/groups/Add.do?sid=${param.sid}" />
  <c:set var="msg_arg1" value="Join" />
@@ -12,7 +12,7 @@
  <c:set var="summary_arg0" value="systems.groups.jsp.remove" />
 </rhn:require>
 
-<rhn:require acl="not user_role(org_admin);not user_role(system_group_admin)">
+<rhn:require acl="not user_role(org_admin);not authorized_for(systems.groups)">
 <c:set var="msg_key"><bean:message key="systems.groups.jsp.noGroups.nonadmin"/></c:set>
 
 <c:set var="summary_key" value="systems.groups.jsp.summary" />

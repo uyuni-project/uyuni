@@ -12,126 +12,36 @@
 package com.suse.manager.webui.controllers.admin.beans;
 
 import com.suse.manager.model.hub.IssHub;
+import com.suse.manager.model.hub.IssRole;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Optional;
 
-import java.util.Date;
+/**
+ * The details of a hub
+ */
+public class HubDetailsData extends IssServerDetailsData {
 
-public class HubDetailsData {
-
-    private long id;
-
-    private String fqdn;
-
-    private String rootCA;
-
-    private String gpgKey;
-
-    private String sccUsername;
-
-    private Date created;
-
-    private Date modified;
+    private final String gpgKey;
 
     /**
      * Create an instance from the hub entity.
      * @param hub the hub
      */
     public HubDetailsData(IssHub hub) {
-        this.id = hub.getId();
-        this.fqdn = hub.getFqdn();
-        this.rootCA = hub.getRootCa();
+        super(
+            hub.getId(),
+            IssRole.HUB,
+            hub.getFqdn(),
+            hub.getRootCa(),
+            Optional.ofNullable(hub.getMirrorCredentials()).map(creds -> creds.getUsername()).orElse(null),
+            hub.getCreated(),
+            hub.getModified()
+        );
+
         this.gpgKey = hub.getGpgKey();
-        this.sccUsername = hub.getMirrorCredentials().getUsername();
-        this.created = hub.getCreated();
-        this.modified = hub.getModified();
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long idIn) {
-        this.id = idIn;
-    }
-
-    public String getFqdn() {
-        return fqdn;
-    }
-
-    public void setFqdn(String fqdnIn) {
-        this.fqdn = fqdnIn;
-    }
-
-    public String getRootCA() {
-        return rootCA;
-    }
-
-    public void setRootCA(String rootCAIn) {
-        this.rootCA = rootCAIn;
     }
 
     public String getGpgKey() {
         return gpgKey;
-    }
-
-    public void setGpgKey(String gpgKeyIn) {
-        this.gpgKey = gpgKeyIn;
-    }
-
-    public String getSccUsername() {
-        return sccUsername;
-    }
-
-    public void setSccUsername(String sccUsernameIn) {
-        this.sccUsername = sccUsernameIn;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    public Date getModified() {
-        return modified;
-    }
-
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (!(o instanceof HubDetailsData that)) {
-            return false;
-        }
-
-        return new EqualsBuilder()
-            .append(getFqdn(), that.getFqdn())
-            .isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-            .append(getFqdn())
-            .toHashCode();
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("HubDetailsData{");
-        sb.append("id=").append(id);
-        sb.append(", fqdn='").append(fqdn).append('\'');
-        sb.append('}');
-        return sb.toString();
     }
 }

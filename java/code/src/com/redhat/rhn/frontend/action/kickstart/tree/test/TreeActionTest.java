@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -27,7 +28,6 @@ import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.test.KickstartableTreeTest;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.action.BaseEditAction;
 import com.redhat.rhn.frontend.action.kickstart.tree.TreeCreateAction;
 import com.redhat.rhn.frontend.action.kickstart.tree.TreeEditAction;
@@ -52,14 +52,14 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testCreateNonSubmit() throws Exception {
-        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
         ChannelFactoryTest.createTestChannel(user);
         executeNonSubmit("/kickstart/TreeCreate");
     }
 
     @Test
     public void testCreateSubmit() throws Exception {
-        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
         Channel c = ChannelFactoryTest.createTestChannel(user);
         executeSubmit("/kickstart/TreeCreate", c);
         verifyActionMessage("tree.create.success");
@@ -67,7 +67,7 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testCreateRefresh() throws Exception {
-        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
 
         Channel rhel5BaseChan = createRhel5Channels();
         Channel rhel4BaseChan = createRhel4Channels();

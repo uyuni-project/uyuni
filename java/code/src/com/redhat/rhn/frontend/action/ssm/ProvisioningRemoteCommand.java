@@ -38,7 +38,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -328,7 +328,7 @@ public class ProvisioningRemoteCommand extends RhnAction implements
 
         return MessageFormat.format(body,
                 scriptType, servers.size(), servers.size() > 1 ? plrl : sngl,
-                StringEscapeUtils.escapeXml(summary.toString()));
+                StringEscapeUtils.escapeXml10(summary.toString()));
     }
 
 

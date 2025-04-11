@@ -19,6 +19,7 @@
 package com.redhat.rhn.frontend.xmlrpc;
 
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.server.Server;
 
@@ -68,6 +69,16 @@ public class PermissionCheckFailureException extends FaultException  {
     public PermissionCheckFailureException(Role role) {
         super(-23, "permissionCheckFailure", "You do not have permissions to " +
                 "perform this action. You need to have at least a " + role.getName() +
+                                 " role to perform this action");
+        // begin member variable initialization
+    }
+    /**
+     * Constructor
+     * @param accessGroupIn Cause for the exception (bad role)
+     */
+    public PermissionCheckFailureException(AccessGroup accessGroupIn) {
+        super(-23, "permissionCheckFailure", "You do not have permissions to " +
+                "perform this action. You need to have at least a " + accessGroupIn.getLabel() +
                                  " role to perform this action");
         // begin member variable initialization
     }

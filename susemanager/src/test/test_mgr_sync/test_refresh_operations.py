@@ -47,7 +47,6 @@ class RefreshOperationsTest(unittest.TestCase):
         self.fake_auth_token = "fake_token"
         self.mgr_sync.auth.token = MagicMock(return_value=self.fake_auth_token)
         self.mgr_sync.config.write = MagicMock()
-        self.mgr_sync.conn.sync.master.hasMaster = MagicMock(return_value=False)
 
     def test_refresh_from_mirror(self):
         """Test the refresh action"""
@@ -220,7 +219,7 @@ Scheduling reposync for following channels:
         """
 
         options = get_options("refresh --schedule".split())
-        mock_execute_xmlrpc = MagicMock()
+        mock_execute_xmlrpc = MagicMock(return_value=False)
         # pylint: disable-next=protected-access
         self.mgr_sync._execute_xmlrpc_method = mock_execute_xmlrpc
         mock_reposync = MagicMock()
@@ -236,7 +235,7 @@ Scheduling reposync for following channels:
         self.assertEqual(["Refresh successfully scheduled"], recorder.stdout)
 
         self.assertTrue(mock_schedule_taskomatic_refresh.mock_calls)
-        self.assertFalse(mock_execute_xmlrpc.mock_calls)
+        self.assertTrue(mock_execute_xmlrpc.mock_calls)
         self.assertFalse(mock_reposync.mock_calls)
 
     def test_refresh_should_not_trigger_reposync_when_there_is_an_error(self):
@@ -245,7 +244,7 @@ Scheduling reposync for following channels:
         """
 
         options = get_options("refresh --refresh-channels".split())
-        stubbed_xmlrpm_call = MagicMock(side_effect=Exception("Boom baby!"))
+        stubbed_xmlrpm_call = MagicMock(side_effect=[False, Exception("Boom baby!")])
         # pylint: disable-next=protected-access
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         mock_reposync = MagicMock()

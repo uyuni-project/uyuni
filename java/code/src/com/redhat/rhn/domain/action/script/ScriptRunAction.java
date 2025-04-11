@@ -23,7 +23,7 @@ import com.redhat.rhn.manager.download.DownloadManager;
 
 import com.suse.manager.utils.SaltUtils;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 
 /**

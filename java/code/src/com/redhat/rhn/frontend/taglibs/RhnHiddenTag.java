@@ -18,8 +18,8 @@ package com.redhat.rhn.frontend.taglibs;
 import com.redhat.rhn.frontend.html.HiddenInputTag;
 import com.redhat.rhn.frontend.html.HtmlTag;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;

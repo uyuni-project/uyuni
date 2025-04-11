@@ -19,7 +19,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 /**
  * ScapAction - Class representing TYPE_SCAP_*.
  */

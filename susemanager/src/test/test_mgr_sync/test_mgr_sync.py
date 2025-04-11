@@ -63,7 +63,6 @@ class MgrSyncTest(unittest.TestCase):
         self.mgr_sync.__init__logger = MagicMock(
             return_value=logger.Logger(3, "tmp.log")
         )
-        self.mgr_sync.conn.sync.master.hasMaster = MagicMock(return_value=False)
 
     def tearDown(self):
         if os.path.exists("tmp.log"):
@@ -75,13 +74,13 @@ class MgrSyncTest(unittest.TestCase):
         self.assertTrue(os.path.isfile("tmp.log"))
 
     def test_should_handle_max_number_of_authentication_failures(self):
-        def raise_maximum_number_of_authentication_failures(options):
+        def raise_maximum_number_of_authentication_failures():
             raise MaximumNumberOfAuthenticationFailures
 
         # pylint: disable-next=protected-access
-        self.mgr_sync._process_user_request = MagicMock()
+        self.mgr_sync.auth.token = MagicMock()
         # pylint: disable-next=protected-access
-        self.mgr_sync._process_user_request.side_effect = (
+        self.mgr_sync.auth.token.side_effect = (
             raise_maximum_number_of_authentication_failures
         )
 
