@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 11 09:17:58 CEST 2025 - rosuna@suse.com
+
+- version 5.0.18-0
+  * Fix: refactor usage of js fetch with internal utility
+    (bsc#1240960)
+
+-------------------------------------------------------------------
 Tue Mar 11 15:19:07 CET 2025 - rosuna@suse.com
 
 - version 5.0.17-0
