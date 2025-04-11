@@ -411,20 +411,6 @@ public class ColumnTag extends BodyTagSupport {
     }
 
     /**
-     * @return Returns the headerClass.
-     */
-    public String getHeaderClass() {
-        return headerClass;
-    }
-
-    /**
-     * @param headerClassIn The headerClass to set.
-     */
-    public void setHeaderClass(String headerClassIn) {
-        this.headerClass = headerClassIn;
-    }
-
-    /**
      * Sets the filter attribute
      * @param attribute the name of the filter attribute
      */
