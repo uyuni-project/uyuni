@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionResult;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.audit.ScapPolicy;
+import com.redhat.rhn.domain.audit.TailoringFile;
 import com.redhat.rhn.domain.audit.XccdfRuleFix;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.channel.AccessToken;
@@ -33,7 +34,6 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.channel.ClonedChannel;
-import com.redhat.rhn.domain.audit.TailoringFile;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -307,7 +307,7 @@ public class AnnotationRegistry {
             RecurringHighstate.class,
             RecurringInternalState.class,
             RecurringPlaybook.class,
-            RecurringScapPolicy.class
+            RecurringScapPolicy.class,
             RecurringState.class,
             RegistryCredentials.class,
             RegTokenOrgDefault.class,
@@ -344,7 +344,7 @@ public class AnnotationRegistry {
             SslCryptoKey.class,
             StateChange.class,
             StateRevision.class,
-            TailoringFile.class
+            TailoringFile.class,
             SUSEProduct.class,
             Task.class,
             TaskoBunch.class,
@@ -361,7 +361,7 @@ public class AnnotationRegistry {
             UserNotification.class,
             VHMCredentials.class,
             VirtualHostManagerNodeInfo.class,
-            XccdfRuleFix.class
+            XccdfRuleFix.class,
             XccdfTestResult.class,
             WebEndpoint.class
     );

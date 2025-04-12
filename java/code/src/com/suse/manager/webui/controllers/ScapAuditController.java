@@ -1,62 +1,71 @@
+/*
+ * Copyright (c) 2025 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ */
 package com.suse.manager.webui.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.action.scap.ScapAction;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.get;
+import static spark.Spark.post;
+
 import com.redhat.rhn.domain.audit.ScapFactory;
 import com.redhat.rhn.domain.audit.ScapPolicy;
 import com.redhat.rhn.domain.audit.TailoringFile;
 import com.redhat.rhn.domain.audit.XccdfRuleFix;
-import com.redhat.rhn.domain.reactor.SaltEvent;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
-import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.audit.scap.xml.BenchMark;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.webui.controllers.utils.RequestUtil;
-import com.suse.manager.webui.utils.gson.ScapPolicyDetailJson;
-import com.suse.manager.webui.utils.gson.ScapPolicyJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
-import com.suse.manager.webui.utils.gson.ScapScanScheduleJson;
+import com.suse.manager.webui.utils.gson.ScapPolicyJson;
 import com.suse.utils.Json;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import org.hibernate.query.Query;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
 import spark.template.jade.JadeTemplateEngine;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.*;
-import java.util.stream.Collectors;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.*;
-import static spark.Spark.get;
-import static spark.Spark.post;
-import com.google.gson.reflect.TypeToken;
 
 public class ScapAuditController {
     private static final Logger LOG = LogManager.getLogger(ScapAuditController.class);

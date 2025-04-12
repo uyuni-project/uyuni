@@ -14,8 +14,6 @@
  */
 package com.suse.manager.webui.utils.gson;
 
-import com.suse.manager.webui.utils.ScapPolicyJson;
-
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -166,6 +164,7 @@ public class RecurringActionDetailsDto {
      */
     public void setPolicies(Set<ScapPolicyJson> policiesIn) {
         this.policies = policiesIn;
+    }
 
     /**
      * Gets the playbook path

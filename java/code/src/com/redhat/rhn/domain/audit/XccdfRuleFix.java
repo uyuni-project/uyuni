@@ -1,11 +1,29 @@
+/*
+ * Copyright (c) 2025 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ */
 package com.redhat.rhn.domain.audit;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.suse.manager.webui.utils.gson.ScapPolicyDetailJson;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SqlResultSetMapping;
+import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "suseXccdfRuleFix")
@@ -30,18 +48,28 @@ public class XccdfRuleFix {
     private String identifier;
     private String remediation;
     private String benchMarkId;
+
+    /**
+     * Constructor
+     */
     public XccdfRuleFix() {
 
     }
 
+    /**
+     * Constructor
+     * @param benchMarkIdIn
+     * @param identifierIn
+     * @param fixIn
+     */
     public XccdfRuleFix(String benchMarkIdIn, String identifierIn, String fixIn) {
         this.benchMarkId = benchMarkIdIn;
         this.identifier = identifierIn;
         this.remediation = fixIn;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long idIn) {
+        this.id = idIn;
     }
 
     @Id
@@ -55,8 +83,8 @@ public class XccdfRuleFix {
         return benchMarkId;
     }
 
-    public void setBenchMarkId(String benchMarkId) {
-        this.benchMarkId = benchMarkId;
+    public void setBenchMarkId(String benchMarkIdIn) {
+        this.benchMarkId = benchMarkIdIn;
     }
 
     @Column(name = "identifier")
@@ -64,19 +92,19 @@ public class XccdfRuleFix {
         return identifier;
     }
 
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
+    public void setIdentifier(String identifierIn) {
+        this.identifier = identifierIn;
     }
     @Column(name = "remediation")
     public String getRemediation() {
         return remediation;
     }
 
-    public void setRemediation(String remediation) {
-        this.remediation = remediation;
+    public void setRemediation(String remediationIn) {
+        this.remediation = remediationIn;
     }
 
-
+    @Override
     public boolean equals(final Object other) {
         if (this == other) {
             return true;
@@ -102,10 +130,9 @@ public class XccdfRuleFix {
                 .append(identifier)
                 .toHashCode();
     }
+
     @Override
     public String toString() {
         return super.toString();
     }
-
-
 }

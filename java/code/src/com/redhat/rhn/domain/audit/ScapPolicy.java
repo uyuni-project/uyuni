@@ -1,14 +1,33 @@
+/*
+ * Copyright (c) 2025 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ */
 package com.redhat.rhn.domain.audit;
 
 
-import com.google.gson.annotations.Expose;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.Org;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.persistence.*;
+import com.google.gson.annotations.Expose;
+
+
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "suseScapPolicy")
@@ -185,10 +204,15 @@ public class ScapPolicy extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         ScapPolicy that = (ScapPolicy) o;
-        return policyName.equals(that.policyName) && dataStreamName.equals(that.dataStreamName) && xccdfProfileId.equals(that.xccdfProfileId);
+        return policyName.equals(that.policyName) && dataStreamName.equals(that.dataStreamName) &&
+                xccdfProfileId.equals(that.xccdfProfileId);
     }
 
     /**
