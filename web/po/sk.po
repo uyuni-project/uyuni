@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-11 13:25+0200\n"
-"PO-Revision-Date: 2025-04-11 16:56+0000\n"
+"PO-Revision-Date: 2025-04-12 17:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -445,7 +445,7 @@ msgstr "Naozaj chcete vymazať projekt "
 
 #: ../html/src/components/formik/Form.example.tsx:34
 msgid "Field"
-msgstr ""
+msgstr "Pole"
 
 #: ../html/src/components/formik/Form.example.tsx:36
 #: ../html/src/components/input/InputBase.test.tsx:43
@@ -464,7 +464,7 @@ msgstr "Minimálne 2 znaky"
 
 #: ../html/src/components/formik/Form.example.tsx:39
 msgid "Checkbox"
-msgstr ""
+msgstr "Zaškrtávacie pole"
 
 #: ../html/src/components/formik/Form.example.tsx:41
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
@@ -481,30 +481,24 @@ msgid "Password"
 msgstr "Heslo"
 
 #: ../html/src/components/formik/Form.example.tsx:43
-#, fuzzy
-#| msgid "fa-times"
 msgid "Datetime"
-msgstr "fa-times"
+msgstr "Dátum a čas"
 
 #: ../html/src/components/formik/Form.example.tsx:45
 msgid "Multiple values"
-msgstr ""
+msgstr "Viacero hodnôt"
 
 #: ../html/src/components/formik/Form.example.tsx:47
-#, fuzzy
-#| msgid "Loading text"
 msgid "Long text"
-msgstr "Načítavanie textu"
+msgstr "Dlhý text"
 
 #: ../html/src/components/formik/Form.example.tsx:49
-#, fuzzy
-#| msgid "Changes"
 msgid "Range"
-msgstr "Zmeny"
+msgstr "Rozsah"
 
 #: ../html/src/components/formik/Form.example.tsx:53
 msgid "Radio"
-msgstr ""
+msgstr "Prepínač"
 
 #: ../html/src/components/formik/Form.example.tsx:55
 msgid "One"
