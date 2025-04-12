@@ -60,6 +60,7 @@ import com.suse.manager.webui.controllers.RecurringActionController;
 import com.suse.manager.webui.controllers.SSOController;
 import com.suse.manager.webui.controllers.SaltSSHController;
 import com.suse.manager.webui.controllers.SaltbootController;
+import com.suse.manager.webui.controllers.ScapAuditController;
 import com.suse.manager.webui.controllers.SetController;
 import com.suse.manager.webui.controllers.SsmController;
 import com.suse.manager.webui.controllers.StatesAPI;
@@ -143,6 +144,7 @@ public class Router implements SparkApplication {
         DownloadController downloadController = new DownloadController(paygManager);
         ConfidentialComputingController confidentialComputingController =
                 new ConfidentialComputingController(attestationManager);
+        ScapAuditController scapAuditController = new ScapAuditController();
         ProxyConfigurationController proxyConfigurationController =
                 new ProxyConfigurationController(systemManager);
 
@@ -251,6 +253,9 @@ public class Router implements SparkApplication {
 
         // Ansible Control Node
         AnsibleController.initRoutes(jade);
+
+        //SCAP audit
+        scapAuditController.initRoutes(jade);
 
         // Rhn Set API
         SetController.initRoutes();

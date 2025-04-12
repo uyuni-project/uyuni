@@ -17,13 +17,18 @@ package com.redhat.rhn.domain.audit;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
-
+import com.redhat.rhn.domain.org.Org;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.type.StandardBasicTypes;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -140,6 +145,177 @@ public class ScapFactory extends HibernateFactory {
     public static void save(XccdfRuleResult ruleResult) {
         getSession().persist(ruleResult);
     }
+
+    /**
+     * Search for all tailoring files objects in the database
+     * @return list of tailoring files objects
+     */
+    public static List<TailoringFile> lookupAllTailoringFiles() {
+        return getSession().createQuery("FROM TailoringFile").list();
+    }
+    /**
+     * Search for all tailoring files objects in the database
+     * @param org the organization
+     * @return Returns a list of  tailoring files
+     */
+    public static List<TailoringFile> listTailoringFiles(Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<TailoringFile> criteria = builder.createQuery(TailoringFile.class);
+        Root<TailoringFile> root = criteria.from(TailoringFile.class);
+        criteria.where(builder.equal(root.get("org"), org));
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
+     * Lookup for a tailoring file object based on the id and organization
+     * @param id tailoring file ID
+     * @param org the organization
+     * @return optional of tailoring file object
+     */
+    public static Optional<TailoringFile> lookupTailoringFileByIdAndOrg(Integer id, Org org) {
+
+        if (Objects.isNull(id)) {
+            return Optional.empty();
+        }
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<TailoringFile> select = builder.createQuery(TailoringFile.class);
+        Root<TailoringFile> root = select.from(TailoringFile.class);
+        select.where(builder.and(
+                builder.equal(root.get("id"), id),
+                builder.equal(root.get("org"), org)));
+
+        return getSession().createQuery(select).uniqueResultOptional();
+    }
+
+    /**
+     * Lookup for Tailoring files by an id list and organization
+     * @param ids image profile id list
+     * @param org the organization
+     * @return Returns a list of image profiles with the given ids if it exists
+     * inside the organization
+     */
+    public static List<TailoringFile>  lookupTailoringFilesByIds(List<Long> ids, Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<TailoringFile> criteria = builder.createQuery(TailoringFile.class);
+        Root<TailoringFile> root = criteria.from(TailoringFile.class);
+        criteria.where(builder.and(
+                root.get("id").in(ids),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
+     * Deletes the Tailoring file object from the database
+     * @param tailoringFile TailoringFile object
+     */
+    public static void deleteTailoringFile(TailoringFile tailoringFile) {
+        getSession().delete(tailoringFile);
+    }
+    /**
+     * Save the tailoringFile object to the database
+     * @param tailoringFile object
+     */
+    public static void saveTailoringFile(TailoringFile tailoringFile) {
+        tailoringFile.setModified(new Date());
+        singleton.saveObject(tailoringFile);
+    }
+
+    /**
+     * List all SCAP polices objects in the database
+     * @param org the organization
+     * @return Returns a list of  tailoring files
+     */
+    public static List<ScapPolicy> listScapPolicies(Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ScapPolicy> criteria = builder.createQuery(ScapPolicy.class);
+        Root<ScapPolicy> root = criteria.from(ScapPolicy.class);
+        criteria.where(builder.equal(root.get("org"), org));
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
+     * Lookup for Scap policies by an id list and organization
+     * @param ids image profile id list
+     * @param org the organization
+     * @return Returns a list of  tailoring files
+     * inside the organization
+     */
+    public static List<ScapPolicy>  lookupScapPoliciesByIds(List<Integer> ids, Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ScapPolicy> criteria = builder.createQuery(ScapPolicy.class);
+        Root<ScapPolicy> root = criteria.from(ScapPolicy.class);
+        criteria.where(builder.and(
+                root.get("id").in(ids),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(criteria).getResultList();
+    }
+    /**
+     * Lookup for a tailoring file object based on the id and organization
+     * @param id tailoring file ID
+     * @param org the organization
+     * @return optional of tailoring file object
+     */
+    public static Optional<ScapPolicy> lookupScapPolicyByIdAndOrg(Integer id, Org org) {
+
+        if (Objects.isNull(id)) {
+            return Optional.empty();
+        }
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ScapPolicy> select = builder.createQuery(ScapPolicy.class);
+        Root<ScapPolicy> root = select.from(ScapPolicy.class);
+        select.where(builder.and(
+                builder.equal(root.get("id"), id),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(select).uniqueResultOptional();
+    }
+    /**
+     * Deletes the Scap Policy object from the database
+     * @param scapPolicy ScapPolicy object
+     */
+    public static void deleteScapPolicy(ScapPolicy scapPolicy) {
+        getSession().delete(scapPolicy);
+    }
+    /**
+     * Save the scapPolicy object to the database
+     * @param scapPolicy object
+     */
+    public static void saveScapPolicy(ScapPolicy scapPolicy) {
+        scapPolicy.setModified(new Date());
+        singleton.saveObject(scapPolicy);
+    }
+
+    /**
+     * Save the XccdfRuleFix object
+     * @param xccdfRuleFix
+     */
+    public static void  saveXccfRuleFix(XccdfRuleFix xccdfRuleFix) {
+        singleton.saveObject(xccdfRuleFix, true);
+    }
+    /**
+     * Find a {@link XccdfRuleFix} by identified and benchmark id.
+     * @param benchmarkId benchmarkId
+     * @param identifier identifier
+     * @return the {@link XccdfRuleResultType} if any
+     */
+    public static Optional<XccdfRuleFix> lookupRuleRemediation(String benchmarkId, String identifier) {
+        return getSession().createCriteria(XccdfRuleFix.class)
+                .add(Restrictions.eq("benchMarkId", benchmarkId))
+                .add(Restrictions.eq("identifier", identifier))
+                .list()
+                .stream().findFirst();
+    }
+    /**
+     * Find a {@link XccdfRuleFix} by identified.
+     * @param identifier identifier
+     * @return the {@link XccdfRuleResultType} if any
+     */
+    public static Optional<XccdfRuleFix> lookupRuleRemediation(String identifier) {
+        return getSession().createCriteria(XccdfRuleFix.class)
+                .add(Restrictions.eq("identifier", identifier))
+                .list()
+                .stream().findFirst();
+    }
+
 
     /**
      * Get the Logger for the derived class so log messages

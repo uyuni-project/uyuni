@@ -22,6 +22,9 @@ import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionResult;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
+import com.redhat.rhn.domain.audit.ScapPolicy;
+import com.redhat.rhn.domain.audit.TailoringFile;
+import com.redhat.rhn.domain.audit.XccdfRuleFix;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AppStream;
@@ -96,6 +99,7 @@ import com.redhat.rhn.domain.recurringactions.state.RecurringConfigChannel;
 import com.redhat.rhn.domain.recurringactions.state.RecurringInternalState;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
+import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageBreaks;
@@ -303,6 +307,7 @@ public class AnnotationRegistry {
             RecurringHighstate.class,
             RecurringInternalState.class,
             RecurringPlaybook.class,
+            RecurringScapPolicy.class,
             RecurringState.class,
             RegistryCredentials.class,
             RegTokenOrgDefault.class,
@@ -320,6 +325,7 @@ public class AnnotationRegistry {
             SCCRepositoryNoAuth.class,
             SCCRepositoryTokenAuth.class,
             SCCSubscription.class,
+            ScapPolicy.class,
             ScriptActionDetails.class,
             ScriptResult.class,
             ServerAppStream.class,
@@ -338,6 +344,7 @@ public class AnnotationRegistry {
             SslCryptoKey.class,
             StateChange.class,
             StateRevision.class,
+            TailoringFile.class,
             SUSEProduct.class,
             Task.class,
             TaskoBunch.class,
@@ -354,6 +361,7 @@ public class AnnotationRegistry {
             UserNotification.class,
             VHMCredentials.class,
             VirtualHostManagerNodeInfo.class,
+            XccdfRuleFix.class,
             XccdfTestResult.class,
             WebEndpoint.class
     );
