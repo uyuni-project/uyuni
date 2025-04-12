@@ -18,16 +18,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-11 13:33+0200\n"
-"PO-Revision-Date: 2025-04-05 13:56+0000\n"
+"PO-Revision-Date: 2025-04-12 10:56+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
-"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web-4-3/de/"
-">\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web-4-3/de/>"
+"\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.3\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: ../html/javascript/spacewalk-essentials.js:450
 msgid "remaining"
@@ -575,7 +575,7 @@ msgstr ""
 
 #: ../html/src/components/states-picker.tsx:422
 msgid "Channel Label"
-msgstr ""
+msgstr "Kanalbezeichnung"
 
 #: ../html/src/components/states-picker.tsx:423
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
@@ -1226,7 +1226,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.tsx:524
 msgid "Filter by architecture"
-msgstr ""
+msgstr "Nach Architektur filtern"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:619
 msgid "Filter by product Description"
@@ -1243,7 +1243,7 @@ msgstr ""
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:184
 msgid "Architecture"
-msgstr ""
+msgstr "Architektur"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:703
 msgid "Arch"
@@ -1510,7 +1510,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:244
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:333
 #: ../html/src/manager/images/image-profiles.tsx:190
@@ -2418,7 +2418,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:315
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
 msgid "Label"
-msgstr ""
+msgstr "Bezeichnung"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:51
 msgid "Insert before"
