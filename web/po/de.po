@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-11 13:25+0200\n"
-"PO-Revision-Date: 2025-04-05 13:56+0000\n"
+"PO-Revision-Date: 2025-04-12 10:56+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
 "Language: de\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.3\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -728,30 +728,26 @@ msgid "The channels have been successfully desynced."
 msgstr ""
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:131
-#, fuzzy
-#| msgid "Organization"
 msgid "Select Organization"
-msgstr "Organisation"
+msgstr "Organisation auswählen"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:161
 #: ../html/src/manager/admin/setup/products/products.tsx:487
 msgid "Filter by architecture"
-msgstr ""
+msgstr "Nach Architektur filtern"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:173
-#, fuzzy
-#| msgid "Required channels"
 msgid "Search channels..."
-msgstr "Erforderliche Kanäle"
+msgstr "Kanäle suchen..."
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:188
 msgid "Sync"
-msgstr ""
+msgstr "Synchronisation"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:189
 #: ../html/src/components/states-picker.tsx:452
 msgid "Channel Label"
-msgstr ""
+msgstr "Kanalbezeichnung"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:190
 #: ../html/src/manager/admin/setup/products/products.tsx:587
@@ -760,7 +756,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
 msgid "Architecture"
-msgstr ""
+msgstr "Architektur"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:191
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:306
@@ -776,7 +772,7 @@ msgstr ""
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:67
 msgid "Add Server"
-msgstr ""
+msgstr "Server hinzufügen"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:69
 msgid "Set the FQDN of the remote server"
@@ -784,11 +780,11 @@ msgstr ""
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:89
 msgid "Migrate?"
-msgstr ""
+msgstr "Migrieren?"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:95
 msgid "Access Token"
-msgstr ""
+msgstr "Zugangs-Token"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:100
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:294
@@ -802,22 +798,25 @@ msgstr ""
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:184
 msgid "Migration partially succeeded"
-msgstr ""
+msgstr "Migration teilweise erfolgreich"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:185
 msgid "Migration failed"
-msgstr ""
+msgstr "Migration fehlgeschlagen"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:193
 msgid ""
 "Some of the servers where migrated successfully, but some errors happened "
 "during the process."
 msgstr ""
+"Einige der Server wurden erfolgreich migriert, aber während des Prozesses "
+"traten einige Fehler auf."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:194
 msgid ""
 "The migration process was not successfull and reported the following errors"
 msgstr ""
+"Der Migrationsprozess war nicht erfolgreich und meldete die folgenden Fehler"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:226
 msgid "This slave is currently disabled and cannot be selected for migration"
@@ -828,10 +827,8 @@ msgid "Check to migrate this server to a peripheral"
 msgstr ""
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:246
-#, fuzzy
-#| msgid "undefined"
 msgid "Not defined"
-msgstr "undefiniert"
+msgstr "Nicht definiert"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:251
 #: ../html/src/components/large-text-attachment.tsx:69
@@ -1139,16 +1136,12 @@ msgid "Synchronized channels:"
 msgstr "Erforderliche Kanäle"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:163
-#, fuzzy
-#| msgid "Required channels"
 msgid "Edit channels"
-msgstr "Erforderliche Kanäle"
+msgstr "Kanäle bearbeiten"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:185
-#, fuzzy
-#| msgid "Required channels"
 msgid "One syncronized channel"
-msgstr "Erforderliche Kanäle"
+msgstr "Ein synchronisierter Kanal"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:189
 msgid "{nSyncedChannels} syncronized channels, from one organization"
@@ -1170,11 +1163,11 @@ msgstr ""
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:227
 msgid "Mirror credentials successfully regenerated."
-msgstr ""
+msgstr "Spiegelserver-Anmeldeinformationen erfolgreich neu generiert."
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:170
 msgid "No changes to apply"
-msgstr ""
+msgstr "Keine anzuwendenden Änderungen"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:215
 msgid "Channels synced correctly to peripheral!"
@@ -1186,14 +1179,12 @@ msgstr ""
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:293
 msgid "Channels to Add"
-msgstr ""
+msgstr "Kanäle zum Hinzufügen"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:301
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:338
-#, fuzzy
-#| msgid "Filter"
 msgid "Filter by Name"
-msgstr "Filter"
+msgstr "Nach Name filtern"
 
 #. ref={nameInputRef}
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:303
@@ -1211,7 +1202,7 @@ msgstr "Filter"
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:84
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:304
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:341
@@ -1227,7 +1218,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:315
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
 msgid "Label"
-msgstr ""
+msgstr "Bezeichnung"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:305
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:342
@@ -1246,14 +1237,12 @@ msgid "No channels selected to add"
 msgstr ""
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:331
-#, fuzzy
-#| msgid "Channel Name"
 msgid "Channels to Remove"
-msgstr "Kanalname"
+msgstr "Zu entfernende Kanäle"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:347
 msgid "No channels selected to remove"
-msgstr ""
+msgstr "Keine Kanäle zum Entfernen ausgewählt"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:354
 #, fuzzy
