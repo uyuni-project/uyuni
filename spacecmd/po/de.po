@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-24 15:21+0100\n"
-"PO-Revision-Date: 2025-04-05 13:56+0000\n"
+"PO-Revision-Date: 2025-04-12 10:56+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/spacecmd-4-3/"
 "de/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.3\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -5210,7 +5210,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:912
 msgid "Architecture"
-msgstr ""
+msgstr "Architektur"
 
 #: ../src/spacecmd/softwarechannel.py:919
 msgid "Checksum type"
