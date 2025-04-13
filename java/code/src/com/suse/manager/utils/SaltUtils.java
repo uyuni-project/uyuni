@@ -74,6 +74,7 @@ import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
@@ -83,6 +84,7 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.VirtualInstanceManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -114,6 +116,7 @@ import com.suse.manager.webui.utils.salt.custom.FilesDiffResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.DirectoryResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.FileResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.SymLinkResult;
+import com.suse.manager.webui.utils.salt.custom.GuestProperties;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
@@ -125,6 +128,8 @@ import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
+import com.suse.manager.webui.utils.salt.custom.VmInfo;
+import com.suse.manager.webui.utils.salt.custom.VmInfoSlsResult;
 import com.suse.salt.netapi.calls.modules.Openscap;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Pkg.Info;
@@ -648,14 +653,39 @@ public class SaltUtils {
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                serverAction.setResultMsg("Failure");
+                var originalErrorMsg = jsonEventToStateApplyResults(jsonResult)
+                        .map(SaltUtils::getOriginalStateApplyError)
+                        .orElseThrow(() -> new RuntimeException("Failed to parse the state.apply error result"))
+                        .map(StateApplyResult::getComment)
+                        .map(msg -> msg.isEmpty() ? null : msg)
+                        .orElse("Error while updating the hardware profile.\nGot no result from the system.");
+                serverAction.setResultMsg(originalErrorMsg);
             }
             else {
                 serverAction.setResultMsg("Success");
             }
-            serverAction.getServer().asMinionServer()
-                    .ifPresent(minionServer -> handleHardwareProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
-                    HwProfileUpdateSlsResult.class), serverAction));
+            serverAction.getServer().asMinionServer().ifPresentOrElse(
+                    minionServer -> handleHardwareProfileUpdate(minionServer,
+                            Json.GSON.fromJson(jsonResult, HwProfileUpdateSlsResult.class), serverAction),
+                    () -> LOG.error("{} is not a minion", serverAction.getServer().getName()));
+        }
+        else if (action.getActionType().equals(ActionFactory.TYPE_VIRT_PROFILE_REFRESH)) {
+            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+                var originalErrorMsg = jsonEventToStateApplyResults(jsonResult)
+                        .map(SaltUtils::getOriginalStateApplyError)
+                        .orElseThrow(() -> new RuntimeException("Failed to parse the state.apply error result"))
+                        .map(StateApplyResult::getComment)
+                        .map(msg -> msg.isEmpty() ? null : msg)
+                        .orElse("Error while updating the virtual instance profile.\nGot no result from the system.");
+                serverAction.setResultMsg(originalErrorMsg);
+            }
+            else {
+                serverAction.setResultMsg("Success");
+            }
+            serverAction.getServer().asMinionServer().ifPresentOrElse(
+                    minionServer -> handleVirtualMachineUpdate(minionServer,
+                            Json.GSON.fromJson(jsonResult, VmInfoSlsResult.class)),
+                    () -> LOG.error("{} is not a minion", serverAction.getServer().getName()));
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
             DistUpgradeAction dupAction = (DistUpgradeAction) action;
@@ -1823,6 +1853,37 @@ public class SaltUtils {
         else {
             serverAction.setResultMsg("Successfully collected attestation data");
         }
+    }
+
+    private static void handleVirtualMachineUpdate(MinionServer server, VmInfoSlsResult result) {
+        Map<String, Map<String, Object>> vmInfos = result.getVmInfos();
+
+        if (vmInfos.isEmpty()) {
+            LOG.info("No virtual machines found");
+            return;
+        }
+        VirtualInstanceManager.updateHostVirtualInstance(server,
+                VirtualInstanceFactory.getInstance().getFullyVirtType());
+
+        List<VmInfo> plan = new ArrayList<>();
+        plan.add(new VmInfo(0, VirtualInstanceManager.EVENT_TYPE_FULLREPORT, null, null));
+
+        plan.addAll(
+                vmInfos.entrySet().stream().map(entry -> {
+                    Map<String, Object> vm = entry.getValue();
+                    String state = vm.get("state").toString();
+                    GuestProperties props = new GuestProperties(
+                            ((Double)vm.get("maxMem")).longValue() / 1024,
+                            entry.getKey(),
+                            "shutdown".equals(state) ? "stopped" : state,
+                            vm.get("uuid").toString(),
+                            ((Double)vm.get("cpu")).intValue(),
+                            null
+                    );
+                    return new VmInfo(0, VirtualInstanceManager.EVENT_TYPE_EXISTS, null, props);
+                }).toList()
+        );
+        VirtualInstanceManager.updateGuestsVirtualInstances(server, plan);
     }
 
     /**
