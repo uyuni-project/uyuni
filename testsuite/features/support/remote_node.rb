@@ -300,6 +300,14 @@ class RemoteNode
     $stdout.puts "Node #{hostname} is online."
   end
 
+  def host
+    @host_system ||= System.new(local_os_family)
+  end
+
+  def container
+    @container_system ||= System.new(os_family)
+  end
+
   private
 
   # Obtain the Public IP for a node
@@ -361,13 +369,5 @@ class RemoteNode
     os_version.gsub!('.', '-SP') if os_family.match(/^sles/)
     $stdout.puts "Node: #{@hostname}, OS Version: #{os_version}, Family: #{os_family}"
     [os_version, os_family]
-  end
-
-  def host
-    @host_system ||= System.new(local_os_family)
-  end
-
-  def container
-    @container_system ||= System.new(os_family)
   end
 end
