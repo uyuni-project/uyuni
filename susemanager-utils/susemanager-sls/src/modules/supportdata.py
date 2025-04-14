@@ -100,7 +100,7 @@ def get(cmd_args: str = "", **kwargs) -> Dict[str, Any]:
                 shutil.rmtree(output_dir, ignore_errors=True)
             supportdata_dir = output_dir
             success = True
-    elif returncode is None:
+    else:
         error = "Required tools to get support data are not installed"
         returncode = 1
 
