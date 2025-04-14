@@ -142,7 +142,7 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     --secret uyuni-cert,type=mount,target=/etc/pki/tls/certs/spacewalk.crt \
     --secret uyuni-key,type=mount,target=/etc/pki/tls/private/spacewalk.key \
     --secret uyuni-db-ca,type=mount,target=/etc/pki/trust/anchors/DB-RHN-ORG-TRUSTED-SSL-CERT \
-    -e UYUNI_FQDN="server"  \
+    -e UYUNI_FQDN="server.test.lan"  \
     -e MANAGER_ADMIN_EMAIL="a@b.com"  \
     -e MANAGER_MAIL_FROM="a@b.com"  \
     -e MANAGER_ENABLE_TFTP="n"  \
@@ -157,7 +157,7 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     -e SCC_USER="test"  \
     -e SCC_PASS="test"  \
     --cgroupns=host \
-    -h server \
+    -h server.test.lan \
     --name=server-setup \
     --network network \
     ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION \
