@@ -10,6 +10,6 @@ install-supportdata-command:
 gather-supportdata:
   mgrcompat.module_run:
     - name: supportdata.get
-    - cmd_args: pillar.get('arguments')
+    - cmd_args: "{{ pillar.get('arguments', '') }}"
     - require:
       - install-supportdata-command
