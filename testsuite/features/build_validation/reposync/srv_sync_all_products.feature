@@ -532,6 +532,26 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "almalinux9" have finished
 
 @susemanager
+@amazon2023_minion
+  Scenario: Add Amazon Linux 2023
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "Amazon Linux 2023" as the filtered product description
+    And I select "Amazon Linux 2023 x86_64" as a product
+    Then I should see the "Amazon Linux 2023 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Amazon Linux 2023 x86_64" product has been added
+    And I wait until all synchronized channels for "amazonlinux2023" have finished
+
+@uyuni
+@amazon2023_minion
+  Scenario: Add Amazon Linux 2023
+    When I use spacewalk-common-channel to add all "amazonlinux2023" channels with arch "x86_64"
+    And I wait until all synchronized channels for "amazonlinux2023" have finished
+
+@susemanager
 @centos7_minion
   Scenario: Add SUSE Liberty Linux 7
     Given I am authorized for the "Admin" section
