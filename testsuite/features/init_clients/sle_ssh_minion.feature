@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2023 SUSE LLC
+# Copyright (c) 2016-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @ssh_minion
@@ -18,8 +18,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     And I enter "linux" as "password"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    # workaround for bsc#1222108
-    And I wait at most 480 seconds until I see "Bootstrap process initiated." text
+    And I wait until I see "Bootstrap process initiated." text
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "ssh_minion", refreshing the page
     And I wait until onboarding is completed for "ssh_minion"

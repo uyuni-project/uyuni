@@ -1,4 +1,4 @@
-# Copyright (c) 2023 SUSE LLC
+# Copyright (c) 2023-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #  1) bootstrap a new Oracle 9 minion via salt-ssh
@@ -22,8 +22,7 @@ Feature: Bootstrap a Oracle 9 Salt SSH minion
     And I select "1-oracle9_ssh_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    # workaround for bsc#1222108
-    And I wait at most 480 seconds until I see "Bootstrap process initiated." text
+    And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "oracle9_ssh_minion"
 
 @proxy
