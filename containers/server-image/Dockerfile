@@ -51,10 +51,6 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     habootstrap-formula \
     salt-shaptools \
     inter-server-sync \
-    golang-github-prometheus-node_exporter \
-    prometheus-postgres_exporter \
-    golang-github-QubitProducts-exporter_exporter \
-    prometheus-jmx_exporter \
     spacecmd \
     javamail \
     libyui-ncurses-pkg16 \
@@ -79,6 +75,7 @@ RUN chmod a+x /usr/lib/postfix/systemd/config_postfix
 
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
 
+RUN rm /etc/sysconfig/prometheus-postgres_exporter
 RUN mkdir -p /etc/sysconfig/prometheus-postgres_exporter/systemd \
              /etc/systemd/system/prometheus-postgres_exporter.service.d \
              /etc/prometheus-jmx_exporter/tomcat \
