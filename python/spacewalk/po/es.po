@@ -16,16 +16,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-11 13:36+0200\n"
-"PO-Revision-Date: 2024-05-07 10:43+0000\n"
-"Last-Translator: Julio González Gil <jgonzalez@suse.com>\n"
-"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/"
-">\n"
+"PO-Revision-Date: 2025-04-14 14:56+0000\n"
+"Last-Translator: \"Marina J. Donis\" <marinajdonis@gmail.com>\n"
+"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend-5-0/"
+"es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: ../server/apacheAuth.py:72
 #, python-format
@@ -1138,7 +1138,7 @@ msgstr "    Búsqueda infructuosa: %s"
 #: ../satellite_tools/messages.py:86
 #, python-format
 msgid "   RPM fetch summary: %s"
-msgstr ""
+msgstr "   Resumen de obtención de RPM: %s"
 
 #: ../satellite_tools/messages.py:87
 #, python-format
@@ -1158,27 +1158,27 @@ msgstr "       extinto: %d"
 #: ../satellite_tools/messages.py:91
 #, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr ""
+msgstr "   Recuperando / analizando metadatos *relevantes* del paquete: %s (%s)"
 
 #: ../satellite_tools/messages.py:92
 #, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr ""
+msgstr "   Recuperando / analizando datos de errdata: %s (%s)"
 
 #: ../satellite_tools/messages.py:93
 #, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr ""
+msgstr "   Recuperando / analizando datos de kickstart: %s (%s)"
 
 #: ../satellite_tools/messages.py:94
 #, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr ""
+msgstr "   Recuperando / analizando archivos del árbol de kickstart: %s (%s)"
 
 #: ../satellite_tools/messages.py:95
 #, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr ""
+msgstr "   Importando metadatos *revelantes* del paquete: %s (%s)"
 
 #: ../satellite_tools/messages.py:96
 msgid "   * WARNING: this may be a slow process."
@@ -1191,21 +1191,21 @@ msgstr "Enlazando paquetes a canales"
 #: ../satellite_tools/messages.py:98
 #, python-format
 msgid "   Importing *relevant* errata: %s (%s)"
-msgstr ""
+msgstr "   Importando errdata *revelante*: %s (%s)"
 
 #: ../satellite_tools/messages.py:99
 msgid "   No new kickstartable tree to import"
-msgstr ""
+msgstr "   No hay ningún nuevo árbol de kickstart para importar"
 
 #: ../satellite_tools/messages.py:100
 #, python-format
 msgid "Importing kickstartable trees (%d)"
-msgstr ""
+msgstr "Importando árboles de kickstart (%d)"
 
 #: ../satellite_tools/messages.py:101
 #, python-format
 msgid "Imported kickstartable trees (%d)"
-msgstr ""
+msgstr "Árboles de kickstart importados (%d)"
 
 #: ../satellite_tools/reposync.py:138 ../satellite_tools/satsync.py:517
 msgid "+++ sending log as an email +++"
@@ -1214,7 +1214,7 @@ msgstr "+++ enviando registro como un email +++"
 #: ../satellite_tools/reposync.py:141
 #, python-format
 msgid "%s sync. report from %s"
-msgstr ""
+msgstr "%s sincronización. reporte desde %s"
 
 #: ../satellite_tools/reposync.py:151 ../satellite_tools/satsync.py:529
 msgid "+++ email requested, but there is nothing to send +++"
