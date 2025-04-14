@@ -5,7 +5,6 @@
 # javascript validation fails on validating the URL
 # this needs to be fixed
 
-@skip_if_github_validation
 @scope_maintenance_windows
 @sle_minion
 @rhlike_minion
