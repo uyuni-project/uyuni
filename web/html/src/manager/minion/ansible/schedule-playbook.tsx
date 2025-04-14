@@ -34,11 +34,11 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
   const [loading, setLoading] = useState(true);
   const [playbookContent, setPlaybookContent] = useState("");
   const [isTestMode, setTestMode] = useState(false);
-  const [messages, setMessages] = useState < MessageType[] > ([]);
-  const [inventoryPath, setInventoryPath] = useState < ComboboxItem | null > (null);
-  const [inventories, setInventories] = useState < string[] > ([]);
-  const [playbookArgs, setPlaybookArgs] = useState < PlaybookArgs > ({ flushCache: false });
-  const [actionChain, setActionChain] = useState < ActionChain | null > (null);
+  const [messages, setMessages] = useState <MessageType[]> ([]);
+  const [inventoryPath, setInventoryPath] = useState <ComboboxItem | null> (null);
+  const [inventories, setInventories] = useState <string[]> ([]);
+  const [playbookArgs, setPlaybookArgs] = useState <PlaybookArgs> ({ flushCache: false });
+  const [actionChain, setActionChain] = useState <ActionChain | null> (null);
   const [datetime, setDatetime] = useState(localizedMoment());
   const defaultInventory = "-";
 
