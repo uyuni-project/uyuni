@@ -65,6 +65,7 @@ import java.nio.file.Path;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Tests for {@link SCCClient} methods.
@@ -97,7 +98,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                                 .map(system ->
                                         new SCCSystemCredentialsJson(system.getLogin(), system.getPassword(), 12345L)
                                 )
-                                .toList()
+                                .collect(Collectors.toList())
                 );
             }
 
@@ -114,7 +115,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         List<SCCRegCacheItem> testSystems = allUnregistered.stream()
                 .filter(i -> i.getOptServer().get().equals(testSystem))
-                .toList();
+                .collect(Collectors.toList());
         SCCCredentials credentials = CredentialsFactory.createSCCCredentials("username", "password");
         credentials.setUrl("https://scc.suse.com");
         CredentialsFactory.storeCredentials(credentials);
@@ -172,7 +173,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         List<SCCRegCacheItem> testSystems = allUnregistered.stream()
                 .filter(i -> i.getOptServer().get().equals(testSystem))
-                .toList();
+                .collect(Collectors.toList());
 
         SCCCredentials credentials = CredentialsFactory.createSCCCredentials("username", "password");
         CredentialsFactory.storeCredentials(credentials);
@@ -208,7 +209,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                                 .map(system ->
                                         new SCCSystemCredentialsJson(system.getLogin(), system.getPassword(), 12345L)
                                 )
-                                .toList()
+                                .collect(Collectors.toList())
                 );
             }
 
@@ -232,7 +233,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         List<SCCRegCacheItem> testSystems = allUnregistered.stream()
                 .filter(i -> i.getOptServer().get().equals(testSystem))
-                .toList();
+                .collect(Collectors.toList());
         SCCCredentials credentials = CredentialsFactory.createSCCCredentials("username", "password");
         credentials.setUrl("https://scc.suse.com");
         CredentialsFactory.storeCredentials(credentials);
@@ -280,7 +281,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                                 .map(system ->
                                         new SCCSystemCredentialsJson(system.getLogin(), system.getPassword(), 12345L)
                                 )
-                                .toList()
+                                .collect(Collectors.toList())
                 );
             }
 
@@ -302,7 +303,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         List<SCCRegCacheItem> testSystems = allUnregistered.stream()
                 .filter(i -> i.getOptServer().get().getServerInfo().getCheckin().equals(new Date(0)))
-                .toList();
+                .collect(Collectors.toList());
         SCCCredentials credentials = CredentialsFactory.createSCCCredentials("username", "password");
         credentials.setUrl("https://scc.suse.com");
         CredentialsFactory.storeCredentials(credentials);
@@ -354,7 +355,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                                         system.getPassword(),
                                         new Random().nextLong())
                                 )
-                                .toList()
+                                .collect(Collectors.toList())
                 );
             }
 
@@ -443,7 +444,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                                         system.getPassword(),
                                         new Random().nextLong())
                                 )
-                                .toList()
+                                .collect(Collectors.toList())
                 );
             }
 
@@ -547,7 +548,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                                         system.getPassword(),
                                         new Random().nextLong())
                                 )
-                                .toList()
+                                .collect(Collectors.toList())
                 );
             }
 

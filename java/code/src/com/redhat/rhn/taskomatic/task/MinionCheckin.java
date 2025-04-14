@@ -24,6 +24,7 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.quartz.JobExecutionContext;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -65,7 +66,7 @@ public class MinionCheckin extends RhnJavaJob {
                 TaskConstants.TASK_QUERY_MINION_CHECKIN_FIND_CHECKIN_CANDIDATES);
         List<SystemSummary> checkinCandidates = candidatesResolver.getCheckinCandidates();
 
-        return checkinCandidates.stream().map(SystemSummary::getMinionId).toList();
+        return checkinCandidates.stream().map(SystemSummary::getMinionId).collect(Collectors.toList());
     }
 
     /**

@@ -205,7 +205,7 @@ public class MatcherJsonIO {
             });
 
         return Stream.concat(systems, jsonSystemForSelf(arch, includeSelf, selfMonitoringEnabled))
-            .toList();
+            .collect(Collectors.toList());
     }
 
     private static Set<Long> getVirtualGuests(Server system) {
@@ -227,7 +227,7 @@ public class MatcherJsonIO {
                         p.getChannelFamily() != null ? p.getChannelFamily().getLabel() : "",
                         p.isBase(),
                         p.getFree()))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**
@@ -256,7 +256,7 @@ public class MatcherJsonIO {
                                 .collect(Collectors.toSet())
                 );
             })
-            .toList();
+            .collect(Collectors.toList());
     }
 
     /**
@@ -268,7 +268,7 @@ public class MatcherJsonIO {
             .createQuery("SELECT ps FROM PinnedSubscription ps", PinnedSubscription.class)
             .stream()
             .map(p -> new MatchJson(p.getSystemId(), p.getSubscriptionId(), null, null))
-            .toList();
+            .collect(Collectors.toList());
     }
 
     /**
@@ -313,7 +313,7 @@ public class MatcherJsonIO {
                         vhm.getServers().stream()
                                 .flatMap(s -> getVirtualGuests(s).stream())
                                 .collect(Collectors.toSet())))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**

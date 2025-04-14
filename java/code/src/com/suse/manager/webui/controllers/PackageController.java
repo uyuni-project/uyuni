@@ -48,6 +48,7 @@ import org.apache.http.HttpStatus;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -123,7 +124,7 @@ public class PackageController {
 
             return json(response, packages.stream()
                     .map(PackageOverview::getId)
-                    .toList(), new TypeToken<>() { });
+                    .collect(Collectors.toList()), new TypeToken<>() { });
         }
 
         DataResult<PackageOverview> packages = PackageManager.listCustomPackages(user.getOrg().getId(), source, pc);
@@ -156,7 +157,7 @@ public class PackageController {
 
             return json(response, packages.stream()
                     .map(PackageOverview::getId)
-                    .toList(), new TypeToken<>() { });
+                    .collect(Collectors.toList()), new TypeToken<>() { });
         }
 
         DataResult<PackageOverview> packages = PackageManager.listOrphanPackages(user.getOrg().getId(), source, pc);
@@ -195,7 +196,7 @@ public class PackageController {
 
                 return json(response, packages.stream()
                         .map(PackageOverview::getId)
-                        .toList(), new TypeToken<>() { });
+                        .collect(Collectors.toList()), new TypeToken<>() { });
             }
 
             DataResult<PackageOverview> packages = PackageManager.listCustomPackageForChannel(

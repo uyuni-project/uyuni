@@ -118,7 +118,7 @@ public class OVALCleaner {
         }
 
         List<String> cleanCves = definition.getCves().stream().map(OVALCleaner::removeWhitespaceChars)
-                .toList();
+                .collect(Collectors.toList());
 
         definition.setCves(cleanCves);
     }

@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -456,7 +457,7 @@ public class SCCCachingFactory extends HibernateFactory {
     public static List<Long> lookupRepositoryIdsWithAuth() {
         List<BigDecimal> resultList =
                 getSession().getNamedNativeQuery("SCCRepositoryAuth.lookupRepoIdWithAuth").getResultList();
-        return resultList.stream().map(BigDecimal::longValue).toList();
+        return resultList.stream().map(BigDecimal::longValue).collect(Collectors.toList());
     }
 
     /**

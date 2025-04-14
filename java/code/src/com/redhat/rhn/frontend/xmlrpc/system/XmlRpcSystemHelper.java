@@ -30,6 +30,7 @@ import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -92,7 +93,7 @@ public class XmlRpcSystemHelper {
     public List<Server> lookupServers(User user, List<? extends Number> serverIds) throws NoSuchSystemException {
         try {
             return SystemManager.lookupByServerIdsAndUser(
-                    serverIds.stream().map(Number::longValue).toList(), user.getId());
+                    serverIds.stream().map(Number::longValue).collect(Collectors.toList()), user.getId());
         }
         catch (LookupException e) {
             throw new NoSuchSystemException("No such systems found for user: " + user.getId());
@@ -113,7 +114,7 @@ public class XmlRpcSystemHelper {
             throws NoSuchSystemException {
         try {
             return ServerFactory.getSystemsForSubscribe(
-                    serverIds.stream().map(Number::longValue).toList(), user);
+                    serverIds.stream().map(Number::longValue).collect(Collectors.toList()), user);
         }
         catch (LookupException e) {
             throw new NoSuchSystemException("No such systems found for user: " + user.getId());
