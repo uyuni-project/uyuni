@@ -1753,12 +1753,8 @@ public class PackageManager extends BaseManager {
 
     private static String getAssociatedRelease(Package pack) {
         for (Channel chan : pack.getChannels()) {
-            List<String> releases = new ArrayList<>();
             for (DistChannelMap map : chan.getDistChannelMaps()) {
-                String release = map.getRelease();
-                if (release != null && !release.isEmpty()) {
-                    releases.add(release);
-                }
+                return map.getRelease();
             }
         }
         return null;
