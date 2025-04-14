@@ -96,11 +96,11 @@ def get(cmd_args: str = "", **kwargs) -> Dict[str, Any]:
             if "master_uri" in __opts__ and __salt__["cp.push_dir"](output_dir):
                 # remove the output dir only when the upload was successful
                 # with salt-ssh "master_uri" is not in opts and we need to
-                # download it explictly via scp
+                # download it explicitly via scp
                 shutil.rmtree(output_dir, ignore_errors=True)
             supportdata_dir = output_dir
             success = True
-    elif returncode is None:
+    else:
         error = "Required tools to get support data are not installed"
         returncode = 1
 
