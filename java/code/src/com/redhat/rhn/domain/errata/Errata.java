@@ -16,8 +16,8 @@ package com.redhat.rhn.domain.errata;
 
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.contentmgmt.ContentFilterEntity;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.contentmgmt.ContentFilterEntity;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.frontend.struts.Selectable;

@@ -15,8 +15,8 @@
 
 package com.redhat.rhn.manager.contentmgmt;
 
-import com.redhat.rhn.domain.contentmgmt.ContentFilterEntity;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
+import com.redhat.rhn.domain.contentmgmt.ContentFilterEntity;
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 
 import java.util.List;

@@ -16,9 +16,9 @@ package com.redhat.rhn.domain.rhnpackage;
 
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.contentmgmt.ContentFilterEntity;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.Checksum;
+import com.redhat.rhn.domain.contentmgmt.ContentFilterEntity;
 import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.org.Org;
