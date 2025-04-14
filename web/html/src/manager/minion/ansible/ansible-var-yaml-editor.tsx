@@ -74,7 +74,7 @@ const AnsibleVarYamlEditor = (props: Props) => {
   }
 
   const renderVariableDiv = (path, setFieldValue) => {
-    console.log('renderVariableDiv', path)
+
     if (varType === "String" && visibleInputPath === path) {
       return (
         <div className="row ">
@@ -115,9 +115,41 @@ const AnsibleVarYamlEditor = (props: Props) => {
     }
     if (varType === "List" && visibleInputPath === path) {
       return (
-        <div className="row align-items-center">
-          <h3>List</h3>
-        </div>)
+        <div className="row ">
+          <div>List</div>
+          <div className="form-group ">
+            <input
+              className="form-control"
+              placeholder="New variable key"
+              value={newKeyInput[path] || ""}
+              onChange={(e) => setNewKeyInput({ [path]: e.target.value })}
+            />
+          </div>
+          <div className="form-group ">
+            <input
+              className="form-control mt-2"
+              placeholder="New variable value"
+              value={newValueInput[path] || ""}
+              onChange={(e) => setNewValueInput({ [path]: e.target.value })}
+            />
+          </div>
+          <div className="form-group ">
+            <Button
+              text="Add"
+              icon="fa-plus"
+              className="btn btn-sm btn-primary mt-2"
+              handler={() => {
+                const key = newKeyInput[path]?.trim();
+                const val = newValueInput[path]?.trim();
+                if (key) {
+                  setFieldValue(`${path}.${key}`, val || "");
+                  setNewKeyInput({ [path]: "" });
+                  setNewValueInput({ [path]: "" });
+                }
+              }}
+            />
+          </div>
+        </div >)
     }
     if (varType === "Dictionary" && visibleInputPath === path) {
       return (
