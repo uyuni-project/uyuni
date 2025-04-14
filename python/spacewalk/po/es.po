@@ -16,16 +16,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-11 13:25+0200\n"
-"PO-Revision-Date: 2024-05-07 10:43+0000\n"
-"Last-Translator: Julio González Gil <jgonzalez@suse.com>\n"
-"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/"
-">\n"
+"PO-Revision-Date: 2025-04-14 13:56+0000\n"
+"Last-Translator: \"Marina J. Donis\" <marinajdonis@gmail.com>\n"
+"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/>"
+"\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: ../server/apacheAuth.py:72
 #, python-format
@@ -84,12 +84,11 @@ msgstr ""
 "organización para más ayuda."
 
 #: ../server/handlers/xmlrpc/proxy.py:71
-#, fuzzy, python-format
-#| msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+#, python-format
 msgid ""
 "SUSE Multi-Linux Manager Proxy service not enabled for server profile: \"%s\""
 msgstr ""
-"El servicio {PRODUCT_NAME} Proxy no está habilitado para el perfil del "
+"SUSE Multi-Linux Manager Proxy no está habilitado para el perfil del "
 "servidor: “%s”"
 
 #: ../server/handlers/xmlrpc/proxy.py:94
@@ -449,15 +448,7 @@ msgid "Invalid value for entry."
 msgstr "Valor para la entrada no válido."
 
 #: ../common/rhnException.py:88
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "     This system does not have a valid entitlement for SUSE Manager.\n"
-#| "     Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
-#| "     or login at https://%(hostname)s, and from the \"Overview\" tab,\n"
-#| "     select \"Subscription Management\" to enable the service for this "
-#| "system.\n"
-#| "     "
+#, python-format
 msgid ""
 "\n"
 "     This system does not have a valid entitlement for SUSE Multi-Linux "
@@ -469,9 +460,9 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     Este sistema no tiene una subscripción válida de SUSE Manager.\n"
-"     Por favor visite https://%(hostname)s/rhn/systems/SystemEntitlements."
-"do \n"
+"     Este sistema no tiene una subscripción válida de Multi-Linux Manager.\n"
+"     Por favor visite https://%(hostname)s/rhn/systems/SystemEntitlements.do "
+"\n"
 "     o acceda a https://%(hostname)s, y desde la pestaña “General\", "
 "seleccione \n"
 "     “Gestión de subscripciones” para habilitar el servicio para este "
@@ -624,12 +615,6 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:154
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "     The --force mgrpush option is disabled on this server.\n"
-#| "     Please contact your SUSE Manager administrator for more help.\n"
-#| "     "
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
@@ -639,7 +624,7 @@ msgid ""
 msgstr ""
 "\n"
 "     La opción –force rhnpush está deshabilitada en este servidor. \n"
-"Por favor contacte con su administrador de @@PRODUCT_NAME@@ para más "
+"Por favor contacte con su administrador de SUSE Multi-Linux Manager para más "
 "información.\n"
 "     "
 
@@ -697,10 +682,8 @@ msgid "You can not unsubscribe from base channel."
 msgstr "Usted no puede darse de baja del canal base."
 
 #: ../common/rhnException.py:183
-#, fuzzy
-#| msgid "SUSE Manager or Proxy channel can not be subscribed."
 msgid "SUSE Multi-Linux Manager or Proxy channel can not be subscribed."
-msgstr "No se puede subscribir al canal de @@PRODUCT_NAME@@ o Proxy."
+msgstr "No se puede subscribir al canal de Proxy o SUSE Multi-Linux Manager."
 
 #. 80-90: server group errors
 #: ../common/rhnException.py:185
@@ -764,25 +747,14 @@ msgstr "El nombre del sistema no puede tener menos de 1 carácter"
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
 #: ../common/rhnException.py:206
-#, fuzzy
-#| msgid "SUSE Manager Proxy error."
 msgid "SUSE Multi-Linux Manager Proxy error."
-msgstr "Error de @@PRODUCT_NAME@@ Proxy."
+msgstr "Error de Proxy de SUSE Multi-Linux Manager."
 
 #: ../common/rhnException.py:207
-#, fuzzy
-#| msgid "SUSE Manager Proxy unable to login."
 msgid "SUSE Multi-Linux Manager Proxy unable to login."
-msgstr "@@PRODUCT_NAME@@ Proxy incapaz de acceder"
+msgstr "SUSE Multi-Linux Manager Proxy incapaz de acceder."
 
 #: ../common/rhnException.py:210
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "     SUSE Manager Proxy system ID does not match a Spacewalk Proxy "
-#| "Server\n"
-#| "     in the database.\n"
-#| "     "
 msgid ""
 "\n"
 "     SUSE Multi-Linux Manager Proxy system ID does not match a Spacewalk "
@@ -791,22 +763,18 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     ID del sistema SUSE Manager Proxy no coincide con un Spacewalk Proxy "
-"Server\n"
-"    en la base de datos.\n"
+"     El ID del sistema SUSE Multi-Linux Manager Proxy no coincide con un "
+"Spacewalk Proxy Server\n"
+"     en la base de datos.\n"
 "     "
 
 #: ../common/rhnException.py:215
-#, fuzzy
-#| msgid "SUSE Manager Proxy session token is invalid."
 msgid "SUSE Multi-Linux Manager Proxy session token is invalid."
-msgstr "La ficha de sesión para SUSE Manager Proxy no es válida."
+msgstr "La ficha de sesión para SUSE Multi-Linux Manager Proxy no es válida."
 
 #: ../common/rhnException.py:216
-#, fuzzy
-#| msgid "SUSE Manager Proxy session token has expired."
 msgid "SUSE Multi-Linux Manager Proxy session token has expired."
-msgstr "La ficha de sesión para SUSE Manager Proxy ha expirado."
+msgstr "La ficha de sesión para SUSE Multi-Linux Manager Proxy ha expirado."
 
 #: ../common/rhnException.py:220
 msgid ""
@@ -822,12 +790,6 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:226
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "     This SUSE Manager server is not allowed to use Inter Server Sync on "
-#| "this server\n"
-#| "     "
 msgid ""
 "\n"
 "     This SUSE Multi-Linux Manager server is not allowed to use Inter Server "
@@ -835,24 +797,19 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     Este servidor SUSE Manager no tiene permitido usar Inter Satellite Sync "
-"sobre este servidor\n"
+"     Este servidor SUSE Multi-Linux Manager no tiene permitido usar Inter "
+"Satellite Sync en este servidor\n"
 "     "
 
 #: ../common/rhnException.py:231
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "     Inter Server Sync is disabled on this SUSE Manager Server.\n"
-#| "     "
 msgid ""
 "\n"
 "     Inter Server Sync is disabled on this SUSE Multi-Linux Manager Server.\n"
 "     "
 msgstr ""
 "\n"
-"     Inter Satellite Sync está deshabilitado sobre este Servidor SUSE "
-"Manager\n"
+"     Inter Satellite Sync está deshabilitado en este Servidor SUSE Multi-"
+"Linux Manager\n"
 "     "
 
 #. 3000-3999: XML dumper errors:
@@ -1130,12 +1087,7 @@ msgstr ""
 "        %s\n"
 
 #: ../satellite_tools/messages.py:71
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "ERROR: you are not entitled to sync a channel in this set of channels.\n"
-#| "Please contact your SUSE Manager contact\n"
-#| "%s"
+#, python-format
 msgid ""
 "\n"
 "ERROR: you are not entitled to sync a channel in this set of channels.\n"
@@ -1143,9 +1095,9 @@ msgid ""
 "%s"
 msgstr ""
 "\n"
-"ERROR: usted no está intitulado para conciliar un canal con este conjunto de "
+"ERROR: no tiene permiso para sincronizar un canal en este conjunto de "
 "canales.\n"
-"Favor de contactar su Administrador SUSE\n"
+"Por favor, contacte con su contacto de SUSE Multi-Linux Manager\n"
 "%s"
 
 #: ../satellite_tools/messages.py:77
@@ -1181,7 +1133,7 @@ msgstr "    Búsqueda infructuosa: %s"
 #: ../satellite_tools/messages.py:86
 #, python-format
 msgid "   RPM fetch summary: %s"
-msgstr ""
+msgstr "   Resumen de obtención de RPM: %s"
 
 #: ../satellite_tools/messages.py:87
 #, python-format
@@ -1201,27 +1153,27 @@ msgstr "       extinto: %d"
 #: ../satellite_tools/messages.py:91
 #, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr ""
+msgstr "   Recuperando / analizando metadatos *relevantes* del paquete: %s (%s)"
 
 #: ../satellite_tools/messages.py:92
 #, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr ""
+msgstr "   Recuperando / analizando datos de errdata: %s (%s)"
 
 #: ../satellite_tools/messages.py:93
 #, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr ""
+msgstr "   Recuperando / analizando datos de kickstart: %s (%s)"
 
 #: ../satellite_tools/messages.py:94
 #, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr ""
+msgstr "   Recuperando / analizando archivos del árbol de kickstart: %s (%s)"
 
 #: ../satellite_tools/messages.py:95
 #, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr ""
+msgstr "   Importando metadatos *revelantes* del paquete: %s (%s)"
 
 #: ../satellite_tools/messages.py:96
 msgid "   * WARNING: this may be a slow process."
@@ -1234,21 +1186,21 @@ msgstr "Enlazando paquetes a canales"
 #: ../satellite_tools/messages.py:98
 #, python-format
 msgid "   Importing *relevant* errata: %s (%s)"
-msgstr ""
+msgstr "   Importando errdata *revelante*: %s (%s)"
 
 #: ../satellite_tools/messages.py:99
 msgid "   No new kickstartable tree to import"
-msgstr ""
+msgstr "   No hay ningún nuevo árbol de kickstart para importar"
 
 #: ../satellite_tools/messages.py:100
 #, python-format
 msgid "Importing kickstartable trees (%d)"
-msgstr ""
+msgstr "Importando árboles de kickstart (%d)"
 
 #: ../satellite_tools/messages.py:101
 #, python-format
 msgid "Imported kickstartable trees (%d)"
-msgstr ""
+msgstr "Árboles de kickstart importados (%d)"
 
 #: ../satellite_tools/reposync.py:138
 msgid "+++ sending log as an email +++"
@@ -1257,7 +1209,7 @@ msgstr "+++ enviando registro como un email +++"
 #: ../satellite_tools/reposync.py:141
 #, python-format
 msgid "%s sync. report from %s"
-msgstr ""
+msgstr "%s sincronización. reporte desde %s"
 
 #: ../satellite_tools/reposync.py:151
 msgid "+++ email requested, but there is nothing to send +++"
