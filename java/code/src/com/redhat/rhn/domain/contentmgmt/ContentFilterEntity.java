@@ -9,13 +9,12 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
+package com.redhat.rhn.domain.contentmgmt;
+
 /**
  * Marker interface for entities compatible with {@link ContentFilter}.
  * Implemented by {@link Errata}, {@link Package}, {@link Module}, etc.,
  * to enforce type-safe filtering operations.
  */
-
-package com.redhat.rhn.domain.contentmgmt;
-
 public interface ContentFilterEntity {
 }
