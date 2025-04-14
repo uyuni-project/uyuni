@@ -15,8 +15,6 @@
 
 package com.redhat.rhn.domain.contentmgmt;
 
-import com.redhat.rhn.domain.ContentFilterEntity;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 

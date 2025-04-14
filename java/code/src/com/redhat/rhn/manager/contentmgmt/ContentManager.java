@@ -36,7 +36,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
-import com.redhat.rhn.domain.ContentFilterEntity;
+import com.redhat.rhn.domain.contentmgmt.ContentFilterEntity;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
@@ -1070,7 +1070,7 @@ public class ContentManager {
                                                     Class<T> type) {
         return filters.stream()
                 .filter(f -> type.isAssignableFrom(f.getClass()))
-                .map(f -> (T) f)
+                .map(f -> type.cast(f))
                 .collect(toList());
     }
 

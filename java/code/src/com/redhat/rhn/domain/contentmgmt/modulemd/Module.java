@@ -15,7 +15,7 @@
 
 package com.redhat.rhn.domain.contentmgmt.modulemd;
 
-import com.redhat.rhn.domain.ContentFilterEntity;
+import com.redhat.rhn.domain.contentmgmt.ContentFilterEntity;
 
 import org.apache.commons.lang3.StringUtils;
 
