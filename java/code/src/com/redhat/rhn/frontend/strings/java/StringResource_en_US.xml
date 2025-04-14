@@ -1919,6 +1919,12 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="supportdata.get" xml:space="preserve">
+        <source>Get and Upload Support data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="reboot.reboot" xml:space="preserve">
         <source>System reboot</source>
         <context-group name="ctx">
