@@ -40,8 +40,6 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
   const [playbookArgs, setPlaybookArgs] = useState < PlaybookArgs > ({ flushCache: false });
   const [actionChain, setActionChain] = useState < ActionChain | null > (null);
   const [datetime, setDatetime] = useState(localizedMoment());
-  const [open, setOpen] = useState(false);
-
   const defaultInventory = "-";
 
   useEffect(() => {
