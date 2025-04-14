@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-28 14:30+0100\n"
-"PO-Revision-Date: 2025-03-15 14:29+0000\n"
+"POT-Creation-Date: 2025-04-11 13:25+0200\n"
+"PO-Revision-Date: 2025-04-07 17:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -59,8 +59,8 @@ msgstr "Potvrdiť vykonanie atestácie"
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:128
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:94
 msgid "Schedule"
 msgstr "Plán"
@@ -68,7 +68,8 @@ msgstr "Plán"
 #: ../html/src/components/CoCoScansList.tsx:137
 #: ../html/src/components/CoCoScansList.tsx:192
 #: ../html/src/components/package/PackageListActionScheduler.tsx:189
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:218
+#: ../html/src/manager/admin/hub/peripheral-details.tsx:43
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:242
 msgid "Back to list"
 msgstr "Späť na zoznam"
 
@@ -176,7 +177,7 @@ msgstr "Atestácia #{identifier} vykonaná dňa {date} o {time}"
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:212
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/all-list.tsx:73
-#: ../html/src/manager/systems/list-filter.tsx:41
+#: ../html/src/manager/systems/list-filter.tsx:43
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:775
 msgid "System"
@@ -190,7 +191,7 @@ msgstr "Typ prostredia"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
 #: ../html/src/components/hub/TokenTable.tsx:89
-#: ../html/src/manager/notifications/notification-messages.tsx:512
+#: ../html/src/manager/notifications/notifications-list.tsx:126
 msgid "Created"
 msgstr "Vytvorené"
 
@@ -256,7 +257,7 @@ msgid "Last modified on"
 msgstr "Naposledy zmenené dňa"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:84
-#: ../html/src/manager/notifications/notification-messages.tsx:517
+#: ../html/src/manager/notifications/notifications-list.tsx:129
 msgid "Action"
 msgstr "Akcia"
 
@@ -292,7 +293,8 @@ msgstr "Výstup procesu"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
 #: ../html/src/components/formula-selection.tsx:293
-#: ../html/src/components/large-text-attachment.tsx:176
+#: ../html/src/components/hub/ModalEditButton.tsx:94
+#: ../html/src/components/large-text-attachment.tsx:184
 #: ../html/src/components/panels/CreatorPanel.tsx:125
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:144
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:197
@@ -340,19 +342,19 @@ msgstr "Vytvoriť {label}"
 msgid "Configuration Channels"
 msgstr "Konfiguračné kanály"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:112
+#: ../html/src/components/datetime/DateTimePicker.tsx:124
 msgid "Previous month"
 msgstr "Predchádzajúci mesiac"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:113
+#: ../html/src/components/datetime/DateTimePicker.tsx:125
 msgid "Next month"
 msgstr "Nasledujúci mesiac"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:114
+#: ../html/src/components/datetime/DateTimePicker.tsx:126
 msgid "Previous year"
 msgstr "Predchádzajúci rok"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:115
+#: ../html/src/components/datetime/DateTimePicker.tsx:127
 msgid "Next year"
 msgstr "Nasledujúci rok"
 
@@ -374,7 +376,10 @@ msgstr ""
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:54
 #: ../html/src/components/hub/AddTokenButton.tsx:154
-#: ../html/src/components/large-text-attachment.tsx:169
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:115
+#: ../html/src/components/hub/ModalEditButton.tsx:87
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:367
+#: ../html/src/components/large-text-attachment.tsx:177
 #: ../html/src/components/panels/CreatorPanel.tsx:114
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:56
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:34
@@ -394,11 +399,12 @@ msgstr "Zrušiť"
 
 #. both the peripheral and the hub are null means the token is not used and we can delete it
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
+#: ../html/src/components/hub/PeripheralsList.tsx:52
 #: ../html/src/components/hub/TokenTable.tsx:175
 #: ../html/src/components/hub/TokenTable.tsx:184
 #: ../html/src/components/hub/TokenTable.tsx:228
-#: ../html/src/components/large-text-attachment.tsx:187
-#: ../html/src/components/large-text-attachment.tsx:200
+#: ../html/src/components/large-text-attachment.tsx:195
+#: ../html/src/components/large-text-attachment.tsx:209
 #: ../html/src/components/panels/CreatorPanel.tsx:97
 #: ../html/src/components/table/Table.tsx:139
 #: ../html/src/manager/admin/payg/payg.tsx:73
@@ -419,8 +425,8 @@ msgstr "Zrušiť"
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:24
 #: ../html/src/manager/packages/list.tsx:72
 #: ../html/src/manager/packages/list.tsx:125
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:217
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:220
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:248
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:251
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:222
 #: ../html/src/manager/salt/keys/key-management.tsx:54
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:132
@@ -436,6 +442,132 @@ msgstr "Vymazať projekt"
 #: ../html/src/components/dialog/delete.example.tsx:17
 msgid "Are you sure you want to delete project "
 msgstr "Naozaj chcete vymazať projekt "
+
+#: ../html/src/components/formik/Form.example.tsx:34
+msgid "Field"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:36
+#: ../html/src/components/input/InputBase.test.tsx:43
+#: ../html/src/components/input/InputBase.test.tsx:69
+#: ../html/src/components/input/InputBase.test.tsx:97
+#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:49
+#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:58
+#: ../html/src/components/input/form-multi-input/single-field.example.tsx:47
+#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:58
+#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:66
+#: ../html/src/components/input/form/Form.example.tsx:25
+#: ../html/src/components/input/text/Text.example.tsx:25
+#: ../html/src/components/input/text/Text.example.tsx:34
+msgid "Minimum 2 characters"
+msgstr "Minimálne 2 znaky"
+
+#: ../html/src/components/formik/Form.example.tsx:39
+msgid "Checkbox"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:41
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
+#: ../html/src/components/input/password/Password.example.tsx:23
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:74
+#: ../html/src/manager/images/image-store-edit.tsx:180
+#: ../html/src/manager/login/susemanager/login.tsx:99
+#: ../html/src/manager/login/uyuni/login.tsx:90
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:416
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:539
+msgid "Password"
+msgstr "Heslo"
+
+#: ../html/src/components/formik/Form.example.tsx:43
+#, fuzzy
+#| msgid "fa-times"
+msgid "Datetime"
+msgstr "fa-times"
+
+#: ../html/src/components/formik/Form.example.tsx:45
+msgid "Multiple values"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:47
+#, fuzzy
+#| msgid "Loading text"
+msgid "Long text"
+msgstr "Načítavanie textu"
+
+#: ../html/src/components/formik/Form.example.tsx:49
+#, fuzzy
+#| msgid "Changes"
+msgid "Range"
+msgstr "Zmeny"
+
+#: ../html/src/components/formik/Form.example.tsx:53
+msgid "Radio"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:55
+msgid "One"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:56
+msgid "Two"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:57
+msgid "Three"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:62
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:108
+#: ../html/src/components/input/check/Check.example.tsx:22
+#: ../html/src/components/input/datetime/DateTime.example.tsx:25
+#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:66
+#: ../html/src/components/input/form-multi-input/single-field.example.tsx:55
+#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:75
+#: ../html/src/components/input/form/Form.example.tsx:30
+#: ../html/src/components/input/password/Password.example.tsx:30
+#: ../html/src/components/input/radio/horizontal-open.example.tsx:37
+#: ../html/src/components/input/radio/horizontal.example.tsx:36
+#: ../html/src/components/input/radio/vertical-open.example.tsx:36
+#: ../html/src/components/input/radio/vertical.example.tsx:35
+#: ../html/src/components/input/range/Range.example.tsx:24
+#: ../html/src/components/input/select/simple.example.tsx:32
+#: ../html/src/components/input/text/Text.example.tsx:38
+msgid "Submit"
+msgstr "Odoslať"
+
+#: ../html/src/components/formik/field/AsRadio.tsx:41
+#, fuzzy
+#| msgid "Custom State"
+msgid "Custom value"
+msgstr "Vlastný stav"
+
+#: ../html/src/components/formik/field/AsRange.tsx:15
+msgid "{rangeInputName} start"
+msgstr ""
+
+#: ../html/src/components/formik/field/AsRange.tsx:24
+msgid "{rangeInputName} end"
+msgstr ""
+
+#: ../html/src/components/formik/field/FieldBase.tsx:30
+#: ../html/src/components/input/InputBase.tsx:278
+msgid "required"
+msgstr "požadované"
+
+#: ../html/src/components/formik/field/MultiField.tsx:37
+#, fuzzy
+#| msgid "Remove file"
+msgid "Remove item"
+msgstr "Odstrániť súbor"
+
+#: ../html/src/components/formik/field/MultiField.tsx:58
+#: ../html/src/components/formik/field/MultiField.tsx:62
+#, fuzzy
+#| msgid "Add system"
+msgid "Add item"
+msgstr "Pridať systém"
 
 #: ../html/src/components/formula-selection.tsx:135
 msgid " No group"
@@ -503,23 +635,26 @@ msgid "Add a new access token"
 msgstr "Pridať nový prístupový token"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:128
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:70
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:92
 msgid "Server FQDN"
 msgstr "Server FQDN"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:130
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:159
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:160
 msgid "e.g. server.domain.com"
 msgstr "napr. server.domain.com"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:134
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:163
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:73
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:164
 #: ../html/src/manager/proxy/container-config.tsx:206
 #: ../html/src/manager/proxy/container-config.tsx:217
 msgid "Has to be a valid FQDN address"
 msgstr "Musí to byť platná adresa FQDN"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:139
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:183
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:184
 msgid "Token"
 msgstr "Token"
 
@@ -548,6 +683,7 @@ msgid "Copy"
 msgstr "Kopírovať"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:220
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:208
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:94
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:95
 msgid "Close"
@@ -559,7 +695,6 @@ msgstr "Prístupový token skopírovaný do schránky"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:38
 #: ../html/src/components/hub/DeregisterServer.tsx:47
-#: ../html/src/components/hub/PeripheralsList.tsx:51
 msgid "Deregister"
 msgstr "Zrušiť registráciu"
 
@@ -580,8 +715,12 @@ msgstr ""
 "neho nebudete dostávať dáta."
 
 #: ../html/src/components/hub/DeregisterServer.tsx:70
+#, fuzzy
+#| msgid ""
+#| "Are you sure you want to derigester peripheral {fqdn}? All the current "
+#| "configuration will be lost."
 msgid ""
-"Are you sure you want to derigester peripheral {fqdn}? All the current "
+"Are you sure you want to deregister peripheral {fqdn}? All the current "
 "configuration will be lost."
 msgstr ""
 "Ste si istí, že chcete zrušiť registráciu periférie {fqdn}? Celá aktuálna "
@@ -591,111 +730,289 @@ msgstr ""
 msgid "The server {fqdn} has been successfully deregistered."
 msgstr "Serveru {fqdn} bola úspešne zrušená registrácia."
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:36
-msgid "Server FQDN:"
-msgstr "Server FQDN:"
+#: ../html/src/components/hub/DesyncChannel.tsx:36
+#: ../html/src/components/hub/DesyncChannel.tsx:45
+#, fuzzy
+#| msgid "synced"
+msgid "Desync"
+msgstr "synchronizované"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:44
-msgid "Registration date:"
-msgstr "Dátum registrácie:"
+#: ../html/src/components/hub/DesyncChannel.tsx:37
+#, fuzzy
+#| msgid "Base Channel"
+msgid "Desync Channel"
+msgstr "Základný kanál"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:54
-msgid "Last modified:"
-msgstr "Naposledy zmenené:"
+#: ../html/src/components/hub/DesyncChannel.tsx:42
+#, fuzzy
+#| msgid "Confirm Deletion"
+msgid "Confirm Desync"
+msgstr "Potvrdiť vymazanie"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:64
-msgid "Root Certificate Authority:"
-msgstr "Koreňová certifikačná autorita:"
+#: ../html/src/components/hub/DesyncChannel.tsx:55
+#, fuzzy
+#| msgid "no child channels"
+msgid "Desync channels?"
+msgstr "žiadne kanály potomkov"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:70
-msgid ""
-"A customized Root Certificate Authority is currently configured for this hub."
+#: ../html/src/components/hub/DesyncChannel.tsx:64
+#, fuzzy
+#| msgid "The server {fqdn} has been successfully deregistered."
+msgid "The channels have been successfully desynced."
+msgstr "Serveru {fqdn} bola úspešne zrušená registrácia."
+
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:131
+#, fuzzy
+#| msgid "Organization"
+msgid "Select Organization"
+msgstr "Organizácia"
+
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:161
+#: ../html/src/manager/admin/setup/products/products.tsx:487
+msgid "Filter by architecture"
+msgstr "Filtrovať podľa architektúry"
+
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:173
+#, fuzzy
+#| msgid "Loading child channels.."
+msgid "Search channels..."
+msgstr "Načítavajú sa kanály potomkov.."
+
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:188
+msgid "Sync"
 msgstr ""
-"Pre tento hub je v súčasnosti nastavená vlastná koreňová certifikačná "
-"autorita."
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:71
-msgid "This hub is currently using the default Root Certificate Authority."
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:189
+#: ../html/src/components/states-picker.tsx:452
+msgid "Channel Label"
+msgstr "Označenie kanála"
+
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:190
+#: ../html/src/manager/admin/setup/products/products.tsx:587
+#: ../html/src/manager/admin/setup/products/products.tsx:968
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
+#: ../html/src/manager/images/image-view-packages.tsx:50
+#: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
+msgid "Architecture"
+msgstr "Architektúra"
+
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:191
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:306
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:343
+msgid "Hub Org"
 msgstr ""
-"Tento hub v súčasnosti používa predvolenú koreňovú certifikačnú autoritu."
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:72
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:192
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:307
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:344
+#, fuzzy
+#| msgid "N. of Sync Orgs"
+msgid "Sync Org"
+msgstr "Počet synchronizovaných organizácií"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:67
+#, fuzzy
+#| msgid "Audit Servers"
+msgid "Add Server"
+msgstr "Auditovať servery"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:69
+msgid "Set the FQDN of the remote server"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:89
+#, fuzzy
+#| msgid "Migrate"
+msgid "Migrate?"
+msgstr "Migrovať"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:95
+#, fuzzy
+#| msgid "Access Tokens"
+msgid "Access Token"
+msgstr "Prístupové tokeny"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:100
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:294
+#: ../html/src/components/hub/ServerDetailsForm.tsx:103
 msgid "Root Certificate Authority"
 msgstr "Koreňová certifikačná autorita"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:74
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:166
+#, fuzzy
+#| msgid "Peripheral registration in progress: waiting for a response..."
+msgid "Peripheral migration in progress: waiting for a response..."
+msgstr "Prebieha registrácia periférie: čaká sa na odpoveď..."
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:184
+msgid "Migration partially succeeded"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:185
+#, fuzzy
+#| msgid " failed"
+msgid "Migration failed"
+msgstr " neúspešné"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:193
 msgid ""
-"Ensure the certificate you are providing is correct before proceeding. A "
-"wrong value will break the connection with the hub."
+"Some of the servers where migrated successfully, but some errors happened "
+"during the process."
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:194
+msgid ""
+"The migration process was not successfull and reported the following errors"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:226
+msgid "This slave is currently disabled and cannot be selected for migration"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:227
+msgid "Check to migrate this server to a peripheral"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:246
+#, fuzzy
+#| msgid "undefined"
+msgid "Not defined"
+msgstr "nedefinované"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:251
+#: ../html/src/components/large-text-attachment.tsx:69
+#: ../html/src/components/large-text-attachment.tsx:110
+#: ../html/src/components/salt-state-popup.tsx:60
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:60
+#: ../html/src/manager/images/image-profiles.tsx:204
+#: ../html/src/manager/images/image-stores.tsx:198
+#: ../html/src/manager/images/image-view-overview.tsx:326
+#: ../html/src/manager/images/image-view-overview.tsx:351
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:36
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:39
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:78
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:63
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:240
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:243
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:213
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
+msgid "Edit"
+msgstr "Upraviť"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:252
+msgid "Set access token for {fqdn}"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:253
+#, fuzzy
+#| msgid "Access Tokens"
+msgid "Access token"
+msgstr "Prístupové tokeny"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:282
+#, fuzzy
+#| msgid "No tokens available"
+msgid "Root CA available"
+msgstr "Žiadne dostupné tokeny"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:282
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
+msgid "Not needed"
+msgstr "Nie je potrebné"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:292
+msgid "The root CA is the same of the hub."
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:293
+msgid "This server has a different root CA."
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:296
+#, fuzzy
+#| msgid ""
+#| "Ensure the certificate you are providing is correct before proceeding. A "
+#| "wrong value will break the connection with the hub."
+msgid ""
+"Ensure the certificate you are providing for {fqdn} is correct before "
+"proceeding. A wrong value will prevent the connection with the hub."
 msgstr ""
 "Pred pokračovaním sa uistite, či je poskytnutý certifikát správny. Nesprávna "
 "hodnota spôsobí prerušenie spojenia s hubom."
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:77
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:301
+#, fuzzy
+#| msgid ""
+#| "Are you sure you want to delete the current Root Certificate Authority? "
+#| "This change may break the connection with the hub."
 msgid ""
-"Are you sure you want to delete the current Root Certificate Authority? This "
-"change may break the connection with the hub."
+"Are you sure you want to remove the current Root Certificate Authority for "
+"{fqdn}?"
 msgstr ""
 "Ste si istí, že chcete vymazať aktuálnu koreňovú certifikačnú autoritu? Táto "
 "zmena môže prerušiť spojenie s hubom."
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:83
-msgid "Root Certificate Authority successfully modified."
-msgstr "Koreňová certifikačná autorita bola úspešne pozmenená."
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:321
+#: ../html/src/manager/notifications/notifications-list.tsx:339
+#: ../html/src/manager/notifications/notifications-list.tsx:340
+msgid "Info"
+msgstr "Informácie"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:98
-msgid "Root Certificate Authority successfully updated."
-msgstr "Koreňová certifikačná autorita bola úspešne aktualizovaná."
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:326
+#: ../html/src/manager/notifications/notifications-list.tsx:346
+#: ../html/src/manager/notifications/notifications-list.tsx:347
+msgid "Warning"
+msgstr "Varovanie"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:115
-msgid "GPG Public Key:"
-msgstr "Verejný kľúč GPG:"
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:331
+#: ../html/src/manager/notifications/notifications-list.tsx:353
+#: ../html/src/manager/notifications/notifications-list.tsx:354
+msgid "Error"
+msgstr "Chyba"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:121
-msgid "A customized GPG key is currently configured for this hub."
-msgstr "Pre tento hub je v súčasnosti nakonfigurovaný vlastný kľúč GPG."
-
-#: ../html/src/components/hub/HubDetailsForm.tsx:122
-msgid "This hub is currently not using a custom GPG key."
-msgstr "Tento hub v súčasnosti nepoužíva vlastný kľúč GPG."
-
-#: ../html/src/components/hub/HubDetailsForm.tsx:131
-msgid "Mirror credentials:"
-msgstr "Zrkadlové prihlasovanie údaje:"
-
-#: ../html/src/components/hub/PeripheralsList.tsx:29
+#: ../html/src/components/hub/PeripheralsList.tsx:31
 msgid "Filter by FQDN"
 msgstr "Filtrovať podľa FQDN"
 
-#: ../html/src/components/hub/PeripheralsList.tsx:31
+#: ../html/src/components/hub/PeripheralsList.tsx:36
 msgid "Peripheral FQDN"
 msgstr "Periférne FQDN"
 
-#: ../html/src/components/hub/PeripheralsList.tsx:35
-msgid "N. of Sync Channels"
+#: ../html/src/components/hub/PeripheralsList.tsx:41
+#, fuzzy
+#| msgid "N. of Sync Channels"
+msgid "N. of synced channels"
 msgstr "Počet synchronizovaných kanálov"
 
-#: ../html/src/components/hub/PeripheralsList.tsx:41
-msgid "N. of Sync Orgs"
+#: ../html/src/components/hub/PeripheralsList.tsx:46
+#, fuzzy
+#| msgid "N. of Sync Orgs"
+msgid "N. of synced organizations"
 msgstr "Počet synchronizovaných organizácií"
 
-#: ../html/src/components/hub/PeripheralsList.tsx:46
+#: ../html/src/components/hub/PeripheralsList.tsx:49
 msgid "Download Root CA"
 msgstr "Stiahnuť koreňovú CA"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:135
+#: ../html/src/components/hub/PeripheralsList.tsx:66
+msgid "View details of peripheral {fqdn}"
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:136
 msgid "Register a new peripheral server"
 msgstr "Zaregistrovať nový periférny server"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:141
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:142
 msgid "Peripheral registration in progress: waiting for a response..."
 msgstr "Prebieha registrácia periférie: čaká sa na odpoveď..."
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:156
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:157
 msgid "Peripheral Server FQDN"
 msgstr "FQDN periférneho servera"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:157
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:158
 msgid ""
 "The unique, DNS-resolvable fully-qualified domain name of the server to "
 "register."
@@ -703,31 +1020,31 @@ msgstr ""
 "Jedinečný, plne kvalifikovaný názov domény servera rozpoznateľný DNS, ktorý "
 "sa má zaregistrovať."
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:167
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:168
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:169
 msgid "Registration mode"
 msgstr "Režim registrácie"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:169
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:170
 msgid "Define how to connect to the remote server to initiate the registration"
 msgstr ""
 "Definovanie spôsobu pripojenia k vzdialenému serveru na začatie registrácie"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:176
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:177
 msgid "Existing token"
 msgstr "Existujúci token"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:177
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:178
 msgid "Administrator User/Password"
 msgstr "Administrátor používateľ/heslo"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:184
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:185
 msgid ""
 "The token that grant access to the remote server to establish the connection."
 msgstr ""
 "Token, ktorý poskytuje prístup k vzdialenému serveru na vytvorenie spojenia."
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:195
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
 #: ../html/src/manager/images/image-store-edit.tsx:171
 #: ../html/src/manager/login/susemanager/login.tsx:88
@@ -735,33 +1052,20 @@ msgstr ""
 msgid "Username"
 msgstr "Používateľské meno"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:197
 msgid "The username of {productName} Administrator of the remote server."
 msgstr "Používateľské meno administrátora {productName} vzdialeného servera."
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:204
-#: ../html/src/components/input/password/Password.example.tsx:23
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:74
-#: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/susemanager/login.tsx:99
-#: ../html/src/manager/login/uyuni/login.tsx:90
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:416
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:539
-msgid "Password"
-msgstr "Heslo"
-
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:206
 msgid "The password of the specified user."
 msgstr "Heslo zadaného používateľa."
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:214
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:215
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:216
 msgid "Root CA certificate"
 msgstr "Certifikát koreňovej CA"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:217
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:218
 msgid ""
 "The Root certificate authority of the remote server, that must be trusted to "
 "establish a secure connection."
@@ -769,48 +1073,339 @@ msgstr ""
 "Koreňová certifikačná autorita vzdialeného servera, ktorá musí byť "
 "dôveryhodná na vytvorenie bezpečného pripojenia."
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:225
-msgid "Not needed"
-msgstr "Nie je potrebné"
-
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
-#: ../html/src/components/large-text-attachment.tsx:136
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
+#: ../html/src/components/large-text-attachment.tsx:144
 msgid "Upload a file"
 msgstr "Nahrať súbor"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:228
 msgid "Paste a PEM certificate"
 msgstr "Vložiť certifikát PEM"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:233
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:234
 msgid "Certificate File"
 msgstr "Súbor certifikátu"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:234
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:235
 msgid "Certificate file, in PEM format"
 msgstr "Súbor certifikátu, vo formáte PEM"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:244
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:245
 msgid "PEM Certificate"
 msgstr "Certifikát PEM"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:245
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:246
 msgid "The text representing the certificate, in PEM format"
 msgstr "Text reprezentujúci certifikát, vo formáte PEM"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:260
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:261
 msgid "Register"
 msgstr "Registrovať"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:267
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:268
 #: ../html/src/manager/images/image-import.tsx:314
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:515
 #: ../html/src/manager/proxy/container-config.tsx:390
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:407
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
 msgstr "Vymazať polia"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:16
+msgid ""
+"A customized Root Certificate Authority is currently configured for this hub."
+msgstr ""
+"Pre tento hub je v súčasnosti nastavená vlastná koreňová certifikačná "
+"autorita."
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:17
+#, fuzzy
+#| msgid ""
+#| "A customized Root Certificate Authority is currently configured for this "
+#| "hub."
+msgid ""
+"A customized Root Certificate Authority is currently configured for this "
+"peripheral."
+msgstr ""
+"Pre tento hub je v súčasnosti nastavená vlastná koreňová certifikačná "
+"autorita."
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:20
+msgid "This hub is currently using the default Root Certificate Authority."
+msgstr ""
+"Tento hub v súčasnosti používa predvolenú koreňovú certifikačnú autoritu."
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:21
+#, fuzzy
+#| msgid "This hub is currently using the default Root Certificate Authority."
+msgid ""
+"This peripheral is currently using the default Root Certificate Authority."
+msgstr ""
+"Tento hub v súčasnosti používa predvolenú koreňovú certifikačnú autoritu."
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:25
+msgid ""
+"Ensure the certificate you are providing is correct before proceeding. A "
+"wrong value will break the connection with the hub."
+msgstr ""
+"Pred pokračovaním sa uistite, či je poskytnutý certifikát správny. Nesprávna "
+"hodnota spôsobí prerušenie spojenia s hubom."
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:28
+#, fuzzy
+#| msgid ""
+#| "Ensure the certificate you are providing is correct before proceeding. A "
+#| "wrong value will break the connection with the hub."
+msgid ""
+"Ensure the certificate you are providing is correct before proceeding. A "
+"wrong value will break the connection with the peripheral."
+msgstr ""
+"Pred pokračovaním sa uistite, či je poskytnutý certifikát správny. Nesprávna "
+"hodnota spôsobí prerušenie spojenia s hubom."
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:33
+msgid ""
+"Are you sure you want to delete the current Root Certificate Authority? This "
+"change may break the connection with the hub."
+msgstr ""
+"Ste si istí, že chcete vymazať aktuálnu koreňovú certifikačnú autoritu? Táto "
+"zmena môže prerušiť spojenie s hubom."
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:36
+#, fuzzy
+#| msgid ""
+#| "Are you sure you want to delete the current Root Certificate Authority? "
+#| "This change may break the connection with the hub."
+msgid ""
+"Are you sure you want to delete the current Root Certificate Authority? This "
+"change may break the connection with the peripheral."
+msgstr ""
+"Ste si istí, že chcete vymazať aktuálnu koreňovú certifikačnú autoritu? Táto "
+"zmena môže prerušiť spojenie s hubom."
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:67
+msgid "Server FQDN:"
+msgstr "Server FQDN:"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:75
+msgid "Registration date:"
+msgstr "Dátum registrácie:"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:85
+msgid "Last modified:"
+msgstr "Naposledy zmenené:"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:95
+msgid "Root Certificate Authority:"
+msgstr "Koreňová certifikačná autorita:"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:117
+msgid "GPG Public Key:"
+msgstr "Verejný kľúč GPG:"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:123
+msgid "A customized GPG key is currently configured for this hub."
+msgstr "Pre tento hub je v súčasnosti nakonfigurovaný vlastný kľúč GPG."
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:124
+msgid "This hub is currently not using a custom GPG key."
+msgstr "Tento hub v súčasnosti nepoužíva vlastný kľúč GPG."
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:134
+msgid "Mirror credentials:"
+msgstr "Zrkadlové prihlasovanie údaje:"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:142
+#, fuzzy
+#| msgid "Use credentials"
+msgid "Regenerate credentials"
+msgstr "Použiť prihlasovanie údaje"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:155
+#, fuzzy
+#| msgid "no child channels"
+msgid "Synchronized channels:"
+msgstr "žiadne kanály potomkov"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:163
+#, fuzzy
+#| msgid "Edit Channel Ranks"
+msgid "Edit channels"
+msgstr "Upraviť poradia kanálov"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:185
+#, fuzzy
+#| msgid "has unsynchronized patches"
+msgid "One syncronized channel"
+msgstr "má nesynchronizované opravy"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:189
+msgid "{nSyncedChannels} syncronized channels, from one organization"
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:192
+msgid ""
+"{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different "
+"organizations"
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:198
+msgid "Root Certificate Authority successfully modified."
+msgstr "Koreňová certifikačná autorita bola úspešne pozmenená."
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:212
+msgid "Root Certificate Authority successfully updated."
+msgstr "Koreňová certifikačná autorita bola úspešne aktualizovaná."
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:227
+#, fuzzy
+#| msgid "Schedule successfully created."
+msgid "Mirror credentials successfully regenerated."
+msgstr "Naplánované úspešne."
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:170
+#, fuzzy
+#| msgid "No change"
+msgid "No changes to apply"
+msgstr "Žiadna zmena"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:215
+msgid "Channels synced correctly to peripheral!"
+msgstr ""
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:243
+msgid "Please select at least one channel to add or remove from sync"
+msgstr ""
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:293
+#, fuzzy
+#| msgid "Channels"
+msgid "Channels to Add"
+msgstr "Kanály"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:301
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:338
+#, fuzzy
+#| msgid "Filter by name"
+msgid "Filter by Name"
+msgstr "Filtrovať podľa názvu"
+
+#. ref={nameInputRef}
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:303
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:340
+#: ../html/src/components/input/form/Form.example.tsx:23
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:389
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:171
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
+#: ../html/src/manager/images/image-view.tsx:644
+#: ../html/src/manager/salt/keys/key-management.tsx:160
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:84
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
+msgid "Name"
+msgstr "Názov"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:304
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:341
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:29
+#: ../html/src/manager/images/image-build.tsx:258
+#: ../html/src/manager/images/image-profile-edit.tsx:528
+#: ../html/src/manager/images/image-profiles.tsx:177
+#: ../html/src/manager/images/image-store-edit.tsx:259
+#: ../html/src/manager/images/image-stores.tsx:177
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:259
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:315
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
+msgid "Label"
+msgstr "Označenie"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:305
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:342
+#: ../html/src/manager/admin/setup/products/products.tsx:589
+msgid "Arch"
+msgstr "Arch"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:318
+msgid ""
+"Some custom channels do not have a sync organization selected. Please select "
+"organizations before confirming."
+msgstr ""
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:324
+#, fuzzy
+#| msgid " channels synced"
+msgid "No channels selected to add"
+msgstr " kanály synchronizované"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:331
+#, fuzzy
+#| msgid "Channel Name"
+msgid "Channels to Remove"
+msgstr "Názov kanála"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:347
+#, fuzzy
+#| msgid " channels synced"
+msgid "No channels selected to remove"
+msgstr " kanály synchronizované"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:354
+#, fuzzy
+#| msgid "Channel sync failed"
+msgid "Channel Sync Changes"
+msgstr "Synchronizácia kanála zlyhala"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:355
+#, fuzzy
+#| msgid "Can not contain the following characters: /\\"
+msgid "You are about to make the following changes:"
+msgstr "Nemôže obsahovať nasledujúce znaky: /\\"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:374
+#: ../html/src/components/package/PackageListActionScheduler.tsx:180
+#: ../html/src/components/states-picker.tsx:369
+#: ../html/src/components/states-picker.tsx:559
+#: ../html/src/manager/admin/setup/products/products.tsx:1081
+#: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:38
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:191
+#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1135
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:677
+msgid "Confirm"
+msgstr "Potvrdiť"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:397
+msgid "{peripheralFqdn} - Peripheral Sync Channels"
+msgstr ""
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:407
+#, fuzzy
+#| msgid "Back to list"
+msgid "Back to details"
+msgstr "Späť na zoznam"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:420
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:421
+#: ../html/src/manager/appstreams/actions-appstreams.tsx:14
+msgid "Apply Changes"
+msgstr "Použiť zmeny"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:429
+msgid "Sync Channels from Hub to Peripheral"
+msgstr ""
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:439
+#, fuzzy
+#| msgid "Confirm Software Channel Change"
+msgid "Confirm Channel Synchronization Changes"
+msgstr "Potvrďte zmenu softvérového kanála"
 
 #: ../html/src/components/hub/TokenTable.tsx:54
 msgid "No tokens available"
@@ -831,14 +1426,14 @@ msgstr "Platné"
 #: ../html/src/components/hub/TokenTable.tsx:76
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
-#: ../html/src/manager/systems/list-filter.tsx:36
+#: ../html/src/manager/systems/list-filter.tsx:38
 msgid "Yes"
 msgstr "Áno"
 
 #: ../html/src/components/hub/TokenTable.tsx:76
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
-#: ../html/src/manager/systems/list-filter.tsx:37
+#: ../html/src/manager/systems/list-filter.tsx:39
 msgid "No"
 msgstr "Nie"
 
@@ -952,41 +1547,6 @@ msgid ""
 msgstr ""
 "Povolením tohto prístupového tokenu sa obnoví prístup k periférii {fqdn}."
 
-#: ../html/src/components/input/InputBase.test.tsx:43
-#: ../html/src/components/input/InputBase.test.tsx:69
-#: ../html/src/components/input/InputBase.test.tsx:97
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:49
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:58
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:47
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:58
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:66
-#: ../html/src/components/input/form/Form.example.tsx:25
-#: ../html/src/components/input/text/Text.example.tsx:25
-#: ../html/src/components/input/text/Text.example.tsx:34
-msgid "Minimum 2 characters"
-msgstr "Minimálne 2 znaky"
-
-#: ../html/src/components/input/InputBase.tsx:278
-msgid "required"
-msgstr "požadované"
-
-#: ../html/src/components/input/check/Check.example.tsx:22
-#: ../html/src/components/input/datetime/DateTime.example.tsx:25
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:66
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:55
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:75
-#: ../html/src/components/input/form/Form.example.tsx:30
-#: ../html/src/components/input/password/Password.example.tsx:30
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:37
-#: ../html/src/components/input/radio/horizontal.example.tsx:36
-#: ../html/src/components/input/radio/vertical-open.example.tsx:36
-#: ../html/src/components/input/radio/vertical.example.tsx:35
-#: ../html/src/components/input/range/Range.example.tsx:24
-#: ../html/src/components/input/select/simple.example.tsx:32
-#: ../html/src/components/input/text/Text.example.tsx:38
-msgid "Submit"
-msgstr "Odoslať"
-
 #: ../html/src/components/input/datetime/DateTime.example.tsx:24
 msgid "Time"
 msgstr "Čas"
@@ -1015,27 +1575,9 @@ msgstr "Priezvisko"
 msgid "Login"
 msgstr "Prihlasovacie meno"
 
-#. ref={nameInputRef}
-#: ../html/src/components/input/form/Form.example.tsx:23
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:389
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:171
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
-#: ../html/src/manager/images/image-view.tsx:644
-#: ../html/src/manager/salt/keys/key-management.tsx:160
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:84
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
-msgid "Name"
-msgstr "Názov"
-
 #: ../html/src/components/input/password/Password.example.tsx:25
-#, fuzzy
-#| msgid "Minimum 4 characters"
 msgid "Must be at least 4 characters"
-msgstr "Minimálne 4 znaky"
+msgstr "Musia byť aspoň 4 znaky"
 
 #: ../html/src/components/input/radio/horizontal-open.example.tsx:26
 #: ../html/src/components/input/radio/horizontal.example.tsx:26
@@ -1096,65 +1638,44 @@ msgstr "Druh"
 msgid "No flavors"
 msgstr "Žiadne druhy"
 
-#: ../html/src/components/large-text-attachment.tsx:62
+#: ../html/src/components/large-text-attachment.tsx:67
 msgid "Data is present."
 msgstr "Údaje sú prítomné."
 
-#: ../html/src/components/large-text-attachment.tsx:63
+#: ../html/src/components/large-text-attachment.tsx:68
 msgid "Data is not present."
 msgstr "Údaje nie sú prítomné."
 
-#: ../html/src/components/large-text-attachment.tsx:64
-#: ../html/src/components/large-text-attachment.tsx:103
-#: ../html/src/components/salt-state-popup.tsx:60
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:60
-#: ../html/src/manager/images/image-profiles.tsx:204
-#: ../html/src/manager/images/image-stores.tsx:198
-#: ../html/src/manager/images/image-view-overview.tsx:326
-#: ../html/src/manager/images/image-view-overview.tsx:351
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:36
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:39
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:78
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:63
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:209
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:212
-#: ../html/src/manager/recurring/recurring-actions-list.tsx:213
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
-msgid "Edit"
-msgstr "Upraviť"
-
-#: ../html/src/components/large-text-attachment.tsx:93
+#: ../html/src/components/large-text-attachment.tsx:99
 msgid "Download"
 msgstr "Stiahnuť"
 
-#: ../html/src/components/large-text-attachment.tsx:103
+#: ../html/src/components/large-text-attachment.tsx:110
 msgid "Add"
 msgstr "Pridať"
 
-#: ../html/src/components/large-text-attachment.tsx:127
-#: ../html/src/components/large-text-attachment.tsx:128
+#: ../html/src/components/large-text-attachment.tsx:135
+#: ../html/src/components/large-text-attachment.tsx:136
 msgid "Edit method"
 msgstr "Upraviť metódu"
 
-#: ../html/src/components/large-text-attachment.tsx:129
+#: ../html/src/components/large-text-attachment.tsx:137
 msgid "Define how to provide the new value"
 msgstr "Definovať spôsob poskytovania novej hodnoty"
 
-#: ../html/src/components/large-text-attachment.tsx:137
+#: ../html/src/components/large-text-attachment.tsx:145
 msgid "Paste the new value"
 msgstr "Vložiť novú hodnotu"
 
-#: ../html/src/components/large-text-attachment.tsx:143
+#: ../html/src/components/large-text-attachment.tsx:151
 msgid "File"
 msgstr "Súbor"
 
-#: ../html/src/components/large-text-attachment.tsx:153
+#: ../html/src/components/large-text-attachment.tsx:161
 msgid "New value"
 msgstr "Nová hodnota"
 
-#: ../html/src/components/large-text-attachment.tsx:195
+#: ../html/src/components/large-text-attachment.tsx:204
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
 msgid "Confirm Deletion"
 msgstr "Potvrdiť vymazanie"
@@ -1166,18 +1687,6 @@ msgstr "Nie je možné vymazať výber"
 #: ../html/src/components/package/PackageListActionScheduler.tsx:107
 msgid "Unable to perform action."
 msgstr "Nie je možné vykonať akciu."
-
-#: ../html/src/components/package/PackageListActionScheduler.tsx:180
-#: ../html/src/components/states-picker.tsx:369
-#: ../html/src/components/states-picker.tsx:559
-#: ../html/src/manager/admin/setup/products/products.tsx:1081
-#: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:38
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:191
-#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1135
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:677
-msgid "Confirm"
-msgstr "Potvrdiť"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:208
 #: ../html/src/components/package/PackageListActionScheduler.tsx:241
@@ -1219,11 +1728,11 @@ msgstr "Nasledujúca"
 msgid "Last"
 msgstr "Posledná"
 
-#: ../html/src/components/pagination.tsx:93
+#: ../html/src/components/pagination.tsx:94
 msgid "Page <dropdown></dropdown> of {total}"
 msgstr "Stránka <dropdown></dropdown> z {total}"
 
-#: ../html/src/components/pagination.tsx:115
+#: ../html/src/components/pagination.tsx:117
 msgid "Page {current} of {total}"
 msgstr "Stránka {current} z {total}"
 
@@ -1371,9 +1880,10 @@ msgstr ""
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:91
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:202
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:204
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:103
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:121
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:233
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:235
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:111
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
@@ -1428,7 +1938,7 @@ msgid "There are no states assigned."
 msgstr "Nie sú priradené žiadne stavy."
 
 #: ../html/src/components/states-picker.tsx:451
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:251
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:282
 msgid "State Name"
 msgstr "Názov stavu"
 
@@ -1437,13 +1947,9 @@ msgid "Channel Name"
 msgstr "Názov kanála"
 
 #: ../html/src/components/states-picker.tsx:452
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:264
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:295
 msgid "State Label"
 msgstr "Označenie stavu"
-
-#: ../html/src/components/states-picker.tsx:452
-msgid "Channel Label"
-msgstr "Označenie kanála"
 
 #: ../html/src/components/states-picker.tsx:453
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
@@ -1457,7 +1963,7 @@ msgstr "Označenie kanála"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:42
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:36
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:52
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:268
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:299
 msgid "Description"
 msgstr "Popis"
 
@@ -1500,7 +2006,7 @@ msgstr "Virtuálny hosť"
 
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
-#: ../html/src/manager/systems/list-filter.tsx:66
+#: ../html/src/manager/systems/list-filter.tsx:68
 #: ../html/src/manager/systems/virtual-list.tsx:63
 msgid "Virtual Host"
 msgstr "Virtuálny hostiteľ"
@@ -1512,6 +2018,7 @@ msgstr "Nevirtuálny systém"
 #: ../html/src/components/systems.tsx:44
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:608
 #: ../html/src/manager/systems/list-filter.tsx:6
+#: ../html/src/manager/systems/list-filter.tsx:22
 msgid "Proxy"
 msgstr "Proxy"
 
@@ -1621,7 +2128,7 @@ msgstr "Pomocník"
 
 #: ../html/src/components/utils/loading/Loading.tsx:20
 #: ../html/src/manager/appstreams/appstream-packages.tsx:32
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:74
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:106
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:634
@@ -1789,20 +2296,20 @@ msgid "Server Monitoring"
 msgstr "Monitorovanie servera"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:154
-#, fuzzy
-#| msgid " exporters to expose metrics about your environment."
 msgid ""
 "The server uses <link>Prometheus</link> exporters to expose metrics about "
 "your environment."
-msgstr " exportéri pre ukázanie metriky o vašom prostredí."
+msgstr ""
+"Server používa exportéry <link>Prometheus</link> na zobrazenie metrík o "
+"vašom prostredí."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:163
-#, fuzzy
-#| msgid " to learn how to consume these metrics."
 msgid ""
 "Refer to the <link>documentation</link> to learn how to consume these "
 "metrics."
-msgstr " naučiť sa, ako tieto metriky využívať."
+msgstr ""
+"Informácie o tom, ako tieto metriky používať, nájdete v <link>dokumentácii</"
+"link>."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:254
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:274
@@ -1819,14 +2326,12 @@ msgid "Disable"
 msgstr "Zakázať"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:338
-#, fuzzy
-#| msgid "SUSE Manager Configuration - Monitoring"
 msgid "{productName} Configuration - Monitoring"
-msgstr "Konfigurácia SUSE Manager - Monitorovanie"
+msgstr "Konfigurácia {productName} - Monitorovanie"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:345
 msgid "Set up monitoring for your {productName} server."
-msgstr ""
+msgstr "Nastavte monitorovanie pre váš server {productName}."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:351
 msgid "General"
@@ -1921,13 +2426,47 @@ msgstr "Tento server je v súčasnosti registrovaný ako periféria hubu {fqdn}.
 msgid "Access Tokens"
 msgstr "Prístupové tokeny"
 
-#: ../html/src/manager/admin/hub/peripherals.tsx:16
+#: ../html/src/manager/admin/hub/migrate-from-v1.renderer.tsx:14
+msgid "Migrate from ISSv1 Slaves"
+msgstr ""
+
+#: ../html/src/manager/admin/hub/migrate-from-v2.renderer.tsx:13
+msgid "Migrate from ISSv2"
+msgstr ""
+
+#: ../html/src/manager/admin/hub/peripheral-details.tsx:20
+msgid "{fqdn} - Peripheral Details"
+msgstr ""
+
+#: ../html/src/manager/admin/hub/peripheral-details.tsx:51
+#, fuzzy
+#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
+msgid "The server {fqdn} is currently registered as peripheral of this hub. "
+msgstr "Tento server je v súčasnosti registrovaný ako periféria hubu {fqdn}. "
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:26
 msgid "Peripherals Configuration"
 msgstr "Konfigurácia periférií"
 
-#: ../html/src/manager/admin/hub/peripherals.tsx:25
+#: ../html/src/manager/admin/hub/peripherals.tsx:35
 msgid "Add Peripheral"
 msgstr "Pridať perifériu"
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:39
+msgid "Migrate"
+msgstr "Migrovať"
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:41
+msgid "Migrate an existing configuration of a previous version of ISS"
+msgstr ""
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:48
+msgid "Migrate ISS v1..."
+msgstr ""
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:57
+msgid "Migrate ISS v2..."
+msgstr ""
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:57
 msgid ""
@@ -2118,7 +2657,7 @@ msgstr "Obnoviť katalóg produktov zo Zákazníckeho centra SUSE"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:376
-#: ../html/src/manager/notifications/notification-messages.tsx:439
+#: ../html/src/manager/notifications/notifications-list.tsx:195
 msgid "Refresh"
 msgstr "Obnoviť"
 
@@ -2136,16 +2675,12 @@ msgid "Operation not successful: Empty reply from the server"
 msgstr "Operácia nebola úspešná: Prázdna odpoveď zo servera"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:132
-#, fuzzy
-#| msgid ""
-#| "No SUSE Manager Server Subscription available. Products requiring Client "
-#| "Tools Channel will not be shown."
 msgid ""
 "No SUSE Multi-Linux Manager Server Subscription available. Products "
 "requiring Client Tools Channel will not be shown."
 msgstr ""
-"Nie je k dispozícii predplatné servera SUSE Manager. Produkty vyžadujúce "
-"kanál nástrojov klienta sa nebudú zobrazovať."
+"Nie je k dispozícii predplatné servera SUSE Multi-Linux Manager. Produkty "
+"vyžadujúce kanál nástrojov klienta sa nebudú zobrazovať."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:179
 msgid "The product catalog refresh is running..."
@@ -2215,10 +2750,6 @@ msgstr ""
 "Tento server je nakonfigurovaný ako periférny server v konfigurácii pre hub. "
 "Produkty možno spravovať len na hub serveri."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:487
-msgid "Filter by architecture"
-msgstr "Filtrovať podľa architektúry"
-
 #: ../html/src/manager/admin/setup/products/products.tsx:505
 msgid "Filter by product Description"
 msgstr "Filtrovať podľa popisu produktu"
@@ -2226,18 +2757,6 @@ msgstr "Filtrovať podľa popisu produktu"
 #: ../html/src/manager/admin/setup/products/products.tsx:581
 msgid "Product Description"
 msgstr "Popis produktu"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:587
-#: ../html/src/manager/admin/setup/products/products.tsx:968
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
-#: ../html/src/manager/images/image-view-packages.tsx:50
-#: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
-msgid "Architecture"
-msgstr "Architektúra"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:589
-msgid "Arch"
-msgstr "Arch"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:596
 #: ../html/src/manager/packages/list.tsx:158
@@ -2360,16 +2879,16 @@ msgstr "Používateľské meno HTTP Proxy"
 msgid "HTTP Proxy Password"
 msgstr "Heslo HTTP Proxy"
 
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:125
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:128
 msgid "Illustration of a proxy server"
 msgstr "Ilustrácia proxy servera"
 
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:126
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:129
 #: ../html/src/manager/admin/setup/setup-header.tsx:7
 msgid "HTTP Proxy"
 msgstr "HTTP Proxy"
 
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:129
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:132
 msgid ""
 "If this server uses an HTTP proxy to access the outside network, you can use "
 "this form to configure it. If that is not the case, move on to "
@@ -2498,7 +3017,6 @@ msgstr "Momentálne na serveri nie sú spustené žiadne úlohy."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:559
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "Sedenie vypršalo, prosím, znovu načítajte stránku, aby ste zobrazili "
@@ -2506,14 +3024,9 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:263
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:561
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "Chyba servera, prosím, skontrolujte súbory záznamov."
-
-#: ../html/src/manager/appstreams/actions-appstreams.tsx:14
-msgid "Apply Changes"
-msgstr "Použiť zmeny"
 
 #: ../html/src/manager/appstreams/appstream-packages.tsx:36
 msgid "An error occurred while displaying the list of packages."
@@ -2745,16 +3258,12 @@ msgid "Match data status"
 msgstr "Stav údajov priradenia"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:88
-#, fuzzy
-#| msgid ""
-#| "Could not start a matching run. Please contact your SUSE Manager "
-#| "administrator to make sure the task scheduler is running."
 msgid ""
 "Could not start a matching run. Please contact your administrator to make "
 "sure the task scheduler is running."
 msgstr ""
 "Nepodarilo sa spustiť beh priraďovania. Prosím, kontaktujte svojho "
-"administrátora SUSE Manager a uistite sa, že je spustený plánovač úloh."
+"administrátora a uistite sa, že je spustený plánovač úloh."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:97
 msgid "No match data is currently available."
@@ -2969,6 +3478,7 @@ msgid "Socket/IFL count"
 msgstr "Počet Soket/IFL"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:306
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:127
 msgid "Select"
 msgstr "Vybrať"
 
@@ -3595,20 +4105,6 @@ msgstr "História verzie {version}"
 msgid "Version {version} successfully built into {environmentName}"
 msgstr "Verzia {version} bola úspešne zabudovaná do {environmentName}"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:29
-#: ../html/src/manager/images/image-build.tsx:258
-#: ../html/src/manager/images/image-profile-edit.tsx:528
-#: ../html/src/manager/images/image-profiles.tsx:177
-#: ../html/src/manager/images/image-store-edit.tsx:259
-#: ../html/src/manager/images/image-stores.tsx:177
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:259
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:315
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
-msgid "Label"
-msgstr "Označenie"
-
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:51
 msgid "Insert before"
 msgstr "Vložte pred"
@@ -3842,7 +4338,7 @@ msgstr "zahrnúť odporúčané"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:643
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:500
+#: ../html/src/manager/notifications/notifications-list.tsx:114
 #: ../html/src/manager/state/highstate-summary.tsx:77
 msgid "Type"
 msgstr "Typ"
@@ -3945,7 +4441,7 @@ msgstr "Systémy"
 #: ../html/src/manager/images/image-view.tsx:668
 #: ../html/src/manager/images/image-view.tsx:792
 #: ../html/src/manager/systems/all-list.tsx:103
-#: ../html/src/manager/systems/list-filter.tsx:45
+#: ../html/src/manager/systems/list-filter.tsx:47
 msgid "Packages"
 msgstr "Balíky"
 
@@ -3953,7 +4449,7 @@ msgstr "Balíky"
 #: ../html/src/manager/images/image-view.tsx:655
 #: ../html/src/manager/images/image-view.tsx:791
 #: ../html/src/manager/systems/all-list.tsx:90
-#: ../html/src/manager/systems/list-filter.tsx:44
+#: ../html/src/manager/systems/list-filter.tsx:46
 msgid "Patches"
 msgstr "Opravy"
 
@@ -3989,7 +4485,7 @@ msgid "Building the image has been "
 msgstr "Zostavenie obrazu bolo "
 
 #: ../html/src/manager/images/image-build.tsx:211
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:177
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:217
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:51
 #: ../html/src/manager/systems/proxy.tsx:70
@@ -4349,10 +4845,8 @@ msgstr "Zobraziť súhrn klastrov"
 #: ../html/src/manager/images/image-view-overview.tsx:247
 #: ../html/src/manager/images/image-view-overview.tsx:249
 #: ../html/src/manager/images/image-view.tsx:528
-#, fuzzy
-#| msgid "All instances are consistent with SUSE Manager"
 msgid "All instances are consistent with {productName}"
-msgstr "Všetky inštancie sú v súlade so SUSE Manager"
+msgstr "Všetky inštancie sú v súlade s {productName}"
 
 #: ../html/src/manager/images/image-view-overview.tsx:262
 #: ../html/src/manager/images/image-view-overview.tsx:263
@@ -4371,7 +4865,7 @@ msgstr "Upraviť úložisko"
 #: ../html/src/manager/images/image-view-overview.tsx:522
 #: ../html/src/manager/images/image-view-overview.tsx:523
 #: ../html/src/manager/images/image-view.tsx:485
-#: ../html/src/manager/systems/list-filter.tsx:26
+#: ../html/src/manager/systems/list-filter.tsx:28
 msgid "Critical updates available"
 msgstr "K dispozícii sú kritické aktualizácie"
 
@@ -4512,20 +5006,16 @@ msgid "Loading runtime information..."
 msgstr "Načítavajú sa behové informácie..."
 
 #: ../html/src/manager/images/image-view-runtime.tsx:70
-#, fuzzy
-#| msgid "Instance is consistent with SUSE Manager"
 msgid "Instance is consistent with {productName}"
-msgstr "Inštancia je v súlade so SUSE Manager"
+msgstr "Inštancia je v súlade s {productName}"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:76
 msgid "Instance is outdated"
 msgstr "Inštancia je zastaraná"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:110
-#, fuzzy
-#| msgid "Cluster is consistent with SUSE Manager"
 msgid "Cluster is consistent with {productName"
-msgstr "Klaster je v súlade so SUSE Manager"
+msgstr "Klaster je v súlade s {productName"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:116
 msgid "Cluster is outdated"
@@ -4582,7 +5072,7 @@ msgstr "(zastarané)"
 
 #: ../html/src/manager/images/image-view.tsx:652
 #: ../html/src/manager/systems/all-list.tsx:79
-#: ../html/src/manager/systems/list-filter.tsx:43
+#: ../html/src/manager/systems/list-filter.tsx:45
 #: ../html/src/manager/systems/virtual-list.tsx:88
 msgid "Updates"
 msgstr "Aktualizácie"
@@ -4642,22 +5132,16 @@ msgstr ""
 "svojho systémového administrátora, aby pridal viac miesta na disku."
 
 #: ../html/src/manager/login/messages.tsx:53
-#, fuzzy
-#| msgid ""
-#| "SUSE Manager PAYG instances must forward registration data to SCC when "
-#| "credentials are provided. Data will be sent independently of the "
-#| "configuration setting. To hide this warning please set "
-#| "'forward_registration = 1' in rhn.conf."
 msgid ""
 "SUSE Multi-Linux Manager PAYG instances must forward registration data to "
 "SCC when credentials are provided. Data will be sent independently of the "
 "configuration setting. To hide this warning please set 'forward_registration "
 "= 1' in rhn.conf."
 msgstr ""
-"PAYG inštancie SUSE Manager musia po poskytnutí prihlasovacích údajov "
-"postúpiť registračné údaje do SCC. Údaje sa odošlú nezávisle od nastavenia "
-"konfigurácie. Ak chcete toto upozornenie skryť, nastavte v rhn.conf "
-"'forward_registration = 1'."
+"PAYG inštancie SUSE Multi-Linux Manager musia po poskytnutí prihlasovacích "
+"údajov postúpiť registračné údaje do SCC. Údaje sa odošlú nezávisle od "
+"nastavenia konfigurácie. Ak chcete toto upozornenie skryť, nastavte v rhn."
+"conf 'forward_registration = 1'."
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
@@ -4683,13 +5167,8 @@ msgstr "<link>Zistite viac</link> o {productName}."
 msgid "Sign In"
 msgstr "Prihlásiť sa"
 
-#: ../html/src/manager/login/susemanager/login.tsx:119
-#: ../html/src/manager/login/uyuni/login.tsx:117
-msgid "Copyright Notice"
-msgstr "Oznámenie o autorských právach"
-
-#: ../html/src/manager/login/susemanager/login.tsx:121
-#: ../html/src/manager/login/uyuni/login.tsx:120
+#: ../html/src/manager/login/susemanager/login.tsx:120
+#: ../html/src/manager/login/uyuni/login.tsx:118
 msgid "{productName} release {versionNumber}"
 msgstr "{productName} vydanie {versionNumber}"
 
@@ -4718,10 +5197,6 @@ msgstr "Zistite viac o {productName}:"
 #: ../html/src/manager/login/uyuni/login.tsx:46
 msgid "View website"
 msgstr "Zobraziť webové stránky"
-
-#: ../html/src/manager/login/uyuni/login.tsx:114
-msgid "About"
-msgstr "O aplikácii"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:76
 msgid "Skip to the last maintenance window"
@@ -4830,7 +5305,7 @@ msgid "Multi"
 msgstr "Viacnásobný"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:102
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:150
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:156
 msgid "Schedule Details"
 msgstr "Podrobnosti plánu"
 
@@ -5047,7 +5522,7 @@ msgid "Loading content.."
 msgstr "Načítava sa obsah.."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:57
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:48
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:50
 msgid "An error occurred while loading data. Please check server logs."
 msgstr ""
 "Pri načítavaní dát sa vyskytla chyba. Prosím, skontrolujte záznamy servera."
@@ -5084,53 +5559,58 @@ msgstr "Pridať inventárny súbor"
 msgid "e.g., /etc/ansible/testing/hosts"
 msgstr "napr. /etc/ansible/testing/hosts"
 
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:81
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:85
 msgid "Nothing configured. Please add paths in the "
 msgstr "Nič nakonfigurované. Pridajte, prosím, cesty v "
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:81
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:93
 msgid "Loading playbook contents.."
 msgstr "Načítavajú obsahy scenárov.."
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:87
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:200
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:224
 #: ../html/src/manager/state/highstate.tsx:121
 msgid "Test mode"
 msgstr "Režim testu"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:92
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:104
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:122
 msgid "Back to playbook list"
 msgstr "Späť na zoznam scenárov"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:110
 msgid "Schedule playbook execution"
 msgstr "Naplánovať vykonanie scenára"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:128
+msgid "Select the current Playbook"
+msgstr "Vybrať aktuálny scenár"
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Schedule Playbook Execution"
 msgstr "Naplánovať vykonanie scenára"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:126
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:166
 msgid "Inventory Path"
 msgstr "Inventárna cesta"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:140
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:180
 msgid "Flush Ansible fact cache"
 msgstr "Vyprázdniť vyrovnávaciu pamäť faktov Ansible"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:141
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:181
 msgid "Clear the fact cache for every host in inventory"
 msgstr "Vymazať vyrovnávaciu pamäť faktov pre každého hostiteľa v inventári"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:149
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:189
 msgid "Playbook Content"
 msgstr "Obsah scenára"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:169
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:209
 msgid "Action has been successfully added to action chain"
 msgstr "Akcia bola úspešne pridaná do reťazca akcií"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:176
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:216
 msgid "Playbook execution has been"
 msgstr "Vykonanie scenára bolo"
 
@@ -5214,8 +5694,248 @@ msgstr "Stavy balíkov boli uložené."
 msgid "Applying the packages states has been "
 msgstr "Použitie stavov balíkov bolo "
 
+#: ../html/src/manager/minion/proxy/proxy-config-messages.tsx:13
+msgid "Proxy configuration action has been scheduled."
+msgstr "Bola naplánovaná akcia konfigurácie proxy."
+
+#: ../html/src/manager/minion/proxy/proxy-config-messages.tsx:25
+msgid "Scheduling proxy configuration action..."
+msgstr "Naplánovanie akcie konfigurácie proxy..."
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:114
+#: ../html/src/manager/proxy/container-config.tsx:142
+msgid "Request interrupted or invalid response received from the server."
+msgstr ""
+"Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď."
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:179
+msgid "Proxy Configuration"
+msgstr "Konfigurácia proxy"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:183
+msgid ""
+"Convert an already onboarded minion to a proxy or update the configuration "
+"of an existing proxy."
+msgstr ""
+"Konvertovať už začlenený minion na proxy alebo aktualizovať konfiguráciu "
+"existujúceho proxy."
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:193
+msgid "Convert Minion to Proxy"
+msgstr "Konvertovať Minion na Proxy"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:198
+#: ../html/src/manager/proxy/container-config.tsx:210
+msgid "Parent FQDN"
+msgstr "FQDN rodiča"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:199
+#: ../html/src/manager/proxy/container-config.tsx:213
+msgid "The FQDN of the parent (server or proxy) to connect to."
+msgstr "FQDN rodiča (server alebo proxy), ku ktorému sa má pripojiť."
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:201
+#: ../html/src/manager/proxy/container-config.tsx:212
+msgid "e.g., server.domain.com"
+msgstr "napr. server.domain.com"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:209
+#: ../html/src/manager/proxy/container-config.tsx:221
+msgid "Proxy SSH port"
+msgstr "Port Proxy SSH"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:210
+#: ../html/src/manager/proxy/container-config.tsx:222
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:499
+msgid "Port range: 1 - 65535"
+msgstr "Rozsah portov: 1 - 65535"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:219
+#: ../html/src/manager/proxy/container-config.tsx:231
+msgid "Max Squid cache size"
+msgstr "Max veľkosť vyrovnávacej pamäte Squid"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:220
+msgid "The maximum value of the Squid cache in Gigabytes"
+msgstr "Maximálna hodnota vyrovnávacej pamäte Squid v gigabajtoch"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:223
+msgid "e.g., 100"
+msgstr "napr. 100"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:230
+#: ../html/src/manager/proxy/container-config.tsx:242
+msgid "Proxy admin email"
+msgstr "Email administrátora proxy"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:231
+#: ../html/src/manager/proxy/container-config.tsx:243
+msgid "The container-based proxy administrator email address"
+msgstr "Emailová adresa administrátora proxy založeného na kontajneroch"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:232
+#: ../html/src/manager/proxy/container-config.tsx:244
+msgid "e.g., proxy.admin@mycompany.com"
+msgstr "napr. proxy.admin@mycompany.com"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:241
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:242
+msgid "Certificates"
+msgstr "Certifikáty"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:250
+msgid "Keep"
+msgstr "Ponechať"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:251
+msgid "Replace"
+msgstr "Nahradiť"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:262
+msgid ""
+"Keeping the current certificates means no changes will be made to the Root "
+"CA, Intermediate CAs, Proxy certificate, or Proxy SSL private key."
+msgstr ""
+"Zachovanie aktuálnych certifikátov znamená, že sa nevykonajú žiadne zmeny v "
+"koreňovej CA, sprostredkujúcich CA, proxy certifikáte ani v proxy SSL "
+"súkromnom kľúči."
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:273
+msgid "Root CA"
+msgstr "Koreňová CA"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:274
+#: ../html/src/manager/proxy/container-config.tsx:269
+#: ../html/src/manager/proxy/container-config.tsx:278
+#: ../html/src/manager/proxy/container-config.tsx:335
+msgid "To sign the SSL certificate in PEM format"
+msgstr "Podpísanie certifikátu SSL vo formáte PEM"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:283
+#: ../html/src/manager/proxy/container-config.tsx:344
+msgid "Intermediate CAs"
+msgstr "Sprostredkujúce CA"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:293
+#: ../html/src/manager/proxy/container-config.tsx:354
+msgid "CA file in PEM format"
+msgstr "Súbor CA vo formáte PEM"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:305
+#: ../html/src/manager/proxy/container-config.tsx:365
+msgid "Proxy certificate"
+msgstr "Proxy certifikát"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:306
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:315
+#: ../html/src/manager/proxy/container-config.tsx:366
+#: ../html/src/manager/proxy/container-config.tsx:375
+msgid "In PEM format"
+msgstr "Vo formáte PEM"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:314
+#: ../html/src/manager/proxy/container-config.tsx:374
+msgid "Proxy SSL private key"
+msgstr "Súkromný kľúč proxy SSL"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:326
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:327
+msgid "Source"
+msgstr "Zdroj"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:335
+msgid "Registry"
+msgstr "Register"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:336
+msgid "RPM"
+msgstr "RPM"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:344
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:345
+msgid "Registry Source"
+msgstr "Zdroj registra"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:352
+msgid "Simple"
+msgstr "Jednoduchá"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:353
+msgid "Advanced"
+msgstr "Pokročilé"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:361
+msgid "Registry URL"
+msgstr "URL registra"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:362
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:389
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:413
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:437
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:461
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:485
+msgid "e.g., "
+msgstr "napr. "
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:369
+msgid "Containers Tag"
+msgstr "Značka kontajnerov"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:371
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:398
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:422
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:446
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:470
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:494
+msgid "e.g., latest"
+msgstr "napr. najnovšie"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:388
+msgid "HTTPD URL"
+msgstr "HTTPD URL"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:396
+msgid "HTTPD Tag"
+msgstr "Značka HTTPD"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:412
+msgid "Salt Broker URL"
+msgstr "Salt Broker URL"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:420
+msgid "Salt Broker Tag"
+msgstr "Značka Salt Broker"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:436
+msgid "Squid URL"
+msgstr "Squid URL"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:444
+msgid "Squid Tag"
+msgstr "Značka Squid"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:460
+msgid "SSH URL"
+msgstr "SSH URL"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:468
+msgid "SSH Tag"
+msgstr "Značka SSH"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:484
+msgid "TFTPD URL"
+msgstr "TFTPD URL"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:492
+msgid "TFTPD Tag"
+msgstr "Značka TFTPD"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:510
+msgid "Apply"
+msgstr "Použiť"
+
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:506
+#: ../html/src/manager/notifications/notifications-list.tsx:120
 msgid "Summary"
 msgstr "Súhrn"
 
@@ -5283,131 +6003,91 @@ msgstr "Zoznam / Odstránenie nainštalovaných PTFs"
 msgid "Install PTF"
 msgstr "Inštalovať PTF"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:24
-msgid "Onboarding failed"
-msgstr "Začlenenie sa zlyhalo"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:28
-msgid "Channel sync failed"
-msgstr "Synchronizácia kanála zlyhala"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:32
-msgid "Channel sync finished"
-msgstr "Synchronizácia kanála je dokončená"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:36
-msgid "Creating Bootstrap Repository failed"
-msgstr "Vytvorenie zavádzacieho repozitára zlyhalo"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:40
-msgid "State apply failed"
-msgstr "Aplikácia stavu zlyhala"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:44
-msgid "PAYG refresh authentication data failed"
-msgstr "Zlyhalo obnovenie dát overenia PAYG"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:48
-msgid "End of Life Period"
-msgstr "Koniec životného cyklu"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:52
-msgid "Subscription Warning"
-msgstr "Upozornenie na predplatné"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:56
-msgid "Update Notification"
-msgstr "Upozornenie na aktualizáciu"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:60
-msgid "PAYG instance is not compliant"
-msgstr "Inštancia PAYG nie je vyhovujúca"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:64
-msgid "SCC Data Sync Disabled"
-msgstr "Zakázaná synchronizácia dát SCC"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:245
-#: ../html/src/manager/notifications/notification-messages.tsx:246
-msgid "Info"
-msgstr "Informácie"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:253
-#: ../html/src/manager/notifications/notification-messages.tsx:254
-msgid "Warning"
-msgstr "Varovanie"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:261
-#: ../html/src/manager/notifications/notification-messages.tsx:262
-msgid "Error"
-msgstr "Chyba"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:324
-msgid "show details"
-msgstr "zobraziť podrobnosti"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:373
-msgid "Retry onboarding"
-msgstr "Skúste znova začlenenie sa"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:383
-msgid "Retry repo sync"
-msgstr "Zopakovať synchronizáciu repozitárov"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:406
-msgid "Unread Messages"
-msgstr "Neprečítané správy"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:411
-msgid "All Messages"
-msgstr "Všetky správy"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:424
-msgid "Filter by type"
-msgstr "Filtrovať podľa typu"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:443
-#: ../html/src/manager/notifications/notification-messages.tsx:444
-msgid "Delete selected messages"
-msgstr "Vymazať vybraté správy"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:451
-#: ../html/src/manager/notifications/notification-messages.tsx:452
-msgid "Mark selected as read"
-msgstr "Označiť vybrané ako prečítané"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:469
-#: ../html/src/manager/notifications/notification-messages.tsx:547
+#: ../html/src/manager/notifications/notifications-list.tsx:78
 msgid "Notification Messages"
 msgstr "Správy s upozorneniami"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:474
+#: ../html/src/manager/notifications/notifications-list.tsx:83
 msgid "The server has collected the following notification messages."
 msgstr "Server zhromaždil nasledujúce správy s upozorneniami."
 
-#: ../html/src/manager/notifications/notification-messages.tsx:488
+#: ../html/src/manager/notifications/notifications-list.tsx:100
 msgid "Filter by summary"
 msgstr "Filtrovať podľa súhrnu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:494
+#: ../html/src/manager/notifications/notifications-list.tsx:108
 msgid "Severity"
 msgstr "Závažnosť"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:523
+#: ../html/src/manager/notifications/notifications-list.tsx:133
 msgid "Read|Delete"
 msgstr "Čítať|Vymazať"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:529
+#: ../html/src/manager/notifications/notifications-list.tsx:159
+msgid "Filter by type"
+msgstr "Filtrovať podľa typu"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:177
+msgid "Unread Messages"
+msgstr "Neprečítané správy"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:182
+msgid "All Messages"
+msgstr "Všetky správy"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:199
+#: ../html/src/manager/notifications/notifications-list.tsx:200
+msgid "Delete selected messages"
+msgstr "Vymazať vybraté správy"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:207
+#: ../html/src/manager/notifications/notifications-list.tsx:208
+msgid "Mark selected as read"
+msgstr "Označiť vybrané ako prečítané"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:226
+msgid "show details"
+msgstr "zobraziť podrobnosti"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:242
+msgid "Retry"
+msgstr "Znovu"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:254
 msgid "Flag as Unread"
 msgstr "Označiť ako neprečítané"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:529
+#: ../html/src/manager/notifications/notifications-list.tsx:254
 msgid "Flag as Read"
 msgstr "Označiť ako prečítané"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:535
+#: ../html/src/manager/notifications/notifications-list.tsx:260
 msgid "Delete Notification"
 msgstr "Vymazať oznámenie"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:307
+#, fuzzy
+#| msgid "Environment updated successfully"
+msgid "{number} messages status updated successfully"
+msgstr "Prostredie bolo úspešne aktualizované"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:308
+#, fuzzy
+#| msgid "Cluster properties updated successfully"
+msgid "Message read status updated successfully"
+msgstr "Vlastnosti klastra sa úspešne aktualizovali"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:325
+#, fuzzy
+#| msgid "Filter deleted successfully"
+msgid "{number} messages deleted successfully"
+msgstr "Filter bol úspešne vymazaný"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:326
+#, fuzzy
+#| msgid "Filter deleted successfully"
+msgid "Message deleted successfully"
+msgstr "Filter bol úspešne vymazaný"
 
 #: ../html/src/manager/notifications/notifications.tsx:42
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:339
@@ -5471,11 +6151,6 @@ msgid ""
 "Generation of the proxy configuration in progress: waiting for a response..."
 msgstr "Prebieha generovanie konfigurácie proxy: čaká sa na odpoveď..."
 
-#: ../html/src/manager/proxy/container-config.tsx:142
-msgid "Request interrupted or invalid response received from the server."
-msgstr ""
-"Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď."
-
 #: ../html/src/manager/proxy/container-config.tsx:179
 #: ../html/src/manager/proxy/container-config.tsx:195
 msgid "Container Based Proxy Configuration"
@@ -5503,31 +6178,6 @@ msgstr "Jedinečný názov FQDN tohto proxy, ktorý je možné rozlíšiť pomoc
 msgid "e.g., proxy.domain.com"
 msgstr "napr. proxy.domain.com"
 
-#: ../html/src/manager/proxy/container-config.tsx:210
-msgid "Parent FQDN"
-msgstr "FQDN rodiča"
-
-#: ../html/src/manager/proxy/container-config.tsx:212
-msgid "e.g., server.domain.com"
-msgstr "napr. server.domain.com"
-
-#: ../html/src/manager/proxy/container-config.tsx:213
-msgid "The FQDN of the parent (server or proxy) to connect to."
-msgstr "FQDN rodiča (server alebo proxy), ku ktorému sa má pripojiť."
-
-#: ../html/src/manager/proxy/container-config.tsx:221
-msgid "Proxy SSH port"
-msgstr "Port Proxy SSH"
-
-#: ../html/src/manager/proxy/container-config.tsx:222
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:499
-msgid "Port range: 1 - 65535"
-msgstr "Rozsah portov: 1 - 65535"
-
-#: ../html/src/manager/proxy/container-config.tsx:231
-msgid "Max Squid cache size"
-msgstr "Max veľkosť vyrovnávacej pamäte Squid"
-
 #: ../html/src/manager/proxy/container-config.tsx:232
 msgid "The maximum value of the Squid cache in Megabytes"
 msgstr "Maximálna hodnota vyrovnávacej pamäte Squid v megabajtoch"
@@ -5535,18 +6185,6 @@ msgstr "Maximálna hodnota vyrovnávacej pamäte Squid v megabajtoch"
 #: ../html/src/manager/proxy/container-config.tsx:235
 msgid "e.g., 2048"
 msgstr "napr. 2048"
-
-#: ../html/src/manager/proxy/container-config.tsx:242
-msgid "Proxy admin email"
-msgstr "Email administrátora proxy"
-
-#: ../html/src/manager/proxy/container-config.tsx:243
-msgid "The container-based proxy administrator email address"
-msgstr "Emailová adresa administrátora proxy založeného na kontajneroch"
-
-#: ../html/src/manager/proxy/container-config.tsx:244
-msgid "e.g., proxy.admin@mycompany.com"
-msgstr "napr. proxy.admin@mycompany.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:251
 #: ../html/src/manager/proxy/container-config.tsx:252
@@ -5565,12 +6203,6 @@ msgstr "Použiť existujúce"
 #: ../html/src/manager/proxy/container-config.tsx:268
 msgid "CA certificate"
 msgstr "CA certifikát"
-
-#: ../html/src/manager/proxy/container-config.tsx:269
-#: ../html/src/manager/proxy/container-config.tsx:278
-#: ../html/src/manager/proxy/container-config.tsx:335
-msgid "To sign the SSL certificate in PEM format"
-msgstr "Podpísanie certifikátu SSL vo formáte PEM"
 
 #: ../html/src/manager/proxy/container-config.tsx:277
 msgid "CA private key"
@@ -5626,125 +6258,131 @@ msgstr "Email"
 msgid "The root CA"
 msgstr "Koreňová CA"
 
-#: ../html/src/manager/proxy/container-config.tsx:344
-msgid "Intermediate CAs"
-msgstr "Sprostredkujúce CA"
-
-#: ../html/src/manager/proxy/container-config.tsx:354
-msgid "CA file in PEM format"
-msgstr "Súbor CA vo formáte PEM"
-
-#: ../html/src/manager/proxy/container-config.tsx:365
-msgid "Proxy certificate"
-msgstr "Proxy certifikát"
-
-#: ../html/src/manager/proxy/container-config.tsx:366
-#: ../html/src/manager/proxy/container-config.tsx:375
-msgid "In PEM format"
-msgstr "Vo formáte PEM"
-
-#: ../html/src/manager/proxy/container-config.tsx:374
-msgid "Proxy SSL private key"
-msgstr "Súkromný kľúč proxy SSL"
-
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:89
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:95
 msgid "Execution time"
 msgstr "Čas vykonania"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:155
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:161
 msgid "State:"
 msgstr "Stav:"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:156
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:162
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:148
 msgid "Active"
 msgstr "Aktívny"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:156
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:162
 msgid "Inactive"
 msgstr "Neaktívny"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:160
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:166
 msgid "Test"
 msgstr "Test"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:161
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:167
 msgid "True"
 msgstr "Pravda"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:165
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:171
 msgid "Action type"
 msgstr "Typ akcie"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:169
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:175
 msgid "Target type"
 msgstr "Typ cieľa"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:173
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:179
 msgid "Target name"
 msgstr "Názov cieľa"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:177
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:183
 msgid "Created by"
 msgstr "Vytvorené"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:182
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:188
 msgid "Created at"
 msgstr "Vytvorené v"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:188
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:194
 msgid "Quartz format string"
 msgstr "Reťazec formátu Quartz"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:233
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:206
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:74
+msgid "Playbook details"
+msgstr "Podrobnosti scenára"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:211
+msgid "Playbook path"
+msgstr "Cesta scenára"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:215
+msgid "Inventory path"
+msgstr "Inventárna cesta"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:219
+msgid "Flush fact cache"
+msgstr "Vyprázdniť vyrovnávaciu pamäť faktov"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:220
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:93
+msgid "true"
+msgstr "pravda"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:220
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:93
+msgid "false"
+msgstr "nepravda"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:264
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:235
 msgid "Delete Recurring Action Schedule"
 msgstr "Vymazať plán opakujúcich sa akcií"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:234
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:265
 msgid "Are you sure you want to delete this schedule?"
 msgstr "Naozaj chcete vymazať tento plán?"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:242
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:273
 msgid "State configuration for {name}"
 msgstr "Konfigurácia stavu pre {name}"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:249
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:280
 msgid "Order"
 msgstr "Usporiadať"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:79
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:81
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:84
 msgid "Schedule successfully updated."
 msgstr "Naplánované úspešne."
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:79
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:81
 msgid "Schedule successfully created."
 msgstr "Naplánované úspešne."
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:90
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:92
 msgid "Action scheduled on selected minions"
 msgstr "Naplánovaná akcia na vybraných klientoch minion"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
 msgid "Update "
 msgstr "Aktualizovať "
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
 msgid "Create "
 msgstr "Vytvoriť "
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:226
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
 msgid "Schedule Recurring Action"
 msgstr "Naplánovať opakujúcu sa akciu"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:235
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:259
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:194
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:35
 msgid "Action Type"
 msgstr "Typ akcie"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:260
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:283
 msgid "Configure states to execute"
 msgstr "Konfigurovať stavy na vykonanie"
 
@@ -5788,17 +6426,37 @@ msgstr "Minion"
 msgid "Group"
 msgstr "Skupina"
 
-#: ../html/src/manager/recurring/recurring-actions.tsx:133
+#: ../html/src/manager/recurring/recurring-actions.tsx:134
 msgid "Error when deleting the action. Check if Taskomatic is running"
 msgstr "Chyba pri vymazávaní akcie. Skontrolujte, či je spustený Taskomatic"
 
-#: ../html/src/manager/recurring/recurring-actions.tsx:148
+#: ../html/src/manager/recurring/recurring-actions.tsx:149
 msgid ""
 "The below times are displayed in the server time zone {timeZone}. The "
 "scheduled time will be the server time."
 msgstr ""
 "Nižšie uvedené časy sa zobrazujú v časovom pásme servera {timeZone}. "
 "Naplánovaný čas bude časom servera."
+
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:54
+msgid "Change Playbook"
+msgstr "Zmeniť scenár"
+
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:61
+msgid "Select a Playbook"
+msgstr "Vybrať scenár"
+
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:79
+msgid "Playbook path:"
+msgstr "Cesta scenára:"
+
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:85
+msgid "Inventory path:"
+msgstr "Inventárna cesta:"
+
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:91
+msgid "Flush fact cache:"
+msgstr "Vyprázdniť vyrovnávaciu pamäť faktov:"
 
 #. Value options for filtering by Action Type in recurring actions list
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
@@ -5975,10 +6633,8 @@ msgid "Uyuni homepage"
 msgstr "Domovská stránka Uyuni"
 
 #: ../html/src/manager/shared/menu/menu.tsx:259
-#, fuzzy
-#| msgid "SUSE Manager homepage"
 msgid "SUSE Multi-Linux Manager homepage"
-msgstr "Domovská stránka SUSE Manager"
+msgstr "Domovská stránka SUSE Multi-Linux Manager"
 
 #: ../html/src/manager/state/display-highstate.tsx:9
 msgid "State Summary for {name}"
@@ -5997,10 +6653,8 @@ msgid "Config channel"
 msgstr "Konfiguračný kanál"
 
 #: ../html/src/manager/state/highstate-summary.tsx:27
-#, fuzzy
-#| msgid "{productName} release {versionNumber}"
 msgid "{productName} internal"
-msgstr "{productName} vydanie {versionNumber}"
+msgstr "{productName} interné"
 
 #: ../html/src/manager/state/highstate-summary.tsx:37
 msgid "Internal states"
@@ -6052,7 +6706,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:35
 msgid "{productName} Default"
-msgstr ""
+msgstr "{productName} Predvolené"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:65
 msgid "Loading child channels.."
@@ -6107,24 +6761,24 @@ msgid "No Systems."
 msgstr "Žiadne systémy."
 
 #: ../html/src/manager/systems/all-list.tsx:117
-#: ../html/src/manager/systems/list-filter.tsx:46
+#: ../html/src/manager/systems/list-filter.tsx:48
 msgid "Extra Packages"
 msgstr "Extra balíky"
 
 #: ../html/src/manager/systems/all-list.tsx:131
-#: ../html/src/manager/systems/list-filter.tsx:47
+#: ../html/src/manager/systems/list-filter.tsx:49
 msgid "Config Diffs"
 msgstr "Konfiguračné rozdiely"
 
 #: ../html/src/manager/systems/all-list.tsx:146
-#: ../html/src/manager/systems/list-filter.tsx:48
+#: ../html/src/manager/systems/list-filter.tsx:50
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:579
 msgid "Base Channel"
 msgstr "Základný kanál"
 
 #: ../html/src/manager/systems/all-list.tsx:157
-#: ../html/src/manager/systems/list-filter.tsx:51
+#: ../html/src/manager/systems/list-filter.tsx:53
 msgid "System Type"
 msgstr "Typ systému"
 
@@ -6169,7 +6823,7 @@ msgid "Loading SSH Private Key.."
 msgstr "Načítava sa súkromný kľúč SSH..."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:399
-#: ../html/src/manager/systems/list-filter.tsx:13
+#: ../html/src/manager/systems/list-filter.tsx:14
 msgid "Bootstrap"
 msgstr "Zavádzať"
 
@@ -6337,83 +6991,87 @@ msgstr "Fyzický"
 msgid "Ansible Control Node"
 msgstr "Riadiaci uzol Ansible"
 
-#: ../html/src/manager/systems/list-filter.tsx:14
+#: ../html/src/manager/systems/list-filter.tsx:13
+msgid "Ansible Managed"
+msgstr "Spravované Ansible"
+
+#: ../html/src/manager/systems/list-filter.tsx:15
 msgid "Container Build Host"
 msgstr "Hostiteľ zostavený kontajnermi"
 
-#: ../html/src/manager/systems/list-filter.tsx:15
+#: ../html/src/manager/systems/list-filter.tsx:16
 msgid "Foreign"
 msgstr "Cudzie"
 
-#: ../html/src/manager/systems/list-filter.tsx:16
+#: ../html/src/manager/systems/list-filter.tsx:17
 msgid "Management"
 msgstr "Správa"
 
-#: ../html/src/manager/systems/list-filter.tsx:17
+#: ../html/src/manager/systems/list-filter.tsx:18
 msgid "Monitored Host"
 msgstr "Monitorovaný hostiteľ"
 
-#: ../html/src/manager/systems/list-filter.tsx:18
+#: ../html/src/manager/systems/list-filter.tsx:19
 msgid "OS Image Build Host"
 msgstr "Hostiteľ zostavenia ISO obrazu"
 
-#: ../html/src/manager/systems/list-filter.tsx:19
+#: ../html/src/manager/systems/list-filter.tsx:20
 msgid "Salt"
 msgstr "Salt"
 
-#: ../html/src/manager/systems/list-filter.tsx:20
+#: ../html/src/manager/systems/list-filter.tsx:21
 msgid "Virtualization Host"
 msgstr "Hostiteľ virtualizácie"
 
-#: ../html/src/manager/systems/list-filter.tsx:24
+#: ../html/src/manager/systems/list-filter.tsx:26
 msgid "Actions scheduled"
 msgstr "Akcie naplánované"
 
-#: ../html/src/manager/systems/list-filter.tsx:25
+#: ../html/src/manager/systems/list-filter.tsx:27
 msgid "All updates scheduled"
 msgstr "Všetky aktualizácie naplánované"
 
-#: ../html/src/manager/systems/list-filter.tsx:27
+#: ../html/src/manager/systems/list-filter.tsx:29
 msgid "Kickstart in progress"
 msgstr "Kickstart prebieha"
 
-#: ../html/src/manager/systems/list-filter.tsx:28
+#: ../html/src/manager/systems/list-filter.tsx:30
 msgid "System is up to date"
 msgstr "Systém je aktuálny"
 
-#: ../html/src/manager/systems/list-filter.tsx:29
+#: ../html/src/manager/systems/list-filter.tsx:31
 msgid "System not checking in"
 msgstr "Systém, ktorý nie je prihlásený"
 
-#: ../html/src/manager/systems/list-filter.tsx:30
+#: ../html/src/manager/systems/list-filter.tsx:32
 msgid "System not entitled"
 msgstr "Systém, ktorý nie je oprávnený"
 
-#: ../html/src/manager/systems/list-filter.tsx:31
+#: ../html/src/manager/systems/list-filter.tsx:33
 msgid "System requires reboot"
 msgstr "Systém vyžaduje reštart"
 
-#: ../html/src/manager/systems/list-filter.tsx:32
+#: ../html/src/manager/systems/list-filter.tsx:34
 msgid "Updates available"
 msgstr "K dispozícii sú aktualizácie"
 
-#: ../html/src/manager/systems/list-filter.tsx:42
+#: ../html/src/manager/systems/list-filter.tsx:44
 msgid "System Kind"
 msgstr "Druh systému"
 
-#: ../html/src/manager/systems/list-filter.tsx:57
+#: ../html/src/manager/systems/list-filter.tsx:59
 msgid "Requires Reboot"
 msgstr "Vyžaduje reštart"
 
-#: ../html/src/manager/systems/list-filter.tsx:61
+#: ../html/src/manager/systems/list-filter.tsx:63
 msgid "Registered Days"
 msgstr "Registrované dni"
 
-#: ../html/src/manager/systems/list-filter.tsx:62
+#: ../html/src/manager/systems/list-filter.tsx:64
 msgid "Groups"
 msgstr "Skupiny"
 
-#: ../html/src/manager/systems/list-filter.tsx:67
+#: ../html/src/manager/systems/list-filter.tsx:69
 #: ../html/src/manager/systems/virtual-list.tsx:71
 msgid "Virtual System"
 msgstr "Virtuálny systém"
@@ -6809,6 +7467,48 @@ msgstr "Zdroj sa nenašiel."
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
 
+#~ msgid "Onboarding failed"
+#~ msgstr "Začlenenie sa zlyhalo"
+
+#~ msgid "Channel sync finished"
+#~ msgstr "Synchronizácia kanála je dokončená"
+
+#~ msgid "Creating Bootstrap Repository failed"
+#~ msgstr "Vytvorenie zavádzacieho repozitára zlyhalo"
+
+#~ msgid "State apply failed"
+#~ msgstr "Aplikácia stavu zlyhala"
+
+#~ msgid "PAYG refresh authentication data failed"
+#~ msgstr "Zlyhalo obnovenie dát overenia PAYG"
+
+#~ msgid "End of Life Period"
+#~ msgstr "Koniec životného cyklu"
+
+#~ msgid "Subscription Warning"
+#~ msgstr "Upozornenie na predplatné"
+
+#~ msgid "Update Notification"
+#~ msgstr "Upozornenie na aktualizáciu"
+
+#~ msgid "PAYG instance is not compliant"
+#~ msgstr "Inštancia PAYG nie je vyhovujúca"
+
+#~ msgid "SCC Data Sync Disabled"
+#~ msgstr "Zakázaná synchronizácia dát SCC"
+
+#~ msgid "Retry onboarding"
+#~ msgstr "Skúste znova začlenenie sa"
+
+#~ msgid "Retry repo sync"
+#~ msgstr "Zopakovať synchronizáciu repozitárov"
+
+#~ msgid "Copyright Notice"
+#~ msgstr "Oznámenie o autorských právach"
+
+#~ msgid "About"
+#~ msgstr "O aplikácii"
+
 #~ msgid "The server uses "
 #~ msgstr "Server používa "
 
@@ -6851,9 +7551,6 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "Action Status"
 #~ msgstr "Stav akcie"
-
-#~ msgid "Can not contain the following characters: /\\"
-#~ msgstr "Nemôže obsahovať nasledujúce znaky: /\\"
 
 #~ msgid "Hypervisor"
 #~ msgstr "Hypervizor"
@@ -6898,9 +7595,6 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Graphics"
 #~ msgstr "Grafika"
 
-#~ msgid "Retry"
-#~ msgstr "Znovu"
-
 #~ msgid "Connecting..."
 #~ msgstr "Pripájanie..."
 
@@ -6924,9 +7618,6 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "Create Virtual Machine"
 #~ msgstr "Vytvoriť virtuálny stroj"
-
-#~ msgid "Migrate"
-#~ msgstr "Migrovať"
 
 #~ msgid "Select where to migrate the virtual guest to."
 #~ msgstr "Vyberte, kam sa má virtuálny hosť migrovať."
@@ -7348,9 +8039,6 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Pool Type"
 #~ msgstr "Typ fondu"
 
-#~ msgid "Source"
-#~ msgstr "Zdroj"
-
 #~ msgid "Devices"
 #~ msgstr "Zariadenia"
 
@@ -7503,9 +8191,6 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "Partition systems by given check-in time:"
 #~ msgstr "Rozdeliť systémy podľa daného času registrácie:"
-
-#~ msgid "Apply"
-#~ msgstr "Použiť"
 
 #~ msgid "Partition systems based on whether there are patches for them:"
 #~ msgstr "Rozdeliť systémy na základe toho, či pre ne existujú opravy:"
@@ -7672,9 +8357,6 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "System group refresh action scheduled successfully"
 #~ msgstr "Akcia obnovenia systémovej skupiny bola úspešne naplánovaná"
-
-#~ msgid "Cluster properties updated successfully"
-#~ msgstr "Vlastnosti klastra sa úspešne aktualizovali"
 
 #~ msgid "Edit cluster details"
 #~ msgstr "Upraviť podrobnosti klastra"

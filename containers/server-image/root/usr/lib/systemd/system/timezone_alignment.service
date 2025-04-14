@@ -1,6 +1,5 @@
 [Unit]
 Description=Timezone alignment
-After=postgresql.service
 
 [Service]
 PassEnvironment=TZ

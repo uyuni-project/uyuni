@@ -11645,6 +11645,175 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Unable to deregister: an unexpected error is occurred while contacting the remote server. Please check the server logs.</source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="toolbar.convert.proxy" xml:space="preserve">
+        <source>Convert to Proxy</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Details Convert to Proxy</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.entitle.added.proxy_entitled" xml:space="preserve">
+        <source>&lt;strong&gt;Proxy&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ansible.inventory" xml:space="preserve">
+        <source>Refresh Ansible inventories</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="recurring_action.empty_playbook_path" xml:space="preserve">
+        <source>No Playbook selected</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.cannot_refresh_certificate" xml:space="preserve">
+        <source>An error occurred while attempting to refresh the root certificate authorities. Please check the server logs.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.migration_success" xml:space="preserve">
+        <source>The migration from ISSv{0} was completed successfully.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.unexpected_error_migrating" xml:space="preserve">
+        <source>An expected error happened during the migration process: {0}. Please check the server logs.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.migration.no_slaves" xml:space="preserve">
+        <source>This server does not have any ISSv1 slave</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.migration.slave_not_exit" xml:space="preserve">
+        <source>Slave {0} does not exist</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.migration.no_migration_data" xml:space="preserve">
+        <source>Slave {0} has no migration data and will not be migrated</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.migration.slave_disabled" xml:space="preserve">
+        <source>Slave {0} is currently disabled and will not be migrated</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.migration.unable_to_migrate" xml:space="preserve">
+        <source>Unable to migrate server {0}: {1}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.migration.fail_channel_config" xml:space="preserve">
+        <source>Unable to configure channels for peripheral {0}: {1}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.migration.removal_slave" xml:space="preserve">
+        <source>Unable remove ISSv1 data for slave {0}: {1}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.migration.removal_peripheral" xml:space="preserve">
+        <source>Unable to remove partially migrated peripheral {0}: {1}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.invalid_id" xml:space="preserve">
+        <source>The specified peripheral id is invalid.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="onboardingfailed" xml:space="preserve">
+        <source>Onboarding failed</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channelsyncfailed" xml:space="preserve">
+        <source>Channel sync failed</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channelsyncfinished" xml:space="preserve">
+        <source>Channel sync finished</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="createbootstraprepofailed" xml:space="preserve">
+        <source>Creating Bootstrap Repository failed</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="stateapplyfailed" xml:space="preserve">
+        <source>State apply failed</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="paygauthenticationupdatefailed" xml:space="preserve">
+        <source>PAYG refresh failed</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="endoflifeperiod" xml:space="preserve">
+        <source>End of Life Period</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="subscriptionwarning" xml:space="preserve">
+        <source>Subscription Warning</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="updateavailable" xml:space="preserve">
+        <source>Updates are Available</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="paygnotcompliantwarning" xml:space="preserve">
+        <source>PAYG instance is not compliant</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sccoptoutwarning" xml:space="preserve">
+        <source>SCC Data Sync Disabled</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hubregistrationchanged" xml:space="preserve">
+        <source>Hub Registration Changed</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.not_found" xml:space="preserve">
+        <source>Cannot retry: a notification with id '{0}' does not exist.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.type_not_actionable" xml:space="preserve">
+        <source>Cannot retry: the notification type '{0}' is not actionable.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.channelsyncfailed.action.not_found" xml:space="preserve">
+        <source>Failed to restart reposync. A channel with id {0} does not exist.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.channelsyncfailed.action.failed" xml:space="preserve">
+        <source>Failed to restart reposync for the channel '{0}': {1}.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.channelsyncfailed.action.success" xml:space="preserve">
+        <source>Reposync restarted for the channel '{0}'</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.onboardingfailed.action.success" xml:space="preserve">
+        <source>Onboarding restarted for the minion with id '{0}'</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.hub.registered.summary" xml:space="preserve">
+        <source>This server is now a peripheral of {0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.hub.registered.details" xml:space="preserve">
+        <source>&lt;p&gt;This server has been registered as a peripheral of hub {0} and will start to receive data from it.&lt;/p&gt; &lt;p&gt;Check the &lt;a href="/rhn/manager/admin/hub/hub-details"&gt;Hub details page&lt;/a&gt; for more information.&lt;/p&gt;</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.hub.hub_deregistered.summary" xml:space="preserve">
+        <source>This server is no longer a peripheral of {0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.hub.hub_deregistered.details" xml:space="preserve">
+        <source>&lt;p&gt;The hub {0} has de-registered this server, which means it is no longer acting as its peripheral.&lt;/p&gt; &lt;p&gt;Review your configuration, as all the channels that were previously synced from the hub will no loger be updated.&lt;/p&gt;</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.hub.peripheral_deregistered.summary" xml:space="preserve">
+        <source>Server {0} is no longer a peripheral.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.hub.peripheral_deregistered.details" xml:space="preserve">
+        <source>&lt;p&gt;The peripheral {0} has de-registered from this hub, and it is no longer manageable as a peripheral..&lt;/p&gt; &lt;p&gt;Any existing synchronization configuration has been removed.&lt;/p&gt;</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>

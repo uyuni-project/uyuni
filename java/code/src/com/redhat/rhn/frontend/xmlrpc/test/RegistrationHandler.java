@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.xmlrpc.test;
 
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 
 /**
@@ -22,6 +23,11 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
  * @apidoc.ignore
  */
 public class RegistrationHandler extends BaseHandler {
+
+    @Override
+    protected void ensureRoleBasedAccess(User user, String className, String methodName) {
+        // Bypass RBAC for unit tests
+    }
 
     /**
      * Returns the RHN privacy statement

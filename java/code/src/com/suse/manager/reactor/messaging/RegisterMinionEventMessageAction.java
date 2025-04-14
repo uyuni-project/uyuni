@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015--2021 SUSE LLC
+ * Copyright (c) 2015--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.reactor.messaging;
 
@@ -47,8 +43,6 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -63,7 +57,6 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
@@ -133,11 +126,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         systemQuery = systemQueryIn;
         cloudPaygManager = paygMgrIn;
         attestationManager = attMgrIn;
-        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
-        ServerGroupManager groupManager = new ServerGroupManager(saltApi);
         entitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(monitoringManager, groupManager),
-                new SystemEntitler(saltApi, monitoringManager, groupManager)
+                new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
         );
     }
 
@@ -975,12 +965,11 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         new OnboardingFailed(rme.minionId, e.getLocalizedMessage())
                 );
                 if (rme.org == null) {
-                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                            Collections.singleton(RoleFactory.ORG_ADMIN), empty());
+                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage, RoleFactory.ORG_ADMIN);
                 }
                 else {
                     UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                            Collections.singleton(RoleFactory.ORG_ADMIN), of(rme.org));
+                            RoleFactory.ORG_ADMIN, of(rme.org));
                 }
             }
         };
@@ -1021,6 +1010,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         /**
          * @return return the message localized - if it was translated
          */
+        @Override
         public String getLocalizedMessage() {
             if (messageId.isEmpty()) {
                 return getMessage();

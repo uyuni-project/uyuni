@@ -16,11 +16,10 @@ package com.redhat.rhn.taskomatic.core;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -94,7 +93,7 @@ public class TaskomaticDaemon {
         int retval = SUCCESS;
         CommandLineParser parser = null;
         try {
-            parser = new PosixParser();
+            parser = new DefaultParser();
             CommandLine cl = parser.parse(options, argv);
             retval = onStartup(cl);
         }
@@ -211,11 +210,12 @@ public class TaskomaticDaemon {
 
     private void createOption(Options accum, String longopt, boolean arg,
                               String argName, String description) {
-        OptionBuilder.withArgName(argName);
-        OptionBuilder.withLongOpt(longopt);
-        OptionBuilder.hasArg(arg);
-        OptionBuilder.withDescription(description);
-        Option option = OptionBuilder.create(longopt);
+        Option option = Option.builder(longopt)
+                .argName(argName)
+                .longOpt(longopt)
+                .hasArg(arg)
+                .desc(description)
+                .build();
         accum.addOption(option);
         this.masterOptionsMap.putIfAbsent(longopt, option);
     }

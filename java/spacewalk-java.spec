@@ -60,7 +60,7 @@
 %endif
 
 Name:           spacewalk-java
-Version:        5.1.10
+Version:        5.1.11
 Release:        0
 Summary:        Java web application files for %{productprettyname}
 License:        GPL-2.0-only
@@ -89,6 +89,7 @@ BuildRequires:  apache-commons-el
 BuildRequires:  apache-commons-io >= 2.11.0
 BuildRequires:  apache-commons-jexl
 BuildRequires:  apache-commons-lang3 >= 3.4
+BuildRequires:  apache-commons-text
 BuildRequires:  apache-commons-logging
 BuildRequires:  bcel
 BuildRequires:  mvn(net.bytebuddy:byte-buddy) >= 1.14
@@ -174,6 +175,7 @@ Requires:       apache-commons-el
 Requires:       apache-commons-io
 Requires:       apache-commons-jexl
 Requires:       apache-commons-lang3
+Requires:       apache-commons-text
 Requires:       apache-commons-logging
 Requires:       bcel
 Requires:       mvn(net.bytebuddy:byte-buddy) >= 1.14
@@ -316,6 +318,7 @@ This package contains testing files of spacewalk-java.
 %{_datadir}/rhn/unit-tests/*
 %{_datadir}/rhn/unittest.xml
 %attr(644, tomcat, tomcat) %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/commons-lang3.jar
+%attr(644, tomcat, tomcat) %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/commons-text.jar
 %endif
 
 %package apidoc-sources
@@ -352,6 +355,7 @@ Requires:       %{ehcache}
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
+Requires:       apache-commons-text
 Requires:       apache-commons-logging
 Requires:       bcel
 Requires:       mvn(net.bytebuddy:byte-buddy) >= 1.14

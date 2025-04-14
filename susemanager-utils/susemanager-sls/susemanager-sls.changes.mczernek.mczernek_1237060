@@ -1,2 +1,0 @@
-- Change uptodate recurring action to use dist-upgrade
-  instead of upgrade for Deb systems (bsc#1237060)

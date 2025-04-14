@@ -37,11 +37,11 @@ public class SCCMinProductJson {
      */
     public SCCMinProductJson(long idIn, String identifierIn, String versionIn,
             String releaseTypeIn, String archIn) {
-        this.id = id;
-        this.identifier = identifier;
-        this.version = version;
-        this.releaseType = releaseType;
-        this.arch = arch;
+        this.id = idIn;
+        this.identifier = identifierIn;
+        this.version = versionIn;
+        this.releaseType = releaseTypeIn;
+        this.arch = archIn;
     }
 
     /**

@@ -31,7 +31,7 @@ public class UpgradablePackageListItem extends PackageListItem {
     private List errataAdvisory = new ArrayList<>();
     private List errataAdvisoryType = new ArrayList<>();
     private Set installed;
-    private String installedPackage = new String();
+    private String installedPackage = "";
     private boolean packageReboot;
     private boolean errataReboot;
     private boolean errataRestart;

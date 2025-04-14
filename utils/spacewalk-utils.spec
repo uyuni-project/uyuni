@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk-utils
-Version:        5.1.3
+Version:        5.1.4
 Release:        0
 Summary:        Utilities that may be run against a SUSE Manager/Uyuni server
 License:        GPL-2.0-only AND GPL-3.0-or-later
@@ -107,7 +107,6 @@ popd
 %attr(755,root,root) %{_bindir}/spacewalk-clone-by-date
 %attr(755,root,root) %{_bindir}/spacewalk-hostname-rename
 %attr(755,root,root) %{_bindir}/spacewalk-manage-channel-lifecycle
-%attr(755,root,root) %{_bindir}/spacewalk-sync-setup
 %attr(755,root,root) %{_bindir}/taskotop
 %attr(755,root,root) %{_bindir}/spacewalk-watch-channel-sync.sh
 %config %{_sysconfdir}/rhn/spacewalk-common-channels.ini
@@ -121,7 +120,6 @@ popd
 %{python3_sitelib}/utils/__pycache__/depsolver.*
 %{_mandir}/man8/spacewalk-clone-by-date.8%{?ext_man}
 %{_mandir}/man8/spacewalk-hostname-rename.8%{?ext_man}
-%{_mandir}/man8/spacewalk-sync-setup.8%{?ext_man}
 %{_mandir}/man8/taskotop.8%{?ext_man}
 
 

@@ -90,8 +90,7 @@ def main():
         sys.exit(0)
 
     if not options.list:
-        for command in ['spacewalk-remove-channel', 'satellite-sync',
-                        'spacewalk-repo-sync']:
+        for command in ['spacewalk-remove-channel', 'spacewalk-repo-sync']:
             try:
                 LOCK.append(rhnLockfile.Lockfile(
                     os.path.join(LOCK_DIR, "%s.pid" % command)))

@@ -16,6 +16,7 @@
 package com.redhat.rhn.frontend.action.groups;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -25,6 +26,7 @@ import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListSessionSetHelper;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -45,7 +47,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ListRemoveSystemsAction extends BaseListAction<SystemOverview> {
 
-    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -56,13 +58,15 @@ public class ListRemoveSystemsAction extends BaseListAction<SystemOverview> {
         RequestContext context = new RequestContext(request);
         ManagedServerGroup sg = context.lookupAndBindServerGroup();
         User user = context.getCurrentUser();
+        UserManager.ensureRoleBasedAccess(user, "systems.groups.systems", Namespace.AccessMode.W);
+
         Set<String> set = helper.getSet();
         List<Server> servers = new LinkedList<>();
         for (String id : set) {
             Long sid = Long.valueOf(id);
             servers.add(SystemManager.lookupByIdAndUser(sid, user));
         }
-        serverGroupManager.removeServers(sg, servers, user);
+        SERVER_GROUP_MANAGER.removeServers(sg, servers, user);
         getStrutsDelegate().saveMessage(
                     "systemgroup.systems.removed",
                         new String [] {String.valueOf(set.size()),

@@ -35,8 +35,6 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.systems.entitlements.SystemEntitlementsSetupAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -46,7 +44,6 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -78,11 +75,8 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         saltServiceMock = context.mock(SaltService.class);
-        ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
-        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltServiceMock);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(monitoringManager, serverGroupManager),
-                new SystemEntitler(saltServiceMock, monitoringManager, serverGroupManager)
+                new SystemUnentitler(saltServiceMock), new SystemEntitler(saltServiceMock)
         );
         context.checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));

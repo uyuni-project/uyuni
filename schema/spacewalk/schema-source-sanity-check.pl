@@ -32,7 +32,7 @@ for my $dir (@dirs) {
                         my $generic = $name;
                         my $db = 'common';
                         if ($generic =~ /\.(oracle|postgresql)$/) {
-                                die "Found DB specific files in [upgrade] dir"
+                                die "Found DB specific files in [upgrade] dir: $generic"
                         }
                         $files{$db}{$generic} = $name;
                 } else {
@@ -93,7 +93,7 @@ sub check_file_content {
         } elsif ($type eq 'data') {
                 if (not $content =~ /^(--.*\n
                                         |\s*\n
-                                        |insert\s+into\s+$name\b[^;]+(values|select)('[^;]+(;[^;]*)*'|[^';])+;
+                                        |insert\s+into\s+(?:\w+\.)?$name\b[^;]+(values|select)('[^;]+(;[^;]*)*'|[^';])+;
                                         |select\s+[^;()]+\(('[^;]+')*\);
                                         |begin\s+[^;()]+\(('[^;]+')*\);\s+end;\n\/
                                         |commit;

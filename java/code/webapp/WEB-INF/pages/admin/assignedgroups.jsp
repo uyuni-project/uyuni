@@ -14,7 +14,7 @@
 
 <div class="page-summary">
   <p><bean:message key="assignedgroups.jsp.summary"/></p>
-  <rhn:require acl="uid_role(system_group_admin)">
+  <rhn:require acl="uid_access_group(activation_key_admin)">
     <p><bean:message key="assignedgroups.jsp.asadmin"/></p>
   </rhn:require>
 </div>

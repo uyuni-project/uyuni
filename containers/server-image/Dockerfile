@@ -20,8 +20,6 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         ${PRODUCT_PATTERN_PREFIX}_retail \
         spacewalk-backend-sql-postgresql \
         spacewalk-java-postgresql \
-        postgresql16-contrib \
-        postgresql16-server \
         postgresql16 \
         billing-data-service \
         grub2-x86_64-efi \
@@ -99,7 +97,7 @@ LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.1.4
+LABEL org.opencontainers.image.version=5.1.5
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

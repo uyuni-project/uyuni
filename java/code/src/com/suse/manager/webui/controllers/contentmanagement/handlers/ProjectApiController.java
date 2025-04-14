@@ -15,6 +15,7 @@
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.delete;
@@ -91,8 +92,7 @@ public class ProjectApiController {
             );
         }
         catch (EntityExistsException error) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error(LOC.getMessage("contentmanagement.project_exists")));
+            return badRequest(res, LOC.getMessage("contentmanagement.project_exists"));
         }
         catch (ValidatorException e) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
@@ -100,7 +100,7 @@ public class ProjectApiController {
                             ValidationUtils.convertFieldValidationErrors(e)));
         }
         catch (ContentManagementException error) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(error.getMessage()));
+            return badRequest(res, error.getMessage());
         }
 
         FlashScopeHelper.flash(
@@ -155,7 +155,7 @@ public class ProjectApiController {
             );
         }
         catch (ContentManagementException error) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(error.getMessage()));
+            return badRequest(res, error.getMessage());
         }
         catch (ValidatorException e) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST,

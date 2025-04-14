@@ -6,7 +6,7 @@
    <rhn:submitted/>
    <hr/>
         <c:if test="${not requestScope.normal}" >
-                <rhn:require acl="user_role(config_admin)">
+                <rhn:require acl="authorized_for(systems.config.files)">
                     <input type="submit" class="btn btn-default"
                         name ="dispatch"
                         value="${requestScope.copy_to_global}"/>
@@ -24,7 +24,7 @@
                     value="${requestScope.copy_to_local}"/>
    </c:if>
         <c:if test="${not requestScope.normal}" >
-                <rhn:require acl="user_role(config_admin)">
+                <rhn:require acl="authorized_for(systems.config.files)">
                     <input type="submit" class="btn btn-default"
                         name ="dispatch"
                             value="${requestScope.delete_files}"/>

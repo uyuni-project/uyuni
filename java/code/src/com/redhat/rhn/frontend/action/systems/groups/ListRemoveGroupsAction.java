@@ -15,7 +15,10 @@
 
 package com.redhat.rhn.frontend.action.systems.groups;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -47,7 +50,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ListRemoveGroupsAction extends BaseListAction implements Listable<ManagedServerGroup> {
 
-    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -76,6 +79,7 @@ public class ListRemoveGroupsAction extends BaseListAction implements Listable<M
             HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
+        ensureRoleBasedAccess(user, "systems.groups.list", Namespace.AccessMode.W);
         Server server = context.lookupAndBindServer();
         List<Server> servers = new LinkedList<>();
         servers.add(server);
@@ -83,8 +87,8 @@ public class ListRemoveGroupsAction extends BaseListAction implements Listable<M
 
         for (String id : set) {
             Long sgid = Long.valueOf(id);
-            ServerGroup group = serverGroupManager.lookup(sgid, user);
-            serverGroupManager.removeServers(group, servers, user);
+            ServerGroup group = SERVER_GROUP_MANAGER.lookup(sgid, user);
+            SERVER_GROUP_MANAGER.removeServers(group, servers, user);
         }
         helper.destroy();
         getStrutsDelegate().saveMessage(

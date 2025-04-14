@@ -31,6 +31,13 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
+import spark.Request;
+import spark.Response;
+import spark.RouteImpl;
+import spark.route.HttpMethod;
+import spark.route.Routes;
+import spark.utils.SparkUtils;
+
 /**
  * The UI Menu Tree.
  */
@@ -60,23 +67,20 @@ public class MenuTree {
 
         Map<String, Boolean> adminRoles = new HashMap<>();
         adminRoles.put("org", checkAcl(user, "user_role(org_admin)"));
-        adminRoles.put("config", checkAcl(user, "user_role(config_admin)"));
         adminRoles.put("satellite", checkAcl(user, "user_role(satellite_admin)"));
-        adminRoles.put("activationKey", checkAcl(user, "user_role(activation_key_admin)"));
-        adminRoles.put("image", checkAcl(user, "user_role(image_admin)"));
 
         MenuItemList nodes = new MenuItemList();
 
         if (checkAcl(user, "user_authenticated()")) {
-            nodes.add(getHomeNode(adminRoles));
+            nodes.add(getHomeNode(user, adminRoles));
             nodes.add(getSystemsNode(user, adminRoles));
             nodes.add(getSaltNode(user, adminRoles));
-            nodes.add(getImagesNode(adminRoles));
+            nodes.add(getImagesNode(user));
             nodes.add(getPatchesNode(user));
             nodes.add(getSoftwareNode(user, adminRoles));
             nodes.add(getContentManagementNode());
             nodes.add(getAuditNode(user, adminRoles));
-            nodes.add(getConfigurationNode(adminRoles));
+            nodes.add(getConfigurationNode(user));
             nodes.add(getScheduleNode());
             nodes.add(getUsersNode(adminRoles));
             nodes.add(getAdminNode(adminRoles));
@@ -99,128 +103,184 @@ public class MenuTree {
         return nodes;
     }
 
-    private MenuItem getHomeNode(Map<String, Boolean> adminRoles) {
-        return new MenuItem("Home").withIcon("fa-home")
-            .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/YourRhn.do"))
-            .addChild(new MenuItem("Notification Messages").withPrimaryUrl("/rhn/manager/notification-messages"))
-            .addChild(new MenuItem("User Account")
-                    .addChild(new MenuItem("My Account").withPrimaryUrl("/rhn/account/UserDetails.do"))
-                    .addChild(new MenuItem("Addresses")
-                            .withPrimaryUrl("/rhn/account/Addresses.do").withAltUrl("/rhn/account/EditAddress.do"))
-                    .addChild(new MenuItem("Change Email").withPrimaryUrl("/rhn/account/ChangeEmail.do"))
-                    .addChild(new MenuItem("Account Deactivation")
-                            .withPrimaryUrl("/rhn/account/AccountDeactivation.do")))
-            .addChild(new MenuItem("My Preferences").withPrimaryUrl("/rhn/account/UserPreferences.do"))
-            .addChild(new MenuItem("My Organization")
-                    .addChild(new MenuItem("Configuration")
-                            .withPrimaryUrl("/rhn/multiorg/OrgConfigDetails.do").withVisibility(adminRoles.get("org")))
-                    .addChild(new MenuItem("Organization Trusts").withPrimaryUrl("/rhn/multiorg/Organizations.do")
-                            .withAltUrl("/rhn/multiorg/OrgTrustDetails.do")
-                            .withAltUrl("/rhn/multiorg/channels/Consumed.do")
-                            .withAltUrl("/rhn/multiorg/channels/Provided.do").withVisibility(adminRoles.get("org")))
-                    .addChild(new MenuItem("Recurring Actions").withPrimaryUrl("/rhn/manager/yourorg/recurring-actions")
-                            .withVisibility(adminRoles.get("org")))
-                    .addChild(new MenuItem("Configuration Channels").withPrimaryUrl("/rhn/manager/yourorg/custom")
-                            .withVisibility(adminRoles.get("org")))
-                    .withVisibility(adminRoles.get("org")));
+    private MenuItem getHomeNode(User user, Map<String, Boolean> adminRoles) {
+        return new MenuItem("Home")
+                .withVisibility(isUserAuthorizedFor(user, "home"))
+                .withIcon("fa-home")
+                .addChild(new MenuItem("Overview")
+                        .withVisibility(isUserAuthorizedFor(user, "home.overview.main"))
+                        .withPrimaryUrl("/rhn/YourRhn.do"))
+                .addChild(new MenuItem("Notification Messages")
+                        .withVisibility(isUserAuthorizedFor(user, "home.notifications"))
+                        .withPrimaryUrl("/rhn/manager/notification-messages"))
+                .addChild(new MenuItem("User Account")
+                        .withVisibility(isUserAuthorizedFor(user, "home.account"))
+                        .addChild(new MenuItem("My Account")
+                                .withVisibility(isUserAuthorizedFor(user, "home.account.details"))
+                                .withPrimaryUrl("/rhn/account/UserDetails.do"))
+                        .addChild(new MenuItem("Addresses")
+                                .withVisibility(isUserAuthorizedFor(user, "home.account.address"))
+                                .withPrimaryUrl("/rhn/account/Addresses.do")
+                                .withAltUrl("/rhn/account/EditAddress.do"))
+                        .addChild(new MenuItem("Change Email")
+                                .withVisibility(isUserAuthorizedFor(user, "home.account.email"))
+                                .withPrimaryUrl("/rhn/account/ChangeEmail.do"))
+                        .addChild(new MenuItem("Account Deactivation")
+                                .withVisibility(isUserAuthorizedFor(user, "home.account.deactivate"))
+                                .withPrimaryUrl("/rhn/account/AccountDeactivation.do")))
+                .addChild(new MenuItem("My Preferences")
+                        .withVisibility(isUserAuthorizedFor(user, "home.account.preferences"))
+                        .withPrimaryUrl("/rhn/account/UserPreferences.do"))
+                .addChild(new MenuItem("My Organization")
+                        .addChild(new MenuItem("Configuration")
+                                .withPrimaryUrl("/rhn/multiorg/OrgConfigDetails.do")
+                                .withVisibility(adminRoles.get("org")))
+                        .addChild(new MenuItem("Organization Trusts")
+                                .withPrimaryUrl("/rhn/multiorg/Organizations.do")
+                                .withAltUrl("/rhn/multiorg/OrgTrustDetails.do")
+                                .withAltUrl("/rhn/multiorg/channels/Consumed.do")
+                                .withAltUrl("/rhn/multiorg/channels/Provided.do")
+                                .withVisibility(adminRoles.get("org")))
+                        .addChild(new MenuItem("Recurring Actions")
+                                .withPrimaryUrl("/rhn/manager/yourorg/recurring-actions")
+                                .withVisibility(adminRoles.get("org")))
+                        .addChild(new MenuItem("Configuration Channels")
+                                .withPrimaryUrl("/rhn/manager/yourorg/custom")
+                                .withVisibility(adminRoles.get("org")))
+                        .withVisibility(adminRoles.get("org")));
     }
 
     private MenuItem getSystemsNode(User user, Map<String, Boolean> adminRoles) {
-        return new MenuItem("Systems").withIcon("fa-desktop").withDir("/rhn/systems/details")
-            .withDir("/rhn/manager/systems/details")
-            .addChild(new MenuItem("System List").addChild(new MenuItem("All")
-                    .withPrimaryUrl("/rhn/manager/systems/list/all"))
-                    .addChild(new MenuItem("Physical Systems")
-                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=system_kind&q=physical"))
-                    .addChild(new MenuItem("Virtual Systems").withPrimaryUrl("/rhn/manager/systems/list/virtual"))
-                    .addChild(new MenuItem("Bare Metal Systems").withPrimaryUrl("/rhn/systems/BootstrapSystemList.do"))
-                    .addChild(new MenuItem("Out of Date")
-                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=status_type&q=critical"))
-                    .addChild(new MenuItem("Requiring Reboot")
-                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=requires_reboot&q=true"))
-                    .addChild(new MenuItem("Extra Packages")
-                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=extra_pkg_count&q=>0"))
-                    .addChild(new MenuItem("Ungrouped")
-                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=group_count&q=0")
-                            .withVisibility(adminRoles.get("org")))
-                    .addChild(new MenuItem("Inactive")
-                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=status_type&q=awol"))
-                    .addChild(new MenuItem("Recently Registered")
-                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=created_days&q=>6"))
-                    .addChild(new MenuItem("Proxy")
-                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=system_kind&q=proxy")
-                            .withVisibility(checkAcl(user, "org_channel_family(SMP) or not is_suma()") &&
-                                    adminRoles.get("org")))
-                    .addChild(new MenuItem("Duplicate Systems").withPrimaryUrl("/rhn/systems/DuplicateIPList.do")
-                            .withAltUrl("/rhn/systems/DuplicateIPv6List.do")
-                            .withAltUrl("/rhn/systems/DuplicateHostName.do")
-                            .withAltUrl("/rhn/systems/DuplicateMacAddress.do")
-                            .withAltUrl("/rhn/systems/DuplicateSystemsCompare.do")
-                            .withAltUrl("/rhn/systems/DuplicateSystemsDeleteConfirm.do"))
-                    .addChild(new MenuItem("System Currency").withPrimaryUrl("/rhn/systems/SystemCurrency.do"))
-                    .addChild(new MenuItem("System Entitlements").withPrimaryUrl("/rhn/systems/SystemEntitlements.do")
-                            .withVisibility(adminRoles.get("org"))))
-            .addChild(new MenuItem("System Groups").withPrimaryUrl("/rhn/systems/SystemGroupList.do")
-                    .withDir("/rhn/groups")
-                    .withDir("/rhn/systems/groups").withDir("/rhn/manager/groups"))
-            .addChild(new MenuItem("System Set Manager").withDir("/rhn/systems/ssm").withDir("/rhn/ssm")
-                    .withDir("/rhn/channel/ssm").withDir("/rhn/manager/systems/ssm")
-                    .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/ssm/index.do"))
-                    .addChild(new MenuItem("ssm.nav.status").withPrimaryUrl("/rhn/ssm/ViewAllLog.do")
-                            .withAltUrl("/rhn/ssm/ViewLog.do").withAltUrl("/rhn/ssm/ViewCompletedLog.do")))
-            .addChild(new MenuItem("Bootstrapping").withPrimaryUrl("/rhn/manager/systems/bootstrap")
-                    .withVisibility(adminRoles.get("org")))
-            .addChild(new MenuItem("container.based.proxy.config").withPrimaryUrl("/rhn/manager/proxy/container-config")
-                    .withVisibility(adminRoles.get("org")))
-            .addChild(new MenuItem("Advanced Search").withPrimaryUrl("/rhn/systems/Search.do"))
-            .addChild(new MenuItem("Activation Keys").withPrimaryUrl("/rhn/activationkeys/List.do")
-                    .withAltUrl("/rhn/activationkeys/Create.do").withAltUrl("/rhn/activationkeys/Edit.do")
-                    .withAltUrl("/rhn/activationkeys/Delete.do").withAltUrl("/rhn/activationkeys/Clone.do")
-                    .withDir("/rhn/activationkeys/channels").withDir("/rhn/activationkeys/configuration")
-                    .withDir("/rhn/activationkeys/groups").withDir("/rhn/activationkeys/packages")
-                    .withDir("/rhn/activationkeys/systems").withVisibility(adminRoles.get("activationKey")))
-            .addChild(new MenuItem("Stored Profiles").withPrimaryUrl("/rhn/profiles/List.do")
-                    .withDir("/rhn/profiles"))
-            .addChild(new MenuItem("Custom System Info").withPrimaryUrl("/rhn/systems/customdata/CustomDataList.do")
-                    .withDir("/rhn/systems/customdata"))
-            .addChild(new MenuItem("Kickstart")
-                    .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/kickstart/KickstartOverview.do")
-                            .withVisibility(adminRoles.get("config")))
-                    .addChild(new MenuItem("Profiles").withPrimaryUrl("/rhn/kickstart/Kickstarts.do")
-                            .withDir("/rhn/kickstart")
-                            .withVisibility(adminRoles.get("config")))
-                    .addChild(new MenuItem("Bare Metal").withPrimaryUrl("/rhn/kickstart/KickstartIpRanges.do")
-                            .withVisibility(adminRoles.get("config")))
-                    .addChild(new MenuItem("GPG and SSL Keys").withPrimaryUrl("/rhn/keys/CryptoKeysList.do")
-                            .withDir("/rhn/keys")
-                            .withVisibility(adminRoles.get("config")))
-                    .addChild(new MenuItem("Distributions").withPrimaryUrl("/rhn/kickstart/ViewTrees.do")
-                            .withAltUrl("/rhn/kickstart/TreeEdit.do")
-                            .withAltUrl("/rhn/kickstart/TreeCreate.do").withAltUrl("/rhn/kickstart/TreeDelete.do")
-                            .withAltUrl("/rhn/kickstart/tree/EditVariables.do")
-                            .withVisibility(adminRoles.get("config")))
-                    .addChild(new MenuItem("File Preservation")
-                            .withPrimaryUrl("/rhn/systems/provisioning/preservation/PreservationList.do")
-                            .withAltUrl("/rhn/systems/provisioning/preservation/PreservationListEdit.do")
-                            .withAltUrl("/rhn/systems/provisioning/preservation/PreservationListCreate.do")
-                            .withAltUrl("/rhn/systems/provisioning/preservation/PreservationListDeleteSubmit.do")
-                            .withAltUrl("/rhn/systems/provisioning/preservation/PreservationListDelete.do")
-                            .withVisibility(adminRoles.get("config")))
-                    .addChild(new MenuItem("snippets.jsp.toolbar")
-                            .withPrimaryUrl("/rhn/kickstart/cobbler/CustomSnippetList.do")
-                            .withAltUrl("/rhn/kickstart/cobbler/DefaultSnippetList.do")
-                            .withAltUrl("/rhn/kickstart/cobbler/CobblerSnippetList.do")
-                            .withAltUrl("/rhn/kickstart/cobbler/CustomSnippetList.do")
-                            .withAltUrl("/rhn/kickstart/cobbler/CobblerSnippetEdit.do")
-                            .withAltUrl("/rhn/kickstart/cobbler/CobblerSnippetCreate.do")
-                            .withAltUrl("/rhn/kickstart/cobbler/CobblerSnippetDelete.do")
-                            .withAltUrl("/rhn/kickstart/cobbler/CobblerSnippetView.do")
-                            .withAltUrl("/rhn/kickstart/cobbler/DefaultSnippetView.do")
-                            .withVisibility(adminRoles.get("config")))
-                    .withVisibility(adminRoles.get("config")))
-            .addChild(new MenuItem("Virtual Host Managers").withPrimaryUrl("/rhn/manager/vhms")
-                    .withDir("/rhn/manager/vhms")
-                    .withVisibility(adminRoles.get("org")));
+        return new MenuItem("Systems")
+                .withVisibility(isUserAuthorizedFor(user, "systems"))
+                .withIcon("fa-desktop")
+                .withDir("/rhn/systems/details")
+                .withDir("/rhn/manager/systems/details")
+                .addChild(new MenuItem("System List")
+                        .withVisibility(isUserAuthorizedFor(user, "systems.list"))
+                        .addChild(new MenuItem("All")
+                                .withPrimaryUrl("/rhn/manager/systems/list/all"))
+                        .addChild(new MenuItem("Physical Systems")
+                                .withPrimaryUrl("/rhn/manager/systems/list/all?qc=system_kind&q=physical"))
+                        .addChild(new MenuItem("Virtual Systems")
+                                .withPrimaryUrl("/rhn/manager/systems/list/virtual"))
+                        .addChild(new MenuItem("Bare Metal Systems")
+                                .withPrimaryUrl("/rhn/systems/BootstrapSystemList.do"))
+                        .addChild(new MenuItem("Out of Date")
+                                .withPrimaryUrl("/rhn/manager/systems/list/all?qc=status_type&q=critical"))
+                        .addChild(new MenuItem("Requiring Reboot")
+                                .withPrimaryUrl("/rhn/manager/systems/list/all?qc=requires_reboot&q=true"))
+                        .addChild(new MenuItem("Extra Packages")
+                                .withPrimaryUrl("/rhn/manager/systems/list/all?qc=extra_pkg_count&q=>0"))
+                        .addChild(new MenuItem("Ungrouped")
+                                .withPrimaryUrl("/rhn/manager/systems/list/all?qc=group_count&q=0")
+                                .withVisibility(adminRoles.get("org")))
+                        .addChild(new MenuItem("Inactive")
+                                .withPrimaryUrl("/rhn/manager/systems/list/all?qc=status_type&q=awol"))
+                        .addChild(new MenuItem("Recently Registered")
+                                .withPrimaryUrl("/rhn/manager/systems/list/all?qc=created_days&q=>6"))
+                        .addChild(new MenuItem("Proxy")
+                                .withPrimaryUrl("/rhn/manager/systems/list/all?qc=system_kind&q=proxy")
+                                .withVisibility(checkAcl(user, "org_channel_family(SMP) or not is_suma()") &&
+                                        adminRoles.get("org")))
+                        .addChild(new MenuItem("Duplicate Systems")
+                                .withPrimaryUrl("/rhn/systems/DuplicateIPList.do")
+                                .withAltUrl("/rhn/systems/DuplicateIPv6List.do")
+                                .withAltUrl("/rhn/systems/DuplicateHostName.do")
+                                .withAltUrl("/rhn/systems/DuplicateMacAddress.do")
+                                .withAltUrl("/rhn/systems/DuplicateSystemsCompare.do")
+                                .withAltUrl("/rhn/systems/DuplicateSystemsDeleteConfirm.do"))
+                        .addChild(new MenuItem("System Currency")
+                                .withPrimaryUrl("/rhn/systems/SystemCurrency.do"))
+                        .addChild(new MenuItem("System Entitlements")
+                                .withPrimaryUrl("/rhn/systems/SystemEntitlements.do")
+                                .withVisibility(adminRoles.get("org"))))
+                .addChild(new MenuItem("System Groups")
+                        .withVisibility(isUserAuthorizedFor(user, "systems.groups.list"))
+                        .withPrimaryUrl("/rhn/systems/SystemGroupList.do")
+                        .withDir("/rhn/groups")
+                        .withDir("/rhn/systems/groups").withDir("/rhn/manager/groups"))
+                .addChild(new MenuItem("System Set Manager")
+                        .withDir("/rhn/systems/ssm")
+                        .withDir("/rhn/ssm")
+                        .withDir("/rhn/channel/ssm")
+                        .withDir("/rhn/manager/systems/ssm")
+                        .addChild(new MenuItem("Overview")
+                                .withPrimaryUrl("/rhn/ssm/index.do"))
+                        .addChild(new MenuItem("ssm.nav.status")
+                                .withPrimaryUrl("/rhn/ssm/ViewAllLog.do")
+                                .withAltUrl("/rhn/ssm/ViewLog.do")
+                                .withAltUrl("/rhn/ssm/ViewCompletedLog.do")))
+                .addChild(new MenuItem("Bootstrapping")
+                        .withVisibility(isUserAuthorizedFor(user, "systems.bootstrap"))
+                        .withPrimaryUrl("/rhn/manager/systems/bootstrap")
+                        .withVisibility(adminRoles.get("org")))
+                .addChild(new MenuItem("container.based.proxy.config")
+                        .withVisibility(isUserAuthorizedFor(user, "systems.proxy"))
+                        .withPrimaryUrl("/rhn/manager/proxy/container-config")
+                        .withVisibility(adminRoles.get("org")))
+                .addChild(new MenuItem("Advanced Search")
+                        .withVisibility(isUserAuthorizedFor(user, "systems.search"))
+                        .withPrimaryUrl("/rhn/systems/Search.do"))
+                .addChild(new MenuItem("Activation Keys")
+                        .withVisibility(isUserAuthorizedFor(user, "systems.activation_keys"))
+                        .withPrimaryUrl("/rhn/activationkeys/List.do")
+                        .withAltUrl("/rhn/activationkeys/Create.do")
+                        .withAltUrl("/rhn/activationkeys/Edit.do")
+                        .withAltUrl("/rhn/activationkeys/Delete.do")
+                        .withAltUrl("/rhn/activationkeys/Clone.do")
+                        .withDir("/rhn/activationkeys/channels")
+                        .withDir("/rhn/activationkeys/configuration")
+                        .withDir("/rhn/activationkeys/groups")
+                        .withDir("/rhn/activationkeys/packages")
+                        .withDir("/rhn/activationkeys/systems"))
+                .addChild(new MenuItem("Stored Profiles")
+                        .withVisibility(isUserAuthorizedFor(user, "systems.profiles"))
+                        .withPrimaryUrl("/rhn/profiles/List.do")
+                        .withDir("/rhn/profiles"))
+                .addChild(new MenuItem("Custom System Info")
+                        .withVisibility(isUserAuthorizedFor(user, "systems.custom_data"))
+                        .withPrimaryUrl("/rhn/systems/customdata/CustomDataList.do")
+                        .withDir("/rhn/systems/customdata"))
+                .addChild(new MenuItem("Kickstart")
+                        .withVisibility(isUserAuthorizedFor(user, "systems.autoinstallation"))
+                        .addChild(new MenuItem("Overview")
+                                .withPrimaryUrl("/rhn/kickstart/KickstartOverview.do"))
+                        .addChild(new MenuItem("Profiles")
+                                .withPrimaryUrl("/rhn/kickstart/Kickstarts.do")
+                                .withDir("/rhn/kickstart"))
+                        .addChild(new MenuItem("Bare Metal")
+                                .withPrimaryUrl("/rhn/kickstart/KickstartIpRanges.do"))
+                        .addChild(new MenuItem("GPG and SSL Keys")
+                                .withPrimaryUrl("/rhn/keys/CryptoKeysList.do")
+                                .withDir("/rhn/keys"))
+                        .addChild(new MenuItem("Distributions")
+                                .withPrimaryUrl("/rhn/kickstart/ViewTrees.do")
+                                .withAltUrl("/rhn/kickstart/TreeEdit.do")
+                                .withAltUrl("/rhn/kickstart/TreeCreate.do")
+                                .withAltUrl("/rhn/kickstart/TreeDelete.do")
+                                .withAltUrl("/rhn/kickstart/tree/EditVariables.do"))
+                        .addChild(new MenuItem("File Preservation")
+                                .withPrimaryUrl("/rhn/systems/provisioning/preservation/PreservationList.do")
+                                .withAltUrl("/rhn/systems/provisioning/preservation/PreservationListEdit.do")
+                                .withAltUrl("/rhn/systems/provisioning/preservation/PreservationListCreate.do")
+                                .withAltUrl("/rhn/systems/provisioning/preservation/PreservationListDeleteSubmit.do")
+                                .withAltUrl("/rhn/systems/provisioning/preservation/PreservationListDelete.do"))
+                        .addChild(new MenuItem("snippets.jsp.toolbar")
+                                .withPrimaryUrl("/rhn/kickstart/cobbler/CustomSnippetList.do")
+                                .withAltUrl("/rhn/kickstart/cobbler/DefaultSnippetList.do")
+                                .withAltUrl("/rhn/kickstart/cobbler/CobblerSnippetList.do")
+                                .withAltUrl("/rhn/kickstart/cobbler/CustomSnippetList.do")
+                                .withAltUrl("/rhn/kickstart/cobbler/CobblerSnippetEdit.do")
+                                .withAltUrl("/rhn/kickstart/cobbler/CobblerSnippetCreate.do")
+                                .withAltUrl("/rhn/kickstart/cobbler/CobblerSnippetDelete.do")
+                                .withAltUrl("/rhn/kickstart/cobbler/CobblerSnippetView.do")
+                                .withAltUrl("/rhn/kickstart/cobbler/DefaultSnippetView.do"))
+                        )
+                .addChild(new MenuItem("Virtual Host Managers")
+                        .withPrimaryUrl("/rhn/manager/vhms")
+                        .withDir("/rhn/manager/vhms")
+                        .withVisibility(adminRoles.get("org")));
     }
 
     private MenuItem getSaltNode(User user, Map<String, Boolean> adminRoles) {
@@ -232,36 +292,58 @@ public class MenuTree {
                         .withVisibility(adminRoles.get("org")));
     }
 
-    private MenuItem getImagesNode(Map<String, Boolean> adminRoles) {
-        return new MenuItem("Images").withIcon("spacewalk-icon-manage-configuration-files")
-                .addChild(new MenuItem("Image List").withPrimaryUrl("/rhn/manager/cm/images")
+    private MenuItem getImagesNode(User user) {
+        return new MenuItem("Images")
+                .withVisibility(isUserAuthorizedFor(user, "cm"))
+                .withIcon("spacewalk-icon-manage-configuration-files")
+                .addChild(new MenuItem("Image List")
+                        .withVisibility(isUserAuthorizedFor(user, "cm.image.list"))
+                        .withPrimaryUrl("/rhn/manager/cm/images")
                         .withDir("/rhn/manager/cm/images"))
-                .addChild(new MenuItem("Build").withPrimaryUrl("/rhn/manager/cm/build")
-                        .withDir("/rhn/manager/cm/build").withVisibility(adminRoles.get("image")))
-                .addChild(new MenuItem("Profiles").withPrimaryUrl("/rhn/manager/cm/imageprofiles")
+                .addChild(new MenuItem("Build")
+                        .withVisibility(isUserAuthorizedFor(user, "cm.build"))
+                        .withPrimaryUrl("/rhn/manager/cm/build")
+                        .withDir("/rhn/manager/cm/build"))
+                .addChild(new MenuItem("Profiles")
+                        .withVisibility(isUserAuthorizedFor(user, "cm.profile.list"))
+                        .withPrimaryUrl("/rhn/manager/cm/imageprofiles")
                         .withDir("/rhn/manager/cm/imageprofiles"))
-                .addChild(new MenuItem("Stores").withPrimaryUrl("/rhn/manager/cm/imagestores")
+                .addChild(new MenuItem("Stores")
+                        .withVisibility(isUserAuthorizedFor(user, "cm.store.list"))
+                        .withPrimaryUrl("/rhn/manager/cm/imagestores")
                         .withDir("/rhn/manager/cm/imagestores"));
     }
 
     private MenuItem getPatchesNode(User user) {
-        return new MenuItem("Patches").withIcon("spacewalk-icon-patches")
-            .addChild(new MenuItem("Patch List").withDir("/rhn/errata")
-                    .addChild(new MenuItem("Relevant").withPrimaryUrl("/rhn/errata/RelevantErrata.do")
-                            .withAltUrl("/rhn/errata/RelevantBugErrata.do")
-                            .withAltUrl("/rhn/errata/RelevantEnhancementErrata.do")
-                            .withAltUrl("/rhn/errata/RelevantSecurityErrata.do"))
-                    .addChild(new MenuItem("All").withPrimaryUrl("/rhn/errata/AllErrata.do")
-                            .withAltUrl("/rhn/errata/AllBugErrata.do")
-                            .withAltUrl("/rhn/errata/AllEnhancementErrata.do")
-                            .withAltUrl("/rhn/errata/AllSecurityErrata.do")))
-            .addChild(new MenuItem("Advanced Search").withPrimaryUrl("/rhn/errata/Search.do"))
-            .addChild(new MenuItem("Manage Errata").withPrimaryUrl("/rhn/errata/manage/Errata.do")
-                    .withAltUrl("/rhn/errata/manage/Create.do").withAltUrl("/rhn/errata/manage/CreateSubmit.do")
-                    .withVisibility(checkAcl(user, "user_role(channel_admin)")))
-            .addChild(new MenuItem("Clone Errata").withPrimaryUrl("/rhn/errata/manage/CloneErrata.do")
-                    .withAltUrl("/rhn/errata/manage/CloneConfirm.do")
-                    .withDir("/rhn/errata/manage/clone").withVisibility(checkAcl(user, "user_role(channel_admin)")));
+        return new MenuItem("Patches")
+                .withVisibility(isUserAuthorizedFor(user, "patches"))
+                .withIcon("spacewalk-icon-patches")
+                .addChild(new MenuItem("Patch List")
+                        .withVisibility(isUserAuthorizedFor(user, "patches.list"))
+                        .withDir("/rhn/errata")
+                        .addChild(new MenuItem("Relevant")
+                                .withPrimaryUrl("/rhn/errata/RelevantErrata.do")
+                                .withAltUrl("/rhn/errata/RelevantBugErrata.do")
+                                .withAltUrl("/rhn/errata/RelevantEnhancementErrata.do")
+                                .withAltUrl("/rhn/errata/RelevantSecurityErrata.do"))
+                        .addChild(new MenuItem("All")
+                                .withPrimaryUrl("/rhn/errata/AllErrata.do")
+                                .withAltUrl("/rhn/errata/AllBugErrata.do")
+                                .withAltUrl("/rhn/errata/AllEnhancementErrata.do")
+                                .withAltUrl("/rhn/errata/AllSecurityErrata.do")))
+                .addChild(new MenuItem("Advanced Search")
+                        .withVisibility(isUserAuthorizedFor(user, "patches.search"))
+                        .withPrimaryUrl("/rhn/errata/Search.do"))
+                .addChild(new MenuItem("Manage Errata")
+                        .withVisibility(isUserAuthorizedFor(user, "patches.manage"))
+                        .withPrimaryUrl("/rhn/errata/manage/Errata.do")
+                        .withAltUrl("/rhn/errata/manage/Create.do")
+                        .withAltUrl("/rhn/errata/manage/CreateSubmit.do"))
+                .addChild(new MenuItem("Clone Errata")
+                        .withVisibility(isUserAuthorizedFor(user, "patches.clone"))
+                        .withPrimaryUrl("/rhn/errata/manage/CloneErrata.do")
+                        .withAltUrl("/rhn/errata/manage/CloneConfirm.do")
+                        .withDir("/rhn/errata/manage/clone"));
     }
 
     private MenuItem getSoftwareNode(User user, Map<String, Boolean> adminRoles) {
@@ -284,12 +366,12 @@ public class MenuTree {
                             .withAltUrl("/rhn/channels/manage/errata/ConfirmErrataAdd.do"))
                     .addChild(new MenuItem("Packages").withPrimaryUrl("/rhn/manager/packages/list")
                             .withDir("/rhn/manager/packages")
-                            .withVisibility(checkAcl(user, "user_role(channel_admin)")))
+                            .withVisibility(isUserAuthorizedFor(user, "software.manage.packages")))
                     .addChild(new MenuItem("Repositories").withPrimaryUrl("/rhn/channels/manage/repos/RepoList.do")
                             .withAltUrl("/rhn/channels/manage/repos/RepoEdit.do")
                             .withAltUrl("/rhn/channels/manage/repos/RepoCreate.do")
                             .withDir("/rhn/channels/manage/repos")
-                            .withVisibility(checkAcl(user, "user_role(channel_admin)"))))
+                            .withVisibility(isUserAuthorizedFor(user, "software.manage.repos"))))
             .addChild(new MenuItem("Distribution Channel Mapping")
                     .withPrimaryUrl("/rhn/channels/manage/DistChannelMap.do")
                     .withAltUrl("/rhn/channels/manage/DistChannelMapEdit.do")
@@ -328,12 +410,11 @@ public class MenuTree {
                         .withPrimaryUrl("/rhn/manager/audit/confidential-computing"));
     }
 
-    private MenuItem getConfigurationNode(Map<String, Boolean> adminRoles) {
+    private MenuItem getConfigurationNode(User user) {
         return new MenuItem("config.nav.config").withIcon("spacewalk-icon-software-channel-management")
-            .withVisibility(adminRoles.get("config"))
+            .withVisibility(isUserAuthorizedFor(user, "config.overview"))
             .withDir("/rhn/configuration")
-            .addChild(new MenuItem("common.nav.overview").withPrimaryUrl("/rhn/configuration/Overview.do")
-                    .withVisibility(adminRoles.get("config")))
+            .addChild(new MenuItem("common.nav.overview").withPrimaryUrl("/rhn/configuration/Overview.do"))
             .addChild(new MenuItem("config.nav.channels")
                     .withPrimaryUrl("/rhn/configuration/GlobalConfigChannelList.do")
                     .withDir("/rhn/configuration/channel/")
@@ -343,15 +424,13 @@ public class MenuTree {
                     .withAltUrl("/rhn/configuration/ChannelUploadFiles.do")
                     .withAltUrl("/rhn/configuration/ChannelImportFiles.do")
                     .withAltUrl("/rhn/configuration/ChannelCreateFiles.do")
-                    .withVisibility(adminRoles.get("config")))
+                    .withVisibility(isUserAuthorizedFor(user, "config.channels")))
             .addChild(new MenuItem("config.nav.files").withDir("/rhn/configuration/file")
-                    .withVisibility(adminRoles.get("config"))
+                    .withVisibility(isUserAuthorizedFor(user, "config.files"))
                     .addChild(new MenuItem("config.nav.globalfiles")
-                            .withPrimaryUrl("/rhn/configuration/file/GlobalConfigFileList.do")
-                            .withVisibility(adminRoles.get("config")))
+                            .withPrimaryUrl("/rhn/configuration/file/GlobalConfigFileList.do"))
                     .addChild(new MenuItem("config.nav.localfiles")
-                            .withPrimaryUrl("/rhn/configuration/file/LocalConfigFileList.do")
-                            .withVisibility(adminRoles.get("config")))
+                            .withPrimaryUrl("/rhn/configuration/file/LocalConfigFileList.do"))
             )
             .addChild(new MenuItem("common.nav.systems").withDir("/rhn/configuration/system")
                     .addChild(new MenuItem("config.nav.managed")
@@ -359,8 +438,6 @@ public class MenuTree {
                     .addChild(new MenuItem("config.nav.target")
                             .withPrimaryUrl("/rhn/configuration/system/TargetSystems.do")
                             .withAltUrl("/rhn/configuration/system/TargetSystemsSubmit.do")
-                            .withAltUrl("/rhn/configuration/system/EnableSystemsConfirm.do")
-                            .withAltUrl("/rhn/configuration/system/EnableSystemsConfirmSubmit.do")
                             .withAltUrl("/rhn/configuration/system/Summary.do")));
     }
 
@@ -443,18 +520,15 @@ public class MenuTree {
                     .addChild(new MenuItem("Password Policy")
                             .withPrimaryUrl("/rhn/manager/admin/config/password-policy")
                             .withVisibility(adminRoles.get("satellite"))))
-            .addChild(new MenuItem("ISS Configuration")
-                    .withVisibility(adminRoles.get("satellite"))
-                    .addChild(new MenuItem("Master Setup").withPrimaryUrl("/rhn/admin/iss/Master.do")
-                            .withVisibility(adminRoles.get("satellite")))
-                    .addChild(new MenuItem("Slave Setup").withPrimaryUrl("/rhn/admin/iss/Slave.do")
-                            .withVisibility(adminRoles.get("satellite")))
-            )
             .addChild(new MenuItem("Hub Configuration")
                     .withVisibility(adminRoles.get("satellite"))
                     .withPrimaryUrl("/rhn/manager/admin/hub/peripherals")
                     .addChild(new MenuItem("Peripherals Configuration")
                             .withPrimaryUrl("/rhn/manager/admin/hub/peripherals")
+                            .withAltUrl("/rhn/manager/admin/hub/peripherals/register")
+                            .withAltUrl("/rhn/manager/admin/hub/peripherals/migrate-from-v1")
+                            .withAltUrl("/rhn/manager/admin/hub/peripherals/migrate-from-v2")
+                            .withAltUrl("/rhn/manager/admin/hub/peripherals/:id")
                             .withVisibility(adminRoles.get("satellite")))
                 .addChild(new MenuItem("Hub Details").withPrimaryUrl("/rhn/manager/admin/hub/hub-details")
                     .withVisibility(adminRoles.get("satellite")))
@@ -500,9 +574,13 @@ public class MenuTree {
     }
 
     private MenuItem getAboutNode(String docsLocale) {
-        return new MenuItem("About Spacewalk").withIcon("fa-question-circle")
-            .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/help/about.do"))
-            .addChild(new MenuItem("Sign In").withPrimaryUrl("/rhn/manager/login"))
+        return new MenuItem("Help").withIcon("fa-question-circle")
+            .addChild(new MenuItem("API")
+                    .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/apidoc/index.jsp")
+                            .withDir("/rhn/apidoc"))
+                    .addChild(new MenuItem("FAQ").withPrimaryUrl("/rhn/apidoc/faqs.jsp"))
+                    .addChild(new MenuItem("Sample Scripts").withPrimaryUrl("/rhn/apidoc/scripts.jsp"))
+            )
             .addChild(new MenuItem("Documentation_version", ConfigDefaults.get().getProductVersion())
                     .withDocsUrl("index.html", docsLocale).withTarget("_blank"))
             .addChild(new MenuItem("Lookup Login/Password").withPrimaryUrl("/rhn/help/ForgotCredentials.do"))
@@ -513,12 +591,6 @@ public class MenuTree {
                     .addChild(new MenuItem("product_proxy")
                             .withDocsUrl("release-notes/release-notes-proxy.html", docsLocale)
                             .withTarget("_blank"))
-            )
-            .addChild(new MenuItem("API")
-                    .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/apidoc/index.jsp")
-                            .withDir("/rhn/apidoc"))
-                    .addChild(new MenuItem("FAQ").withPrimaryUrl("/rhn/apidoc/faqs.jsp"))
-                    .addChild(new MenuItem("Sample Scripts").withPrimaryUrl("/rhn/apidoc/scripts.jsp"))
             )
             .addChild(new MenuItem("Report Database Schema").withTarget("_blank")
                     .withPrimaryUrl("/docs/en/reportdb-schema/index.html")
@@ -546,6 +618,10 @@ public class MenuTree {
         Matcher matcher = pattern.matcher(productVersion);
         matcher.find();
         return matcher.group(0);
+    }
+
+    private boolean isUserAuthorizedFor(User userIn, String namespace) {
+        return checkAcl(userIn, "authorized_for(%s)".formatted(namespace));
     }
 
     /**
@@ -577,24 +653,24 @@ public class MenuTree {
      * based on the list of urls of the link
      *
      * @param nodes the list of nodes of the menu
-     * @param url the current URL
+     * @param currentUrl the current URL
      * @return the current active {@link MenuItem}
      */
-    public static MenuItem getActiveNode(List<MenuItem> nodes, String url) {
+    public static MenuItem getActiveNode(List<MenuItem> nodes, String currentUrl) {
         MenuItem activeItem = null;
         for (MenuItem item : nodes) {
             if (item.getSubmenu() != null) {
                 // recursive call to iterate in the submenu
-                activeItem = getActiveNode(item.getSubmenu(), url);
+                activeItem = getActiveNode(item.getSubmenu(), currentUrl);
             }
             else {
-                if (url.equalsIgnoreCase(item.getPrimaryUrl())) {
+                if (urlMatches(item.getPrimaryUrl(), currentUrl)) {
                     activeItem = item;
                     return activeItem;
                 }
                 if (item.getUrls() != null && !item.getUrls().isEmpty()) {
                     for (String link : item.getUrls()) {
-                        if (url.equalsIgnoreCase(link)) {
+                        if (urlMatches(link, currentUrl)) {
                             activeItem = item;
                             return activeItem;
                         }
@@ -609,6 +685,29 @@ public class MenuTree {
             }
         }
         return null;
+    }
+
+    private static boolean urlMatches(String menuUrl, String currentUrl) {
+        // Check first a direct match
+        if (currentUrl.equalsIgnoreCase(menuUrl)) {
+            return true;
+        }
+
+        // Check if the url is parameterized and try to match accordingly
+        return isParameterizedUrl(menuUrl) && parameterizedUrlMatches(menuUrl, currentUrl);
+    }
+
+    // Use Spark logic to check if a url is parameterized
+    private static boolean isParameterizedUrl(String template) {
+        return SparkUtils.convertRouteToList(template).stream()
+            .anyMatch(routePart -> SparkUtils.isParam(routePart) || SparkUtils.isSplat(routePart));
+    }
+
+    // Use Spark logic to check if the current url matches a parameterized url
+    private static boolean parameterizedUrlMatches(String template, String currentUrl) {
+        Routes routes = Routes.create();
+        routes.add(HttpMethod.get, new MatchableMenuItemRoute(template));
+        return routes.find(HttpMethod.get, currentUrl, null) != null;
     }
 
     /**
@@ -702,5 +801,18 @@ public class MenuTree {
         public boolean add(MenuItem e) {
             return e.getIsVisible() ? super.add(e) : false;
         }
+    }
+
+    private static class MatchableMenuItemRoute extends RouteImpl {
+
+        MatchableMenuItemRoute(String pathIn) {
+            super(pathIn);
+        }
+
+        @Override
+        public Object handle(Request request, Response response) {
+            throw new UnsupportedOperationException("This route implementation can only be used for patch matching");
+        }
+
     }
 }

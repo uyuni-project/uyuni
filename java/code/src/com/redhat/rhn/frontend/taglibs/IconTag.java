@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2019--2025 SUSE LLC
  * Copyright (c) 2013--2018 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,7 +18,7 @@ package com.redhat.rhn.frontend.taglibs;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -129,6 +130,7 @@ public class IconTag extends TagSupport {
         icons.put("item-edit", "fa fa-edit");
         icons.put("item-enabled", "fa fa-check text-success");
         icons.put("item-import", "fa fa-level-down");
+        icons.put("item-proxy-convert", "fa fa-arrow-up");
         icons.put("item-search", "fa fa-eye");
         icons.put("item-ssm-add", "fa fa-plus-circle");
         icons.put("item-ssm-del", "fa fa-minus-circle");

@@ -67,7 +67,6 @@ public class SystemDetailsHandler extends BaseHandler {
       * @apidoc.returntype #param("boolean", "true if configuration management is enabled; otherwise, false")
       */
     public boolean checkConfigManagement(User loggedInUser, String ksLabel) {
-        ensureConfigAdmin(loggedInUser);
         SystemDetailsCommand command  = getSystemDetailsCommand(ksLabel, loggedInUser);
         return command.getKickstartData().getKickstartDefaults().getCfgManagementFlag();
     }
@@ -108,7 +107,6 @@ public class SystemDetailsHandler extends BaseHandler {
     }
 
     private int setConfigFlag(User loggedInUser, String ksLabel, boolean flag) {
-        ensureConfigAdmin(loggedInUser);
         SystemDetailsCommand command  = getSystemDetailsCommand(ksLabel, loggedInUser);
         command.enableConfigManagement(flag);
         command.store();
@@ -129,7 +127,6 @@ public class SystemDetailsHandler extends BaseHandler {
     * @apidoc.returntype #param("boolean", "true if remote commands support is enabled; otherwise, false")
     */
     public boolean checkRemoteCommands(User loggedInUser, String ksLabel) {
-        ensureConfigAdmin(loggedInUser);
         SystemDetailsCommand command  = getSystemDetailsCommand(ksLabel, loggedInUser);
         return command.getKickstartData().getKickstartDefaults().getRemoteCommandFlag();
     }
@@ -167,14 +164,12 @@ public class SystemDetailsHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "ksLabel", "the kickstart profile label")
      * @apidoc.returntype #return_int_success()
-
      */
     public int disableRemoteCommands(User loggedInUser, String ksLabel) {
         return setRemoteCommandsFlag(loggedInUser, ksLabel, false);
     }
 
     private int setRemoteCommandsFlag(User loggedInUser, String ksLabel, boolean flag) {
-        ensureConfigAdmin(loggedInUser);
         SystemDetailsCommand command  = getSystemDetailsCommand(ksLabel, loggedInUser);
         command.enableRemoteCommands(flag);
         command.store();
@@ -202,7 +197,6 @@ public class SystemDetailsHandler extends BaseHandler {
      */
     @ReadOnly
     public String getSELinux(User loggedInUser, String ksLabel) {
-        ensureConfigAdmin(loggedInUser);
         SystemDetailsCommand command  = getSystemDetailsCommand(ksLabel, loggedInUser);
         return command.getKickstartData().getSELinuxMode().getValue();
     }
@@ -230,7 +224,6 @@ public class SystemDetailsHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int setSELinux(User loggedInUser, String ksLabel, String enforcingMode) {
-        ensureConfigAdmin(loggedInUser);
         SystemDetailsCommand command  = getSystemDetailsCommand(ksLabel, loggedInUser);
         command.setMode(SELinuxMode.lookup(enforcingMode));
         return setRemoteCommandsFlag(loggedInUser, ksLabel, true);
@@ -260,9 +253,6 @@ public class SystemDetailsHandler extends BaseHandler {
     @ReadOnly
     public Map<String, Object> getLocale(User loggedInUser, String ksLabel)
             throws FaultException {
-
-        ensureConfigAdmin(loggedInUser);
-
         KickstartLocaleCommand command  = getLocaleCommand(ksLabel, loggedInUser);
 
         Map<String, Object> locale = new HashMap<>();
@@ -296,9 +286,6 @@ public class SystemDetailsHandler extends BaseHandler {
      */
     public int setLocale(User loggedInUser, String ksLabel, String locale,
             Boolean useUtc) throws FaultException {
-
-        ensureConfigAdmin(loggedInUser);
-
         KickstartLocaleCommand command  = getLocaleCommand(ksLabel, loggedInUser);
 
         if (command.isValidTimezone(locale) == Boolean.FALSE) {
@@ -705,7 +692,6 @@ public class SystemDetailsHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int setRegistrationType(User loggedInUser, String ksLabel, String registrationType) {
-        ensureConfigAdmin(loggedInUser);
         SystemDetailsCommand command = getSystemDetailsCommand(ksLabel,
                 loggedInUser);
         command.setRegistrationType(registrationType);
@@ -739,7 +725,6 @@ public class SystemDetailsHandler extends BaseHandler {
      *      #options_end()
      */
     public String  getRegistrationType(User loggedInUser, String ksLabel) {
-        ensureConfigAdmin(loggedInUser);
         KickstartData data =
             KickstartFactory.lookupKickstartDataByLabelAndOrgId(ksLabel,
                     loggedInUser.getOrg().getId());

@@ -26,7 +26,7 @@ import com.redhat.rhn.domain.kickstart.RepoInfo;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cobbler.Profile;
@@ -300,7 +300,7 @@ public class KickstartUrlHelper {
         // /ks/dist/session/
         // 94xe86321bae3cb74551d995e5eafa065c0/ks-rhel-i386-as-4-u2
         String file = getLongMediaPath(session);
-        TinyUrl turl = CommonFactory.createTinyUrl(file.toString(),
+        TinyUrl turl = CommonFactory.createTinyUrl(file,
                 date);
         CommonFactory.saveTinyUrl(turl);
         if (log.isDebugEnabled()) {
@@ -329,7 +329,7 @@ public class KickstartUrlHelper {
         // /ks/dist/session/
         // 94xe86321bae3cb74551d995e5eafa065c0/ks-rhel-i386-as-4-u2
         String file = getLongMediaPath(session);
-        TinyUrl turl = CommonFactory.createTinyUrl(file.toString(),
+        TinyUrl turl = CommonFactory.createTinyUrl(file,
                 new Date());
         CommonFactory.saveTinyUrl(turl);
         if (log.isDebugEnabled()) {

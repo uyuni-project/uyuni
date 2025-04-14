@@ -1278,6 +1278,27 @@
         </context-group>
       <target state="new"/>
   </trans-unit>
-      </body>
+      <trans-unit id="Clients" xml:space="preserve">
+        <source>Clients</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="nav.sdc.config.list_channels" xml:space="preserve">
+          <source>List Channels</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+          </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="nav.sdc.config.rank_channels_view" xml:space="preserve">
+          <source>View Rankings</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+          </context-group>
+        <target state="new"/>
+  </trans-unit>
+        </body>
   </file>
 </xliff>

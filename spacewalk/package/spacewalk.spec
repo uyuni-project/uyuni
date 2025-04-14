@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk
-Version:        5.1.2
+Version:        5.1.3
 Release:        0
 Summary:        Spacewalk Systems Management Application
 License:        GPL-2.0-only
@@ -55,8 +55,6 @@ Requires:       spacewalk-html
 Requires:       mgr-push
 Requires:       spacewalk-backend
 Requires:       spacewalk-backend-app
-Requires:       spacewalk-backend-iss
-Requires:       spacewalk-backend-iss-export
 Requires:       spacewalk-backend-package-push-server
 Requires:       spacewalk-backend-server
 Requires:       spacewalk-backend-sql

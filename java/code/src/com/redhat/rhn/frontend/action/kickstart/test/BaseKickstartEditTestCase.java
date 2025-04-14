@@ -14,9 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -35,7 +35,7 @@ public class BaseKickstartEditTestCase extends RhnPostMockStrutsTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
         this.ksdata = KickstartDataTest.createKickstartWithChannel(user.getOrg());
         TestUtils.saveAndFlush(ksdata);
         addRequestParameter(RequestContext.KICKSTART_ID, this.ksdata.getId().toString());

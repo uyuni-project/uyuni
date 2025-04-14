@@ -15,7 +15,10 @@
 
 package com.redhat.rhn.frontend.action.token.groups;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
@@ -45,7 +48,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ListRemoveGroupsAction extends BaseListAction<ManagedServerGroup> {
 
-    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -56,10 +59,11 @@ public class ListRemoveGroupsAction extends BaseListAction<ManagedServerGroup> {
         RequestContext context = new RequestContext(request);
         ActivationKey key = context.lookupAndBindActivationKey();
         User user = context.getCurrentUser();
+        ensureRoleBasedAccess(user, "systems.activation_keys.groups", Namespace.AccessMode.W);
         Set<String> set = helper.getSet();
         for (String id : set) {
             Long sgid = Long.valueOf(id);
-            key.removeServerGroup(serverGroupManager.lookup(sgid, user));
+            key.removeServerGroup(SERVER_GROUP_MANAGER.lookup(sgid, user));
         }
 
         getStrutsDelegate().saveMessage(

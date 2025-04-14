@@ -106,7 +106,7 @@ end
 
 # register chromedriver headless mode
 $capybara_driver = capybara_register_driver
-Selenium::WebDriver.logger.level = :error unless $debug_mode
+Selenium::WebDriver.logger.level = :error
 Capybara.default_driver = :selenium_chrome_headless
 Capybara.javascript_driver = :selenium_chrome_headless
 Capybara.default_normalize_ws = true

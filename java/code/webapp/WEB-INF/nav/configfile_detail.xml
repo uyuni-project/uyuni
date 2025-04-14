@@ -19,20 +19,20 @@
     <!-- There are two copy file tabs because of the acl necessary to see the first page.
          The main difference is url associated with the tab. -->
         <rhn-tab name="configfile.nav.copy" url="/rhn/configuration/file/CopyFileCentral.do"
-                 acl="user_role(config_admin)">
+                 acl="authorized_for(config.files)">
                 <rhn-tab name="configfile.nav.copy.central" url="/rhn/configuration/file/CopyFileCentral.do"
-                         acl="user_role(config_admin)"/>
+                         acl="authorized_for(config.files)"/>
                 <rhn-tab name="configfile.nav.copy.local" url="/rhn/configuration/file/CopyFileLocal.do"
-                         acl="user_role(config_admin); not is_sls()"/>
+                         acl="authorized_for(config.files); not is_sls()"/>
                 <rhn-tab name="configfile.nav.copy.sandbox" url="/rhn/configuration/file/CopyFileSandbox.do"
-                         acl="user_role(config_admin); not is_sls()"/>
+                         acl="authorized_for(config.files); not is_sls()"/>
         </rhn-tab>
         <rhn-tab name="configfile.nav.copy" url="/rhn/configuration/file/CopyFileLocal.do"
-                 acl="not user_role(config_admin)">
+                 acl="not authorized_for(config.files)">
                 <rhn-tab name="configfile.nav.copy.local" url="/rhn/configuration/file/CopyFileLocal.do"
-                         acl="not user_role(config_admin); not is_sls()"/>
+                         acl="not authorized_for(config.files); not is_sls()"/>
                 <rhn-tab name="configfile.nav.copy.sandbox" url="/rhn/configuration/file/CopyFileSandbox.do"
-                         acl="not user_role(config_admin); not is_sls()"/>
+                         acl="not authorized_for(config.files); not is_sls()"/>
         </rhn-tab>
         <rhn-tab name="configfile.nav.compare"
                   url="/rhn/configuration/file/CompareRevision.do">

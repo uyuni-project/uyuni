@@ -46,7 +46,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class InstalledSystemsListAction extends RhnAction {
 
-    private final String LIST_NAME = "systemList";
+    private static final String LIST_NAME = "systemList";
 
     /** {@inheritDoc} */
     @Override

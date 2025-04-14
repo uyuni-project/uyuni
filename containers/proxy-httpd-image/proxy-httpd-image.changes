@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 11 17:38:44 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.5
+  * Use the new product name SUSE Multi-Linux Manager
+  * Use the rebranded release-notes-multi-linux-manager-proxy package
+
+-------------------------------------------------------------------
 Fri Feb 28 11:33:42 CET 2025 - rosuna@suse.com
 
 - version 5.1.4

@@ -64,11 +64,6 @@ public class VariablesAction extends KickstartVariableAction {
     }
 
     @Override
-    protected void checkPermissions(HttpServletRequest request) {
-        //TODO: check for null system record
-    }
-
-    @Override
     protected String getCobblerId(RequestContext context) {
         Server server = context.lookupAndBindServer();
         return server.getCobblerId();

@@ -19,7 +19,6 @@ import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.ClientCertificateDigester;
 import com.redhat.rhn.common.client.InvalidCertificateException;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.translation.TranslationException;
@@ -115,10 +114,13 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         if (!params.isEmpty() && params.get(0) instanceof String p0 && isSessionKey(p0) &&
                 !myClass.getName().endsWith("AuthHandler") && !myClass.getName().endsWith("SearchHandler")) {
 
-                session = SessionManager.loadSession((String)params.get(0));
-                user = getLoggedInUser((String) params.get(0));
-                params.set(0, user);
-            }
+            session = SessionManager.loadSession((String) params.get(0));
+            user = getLoggedInUser((String) params.get(0));
+            params.set(0, user);
+        }
+        else if (!params.isEmpty() && params.get(0) instanceof User) {
+            user = (User) params.get(0);
+        }
 
 
         //we've found all the methods that have the same number of parameters
@@ -141,14 +143,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
             }
         }
 
-        try {
-            ensureRoleBasedAccess(user, myClass.getCanonicalName(), beanifiedMethod);
-        }
-        catch (SecurityException e) {
-            if (ConfigDefaults.get().isRbacEnabled()) {
-                throw e;
-            }
-        }
+        ensureRoleBasedAccess(user, myClass.getCanonicalName(), beanifiedMethod);
 
         try {
             return foundMethod.invoke(this, converted);
@@ -194,7 +189,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         }
     }
 
-    private void ensureRoleBasedAccess(User user, String className, String methodName) {
+    protected void ensureRoleBasedAccess(User user, String className, String methodName) {
         String apiEndpoint = className + "." + methodName;
         if (user == null) {
             if (!WebEndpointFactory.getUnauthorizedApiMethods().contains(apiEndpoint)) {
@@ -380,55 +375,6 @@ public class BaseHandler implements XmlRpcInvocationHandler {
     }
 
     /**
-     * Private helper method to make sure a user has system group admin role.
-     * If not, this will throw a generic Permission exception.
-     * @param user The user to check
-     * @throws PermissionCheckFailureException if user is not a system group admin
-     */
-    public static void ensureSystemGroupAdmin(User user)
-        throws PermissionCheckFailureException {
-        ensureUserRole(user, RoleFactory.SYSTEM_GROUP_ADMIN);
-    }
-
-    /**
-     * Private helper method to make sure a user has config admin role.
-     * If not, this will throw a generic Permission exception.
-     * @param user The user to check
-     * @throws PermissionCheckFailureException if user is not a config admin.
-     */
-    public static void ensureConfigAdmin(User user)
-        throws PermissionCheckFailureException {
-        ensureUserRole(user, RoleFactory.CONFIG_ADMIN);
-    }
-
-    /**
-     * Public helper method to make sure a user has either
-     * an org admin or a config admin role
-     * If not, this will throw a generic Permission exception.
-     * @param user The user to check
-     * @throws PermissionCheckFailureException if user is neither org nor config admin.
-     */
-    public static void ensureOrgOrConfigAdmin(User user)
-        throws PermissionCheckFailureException {
-        if (!user.hasRole(RoleFactory.ORG_ADMIN) &&
-                !user.hasRole(RoleFactory.CONFIG_ADMIN)) {
-            throw new PermissionCheckFailureException(RoleFactory.ORG_ADMIN,
-                    RoleFactory.CONFIG_ADMIN);
-        }
-    }
-
-    /**
-     * Private helper method to make sure a user has image admin role.
-     * If not, this will throw a generic Permission exception.
-     * @param user The user to check
-     * @throws PermissionCheckFailureException if user is not an image admin.
-     */
-    public static void ensureImageAdmin(User user)
-        throws PermissionCheckFailureException {
-        ensureUserRole(user, RoleFactory.IMAGE_ADMIN);
-    }
-
-    /**
      * Private helper method to make sure a user  the given role..
      * If not, this will throw a generic Permission exception.
      * @param user The user to check
@@ -519,7 +465,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
             if (!validKeys.contains(key)) {
                 // user passed an invalid key...
                 if (errors == null) {
-                    errors = new String(key);
+                    errors = key;
                 }
                 else {
                     errors += ", " + key;

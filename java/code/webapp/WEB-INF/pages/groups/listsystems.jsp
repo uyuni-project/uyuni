@@ -1,11 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
- <rhn:require acl="user_role(system_group_admin)">
+ <rhn:require acl="authorized_for(systems.groups)">
 <c:set var="summary_key" value="systemgroup.systems.summary" />
 <c:set var="summary_arg0" value="systemgroup.systems.remove" />
  </rhn:require>
-<rhn:require acl="not user_role(system_group_admin)">
+<rhn:require acl="not authorized_for(systems.groups)">
  <c:set var="summary_key" value="systemgroup.systems.summary.nonadmin"/>
  </rhn:require>
 

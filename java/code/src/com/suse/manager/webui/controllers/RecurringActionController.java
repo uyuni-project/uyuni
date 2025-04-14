@@ -19,6 +19,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.notFound;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
@@ -40,6 +41,7 @@ import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
+import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -300,6 +302,12 @@ public class RecurringActionController {
             dto.setStates(StateConfigJson.listOrderedStates(
                     ((RecurringState) action.getRecurringActionType()).getStateConfig()));
         }
+        else if (RecurringActionType.ActionType.PLAYBOOK.equals(action.getActionType())) {
+            dto.setTest(((RecurringPlaybook) action.getRecurringActionType()).isTestMode());
+            dto.setPlaybookPath(((RecurringPlaybook) action.getRecurringActionType()).getPlaybookPath());
+            dto.setInventoryPath(((RecurringPlaybook) action.getRecurringActionType()).getInventoryPath());
+            dto.setFlushCache(((RecurringPlaybook) action.getRecurringActionType()).isFlushCache());
+        }
         return dto;
     }
 
@@ -375,7 +383,7 @@ public class RecurringActionController {
             String errMsg = LocalizationService.getInstance().getMessage("recurring_action.not_in_maint_mode");
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(errMsg)));
         }
-        return json(response, ResultJson.success());
+        return success(response);
     }
 
     private static RecurringAction createOrGetAction(User user, RecurringActionScheduleJson json) {
@@ -438,6 +446,17 @@ public class RecurringActionController {
         return stateConfig;
     }
 
+    private static void setPlaybookDetails(RecurringPlaybook playbookType, RecurringActionDetailsDto details) {
+        if (details.getPlaybookPath() == null || details.getPlaybookPath().isEmpty()) {
+            throw new ValidatorException(LocalizationService.getInstance()
+                    .getMessage("recurring_action.empty_playbook_path"));
+        }
+        playbookType.setPlaybookPath(details.getPlaybookPath());
+        playbookType.setTestMode(details.isTest());
+        playbookType.setInventoryPath(details.getInventoryPath());
+        playbookType.setFlushCache(details.isFlushCache());
+    }
+
     private static void mapJsonToAction(RecurringActionScheduleJson json, RecurringAction action) {
         action.setName(json.getScheduleName());
         action.setActive(json.isActive());
@@ -457,6 +476,9 @@ public class RecurringActionController {
                 Set<RecurringStateConfig> newConfig = getStateConfigFromJson(details.getStates(), action.getCreator());
                 ((RecurringState) action.getRecurringActionType()).saveStateConfig(newConfig);
             }
+        }
+        else if (action.getRecurringActionType() instanceof RecurringPlaybook playbookType) {
+            setPlaybookDetails(playbookType, details);
         }
 
         String cron = json.getCron();

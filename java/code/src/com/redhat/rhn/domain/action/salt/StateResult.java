@@ -40,7 +40,7 @@ public class StateResult {
      * @param e map
      */
     public StateResult(Map.Entry<String, Map<String, Object>> e) {
-        String[] arr = e.getKey().split("_|-");
+        String[] arr = e.getKey().split("_\\|-");
         function = arr[0] + "." + arr[arr.length - 1];
 
         e.getValue().forEach((key, val) -> {
@@ -182,16 +182,16 @@ public class StateResult {
     public String toString() {
         StringBuilder retval = new StringBuilder();
         Formatter form = new Formatter(retval);
-        form.format("----------\n");
-        form.format("%1$12s: %2$s\n", "ID", getId());
-        form.format("%1$12s: %2$s\n", "Function", getFunction());
-        form.format("%1$12s: %2$s\n", "Name", getName());
-        form.format("%1$12s: %2$s\n", "Result", isResult());
-        form.format("%1$12s: %2$s\n", "Comment", getComment());
-        form.format("%1$12s: %2$s\n", "Started", getStartTime());
-        form.format("%1$12s: %2$s\n", "Duration", getDuration());
-        form.format("%1$12s: %2$s\n", "SLS", getSls());
-        form.format("%1$12s: %2$s\n", "Changed", getChanges());
+        form.format("----------%n");
+        form.format("%1$12s: %2$s%n", "ID", getId());
+        form.format("%1$12s: %2$s%n", "Function", getFunction());
+        form.format("%1$12s: %2$s%n", "Name", getName());
+        form.format("%1$12s: %2$s%n", "Result", isResult());
+        form.format("%1$12s: %2$s%n", "Comment", getComment());
+        form.format("%1$12s: %2$s%n", "Started", getStartTime());
+        form.format("%1$12s: %2$s%n", "Duration", getDuration());
+        form.format("%1$12s: %2$s%n", "SLS", getSls());
+        form.format("%1$12s: %2$s%n", "Changed", getChanges());
         form.close();
         return retval.toString();
     }

@@ -188,7 +188,7 @@ public class VirtualHostManagerController {
         String module = request.params("name");
         Optional<GathererModule> gathererModule = getGathererModules()
                 .entrySet().stream()
-                .filter(e -> module.toLowerCase().equals(e.getKey().toLowerCase()))
+                .filter(e -> module.equalsIgnoreCase(e.getKey()))
                 .map(Map.Entry::getValue)
                 .findFirst();
         return result(response,
@@ -387,8 +387,7 @@ public class VirtualHostManagerController {
             try {
                 try (InputStream fi = new FileInputStream(kubeconfigPath)) {
                     Map<String, Object>  map = new Yaml().loadAs(fi, Map.class);
-                    if (map.get("contexts") != null &&
-                            map.get("contexts") instanceof List) {
+                    if (map.get("contexts") instanceof List) {
                         List<Map<String, Object>> contexts =
                                 (List<Map<String, Object>>)map.get("contexts");
                         contextNames = contexts.stream()

@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  */
 public class ChannelPackagesBaseAction extends RhnAction {
 
-    protected final String listName = "packageList";
+    protected static final String LIST_NAME = "packageList";
 
     protected List<SelectableChannel> findChannels(User user, Long selectedChan) {
         return ChannelFactory.findAllByUserOrderByChild(user).stream()

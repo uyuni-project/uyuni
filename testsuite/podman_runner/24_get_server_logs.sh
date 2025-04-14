@@ -12,5 +12,6 @@ src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 server_id=${1}
 rm -rfv /tmp/testing/server-logs/${server_id}
 mkdir -p /tmp/testing/server-logs/${server_id}
+sudo -i journalctl > /tmp/testing/server-logs/${server_id}/journalctl.log && chmod 644 /tmp/testing/server-logs/${server_id}/journalctl.log
 sudo -i podman exec server bash -c "supportconfig -R /tmp/server-logs/${server_id} && chmod 644 /tmp/server-logs/${server_id}/*.txz*"
 

@@ -17,12 +17,12 @@ package com.redhat.rhn.frontend.action.channel.manage;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.SelectableChannel;
 import com.redhat.rhn.domain.rhnset.RhnSet;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -53,11 +53,11 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ChannelPackagesAddAction extends ChannelPackagesBaseAction {
 
-    private final String SELECTED_CHANNEL = "selected_channel";
-    private final String ALL_PACKAGES = "all_managed_packages";
-    private final String ALL_PACKAGES_SELECTED = "all_selected";
-    private final String ORPHAN_PACKAGES = "orphan_packages";
-    private final String ORPHAN_PACKAGES_SELECTED = "orphan_selected";
+    private static final String SELECTED_CHANNEL = "selected_channel";
+    private static final String ALL_PACKAGES = "all_managed_packages";
+    private static final String ALL_PACKAGES_SELECTED = "all_selected";
+    private static final String ORPHAN_PACKAGES = "orphan_packages";
+    private static final String ORPHAN_PACKAGES_SELECTED = "orphan_selected";
 
     /** {@inheritDoc} */
     @Override
@@ -73,7 +73,7 @@ public class ChannelPackagesAddAction extends ChannelPackagesBaseAction {
         Channel chan = ChannelFactory.lookupByIdAndUser(cid, user);
 
         if (!UserManager.verifyChannelAdmin(user, chan)) {
-              throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
+              throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
         }
         if (chan.getOrg() == null) {
             throw new PermissionCheckFailureException();
@@ -141,24 +141,24 @@ public class ChannelPackagesAddAction extends ChannelPackagesBaseAction {
 
 
         String alphaBarPressed = request.getParameter(
-                AlphaBarHelper.makeAlphaKey(TagHelper.generateUniqueName(listName)));
+                AlphaBarHelper.makeAlphaKey(TagHelper.generateUniqueName(LIST_NAME)));
         if (!requestContext.isSubmitted() && alphaBarPressed == null) {
             set.clear();
             RhnSetManager.store(set);
         }
-        else if (ListTagHelper.getListAction(listName, request) != null) {
-            helper.execute(set, listName, result);
+        else if (ListTagHelper.getListAction(LIST_NAME, request) != null) {
+            helper.execute(set, LIST_NAME, result);
         }
 
 
 
         if (!set.isEmpty()) {
             helper.syncSelections(set, result);
-            ListTagHelper.setSelectedAmount(listName, set.size(), request);
+            ListTagHelper.setSelectedAmount(LIST_NAME, set.size(), request);
         }
 
-        ListTagHelper.bindSetDeclTo(listName,  RhnSetDecl.PACKAGES_TO_ADD, request);
-        TagHelper.bindElaboratorTo(listName, result.getElaborator(), request);
+        ListTagHelper.bindSetDeclTo(LIST_NAME,  RhnSetDecl.PACKAGES_TO_ADD, request);
+        TagHelper.bindElaboratorTo(LIST_NAME, result.getElaborator(), request);
 
 
 

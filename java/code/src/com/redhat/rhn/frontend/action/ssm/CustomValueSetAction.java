@@ -49,12 +49,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CustomValueSetAction extends RhnAction {
 
-    private final String CIKID_PARAM = "cikid";
-    private final String LABEL_PARAM = "label";
-    private final String DESC_PARAM = "description";
-    private final String VAL_PARAM = "value";
-    private final String REMOVE_BTN = "remove";
-    private final String SET_BTN = "set";
+    private static final String CIKID_PARAM = "cikid";
+    private static final String LABEL_PARAM = "label";
+    private static final String DESC_PARAM = "description";
+    private static final String VAL_PARAM = "value";
+    private static final String REMOVE_BTN = "remove";
+    private static final String SET_BTN = "set";
     private static final String VALIDATION_XSD = "/com/redhat/rhn/frontend/action/" +
             "systems/sdc/validation/editCustomDataForm.xsd";
 

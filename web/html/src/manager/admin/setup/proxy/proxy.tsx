@@ -122,6 +122,9 @@ export default (props: Props) => {
           </Form>
         </div>
         <div className="col-sm-3 hidden-xs" id="wizard-faq">
+          <div className="proxy-brand text-center">
+            SUSE<i className="fa fa-registered"></i> Multi-Linux Manager
+          </div>
           <img src={img} alt={t("Illustration of a proxy server")} />
           <h4>{t("HTTP Proxy")}</h4>
           <p>

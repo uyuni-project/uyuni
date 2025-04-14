@@ -24,6 +24,8 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 
 import com.suse.manager.webui.services.iface.MonitoringManager;
@@ -45,19 +47,18 @@ public class SystemEntitler {
     private static final Logger LOG = LogManager.getLogger(SystemEntitler.class);
 
     private SaltApi saltApi;
+    private AnsibleManager ansibleManager;
     private MonitoringManager monitoringManager;
     private ServerGroupManager serverGroupManager;
 
     /**
      * @param saltApiIn instance for gathering data from a system.
-     * @param monitoringManagerIn instance for handling monitoring configuration.
-     * @param serverGroupManagerIn
      */
-    public SystemEntitler(SaltApi saltApiIn,
-            MonitoringManager monitoringManagerIn, ServerGroupManager serverGroupManagerIn) {
+    public SystemEntitler(SaltApi saltApiIn) {
         this.saltApi = saltApiIn;
-        this.monitoringManager = monitoringManagerIn;
-        this.serverGroupManager = serverGroupManagerIn;
+        this.ansibleManager = new AnsibleManager(saltApiIn);
+        this.monitoringManager = new FormulaMonitoringManager(saltApiIn);
+        this.serverGroupManager = new ServerGroupManager(saltApiIn);
     }
 
     /**
@@ -102,6 +103,10 @@ public class SystemEntitler {
         entitleServer(server, ent);
 
         server.asMinionServer().ifPresent(minion -> {
+            if (EntitlementManager.ANSIBLE_CONTROL_NODE.equals(ent)) {
+                ansibleManager.createDefaultPaths(minion);
+            }
+
             serverGroupManager.updatePillarAfterGroupUpdateForServers(Arrays.asList(minion));
 
             if (EntitlementManager.MONITORING.equals(ent)) {

@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -33,8 +34,6 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -45,7 +44,6 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
@@ -66,11 +64,8 @@ public class AccessTest extends BaseTestCaseWithUser {
 
     private Acl acl;
     private final SaltApi saltApi = new TestSaltApi();
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
-    private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-            new SystemUnentitler(monitoringManager, serverGroupManager),
-            new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
+            new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
     );
 
     @Override
@@ -180,7 +175,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         Map<String, Object> context = new HashMap<>();
         User user =  UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
         context.put("user", user);
         boolean rc = acl.evalAcl(context, "user_can_manage_channels()");
         assertTrue(rc);
@@ -333,7 +328,7 @@ public class AccessTest extends BaseTestCaseWithUser {
             User user =  UserTestUtils.findNewUser("testUser",
                     "testOrg" + this.getClass().getSimpleName());
             context.put("user", user);
-            user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+            user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
 
             Channel chan = ChannelFactoryTest.createBaseChannel(user);
             assertTrue(acl.evalAcl(context, "can_access_channel(" + chan.getId() + ")"));
@@ -349,7 +344,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         User user = UserTestUtils.findNewUser("testUser", "testOrg" + this.getClass().getSimpleName());
         context.put("user", user);
 
-        user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
         Channel chan = null;
 
         try {

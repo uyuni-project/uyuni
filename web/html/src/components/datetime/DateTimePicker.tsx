@@ -1,6 +1,6 @@
 import "react-datepicker/dist/react-datepicker.css";
 
-import { forwardRef, useRef } from "react";
+import { forwardRef, useRef, useState } from "react";
 
 import ReactDatePicker from "react-datepicker";
 
@@ -26,9 +26,10 @@ type Props = {
   legacyId?: string;
   value: moment.Moment;
   onChange: (value: moment.Moment) => void;
+  disabled?: boolean;
   hideDatePicker?: boolean;
   hideTimePicker?: boolean;
-  // By default date times are shown in the user's configured time zone. Setting this property will default to the server time zone instead.
+  /** By default date times are shown in the user's configured time zone. Setting this property will default to the server time zone instead. */
   serverTimeZone?: boolean;
 };
 
@@ -44,6 +45,9 @@ export const DateTimePicker = (props: Props) => {
   const hideTimePicker = props.hideTimePicker ?? false;
   const timeZone = props.serverTimeZone ? localizedMoment.serverTimeZone : localizedMoment.userTimeZone;
 
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+
   // Legacy id offers compatibility with the DateTimePickerTag.java format
   const datePickerId = props.legacyId
     ? `${props.legacyId}_datepicker_widget_input`
@@ -57,14 +61,22 @@ export const DateTimePicker = (props: Props) => {
     : undefined;
 
   const openDatePicker = () => {
-    datePickerRef.current?.setOpen(true);
+    if (props.disabled) {
+      return;
+    }
+    setShowDatePicker(true);
   };
 
   const openTimePicker = () => {
-    timePickerRef.current?.setOpen(true);
+    if (props.disabled) {
+      return;
+    }
+    setShowTimePicker(true);
   };
 
   const onChange = (date: Date | null) => {
+    setShowDatePicker(false);
+    setShowTimePicker(false);
     // Currently we don't support propagating null values, we might want to do this in the future
     if (date === null) {
       return;
@@ -129,6 +141,7 @@ export const DateTimePicker = (props: Props) => {
             </span>
             <ReactDatePicker
               key="date-picker"
+              open={showDatePicker}
               /**
                * Here and below, since an element with this id doesn't exist it will be created for the portal in the document
                * body. Please don't remove this as it otherwise breaks z-index stacking.
@@ -137,6 +150,8 @@ export const DateTimePicker = (props: Props) => {
               ref={datePickerRef}
               selected={browserTimezoneValue.toDate()}
               onChange={onChange}
+              onClickOutside={() => setShowDatePicker(false)}
+              onInputClick={() => setShowDatePicker(true)}
               dateFormat={DATE_FORMAT}
               wrapperClassName="form-control date-time-picker-wrapper"
               popperModifiers={popperModifiers}
@@ -160,6 +175,7 @@ export const DateTimePicker = (props: Props) => {
               previousYearButtonLabel={previousYear}
               nextYearAriaLabel={nextYear}
               nextYearButtonLabel={nextYear}
+              disabled={props.disabled}
             />
           </>
         )}
@@ -174,8 +190,10 @@ export const DateTimePicker = (props: Props) => {
               <i className="fa fa-clock-o"></i>
             </span>
             <ReactDatePicker
+              open={showTimePicker}
               key="time-picker"
               portalId="time-picker-portal"
+              onClickOutside={() => setShowTimePicker(false)}
               ref={timePickerRef}
               selected={browserTimezoneValue.toDate()}
               onChange={(date, event) => {
@@ -192,6 +210,7 @@ export const DateTimePicker = (props: Props) => {
                 mergedDate.setHours(date.getHours(), date.getMinutes());
                 onChange(mergedDate);
               }}
+              onInputClick={() => setShowTimePicker(true)}
               onChangeRaw={(event) => {
                 // In case the user pastes a value, clean it up and cut it to max length
                 const rawValue = event.target.value.replaceAll(/[^\d:]/g, "");
@@ -225,6 +244,7 @@ export const DateTimePicker = (props: Props) => {
                   data-testid="time-picker"
                 />
               }
+              disabled={props.disabled}
             />
           </>
         )}

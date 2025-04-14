@@ -118,8 +118,6 @@ public class ServerGroupHandler extends BaseHandler {
      */
     public int addOrRemoveAdmins(User loggedInUser, String systemGroupName,
                                         List<String> loginNames, boolean add) {
-        ensureSystemGroupAdmin(loggedInUser);
-
         // Check to see if any of the users provided are Satellite or Organization
         // admins.  If so, generate an exception.  These users are granted access
         // by default and their access may not be changed.
@@ -129,7 +127,7 @@ public class ServerGroupHandler extends BaseHandler {
             if ((user != null) && ((user.hasRole(RoleFactory.SAT_ADMIN) ||
                 (user.hasRole(RoleFactory.ORG_ADMIN))))) {
                 if (admins == null) {
-                    admins = new String(login);
+                    admins = login;
                 }
                 else {
                     admins += ", " + login;
@@ -242,7 +240,6 @@ public class ServerGroupHandler extends BaseHandler {
      * @apidoc.returntype $ManagedServerGroupSerializer
      */
     public ServerGroup create(User loggedInUser, String name, String description) {
-        ensureSystemGroupAdmin(loggedInUser);
         return serverGroupManager.create(loggedInUser, name, description);
     }
 
@@ -258,7 +255,6 @@ public class ServerGroupHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, String systemGroupName) {
-        ensureSystemGroupAdmin(loggedInUser);
         ManagedServerGroup group = serverGroupManager.lookup(systemGroupName, loggedInUser);
         serverGroupManager.remove(loggedInUser, group);
         return 1;

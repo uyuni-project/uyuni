@@ -31,7 +31,7 @@
 %define apache_group apache
 %endif
 Name:           uyuni-base
-Version:        5.1.1
+Version:        5.1.2
 Release:        0
 Summary:        Uyuni Base Package
 License:        GPL-2.0-only
@@ -95,7 +95,9 @@ Basic filesystem hierarchy for Uyuni proxy.
 mkdir -p %{buildroot}%{_sysconfdir}/rhn
 mkdir -p %{buildroot}%{_datadir}/rhn/proxy
 %if 0%{?suse_version} >= 1500 || 0%{?rhel} >= 9
-mkdir -p %{buildroot}%{_localstatedir}/spacewalk
+install -d -m 0775 %{buildroot}%{_localstatedir}/spacewalk
+install -d -m 0775 %{buildroot}/%{_localstatedir}/spacewalk/systems
+install -d -m 0775 %{buildroot}/%{_localstatedir}/spacewalk/packages
 %endif
 mkdir -p %{buildroot}%{_datadir}/rhn/config-defaults
 mkdir -p %{buildroot}/srv/www/distributions
@@ -120,6 +122,8 @@ getent passwd %{apache_user} >/dev/null && %{_sbindir}/usermod -a -G susemanager
 %files server
 %defattr(-,root,root)
 %dir %attr(755,%{apache_user}, root) %{_localstatedir}/spacewalk
+%dir %attr(755,%{apache_user}, %{apache_group}) %{_localstatedir}/spacewalk/systems
+%dir %attr(755,%{apache_user}, %{apache_group}) %{_localstatedir}/spacewalk/packages
 %dir %attr(755,root,root) /srv/www/distributions
 %endif
 

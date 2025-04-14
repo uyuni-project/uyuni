@@ -22,6 +22,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
@@ -29,7 +30,6 @@ import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -197,7 +197,7 @@ public class ActivationKeyManager {
     public ActivationKey createNewActivationKey(User user,
             String key, String note, Long usageLimit, Channel baseChannel,
             boolean universalDefault) {
-        if (user.hasRole(RoleFactory.ACTIVATION_KEY_ADMIN)) {
+        if (user.isMemberOf(AccessGroupFactory.ACTIVATION_KEY_ADMIN)) {
             return ActivationKeyFactory.createNewKey(user, null, key,
                     note, usageLimit, baseChannel, universalDefault);
         }
@@ -351,7 +351,7 @@ public class ActivationKeyManager {
     private boolean canAdministerKeys(User user, ActivationKey key) {
         return user != null && key != null &&
                  user.getOrg().equals(key.getOrg()) &&
-                    user.hasRole(RoleFactory.ACTIVATION_KEY_ADMIN);
+                    user.isMemberOf(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
     }
 
     /**

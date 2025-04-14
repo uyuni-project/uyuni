@@ -59,7 +59,7 @@
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        5.1.7
+Version:        5.1.8
 Release:        0
 Summary:        %{productprettyname} specific scripts
 License:        GPL-2.0-only
@@ -99,10 +99,9 @@ BuildRequires:  spacewalk-backend-sql-postgresql
 %if 0%{?suse_version}
 BuildRequires:  %fillup_prereq
 BuildRequires:  %insserv_prereq
-BuildRequires:  postgresql-init
 BuildRequires:  tftp
-Requires(pre):  %fillup_prereq %insserv_prereq tftp postgresql-init
-Requires(preun):%fillup_prereq %insserv_prereq tftp postgresql-init
+Requires(pre):  %fillup_prereq %insserv_prereq tftp
+Requires(preun):%fillup_prereq %insserv_prereq tftp
 Requires(post): user(%{apache_user})
 %endif
 Requires(pre):  salt

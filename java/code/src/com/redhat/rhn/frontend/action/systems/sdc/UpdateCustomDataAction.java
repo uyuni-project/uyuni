@@ -48,13 +48,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class UpdateCustomDataAction extends RhnAction {
 
-    private final String CIKID_PARAM = "cikid";
-    private final String LABEL_PARAM = "label";
-    private final String VAL_PARAM = "value";
-    private final String CREATE_PARAM = "created";
-    private final String MODIFY_PARAM = "modified";
-    private final String CREATOR_PARAM = "creator";
-    private final String MODIFIER_PARAM = "modifier";
+    private static final String CIKID_PARAM = "cikid";
+    private static final String LABEL_PARAM = "label";
+    private static final String VAL_PARAM = "value";
+    private static final String CREATE_PARAM = "created";
+    private static final String MODIFY_PARAM = "modified";
+    private static final String CREATOR_PARAM = "creator";
+    private static final String MODIFIER_PARAM = "modifier";
     private static final String VALIDATION_XSD = "/com/redhat/rhn/frontend/action/" +
             "systems/sdc/validation/editCustomDataForm.xsd";
 

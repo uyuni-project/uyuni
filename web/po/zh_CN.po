@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-28 14:30+0100\n"
+"POT-Creation-Date: 2025-04-11 13:25+0200\n"
 "PO-Revision-Date: 2025-03-10 13:56+0000\n"
 "Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -56,8 +56,8 @@ msgstr "确认认证执行"
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:128
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:94
 msgid "Schedule"
 msgstr "日程安排"
@@ -65,7 +65,8 @@ msgstr "日程安排"
 #: ../html/src/components/CoCoScansList.tsx:137
 #: ../html/src/components/CoCoScansList.tsx:192
 #: ../html/src/components/package/PackageListActionScheduler.tsx:189
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:218
+#: ../html/src/manager/admin/hub/peripheral-details.tsx:43
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:242
 msgid "Back to list"
 msgstr "返回列表"
 
@@ -170,7 +171,7 @@ msgstr "认证 #{identifier} 于 {date} {time} 执行"
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:212
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/all-list.tsx:73
-#: ../html/src/manager/systems/list-filter.tsx:41
+#: ../html/src/manager/systems/list-filter.tsx:43
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:775
 msgid "System"
@@ -184,7 +185,7 @@ msgstr "环境类型"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
 #: ../html/src/components/hub/TokenTable.tsx:89
-#: ../html/src/manager/notifications/notification-messages.tsx:512
+#: ../html/src/manager/notifications/notifications-list.tsx:126
 msgid "Created"
 msgstr "创建日期"
 
@@ -250,7 +251,7 @@ msgid "Last modified on"
 msgstr "上次修改日期"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:84
-#: ../html/src/manager/notifications/notification-messages.tsx:517
+#: ../html/src/manager/notifications/notifications-list.tsx:129
 msgid "Action"
 msgstr "操作"
 
@@ -286,7 +287,8 @@ msgstr "流程输出"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
 #: ../html/src/components/formula-selection.tsx:293
-#: ../html/src/components/large-text-attachment.tsx:176
+#: ../html/src/components/hub/ModalEditButton.tsx:94
+#: ../html/src/components/large-text-attachment.tsx:184
 #: ../html/src/components/panels/CreatorPanel.tsx:125
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:144
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:197
@@ -334,19 +336,19 @@ msgstr "创建 {label}"
 msgid "Configuration Channels"
 msgstr "配置通道"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:112
+#: ../html/src/components/datetime/DateTimePicker.tsx:124
 msgid "Previous month"
 msgstr "上个月"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:113
+#: ../html/src/components/datetime/DateTimePicker.tsx:125
 msgid "Next month"
 msgstr "下个月"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:114
+#: ../html/src/components/datetime/DateTimePicker.tsx:126
 msgid "Previous year"
 msgstr "上一年"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:115
+#: ../html/src/components/datetime/DateTimePicker.tsx:127
 msgid "Next year"
 msgstr "下一年"
 
@@ -366,7 +368,10 @@ msgstr "您确定要{action}选定的 {name} 吗？（已选择 {count} 个 {nam
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:54
 #: ../html/src/components/hub/AddTokenButton.tsx:154
-#: ../html/src/components/large-text-attachment.tsx:169
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:115
+#: ../html/src/components/hub/ModalEditButton.tsx:87
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:367
+#: ../html/src/components/large-text-attachment.tsx:177
 #: ../html/src/components/panels/CreatorPanel.tsx:114
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:56
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:34
@@ -386,11 +391,12 @@ msgstr "取消"
 
 #. both the peripheral and the hub are null means the token is not used and we can delete it
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
+#: ../html/src/components/hub/PeripheralsList.tsx:52
 #: ../html/src/components/hub/TokenTable.tsx:175
 #: ../html/src/components/hub/TokenTable.tsx:184
 #: ../html/src/components/hub/TokenTable.tsx:228
-#: ../html/src/components/large-text-attachment.tsx:187
-#: ../html/src/components/large-text-attachment.tsx:200
+#: ../html/src/components/large-text-attachment.tsx:195
+#: ../html/src/components/large-text-attachment.tsx:209
 #: ../html/src/components/panels/CreatorPanel.tsx:97
 #: ../html/src/components/table/Table.tsx:139
 #: ../html/src/manager/admin/payg/payg.tsx:73
@@ -411,8 +417,8 @@ msgstr "取消"
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:24
 #: ../html/src/manager/packages/list.tsx:72
 #: ../html/src/manager/packages/list.tsx:125
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:217
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:220
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:248
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:251
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:222
 #: ../html/src/manager/salt/keys/key-management.tsx:54
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:132
@@ -428,6 +434,132 @@ msgstr "删除项目"
 #: ../html/src/components/dialog/delete.example.tsx:17
 msgid "Are you sure you want to delete project "
 msgstr "您确定要删除项目吗 "
+
+#: ../html/src/components/formik/Form.example.tsx:34
+msgid "Field"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:36
+#: ../html/src/components/input/InputBase.test.tsx:43
+#: ../html/src/components/input/InputBase.test.tsx:69
+#: ../html/src/components/input/InputBase.test.tsx:97
+#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:49
+#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:58
+#: ../html/src/components/input/form-multi-input/single-field.example.tsx:47
+#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:58
+#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:66
+#: ../html/src/components/input/form/Form.example.tsx:25
+#: ../html/src/components/input/text/Text.example.tsx:25
+#: ../html/src/components/input/text/Text.example.tsx:34
+msgid "Minimum 2 characters"
+msgstr "最少 2 个字符"
+
+#: ../html/src/components/formik/Form.example.tsx:39
+msgid "Checkbox"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:41
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
+#: ../html/src/components/input/password/Password.example.tsx:23
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:74
+#: ../html/src/manager/images/image-store-edit.tsx:180
+#: ../html/src/manager/login/susemanager/login.tsx:99
+#: ../html/src/manager/login/uyuni/login.tsx:90
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:416
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:539
+msgid "Password"
+msgstr "口令"
+
+#: ../html/src/components/formik/Form.example.tsx:43
+#, fuzzy
+#| msgid "fa-times"
+msgid "Datetime"
+msgstr "fa-times"
+
+#: ../html/src/components/formik/Form.example.tsx:45
+msgid "Multiple values"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:47
+#, fuzzy
+#| msgid "Loading text"
+msgid "Long text"
+msgstr "正在加载文本"
+
+#: ../html/src/components/formik/Form.example.tsx:49
+#, fuzzy
+#| msgid "Changes"
+msgid "Range"
+msgstr "更改"
+
+#: ../html/src/components/formik/Form.example.tsx:53
+msgid "Radio"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:55
+msgid "One"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:56
+msgid "Two"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:57
+msgid "Three"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:62
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:108
+#: ../html/src/components/input/check/Check.example.tsx:22
+#: ../html/src/components/input/datetime/DateTime.example.tsx:25
+#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:66
+#: ../html/src/components/input/form-multi-input/single-field.example.tsx:55
+#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:75
+#: ../html/src/components/input/form/Form.example.tsx:30
+#: ../html/src/components/input/password/Password.example.tsx:30
+#: ../html/src/components/input/radio/horizontal-open.example.tsx:37
+#: ../html/src/components/input/radio/horizontal.example.tsx:36
+#: ../html/src/components/input/radio/vertical-open.example.tsx:36
+#: ../html/src/components/input/radio/vertical.example.tsx:35
+#: ../html/src/components/input/range/Range.example.tsx:24
+#: ../html/src/components/input/select/simple.example.tsx:32
+#: ../html/src/components/input/text/Text.example.tsx:38
+msgid "Submit"
+msgstr "提交"
+
+#: ../html/src/components/formik/field/AsRadio.tsx:41
+#, fuzzy
+#| msgid "Custom State"
+msgid "Custom value"
+msgstr "自定义状态"
+
+#: ../html/src/components/formik/field/AsRange.tsx:15
+msgid "{rangeInputName} start"
+msgstr ""
+
+#: ../html/src/components/formik/field/AsRange.tsx:24
+msgid "{rangeInputName} end"
+msgstr ""
+
+#: ../html/src/components/formik/field/FieldBase.tsx:30
+#: ../html/src/components/input/InputBase.tsx:278
+msgid "required"
+msgstr "必填"
+
+#: ../html/src/components/formik/field/MultiField.tsx:37
+#, fuzzy
+#| msgid "Remove file"
+msgid "Remove item"
+msgstr "去除文件"
+
+#: ../html/src/components/formik/field/MultiField.tsx:58
+#: ../html/src/components/formik/field/MultiField.tsx:62
+#, fuzzy
+#| msgid "Add system"
+msgid "Add item"
+msgstr "添加系统"
 
 #: ../html/src/components/formula-selection.tsx:135
 msgid " No group"
@@ -492,23 +624,26 @@ msgid "Add a new access token"
 msgstr "添加新的访问令牌"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:128
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:70
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:92
 msgid "Server FQDN"
 msgstr "服务器 FQDN"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:130
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:159
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:160
 msgid "e.g. server.domain.com"
 msgstr "例如 server.domain.com"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:134
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:163
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:73
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:164
 #: ../html/src/manager/proxy/container-config.tsx:206
 #: ../html/src/manager/proxy/container-config.tsx:217
 msgid "Has to be a valid FQDN address"
 msgstr "必须为有效的 FQDN 地址"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:139
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:183
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:184
 msgid "Token"
 msgstr "令牌"
 
@@ -535,6 +670,7 @@ msgid "Copy"
 msgstr "复制"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:220
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:208
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:94
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:95
 msgid "Close"
@@ -546,7 +682,6 @@ msgstr "访问令牌已复制到剪贴板"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:38
 #: ../html/src/components/hub/DeregisterServer.tsx:47
-#: ../html/src/components/hub/PeripheralsList.tsx:51
 msgid "Deregister"
 msgstr "取消注册"
 
@@ -566,8 +701,12 @@ msgstr ""
 "您确定要从 Hub {fqdn} 取消注册吗？如果取消注册，您将无法再从该处获得数据。"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:70
+#, fuzzy
+#| msgid ""
+#| "Are you sure you want to derigester peripheral {fqdn}? All the current "
+#| "configuration will be lost."
 msgid ""
-"Are you sure you want to derigester peripheral {fqdn}? All the current "
+"Are you sure you want to deregister peripheral {fqdn}? All the current "
 "configuration will be lost."
 msgstr "您确定要将外设 {fqdn} 取消注册吗？当前的所有配置都将丢失。"
 
@@ -575,134 +714,315 @@ msgstr "您确定要将外设 {fqdn} 取消注册吗？当前的所有配置都�
 msgid "The server {fqdn} has been successfully deregistered."
 msgstr "已成功将服务器 {fqdn} 取消注册。"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:36
-msgid "Server FQDN:"
-msgstr "服务器 FQDN："
+#: ../html/src/components/hub/DesyncChannel.tsx:36
+#: ../html/src/components/hub/DesyncChannel.tsx:45
+#, fuzzy
+#| msgid "synced"
+msgid "Desync"
+msgstr "已同步"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:44
-msgid "Registration date:"
-msgstr "注册日期："
+#: ../html/src/components/hub/DesyncChannel.tsx:37
+#, fuzzy
+#| msgid "Base Channel"
+msgid "Desync Channel"
+msgstr "基础通道"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:54
-msgid "Last modified:"
-msgstr "上次修改时间："
+#: ../html/src/components/hub/DesyncChannel.tsx:42
+#, fuzzy
+#| msgid "Confirm Deletion"
+msgid "Confirm Desync"
+msgstr "确认删除"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:64
-msgid "Root Certificate Authority:"
-msgstr "根证书颁发机构："
+#: ../html/src/components/hub/DesyncChannel.tsx:55
+#, fuzzy
+#| msgid "no child channels"
+msgid "Desync channels?"
+msgstr "无子通道"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:70
-msgid ""
-"A customized Root Certificate Authority is currently configured for this hub."
-msgstr "目前已为此 Hub 配置自定义根证书颁发机构。"
+#: ../html/src/components/hub/DesyncChannel.tsx:64
+#, fuzzy
+#| msgid "The server {fqdn} has been successfully deregistered."
+msgid "The channels have been successfully desynced."
+msgstr "已成功将服务器 {fqdn} 取消注册。"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:71
-msgid "This hub is currently using the default Root Certificate Authority."
-msgstr "此 Hub 目前使用的是默认根证书颁发机构。"
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:131
+#, fuzzy
+#| msgid "Organization"
+msgid "Select Organization"
+msgstr "组织"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:72
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:161
+#: ../html/src/manager/admin/setup/products/products.tsx:487
+msgid "Filter by architecture"
+msgstr "按体系结构过滤"
+
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:173
+#, fuzzy
+#| msgid "Loading child channels.."
+msgid "Search channels..."
+msgstr "正在加载子通道..."
+
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:188
+msgid "Sync"
+msgstr ""
+
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:189
+#: ../html/src/components/states-picker.tsx:452
+msgid "Channel Label"
+msgstr "通道标签"
+
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:190
+#: ../html/src/manager/admin/setup/products/products.tsx:587
+#: ../html/src/manager/admin/setup/products/products.tsx:968
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
+#: ../html/src/manager/images/image-view-packages.tsx:50
+#: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
+msgid "Architecture"
+msgstr "体系结构"
+
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:191
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:306
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:343
+msgid "Hub Org"
+msgstr ""
+
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:192
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:307
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:344
+#, fuzzy
+#| msgid "N. of Sync Orgs"
+msgid "Sync Org"
+msgstr "同步组织数量"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:67
+#, fuzzy
+#| msgid "Audit Servers"
+msgid "Add Server"
+msgstr "审计服务器"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:69
+msgid "Set the FQDN of the remote server"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:89
+#, fuzzy
+#| msgid "Migrate"
+msgid "Migrate?"
+msgstr "迁移"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:95
+#, fuzzy
+#| msgid "Access Tokens"
+msgid "Access Token"
+msgstr "访问令牌"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:100
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:294
+#: ../html/src/components/hub/ServerDetailsForm.tsx:103
 msgid "Root Certificate Authority"
 msgstr "根证书颁发机构"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:74
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:166
+#, fuzzy
+#| msgid "Peripheral registration in progress: waiting for a response..."
+msgid "Peripheral migration in progress: waiting for a response..."
+msgstr "正在注册外设：正在等待响应..."
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:184
+msgid "Migration partially succeeded"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:185
+#, fuzzy
+#| msgid " failed"
+msgid "Migration failed"
+msgstr " 失败"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:193
 msgid ""
-"Ensure the certificate you are providing is correct before proceeding. A "
-"wrong value will break the connection with the hub."
+"Some of the servers where migrated successfully, but some errors happened "
+"during the process."
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:194
+msgid ""
+"The migration process was not successfull and reported the following errors"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:226
+msgid "This slave is currently disabled and cannot be selected for migration"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:227
+msgid "Check to migrate this server to a peripheral"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:246
+#, fuzzy
+#| msgid "undefined"
+msgid "Not defined"
+msgstr "未定义"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:251
+#: ../html/src/components/large-text-attachment.tsx:69
+#: ../html/src/components/large-text-attachment.tsx:110
+#: ../html/src/components/salt-state-popup.tsx:60
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:60
+#: ../html/src/manager/images/image-profiles.tsx:204
+#: ../html/src/manager/images/image-stores.tsx:198
+#: ../html/src/manager/images/image-view-overview.tsx:326
+#: ../html/src/manager/images/image-view-overview.tsx:351
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:36
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:39
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:78
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:63
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:240
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:243
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:213
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
+msgid "Edit"
+msgstr "编辑"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:252
+msgid "Set access token for {fqdn}"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:253
+#, fuzzy
+#| msgid "Access Tokens"
+msgid "Access token"
+msgstr "访问令牌"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:282
+#, fuzzy
+#| msgid "No tokens available"
+msgid "Root CA available"
+msgstr "无可用令牌"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:282
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
+msgid "Not needed"
+msgstr "不需要"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:292
+msgid "The root CA is the same of the hub."
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:293
+msgid "This server has a different root CA."
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:296
+#, fuzzy
+#| msgid ""
+#| "Ensure the certificate you are providing is correct before proceeding. A "
+#| "wrong value will break the connection with the hub."
+msgid ""
+"Ensure the certificate you are providing for {fqdn} is correct before "
+"proceeding. A wrong value will prevent the connection with the hub."
 msgstr ""
 "请确保您提供的证书正确无误，然后再继续。如果提供的值不正确，将会破坏与 Hub 的"
 "连接。"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:77
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:301
+#, fuzzy
+#| msgid ""
+#| "Are you sure you want to delete the current Root Certificate Authority? "
+#| "This change may break the connection with the hub."
 msgid ""
-"Are you sure you want to delete the current Root Certificate Authority? This "
-"change may break the connection with the hub."
+"Are you sure you want to remove the current Root Certificate Authority for "
+"{fqdn}?"
 msgstr "您确定要删除当前的根证书颁发机构吗？此更改可能会破坏与 Hub 的连接。"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:83
-msgid "Root Certificate Authority successfully modified."
-msgstr "已成功修改根证书颁发机构。"
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:321
+#: ../html/src/manager/notifications/notifications-list.tsx:339
+#: ../html/src/manager/notifications/notifications-list.tsx:340
+msgid "Info"
+msgstr "信息"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:98
-msgid "Root Certificate Authority successfully updated."
-msgstr "已成功更新根证书颁发机构。"
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:326
+#: ../html/src/manager/notifications/notifications-list.tsx:346
+#: ../html/src/manager/notifications/notifications-list.tsx:347
+msgid "Warning"
+msgstr "警告"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:115
-msgid "GPG Public Key:"
-msgstr "GPG 公共密钥："
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:331
+#: ../html/src/manager/notifications/notifications-list.tsx:353
+#: ../html/src/manager/notifications/notifications-list.tsx:354
+msgid "Error"
+msgstr "错误"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:121
-msgid "A customized GPG key is currently configured for this hub."
-msgstr "目前已为此 Hub 配置自定义 GPG 密钥。"
-
-#: ../html/src/components/hub/HubDetailsForm.tsx:122
-msgid "This hub is currently not using a custom GPG key."
-msgstr "此 Hub 目前使用的不是自定义 GPG 密钥。"
-
-#: ../html/src/components/hub/HubDetailsForm.tsx:131
-msgid "Mirror credentials:"
-msgstr "镜像身份凭证："
-
-#: ../html/src/components/hub/PeripheralsList.tsx:29
+#: ../html/src/components/hub/PeripheralsList.tsx:31
 msgid "Filter by FQDN"
 msgstr "按 FQDN 过滤"
 
-#: ../html/src/components/hub/PeripheralsList.tsx:31
+#: ../html/src/components/hub/PeripheralsList.tsx:36
 msgid "Peripheral FQDN"
 msgstr "外设 FQDN"
 
-#: ../html/src/components/hub/PeripheralsList.tsx:35
-msgid "N. of Sync Channels"
+#: ../html/src/components/hub/PeripheralsList.tsx:41
+#, fuzzy
+#| msgid "N. of Sync Channels"
+msgid "N. of synced channels"
 msgstr "同步通道数量"
 
-#: ../html/src/components/hub/PeripheralsList.tsx:41
-msgid "N. of Sync Orgs"
+#: ../html/src/components/hub/PeripheralsList.tsx:46
+#, fuzzy
+#| msgid "N. of Sync Orgs"
+msgid "N. of synced organizations"
 msgstr "同步组织数量"
 
-#: ../html/src/components/hub/PeripheralsList.tsx:46
+#: ../html/src/components/hub/PeripheralsList.tsx:49
 msgid "Download Root CA"
 msgstr "下载根 CA"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:135
+#: ../html/src/components/hub/PeripheralsList.tsx:66
+msgid "View details of peripheral {fqdn}"
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:136
 msgid "Register a new peripheral server"
 msgstr "注册新的外设服务器"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:141
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:142
 msgid "Peripheral registration in progress: waiting for a response..."
 msgstr "正在注册外设：正在等待响应..."
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:156
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:157
 msgid "Peripheral Server FQDN"
 msgstr "外设服务器 FQDN"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:157
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:158
 msgid ""
 "The unique, DNS-resolvable fully-qualified domain name of the server to "
 "register."
 msgstr "待注册服务器的可由 DNS 解析的唯一完全限定域名。"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:167
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:168
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:169
 msgid "Registration mode"
 msgstr "注册模式"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:169
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:170
 msgid "Define how to connect to the remote server to initiate the registration"
 msgstr "指定如何连接远程服务器以开始注册"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:176
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:177
 msgid "Existing token"
 msgstr "现有令牌"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:177
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:178
 msgid "Administrator User/Password"
 msgstr "管理员用户/口令"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:184
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:185
 msgid ""
 "The token that grant access to the remote server to establish the connection."
 msgstr "用于授予对远程服务器的访问权限以建立连接的令牌。"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:195
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
 #: ../html/src/manager/images/image-store-edit.tsx:171
 #: ../html/src/manager/login/susemanager/login.tsx:88
@@ -710,80 +1030,348 @@ msgstr "用于授予对远程服务器的访问权限以建立连接的令牌。
 msgid "Username"
 msgstr "用户名"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:197
 msgid "The username of {productName} Administrator of the remote server."
 msgstr "远程服务器的 {productName} 管理员的用户名。"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:204
-#: ../html/src/components/input/password/Password.example.tsx:23
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:74
-#: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/susemanager/login.tsx:99
-#: ../html/src/manager/login/uyuni/login.tsx:90
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:416
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:539
-msgid "Password"
-msgstr "口令"
-
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:206
 msgid "The password of the specified user."
 msgstr "所指定用户的口令。"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:214
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:215
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:216
 msgid "Root CA certificate"
 msgstr "根 CA 证书"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:217
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:218
 msgid ""
 "The Root certificate authority of the remote server, that must be trusted to "
 "establish a secure connection."
 msgstr "远程服务器的根证书颁发机构，该颁发机构必须受信任以便建立安全的连接。"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:225
-msgid "Not needed"
-msgstr "不需要"
-
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
-#: ../html/src/components/large-text-attachment.tsx:136
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
+#: ../html/src/components/large-text-attachment.tsx:144
 msgid "Upload a file"
 msgstr "上载文件"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:228
 msgid "Paste a PEM certificate"
 msgstr "粘贴 PEM 证书"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:233
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:234
 msgid "Certificate File"
 msgstr "证书文件"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:234
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:235
 msgid "Certificate file, in PEM format"
 msgstr "PEM 格式的 CA 文件"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:244
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:245
 msgid "PEM Certificate"
 msgstr "PEM 证书"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:245
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:246
 msgid "The text representing the certificate, in PEM format"
 msgstr "表示 PEM 格式证书的文本"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:260
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:261
 msgid "Register"
 msgstr "注册"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:267
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:268
 #: ../html/src/manager/images/image-import.tsx:314
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:515
 #: ../html/src/manager/proxy/container-config.tsx:390
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:407
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
 msgstr "清除字段"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:16
+msgid ""
+"A customized Root Certificate Authority is currently configured for this hub."
+msgstr "目前已为此 Hub 配置自定义根证书颁发机构。"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:17
+#, fuzzy
+#| msgid ""
+#| "A customized Root Certificate Authority is currently configured for this "
+#| "hub."
+msgid ""
+"A customized Root Certificate Authority is currently configured for this "
+"peripheral."
+msgstr "目前已为此 Hub 配置自定义根证书颁发机构。"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:20
+msgid "This hub is currently using the default Root Certificate Authority."
+msgstr "此 Hub 目前使用的是默认根证书颁发机构。"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:21
+#, fuzzy
+#| msgid "This hub is currently using the default Root Certificate Authority."
+msgid ""
+"This peripheral is currently using the default Root Certificate Authority."
+msgstr "此 Hub 目前使用的是默认根证书颁发机构。"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:25
+msgid ""
+"Ensure the certificate you are providing is correct before proceeding. A "
+"wrong value will break the connection with the hub."
+msgstr ""
+"请确保您提供的证书正确无误，然后再继续。如果提供的值不正确，将会破坏与 Hub 的"
+"连接。"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:28
+#, fuzzy
+#| msgid ""
+#| "Ensure the certificate you are providing is correct before proceeding. A "
+#| "wrong value will break the connection with the hub."
+msgid ""
+"Ensure the certificate you are providing is correct before proceeding. A "
+"wrong value will break the connection with the peripheral."
+msgstr ""
+"请确保您提供的证书正确无误，然后再继续。如果提供的值不正确，将会破坏与 Hub 的"
+"连接。"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:33
+msgid ""
+"Are you sure you want to delete the current Root Certificate Authority? This "
+"change may break the connection with the hub."
+msgstr "您确定要删除当前的根证书颁发机构吗？此更改可能会破坏与 Hub 的连接。"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:36
+#, fuzzy
+#| msgid ""
+#| "Are you sure you want to delete the current Root Certificate Authority? "
+#| "This change may break the connection with the hub."
+msgid ""
+"Are you sure you want to delete the current Root Certificate Authority? This "
+"change may break the connection with the peripheral."
+msgstr "您确定要删除当前的根证书颁发机构吗？此更改可能会破坏与 Hub 的连接。"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:67
+msgid "Server FQDN:"
+msgstr "服务器 FQDN："
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:75
+msgid "Registration date:"
+msgstr "注册日期："
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:85
+msgid "Last modified:"
+msgstr "上次修改时间："
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:95
+msgid "Root Certificate Authority:"
+msgstr "根证书颁发机构："
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:117
+msgid "GPG Public Key:"
+msgstr "GPG 公共密钥："
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:123
+msgid "A customized GPG key is currently configured for this hub."
+msgstr "目前已为此 Hub 配置自定义 GPG 密钥。"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:124
+msgid "This hub is currently not using a custom GPG key."
+msgstr "此 Hub 目前使用的不是自定义 GPG 密钥。"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:134
+msgid "Mirror credentials:"
+msgstr "镜像身份凭证："
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:142
+#, fuzzy
+#| msgid "Use credentials"
+msgid "Regenerate credentials"
+msgstr "使用身份凭证"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:155
+#, fuzzy
+#| msgid "no child channels"
+msgid "Synchronized channels:"
+msgstr "无子通道"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:163
+#, fuzzy
+#| msgid "Edit Channel Ranks"
+msgid "Edit channels"
+msgstr "编辑通道排名"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:185
+#, fuzzy
+#| msgid "has unsynchronized patches"
+msgid "One syncronized channel"
+msgstr "具有未同步的补丁"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:189
+msgid "{nSyncedChannels} syncronized channels, from one organization"
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:192
+msgid ""
+"{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different "
+"organizations"
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:198
+msgid "Root Certificate Authority successfully modified."
+msgstr "已成功修改根证书颁发机构。"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:212
+msgid "Root Certificate Authority successfully updated."
+msgstr "已成功更新根证书颁发机构。"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:227
+#, fuzzy
+#| msgid "Schedule successfully created."
+msgid "Mirror credentials successfully regenerated."
+msgstr "成功创建日程安排。"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:170
+#, fuzzy
+#| msgid "No change"
+msgid "No changes to apply"
+msgstr "无更改"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:215
+msgid "Channels synced correctly to peripheral!"
+msgstr ""
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:243
+msgid "Please select at least one channel to add or remove from sync"
+msgstr ""
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:293
+#, fuzzy
+#| msgid "Channels"
+msgid "Channels to Add"
+msgstr "通道"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:301
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:338
+#, fuzzy
+#| msgid "Filter by name"
+msgid "Filter by Name"
+msgstr "按名称过滤"
+
+#. ref={nameInputRef}
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:303
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:340
+#: ../html/src/components/input/form/Form.example.tsx:23
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:389
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:171
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
+#: ../html/src/manager/images/image-view.tsx:644
+#: ../html/src/manager/salt/keys/key-management.tsx:160
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:84
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
+msgid "Name"
+msgstr "名称"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:304
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:341
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:29
+#: ../html/src/manager/images/image-build.tsx:258
+#: ../html/src/manager/images/image-profile-edit.tsx:528
+#: ../html/src/manager/images/image-profiles.tsx:177
+#: ../html/src/manager/images/image-store-edit.tsx:259
+#: ../html/src/manager/images/image-stores.tsx:177
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:259
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:315
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
+msgid "Label"
+msgstr "标签"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:305
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:342
+#: ../html/src/manager/admin/setup/products/products.tsx:589
+msgid "Arch"
+msgstr "体系结构"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:318
+msgid ""
+"Some custom channels do not have a sync organization selected. Please select "
+"organizations before confirming."
+msgstr ""
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:324
+#, fuzzy
+#| msgid " channels synced"
+msgid "No channels selected to add"
+msgstr " 通道已同步"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:331
+#, fuzzy
+#| msgid "Channel Name"
+msgid "Channels to Remove"
+msgstr "通道名称"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:347
+#, fuzzy
+#| msgid " channels synced"
+msgid "No channels selected to remove"
+msgstr " 通道已同步"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:354
+#, fuzzy
+#| msgid "Channel sync failed"
+msgid "Channel Sync Changes"
+msgstr "通道同步失败"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:355
+#, fuzzy
+#| msgid "Can not contain the following characters: /\\"
+msgid "You are about to make the following changes:"
+msgstr "不能包含以下字符：/\\"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:374
+#: ../html/src/components/package/PackageListActionScheduler.tsx:180
+#: ../html/src/components/states-picker.tsx:369
+#: ../html/src/components/states-picker.tsx:559
+#: ../html/src/manager/admin/setup/products/products.tsx:1081
+#: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:38
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:191
+#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1135
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:677
+msgid "Confirm"
+msgstr "确认"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:397
+msgid "{peripheralFqdn} - Peripheral Sync Channels"
+msgstr ""
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:407
+#, fuzzy
+#| msgid "Back to list"
+msgid "Back to details"
+msgstr "返回列表"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:420
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:421
+#: ../html/src/manager/appstreams/actions-appstreams.tsx:14
+msgid "Apply Changes"
+msgstr "应用更改"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:429
+msgid "Sync Channels from Hub to Peripheral"
+msgstr ""
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:439
+#, fuzzy
+#| msgid "Confirm Software Channel Change"
+msgid "Confirm Channel Synchronization Changes"
+msgstr "确认软件通道更改"
 
 #: ../html/src/components/hub/TokenTable.tsx:54
 msgid "No tokens available"
@@ -804,14 +1392,14 @@ msgstr "有效"
 #: ../html/src/components/hub/TokenTable.tsx:76
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
-#: ../html/src/manager/systems/list-filter.tsx:36
+#: ../html/src/manager/systems/list-filter.tsx:38
 msgid "Yes"
 msgstr "是"
 
 #: ../html/src/components/hub/TokenTable.tsx:76
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
-#: ../html/src/manager/systems/list-filter.tsx:37
+#: ../html/src/manager/systems/list-filter.tsx:39
 msgid "No"
 msgstr "否"
 
@@ -918,41 +1506,6 @@ msgid ""
 "Enabling this access token will restore access to the peripheral {fqdn}."
 msgstr "启用此访问令牌将恢复对外设 {fqdn} 的访问权限。"
 
-#: ../html/src/components/input/InputBase.test.tsx:43
-#: ../html/src/components/input/InputBase.test.tsx:69
-#: ../html/src/components/input/InputBase.test.tsx:97
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:49
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:58
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:47
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:58
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:66
-#: ../html/src/components/input/form/Form.example.tsx:25
-#: ../html/src/components/input/text/Text.example.tsx:25
-#: ../html/src/components/input/text/Text.example.tsx:34
-msgid "Minimum 2 characters"
-msgstr "最少 2 个字符"
-
-#: ../html/src/components/input/InputBase.tsx:278
-msgid "required"
-msgstr "必填"
-
-#: ../html/src/components/input/check/Check.example.tsx:22
-#: ../html/src/components/input/datetime/DateTime.example.tsx:25
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:66
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:55
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:75
-#: ../html/src/components/input/form/Form.example.tsx:30
-#: ../html/src/components/input/password/Password.example.tsx:30
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:37
-#: ../html/src/components/input/radio/horizontal.example.tsx:36
-#: ../html/src/components/input/radio/vertical-open.example.tsx:36
-#: ../html/src/components/input/radio/vertical.example.tsx:35
-#: ../html/src/components/input/range/Range.example.tsx:24
-#: ../html/src/components/input/select/simple.example.tsx:32
-#: ../html/src/components/input/text/Text.example.tsx:38
-msgid "Submit"
-msgstr "提交"
-
 #: ../html/src/components/input/datetime/DateTime.example.tsx:24
 msgid "Time"
 msgstr "时间"
@@ -980,22 +1533,6 @@ msgstr "姓氏"
 #: ../html/src/manager/login/uyuni/login.tsx:78
 msgid "Login"
 msgstr "登录"
-
-#. ref={nameInputRef}
-#: ../html/src/components/input/form/Form.example.tsx:23
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:389
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:171
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
-#: ../html/src/manager/images/image-view.tsx:644
-#: ../html/src/manager/salt/keys/key-management.tsx:160
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:84
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
-msgid "Name"
-msgstr "名称"
 
 #: ../html/src/components/input/password/Password.example.tsx:25
 #, fuzzy
@@ -1062,65 +1599,44 @@ msgstr "风格"
 msgid "No flavors"
 msgstr "无风格"
 
-#: ../html/src/components/large-text-attachment.tsx:62
+#: ../html/src/components/large-text-attachment.tsx:67
 msgid "Data is present."
 msgstr "数据存在。"
 
-#: ../html/src/components/large-text-attachment.tsx:63
+#: ../html/src/components/large-text-attachment.tsx:68
 msgid "Data is not present."
 msgstr "数据不存在。"
 
-#: ../html/src/components/large-text-attachment.tsx:64
-#: ../html/src/components/large-text-attachment.tsx:103
-#: ../html/src/components/salt-state-popup.tsx:60
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:60
-#: ../html/src/manager/images/image-profiles.tsx:204
-#: ../html/src/manager/images/image-stores.tsx:198
-#: ../html/src/manager/images/image-view-overview.tsx:326
-#: ../html/src/manager/images/image-view-overview.tsx:351
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:36
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:39
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:78
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:63
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:209
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:212
-#: ../html/src/manager/recurring/recurring-actions-list.tsx:213
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
-msgid "Edit"
-msgstr "编辑"
-
-#: ../html/src/components/large-text-attachment.tsx:93
+#: ../html/src/components/large-text-attachment.tsx:99
 msgid "Download"
 msgstr "下载"
 
-#: ../html/src/components/large-text-attachment.tsx:103
+#: ../html/src/components/large-text-attachment.tsx:110
 msgid "Add"
 msgstr "添加"
 
-#: ../html/src/components/large-text-attachment.tsx:127
-#: ../html/src/components/large-text-attachment.tsx:128
+#: ../html/src/components/large-text-attachment.tsx:135
+#: ../html/src/components/large-text-attachment.tsx:136
 msgid "Edit method"
 msgstr "编辑方法"
 
-#: ../html/src/components/large-text-attachment.tsx:129
+#: ../html/src/components/large-text-attachment.tsx:137
 msgid "Define how to provide the new value"
 msgstr "指定如何提供新值"
 
-#: ../html/src/components/large-text-attachment.tsx:137
+#: ../html/src/components/large-text-attachment.tsx:145
 msgid "Paste the new value"
 msgstr "粘贴新值"
 
-#: ../html/src/components/large-text-attachment.tsx:143
+#: ../html/src/components/large-text-attachment.tsx:151
 msgid "File"
 msgstr "文件"
 
-#: ../html/src/components/large-text-attachment.tsx:153
+#: ../html/src/components/large-text-attachment.tsx:161
 msgid "New value"
 msgstr "新值"
 
-#: ../html/src/components/large-text-attachment.tsx:195
+#: ../html/src/components/large-text-attachment.tsx:204
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
 msgid "Confirm Deletion"
 msgstr "确认删除"
@@ -1132,18 +1648,6 @@ msgstr "无法清除选择"
 #: ../html/src/components/package/PackageListActionScheduler.tsx:107
 msgid "Unable to perform action."
 msgstr "无法执行操作。"
-
-#: ../html/src/components/package/PackageListActionScheduler.tsx:180
-#: ../html/src/components/states-picker.tsx:369
-#: ../html/src/components/states-picker.tsx:559
-#: ../html/src/manager/admin/setup/products/products.tsx:1081
-#: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:38
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:191
-#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1135
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:677
-msgid "Confirm"
-msgstr "确认"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:208
 #: ../html/src/components/package/PackageListActionScheduler.tsx:241
@@ -1185,11 +1689,11 @@ msgstr "下一页"
 msgid "Last"
 msgstr "最后一页"
 
-#: ../html/src/components/pagination.tsx:93
+#: ../html/src/components/pagination.tsx:94
 msgid "Page <dropdown></dropdown> of {total}"
 msgstr "第 <dropdown></dropdown> 页，共 {total} 页"
 
-#: ../html/src/components/pagination.tsx:115
+#: ../html/src/components/pagination.tsx:117
 msgid "Page {current} of {total}"
 msgstr "第 {current} 页，共 {total} 页"
 
@@ -1331,9 +1835,10 @@ msgstr "未指派状态。请使用搜索来查找并指派状态。"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:91
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:202
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:204
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:103
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:121
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:233
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:235
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:111
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
@@ -1388,7 +1893,7 @@ msgid "There are no states assigned."
 msgstr "未指派任何状态。"
 
 #: ../html/src/components/states-picker.tsx:451
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:251
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:282
 msgid "State Name"
 msgstr "状态名称"
 
@@ -1397,13 +1902,9 @@ msgid "Channel Name"
 msgstr "通道名称"
 
 #: ../html/src/components/states-picker.tsx:452
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:264
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:295
 msgid "State Label"
 msgstr "状态标签"
-
-#: ../html/src/components/states-picker.tsx:452
-msgid "Channel Label"
-msgstr "通道标签"
 
 #: ../html/src/components/states-picker.tsx:453
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
@@ -1417,7 +1918,7 @@ msgstr "通道标签"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:42
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:36
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:52
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:268
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:299
 msgid "Description"
 msgstr "说明"
 
@@ -1458,7 +1959,7 @@ msgstr "虚拟 Guest"
 
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
-#: ../html/src/manager/systems/list-filter.tsx:66
+#: ../html/src/manager/systems/list-filter.tsx:68
 #: ../html/src/manager/systems/virtual-list.tsx:63
 msgid "Virtual Host"
 msgstr "虚拟主机"
@@ -1470,6 +1971,7 @@ msgstr "非虚拟系统"
 #: ../html/src/components/systems.tsx:44
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:608
 #: ../html/src/manager/systems/list-filter.tsx:6
+#: ../html/src/manager/systems/list-filter.tsx:22
 msgid "Proxy"
 msgstr "代理"
 
@@ -1579,7 +2081,7 @@ msgstr "帮助"
 
 #: ../html/src/components/utils/loading/Loading.tsx:20
 #: ../html/src/manager/appstreams/appstream-packages.tsx:32
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:74
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:106
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:634
@@ -1865,13 +2367,47 @@ msgstr "此服务器目前注册为 Hub {fqdn} 的外设。 "
 msgid "Access Tokens"
 msgstr "访问令牌"
 
-#: ../html/src/manager/admin/hub/peripherals.tsx:16
+#: ../html/src/manager/admin/hub/migrate-from-v1.renderer.tsx:14
+msgid "Migrate from ISSv1 Slaves"
+msgstr ""
+
+#: ../html/src/manager/admin/hub/migrate-from-v2.renderer.tsx:13
+msgid "Migrate from ISSv2"
+msgstr ""
+
+#: ../html/src/manager/admin/hub/peripheral-details.tsx:20
+msgid "{fqdn} - Peripheral Details"
+msgstr ""
+
+#: ../html/src/manager/admin/hub/peripheral-details.tsx:51
+#, fuzzy
+#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
+msgid "The server {fqdn} is currently registered as peripheral of this hub. "
+msgstr "此服务器目前注册为 Hub {fqdn} 的外设。 "
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:26
 msgid "Peripherals Configuration"
 msgstr "外设配置"
 
-#: ../html/src/manager/admin/hub/peripherals.tsx:25
+#: ../html/src/manager/admin/hub/peripherals.tsx:35
 msgid "Add Peripheral"
 msgstr "添加外设"
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:39
+msgid "Migrate"
+msgstr "迁移"
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:41
+msgid "Migrate an existing configuration of a previous version of ISS"
+msgstr ""
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:48
+msgid "Migrate ISS v1..."
+msgstr ""
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:57
+msgid "Migrate ISS v2..."
+msgstr ""
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:57
 msgid ""
@@ -2056,7 +2592,7 @@ msgstr "从 SUSE Customer Center 刷新产品目录"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:376
-#: ../html/src/manager/notifications/notification-messages.tsx:439
+#: ../html/src/manager/notifications/notifications-list.tsx:195
 msgid "Refresh"
 msgstr "刷新"
 
@@ -2144,10 +2680,6 @@ msgid ""
 msgstr ""
 "此服务器已配置为某个 Hub 配置的外设服务器。只能在相应 Hub 服务器上管理产品。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:487
-msgid "Filter by architecture"
-msgstr "按体系结构过滤"
-
 #: ../html/src/manager/admin/setup/products/products.tsx:505
 msgid "Filter by product Description"
 msgstr "按产品说明过滤"
@@ -2155,18 +2687,6 @@ msgstr "按产品说明过滤"
 #: ../html/src/manager/admin/setup/products/products.tsx:581
 msgid "Product Description"
 msgstr "产品说明"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:587
-#: ../html/src/manager/admin/setup/products/products.tsx:968
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
-#: ../html/src/manager/images/image-view-packages.tsx:50
-#: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
-msgid "Architecture"
-msgstr "体系结构"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:589
-msgid "Arch"
-msgstr "体系结构"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:596
 #: ../html/src/manager/packages/list.tsx:158
@@ -2286,16 +2806,16 @@ msgstr "HTTP 代理用户名"
 msgid "HTTP Proxy Password"
 msgstr "HTTP 代理口令"
 
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:125
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:128
 msgid "Illustration of a proxy server"
 msgstr "安装代理服务器"
 
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:126
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:129
 #: ../html/src/manager/admin/setup/setup-header.tsx:7
 msgid "HTTP Proxy"
 msgstr "HTTP 代理"
 
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:129
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:132
 msgid ""
 "If this server uses an HTTP proxy to access the outside network, you can use "
 "this form to configure it. If that is not the case, move on to "
@@ -2421,20 +2941,14 @@ msgstr "目前没有任何任务在服务器上运行。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:559
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr "会话已失效，请重新加载页面以查看最新数据。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:263
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:561
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "服务器错误，请查看日志文件。"
-
-#: ../html/src/manager/appstreams/actions-appstreams.tsx:14
-msgid "Apply Changes"
-msgstr "应用更改"
 
 #: ../html/src/manager/appstreams/appstream-packages.tsx:36
 msgid "An error occurred while displaying the list of packages."
@@ -2860,6 +3374,7 @@ msgid "Socket/IFL count"
 msgstr "插槽/IFL 计数"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:306
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:127
 msgid "Select"
 msgstr "选择"
 
@@ -3477,20 +3992,6 @@ msgstr "版本 {version} 历史记录"
 msgid "Version {version} successfully built into {environmentName}"
 msgstr "已成功在 {environmentName} 中构建版本 {version}"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:29
-#: ../html/src/manager/images/image-build.tsx:258
-#: ../html/src/manager/images/image-profile-edit.tsx:528
-#: ../html/src/manager/images/image-profiles.tsx:177
-#: ../html/src/manager/images/image-store-edit.tsx:259
-#: ../html/src/manager/images/image-stores.tsx:177
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:259
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:315
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
-msgid "Label"
-msgstr "标签"
-
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:51
 msgid "Insert before"
 msgstr "在前面插入"
@@ -3721,7 +4222,7 @@ msgstr "包括建议项"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:643
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:500
+#: ../html/src/manager/notifications/notifications-list.tsx:114
 #: ../html/src/manager/state/highstate-summary.tsx:77
 msgid "Type"
 msgstr "类型"
@@ -3813,7 +4314,7 @@ msgstr "系统"
 #: ../html/src/manager/images/image-view.tsx:668
 #: ../html/src/manager/images/image-view.tsx:792
 #: ../html/src/manager/systems/all-list.tsx:103
-#: ../html/src/manager/systems/list-filter.tsx:45
+#: ../html/src/manager/systems/list-filter.tsx:47
 msgid "Packages"
 msgstr "软件包"
 
@@ -3821,7 +4322,7 @@ msgstr "软件包"
 #: ../html/src/manager/images/image-view.tsx:655
 #: ../html/src/manager/images/image-view.tsx:791
 #: ../html/src/manager/systems/all-list.tsx:90
-#: ../html/src/manager/systems/list-filter.tsx:44
+#: ../html/src/manager/systems/list-filter.tsx:46
 msgid "Patches"
 msgstr "补丁"
 
@@ -3855,7 +4356,7 @@ msgid "Building the image has been "
 msgstr "映像构建 "
 
 #: ../html/src/manager/images/image-build.tsx:211
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:177
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:217
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:51
 #: ../html/src/manager/systems/proxy.tsx:70
@@ -4235,7 +4736,7 @@ msgstr "编辑存储区"
 #: ../html/src/manager/images/image-view-overview.tsx:522
 #: ../html/src/manager/images/image-view-overview.tsx:523
 #: ../html/src/manager/images/image-view.tsx:485
-#: ../html/src/manager/systems/list-filter.tsx:26
+#: ../html/src/manager/systems/list-filter.tsx:28
 msgid "Critical updates available"
 msgstr "有关键更新可用"
 
@@ -4446,7 +4947,7 @@ msgstr "（过时）"
 
 #: ../html/src/manager/images/image-view.tsx:652
 #: ../html/src/manager/systems/all-list.tsx:79
-#: ../html/src/manager/systems/list-filter.tsx:43
+#: ../html/src/manager/systems/list-filter.tsx:45
 #: ../html/src/manager/systems/virtual-list.tsx:88
 msgid "Updates"
 msgstr "更新"
@@ -4534,13 +5035,8 @@ msgstr "了解 {productName} 的<link>详细信息</link>。"
 msgid "Sign In"
 msgstr "登录"
 
-#: ../html/src/manager/login/susemanager/login.tsx:119
-#: ../html/src/manager/login/uyuni/login.tsx:117
-msgid "Copyright Notice"
-msgstr "版权声明"
-
-#: ../html/src/manager/login/susemanager/login.tsx:121
-#: ../html/src/manager/login/uyuni/login.tsx:120
+#: ../html/src/manager/login/susemanager/login.tsx:120
+#: ../html/src/manager/login/uyuni/login.tsx:118
 msgid "{productName} release {versionNumber}"
 msgstr "{productName} 版本：{versionNumber}"
 
@@ -4567,10 +5063,6 @@ msgstr "了解 {productName} 的详细信息："
 #: ../html/src/manager/login/uyuni/login.tsx:46
 msgid "View website"
 msgstr "查看网站"
-
-#: ../html/src/manager/login/uyuni/login.tsx:114
-msgid "About"
-msgstr "关于"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:76
 msgid "Skip to the last maintenance window"
@@ -4678,7 +5170,7 @@ msgid "Multi"
 msgstr "多"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:102
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:150
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:156
 msgid "Schedule Details"
 msgstr "日程安排细节"
 
@@ -4886,7 +5378,7 @@ msgid "Loading content.."
 msgstr "正在加载内容..."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:57
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:48
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:50
 msgid "An error occurred while loading data. Please check server logs."
 msgstr "加载数据时出错。请查看服务器日志。"
 
@@ -4920,53 +5412,58 @@ msgstr "添加库存文件"
 msgid "e.g., /etc/ansible/testing/hosts"
 msgstr "例如 /etc/ansible/testing/hosts"
 
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:81
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:85
 msgid "Nothing configured. Please add paths in the "
 msgstr "未配置任何设置。请在以下位置添加路径 "
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:81
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:93
 msgid "Loading playbook contents.."
 msgstr "正在加载剧本内容..."
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:87
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:200
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:224
 #: ../html/src/manager/state/highstate.tsx:121
 msgid "Test mode"
 msgstr "测试模式"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:92
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:104
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:122
 msgid "Back to playbook list"
 msgstr "返回剧本列表"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:110
 msgid "Schedule playbook execution"
 msgstr "安排剧本执行"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:128
+msgid "Select the current Playbook"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Schedule Playbook Execution"
 msgstr "安排剧本的执行"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:126
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:166
 msgid "Inventory Path"
 msgstr "库存路径"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:140
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:180
 msgid "Flush Ansible fact cache"
 msgstr "刷新 Ansible 事实缓存"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:141
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:181
 msgid "Clear the fact cache for every host in inventory"
 msgstr "为正在库存的每个主机清除事实缓存"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:149
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:189
 msgid "Playbook Content"
 msgstr "剧本内容"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:169
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:209
 msgid "Action has been successfully added to action chain"
 msgstr "操作已成功添加到操作链"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:176
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:216
 msgid "Playbook execution has been"
 msgstr "剧本的执行已"
 
@@ -5050,8 +5547,268 @@ msgstr "已保存软件包状态。"
 msgid "Applying the packages states has been "
 msgstr "应用软件包状态 "
 
+#: ../html/src/manager/minion/proxy/proxy-config-messages.tsx:13
+#, fuzzy
+#| msgid "The image import has been scheduled."
+msgid "Proxy configuration action has been scheduled."
+msgstr "已安排映像导入。"
+
+#: ../html/src/manager/minion/proxy/proxy-config-messages.tsx:25
+#, fuzzy
+#| msgid "Search in configuration channels"
+msgid "Scheduling proxy configuration action..."
+msgstr "在配置通道中搜索"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:114
+#: ../html/src/manager/proxy/container-config.tsx:142
+msgid "Request interrupted or invalid response received from the server."
+msgstr "请求已中断，或者从服务器收到了无效响应。"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:179
+#, fuzzy
+#| msgid "Configuration"
+msgid "Proxy Configuration"
+msgstr "配置"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:183
+msgid ""
+"Convert an already onboarded minion to a proxy or update the configuration "
+"of an existing proxy."
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:193
+msgid "Convert Minion to Proxy"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:198
+#: ../html/src/manager/proxy/container-config.tsx:210
+msgid "Parent FQDN"
+msgstr "父 FQDN"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:199
+#: ../html/src/manager/proxy/container-config.tsx:213
+msgid "The FQDN of the parent (server or proxy) to connect to."
+msgstr "要连接到的父项（服务器或代理）的 FQDN。"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:201
+#: ../html/src/manager/proxy/container-config.tsx:212
+msgid "e.g., server.domain.com"
+msgstr "例如 server.domain.com"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:209
+#: ../html/src/manager/proxy/container-config.tsx:221
+msgid "Proxy SSH port"
+msgstr "代理 SSH 端口"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:210
+#: ../html/src/manager/proxy/container-config.tsx:222
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:499
+msgid "Port range: 1 - 65535"
+msgstr "端口范围：1 - 65535"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:219
+#: ../html/src/manager/proxy/container-config.tsx:231
+msgid "Max Squid cache size"
+msgstr "最大 Squid 缓存大小"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:220
+#, fuzzy
+#| msgid "The maximum value of the Squid cache in Megabytes"
+msgid "The maximum value of the Squid cache in Gigabytes"
+msgstr "Squid 缓存的最大值 (MB)"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:223
+#, fuzzy
+#| msgid "e.g., 2048"
+msgid "e.g., 100"
+msgstr "例如 2048"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:230
+#: ../html/src/manager/proxy/container-config.tsx:242
+msgid "Proxy admin email"
+msgstr "代理管理员电子邮件"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:231
+#: ../html/src/manager/proxy/container-config.tsx:243
+msgid "The container-based proxy administrator email address"
+msgstr "基于容器的代理管理员电子邮件地址"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:232
+#: ../html/src/manager/proxy/container-config.tsx:244
+msgid "e.g., proxy.admin@mycompany.com"
+msgstr "例如 proxy.admin@mycompany.com"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:241
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:242
+#, fuzzy
+#| msgid "CA certificate"
+msgid "Certificates"
+msgstr "CA 证书"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:250
+msgid "Keep"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:251
+msgid "Replace"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:262
+msgid ""
+"Keeping the current certificates means no changes will be made to the Root "
+"CA, Intermediate CAs, Proxy certificate, or Proxy SSL private key."
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:273
+#, fuzzy
+#| msgid "The root CA"
+msgid "Root CA"
+msgstr "根 CA"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:274
+#: ../html/src/manager/proxy/container-config.tsx:269
+#: ../html/src/manager/proxy/container-config.tsx:278
+#: ../html/src/manager/proxy/container-config.tsx:335
+msgid "To sign the SSL certificate in PEM format"
+msgstr "为 PEM 格式的 SSL 证书签名"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:283
+#: ../html/src/manager/proxy/container-config.tsx:344
+msgid "Intermediate CAs"
+msgstr "中间 CA"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:293
+#: ../html/src/manager/proxy/container-config.tsx:354
+msgid "CA file in PEM format"
+msgstr "PEM 格式的 CA 文件"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:305
+#: ../html/src/manager/proxy/container-config.tsx:365
+msgid "Proxy certificate"
+msgstr "代理证书"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:306
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:315
+#: ../html/src/manager/proxy/container-config.tsx:366
+#: ../html/src/manager/proxy/container-config.tsx:375
+msgid "In PEM format"
+msgstr "PEM 格式"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:314
+#: ../html/src/manager/proxy/container-config.tsx:374
+msgid "Proxy SSL private key"
+msgstr "代理 SSL 私用密钥"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:326
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:327
+msgid "Source"
+msgstr "源"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:335
+#, fuzzy
+#| msgid "Register"
+msgid "Registry"
+msgstr "注册"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:336
+msgid "RPM"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:344
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:345
+#, fuzzy
+#| msgid "Registration mode"
+msgid "Registry Source"
+msgstr "注册模式"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:352
+msgid "Simple"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:353
+msgid "Advanced"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:361
+#, fuzzy
+#| msgid "Register"
+msgid "Registry URL"
+msgstr "注册"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:362
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:389
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:413
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:437
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:461
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:485
+#, fuzzy
+#| msgid "e.g., 2048"
+msgid "e.g., "
+msgstr "例如 2048"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:369
+#, fuzzy
+#| msgid "Contains Package"
+msgid "Containers Tag"
+msgstr "包含软件包"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:371
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:398
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:422
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:446
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:470
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:494
+#, fuzzy
+#| msgid "latest"
+msgid "e.g., latest"
+msgstr "最新"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:388
+msgid "HTTPD URL"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:396
+msgid "HTTPD Tag"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:412
+msgid "Salt Broker URL"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:420
+msgid "Salt Broker Tag"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:436
+msgid "Squid URL"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:444
+msgid "Squid Tag"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:460
+msgid "SSH URL"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:468
+msgid "SSH Tag"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:484
+msgid "TFTPD URL"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:492
+msgid "TFTPD Tag"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:510
+msgid "Apply"
+msgstr "应用"
+
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:506
+#: ../html/src/manager/notifications/notifications-list.tsx:120
 msgid "Summary"
 msgstr "摘要"
 
@@ -5115,131 +5872,91 @@ msgstr "列出/去除安装的 PTF"
 msgid "Install PTF"
 msgstr "安装 PTF"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:24
-msgid "Onboarding failed"
-msgstr "载入失败"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:28
-msgid "Channel sync failed"
-msgstr "通道同步失败"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:32
-msgid "Channel sync finished"
-msgstr "通道同步已完成"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:36
-msgid "Creating Bootstrap Repository failed"
-msgstr "创建引导储存库失败"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:40
-msgid "State apply failed"
-msgstr "状态应用失败"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:44
-msgid "PAYG refresh authentication data failed"
-msgstr "PAYG 刷新身份验证数据失败"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:48
-msgid "End of Life Period"
-msgstr "生命周期结束期限"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:52
-msgid "Subscription Warning"
-msgstr "订阅警告"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:56
-msgid "Update Notification"
-msgstr "更新通知"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:60
-msgid "PAYG instance is not compliant"
-msgstr "PAYG 实例不合规"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:64
-msgid "SCC Data Sync Disabled"
-msgstr "SCC 数据同步功能已禁用"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:245
-#: ../html/src/manager/notifications/notification-messages.tsx:246
-msgid "Info"
-msgstr "信息"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:253
-#: ../html/src/manager/notifications/notification-messages.tsx:254
-msgid "Warning"
-msgstr "警告"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:261
-#: ../html/src/manager/notifications/notification-messages.tsx:262
-msgid "Error"
-msgstr "错误"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:324
-msgid "show details"
-msgstr "显示细节"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:373
-msgid "Retry onboarding"
-msgstr "重试载入"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:383
-msgid "Retry repo sync"
-msgstr "重试储存库同步"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:406
-msgid "Unread Messages"
-msgstr "未读消息"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:411
-msgid "All Messages"
-msgstr "所有消息"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:424
-msgid "Filter by type"
-msgstr "按类型过滤"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:443
-#: ../html/src/manager/notifications/notification-messages.tsx:444
-msgid "Delete selected messages"
-msgstr "删除选定的消息"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:451
-#: ../html/src/manager/notifications/notification-messages.tsx:452
-msgid "Mark selected as read"
-msgstr "将选定消息标记为已读"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:469
-#: ../html/src/manager/notifications/notification-messages.tsx:547
+#: ../html/src/manager/notifications/notifications-list.tsx:78
 msgid "Notification Messages"
 msgstr "通知消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:474
+#: ../html/src/manager/notifications/notifications-list.tsx:83
 msgid "The server has collected the following notification messages."
 msgstr "服务器已收集以下通知消息。"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:488
+#: ../html/src/manager/notifications/notifications-list.tsx:100
 msgid "Filter by summary"
 msgstr "按摘要过滤"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:494
+#: ../html/src/manager/notifications/notifications-list.tsx:108
 msgid "Severity"
 msgstr "严重性"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:523
+#: ../html/src/manager/notifications/notifications-list.tsx:133
 msgid "Read|Delete"
 msgstr "阅读|删除"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:529
+#: ../html/src/manager/notifications/notifications-list.tsx:159
+msgid "Filter by type"
+msgstr "按类型过滤"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:177
+msgid "Unread Messages"
+msgstr "未读消息"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:182
+msgid "All Messages"
+msgstr "所有消息"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:199
+#: ../html/src/manager/notifications/notifications-list.tsx:200
+msgid "Delete selected messages"
+msgstr "删除选定的消息"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:207
+#: ../html/src/manager/notifications/notifications-list.tsx:208
+msgid "Mark selected as read"
+msgstr "将选定消息标记为已读"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:226
+msgid "show details"
+msgstr "显示细节"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:242
+msgid "Retry"
+msgstr "重试"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:254
 msgid "Flag as Unread"
 msgstr "标记为未读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:529
+#: ../html/src/manager/notifications/notifications-list.tsx:254
 msgid "Flag as Read"
 msgstr "标记为已读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:535
+#: ../html/src/manager/notifications/notifications-list.tsx:260
 msgid "Delete Notification"
 msgstr "删除通知"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:307
+#, fuzzy
+#| msgid "Environment updated successfully"
+msgid "{number} messages status updated successfully"
+msgstr "已成功更新环境"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:308
+#, fuzzy
+#| msgid "Cluster properties updated successfully"
+msgid "Message read status updated successfully"
+msgstr "已成功更新群集属性"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:325
+#, fuzzy
+#| msgid "Filter deleted successfully"
+msgid "{number} messages deleted successfully"
+msgstr "已成功删除过滤器"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:326
+#, fuzzy
+#| msgid "Filter deleted successfully"
+msgid "Message deleted successfully"
+msgstr "已成功删除过滤器"
 
 #: ../html/src/manager/notifications/notifications.tsx:42
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:339
@@ -5300,10 +6017,6 @@ msgid ""
 "Generation of the proxy configuration in progress: waiting for a response..."
 msgstr "正在生成代理配置：正在等待响应..."
 
-#: ../html/src/manager/proxy/container-config.tsx:142
-msgid "Request interrupted or invalid response received from the server."
-msgstr "请求已中断，或者从服务器收到了无效响应。"
-
 #: ../html/src/manager/proxy/container-config.tsx:179
 #: ../html/src/manager/proxy/container-config.tsx:195
 msgid "Container Based Proxy Configuration"
@@ -5330,31 +6043,6 @@ msgstr "此代理的唯一且可由 DNS 解析的完全限定域名。"
 msgid "e.g., proxy.domain.com"
 msgstr "例如 proxy.domain.com"
 
-#: ../html/src/manager/proxy/container-config.tsx:210
-msgid "Parent FQDN"
-msgstr "父 FQDN"
-
-#: ../html/src/manager/proxy/container-config.tsx:212
-msgid "e.g., server.domain.com"
-msgstr "例如 server.domain.com"
-
-#: ../html/src/manager/proxy/container-config.tsx:213
-msgid "The FQDN of the parent (server or proxy) to connect to."
-msgstr "要连接到的父项（服务器或代理）的 FQDN。"
-
-#: ../html/src/manager/proxy/container-config.tsx:221
-msgid "Proxy SSH port"
-msgstr "代理 SSH 端口"
-
-#: ../html/src/manager/proxy/container-config.tsx:222
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:499
-msgid "Port range: 1 - 65535"
-msgstr "端口范围：1 - 65535"
-
-#: ../html/src/manager/proxy/container-config.tsx:231
-msgid "Max Squid cache size"
-msgstr "最大 Squid 缓存大小"
-
 #: ../html/src/manager/proxy/container-config.tsx:232
 msgid "The maximum value of the Squid cache in Megabytes"
 msgstr "Squid 缓存的最大值 (MB)"
@@ -5362,18 +6050,6 @@ msgstr "Squid 缓存的最大值 (MB)"
 #: ../html/src/manager/proxy/container-config.tsx:235
 msgid "e.g., 2048"
 msgstr "例如 2048"
-
-#: ../html/src/manager/proxy/container-config.tsx:242
-msgid "Proxy admin email"
-msgstr "代理管理员电子邮件"
-
-#: ../html/src/manager/proxy/container-config.tsx:243
-msgid "The container-based proxy administrator email address"
-msgstr "基于容器的代理管理员电子邮件地址"
-
-#: ../html/src/manager/proxy/container-config.tsx:244
-msgid "e.g., proxy.admin@mycompany.com"
-msgstr "例如 proxy.admin@mycompany.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:251
 #: ../html/src/manager/proxy/container-config.tsx:252
@@ -5392,12 +6068,6 @@ msgstr "使用现有的"
 #: ../html/src/manager/proxy/container-config.tsx:268
 msgid "CA certificate"
 msgstr "CA 证书"
-
-#: ../html/src/manager/proxy/container-config.tsx:269
-#: ../html/src/manager/proxy/container-config.tsx:278
-#: ../html/src/manager/proxy/container-config.tsx:335
-msgid "To sign the SSL certificate in PEM format"
-msgstr "为 PEM 格式的 SSL 证书签名"
 
 #: ../html/src/manager/proxy/container-config.tsx:277
 msgid "CA private key"
@@ -5453,125 +6123,139 @@ msgstr "电子邮件"
 msgid "The root CA"
 msgstr "根 CA"
 
-#: ../html/src/manager/proxy/container-config.tsx:344
-msgid "Intermediate CAs"
-msgstr "中间 CA"
-
-#: ../html/src/manager/proxy/container-config.tsx:354
-msgid "CA file in PEM format"
-msgstr "PEM 格式的 CA 文件"
-
-#: ../html/src/manager/proxy/container-config.tsx:365
-msgid "Proxy certificate"
-msgstr "代理证书"
-
-#: ../html/src/manager/proxy/container-config.tsx:366
-#: ../html/src/manager/proxy/container-config.tsx:375
-msgid "In PEM format"
-msgstr "PEM 格式"
-
-#: ../html/src/manager/proxy/container-config.tsx:374
-msgid "Proxy SSL private key"
-msgstr "代理 SSL 私用密钥"
-
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:89
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:95
 msgid "Execution time"
 msgstr "执行时间"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:155
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:161
 msgid "State:"
 msgstr "状态："
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:156
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:162
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:148
 msgid "Active"
 msgstr "活动"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:156
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:162
 msgid "Inactive"
 msgstr "非活动"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:160
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:166
 msgid "Test"
 msgstr "测试"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:161
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:167
 msgid "True"
 msgstr "True"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:165
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:171
 msgid "Action type"
 msgstr "操作类型"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:169
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:175
 msgid "Target type"
 msgstr "目标类型"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:173
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:179
 msgid "Target name"
 msgstr "目标名称"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:177
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:183
 msgid "Created by"
 msgstr "创建者"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:182
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:188
 msgid "Created at"
 msgstr "创建时间"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:188
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:194
 msgid "Quartz format string"
 msgstr "Quartz 格式字符串"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:233
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:206
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:74
+#, fuzzy
+#| msgid "Playbook Directories"
+msgid "Playbook details"
+msgstr "剧本目录"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:211
+#, fuzzy
+#| msgid "Playbook Content"
+msgid "Playbook path"
+msgstr "剧本内容"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:215
+#, fuzzy
+#| msgid "Inventory Path"
+msgid "Inventory path"
+msgstr "库存路径"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:219
+#, fuzzy
+#| msgid "Flush Ansible fact cache"
+msgid "Flush fact cache"
+msgstr "刷新 Ansible 事实缓存"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:220
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:93
+msgid "true"
+msgstr ""
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:220
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:93
+msgid "false"
+msgstr ""
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:264
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:235
 msgid "Delete Recurring Action Schedule"
 msgstr "删除重复性操作日程安排"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:234
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:265
 msgid "Are you sure you want to delete this schedule?"
 msgstr "您确定要删除此日程安排吗？"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:242
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:273
 msgid "State configuration for {name}"
 msgstr "{name} 的状态配置"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:249
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:280
 msgid "Order"
 msgstr "排序"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:79
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:81
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:84
 msgid "Schedule successfully updated."
 msgstr "成功更新日程安排。"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:79
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:81
 msgid "Schedule successfully created."
 msgstr "成功创建日程安排。"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:90
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:92
 msgid "Action scheduled on selected minions"
 msgstr "安排要对选定受控端执行的操作"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
 msgid "Update "
 msgstr "更新 "
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
 msgid "Create "
 msgstr "创建 "
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:226
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
 msgid "Schedule Recurring Action"
 msgstr "安排重复性操作"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:235
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:259
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:194
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:35
 msgid "Action Type"
 msgstr "操作类型"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:260
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:283
 msgid "Configure states to execute"
 msgstr "配置要执行的状态"
 
@@ -5613,16 +6297,46 @@ msgstr "受控端"
 msgid "Group"
 msgstr "组"
 
-#: ../html/src/manager/recurring/recurring-actions.tsx:133
+#: ../html/src/manager/recurring/recurring-actions.tsx:134
 msgid "Error when deleting the action. Check if Taskomatic is running"
 msgstr "删除操作时出错。请检查 Taskomatic 是否正在运行"
 
-#: ../html/src/manager/recurring/recurring-actions.tsx:148
+#: ../html/src/manager/recurring/recurring-actions.tsx:149
 msgid ""
 "The below times are displayed in the server time zone {timeZone}. The "
 "scheduled time will be the server time."
 msgstr ""
 "系统会按照服务器时区 {timeZone} 显示以下时间。安排的时间将会是服务器时间。"
+
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:54
+#, fuzzy
+#| msgid "Change Proxy"
+msgid "Change Playbook"
+msgstr "更改代理"
+
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:61
+#, fuzzy
+#| msgid "Select a filter"
+msgid "Select a Playbook"
+msgstr "选择过滤器"
+
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:79
+#, fuzzy
+#| msgid "Playbook Content"
+msgid "Playbook path:"
+msgstr "剧本内容"
+
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:85
+#, fuzzy
+#| msgid "Inventory Path"
+msgid "Inventory path:"
+msgstr "库存路径"
+
+#: ../html/src/manager/recurring/recurring-playbook-picker.tsx:91
+#, fuzzy
+#| msgid "Flush Ansible fact cache"
+msgid "Flush fact cache:"
+msgstr "刷新 Ansible 事实缓存"
 
 #. Value options for filtering by Action Type in recurring actions list
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
@@ -5926,24 +6640,24 @@ msgid "No Systems."
 msgstr "没有系统。"
 
 #: ../html/src/manager/systems/all-list.tsx:117
-#: ../html/src/manager/systems/list-filter.tsx:46
+#: ../html/src/manager/systems/list-filter.tsx:48
 msgid "Extra Packages"
 msgstr "额外的软件包"
 
 #: ../html/src/manager/systems/all-list.tsx:131
-#: ../html/src/manager/systems/list-filter.tsx:47
+#: ../html/src/manager/systems/list-filter.tsx:49
 msgid "Config Diffs"
 msgstr "配置差异"
 
 #: ../html/src/manager/systems/all-list.tsx:146
-#: ../html/src/manager/systems/list-filter.tsx:48
+#: ../html/src/manager/systems/list-filter.tsx:50
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:579
 msgid "Base Channel"
 msgstr "基础通道"
 
 #: ../html/src/manager/systems/all-list.tsx:157
-#: ../html/src/manager/systems/list-filter.tsx:51
+#: ../html/src/manager/systems/list-filter.tsx:53
 msgid "System Type"
 msgstr "系统类型"
 
@@ -5986,7 +6700,7 @@ msgid "Loading SSH Private Key.."
 msgstr "正在加载 SSH 私用密钥..."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:399
-#: ../html/src/manager/systems/list-filter.tsx:13
+#: ../html/src/manager/systems/list-filter.tsx:14
 msgid "Bootstrap"
 msgstr "引导"
 
@@ -6148,83 +6862,87 @@ msgstr "物理"
 msgid "Ansible Control Node"
 msgstr "Ansible 控制节点"
 
-#: ../html/src/manager/systems/list-filter.tsx:14
+#: ../html/src/manager/systems/list-filter.tsx:13
+msgid "Ansible Managed"
+msgstr ""
+
+#: ../html/src/manager/systems/list-filter.tsx:15
 msgid "Container Build Host"
 msgstr "容器构建主机"
 
-#: ../html/src/manager/systems/list-filter.tsx:15
+#: ../html/src/manager/systems/list-filter.tsx:16
 msgid "Foreign"
 msgstr "外部"
 
-#: ../html/src/manager/systems/list-filter.tsx:16
+#: ../html/src/manager/systems/list-filter.tsx:17
 msgid "Management"
 msgstr "管理"
 
-#: ../html/src/manager/systems/list-filter.tsx:17
+#: ../html/src/manager/systems/list-filter.tsx:18
 msgid "Monitored Host"
 msgstr "受监控主机"
 
-#: ../html/src/manager/systems/list-filter.tsx:18
+#: ../html/src/manager/systems/list-filter.tsx:19
 msgid "OS Image Build Host"
 msgstr "操作系统映像构建主机"
 
-#: ../html/src/manager/systems/list-filter.tsx:19
+#: ../html/src/manager/systems/list-filter.tsx:20
 msgid "Salt"
 msgstr "Salt"
 
-#: ../html/src/manager/systems/list-filter.tsx:20
+#: ../html/src/manager/systems/list-filter.tsx:21
 msgid "Virtualization Host"
 msgstr "虚拟化主机"
 
-#: ../html/src/manager/systems/list-filter.tsx:24
+#: ../html/src/manager/systems/list-filter.tsx:26
 msgid "Actions scheduled"
 msgstr "安排的操作"
 
-#: ../html/src/manager/systems/list-filter.tsx:25
+#: ../html/src/manager/systems/list-filter.tsx:27
 msgid "All updates scheduled"
 msgstr "安排的所有更新"
 
-#: ../html/src/manager/systems/list-filter.tsx:27
+#: ../html/src/manager/systems/list-filter.tsx:29
 msgid "Kickstart in progress"
 msgstr "正在进行 Kickstart"
 
-#: ../html/src/manager/systems/list-filter.tsx:28
+#: ../html/src/manager/systems/list-filter.tsx:30
 msgid "System is up to date"
 msgstr "系统是最新的"
 
-#: ../html/src/manager/systems/list-filter.tsx:29
+#: ../html/src/manager/systems/list-filter.tsx:31
 msgid "System not checking in"
 msgstr "系统未在签入"
 
-#: ../html/src/manager/systems/list-filter.tsx:30
+#: ../html/src/manager/systems/list-filter.tsx:32
 msgid "System not entitled"
 msgstr "系统未被赋权"
 
-#: ../html/src/manager/systems/list-filter.tsx:31
+#: ../html/src/manager/systems/list-filter.tsx:33
 msgid "System requires reboot"
 msgstr "系统需要重引导"
 
-#: ../html/src/manager/systems/list-filter.tsx:32
+#: ../html/src/manager/systems/list-filter.tsx:34
 msgid "Updates available"
 msgstr "有可用更新"
 
-#: ../html/src/manager/systems/list-filter.tsx:42
+#: ../html/src/manager/systems/list-filter.tsx:44
 msgid "System Kind"
 msgstr "系统类型"
 
-#: ../html/src/manager/systems/list-filter.tsx:57
+#: ../html/src/manager/systems/list-filter.tsx:59
 msgid "Requires Reboot"
 msgstr "需要重引导"
 
-#: ../html/src/manager/systems/list-filter.tsx:61
+#: ../html/src/manager/systems/list-filter.tsx:63
 msgid "Registered Days"
 msgstr "已注册天数"
 
-#: ../html/src/manager/systems/list-filter.tsx:62
+#: ../html/src/manager/systems/list-filter.tsx:64
 msgid "Groups"
 msgstr "组"
 
-#: ../html/src/manager/systems/list-filter.tsx:67
+#: ../html/src/manager/systems/list-filter.tsx:69
 #: ../html/src/manager/systems/virtual-list.tsx:71
 msgid "Virtual System"
 msgstr "虚拟系统"
@@ -6604,6 +7322,48 @@ msgstr "未找到资源。"
 msgid "HTTP Error code "
 msgstr "HTTP 错误代码 "
 
+#~ msgid "Onboarding failed"
+#~ msgstr "载入失败"
+
+#~ msgid "Channel sync finished"
+#~ msgstr "通道同步已完成"
+
+#~ msgid "Creating Bootstrap Repository failed"
+#~ msgstr "创建引导储存库失败"
+
+#~ msgid "State apply failed"
+#~ msgstr "状态应用失败"
+
+#~ msgid "PAYG refresh authentication data failed"
+#~ msgstr "PAYG 刷新身份验证数据失败"
+
+#~ msgid "End of Life Period"
+#~ msgstr "生命周期结束期限"
+
+#~ msgid "Subscription Warning"
+#~ msgstr "订阅警告"
+
+#~ msgid "Update Notification"
+#~ msgstr "更新通知"
+
+#~ msgid "PAYG instance is not compliant"
+#~ msgstr "PAYG 实例不合规"
+
+#~ msgid "SCC Data Sync Disabled"
+#~ msgstr "SCC 数据同步功能已禁用"
+
+#~ msgid "Retry onboarding"
+#~ msgstr "重试载入"
+
+#~ msgid "Retry repo sync"
+#~ msgstr "重试储存库同步"
+
+#~ msgid "Copyright Notice"
+#~ msgstr "版权声明"
+
+#~ msgid "About"
+#~ msgstr "关于"
+
 #~ msgid "The server uses "
 #~ msgstr "服务器使用 "
 
@@ -6644,9 +7404,6 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "Action Status"
 #~ msgstr "操作状态"
-
-#~ msgid "Can not contain the following characters: /\\"
-#~ msgstr "不能包含以下字符：/\\"
 
 #~ msgid "Hypervisor"
 #~ msgstr "超级管理程序"
@@ -6690,9 +7447,6 @@ msgstr "HTTP 错误代码 "
 #~ msgid "Graphics"
 #~ msgstr "显卡"
 
-#~ msgid "Retry"
-#~ msgstr "重试"
-
 #~ msgid "Connecting..."
 #~ msgstr "正在连接..."
 
@@ -6716,9 +7470,6 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "Create Virtual Machine"
 #~ msgstr "创建虚拟机"
-
-#~ msgid "Migrate"
-#~ msgstr "迁移"
 
 #~ msgid "Select where to migrate the virtual guest to."
 #~ msgstr "选择要将虚拟 Guest 迁移到哪台主机。"
@@ -7126,9 +7877,6 @@ msgstr "HTTP 错误代码 "
 #~ msgid "Pool Type"
 #~ msgstr "池类型"
 
-#~ msgid "Source"
-#~ msgstr "源"
-
 #~ msgid "Devices"
 #~ msgstr "设备"
 
@@ -7281,9 +8029,6 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "Partition systems by given check-in time:"
 #~ msgstr "按给定的签入时间将系统分区："
-
-#~ msgid "Apply"
-#~ msgstr "应用"
 
 #~ msgid "Partition systems based on whether there are patches for them:"
 #~ msgstr "根据系统是否有适用的补丁将系统分区："
@@ -7444,9 +8189,6 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "System group refresh action scheduled successfully"
 #~ msgstr "已成功安排系统组刷新操作"
-
-#~ msgid "Cluster properties updated successfully"
-#~ msgstr "已成功更新群集属性"
 
 #~ msgid "Edit cluster details"
 #~ msgstr "编辑群集细节"

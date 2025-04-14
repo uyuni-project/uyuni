@@ -15,7 +15,10 @@
 
 package com.redhat.rhn.frontend.action.groups;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -45,7 +48,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AddSystemsAction extends BaseListAction<SystemOverview> {
 
-    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -56,6 +59,7 @@ public class AddSystemsAction extends BaseListAction<SystemOverview> {
         RequestContext context = new RequestContext(request);
         ManagedServerGroup sg = context.lookupAndBindServerGroup();
         User user = context.getCurrentUser();
+        ensureRoleBasedAccess(user, "systems.groups.target_systems", Namespace.AccessMode.W);
         Set<String> set = helper.getSet();
         List<Server> servers = new LinkedList<>();
         for (String id : set) {
@@ -63,7 +67,7 @@ public class AddSystemsAction extends BaseListAction<SystemOverview> {
             servers.add(SystemManager.lookupByIdAndUser(sid, user));
         }
 
-        serverGroupManager.addServers(sg, servers, user);
+        SERVER_GROUP_MANAGER.addServers(sg, servers, user);
         getStrutsDelegate().saveMessage(
                     "systemgroup.target-systems.added",
                         new String [] {String.valueOf(set.size()),
