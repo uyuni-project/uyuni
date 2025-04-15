@@ -1,7 +1,6 @@
 # Copyright (c) 2015-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_github_validation
 @scope_res
 @scope_salt
 @rhlike_minion
