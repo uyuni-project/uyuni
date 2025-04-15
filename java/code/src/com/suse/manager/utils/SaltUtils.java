@@ -240,8 +240,8 @@ public class SaltUtils {
     /**
      * Constructor for testing purposes.
      *
-     * @param systemQueryIn
-     * @param saltApiIn
+     * @param systemQueryIn the system query
+     * @param saltApiIn the salt api
      */
     public SaltUtils(SystemQuery systemQueryIn, SaltApi saltApiIn) {
         this.saltApi = saltApiIn;
@@ -405,7 +405,7 @@ public class SaltUtils {
             String name = e.getKey();
             Change<List<Info>> change = e.getValue();
 
-            // Sometimes Salt lists the same NEVRA twice, only with different install timestamps.
+            // Sometimes Salt lists the same NEVRA twice, only with different installation timestamps.
             // Use a merge function is to ignore these duplicate entries.
             Map<String, Info> newPackages = change.getNewValue().stream()
                     .collect(Collectors.toMap(info -> packageToKey(name, info), Function.identity(), (a, b) -> a));
@@ -424,7 +424,7 @@ public class SaltUtils {
 
             Map<String, Tuple2<String, Info>> packagesToCreate = newPackages.values().stream()
                     .filter(info -> !currentPackages.containsKey(packageToKey(name, info)))
-                    .collect(Collectors.toMap(info -> packageToKey(name, info), info -> new Tuple2(name, info)));
+                    .collect(Collectors.toMap(info -> packageToKey(name, info), info -> new Tuple2<>(name, info)));
 
             packagesToAdd.addAll(createPackagesFromSalt(packagesToCreate, server));
             server.getPackages().addAll(packagesToAdd);
@@ -576,7 +576,7 @@ public class SaltUtils {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
             // check if the minion is locked (blackout mode)
             String output = getJsonResultWithPrettyPrint(jsonResult);
-            if (output.startsWith("\'ERROR") && output.contains("Minion in blackout mode")) {
+            if (output.startsWith("'ERROR") && output.contains("Minion in blackout mode")) {
                 serverAction.setResultMsg(output);
                 return;
             }
@@ -692,7 +692,7 @@ public class SaltUtils {
                 List<Channel> subbed = collect.get(true);
                 List<Channel> unsubbed = collect.get(false);
                 Set<Channel> currentChannels = serverAction.getServer().getChannels();
-                currentChannels.removeAll(subbed);
+                subbed.forEach(currentChannels::remove);
                 currentChannels.addAll(unsubbed);
                 ServerFactory.save(serverAction.getServer());
                 MessageQueue.publish(
@@ -721,8 +721,8 @@ public class SaltUtils {
         else if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
             handleFilesDiff(jsonResult, action);
             serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.diffed"));
-            /**
-             * For comparison we are simply using file.managed state in dry-run mode, Salt doesn't return
+            /*
+             * For comparison, we are simply using file.managed state in dry-run mode, Salt doesn't return
              * 'result' attribute(actionFailed method check this attribute) when File(File, Dir, Symlink)
              * already exist on the system and action is considered as Failed even though there was no error.
              */
@@ -737,7 +737,7 @@ public class SaltUtils {
             }
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS)) {
-            handleSubscribeChannels(serverAction, jsonResult, action);
+            handleSubscribeChannels(serverAction, jsonResult);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_COCO_ATTESTATION)) {
             handleCocoAttestationResult(action, serverAction, jsonResult);
@@ -853,7 +853,7 @@ public class SaltUtils {
         return YamlHelper.INSTANCE.dump(Json.GSON.fromJson(jsonResult, Object.class));
     }
 
-    private void handleSubscribeChannels(ServerAction serverAction, JsonElement jsonResult, Action action) {
+    private void handleSubscribeChannels(ServerAction serverAction, JsonElement jsonResult) {
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             serverAction.setResultMsg("Successfully applied state: " + ApplyStatesEventMessage.CHANNELS);
         }
@@ -1281,18 +1281,15 @@ public class SaltUtils {
      */
     private static Optional<Map<String, StateApplyResult<Map<String, Object>>>>
     jsonEventToStateApplyResults(JsonElement jsonResult) {
-        TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
-                new TypeToken<>() {
-                };
-        Optional<Map<String, StateApplyResult<Map<String, Object>>>> results;
-        results = Optional.empty();
+        TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken = new TypeToken<>() { };
+        Optional<Map<String, StateApplyResult<Map<String, Object>>>> results = Optional.empty();
         try {
              results = Optional.ofNullable(
                 Json.GSON.fromJson(jsonResult, typeToken.getType()));
         }
         catch (JsonSyntaxException e) {
             LOG.error("JSON syntax error while decoding into a StateApplyResult:");
-            LOG.error(jsonResult.toString());
+            LOG.error(jsonResult == null ? "NULL" : jsonResult.toString());
         }
         return results;
     }
@@ -1573,18 +1570,17 @@ public class SaltUtils {
         // Update last boot time
         handleUptimeUpdate(server, result.getUpTime()
                 .map(ut -> (Number)ut.getChanges().getRet().get("seconds"))
-                .map(n -> n.longValue())
+                .map(Number::longValue)
                 .orElse(null));
 
         result.getRebootRequired()
             .map(rr -> rr.getChanges().getRet())
-            .filter(Objects::nonNull)
             .map(ret -> (Boolean) ret.get("reboot_required"))
             .ifPresent(flag -> server.setRebootRequiredAfter(flag ? new Date() : null));
 
         // Update live patching version
         server.setKernelLiveVersion(result.getKernelLiveVersionInfo()
-                .map(klv -> klv.getChanges().getRet()).filter(Objects::nonNull)
+                .map(klv -> klv.getChanges().getRet())
                 .map(KernelLiveVersionInfo::getKernelLiveVersion).orElse(null));
 
         // Update AppStream modules
@@ -1666,9 +1662,11 @@ public class SaltUtils {
         ).map(Map.Entry::getValue).collect(Collectors.toList());
         packages.retainAll(unchanged);
 
-        Map<String, Tuple2<String, Pkg.Info>> packagesToAdd = newPackageMap.entrySet().stream().filter(
-                e -> !oldPackageMap.containsKey(e.getKey())
-        ).collect(Collectors.toMap(Map.Entry::getKey, e -> new Tuple2(e.getValue().getKey(), e.getValue().getValue())));
+        Map<String, Tuple2<String, Pkg.Info>> packagesToAdd = newPackageMap.entrySet().stream()
+                .filter(e -> !oldPackageMap.containsKey(e.getKey()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> new Tuple2<>(e.getValue().getKey(), e.getValue().getValue())));
 
         packages.addAll(createPackagesFromSalt(packagesToAdd, server));
         SystemManager.updateSystemOverview(server.getId());
@@ -1704,19 +1702,20 @@ public class SaltUtils {
      */
     private static List<InstalledPackage> createPackagesFromSalt(
             Map<String, Tuple2<String, Pkg.Info>> packageInfoAndNameBySaltPackageKey, Server server) {
-        List<String> names = new ArrayList<>(packageInfoAndNameBySaltPackageKey.values().stream().map(Tuple2::getA)
-                .collect(Collectors.toSet()));
-        Collections.sort(names);
+        List<String> names = packageInfoAndNameBySaltPackageKey.values().stream()
+                .map(Tuple2::getA)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
 
         Map<String, PackageName> packageNames = names.stream().collect(Collectors.toMap(Function.identity(),
                 PackageFactory::lookupOrCreatePackageByName));
-
 
         Map<String, PackageEvr> packageEvrsBySaltPackageKey = packageInfoAndNameBySaltPackageKey.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey,
                         e -> {
                             Pkg.Info pkgInfo = e.getValue().getB();
-                            return parsePackageEvr(pkgInfo.getEpoch(), pkgInfo.getVersion().get(),
+                            return parsePackageEvr(pkgInfo.getEpoch(), pkgInfo.getVersion().orElseThrow(),
                                     pkgInfo.getRelease(), server.getPackageType());
                         }));
 
@@ -1747,7 +1746,7 @@ public class SaltUtils {
         pkg.setServer(server);
 
         // Add -deb suffix to architectures for Debian systems
-        String pkgArch = pkgInfo.getArchitecture().get();
+        String pkgArch = pkgInfo.getArchitecture().orElseThrow();
         if (server.getPackageType() == PackageType.DEB) {
             pkgArch += "-deb";
         }
@@ -1791,13 +1790,13 @@ public class SaltUtils {
         sb.append(
                 new PackageEvr(
                         info.getEpoch().orElse(null),
-                        info.getVersion().get(),
+                        info.getVersion().orElseThrow(),
                         info.getRelease().orElse("X"),
                         PackageType.RPM
                 ).toUniversalEvrString()
         );
         sb.append(".");
-        sb.append(info.getArchitecture().get());
+        sb.append(info.getArchitecture().orElseThrow());
 
         return sb.toString();
     }
@@ -2008,19 +2007,15 @@ public class SaltUtils {
 
     private static PackageEvr parsePackageEvr(Optional<String> epoch, String version, Optional<String> release,
                                               PackageType type) {
-        switch (type) {
-            case DEB:
-                return PackageEvrFactory.lookupOrCreatePackageEvr(PackageEvr.parseDebian(version));
-            case RPM:
-                return PackageEvrFactory.lookupOrCreatePackageEvr(epoch.map(StringUtils::trimToNull).orElse(null),
-                        version, release.orElse("0"), PackageType.RPM);
-            default:
-                throw new RuntimeException("unreachable");
-        }
+        return switch (type) {
+            case DEB -> PackageEvrFactory.lookupOrCreatePackageEvr(PackageEvr.parseDebian(version));
+            case RPM -> PackageEvrFactory.lookupOrCreatePackageEvr(epoch.map(StringUtils::trimToNull).orElse(null),
+                    version, release.orElse("0"), PackageType.RPM);
+        };
     }
 
     private static ImagePackage createImagePackageFromSalt(String name, Pkg.Info info, ImageInfo imageInfo) {
-        return createImagePackageFromSalt(name, info.getEpoch(), info.getRelease(), info.getVersion().get(),
+        return createImagePackageFromSalt(name, info.getEpoch(), info.getRelease(), info.getVersion().orElseThrow(),
                 info.getInstallDateUnixTime(), info.getArchitecture(), imageInfo);
     }
 
@@ -2060,7 +2055,7 @@ public class SaltUtils {
             // Find the corresponding SUSEProduct in the database, if any
             Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
                     .findSUSEProduct(name, version, release, arch, true));
-            if (!suseProduct.isPresent()) {
+            if (suseProduct.isEmpty()) {
                 LOG.warn(String.format("No product match found for: %s %s %s %s",
                         name, version, release, arch));
             }
@@ -2097,7 +2092,7 @@ public class SaltUtils {
                         alibabaReleaseFile, almaReleaseFile, amazonReleaseFile,
                         rockyReleaseFile);
 
-        if (!rhelProductInfo.isPresent()) {
+        if (rhelProductInfo.isEmpty()) {
             LOG.warn("Could not determine RHEL product type for minion: {}", server.getMinionId());
             return Collections.emptySet();
         }
@@ -2139,7 +2134,7 @@ public class SaltUtils {
                          alibabaReleaseFile, almaReleaseFile, amazonReleaseFile,
                          rockyReleaseFile);
 
-         if (!rhelProductInfo.isPresent()) {
+         if (rhelProductInfo.isEmpty()) {
              LOG.warn("Could not determine RHEL product type for image: {} {}", image.getName(), image.getVersion());
              return Collections.emptySet();
          }
@@ -2306,7 +2301,7 @@ public class SaltUtils {
         if (action == null) {
             return false;
         }
-        if ((!prereqType.isPresent() || prereqType.get().equals(action.getActionType())) &&
+        if ((prereqType.isEmpty() || prereqType.get().equals(action.getActionType())) &&
                 action.getServerActions().stream()
                         .filter(sa -> sa.getServer().getId() == systemId)
                         .filter(sa -> ActionFactory.STATUS_COMPLETED.equals(sa.getStatus()))
