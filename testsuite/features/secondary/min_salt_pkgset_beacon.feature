@@ -1,7 +1,6 @@
 # Copyright (c) 2016-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_github_validation
 @scope_salt
 Feature: System package list is updated if packages are manually installed or removed
 
