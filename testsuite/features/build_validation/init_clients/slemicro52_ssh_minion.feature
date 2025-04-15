@@ -1,4 +1,4 @@
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2024-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # Beware: After altering the system e.g. package installation/removal, the system
@@ -23,8 +23,7 @@ Feature: Bootstrap a SLE Micro 5.2 Salt SSH minion
     And I select "1-slemicro52_ssh_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    # workaround for bsc#1222108
-    And I wait at most 480 seconds until I see "Bootstrap process initiated." text
+    And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "slemicro52_ssh_minion"
 
 @proxy
