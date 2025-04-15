@@ -18,6 +18,7 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.Checksum;
+import com.redhat.rhn.domain.contentmgmt.ContentFilterEntity;
 import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.org.Org;
@@ -37,7 +38,7 @@ import java.util.Set;
 /**
  * Package
  */
-public class Package extends BaseDomainHelper {
+public class Package extends BaseDomainHelper implements ContentFilterEntity {
 
     private Long id;
     private String rpmVersion;

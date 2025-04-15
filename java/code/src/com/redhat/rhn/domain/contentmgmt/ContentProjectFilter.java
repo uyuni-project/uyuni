@@ -39,7 +39,7 @@ public class ContentProjectFilter {
     private Long id;
     private State state;
     private ContentProject project;
-    private ContentFilter filter;
+    private ContentFilter<? extends ContentFilterEntity> filter;
 
     /**
      * State of the Source
@@ -64,7 +64,7 @@ public class ContentProjectFilter {
      * @param projectIn the {@link ContentProject}
      * @param filterIn the {@link ContentFilter}
      */
-    public ContentProjectFilter(ContentProject projectIn, ContentFilter filterIn) {
+    public ContentProjectFilter(ContentProject projectIn, ContentFilter<? extends ContentFilterEntity> filterIn) {
         this();
         this.project = projectIn;
         this.filter = filterIn;
@@ -137,7 +137,7 @@ public class ContentProjectFilter {
      */
     @ManyToOne
     @JoinColumn(name = "filter_id")
-    public ContentFilter getFilter() {
+    public ContentFilter<? extends ContentFilterEntity> getFilter() {
         return filter;
     }
 
@@ -146,7 +146,7 @@ public class ContentProjectFilter {
      *
      * @param filterIn the filter
      */
-    public void setFilter(ContentFilter filterIn) {
+    public void setFilter(ContentFilter<? extends ContentFilterEntity> filterIn) {
         this.filter = filterIn;
     }
 

@@ -19,6 +19,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventDatabaseMessage;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
+import com.redhat.rhn.domain.contentmgmt.ContentFilterEntity;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.user.User;
 
@@ -34,7 +35,7 @@ public class AlignSoftwareTargetMsg implements EventDatabaseMessage {
 
     private final Channel source;
     private final SoftwareEnvironmentTarget target;
-    private final List<ContentFilter> filters;
+    private final List<ContentFilter<? extends ContentFilterEntity>> filters;
     private final User user;
     private final Transaction txn;
 
@@ -45,7 +46,9 @@ public class AlignSoftwareTargetMsg implements EventDatabaseMessage {
      * @param filtersIn the {@link ContentFilter}s
      * @param userIn the User
      */
-    public AlignSoftwareTargetMsg(Channel src, SoftwareEnvironmentTarget tgt, List<ContentFilter> filtersIn,
+    public AlignSoftwareTargetMsg(Channel src,
+                                  SoftwareEnvironmentTarget tgt,
+                                  List<ContentFilter<? extends ContentFilterEntity>> filtersIn,
             User userIn) {
         this.source = src;
         this.target = tgt;
@@ -77,7 +80,7 @@ public class AlignSoftwareTargetMsg implements EventDatabaseMessage {
      *
      * @return filters
      */
-    public List<ContentFilter> getFilters() {
+    public List<ContentFilter<? extends ContentFilterEntity>> getFilters() {
         return filters;
     }
 
