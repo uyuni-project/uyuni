@@ -44,6 +44,8 @@ ENV_VAR_BY_HOST = {
   'alma8_ssh_minion' => 'ALMA8_SSHMINION',
   'alma9_minion' => 'ALMA9_MINION',
   'alma9_ssh_minion' => 'ALMA9_SSHMINION',
+  'amazon2023_minion' => 'AMAZON2023_MINION',
+  'amazon2023_ssh_minion' => 'AMAZON2023_SSHMINION',
   'centos7_minion' => 'CENTOS7_MINION',
   'centos7_ssh_minion' => 'CENTOS7_SSHMINION',
   'liberty9_minion' => 'LIBERTY9_MINION',
@@ -188,6 +190,8 @@ PACKAGE_BY_CLIENT = {
   'alma8_ssh_minion' => 'autoconf',
   'alma9_minion' => 'autoconf',
   'alma9_ssh_minion' => 'autoconf',
+  'amazon2023_minion' => 'autoconf',
+  'amazon2023_ssh_minion' => 'autoconf',
   'centos7_minion' => 'autoconf',
   'centos7_ssh_minion' => 'autoconf',
   'liberty9_minion' => 'autoconf',
@@ -267,6 +271,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'alma8_ssh_minion' => 'almalinux8 for x86_64',
     'alma9_minion' => 'almalinux9 for x86_64',
     'alma9_ssh_minion' => 'almalinux9 for x86_64',
+    'amazon2023_minion' => 'amazonlinux2023 for x86_64',
+    'amazon2023_ssh_minion' => 'amazonlinux2023 for x86_64',
     'centos7_minion' => 'RHEL x86_64 Server 7',
     'centos7_ssh_minion' => 'RHEL x86_64 Server 7',
     'liberty9_minion' => 'EL9-Pool for x86_64',
@@ -338,6 +344,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'alma8_ssh_minion' => 'AlmaLinux 8 (x86_64)',
     'alma9_minion' => 'AlmaLinux 9 (x86_64)',
     'alma9_ssh_minion' => 'AlmaLinux 9 (x86_64)',
+    'amazon2023_minion' => 'Amazon Linux 2023 x86_64',
+    'amazon2023_ssh_minion' => 'Amazon Linux 2023 x86_64',
     'centos7_minion' => 'CentOS 7 (x86_64)',
     'centos7_ssh_minion' => 'CentOS 7 (x86_64)',
     'liberty9_minion' => 'EL9-Pool for x86_64',
@@ -397,6 +405,7 @@ LABEL_BY_BASE_CHANNEL = {
     'SL-Micro-6.1-Pool for x86_64' => 'sl-micro-6.1-pool-x86_64',
     'almalinux8 for x86_64' => 'almalinux8-x86_64',
     'almalinux9 for x86_64' => 'almalinux9-x86_64',
+    'amazonlinux2023 for x86_64' => 'amazonlinux2023-x86_64',
     'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
     'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
     'EL9-Pool for x86_64' => 'el9-pool-x86_64',
@@ -427,6 +436,7 @@ LABEL_BY_BASE_CHANNEL = {
     'SL-Micro-6.1-Pool for x86_64' => 'sl-micro-6.1-pool-x86_64',
     'AlmaLinux 8 (x86_64)' => 'almalinux8-x86_64',
     'AlmaLinux 9 (x86_64)' => 'almalinux9-x86_64',
+    'Amazon Linux 2023 x86_64' => 'amazonlinux2023-x86_64',
     'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
     'CentOS 7 (x86_64)' => 'centos7-x86_64',
     'EL9-Pool for x86_64' => 'el9-pool-x86_64',
@@ -464,6 +474,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'SL-Micro-6.1-Pool for x86_64' => 'SL-MICRO-6.1-x86_64',
     'almalinux8 for x86_64' => 'almalinux-8-x86_64',
     'almalinux9 for x86_64' => 'almalinux-9-x86_64',
+    'amazonlinux2023 for x86_64' => 'amazonlinux-2023-x86_64',
     'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
     'RHEL x86_64 Server 7' => 'RES7-x86_64',
     'EL9-Pool for x86_64' => 'SUSE-LibertyLinux9-x86_64',
@@ -496,6 +507,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'SL-Micro-6.1-Pool for x86_64' => 'SL-MICRO-6.1-x86_64',
     'AlmaLinux 8 (x86_64)' => 'almalinux-8-x86_64-uyuni',
     'AlmaLinux 9 (x86_64)' => 'almalinux-9-x86_64-uyuni',
+    'Amazon Linux 2023 x86_64' => 'amazonlinux-2023-x86_64-uyuni',
     'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
     'CentOS 7 (x86_64)' => 'centos-7-x86_64-uyuni',
     'EL9-Pool for x86_64' => 'SUSE-LibertyLinux9-x86_64',
@@ -534,6 +546,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'SL-Micro-6.1-Pool for x86_64' => 'sl-micro-6.1-pool-x86_64',
     'almalinux8 for x86_64' => nil,
     'almalinux9 for x86_64' => nil,
+    'amazonlinux2023 for x86_64' => nil,
     'Fake-Base-Channel-SUSE-like' => nil,
     'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
     'EL9-Pool for x86_64' => 'el9-pool-x86_64',
@@ -563,8 +576,9 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'SLE-Micro-5.5-Pool for x86_64' => 'sle-micro-5.5-pool-x86_64',
     'SL-Micro-6.0-Pool for x86_64' => 'sl-micro-6.0-pool-x86_64',
     'SL-Micro-6.1-Pool for x86_64' => 'sl-micro-6.1-pool-x86_64',
-    'almalinux8 for x86_64' => nil,
-    'almalinux9 for x86_64' => nil,
+    'AlmaLinux 8 (x86_64)' => nil,
+    'AlmaLinux 9 (x86_64)' => nil,
+    'Amazon Linux 2023 x86_64' => nil,
     'Fake-Base-Channel-SUSE-like' => nil,
     'CentOS 7 (x86_64)' => 'centos-7-x86_64-uyuni',
     'EL9-Pool for x86_64' => 'el9-pool-x86_64',
@@ -616,6 +630,8 @@ PKGARCH_BY_CLIENT = {
   'alma8_ssh_minion' => 'x86_64',
   'alma9_minion' => 'x86_64',
   'alma9_ssh_minion' => 'x86_64',
+  'amazon2023_minion' => 'x86_64',
+  'amazon2023_ssh_minion' => 'x86_64',
   'centos7_minion' => 'x86_64',
   'centos7_ssh_minion' => 'x86_64',
   'liberty9_minion' => 'x86_64',
@@ -670,15 +686,31 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-containers15-sp4-updates-x86_64
         sle-product-sles15-sp4-ltss-updates-x86_64
       ],
-    'almalinux8' =>
+    'almalinux8' => # CHECKED
       %w[
         almalinux8-x86_64
         almalinux8-appstream-x86_64
+        managertools-el8-pool-x86_64-alma
+        managertools-el8-updates-x86_64-alma
+        managertools-beta-el8-pool-x86_64-alma
+        managertools-beta-el8-updates-x86_64-alma
       ],
     'almalinux9' => # CHECKED
       %w[
         almalinux9-x86_64
         almalinux9-appstream-x86_64
+        managertools-el9-pool-x86_64-alma
+        managertools-el9-updates-x86_64-alma
+        managertools-beta-el9-pool-x86_64-alma
+        managertools-beta-el9-updates-x86_64-alma
+      ],
+    'amazonlinux2023' => # CHECKED
+      %w[
+        amazonlinux2023-x86_64
+        managertools-el9-pool-x86_64-amazon
+        managertools-el9-updates-x86_64-amazon
+        managertools-beta-el9-pool-x86_64-amazon
+        managertools-beta-el9-updates-x86_64-amazon
       ],
     'debian-12' => # CHECKED
       %w[
@@ -1014,6 +1046,11 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         almalinux9-x86_64-extras
         almalinux9-uyuni-client-devel-x86_64
       ],
+    'amazonlinux2023' =>
+      %w[
+        amazonlinux2023-x86_64
+        amazonlinux2023-uyuni-client-devel-x86_64
+      ],
     'centos7' => # CHECKED
       %w[
         centos7-x86_64
@@ -1314,9 +1351,9 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
 # Formula: (end date - startup date) * 2, rounded to upper 60 seconds
 # Please keep this list sorted alphabetically
 TIMEOUT_BY_CHANNEL_NAME = {
-  'almalinux8-appstream-x86_64' => 480,
+  'almalinux8-appstream-x86_64' => 1260,
   'almalinux8-uyuni-client-devel-x86_64' => 60,
-  'almalinux8-x86_64' => 420,
+  'almalinux8-x86_64' => 540,
   'almalinux8-x86_64-appstream' => 1740,
   'almalinux8-x86_64-extras' => 60,
   'almalinux9-appstream-x86_64' => 480,
@@ -1324,6 +1361,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'almalinux9-x86_64' => 120,
   'almalinux9-x86_64-appstream' => 720,
   'almalinux9-x86_64-extras' => 60,
+  'amazonlinux2023-x86_64' => 1980,
+  'amazonlinux2023-uyuni-client-devel-x86_64' => 60,
   'centos-7-iso' => 300,
   'centos7-uyuni-client-devel-x86_64' => 60,
   'centos7-x86_64' => 960,
@@ -1347,8 +1386,14 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'fake-child-channel-suse-like' => 240,
   'fake-rpm-suse-channel' => 120,
   'fake-rpm-terminal-channel' => 360,
+  'managertools-beta-el8-pool-x86_64-alma' => 60,
+  'managertools-beta-el9-pool-x86_64-amazon' => 60,
+  'managertools-beta-el8-updates-x86_64-alma' => 60,
+  'managertools-beta-el9-updates-x86_64-amazon' => 60,
   'managertools-beta-el9-pool-x86_64' => 60,
+  'managertools-beta-el9-pool-x86_64-alma' => 60,
   'managertools-beta-el9-updates-x86_64' => 60,
+  'managertools-beta-el9-updates-x86_64-alma' => 60,
   'managertools-beta-sle15-pool-x86_64-sp4' => 60,
   'managertools-beta-sle15-updates-x86_64-sp4' => 60,
   'managertools-beta-ubuntu2204-updates-amd64' => 60,
@@ -1358,10 +1403,16 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-el7-pool-x86_64-lbt7' => 60,
   'managertools-el7-updates-x86_64-lbt7' => 60,
   'managertools-el8-pool-x86_64' => 60,
+  'managertools-el8-pool-x86_64-alma' => 60,
   'managertools-el8-updates-x86_64' => 60,
+  'managertools-el8-updates-x86_64-alma' => 60,
   'managertools-el9-pool-x86_64' => 60,
+  'managertools-el9-pool-x86_64-alma' => 60,
+  'managertools-el9-pool-x86_64-amazon' => 60,
   'managertools-el9-pool-x86_64-rocky' => 60,
   'managertools-el9-updates-x86_64' => 60,
+  'managertools-el9-updates-x86_64-alma' => 60,
+  'managertools-el9-updates-x86_64-amazon' => 60,
   'managertools-el9-updates-x86_64-rocky' => 60,
   'managertools-sle12-pool-x86_64-sp5' => 60,
   'managertools-sle12-updates-x86_64-sp5' => 60,
