@@ -12,7 +12,7 @@
   var filtered = ${requestScope.isFiltered};
   function showFiltered() {
     if (filtered)
-      ShowAll();
+      showAllRows();
   }
 </script>
 <rhn:toolbar base="h1" icon="header-organisation">
