@@ -57,7 +57,7 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
     -v /tmp/testing:/tmp \
     --cgroupns=host \
-    -h server.test.lan \
+    -h server \
     -p 8443:443 \
     -p 8080:80 \
     -p 9090:9090 \
