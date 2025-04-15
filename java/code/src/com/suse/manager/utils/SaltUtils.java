@@ -653,12 +653,8 @@ public class SaltUtils {
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                var originalErrorMsg = jsonEventToStateApplyResults(jsonResult)
-                        .map(SaltUtils::getOriginalStateApplyError)
-                        .orElseThrow(() -> new RuntimeException("Failed to parse the state.apply error result"))
-                        .map(StateApplyResult::getComment)
-                        .map(msg -> msg.isEmpty() ? null : msg)
-                        .orElse("Error while updating the hardware profile.\nGot no result from the system.");
+                var originalErrorMsg = getErrorFromStateApplyResult(jsonResult,
+                        "Error while updating the hardware profile.\nGot no result from the system.");
                 serverAction.setResultMsg(originalErrorMsg);
             }
             else {
@@ -671,12 +667,8 @@ public class SaltUtils {
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_VIRT_PROFILE_REFRESH)) {
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                var originalErrorMsg = jsonEventToStateApplyResults(jsonResult)
-                        .map(SaltUtils::getOriginalStateApplyError)
-                        .orElseThrow(() -> new RuntimeException("Failed to parse the state.apply error result"))
-                        .map(StateApplyResult::getComment)
-                        .map(msg -> msg.isEmpty() ? null : msg)
-                        .orElse("Error while updating the virtual instance profile.\nGot no result from the system.");
+                var originalErrorMsg = getErrorFromStateApplyResult(jsonResult,
+                        "Error while updating the virtual instance profile.\nGot no result from the system.");
                 serverAction.setResultMsg(originalErrorMsg);
             }
             else {
@@ -1263,6 +1255,26 @@ public class SaltUtils {
     }
 
     /**
+     * Parse and return the error message from the state.apply
+     * @param jsonResult the json representaion of an event
+     * @param genericErrorMsg a generic error message
+     * @return the error as string
+     */
+    public static String getErrorFromStateApplyResult(JsonElement jsonResult, String genericErrorMsg) {
+        try {
+            return jsonEventToStateApplyResults(jsonResult)
+                    .map(SaltUtils::getOriginalStateApplyError)
+                    .orElseThrow(() -> new RuntimeException("Failed to parse the state.apply error result"))
+                    .map(StateApplyResult::getComment)
+                    .map(msg -> msg.isEmpty() ? null : msg)
+                    .orElse(genericErrorMsg);
+        }
+        catch (RuntimeException e) {
+            return e.getMessage();
+        }
+    }
+
+    /**
      * Converts the json representation of an event to a map
      *
      * @param jsonResult json representation of an event
@@ -1294,7 +1306,9 @@ public class SaltUtils {
     private static <R> Optional<StateApplyResult<R>> getOriginalStateApplyError(
             Map<String, StateApplyResult<R>> stateApplyResultMap) {
         return stateApplyResultMap.values().stream()
+                .filter(r -> !r.isResult())
                 .filter(r -> !r.getComment().startsWith("One or more requisite failed"))
+                .sorted(Comparator.comparing(StateApplyResult::getRunNum))
                 .findFirst();
     }
 
@@ -1441,13 +1455,8 @@ public class SaltUtils {
 
         if (ActionFactory.STATUS_FAILED.equals(serverAction.getStatus())) {
             // Filter out the subsequent errors to find the root cause
-            var originalErrorMsg = jsonEventToStateApplyResults(jsonResult)
-                    .map(SaltUtils::getOriginalStateApplyError)
-                        .orElseThrow(() -> new RuntimeException("Failed to parse the state.apply error result"))
-                    .map(StateApplyResult::getComment)
-                    .map(msg -> msg.isEmpty() ? null : msg)
-                    .orElse("Error while configuring AppStreams on the system.\nGot no result from the system.");
-
+            var originalErrorMsg = getErrorFromStateApplyResult(jsonResult,
+                    "Error while configuring AppStreams on the system.\nGot no result from the system.");
             serverAction.setResultMsg(originalErrorMsg);
             return;
         }
@@ -1596,13 +1605,13 @@ public class SaltUtils {
             server.setOs(grains.getValueAsString("osfullname"));
             server.setCpe(grains.getValueAsString("cpe"));
 
-            /** Release is set directly from grain information for SUSE systems only.
-                RH systems require some parsing on the grains to get the correct release
-                See RegisterMinionEventMessageAction#getOsRelease
+            /* Release is set directly from grain information for SUSE systems only.
+               RH systems require some parsing on the grains to get the correct release
+               See RegisterMinionEventMessageAction#getOsRelease
 
-                However, release can change only after product migration and SUMA supports this only on SUSE systems.
-                Also, the getOsRelease method requires remote command execution and was therefore avoided for now.
-                If we decide to support RedHat distro/SP upgrades in the future, this code has to be reviewed.
+               However, release can change only after product migration and SUMA supports this only on SUSE systems.
+               Also, the getOsRelease method requires remote command execution and was therefore avoided for now.
+               If we decide to support RedHat distro/SP upgrades in the future, this code has to be reviewed.
              */
             if (server.getOsFamily().equals(OS_FAMILY_SUSE)) {
                 server.setRelease(grains.getValueAsString("osrelease"));
