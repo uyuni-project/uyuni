@@ -1,3 +1,4 @@
+TEST
 # Uyuni automated test suite
 
 ## Introduction
