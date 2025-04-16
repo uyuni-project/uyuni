@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-11 13:25+0200\n"
-"PO-Revision-Date: 2025-04-12 17:56+0000\n"
+"PO-Revision-Date: 2025-04-16 15:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.10.4\n"
+"X-Generator: Weblate 5.11\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -532,10 +532,8 @@ msgid "Submit"
 msgstr "Odoslať"
 
 #: ../html/src/components/formik/field/AsRadio.tsx:41
-#, fuzzy
-#| msgid "Custom State"
 msgid "Custom value"
-msgstr "Vlastný stav"
+msgstr "Vlastná hodnota"
 
 #: ../html/src/components/formik/field/AsRange.tsx:15
 msgid "{rangeInputName} start"
@@ -551,17 +549,13 @@ msgid "required"
 msgstr "požadované"
 
 #: ../html/src/components/formik/field/MultiField.tsx:37
-#, fuzzy
-#| msgid "Remove file"
 msgid "Remove item"
-msgstr "Odstrániť súbor"
+msgstr "Odstrániť položku"
 
 #: ../html/src/components/formik/field/MultiField.tsx:58
 #: ../html/src/components/formik/field/MultiField.tsx:62
-#, fuzzy
-#| msgid "Add system"
 msgid "Add item"
-msgstr "Pridať systém"
+msgstr "Pridať položku"
 
 #: ../html/src/components/formula-selection.tsx:135
 msgid " No group"
@@ -709,10 +703,6 @@ msgstr ""
 "neho nebudete dostávať dáta."
 
 #: ../html/src/components/hub/DeregisterServer.tsx:70
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to derigester peripheral {fqdn}? All the current "
-#| "configuration will be lost."
 msgid ""
 "Are you sure you want to deregister peripheral {fqdn}? All the current "
 "configuration will be lost."
@@ -726,38 +716,28 @@ msgstr "Serveru {fqdn} bola úspešne zrušená registrácia."
 
 #: ../html/src/components/hub/DesyncChannel.tsx:36
 #: ../html/src/components/hub/DesyncChannel.tsx:45
-#, fuzzy
-#| msgid "synced"
 msgid "Desync"
-msgstr "synchronizované"
+msgstr "Zrušiť synchronizáciu"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:37
-#, fuzzy
-#| msgid "Base Channel"
 msgid "Desync Channel"
-msgstr "Základný kanál"
+msgstr "Zrušiť synchronizáciu kanála"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:42
-#, fuzzy
-#| msgid "Confirm Deletion"
 msgid "Confirm Desync"
-msgstr "Potvrdiť vymazanie"
+msgstr "Potvrdiť zrušenie synchronizácie"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:55
 msgid "Desync channels?"
 msgstr "Zrušiť synchronizáciu kanálov?"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:64
-#, fuzzy
-#| msgid "The server {fqdn} has been successfully deregistered."
 msgid "The channels have been successfully desynced."
-msgstr "Serveru {fqdn} bola úspešne zrušená registrácia."
+msgstr "Kanálom bola úspešne zrušená synchronizácia."
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:131
-#, fuzzy
-#| msgid "Organization"
 msgid "Select Organization"
-msgstr "Organizácia"
+msgstr "Vybrať organizáciu"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:161
 #: ../html/src/manager/admin/setup/products/products.tsx:487
@@ -765,10 +745,8 @@ msgid "Filter by architecture"
 msgstr "Filtrovať podľa architektúry"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:173
-#, fuzzy
-#| msgid "Loading child channels.."
 msgid "Search channels..."
-msgstr "Načítavajú sa kanály potomkov.."
+msgstr "Hľadanie kanálov..."
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:188
 msgid "Sync"
@@ -797,16 +775,12 @@ msgstr ""
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:192
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:307
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:344
-#, fuzzy
-#| msgid "N. of Sync Orgs"
 msgid "Sync Org"
-msgstr "Počet synchronizovaných organizácií"
+msgstr "Synchronizovaná organizácia"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:67
-#, fuzzy
-#| msgid "Audit Servers"
 msgid "Add Server"
-msgstr "Auditovať servery"
+msgstr "Pridať server"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:69
 msgid "Set the FQDN of the remote server"
@@ -817,10 +791,8 @@ msgid "Migrate?"
 msgstr "Migrovať?"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:95
-#, fuzzy
-#| msgid "Access Tokens"
 msgid "Access Token"
-msgstr "Prístupové tokeny"
+msgstr "Prístupový token"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:100
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:294
@@ -829,10 +801,8 @@ msgid "Root Certificate Authority"
 msgstr "Koreňová certifikačná autorita"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:166
-#, fuzzy
-#| msgid "Peripheral registration in progress: waiting for a response..."
 msgid "Peripheral migration in progress: waiting for a response..."
-msgstr "Prebieha registrácia periférie: čaká sa na odpoveď..."
+msgstr "Prebieha migrácia periférie: čaká sa na odpoveď..."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:184
 msgid "Migration partially succeeded"
@@ -862,10 +832,8 @@ msgid "Check to migrate this server to a peripheral"
 msgstr ""
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:246
-#, fuzzy
-#| msgid "undefined"
 msgid "Not defined"
-msgstr "nedefinované"
+msgstr "Nedefinované"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:251
 #: ../html/src/components/large-text-attachment.tsx:69
@@ -894,16 +862,12 @@ msgid "Set access token for {fqdn}"
 msgstr ""
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:253
-#, fuzzy
-#| msgid "Access Tokens"
 msgid "Access token"
-msgstr "Prístupové tokeny"
+msgstr "Prístupový token"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:282
-#, fuzzy
-#| msgid "No tokens available"
 msgid "Root CA available"
-msgstr "Žiadne dostupné tokeny"
+msgstr "K dispozícii je koreňová CA"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:282
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
@@ -919,16 +883,12 @@ msgid "This server has a different root CA."
 msgstr ""
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:296
-#, fuzzy
-#| msgid ""
-#| "Ensure the certificate you are providing is correct before proceeding. A "
-#| "wrong value will break the connection with the hub."
 msgid ""
 "Ensure the certificate you are providing for {fqdn} is correct before "
 "proceeding. A wrong value will prevent the connection with the hub."
 msgstr ""
-"Pred pokračovaním sa uistite, či je poskytnutý certifikát správny. Nesprávna "
-"hodnota spôsobí prerušenie spojenia s hubom."
+"Pred pokračovaním sa uistite, že certifikát, ktorý poskytujete pre {fqdn}, "
+"je správny. Nesprávna hodnota zabráni spojeniu s hubom."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:301
 msgid ""
@@ -965,14 +925,10 @@ msgid "Peripheral FQDN"
 msgstr "Periférne FQDN"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:41
-#, fuzzy
-#| msgid "N. of Sync Channels"
 msgid "N. of synced channels"
 msgstr "Počet synchronizovaných kanálov"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:46
-#, fuzzy
-#| msgid "N. of Sync Orgs"
 msgid "N. of synced organizations"
 msgstr "Počet synchronizovaných organizácií"
 
