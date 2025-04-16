@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Copyright (c) 2019--2024 SUSE Linux GmbH
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2019--2025 SUSE Linux GmbH
+# Copyright (c) 2024--2025 SUSE LLC
 #
 # This file is part of uyuni-storage-setup.
 #
@@ -77,10 +77,10 @@ check_mountpoint() {
     # check if mount_point exists
     if [ ! -d $mount_point ]; then
         mkdir $mount_point || die "Unable to create $mount_point"
-	chmod 0700 $mount_point
-	if /usr/sbin/selinuxenabled; then
+        chmod 0700 $mount_point
+        if [ -x /usr/sbin/selinuxenabled ] && /usr/sbin/selinuxenabled; then
             chcon --reference=$mount_point/.. $mount_point || die "Unable to set selinux context to $mount_point"
-	fi
+        fi
     fi
 }
 
@@ -136,7 +136,7 @@ mount_storage() {
     local mount_point=$2
     mkdir -p $mount_point
     chmod 0700 $mount_point
-    if /usr/sbin/selinuxenabled; then
+    if [ -x /usr/sbin/selinuxenabled ] && /usr/sbin/selinuxenabled; then
         chcon --reference=$mount_point/.. $mount_point || die "Unable to set selinux context to $mount_point"
     fi
     local result=$(mount $part $mount_point 2>&1)
@@ -171,7 +171,7 @@ remount_storage() {
     if [ ! -d $mount_point ]; then
         mkdir -p $mount_point
         chmod 0700 $mount_point
-        if /usr/sbin/selinuxenabled; then
+        if [ -x /usr/sbin/selinuxenabled ] && /usr/sbin/selinuxenabled; then
             chcon --reference=$mount_point/.. $mount_point || die "Unable to set selinux context to $mount_point"
         fi
     fi
