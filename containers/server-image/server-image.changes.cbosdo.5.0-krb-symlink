@@ -1,0 +1,2 @@
+- Fix broken /etc/rhn/krb5.conf.d/crypto-policies symlink
+  (bsc#1237938)
