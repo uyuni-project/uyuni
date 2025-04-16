@@ -11,6 +11,7 @@ import { Messages, MessageType, Utils as MsgUtils } from "components/messages/me
 import { InnerPanel } from "components/panels/InnerPanel";
 import { Toggler } from "components/toggler";
 import { Loading } from "components/utils/loading/Loading";
+import EditAnsibleVarsModal from "./edit-ansible-vars-modal";
 
 import { localizedMoment } from "utils";
 import Network, { JsonResult } from "utils/network";
@@ -33,13 +34,12 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
   const [loading, setLoading] = useState(true);
   const [playbookContent, setPlaybookContent] = useState("");
   const [isTestMode, setTestMode] = useState(false);
-  const [messages, setMessages] = useState<MessageType[]>([]);
-  const [inventoryPath, setInventoryPath] = useState<ComboboxItem | null>(null);
-  const [inventories, setInventories] = useState<string[]>([]);
-  const [playbookArgs, setPlaybookArgs] = useState<PlaybookArgs>({ flushCache: false });
-  const [actionChain, setActionChain] = useState<ActionChain | null>(null);
+  const [messages, setMessages] = useState <MessageType[]> ([]);
+  const [inventoryPath, setInventoryPath] = useState <ComboboxItem | null> (null);
+  const [inventories, setInventories] = useState <string[]> ([]);
+  const [playbookArgs, setPlaybookArgs] = useState <PlaybookArgs> ({ flushCache: false });
+  const [actionChain, setActionChain] = useState <ActionChain | null> (null);
   const [datetime, setDatetime] = useState(localizedMoment());
-
   const defaultInventory = "-";
 
   useEffect(() => {
@@ -186,7 +186,10 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
         </div>
 
         <div>
-          <h3>{t("Playbook Content")}</h3>
+          <div className="d-flex justify-content-between">
+            <h3>{t("Playbook Content")}</h3>
+            <EditAnsibleVarsModal id="anisble-var" renderContent={playbookContent} />
+          </div>
           <AceEditor
             className="form-control"
             id="playbook-content"
