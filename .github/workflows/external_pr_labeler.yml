@@ -21,6 +21,12 @@ jobs:
           # See: https://docs.github.com/rest/orgs/members#check-organization-membership-for-a-user--status-codes
           RESULT=`gh api orgs/uyuni-project/members/${{ github.actor }} -i | head -1 | awk '{ print $2 }'`
           echo "result=$RESULT" >> "$GITHUB_OUTPUT"
+
+          # Fail the job if the API call didn't return 200 (member) or 404 (not member)
+          if [[ "$RESULT" != "200" && "$RESULT" != "404" ]]; then
+            echo "Error: Failed to check organization membership. Status code: $RESULT"
+            exit 1
+          fi
       - name: Label the PR
         # If not a member of org
         if: ${{ steps.is_member.outputs.result == 404 }}
