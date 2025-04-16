@@ -8,10 +8,17 @@ class VEXDatabaseManager:
                  host="localhost"):
         
         """Initialize the database connection parameters"""
-        self.dbname = dbname
-        self.user = user
-        self.password = password
-        self.host = host
+
+        self.load_db_config()
+
+        logging.info(self.config.get("db_name"))
+        logging.info(self.config.get("db_user"))
+        logging.info(self.config.get("db_password"))
+
+        self.dbname=self.config.get("db_name")
+        self.user=self.config.get("db_user")
+        self.password=self.config.get("db_password")
+        self.host=self.config.get("db_host")
         self.conn = None
 
     def __enter__(self):
@@ -22,6 +29,15 @@ class VEXDatabaseManager:
     def __exit__(self, exc_type, exc_val, exc_tb):
         """Close connection when exiting context manager"""
         self.close()
+
+    def load_db_config(self, path="/etc/rhn/rhn.conf"):
+        self.config = {}
+        with open(path, "r") as file:
+            for linea in file:
+                if "=" in linea and not linea.strip().startswith("#"):
+                    clave, valor = linea.strip().split("=", 1)
+                    self.config[clave.strip()] = valor.strip()
+        return self.config
 
     def connect(self):
         """Establish database connection"""
