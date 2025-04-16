@@ -1,0 +1,1 @@
+- Ensure selinuxenabled exists before executing it (bsc#1241060)
