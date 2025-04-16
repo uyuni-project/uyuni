@@ -488,15 +488,27 @@ When(/^I create the MU repositories for "([^"]*)"$/) do |client|
       log "The MU repository #{unique_repo_name} was already created, we will reuse it."
     else
       content_type = deb_host?(client) ? 'deb' : 'yum'
+      extra_step = ''
+      check_text = ''
+
+      # Workaround for slmicro6X repositories that are not signed with SUSE authorities.
+      if %w[slmicro60_minion slmicro61_minion].include?(client)
+        extra_step = 'And I uncheck "metadataSigned"'
+        check_text = 'Then I should see "metadataSigned" as unchecked'
+      else
+        check_text = 'Then I should see "metadataSigned" as checked'
+      end
+
       steps %(
         When I follow the left menu "Software > Manage > Repositories"
         And I follow "Create Repository"
         And I enter "#{unique_repo_name}" as "label"
         And I enter "#{repo_url.strip}" as "url"
         And I select "#{content_type}" from "contenttype"
+        #{extra_step}
         And I click on "Create Repository"
         Then I should see a "Repository created successfully" text or "The repository label '#{unique_repo_name}' is already in use" text
-        And I should see "metadataSigned" as checked
+        #{check_text}
       )
     end
   end
