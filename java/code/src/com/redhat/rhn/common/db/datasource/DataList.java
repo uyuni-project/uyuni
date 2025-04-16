@@ -99,7 +99,7 @@ public class DataList<E> extends ArrayList<E> {
                  * To avoid this, turn off automatic elaboration.
                  */
                 autoElab = false;
-                mode.elaborate(this, elaboratorParams);
+                mode.elaborate((List<Object>)this, elaboratorParams);
                 //we are done, turn automatic elaboration back to what it was.
             }
         }
