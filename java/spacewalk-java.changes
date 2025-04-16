@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Apr 16 16:20:28 CEST 2025 - rosuna@suse.com
+
+- version 5.1.12-0
+  * CVE-2025-23393: Filter user input in systems list page
+    (bsc#1240386)
+  * CVE-2025-23392: Filter user input in systems list page
+    (bsc#1239826)
+
+-------------------------------------------------------------------
 Fri Dec 13 15:02:20 CET 2024 - rosuna@suse.com
 
 - version 5.1.5-0
