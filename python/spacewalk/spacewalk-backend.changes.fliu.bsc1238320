@@ -1,1 +1,2 @@
-Use localhost instead of getfqdn as server_url (bsc#1238320)
+- Use localhost instead of getfqdn as server_url 
+  (bsc#1238320)
