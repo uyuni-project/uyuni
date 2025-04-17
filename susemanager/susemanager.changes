@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Fri Apr 11 17:11:27 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.8-0
+  * Use the new product name SUSE Multi-Linux Manager
+  * Remove requirement of LTSS repositories for generation of the
+    bootstrap repositories since only venv-salt-minion is needed
+  * Add bootstrap repository data for Raspberry Pi OS 12 product
+  * Add bootstrap repository data for openEuler 24.03-LTS-SP1 product
+  * Fix creating bootstrap repositories for products which have
+    only a base channel (bsc#1239747)
+  * Remove unused code related to the database move to a separate
+    container
+  * Add ManagerTools for SLE Micro to bootstrap repository data
+  * Check for peripheral configuration in mgr-sync
+
+-------------------------------------------------------------------
 Mon Mar 24 18:32:37 CET 2025 - marina.latini@suse.com
 
 - version 5.1.7-0

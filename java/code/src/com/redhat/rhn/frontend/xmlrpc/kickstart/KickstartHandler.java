@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.xmlrpc.kickstart;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -27,7 +26,6 @@ import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.kickstart.builder.KickstartBuilder;
 import com.redhat.rhn.domain.kickstart.builder.KickstartParser;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.kickstart.KickstartIpRangeFilter;
 import com.redhat.rhn.frontend.action.kickstart.KickstartTreeUpdateType;
@@ -61,7 +59,6 @@ public class KickstartHandler extends BaseHandler {
      */
     @ReadOnly
     public List<Channel> listKickstartableChannels(User loggedInUser) {
-        ensureConfigAdmin(loggedInUser);
         return  ChannelFactory
                 .getKickstartableChannels(loggedInUser.getOrg());
 
@@ -78,7 +75,6 @@ public class KickstartHandler extends BaseHandler {
      */
     @ReadOnly
     public List<Channel> listAutoinstallableChannels(User loggedInUser) {
-        ensureConfigAdmin(loggedInUser);
         return ChannelFactory.getKickstartableTreeChannels(loggedInUser.getOrg());
     }
 
@@ -414,13 +410,6 @@ public class KickstartHandler extends BaseHandler {
         return 1;
     }
 
-    private void checkKickstartPerms(User user) {
-        if (!user.hasRole(RoleFactory.CONFIG_ADMIN)) {
-            throw new PermissionException(LocalizationService.getInstance()
-                    .getMessage("permission.configadmin.needed"));
-        }
-    }
-
     private KickstartData lookupKsData(String label, Org org) {
         return XmlRpcKickstartHelper.getInstance().lookupKsData(label, org);
     }
@@ -437,7 +426,6 @@ public class KickstartHandler extends BaseHandler {
      */
     @ReadOnly
     public List listKickstarts(User loggedInUser) {
-        checkKickstartPerms(loggedInUser);
         return KickstartLister.getInstance().kickstartsInOrg(loggedInUser.getOrg(), null);
     }
 
@@ -454,10 +442,6 @@ public class KickstartHandler extends BaseHandler {
      */
     @ReadOnly
     public List listAllIpRanges(User loggedInUser) {
-        if (!loggedInUser.hasRole(RoleFactory.CONFIG_ADMIN)) {
-            throw new PermissionCheckFailureException();
-        }
-
         return KickstartFactory.lookupRangeByOrg(loggedInUser.getOrg());
     }
 
@@ -500,9 +484,6 @@ public class KickstartHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int deleteProfile(User loggedInUser, String ksLabel) {
-        if (!loggedInUser.hasRole(RoleFactory.CONFIG_ADMIN)) {
-            throw new PermissionException(RoleFactory.CONFIG_ADMIN);
-        }
         KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
         KickstartDeleteCommand com = new KickstartDeleteCommand(ksdata.getId(),
                 loggedInUser);
@@ -527,10 +508,6 @@ public class KickstartHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int disableProfile(User loggedInUser, String profileLabel, Boolean disabled) {
-
-        if (!loggedInUser.hasRole(RoleFactory.CONFIG_ADMIN)) {
-            throw new PermissionException(RoleFactory.CONFIG_ADMIN);
-        }
         KickstartData ksData = lookupKsData(profileLabel, loggedInUser.getOrg());
 
         KickstartEditCommand cmd = new KickstartEditCommand(

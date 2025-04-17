@@ -23,6 +23,8 @@ import com.redhat.rhn.frontend.listview.PageControl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import spark.Request;
 
@@ -83,20 +85,20 @@ public class PageControlHelper {
      * @param defaultFilterColumn the default filter column to be used if not specified in the request
      */
     private void parseQueryParams(String defaultFilterColumn) {
-        function = request.queryParams("f");
+        function = filterInput(request.queryParams("f"));
 
-        String filterColumn = request.queryParams("qc");
+        String filterColumn = filterInput(request.queryParams("qc"));
         if (filterColumn == null) {
             filterColumn = defaultFilterColumn;
         }
-        String filterQuery = request.queryParams("q");
+        String filterQuery = filterInput(request.queryParams("q"));
         if (isNotEmpty(filterQuery)) {
             query = filterQuery;
             queryColumn = filterColumn;
         }
 
-        sortDirection = request.queryParams("s");
-        sortColumn = request.queryParams("sc");
+        sortDirection = filterInput(request.queryParams("s"));
+        sortColumn = filterInput(request.queryParams("sc"));
 
         try {
             start = Integer.parseInt(request.queryParams("p"));
@@ -106,6 +108,29 @@ public class PageControlHelper {
             // No page info available in the request
             start = 1;
         }
+    }
+
+    /**
+     * Removes unwanted characters from an input string.
+     *
+     * @param input the string to filter
+     *
+     * @return the string with only the allowed characters.
+     */
+    private String filterInput(String input) {
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+
+        Pattern pattern = Pattern.compile("[0-9a-zA-Z-_]");
+        Matcher matcher = pattern.matcher(input);
+        StringBuilder result = new StringBuilder();
+
+        while (matcher.find()) {
+            result.append(matcher.group());
+        }
+
+        return result.toString();
     }
 
     /**

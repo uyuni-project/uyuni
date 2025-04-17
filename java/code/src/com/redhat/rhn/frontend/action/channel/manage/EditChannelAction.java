@@ -22,12 +22,12 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -669,7 +669,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
             Channel c = ChannelManager.lookupByIdAndUser(cid,
                                                          ctx.getCurrentUser());
             if (!UserManager.verifyChannelAdmin(ctx.getCurrentUser(), c)) {
-                throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
+                throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
             }
 
             form.set(NAME, c.getName());

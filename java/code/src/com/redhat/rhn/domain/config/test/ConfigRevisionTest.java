@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -35,7 +35,7 @@ public class ConfigRevisionTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreateConfigRevision() {
-        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
 
         ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
 

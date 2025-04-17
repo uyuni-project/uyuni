@@ -45,5 +45,5 @@ jobs:
         with:
           context: ./testsuite/dockerfiles/controller-dev/
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ci-test-controller-dev:qe-develop
-          labels: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ci-test-controller-dev:qe-develop
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

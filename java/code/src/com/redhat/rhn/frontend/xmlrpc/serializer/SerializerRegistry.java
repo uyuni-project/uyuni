@@ -128,9 +128,6 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(XccdfTestResultDtoSerializer.class);
         SERIALIZER_CLASSES.add(XccdfTestResultSerializer.class);
         SERIALIZER_CLASSES.add(XccdfRuleResultDtoSerializer.class);
-        SERIALIZER_CLASSES.add(IssMasterSerializer.class);
-        SERIALIZER_CLASSES.add(IssMasterOrgSerializer.class);
-        SERIALIZER_CLASSES.add(IssSlaveSerializer.class);
         SERIALIZER_CLASSES.add(CVEAuditServerSerializer.class);
         SERIALIZER_CLASSES.add(CVEAuditImageSerializer.class);
         SERIALIZER_CLASSES.add(UserExtGroupSerializer.class);
@@ -174,6 +171,8 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(ChannelInfoJsonSerializer.class);
         SERIALIZER_CLASSES.add(OrgInfoJsonSerializer.class);
         SERIALIZER_CLASSES.add(MigrationResultSerializer.class);
+        SERIALIZER_CLASSES.add(AccessGroupSerializer.class);
+        SERIALIZER_CLASSES.add(NamespaceSerializer.class);
     }
 
     /**

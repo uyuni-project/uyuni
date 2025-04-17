@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 11 18:02:13 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.2
+  * Adapt DB container to work with mgradm database configuration
+  * Database container now logs to the journald/podman logs
+
+-------------------------------------------------------------------
 Fri Feb 28 11:39:21 CET 2025 - rosuna@suse.com
 
 - version 5.1.1

@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
@@ -31,7 +31,7 @@ public class ChannelFilesListSetupTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecuteNoFiles() {
-        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
         long ccid = cc.getId();

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 11 17:21:17 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.2-0
+  * Use the new product name SUSE Multi-Linux Manager
+  * Move PostgreSQL to a separate container
+
+-------------------------------------------------------------------
 Mon Oct 14 15:36:26 CEST 2024 - rosuna@suse.com
 
 - version 5.1.1-0

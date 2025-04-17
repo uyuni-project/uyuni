@@ -20,6 +20,7 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
@@ -165,7 +166,7 @@ public class ServerGroupManager implements Serializable {
      * @param user the user to authenticate
      */
     public void validateAdminCredentials(User user) {
-        if (!user.hasRole(RoleFactory.SYSTEM_GROUP_ADMIN)) {
+        if (!user.isMemberOf(AccessGroupFactory.SYSTEM_GROUP_ADMIN)) {
             String msg = "The desired operation cannot be performed since the user" +
                             "[" + user + "] does not have the system group admin role";
             throw new PermissionException(msg);

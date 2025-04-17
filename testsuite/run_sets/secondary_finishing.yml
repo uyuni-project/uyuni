@@ -8,6 +8,5 @@
 
 # these features are disruptive for other features, so they are better at the end
 - features/secondary/srv_rename_hostname.feature
-- features/secondary/srv_smdba.feature
 
 ## Finishing Secondary features END ##

@@ -9,7 +9,7 @@
 
 <%@ include file="/WEB-INF/pages/common/fragments/groups/header.jspf" %>
 
-  <rhn:require acl="not user_role(org_admin);not user_role(system_group_admin)">
+  <rhn:require acl="not user_role(org_admin);not authorized_for(systems.groups)">
     <c:set var="notSelectable" value="True" />
   </rhn:require>
 
@@ -27,7 +27,7 @@
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system_listdisplay.jspf" %>
 
     <c:if test="${not empty requestScope.pageList}">
-      <rhn:require acl="user_role(org_admin) or user_role(system_group_admin)">
+      <rhn:require acl="user_role(org_admin) or authorized_for(systems.groups)">
         <rhn:submitted />
         <hr />
         <div class="text-right">

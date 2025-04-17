@@ -19,6 +19,7 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
@@ -28,7 +29,6 @@ import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFailed;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFinished;
 import com.redhat.rhn.domain.notification.types.NotificationData;
-import com.redhat.rhn.domain.role.RoleFactory;
 
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -71,7 +71,8 @@ public class RepoSyncTask extends RhnJavaJob {
             NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                     new ChannelSyncFailed(null, null, LocalizationService.getInstance()
                             .getMessage("notification.channelsyncfailed.notcompliant")));
-            UserNotificationFactory.storeNotificationMessageFor(notificationMessage, Set.of(RoleFactory.CHANNEL_ADMIN));
+            UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                    Set.of(AccessGroupFactory.CHANNEL_ADMIN));
             return;
         }
 
@@ -117,7 +118,7 @@ public class RepoSyncTask extends RhnJavaJob {
 
             UserNotificationFactory.storeNotificationMessageFor(
                 UserNotificationFactory.createNotificationMessage(notificationData),
-                Set.of(RoleFactory.CHANNEL_ADMIN),
+                Set.of(AccessGroupFactory.CHANNEL_ADMIN),
                 Optional.ofNullable(channel.getOrg())
             );
         }

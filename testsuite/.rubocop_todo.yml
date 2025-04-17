@@ -102,7 +102,6 @@ Style/ArrayFirstLast:
     - 'features/step_definitions/docker_steps.rb'
     - 'features/step_definitions/salt_steps.rb'
     - 'features/step_definitions/setup_steps.rb'
-    - 'features/step_definitions/smdba_steps.rb'
     - 'features/step_definitions/vm_steps.rb'
     - 'features/support/commonlib.rb'
     - 'features/support/http_client.rb'
@@ -181,7 +180,6 @@ Style/RedundantStringEscape:
     - 'features/step_definitions/cobbler_steps.rb'
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/file_management_steps.rb'
-    - 'features/step_definitions/smdba_steps.rb'
     - 'features/step_definitions/vm_steps.rb'
 
 # Offense count: 34

@@ -14,9 +14,9 @@
  */
 package com.redhat.rhn.common.security.acl;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigRevision;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
@@ -82,7 +82,7 @@ public class ConfigAclHandler extends BaseHandler {
         }
 
         if (cc.isGlobalChannel()) {
-            return user.hasRole(RoleFactory.CONFIG_ADMIN);
+            return user.isMemberOf(AccessGroupFactory.CONFIG_ADMIN);
         }
 
         //You have only gotton this far if you have access to the channel

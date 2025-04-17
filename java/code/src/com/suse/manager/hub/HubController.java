@@ -63,7 +63,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import spark.Request;
 import spark.Response;
@@ -170,7 +169,7 @@ public class HubController {
         // Add a notification to inform the user this server has been deregistered
         var notificationData = new HubRegistrationChanged(false, remoteRole, accessToken.getServerFqdn());
         var notification = UserNotificationFactory.createNotificationMessage(notificationData);
-        UserNotificationFactory.storeNotificationMessageFor(notification, Set.of(RoleFactory.SAT_ADMIN));
+        UserNotificationFactory.storeNotificationMessageFor(notification, RoleFactory.SAT_ADMIN);
 
         return success(response);
     }
@@ -277,7 +276,7 @@ public class HubController {
             // Add a notification to inform the user this server is now a peripheral
             var notificationData = new HubRegistrationChanged(true, IssRole.HUB, token.getServerFqdn());
             var notification = UserNotificationFactory.createNotificationMessage(notificationData);
-            UserNotificationFactory.storeNotificationMessageFor(notification, Set.of(RoleFactory.SAT_ADMIN));
+            UserNotificationFactory.storeNotificationMessageFor(notification, RoleFactory.SAT_ADMIN);
 
             return success(response);
         }

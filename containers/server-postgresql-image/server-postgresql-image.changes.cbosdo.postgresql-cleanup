@@ -1,2 +1,0 @@
-- Adapt db container to work with mgradm database configuration
-- Database container now logs to the journald/podman logs

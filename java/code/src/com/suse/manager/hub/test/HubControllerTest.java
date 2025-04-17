@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelProduct;
@@ -33,7 +34,6 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.iss.IssMaster;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -428,7 +428,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     public void checkApilistAllPeripheralChannels() throws Exception {
         String apiUnderTest = "/hub/listAllPeripheralChannels";
 
-        user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
         Channel testBaseChannel = ChannelTestUtils.createBaseChannel(user);
         Channel testChildChannel = ChannelTestUtils.createChildChannel(user, testBaseChannel);
 

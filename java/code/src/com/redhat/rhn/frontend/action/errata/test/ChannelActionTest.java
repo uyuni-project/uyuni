@@ -17,13 +17,13 @@ package com.redhat.rhn.frontend.action.errata.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.errata.ChannelAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -115,7 +115,7 @@ public class ChannelActionTest extends RhnBaseTestCase {
         RequestContext requestContext = new RequestContext(request);
 
         User user = requestContext.getCurrentUser();
-        user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
 
         //create the errata
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());

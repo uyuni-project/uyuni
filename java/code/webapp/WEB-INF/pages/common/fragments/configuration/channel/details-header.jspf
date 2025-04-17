@@ -11,7 +11,7 @@
 			iconAlt="config.common.globalAlt"
 			helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/configuration/config-channels.html"
 			deletionUrl="/rhn/configuration/DeleteChannel.do?ccid=${ccid}"
-			deletionType="configchannel" deletionAcl="user_role(config_admin)">
+			deletionType="configchannel" deletionAcl="authorized_for(config.channels)">
 			${channel.displayName}
 		  </rhn:toolbar>
 		</c:if>
@@ -20,7 +20,7 @@
 			iconAlt="config.common.localAlt"
 			helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/configuration/config-channels.html"
 			deletionUrl="/rhn/configuration/DeleteChannel.do?ccid=${ccid}"
-			deletionType="configchannel" deletionAcl="user_role(config_admin)">
+			deletionType="configchannel" deletionAcl="authorized_for(config.channels)">
 			${channel.displayName}
 		  </rhn:toolbar>
 		</c:if>
@@ -29,7 +29,7 @@
 			iconAlt="config.common.sandboxAlt"
 			helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/configuration/config-channels.html"
 			deletionUrl="/rhn/configuration/DeleteChannel.do?ccid=${ccid}"
-			deletionType="configchannel" deletionAcl="user_role(config_admin)">
+			deletionType="configchannel" deletionAcl="authorized_for(config.channels)">
 			${channel.displayName}
 		  </rhn:toolbar>
 		</c:if>

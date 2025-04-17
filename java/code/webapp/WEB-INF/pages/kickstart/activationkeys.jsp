@@ -29,10 +29,10 @@
 
             <rhn:set value="${current.id}" />
         <rhn:column header="kickstart.activationkeys.jsp.description">
-                        <rhn:require acl="user_role(activation_key_admin)">
+                        <rhn:require acl="authorized_for(systems.activation_keys.details)">
                 <a href="/rhn/activationkeys/Edit.do?tid=${current.id}">${current.note}</a>
                         </rhn:require>
-                        <rhn:require acl="not user_role(activation_key_admin)">
+                        <rhn:require acl="authorized_for(systems.activation_keys.details)">
                                 ${current.note}
                         </rhn:require>
         </rhn:column>

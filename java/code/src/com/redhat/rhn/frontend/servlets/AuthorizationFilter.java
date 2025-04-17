@@ -16,7 +16,6 @@
 
 package com.redhat.rhn.frontend.servlets;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.access.WebEndpoint;
 import com.redhat.rhn.domain.access.WebEndpointFactory;
@@ -94,10 +93,8 @@ public class AuthorizationFilter implements Filter {
             // TODO: Review PageFilter
             LOG.debug("Access restricted for user '{}' to URI '{}' [{}]",
                     new RequestContext(hreq).getCurrentUser(), hreq.getRequestURI(), hreq.getMethod());
-            if (ConfigDefaults.get().isRbacEnabled()) {
-                hres.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
-                return;
-            }
+            hres.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
+            return;
         }
 
         // Pass control on to the next filter

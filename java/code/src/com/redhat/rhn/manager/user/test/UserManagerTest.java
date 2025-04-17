@@ -265,8 +265,6 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertTrue(UserManager.listRolesAssignableBy(user).isEmpty());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserManager.storeUser(user);
-        assertTrue(UserManager.listRolesAssignableBy(user).
-                                contains(RoleFactory.CONFIG_ADMIN));
         assertFalse(UserManager.listRolesAssignableBy(user).
                 contains(RoleFactory.SAT_ADMIN));
 

@@ -21,13 +21,13 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.notFound;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static com.suse.utils.Json.GSON;
 import static spark.Spark.post;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
@@ -39,8 +39,6 @@ import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.OSImageStoreUtils;
-import com.redhat.rhn.domain.role.Role;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
@@ -104,8 +102,6 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class ImageBuildController {
 
-    private static final Role ADMIN_ROLE = RoleFactory.IMAGE_ADMIN;
-
     private static final ViewHelper VIEW_HELPER = ViewHelper.INSTANCE;
     private static Logger log = LogManager.getLogger(ImageBuildController.class);
 
@@ -134,7 +130,7 @@ public class ImageBuildController {
                 withCsrfToken(withUser(imageBuildController::rebuild)), jade);
 
         Spark.get("/manager/api/cm/build/hosts/:type", withUser(imageBuildController::getBuildHosts));
-        post("/manager/api/cm/build/:id", withImageAdmin(imageBuildController::build));
+        post("/manager/api/cm/build/:id", withUser(imageBuildController::build));
 
         Spark.get("/manager/cm/images", withUserPreferences(withCsrfToken(withUser(imageBuildController::listView))),
                 jade);
@@ -155,10 +151,10 @@ public class ImageBuildController {
         Spark.get("/manager/api/cm/images/buildlog/:id",
                 withUser(imageBuildController::getBuildLog));
         post("/manager/api/cm/images/inspect/:id",
-                withImageAdmin(imageBuildController::inspect));
-        post("/manager/api/cm/images/delete", withImageAdmin(ImageBuildController::delete));
+                withUser(imageBuildController::inspect));
+        post("/manager/api/cm/images/delete", withUser(ImageBuildController::delete));
         post("/manager/api/cm/images/import",
-                withImageAdmin(imageBuildController::importImage));
+                withUser(imageBuildController::importImage));
     }
 
     /**
@@ -289,7 +285,7 @@ public class ImageBuildController {
             model.put("osImageStoreUrl", OSImageStoreUtils.getOSImageStoreRelativeURI(user.getOrg()));
         }
 
-        model.put("isAdmin", user.hasRole(ADMIN_ROLE));
+        model.put("isAdmin", user.isMemberOf(AccessGroupFactory.IMAGE_ADMIN));
         Map<String, GathererModule> modules = new GathererRunner().listModules();
         model.put("isRuntimeInfoEnabled", ImagesUtil.isImageRuntimeInfoEnabled());
         return new ModelAndView(model, "templates/content_management/view.jade");

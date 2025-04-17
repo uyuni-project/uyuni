@@ -19,13 +19,13 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.util.FileLocks;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.PaygAuthenticationUpdateFailed;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -40,9 +40,9 @@ import com.jcraft.jsch.JSchException;
 import org.apache.commons.collections.CollectionUtils;
 import org.quartz.JobExecutionContext;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PaygUpdateAuthTask extends RhnJavaJob {
@@ -188,7 +188,7 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
             NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                     new PaygAuthenticationUpdateFailed(instance.getHost(), instance.getId()));
             UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                    Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.empty());
+                    Set.of(AccessGroupFactory.CHANNEL_ADMIN), Optional.empty());
             // was in error state before. At least second time failed to get the data
             // invalidate existing credentials
             paygDataProcessor.invalidateCredentials(instance);

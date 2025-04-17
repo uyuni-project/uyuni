@@ -25,13 +25,13 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -57,7 +57,6 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
-import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.utils.MachinePasswordUtils;
 import com.suse.manager.webui.services.test.TestSaltApi;
@@ -885,7 +884,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         String newKey = keyHandler.create(admin, KEY,
                         KEY_DESCRIPTION + " " + 1, baseChannelLabel,
                 KEY_USAGE_LIMIT, KEY_ENTITLEMENTS, Boolean.FALSE);
-        UserTestUtils.addUserRole(admin, RoleFactory.CONFIG_ADMIN);
+        admin.addToGroup(AccessGroupFactory.CONFIG_ADMIN);
         // Create a global channel
         ConfigChannel global1 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
                 ConfigChannelType.normal());

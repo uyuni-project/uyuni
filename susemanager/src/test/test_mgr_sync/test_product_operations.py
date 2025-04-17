@@ -58,7 +58,6 @@ class ProductOperationsTest(unittest.TestCase):
         self.fake_auth_token = "fake_token"
         self.mgr_sync.auth.token = MagicMock(return_value=self.fake_auth_token)
         self.mgr_sync.config.write = MagicMock()
-        self.mgr_sync.conn.sync.master.hasMaster = MagicMock(return_value=False)
 
     def tearDown(self):
         if os.path.exists("tmp.log"):
@@ -77,27 +76,27 @@ class ProductOperationsTest(unittest.TestCase):
 
     def test_list_emtpy_product(self):
         options = get_options("list product".split())
-        stubbed_xmlrpm_call = MagicMock(return_value=[])
+        stubbed_xmlrpm_call = MagicMock(side_effect=[False, []])
         # pylint: disable-next=protected-access
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
         self.assertEqual(recorder.stdout, ["No products found."])
 
-        stubbed_xmlrpm_call.assert_called_once_with(
+        stubbed_xmlrpm_call.assert_called_with(
             self.mgr_sync.conn.sync.content, "listProducts", self.fake_auth_token
         )
 
     def test_list_product(self):
         options = get_options("list product".split())
-        stubbed_xmlrpm_call = MagicMock(return_value=[])
+        stubbed_xmlrpm_call = MagicMock(side_effect=[False, []])
         # pylint: disable-next=protected-access
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
         self.assertEqual(recorder.stdout, ["No products found."])
 
-        stubbed_xmlrpm_call.assert_called_once_with(
+        stubbed_xmlrpm_call.assert_called_with(
             self.mgr_sync.conn.sync.content, "listProducts", self.fake_auth_token
         )
 
@@ -106,7 +105,7 @@ class ProductOperationsTest(unittest.TestCase):
 
         options = get_options("list product -e".split())
         stubbed_xmlrpm_call = MagicMock(
-            return_value=read_data_from_fixture("list_products_simplified.data")
+            side_effect=[False, read_data_from_fixture("list_products_simplified.data")]
         )
         # pylint: disable-next=protected-access
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
@@ -179,7 +178,7 @@ Status:
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        stubbed_xmlrpm_call.assert_called_once_with(
+        stubbed_xmlrpm_call.assert_called_with(
             self.mgr_sync.conn.sync.content, "listProducts", self.fake_auth_token
         )
 
@@ -188,7 +187,7 @@ Status:
 
         options = get_options("list product".split())
         stubbed_xmlrpm_call = MagicMock(
-            return_value=read_data_from_fixture("list_products_simplified.data")
+            side_effect=[False, read_data_from_fixture("list_products_simplified.data")]
         )
         # pylint: disable-next=protected-access
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
@@ -236,7 +235,7 @@ Status:
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        stubbed_xmlrpm_call.assert_called_once_with(
+        stubbed_xmlrpm_call.assert_called_with(
             self.mgr_sync.conn.sync.content, "listProducts", self.fake_auth_token
         )
 
@@ -245,7 +244,7 @@ Status:
 
         options = get_options("list product --filter proxy".split())
         stubbed_xmlrpm_call = MagicMock(
-            return_value=read_data_from_fixture("list_products.data")
+            side_effect=[False, read_data_from_fixture("list_products.data")]
         )
         # pylint: disable-next=protected-access
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
@@ -267,39 +266,7 @@ Status:
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        stubbed_xmlrpm_call.assert_called_once_with(
-            self.mgr_sync.conn.sync.content, "listProducts", self.fake_auth_token
-        )
-
-    # pylint: disable-next=function-redefined
-    def test_list_products_with_filtering(self):
-        """Test listing products with filtering"""
-
-        options = get_options("list product --filter proxy".split())
-        stubbed_xmlrpm_call = MagicMock(
-            return_value=read_data_from_fixture("list_products.data")
-        )
-        # pylint: disable-next=protected-access
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
-        with ConsoleRecorder() as recorder:
-            self.mgr_sync.run(options)
-
-        expected_output = """Available Products:
-
-(R) - recommended extension
-
-Status:
-  - [I] - product is installed
-  - [ ] - product is not installed, but is available
-  - [U] - product is unavailable
-
-[ ] SUSE Manager Proxy 1.2 x86_64
-[ ] SUSE Manager Proxy 1.7 x86_64
-[ ] SUSE Manager Proxy 2.1 x86_64"""
-
-        self.assertEqual(expected_output.split("\n"), recorder.stdout)
-
-        stubbed_xmlrpm_call.assert_called_once_with(
+        stubbed_xmlrpm_call.assert_called_with(
             self.mgr_sync.conn.sync.content, "listProducts", self.fake_auth_token
         )
 
@@ -309,7 +276,7 @@ Status:
 
         options = get_options("list product --filter proxy".split())
         stubbed_xmlrpm_call = MagicMock(
-            return_value=read_data_from_fixture("list_products.data")
+            side_effect=[False, read_data_from_fixture("list_products.data")]
         )
         # pylint: disable-next=protected-access
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
@@ -331,7 +298,39 @@ Status:
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        stubbed_xmlrpm_call.assert_called_once_with(
+        stubbed_xmlrpm_call.assert_called_with(
+            self.mgr_sync.conn.sync.content, "listProducts", self.fake_auth_token
+        )
+
+    # pylint: disable-next=function-redefined
+    def test_list_products_with_filtering(self):
+        """Test listing products with filtering"""
+
+        options = get_options("list product --filter proxy".split())
+        stubbed_xmlrpm_call = MagicMock(
+            side_effect=[False, read_data_from_fixture("list_products.data")]
+        )
+        # pylint: disable-next=protected-access
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        with ConsoleRecorder() as recorder:
+            self.mgr_sync.run(options)
+
+        expected_output = """Available Products:
+
+(R) - recommended extension
+
+Status:
+  - [I] - product is installed
+  - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
+
+[ ] SUSE Manager Proxy 1.2 x86_64
+[ ] SUSE Manager Proxy 1.7 x86_64
+[ ] SUSE Manager Proxy 2.1 x86_64"""
+
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
+
+        stubbed_xmlrpm_call.assert_called_with(
             self.mgr_sync.conn.sync.content, "listProducts", self.fake_auth_token
         )
 
@@ -342,7 +341,7 @@ Status:
 
         options = get_options("list product --filter cloud".split())
         stubbed_xmlrpm_call = MagicMock(
-            return_value=read_data_from_fixture("list_products.data")
+            side_effect=[False, read_data_from_fixture("list_products.data")]
         )
         # pylint: disable-next=protected-access
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
@@ -366,7 +365,7 @@ Status:
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        stubbed_xmlrpm_call.assert_called_once_with(
+        stubbed_xmlrpm_call.assert_called_with(
             self.mgr_sync.conn.sync.content, "listProducts", self.fake_auth_token
         )
 
@@ -821,7 +820,7 @@ All the available products have already been installed, nothing to do"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        self.assertFalse(stubbed_xmlrpm_call.mock_calls)
+        self.assertTrue(stubbed_xmlrpm_call.mock_calls)
 
     def test_all_available_products_are_already_installed(self):
         """Test all the available products are already installed"""
@@ -839,7 +838,7 @@ All the available products have already been installed, nothing to do"""
         self.mgr_sync._fetch_remote_products = MagicMock(
             return_value=available_products
         )
-        stubbed_xmlrpm_call = MagicMock()
+        stubbed_xmlrpm_call = MagicMock(return_value=False)
         # pylint: disable-next=protected-access
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
@@ -867,7 +866,7 @@ Status:
 All the available products have already been installed, nothing to do"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        self.assertFalse(stubbed_xmlrpm_call.mock_calls)
+        self.assertTrue(stubbed_xmlrpm_call.mock_calls)
 
     def test_add_products_with_an_optional_channel_unavailable(self):
         """Test adding a product with an optional channel unavailable."""
@@ -951,6 +950,8 @@ Product successfully added"""
 def xmlrpc_sideeffect(*args, **kwargs):
     if args[1] == "addChannels":
         return [args[3]]
+    elif args[1] == "isISSPeripheral":
+        return False
     return read_data_from_fixture("list_channels.data")
 
 
@@ -958,4 +959,6 @@ def xmlrpc_sideeffect(*args, **kwargs):
 def xmlrpc_product_sideeffect(*args, **kwargs):
     if args[1] == "addChannels":
         return [args[3]]
+    elif args[1] == "isISSPeripheral":
+        return False
     return read_data_from_fixture("list_channels_simplified.data")

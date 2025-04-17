@@ -106,7 +106,7 @@ end
 
 # register chromedriver headless mode
 $capybara_driver = capybara_register_driver
-Selenium::WebDriver.logger.level = :error unless $debug_mode
+Selenium::WebDriver.logger.level = :error
 Capybara.default_driver = :selenium_chrome_headless
 Capybara.javascript_driver = :selenium_chrome_headless
 Capybara.default_normalize_ws = true
@@ -329,6 +329,14 @@ end
 
 Before('@alma9_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma9_ssh_minion']
+end
+
+Before('@amazon2023_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['amazon2023_minion']
+end
+
+Before('@amazon2023_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['amazon2023_ssh_minion']
 end
 
 Before('@centos7_minion') do

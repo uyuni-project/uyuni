@@ -23,9 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.SHA256Crypt;
-import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
@@ -224,21 +222,8 @@ public class UserTest extends RhnBaseTestCase {
     public void testGetRoles() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
-        Org org = usr.getOrg();
-
-        for (int i = 0; i < 4; i++) {
-            Role role = RoleFactory.createRole();
-            role.setLabel("Role" + i);
-            role.setName("Role " + i);
-
-            org.addRole(role);
-            TestUtils.saveAndFlush(role);
-
-            usr.addPermanentRole(role);
-        }
-
-        Set roles = usr.getRoles();
-        assertEquals(4, roles.size());
+        Set<Role> roles = usr.getRoles();
+        assertEquals(5, roles.size());
     }
 
     /**

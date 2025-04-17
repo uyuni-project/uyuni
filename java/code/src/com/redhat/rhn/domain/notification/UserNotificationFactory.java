@@ -16,6 +16,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.SmtpMail;
+import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.notification.types.NotificationData;
 import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.domain.org.Org;
@@ -179,7 +180,7 @@ public class UserNotificationFactory extends HibernateFactory {
     }
 
     /**
-     * Stores a notification visible for users that match both the given roles and org.
+     * Stores a notification visible for all users.
      *
      * @param notificationMessageIn notification to store
      */
@@ -188,39 +189,40 @@ public class UserNotificationFactory extends HibernateFactory {
     }
 
     /**
-     * Stores a notification visible for users that match both the given roles and org.
+     * Stores a notification visible for users that match both the given access groups and org.
      *
      * @param notificationMessageIn notification to store
-     * @param rolesIn roles to determin which users should see the notification.
+     * @param groupsIn the access groups to determine which users should see the notification.
      */
-    public static void storeNotificationMessageFor(NotificationMessage notificationMessageIn, Set<Role> rolesIn) {
-        storeNotificationMessageFor(notificationMessageIn, rolesIn, Optional.empty());
+    public static void storeNotificationMessageFor(NotificationMessage notificationMessageIn,
+                                                   Set<AccessGroup> groupsIn) {
+        storeNotificationMessageFor(notificationMessageIn, groupsIn, Optional.empty());
     }
 
         /**
-         * Stores a notification visible for users that match both the given roles and org.
+         * Stores a notification visible for users that match both the given access groups and org.
          *
          * @param notificationMessageIn notification to store
-         * @param rolesIn roles to determin which users should see the notification.
+         * @param groupsIn the access groups to determine which users should see the notification.
          * @param org org users need to be in to see the notification.
          */
     public static void storeNotificationMessageFor(NotificationMessage notificationMessageIn,
-                                                   Set<Role> rolesIn, Optional<Org> org) {
+                                                   Set<AccessGroup> groupsIn, Optional<Org> org) {
         // only users in the current Org
         // do not create notifications for non active users
         // only users with one role in the roles
         Set<User> allUsers = UserFactory.getInstance().findAllUsers(org).stream()
                 .filter(user -> !user.isDisabled()).collect(Collectors.toSet());
 
-        if (rolesIn.isEmpty()) {
+        if (groupsIn.isEmpty()) {
             storeForUsers(notificationMessageIn, allUsers);
         }
         else {
             Set<User> validUsers = new HashSet<>();
             for (User user : allUsers) {
-                Set<Role> userRoles = user.getRoles();
-                for (Role role : userRoles) {
-                    if (rolesIn.contains(role)) {
+                Set<AccessGroup> userGroups = user.getAccessGroups();
+                for (AccessGroup group : userGroups) {
+                    if (groupsIn.contains(group)) {
                         validUsers.add(user);
                         break;
                     }
@@ -228,6 +230,43 @@ public class UserNotificationFactory extends HibernateFactory {
             }
             storeForUsers(notificationMessageIn, validUsers);
         }
+
+        // Update Notification WebSocket Sessions right now
+        Notification.spreadUpdate(Notification.USER_NOTIFICATIONS);
+    }
+
+    /**
+     * Stores a notification visible for users that match both the given role and org.
+     *
+     * @param notificationMessageIn notification to store
+     * @param roleIn the role to determine which users should see the notification.
+     */
+    public static void storeNotificationMessageFor(NotificationMessage notificationMessageIn, Role roleIn) {
+        storeNotificationMessageFor(notificationMessageIn, roleIn, Optional.empty());
+    }
+
+    /**
+     * Stores a notification visible for users that match both the given role and org.
+     *
+     * @param notificationMessageIn notification to store
+     * @param roleIn the role to determine which users should see the notification.
+     * @param org org users need to be in to see the notification.
+     */
+    public static void storeNotificationMessageFor(NotificationMessage notificationMessageIn, Role roleIn,
+                                                   Optional<Org> org) {
+        // only users in the current Org
+        // do not create notifications for non active users
+        // only users with one role in the roles
+        Set<User> allUsers = UserFactory.getInstance().findAllUsers(org).stream()
+                .filter(user -> !user.isDisabled()).collect(Collectors.toSet());
+
+        Set<User> validUsers = new HashSet<>();
+        for (User user : allUsers) {
+            if (user.getRoles().contains(roleIn)) {
+                validUsers.add(user);
+            }
+        }
+        storeForUsers(notificationMessageIn, validUsers);
 
         // Update Notification WebSocket Sessions right now
         Notification.spreadUpdate(Notification.USER_NOTIFICATIONS);

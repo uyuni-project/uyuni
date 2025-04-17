@@ -101,11 +101,11 @@
                     <div class="col-sm-10">
                         <ul class="list-unstyled">
                             <li><bean:message key="ssm.overview.channels.memberships"/></li>
-                            <rhn:require acl="user_role(config_admin);
+                            <rhn:require acl="authorized_for(systems.config.channels);
                                     all_systems_in_set_have_feature(ftr_channel_config_subscription)">
                                 <li><bean:message key="ssm.overview.channels.subscriptions"/></li>
                             </rhn:require>
-                            <rhn:require acl="user_role(config_admin);
+                            <rhn:require acl="authorized_for(systems.config.files);
                                     all_systems_in_set_have_feature(ftr_channel_deploy_diff)">
                                 <li><bean:message key="ssm.overview.channels.deploy"/></li>
                             </rhn:require>

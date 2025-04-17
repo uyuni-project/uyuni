@@ -9,9 +9,9 @@
   <rhn-tab name="Systems">
     <rhn-tab-url>/rhn/users/SystemsAdmined.do</rhn-tab-url>
   </rhn-tab>
-  <rhn-tab name="Channel Permissions" acl="user_role(channel_admin)" url="/rhn/users/ChannelPerms.do">
+  <rhn-tab name="Channel Permissions" acl="authorized_for(users.channels)" url="/rhn/users/ChannelPerms.do">
     <rhn-tab name="Subscription" url="/rhn/users/ChannelPerms.do" />
-    <rhn-tab name="Management" url="/rhn/users/ChannelManagementPerms.do" acl="org_role(channel_admin)"/>
+    <rhn-tab name="Management" url="/rhn/users/ChannelManagementPerms.do"/>
   </rhn-tab>
   <rhn-tab name="Preferences">
     <rhn-tab-url>/rhn/users/UserPreferences.do</rhn-tab-url>

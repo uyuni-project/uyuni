@@ -25,6 +25,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -313,7 +314,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     public void testDeleteChannel() throws Exception {
         // thanks mmccune for the tip
         user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
-        user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
         TestUtils.saveAndFlush(user);
 
         Channel c = ChannelFactoryTest.createTestChannel(user);
@@ -325,7 +326,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testDeleteClonedChannel() throws Exception {
         user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
-        user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
         TestUtils.saveAndFlush(user);
 
         Channel c = ChannelFactoryTest.createTestChannel(user);
@@ -341,7 +342,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testDeleteChannelWithClones() throws Exception {
         user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
-        user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
         TestUtils.saveAndFlush(user);
 
         Channel c = ChannelFactoryTest.createTestChannel(user);
@@ -1016,7 +1017,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testListErrataNeedingResync() throws Exception {
 
-        user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
         UserFactory.save(user);
 
         Channel ochan = ChannelFactoryTest.createTestChannel(user);
@@ -1048,7 +1049,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testListErrataNeedingResyncRetracted() throws Exception {
-        user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
         UserFactory.save(user);
 
         Channel ochan = ChannelFactoryTest.createTestChannel(user);
@@ -1076,7 +1077,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testListErrataPackagesForResync() throws Exception {
 
-        user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
 
         Channel ochan = ChannelFactoryTest.createTestChannel(user);
         Channel cchan = ChannelFactoryTest.createTestClonedChannel(ochan, user);

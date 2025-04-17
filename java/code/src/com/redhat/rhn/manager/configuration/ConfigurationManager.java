@@ -43,7 +43,6 @@ import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.state.RecurringConfigChannel;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.state.StateFactory;
@@ -847,9 +846,6 @@ public class ConfigurationManager extends BaseManager {
      * @return The summary for each system in Dto format.
      */
     public DataResult<ConfigSystemDto> getEnableSummary(User user, PageControl pc, String set) {
-        if (!user.hasRole(RoleFactory.CONFIG_ADMIN)) {
-            throw new IllegalArgumentException("User is not a config admin.");
-        }
         SelectMode m = ModeFactory.getMode(CONFIG_QUERIES,
                 "enable_config_summary");
         Map<String, Object> params = new HashMap<>();
@@ -1364,9 +1360,6 @@ public class ConfigurationManager extends BaseManager {
         if (!user.getOrg().equals(channel.getOrg())) {
             throw new IllegalArgumentException("Cannot delete config channel. User" +
                     " and channel are in different orgs");
-        }
-        if (!user.hasRole(RoleFactory.CONFIG_ADMIN)) {
-            throw new IllegalArgumentException("User is not a config admin.");
         }
         // Get associated recurring state actions
         List<RecurringAction> actions = RecurringActionFactory.listActionWithConfChannel(channel);

@@ -14,9 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.configuration.test;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.ConfigTestUtils;
@@ -29,7 +29,7 @@ public class GlobalConfigChannelListTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() throws Exception {
-        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
 
         //Make a config channel so that it will appear in the list.
         ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg());

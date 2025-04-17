@@ -61,7 +61,7 @@
       <c:if test="${admin_count == 0}">
         <span class="no-details"><bean:message key="systemgroup.details.none"/></span>
       </c:if>
-      <rhn:require acl="user_role(system_group_admin)">
+      <rhn:require acl="authorized_for(systems.groups.admins)">
       <br />
       <a href="/rhn/groups/AdminList.do?sgid=${id}" class="js-spa"><bean:message key="systemgroup.details.manageadmins"/></a>
       </rhn:require>
@@ -80,7 +80,7 @@
       </c:if>
     </td>
   </tr>
-  <rhn:require acl="user_role(system_group_admin)">
+  <rhn:require acl="authorized_for(systems.groups)">
   <tr>
     <th><bean:message key="systemgroup.details.states"/></th>
     <td>
@@ -102,7 +102,7 @@
 <div class="panel panel-default">
 <div class="panel-heading">
   <h3><bean:message key="systemgroup.details.properties"/>
-  <rhn:require acl="user_role(system_group_admin)">
+  <rhn:require acl="authorized_for(systems.groups.details)">
     (<a href="/rhn/groups/EditGroup.do?sgid=${id}" class="js-spa"><bean:message key="systemgroup.details.editproperties"/></a>)
   </rhn:require></h3>
 </div>

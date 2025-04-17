@@ -77,13 +77,8 @@
                 ${channel.displayName}
               </a>
             </c:set>
-          <rhn:require acl="not user_role(config_admin)">
-            <bean:message key="deployglobal.jspf.tip.needadmin"
-              arg0="${rhn:localize('config_admin')}"
-              arg1="${tipbeanarg}" />
-          </rhn:require>
           <%-- Org admins will get both of the following --%>
-          <rhn:require acl="user_role(config_admin)">
+          <rhn:require acl="authorized_for(config.channels)">
             <bean:message key="deployglobal.jspf.tip.configadmin"
               arg0="${tipbeanarg}"
           arg1="/rhn/configuration/channel/TargetSystems.do?ccid=${channel.id}" />

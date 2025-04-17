@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.kickstart.builder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
@@ -31,7 +30,6 @@ import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.kickstart.KickstartTreeUpdateType;
 import com.redhat.rhn.frontend.dto.StringDto;
@@ -368,14 +366,6 @@ public class KickstartBuilder {
 
     }
 
-    private void checkRoles() {
-        if (!user.hasRole(RoleFactory.ORG_ADMIN) &&
-                !user.hasRole(RoleFactory.CONFIG_ADMIN)) {
-            throw new PermissionException("Only Org Admins or Configuration Admins can " +
-                    "modify kickstarts.");
-        }
-    }
-
     /**
      * Construct a KickstartData.
      * @param parser KickstartParser to build from.
@@ -465,7 +455,6 @@ public class KickstartBuilder {
             String fileContents,
             String virtType,
             KickstartTreeUpdateType updateType) {
-        checkRoles();
         KickstartRawData ksdata = new KickstartRawData();
         ksdata.setData(fileContents);
         setupBasicInfo(label, ksdata, tree, virtType, updateType);
@@ -480,7 +469,6 @@ public class KickstartBuilder {
             KickstartableTree ksTree,
             String virtType,
             KickstartTreeUpdateType updateType) {
-        checkRoles();
         validateNewLabel(ksLabel);
         ksdata.setLabel(ksLabel);
         ksdata.setOrg(user.getOrg());
@@ -506,7 +494,6 @@ public class KickstartBuilder {
     public void update(KickstartData data, String label,
             KickstartableTree ksTree,
             String virtType) {
-        checkRoles();
         if (!data.getLabel().equals(label)) {
             validateNewLabel(label);
             data.setLabel(label);
@@ -550,7 +537,6 @@ public class KickstartBuilder {
             String virtType, String downloadUrl, String rootPassword,
             KickstartTreeUpdateType updateType) {
 
-        checkRoles();
         KickstartData ksdata = new KickstartData();
         setupBasicInfo(ksLabel, ksdata, tree, virtType, updateType);
         KickstartCommandName kcn = null;

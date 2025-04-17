@@ -54,7 +54,6 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -110,7 +109,7 @@ public class DailySummary extends RhnJavaJob {
         if (END_OF_LIFE_MANAGER.isNotificationPeriod(today)) {
             NotificationMessage notification = UserNotificationFactory.createNotificationMessage(
                 new EndOfLifePeriod(END_OF_LIFE_MANAGER.getEndOfLifeDate()));
-            UserNotificationFactory.storeNotificationMessageFor(notification, Set.of(RoleFactory.ORG_ADMIN));
+            UserNotificationFactory.storeNotificationMessageFor(notification, RoleFactory.ORG_ADMIN);
         }
     }
 
@@ -123,7 +122,7 @@ public class DailySummary extends RhnJavaJob {
         if (sw.expiresSoon()) {
             NotificationMessage notificationMessage =
                     UserNotificationFactory.createNotificationMessage(new SubscriptionWarning());
-            UserNotificationFactory.storeNotificationMessageFor(notificationMessage, Set.of(RoleFactory.ORG_ADMIN));
+            UserNotificationFactory.storeNotificationMessageFor(notificationMessage, RoleFactory.ORG_ADMIN);
         }
     }
 
@@ -132,7 +131,7 @@ public class DailySummary extends RhnJavaJob {
         if (uan.hasUpdateAvailable()) {
             NotificationMessage notificationMessage =
                     UserNotificationFactory.createNotificationMessage(uan);
-            UserNotificationFactory.storeNotificationMessageFor(notificationMessage, Set.of(RoleFactory.SAT_ADMIN));
+            UserNotificationFactory.storeNotificationMessageFor(notificationMessage, RoleFactory.SAT_ADMIN);
         }
     }
 

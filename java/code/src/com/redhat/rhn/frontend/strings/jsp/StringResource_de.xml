@@ -13792,7 +13792,7 @@ Anschließend wird das nicht-chroot Post-Skript ausgeführt, und zuletzt das Pos
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/childchannels/* pages</context>
         </context-group>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="activation-key.childchannels.jsp.blurb" xml:space="preserve">
         <source>The following child channels of &lt;strong&gt;{0}&lt;/strong&gt; can be associated with this activation key.</source>
@@ -28451,7 +28451,7 @@ für einen angegebenen Channel aufgelistet wird.</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.iss-slave" xml:space="preserve">
         <source>This server is configured as a Peripheral server in a Hub configuration. Credentials can only be managed on the Hub server.</source>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.bt.cancel" xml:space="preserve">
         <source>Cancel</source>
@@ -28490,7 +28490,7 @@ für einen angegebenen Channel aufgelistet wird.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;@@PRODUCT_NAME@@ License Agreement&lt;/a&gt;</source>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="copyright.jsp.body.uyuni" xml:space="preserve">
         <source>
@@ -28536,12 +28536,12 @@ für einen angegebenen Channel aufgelistet wird.</target>
       <trans-unit id="delete_confirm.jsp.summary.sshpush" xml:space="preserve">
         <source>For Salt minions @@PRODUCT_NAME@@ will also cleanup any specific configuration installed on the minion.
               This might take a few extra seconds.</source>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup" xml:space="preserve">
         <source>The selected profiles include Salt systems. @@PRODUCT_NAME@@ can try to remove the specific configuration from the Salt systems.
             In order for this to work the systems must be up and running and reachable. If a system is not reachable it will result in an error.</source>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup.type" xml:space="preserve">
         <source>Please chose how to handle Salt minions cleanup and delete:</source>
@@ -29322,21 +29322,21 @@ für einen angegebenen Channel aufgelistet wird.</target>
         </context-group>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="system.event.inventory" xml:space="preserve">
-          <source>Inventory:</source>
+      <trans-unit id="system.event.inventory" xml:space="preserve">
+        <source>Inventory:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ansible_managed" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="ansible_managed" xml:space="preserve">
         <source>Ansible Managed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="proxy_entitled" xml:space="preserve">
         <source>Proxy</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Proxy</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

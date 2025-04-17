@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.user;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -27,6 +28,7 @@ import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
+import com.redhat.rhn.manager.access.AccessGroupManager;
 import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.logging.log4j.LogManager;
@@ -45,6 +47,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,6 +59,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AdminUserEditAction extends UserEditActionHelper {
 
     private static Logger log = LogManager.getLogger(AdminUserEditAction.class);
+    private static final AccessGroupManager ACCESS_GROUP_MANAGER = GlobalInstanceHolder.ACCESS_GROUP_MANAGER;
     private static final String ROLE_SETTING_PREFIX = "role_";
 
     /** {@inheritDoc} */
@@ -179,24 +183,8 @@ public class AdminUserEditAction extends UserEditActionHelper {
         }
 
         try {
-            UserManager.addRemoveUserRoles(targetUser, rolesToAdd,
-                    rolesToRemove);
-
-            //if he is an org amin make sure he does NOT
-            // have any subscribed Server Groups, because
-            // by becoming an org admin he is automatically
-            // subscribed to every group... and so his list
-            // will be empty..
-            if (targetUser.hasRole(RoleFactory.ORG_ADMIN) &&
-                    !targetUser.getAssociatedServerGroups().isEmpty()) {
-                Set<User> admins = new HashSet<>();
-                admins.add(targetUser);
-                for (Iterator<ServerGroup> itr = targetUser.getAssociatedServerGroups().iterator(); itr.hasNext();) {
-                    ManagedServerGroup sg = (ManagedServerGroup) itr.next();
-                    GlobalInstanceHolder.SERVER_GROUP_MANAGER.dissociateAdmins(sg, admins, loggedInUser);
-                    itr.remove();
-                }
-            }
+            processRBACGroupAssignments(request, targetUser);
+            processAdminRoleAssignments(request, rolesToAdd, rolesToRemove, targetUser, loggedInUser);
         }
         catch (PermissionException pe) {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
@@ -204,6 +192,56 @@ public class AdminUserEditAction extends UserEditActionHelper {
         }
 
         return errors;
+    }
+
+    private void processAdminRoleAssignments(HttpServletRequest request, List<String> rolesToAdd,
+                                             List<String> rolesToRemove, User target, User loggedInUser) {
+
+        Predicate<String> onlyAdmin =
+                (String r) -> RoleFactory.ORG_ADMIN.getLabel().equals(r) || RoleFactory.SAT_ADMIN.getLabel().equals(r);
+
+        UserManager.addRemoveUserRoles(target, rolesToAdd.stream().filter(onlyAdmin).toList(),
+                rolesToRemove.stream().filter(onlyAdmin).toList());
+
+        //if he is an org amin make sure he does NOT
+        // have any subscribed Server Groups, because
+        // by becoming an org admin he is automatically
+        // subscribed to every group... and so his list
+        // will be empty..
+        if (target.hasRole(RoleFactory.ORG_ADMIN) &&
+                !target.getAssociatedServerGroups().isEmpty()) {
+            Set<User> admins = new HashSet<>();
+            admins.add(target);
+            for (Iterator<ServerGroup> itr = target.getAssociatedServerGroups().iterator(); itr.hasNext();) {
+                ManagedServerGroup sg = (ManagedServerGroup) itr.next();
+                GlobalInstanceHolder.SERVER_GROUP_MANAGER.dissociateAdmins(sg, admins, loggedInUser);
+                itr.remove();
+            }
+        }
+    }
+
+    private void processRBACGroupAssignments(HttpServletRequest request, User target) {
+        var userGroups = target.getAccessGroups();
+        var currentGroupLabels = userGroups.stream()
+                .map(AccessGroup::getLabel)
+                .collect(Collectors.toUnmodifiableSet());
+
+        Iterator<AccessGroup> iterator = userGroups.iterator();
+        while (iterator.hasNext()) {
+            AccessGroup group = iterator.next();
+            String groupSetting = request.getParameter(ROLE_SETTING_PREFIX + group.getLabel());
+
+            if (groupSetting == null) {
+                iterator.remove();
+            }
+        }
+
+        for (AccessGroup group : ACCESS_GROUP_MANAGER.list(target.getOrg())) {
+            String groupSetting = request.getParameter(ROLE_SETTING_PREFIX + group.getLabel());
+            if (groupSetting != null && !currentGroupLabels.contains(group.getLabel())) {
+                userGroups.add(group);
+            }
+        }
     }
 
     private Set<String> extractDisabledRoles(HttpServletRequest request) {

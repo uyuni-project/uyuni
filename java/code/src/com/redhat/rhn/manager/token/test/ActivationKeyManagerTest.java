@@ -21,10 +21,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -62,7 +62,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     }
     @Test
     public void testDelete() {
-        user.addPermanentRole(RoleFactory.ACTIVATION_KEY_ADMIN);
+        user.addToGroup(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
         ActivationKey key = manager.createNewActivationKey(user, "Test");
         ActivationKey temp = manager.lookupByKey(key.getKey(), user);
         assertNotNull(temp);
@@ -78,7 +78,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     }
     @Test
     public void testDeployConfig() throws Exception {
-        UserTestUtils.addUserRole(user, RoleFactory.ACTIVATION_KEY_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.ACTIVATION_KEY_ADMIN);
 
         //need a tools channel for config deploy
         Channel base = ChannelTestUtils.createBaseChannel(user);
@@ -96,7 +96,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     }
     @Test
     public void testConfigPermissions() throws Exception {
-        UserTestUtils.addUserRole(user, RoleFactory.ACTIVATION_KEY_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.ACTIVATION_KEY_ADMIN);
         ActivationKey key = createActivationKey();
 
         //need a tools channel for config deploy
@@ -117,7 +117,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testLookup() {
         //first lets just check on permissions...
-        user.addPermanentRole(RoleFactory.ACTIVATION_KEY_ADMIN);
+        user.addToGroup(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
         final ActivationKey key = manager.createNewActivationKey(user, "Test");
         ActivationKey temp;
         //we make newuser
@@ -188,7 +188,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreate() throws Exception {
-        user.addPermanentRole(RoleFactory.ACTIVATION_KEY_ADMIN);
+        user.addToGroup(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
         String note = "Test";
         final ActivationKey key = manager.createNewActivationKey(user, note);
         assertEquals(user.getOrg(), key.getOrg());
@@ -284,7 +284,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     }
 
     public ActivationKey createActivationKey() {
-        user.addPermanentRole(RoleFactory.ACTIVATION_KEY_ADMIN);
+        user.addToGroup(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
         return  manager.createNewActivationKey(user, TestUtils.randomString());
     }
 

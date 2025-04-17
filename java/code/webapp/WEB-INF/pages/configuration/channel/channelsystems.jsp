@@ -30,8 +30,8 @@
           <rhn:listdisplay filterBy="system.common.systemName"
                            set="${requestScope.set}"
                            button="channelsystems.jsp.unsubscribe"
-                           buttonAcl="user_role(config_admin)">
-            <rhn:require acl="user_role(config_admin)">
+                           buttonAcl="authorized_for(config.channels)">
+            <rhn:require acl="authorized_for(config.channels)">
               <rhn:set value="${current.id}"/>
             </rhn:require>
 

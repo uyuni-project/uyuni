@@ -93,15 +93,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                 AND sg.org_id = :org_id
                                 AND
                          NOT EXISTS
-                         (select 1 from rhnUserServerGroupPerms usgp where usgp.server_group_id = sg.id
-                                AND NOT Exists (
-                                        select 1 from rhnUserGroupMembers ugm
-                                                inner join rhnUserGroup ug on  ug.id = ugm.user_group_id
-                                                inner join rhnUserGroupType ugt on ug.group_type = ugt.id
-                                                where ugt.label != 'org_admin'
-                                                        AND ug.org_id=sg.org_id
-                                    AND ugm.user_id = usgp.user_id
-                         ))]]>
+                         (select 1 from rhnUserServerGroupPerms usgp where usgp.server_group_id = sg.id)]]>
                 <return alias="sg" class="com.redhat.rhn.domain.server.ServerGroup"/>
     </sql-query>
 

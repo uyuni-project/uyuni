@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -267,7 +268,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
         SystemManager.subscribeServerToChannel(userB, s, c);
         flushAndEvict(c);
         flushAndEvict(s);
-        addRole(admin, RoleFactory.CHANNEL_ADMIN);
+        addAccessGroup(admin, AccessGroupFactory.CHANNEL_ADMIN);
         Package pkg = PackageTest.createTestPackage(orgA);
         List<Long> packages = new ArrayList<>();
         packages.add(pkg.getId());

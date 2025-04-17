@@ -43,4 +43,8 @@ rhnTaskoSchedule           :: rhnTaskoBunch
 rhnTaskoTemplate           :: rhnTaskoBunch rhnTaskoTask
 rhnTemplateString          :: data/rhnTemplateCategory
 reschedule                 :: data/rhnTaskoSchedule
+namespace                  :: accessGroup
+accessGroupNamespace       :: accessGroup namespace
+endpoint                   :: namespace
+endpointNamespace          :: endpoint namespace
 

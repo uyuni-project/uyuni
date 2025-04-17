@@ -18,10 +18,10 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -73,7 +73,7 @@ public class ChannelPackagesAddConfirmAction extends RhnAction {
         Channel chan = ChannelFactory.lookupByIdAndUser(cid, user);
 
         if (!UserManager.verifyChannelAdmin(user, chan)) {
-              throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
+              throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
         }
         if (chan.getOrg() == null) {
             throw new PermissionCheckFailureException();

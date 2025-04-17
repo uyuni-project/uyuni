@@ -1936,7 +1936,6 @@ public class SystemHandler extends BaseHandler {
     public int setGroupMembership(User loggedInUser, Integer sid, Integer sgid,
             Boolean member) throws FaultException {
         // Get the logged in user and server
-        ensureSystemGroupAdmin(loggedInUser);
         Server server = lookupServer(loggedInUser, sid);
         try {
             ManagedServerGroup group = serverGroupManager.lookup(sgid.longValue(),
@@ -8874,7 +8873,6 @@ public class SystemHandler extends BaseHandler {
      */
     @ReadOnly
     public Map<String, Object> getPillar(User loggedInUser, Integer systemId, String category) {
-        ensureImageAdmin(loggedInUser);
         Optional<MinionServer> opt = MinionServerFactory.lookupById(systemId.longValue());
         if (!opt.isPresent()) {
             throw new NoSuchSystemException();
@@ -8900,7 +8898,6 @@ public class SystemHandler extends BaseHandler {
      */
     @ReadOnly
     public Map<String, Object> getPillar(User loggedInUser, String minionId, String category) {
-        ensureImageAdmin(loggedInUser);
         Optional<MinionServer> opt = MinionServerFactory.findByMinionId(minionId);
         if (!opt.isPresent()) {
             throw new NoSuchSystemException();
@@ -8926,7 +8923,6 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int setPillar(User loggedInUser, Integer systemId, String category, Map<String, Object> pillarData) {
-        ensureImageAdmin(loggedInUser);
         Optional<MinionServer> opt = MinionServerFactory.lookupById(systemId.longValue());
         if (!opt.isPresent()) {
             throw new NoSuchSystemException();
@@ -8958,7 +8954,6 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int setPillar(User loggedInUser, String minionId, String category, Map<String, Object> pillarData) {
-        ensureImageAdmin(loggedInUser);
         Optional<MinionServer> opt = MinionServerFactory.findByMinionId(minionId);
         if (!opt.isPresent()) {
             throw new NoSuchSystemException();

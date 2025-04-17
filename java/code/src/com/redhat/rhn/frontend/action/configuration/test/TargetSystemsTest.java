@@ -16,7 +16,7 @@ package com.redhat.rhn.frontend.action.configuration.test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
@@ -36,7 +36,7 @@ public class TargetSystemsTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() {
-        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
 
         //Need to set the locale and timezone for the datepicker.
         Context ctxt = Context.getCurrentContext();

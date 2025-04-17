@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.util.SHA256Crypt;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -71,7 +72,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
         this.manager = ConfigChannelSaltManager.getInstance();
         manager.setBaseDirPath(tmpSaltRoot.toAbsolutePath().toString());
         user.getOrg().addRole(RoleFactory.CONFIG_ADMIN);
-        user.addPermanentRole(RoleFactory.CONFIG_ADMIN);
+        user.addToGroup(AccessGroupFactory.CONFIG_ADMIN);
         TestUtils.saveAndFlush(user);
     }
 

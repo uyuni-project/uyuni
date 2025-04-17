@@ -86,21 +86,24 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
         # pylint: disable-next=consider-using-f-string
         self.log.info("Executing mgr-sync {0}".format(options))
 
-        if self.conn.sync.master.hasMaster() and "refresh" not in vars(options):
-            msg = """SUSE Multi-Linux Manager is configured as slave server. Please use 'mgr-inter-sync' command.\n"""
-            self.log.error(msg)
-            sys.stderr.write(msg)
-            return 1
-
-        if options.store_credentials and not self.auth.has_credentials():
-            # Ensure credentials are asked to the user, even though
-            # there's a token already store inside of the local
-            # configuration
-            self.auth.discard_token()
-
         # Now we can process the user request
         exit_code = 0
         try:
+            is_iss_peripheral = self._execute_xmlrpc_method(
+                self.conn.sync.hub, "isISSPeripheral", self.auth.token()
+            )
+            if is_iss_peripheral and "refresh" not in vars(options):
+                msg = """SUSE Multi-Linux Manager is configured as a peripheral server. Channels and Products are managed on the Hub.\n"""
+                self.log.error(msg)
+                sys.stderr.write(msg)
+                return 1
+
+            if options.store_credentials and not self.auth.has_credentials():
+                # Ensure credentials are asked to the user, even though
+                # there's a token already store inside of the local
+                # configuration
+                self.auth.discard_token()
+
             exit_code = self._process_user_request(options)
         except MaximumNumberOfAuthenticationFailures:
             msg = "mgr-sync: Authentication failure"
@@ -825,7 +828,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             + len(sorted(actions, key=lambda t: t[0], reverse=True)[0])
         )
 
-        if self.conn.sync.master.hasMaster() or schedule:
+        if schedule:
             try:
                 self._schedule_taskomatic_refresh(enable_reposync)
             except xmlrpc_client.Fault as e:

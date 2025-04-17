@@ -22,9 +22,9 @@ import static com.suse.manager.webui.utils.gson.ResultJson.success;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
@@ -97,7 +97,7 @@ public class ActivationKeysViewsController {
         data.put("channelsAppStreams", Json.GSON.toJson(channelsAppStreams));
         data.put("note", activationKey.getNote());
         data.put("activationKeyId", activationKey.getId());
-        data.put("isActivationKeyAdmin", user.hasRole(RoleFactory.ACTIVATION_KEY_ADMIN));
+        data.put("isActivationKeyAdmin", user.isMemberOf(AccessGroupFactory.ACTIVATION_KEY_ADMIN));
         data.put("tabs", ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/activation_key.xml"));
         return new ModelAndView(data, "templates/activation_keys/appstreams.jade");
     }

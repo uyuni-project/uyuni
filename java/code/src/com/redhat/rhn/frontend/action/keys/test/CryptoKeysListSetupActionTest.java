@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.keys.test;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.test.CryptoTest;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.dto.CryptoKeyDto;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -32,7 +32,7 @@ public class CryptoKeysListSetupActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() {
-        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
         CryptoKey key = CryptoTest.createTestKey(user.getOrg());
         KickstartFactory.saveCryptoKey(key);
         TestUtils.flushAndEvict(key);

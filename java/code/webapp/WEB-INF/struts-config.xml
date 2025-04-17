@@ -1111,25 +1111,6 @@
       <form-property name="channel_label" type="java.lang.String" />
     </form-bean>
 
-    <!--  ISS Admin forms -->
-    <form-bean name="editSlaveForm"
-               type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
-        <form-property name="id" type="java.lang.Long" />
-        <form-property name="slave" type="java.lang.String" />
-        <form-property name="enabled" type="java.lang.Boolean" />
-        <form-property name="allowAllOrgs" type="java.lang.Boolean" />
-        <form-property name="submitted" type="java.lang.Boolean"/>
-    </form-bean>
-
-    <form-bean name="editMasterForm"
-               type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
-        <form-property name="id" type="java.lang.Long" />
-        <form-property name="label" type="java.lang.String" />
-        <form-property name="defaultMaster" type="java.lang.Boolean" />
-        <form-property name="caCert" type="java.lang.String" />
-        <form-property name="submitted" type="java.lang.Boolean"/>
-    </form-bean>
-
     <form-bean name="SSMLockUnlockForm" type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
       <form-property name="lock_reason" type="java.lang.String" />
       <form-property name="submitted" type="java.lang.Boolean" />
@@ -2091,7 +2072,6 @@
         type="com.redhat.rhn.frontend.action.errata.ErrataAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(channel_admin)"/>
         <forward name="default"
                path="/WEB-INF/pages/errata/published.jsp" />
         <forward name="continue"
@@ -2105,7 +2085,6 @@
         type="com.redhat.rhn.frontend.action.errata.CloneErrataAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(channel_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/errata/cloneerrata.jsp" />
         <forward name="continue"
@@ -2117,7 +2096,6 @@
             input="/WEB-INF/pages/admin/errata/cloneconfirm.jsp"
             type="com.redhat.rhn.frontend.action.errata.CloneConfirmSetupAction"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-            <set-property property="acls" value="user_role(channel_admin)"/>
             <forward name="default"
                      path="/WEB-INF/pages/admin/errata/cloneconfirm.jsp"/>
     </action>
@@ -2129,7 +2107,6 @@
          type="com.redhat.rhn.frontend.action.errata.CloneConfirmAction"
          className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequired" value="true" />
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default"
                   path="/errata/manage/CloneConfirm.do" redirect="true"/>
          <forward name="failure"
@@ -2143,7 +2120,6 @@
         input="/WEB-INF/pages/admin/errata/publisheddeleteconfirm.jsp"
         type="com.redhat.rhn.frontend.action.errata.PublishedDeleteConfirmSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(channel_admin)"/>
         <forward name="default"
                path="/WEB-INF/pages/admin/errata/publisheddeleteconfirm.jsp" />
     </action>
@@ -2154,7 +2130,6 @@
          type="com.redhat.rhn.frontend.action.errata.PublishedDeleteConfirmAction"
          className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequired" value="true" />
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default"
                   path="/errata/manage/Errata.do" redirect="true"/>
      </action>
@@ -2166,7 +2141,6 @@
          parameter="dispatch"
          className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequiredIfSubmitted" value="true" />
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default"
                   path="/WEB-INF/pages/errata/delete.jsp" />
          <forward name="deleted"
@@ -2179,7 +2153,6 @@
              input="/WEB-INF/pages/errata/create.jsp"
              type="com.redhat.rhn.frontend.action.errata.CreateSetupAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-       <set-property property="acls" value="user_role(channel_admin)"/>
        <forward name="default"
                 path="/WEB-INF/pages/errata/create.jsp"/>
      </action>
@@ -2192,7 +2165,6 @@
              type="com.redhat.rhn.frontend.action.errata.CreateAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequired" value="true" />
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default" path="/errata/manage/Create.do"/>
          <forward name="failure" path="/errata/manage/Create.do"/>
          <forward name="success" path="/errata/manage/Edit.do" redirect="true"/>
@@ -2205,7 +2177,7 @@
              type="com.redhat.rhn.frontend.action.errata.EditAction"
              parameter="dispatch"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="acls" value="user_role(channel_admin); errata_editable()"/>
+         <set-property property="acls" value="errata_editable()"/>
          <set-property property="postRequiredIfSubmitted" value="true" />
          <forward name="notified"
              path="/errata/manage/Notify.do" redirect="true"/>
@@ -2218,7 +2190,6 @@
              input="/WEB-INF/pages/errata/erratachannelintersection.jsp"
              type="com.redhat.rhn.frontend.action.errata.ErrataChannelIntersectionAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default" path="/WEB-INF/pages/errata/erratachannelintersection.jsp"/>
      </action>
 
@@ -2228,7 +2199,6 @@
              input="/WEB-INF/pages/errata/addchannels.jsp"
              type="com.redhat.rhn.frontend.action.errata.ChannelSetupAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default" path="/WEB-INF/pages/errata/addchannels.jsp"/>
      </action>
 
@@ -2237,7 +2207,6 @@
              type="com.redhat.rhn.frontend.action.errata.ChannelAction"
              parameter="dispatch"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <set-property property="postRequired" value="true" />
          <forward name="default" path="/errata/manage/SelectChannels.do"
              redirect="true"/>
@@ -2251,7 +2220,6 @@
              input="/WEB-INF/pages/errata/packagepush.jsp"
              type="com.redhat.rhn.frontend.action.errata.PackagePushSetupAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default" path="/WEB-INF/pages/errata/packagepush.jsp"/>
          <forward name="finished" path="/errata/AllErrata.do" redirect="true" />
      </action>
@@ -2264,7 +2232,6 @@
              parameter="dispatch"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequired" value="true" />
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default" path="/errata/manage/PackagePush.do"/>
          <forward name="defaultWithoutRedirect" path="/errata/manage/PackagePush.do" />
      </action>
@@ -2278,7 +2245,6 @@
         <action path="/errata/manage/Notify" scope="request"
             type="com.redhat.rhn.frontend.action.errata.NotifySetupAction"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-            <set-property property="acls" value="user_role(channel_admin)"/>
             <forward name="default" path="/WEB-INF/pages/errata/notify.jsp"/>
         </action>
 
@@ -2288,7 +2254,6 @@
              type="com.redhat.rhn.frontend.action.errata.NotifyAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequired" value="true" />
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default" path="/errata/manage/Errata.do" redirect="true"/>
      </action>
 
@@ -2297,7 +2262,6 @@
              input="/WEB-INF/pages/errata/editchannels.jsp"
              type="com.redhat.rhn.frontend.action.errata.ChannelSetupAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default"
                   path="/WEB-INF/pages/errata/editchannels.jsp"/>
      </action>
@@ -2309,7 +2273,6 @@
             parameter="dispatch"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequired" value="true" />
-         <set-property property="acls" value="user_role(channel_admin)"/>
           <forward name="default" path="/errata/manage/Channels.do"/>
         <forward name="push" path="/errata/manage/AddChannelPackagePush.do" redirect="true"/>
         <forward name="failure" path="/errata/manage/Channels.do"/>
@@ -2320,7 +2283,6 @@
              input="/WEB-INF/pages/errata/addchannelpackagepush.jsp"
              type="com.redhat.rhn.frontend.action.errata.PackagePushSetupAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default" path="/WEB-INF/pages/errata/addchannelpackagepush.jsp"/>
          <forward name="finished" path="/errata/manage/Channels.do" />
      </action>
@@ -2332,7 +2294,6 @@
              type="com.redhat.rhn.frontend.action.errata.PackagePushAction"
              parameter="dispatch"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <set-property property="postRequired" value="true" />
          <forward name="default" path="/errata/manage/AddChannelPackagePush.do" redirect="true"/>
          <forward name="defaultWithoutRedirect" path="/errata/manage/AddChannelPackagePush.do" />
@@ -2341,7 +2302,6 @@
     <action path="/errata/manage/Packages" scope="request"
         type="com.redhat.rhn.frontend.action.errata.BaseErrataSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(channel_admin)"/>
         <forward name="default"
             path="/WEB-INF/pages/errata/packages/packages.jsp"/>
     </action>
@@ -2372,7 +2332,6 @@
              input="/WEB-INF/pages/errata/addpackagepackagepush.jsp"
              type="com.redhat.rhn.frontend.action.errata.PackagePushSetupAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default" path="/WEB-INF/pages/errata/addpackagepackagepush.jsp"/>
          <forward name="finished" path="/errata/manage/AddPackages.do" />
      </action>
@@ -2385,7 +2344,6 @@
              parameter="dispatch"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequired" value="true" />
-         <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default" path="/errata/manage/AddPackagePackagePush.do"/>
          <forward name="defaultWithoutRedirect" path="/errata/manage/AddPackagePackagePush.do" />
      </action>
@@ -2395,7 +2353,6 @@
         input="/WEB-INF/pages/errata/packages/list.jsp"
         type="com.redhat.rhn.frontend.action.errata.ListPackagesAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(channel_admin)"/>
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default" path="/WEB-INF/pages/errata/packages/list.jsp" />
         <forward name="confirm" path="/errata/manage/RemovePackages.do" redirect="true"/>
@@ -2406,7 +2363,6 @@
         input="/WEB-INF/pages/errata/packages/remove.jsp"
         type="com.redhat.rhn.frontend.action.errata.RemovePackagesAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(channel_admin)"/>
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
             path="/WEB-INF/pages/errata/packages/remove.jsp"/>
@@ -3494,7 +3450,7 @@
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
              <set-property property="postRequiredIfSubmitted" value="true" />
              <set-property property="acls"
-                      value="system_feature(ftr_system_grouping); user_role(org_admin) or user_role(system_group_admin)"/>
+                      value="system_feature(ftr_system_grouping); user_role(org_admin) or authorized_for(systems.groups.join , W)"/>
              <forward name="default"
                       path="/WEB-INF/pages/systems/groups/add.jsp" />
              <forward name="success"
@@ -3508,8 +3464,6 @@
              type="com.redhat.rhn.frontend.action.groups.AdminListAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
              <set-property property="postRequiredIfSubmitted" value="true" />
-             <set-property property="acls"
-                      value="user_role(system_group_admin)"/>
              <forward name="default"
                       path="/WEB-INF/pages/groups/adminlist.jsp" />
              <forward name="submitted"
@@ -3522,8 +3476,6 @@
              type="com.redhat.rhn.frontend.action.groups.AddSystemsAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
              <set-property property="postRequiredIfSubmitted" value="true" />
-             <set-property property="acls"
-                      value="user_role(system_group_admin)"/>
              <forward name="default"
                       path="/WEB-INF/pages/groups/addsystems.jsp" />
              <forward name="success"
@@ -3577,8 +3529,6 @@
              type="com.redhat.rhn.frontend.action.groups.EditGroupAction"
              name="editSystemGroupForm"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-             <set-property property="acls"
-                      value="user_role(system_group_admin)"/>
              <set-property property="postRequiredIfSubmitted" value="true" />
              <forward name="default"
                       path="/WEB-INF/pages/groups/edit.jsp" />
@@ -3595,7 +3545,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         >
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(system_group_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/groups/delete.jsp"/>
         <forward name="success" redirect = "true"
@@ -3694,7 +3643,7 @@
          className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
         <set-property property="acls"
-                      value="system_feature(ftr_config);user_role(config_admin)"/>
+                      value="system_feature(ftr_config)"/>
          <forward name="default"
                   path="/WEB-INF/pages/configuration/sdc/copy2channels.jsp"
                   />
@@ -4191,7 +4140,6 @@
             type="com.redhat.rhn.frontend.action.groups.SSMGroupManageAction"
             name="submittedForm"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-            <set-property property="acls" value="user_role(system_group_admin)"/>
             <set-property property="postRequiredIfSubmitted" value="true" />
             <forward name="default" path="/WEB-INF/pages/groups/ssmmanage.jsp" />
             <forward name="confirm" path="/systems/ssm/groups/Confirm.do" redirect="true" />
@@ -4202,7 +4150,6 @@
             type="com.redhat.rhn.frontend.action.groups.SSMGroupConfirmAction"
             name="submittedForm"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-            <set-property property="acls" value="user_role(system_group_admin)"/>
             <set-property property="postRequiredIfSubmitted" value="true" />
             <forward name="default" path="/WEB-INF/pages/groups/ssmconfirm.jsp" />
             <forward name="success" path="/systems/ssm/groups/Manage.do" redirect="true" />
@@ -4213,7 +4160,6 @@
             type="com.redhat.rhn.frontend.action.groups.EditGroupAction"
             name="editSystemGroupForm"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-            <set-property property="acls" value="user_role(system_group_admin)"/>
             <set-property property="postRequiredIfSubmitted" value="true" />
             <forward name="default" path="/WEB-INF/pages/groups/ssmcreate.jsp" />
             <forward name="success" path="/systems/ssm/groups/Manage.do" redirect="true" />
@@ -4394,7 +4340,6 @@
         type="com.redhat.rhn.frontend.action.configuration.ssm.SubscribeSetup"
         name="submittedForm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/configuration/ssm/subscribe.jsp"/>
     </action>
@@ -4407,7 +4352,6 @@
         type="com.redhat.rhn.frontend.action.configuration.ssm.SubscribeSubmit"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequired" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/systems/ssm/config/Subscribe.do"/>
         <forward name="confirm" redirect="true"
@@ -4422,7 +4366,6 @@
         parameter="dispatch"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/configuration/ssm/rankchannels.jsp"/>
         <forward name="confirm" redirect="true"
@@ -4437,7 +4380,6 @@
         name="submittedForm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/configuration/ssm/subscribeconfirm.jsp"/>
         <!-- after subscribing, their really isn't a good place to drop the user.
@@ -4732,137 +4674,6 @@
         <forward name="default"
                  path="/WEB-INF/pages/admin/catalina.jsp"/>
     </action>
-
-    <!--  ISS Config Pages  -->
-    <action path="/admin/iss/Master"
-        scope="request"
-        input="/WEB-INF/pages/admin/iss/master.jsp"
-        type="com.redhat.rhn.frontend.action.iss.MasterAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(satellite_admin);"/>
-        <forward name="default"
-                 path="/WEB-INF/pages/admin/iss/master.jsp"/>
-        <forward name="edit"
-                 path="/admin/iss/EditSlave.do" redirect="true"/>
-        <forward name="confirm"
-                 path="/admin/iss/RemoveSlaveConfirm.do"
-                 redirect="true" />
-    </action>
-
-    <action path="/admin/iss/EditSlave"
-        scope="request"
-        name="editSlaveForm"
-        input="/WEB-INF/pages/admin/iss/editslave.jsp"
-        type="com.redhat.rhn.frontend.action.iss.EditSlaveSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(satellite_admin);"/>
-        <forward name="default"
-                 path="/WEB-INF/pages/admin/iss/editslave.jsp"/>
-        <forward name="success"
-                 path="/admin/iss/EditSlave.do" redirect="true"/>
-    </action>
-
-    <action path="/admin/iss/UpdateSlave"
-        scope="request"
-        name="editSlaveForm"
-        input="/WEB-INF/pages/admin/iss/editslave.jsp"
-        type="com.redhat.rhn.frontend.action.iss.EditSlaveAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(satellite_admin);"/>
-        <forward name="default"
-                 path="/WEB-INF/pages/admin/iss/editslave.jsp"/>
-        <forward name="success"
-                 path="/admin/iss/EditSlave.do" redirect="true"/>
-    </action>
-
-    <action path="/admin/iss/AllowSlaveOrgs"
-        scope="request"
-        name="editSlaveForm"
-        input="/WEB-INF/pages/admin/iss/editslave.jsp"
-        type="com.redhat.rhn.frontend.action.iss.AllowSlaveOrgsAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(satellite_admin);"/>
-        <forward name="default"
-                 path="/admin/iss/EditSlave.do" redirect="true"/>
-        <forward name="success"
-                 path="/admin/iss/EditSlave.do" redirect="true"/>
-    </action>
-
-    <action path="/admin/iss/RemoveSlaveConfirm"
-        scope="request"
-        name="editSlaveForm"
-        input="/WEB-INF/pages/admin/iss/confirmslaveremove.jsp"
-        type="com.redhat.rhn.frontend.action.iss.RemoveSlavesAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(satellite_admin);"/>
-        <forward name="default"
-                 path="/WEB-INF/pages/admin/iss/confirmslaveremove.jsp"/>
-        <forward name="confirm"
-                 path="/admin/iss/Master.do" redirect="true"/>
-    </action>
-
-    <action path="/admin/iss/DeleteSlave"
-        scope="request"
-        input="/WEB-INF/pages/admin/iss/editslave.jsp"
-        type="com.redhat.rhn.frontend.action.iss.DeleteSlaveAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(satellite_admin);"/>
-        <forward name="default"
-                 path="/admin/iss/Master.do" redirect="true"/>
-    </action>
-
-    <action path="/admin/iss/Slave"
-        scope="request"
-        input="/WEB-INF/pages/admin/iss/slave.jsp"
-        type="com.redhat.rhn.frontend.action.iss.SlaveAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(satellite_admin);"/>
-        <forward name="default"
-                 path="/WEB-INF/pages/admin/iss/slave.jsp"/>
-        <forward name="confirm"
-                 path="/admin/iss/RemoveMasterConfirm.do"
-                 redirect="true" />
-    </action>
-
-    <action path="/admin/iss/RemoveMasterConfirm"
-        scope="request"
-        input="/WEB-INF/pages/admin/iss/confirmmasterremove.jsp"
-        type="com.redhat.rhn.frontend.action.iss.RemoveMastersAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(satellite_admin);"/>
-        <forward name="default"
-                 path="/WEB-INF/pages/admin/iss/confirmmastersremove.jsp"/>
-        <forward name="confirm"
-                 path="/admin/iss/Slave.do" redirect="true"/>
-    </action>
-
-    <action path="/admin/iss/EditMaster"
-        scope="request"
-        name="editMasterForm"
-        input="/WEB-INF/pages/admin/iss/editmaster.jsp"
-        type="com.redhat.rhn.frontend.action.iss.EditMasterSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(satellite_admin);"/>
-        <forward name="default"
-                 path="/WEB-INF/pages/admin/iss/editmaster.jsp"/>
-        <forward name="success"
-                 path="/admin/iss/EditMaster.do" redirect="true"/>
-    </action>
-
-    <action path="/admin/iss/UpdateMaster"
-        scope="request"
-        name="editMasterForm"
-        input="/WEB-INF/pages/admin/iss/editmaster.jsp"
-        type="com.redhat.rhn.frontend.action.iss.EditMasterAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(satellite_admin);"/>
-        <forward name="default"
-                 path="/WEB-INF/pages/admin/iss/editmaster.jsp"/>
-        <forward name="success"
-                 path="/admin/iss/EditMaster.do" redirect="true"/>
-    </action>
-
-    <!--  /ISS Config Pages -->
 
     <action path="/YourRhnClips"
         scope="request"
@@ -5167,7 +4978,6 @@
         type="com.redhat.rhn.frontend.action.token.ActivationKeysListAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/list.jsp"/>
@@ -5183,7 +4993,6 @@
         type="com.redhat.rhn.frontend.action.token.ActivationKeyDetailsAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="create">
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/create.jsp"/>
@@ -5201,7 +5010,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="edit">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/edit.jsp"/>
         <forward name="success" redirect = "true"
@@ -5215,7 +5023,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/delete.jsp"/>
         <forward name="success" redirect = "true"
@@ -5228,7 +5035,6 @@
         input="/WEB-INF/pages/activationkeys/clone.jsp"
         type="com.redhat.rhn.frontend.action.token.ActivationKeyCloneAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/clone.jsp"/>
         <forward name="success" redirect = "true"
@@ -5243,7 +5049,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/packages/listeditpackages.jsp"/>
         <forward name="success" redirect = "true"
@@ -5257,7 +5062,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/configuration/list.jsp"/>
         <forward name="success" redirect = "true"
@@ -5271,7 +5075,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/configuration/subscribe.jsp"/>
         <forward name="rank" redirect = "true"
@@ -5289,7 +5092,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/configuration/rank.jsp"/>
         <forward name="success" redirect = "true"
@@ -5303,7 +5105,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/groups/list.jsp"/>
         <forward name="success" redirect = "true"
@@ -5317,7 +5118,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/groups/add.jsp"/>
         <forward name="success" redirect = "true"
@@ -5331,7 +5131,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/systems//list.jsp"/>
         <forward name="success" redirect = "true"
@@ -5386,7 +5185,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.ssm.SsmKickstartableSystemsAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/ssm/kickstartablesystems.jsp"/>
         <forward name="scheduleByIp"
@@ -5442,7 +5240,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.ScriptsSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/scripts.jsp"/>
     </action>
@@ -5453,7 +5250,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.KickstartIpRangeSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/kickstartranges.jsp"/>
     </action>
@@ -5464,7 +5260,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.KickstartOverviewAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/kickstartoverview.jsp"/>
     </action>
@@ -5476,8 +5271,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.KickstartDetailsEditAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls"
-                        value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/kickstartdetails.jsp"/>
         <forward name="raw_mode"
@@ -5607,8 +5400,6 @@
         parameter="create"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls"
-                        value="user_role(config_admin)"/>
         <forward name="default"
                 path="/WEB-INF/pages/kickstart/wizard/profile/advanced/create.jsp"/>
         <forward name="success"
@@ -5623,8 +5414,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.KickstartProfileVariableAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls"
-                        value="user_role(config_admin)"/>
         <forward name="default"
                 path="/WEB-INF/pages/kickstart/kickstartvariables.jsp"/>
     </action>
@@ -5636,8 +5425,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.tree.KickstartTreeVariableAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls"
-                        value="user_role(config_admin)"/>
         <forward name="default"
                 path="/WEB-INF/pages/kickstart/kickstarttreevariables.jsp"/>
     </action>
@@ -5651,8 +5438,6 @@
         parameter="edit"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls"
-                        value="user_role(config_admin)"/>
         <forward name="default"
                 path="/WEB-INF/pages/kickstart/wizard/profile/advanced/edit.jsp"/>
         <forward name="success"
@@ -5722,7 +5507,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.ViewTreesAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/kstrees.jsp"/>
     </action>
@@ -5734,7 +5518,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.cobbler.CobblerSnippetListSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/cobbler/snippets.jsp"/>
     </action>
@@ -5746,7 +5529,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.cobbler.CobblerSnippetListSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/cobbler/snippets.jsp"/>
     </action>
@@ -5758,7 +5540,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.cobbler.CobblerSnippetListSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/cobbler/snippets.jsp"/>
     </action>
@@ -5771,7 +5552,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.cobbler.CobblerSnippetDetailsAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/cobbler/snippetdetails.jsp"/>
         <forward name="success"
@@ -5786,7 +5566,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.cobbler.CobblerSnippetDetailsAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/cobbler/snippetdetails.jsp"/>
         <forward name="success"
@@ -5800,7 +5579,6 @@
         parameter="view_mode"
         type="com.redhat.rhn.frontend.action.kickstart.cobbler.CobblerSnippetViewAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/cobbler/snippetview.jsp"/>
     </action>
@@ -5811,7 +5589,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.cobbler.CobblerSnippetDeleteAction"
          className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequiredIfSubmitted" value="true" />
-         <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/cobbler/deleteconfirm.jsp"/>
         <forward name="success" redirect = "true"
@@ -5824,7 +5601,6 @@
         type="com.redhat.rhn.frontend.action.keys.CryptoKeysListSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/keys/keys.jsp"/>
     </action>
@@ -5876,7 +5652,6 @@
         type="com.redhat.rhn.frontend.action.systems.provisioning.PreservationListAction"
         parameter="dispatch"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/systems/provisioning/preservation/preservation_list.jsp"/>
     </action>
@@ -5888,7 +5663,6 @@
         parameter="dispatch"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/systems/provisioning/preservation/PreservationList.do"/>
         <forward name="delete"
@@ -5899,7 +5673,6 @@
         scope="request"
         type="com.redhat.rhn.frontend.action.systems.provisioning.PreservationListDeleteSingleAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default" redirect="true"
                  path="/systems/provisioning/preservation/PreservationListDeleteSubmit.do"/>
     </action>
@@ -5911,7 +5684,6 @@
         type="com.redhat.rhn.frontend.action.systems.provisioning.PreservationListConfirmDeleteAction"
         parameter="dispatch"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/systems/provisioning/preservation/preservationlistconfirm.jsp"/>
     </action>
@@ -5923,7 +5695,6 @@
         parameter="dispatch"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequired" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/systems/provisioning/preservation/PreservationList.do"/>
     </action>
@@ -5935,7 +5706,6 @@
         type="com.redhat.rhn.frontend.action.systems.provisioning.PreservationListEditAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/systems/provisioning/preservation/preservation_edit.jsp"/>
         <forward name="success"
@@ -5950,7 +5720,6 @@
         type="com.redhat.rhn.frontend.action.systems.provisioning.PreservationListCreateAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/systems/provisioning/preservation/preservation_create.jsp"/>
         <forward name="success"
@@ -6132,7 +5901,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.KickstartScriptCreateAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/scriptcreate.jsp"/>
         <forward name="success"
@@ -6146,7 +5914,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.KickstartScriptEditAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/scriptedit.jsp"/>
         <forward name="success"
@@ -6160,7 +5927,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.KickstartScriptDeleteAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/scriptdelete.jsp"/>
         <forward name="success"
@@ -6175,7 +5941,6 @@
         parameter="dispatch"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/scriptorder.jsp"/>
         <forward name="success"
@@ -6237,7 +6002,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.tree.TreeCreateAction"
  className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/treecreate.jsp"/>
         <forward name="success"
@@ -6251,7 +6015,6 @@
         type="com.redhat.rhn.frontend.action.kickstart.tree.TreeEditAction"
   className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/kickstart/treeedit.jsp"/>
         <forward name="success"
@@ -6281,7 +6044,6 @@
         input="/WEB-INF/pages/configuration/overview/overview.jsp"
         type="com.redhat.rhn.frontend.action.configuration.overview.Overview"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/configuration/overview/overview.jsp"/>
     </action>
@@ -6292,7 +6054,6 @@
         type="com.redhat.rhn.frontend.action.configuration.overview.GlobalConfigChannelList"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/configuration/overview/globalconfiglist.jsp"/>
     </action>
@@ -6303,7 +6064,6 @@
         type="com.redhat.rhn.frontend.action.configuration.overview.GlobalConfigFileList"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin);"/>
         <forward name="default"
                  path="/WEB-INF/pages/configuration/overview/globalfilelist.jsp"/>
     </action>
@@ -6314,7 +6074,6 @@
         type="com.redhat.rhn.frontend.action.configuration.overview.LocalConfigFileList"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin);"/>
         <forward name="default"
                  path="/WEB-INF/pages/configuration/overview/localfilelist.jsp"/>
     </action>
@@ -6396,7 +6155,6 @@
         type="com.redhat.rhn.frontend.action.configuration.channel.ChannelOverviewAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/configuration/channel/channelcreate.jsp"/>
         <forward name="success" redirect="true"
@@ -6412,7 +6170,6 @@
         type="com.redhat.rhn.frontend.action.configuration.channel.DeleteChannelAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(config_admin);"/>
         <forward name="submit" redirect="true"
             path="/configuration/GlobalConfigChannelList.do"/>
         <forward name="default"
@@ -6507,7 +6264,7 @@
         type="com.redhat.rhn.frontend.action.configuration.channel.TargetSystemsListSetup"
         name="submittedForm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="config_channel_type(normal) or config_channel_type(state);user_role(config_admin);"/>
+        <set-property property="acls" value="config_channel_type(normal) or config_channel_type(state)"/>
         <set-property property="mixins" value="com.redhat.rhn.common.security.acl.ConfigAclHandler" />
         <forward name="default"
               path="/WEB-INF/pages/configuration/channel/targetsystems.jsp"/>
@@ -6521,7 +6278,7 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequired" value="true" />
-        <set-property property="acls" value="config_channel_type(normal) or config_channel_type(state);user_role(config_admin);"/>
+        <set-property property="acls" value="config_channel_type(normal) or config_channel_type(state)"/>
         <set-property property="mixins" value="com.redhat.rhn.common.security.acl.ConfigAclHandler" />
         <forward name="default"
               path="/configuration/channel/TargetSystems.do"/>
@@ -6718,7 +6475,6 @@
         input="/WEB-INF/pages/configuration/files/copycentral.jsp"
         type="com.redhat.rhn.frontend.action.configuration.files.CopyFileCentralAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(config_admin);"/>
         <forward name="default"
                  path="/WEB-INF/pages/configuration/files/copycentral.jsp"/>
     </action>
@@ -6747,7 +6503,6 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequired" value="true" />
-        <set-property property="acls" value="user_role(config_admin);"/>
         <forward name="default"
                  path="/configuration/file/CopyFileCentral.do"/>
     </action>
@@ -7270,7 +7025,7 @@
         input="/WEB-INF/pages/channels/manage/subscribers.jsp"
         type="com.redhat.rhn.frontend.action.channels.SubscribersAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(channel_admin) or user_can_admin_channel();"/>
+        <set-property property="acls" value="user_can_admin_channel();"/>
         <set-property property="mixins"
               value="com.redhat.rhn.common.security.acl.ChannelAclHandler"/>
         <forward name="default" path="/WEB-INF/pages/channels/manage/subscribers.jsp" />
@@ -7283,7 +7038,7 @@
         input="/WEB-INF/pages/channels/manage/subscribers_manage.jsp"
         type="com.redhat.rhn.frontend.action.channels.SubscribersAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(channel_admin) or user_can_admin_channel();"/>
+        <set-property property="acls" value="user_can_admin_channel();"/>
         <set-property property="mixins"
               value="com.redhat.rhn.common.security.acl.ChannelAclHandler"/>
         <forward name="default" path="/WEB-INF/pages/channels/manage/subscribers_manage.jsp" />
@@ -7296,7 +7051,6 @@
         input="/WEB-INF/pages/channels/manage/managers.jsp"
         type="com.redhat.rhn.frontend.action.channels.ManagersSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(channel_admin);"/>
         <forward name="default" path="/WEB-INF/pages/channels/manage/managers.jsp" />
         <forward name="submitted"
                  path="/channels/Managers.do" redirect="true"/>
@@ -7307,7 +7061,6 @@
         input="/WEB-INF/pages/channels/manage/managers_edit.jsp"
         type="com.redhat.rhn.frontend.action.channels.ManagersSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(channel_admin);"/>
         <forward name="default" path="/WEB-INF/pages/channels/manage/managers_edit.jsp" />
         <forward name="submitted"
                  path="/channels/manage/Managers.do" redirect="true"/>

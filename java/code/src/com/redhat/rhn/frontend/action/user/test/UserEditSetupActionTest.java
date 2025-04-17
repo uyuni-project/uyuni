@@ -22,10 +22,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.domain.role.Role;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.user.UserEditSetupAction;
 import com.redhat.rhn.frontend.action.user.UserRoleStatusBean;
@@ -36,7 +35,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -54,13 +52,8 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
         User user = sah.getUser();
         user.setTitle("Test title");
         // Lets add some roles
-        Iterator it = UserFactory.IMPLIEDROLES.iterator();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        while (it.hasNext()) {
-            Role cr = (Role) it.next();
-            user.getOrg().addRole(cr);
-            user.addPermanentRole(cr);
-        }
+        user.getAccessGroups().addAll(AccessGroupFactory.DEFAULT_GROUPS);
 
         setupExpectations(sah.getForm(), sah.getUser());
 
@@ -77,13 +70,12 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
                     sah.getRequest().getAttribute("lastLoggedIn"));
             // Verify some more intensive stuff
             assertNotNull(sah.getRequest().getAttribute("adminRoles"));
-            assertNotNull(sah.getRequest().getAttribute("regularRoles"));
-            List<UserRoleStatusBean> regularRoles = (List<UserRoleStatusBean>)
-                sah.getRequest().getAttribute("regularRoles");
-            assertEquals(5, regularRoles.size());
-            UserRoleStatusBean lv = regularRoles.get(0);
+            assertNotNull(sah.getRequest().getAttribute("rbacRoles"));
+            List<UserRoleStatusBean> rbacRoles = (List<UserRoleStatusBean>)
+                sah.getRequest().getAttribute("rbacRoles");
+            assertEquals(6, rbacRoles.size());
+            UserRoleStatusBean lv = rbacRoles.get(0);
             assertTrue(TestUtils.isLocalized(lv.getName()));
-            assertTrue(lv.isDisabled());
             assertNotNull(sah.getRequest().getAttribute("disabledRoles"));
             assertInstanceOf(User.class, sah.getRequest().getAttribute("user"));
 

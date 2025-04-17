@@ -1,4 +1,4 @@
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2024-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #  1) bootstrap a new Alma 8 minion via salt-ssh
@@ -22,8 +22,7 @@ Feature: Bootstrap a Alma 8 Salt SSH minion
     And I select "1-alma8_ssh_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    # workaround for bsc#1222108
-    And I wait at most 480 seconds until I see "Bootstrap process initiated." text
+    And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "alma8_ssh_minion"
 
 @proxy

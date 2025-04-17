@@ -243,6 +243,20 @@ Feature: Sanity checks
     And "alma9_ssh_minion" should communicate with the server using public interface
     And the clock from "alma9_ssh_minion" should be exact
 
+@amazon2023_minion
+  Scenario: The Amazon 2023 Salt minion is healthy
+    Then "amazon2023_minion" should have a FQDN
+    And reverse resolution should work for "amazon2023_minion"
+    And "amazon2023_minion" should communicate with the server using public interface
+    And the clock from "amazon2023_minion" should be exact
+
+@amazon2023_ssh_minion
+  Scenario: The Amazon 2023 Salt SSH minion is healthy
+    Then "amazon2023_ssh_minion" should have a FQDN
+    And reverse resolution should work for "amazon2023_ssh_minion"
+    And "amazon2023_ssh_minion" should communicate with the server using public interface
+    And the clock from "amazon2023_ssh_minion" should be exact
+
 @centos7_minion
   Scenario: The CentOS 7 Salt minion is healthy
     Then "centos7_minion" should have a FQDN

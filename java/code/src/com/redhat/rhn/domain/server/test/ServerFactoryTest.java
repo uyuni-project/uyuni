@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
@@ -167,7 +168,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public void testListConfigEnabledSystems() throws Exception {
         //Only Config Admins can use this manager function.
         //Making the user a config admin will also automatically
-        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
 
         //That is not enough though, the user must also have a server that is
         //a member of the config channel and have access to the server as well.
@@ -282,7 +283,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         Collection servers = new ArrayList<>();
         servers.add(server);
-        user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
+        user.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
         ManagedServerGroup sg1 = SERVER_GROUP_MANAGER.create(user, "FooFooFOO", "Foo Description");
         SERVER_GROUP_MANAGER.addServers(sg1, servers, user);
 

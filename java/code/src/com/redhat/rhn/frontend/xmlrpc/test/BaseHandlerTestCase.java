@@ -18,10 +18,10 @@ import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_D
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -109,8 +109,7 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
         committed = true;
     }
 
-    protected void addRole(User user, Role role) {
-        user.getOrg().addRole(role);
-        user.addPermanentRole(role);
+    protected void addAccessGroup(User user, AccessGroup group) {
+        user.addToGroup(group);
     }
 }

@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.configuration.test;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -30,7 +30,7 @@ public class ChannelFilesImportTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testExecuteNoFiles() {
-        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
 
         //create a file that is not in this channel
         ConfigTestUtils.createConfigFile(user.getOrg());
@@ -44,7 +44,7 @@ public class ChannelFilesImportTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testSubmitNoFiles() {
-        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
         long ccid = cc.getId();

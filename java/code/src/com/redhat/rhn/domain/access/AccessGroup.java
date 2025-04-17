@@ -17,10 +17,12 @@ package com.redhat.rhn.domain.access;
 
 import com.redhat.rhn.domain.org.Org;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,7 +43,7 @@ public class AccessGroup {
     @OneToOne
     @JoinColumn(name = "org_id")
     private Org org;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "access.accessGroupNamespace",
             joinColumns = @JoinColumn(name = "group_id"),
@@ -65,6 +67,7 @@ public class AccessGroup {
         label = labelIn;
         description = descriptionIn;
         org = orgIn;
+        namespaces = new HashSet<>();
     }
 
     public Long getId() {

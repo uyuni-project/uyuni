@@ -16,9 +16,9 @@ package com.redhat.rhn.frontend.action.channel;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -64,7 +64,7 @@ public class ChannelDetailsAction extends RhnAction {
         Channel chan = ChannelManager.lookupByIdAndUser(cid, user);
 
         if (isSubmitted(form) && (
-                (chan.getOrg() == null && user.hasRole(RoleFactory.CHANNEL_ADMIN)) ||
+                (chan.getOrg() == null && user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) ||
                     UserManager.verifyChannelAdmin(user, chan))) {
             String global = (String)form.get("global");
             chan.setGloballySubscribable((global != null) &&
@@ -114,7 +114,7 @@ public class ChannelDetailsAction extends RhnAction {
 
         request.setAttribute("gpg_check", chan.isGPGCheck());
 
-        if ((chan.getOrg() == null && user.hasRole(RoleFactory.CHANNEL_ADMIN)) ||
+        if ((chan.getOrg() == null && user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) ||
                 UserManager.verifyChannelAdmin(user, chan)) {
             request.setAttribute("has_access", true);
         }

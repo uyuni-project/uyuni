@@ -14,9 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.channels;
 
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.dto.UserOverview;
@@ -84,7 +84,7 @@ public class SubscribersAction extends RhnAction implements Listable<UserOvervie
         if (helper.isDispatched()) {
             // make sure the user has enough rights to change channel managers
             if (!(UserManager.verifyChannelAdmin(user, currentChan) ||
-                    user.hasRole(RoleFactory.CHANNEL_ADMIN))) {
+                    user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN))) {
                   throw new PermissionCheckFailureException();
             }
 
@@ -92,7 +92,7 @@ public class SubscribersAction extends RhnAction implements Listable<UserOvervie
             // remove channel subscribers
             for (String valueIn : (Iterable<String>) helper.getRemovedKeys()) {
                 Long uid = Long.valueOf(valueIn);
-                if (!UserManager.hasRole(uid, RoleFactory.CHANNEL_ADMIN)) {
+                if (!UserManager.isMemberOf(uid, AccessGroupFactory.CHANNEL_ADMIN)) {
                     user.getOrg().removeChannelPermissions(uid, currentChan.getId(),
                             ChannelManager.QRY_ROLE_SUBSCRIBE);
                 }
@@ -102,7 +102,7 @@ public class SubscribersAction extends RhnAction implements Listable<UserOvervie
             // add channel subscribers
             for (String oIn : (Iterable<String>) helper.getAddedKeys()) {
                 Long uid = Long.valueOf(oIn);
-                if (!UserManager.hasRole(uid, RoleFactory.CHANNEL_ADMIN)) {
+                if (!UserManager.isMemberOf(uid, AccessGroupFactory.CHANNEL_ADMIN)) {
                     user.getOrg().removeChannelPermissions(uid, currentChan.getId(),
                             ChannelManager.QRY_ROLE_SUBSCRIBE);
                     user.getOrg().resetChannelPermissions(uid, currentChan.getId(),
@@ -130,7 +130,7 @@ public class SubscribersAction extends RhnAction implements Listable<UserOvervie
         List<UserOverview> userList = UserManager.activeInOrg2(currentUser);
         for (UserOverview uo : userList) {
             uo.setSelectable(true);
-            uo.setDisabled(UserManager.hasRole(uo.getId(), RoleFactory.CHANNEL_ADMIN));
+            uo.setDisabled(UserManager.isMemberOf(uo.getId(), AccessGroupFactory.CHANNEL_ADMIN));
         }
         return userList;
     }

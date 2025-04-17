@@ -10,10 +10,10 @@
              imgAlt="channels.overview.toolbar.imgAlt"
              creationUrl="/rhn/channels/manage/Edit.do"
              creationType="channel"
-             creationAcl="user_role(channel_admin)"
+             creationAcl="authorized_for(software.manage.details)"
              cloneUrl="/rhn/channels/manage/Clone.do"
              cloneType="channel"
-             cloneAcl="user_role(channel_admin)"
+             cloneAcl="authorized_for(software.manage.clone)"
              helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/software/manage-channels.html"
         >
     <bean:message key="channels.manage.jsp.toolbar"/>

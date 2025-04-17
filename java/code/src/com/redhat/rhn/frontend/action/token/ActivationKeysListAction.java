@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.token;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.token.TokenFactory;
@@ -116,6 +119,7 @@ public class ActivationKeysListAction extends RhnAction {
             RequestContext context, RhnSet set,
             List<ActivationKeyDto> currentKeys) {
         User user = context.getCurrentUser();
+        ensureRoleBasedAccess(user, "systems.activation_keys.list", Namespace.AccessMode.W);
         int numEnabled = 0;
         int numDisabled = 0;
         for (ActivationKeyDto dto : currentKeys) {

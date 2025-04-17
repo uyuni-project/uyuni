@@ -13,16 +13,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-04 11:42+0200\n"
-"PO-Revision-Date: 2025-01-23 14:54+0000\n"
-"Last-Translator: \"Marina J. Donis\" <marinajdonis@gmail.com>\n"
+"POT-Creation-Date: 2025-04-11 13:25+0200\n"
+"PO-Revision-Date: 2025-04-09 15:56+0000\n"
+"Last-Translator: Fran Serrador <serrador@proton.me>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -69,6 +69,7 @@ msgstr "Programación"
 #: ../html/src/components/CoCoScansList.tsx:137
 #: ../html/src/components/CoCoScansList.tsx:192
 #: ../html/src/components/package/PackageListActionScheduler.tsx:189
+#: ../html/src/manager/admin/hub/peripheral-details.tsx:43
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:242
 msgid "Back to list"
 msgstr "Volver a la lista"
@@ -194,7 +195,7 @@ msgstr "Ciclo de vida de entorno"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
 #: ../html/src/components/hub/TokenTable.tsx:89
-#: ../html/src/manager/notifications/notification-messages.tsx:512
+#: ../html/src/manager/notifications/notifications-list.tsx:126
 msgid "Created"
 msgstr "Creación"
 
@@ -265,7 +266,7 @@ msgid "Last modified on"
 msgstr "Última modificación"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:84
-#: ../html/src/manager/notifications/notification-messages.tsx:517
+#: ../html/src/manager/notifications/notifications-list.tsx:129
 msgid "Action"
 msgstr "Acción"
 
@@ -302,7 +303,8 @@ msgstr ""
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
 #: ../html/src/components/formula-selection.tsx:293
-#: ../html/src/components/large-text-attachment.tsx:176
+#: ../html/src/components/hub/ModalEditButton.tsx:94
+#: ../html/src/components/large-text-attachment.tsx:184
 #: ../html/src/components/panels/CreatorPanel.tsx:125
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:144
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:197
@@ -355,19 +357,19 @@ msgstr "Crear"
 msgid "Configuration Channels"
 msgstr "Canales de configuración"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:117
+#: ../html/src/components/datetime/DateTimePicker.tsx:124
 msgid "Previous month"
 msgstr ""
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:118
+#: ../html/src/components/datetime/DateTimePicker.tsx:125
 msgid "Next month"
 msgstr ""
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:119
+#: ../html/src/components/datetime/DateTimePicker.tsx:126
 msgid "Previous year"
 msgstr ""
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:120
+#: ../html/src/components/datetime/DateTimePicker.tsx:127
 #, fuzzy
 msgid "Next year"
 msgstr "Siguiente"
@@ -392,7 +394,10 @@ msgstr ""
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:54
 #: ../html/src/components/hub/AddTokenButton.tsx:154
-#: ../html/src/components/large-text-attachment.tsx:169
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:115
+#: ../html/src/components/hub/ModalEditButton.tsx:87
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:367
+#: ../html/src/components/large-text-attachment.tsx:177
 #: ../html/src/components/panels/CreatorPanel.tsx:114
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:56
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:34
@@ -412,11 +417,12 @@ msgstr "Cancelar"
 
 #. both the peripheral and the hub are null means the token is not used and we can delete it
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
+#: ../html/src/components/hub/PeripheralsList.tsx:52
 #: ../html/src/components/hub/TokenTable.tsx:175
 #: ../html/src/components/hub/TokenTable.tsx:184
 #: ../html/src/components/hub/TokenTable.tsx:228
-#: ../html/src/components/large-text-attachment.tsx:187
-#: ../html/src/components/large-text-attachment.tsx:200
+#: ../html/src/components/large-text-attachment.tsx:195
+#: ../html/src/components/large-text-attachment.tsx:209
 #: ../html/src/components/panels/CreatorPanel.tsx:97
 #: ../html/src/components/table/Table.tsx:139
 #: ../html/src/manager/admin/payg/payg.tsx:73
@@ -454,6 +460,127 @@ msgstr "Eliminar proyecto"
 #: ../html/src/components/dialog/delete.example.tsx:17
 msgid "Are you sure you want to delete project "
 msgstr "¿Confirma que quiere eliminar el proyecto "
+
+#: ../html/src/components/formik/Form.example.tsx:34
+msgid "Field"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:36
+#: ../html/src/components/input/InputBase.test.tsx:43
+#: ../html/src/components/input/InputBase.test.tsx:69
+#: ../html/src/components/input/InputBase.test.tsx:97
+#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:49
+#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:58
+#: ../html/src/components/input/form-multi-input/single-field.example.tsx:47
+#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:58
+#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:66
+#: ../html/src/components/input/form/Form.example.tsx:25
+#: ../html/src/components/input/text/Text.example.tsx:25
+#: ../html/src/components/input/text/Text.example.tsx:34
+msgid "Minimum 2 characters"
+msgstr "2 caracteres como mínimo"
+
+#: ../html/src/components/formik/Form.example.tsx:39
+msgid "Checkbox"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:41
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
+#: ../html/src/components/input/password/Password.example.tsx:23
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:74
+#: ../html/src/manager/images/image-store-edit.tsx:180
+#: ../html/src/manager/login/susemanager/login.tsx:99
+#: ../html/src/manager/login/uyuni/login.tsx:90
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:416
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:539
+msgid "Password"
+msgstr "Contraseña"
+
+#: ../html/src/components/formik/Form.example.tsx:43
+msgid "Datetime"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:45
+msgid "Multiple values"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:47
+#, fuzzy
+msgid "Long text"
+msgstr "Información adicional"
+
+#: ../html/src/components/formik/Form.example.tsx:49
+#, fuzzy
+#| msgid "Changes"
+msgid "Range"
+msgstr "Cambios"
+
+#: ../html/src/components/formik/Form.example.tsx:53
+msgid "Radio"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:55
+msgid "One"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:56
+msgid "Two"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:57
+msgid "Three"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:62
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:108
+#: ../html/src/components/input/check/Check.example.tsx:22
+#: ../html/src/components/input/datetime/DateTime.example.tsx:25
+#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:66
+#: ../html/src/components/input/form-multi-input/single-field.example.tsx:55
+#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:75
+#: ../html/src/components/input/form/Form.example.tsx:30
+#: ../html/src/components/input/password/Password.example.tsx:30
+#: ../html/src/components/input/radio/horizontal-open.example.tsx:37
+#: ../html/src/components/input/radio/horizontal.example.tsx:36
+#: ../html/src/components/input/radio/vertical-open.example.tsx:36
+#: ../html/src/components/input/radio/vertical.example.tsx:35
+#: ../html/src/components/input/range/Range.example.tsx:24
+#: ../html/src/components/input/select/simple.example.tsx:32
+#: ../html/src/components/input/text/Text.example.tsx:38
+msgid "Submit"
+msgstr "Enviar"
+
+#: ../html/src/components/formik/field/AsRadio.tsx:41
+#, fuzzy
+msgid "Custom value"
+msgstr "Estado de acción"
+
+#: ../html/src/components/formik/field/AsRange.tsx:15
+msgid "{rangeInputName} start"
+msgstr ""
+
+#: ../html/src/components/formik/field/AsRange.tsx:24
+msgid "{rangeInputName} end"
+msgstr ""
+
+#: ../html/src/components/formik/field/FieldBase.tsx:30
+#: ../html/src/components/input/InputBase.tsx:278
+#, fuzzy
+msgid "required"
+msgstr "Se necesita un reinicio"
+
+#: ../html/src/components/formik/field/MultiField.tsx:37
+#, fuzzy
+msgid "Remove item"
+msgstr "Quitar"
+
+#: ../html/src/components/formik/field/MultiField.tsx:58
+#: ../html/src/components/formik/field/MultiField.tsx:62
+#, fuzzy
+msgid "Add item"
+msgstr "Sistema"
 
 #: ../html/src/components/formula-selection.tsx:135
 msgid " No group"
@@ -518,16 +645,19 @@ msgid "Add a new access token"
 msgstr ""
 
 #: ../html/src/components/hub/AddTokenButton.tsx:128
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:70
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:92
 msgid "Server FQDN"
 msgstr ""
 
 #: ../html/src/components/hub/AddTokenButton.tsx:130
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:159
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:160
 msgid "e.g. server.domain.com"
 msgstr ""
 
 #: ../html/src/components/hub/AddTokenButton.tsx:134
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:163
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:73
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:164
 #: ../html/src/manager/proxy/container-config.tsx:206
 #: ../html/src/manager/proxy/container-config.tsx:217
 #, fuzzy
@@ -535,7 +665,7 @@ msgid "Has to be a valid FQDN address"
 msgstr "Déjelo vacío para generar una dirección MAC"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:139
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:183
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:184
 msgid "Token"
 msgstr ""
 
@@ -565,6 +695,7 @@ msgid "Copy"
 msgstr ""
 
 #: ../html/src/components/hub/AddTokenButton.tsx:220
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:208
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:94
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:95
 msgid "Close"
@@ -576,7 +707,6 @@ msgstr ""
 
 #: ../html/src/components/hub/DeregisterServer.tsx:38
 #: ../html/src/components/hub/DeregisterServer.tsx:47
-#: ../html/src/components/hub/PeripheralsList.tsx:51
 #, fuzzy
 #| msgid "Persistent"
 msgid "Deregister"
@@ -600,7 +730,7 @@ msgstr ""
 
 #: ../html/src/components/hub/DeregisterServer.tsx:70
 msgid ""
-"Are you sure you want to derigester peripheral {fqdn}? All the current "
+"Are you sure you want to deregister peripheral {fqdn}? All the current "
 "configuration will be lost."
 msgstr ""
 
@@ -608,140 +738,291 @@ msgstr ""
 msgid "The server {fqdn} has been successfully deregistered."
 msgstr ""
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:36
-msgid "Server FQDN:"
+#: ../html/src/components/hub/DesyncChannel.tsx:36
+#: ../html/src/components/hub/DesyncChannel.tsx:45
+msgid "Desync"
 msgstr ""
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:44
+#: ../html/src/components/hub/DesyncChannel.tsx:37
 #, fuzzy
-msgid "Registration date:"
-msgstr "Clave de activación"
+#| msgid "Base Channel"
+msgid "Desync Channel"
+msgstr "Canal de base"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:54
+#: ../html/src/components/hub/DesyncChannel.tsx:42
 #, fuzzy
-msgid "Last modified:"
-msgstr "Última modificación"
+#| msgid "Confirm Deletion"
+msgid "Confirm Desync"
+msgstr "Confirmar eliminación"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:64
-msgid "Root Certificate Authority:"
+#: ../html/src/components/hub/DesyncChannel.tsx:55
+#, fuzzy
+#| msgid "Software Channels"
+msgid "Desync channels?"
+msgstr "Canales de sóftwer"
+
+#: ../html/src/components/hub/DesyncChannel.tsx:64
+#, fuzzy
+msgid "The channels have been successfully desynced."
+msgstr "Se eliminó el filtro correctamente"
+
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:131
+#, fuzzy
+#| msgid "Organization"
+msgid "Select Organization"
+msgstr "Organización"
+
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:161
+#: ../html/src/manager/admin/setup/products/products.tsx:487
+msgid "Filter by architecture"
 msgstr ""
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:70
-msgid ""
-"A customized Root Certificate Authority is currently configured for this hub."
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:173
+#, fuzzy
+msgid "Search channels..."
+msgstr "Cargando el programador…"
+
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:188
+msgid "Sync"
 msgstr ""
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:71
-msgid "This hub is currently using the default Root Certificate Authority."
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:189
+#: ../html/src/components/states-picker.tsx:452
+msgid "Channel Label"
+msgstr "Etiqueta del canal"
+
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:190
+#: ../html/src/manager/admin/setup/products/products.tsx:587
+#: ../html/src/manager/admin/setup/products/products.tsx:968
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
+#: ../html/src/manager/images/image-view-packages.tsx:50
+#: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
+msgid "Architecture"
+msgstr "Arquitectura"
+
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:191
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:306
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:343
+msgid "Hub Org"
 msgstr ""
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:72
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:192
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:307
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:344
+msgid "Sync Org"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:67
+#, fuzzy
+#| msgid "Server"
+msgid "Add Server"
+msgstr "Servidor"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:69
+msgid "Set the FQDN of the remote server"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:89
+msgid "Migrate?"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:95
+msgid "Access Token"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:100
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:294
+#: ../html/src/components/hub/ServerDetailsForm.tsx:103
 msgid "Root Certificate Authority"
 msgstr ""
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:74
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:166
+msgid "Peripheral migration in progress: waiting for a response..."
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:184
+msgid "Migration partially succeeded"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:185
+msgid "Migration failed"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:193
 msgid ""
-"Ensure the certificate you are providing is correct before proceeding. A "
-"wrong value will break the connection with the hub."
+"Some of the servers where migrated successfully, but some errors happened "
+"during the process."
 msgstr ""
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:77
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:194
 msgid ""
-"Are you sure you want to delete the current Root Certificate Authority? This "
-"change may break the connection with the hub."
+"The migration process was not successfull and reported the following errors"
 msgstr ""
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:83
-msgid "Root Certificate Authority successfully modified."
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:226
+msgid "This slave is currently disabled and cannot be selected for migration"
 msgstr ""
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:98
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:227
+msgid "Check to migrate this server to a peripheral"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:246
+msgid "Not defined"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:251
+#: ../html/src/components/large-text-attachment.tsx:69
+#: ../html/src/components/large-text-attachment.tsx:110
+#: ../html/src/components/salt-state-popup.tsx:60
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:60
+#: ../html/src/manager/images/image-profiles.tsx:204
+#: ../html/src/manager/images/image-stores.tsx:198
+#: ../html/src/manager/images/image-view-overview.tsx:326
+#: ../html/src/manager/images/image-view-overview.tsx:351
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:36
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:39
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:78
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:63
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:240
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:243
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:213
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
+msgid "Edit"
+msgstr "Editar"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:252
+msgid "Set access token for {fqdn}"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:253
 #, fuzzy
-msgid "Root Certificate Authority successfully updated."
-msgstr "Se eliminó el filtro correctamente"
+#| msgid "Add to:"
+msgid "Access token"
+msgstr "Añadir a:"
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:115
-msgid "GPG Public Key:"
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:282
+msgid "Root CA available"
 msgstr ""
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:121
-msgid "A customized GPG key is currently configured for this hub."
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:282
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
+msgid "Not needed"
 msgstr ""
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:122
-msgid "This hub is currently not using a custom GPG key."
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:292
+msgid "The root CA is the same of the hub."
 msgstr ""
 
-#: ../html/src/components/hub/HubDetailsForm.tsx:131
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:293
+msgid "This server has a different root CA."
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:296
+msgid ""
+"Ensure the certificate you are providing for {fqdn} is correct before "
+"proceeding. A wrong value will prevent the connection with the hub."
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:301
 #, fuzzy
-msgid "Mirror credentials:"
-msgstr "Detalles del filtro"
+#| msgid "Are you sure you want to delete the selected profile?"
+msgid ""
+"Are you sure you want to remove the current Root Certificate Authority for "
+"{fqdn}?"
+msgstr "¿Confirma que quiere eliminar el perfil seleccionado?"
 
-#: ../html/src/components/hub/PeripheralsList.tsx:29
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:321
+#: ../html/src/manager/notifications/notifications-list.tsx:339
+#: ../html/src/manager/notifications/notifications-list.tsx:340
+msgid "Info"
+msgstr ""
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:326
+#: ../html/src/manager/notifications/notifications-list.tsx:346
+#: ../html/src/manager/notifications/notifications-list.tsx:347
+msgid "Warning"
+msgstr "Alerta"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:331
+#: ../html/src/manager/notifications/notifications-list.tsx:353
+#: ../html/src/manager/notifications/notifications-list.tsx:354
+msgid "Error"
+msgstr ""
+
+#: ../html/src/components/hub/PeripheralsList.tsx:31
 #, fuzzy
 msgid "Filter by FQDN"
 msgstr "Tipo de filtro"
 
-#: ../html/src/components/hub/PeripheralsList.tsx:31
+#: ../html/src/components/hub/PeripheralsList.tsx:36
 msgid "Peripheral FQDN"
 msgstr ""
 
-#: ../html/src/components/hub/PeripheralsList.tsx:35
+#: ../html/src/components/hub/PeripheralsList.tsx:41
 #, fuzzy
 #| msgid "Software Channels"
-msgid "N. of Sync Channels"
+msgid "N. of synced channels"
 msgstr "Canales de sóftwer"
 
-#: ../html/src/components/hub/PeripheralsList.tsx:41
-msgid "N. of Sync Orgs"
-msgstr ""
-
 #: ../html/src/components/hub/PeripheralsList.tsx:46
+#, fuzzy
+#| msgid "Software Channels"
+msgid "N. of synced organizations"
+msgstr "Canales de sóftwer"
+
+#: ../html/src/components/hub/PeripheralsList.tsx:49
 msgid "Download Root CA"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:135
+#: ../html/src/components/hub/PeripheralsList.tsx:66
+msgid "View details of peripheral {fqdn}"
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:136
 msgid "Register a new peripheral server"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:141
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:142
 msgid "Peripheral registration in progress: waiting for a response..."
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:156
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:157
 msgid "Peripheral Server FQDN"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:157
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:158
 msgid ""
 "The unique, DNS-resolvable fully-qualified domain name of the server to "
 "register."
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:167
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:168
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:169
 #, fuzzy
 msgid "Registration mode"
 msgstr "Clave de activación"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:169
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:170
 msgid "Define how to connect to the remote server to initiate the registration"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:176
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:177
 msgid "Existing token"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:177
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:178
 msgid "Administrator User/Password"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:184
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:185
 msgid ""
 "The token that grant access to the remote server to establish the connection."
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:195
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
 #: ../html/src/manager/images/image-store-edit.tsx:171
 #: ../html/src/manager/login/susemanager/login.tsx:88
@@ -749,73 +1030,56 @@ msgstr ""
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:197
 msgid "The username of {productName} Administrator of the remote server."
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:204
-#: ../html/src/components/input/password/Password.example.tsx:23
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:74
-#: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/susemanager/login.tsx:99
-#: ../html/src/manager/login/uyuni/login.tsx:90
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:416
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:539
-msgid "Password"
-msgstr "Contraseña"
-
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:206
 msgid "The password of the specified user."
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:214
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:215
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:216
 msgid "Root CA certificate"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:217
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:218
 msgid ""
 "The Root certificate authority of the remote server, that must be trusted to "
 "establish a secure connection."
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:225
-msgid "Not needed"
-msgstr ""
-
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
-#: ../html/src/components/large-text-attachment.tsx:136
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
+#: ../html/src/components/large-text-attachment.tsx:144
 msgid "Upload a file"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:228
 msgid "Paste a PEM certificate"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:233
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:234
 msgid "Certificate File"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:234
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:235
 msgid "Certificate file, in PEM format"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:244
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:245
 msgid "PEM Certificate"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:245
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:246
 msgid "The text representing the certificate, in PEM format"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:260
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:261
 #, fuzzy
 msgid "Register"
 msgstr "Sistema no registrado"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:267
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:268
 #: ../html/src/manager/images/image-import.tsx:314
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
@@ -825,6 +1089,266 @@ msgstr "Sistema no registrado"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
 msgstr "Vaciar campos"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:16
+msgid ""
+"A customized Root Certificate Authority is currently configured for this hub."
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:17
+msgid ""
+"A customized Root Certificate Authority is currently configured for this "
+"peripheral."
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:20
+msgid "This hub is currently using the default Root Certificate Authority."
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:21
+msgid ""
+"This peripheral is currently using the default Root Certificate Authority."
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:25
+msgid ""
+"Ensure the certificate you are providing is correct before proceeding. A "
+"wrong value will break the connection with the hub."
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:28
+msgid ""
+"Ensure the certificate you are providing is correct before proceeding. A "
+"wrong value will break the connection with the peripheral."
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:33
+msgid ""
+"Are you sure you want to delete the current Root Certificate Authority? This "
+"change may break the connection with the hub."
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:36
+msgid ""
+"Are you sure you want to delete the current Root Certificate Authority? This "
+"change may break the connection with the peripheral."
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:67
+msgid "Server FQDN:"
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:75
+#, fuzzy
+msgid "Registration date:"
+msgstr "Clave de activación"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:85
+#, fuzzy
+msgid "Last modified:"
+msgstr "Última modificación"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:95
+msgid "Root Certificate Authority:"
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:117
+msgid "GPG Public Key:"
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:123
+msgid "A customized GPG key is currently configured for this hub."
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:124
+msgid "This hub is currently not using a custom GPG key."
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:134
+#, fuzzy
+msgid "Mirror credentials:"
+msgstr "Detalles del filtro"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:142
+#, fuzzy
+msgid "Regenerate credentials"
+msgstr "Organización"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:155
+#, fuzzy
+msgid "Synchronized channels:"
+msgstr "Canales de configuración"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:163
+#, fuzzy
+msgid "Edit channels"
+msgstr "Canales"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:185
+#, fuzzy
+msgid "One syncronized channel"
+msgstr "Canal de base nuevo"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:189
+msgid "{nSyncedChannels} syncronized channels, from one organization"
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:192
+msgid ""
+"{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different "
+"organizations"
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:198
+msgid "Root Certificate Authority successfully modified."
+msgstr ""
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:212
+#, fuzzy
+msgid "Root Certificate Authority successfully updated."
+msgstr "Se eliminó el filtro correctamente"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:227
+#, fuzzy
+msgid "Mirror credentials successfully regenerated."
+msgstr "Se eliminó el filtro correctamente"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:170
+msgid "No changes to apply"
+msgstr ""
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:215
+msgid "Channels synced correctly to peripheral!"
+msgstr ""
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:243
+msgid "Please select at least one channel to add or remove from sync"
+msgstr ""
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:293
+#, fuzzy
+#| msgid "Channels"
+msgid "Channels to Add"
+msgstr "Canales"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:301
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:338
+#, fuzzy
+#| msgid "Filter Name"
+msgid "Filter by Name"
+msgstr "Nombre del filtro"
+
+#. ref={nameInputRef}
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:303
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:340
+#: ../html/src/components/input/form/Form.example.tsx:23
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:389
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:171
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
+#: ../html/src/manager/images/image-view.tsx:644
+#: ../html/src/manager/salt/keys/key-management.tsx:160
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:84
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
+msgid "Name"
+msgstr "Nombre"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:304
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:341
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:29
+#: ../html/src/manager/images/image-build.tsx:258
+#: ../html/src/manager/images/image-profile-edit.tsx:528
+#: ../html/src/manager/images/image-profiles.tsx:177
+#: ../html/src/manager/images/image-store-edit.tsx:259
+#: ../html/src/manager/images/image-stores.tsx:177
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:259
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:315
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
+msgid "Label"
+msgstr "Etiqueta"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:305
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:342
+#: ../html/src/manager/admin/setup/products/products.tsx:589
+msgid "Arch"
+msgstr "Arq."
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:318
+msgid ""
+"Some custom channels do not have a sync organization selected. Please select "
+"organizations before confirming."
+msgstr ""
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:324
+#, fuzzy
+#| msgid " channels synced"
+msgid "No channels selected to add"
+msgstr " canales sincronizados"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:331
+#, fuzzy
+#| msgid "Channel Name"
+msgid "Channels to Remove"
+msgstr "Nombre del canal"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:347
+#, fuzzy
+#| msgid " channels synced"
+msgid "No channels selected to remove"
+msgstr " canales sincronizados"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:354
+#, fuzzy
+#| msgid "Channel change is invalid."
+msgid "Channel Sync Changes"
+msgstr "El cambio de canal no es válido."
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:355
+msgid "You are about to make the following changes:"
+msgstr ""
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:374
+#: ../html/src/components/package/PackageListActionScheduler.tsx:180
+#: ../html/src/components/states-picker.tsx:369
+#: ../html/src/components/states-picker.tsx:559
+#: ../html/src/manager/admin/setup/products/products.tsx:1081
+#: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:38
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:191
+#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1135
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:677
+msgid "Confirm"
+msgstr "Confirmar"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:397
+msgid "{peripheralFqdn} - Peripheral Sync Channels"
+msgstr ""
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:407
+#, fuzzy
+#| msgid "Back to list"
+msgid "Back to details"
+msgstr "Volver a la lista"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:420
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:421
+#: ../html/src/manager/appstreams/actions-appstreams.tsx:14
+#, fuzzy
+msgid "Apply Changes"
+msgstr "Cambios"
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:429
+msgid "Sync Channels from Hub to Peripheral"
+msgstr ""
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:439
+msgid "Confirm Channel Synchronization Changes"
+msgstr ""
 
 #: ../html/src/components/hub/TokenTable.tsx:54
 msgid "No tokens available"
@@ -837,7 +1361,7 @@ msgstr "Acción"
 
 #: ../html/src/components/hub/TokenTable.tsx:68
 msgid "Server"
-msgstr ""
+msgstr "Servidor"
 
 #: ../html/src/components/hub/TokenTable.tsx:75
 msgid "Valid"
@@ -969,42 +1493,6 @@ msgid ""
 "Enabling this access token will restore access to the peripheral {fqdn}."
 msgstr ""
 
-#: ../html/src/components/input/InputBase.test.tsx:43
-#: ../html/src/components/input/InputBase.test.tsx:69
-#: ../html/src/components/input/InputBase.test.tsx:97
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:49
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:58
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:47
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:58
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:66
-#: ../html/src/components/input/form/Form.example.tsx:25
-#: ../html/src/components/input/text/Text.example.tsx:25
-#: ../html/src/components/input/text/Text.example.tsx:34
-msgid "Minimum 2 characters"
-msgstr "2 caracteres como mínimo"
-
-#: ../html/src/components/input/InputBase.tsx:278
-#, fuzzy
-msgid "required"
-msgstr "Se necesita un reinicio"
-
-#: ../html/src/components/input/check/Check.example.tsx:22
-#: ../html/src/components/input/datetime/DateTime.example.tsx:25
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:66
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:55
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:75
-#: ../html/src/components/input/form/Form.example.tsx:30
-#: ../html/src/components/input/password/Password.example.tsx:30
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:37
-#: ../html/src/components/input/radio/horizontal.example.tsx:36
-#: ../html/src/components/input/radio/vertical-open.example.tsx:36
-#: ../html/src/components/input/radio/vertical.example.tsx:35
-#: ../html/src/components/input/range/Range.example.tsx:24
-#: ../html/src/components/input/select/simple.example.tsx:32
-#: ../html/src/components/input/text/Text.example.tsx:38
-msgid "Submit"
-msgstr "Enviar"
-
 #: ../html/src/components/input/datetime/DateTime.example.tsx:24
 msgid "Time"
 msgstr "Hora"
@@ -1033,22 +1521,6 @@ msgstr "Nombre de tarea"
 #: ../html/src/manager/login/uyuni/login.tsx:78
 msgid "Login"
 msgstr ""
-
-#. ref={nameInputRef}
-#: ../html/src/components/input/form/Form.example.tsx:23
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:389
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:171
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
-#: ../html/src/manager/images/image-view.tsx:644
-#: ../html/src/manager/salt/keys/key-management.tsx:160
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:84
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
-msgid "Name"
-msgstr "Nombre"
 
 #: ../html/src/components/input/password/Password.example.tsx:25
 #, fuzzy
@@ -1116,66 +1588,45 @@ msgstr ""
 msgid "No flavors"
 msgstr ""
 
-#: ../html/src/components/large-text-attachment.tsx:62
+#: ../html/src/components/large-text-attachment.tsx:67
 msgid "Data is present."
 msgstr ""
 
-#: ../html/src/components/large-text-attachment.tsx:63
+#: ../html/src/components/large-text-attachment.tsx:68
 msgid "Data is not present."
 msgstr ""
 
-#: ../html/src/components/large-text-attachment.tsx:64
-#: ../html/src/components/large-text-attachment.tsx:103
-#: ../html/src/components/salt-state-popup.tsx:60
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:60
-#: ../html/src/manager/images/image-profiles.tsx:204
-#: ../html/src/manager/images/image-stores.tsx:198
-#: ../html/src/manager/images/image-view-overview.tsx:326
-#: ../html/src/manager/images/image-view-overview.tsx:351
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:36
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:39
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:78
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:63
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:240
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:243
-#: ../html/src/manager/recurring/recurring-actions-list.tsx:213
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
-msgid "Edit"
-msgstr "Editar"
-
-#: ../html/src/components/large-text-attachment.tsx:93
+#: ../html/src/components/large-text-attachment.tsx:99
 msgid "Download"
 msgstr ""
 
-#: ../html/src/components/large-text-attachment.tsx:103
+#: ../html/src/components/large-text-attachment.tsx:110
 msgid "Add"
 msgstr "Añadir"
 
-#: ../html/src/components/large-text-attachment.tsx:127
-#: ../html/src/components/large-text-attachment.tsx:128
+#: ../html/src/components/large-text-attachment.tsx:135
+#: ../html/src/components/large-text-attachment.tsx:136
 #, fuzzy
 msgid "Edit method"
 msgstr "Editar"
 
-#: ../html/src/components/large-text-attachment.tsx:129
+#: ../html/src/components/large-text-attachment.tsx:137
 msgid "Define how to provide the new value"
 msgstr ""
 
-#: ../html/src/components/large-text-attachment.tsx:137
+#: ../html/src/components/large-text-attachment.tsx:145
 msgid "Paste the new value"
 msgstr ""
 
-#: ../html/src/components/large-text-attachment.tsx:143
+#: ../html/src/components/large-text-attachment.tsx:151
 msgid "File"
 msgstr "Archivo"
 
-#: ../html/src/components/large-text-attachment.tsx:153
+#: ../html/src/components/large-text-attachment.tsx:161
 msgid "New value"
 msgstr ""
 
-#: ../html/src/components/large-text-attachment.tsx:195
+#: ../html/src/components/large-text-attachment.tsx:204
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
 msgid "Confirm Deletion"
 msgstr "Confirmar eliminación"
@@ -1188,18 +1639,6 @@ msgstr "Volver a la selección de sistema"
 #: ../html/src/components/package/PackageListActionScheduler.tsx:107
 msgid "Unable to perform action."
 msgstr ""
-
-#: ../html/src/components/package/PackageListActionScheduler.tsx:180
-#: ../html/src/components/states-picker.tsx:369
-#: ../html/src/components/states-picker.tsx:559
-#: ../html/src/manager/admin/setup/products/products.tsx:1081
-#: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:38
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:191
-#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1135
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:677
-msgid "Confirm"
-msgstr "Confirmar"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:208
 #: ../html/src/components/package/PackageListActionScheduler.tsx:241
@@ -1473,10 +1912,6 @@ msgstr "Nombre del canal"
 msgid "State Label"
 msgstr "Canales de sóftwer"
 
-#: ../html/src/components/states-picker.tsx:452
-msgid "Channel Label"
-msgstr "Etiqueta del canal"
-
 #: ../html/src/components/states-picker.tsx:453
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:81
@@ -1552,7 +1987,7 @@ msgstr "Sistemas virtuales alojados"
 #: ../html/src/manager/systems/list-filter.tsx:6
 #: ../html/src/manager/systems/list-filter.tsx:22
 msgid "Proxy"
-msgstr ""
+msgstr "Proxy"
 
 #: ../html/src/components/systems.tsx:45
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:77
@@ -1975,13 +2410,45 @@ msgstr ""
 msgid "Access Tokens"
 msgstr ""
 
-#: ../html/src/manager/admin/hub/peripherals.tsx:16
+#: ../html/src/manager/admin/hub/migrate-from-v1.renderer.tsx:14
+msgid "Migrate from ISSv1 Slaves"
+msgstr ""
+
+#: ../html/src/manager/admin/hub/migrate-from-v2.renderer.tsx:13
+msgid "Migrate from ISSv2"
+msgstr ""
+
+#: ../html/src/manager/admin/hub/peripheral-details.tsx:20
+msgid "{fqdn} - Peripheral Details"
+msgstr ""
+
+#: ../html/src/manager/admin/hub/peripheral-details.tsx:51
+msgid "The server {fqdn} is currently registered as peripheral of this hub. "
+msgstr ""
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:26
 #, fuzzy
 msgid "Peripherals Configuration"
 msgstr "Canales de configuración"
 
-#: ../html/src/manager/admin/hub/peripherals.tsx:25
+#: ../html/src/manager/admin/hub/peripherals.tsx:35
 msgid "Add Peripheral"
+msgstr ""
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:39
+msgid "Migrate"
+msgstr ""
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:41
+msgid "Migrate an existing configuration of a previous version of ISS"
+msgstr ""
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:48
+msgid "Migrate ISS v1..."
+msgstr ""
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:57
+msgid "Migrate ISS v2..."
 msgstr ""
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:57
@@ -2179,7 +2646,7 @@ msgstr ""
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:376
-#: ../html/src/manager/notifications/notification-messages.tsx:439
+#: ../html/src/manager/notifications/notifications-list.tsx:195
 msgid "Refresh"
 msgstr ""
 
@@ -2259,10 +2726,6 @@ msgid ""
 "Products can only be managed on the Hub server."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:487
-msgid "Filter by architecture"
-msgstr ""
-
 #: ../html/src/manager/admin/setup/products/products.tsx:505
 msgid "Filter by product Description"
 msgstr ""
@@ -2270,18 +2733,6 @@ msgstr ""
 #: ../html/src/manager/admin/setup/products/products.tsx:581
 msgid "Product Description"
 msgstr "Descripción de producto"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:587
-#: ../html/src/manager/admin/setup/products/products.tsx:968
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
-#: ../html/src/manager/images/image-view-packages.tsx:50
-#: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
-msgid "Architecture"
-msgstr "Arquitectura"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:589
-msgid "Arch"
-msgstr "Arq."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:596
 #: ../html/src/manager/packages/list.tsx:158
@@ -2538,22 +2989,15 @@ msgstr "En este momento no hay ninguna tarea ejecutándose en el servidor."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:559
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "La sesión ha caducado. Vuelva a cargar la página para ver datos actualizados."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:263
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:561
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "Se produjo un error en el servidor; revise los archivos de registro."
-
-#: ../html/src/manager/appstreams/actions-appstreams.tsx:14
-#, fuzzy
-msgid "Apply Changes"
-msgstr "Cambios"
 
 #: ../html/src/manager/appstreams/appstream-packages.tsx:36
 #, fuzzy
@@ -3615,20 +4059,6 @@ msgstr "Histórico de versiones"
 msgid "Version {version} successfully built into {environmentName}"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:29
-#: ../html/src/manager/images/image-build.tsx:258
-#: ../html/src/manager/images/image-profile-edit.tsx:528
-#: ../html/src/manager/images/image-profiles.tsx:177
-#: ../html/src/manager/images/image-store-edit.tsx:259
-#: ../html/src/manager/images/image-stores.tsx:177
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:259
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:315
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
-msgid "Label"
-msgstr "Etiqueta"
-
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:51
 msgid "Insert before"
 msgstr ""
@@ -3865,7 +4295,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:643
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:500
+#: ../html/src/manager/notifications/notifications-list.tsx:114
 #: ../html/src/manager/state/highstate-summary.tsx:77
 msgid "Type"
 msgstr "Tipo"
@@ -5470,7 +5900,7 @@ msgid "Apply"
 msgstr "Aplicar"
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:506
+#: ../html/src/manager/notifications/notifications-list.tsx:120
 msgid "Summary"
 msgstr ""
 
@@ -5535,135 +5965,93 @@ msgstr ""
 msgid "Install PTF"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:24
-msgid "Onboarding failed"
-msgstr ""
-
-#: ../html/src/manager/notifications/notification-messages.tsx:28
-msgid "Channel sync failed"
-msgstr ""
-
-#: ../html/src/manager/notifications/notification-messages.tsx:32
-msgid "Channel sync finished"
-msgstr ""
-
-#: ../html/src/manager/notifications/notification-messages.tsx:36
-msgid "Creating Bootstrap Repository failed"
-msgstr ""
-
-#: ../html/src/manager/notifications/notification-messages.tsx:40
-msgid "State apply failed"
-msgstr ""
-
-#: ../html/src/manager/notifications/notification-messages.tsx:44
-msgid "PAYG refresh authentication data failed"
-msgstr ""
-
-#: ../html/src/manager/notifications/notification-messages.tsx:48
-msgid "End of Life Period"
-msgstr ""
-
-#: ../html/src/manager/notifications/notification-messages.tsx:52
-#, fuzzy
-msgid "Subscription Warning"
-msgstr "Suscripciones"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:56
-#, fuzzy
-msgid "Update Notification"
-msgstr "Mensajes de notificación"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:60
-msgid "PAYG instance is not compliant"
-msgstr ""
-
-#: ../html/src/manager/notifications/notification-messages.tsx:64
-msgid "SCC Data Sync Disabled"
-msgstr ""
-
-#: ../html/src/manager/notifications/notification-messages.tsx:245
-#: ../html/src/manager/notifications/notification-messages.tsx:246
-msgid "Info"
-msgstr ""
-
-#: ../html/src/manager/notifications/notification-messages.tsx:253
-#: ../html/src/manager/notifications/notification-messages.tsx:254
-msgid "Warning"
-msgstr "Alerta"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:261
-#: ../html/src/manager/notifications/notification-messages.tsx:262
-msgid "Error"
-msgstr ""
-
-#: ../html/src/manager/notifications/notification-messages.tsx:324
-msgid "show details"
-msgstr ""
-
-#: ../html/src/manager/notifications/notification-messages.tsx:373
-msgid "Retry onboarding"
-msgstr ""
-
-#: ../html/src/manager/notifications/notification-messages.tsx:383
-msgid "Retry repo sync"
-msgstr ""
-
-#: ../html/src/manager/notifications/notification-messages.tsx:406
-msgid "Unread Messages"
-msgstr "Mensajes no leídos"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:411
-msgid "All Messages"
-msgstr "Todos los mensajes"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:424
-#, fuzzy
-msgid "Filter by type"
-msgstr "Tipo de filtro"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:443
-#: ../html/src/manager/notifications/notification-messages.tsx:444
-msgid "Delete selected messages"
-msgstr "Eliminar mensajes seleccionados"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:451
-#: ../html/src/manager/notifications/notification-messages.tsx:452
-msgid "Mark selected as read"
-msgstr "Marcar seleccionados como leídos"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:469
-#: ../html/src/manager/notifications/notification-messages.tsx:547
+#: ../html/src/manager/notifications/notifications-list.tsx:78
 msgid "Notification Messages"
 msgstr "Mensajes de notificación"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:474
+#: ../html/src/manager/notifications/notifications-list.tsx:83
 msgid "The server has collected the following notification messages."
 msgstr "El servidor ha reunido los mensajes de notificación siguientes."
 
-#: ../html/src/manager/notifications/notification-messages.tsx:488
+#: ../html/src/manager/notifications/notifications-list.tsx:100
 #, fuzzy
 msgid "Filter by summary"
 msgstr "Filtrar por nombre de sistema"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:494
+#: ../html/src/manager/notifications/notifications-list.tsx:108
 msgid "Severity"
 msgstr "Gravedad"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:523
+#: ../html/src/manager/notifications/notifications-list.tsx:133
 msgid "Read|Delete"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:529
+#: ../html/src/manager/notifications/notifications-list.tsx:159
+#, fuzzy
+msgid "Filter by type"
+msgstr "Tipo de filtro"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:177
+msgid "Unread Messages"
+msgstr "Mensajes no leídos"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:182
+msgid "All Messages"
+msgstr "Todos los mensajes"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:199
+#: ../html/src/manager/notifications/notifications-list.tsx:200
+msgid "Delete selected messages"
+msgstr "Eliminar mensajes seleccionados"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:207
+#: ../html/src/manager/notifications/notifications-list.tsx:208
+msgid "Mark selected as read"
+msgstr "Marcar seleccionados como leídos"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:226
+msgid "show details"
+msgstr ""
+
+#: ../html/src/manager/notifications/notifications-list.tsx:242
+msgid "Retry"
+msgstr ""
+
+#: ../html/src/manager/notifications/notifications-list.tsx:254
 msgid "Flag as Unread"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:529
+#: ../html/src/manager/notifications/notifications-list.tsx:254
 msgid "Flag as Read"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:535
+#: ../html/src/manager/notifications/notifications-list.tsx:260
 msgid "Delete Notification"
 msgstr ""
+
+#: ../html/src/manager/notifications/notifications-list.tsx:307
+#, fuzzy
+#| msgid "Cluster properties updated successfully"
+msgid "{number} messages status updated successfully"
+msgstr "Se actualizaron las propiedades de la agrupación correctamente"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:308
+#, fuzzy
+#| msgid "Cluster properties updated successfully"
+msgid "Message read status updated successfully"
+msgstr "Se actualizaron las propiedades de la agrupación correctamente"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:325
+#, fuzzy
+#| msgid "Filter deleted successfully"
+msgid "{number} messages deleted successfully"
+msgstr "Se eliminó el filtro correctamente"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:326
+#, fuzzy
+#| msgid "Filter deleted successfully"
+msgid "Message deleted successfully"
+msgstr "Se eliminó el filtro correctamente"
 
 #: ../html/src/manager/notifications/notifications.tsx:42
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:339
@@ -7065,6 +7453,14 @@ msgstr ""
 msgid "HTTP Error code "
 msgstr ""
 
+#, fuzzy
+#~ msgid "Subscription Warning"
+#~ msgstr "Suscripciones"
+
+#, fuzzy
+#~ msgid "Update Notification"
+#~ msgstr "Mensajes de notificación"
+
 #~ msgid "The server uses "
 #~ msgstr "El servidor utiliza "
 
@@ -7451,9 +7847,6 @@ msgstr ""
 #~ msgid "System group refresh action scheduled successfully"
 #~ msgstr "Se actualizaron las propiedades del proyecto correctamente"
 
-#~ msgid "Cluster properties updated successfully"
-#~ msgstr "Se actualizaron las propiedades de la agrupación correctamente"
-
 #~ msgid "Edit cluster details"
 #~ msgstr "Editar detalles de agrupación"
 
@@ -7479,10 +7872,6 @@ msgstr ""
 
 #~ msgid "Cluster "
 #~ msgstr "Agrupación "
-
-#, fuzzy
-#~ msgid " has been added successfully."
-#~ msgstr "Se eliminó el filtro correctamente"
 
 #~ msgid "Delete cluster"
 #~ msgstr "Eliminar agrupación"

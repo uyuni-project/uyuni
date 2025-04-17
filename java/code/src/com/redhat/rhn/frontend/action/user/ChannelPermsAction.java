@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.user;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -56,6 +59,7 @@ public class ChannelPermsAction extends RhnListAction {
         }
 
         User user = UserManager.lookupUser(requestContext.getCurrentUser(), uid);
+        ensureRoleBasedAccess(user, "users.channels", Namespace.AccessMode.W);
         request.setAttribute(RhnHelper.TARGET_USER, user);
 
         String[] channels = (String[]) form.get("cid");

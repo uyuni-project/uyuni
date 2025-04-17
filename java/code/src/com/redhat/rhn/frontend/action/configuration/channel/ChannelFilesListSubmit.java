@@ -14,7 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.configuration.channel;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -71,9 +74,11 @@ public class ChannelFilesListSubmit extends BaseSetOperateOnSelectedItemsAction 
     public ActionForward processRemove(ActionMapping mapping,
             ActionForm formIn, HttpServletRequest request,
             HttpServletResponse response) {
+        RequestContext requestContext = new RequestContext(request);
+        ensureRoleBasedAccess(requestContext.getCurrentUser(), "config.channels", Namespace.AccessMode.W);
         ActionForward retval = operateOnSelectedSet(mapping, formIn, request,
                 response, "setFilesToRemove");
-        ConfigActionHelper.clearRhnSets(new RequestContext(request).getCurrentUser());
+        ConfigActionHelper.clearRhnSets(requestContext.getCurrentUser());
         return retval;
     }
     /**

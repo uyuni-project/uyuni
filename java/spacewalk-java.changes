@@ -1,4 +1,75 @@
 -------------------------------------------------------------------
+Wed Apr 16 16:20:28 CEST 2025 - rosuna@suse.com
+
+- version 5.1.12-0
+  * CVE-2025-23393: Filter user input in systems list page
+    (bsc#1240386)
+  * CVE-2025-23392: Filter user input in systems list page
+    (bsc#1239826)
+
+-------------------------------------------------------------------
+Fri Apr 11 17:22:55 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.11-0
+  * Fix query for Server by machineId (bsc#1240409)
+  * Drop Inter-Server-Sync configuration UI and API
+  * Add calling a highstate in the API for actionchain
+    (bsc#1157520)
+  * Fix: Using reboot_suggested or restart_suggested by API
+    always responds false (bsc#1236910)
+  * Fix: OpenSCAP audit is running immediately even when scheduled
+    for next days (bsc#1239743)
+  * Fix: Internal server error when accessing groups in
+    activation keys (bsc#1237581)
+  * Fix: manage errors in user-defined pillars (bsc#1230403)
+  * Fix UI accordions (bsc#1239795)
+  * Fix config channels not following priority in highstate
+    (bsc#1237694)
+  * Do not show Vendor Advisory link for SL-Micro 6.0 and 6.1
+    products. They are not published yet on the web (bsc#1237770)
+  * Use the new product name SUSE Multi-Linux Manager
+  * Fix the tooltip text for specific icons in the patches list
+  * Fix race at updating system overview table (bsc#1235853)
+  * Fix double-delete in cancelActions
+  * Fix CLM channel name definition (bsc#1239868)
+  * Fix: remove SCAP file upload size limit setting (bsc#1240050)
+  * Fix severity levels are missing in api output of
+    errata getDetails method (bsc#1240038)
+  * Add migration process from ISS v1 and v2
+  * Fix state apply result formatting by splitting one the correct
+    string token
+  * Fix package locking for packages not available anymore
+    in the assigned repositories (bsc#1236877)
+  * Deprecate the About page
+  * Added API Documentation link on the login page
+  * Fix several pages returning 500 status
+  * Set default paths for Ansible playbook and inventory
+    on add control node
+  * Add filtering option to the system list to filter by
+    Ansible managed systems
+  * Display raw playbook output from Ansible in the event details
+  * Allow scheduling recurring playbook actions on Ansible
+    control nodes
+  * Fix content visibility issues on the Action Chains page
+    (bsc#1239558, bsc#1239559)
+  * Add proxy onboarding feature
+  * Use correct root certificate authority, if available, for
+    connecting to the remote reporting database
+  * Fix OpenSCAP audit acceptance tests:
+    comparableId field was missing in XccdfTestResult
+  * Introduce Role-Based Access Control
+  * Introduce 'access' API namespace to manage Role-Based Access
+    Control
+  * Update 'user' API namespace to support RBAC roles
+  * Update notification message styles
+  * Add support for OVAL CVE analyzes on Ubuntu
+  * Adjust report DB API to unprivileged user
+  * Add Hub Registration changed notification
+  * Add API to regenerate the SCC credentials for a peripheral
+  * Add peripheral details UI page
+  * API for proxy onboarding
+
+-------------------------------------------------------------------
 Thu Mar 06 19:57:20 CET 2025 - marina.latini@suse.com
 
 - version 5.1.10-0

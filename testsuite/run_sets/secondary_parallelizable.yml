@@ -19,7 +19,6 @@
 - features/secondary/srv_user_api.feature
 - features/secondary/srv_salt_download_endpoint.feature
 - features/secondary/srv_docker_advanced_content_management.feature
-- features/secondary/srv_docker_cve_audit.feature
 - features/secondary/srv_datepicker.feature
 - features/secondary/srv_group_union_intersection.feature
 - features/secondary/srv_custom_system_info.feature

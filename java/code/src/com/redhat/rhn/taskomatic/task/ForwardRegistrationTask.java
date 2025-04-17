@@ -40,7 +40,6 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -64,7 +63,7 @@ public class ForwardRegistrationTask extends RhnJavaJob {
             if (lastNotification == null || lastNotification.getCreated().before(DateUtils.addMonths(new Date(), -3))) {
                 NotificationMessage notificationMessage =
                         UserNotificationFactory.createNotificationMessage(new SCCOptOutWarning());
-                UserNotificationFactory.storeNotificationMessageFor(notificationMessage, Set.of(RoleFactory.ORG_ADMIN));
+                UserNotificationFactory.storeNotificationMessageFor(notificationMessage, RoleFactory.ORG_ADMIN);
             }
 
             if (GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance() &&

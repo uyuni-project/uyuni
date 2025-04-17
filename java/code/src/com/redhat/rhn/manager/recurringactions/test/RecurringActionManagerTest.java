@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
@@ -126,7 +127,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         try {
             var group = ServerGroupTestUtils.createManaged(anotherUser);
             /* Restrict anotherUser from accessing the minion */
-            anotherUser.removePermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
+            anotherUser.getAccessGroups().remove(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
             var recurringAction = RecurringActionManager.createRecurringAction(
                     GROUP, HIGHSTATE, group.getId(), anotherUser);
             recurringAction.setCronExpr(CRON_EXPR);

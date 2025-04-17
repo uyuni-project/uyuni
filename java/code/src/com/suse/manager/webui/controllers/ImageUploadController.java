@@ -18,7 +18,7 @@ package com.suse.manager.webui.controllers;
 import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
@@ -60,7 +60,7 @@ public class ImageUploadController {
      */
     public static void initRoutes() {
 
-        Spark.post("/manager/upload/image", withImageAdmin(ImageUploadController::uploadImage));
+        Spark.post("/manager/upload/image", withUser(ImageUploadController::uploadImage));
     }
 
 

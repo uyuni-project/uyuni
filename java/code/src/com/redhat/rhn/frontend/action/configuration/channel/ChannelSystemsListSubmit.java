@@ -14,7 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.configuration.channel;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.server.Server;
@@ -93,9 +96,10 @@ public class ChannelSystemsListSubmit extends BaseSetOperateOnSelectedItemsActio
             ActionForm formIn,
             HttpServletRequest request,
             HttpServletResponse response) {
+        RequestContext requestContext = new RequestContext(request);
+        ensureRoleBasedAccess(requestContext.getCurrentUser(), "config.channels", Namespace.AccessMode.W);
         Map<String, Object> params = makeParamMap(formIn, request);
         operateOnSelectedSet(mapping, formIn, request, response, "unsubscribeSystems");
-        RequestContext requestContext = new RequestContext(request);
         ConfigActionHelper.clearRhnSets(requestContext.getCurrentUser());
         return getStrutsDelegate().forwardParams(mapping.findForward("success"), params);
     }

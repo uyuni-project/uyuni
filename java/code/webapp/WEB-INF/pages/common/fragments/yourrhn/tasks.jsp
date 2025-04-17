@@ -78,7 +78,7 @@
       </rhn:require>
 
       <rhn:require
-        acl="user_role(activation_key_admin)">
+        acl="authorized_for(systems.activation_keys.list)">
         <li class="list-group-item">
         <rhn:icon type="nav-bullet" /> <a
                 class="js-spa"
@@ -90,7 +90,7 @@
       </rhn:require>
 
       <rhn:require
-        acl="user_role(config_admin)">
+        acl="authorized_for(systems.autoinstallation)">
         <li class="list-group-item">
           <rhn:icon type="nav-bullet" /> <a
                 class="js-spa"
