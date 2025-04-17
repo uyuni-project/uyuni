@@ -15,7 +15,7 @@ type Props<ValueType, RendererProps> = FieldProps<ValueType, RendererProps> & {
 export const MultiField = <ValueType, RendererProps>(props: Props<ValueType, RendererProps>) => {
   const sharedFieldConfig = useSharedFieldConfig();
   const { name, defaultNewItemValue, ...rest } = props;
-  const [field] = useField<ValueType[]>(props.name);
+  const [field] = useField < ValueType[] > (props.name);
 
   return (
     <FieldArray
