@@ -19,6 +19,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('', '/hub/sync/registerHub', 'POST', 'W', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/hub/serverInfo', 'GET', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/hub/sync/replaceTokens', 'POST', 'W', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)

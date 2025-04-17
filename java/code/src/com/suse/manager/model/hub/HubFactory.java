@@ -127,8 +127,11 @@ public class HubFactory extends HibernateFactory {
      * @return return {@link IssHub}
      */
     public Optional<IssHub> lookupIssHub() {
-        return getSession().createQuery("FROM IssHub", IssHub.class)
-                .uniqueResultOptional();
+        Query<IssHub> query = getSession().createQuery("FROM IssHub", IssHub.class);
+        if (query.stream().count() > 1) {
+            LOG.error("Duplicate hub in IssHub: a peripheral server should have not more than 1 Hub");
+        }
+        return query.stream().findFirst();
     }
 
     /**

@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.hub.HubManager;
 import com.suse.manager.model.hub.ChannelInfoJson;
+import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.migration.MigrationItem;
 import com.suse.manager.model.hub.migration.MigrationMessageLevel;
 import com.suse.manager.model.hub.migration.MigrationResult;
@@ -300,7 +301,7 @@ public class IssMigrator {
 
         try {
             LOGGER.debug("Peripheral {} was not correctly migrated. Deregistering.", item.peripheral());
-            hubManager.deregister(user, item.fqdn(), false);
+            hubManager.deregister(user, item.fqdn(), IssRole.PERIPHERAL, false);
         }
         catch (Exception ex) {
             LOGGER.error("Unable to deregister peripheral {}", item.peripheral(), ex);

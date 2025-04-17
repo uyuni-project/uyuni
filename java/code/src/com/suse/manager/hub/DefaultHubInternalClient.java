@@ -19,6 +19,7 @@ import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
+import com.suse.manager.model.hub.ServerInfoJson;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 
 import com.google.gson.Gson;
@@ -129,6 +130,11 @@ public class DefaultHubInternalClient implements HubInternalClient {
     @Override
     public void deleteIssV1Master() throws IOException {
         invokePost("hub/sync/migrate/v1", "deleteMaster", null);
+    }
+
+    @Override
+    public ServerInfoJson getServerInfo() throws IOException {
+        return invokeGet("hub", "serverInfo", ServerInfoJson.class);
     }
 
     private <R> R invokeGet(String namespace, String apiMethod, Type responseType)
