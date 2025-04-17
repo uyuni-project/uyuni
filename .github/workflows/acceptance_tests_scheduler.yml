@@ -13,6 +13,7 @@ jobs:
     with:
       tests: "18_run_secondary_tests.sh"
       server_id: "acceptance"
+      skip_tests: false
     secrets: inherit
 
   scheduled-additional-tests:
@@ -26,4 +27,5 @@ jobs:
     with:
       tests: "22_run_secondary_parallelizable_tests_subset.sh ${{ matrix.set }}"
       server_id: "additional_${{ matrix.set }}"
+      skip_tests: false
     secrets: inherit
