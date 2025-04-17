@@ -22,6 +22,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.configuration.SaltConfigSubscriptionService;
 import com.redhat.rhn.manager.configuration.SaltConfigurable;
 
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -294,6 +296,12 @@ public class MinionServer extends Server implements SaltConfigurable {
                 }
         }
         return changed;
+    }
+
+    public boolean isSSHPush() {
+        return getContactMethodLabel()
+                .map(ContactMethodUtil::isSSHPushContactMethod)
+                .orElse(false);
     }
 
     public boolean isRebootNeeded() {

@@ -104,7 +104,6 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -117,6 +116,7 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
+import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
@@ -392,24 +392,23 @@ public class SaltServerActionService {
                                                                      SupportDataAction action) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
 
-        var serverActionsById = action.getServerActions().stream()
-                .collect(Collectors.toMap(sa -> sa.getServerId(), sa -> sa));
-
-        var caseNumber = action.getDetails().getCaseNumber();
-
         var partitioned = minions.stream().collect(Collectors.partitioningBy(minionSummary -> {
-            var sa = serverActionsById.get(minionSummary.getServerId());
-            var actionPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/" +
-                    ScapFileManager.getActionPath(action.getOrg().getId(), sa.getServerId(), action.getId());
-            var bundleName = caseNumber + "_" + action.getId() + "_" + minionSummary.getMinionId() + ".tar";
-            var bundle = Paths.get(actionPath).resolve(bundleName);
+            var actionPath = MinionActionUtils.getFullActionPath(action.getOrg().getId(), minionSummary.getServerId(),
+                    action.getId());
+            var bundle = actionPath.resolve("bundle.tar");
             return Files.exists(bundle);
         }));
 
         var pillar = Optional.ofNullable(action.getDetails().getParameter())
                 .map(p -> Map.of("arguments", (Object)p));
-        ret.put(State.apply(List.of("supportdata"), pillar), partitioned.get(false));
-        ret.put(Test.echo("supportdata"), partitioned.get(true));
+        var full = partitioned.get(false);
+        var onlyUpload = partitioned.get(true);
+        if (!full.isEmpty()) {
+            ret.put(State.apply(List.of("supportdata"), pillar), full);
+        }
+        if (!onlyUpload.isEmpty()) {
+            ret.put(Test.echo("supportdata"), onlyUpload);
+        }
         return ret;
     }
 
