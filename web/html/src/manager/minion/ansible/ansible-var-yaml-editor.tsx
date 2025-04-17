@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import get from "lodash/get";
-
+import unset from "lodash/unset";
 import yaml from "js-yaml";
 import { Panel } from "components/panels/Panel";
 import { DropdownButton, Button } from "components/buttons";
 import { useFormikContext } from "formik";
 import { Field, MultiField } from "components/formik/field";
 import { Form, OnSubmit } from "components/formik/Form";
-
+import { StringVariableEditor } from "./string-variable-editor"
 
 const isDictionary = (obj) => {
   if (typeof obj !== "object" || obj === null || Array.isArray(obj)) return false;
@@ -26,18 +26,21 @@ type Props = {
   data: Record<string, any>;
 };
 
+
+
 const AnsibleVarYamlEditor = (props: Props) => {
-  const [newKeyInput, setNewKeyInput] = useState({});
-  const [newValueInput, setNewValueInput] = useState({});
   const [visibleInputPath, setVisibleInputPath] = useState(null);
   const [varType, setVarType] = useState(null);
+  const [pendingListKey, setPendingListKey] = useState(null);
+  const [pendingListItems, setPendingListItems] = useState([""]);
 
   const generateId = (path) => `id_${path.split(".").join("_")}`;
 
   // titles for collapse
   const levelOneTitles = (obj) => Object.keys(obj);
 
-  function nestedLevelTitles(prefix, value) {
+
+  const nestedLevelTitles = (prefix, value) => {
     const current = get(value, prefix);
     let paths = [];
 
@@ -55,7 +58,82 @@ const AnsibleVarYamlEditor = (props: Props) => {
     }
     // console.log(paths)
     return paths;
-  }
+  };
+
+  const KeyValueEditor = ({ path, value, onDelete, setFieldValue }) => {
+    console.log("KeyValueEditor");
+    const [newKey, setNewKey] = useState("");
+    const [newValue, setNewValue] = useState("");
+    const [showInputs, setShowInputs] = useState(false);
+    const [showFocus, setShowFocus] = useState(false);
+
+    const handleAdd = () => {
+      if (!newKey.trim()) return;
+
+      let val = newValue;
+      if (newValue === "true") val = true;
+      else if (newValue === "false") val = false;
+      setFieldValue(`${path}.${newKey}`, val);
+      setNewKey("");
+      setNewValue("");
+      setShowInputs(false);
+      setShowFocus(true)
+    };
+
+    const handleValKeyDown = (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleAdd();
+      }
+    };
+
+    return (
+      <>
+        {Object.entries(value).map(([k]) => (
+          <div key={k} className="row mt-2">
+            <div className="col-md-4 text-right"><label>{k}</label></div>
+            <div className="col-md-8">
+              <Field autoFocus={showFocus} name={`${path}.${k}`} children={<Button
+                className="btn-default btn-sm"
+                handler={() => onDelete(`${path}.${k}`)}
+                title={t("Remove item")}
+                icon="fa-minus"
+              />} />
+            </div>
+          </div>
+        ))}
+        <div>
+          {showInputs && (
+            <div className="row mt-2">
+              <div className="col-md-4"></div>
+              <div className="col-md-8">
+                <input
+                  className="form-control"
+                  placeholder="New key"
+                  value={newKey}
+                  onChange={(e) => setNewKey(e.target.value)}
+                  onBlur={handleAdd}
+                  onKeyDown={handleValKeyDown}
+                />
+              </div>
+            </div>)}
+          <div className="row mt-2">
+            <div className="col-md-4"></div>
+            <div className="col-md-8">
+              {!showInputs && (
+                <Button
+                  className=" btn-default btn-sm mt-2"
+                  icon="fa-plus"
+                  text={t("Add new key")}
+                  handler={() => setShowInputs(true)}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      </>
+    )
+  };
 
   const YamlPreview = () => {
     const { values } = useFormikContext();
@@ -68,12 +146,15 @@ const AnsibleVarYamlEditor = (props: Props) => {
     return <pre>{yamlOutput}</pre>;
   };
 
-  const handleVariable = (path, name) => {
+  const handleVariable = useCallback((path, name, setFieldValue) => {
     setVisibleInputPath(path);
     setVarType(name);
-  }
 
-  const renderVariableDiv = (path, setFieldValue) => {
+  }, []);
+
+  const renderVariableDiv = useCallback((path, setFieldValue) => {
+    const [newKeyString, setNewKeyString] = useState({});
+    const [newValueString, setNewValueString] = useState({});
 
     if (varType === "String" && visibleInputPath === path) {
       return (
@@ -83,74 +164,91 @@ const AnsibleVarYamlEditor = (props: Props) => {
             <input
               className="form-control"
               placeholder="New variable key"
-              value={newKeyInput[path] || ""}
-              onChange={(e) => setNewKeyInput({ [path]: e.target.value })}
+              value={newKeyString[path] || ""}
+              onChange={(e) => setNewKeyString({ [path]: e.target.value })}
             />
           </div>
           <div className="form-group ">
             <input
               className="form-control mt-2"
               placeholder="New variable value"
-              value={newValueInput[path] || ""}
-              onChange={(e) => setNewValueInput({ [path]: e.target.value })}
+              value={newValueString[path] || ""}
+              onChange={(e) => setNewValueString({ [path]: e.target.value })}
             />
           </div>
           <div className="form-group ">
             <Button
-              text="Add"
+              text={t("Add")}
               icon="fa-plus"
               className="btn btn-sm btn-primary mt-2"
               handler={() => {
-                const key = newKeyInput[path]?.trim();
-                const val = newValueInput[path]?.trim();
+                const key = newKeyString[path]?.trim();
+                const val = newValueString[path]?.trim();
                 if (key) {
                   setFieldValue(`${path}.${key}`, val || "");
-                  setNewKeyInput({ [path]: "" });
-                  setNewValueInput({ [path]: "" });
+                  setNewKeyString({ [path]: "" });
+                  setNewValueString({ [path]: "" });
                 }
               }}
             />
           </div>
         </div >)
     }
+
     if (varType === "List" && visibleInputPath === path) {
+      const handleAddList = () => {
+        if (pendingListKey) {
+          setFieldValue(`${path}.${pendingListKey}`, pendingListItems);
+          setPendingListKey("");
+          setPendingListItems([""]);
+          setVarType(null);
+          setVisibleInputPath(null);
+        }
+      };
+
       return (
-        <div className="row ">
-          <div>List</div>
-          <div className="form-group ">
+        <div className="row">
+          <div className="form-group col-md-4">
             <input
               className="form-control"
-              placeholder="New variable key"
-              value={newKeyInput[path] || ""}
-              onChange={(e) => setNewKeyInput({ [path]: e.target.value })}
+              placeholder="List key"
+              value={pendingListKey}
+              onChange={(e) => setPendingListKey(e.target.value)}
             />
           </div>
-          <div className="form-group ">
-            <input
-              className="form-control mt-2"
-              placeholder="New variable value"
-              value={newValueInput[path] || ""}
-              onChange={(e) => setNewValueInput({ [path]: e.target.value })}
-            />
-          </div>
-          <div className="form-group ">
+          <div className="form-group col-md-6">
+            {pendingListItems.map((item, idx) => (
+              <input
+                key={idx}
+                className="form-control mb-1"
+                placeholder={`Item ${idx + 1}`}
+                value={item}
+                onChange={(e) => {
+                  const updated = [...pendingListItems];
+                  updated[idx] = e.target.value;
+                  setPendingListItems(updated);
+                }}
+              />
+            ))}
             <Button
-              text="Add"
+              className="btn-sm btn-default mt-1"
               icon="fa-plus"
-              className="btn btn-sm btn-primary mt-2"
-              handler={() => {
-                const key = newKeyInput[path]?.trim();
-                const val = newValueInput[path]?.trim();
-                if (key) {
-                  setFieldValue(`${path}.${key}`, val || "");
-                  setNewKeyInput({ [path]: "" });
-                  setNewValueInput({ [path]: "" });
-                }
-              }}
+              text={t("Add Item")}
+              handler={() => setPendingListItems([...pendingListItems, ""])}
             />
           </div>
-        </div >)
+          <div className="form-group col-md-2">
+            <Button
+              className="btn btn-sm btn-primary"
+              text={t("Add List")}
+              handler={handleAddList}
+            />
+          </div>
+        </div>
+      );
     }
+
+
     if (varType === "Dictionary" && visibleInputPath === path) {
       return (
         <div className="row align-items-center">
@@ -163,20 +261,29 @@ const AnsibleVarYamlEditor = (props: Props) => {
           <h3>Boolean</h3>
         </div>)
     }
-  }
+  }, [varType, visibleInputPath, pendingListKey, pendingListItems]);
 
   const renderEditor = (path, values, setFieldValue) => {
     console.log('renderEditor')
     const value = get(values, path);
 
+    const removeItem = (targetPath) => {
+      setFieldValue(targetPath, undefined);
+    };
+
     if (typeof value === "string" || typeof value === "number") {
-      console.log('renderEditor :', value)
       return (
         <div className="row">
           <div className="col-md-4"></div>
           <div className="col-md-8">
             <Field
               name={path}
+              children={<Button
+                className="btn-default btn-sm"
+                handler={() => removeItem(path)}
+                title={t("Remove item")}
+                icon="fa-minus"
+              />}
             />
           </div>
         </div>
@@ -198,20 +305,7 @@ const AnsibleVarYamlEditor = (props: Props) => {
     if (isDictionary(value)) {
       return (
         <>
-          {Object.entries(value).map(([k, v]) => {
-            const childPath = `${path}.${k}`;
-            return (
-              <div key={childPath} className="row mt-2">
-                <div className="col-md-4"></div>
-                <div className="col-md-8">
-                  <label>{k}</label>
-                  <Field
-                    name={childPath}
-                  />
-                </div>
-              </div>
-            );
-          })}
+          <KeyValueEditor path={path} value={value} onDelete={removeItem} setFieldValue={setFieldValue} />
         </>
       );
     }
