@@ -15,8 +15,10 @@
 
 package com.redhat.rhn.manager.system.proxycontainerconfig;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +35,8 @@ public class ProxyContainerConfigCreateGenerateFileMaps implements ProxyContaine
         context.getConfigMap().put("server_version", ConfigDefaults.get().getProductVersion());
         context.getConfigMap().put("proxy_fqdn", context.getProxyFqdn());
         context.getConfigMap().put("ca_crt", context.getRootCaCert());
+        String cobblerFqdn = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
+        context.getConfigMap().put("replace_fqdns", Collections.singletonList(cobblerFqdn));
 
         // httpd.yaml
         Map<String, Object> httpdConfig = new HashMap<>();
