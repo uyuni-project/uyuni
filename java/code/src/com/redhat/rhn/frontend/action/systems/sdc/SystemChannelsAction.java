@@ -179,11 +179,9 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
         List<Channel> currentPreservedChildChans = new LinkedList<>();
         List<Channel> currentUnpreservedChildChans = new LinkedList<>();
 
-        if (s.getChildChannels() != null) {
-            for (Channel childChan : s.getChildChannels()) {
-                log.debug("   {}", childChan.getName());
-                currentChildChans.add(childChan);
-            }
+        for (Channel childChan : s.getChildChannels()) {
+            log.debug("   {}", childChan.getName());
+            currentChildChans.add(childChan);
         }
 
         Long newBaseChannelId = (Long) ((DynaActionForm) formIn).get(NEW_BASE_CHANNEL_ID);

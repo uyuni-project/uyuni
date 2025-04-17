@@ -3254,11 +3254,6 @@ public class SystemHandler extends BaseHandler {
     public List<Channel> listSubscribedChildChannels(User loggedInUser, Integer sid) {
         Server server = lookupServer(loggedInUser, sid);
         Set<Channel> childChannels = server.getChildChannels();
-
-        if (childChannels == null) {
-            return new ArrayList<>();
-        }
-
         return new ArrayList<>(childChannels);
     }
 
