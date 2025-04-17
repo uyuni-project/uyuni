@@ -67,13 +67,13 @@ Then(/^it should be possible to use the custom download endpoint$/) do
 end
 
 Then(/^it should be possible to reach the build sources$/) do
-  if product == 'Uyuni'
-    # TODO: move that internal resource to some other external location
-    log 'Sanity check not implemented, move resource to external network first'
-  else
-    url = 'http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP5/x86_64/product/media.1/products.key'
-    get_target('server').run("curl --insecure --location #{url} --output /dev/null")
-  end
+  example_product =
+    if product == 'Uyuni'
+      'distribution/leap-micro/5.5/product/repo/Leap-Micro-5.5-x86_64-Media1/media.1/products'
+    else
+      'ibs/SUSE/Products/SLE-Product-SLES/15-SP6/x86_64/product/media.1/products'
+    end
+  get_target('server').run("curl --insecure --location http://#{$build_sources}/#{example_product} --output /dev/null")
 end
 
 Then(/^it should be possible to reach the Docker profiles$/) do
