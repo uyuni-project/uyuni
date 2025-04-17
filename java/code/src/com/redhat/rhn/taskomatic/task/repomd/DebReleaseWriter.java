@@ -17,7 +17,6 @@ package com.redhat.rhn.taskomatic.task.repomd;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
-import com.redhat.rhn.domain.rhnpackage.PackageArch;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
