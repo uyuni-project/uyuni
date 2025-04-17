@@ -60,7 +60,6 @@ public class PasswordPolicyService {
     public void savePasswordPolicy(PasswordPolicy passwordPolicyIn) {
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         List<RhnConfiguration> configs = new ArrayList<>();
-        // Build configurations using the buildConfiguration method and add them to the configs list
         configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN, passwordPolicyIn.getMinLength()));
         configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX, passwordPolicyIn.getMaxLength()));
         configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_DIGIT_FLAG, passwordPolicyIn.isDigitFlag()));
@@ -78,7 +77,6 @@ public class PasswordPolicyService {
                 passwordPolicyIn.getMaxCharacterOccurrence()));
         configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHARACTERS,
                 passwordPolicyIn.getSpecialChars()));
-        // Perform bulk update
         factory.bulkUpdate(configs);
     }
 
