@@ -20,8 +20,6 @@ import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION
 import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -83,7 +81,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
-import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
@@ -108,8 +105,10 @@ import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
+import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.custom.AppStreamsChangeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.CoCoAttestationRequestData;
@@ -175,6 +174,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -711,8 +712,8 @@ public class SaltUtils {
         else if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
             handleFilesDiff(jsonResult, action);
             serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.diffed"));
-            /**
-             * For comparison we are simply using file.managed state in dry-run mode, Salt doesn't return
+            /*
+             * For comparison, we are simply using file.managed state in dry-run mode, Salt doesn't return
              * 'result' attribute(actionFailed method check this attribute) when File(File, Dir, Symlink)
              * already exist on the system and action is considered as Failed even though there was no error.
              */
@@ -935,7 +936,7 @@ public class SaltUtils {
         return "Unable to parse dry run result";
     }
 
-    private void uploadSupportData(String bundleName, Path bundle, ServerAction serverAction) {
+    private void uploadSupportData(String uploadName, Path bundle, ServerAction serverAction) {
         var httpClient = new HttpClientAdapter();
         var action = (SupportDataAction)serverAction.getParentAction();
         var host = switch (action.getDetails().getGeoType()) {
@@ -943,87 +944,140 @@ public class SaltUtils {
             case US -> "https://support-ftp.us.suse.com";
         };
 
-        var url = host + "/incoming/upload.php?file=" + bundleName;
-        HttpPut put = new HttpPut(url);
-        //TODO: find out if this is required or if we can use a susemanager specific user agent
-        put.setHeader("User-Agent", "SupportConfig");
-        put.setEntity(new FileEntity(bundle.toFile()));
-        try {
-            var response = httpClient.executeRequest(put);
-            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-                serverAction.fail("Error uploading supportdata status code: %d"
-                        .formatted(response.getStatusLine().getStatusCode()));
-                return;
+        if (Files.exists(bundle)) {
+            var url = host + "/incoming/upload.php?file=" + uploadName;
+            HttpPut put = new HttpPut(url);
+            put.setHeader("User-Agent", "SupportConfig");
+            put.setEntity(new FileEntity(bundle.toFile()));
+            try {
+                var response = httpClient.executeRequest(put);
+                if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                    serverAction.fail("Error uploading supportdata status code: %d"
+                            .formatted(response.getStatusLine().getStatusCode()));
+                    return;
+                }
+                serverAction.setResultMsg(uploadName + " uploaded");
+                Files.deleteIfExists(bundle);
             }
-            serverAction.setResultMsg(bundleName + " uploaded");
-            //TODO: should we cleanup the entire action directory?
-            Files.deleteIfExists(bundle);
+            catch (IOException e) {
+                serverAction.fail("Error uploading supportdata: %s".formatted(e.getMessage()));
+            }
         }
-        catch (IOException e) {
-            serverAction.fail("Error uploading supportdata: %s".formatted(e.getMessage()));
+        else {
+            serverAction.fail("Error uploading supportdata: file '%s' does not exist".formatted(bundle.toString()));
+        }
+    }
+
+    private Optional<Path> fetchSupportFiles(MinionServer minionServer, ServerAction serverAction,
+                                             Path supportDataDir) {
+        var actionId = serverAction.getParentAction().getId();
+        var hostname = minionServer.getMinionId();
+        if (minionServer.isSSHPush()) {
+            try {
+                var actionPath = MinionActionUtils.getActionPath(minionServer, actionId);
+
+                //TODO: add additional options required for tunnel
+                var user = SaltSSHService.getSSHUser();
+                var port = Optional.ofNullable(minionServer.getSSHPushPort()).orElse(SaltSSHService.SSH_PUSH_PORT);
+                var rsync = "rsync -p --chown salt:susemanager --chmod=660 -e 'ssh -o ConnectTimeout=2 -p %d -i %s' %s@%s:%s/* %s/."
+                        .formatted(port, SaltSSHService.SSH_KEY_PATH, user, hostname, supportDataDir, actionPath);
+                var copyResult = saltApi.execOnMaster(rsync);
+                String error = copyResult.orElse("Error copying supportdata");
+                if (!error.isBlank()) {
+                    serverAction.fail(error);
+                    return Optional.empty();
+                }
+
+                return Optional.of(actionPath);
+            }
+            catch (IOException e) {
+                serverAction.fail("Error copying supportdata: %s".formatted(e.getMessage()));
+                return Optional.empty();
+            }
+            finally {
+                var cleanupResult = saltApi.callSync(
+                        com.suse.salt.netapi.calls.modules.File.remove(supportDataDir.toString()),
+                        minionServer.getMinionId()
+                );
+                if (cleanupResult.isEmpty()) {
+                    LOG.warn("Error cleaning up supportdata files '{}' on minion: {}",
+                            supportDataDir, minionServer.getMinionId());
+                }
+            }
+        }
+        else {
+            var copyResult = saltApi.storeMinionScapFiles(minionServer, supportDataDir.toString(), actionId);
+            if (copyResult.containsKey(false)) {
+                serverAction.fail("Error copying supportdata: %s".formatted(copyResult.get(false)));
+                return Optional.empty();
+            }
+            return Optional.of(Paths.get(copyResult.get(true)));
         }
     }
 
     private Optional<Path> fetchSupportData(JsonElement jsonResult, ServerAction serverAction,
-                                            MinionServer minionServer, String bundleName) {
+                                            MinionServer minionServer) {
         try {
+
             var result = Json.GSON.fromJson(jsonResult, SupportDataStateResult.class);
-            var actionId = serverAction.getParentAction().getId();
             var supportDataOpt = result.getSupportData();
             if (supportDataOpt.isPresent()) {
                 var supportData = supportDataOpt.get();
                 if (!supportData.isResult()) {
-                    serverAction.fail("Error fetching supportdata from minion: %s".formatted(supportData.getComment()));
+                    serverAction.fail("Error fetching supportdata from minion: %s"
+                            .formatted(supportData.getComment()));
                     return Optional.empty();
                 }
+                if (!supportData.getChanges().getRet().isSuccess()) {
+                    serverAction.fail("Error fetching supportdata: %s"
+                            .formatted(supportData.getChanges().getRet().getError()));
+                    return Optional.empty();
+                }
+
                 var supportDataDir = Paths.get(supportData.getChanges().getRet().getSupportDataDir());
-                var copyResult = saltApi.storeMinionScapFiles(minionServer, supportDataDir.toString(), actionId);
-                if (copyResult.containsKey(false)) {
-                    //TODO: when and how is salts upload directory cleaned up in case of failure
-                    serverAction.fail("Error copying supportdata: %s".formatted(copyResult.get(false)));
-                    return Optional.empty();
-                }
-                var actionPath = Paths.get(copyResult.get(true));
-                var bundle = actionPath.resolve(bundleName);
 
-                List<Path> supportDataFiles;
-                try (var files = Files.list(actionPath)) {
-                    supportDataFiles = files.toList();
-                }
-                catch (IOException e) {
-                    serverAction.fail("Error listing files in '%s': %s".formatted(actionPath, e.getMessage()));
-                    return Optional.empty();
-                }
+                return fetchSupportFiles(minionServer, serverAction, supportDataDir)
+                        .flatMap(actionPath -> {
+                            var bundle = actionPath.resolve("bundle.tar");
 
-                try {
-                    TarArchiveOutputStream outputStream =
-                            new TarArchiveOutputStream(Files.newOutputStream(bundle));
-                    //TODO: find out which ones are commonly used by the commandline tool
-                    outputStream.setBigNumberMode(TarArchiveOutputStream.BIGNUMBER_POSIX);
-                    outputStream.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
-                    for (var file : supportDataFiles) {
-                        var entry = outputStream.createArchiveEntry(file.toFile(), file.getFileName().toString());
-                        outputStream.putArchiveEntry(entry);
-                        Files.copy(file, outputStream);
-                        outputStream.closeArchiveEntry();
-                    }
-                    outputStream.close();
-                    return Optional.of(bundle);
-                }
-                catch (IOException e) {
-                    serverAction.fail("Error packaging supportdata: %s".formatted(e.getMessage()));
-                    return Optional.empty();
-                }
-                finally {
-                    for (var file : supportDataFiles) {
-                        try {
-                            Files.deleteIfExists(file);
-                        }
-                        catch (IOException e) {
-                            LOG.error("Error deleting file '{}': {}", file, e.getMessage(), e);
-                        }
-                    }
-                }
+                            List<Path> supportDataFiles;
+                            try (var files = Files.list(actionPath)) {
+                                supportDataFiles = files.toList();
+                            }
+                            catch (IOException e) {
+                                serverAction.fail("Error listing files in '%s': %s"
+                                        .formatted(actionPath, e.getMessage()));
+                                return Optional.empty();
+                            }
+
+                            try (var outputStream = new TarArchiveOutputStream(Files.newOutputStream(bundle))) {
+                                outputStream.setBigNumberMode(TarArchiveOutputStream.BIGNUMBER_POSIX);
+                                outputStream.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
+                                for (var file : supportDataFiles) {
+                                    var entry = outputStream.createArchiveEntry(file.toFile(), file.getFileName()
+                                            .toString());
+                                    outputStream.putArchiveEntry(entry);
+                                    Files.copy(file, outputStream);
+                                    outputStream.closeArchiveEntry();
+                                }
+                                return Optional.of(bundle);
+                            }
+                            catch (IOException e) {
+                                serverAction.fail("Error packaging supportdata: %s".formatted(e.getMessage()));
+                                return Optional.empty();
+                            }
+                            finally {
+                                supportDataFiles.forEach(file -> {
+                                    try {
+                                        Files.deleteIfExists(file);
+                                    }
+                                    catch (IOException e) {
+                                        LOG.error("Error deleting file '{}': {}", file, e.getMessage(), e);
+                                    }
+                                });
+                            }
+                        });
+
             }
             else {
                 serverAction.fail("Error missing supportdata result");
@@ -1039,25 +1093,29 @@ public class SaltUtils {
     private void handleSupportData(JsonElement jsonResult, ServerAction serverAction) {
         var action = (SupportDataAction)serverAction.getParentAction();
         var caseNumber = action.getDetails().getCaseNumber();
-        serverAction.getServer().asMinionServer().ifPresentOrElse(minionServer -> {
-            var bundleName = caseNumber + "_" + action.getId() + "_" + minionServer.getMinionId() + ".tar";
-            //TODO: move action path function to more general place
-            var actionPath = Paths.get(Config.get().getString(ConfigDefaults.MOUNT_POINT))
-                    .resolve(ScapFileManager.getActionPath(action.getOrg().getId(),
-                            minionServer.getId(), action.getId()));
-            var bundle = actionPath.resolve(bundleName);
+        serverAction.getServer().asMinionServer().ifPresentOrElse(
+                minionServer -> {
+                    var actionPath = MinionActionUtils.getFullActionPath(action.getOrg().getId(), minionServer.getId(),
+                            action.getId());
+                    var bundle = actionPath.resolve("bundle.tar");
+                    var dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_hhmm").withZone(ZoneOffset.UTC);
+                    var prefix = minionServer.isProxy() ? "PXY" :
+                            minionServer.isMgrServer() ? "SRV" : "MIN";
+                    var shortHostname = minionServer.getHostname().split("\\.")[0];
+                    var uploadName = "SR%s_%s_%s_%s.tar".formatted(caseNumber, prefix, shortHostname,
+                            dateTimeFormatter.format(Instant.now()));
 
-            if (jsonResult.isJsonPrimitive() && jsonResult.getAsJsonPrimitive().isString() &&
-                    jsonResult.getAsJsonPrimitive().getAsString().equals("supportdata")) {
-                uploadSupportData(bundleName, bundle, serverAction);
-            }
-            else {
-                fetchSupportData(jsonResult, serverAction, minionServer, bundleName)
-                        .ifPresent(path -> uploadSupportData(bundleName, path, serverAction));
-            }
-        }, () -> {
-            serverAction.fail("server is not a minion: %d".formatted(serverAction.getServer().getId()));
-        });
+                    if (jsonResult.isJsonPrimitive() && jsonResult.getAsJsonPrimitive().isString() &&
+                            jsonResult.getAsJsonPrimitive().getAsString().equals("supportdata")) {
+                        uploadSupportData(uploadName, bundle, serverAction);
+                    }
+                    else {
+                        fetchSupportData(jsonResult, serverAction, minionServer)
+                                .ifPresent(path -> uploadSupportData(uploadName, path, serverAction));
+                    }
+                },
+                () -> serverAction.fail("server is not a minion: %d".formatted(serverAction.getServer().getId()))
+        );
     }
 
     /**
