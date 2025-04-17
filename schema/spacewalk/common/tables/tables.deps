@@ -261,6 +261,7 @@ susePackageState                   :: rhnPackageName rhnPackageEVR rhnPackageArc
 suseProducts                       :: rhnPackageArch rhnChannelFamily
 suseProductChannel                 :: suseProducts rhnChannel
 suseProductExtension               :: suseProducts
+suseSccProxy                       :: scc_proxy_status_t
 suseChannelTemplate                :: suseProducts suseSCCRepository
 suseSaltPillar                     :: rhnServer rhnServerGroup web_customer
 suseSCCOrderItem                   :: suseCredentials
