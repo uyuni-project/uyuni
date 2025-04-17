@@ -36,6 +36,7 @@ import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
 import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
+import com.suse.scc.proxy.SCCProxyFactory;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,6 +65,7 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
     private Integer systemSize;
     private Integer batchSize;
 
+    private SCCProxyFactory sccProxyFactory = new SCCProxyFactory();
 
     @Override
     @BeforeEach
@@ -115,7 +117,8 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
         assertPreConditions();
 
         // execution
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         sccSystemRegistrationManager.register(testSystems, getCredentials());
 
         // assertions
@@ -136,7 +139,8 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
         assertPreConditions();
 
         // execution
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         sccSystemRegistrationManager.register(testSystems, getCredentials());
 
         // assertions
@@ -156,7 +160,8 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
         assertPreConditions();
 
         // execution
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         sccSystemRegistrationManager.register(testSystems, getCredentials());
 
         // assertions
@@ -191,7 +196,8 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
         assertPreConditions();
 
         // execution
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         sccSystemRegistrationManager.register(testSystems, getCredentials());
 
         // assertions
@@ -253,7 +259,8 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
         assertPreConditions();
 
         // execution
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         sccSystemRegistrationManager.register(testSystems, getCredentials());
 
         // assertions
