@@ -11,7 +11,11 @@
 package com.suse.scc;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
+import static spark.Spark.delete;
 import static spark.Spark.get;
+import static spark.Spark.put;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
@@ -32,11 +36,18 @@ import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCFileClient;
 import com.suse.scc.client.SCCWebClient;
+import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
+import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCRepositoryJson;
+import com.suse.scc.model.SCCSystemCredentialsJson;
+import com.suse.scc.proxy.SCCProxyManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
+import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,6 +57,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.util.Base64;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -71,14 +85,29 @@ public class SCCEndpoints {
 
     private static final Logger LOG = LogManager.getLogger(SCCEndpoints.class);
 
+    private final SCCProxyManager sccProxyManager;
+
     /**
      * Constructor
-     * @param uuidIn the UUID
+     *
+     * @param uuidIn   the UUID
      * @param sccUrlIn the SCC URL
      */
     public SCCEndpoints(String uuidIn, URI sccUrlIn) {
+        this(uuidIn, sccUrlIn, new SCCProxyManager());
+    }
+
+    /**
+     * Constructor
+     *
+     * @param uuidIn   the UUID
+     * @param sccUrlIn the SCC URL
+     * @param sccProxyManagerIn the SCC proxy manager
+     */
+    public SCCEndpoints(String uuidIn, URI sccUrlIn, SCCProxyManager sccProxyManagerIn) {
         this.uuid = uuidIn;
         this.sccUrl = sccUrlIn;
+        this.sccProxyManager = sccProxyManagerIn;
     }
 
     private Route withSCCAuth(RouteWithSCCAuth route) {
@@ -118,6 +147,8 @@ public class SCCEndpoints {
         };
     }
 
+    public static final String SHOULD_BE_REMOVED = "/hub/scc";
+
     /**
      * Initialize routs
      * @param jade jade
@@ -128,11 +159,19 @@ public class SCCEndpoints {
         get("/hub/scc/connect/organizations/subscriptions", asJson(withSCCAuth(this::subscriptions)));
         get("/hub/scc/connect/organizations/orders", asJson(withSCCAuth(this::orders)));
         get("/hub/scc/suma/product_tree.json", asJson(this::productTree));
+        //
+        put(SHOULD_BE_REMOVED + "/connect/organizations/systems", asJson(withSCCAuth(this::createSystems)));
+        delete(SHOULD_BE_REMOVED + "/connect/organizations/systems/:id", asJson(withSCCAuth(this::deleteSystem)));
     }
 
     private final Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+            .create();
+
+    private final Gson gsonSccProxy = new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+            .serializeNulls()
             .create();
 
     /**
@@ -296,5 +335,71 @@ public class SCCEndpoints {
      */
     public String productTree(Request request, Response response) {
         return serveEndpoint(SCCClient::productTree);
+    }
+
+    /**
+     * SCC proxy endpoint: register a list of system (put /connect/organizations/systems)
+     *
+     * @param request
+     * @param response
+     * @param credentials
+     * @return a {@Link SCCOrganizationSystemsUpdateResponse} json object
+     */
+    public String createSystems(Request request, Response response, HubSCCCredentials credentials) {
+        try {
+            TypeToken<Map<String, List<SCCRegisterSystemJson>>> typeToken = new TypeToken<>() { };
+            Map<String, List<SCCRegisterSystemJson>> payload = gson.fromJson(request.body(), typeToken.getType());
+            if (!payload.containsKey("systems")) {
+                return badRequest(response, "wrong json input: missing systems key");
+            }
+
+            List<SCCRegisterSystemJson> systemsList = payload.get("systems");
+
+            List<SCCSystemCredentialsJson> systemsResponse = sccProxyManager.createSystems(systemsList,
+                            credentials.getPeripheralUrl())
+                    .stream()
+                    .map(r -> new SCCSystemCredentialsJson(
+                            r.getSccLogin(),
+                            r.getSccPasswd(),
+                            r.getProxyId(),
+                            new Date(0)))
+                    .toList();
+
+            response.status(HttpStatus.SC_CREATED);
+            return gsonSccProxy.toJson(new SCCOrganizationSystemsUpdateResponse(systemsResponse));
+        }
+        catch (JsonSyntaxException eIn) {
+            return badRequest(response, eIn.getMessage());
+        }
+        catch (Exception ex) {
+            return internalServerError(response, ex.getMessage());
+        }
+    }
+
+    /**
+     * SCC proxy endpoint: delete a system (delete /connect/organizations/systems/id)
+     *
+     * @param request
+     * @param response
+     * @param credentials
+     * @return empty body and http status code 204 (successfully deleted) or 404 (not found)
+     */
+    public String deleteSystem(Request request, Response response, HubSCCCredentials credentials) {
+        try {
+            long systemProxyId = Long.parseLong(request.params("id"));
+
+            if (sccProxyManager.deleteSystem(systemProxyId)) {
+                response.status(HttpStatus.SC_NO_CONTENT); //204
+                return "";
+            }
+            response.status(HttpStatus.SC_NOT_FOUND); //404
+            return "";
+        }
+        catch (NumberFormatException ex) {
+            return badRequest(response, "wrong input: invalid id (%s)".formatted(request.params("id")));
+        }
+        catch (Exception ex) {
+            return internalServerError(response, ex.getMessage());
+        }
     }
 }
