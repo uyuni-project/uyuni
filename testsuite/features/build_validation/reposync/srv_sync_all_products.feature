@@ -637,10 +637,10 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I select "RHEL and Liberty 9 Base" as a product
     Then I should see the "RHEL and Liberty 9 Base" selected
     When I open the sub-list of the product "RHEL and Liberty 9 Base"
-    And I select "SUSE Liberty Linux 9" as a product
-    Then I should see the "SUSE Liberty Linux 9" selected
+    And I select "SUSE Liberty Linux 9 x86_64" as a product
+    Then I should see the "SUSE Liberty Linux 9 x86_64" selected
     When I click the Add Product button
-    And I wait until I see "SUSE Liberty Linux 9" product has been added
+    And I wait until I see "SUSE Liberty Linux 9 x86_64" product has been added
     And I wait until all synchronized channels for "sll-9" have finished
 
   @susemanager
