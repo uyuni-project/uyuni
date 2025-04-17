@@ -22,7 +22,6 @@ import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.reactor.PGEventStream;
@@ -40,6 +39,7 @@ import com.suse.manager.webui.services.impl.runner.MgrKiwiImageRunner;
 import com.suse.manager.webui.services.impl.runner.MgrRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.ElementCallJson;
+import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
@@ -100,16 +100,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.GroupPrincipal;
-import java.nio.file.attribute.PosixFileAttributeView;
-import java.nio.file.attribute.PosixFilePermission;
-import java.nio.file.attribute.PosixFilePermissions;
-import java.nio.file.attribute.UserPrincipalLookupService;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
@@ -281,6 +273,11 @@ public class SaltService implements SystemQuery, SaltApi {
                 return Optional.empty();
             }, Optional::of)
         );
+    }
+
+    @Override
+    public Optional<String> execOnMaster(String cmd) {
+        return callSync(MgrRunner.saltCmd(Cmd.run(cmd)));
     }
 
     /**
@@ -1219,36 +1216,21 @@ public class SaltService implements SystemQuery, SaltApi {
         return saltSSHService.bootstrapMinion(parameters, bootstrapMods, pillarData);
     }
 
+
+
     /**
      * {@inheritDoc}
      */
     @Override
     public Map<Boolean, String> storeMinionScapFiles(
             MinionServer minion, String uploadDir, Long actionId) {
-        String actionPath = ScapFileManager
+        String actionPath = MinionActionUtils
                 .getActionPath(minion.getOrg().getId(),
                         minion.getId(), actionId);
         Path mountPoint = Paths.get(com.redhat.rhn.common.conf.Config.get()
                 .getString(ConfigDefaults.MOUNT_POINT));
         try {
-            // create dirs
-            Path actionDir = Files.createDirectories(mountPoint.resolve(actionPath));
-
-            UserPrincipalLookupService lookupService = FileSystems.getDefault()
-                    .getUserPrincipalLookupService();
-            GroupPrincipal susemanagerGroup = lookupService
-                    .lookupPrincipalByGroupName("susemanager");
-            GroupPrincipal wwwGroup = lookupService
-                    .lookupPrincipalByGroupName("www");
-            // systems/<orgId>/<serverId>/actions/<actionId>
-            changeGroupAndPerms(actionDir, susemanagerGroup);
-            // systems/<orgId>/<serverId>/actions
-            actionDir = actionDir.getParent();
-            while (!actionDir.equals(mountPoint)) {
-                changeGroupAndPerms(actionDir, wwwGroup);
-                actionDir = actionDir.getParent();
-            }
-
+            MinionActionUtils.getActionPath(minion, actionId);
         }
         catch (IOException e) {
             LOG.error("Error creating dir {}", mountPoint.resolve(actionPath), e);
@@ -1298,30 +1280,6 @@ public class SaltService implements SystemQuery, SaltApi {
         );
     }
 
-    private void changeGroupAndPerms(Path dir, GroupPrincipal group) {
-        PosixFileAttributeView posixAttrs = Files
-                .getFileAttributeView(dir,
-                        PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
-        try {
-            Set<PosixFilePermission> wantedPers = PosixFilePermissions.fromString("rwxrwxr-x");
-            if (!posixAttrs.readAttributes().permissions().equals(wantedPers)) {
-                posixAttrs.setPermissions(wantedPers);
-            }
-        }
-        catch (IOException e) {
-            LOG.warn(String.format("Could not set 'rwxrwxr-x' permissions on %s: %s",
-                    dir, e.getMessage()));
-        }
-        try {
-            if (!posixAttrs.readAttributes().group().equals(group)) {
-                posixAttrs.setGroup(group);
-            }
-        }
-        catch (IOException e) {
-            LOG.warn(String.format("Could not set group on %s to %s: %s",
-                    dir, group, e.getMessage()));
-        }
-    }
 
     /**
      * {@inheritDoc}

@@ -18,6 +18,8 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 
+import com.suse.manager.webui.utils.MinionActionUtils;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,21 +84,9 @@ public class ScapFileManager {
     }
 
     private static String getStorageRelativePath(XccdfTestResult tr) {
-        return getActionPath(tr.getServer().getOrg().getId(),
+        return MinionActionUtils.getActionPath(tr.getServer().getOrg().getId(),
             tr.getServer().getId(), tr.getScapActionDetails().getParentAction().getId());
     }
 
-    /**
-     * Get the relative path of the storage directory assigned to a given org,
-     * system and action.
-     * @param orgId the org
-     * @param systemId the system
-     * @param actionId the action
-     * @return the path
-     */
-    public static String getActionPath(Long orgId, Long systemId, Long actionId) {
-        // an equivalent of rhnLib.get_action_path()
-        return "systems/" + orgId + "/" + systemId + "/actions/" + actionId;
-    }
 
 }
