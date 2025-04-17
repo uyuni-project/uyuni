@@ -15,10 +15,12 @@
 
 package com.suse.manager.webui.services.impl.runner;
 
+import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.RunnerCall;
 
 import com.google.gson.reflect.TypeToken;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -111,6 +113,22 @@ public class MgrRunner {
                 "dir_path", absolutePath,
                 "mode", modeString)),
                 new TypeToken<Boolean>() { });
+    }
+
+    /**
+     * Runs a salt execution module as a runner module on the master.
+     *
+     * @param localCall execution module call
+     * @param <R> type of the result
+     * @return the runner call
+     */
+    public static <R> RunnerCall<R> saltCmd(LocalCall<R> localCall) {
+        var payload = localCall.getPayload();
+        var fun = payload.get("fun");
+        var kwarg = Optional.ofNullable((Map<String, Object>)payload.get("kwarg"));
+        var map = new HashMap<>(kwarg.orElseGet(Map::of));
+        map.put("fun", fun);
+        return new RunnerCall<>("salt.cmd", Optional.of(map), localCall.getReturnType());
     }
 }
 

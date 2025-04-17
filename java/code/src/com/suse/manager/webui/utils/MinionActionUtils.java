@@ -17,6 +17,7 @@ package com.suse.manager.webui.utils;
 
 import static com.suse.utils.Opt.flatMap;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -43,8 +44,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.GroupPrincipal;
+import java.nio.file.attribute.PosixFileAttributeView;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.nio.file.attribute.UserPrincipalLookupService;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -53,6 +62,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -127,6 +137,94 @@ public class MinionActionUtils {
         }
 
         return serverAction;
+    }
+
+    private static void changeGroupAndPerms(Path dir, GroupPrincipal group) {
+        PosixFileAttributeView posixAttrs = Files
+                .getFileAttributeView(dir,
+                        PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+        try {
+            Set<PosixFilePermission> wantedPers = PosixFilePermissions.fromString("rwxrwxr-x");
+            if (!posixAttrs.readAttributes().permissions().equals(wantedPers)) {
+                posixAttrs.setPermissions(wantedPers);
+            }
+        }
+        catch (IOException e) {
+            LOG.warn(String.format("Could not set 'rwxrwxr-x' permissions on %s: %s",
+                    dir, e.getMessage()));
+        }
+        try {
+            if (!posixAttrs.readAttributes().group().equals(group)) {
+                posixAttrs.setGroup(group);
+            }
+        }
+        catch (IOException e) {
+            LOG.warn(String.format("Could not set group on %s to %s: %s",
+                    dir, group, e.getMessage()));
+        }
+    }
+
+    /**
+     * Get the relative path of the storage directory assigned to a given org,
+     * system and action.
+     * @param orgId the org
+     * @param systemId the system
+     * @param actionId the action
+     * @return the path
+     */
+    public static String getActionPath(Long orgId, Long systemId, Long actionId) {
+        // an equivalent of rhnLib.get_action_path()
+        return "systems/" + orgId + "/" + systemId + "/actions/" + actionId;
+    }
+
+    /**
+     * Returns a directory specific to an org/system/action combination to store files.
+     *
+     * @param orgId org id
+     * @param systemId system id
+     * @param actionId action id
+     * @return path to an org/system/action specific directory to store files
+     */
+    public static Path getFullActionPath(Long orgId, Long systemId, Long actionId) {
+        String actionPath = getActionPath(orgId, systemId, actionId);
+        Path mountPoint = Paths.get(com.redhat.rhn.common.conf.Config.get()
+                .getString(ConfigDefaults.MOUNT_POINT));
+        return mountPoint.resolve(actionPath);
+    }
+
+    /**
+     * Creates and returns a directory specific to an org/system/action combination to store files.
+     * @param minion minion
+     * @param actionId action id
+     * @return path to an org/system/action specific directory to store files
+     *
+     * @throws IOException in case of problems creating the directory or setting permissions
+     */
+    public static Path getActionPath(MinionServer minion, Long actionId) throws IOException {
+        String actionPath = getActionPath(minion.getOrg().getId(),
+                        minion.getId(), actionId);
+        Path mountPoint = Paths.get(com.redhat.rhn.common.conf.Config.get()
+                .getString(ConfigDefaults.MOUNT_POINT));
+        // create dirs
+        Path result = Files.createDirectories(mountPoint.resolve(actionPath));
+        Path actionDir = result;
+
+        UserPrincipalLookupService lookupService = FileSystems.getDefault()
+                .getUserPrincipalLookupService();
+        GroupPrincipal susemanagerGroup = lookupService
+                .lookupPrincipalByGroupName("susemanager");
+        GroupPrincipal wwwGroup = lookupService
+                .lookupPrincipalByGroupName("www");
+        // systems/<orgId>/<serverId>/actions/<actionId>
+        changeGroupAndPerms(actionDir, susemanagerGroup);
+        // systems/<orgId>/<serverId>/actions
+        actionDir = actionDir.getParent();
+        while (!actionDir.equals(mountPoint)) {
+            changeGroupAndPerms(actionDir, wwwGroup);
+            actionDir = actionDir.getParent();
+        }
+
+        return result;
     }
 
     /**
