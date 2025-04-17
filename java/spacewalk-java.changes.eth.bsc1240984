@@ -1,0 +1,2 @@
+- Ensure browser cache is busted when newer assets are available
+  (bsc#1240984)
