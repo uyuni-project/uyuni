@@ -173,13 +173,12 @@ public class SsmManager {
     public static List<ScheduleChannelChangesResultDto> scheduleChannelChanges(
             List<ChannelChangeDto> channelChanges, Date earliest, ActionChain actionChain, User user) {
         Stream<ChannelSelectionResult> withBaseChannelResults =
-                handleChannelChangesForSystemsWithBaseChannel(channelChanges, earliest, user);
+                handleChannelChangesForSystemsWithBaseChannel(channelChanges, user);
 
         DataResult<EssentialServerDto> systemsWithNoBaseChannel = SystemManager.systemsWithoutBaseChannelsInSet(user);
         Stream<ChannelSelectionResult> noBaseChannelResults =
                 systemsWithNoBaseChannel != null && !systemsWithNoBaseChannel.isEmpty() ?
-                handleChannelChangesForSystemsWithNoBaseChannel(channelChanges,
-                        earliest, user, systemsWithNoBaseChannel) :
+                handleChannelChangesForSystemsWithNoBaseChannel(channelChanges, user, systemsWithNoBaseChannel) :
                 Stream.empty();
 
         List<ChannelSelectionResult> allResults = Stream.concat(withBaseChannelResults, noBaseChannelResults)
@@ -221,20 +220,19 @@ public class SsmManager {
     }
 
     private static Stream<ChannelSelectionResult> handleChannelChangesForSystemsWithNoBaseChannel(
-            List<ChannelChangeDto> channelChanges, Date earliest, User user,
-            DataResult<EssentialServerDto> systemsWithNoBaseChannel) {
+            List<ChannelChangeDto> channelChanges, User user, DataResult<EssentialServerDto> systemsWithNoBaseChannel) {
 
         Set<ChannelChangeDto> srvChanges = channelChanges.stream()
                 .filter(ch -> !ch.getOldBaseId().isPresent())
                 .collect(Collectors.toSet());
 
         return systemsWithNoBaseChannel.stream()
-                .map(srv -> handleSingleSystemChannelAddition(srvChanges, srv, earliest, user))
+                .map(srv -> handleSingleSystemChannelAddition(srvChanges, srv, user))
                 .filter(Objects::nonNull);
     }
 
     private static ChannelSelectionResult handleSingleSystemChannelAddition(Set<ChannelChangeDto> srvChanges,
-            EssentialServerDto srvDto, Date earliest, User user) {
+            EssentialServerDto srvDto, User user) {
 
         return ChannelChangeFactory.parseChanges(srvChanges)
             .map(change-> change.handleChange(user, ServerFactory.lookupById(srvDto.getId()), new HashMap<>()))
@@ -242,7 +240,7 @@ public class SsmManager {
     }
 
     private static Stream<ChannelSelectionResult> handleChannelChangesForSystemsWithBaseChannel(
-            List<ChannelChangeDto> channelChanges, Date earliest, User user) {
+            List<ChannelChangeDto> channelChanges, User user) {
         return ChannelManager.baseChannelsInSet(user).stream().flatMap(spc -> {
             Channel currentBase = ChannelFactory.lookupById(spc.getId());
             List<Server> oldBaseServers = SsmManager.findServersInSetByChannel(user, currentBase.getId());
@@ -261,13 +259,13 @@ public class SsmManager {
                                     bc -> ChannelFactory.getAccessibleChildChannels(bc, user)));
 
             return oldBaseServers.stream()
-                    .map(srv -> handleSingleSystemChannelChange(srvChanges, earliest, user, currentBase, srv,
+                    .map(srv -> handleSingleSystemChannelChange(srvChanges, user, currentBase, srv,
                             accessibleChildsByBase));
         });
     }
 
     private static ChannelSelectionResult handleSingleSystemChannelChange(
-            Set<ChannelChangeDto> srvChanges, Date earliest, User user, Channel currentBase,
+            Set<ChannelChangeDto> srvChanges, User user, Channel currentBase,
             Server srv, Map<String, List<Channel>> accessibleChildsByBase) {
 
         return ChannelChangeFactory.parseChanges(srvChanges, currentBase)
