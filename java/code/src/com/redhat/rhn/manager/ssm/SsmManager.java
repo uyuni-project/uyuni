@@ -200,11 +200,11 @@ public class SsmManager {
     }
 
     private static List<ScheduleChannelChangesResultDto> scheduleChannelChanges(User user, Date earliest,
-            ActionChain actionChain, Map<ChannelSelection, List<ChannelSelectionResult>> succeded,
+            ActionChain actionChain, Map<ChannelSelection, List<ChannelSelectionResult>> succeeded,
             Map<String, List<ChannelSelectionResult>> errored) {
-        Stream<ScheduleChannelChangesResultDto> succededResults =
-                succeded.entrySet().stream().map(e ->
-                           scheduleSubscribeChannelsAction(succeded.get(e.getKey()),
+        Stream<ScheduleChannelChangesResultDto> succeededResults =
+                succeeded.entrySet().stream().map(e ->
+                           scheduleSubscribeChannelsAction(succeeded.get(e.getKey()),
                                                            e.getKey().getNewBaseChannel(),
                                                            e.getKey().getChildChannels(),
                                                            user, earliest, actionChain)
@@ -216,7 +216,7 @@ public class SsmManager {
                 )
         ).flatMap(Function.identity());
 
-        return Stream.concat(succededResults, erroredResults).collect(Collectors.toList());
+        return Stream.concat(succeededResults, erroredResults).collect(Collectors.toList());
     }
 
     private static Stream<ChannelSelectionResult> handleChannelChangesForSystemsWithNoBaseChannel(
@@ -251,7 +251,7 @@ public class SsmManager {
                     .filter(ch -> ch.getOldBaseId().map(currentBase.getId()::equals).orElse(false))
                     .collect(Collectors.toSet());
 
-            Map<String, List<Channel>> accessibleChildsByBase =
+            Map<String, List<Channel>> accessibleChildrenByBase =
                     oldBaseServers.stream()
                             .map(Server::getBaseChannel)
                             .distinct()
@@ -260,16 +260,16 @@ public class SsmManager {
 
             return oldBaseServers.stream()
                     .map(srv -> handleSingleSystemChannelChange(srvChanges, user, currentBase, srv,
-                            accessibleChildsByBase));
+                            accessibleChildrenByBase));
         });
     }
 
     private static ChannelSelectionResult handleSingleSystemChannelChange(
             Set<ChannelChangeDto> srvChanges, User user, Channel currentBase,
-            Server srv, Map<String, List<Channel>> accessibleChildsByBase) {
+            Server srv, Map<String, List<Channel>> accessibleChildrenByBase) {
 
         return ChannelChangeFactory.parseChanges(srvChanges, currentBase)
-            .map(channelChange -> channelChange.handleChange(user, srv, accessibleChildsByBase))
+            .map(channelChange -> channelChange.handleChange(user, srv, accessibleChildrenByBase))
             .orElseGet(() -> {
                 LOG.error("Invalid channel change for serverId={}", srv.getId());
                 return new ChannelSelectionResult(srv, "invalid_change");
