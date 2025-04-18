@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-11 13:33+0200\n"
+"POT-Creation-Date: 2025-04-18 12:04+0200\n"
 "PO-Revision-Date: 2025-04-14 14:56+0000\n"
 "Last-Translator: \"Marina J. Donis\" <marinajdonis@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend-4-3/"
@@ -1235,7 +1235,8 @@ msgstr "       extinto: %d"
 #: ../satellite_tools/messages.py:76
 #, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr "   Recuperando / analizando metadatos *relevantes* del paquete: %s (%s)"
+msgstr ""
+"   Recuperando / analizando metadatos *relevantes* del paquete: %s (%s)"
 
 #: ../satellite_tools/messages.py:77
 #, python-format
