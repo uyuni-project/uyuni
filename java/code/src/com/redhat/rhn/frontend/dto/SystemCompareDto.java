@@ -260,11 +260,9 @@ public class SystemCompareDto {
         for (Server system : servers) {
             List keys = new LinkedList<>();
             Set<Channel> childChannels = system.getChildChannels();
-            if (childChannels != null) {
-                for (Channel channel : childChannels) {
-                    keys.add(channel.getName());
-                    idMap.put(channel.getName(), channel.getId().toString());
-                }
+            for (Channel channel : childChannels) {
+                keys.add(channel.getName());
+                idMap.put(channel.getName(), channel.getId().toString());
             }
             ret.add(keys);
         }
@@ -335,11 +333,9 @@ public class SystemCompareDto {
                 keys.add(system.getBaseChannel().getChannelFamily().getName());
             }
 
-            if (system.getChildChannels() != null) {
-                for (Channel channel : system.getChildChannels()) {
-                    if (!channel.isCustom()) {
-                        keys.add(channel.getChannelFamily().getName());
-                    }
+            for (Channel channel : system.getChildChannels()) {
+                if (!channel.isCustom()) {
+                    keys.add(channel.getChannelFamily().getName());
                 }
             }
             ret.add(keys);
