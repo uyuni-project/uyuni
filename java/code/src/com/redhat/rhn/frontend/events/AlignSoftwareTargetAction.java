@@ -21,6 +21,7 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
+import com.redhat.rhn.domain.contentmgmt.ContentFilterEntity;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
@@ -54,7 +55,7 @@ public class AlignSoftwareTargetAction implements MessageAction {
                 .lookupSwEnvironmentTargetById(targetId)
                 .orElseThrow(() -> new EntityNotExistsException(targetId));
         Channel targetChannel = target.getChannel();
-        List<ContentFilter> filters = msg.getFilters();
+        List<ContentFilter<? extends ContentFilterEntity>> filters = msg.getFilters();
 
         try {
             if (!UserManager.verifyChannelAdmin(msg.getUser(), targetChannel)) {

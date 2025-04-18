@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.contentmgmt.modulemd;
 
+import com.redhat.rhn.domain.contentmgmt.ContentFilterEntity;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
@@ -22,7 +24,7 @@ import java.util.Objects;
 /**
  * Represents a module in a modular repository
  */
-public class Module {
+public class Module implements ContentFilterEntity {
 
     private String name;
     private String stream;
