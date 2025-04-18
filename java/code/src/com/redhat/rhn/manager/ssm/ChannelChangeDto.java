@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 SUSE LLC
+ * Copyright (c) 2018--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.redhat.rhn.manager.ssm;
@@ -24,19 +20,10 @@ import java.util.Optional;
  */
 public class ChannelChangeDto {
 
-    /**
-     * What to do with a channel.
-     */
-    public enum ChannelAction {
-        SUBSCRIBE,
-        UNSUBSCRIBE,
-        NO_CHANGE
-    }
-
     private Optional<Long> oldBaseId;
     private Optional<Long> newBaseId;
     private boolean newBaseDefault;
-    private Map<Long, ChannelAction> childChannelActions = new HashMap<>();
+    private Map<Long, ChannelChangeAction> childChannelActions = new HashMap<>();
 
     /**
      * @return oldBaseId to get
@@ -83,14 +70,14 @@ public class ChannelChangeDto {
     /**
      * @return childChannels to get
      */
-    public Map<Long, ChannelAction> getChildChannelActions() {
+    public Map<Long, ChannelChangeAction> getChildChannelActions() {
         return childChannelActions;
     }
 
     /**
      * @param childChannelsIn to set
      */
-    public void setChildChannelActions(Map<Long, ChannelAction> childChannelsIn) {
+    public void setChildChannelActions(Map<Long, ChannelChangeAction> childChannelsIn) {
         this.childChannelActions = childChannelsIn;
     }
 }

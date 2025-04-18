@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -35,6 +36,7 @@ import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.manager.ssm.channelchange.ChannelChangeFactory;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -233,17 +235,10 @@ public class SsmManager {
 
     private static ChannelSelectionResult handleSingleSystemChannelAddition(Set<ChannelChangeDto> srvChanges,
             EssentialServerDto srvDto, Date earliest, User user) {
-        Server srv = ServerFactory.lookupById(srvDto.getId());
 
-        if (defaultBaseChange(srvChanges)) {
-            return handleDefaultBaseChannelChange(earliest, user, srv, srvChanges, new HashMap<>());
-        }
-        else if (explicitChange(srvChanges)) {
-            return handleExplicitBaseChannelChange(earliest, user, Optional.empty(), srv,
-                    srvChanges.stream().findFirst().get(), new HashMap<>());
-        }
-        // no child-only changes possible in case of systems without a base channel
-        return null;
+        return ChannelChangeFactory.parseChanges(srvChanges)
+            .map(change-> change.handleChange(user, ServerFactory.lookupById(srvDto.getId()), new HashMap<>()))
+            .orElse(null);
     }
 
     private static Stream<ChannelSelectionResult> handleChannelChangesForSystemsWithBaseChannel(
@@ -275,89 +270,12 @@ public class SsmManager {
             Set<ChannelChangeDto> srvChanges, Date earliest, User user, Channel currentBase,
             Server srv, Map<String, List<Channel>> accessibleChildsByBase) {
 
-        if (defaultBaseChange(srvChanges)) {
-            return handleDefaultBaseChannelChange(earliest, user, srv, srvChanges, accessibleChildsByBase);
-        }
-        else if (explicitChange(srvChanges)) {
-            return handleExplicitBaseChannelChange(earliest, user,  Optional.of(currentBase), srv,
-                    srvChanges.stream().findFirst().get(), accessibleChildsByBase);
-        }
-        else if (onlyChildChannelsChange(srvChanges)) {
-            ChannelChangeDto srvChange = srvChanges.stream().findFirst().get();
-            Set<Channel> childChannels = getChildChannelsForChange(user, srv, srvChange, srv.getBaseChannel(),
-                    accessibleChildsByBase);
-
-            return new ChannelSelectionResult(srv, new ChannelSelection(Optional.empty(), childChannels));
-        }
-        else {
-            LOG.error("Invalid channel change for serverId={}", srv.getId());
-            return new ChannelSelectionResult(srv, "invalid_change");
-        }
-    }
-
-    private static ChannelSelectionResult handleExplicitBaseChannelChange(Date earliest, User user,
-            Optional<Channel> currentBase, Server srv, ChannelChangeDto srvChange,
-            Map<String, List<Channel>> accessibleChildsByBase) {
-
-        boolean baseChange =
-                (currentBase.isPresent() && !currentBase.get().getId().equals(srvChange.getNewBaseId().orElse(null))) ||
-                !(currentBase.isPresent() && srvChange.getNewBaseId().isPresent());
-
-        boolean newBaseIsCompatible = true;
-        if (baseChange) {
-            if (currentBase.isPresent()) {
-                List<EssentialChannelDto> compatibleBaseChannels = ChannelManager
-                        .listCompatibleBaseChannelsForChannel(user, currentBase.get());
-                newBaseIsCompatible =
-                        // new base is in the compatible channels list
-                        compatibleBaseChannels.stream()
-                                .anyMatch(cbc -> cbc.getId().equals(srvChange.getNewBaseId().orElse(null)));
-
-            }
-            else {
-                // system doesn't have a base
-                List<EssentialChannelDto> availableBaseChannels = ChannelManager.listBaseChannelsForSystem(user, srv);
-                newBaseIsCompatible = availableBaseChannels.stream()
-                        .anyMatch(abc -> abc.getId().equals(srvChange.getNewBaseId().orElse(null)));
-            }
-        }
-
-        if (!newBaseIsCompatible) {
-            String baseChannelId = Optional.ofNullable(srv.getBaseChannel()).map(b -> b.getId() + "").orElse("none");
-            LOG.error("New base id={} not compatible with base id={} for serverId={}", srvChange.getNewBaseId().get(),
-                    baseChannelId, srv.getId());
-            return new ChannelSelectionResult(srv, "incompatible_base");
-        }
-        else {
-            Channel newBaseChannel = ChannelFactory.lookupById(srvChange.getNewBaseId().get());
-            Set<Channel> childChannels = getChildChannelsForChange(user, srv, srvChange, newBaseChannel,
-                    accessibleChildsByBase);
-
-            return new ChannelSelectionResult(srv, new ChannelSelection(Optional.of(newBaseChannel), childChannels));
-        }
-    }
-
-    private static ChannelSelectionResult handleDefaultBaseChannelChange(Date earliest, User user,
-            Server srv, Set<ChannelChangeDto> srvChanges, Map<String, List<Channel>> accessibleChildsByBase) {
-
-        Optional<Channel> guessedChannel =
-                ChannelManager.guessServerBaseChannel(user, srv.getId());
-        if (!guessedChannel.isPresent()) {
-            LOG.error("Could not guess base channel for serverId={} user={}", srv.getId(), user.getLogin());
-            return new ChannelSelectionResult(srv, "no_base_channel_guess");
-        }
-        Optional<ChannelChangeDto> srvChange = getChangeByDefaultBase(srvChanges, guessedChannel.get());
-        if (srvChange.isPresent()) {
-            Channel newBaseChannel = ChannelFactory.lookupById(srvChange.get().getNewBaseId().get());
-            Set<Channel> childChannels = getChildChannelsForChange(user, srv, srvChange.get(), newBaseChannel,
-                    accessibleChildsByBase);
-
-            return new ChannelSelectionResult(srv, new ChannelSelection(Optional.of(newBaseChannel), childChannels));
-        }
-        else {
-            LOG.warn("No base channel change found for serverId={}", srv.getId());
-            return new ChannelSelectionResult(srv, "no_base_change_found");
-        }
+        return ChannelChangeFactory.parseChanges(srvChanges, currentBase)
+            .map(channelChange -> channelChange.handleChange(user, srv, accessibleChildsByBase))
+            .orElseGet(() -> {
+                LOG.error("Invalid channel change for serverId={}", srv.getId());
+                return new ChannelSelectionResult(srv, "invalid_change");
+            });
     }
 
     private static Set<ScheduleChannelChangesResultDto> scheduleSubscribeChannelsAction(
@@ -384,67 +302,6 @@ public class SsmManager {
                     .map(r -> new ScheduleChannelChangesResultDto(SsmServerDto.from(r.getServer()), "taskomatic_error"))
                     .collect(Collectors.toSet());
         }
-    }
-
-    private static Set<Channel> getChildChannelsForChange(User user, Server server, ChannelChangeDto change,
-            Channel newBaseChannel, Map<String, List<Channel>> accessibleChildsByBase) {
-
-        List<Channel> accessibleChildren =
-                accessibleChildsByBase.computeIfAbsent(newBaseChannel.getLabel(),
-                        k -> ChannelFactory.getAccessibleChildChannels(newBaseChannel, user));
-        Set<Channel> availableChildChannels = server.getChildChannels();
-
-        Set<Channel> result = new HashSet<>();
-        change.getChildChannelActions().forEach((cid, action) -> {
-            final long childId = cid;
-            if (action == ChannelChangeDto.ChannelAction.SUBSCRIBE) {
-                Optional<Channel> childToSubscribe = accessibleChildren.stream()
-                        .filter(ac -> ac.getId().equals(childId))
-                        .findFirst();
-                if (childToSubscribe.isPresent()) {
-                    result.add(childToSubscribe.get());
-                }
-                else {
-                    LOG.warn("Child channel id={} not found in accessible children of {} for user={}",
-                            childId, newBaseChannel.getName(), user.getLogin());
-                }
-            }
-            else if (action == ChannelChangeDto.ChannelAction.NO_CHANGE) {
-                availableChildChannels.stream()
-                        .filter(cc -> cc.getId() == childId)
-                        .findFirst()
-                        .ifPresent(result::add);
-            }
-        });
-        return result;
-    }
-
-    private static Optional<ChannelChangeDto> getChangeByDefaultBase(Set<ChannelChangeDto> changes,
-                                                                     Channel guessedChannel) {
-        return changes.stream()
-                .filter(ch -> ch.isNewBaseDefault() &&
-                        ch.getNewBaseId().isPresent() &&
-                        ch.getNewBaseId().get().longValue() == guessedChannel.getId().longValue())
-                .findFirst();
-    }
-
-    private static boolean onlyChildChannelsChange(Set<ChannelChangeDto> changes) {
-        return changes.size() == 1 && changes.stream()
-                .anyMatch(ch -> ch.getNewBaseId().isPresent() &&
-                        ch.getOldBaseId().isPresent() &&
-                        ch.getOldBaseId().get().equals(ch.getNewBaseId().get())
-                );
-    }
-
-    private static boolean explicitChange(Set<ChannelChangeDto> changes) {
-        return changes.size() == 1 &&
-                changes.stream()
-                        .anyMatch(ch -> ch.getNewBaseId().isPresent() && !ch.isNewBaseDefault());
-    }
-
-    private static boolean defaultBaseChange(Set<ChannelChangeDto> changes) {
-        return changes.stream()
-                .allMatch(ch -> ch.getNewBaseId().isPresent() && ch.isNewBaseDefault());
     }
 
     /**
