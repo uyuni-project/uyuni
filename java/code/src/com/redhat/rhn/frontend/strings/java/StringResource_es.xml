@@ -1073,7 +1073,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Programaciones de tareas</target>
+        <target state="translated">Planificaciones de tareas</target>
       </trans-unit>
       <trans-unit id="Task Engine Status" xml:space="preserve">
         <source>Task Engine Status</source>
@@ -1108,7 +1108,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Test Message - ignore</context>
         </context-group>
-        <target>esta es una prueba del programa de emergencia</target>
+        <target state="translated">esta es una prueba del difusión de emergencia</target>
       </trans-unit>
       <trans-unit id="testMessage.oneparam" xml:space="preserve">
         <source>this is a test of the {0}</source>
@@ -1578,7 +1578,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetailsSubmit</context>
         </context-group>
-        <target>Al menos un administrador de organización con acceso regular debe permanecer en  organización {0} </target>
+        <target state="translated">Al menos un administrador de organización con acceso usual debe permanecer en la organización {0}.</target>
       </trans-unit>
       <trans-unit id="error.readonly_sat_admin" xml:space="preserve">
         <source>At least one @@PRODUCT_NAME@@ Administrator must remain with regular access.</source>
@@ -1592,7 +1592,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
-        <target>Nombre de usuario deseado</target>
+        <target state="translated">Acceso deseado</target>
       </trans-unit>
       <trans-unit id="desiredPassword" xml:space="preserve">
         <source>Desired Password</source>
@@ -1821,14 +1821,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
-        <target>Ha programado refrescar el perfil de hardware para {0}.</target>
+        <target state="translated">Ha planificado refrescar el perfil de hardware para {0}.</target>
       </trans-unit>
       <trans-unit id="message.interfaceSet" xml:space="preserve">
         <source>Networking properties updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target state="needs-adaptation">Interfaz de red primaria establecida a &lt;strong&gt;{0}&lt;/strong&gt;.</target>
+        <target state="translated">Propiedades de red actualizadas.</target>
       </trans-unit>
       <trans-unit id="prefix" xml:space="preserve">
         <source>Prefix</source>
@@ -1863,7 +1863,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target>Última entrada</target>
+        <target state="translated">Último acceso</target>
       </trans-unit>
       <trans-unit id="address_record" xml:space="preserve">
         <source>Address Record:</source>
@@ -2003,7 +2003,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>
-        <target>Esconder todos</target>
+        <target state="translated">Ocultar todos</target>
       </trans-unit>
       <trans-unit id="bad-class" xml:space="preserve">
         <source>Class does not implement AclHandler: {0}</source>
