@@ -101,7 +101,7 @@ public class MockModulemdApi extends ModulemdApi {
         return new ModulePackagesResponse(getRpmApis(selectedModules), getPackages(selectedModules),
                 selectedModules.stream()
                         .map(m -> new ModuleInfo(m.getName(), m.getStream(), "1000000001", "6789abcd", "x86_64"))
-                        .toList()
+                        .collect(Collectors.toList())
         );
     }
 
@@ -233,7 +233,7 @@ public class MockModulemdApi extends ModulemdApi {
     }
 
     private static List<String> getMetadataPaths(List<Channel> sources) throws RepositoryNotModularException {
-        return sources.stream().map(MockModulemdApi::getMetadataPath).toList();
+        return sources.stream().map(MockModulemdApi::getMetadataPath).collect(Collectors.toList());
     }
 
     private static String getMetadataPath(Channel channel) throws RepositoryNotModularException {

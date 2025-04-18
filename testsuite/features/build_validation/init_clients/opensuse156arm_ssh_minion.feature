@@ -1,4 +1,4 @@
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2024-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @opensuse156arm_ssh_minion
@@ -19,8 +19,7 @@ Feature: Bootstrap a openSUSE 15.6 ARM Salt SSH minion
     And I select "1-opensuse156arm_ssh_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    # workaround for bsc#1222108
-    And I wait at most 480 seconds until I see "Bootstrap process initiated." text
+    And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "opensuse156arm_ssh_minion"
 
 @proxy

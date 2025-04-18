@@ -69,7 +69,7 @@ public class ModularDataCleanup extends RhnJavaJob {
                 .stream()
                 .map(File::toPath)
                 .filter(path -> !usedModularDataAbsolutePaths.contains(path))
-                .toList();
+                .collect(Collectors.toList());
 
         logCleaning(unusedModularPaths);
         unusedModularPaths.forEach(path -> path.toFile().delete());

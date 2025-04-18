@@ -99,7 +99,7 @@ public class ModularDependencyValidator implements ContentValidator {
                         .map(m -> ContentValidationMessage.contentFiltersMessage(
                                 loc.getMessage("contentmanagement.validation.modulenotfound", m.getFullName()),
                                 TYPE_ERROR))
-                        .toList();
+                        .collect(Collectors.toList());
             }
             else if (e.getCause() instanceof ConflictingStreamsException cause) {
                 Module module = cause.getModule();

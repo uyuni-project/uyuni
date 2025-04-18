@@ -46,6 +46,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Tests {@link com.suse.scc.registration.SCCSystemRegistration}.
@@ -95,7 +96,7 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         this.testSystems = allUnregistered.stream()
                 .filter(i -> i.getOptServer().get().getServerInfo().getCheckin().equals(new Date(0)))
-                .toList();
+                .collect(Collectors.toList());
     }
 
 
@@ -232,7 +233,7 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
                                 .map(system ->
                                         new SCCSystemCredentialsJson(system.getLogin(), system.getPassword(), 12345L)
                                 )
-                                .toList()
+                                .collect(Collectors.toList())
                 );
             }
 
@@ -348,7 +349,7 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
                                 .map(system ->
                                         new SCCSystemCredentialsJson(system.getLogin(), system.getPassword(), 12345L)
                                 )
-                                .toList()
+                                .collect(Collectors.toList())
                 );
             }
 

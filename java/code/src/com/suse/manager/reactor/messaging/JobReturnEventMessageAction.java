@@ -53,7 +53,6 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -61,6 +60,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -109,13 +109,13 @@ public class JobReturnEventMessageAction implements MessageAction {
         // React according to the function the minion ran
         String function = jobReturnEvent.getData().getFun();
 
-        List<Map<String, Object>> functionArgs = new LinkedList<>();
+        Stream<Map<String, Object>> functionArgs = Stream.empty();
         if (jobReturnEvent.getData().getFunArgs() instanceof List funArgs &&
                 !funArgs.isEmpty() && funArgs.get(0) instanceof Map) {
-                functionArgs = funArgs.stream().filter(x -> x instanceof Map).toList();
-            }
+            functionArgs = funArgs.stream().filter(x -> x instanceof Map);
+        }
 
-        boolean isFunctionTestMode = functionArgs.stream()
+        boolean isFunctionTestMode = functionArgs
                 .anyMatch(e -> e.containsKey("test") && Boolean.parseBoolean(e.get("test").toString()));
 
         if (Objects.isNull(function) && LOG.isDebugEnabled()) {

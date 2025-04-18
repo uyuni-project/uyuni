@@ -898,7 +898,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public List<ServerGroupType> getEntitledGroupTypes() {
         return this.groups.stream().filter(g ->g.getGroupType() != null)
-                .map(ServerGroup::getGroupType).toList();
+                .map(ServerGroup::getGroupType).collect(Collectors.toList());
     }
 
     /**
@@ -907,7 +907,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public List<EntitlementServerGroup> getEntitledGroups() {
         return this.groups.stream().filter(g ->g.getGroupType() != null)
-                .map(s -> (EntitlementServerGroup) s).toList();
+                .map(s -> (EntitlementServerGroup) s).collect(Collectors.toList());
     }
 
     /**
@@ -917,8 +917,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     @SuppressWarnings("java:S6204")
     public List<ManagedServerGroup> getManagedGroups() {
         return this.groups.stream().filter(g -> g.getGroupType() == null)
-                .map(s -> (ManagedServerGroup) s)
-                .collect(Collectors.toList());
+                .map(s -> (ManagedServerGroup) s).collect(Collectors.toList());
     }
 
     /**
@@ -1894,23 +1893,13 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * is just a convenience method.  Basically the channels associated with this
      * server that are not base channels.
      *
-     * @return Set of Child Channels.  null of none found.
+     * @return Set of Child Channels.
      */
     public Set<Channel> getChildChannels() {
-        // Make sure we return NULL if none are found
         if (this.getChannels() != null) {
-            Set<Channel> retval = new HashSet<>();
-            for (Channel c : this.getChannels()) {
-                // add non base channels (children)
-                // to return set.
-                if (!c.isBaseChannel()) {
-                    retval.add(c);
-                }
-            }
-            if (retval.isEmpty()) {
-                return new HashSet<>();
-            }
-            return retval;
+            return this.getChannels().stream()
+                    .filter(c -> !c.isBaseChannel())
+                    .collect(Collectors.toSet());
         }
         return new HashSet<>();
     }

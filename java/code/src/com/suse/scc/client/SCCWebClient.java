@@ -198,7 +198,7 @@ public class SCCWebClient implements SCCClient {
                 futures.stream().map(CompletableFuture::join)
                 )
                 .flatMap(p -> p.result.stream())
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private void addHeaders(AbstractHttpMessage request) {

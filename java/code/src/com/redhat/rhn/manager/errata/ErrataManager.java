@@ -311,7 +311,7 @@ public class ErrataManager extends BaseManager {
         List<OwnedErrata> emptyChannelErrata = filteredErrata.stream()
             .filter(t -> t.getChannels().isEmpty())
             .map(OwnedErrata::new)
-            .toList();
+            .collect(Collectors.toList());
         ErrataManager.deleteErrata(user, emptyChannelErrata);
     }
 
@@ -1295,7 +1295,7 @@ public class ErrataManager extends BaseManager {
                 p -> includedErrata.stream().noneMatch(included -> included.getPackages().contains(p))
             )
         ).collect(Collectors.toUnmodifiableSet());
-        List<Long> pids = packagesToRemove.stream().map(Package::getId).toList();
+        List<Long> pids = packagesToRemove.stream().map(Package::getId).collect(Collectors.toList());
         ErrataCacheManager.deleteCacheEntriesForChannelPackages(chan.getId(), pids);
 
         // remove packages
@@ -1493,7 +1493,7 @@ public class ErrataManager extends BaseManager {
     public static void bulkErrataNotification(Map<Long, List<Long>> errataToChannels, Date date) {
         List<Map<String, Object>> eidList = errataToChannels.entrySet().stream()
                 .map(entry -> Collections.singletonMap("eid", (Object)entry.getKey()))
-                .toList();
+                .collect(Collectors.toList());
         WriteMode m = ModeFactory.getWriteMode(ERRATA_QUERIES,  "clear_errata_notification");
         m.executeUpdates(eidList);
 
@@ -1507,7 +1507,7 @@ public class ErrataManager extends BaseManager {
                     params.put("datetime", newDate);
                     return params;
                 })
-                .toList();
+                .collect(Collectors.toList());
 
         WriteMode w = ModeFactory.getWriteMode(ERRATA_QUERIES,  "insert_errata_notification");
         w.executeUpdates(notifyList);
@@ -1790,7 +1790,7 @@ public class ErrataManager extends BaseManager {
 
         List<Errata> retracted = errataList.stream()
                 .filter(e -> e.getAdvisoryStatus() == AdvisoryStatus.RETRACTED)
-                .collect(toList());
+                .toList();
         if (!retracted.isEmpty()) {
             throw new RetractedErrataException(retracted.stream().map(Errata::getId).collect(toList()));
         }
@@ -1898,12 +1898,11 @@ public class ErrataManager extends BaseManager {
                 actionChain, errataMap, updateStackMap, serverMap, minionTargets);
         // store all actions and return ids
         List<Long> actionIds = new ArrayList<>();
-        List<ErrataAction> traditionalErrataActions =
+        Stream<ErrataAction> traditionalErrataActions =
             concat(nonZypperTradClientActions,
             concat(updateStackActions,
-            nonUpdateStackActions))
-            .collect(toList());
-        traditionalErrataActions.stream().forEach(ea-> {
+            nonUpdateStackActions));
+        traditionalErrataActions.forEach(ea-> {
             ActionPackageDetails details = ea.getDetails();
             details.setAllowVendorChange(allowVendorChange);
             ea.setDetails(details);
@@ -1911,9 +1910,8 @@ public class ErrataManager extends BaseManager {
             actionIds.add(action.getId());
         });
 
-        List<ErrataAction> minionErrataActions = minionActions.collect(toList());
         List<Action> minionTaskoActions = new ArrayList<>();
-        minionErrataActions.stream().forEach(ea-> {
+        minionActions.forEach(ea-> {
            ActionPackageDetails details = ea.getDetails();
            details.setAllowVendorChange(allowVendorChange);
            ea.setDetails(details);

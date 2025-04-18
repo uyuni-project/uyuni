@@ -342,7 +342,7 @@ public class CVEAuditManagerOVAL {
             List<ShallowSystemPackage> allInstalledPackages) {
 
         return allInstalledPackages.stream().filter(installed -> Objects.equals(installed.getName(), pkg.getName()))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**

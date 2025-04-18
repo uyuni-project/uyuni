@@ -36,7 +36,7 @@ public class ValidationUtils {
     public static List<String> convertValidationErrors(ValidatorException exc) {
         return exc.getResult().getErrors().stream()
                 .map(ValidationMessage::getLocalizedMessage)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**
@@ -48,6 +48,6 @@ public class ValidationUtils {
         return exc.getResult().getFieldErrors().entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, m -> m.getValue().stream()
                         .map(ValidationMessage::getLocalizedMessage)
-                        .toList()));
+                        .collect(Collectors.toList())));
     }
 }

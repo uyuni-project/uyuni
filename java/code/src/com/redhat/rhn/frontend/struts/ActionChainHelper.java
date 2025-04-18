@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -142,6 +143,6 @@ public class ActionChainHelper {
                     tuple.addProperty("id", ac.getId());
                     tuple.addProperty("text", ac.getLabel());
                     return tuple;
-                }).toList());
+                }).collect(Collectors.toList()));
     }
 }
