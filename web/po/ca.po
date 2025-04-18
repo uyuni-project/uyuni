@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-11 13:36+0200\n"
-"PO-Revision-Date: 2025-03-28 15:56+0000\n"
+"POT-Creation-Date: 2025-04-18 12:02+0200\n"
+"PO-Revision-Date: 2025-04-11 16:56+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web-5-0/ca/"
 ">\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.3\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -304,7 +304,7 @@ msgstr "Processa la sortida"
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
 #: ../html/src/components/formula-selection.tsx:279
 #: ../html/src/components/panels/CreatorPanel.tsx:125
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:144
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:115
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:194
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:35
@@ -446,7 +446,7 @@ msgstr "Suprimeix el projecte"
 
 #: ../html/src/components/dialog/delete.example.tsx:17
 msgid "Are you sure you want to delete project "
-msgstr "Esteu segur que voleu suprimir el projecte "
+msgstr "Segur que voleu suprimir el projecte "
 
 #: ../html/src/components/formula-selection.tsx:135
 msgid " No group"
@@ -475,8 +475,8 @@ msgstr ""
 "resultants."
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:159
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:160
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:130
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:131
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:54
 msgid "Reset"
@@ -1475,69 +1475,71 @@ msgstr "mai"
 msgid "Add PAYG Connection"
 msgstr "Afegeix una connexió PAYG"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:47
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:18
 msgid "Server Configuration - Password Policy"
 msgstr "Configuració del servidor - Política per a les contrasenyes"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:50
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:21
 msgid "Set up your server local users password policy."
 msgstr ""
 "Configureu la política de les contrasenyes dels usuaris locals del servidor."
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:53
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:24
 msgid "Password Policy Settings"
 msgstr "Configuració de la política per a les contrasenyes"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:58
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:29
 msgid "Min Password Length"
 msgstr "Longitud mínima de la contrasenya"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:65
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:36
 msgid "Max Password Length"
 msgstr "Longitud màxima de la contrasenya"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:72
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:43
 msgid "Require Digits"
 msgstr "Requereix dígits"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:79
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:50
 msgid "Require Lowercase Characters"
 msgstr "Requereix caràcters en minúscula"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:86
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:57
 msgid "Require Uppercase Characters"
 msgstr "Requereix caràcters en majúscula"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:93
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:64
 msgid "Restrict Consecutive Characters"
 msgstr "Restringeix els caràcters consecutius"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:100
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:71
 msgid "Require Special Characters"
 msgstr "Requereix caràcters especials"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:107
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:78
 msgid "Allowed Special Characters"
 msgstr "Caràcters especials permesos"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:119
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:90
 msgid "Restrict Characters Occurrences"
 msgstr "Restringeix l'ocurrència de caràcters"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:126
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:97
 msgid "Max Characters Occurrences"
 msgstr "Màxim d'ocurrències de caràcters"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:143
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:114
 msgid "Save Password Policy"
 msgstr "Desa la política de les contrasenyes"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:149
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:120
 msgid "Password Policy Changed"
 msgstr "La política de les contrasenyes ha canviat"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:166
-msgid "Password Policy reset to defaults"
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:139
+#, fuzzy
+#| msgid "Password Policy reset to defaults"
+msgid "Password Policy Reset to Default"
 msgstr ""
 "La política per a les contrasenyes es restableix als valors predeterminats"
 
@@ -5210,7 +5212,7 @@ msgstr "Correu electrònic"
 
 #: ../html/src/manager/proxy/container-config.tsx:334
 msgid "The root CA"
-msgstr "La CA arrel"
+msgstr "La CA d'arrel"
 
 #: ../html/src/manager/proxy/container-config.tsx:344
 msgid "Intermediate CAs"
@@ -6499,7 +6501,7 @@ msgstr "Gràfics"
 
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27
 msgid "Retry"
-msgstr "Torna a intentar"
+msgstr "Torna-ho a provar"
 
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:33
 msgid "Connecting..."
