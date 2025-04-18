@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024 SUSE LLC.
+# Copyright (c) 2013-2025 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
@@ -586,7 +586,7 @@ end
 #
 # @param channel_name [String] the channel to check
 # @return [Integer] number of seconds representing the timeout
-def channel_timeout(channel_name)
+def channel_timeout(channel)
   if channel.include?('custom_channel') || channel.include?('ptf')
     log 'Timeout of 10 minutes for a custom channel'
     return 600
@@ -605,6 +605,7 @@ end
 def channel_sync_completed?(channel_name)
   if channel_reposync_completed?(channel_name)
     return true if channel_is_synced?(channel_name)
+
     log "WARN: Repository metadata for #{channel_name} seems not synchronized. Even if the reposync log says it is."
   end
 
@@ -635,7 +636,7 @@ def channel_reposync_completed?(channel_name)
   false
 end
 
-# Determines whether the given channel channel is synchronized on the server.
+# Determines whether the given channel is synchronized on the server.
 #
 # @param channel [String] The name of the channel to check.
 # @return [Boolean] Returns true if the channel is synchronized, false otherwise.
