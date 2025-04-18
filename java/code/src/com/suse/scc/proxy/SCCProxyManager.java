@@ -44,9 +44,10 @@ public class SCCProxyManager {
      * Creates systems from the lists and stores data to be later registered to SCC
      *
      * @param systemsList a list of {@Link SCCRegisterSystemJson} to be created
+     * @param peripheralFqdnIn the fqdn of the peripheral
      * @return list of corresponding generated records
      */
-    public List<SCCProxyRecord> createSystems(List<SCCRegisterSystemJson> systemsList) {
+    public List<SCCProxyRecord> createSystems(List<SCCRegisterSystemJson> systemsList, String peripheralFqdnIn) {
 
         List<SCCProxyRecord> systemsRecords = new ArrayList<>();
 
@@ -55,7 +56,7 @@ public class SCCProxyManager {
             String sccPasswd = system.getPassword();
             String sccCreationJson = Json.GSON.toJson(system);
 
-            SCCProxyRecord sccProxyRecord = new SCCProxyRecord(sccLogin, sccPasswd, sccCreationJson);
+            SCCProxyRecord sccProxyRecord = new SCCProxyRecord(peripheralFqdnIn, sccLogin, sccPasswd, sccCreationJson);
             sccProxyFactory.save(sccProxyRecord);
             systemsRecords.add(sccProxyRecord);
         }
@@ -81,4 +82,7 @@ public class SCCProxyManager {
 
         return false; //not found
     }
+
+    //registerToScc()
+    //
 }

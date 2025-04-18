@@ -24,8 +24,11 @@ import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCUpdateSystemJson;
 import com.suse.scc.model.SCCVirtualizationHostJson;
+import com.suse.scc.proxy.SCCProxyFactory;
+import com.suse.scc.proxy.SCCProxyRecord;
 import com.suse.scc.registration.SCCSystemRegistration;
 
+import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,14 +43,17 @@ public class SCCSystemRegistrationManager {
 
     private static final Logger LOG = LogManager.getLogger(SCCSystemRegistrationManager.class);
     private final SCCClient sccClient;
+    private final SCCProxyFactory sccProxyFactory;
 
     /**
      * Constructor
      *
      * @param sccClientIn the scc client
+     * @param sccProxyFactoryIn the scc proxy factory
      */
-    public SCCSystemRegistrationManager(SCCClient sccClientIn) {
+    public SCCSystemRegistrationManager(SCCClient sccClientIn, SCCProxyFactory sccProxyFactoryIn) {
         this.sccClient = sccClientIn;
+        this.sccProxyFactory = sccProxyFactoryIn;
     }
 
     /**
@@ -98,16 +104,7 @@ public class SCCSystemRegistrationManager {
                         SCCCachingFactory.deleteRegCacheItem(cacheItem);
                     }
                     catch (SCCClientException e) {
-                        if (e.getHttpStatusCode() == 404) {
-                            LOG.info("System {} not found in SCC", cacheItem.getId());
-                        }
-                        else {
-                            LOG.error("SCC error while deregistering system {}", cacheItem.getId(), e);
-                        }
-                        if (forceDBDeletion || e.getHttpStatusCode() == 404) {
-                            SCCCachingFactory.deleteRegCacheItem(cacheItem);
-                        }
-                        cacheItem.setRegistrationErrorTime(new Date());
+                        handleErrorDeregister(cacheItem, e, forceDBDeletion);
                     }
                     catch (Exception e) {
                         LOG.error("Error deregistering system {}", cacheItem.getId(), e);
@@ -119,6 +116,78 @@ public class SCCSystemRegistrationManager {
                     SCCCachingFactory.deleteRegCacheItem(cacheItem);
                 }
         ));
+    }
+
+    private void handleErrorDeregister(SCCRegCacheItem cacheItem, SCCClientException e, boolean forceDBDeletion) {
+        if (e.getHttpStatusCode() == 404) {
+            LOG.info("System {} not found in SCC", cacheItem.getId());
+        }
+        else {
+            LOG.error("SCC error while deregistering system {}", cacheItem.getId(), e);
+        }
+        if (forceDBDeletion || e.getHttpStatusCode() == 404) {
+            SCCCachingFactory.deleteRegCacheItem(cacheItem);
+        }
+        cacheItem.setRegistrationErrorTime(new Date());
+    }
+
+    /**
+     * De-register a system from SCC
+     *
+     * @param proxyRecords the proxy records identifying the system to de-register
+     * @param forceDBDeletion force delete the proxy record when set to true
+     */
+    public void proxyDeregister(List<SCCProxyRecord> proxyRecords, boolean forceDBDeletion) {
+        proxyRecords.forEach(proxyRecord -> proxyRecord.getOptSccId().ifPresentOrElse(
+                sccId -> {
+                    try {
+                        LOG.debug("de-register system {}", proxyRecord);
+                        sccClient.deleteSystem(sccId, proxyRecord.getSccLogin(), proxyRecord.getSccPasswd());
+                        sccProxyFactory.remove(proxyRecord);
+                    }
+                    catch (SCCClientException e) {
+                        handleErrorProxyDeregister(proxyRecord, e, forceDBDeletion);
+                    }
+                    catch (Exception e) {
+                        handleErrorProxyDeregister(proxyRecord, e);
+                    }
+                },
+                () -> {
+                    LOG.debug("delete not registered cache item {}", proxyRecord);
+                    sccProxyFactory.remove(proxyRecord);
+                }
+        ));
+    }
+
+    private void handleErrorProxyDeregister(SCCProxyRecord proxyRecord, SCCClientException e, boolean forceDBDeletion) {
+        boolean doRemove = forceDBDeletion;
+        if (e.getHttpStatusCode() == HttpStatus.SC_NOT_FOUND) {
+            LOG.info("System {} not found in SCC", proxyRecord.getSccId());
+            doRemove = true;
+        }
+        else {
+            handleErrorProxyDeregister(proxyRecord, e);
+        }
+
+        if (doRemove) {
+            sccProxyFactory.remove(proxyRecord);
+        }
+    }
+
+    private void handleErrorProxyDeregister(SCCProxyRecord proxyRecord, Exception e) {
+        LOG.error("Error while deregistering system {}", proxyRecord.getSccId(), e);
+        proxyRecord.setSccRegistrationErrorTime(new Date());
+        sccProxyFactory.save(proxyRecord);
+    }
+
+    /**
+     * Register systems in SCC
+     *
+     * @param proxyRecords the proxy records identifying the system to register
+     * @param primaryCredential the current primary organization credential
+     */
+    public void proxyRegister(List<SCCProxyRecord> proxyRecords, SCCCredentials primaryCredential) {
+        //new SCCSystemRegistration().register(sccClient, items, primaryCredential)
     }
 
     /**

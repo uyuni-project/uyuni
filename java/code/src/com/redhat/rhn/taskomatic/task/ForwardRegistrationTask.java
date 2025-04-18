@@ -30,6 +30,8 @@ import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCVirtualizationHostJson;
+import com.suse.scc.proxy.SCCProxyFactory;
+import com.suse.scc.proxy.SCCProxyRecord;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.quartz.JobExecutionContext;
@@ -118,8 +120,9 @@ public class ForwardRegistrationTask extends RhnJavaJob {
                     .setUuid(uuid)
                     .createSCCConfig();
             SCCClient sccClient = new SCCWebClient(sccConfig);
+            SCCProxyFactory sccProxyFactory = new SCCProxyFactory();
 
-            SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(sccClient);
+            SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(sccClient, sccProxyFactory);
             List<SCCRegCacheItem> forwardRegistration = SCCCachingFactory.findSystemsToForwardRegistration();
             log.debug("{} RegCacheItems found to forward", forwardRegistration.size());
 
@@ -138,6 +141,15 @@ public class ForwardRegistrationTask extends RhnJavaJob {
                 nextLastSeenUpdateRun = nextLastSeenUpdateRun.plusMinutes(
                         ThreadLocalRandom.current().nextInt(22 * 60, 26 * 60));
             }
+
+            List<SCCProxyRecord> proxyForwardRegistration = sccProxyFactory.findSystemsToForwardRegistration();
+            log.debug("{} ProxyRecords found to forward", proxyForwardRegistration.size());
+
+            List<SCCProxyRecord> proxyDeregister = sccProxyFactory.listDeregisterItems();
+            log.debug("{} ProxyRecords found to delete", proxyDeregister.size());
+
+            sccRegManager.proxyDeregister(proxyDeregister, false);
+            sccRegManager.proxyRegister(proxyForwardRegistration, primaryCredentials);
         }
         catch (URISyntaxException e) {
             log.error(e.getMessage(), e);

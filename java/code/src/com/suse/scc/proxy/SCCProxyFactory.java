@@ -10,11 +10,16 @@
  */
 package com.suse.scc.proxy;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 public class SCCProxyFactory extends HibernateFactory {
@@ -32,6 +37,7 @@ public class SCCProxyFactory extends HibernateFactory {
      * @param sccProxyRecord object to save
      */
     public void save(SCCProxyRecord sccProxyRecord) {
+        sccProxyRecord.setModified(new Date());
         saveObject(sccProxyRecord);
     }
 
@@ -55,5 +61,59 @@ public class SCCProxyFactory extends HibernateFactory {
                 .createQuery("FROM SCCProxyRecord WHERE proxyId = :proxyId", SCCProxyRecord.class)
                 .setParameter("proxyId", proxyId)
                 .uniqueResultOptional();
+    }
+
+    /**
+     * Lookup {@link SCCProxyRecord} list of objects with given status
+     *
+     * @param statusIn the status
+     * @return return list of {@link SCCProxyRecord} with the given status
+     */
+    public List<SCCProxyRecord> lookupByStatus(SCCProxyRecord.Status statusIn) {
+        return getSession()
+                .createQuery("FROM SCCProxyRecord WHERE status = :status", SCCProxyRecord.class)
+                .setParameter("status", statusIn)
+                .list();
+    }
+
+    /**
+     * Lookup {@link SCCProxyRecord} list of objects with given status and with retry time not expired
+     *
+     * @param statusIn the status
+     * @return return list of {@link SCCProxyRecord} with the given status
+     */
+    public List<SCCProxyRecord> lookupByStatusAndRetry(SCCProxyRecord.Status statusIn) {
+        int regErrorExpireTime = Config.get().getInt(ConfigDefaults.REG_ERROR_EXPIRE_TIME, 168);
+        Calendar retryTime = Calendar.getInstance();
+        retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
+
+        return getSession()
+                .createQuery("""
+                            FROM SCCProxyRecord
+                            WHERE status = :status
+                            AND (sccRegistrationErrorTime IS NULL
+                                 OR sccRegistrationErrorTime < :retryTime)
+                        """, SCCProxyRecord.class)
+                .setParameter("status", statusIn)
+                .setParameter("retryTime", new Date(retryTime.getTimeInMillis()))
+                .list();
+    }
+
+    /**
+     * Returns registration items of systems which should be forwarded to SCC
+     *
+     * @return list of {@link SCCProxyRecord}
+     */
+    public List<SCCProxyRecord> findSystemsToForwardRegistration() {
+        return lookupByStatusAndRetry(SCCProxyRecord.Status.SCC_CREATION_PENDING);
+    }
+
+    /**
+     * Returns registration items of systems which should be de-registered from SCC
+     *
+     * @return list of {@link SCCProxyRecord}
+     */
+    public List<SCCProxyRecord> listDeregisterItems() {
+        return lookupByStatusAndRetry(SCCProxyRecord.Status.SCC_REMOVAL_PENDING);
     }
 }

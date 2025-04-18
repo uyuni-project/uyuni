@@ -168,6 +168,11 @@ public class SCCEndpoints {
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
             .create();
 
+    private final Gson gsonSccProxy = new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+            .serializeNulls()
+            .create();
+
     /**
      * organization/products/unscoped endpoint
      * @param request the request
@@ -349,7 +354,8 @@ public class SCCEndpoints {
 
             List<SCCRegisterSystemJson> systemsList = payload.get("systems");
 
-            List<SCCSystemCredentialsJson> systemsResponse = sccProxyManager.createSystems(systemsList)
+            List<SCCSystemCredentialsJson> systemsResponse = sccProxyManager.createSystems(systemsList,
+                            credentials.getPeripheralUrl())
                     .stream()
                     .map(r -> new SCCSystemCredentialsJson(
                             r.getSccLogin(),
@@ -359,7 +365,7 @@ public class SCCEndpoints {
                     .toList();
 
             response.status(HttpStatus.SC_CREATED);
-            return gson.toJson(new SCCOrganizationSystemsUpdateResponse(systemsResponse));
+            return gsonSccProxy.toJson(new SCCOrganizationSystemsUpdateResponse(systemsResponse));
         }
         catch (JsonSyntaxException eIn) {
             return badRequest(response, eIn.getMessage());

@@ -10,10 +10,14 @@
  */
 package com.suse.scc.proxy;
 
+import static java.util.Optional.ofNullable;
+
 import com.redhat.rhn.domain.BaseDomainHelper;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,16 +28,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "suseSccProxy")
 public class SCCProxyRecord extends BaseDomainHelper {
 
     private Long proxyId;
+    private String peripheralFqdn;
     private String sccLogin;
     private String sccPasswd;
     private String sccCreationJson;
     private Long sccId;
+    private Date sccRegistrationErrorTime;
     private Status status;
 
     public enum Status {
@@ -75,17 +82,19 @@ public class SCCProxyRecord extends BaseDomainHelper {
      * Default constructor
      */
     public SCCProxyRecord() {
-        this(null, null, null);
+        this(null, null, null, null);
     }
 
     /**
      * Constructor
      *
+     * @param peripheralFqdnIn peripheral from which the request comes from
      * @param sccLoginIn login of the system to register in SCC
      * @param sccPasswdIn password of the system to register in SCC
      * @param sccCreationJsonIn original creation json of the system to register in SCC
      */
-    public SCCProxyRecord(String sccLoginIn, String sccPasswdIn, String sccCreationJsonIn) {
+    public SCCProxyRecord(String peripheralFqdnIn, String sccLoginIn, String sccPasswdIn, String sccCreationJsonIn) {
+        peripheralFqdn = peripheralFqdnIn;
         sccLogin = sccLoginIn;
         sccPasswd = sccPasswdIn;
         sccCreationJson = sccCreationJsonIn;
@@ -103,6 +112,15 @@ public class SCCProxyRecord extends BaseDomainHelper {
 
     public void setProxyId(Long proxyIdIn) {
         proxyId = proxyIdIn;
+    }
+
+    @Column(name = "peripheral_fqdn")
+    public String getPeripheralFqdn() {
+        return peripheralFqdn;
+    }
+
+    public void setPeripheralFqdn(String peripheralFqdnIn) {
+        peripheralFqdn = peripheralFqdnIn;
     }
 
     @Column(name = "scc_login")
@@ -141,6 +159,31 @@ public class SCCProxyRecord extends BaseDomainHelper {
         sccId = sccIdIn;
     }
 
+    /**
+     * @return Returns the SCC ID when this system was registered already
+     */
+    @Transient
+    public Optional<Long> getOptSccId() {
+        return ofNullable(sccId);
+    }
+
+    @Column(name = "scc_regerror_timestamp")
+    public Date getSccRegistrationErrorTime() {
+        return sccRegistrationErrorTime;
+    }
+
+    public void setSccRegistrationErrorTime(Date sccRegistrationErrorTimeIn) {
+        sccRegistrationErrorTime = sccRegistrationErrorTimeIn;
+    }
+
+    /**
+     * @return the time when the last registration failed
+     */
+    @Transient
+    public Optional<Date> getOptSccRegistrationErrorTime() {
+        return ofNullable(sccRegistrationErrorTime);
+    }
+
     @Enumerated(EnumType.STRING)
     public Status getStatus() {
         return status;
@@ -156,9 +199,9 @@ public class SCCProxyRecord extends BaseDomainHelper {
             return false;
         }
         return Objects.equals(getProxyId(), that.getProxyId()) &&
+                Objects.equals(getPeripheralFqdn(), that.getPeripheralFqdn()) &&
                 Objects.equals(getSccLogin(), that.getSccLogin()) &&
                 Objects.equals(getSccPasswd(), that.getSccPasswd()) &&
-                Objects.equals(getSccCreationJson(), that.getSccCreationJson()) &&
                 Objects.equals(getSccId(), that.getSccId()) &&
                 Objects.equals(getStatus(), that.getStatus());
     }
@@ -166,9 +209,9 @@ public class SCCProxyRecord extends BaseDomainHelper {
     @Override
     public int hashCode() {
         return Objects.hash(getProxyId(),
+                getPeripheralFqdn(),
                 getSccLogin(),
                 getSccPasswd(),
-                getSccCreationJson(),
                 getSccId(),
                 getStatus());
     }
@@ -177,10 +220,12 @@ public class SCCProxyRecord extends BaseDomainHelper {
     public String toString() {
         final StringBuilder sb = new StringBuilder("SCCProxyRecord{");
         sb.append("proxyId=").append(proxyId);
+        sb.append(", peripheralFqdn='").append(peripheralFqdn).append('\'');
         sb.append(", sccLogin='").append(sccLogin).append('\'');
         sb.append(", sccPasswd='").append(sccPasswd).append('\'');
         sb.append(", sccCreationJson='").append(sccCreationJson).append('\'');
         sb.append(", sccId=").append(sccId);
+        sb.append(", sccRegistrationErrorTime=").append(sccRegistrationErrorTime);
         sb.append(", status=").append(status);
         sb.append('}');
         return sb.toString();
