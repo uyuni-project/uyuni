@@ -246,6 +246,9 @@ class CSAFParser(VEX_Parser):
 
                 # TODO: Change status management
 
+                # Different statuses are managed separatedly so managing justification/remediations
+                # or other particularities are treated easily
+
                 if Status.AFFECTED in vuln.get_statuses():
                     logging.info("Persisting known_affected")
                     logging.info(f"Products -> {vuln.get_value('known_affected')}") # DEBUG
@@ -261,9 +264,9 @@ class CSAFParser(VEX_Parser):
 
                     # TODO: MANAGE REMEDIATIONS
 
-                if "known_not_affected" in vuln.get_vulnerability():
+                if Status.NOT_AFFECTED in vuln.get_statuses():
                     logging.info("Persisting known_not_affected")
-                    for product in vuln.get_value('known_not_affected'):
+                    for product in vuln.get_products_status(Status.NOT_AFFECTED):
                         platform = product.split(':')[0]
                         package = product.split(':')[1]
                         logging.info(f"Platform -> {platform}") # DEBUG
@@ -273,9 +276,9 @@ class CSAFParser(VEX_Parser):
 
                     # TODO: MANAGE JUSTIFICATIONS
 
-                if "fixed" in vuln.get_vulnerability():
+                if Status.PATCHED in vuln.get_statuses():
                     logging.info("Persisting fixed")
-                    for product in vuln.get_value('fixed'):
+                    for product in vuln.get_products_status(Status.PATCHED):
                         platform = product.split(':')[0]
                         package = product.split(':')[1]
                         logging.info(f"Platform -> {platform}") # DEBUG
@@ -283,9 +286,9 @@ class CSAFParser(VEX_Parser):
                         db_manager.insert_oval_platform(self.get_product_id_name(platform))
                         db_manager.insert_vulnerable_package(package)
 
-                if "under_investigation" in vuln.get_vulnerability():
+                if Status.UNDER_INVESTIGATION in vuln.get_statuses():
                     logging.info("Persisting under_investigation")
-                    for product in vuln.get_value('under_investigation'):
+                    for product in vuln.get_product_status(Status.UNDER_INVESTIGATION):
                         platform = product.split(':')[0]
                         package = product.split(':')[1]
                         logging.info(f"Platform -> {platform}") # DEBUG

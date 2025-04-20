@@ -13,7 +13,8 @@ def main():
     parser = argparse.ArgumentParser(description="VEX Parser")
     parser.add_argument("-f", "--file", required=True, help="Path to the VEX document")
     parser.add_argument("-x", "--format", required=False, choices=["csaf", "cyclonedx", "openvex"], help="VEX format", default="")
-    parser.add_argument("-p", "--persist", required=False, help="Persist to the database")
+    parser.add_argument("-p", "--persist", action="store_true", required=False, help="Persist to the database")
+    parser.add_argument("-i", "--info", action="store_true", required=False, help="Display VEX info")
     args = parser.parse_args()
 
     if args.format == "csaf":
@@ -34,11 +35,13 @@ def main():
     parser.parse(args.file)
     vulns =  parser.get_vulnerabilities()
 
-    for vuln in vulns:
-        #print(vuln)
-        vuln.show_vulnerability()
+    if args.info:
+        for vuln in vulns:
+            #print(vuln)
+            vuln.show_vulnerability()
 
-    parser.persist_data()
+    if args.persist:
+        parser.persist_data()
 
 if __name__ == "__main__":
     main()
