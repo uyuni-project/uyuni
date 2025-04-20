@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-11 13:25+0200\n"
-"PO-Revision-Date: 2025-04-16 15:59+0000\n"
+"PO-Revision-Date: 2025-04-20 15:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -502,15 +502,15 @@ msgstr "Prepínač"
 
 #: ../html/src/components/formik/Form.example.tsx:55
 msgid "One"
-msgstr ""
+msgstr "Jeden"
 
 #: ../html/src/components/formik/Form.example.tsx:56
 msgid "Two"
-msgstr ""
+msgstr "Dva"
 
 #: ../html/src/components/formik/Form.example.tsx:57
 msgid "Three"
-msgstr ""
+msgstr "Tri"
 
 #: ../html/src/components/formik/Form.example.tsx:62
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:108
@@ -537,11 +537,11 @@ msgstr "Vlastná hodnota"
 
 #: ../html/src/components/formik/field/AsRange.tsx:15
 msgid "{rangeInputName} start"
-msgstr ""
+msgstr "{rangeInputName} štart"
 
 #: ../html/src/components/formik/field/AsRange.tsx:24
 msgid "{rangeInputName} end"
-msgstr ""
+msgstr "{rangeInputName} koniec"
 
 #: ../html/src/components/formik/field/FieldBase.tsx:30
 #: ../html/src/components/input/InputBase.tsx:278
@@ -750,7 +750,7 @@ msgstr "Hľadanie kanálov..."
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:188
 msgid "Sync"
-msgstr ""
+msgstr "Synchronizácia"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:189
 #: ../html/src/components/states-picker.tsx:452
@@ -770,7 +770,7 @@ msgstr "Architektúra"
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:306
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:343
 msgid "Hub Org"
-msgstr ""
+msgstr "Hub Org"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:192
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:307
@@ -784,7 +784,7 @@ msgstr "Pridať server"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:69
 msgid "Set the FQDN of the remote server"
-msgstr ""
+msgstr "Nastaviť FQDN vzdialeného servera"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:89
 msgid "Migrate?"
@@ -806,7 +806,7 @@ msgstr "Prebieha migrácia periférie: čaká sa na odpoveď..."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:184
 msgid "Migration partially succeeded"
-msgstr ""
+msgstr "Migrácia čiastočne úspešná"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:185
 msgid "Migration failed"
@@ -817,6 +817,8 @@ msgid ""
 "Some of the servers where migrated successfully, but some errors happened "
 "during the process."
 msgstr ""
+"Niektoré servery boli úspešne migrované, ale počas procesu sa vyskytli "
+"niektoré chyby."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:194
 msgid ""
@@ -1061,15 +1063,11 @@ msgstr ""
 "autorita."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:17
-#, fuzzy
-#| msgid ""
-#| "A customized Root Certificate Authority is currently configured for this "
-#| "hub."
 msgid ""
 "A customized Root Certificate Authority is currently configured for this "
 "peripheral."
 msgstr ""
-"Pre tento hub je v súčasnosti nastavená vlastná koreňová certifikačná "
+"Pre túto perifériu je v súčasnosti nastavená vlastná koreňová certifikačná "
 "autorita."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:20
@@ -1078,12 +1076,11 @@ msgstr ""
 "Tento hub v súčasnosti používa predvolenú koreňovú certifikačnú autoritu."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:21
-#, fuzzy
-#| msgid "This hub is currently using the default Root Certificate Authority."
 msgid ""
 "This peripheral is currently using the default Root Certificate Authority."
 msgstr ""
-"Tento hub v súčasnosti používa predvolenú koreňovú certifikačnú autoritu."
+"Táto periféria v súčasnosti používa predvolenú koreňovú certifikačnú "
+"autoritu."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:25
 msgid ""
@@ -1094,16 +1091,12 @@ msgstr ""
 "hodnota spôsobí prerušenie spojenia s hubom."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:28
-#, fuzzy
-#| msgid ""
-#| "Ensure the certificate you are providing is correct before proceeding. A "
-#| "wrong value will break the connection with the hub."
 msgid ""
 "Ensure the certificate you are providing is correct before proceeding. A "
 "wrong value will break the connection with the peripheral."
 msgstr ""
 "Pred pokračovaním sa uistite, či je poskytnutý certifikát správny. Nesprávna "
-"hodnota spôsobí prerušenie spojenia s hubom."
+"hodnota spôsobí prerušenie spojenia s perifériou."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:33
 msgid ""
@@ -1114,16 +1107,12 @@ msgstr ""
 "zmena môže prerušiť spojenie s hubom."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:36
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to delete the current Root Certificate Authority? "
-#| "This change may break the connection with the hub."
 msgid ""
 "Are you sure you want to delete the current Root Certificate Authority? This "
 "change may break the connection with the peripheral."
 msgstr ""
 "Ste si istí, že chcete vymazať aktuálnu koreňovú certifikačnú autoritu? Táto "
-"zmena môže prerušiť spojenie s hubom."
+"zmena môže prerušiť spojenie s perifériou."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:67
 msgid "Server FQDN:"
@@ -1158,26 +1147,20 @@ msgid "Mirror credentials:"
 msgstr "Zrkadlové prihlasovanie údaje:"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:142
-#, fuzzy
-#| msgid "Use credentials"
 msgid "Regenerate credentials"
-msgstr "Použiť prihlasovanie údaje"
+msgstr "Znova vygenerovať prihlasovanie údaje"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:155
 msgid "Synchronized channels:"
 msgstr "Synchronizované kanály:"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:163
-#, fuzzy
-#| msgid "Edit Channel Ranks"
 msgid "Edit channels"
-msgstr "Upraviť poradia kanálov"
+msgstr "Upraviť kanály"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:185
-#, fuzzy
-#| msgid "has unsynchronized patches"
 msgid "One syncronized channel"
-msgstr "má nesynchronizované opravy"
+msgstr "Jeden synchronizovaný kanál"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:189
 msgid "{nSyncedChannels} syncronized channels, from one organization"
@@ -1198,16 +1181,12 @@ msgid "Root Certificate Authority successfully updated."
 msgstr "Koreňová certifikačná autorita bola úspešne aktualizovaná."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:227
-#, fuzzy
-#| msgid "Schedule successfully created."
 msgid "Mirror credentials successfully regenerated."
-msgstr "Naplánované úspešne."
+msgstr "Zrkadlové prihlasovacie údaje boli úspešne znovu vygenerované."
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:170
-#, fuzzy
-#| msgid "No change"
 msgid "No changes to apply"
-msgstr "Žiadna zmena"
+msgstr "Žiadne zmeny, ktoré by sa mali uplatniť"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:215
 msgid "Channels synced correctly to peripheral!"
@@ -1218,15 +1197,11 @@ msgid "Please select at least one channel to add or remove from sync"
 msgstr ""
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:293
-#, fuzzy
-#| msgid "Channels"
 msgid "Channels to Add"
-msgstr "Kanály"
+msgstr "Kanály na pridanie"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:301
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:338
-#, fuzzy
-#| msgid "Filter by name"
 msgid "Filter by Name"
 msgstr "Filtrovať podľa názvu"
 
@@ -1281,20 +1256,16 @@ msgid "No channels selected to add"
 msgstr "Nie sú vybrané žiadne kanály na pridanie"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:331
-#, fuzzy
-#| msgid "Channel Name"
 msgid "Channels to Remove"
-msgstr "Názov kanála"
+msgstr "Kanály na odstránenie"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:347
 msgid "No channels selected to remove"
 msgstr "Nie sú vybrané žiadne kanály na odstránenie"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:354
-#, fuzzy
-#| msgid "Channel sync failed"
 msgid "Channel Sync Changes"
-msgstr "Synchronizácia kanála zlyhala"
+msgstr "Zmeny synchronizácie kanálov"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:355
 msgid "You are about to make the following changes:"
@@ -1318,10 +1289,8 @@ msgid "{peripheralFqdn} - Peripheral Sync Channels"
 msgstr ""
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:407
-#, fuzzy
-#| msgid "Back to list"
 msgid "Back to details"
-msgstr "Späť na zoznam"
+msgstr "Späť na podrobnosti"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:420
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:421
@@ -1334,10 +1303,8 @@ msgid "Sync Channels from Hub to Peripheral"
 msgstr ""
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:439
-#, fuzzy
-#| msgid "Confirm Software Channel Change"
 msgid "Confirm Channel Synchronization Changes"
-msgstr "Potvrďte zmenu softvérového kanála"
+msgstr "Potvrdiť zmeny synchronizácie kanálov"
 
 #: ../html/src/components/hub/TokenTable.tsx:54
 msgid "No tokens available"
@@ -2371,10 +2338,8 @@ msgid "{fqdn} - Peripheral Details"
 msgstr ""
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
-msgstr "Tento server je v súčasnosti registrovaný ako periféria hubu {fqdn}. "
+msgstr "Server {fqdn} je v súčasnosti registrovaný ako periféria pre hub. "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:26
 msgid "Peripherals Configuration"
@@ -5998,28 +5963,20 @@ msgid "Delete Notification"
 msgstr "Vymazať oznámenie"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:307
-#, fuzzy
-#| msgid "Environment updated successfully"
 msgid "{number} messages status updated successfully"
-msgstr "Prostredie bolo úspešne aktualizované"
+msgstr "{number} stav správ úspešne aktualizovaný"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:308
-#, fuzzy
-#| msgid "Cluster properties updated successfully"
 msgid "Message read status updated successfully"
-msgstr "Vlastnosti klastra sa úspešne aktualizovali"
+msgstr "Stav čítania správ bol úspešne aktualizovaný"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:325
-#, fuzzy
-#| msgid "Filter deleted successfully"
 msgid "{number} messages deleted successfully"
-msgstr "Filter bol úspešne vymazaný"
+msgstr "{number} stav správ úspešne vymazaný"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:326
-#, fuzzy
-#| msgid "Filter deleted successfully"
 msgid "Message deleted successfully"
-msgstr "Filter bol úspešne vymazaný"
+msgstr "Správa bola úspešne vymazaná"
 
 #: ../html/src/manager/notifications/notifications.tsx:42
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:339
