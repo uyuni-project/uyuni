@@ -5,7 +5,7 @@ podman system connection ls # Debug
 export CONTAINER_CONNECTION=server # NOTE: this will only apply to the current shell instance  
 echo $CONTAINER_CONNECTION # Debug
 
-ssh root@uyuni.test "sudo psql -U spacewalk -d susemanager -f suseVEXAnnotations.sql"
+#ssh root@uyuni.test "sudo psql -U spacewalk -d susemanager -f suseVEXAnnotations.sql"
 
 ssh root@uyuni.test "rm /tmp/vex-processor/ -r"
 
