@@ -48,5 +48,5 @@ class VEX_Parser:
     def get_vulnerabilities(self):
         return self.vulns
 
-    def persist_data(self):
-        self._persist_data()
+    def persist_data(self, file_hash, hash_type='SHA256'):
+        self._persist_data(file_hash, hash_type)

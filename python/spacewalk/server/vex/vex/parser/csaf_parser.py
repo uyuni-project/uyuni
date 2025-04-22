@@ -70,8 +70,10 @@ class CSAFParser(VEX_Parser):
                         
                         for remediation in vulnerability["remediations"]:
                             rem = Remediation()
-                            rem._set_category(remediation["category"])
-                            rem._set_details(remediation["details"])
+                            if "category" in remediation:
+                                rem._set_category(remediation["category"])
+                            if "details" in remediation:
+                                rem._set_details(remediation["details"])
                             #logging.info(remediation)
                             #rem._set_products(remediation["product_ids"])
                             vuln.add_remediation(rem)
@@ -88,9 +90,12 @@ class CSAFParser(VEX_Parser):
                         for threat in vulnerability["threats"]:
                             if threat["category"] == "impact":
                                 justification = Justification()
-                                justification._set_category(threat["category"])
-                                justification._set_details(threat["details"])
-                                justification._set_products(threat["product_ids"])
+                                if "category" in threat:
+                                    justification._set_category(threat["category"])
+                                if "details" in threat:
+                                    justification._set_details(threat["details"])
+                                if "product_ids" in threat:
+                                    justification._set_products(threat["product_ids"])
                                 vuln.add_justification(justification)
 
                     # TODO - An impact statement SHALL exist as machine readable flag in /vulnerabilities[]/flags
@@ -176,7 +181,7 @@ class CSAFParser(VEX_Parser):
             self.metadata["distribution"] = distribution_info
 
     def _extract_products(self):
-        logging.info("Extracting products") #debug
+        #logging.info("Extracting products") #debug
         if len(self.vex_data) == 0:
             return
         product = self.vex_data["product_tree"]
@@ -232,7 +237,7 @@ class CSAFParser(VEX_Parser):
         return element
     
 
-    def _persist_data(self):
+    def _persist_data(self, file_hash, hash_type='SHA256'):
         vulns =  self.get_vulnerabilities()
 
         db_manager = VEXDatabaseManager()
@@ -242,7 +247,8 @@ class CSAFParser(VEX_Parser):
             try:
                 db_manager.connect()
                 
-                vuln_id = db_manager.insert_cve(vuln.get_id()) # Insert CVE id if necessary
+                cve_id = vuln.get_id()
+                vuln_id = db_manager.insert_cve(cve_id) # Insert CVE id if necessary
 
                 # TODO: Change status management
 
@@ -250,14 +256,14 @@ class CSAFParser(VEX_Parser):
                 # or other particularities are treated easily
 
                 if Status.AFFECTED in vuln.get_statuses():
-                    logging.info("Persisting known_affected")
-                    logging.info(f"Products -> {vuln.get_value('known_affected')}") # DEBUG
+                    logging.debug("Persisting known_affected")
+                    #logging.info(f"Products -> {vuln.get_value('known_affected')}") # DEBUG
                     for product in vuln.get_products_status(Status.AFFECTED):
                         platform = product.split(':')[0]
                         package = product.split(':')[1]
-                        logging.info(f"Product -> {product}") # DEBUG
-                        logging.info(f"Platform -> {platform}") # DEBUG
-                        logging.info(f"Package -> {package}") # DEBUG
+                        #logging.info(f"Product -> {product}") # DEBUG
+                        #logging.info(f"Platform -> {platform}") # DEBUG
+                        #logging.info(f"Package -> {package}") # DEBUG
                         platform_id = db_manager.insert_oval_platform(self.get_product_id_name(platform))
                         package_id = db_manager.insert_vulnerable_package(package)
                         db_manager.insert_vex_annotation(platform_id, vuln_id, package_id, Status.AFFECTED.value)
@@ -265,36 +271,40 @@ class CSAFParser(VEX_Parser):
                     # TODO: MANAGE REMEDIATIONS
 
                 if Status.NOT_AFFECTED in vuln.get_statuses():
-                    logging.info("Persisting known_not_affected")
+                    logging.debug("Persisting known_not_affected")
                     for product in vuln.get_products_status(Status.NOT_AFFECTED):
                         platform = product.split(':')[0]
                         package = product.split(':')[1]
-                        logging.info(f"Platform -> {platform}") # DEBUG
-                        logging.info(f"Package -> {package}") # DEBUG
+                        # logging.info(f"Platform -> {platform}") # DEBUG
+                        # logging.info(f"Package -> {package}") # DEBUG
                         db_manager.insert_oval_platform(self.get_product_id_name(platform))
                         db_manager.insert_vulnerable_package(package)
 
                     # TODO: MANAGE JUSTIFICATIONS
 
                 if Status.PATCHED in vuln.get_statuses():
-                    logging.info("Persisting fixed")
+                    logging.debug("Persisting fixed")
                     for product in vuln.get_products_status(Status.PATCHED):
                         platform = product.split(':')[0]
                         package = product.split(':')[1]
-                        logging.info(f"Platform -> {platform}") # DEBUG
-                        logging.info(f"Package -> {package}") # DEBUG
+                        # logging.info(f"Platform -> {platform}") # DEBUG
+                        # logging.info(f"Package -> {package}") # DEBUG
                         db_manager.insert_oval_platform(self.get_product_id_name(platform))
                         db_manager.insert_vulnerable_package(package)
 
                 if Status.UNDER_INVESTIGATION in vuln.get_statuses():
-                    logging.info("Persisting under_investigation")
+                    logging.debug("Persisting under_investigation")
                     for product in vuln.get_product_status(Status.UNDER_INVESTIGATION):
                         platform = product.split(':')[0]
                         package = product.split(':')[1]
-                        logging.info(f"Platform -> {platform}") # DEBUG
-                        logging.info(f"Package -> {package}") # DEBUG
+                        # logging.info(f"Platform -> {platform}") # DEBUG
+                        # logging.info(f"Package -> {package}") # DEBUG
                         db_manager.insert_oval_platform(self.get_product_id_name(platform))
                         db_manager.insert_vulnerable_package(package)
+
+                
+                logging.info(f"Inserting hash: {file_hash} for {cve_id}")
+                db_manager.insert_vex_hash(cve_id, file_hash, hash_type)
 
             finally:
                 db_manager.close()
