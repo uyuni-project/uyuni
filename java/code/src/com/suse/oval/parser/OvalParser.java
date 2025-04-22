@@ -47,7 +47,6 @@ import com.suse.oval.ovaltypes.linux.RpminfoTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.stax2.XMLEventReader2;
-import org.codehaus.stax2.XMLInputFactory2;
 import org.codehaus.stax2.evt.XMLEvent2;
 
 import java.io.File;
@@ -60,6 +59,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
@@ -109,13 +109,13 @@ public class OvalParser {
      * @param bulkHandler an operation to applied on every bulk of parsed OVAL definitions.
      * */
     public void parseDefinitionsInBulk(File ovalFile, OVALDefinitionsBulkHandler bulkHandler) {
-        XMLInputFactory2 xmlInputFactory = (XMLInputFactory2) XMLInputFactory2.newInstance();
+        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         // Disable external entities processing as a protection measure against XXE.
         xmlInputFactory.setProperty("javax.xml.stream.isSupportingExternalEntities", false);
 
         try {
             XMLEventReader2 reader =
-                (XMLEventReader2) xmlInputFactory.createXMLEventReader(new FileInputStream(ovalFile));
+                    (XMLEventReader2) xmlInputFactory.createXMLEventReader(new FileInputStream(ovalFile));
             // Disable external entities processing as a protection measure against XXE.
             xmlInputFactory.setProperty("javax.xml.stream.isSupportingExternalEntities", false);
 
@@ -124,26 +124,23 @@ public class OvalParser {
             while (reader.hasNext()) {
                 XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
 
-                if (nextEvent.isStartElement()) {
-                    String elementName = nextEvent.asStartElement().getName().getLocalPart();
-                    if (elementName.equals("definition")) {
-                        DefinitionType definitionType = parseDefinitionType(nextEvent.asStartElement(), reader);
-                        definitions.add(definitionType);
+                if (nextEvent.isStartElement() &&
+                        nextEvent.asStartElement().getName().getLocalPart().equals("definition")) {
+                    DefinitionType definitionType = parseDefinitionType(nextEvent.asStartElement(), reader);
+                    definitions.add(definitionType);
 
-                        if (definitions.size() == DEFINITIONS_BULK_SIZE) {
-                            bulkHandler.handle(definitions);
-                            definitions = new ArrayList<>();
-                        }
+                    if (definitions.size() == DEFINITIONS_BULK_SIZE) {
+                        bulkHandler.handle(definitions);
+                        definitions = new ArrayList<>();
                     }
                 }
 
-                if (nextEvent.isEndElement()) {
-                    if (nextEvent.asEndElement().getName().getLocalPart().equals("definitions")) {
-                        if (!definitions.isEmpty()) {
-                            bulkHandler.handle(definitions);
-                        }
-                        break;
+                if (nextEvent.isEndElement() &&
+                        nextEvent.asEndElement().getName().getLocalPart().equals("definitions")) {
+                    if (!definitions.isEmpty()) {
+                        bulkHandler.handle(definitions);
                     }
+                    break;
                 }
             }
         }
@@ -172,13 +169,13 @@ public class OvalParser {
      * @return an {@link OVALResources} object containing OVAL objects, states and tests.
      * */
     public OVALResources parseResources(File ovalFile) {
-        XMLInputFactory2 xmlInputFactory = (XMLInputFactory2) XMLInputFactory2.newInstance();
+        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         // Disable external entities processing as a protection measure against XXE.
         xmlInputFactory.setProperty("javax.xml.stream.isSupportingExternalEntities", false);
 
         try {
             XMLEventReader2 reader =
-                (XMLEventReader2) xmlInputFactory.createXMLEventReader(new FileInputStream(ovalFile));
+                    (XMLEventReader2) xmlInputFactory.createXMLEventReader(new FileInputStream(ovalFile));
 
             OVALResources resources = new OVALResources();
 
@@ -241,10 +238,8 @@ public class OvalParser {
                 }
             }
 
-            if (nextEvent.isEndElement()) {
-                if (nextEvent.asEndElement().getName().getLocalPart().equals("definition")) {
-                    return definitionType;
-                }
+            if (nextEvent.isEndElement() && nextEvent.asEndElement().getName().getLocalPart().equals("definition")) {
+                return definitionType;
             }
         }
 
@@ -284,11 +279,9 @@ public class OvalParser {
                 }
             }
 
-            if (nextEvent.isEndElement()) {
-                if (nextEvent.asEndElement().getName().getLocalPart().equals("criteria")) {
-                    criteriaType.setChildren(children);
-                    return criteriaType;
-                }
+            if (nextEvent.isEndElement() && nextEvent.asEndElement().getName().getLocalPart().equals("criteria")) {
+                criteriaType.setChildren(children);
+                return criteriaType;
             }
         }
 
@@ -332,10 +325,8 @@ public class OvalParser {
                 }
             }
 
-            if (nextEvent.isEndElement()) {
-                if (nextEvent.asEndElement().getName().getLocalPart().equals("metadata")) {
-                    return metadataType;
-                }
+            if (nextEvent.isEndElement() && nextEvent.asEndElement().getName().getLocalPart().equals("metadata")) {
+                return metadataType;
             }
         }
 
@@ -362,11 +353,9 @@ public class OvalParser {
                 }
             }
 
-            if (nextEvent.isEndElement()) {
-                if (nextEvent.asEndElement().getName().getLocalPart().equals("advisory")) {
-                    advisory.setCveList(cveList);
-                    return advisory;
-                }
+            if (nextEvent.isEndElement() && nextEvent.asEndElement().getName().getLocalPart().equals("advisory")) {
+                advisory.setCveList(cveList);
+                return advisory;
             }
         }
 
@@ -379,16 +368,13 @@ public class OvalParser {
         while (reader.hasNext()) {
             XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
 
-            if (nextEvent.isStartElement()) {
-                if (nextEvent.asStartElement().getName().getLocalPart().equals("resolution")) {
-                    advisoryAffectedType.setResolution(parseAdvisoryResolutionType(nextEvent.asStartElement(), reader));
-                }
+            if (nextEvent.isStartElement() &&
+                    nextEvent.asStartElement().getName().getLocalPart().equals("resolution")) {
+                advisoryAffectedType.setResolution(parseAdvisoryResolutionType(nextEvent.asStartElement(), reader));
             }
 
-            if (nextEvent.isEndElement()) {
-                if (nextEvent.asEndElement().getName().getLocalPart().equals("affected")) {
-                    return advisoryAffectedType;
-                }
+            if (nextEvent.isEndElement() && nextEvent.asEndElement().getName().getLocalPart().equals("affected")) {
+                return advisoryAffectedType;
             }
         }
 
@@ -409,17 +395,14 @@ public class OvalParser {
         while (reader.hasNext()) {
             XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
 
-            if (nextEvent.isStartElement()) {
-                if (nextEvent.asStartElement().getName().getLocalPart().equals("component")) {
-                    affectedComponents.add(reader.getElementText());
-                }
+            if (nextEvent.isStartElement() &&
+                    nextEvent.asStartElement().getName().getLocalPart().equals("component")) {
+                affectedComponents.add(reader.getElementText());
             }
 
-            if (nextEvent.isEndElement()) {
-                if (nextEvent.asEndElement().getName().getLocalPart().equals("resolution")) {
-                    advisoryResolutionType.setAffectedComponents(affectedComponents);
-                    return advisoryResolutionType;
-                }
+            if (nextEvent.isEndElement() && nextEvent.asEndElement().getName().getLocalPart().equals("resolution")) {
+                advisoryResolutionType.setAffectedComponents(affectedComponents);
+                return advisoryResolutionType;
             }
         }
 
@@ -440,16 +423,13 @@ public class OvalParser {
         while (reader.hasNext()) {
             XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
 
-            if (nextEvent.isStartElement()) {
-                if (nextEvent.asStartElement().getName().getLocalPart().equals("cpe")) {
-                    cpes.add(reader.getElementText());
-                }
+            if (nextEvent.isStartElement() && nextEvent.asStartElement().getName().getLocalPart().equals("cpe")) {
+                cpes.add(reader.getElementText());
             }
 
-            if (nextEvent.isEndElement()) {
-                if (nextEvent.asEndElement().getName().getLocalPart().equals("affected_cpe_list")) {
-                    return cpes;
-                }
+            if (nextEvent.isEndElement() &&
+                    nextEvent.asEndElement().getName().getLocalPart().equals("affected_cpe_list")) {
+                return cpes;
             }
         }
 
@@ -472,10 +452,8 @@ public class OvalParser {
                 }
             }
 
-            if (nextEvent.isEndElement()) {
-                if (nextEvent.asEndElement().getName().getLocalPart().equals("tests")) {
-                    return tests;
-                }
+            if (nextEvent.isEndElement() && nextEvent.asEndElement().getName().getLocalPart().equals("tests")) {
+                return tests;
             }
         }
 
@@ -512,26 +490,7 @@ public class OvalParser {
             XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
 
             if (nextEvent.isStartElement()) {
-                if (nextEvent.asStartElement().getName().getLocalPart().equals("object")) {
-                    Attribute objectRefAttribute = nextEvent.asStartElement().getAttributeByName(
-                            new QName("object_ref"));
-                    if (objectRefAttribute != null) {
-                        testType.setObjectRef(objectRefAttribute.getValue());
-                    }
-                    else {
-                        LOG.warn("objectRef property was not found");
-                    }
-                }
-                else if (nextEvent.asStartElement().getName().getLocalPart().equals("state")) {
-                    Attribute stateRefAttribute = nextEvent.asStartElement().getAttributeByName(
-                            new QName("state_ref"));
-                    if (stateRefAttribute != null) {
-                        testType.setStateRef(stateRefAttribute.getValue());
-                    }
-                    else {
-                        LOG.warn("stateRef property was not found");
-                    }
-                }
+                processTestTypeStartElement(nextEvent, testType);
             }
 
             if (nextEvent.isEndElement()) {
@@ -543,6 +502,29 @@ public class OvalParser {
         }
 
         throw new OvalParserException("Unable to find the closing tag for test type");
+    }
+
+    private static void processTestTypeStartElement(XMLEvent2 nextEvent, TestType testType) {
+        if (nextEvent.asStartElement().getName().getLocalPart().equals("object")) {
+            Attribute objectRefAttribute = nextEvent.asStartElement().getAttributeByName(
+                    new QName("object_ref"));
+            if (objectRefAttribute != null) {
+                testType.setObjectRef(objectRefAttribute.getValue());
+            }
+            else {
+                LOG.warn("objectRef property was not found");
+            }
+        }
+        else if (nextEvent.asStartElement().getName().getLocalPart().equals("state")) {
+            Attribute stateRefAttribute = nextEvent.asStartElement().getAttributeByName(
+                    new QName("state_ref"));
+            if (stateRefAttribute != null) {
+                testType.setStateRef(stateRefAttribute.getValue());
+            }
+            else {
+                LOG.warn("stateRef property was not found");
+            }
+        }
     }
 
     private List<StateType> parseStates(XMLEventReader2 reader) throws XMLStreamException {
@@ -561,10 +543,8 @@ public class OvalParser {
                 }
             }
 
-            if (nextEvent.isEndElement()) {
-                if (nextEvent.asEndElement().getName().getLocalPart().equals("states")) {
-                    return states;
-                }
+            if (nextEvent.isEndElement() && nextEvent.asEndElement().getName().getLocalPart().equals("states")) {
+                return states;
             }
         }
 
@@ -596,6 +576,10 @@ public class OvalParser {
             }
         });
 
+        return processStateType(reader, stateType);
+    }
+
+    private StateType processStateType(XMLEventReader2 reader, StateType stateType) throws XMLStreamException {
         while (reader.hasNext()) {
             XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
             if (nextEvent.isStartElement()) {
@@ -686,10 +670,8 @@ public class OvalParser {
                 }
             }
 
-            if (nextEvent.isEndElement()) {
-                if (nextEvent.asEndElement().getName().getLocalPart().equals("objects")) {
-                    return objects;
-                }
+            if (nextEvent.isEndElement() && nextEvent.asEndElement().getName().getLocalPart().equals("objects")) {
+                return objects;
             }
         }
 
@@ -724,10 +706,8 @@ public class OvalParser {
 
         while (reader.hasNext()) {
             XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
-            if (nextEvent.isStartElement()) {
-                if (nextEvent.asStartElement().getName().getLocalPart().equals("name")) {
-                    objectType.setPackageName(reader.getElementText());
-                }
+            if (nextEvent.isStartElement() && nextEvent.asStartElement().getName().getLocalPart().equals("name")) {
+                objectType.setPackageName(reader.getElementText());
             }
 
             if (nextEvent.isEndElement()) {
