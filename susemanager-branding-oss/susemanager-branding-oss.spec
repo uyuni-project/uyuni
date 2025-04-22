@@ -22,7 +22,7 @@
 %global wwwroot %{susemanager_shared_path}/www
 %global wwwdocroot %{wwwroot}/htdocs
 Name:           susemanager-branding-oss
-Version:        5.1.1
+Version:        5.1.2
 Release:        0
 Summary:        %{productprettyname} branding oss specific files
 License:        GPL-2.0-only

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Apr 22 15:37:08 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.2-0
+  * Use rebranded skelcd-EULA-multi-linux-manager-server
+
+-------------------------------------------------------------------
 Mon Oct 14 16:00:40 CEST 2024 - rosuna@suse.com
 
 - version 5.1.1-0
