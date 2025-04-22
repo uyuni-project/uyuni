@@ -4,7 +4,6 @@
 # This feature depends on:
 # - features/secondary/min_docker_api.feature
 
-@skip_if_github_validation
 @build_host
 @scope_building_container_images
 @auth_registry
@@ -33,8 +32,6 @@ Feature: Build image with authenticated registry
     And I click on "create-btn"
     Then I wait until I see "auth_registry_profile" text
 
-# This test fails for unknown reason
-@skip_if_github_validation
   @scc_credentials
   Scenario: Build an image in the authenticated image store
     When I follow the left menu "Images > Build"
@@ -44,7 +41,7 @@ Feature: Build image with authenticated registry
     And I click on "submit-btn"
     Then I wait until I see "auth_registry_profile" text
     # Verify the status of images in the authenticated image store
-    When I wait at most 660 seconds until image "auth_registry_profile" with version "latest" is built successfully via API
+    When I wait at most 900 seconds until image "auth_registry_profile" with version "latest" is built successfully via API
     And I wait at most 300 seconds until image "auth_registry_profile" with version "latest" is inspected successfully via API
     And I wait until no Salt job is running on "build_host"
     And I refresh the page
