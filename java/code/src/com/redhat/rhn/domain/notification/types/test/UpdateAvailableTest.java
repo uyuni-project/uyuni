@@ -11,9 +11,6 @@
 package com.redhat.rhn.domain.notification.types.test;
 
 
-import static com.redhat.rhn.common.conf.ConfigDefaults.PRODUCT_NAME;
-import static com.redhat.rhn.common.conf.ConfigDefaults.PRODUCT_VERSION_MGR;
-import static com.redhat.rhn.common.conf.ConfigDefaults.PRODUCT_VERSION_UYUNI;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -21,45 +18,51 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.RhnRuntimeException;
-import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.domain.notification.types.NotificationSeverity;
 import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.domain.notification.types.UpdateAvailable;
+import com.redhat.rhn.testing.MockObjectTestCase;
 
+import org.jmock.Expectations;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
-public class UpdateAvailableTest {
+@SuppressWarnings("java:S1192")
+public class UpdateAvailableTest extends MockObjectTestCase {
     private static final String FAILED_TO_EXTRACT_VERSION_MESSAGE_PREFIX =
             "Failed to extract version from release notes from";
     private static final String RELEASE_NOTES_HTML_ELEMENT =
             "<html>Release Notes for v<span id=\"current_version\">%s</span>.</html>";
-    private static final String SUMA = "SUSE Manager";
-    private static final String UYUNI = "Uyuni";
 
-    /**
-     * Set up the test environment.
-     * Used to avoid property product_name overriding web.product_name.
-     */
+    private final ConfigDefaults configDefaults = ConfigDefaults.get();
+
     @BeforeEach
     public void setUp() {
-        Config.get().remove("product_name");
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+    }
+
+    @AfterEach
+    public void tearDown() throws NoSuchFieldException, IllegalAccessException {
+        setConfigDefaultsInstance(configDefaults);
     }
 
     /**
-     * Test hasUpdateAvailable when a new version of SUMA is available.
+     * Test hasUpdateAvailable when a new semantic version is available.
      */
     @Test
-    public void testSuccessSumaWhenUpdateAvailable() {
-        // Set current product version
-        Config.get().setString(PRODUCT_NAME, SUMA);
-        Config.get().setString(PRODUCT_VERSION_MGR, "5.0.1");
+    public void testSuccessHasUpdateAvailableWhenNewSemanticVersion() {
+        // Set product version to version 5.0.1
+        mockConfigDefaults(false, "5.0.1");
 
         // "Mock" the release notes to contain a newer version
         UpdateAvailable updateAvailable = new UpdateAvailable() {
@@ -81,15 +84,14 @@ public class UpdateAvailableTest {
     }
 
     /**
-     * Test hasUpdateAvailable when no new version of SUMA is available.
+     * Test hasUpdateAvailable when no new semantic version is available.
      */
     @Test
-    public void testSuccessSumaWhenNoUpdateAvailable() {
+    public void testSuccessHasUpdateAvailableWhenNoNewSemanticVersion() {
         final String currentVersion = "5.0.1";
 
         // Set current product version
-        Config.get().setString(PRODUCT_NAME, SUMA);
-        Config.get().setString(PRODUCT_VERSION_MGR, currentVersion);
+        mockConfigDefaults(false, currentVersion);
 
         // "Mock" the release notes to contain the same version
         UpdateAvailable updateAvailable = new UpdateAvailable() {
@@ -103,13 +105,12 @@ public class UpdateAvailableTest {
     }
 
     /**
-     * Test hasUpdateAvailable when a new version of Uyuni is available.
+     * Test hasUpdateAvailable when a new data driven version is available.
      */
     @Test
-    public void testSuccessUyuniWhenUpdateAvailable() {
+    public void testSuccessHasUpdateAvailableWhenNewDataDrivenVersion() {
         // Set current product version
-        Config.get().setString(PRODUCT_NAME, UYUNI);
-        Config.get().setString(PRODUCT_VERSION_UYUNI, "2024.07");
+        mockConfigDefaults(true, "2024.07");
 
         // "Mock" the release notes to contain a newer version
         UpdateAvailable updateAvailable = new UpdateAvailable() {
@@ -131,15 +132,14 @@ public class UpdateAvailableTest {
     }
 
     /**
-     * Test the success of the method hasUpdateAvailable when no new version of Uyuni is available.
+     * Test hasUpdateAvailable when no new data driven version is available.
      */
     @Test
-    public void testSuccessUyuniWhenNoUpdateAvailable() {
+    public void testSuccessHasUpdateAvailableWhenNoNewDataDrivenVersion() {
         final String currentVersion = "2024.07";
 
         // Set current product version
-        Config.get().setString(PRODUCT_NAME, UYUNI);
-        Config.get().setString(PRODUCT_VERSION_UYUNI, currentVersion);
+        mockConfigDefaults(true, "2024.07");
 
         // "Mock" the release notes to the same version
         UpdateAvailable updateAvailable = new UpdateAvailable() {
@@ -152,16 +152,33 @@ public class UpdateAvailableTest {
         assertFalse(updateAvailable.hasUpdateAvailable());
     }
 
+    @Test
+    public void testReleaseNotesUrlDataDrivenVersion() {
+        mockConfigDefaults(true, "2024.07");
+
+        UpdateAvailable updateAvailable = new UpdateAvailable();
+        assertEquals("https://www.uyuni-project.org/pages/stable-version.html",
+                updateAvailable.getReleaseNotesUrl());
+    }
+
+    @Test
+    public void testReleaseNotesUrlSemanticVersion() {
+        mockConfigDefaults(false, "5.1.1");
+
+        UpdateAvailable updateAvailable = new UpdateAvailable();
+        assertEquals("https://www.suse.com/releasenotes/x86_64/multi-linux-manager/5.1/index.html",
+                updateAvailable.getReleaseNotesUrl());
+    }
+
     /**
      * Test the failure of the method hasUpdateAvailable when the retrieved released notes belong to another product.
      */
     @Test
-    public void testFailureUyuniWhenWrongReleaseNotesRetrieved() {
+    public void testFailureHasUpdateAvailableWhenDifferentProductReleaseNotes() {
         // Set current product version
-        Config.get().setString(PRODUCT_NAME, UYUNI);
-        Config.get().setString(PRODUCT_VERSION_UYUNI, "2024.07");
+        mockConfigDefaults(true, "2024.07");
 
-        // "Mock" the release notes to retrieve a SUMA version
+        // "Mock" the release notes to retrieve a semantic version
         UpdateAvailable updateAvailable = new UpdateAvailable() {
             @Override
             public String getReleaseNotes() {
@@ -178,7 +195,7 @@ public class UpdateAvailableTest {
      * Test the failure of the method hasUpdateAvailable when no version was extracted.
      */
     @Test
-    public void testFailureUyuniWhenNoVersionDetected() {
+    public void testFailureHasUpdateAvailableWhenNoVersionDetected() {
         UpdateAvailable updateAvailable = new UpdateAvailable() {
             @Override
             public String getReleaseNotes() {
@@ -227,7 +244,7 @@ public class UpdateAvailableTest {
      * Test the failure of the method hasUpdateAvailable when no version was extracted.
      */
     @Test
-    public void testFailureUyuniWhenDownloadFails() {
+    public void testFailureHasUpdateAvailableWhenDownloadFails() {
         UpdateAvailable updateAvailable = new UpdateAvailable() {
             @Override
             public String getReleaseNotes() {
@@ -249,8 +266,7 @@ public class UpdateAvailableTest {
     @MethodSource("validHtmlData")
     public void testSuccessWhenValidHtml(String releaseNotesHtml) {
         // Set current product version
-        Config.get().setString(PRODUCT_NAME, UYUNI);
-        Config.get().setString(PRODUCT_VERSION_UYUNI, "2024.07");
+        mockConfigDefaults(true, "2024.07");
 
         UpdateAvailable updateAvailable = new UpdateAvailable() {
             @Override
@@ -272,20 +288,42 @@ public class UpdateAvailableTest {
         );
     }
 
-    @Test
-    public void testReleaseNotesUrl() {
-        Config.get().setString(PRODUCT_NAME, UYUNI);
-        Config.get().setString(PRODUCT_VERSION_UYUNI, "2024.07");
 
-        UpdateAvailable updateAvailable = new UpdateAvailable();
-        assertEquals("https://www.uyuni-project.org/pages/stable-version.html",
-                updateAvailable.getReleaseNotesUrl());
+    @SuppressWarnings({"java:S1171", "java:S3599"})
+    private void mockConfigDefaults(boolean expectedIsUyuni, String expectedProductVersion) {
+        ConfigDefaults mockConfigDefaults = context.mock(ConfigDefaults.class);
 
-        Config.get().setString(PRODUCT_NAME, SUMA);
-        Config.get().setString(PRODUCT_VERSION_MGR, "5.1.1");
+        context.checking(new Expectations() {{
+            allowing(mockConfigDefaults).getProductName();
+            will(returnValue(expectedIsUyuni ? "Uyuni" : "SUSE Manager"));
+            allowing(mockConfigDefaults).isUyuni();
+            will(returnValue(expectedIsUyuni));
+            allowing(mockConfigDefaults).getProductVersion();
+            will(returnValue(expectedProductVersion));
+            allowing(mockConfigDefaults).getDefaultLocale();
+            will(returnValue("en_US"));
+        }});
 
-        updateAvailable = new UpdateAvailable();
-        assertEquals("https://www.suse.com/releasenotes/x86_64/multi-linux-manager/5.1/index.html",
-                updateAvailable.getReleaseNotesUrl());
+        try {
+            setConfigDefaultsInstance(mockConfigDefaults);
+        }
+        catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
+
+    /**
+     * Overrides the ConfigDefaults instance
+     * @param configDefaultsIn the ConfigDefaults instance
+     * @throws NoSuchFieldException if a field with the specified name is not found.
+     * @throws IllegalAccessException if the field is not accessible.
+     */
+    @SuppressWarnings("java:S3011")
+    private static void setConfigDefaultsInstance(ConfigDefaults configDefaultsIn)
+            throws NoSuchFieldException, IllegalAccessException {
+        Field field = ConfigDefaults.class.getDeclaredField("instance");
+        field.setAccessible(true);
+        field.set(null, configDefaultsIn);
+    }
+
 }

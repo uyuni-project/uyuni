@@ -11,13 +11,9 @@
 package com.redhat.rhn.domain.notification.types;
 
 import com.redhat.rhn.common.RhnRuntimeException;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.common.util.download.DownloadUtils;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.Serializable;
 
@@ -27,17 +23,12 @@ import java.io.Serializable;
 public class UpdateAvailable implements NotificationData, Serializable {
 
     private static final LocalizationService LOCALIZATION_SERVICE = LocalizationService.getInstance();
-    private static final Logger LOG = LogManager.getLogger(UpdateAvailable.class);
 
     private static final String VERSION_ELEMENT_START = "<span";
     private static final String VERSION_ELEMENT_ID_ATTRIBUTE = "id=\"current_version\"";
     private static final String VERSION_ELEMENT_END = "</span>";
 
-    private final boolean isUyuni = ConfigDefaults.get().isUyuni();
-    private final Version version = new Version(
-            ConfigDefaults.get().getProductVersion(),
-            ConfigDefaults.get().isUyuni()
-    );
+    private final ManagerVersion managerVersion = new ManagerVersion();
 
     /**
      * returns true if there is a newer version available.
@@ -47,8 +38,8 @@ public class UpdateAvailable implements NotificationData, Serializable {
     public boolean hasUpdateAvailable() {
         try {
             String releaseNotesHtmlContent = getReleaseNotes();
-            Version latestVersion = new Version(extractVersion(releaseNotesHtmlContent), isUyuni);
-            return latestVersion.isNewerThan(version);
+            ManagerVersion latestManagerVersion = new ManagerVersion(extractVersion(releaseNotesHtmlContent));
+            return latestManagerVersion.isNewerThan(managerVersion);
         }
         catch (IllegalArgumentException | DownloadException e) {
             throw new RhnRuntimeException(
@@ -82,9 +73,9 @@ public class UpdateAvailable implements NotificationData, Serializable {
      * @return the URL to the release notes
      */
     public String getReleaseNotesUrl() {
-        return isUyuni ? "https://www.uyuni-project.org/pages/stable-version.html" :
+        return managerVersion.isUyuni() ? "https://www.uyuni-project.org/pages/stable-version.html" :
                 "https://www.suse.com/releasenotes/x86_64/multi-linux-manager/" +
-                        version.getMajor() + "." + version.getMinor() +
+                        managerVersion.getMajor() + "." + managerVersion.getMinor() +
                         "/index.html";
     }
 
