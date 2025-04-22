@@ -147,6 +147,8 @@ public class SCCEndpoints {
         };
     }
 
+    public static final String SHOULD_BE_REMOVED = "/hub/scc";
+
     /**
      * Initialize routs
      * @param jade jade
@@ -158,9 +160,8 @@ public class SCCEndpoints {
         get("/hub/scc/connect/organizations/orders", asJson(withSCCAuth(this::orders)));
         get("/hub/scc/suma/product_tree.json", asJson(this::productTree));
         //
-        String shouldBeRemoved = "/hub/scc";
-        put(shouldBeRemoved + "/connect/organizations/systems", asJson(withSCCAuth(this::createSystems)));
-        delete(shouldBeRemoved + "/connect/organizations/systems/:id", asJson(withSCCAuth(this::deleteSystem)));
+        put(SHOULD_BE_REMOVED + "/connect/organizations/systems", asJson(withSCCAuth(this::createSystems)));
+        delete(SHOULD_BE_REMOVED + "/connect/organizations/systems/:id", asJson(withSCCAuth(this::deleteSystem)));
     }
 
     private final Gson gson = new GsonBuilder()

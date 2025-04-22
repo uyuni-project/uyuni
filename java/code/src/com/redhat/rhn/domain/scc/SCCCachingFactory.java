@@ -656,4 +656,13 @@ import javax.persistence.NoResultException;
                 .setParameter("retryTime", new Date(retryTime.getTimeInMillis()))
                 .getResultList();
     }
+
+    /**
+     * should be used only for testing
+     * @return list of SCCRegCacheItem
+     */
+    public static List<SCCRegCacheItem> testListAllItems() {
+        return  getSession().createNativeQuery("SELECT * from suseSCCRegCache", SCCRegCacheItem.class)
+                .getResultList();
+    }
 }

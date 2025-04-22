@@ -44,6 +44,7 @@ public class SCCSystemRegistrationManager {
     private static final Logger LOG = LogManager.getLogger(SCCSystemRegistrationManager.class);
     private final SCCClient sccClient;
     private final SCCProxyFactory sccProxyFactory;
+    private final SCCSystemRegistration sccSystemRegistration;
 
     /**
      * Constructor
@@ -52,8 +53,22 @@ public class SCCSystemRegistrationManager {
      * @param sccProxyFactoryIn the scc proxy factory
      */
     public SCCSystemRegistrationManager(SCCClient sccClientIn, SCCProxyFactory sccProxyFactoryIn) {
+        this(sccClientIn, sccProxyFactoryIn, new SCCSystemRegistration());
+    }
+
+    /**
+     * Constructor
+     *
+     * @param sccClientIn             the scc client
+     * @param sccProxyFactoryIn       the scc proxy factory
+     * @param sccSystemRegistrationIn the scc system registration
+     */
+    public SCCSystemRegistrationManager(SCCClient sccClientIn,
+                                        SCCProxyFactory sccProxyFactoryIn,
+                                        SCCSystemRegistration sccSystemRegistrationIn) {
         this.sccClient = sccClientIn;
         this.sccProxyFactory = sccProxyFactoryIn;
+        this.sccSystemRegistration = sccSystemRegistrationIn;
     }
 
     /**
@@ -197,7 +212,7 @@ public class SCCSystemRegistrationManager {
      * @param primaryCredential the current primary organization credential
      */
     public void register(List<SCCRegCacheItem> items, SCCCredentials primaryCredential) {
-        new SCCSystemRegistration().register(sccClient, items, primaryCredential);
+        sccSystemRegistration.register(sccClient, items, primaryCredential);
     }
 
     /**
