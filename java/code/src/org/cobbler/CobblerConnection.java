@@ -219,4 +219,26 @@ public class CobblerConnection {
     public Double getVersion() {
         return (Double) invokeMethod("version", new LinkedList<>());
     }
+
+
+    /**
+     * Begins a new transaction
+     */
+    public void transactionBegin() {
+        invokeTokenMethod("transaction_begin");
+    }
+
+    /**
+     * Commits the current transaction
+     */
+    public void transactionCommit() {
+        invokeTokenMethod("transaction_commit");
+    }
+
+    /**
+     * Aborts the current transaction
+     */
+    public void transactionAbort() {
+        invokeTokenMethod("transaction_abort");
+    }
 }
