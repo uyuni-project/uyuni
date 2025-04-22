@@ -61,6 +61,7 @@ public class SaltbootUtils {
      */
     public static void createSaltbootDistro(ImageInfo imageInfo, BootImage bootImage) {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
+        List<Distro> distros = Distro.list(con);
         String pathPrefix = OSImageStoreUtils.getOSImageStorePathForImage(imageInfo);
         pathPrefix += imageInfo.getName() + "-" + imageInfo.getVersion() + "-" + imageInfo.getRevisionNumber() + "/";
         String initrd = pathPrefix + bootImage.getInitrd().getFilename();
@@ -69,54 +70,62 @@ public class SaltbootUtils {
                 imageInfo.getRevisionNumber();
         String nameV = imageInfo.getOrg().getId() + "-" + imageInfo.getName() + "-" + imageInfo.getVersion();
         String name = imageInfo.getOrg().getId() + "-" + imageInfo.getName();
-        // Generic breed is required for cobbler not appending any autoyast or kickstart keywords
-        Distro cd = new Distro.Builder<String>()
+        try {
+            con.transactionBegin();
+            // Generic breed is required for cobbler not appending any autoyast or kickstart keywords
+            Distro cd = new Distro.Builder<String>()
                 .setName(nameVR)
                 .setInitrd(initrd)
                 .setKernel(kernel)
                 .setKernelOptions(Optional.of("panic=60 splash=silent"))
                 .setArch(imageInfo.getImageArch().getName()).setBreed("generic")
                 .build(con);
-        cd.setComment("Distro for image " + nameVR + " belonging to organization " + imageInfo.getOrg().getName());
-        cd.save();
+            cd.setComment("Distro for image " + nameVR + " belonging to organization " + imageInfo.getOrg().getName());
+            cd.save();
 
-        // Each distro have its own private profile for individual system records
-        // SystemRecords need to be decoupled from saltboot group default profiles
-        updateDistroProfile(con, nameVR, cd, "Distro " + nameVR + " private profile");
+            // Each distro have its own private profile for individual system records
+            // SystemRecords need to be decoupled from saltboot group default profiles
+            updateDistroProfile(con, nameVR, cd, "Distro " + nameVR + " private profile");
 
-        List<Distro> distros = Distro.list(con);
-        SaltbootVersionCompare saltbootCompare = new SaltbootVersionCompare();
-        String defaultImage = imageInfo.getOrg().getId() + "-" + DEFAULT_IMAGE;
-        if (nameVR.equals(selectDistro(distros, imageInfo.getOrg().getId() + "-"))) {
-            updateDistroProfile(con, defaultImage, cd, "Default image");
+            distros.add(cd);
+
+            String defaultImage = imageInfo.getOrg().getId() + "-" + DEFAULT_IMAGE;
+            if (nameVR.equals(selectDistro(distros, imageInfo.getOrg().getId() + "-"))) {
+                updateDistroProfile(con, defaultImage, cd, "Default image");
+            }
+
+            if (nameVR.equals(selectDistro(distros, name + "-"))) {
+                updateDistroProfile(con, name, cd, "Default image for " + name);
+            }
+
+            if (nameVR.equals(selectDistro(distros, nameV + "-"))) {
+                updateDistroProfile(con, nameV, cd, "Default image for " + nameV);
+            }
+
+
+            for (ServerGroup saltbootGroup : Pillar.getGroupsForCategory(FormulaFactory.SALTBOOT_PILLAR)) {
+                String parentProfile;
+                try {
+                    parentProfile = getParent(saltbootGroup);
+                }
+                catch (SaltbootException e) {
+                    LOG.warn("Can't get image for saltboot group {}-{}: {}",
+                             saltbootGroup.getOrg().getId(), saltbootGroup.getName(), e.getMessage());
+                    continue;
+                }
+
+                if (parentProfile.equals(nameVR)) {
+                    updateGroupProfile(con, saltbootGroup, false);
+                }
+                if (parentProfile.equals(nameV) || parentProfile.equals(name) || parentProfile.equals(defaultImage)) {
+                    updateGroupProfile(con, saltbootGroup, true);
+                }
+            }
+            con.transactionCommit();
         }
-
-        if (nameVR.equals(selectDistro(distros, name + "-"))) {
-            updateDistroProfile(con, name, cd, "Default image for " + name);
-        }
-
-        if (nameVR.equals(selectDistro(distros, nameV + "-"))) {
-            updateDistroProfile(con, nameV, cd, "Default image for " + nameV);
-        }
-
-
-        for (ServerGroup saltbootGroup : Pillar.getGroupsForCategory(FormulaFactory.SALTBOOT_PILLAR)) {
-            String parentProfile;
-            try {
-                parentProfile = getParent(saltbootGroup);
-            }
-            catch (SaltbootException e) {
-                LOG.warn("Can't get image for saltboot group {}-{}: {}",
-                         saltbootGroup.getOrg().getId(), saltbootGroup.getName(), e.getMessage());
-                continue;
-            }
-
-            if (parentProfile.equals(nameVR)) {
-                updateGroupProfile(con, saltbootGroup, false);
-            }
-            if (parentProfile.equals(nameV) || parentProfile.equals(name) || parentProfile.equals(defaultImage)) {
-                updateGroupProfile(con, saltbootGroup, true);
-            }
+        catch (Exception e) {
+            con.transactionAbort();
+            throw e;
         }
     }
 
@@ -127,33 +136,43 @@ public class SaltbootUtils {
      */
     public static void deleteSaltbootDistro(ImageInfo info) throws SaltbootException {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
-        String nameVR = info.getOrg().getId() + "-" + info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber();
+        List<Distro> distros = Distro.list(con);
+        String nameVR = info.getOrg().getId() + "-" + info.getName() + "-" +
+                        info.getVersion() + "-" + info.getRevisionNumber();
         String nameV = info.getOrg().getId() + "-" + info.getName() + "-" + info.getVersion();
         String name = info.getOrg().getId() + "-" + info.getName();
 
-        // First delete hidden distro profile
-        deleteSaltbootProfile(nameVR);
-
-        List<Distro> distros = Distro.list(con);
-        List<Distro> remainingDistros = distros.stream().filter(d -> !nameVR.equals(d.getName())).collect(Collectors.toList());
-
+        con.transactionBegin();
         try {
-            Distro d = Distro.lookupByName(con, selectDistro(remainingDistros, info.getOrg().getId() + "-"));
-            updateDistroProfile(con, info.getOrg().getId() + "-" + DEFAULT_IMAGE, d, "Default image");
+            // First delete hidden distro profile
+            deleteSaltbootProfile(nameVR, con);
 
-            d = Distro.lookupByName(con, selectDistro(remainingDistros, name + '-'));
-            updateDistroProfile(con, name, d, "Default image for " + name);
+            List<Distro> remainingDistros = distros.stream().filter(
+                d -> !nameVR.equals(d.getName())).collect(Collectors.toList());
 
-            d = Distro.lookupByName(con, selectDistro(remainingDistros, nameV + '-'));
-            updateDistroProfile(con, nameV, d, "Default image for " + nameV);
+            try {
+                Distro d = Distro.lookupByName(con, selectDistro(remainingDistros, info.getOrg().getId() + "-"));
+                updateDistroProfile(con, info.getOrg().getId() + "-" + DEFAULT_IMAGE, d, "Default image");
+
+                d = Distro.lookupByName(con, selectDistro(remainingDistros, name + '-'));
+                updateDistroProfile(con, name, d, "Default image for " + name);
+
+                d = Distro.lookupByName(con, selectDistro(remainingDistros, nameV + '-'));
+                updateDistroProfile(con, nameV, d, "Default image for " + nameV);
+            }
+            catch (SaltbootException e) {
+                    LOG.error("Can't update the default: {}", e.getMessage());
+            }
+            // then distro itself
+            Distro d = Distro.lookupByName(con, nameVR);
+            if (d != null) {
+                d.remove();
+            }
+            con.transactionCommit();
         }
-        catch (SaltbootException e) {
-                LOG.error("Can't update the default: {}", e.getMessage());
-        }
-        // then distro itself
-        Distro d = Distro.lookupByName(con, nameVR);
-        if (d != null) {
-            d.remove();
+        catch (Exception e) {
+            con.transactionAbort();
+            throw e;
         }
     }
 
@@ -279,10 +298,20 @@ public class SaltbootUtils {
      * Delete saltboot profile
      * If profile is not found, does nothing
      * @param profileName
-     * @param org
      */
     public static void deleteSaltbootProfile(String profileName) {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
+        deleteSaltbootProfile(profileName, con);
+    }
+
+    /**
+     * Delete saltboot profile
+     * If profile is not found, does nothing
+     * @param profileName
+     * @param con Use this Cobbler connection
+     */
+    public static void deleteSaltbootProfile(String profileName, CobblerConnection con) {
+
         Profile p = Profile.lookupByName(con, profileName);
 
         if (p != null) {
