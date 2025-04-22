@@ -184,6 +184,11 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
   end
 end
 
+When(/^I select "([^"]*)" from page size$/) do |option|
+  dropdown = find(:xpath, "//select[@class='display-number']")
+  dropdown.select(option)
+end
+
 When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
   client = 'proxy_nontransactional' if client == 'proxy' && !$is_transactional_server
   select(BASE_CHANNEL_BY_CLIENT[product][client], from: from, exact: false)
