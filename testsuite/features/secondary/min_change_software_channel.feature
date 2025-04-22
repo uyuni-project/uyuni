@@ -16,33 +16,47 @@ Feature: Assign child channel to a system
     Given I am authorized
 
 @susemanager
-  Scenario: Check the system is still subscribed to old channels before channel change completes
+  Scenario: Pre-requisite: unsubscribe from old channels
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
+    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
     Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" should be checked
     And I wait until I do not see "Loading..." text
+    When I uncheck "SLE15-SP4-Installer-Updates for x86_64"
     And I should see "SLE15-SP4-Installer-Updates for x86_64" as unchecked
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
 
 @uyuni
-  Scenario: Check the system is still subscribed to old channels before channel change completes
+  Scenario: Pre-requisite: unsubscribe from old channels
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
+    And I check radio button "openSUSE Leap 15.6 (x86_64)"
     Then radio button "openSUSE Leap 15.6 (x86_64)" should be checked
-    And I wait until I do not see "Loading..." text
-    And I should see "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" as unchecked
+    When I wait until I do not see "Loading..." text
+    And I uncheck "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" by label
+    Then I should see "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" as unchecked
+    When I uncheck "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)" by label
+    Then I should see "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)" as unchecked
+    When I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
 
 @susemanager
-  Scenario: Check via API old channels are still the same on the system before channel change completes
+  Scenario: Pre-requisite: check via API that the system is unsubscribed from old channels
     When I refresh the metadata for "sle_minion"
     Then channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
     And channel "SLE15-SP4-Installer-Updates for x86_64" should be disabled on "sle_minion"
 
 @uyuni
-  Scenario: Check via API old channels are still the same on the system before channel change completes
+  Scenario: Pre-requisite: check via API that the system is unsubscribed from old channels
     When I refresh the metadata for "sle_minion"
     Then channel "openSUSE Leap 15.6 (x86_64)" should be enabled on "sle_minion"
     And channel "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" should be disabled on "sle_minion"
@@ -69,11 +83,12 @@ Feature: Assign child channel to a system
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
     Then radio button "openSUSE Leap 15.6 (x86_64)" should be checked
-    And I wait until I do not see "Loading..." text
-    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)"
-    And I click on "Next"
+    When I wait until I do not see "Loading..." text
+    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" by label
+    Then I should see "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" as checked
+    When I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
-    And I click on "Confirm"
+    When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
@@ -142,13 +157,15 @@ Feature: Assign child channel to a system
     Then radio button "openSUSE Leap 15.6 (x86_64)" should be checked
     And I wait until I do not see "Loading..." text
     And I wait until I see "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" text
-    And I uncheck "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)"
-    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
-    And I check "Fake-RPM-SUSE-Channel"
+    And I uncheck "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" by label
+    Then I should see "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" as unchecked
+    When I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)" by label
+    Then I should see "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)" as checked
+    When I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
-    Then I should see a "Changing the channels has been scheduled." text
-    When I follow "scheduled" in the content area
+    And I wait until I see "Changing the channels has been scheduled." text
+    And I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
     Then channel "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" should be disabled on "sle_minion"
