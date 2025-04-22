@@ -56,6 +56,6 @@ jobs:
     # See https://github.com/mxschmitt/action-tmate?tab=readme-ov-file#only-on-failure
     - name: Setup tmate session
       if: ${{ failure() && github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
-      uses: mxschmitt/action-tmate@e5c7151931ca95bad1c6f4190c730ecf8c7dde48 #v3.19
+      uses: mxschmitt/action-tmate@c606f8612a802e46b3742322514c09fbc8c4afee #v3.21
       with:
         limit-access-to-actor: true
