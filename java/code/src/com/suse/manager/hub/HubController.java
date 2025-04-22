@@ -341,11 +341,17 @@ public class HubController {
 
         try {
             hubManager.syncChannels(token, channelInfoList);
+            Date earliest = Date.from(Instant.now().plus(10, ChronoUnit.SECONDS));
+            taskomaticApi.scheduleProductRefresh(earliest, false);
             return success(response);
         }
         catch (IllegalArgumentException ex) {
             LOGGER.error("Illegal arguments in syncChannels", ex);
             return badRequest(response, ex.getMessage());
+        }
+        catch (TaskomaticApiException ex) {
+            LOGGER.error("Scheduling a product refresh failed. ", ex);
+            return internalServerError(response, "Scheduling product refresh failed");
         }
         catch (Exception e) {
             LOGGER.error("Internal server error in syncChannels", e);
