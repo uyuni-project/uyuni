@@ -155,7 +155,7 @@ public class Profile extends CobblerObject {
      * @return the profile that maps to the name or null
      */
     public static Profile lookupByName(CobblerConnection client, String name) {
-        return handleLookup(client, lookupDataMapByName(client, name, "get_profile"));
+        return handleLookup(client, lookupDataMapByName(client, name, "get_profile", false, false));
     }
 
     /**
@@ -185,7 +185,7 @@ public class Profile extends CobblerObject {
         if (profileMap != null) {
             Profile profile = new Profile(client);
             profile.dataMap = profileMap;
-            profile.dataMapResolved = (Map<String, Object>) client.invokeMethod(
+            profile.dataMapResolved = (Map<String, Object>) client.invokeTokenMethod(
                     "get_profile",
                     profile.getName(), // object name
                     false, // flatten
