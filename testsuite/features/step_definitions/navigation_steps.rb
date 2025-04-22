@@ -173,6 +173,11 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
   end
 end
 
+When(/^I select "([^"]*)" from page size$/) do |option|
+  dropdown = find(:xpath, "//select[@class='display-number']")
+  dropdown.select(option)
+end
+
 When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
   product_key = $is_gh_validation && !$build_validation ? 'Fake' : product
   client = 'proxy_nontransactional' if client == 'proxy' && !$is_transactional_server
