@@ -318,167 +318,170 @@ public class SsmManager {
         for (SystemsPerChannelDto spc : ChannelManager.baseChannelsInSet(user)) {
             Channel currentBase = ChannelFactory.lookupById(spc.getId());
 
-            Optional<SsmBaseChannelChangesDto.Change> baseChange =
-                changes.getChanges().stream()
-                        .filter(c -> c.getOldBaseId() == currentBase.getId())
-                        .findFirst();
-            baseChange.ifPresent(change -> {
-                List<Server> oldBaseServers = findServersInSetByChannel(user,
-                        change.getOldBaseId());
-
-                if (change.getNewBaseId() == -1) {
-                    // set base channel to default
-                    List<SsmAllowedChildChannelsDto> groupByBaseChange = new ArrayList<>();
-                    for (Server srv : oldBaseServers) {
-                        // guess base channels for each server
-                        Optional<Channel> guessedChannel =
-                                ChannelManager.guessServerBaseChannel(user, srv.getId());
-
-                        SsmAllowedChildChannelsDto allowedChildren = guessedChannel
-                                .map(gc ->
-                                        // we have a guess
-                                        getOrCreateByOldAndNewBase(groupByBaseChange,
-                                                Optional.of(currentBase),
-                                                Optional.of(gc))
-                                )
-                                .orElseGet(() -> {
-                                        // could not guess any base channel
-                                        SsmAllowedChildChannelsDto noGuess =
-                                                getOrCreateByOldAndNewBase(groupByBaseChange,
-                                                Optional.of(currentBase),
-                                                Optional.empty());
-                                        noGuess.setNewBaseDefault(false);
-                                        return noGuess;
-                                });
-                        if (allowedChildren.getNewBaseChannel().isPresent()) {
-                            allowedChildren.getServers().add(SsmServerDto.from(srv));
-                        }
-                        else {
-                            // new base channel could not be guessed
-                            allowedChildren.getIncompatibleServers().add(SsmServerDto.from(srv));
-                        }
-                    }
-
-                    groupByBaseChange.forEach(defaultBase -> defaultBase.getNewBaseChannel()
-                            .ifPresent(newBaseChannel -> fillChildChannels(user,
-                                defaultBase,
-                                newBaseChannel.getId())));
-                    result.addAll(groupByBaseChange);
-
-                }
-                else if (change.getNewBaseId() > 0) {
-                    // explicit base channel change
-                    List<EssentialChannelDto> compatibleBases = ChannelManager
-                            .listCompatibleBaseChannelsForChannel(user, currentBase);
-                    Channel newBase = compatibleBases.stream()
-                            .filter(cb -> cb.getId() == change.getNewBaseId())
-                            .findFirst()
-                            .map(ec -> ChannelFactory.lookupById(ec.getId()))
-                            .orElseThrow(() ->
-                                    new IllegalArgumentException("New base id not compatible with old base"));
-                    SsmAllowedChildChannelsDto ac =
-                            new SsmAllowedChildChannelsDto(
-                                    SsmChannelDto.from(currentBase),
-                                    SsmChannelDto.from(newBase),
-                                    false);
-                    ac.getServers()
-                            .addAll(oldBaseServers.stream()
-                                    .map(SsmServerDto::from)
-                                    .toList());
-
-                    fillChildChannels(user, ac, newBase.getId());
-                    result.add(ac);
-                }
-                else {
-                    // no base change
-                    SsmAllowedChildChannelsDto ac =
-                            new SsmAllowedChildChannelsDto(
-                                    SsmChannelDto.from(currentBase),
-                                    SsmChannelDto.from(currentBase),
-                                    false);
-                    ac.getServers()
-                            .addAll(oldBaseServers.stream()
-                                    .map(SsmServerDto::from)
-                                    .toList());
-
-                    fillChildChannels(user, ac, change.getOldBaseId());
-                    result.add(ac);
-                }
-            });
+            // Handle changes with the same base
+            changes.getChanges().stream()
+                .filter(c -> c.getOldBaseId() == currentBase.getId())
+                .findFirst()
+                .ifPresent(change -> result.addAll(handleChangeWithSameBase(user, change, currentBase)));
         }
 
-        Optional<SsmBaseChannelChangesDto.Change> withoutBaseChange =
-                changes.getChanges().stream()
-                    .filter(c -> c.getOldBaseId() == -1)
-                    .findFirst();
+        // Now handle changes without a base
+        changes.getChanges().stream()
+            .filter(c -> c.getOldBaseId() == -1)
+            .findFirst()
+            .ifPresent(change -> result.addAll(handleChangeWithoutBase(user, change)));
 
-        withoutBaseChange.ifPresent(change -> {
-            List<SsmAllowedChildChannelsDto> allowedNoBase = new ArrayList<>();
-
-            for (EssentialServerDto essentialServerDto : SystemManager.systemsWithoutBaseChannelsInSet(user)) {
-                Server srv = ServerFactory.lookupById(essentialServerDto.getId());
-                SsmServerDto ssmServerDto = SsmServerDto.from(srv);
-
-                if (change.getNewBaseId() == -1) {
-                    // set base channel to default
-                    Optional<Channel> guessedChannel = ChannelManager.guessServerBaseChannel(user, srv.getId());
-
-                    SsmAllowedChildChannelsDto allowedChildren = guessedChannel
-                        // we have a guess
-                        .map(gc -> getOrCreateByOldAndNewBase(allowedNoBase, Optional.empty(), Optional.of(gc)))
-                        // could not guess any base channel
-                        .orElseGet(() -> getOrCreateByOldAndNewBase(allowedNoBase, Optional.empty(), Optional.empty()));
-
-                    if (allowedChildren.getNewBaseChannel().isPresent()) {
-                        allowedChildren.getServers().add(ssmServerDto);
-                    }
-                    else {
-                        // new base channel could not be guessed
-                        allowedChildren.getIncompatibleServers().add(ssmServerDto);
-                    }
-                }
-                else if (change.getNewBaseId() > 0) {
-                    // explicit base channel change
-                    Channel newBase = ChannelFactory.lookupById(change.getNewBaseId());
-                    // TODO check if newBase allowed
-                    var allowed = getOrCreateByOldAndNewBase(allowedNoBase, Optional.empty(), Optional.of(newBase));
-                    allowed.setNewBaseDefault(false);
-                    if (allowed.getChildChannels().isEmpty()) {
-                        fillChildChannels(user, allowed, newBase.getId());
-                    }
-                    allowed.getServers().add(ssmServerDto);
-                }
-
-                // else no base change. since system has no base there are no child channels to find
-            }
-            allowedNoBase.forEach(allowed -> allowed.getNewBaseChannel()
-                    .ifPresent(newBaseChannel -> fillChildChannels(user, allowed, newBaseChannel.getId())));
-            result.addAll(allowedNoBase);
-        });
         // else no change for systems without a base channel =>
         // there are no child channels to show
 
         // TEMPORARY HACK: re-iterate and set the recommended flag for the child channels
         // this is not optimal from the complexity POV (for each child channel we perform
         // a bunch of DB queries)
-        result.forEach(change -> {
-            Optional<SsmChannelDto> newBaseChannelDto = change.getNewBaseChannel();
-
-            Optional<Channel> newRootChannel = newBaseChannelDto
-                    .map(channelDto -> ChannelManager.lookupByIdAndUser(channelDto.getId(), user))
-                    .map(ChannelManager::getOriginalChannel);
-
-            newRootChannel.ifPresent(rootChannel -> {
-                Stream<Channel> childChannelStream = change.getChildChannels().stream()
-                        .map(channelDto -> ChannelManager.lookupByIdAndUser(channelDto.getId(), user));
-                Map<Long, Boolean> channelRecommendedFlags =
-                        ChannelManager.computeChannelRecommendedFlags(rootChannel, childChannelStream);
-                change.getChildChannels().forEach(childChannelDto ->
-                        childChannelDto.setRecommended(channelRecommendedFlags.get(childChannelDto.getId())));
-            });
-        });
+        result.forEach(change -> setChildChannelsRecommendedFlag(user, change));
 
         return result;
+    }
+
+    private static List<SsmAllowedChildChannelsDto> handleChangeWithSameBase(User user,
+                                                                             SsmBaseChannelChangesDto.Change change,
+                                                                             Channel currentBase) {
+        List<Server> oldBaseServers = findServersInSetByChannel(user, change.getOldBaseId());
+
+        // set base channel to default
+        if (change.getNewBaseId() == -1) {
+            List<SsmAllowedChildChannelsDto> groupByBaseChange = new ArrayList<>();
+            for (Server srv : oldBaseServers) {
+                // guess base channels for each server
+                Optional<Channel> guessedChannel = ChannelManager.guessServerBaseChannel(user, srv.getId());
+
+                SsmAllowedChildChannelsDto allowedChildren = guessedChannel
+                    // we have a guess
+                    .map(gc -> getOrCreateByOldAndNewBase(groupByBaseChange, currentBase, gc))
+                    // could not guess any base channel
+                    .orElseGet(() -> {
+                        var noGuess = getOrCreateByOldAndNewBase(groupByBaseChange, currentBase, null);
+                        noGuess.setNewBaseDefault(false);
+                        return noGuess;
+                    });
+
+                if (allowedChildren.getNewBaseChannel().isPresent()) {
+                    allowedChildren.getServers().add(SsmServerDto.from(srv));
+                }
+                else {
+                    // new base channel could not be guessed
+                    allowedChildren.getIncompatibleServers().add(SsmServerDto.from(srv));
+                }
+            }
+
+            groupByBaseChange.forEach(defaultBase -> defaultBase.getNewBaseChannel()
+                    .ifPresent(newBaseChannel -> fillChildChannels(user,
+                        defaultBase,
+                        newBaseChannel.getId())));
+
+            return groupByBaseChange;
+        }
+
+        // explicit base channel change
+        if (change.getNewBaseId() > 0) {
+            List<EssentialChannelDto> compatibleBases = ChannelManager
+                    .listCompatibleBaseChannelsForChannel(user, currentBase);
+            Channel newBase = compatibleBases.stream()
+                    .filter(cb -> cb.getId() == change.getNewBaseId())
+                    .findFirst()
+                    .map(ec -> ChannelFactory.lookupById(ec.getId()))
+                    .orElseThrow(() ->
+                            new IllegalArgumentException("New base id not compatible with old base"));
+            SsmAllowedChildChannelsDto ac =
+                    new SsmAllowedChildChannelsDto(
+                            SsmChannelDto.from(currentBase),
+                            SsmChannelDto.from(newBase),
+                            false);
+            ac.getServers()
+                    .addAll(oldBaseServers.stream()
+                            .map(SsmServerDto::from)
+                            .toList());
+
+            fillChildChannels(user, ac, newBase.getId());
+            return List.of(ac);
+        }
+
+        // no base change
+        SsmAllowedChildChannelsDto ac = new SsmAllowedChildChannelsDto(
+                        SsmChannelDto.from(currentBase),
+                        SsmChannelDto.from(currentBase),
+                        false);
+
+        ac.getServers().addAll(oldBaseServers.stream().map(SsmServerDto::from).toList());
+
+        fillChildChannels(user, ac, change.getOldBaseId());
+        return List.of(ac);
+    }
+
+    private static List<SsmAllowedChildChannelsDto> handleChangeWithoutBase(User user,
+                                                                            SsmBaseChannelChangesDto.Change change) {
+        List<SsmAllowedChildChannelsDto> allowedNoBase = new ArrayList<>();
+
+        for (EssentialServerDto essentialServerDto : SystemManager.systemsWithoutBaseChannelsInSet(user)) {
+            Server srv = ServerFactory.lookupById(essentialServerDto.getId());
+            SsmServerDto ssmServerDto = SsmServerDto.from(srv);
+
+            // set base channel to default
+            if (change.getNewBaseId() == -1) {
+                Optional<Channel> guessedChannel = ChannelManager.guessServerBaseChannel(user, srv.getId());
+
+                SsmAllowedChildChannelsDto allowedChildren = guessedChannel
+                    // we have a guess
+                    .map(gc -> getOrCreateByOldAndNewBase(allowedNoBase, null, gc))
+                    // could not guess any base channel
+                    .orElseGet(() -> getOrCreateByOldAndNewBase(allowedNoBase, null, null));
+
+                if (allowedChildren.getNewBaseChannel().isPresent()) {
+                    allowedChildren.getServers().add(ssmServerDto);
+                }
+                else {
+                    // new base channel could not be guessed
+                    allowedChildren.getIncompatibleServers().add(ssmServerDto);
+                }
+            }
+            // explicit base channel change
+            else if (change.getNewBaseId() > 0) {
+                Channel newBase = ChannelFactory.lookupById(change.getNewBaseId());
+
+                // TODO check if newBase allowed
+                SsmAllowedChildChannelsDto allowed = getOrCreateByOldAndNewBase(allowedNoBase, null, newBase);
+                allowed.setNewBaseDefault(false);
+                if (allowed.getChildChannels().isEmpty()) {
+                    fillChildChannels(user, allowed, newBase.getId());
+                }
+
+                allowed.getServers().add(ssmServerDto);
+            }
+
+            // else no base change. since system has no base there are no child channels to find
+        }
+
+        allowedNoBase.forEach(allowed -> allowed.getNewBaseChannel()
+            .ifPresent(newBaseChannel -> fillChildChannels(user, allowed, newBaseChannel.getId())));
+
+        return allowedNoBase;
+    }
+
+    private static void setChildChannelsRecommendedFlag(User user, SsmAllowedChildChannelsDto change) {
+        Optional<SsmChannelDto> newBaseChannelDto = change.getNewBaseChannel();
+
+        newBaseChannelDto
+            .map(channelDto -> ChannelManager.lookupByIdAndUser(channelDto.getId(), user))
+            .map(ChannelManager::getOriginalChannel)
+            .ifPresent(rootChannel -> {
+                Stream<Channel> childChannelStream = change.getChildChannels().stream()
+                    .map(channelDto -> ChannelManager.lookupByIdAndUser(channelDto.getId(), user));
+
+                Map<Long, Boolean> channelRecommendedFlags =
+                    ChannelManager.computeChannelRecommendedFlags(rootChannel, childChannelStream);
+
+                change.getChildChannels().forEach(childChannelDto ->
+                    childChannelDto.setRecommended(channelRecommendedFlags.get(childChannelDto.getId())));
+            });
     }
 
     private static void fillChildChannels(User user, SsmAllowedChildChannelsDto allowed, long baseChannelId) {
@@ -487,9 +490,10 @@ public class SsmManager {
     }
 
     private static SsmAllowedChildChannelsDto getOrCreateByOldAndNewBase(
-            List<SsmAllowedChildChannelsDto> allowedChildren,
-            Optional<Channel> oldBase,
-            Optional<Channel> newBase) {
+        List<SsmAllowedChildChannelsDto> allowedChildren, Channel oldBaseChannel, Channel newBaseChannel) {
+        Optional<Channel> oldBase = Optional.ofNullable(oldBaseChannel);
+        Optional<Channel> newBase = Optional.ofNullable(newBaseChannel);
+
         return allowedChildren.stream()
             .filter(allowed ->
                 newBase.map(Channel::getId).equals(allowed.getNewBaseChannel().map(SsmChannelDto::getId)) &&
