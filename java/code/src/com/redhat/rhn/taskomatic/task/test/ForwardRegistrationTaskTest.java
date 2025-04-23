@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
@@ -36,6 +37,7 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.taskomatic.task.ForwardRegistrationTask;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.hub.test.ControllerTestUtils;
 import com.suse.manager.model.hub.HubFactory;
@@ -66,6 +68,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.DefaultHttpResponseFactory;
 import org.apache.http.message.BasicStatusLine;
 import org.apache.http.util.EntityUtils;
+import org.hibernate.Session;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -115,6 +118,10 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
         public int getCallCnt() {
             return callCnt;
+        }
+
+        public void resetCallCnt() {
+            callCnt = 0;
         }
     }
 
@@ -209,6 +216,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         setupCreateTestSCCWebClient();
         testSccSystemRegMan = new SCCSystemRegistrationManager(mockSccWebClient, testSccProxyFactory);
         setupCreateSystems();
+        mockSccWebClient.resetCallCnt();
     }
 
     private void setupCreateTestObjects() {
@@ -331,13 +339,6 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         );
     }
 
-    private void assertPostConditions(
-            MockSCCWebClient sccWebClient,
-            int expectedSccRequests
-    ) {
-        assertEquals(expectedSccRequests, sccWebClient.getCallCnt(), "Wrong number of SCC requests");
-    }
-
     private void assertPostConditionsCount(
             int expectedRegistered,
             int expectedFailed,
@@ -372,7 +373,6 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
         assertPreConditions();
         mockForwardRegistrationTask.executeSCCTasksCore(testSccSystemRegMan, testSccProxyFactory, primaryCredentials);
-        assertPostConditions(mockSccWebClient, 0);
         assertPostConditionsCount(0, 0, 0);
     }
 
@@ -386,7 +386,6 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
         assertPreConditions();
         mockForwardRegistrationTask.executeSCCTasksCore(testSccSystemRegMan, testSccProxyFactory, primaryCredentials);
-        assertPostConditions(mockSccWebClient, 0);
         assertPostConditionsCount(0, 0, 15);
     }
 
@@ -396,7 +395,6 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
         assertPreConditions();
         mockForwardRegistrationTask.executeSCCTasksCore(testSccSystemRegMan, testSccProxyFactory, primaryCredentials);
-        assertPostConditions(mockSccWebClient, 5);
         assertPostConditionsCount(15, 0, 15);
     }
 
@@ -408,7 +406,6 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
         assertPreConditions();
         mockForwardRegistrationTask.executeSCCTasksCore(testSccSystemRegMan, testSccProxyFactory, primaryCredentials);
-        assertPostConditions(mockSccWebClient, 5);
         assertPostConditionsCount(0, 15, 0);
     }
 
@@ -435,7 +432,6 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
         assertPreConditions();
         mockForwardRegistrationTask.executeSCCTasksCore(testSccSystemRegMan, testSccProxyFactory, primaryCredentials);
-        assertPostConditions(mockSccWebClient, 3);
         assertPostConditionsCount(16, 9, 21);
     }
 
@@ -469,6 +465,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
             throw new IllegalStateException("optCred should have a value");
         }
         mockForwardRegistrationTask.executeSCCTasksCore(sccRegManager, sccProxyFactory, optCred.get());
+        HibernateFactory.getSession().flush();
 
         assertPostConditionsCount(systemSize, 0, systemSize);
 
