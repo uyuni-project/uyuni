@@ -173,6 +173,11 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
   end
 end
 
+When(/^I select "([^"]*)" from page size$/) do |option|
+  dropdown = find(:xpath, "//select[@class='display-number']")
+  dropdown.select(option)
+end
+
 # select an item from any dropdown
 When(/^I select "(.*?)" from "([^"]*)" dropdown/) do |selection, label|
   # let the the select2js box filter open the hidden options
