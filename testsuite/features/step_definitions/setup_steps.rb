@@ -482,16 +482,31 @@ When(/^I create the MU repositories for "([^"]*)"$/) do |client|
       log "The MU repository #{unique_repo_name} was already created, we will reuse it."
     else
       content_type = deb_host?(client) ? 'deb' : 'yum'
-      steps %(
-        When I follow the left menu "Software > Manage > Repositories"
-        And I follow "Create Repository"
-        And I enter "#{unique_repo_name}" as "label"
-        And I enter "#{repo_url.strip}" as "url"
-        And I select "#{content_type}" from "contenttype"
-        And I click on "Create Repository"
-        Then I should see a "Repository created successfully" text or "The repository label '#{unique_repo_name}' is already in use" text
-        And I should see "metadataSigned" as checked
-      )
+      node = get_target(client)
+      if node.os_family.include?('sl-micro') && node.os_version.include?('6')
+        steps %(
+          When I follow the left menu "Software > Manage > Repositories"
+          And I follow "Create Repository"
+          And I enter "#{unique_repo_name}" as "label"
+          And I enter "#{repo_url.strip}" as "url"
+          And I select "#{content_type}" from "contenttype"
+          And I uncheck "metadataSigned"
+          And I click on "Create Repository"
+          Then I should see a "Repository created successfully" text or "The repository label '#{unique_repo_name}' is already in use" text
+          And I should see "metadataSigned" as unchecked
+        )
+      else
+        steps %(
+          When I follow the left menu "Software > Manage > Repositories"
+          And I follow "Create Repository"
+          And I enter "#{unique_repo_name}" as "label"
+          And I enter "#{repo_url.strip}" as "url"
+          And I select "#{content_type}" from "contenttype"
+          And I click on "Create Repository"
+          Then I should see a "Repository created successfully" text or "The repository label '#{unique_repo_name}' is already in use" text
+          And I should see "metadataSigned" as checked
+        )
+      end
     end
   end
 end
