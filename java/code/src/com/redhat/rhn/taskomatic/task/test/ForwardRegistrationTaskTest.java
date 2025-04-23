@@ -37,7 +37,6 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.taskomatic.task.ForwardRegistrationTask;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
-import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.hub.test.ControllerTestUtils;
 import com.suse.manager.model.hub.HubFactory;
@@ -56,6 +55,7 @@ import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.proxy.SCCProxyFactory;
 import com.suse.scc.proxy.SCCProxyManager;
 import com.suse.scc.proxy.SCCProxyRecord;
+import com.suse.scc.proxy.SccProxyStatus;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -68,7 +68,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.DefaultHttpResponseFactory;
 import org.apache.http.message.BasicStatusLine;
 import org.apache.http.util.EntityUtils;
-import org.hibernate.Session;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -470,7 +469,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         assertPostConditionsCount(systemSize, 0, systemSize);
 
         List<SCCProxyRecord> proxyRecords =
-                sccProxyFactory.lookupByStatusAndRetry(SCCProxyRecord.Status.SCC_CREATION_PENDING);
+                sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATION_PENDING);
         assertEquals(this.systemSize, proxyRecords.size());
         if (this.systemSize == proxyRecords.size()) {
             SCCProxyRecord proxyRecord = proxyRecords.get(0);
@@ -479,10 +478,13 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
             assertTrue(proxyRecord.getProxyId() > 0);
         }
 
-        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SCCProxyRecord.Status.SCC_CREATED).size());
-        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SCCProxyRecord.Status.SCC_REMOVAL_PENDING).size());
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATED).size());
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_REMOVAL_PENDING).size());
 
-        List<SCCRegCacheItem> sccRegCacheItems = SCCCachingFactory.testListAllItems();
+        List<SCCRegCacheItem> sccRegCacheItems = HibernateFactory.getSession()
+                .createNativeQuery("SELECT * FROM suseSCCRegCache", SCCRegCacheItem.class)
+                .getResultList();
+
         assertEquals(this.systemSize, sccRegCacheItems.size());
         if (this.systemSize == sccRegCacheItems.size()) {
             SCCRegCacheItem sccRegCacheItem = sccRegCacheItems.get(0);
@@ -491,16 +493,15 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
             assertTrue(sccRegCacheItem.getOptServer().isPresent());
         }
 
-
         //delete
         ServerFactory.delete(servers.get(0));
         ServerFactory.delete(servers.get(1));
 
         mockForwardRegistrationTask.executeSCCTasksCore(sccRegManager, sccProxyFactory, optCred.get());
         assertEquals(this.systemSize - 2,
-                sccProxyFactory.lookupByStatusAndRetry(SCCProxyRecord.Status.SCC_CREATION_PENDING).size());
-        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SCCProxyRecord.Status.SCC_CREATED).size());
-        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SCCProxyRecord.Status.SCC_REMOVAL_PENDING).size());
+                sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATION_PENDING).size());
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATED).size());
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_REMOVAL_PENDING).size());
     }
 
 }

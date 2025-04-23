@@ -40,6 +40,7 @@ import org.quartz.JobExecutionContext;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -86,13 +87,13 @@ public class ForwardRegistrationTask extends RhnJavaJob {
             if (optPrimCred.isEmpty()) {
                 return;
             }
-            int waitTime = ThreadLocalRandom.current().nextInt(0, 15 * 60);
+            int waitTimeSec = ThreadLocalRandom.current().nextInt(0, 15 * 60);
             if (log.isDebugEnabled()) {
                 // no waiting when debug is on
-                waitTime = 1;
+                waitTimeSec = 1;
             }
             try {
-                Thread.sleep(waitTime * 1000L);
+                Thread.sleep(Duration.ofSeconds(waitTimeSec).toMillis());
             }
             catch (InterruptedException e) {
                 log.debug("Sleep interrupted", e);
@@ -105,7 +106,7 @@ public class ForwardRegistrationTask extends RhnJavaJob {
     protected Optional<SCCCredentials> findSccCredentials() {
         HubFactory hubFactory = new HubFactory();
         Optional<IssHub> optHub = hubFactory.lookupIssHub();
-        return optHub.map(this::getSCCCredentialsWhenHub).orElse(getSCCCredentials());
+        return optHub.flatMap(this::getSCCCredentialsWhenHub).or(this::getSCCCredentials);
     }
 
     protected Optional<SCCCredentials> getSCCCredentials() {
@@ -113,7 +114,7 @@ public class ForwardRegistrationTask extends RhnJavaJob {
         Optional<SCCCredentials> optPrimCred = credentials.stream()
                 .filter(c -> c.isPrimary())
                 .findFirst();
-        if (optPrimCred.isEmpty()) {
+        if (log.isDebugEnabled() && optPrimCred.isEmpty()) {
             // We cannot update SCC without credentials
             // Standard Uyuni case
             log.debug("No SCC Credentials - skipping forwarding registration");
@@ -123,10 +124,7 @@ public class ForwardRegistrationTask extends RhnJavaJob {
     }
 
     protected Optional<SCCCredentials> getSCCCredentialsWhenHub(IssHub hub) {
-        List<SCCCredentials> credentials = CredentialsFactory.listSCCCredentials();
-        Optional<SCCCredentials> optHubCredential = credentials.stream()
-                .filter(c -> hub.getFqdn().equals(c.getUrl()))
-                .findFirst();
+        Optional<SCCCredentials> optHubCredential = Optional.ofNullable(hub.getMirrorCredentials());
         if (optHubCredential.isEmpty()) {
             log.warn("No Hub SCC Credentials for {} - skipping forwarding registration", hub.getFqdn());
         }

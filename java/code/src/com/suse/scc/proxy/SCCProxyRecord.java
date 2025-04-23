@@ -14,7 +14,6 @@ import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,7 +25,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -41,42 +39,7 @@ public class SCCProxyRecord extends BaseDomainHelper {
     private String sccCreationJson;
     private Long sccId;
     private Date sccRegistrationErrorTime;
-    private Status status;
-
-    public enum Status {
-        SCC_CREATION_PENDING("SCC_CREATION_PENDING"),
-        SCC_CREATED("SCC_CREATED"),
-        SCC_REMOVAL_PENDING("SCC_REMOVAL_PENDING");
-
-        private final String label;
-
-        Status(String labelIn) {
-            this.label = labelIn;
-        }
-
-        /**
-         * Gets the label representing the status
-         *
-         * @return label
-         */
-        public String getLabel() {
-            return label;
-        }
-
-        /**
-         * Looks up Status by label
-         *
-         * @param label the label representing the status
-         * @return the matching status
-         * @throws java.lang.IllegalArgumentException if no matching status is found
-         */
-        public static SCCProxyRecord.Status byLabel(String label) {
-            return Arrays.stream(SCCProxyRecord.Status.values())
-                    .filter(type -> type.getLabel().equals(label))
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid label " + label));
-        }
-    }
+    private SccProxyStatus status;
 
     /**
      * Default constructor
@@ -98,14 +61,12 @@ public class SCCProxyRecord extends BaseDomainHelper {
         sccLogin = sccLoginIn;
         sccPasswd = sccPasswdIn;
         sccCreationJson = sccCreationJsonIn;
-        status = Status.SCC_CREATION_PENDING;
+        status = SccProxyStatus.SCC_CREATION_PENDING;
     }
 
     @Id
     @Column(name = "proxy_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccproxy_seq")
-    @SequenceGenerator(name = "sccproxy_seq", sequenceName = "suse_sccproxy_id_seq",
-            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getProxyId() {
         return proxyId;
     }
@@ -185,11 +146,11 @@ public class SCCProxyRecord extends BaseDomainHelper {
     }
 
     @Enumerated(EnumType.STRING)
-    public Status getStatus() {
+    public SccProxyStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status statusIn) {
+    public void setStatus(SccProxyStatus statusIn) {
         status = statusIn;
     }
 

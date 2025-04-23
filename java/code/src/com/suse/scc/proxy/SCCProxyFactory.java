@@ -69,7 +69,7 @@ public class SCCProxyFactory extends HibernateFactory {
      * @param statusIn the status
      * @return return list of {@link SCCProxyRecord} with the given status
      */
-    public List<SCCProxyRecord> lookupByStatus(SCCProxyRecord.Status statusIn) {
+    public List<SCCProxyRecord> lookupByStatus(SccProxyStatus statusIn) {
         return getSession()
                 .createQuery("FROM SCCProxyRecord WHERE status = :status", SCCProxyRecord.class)
                 .setParameter("status", statusIn)
@@ -82,7 +82,7 @@ public class SCCProxyFactory extends HibernateFactory {
      * @param statusIn the status
      * @return return list of {@link SCCProxyRecord} with the given status
      */
-    public List<SCCProxyRecord> lookupByStatusAndRetry(SCCProxyRecord.Status statusIn) {
+    public List<SCCProxyRecord> lookupByStatusAndRetry(SccProxyStatus statusIn) {
         int regErrorExpireTime = Config.get().getInt(ConfigDefaults.REG_ERROR_EXPIRE_TIME, 168);
         Calendar retryTime = Calendar.getInstance();
         retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
@@ -105,7 +105,7 @@ public class SCCProxyFactory extends HibernateFactory {
      * @return list of {@link SCCProxyRecord}
      */
     public List<SCCProxyRecord> findSystemsToForwardRegistration() {
-        return lookupByStatusAndRetry(SCCProxyRecord.Status.SCC_CREATION_PENDING);
+        return lookupByStatusAndRetry(SccProxyStatus.SCC_CREATION_PENDING);
     }
 
     /**
@@ -114,6 +114,6 @@ public class SCCProxyFactory extends HibernateFactory {
      * @return list of {@link SCCProxyRecord}
      */
     public List<SCCProxyRecord> listDeregisterItems() {
-        return lookupByStatusAndRetry(SCCProxyRecord.Status.SCC_REMOVAL_PENDING);
+        return lookupByStatusAndRetry(SccProxyStatus.SCC_REMOVAL_PENDING);
     }
 }

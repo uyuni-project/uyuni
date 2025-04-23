@@ -75,7 +75,7 @@ public class SCCProxyManager {
 
         if (proxyRecord.isPresent()) {
             SCCProxyRecord sccProxyRecord = proxyRecord.get();
-            sccProxyRecord.setStatus(SCCProxyRecord.Status.SCC_REMOVAL_PENDING);
+            sccProxyRecord.setStatus(SccProxyStatus.SCC_REMOVAL_PENDING);
             sccProxyFactory.save(sccProxyRecord);
             return true;
         }

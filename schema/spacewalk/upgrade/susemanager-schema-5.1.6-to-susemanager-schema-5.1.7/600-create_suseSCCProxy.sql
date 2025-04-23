@@ -13,18 +13,29 @@
 -- in this software or its documentation.
 --
 
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'scc_proxy_status_t') THEN
+        CREATE TYPE scc_proxy_status_t AS ENUM (
+            'scc_creation_pending',
+            'scc_created',
+            'scc_removal_pending'
+        );
+    ELSE
+        RAISE NOTICE 'type "scc_proxy_status_t" already exists, skipping';
+    END IF;
+END $$;
 
 CREATE TABLE IF NOT EXISTS suseSCCproxy
 (
-    proxy_id            NUMERIC
-                        CONSTRAINT suse_sccproxy_proxy_id_pk
-                        PRIMARY KEY,
+    proxy_id            BIGINT CONSTRAINT suse_sccproxy_proxy_id_pk PRIMARY KEY
+                                                  GENERATED ALWAYS AS IDENTITY,
     peripheral_fqdn     VARCHAR(128),
     scc_login           VARCHAR(64),
     scc_passwd          VARCHAR(64),
     scc_creation_json   TEXT,
     scc_id              NUMERIC,
-    status              VARCHAR(32),
+    status              scc_proxy_status_t NOT NULL,
     scc_regerror_timestamp TIMESTAMPTZ,
 
     created        TIMESTAMPTZ
@@ -33,7 +44,3 @@ CREATE TABLE IF NOT EXISTS suseSCCproxy
                        DEFAULT (current_timestamp) NOT NULL
 );
 
-
-CREATE SEQUENCE IF NOT EXISTS suse_sccproxy_id_seq
-    START 100000
-    MINVALUE 100000;

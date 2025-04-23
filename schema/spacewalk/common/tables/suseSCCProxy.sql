@@ -16,15 +16,14 @@
 
 CREATE TABLE suseSCCproxy
 (
-    proxy_id            NUMERIC
-                        CONSTRAINT suse_sccproxy_proxy_id_pk
-                        PRIMARY KEY,
+    proxy_id            BIGINT CONSTRAINT suse_sccproxy_proxy_id_pk PRIMARY KEY
+                                                  GENERATED ALWAYS AS IDENTITY,
     peripheral_fqdn     VARCHAR(128),
     scc_login           VARCHAR(64),
     scc_passwd          VARCHAR(64),
     scc_creation_json   TEXT,
     scc_id              NUMERIC,
-    status              VARCHAR(32),
+    status              scc_proxy_status_t NOT NULL,
     scc_regerror_timestamp TIMESTAMPTZ,
 
     created        TIMESTAMPTZ
@@ -33,7 +32,3 @@ CREATE TABLE suseSCCproxy
                        DEFAULT (current_timestamp) NOT NULL
 );
 
-
-CREATE SEQUENCE suse_sccproxy_id_seq
-    START 100000
-    MINVALUE 100000;
