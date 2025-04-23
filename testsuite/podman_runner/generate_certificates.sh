@@ -6,9 +6,9 @@ CERT_CITY="test_city"
 CERT_STATE="test_state" 
 CERT_COUNTRY="DE" 
 CERT_EMAIL="a@b.com" 
-CERT_CNAMES="server" 
+CERT_CNAMES="server.test.lan" 
 CERT_PASS="spacewalk" 
-HOSTNAME="server"
+HOSTNAME="server.test.lan"
 
 echo "Generating the self-signed SSL CA..."
 mkdir -p /root/ssl-build
