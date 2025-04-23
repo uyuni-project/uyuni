@@ -250,8 +250,8 @@ public class SyncRepositoriesAction extends RhnAction implements Listable<Conten
                 for (String line : lines) {
                     // Packages are downloaded
                     if (line.contains("No new packages to sync.") ||
-                            (line.contains("Linking packages to channel.")) ||
-                            (line.contains("Sync completed."))) {
+                            line.contains("Linking packages to channel.") ||
+                            line.contains("Sync completed.")) {
                         syncingRepo.put("progress", "100");
                         // Mark as finished when all repos are synced
                         syncingRepo.put("finished", !inProgress);

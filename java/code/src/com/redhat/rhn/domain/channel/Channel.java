@@ -653,7 +653,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @return true if this channel is considered a base channel.
      */
     public boolean isBaseChannel() {
-        return (getParentChannel() == null);
+        return getParentChannel() == null;
     }
 
     /**
@@ -901,7 +901,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      */
     public String getChecksumTypeLabel() {
 
-        if ((checksumType == null) || (checksumType.getLabel() == null)) {
+        if (checksumType == null || checksumType.getLabel() == null) {
             // each channel shall have set checksumType
             return null;
         }

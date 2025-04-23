@@ -79,6 +79,6 @@ public class OrgTrustOverview extends BaseDto {
      * @param trustedIn whether the org is trusted.
      */
     public void setTrusted(Integer trustedIn) {
-        trusted = (trustedIn != 0);
+        trusted = trustedIn != 0;
     }
 }

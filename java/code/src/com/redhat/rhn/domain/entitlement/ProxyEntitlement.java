@@ -58,8 +58,8 @@ public class ProxyEntitlement extends Entitlement {
     @Override
     public boolean isAllowedOnServer(Server server) {
         return  super.isAllowedOnServer(server) &&
-                ((server.getBaseEntitlement() instanceof SaltEntitlement) ||
-                 (server.getBaseEntitlement() instanceof ForeignEntitlement));
+                (server.getBaseEntitlement() instanceof SaltEntitlement ||
+                        server.getBaseEntitlement() instanceof ForeignEntitlement);
     }
 
     /**

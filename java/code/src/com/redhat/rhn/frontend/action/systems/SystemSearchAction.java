@@ -214,7 +214,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable<Sys
 
         List results = (List) request.getAttribute(getDataSetName());
        LOG.debug("SystemSearch results.size() = {}", results != null ? results.size() : "null results");
-        if ((results != null) && (results.size() == 1)) {
+        if (results != null && results.size() == 1) {
             SystemSearchResult s = (SystemSearchResult) results.get(0);
             return StrutsDelegate.getInstance().forwardParam(mapping.findForward("single"),
                             "sid", s.getId().toString());

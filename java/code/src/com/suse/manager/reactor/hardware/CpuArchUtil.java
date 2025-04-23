@@ -53,8 +53,8 @@ public class CpuArchUtil {
      * @return Check if the given cpuarch is X86 (32 or 64 bit)
      */
     public static boolean isX86(String cpuarch) {
-        return (cpuarch.startsWith("i") &&
-                StringUtils.substring(cpuarch, -2, cpuarch.length()).equals("86")) ||
+        return cpuarch.startsWith("i") &&
+                StringUtils.substring(cpuarch, -2, cpuarch.length()).equals("86") ||
                 "x86_64".equals(cpuarch);
     }
 

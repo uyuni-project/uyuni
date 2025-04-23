@@ -638,7 +638,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.getChannelTemplates()
         .stream()
         .filter(pr -> pr.getRootProduct().equals(root))
-        .filter(pr -> (mandatory && pr.isMandatory()) || optionalChannelIds.contains(pr.getRepository().getSccId()))
+        .filter(pr -> mandatory && pr.isMandatory() || optionalChannelIds.contains(pr.getRepository().getSccId()))
         .forEach(pr -> {
             try {
                 if (pr.getParentChannelLabel() != null &&

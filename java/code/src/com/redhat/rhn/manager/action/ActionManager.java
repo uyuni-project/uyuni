@@ -198,7 +198,7 @@ public class ActionManager extends BaseManager {
         }
         Date now = Calendar.getInstance().getTime();
         if (serverAction.getStatus().equals(ActionFactory.STATUS_QUEUED) ||
-                serverAction.getStatus().equals((ActionFactory.STATUS_PICKED_UP))) {
+                serverAction.getStatus().equals(ActionFactory.STATUS_PICKED_UP)) {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
             serverAction.setResultMsg(message);
             serverAction.setCompletionTime(now);
@@ -631,7 +631,7 @@ public class ActionManager extends BaseManager {
             addConfigurationRevisionsToAction(user, revisions, a, server);
         }
         Set<ServerAction> sa = a.getServerActions();
-        if ((sa == null) || (sa.isEmpty())) {
+        if (sa == null || sa.isEmpty()) {
             return null;
         }
         ActionFactory.save(a);
@@ -1139,7 +1139,7 @@ public class ActionManager extends BaseManager {
      */
     public static PackageAction schedulePackageRefresh(User scheduler, Server server)
         throws TaskomaticApiException {
-        return (schedulePackageRefresh(scheduler, server, new Date()));
+        return schedulePackageRefresh(scheduler, server, new Date());
     }
 
     /**
@@ -2184,9 +2184,9 @@ public class ActionManager extends BaseManager {
                                                      server,
                                                      ActionFactory.TYPE_REBOOT,
                                                      ActionFactory.TYPE_REBOOT.getName(),
-                                                     (earliestAction == null ?
-                                                      new Date() :
-                                                      earliestAction));
+                earliestAction == null ?
+                 new Date() :
+                 earliestAction);
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
         return action;
@@ -2212,7 +2212,7 @@ public class ActionManager extends BaseManager {
                         server,
                         ActionFactory.TYPE_CLIENTCERT_UPDATE_CLIENT_CERT,
                         ActionFactory.TYPE_CLIENTCERT_UPDATE_CLIENT_CERT.getName(),
-                        (earliestAction == null ? new Date() : earliestAction));
+                earliestAction == null ? new Date() : earliestAction);
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
         return action;

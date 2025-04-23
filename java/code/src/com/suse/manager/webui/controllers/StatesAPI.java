@@ -244,15 +244,15 @@ public class StatesAPI {
 
         // Lookup assigned states
         List<ConfigChannel> assignedStates = handleTarget(type, id,
-                (serverId) -> {
+                serverId -> {
                     MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(id));
                     return StateFactory.latestConfigChannels(server);
                 },
-                (groupId) -> {
+                groupId -> {
                     ServerGroup group = getEntityIfExists(ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg()));
                     return StateFactory.latestConfigChannels(group);
                 },
-                (orgId) -> {
+                orgId -> {
                     Org org = getEntityIfExists(OrgFactory.lookupById(id));
                     return StateFactory.latestConfigChannels(org);
                 }
@@ -294,18 +294,18 @@ public class StatesAPI {
 
         try {
             SaltConfigurable entity = handleTarget(json.getTargetType(), json.getTargetId(),
-                (serverId) -> {
+                    serverId -> {
                         MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(serverId));
                         checkUserHasPermissionsOnServer(server, user);
                         return server;
                 },
-                (groupId) -> {
+                    groupId -> {
                         ServerGroup group =
                                 getEntityIfExists(ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg()));
                         checkUserHasPermissionsOnServerGroup(user, group);
                         return group;
                 },
-                (orgId) -> {
+                    orgId -> {
                         Org org = getEntityIfExists(OrgFactory.lookupById(json.getTargetId()));
                         checkUserHasPermissionsOnOrg(org);
                         return org;
@@ -480,7 +480,7 @@ public class StatesAPI {
         try {
             ApplyStatesAction scheduledAction = handleTarget(json.getTargetType(),
                     json.getTargetId(),
-                    (serverId) -> {
+                    serverId -> {
                         MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(json.getTargetId()));
                         checkUserHasPermissionsOnServer(server, user);
                         ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
@@ -488,7 +488,7 @@ public class StatesAPI {
                                 getScheduleDate(json));
                         return action;
                     },
-                    (groupId) -> {
+                    groupId -> {
                         ServerGroup group = getEntityIfExists(
                                 ServerGroupFactory.lookupByIdAndOrg(json.getTargetId(), user.getOrg()));
                         checkUserHasPermissionsOnServerGroup(user, group);
@@ -510,7 +510,7 @@ public class StatesAPI {
 
                         return action;
                     },
-                    (orgId) -> {
+                    orgId -> {
                         Org org = getEntityIfExists(OrgFactory.lookupById(json.getTargetId()));
                         checkUserHasPermissionsOnOrg(org);
                         List<Long> minionServerIds = MinionServerFactory

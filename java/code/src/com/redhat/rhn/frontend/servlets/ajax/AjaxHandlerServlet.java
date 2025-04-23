@@ -148,7 +148,7 @@ public class AjaxHandlerServlet extends HttpServlet {
             ActionChainEntriesDto dto = parseBody(req, ActionChainEntriesDto.class);
             return actionChainEntryRenderer.renderAsync(req, resp, dto.getActionChainId(), dto.getSortOrder());
         });
-        HANDLERS.put("action-chain-save", ((req, resp) -> {
+        HANDLERS.put("action-chain-save", (req, resp) -> {
             ActionChainSaveDto dto = parseBody(req, ActionChainSaveDto.class);
             return actionChainSaveAction.save(
                 dto.getActionChainId(),
@@ -158,7 +158,7 @@ public class AjaxHandlerServlet extends HttpServlet {
                 dto.getReorderedSortOrders(),
                 req
             );
-        }));
+        });
 
         // The following handler is used in all the pages using the rl:selectablecolumn custom tag
         HANDLERS.put("item-selector", (req, resp) -> {

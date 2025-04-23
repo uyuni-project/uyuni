@@ -166,11 +166,11 @@ public class ControllerTestUtils {
 
         RouteImpl routeImpl = (RouteImpl) routeMatch.get().getTarget();
 
-        Map<String, String> httpHeaders = (null == authBearerToken) ?
+        Map<String, String> httpHeaders = null == authBearerToken ?
                 new HashMap<>() :
                 Map.of("Authorization", "Bearer " + authBearerToken);
 
-        Request dummyTestRequest = (null == body) ?
+        Request dummyTestRequest = null == body ?
                 SparkTestUtils.createMockRequestWithParams(apiEndpoint, new HashMap<>(), httpHeaders) :
                 SparkTestUtils.createMockRequestWithBody(apiEndpoint, httpHeaders, body);
 
@@ -237,7 +237,7 @@ public class ControllerTestUtils {
         GregorianCalendar cal = new GregorianCalendar();
         Date nowDate = createDateUtil(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
 
-        return (dateIn.getTime() - nowDate.getTime() < 24L * 60L * 60L * 1000L);
+        return dateIn.getTime() - nowDate.getTime() < 24L * 60L * 60L * 1000L;
     }
 
     public ChannelInfoDetailsJson createChannelInfoDetailsJson(Long orgId,

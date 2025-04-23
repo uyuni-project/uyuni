@@ -483,7 +483,7 @@ public class ConfigChannelSaltManager {
      * @return the channel relative path
      */
     private Path getChannelRelativePath(Long orgId, String channelLabel) {
-        return Paths.get((getOrgNamespace(orgId)))
+        return Paths.get(getOrgNamespace(orgId))
                 .resolve(channelLabel);
     }
 

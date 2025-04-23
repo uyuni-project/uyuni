@@ -385,9 +385,9 @@ public class ActionChainFactory extends HibernateFactory {
      * @return if the action chains contains any minion
      */
     public static boolean isActionChainTargettingMinions(final ActionChain actionChain) {
-        return ((Long)singleton.lookupObjectByNamedQuery("ActionChain.countMinionsInActionChain",
+        return (Long)singleton.lookupObjectByNamedQuery("ActionChain.countMinionsInActionChain",
             Map.of("actionchain_id", actionChain.getId())
-        ) > 0);
+        ) > 0;
     }
 
     /**

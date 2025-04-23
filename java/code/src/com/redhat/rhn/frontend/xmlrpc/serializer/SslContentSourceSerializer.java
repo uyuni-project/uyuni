@@ -47,9 +47,9 @@ public class SslContentSourceSerializer extends ApiResponseSerializer<SslContent
         SslCryptoKey key = src.getClientKey();
 
         return new SerializationBuilder()
-                .add("sslCaDesc", (ca != null) ? ca.getDescription() : "")
-                .add("sslCertDesc", (cert != null) ? cert.getDescription() : "")
-                .add("sslKeyDesc", (key != null) ? key.getDescription() : "")
+                .add("sslCaDesc", ca != null ? ca.getDescription() : "")
+                .add("sslCertDesc", cert != null ? cert.getDescription() : "")
+                .add("sslKeyDesc", key != null ? key.getDescription() : "")
                 .build();
     }
 }

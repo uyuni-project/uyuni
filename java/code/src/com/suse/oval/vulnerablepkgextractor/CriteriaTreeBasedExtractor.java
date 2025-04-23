@@ -100,7 +100,7 @@ public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesEx
             if (currentLevel > maxNestingLevel) {
                 return;
             }
-            for (BaseCriteria child : ((CriteriaType) (criteria)).getChildren()) {
+            for (BaseCriteria child : ((CriteriaType) criteria).getChildren()) {
                 collectCriterionsHelper(child, currentLevel + 1, maxNestingLevel, criterions);
             }
         }
@@ -122,7 +122,7 @@ public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesEx
             matches.add(criteria);
         }
         if (criteria instanceof CriteriaType criteriaCast) {
-            for (BaseCriteria childCriteria : (criteriaCast).getChildren()) {
+            for (BaseCriteria childCriteria : criteriaCast.getChildren()) {
                 walkCriteriaTreeHelper(childCriteria, matches);
             }
         }

@@ -298,7 +298,7 @@ Serializable {
             isPub = isPub && !addr6.getAddress().equals("::1");
         }
 
-        return (isPub && hasAddress);
+        return isPub && hasAddress;
     }
 
     /**
@@ -317,13 +317,12 @@ Serializable {
      * @return true if the nic is a container network
      */
     public boolean isContainerNetwork() {
-        return (
-            "bridge".equals(module) && (
-                    getName().startsWith("docker") ||
-                    getName().startsWith("cni-podman") ||
-                    getName().startsWith("podman") ||
-                    getName().startsWith("cni")
-            ) || getName().startsWith("flannel"));
+        return "bridge".equals(module) && (
+                getName().startsWith("docker") ||
+                getName().startsWith("cni-podman") ||
+                getName().startsWith("podman") ||
+                getName().startsWith("cni")
+        ) || getName().startsWith("flannel");
     }
 
     /**
@@ -331,7 +330,7 @@ Serializable {
      * @return true if the nic is a virtual bridge, false otherwise
      */
     public boolean isVirtBridge() {
-        return ("bridge".equals(module) && getName().startsWith("virbr"));
+        return "bridge".equals(module) && getName().startsWith("virbr");
     }
 
     /**
@@ -416,7 +415,7 @@ Serializable {
         if (addrs == null) {
             addrs = findServerNetAddress6ByScope("host");
         }
-        return ((addrs != null && addrs.iterator().hasNext()) ?
-                addrs.iterator().next() : "::1");
+        return addrs != null && addrs.iterator().hasNext() ?
+                addrs.iterator().next() : "::1";
     }
 }

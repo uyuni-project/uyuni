@@ -114,8 +114,8 @@ public class ChannelVersion {
     public static ChannelVersion getChannelVersionForDistChannelMap(
             DistChannelMap dcm) {
         if (DIST_CHANNEL_MAP_TO_CHANNEL_VERSION.containsKey(dcm.getRelease())) {
-            return (DIST_CHANNEL_MAP_TO_CHANNEL_VERSION.get(
-                    dcm.getRelease()));
+            return DIST_CHANNEL_MAP_TO_CHANNEL_VERSION.get(
+                    dcm.getRelease());
         }
         return ChannelVersion.LEGACY;
     }

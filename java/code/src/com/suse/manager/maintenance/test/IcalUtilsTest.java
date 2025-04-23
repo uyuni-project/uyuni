@@ -135,12 +135,12 @@ public class IcalUtilsTest  {
         // dates in the tests are readable my human eyes too
         List<Pair<String, String>> nycEvents = icalUtils.calculateUpcomingPeriods(
                 multiZonesCal, of("Maint. windows - NYC - weekdays"), datetime.toInstant(), 3)
-                .map(pair -> Pair.of(formatNY(pair.getLeft()), formatNY((pair.getRight()))))
+                .map(pair -> Pair.of(formatNY(pair.getLeft()), formatNY(pair.getRight())))
                 .collect(Collectors.toList());
 
         List<Pair<String, String>> sriLankaEvts = icalUtils.calculateUpcomingPeriods(
                 multiZonesCal, of("Maint. windows-Sri Lanka"), datetime.toInstant(), 3)
-                .map(pair -> Pair.of(formatSriLanka(pair.getLeft()), formatSriLanka((pair.getRight()))))
+                .map(pair -> Pair.of(formatSriLanka(pair.getLeft()), formatSriLanka(pair.getRight())))
                 .collect(Collectors.toList());
 
         List<Pair<Instant, Instant>> listNoEvts = icalUtils.calculateUpcomingPeriods(

@@ -119,6 +119,6 @@ public class XccdfDiffSubmitAction extends RhnAction implements Listable<RuleRes
 
     private String getView(HttpServletRequest request) {
         String view = request.getParameter(VIEW);
-        return (view == null || "".equals(view)) ? FULL : view;
+        return view == null || "".equals(view) ? FULL : view;
     }
 }

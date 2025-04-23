@@ -157,7 +157,7 @@ public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
         }
 
         //skip all the lines outside of our context.
-        while ((numLines - counter) > contextLines) {
+        while (numLines - counter > contextLines) {
             lines.next();
             counter++;
         }

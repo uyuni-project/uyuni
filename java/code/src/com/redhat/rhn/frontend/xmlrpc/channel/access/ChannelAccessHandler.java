@@ -57,7 +57,7 @@ public class ChannelAccessHandler extends BaseHandler {
 
         Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
         // This can be set for null-org channels by channel admin
-        if ((channel.getOrg() != null) || (!loggedInUser.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN))) {
+        if (channel.getOrg() != null || !loggedInUser.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
             verifyChannelAdmin(loggedInUser, channel);
         }
 
@@ -89,7 +89,7 @@ public class ChannelAccessHandler extends BaseHandler {
 
         Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
         // This can be set for null-org channels by channel admin
-        if ((channel.getOrg() != null) || (!loggedInUser.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN))) {
+        if (channel.getOrg() != null || !loggedInUser.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
             verifyChannelAdmin(loggedInUser, channel);
         }
 

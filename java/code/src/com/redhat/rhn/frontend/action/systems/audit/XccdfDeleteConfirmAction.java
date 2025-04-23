@@ -90,7 +90,7 @@ public class XccdfDeleteConfirmAction extends RhnAction {
                RhnSetFactory.cleanup(set);
            }
            Long retainedCount = result.size() - removedCount;
-           ActionMessages msg = (removedCount == 0) ?
+           ActionMessages msg = removedCount == 0 ?
                new ActionErrors() : new ActionMessages();
            String[] messageParams = {removedCount.toString(), retainedCount.toString()};
            msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(

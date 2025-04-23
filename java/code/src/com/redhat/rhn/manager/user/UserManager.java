@@ -128,7 +128,7 @@ public class UserManager extends BaseManager {
          * package (org the package doesn't exist), nothing will be returned from the query
          * and we will end up with an empty DataResult object.
          */
-        return (!dr.isEmpty());
+        return !dr.isEmpty();
     }
 
     /**
@@ -148,7 +148,7 @@ public class UserManager extends BaseManager {
          * package (org the package doesn't exist), nothing will be returned from the query
          * and we will end up with an empty DataResult object.
          */
-        return (!dr.isEmpty());
+        return !dr.isEmpty();
     }
 
     /**
@@ -992,7 +992,7 @@ public class UserManager extends BaseManager {
      * @return true if user can administer system group
      */
     public static boolean canAdministerSystemGroup(User user, ManagedServerGroup group) {
-        return (user != null && group != null && SERVER_GROUP_MANAGER.canAccess(user, group));
+        return user != null && group != null && SERVER_GROUP_MANAGER.canAccess(user, group);
     }
 
     /**
@@ -1074,7 +1074,7 @@ public class UserManager extends BaseManager {
         boolean permittedAction = false;
         Iterator<Channel> channels = user.getOrg().getAccessibleChannels().iterator();
         while (!permittedAction && channels.hasNext()) {
-            if ((channels.next()).getId().equals(cid)) {
+            if (channels.next().getId().equals(cid)) {
                 permittedAction = true;
             }
         }
@@ -1171,7 +1171,7 @@ public class UserManager extends BaseManager {
     public static String roleNames(Set<Role> rolesIn) {
         String roleNames = null;
         for (Role role : rolesIn) {
-            roleNames = (roleNames == null) ? role.getName() :
+            roleNames = roleNames == null ? role.getName() :
                 roleNames + ", " + role.getName();
         }
         if (roleNames == null) {
@@ -1188,7 +1188,7 @@ public class UserManager extends BaseManager {
     public static String serverGroupsName(Set<ServerGroup> serverGroupsIn) {
         String serverGroupsName = null;
         for (ServerGroup sg : serverGroupsIn) {
-            serverGroupsName = (serverGroupsName == null) ? sg.getName() :
+            serverGroupsName = serverGroupsName == null ? sg.getName() :
                 serverGroupsName + ", " + sg.getName();
         }
         return Objects.requireNonNullElse(serverGroupsName, "(none)");

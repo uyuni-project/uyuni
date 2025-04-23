@@ -68,7 +68,7 @@ public class AuthenticationFilter implements Filter {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("ENTER AuthFilter.doFilter: {} [{}] ({})", request.getRemoteAddr(), new Date(),
-                    ((HttpServletRequest) (request)).getRequestURI());
+                    ((HttpServletRequest) request).getRequestURI());
         }
 
         if (authenticationService.validate((HttpServletRequest) request, (HttpServletResponse) response)) {

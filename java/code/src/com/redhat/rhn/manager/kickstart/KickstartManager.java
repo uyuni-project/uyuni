@@ -233,13 +233,13 @@ public class KickstartManager extends BaseManager {
                     range.getMax().longValue(),
                     range.getId().longValue());
             //seed range if null
-            bestRange = (bestRange == null) ? iprange : bestRange;
+            bestRange = bestRange == null ? iprange : bestRange;
             if (iprange.isSubset(bestRange)) {
                 bestRange = iprange;
             }
         }
 
-        return (bestRange == null) ? KickstartFactory.lookupOrgDefault(orgIn) :
+        return bestRange == null ? KickstartFactory.lookupOrgDefault(orgIn) :
             KickstartFactory.lookupKickstartDataByIdAndOrg(orgIn, bestRange.getKsid());
     }
 

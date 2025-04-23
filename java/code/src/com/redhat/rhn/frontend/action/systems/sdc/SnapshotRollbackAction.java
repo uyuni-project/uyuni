@@ -86,8 +86,8 @@ public class SnapshotRollbackAction extends RhnAction {
 
         InvalidSnapshotReason reason = snapshot.getInvalidReason();
         params.put(SNAPSHOT_NAME, snapshot.getName());
-        params.put(INVALID_REASON_LABEL, (reason != null ? reason.getLabel() : ""));
-        params.put(INVALID_REASON_NAME, (reason != null ? reason.getName() : ""));
+        params.put(INVALID_REASON_LABEL, reason != null ? reason.getLabel() : "");
+        params.put(INVALID_REASON_NAME, reason != null ? reason.getName() : "");
         params.put(GROUP_CHANGES,   snapshot.groupDiffs(sid));
         params.put(CHANNEL_CHANGES, snapshot.channelDiffs(sid));
         params.put(PACKAGE_CHANGES, snapshot.packageDiffs(sid));

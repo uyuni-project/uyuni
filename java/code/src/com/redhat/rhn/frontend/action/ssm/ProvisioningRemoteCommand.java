@@ -304,8 +304,8 @@ public class ProvisioningRemoteCommand extends RhnAction implements
         String[] scriptShellTokens = script.trim().split("\n").clone()[0].split("/");
         String scriptType = scriptShellTokens[scriptShellTokens.length - 1];
         scriptType = scriptType.length() > 1 ?
-                     (scriptType.substring(0, 1).toUpperCase() +
-                      scriptType.substring(1).toLowerCase()) :
+                scriptType.substring(0, 1).toUpperCase() +
+                 scriptType.substring(1).toLowerCase() :
                       scriptType.toUpperCase();
 
         StringBuilder summary = new StringBuilder();

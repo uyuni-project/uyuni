@@ -89,7 +89,7 @@ public class ShowProfileAction extends RhnAction {
 
     private boolean buttonPressed(String btnName, DynaActionForm form) {
         String btn = (String) form.get(btnName);
-        return (btn != null && !"".equals(btn));
+        return btn != null && !"".equals(btn);
     }
 
     private ActionForward compareSystems(ActionMapping mapping,

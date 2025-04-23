@@ -71,7 +71,7 @@ public class TokenPackageFactory extends HibernateFactory {
      * @return list of token packages found
      */
     public static List<TokenPackage> lookupPackages(Token tokenIn, PackageName nameIn) {
-        if ((tokenIn == null) || (nameIn == null)) {
+        if (tokenIn == null || nameIn == null) {
             return null;
         }
 
@@ -103,7 +103,7 @@ public class TokenPackageFactory extends HibernateFactory {
     public static TokenPackage lookupPackage(Token tokenIn, PackageName nameIn,
             PackageArch archIn) {
 
-        if ((tokenIn == null) || (nameIn == null) || (archIn == null)) {
+        if (tokenIn == null || nameIn == null || archIn == null) {
             return null;
         }
 

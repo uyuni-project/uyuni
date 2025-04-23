@@ -328,6 +328,6 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
 
     private void assertTaskDoesNotExist(String taskName) {
         List<Task> tasks = TaskFactory.getTaskListByNameLike(taskName);
-        assertTrue((tasks == null || tasks.isEmpty()));
+        assertTrue(tasks == null || tasks.isEmpty());
     }
 }

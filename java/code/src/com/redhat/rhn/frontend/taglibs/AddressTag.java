@@ -239,7 +239,7 @@ public class AddressTag extends TagSupport {
             throw new JspException("IO error writing to JSP file:", ioe);
         }
 
-        return (SKIP_BODY);
+        return SKIP_BODY;
     }
 
     // man this is a hack.

@@ -2060,7 +2060,7 @@ public class ConfigurationManager extends BaseManager {
 
         Map<String, Object> result = m.execute(inParams, outParams);
         int access = ((Long)result.get("access")).intValue();
-        return (access == 1);
+        return access == 1;
     }
 
     /**

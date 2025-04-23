@@ -243,7 +243,7 @@ public class FormatDateTag extends TagSupport {
         catch (IOException ioe) {
             throw new JspException("IO error writing to JSP file:", ioe);
         }
-        return (SKIP_BODY);
+        return SKIP_BODY;
     }
 
     /**
@@ -287,10 +287,10 @@ public class FormatDateTag extends TagSupport {
     }
 
     protected boolean isFormatCustomized() {
-        return (getPattern() != null ||
+        return getPattern() != null ||
                 getType() != null ||
                 getDateStyle() != null ||
-                getTimeStyle() != null);
+                getTimeStyle() != null;
     }
 
     /**

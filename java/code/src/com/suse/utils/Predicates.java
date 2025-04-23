@@ -37,7 +37,7 @@ public final class Predicates {
      * @return true if the object does not contain meaningful content
      */
     public static boolean isAbsent(Object value) {
-        return !(isProvided(value));
+        return !isProvided(value);
     }
 
     /**
@@ -126,7 +126,7 @@ public final class Predicates {
      * @return true if none of the elements in the collection are considered provided, otherwise false
      */
     public static boolean noneProvided(Collection<?> collection) {
-        if ((collection == null) || collection.isEmpty()) {
+        if (collection == null || collection.isEmpty()) {
             return true;
         }
         return !isProvided(collection);
@@ -139,7 +139,7 @@ public final class Predicates {
      * @return true if any of the elements in the collection are considered provided, otherwise false
      */
     public static boolean anyProvided(Collection<?> collection) {
-        return !(noneProvided(collection));
+        return !noneProvided(collection);
     }
 
     /**

@@ -140,7 +140,7 @@ public class MirrorCredentialsManager {
         // Check if the supplied user name already exists in stored credentials
         for (SCCCredentials existingCred : CredentialsFactory.listSCCCredentials()) {
             if (existingCred.getUsername().equals(creds.getUser()) &&
-                    (!Objects.equals(existingCred.getId(), creds.getId()))) {
+                    !Objects.equals(existingCred.getId(), creds.getId())) {
                 throw new MirrorCredentialsNotUniqueException("Username already exists");
             }
         }

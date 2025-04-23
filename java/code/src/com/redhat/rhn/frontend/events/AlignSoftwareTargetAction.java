@@ -80,7 +80,7 @@ public class AlignSoftwareTargetAction implements MessageAction {
 
     @Override
     public Consumer<Exception> getExceptionHandler() {
-        return (e) -> {
+        return e -> {
             if (e instanceof AlignSoftwareTargetException exc) {
                 LOG.error("Error aligning target {}", exc.getTarget().getId(), e);
                 exc.getTarget().setStatus(Status.FAILED);

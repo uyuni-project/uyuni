@@ -237,7 +237,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
             // Check the product sync status
             SyncStatus status = getProductSyncStatus(product, channelByLabel);
             assertEquals(SyncStatus.SyncStage.FINISHED, status.getStage());
-            assertNotNull((status.getLastSyncDate()));
+            assertNotNull(status.getLastSyncDate());
         }
         finally {
             // Clean up and restore the old cache path

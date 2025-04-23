@@ -53,9 +53,9 @@ public class SatUserListAction extends RhnAction {
 
         DataList<MultiOrgAllUserOverview> result = OrgManager.allUsers();
 
-        Long canModify =  (user.getOrg().getId().longValue() ==
-            oid.longValue()) &&
-           (user.hasRole(RoleFactory.ORG_ADMIN)) ? 1L : 0L;
+        Long canModify =  user.getOrg().getId().longValue() ==
+            oid.longValue() &&
+                user.hasRole(RoleFactory.ORG_ADMIN) ? 1L : 0L;
 
         request.setAttribute("canModify", canModify);
         request.setAttribute("userOrgId", oid);

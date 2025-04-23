@@ -45,7 +45,7 @@ public class HttpServerMock {
          */
         port = (int) (
                 10000 +
-                (System.currentTimeMillis() % 100) * 100 +
+                System.currentTimeMillis() % 100 * 100 +
                 new Random().nextInt(100));
     }
 

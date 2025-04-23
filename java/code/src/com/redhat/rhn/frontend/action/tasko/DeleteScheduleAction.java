@@ -49,7 +49,7 @@ public class DeleteScheduleAction extends RhnAction {
         User loggedInUser = ctx.getCurrentUser();
 
         if (ctx.hasParam("schid")) {
-            Long scheduleId = ctx.getParamAsLong(("schid"));
+            Long scheduleId = ctx.getParamAsLong("schid");
             TaskomaticApi tapi = new TaskomaticApi();
             Map<String, Object> schedule = new HashMap<>();
             try {

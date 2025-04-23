@@ -510,8 +510,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals("livepatch_2_2_1", minion.getKernelLiveVersion());
 
         // Verify Uptime is set
-        Date bootTime = new Date(System.currentTimeMillis() - (600 * 1000));
-        assertEquals((long) minion.getLastBoot(), (bootTime.getTime() / 1000));
+        Date bootTime = new Date(System.currentTimeMillis() - 600 * 1000);
+        assertEquals((long) minion.getLastBoot(), bootTime.getTime() / 1000);
 
         //Switch back from live patching
         message = new JobReturnEventMessage(JobReturnEvent
@@ -714,7 +714,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testHardwareProfileUpdateX86NoDmi()  throws Exception {
-        testHardwareProfileUpdate("hardware.profileupdate.nodmi.x86.json", (server) -> {
+        testHardwareProfileUpdate("hardware.profileupdate.nodmi.x86.json", server -> {
             assertNotNull(server);
             assertNotNull(server.getCpu());
             assertNotNull(server.getVirtualInstance());
@@ -730,7 +730,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testHardwareProfileUpdateDockerNoDmiUdev()  throws Exception {
-        testHardwareProfileUpdate("hardware.profileupdate.docker.json", (server) -> {
+        testHardwareProfileUpdate("hardware.profileupdate.docker.json", server -> {
             assertNotNull(server);
             assertNotNull(server.getCpu());
             assertNull(server.getVirtualInstance());
@@ -745,7 +745,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testHardwareProfileUpdateX86() throws Exception {
-        testHardwareProfileUpdate("hardware.profileupdate.x86.json", (server) -> {
+        testHardwareProfileUpdate("hardware.profileupdate.x86.json", server -> {
             assertNotNull(server);
             assertNotNull(server.getCpu());
             assertEquals(Long.valueOf(1), server.getCpu().getNrsocket());
@@ -1730,7 +1730,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
 
-        ImageInfo image = doTestKiwiImageBuild(server, profile, "image.build.kiwi.json", (info) -> {
+        ImageInfo image = doTestKiwiImageBuild(server, profile, "image.build.kiwi.json", info -> {
             // name and version is updated from the Kiwi build result
             assertEquals("POS_Image_JeOS7", info.getName());
             assertEquals("7.0.0", info.getVersion());
@@ -1788,7 +1788,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
 
-        ImageInfo image = doTestKiwiImageBuild(server, profile, "image.build.bundle.kiwi.json", (info) -> {
+        ImageInfo image = doTestKiwiImageBuild(server, profile, "image.build.bundle.kiwi.json", info -> {
             // name and version is updated from the Kiwi build result
             assertEquals("POS_Image_JeOS7", info.getName());
             assertEquals("7.0.0", info.getVersion());
@@ -1877,7 +1877,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
 
         assertFalse(user.getOrg().getPillars().stream()
-                   .filter(item -> (("Image" + image.getId()).equals(item.getCategory())))
+                   .filter(item -> ("Image" + image.getId()).equals(item.getCategory()))
                    .findAny().isPresent());
     }
 
@@ -1906,7 +1906,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
 
-        doTestKiwiImageInspect(server, profile, "image.inspect.kiwi_compressed.json", (info) -> {
+        doTestKiwiImageInspect(server, profile, "image.inspect.kiwi_compressed.json", info -> {
             assertNotNull(info.getInspectAction().getId());
             assertEquals(286, info.getPackages().size());
 

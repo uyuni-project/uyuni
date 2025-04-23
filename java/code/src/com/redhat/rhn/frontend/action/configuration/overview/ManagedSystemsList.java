@@ -65,7 +65,7 @@ public class ManagedSystemsList extends RhnListAction {
 
         // if submitted get checkbox status
         if (requestContext.isSubmitted()) {
-            managedSystemsOnly = (request.getParameter(checkboxName) != null);
+            managedSystemsOnly = request.getParameter(checkboxName) != null;
         }
         // if checkbox is "on", filter data to show systems containing
         // at least one locally or centrally managed file only
@@ -75,7 +75,7 @@ public class ManagedSystemsList extends RhnListAction {
             // iterate through list
             for (ConfigSystemDto o : dtos) {
                 // if there is no local and no global file
-                if ((o.getGlobalFileCount() + o.getLocalFileCount()) <= 0) {
+                if (o.getGlobalFileCount() + o.getLocalFileCount() <= 0) {
                     // delete system from list
                     dr.remove(o);
                     total--;

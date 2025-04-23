@@ -663,7 +663,7 @@ public class ListTag extends BodyTagSupport {
 
         pageContext.pushBody(footLinksContent);
         // if there is reference links, put them as a panel footer
-        if ((refLink != null) && (!isEmpty())) {
+        if (refLink != null && !isEmpty()) {
 
             ListTagUtil.write(pageContext, "<a href=\"" + refLink + "\" >");
             /* Here we render the reflink and its key. If the key hasn't been set
@@ -749,7 +749,7 @@ public class ListTag extends BodyTagSupport {
 
         ListTagUtil.write(pageContext, "<!-- START LIST " + getUniqueName() + " -->");
 
-        String listId = (getStyleId() != null) ? getStyleId() : getUniqueName();
+        String listId = getStyleId() != null ? getStyleId() : getUniqueName();
 
         setupManipulator();
         manip.sort();

@@ -91,7 +91,7 @@ public class ChannelAclHandler extends BaseHandler {
         User usr = (User)ctx.get(USER);
         Channel chan = getChannel(usr, ctx);
         if (chan != null) {
-            String p0 = (params.length > 0 ? params[0] : null);
+            String p0 = params.length > 0 ? params[0] : null;
             boolean subscribable = ChannelFactory.isGloballySubscribable(usr.getOrg(),
                     chan);
             if (NOT_GLOBAL_SUBSCRIBE.equals(p0)) {
@@ -154,7 +154,7 @@ public class ChannelAclHandler extends BaseHandler {
         Channel chan = getChannel(usr, ctx);
         if (chan != null) {
             Set<ChannelVersion> vers = ChannelManager.getChannelVersions(chan);
-            return (vers != null && vers.contains(ChannelVersion.RHEL5));
+            return vers != null && vers.contains(ChannelVersion.RHEL5);
         }
         return false;
 

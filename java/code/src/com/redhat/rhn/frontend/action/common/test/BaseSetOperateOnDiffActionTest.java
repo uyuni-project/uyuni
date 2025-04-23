@@ -50,8 +50,8 @@ public class BaseSetOperateOnDiffActionTest extends RhnPostMockStrutsTestCase {
             ActivationKeyFactory.save(key);
             TestUtils.flushAndEvict(key);
         }
-        assertTrue((ksdata.getDefaultRegTokens() == null ||
-                ksdata.getDefaultRegTokens().isEmpty()));
+        assertTrue(ksdata.getDefaultRegTokens() == null ||
+                ksdata.getDefaultRegTokens().isEmpty());
         setRequestPathInfo("/kickstart/ActivationKeysSubmit");
         addSelectedItem(ActivationKeyTest.createTestActivationKey(user,
                 ServerFactoryTest.createTestServer(user)).getId());
@@ -64,8 +64,8 @@ public class BaseSetOperateOnDiffActionTest extends RhnPostMockStrutsTestCase {
         addDispatchCall(ActivationKeysSubmitAction.UPDATE_METHOD);
         actionPerform();
         verifyActionMessage("kickstart_activation_keys.added");
-        assertTrue((ksdata.getDefaultRegTokens() != null &&
-                !ksdata.getDefaultRegTokens().isEmpty()));
+        assertTrue(ksdata.getDefaultRegTokens() != null &&
+                !ksdata.getDefaultRegTokens().isEmpty());
 
     }
 }

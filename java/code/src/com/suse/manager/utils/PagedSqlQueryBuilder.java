@@ -298,7 +298,7 @@ public class PagedSqlQueryBuilder {
         FilterWithValue filter = Optional.ofNullable(filterParser).map(parser -> parser.apply(pageControl)).
                 orElse(FilterWithValue.NO_FILTER);
         if (!"".equals(filter.getValue())) {
-            whereWithFilter = (where != null) ?
+            whereWithFilter = where != null ?
                     String.format("(%s) AND %s", where, filter.getFilter()) :
                     filter.getFilter();
         }

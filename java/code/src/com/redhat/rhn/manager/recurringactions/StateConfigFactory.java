@@ -87,7 +87,7 @@ public class StateConfigFactory {
         return RecurringActionFactory.lookupInternalStateByName(stateName)
                 .map(state -> (RecurringStateConfig) new RecurringInternalState(state, position))
                 .or(() -> Optional.ofNullable(configManager.lookupGlobalConfigChannel(user, stateName))
-                        .map((channel) -> this.getRecurringState(channel, position)))
+                        .map(channel -> this.getRecurringState(channel, position)))
                 .orElseThrow();
     }
 }

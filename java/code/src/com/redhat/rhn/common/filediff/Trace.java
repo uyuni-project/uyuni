@@ -93,7 +93,7 @@ public class Trace {
      */
     public int bestPossible() {
         int shortest = currentLineOld > currentLineNew ? currentLineNew : currentLineOld;
-        return (matches + shortest + 1); //currentLine* is an index, so we must add one.
+        return matches + shortest + 1; //currentLine* is an index, so we must add one.
     }
 
     private void fork() {

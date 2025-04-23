@@ -800,7 +800,7 @@ public class KickstartData {
      */
     public boolean isRhel7OrGreater() {
         if (getInstallType() != null) {
-            return (getInstallType().isRhel7OrGreater() || getInstallType().isFedora());
+            return getInstallType().isRhel7OrGreater() || getInstallType().isFedora();
         }
         return false;
     }
@@ -810,7 +810,7 @@ public class KickstartData {
      */
     public boolean isRhel9OrGreater() {
         if (getInstallType() != null) {
-            return (getInstallType().isRhel9OrGreater() || getInstallType().isFedora());
+            return getInstallType().isRhel9OrGreater() || getInstallType().isFedora();
         }
         return false;
     }
@@ -820,8 +820,8 @@ public class KickstartData {
      */
     public boolean isRhel6OrGreater() {
         if (getInstallType() != null) {
-            return (getInstallType().isRhel6OrGreater() ||
-                    getInstallType().isFedora());
+            return getInstallType().isRhel6OrGreater() ||
+                    getInstallType().isFedora();
         }
         return false;
     }
@@ -855,7 +855,7 @@ public class KickstartData {
      */
     public boolean isSLES11OrGreater() {
         if (getInstallType() != null) {
-            return (getInstallType().isSLES11OrGreater());
+            return getInstallType().isSLES11OrGreater();
         }
         return false;
     }
@@ -866,7 +866,7 @@ public class KickstartData {
      */
     public boolean isSLES12OrGreater() {
         if (getInstallType() != null) {
-            return (getInstallType().isSLES12OrGreater());
+            return getInstallType().isSLES12OrGreater();
         }
         return false;
     }
@@ -877,7 +877,7 @@ public class KickstartData {
      */
     public boolean isSLES15OrGreater() {
         if (getInstallType() != null) {
-            return (getInstallType().isSLES15OrGreater());
+            return getInstallType().isSLES15OrGreater();
         }
         return false;
     }

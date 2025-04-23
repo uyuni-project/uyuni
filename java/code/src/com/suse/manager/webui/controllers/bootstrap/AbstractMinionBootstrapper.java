@@ -164,7 +164,7 @@ public abstract class AbstractMinionBootstrapper {
         LOG.debug("Salt SSH Dir test output: {}", commandOutput);
 
         try {
-            boolean ownerCanReadWrite = ("rw").equals(commandOutput.substring(1, 3));
+            boolean ownerCanReadWrite = "rw".equals(commandOutput.substring(1, 3));
             boolean userAndGroupSet = commandOutput.contains("salt salt");
 
             LOG.debug("User can read/write: {} user and group correct: {}", ownerCanReadWrite, userAndGroupSet);

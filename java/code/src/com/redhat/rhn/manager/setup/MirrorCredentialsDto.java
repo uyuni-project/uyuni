@@ -121,8 +121,8 @@ public class MirrorCredentialsDto extends BaseDto {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((password == null) ? 0 : password.hashCode());
-        result = prime * result + ((user == null) ? 0 : user.hashCode());
+        result = prime * result + (password == null ? 0 : password.hashCode());
+        result = prime * result + (user == null ? 0 : user.hashCode());
         return result;
     }
 

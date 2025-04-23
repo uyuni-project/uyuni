@@ -305,7 +305,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         this.setScheduleDate(scheduleDateIn);
         if (data != null) {
             this.setKsdata(data);
-            assert (this.getKsdata() != null);
+            assert this.getKsdata() != null;
         }
 
         this.setKickstartServerName(kickstartServerNameIn);
@@ -351,7 +351,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
         Server hServer =
                 ServerFactory.lookupByIdAndOrg(selectedHostServerId, userIn.getOrg());
-        assert (hServer != null);
+        assert hServer != null;
         this.setHostServer(hServer);
 
         // There may or may not be a target server present.  If so, then look it up in

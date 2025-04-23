@@ -437,7 +437,7 @@ public abstract class ConfigFileData {
                getOwner().equals(cInfo.getUsername()) &&
                getGroup().equals(cInfo.getGroupname()) &&
                Long.valueOf(getPermissions()).equals(cInfo.getFilemode()) &&
-               ((StringUtils.isEmpty(cfdSelinuxCtx) && StringUtils.isEmpty(crSelinuxCtx)) ||
+               (StringUtils.isEmpty(cfdSelinuxCtx) && StringUtils.isEmpty(crSelinuxCtx) ||
                        cfdSelinuxCtx.equals(crSelinuxCtx));
     }
  }

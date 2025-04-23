@@ -200,7 +200,7 @@ public class ChannelsJson {
      */
     public void setChildren(Stream<Channel> childrenIn) {
         this.children = childrenIn.map(
-                (c) -> new ChannelJson(c.getId(), c.getLabel(), c.getName(), c.isCustom(), true,
+                        c -> new ChannelJson(c.getId(), c.getLabel(), c.getName(), c.isCustom(), true,
                         c.isCloned(), c.getChannelArch().getLabel()))
                 .collect(Collectors.toList());
     }
@@ -210,7 +210,7 @@ public class ChannelsJson {
      * @param recommendedFlags the map of channels with recommended flag value
      */
     public void setChildrenWithRecommendedAndArch(Stream<Channel> childrenIn, Map<Long, Boolean> recommendedFlags) {
-        this.children = childrenIn.map((c) -> {
+        this.children = childrenIn.map(c -> {
             ChannelJson channelWithArch = new ChannelJson(
                     c.getId(),
                     c.getLabel(),

@@ -156,8 +156,8 @@ public class ActivationKeyManager {
     public ActivationKey createNewReActivationKey(User user, Server server,
             String key, String note, Long usageLimit, Channel baseChannel,
             boolean universalDefault, KickstartSession session) {
-        if ((server == null && session == null) || (server != null &&
-                SystemManager.lookupByIdAndUser(server.getId(), user) == null)) {
+        if (server == null && session == null || server != null &&
+                SystemManager.lookupByIdAndUser(server.getId(), user) == null) {
             throw new IllegalArgumentException("Either server or session can be null, " +
                     "but not both, otherwise use createNewActivationKey");
         }

@@ -211,7 +211,7 @@ public class DataSetManipulator {
             }
         }
         else {
-            if ((getCurrentPageNumber() * pageSize) + pageSize < (totalDataSetSize)) {
+            if (getCurrentPageNumber() * pageSize + pageSize < totalDataSetSize) {
                 retval = getCurrentPageNumber() + 1;
             }
         }
@@ -225,7 +225,7 @@ public class DataSetManipulator {
     public int getPrevPageNumber() {
         int retval = -1;
         if (getCurrentPageNumber() > 0) {
-            if (((getCurrentPageNumber() * pageSize) - pageSize) > -1) {
+            if (getCurrentPageNumber() * pageSize - pageSize > -1) {
                 retval = getCurrentPageNumber() - 1;
             }
         }
@@ -245,7 +245,7 @@ public class DataSetManipulator {
      * @return answer to that burning question
      */
     public boolean isLastPage() {
-        int maxPage = (dataset.size() / pageSize) - 1;
+        int maxPage = dataset.size() / pageSize - 1;
         // Add a page for overflow, since the dataset is not
         // evenly divisible by the pagesize
         if (dataset.size() % pageSize > 0) {

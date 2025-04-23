@@ -525,7 +525,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
         out.append(LocalizationService.getInstance()
                     .getMessage("message.range", args));
 
-        if ((set != null) && (!RhnSetDecl.SYSTEMS.getLabel().equals(set.getLabel()))) {
+        if (set != null && !RhnSetDecl.SYSTEMS.getLabel().equals(set.getLabel())) {
             if (top) {
                 out.append(" <strong><span id=\"pagination_selcount_top\">");
             }

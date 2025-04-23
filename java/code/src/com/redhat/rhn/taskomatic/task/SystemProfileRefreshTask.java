@@ -63,8 +63,8 @@ public class SystemProfileRefreshTask extends RhnJavaJob {
 
             Set<Long> sids = ServerFactory.listOrgSystems(org.getId()).stream()
                     .filter(s -> !s.isInactive())
-                    .filter(s -> (s.hasEntitlement(EntitlementManager.SALT) ||
-                                s.hasEntitlement(EntitlementManager.MANAGEMENT)))
+                    .filter(s -> s.hasEntitlement(EntitlementManager.SALT) ||
+                                s.hasEntitlement(EntitlementManager.MANAGEMENT))
                     .map(Server::getId)
                     .collect(Collectors.toSet());
             if (sids.isEmpty()) {

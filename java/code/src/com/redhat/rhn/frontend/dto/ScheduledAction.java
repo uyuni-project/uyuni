@@ -196,7 +196,7 @@ public class ScheduledAction extends BaseDto implements RowCallback {
      * @return the number of actions which are in progress.
      */
     public long getInProgress() {
-        return (pickedUp + queued);
+        return pickedUp + queued;
     }
 
     /**

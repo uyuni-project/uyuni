@@ -139,7 +139,7 @@ public final class CertificateUtils {
      * @throws JobExecutionException if there was an error
      */
     public static void saveAndUpdateCertificates(Map<String, String> filenameToRootCaCertMap) {
-        if ((null == filenameToRootCaCertMap) || filenameToRootCaCertMap.isEmpty()) {
+        if (null == filenameToRootCaCertMap || filenameToRootCaCertMap.isEmpty()) {
             return; // nothing to do
         }
 
@@ -148,7 +148,7 @@ public final class CertificateUtils {
     }
 
     private static void saveCertificates(Map<String, String> filenameToRootCaCertMap) {
-        if ((null == filenameToRootCaCertMap) || filenameToRootCaCertMap.isEmpty()) {
+        if (null == filenameToRootCaCertMap || filenameToRootCaCertMap.isEmpty()) {
             return; // nothing to do
         }
 

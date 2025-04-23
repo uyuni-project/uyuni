@@ -263,7 +263,7 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
         return ActionChainManager.scheduleScriptRuns(
                 user,
                 servers,
-                (label != null ? label : MessageFormat.format(msg, server.getName())),
+                label != null ? label : MessageFormat.format(msg, server.getName()),
                 ActionManager.createScript(form.getString(FormData.UID),
                         form.getString(FormData.GID),
                         form.get(FormData.TIMEOUT) == null ?

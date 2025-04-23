@@ -89,7 +89,7 @@ public class StringConstraint extends RequiredIfConstraint {
         // Validate String length
         if (hasMaxLength()) {
             LOG.debug("HasMaxlength ..");
-            if (!(lengthLessThan(strValue, getMaxLength()))) {
+            if (!lengthLessThan(strValue, getMaxLength())) {
                 LOG.debug("Above max length: {} data: {}max length: {}", strValue.length(), strValue, getMaxLength());
                 Object[] args = new Object[2];
                 args[0] = localizedIdentifier;
@@ -105,7 +105,7 @@ public class StringConstraint extends RequiredIfConstraint {
                 args[0] = localizedIdentifier;
                 return new ValidatorError("errors.required", args);
             }
-            if (!(lengthGreaterThan(strValue, getMinLength()))) {
+            if (!lengthGreaterThan(strValue, getMinLength())) {
                 LOG.debug("Below min length: {} data: {}", strValue.length(), strValue);
                 Object[] args = new Object[2];
                 args[0] = localizedIdentifier;

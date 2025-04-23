@@ -497,8 +497,8 @@ public class HardwareMapper {
             zhost.updateServerInfo();
 
             CPU hostcpu = zhost.getCpu();
-            if (hostcpu == null || (hostcpu.getNrsocket() != null &&
-                    hostcpu.getNrsocket().longValue() != totalIfls)) {
+            if (hostcpu == null || hostcpu.getNrsocket() != null &&
+                    hostcpu.getNrsocket().longValue() != totalIfls) {
                 LOG.debug("Update host cpu: {}", totalIfls);
                 hostcpu = Optional.ofNullable(hostcpu).orElseGet(CPU::new);
                 hostcpu.setNrCPU(totalIfls);
@@ -582,7 +582,7 @@ public class HardwareMapper {
                 grains.getValueAsString("virtual"));
         String virtSubtype = grains.getValueAsString("virtual_subtype");
         String instanceId = grains.getValueAsString("instance_id");
-        String virtUuid = (StringUtils.isEmpty(instanceId)) ? grains.getValueAsString("uuid") : instanceId;
+        String virtUuid = StringUtils.isEmpty(instanceId) ? grains.getValueAsString("uuid") : instanceId;
         int vCPUs = grains.getValueAsLong("total_num_cpus").orElse(0L).intValue();
         long memory = grains.getValueAsLong("mem_total").orElse(0L);
 
@@ -1155,7 +1155,7 @@ public class HardwareMapper {
 
         if (subsys.equals("block")) {
             if (StringUtils.isNotBlank(attrs.getValueAsString("ID_CDROM")) ||
-                    (attrs.getValueAsString("ID_TYPE").equals("cd"))) {
+                    attrs.getValueAsString("ID_TYPE").equals("cd")) {
                 return Device.CLASS_CDROM;
             }
             else {

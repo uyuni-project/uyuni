@@ -63,7 +63,7 @@ public class NavDialogMenuTag extends TagSupport {
             throw new JspException("Error writing to JSP file:", e);
         }
 
-        return (SKIP_BODY);
+        return SKIP_BODY;
     }
 
     /**

@@ -650,9 +650,9 @@ public class ListTagUtil {
                 "name=\"%s\" value=\"%s\" class=\"form-control\" placeholder=\"%s\" " +
                 "onkeypress=\"return enterKeyHandler(event, jQuery('button[name=%s]'))\"/>",
                                 filterValueKey,
-                                (filterValue != null ?
-                                 StringEscapeUtils.escapeHtml4(filterValue) :
-                                 ""),
+                filterValue != null ?
+                 StringEscapeUtils.escapeHtml4(filterValue) :
+                 "",
                                  StringEscapeUtils.escapeHtml4(placeHolder),
                                  filterName
                                  ));
@@ -679,7 +679,7 @@ public class ListTagUtil {
     public static void renderFilterSubmit(PageContext pageContext,
             String uniqueName) throws JspException {
         String filterName = makeFilterNameByLabel(uniqueName);
-        String result = (String.format("<input type=\"hidden\" name=\"%s\">", filterName));
+        String result = String.format("<input type=\"hidden\" name=\"%s\">", filterName);
         ListTagUtil.write(pageContext, result);
     }
 

@@ -765,7 +765,7 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
      * null if not selectable
      */
     public void setSelectable(Integer selectableIn) {
-        selectable = (selectableIn != null);
+        selectable = selectableIn != null;
     }
 
     /**
@@ -886,7 +886,7 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
      *  system is not a virtual host. Sets isVirtualHost to true or false.
      */
     public void setVirtualHost(Object host) {
-        isVirtualHost = (host != null);
+        isVirtualHost = host != null;
     }
 
     /**
@@ -894,7 +894,7 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
      * system is not a virtual guest. Sets isVirtualGuest to true or false.
      */
     public void setVirtualGuest(Object guest) {
-        isVirtualGuest = (guest != null);
+        isVirtualGuest = guest != null;
     }
 
     /**

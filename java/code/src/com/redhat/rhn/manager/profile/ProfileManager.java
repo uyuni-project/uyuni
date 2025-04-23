@@ -127,7 +127,7 @@ public class ProfileManager extends BaseManager {
     }
 
     private static boolean isNameInUse(String name, Long orgid) {
-        return (ProfileFactory.findByNameAndOrgId(name, orgid) != null);
+        return ProfileFactory.findByNameAndOrgId(name, orgid) != null;
     }
 
     /**
@@ -256,7 +256,7 @@ public class ProfileManager extends BaseManager {
                                 // if the arch of the packages doesn't match, we don't
                                 // need to compare the EVR; therefore, if at end of the
                                 // list, add both packages to the result
-                                if ((j + 1) == plist.size()) {
+                                if (j + 1 == plist.size()) {
                                     PackageMetadata pm = createPackageMetadata(
                                             syspkgitem, null,
                                             PackageMetadata.KEY_THIS_ONLY, param);
@@ -279,7 +279,7 @@ public class ProfileManager extends BaseManager {
                                 if (pm.getComparisonAsInt() !=
                                         PackageMetadata.KEY_NO_DIFF) {
 
-                                    if ((j + 1) == plist.size()) {
+                                    if (j + 1 == plist.size()) {
                                         // this is the last entry in plist; therefore,
                                         // this must be a difference between pkgs
                                         log.debug("Adding to cm: {} comp: {}", evrKey, pm.getComparison());
@@ -421,12 +421,12 @@ public class ProfileManager extends BaseManager {
      * @return returns 0 if arch are equal; otherwise, return 1
      */
     private static int compareArch(String a1, String a2) {
-        if (((a1 == null) && (a2 != null)) ||
-                ((a1 != null) && (a2 == null))) {
+        if (a1 == null && a2 != null ||
+                a1 != null && a2 == null) {
             return 1;
         }
 
-        if (((a1 == null) && (a2 == null)) || (a1.equals(a2))) {
+        if (a1 == null && a2 == null || a1.equals(a2)) {
             return 0;
         }
         return 1;

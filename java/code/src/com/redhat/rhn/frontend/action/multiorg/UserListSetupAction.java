@@ -52,9 +52,9 @@ public class UserListSetupAction extends RhnAction {
         Org org = OrgFactory.lookupById(oid);
         String name = org.getName();
 
-        Long canModify =  (user.getOrg().getId().longValue() ==
-                           oid.longValue()) &&
-                          (user.hasRole(RoleFactory.ORG_ADMIN)) ? 1L : 0L;
+        Long canModify =  user.getOrg().getId().longValue() ==
+                           oid.longValue() &&
+                user.hasRole(RoleFactory.ORG_ADMIN) ? 1L : 0L;
         DataList result = OrgManager.activeUsers(oid);
 
         request.setAttribute("canModify", canModify);

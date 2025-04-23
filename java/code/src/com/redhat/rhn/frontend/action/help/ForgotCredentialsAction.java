@@ -220,8 +220,8 @@ public class ForgotCredentialsAction extends RhnAction {
 
         // Time has not elapsed for last user
         if (prevRequest != null &&
-                ((now - prevRequest) < timeout * 1000) &&
-                (user.toUpperCase().equals(prevRequestUser))) {
+                now - prevRequest < timeout * 1000 &&
+                user.toUpperCase().equals(prevRequestUser)) {
             log.debug("Unsuccessful try to request email for {}", user);
             return false;
         }

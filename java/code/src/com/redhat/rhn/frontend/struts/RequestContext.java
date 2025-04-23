@@ -198,7 +198,7 @@ public class RequestContext {
         PxtSessionDelegateFactory factory = PxtSessionDelegateFactory.getInstance();
         PxtSessionDelegate pxtDelegate = factory.newPxtSessionDelegate();
         Long uid = pxtDelegate.getWebUserId(request);
-        return ((uid == null) ? null : UserFactory.lookupById(uid));
+        return uid == null ? null : UserFactory.lookupById(uid);
     }
 
     /**
@@ -423,7 +423,7 @@ public class RequestContext {
      * @return True if the named parameter is in the request.
      */
     public boolean hasParam(String name) {
-        return (request.getParameter(name) != null);
+        return request.getParameter(name) != null;
     }
 
     /**

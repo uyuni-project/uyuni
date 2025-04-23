@@ -613,7 +613,7 @@ public class ConfigurationFactory extends HibernateFactory {
         inParams.put("username_in", user);
         inParams.put("groupname_in", group);
         inParams.put("filemode_in", filemode);
-        if ((selinuxCtx == null) || (selinuxCtx.isEmpty())) {
+        if (selinuxCtx == null || selinuxCtx.isEmpty()) {
             inParams.put("selinuxCtx_in", null);
         }
         else {
@@ -922,7 +922,7 @@ public class ConfigurationFactory extends HibernateFactory {
             // mark and reset stream, so that stream can be re-read later
             stream.mark(size.intValue());
             do {
-                read = stream.read(foo, offset, (foo.length - offset));
+                read = stream.read(foo, offset, foo.length - offset);
                 offset += read;
             } while (read > 0 && offset < foo.length);
             stream.reset();
@@ -963,7 +963,7 @@ public class ConfigurationFactory extends HibernateFactory {
         if (results == null) {
             return 1L;
         }
-        return ((Long) results.get("revision")) + 1;
+        return (Long) results.get("revision") + 1;
     }
 
     /**

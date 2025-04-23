@@ -112,7 +112,7 @@ public class DebVersionComparator implements Comparator<String> {
         while (i < a.length || j < b.length) {
             int firstDiff = 0;
 
-            while ((i < a.length && !Character.isDigit(a[i])) || (j < b.length && !Character.isDigit(b[j]))) {
+            while (i < a.length && !Character.isDigit(a[i]) || j < b.length && !Character.isDigit(b[j])) {
                 int ac = i >= a.length ? 0 : order(a[i]);
                 int bc = j >= b.length ? 0 : order(b[j]);
 
@@ -129,7 +129,7 @@ public class DebVersionComparator implements Comparator<String> {
             while (j < b.length && b[j] == '0') {
                 j++;
             }
-            while (i < a.length && j < b.length && Character.isDigit(a[i]) && Character.isDigit((b[j]))) {
+            while (i < a.length && j < b.length && Character.isDigit(a[i]) && Character.isDigit(b[j])) {
                 if (firstDiff == 0) {
                     firstDiff = a[i] - b[j];
                 }

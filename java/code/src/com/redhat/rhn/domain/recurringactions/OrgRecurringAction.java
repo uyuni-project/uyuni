@@ -81,7 +81,7 @@ public class OrgRecurringAction extends RecurringAction {
      */
     @Override
     public boolean canAccess(User user) {
-        return (user.hasRole(RoleFactory.ORG_ADMIN) && user.getOrg().equals(getOrg())) ||
+        return user.hasRole(RoleFactory.ORG_ADMIN) && user.getOrg().equals(getOrg()) ||
                 user.hasRole(RoleFactory.SAT_ADMIN);
     }
 

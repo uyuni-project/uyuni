@@ -235,7 +235,7 @@ public class KickstartBuilder {
         }
 
         // Make sure the first line starts with %packages for sanity:
-        if (!(lines.get(0)).startsWith("%packages")) {
+        if (!lines.get(0).startsWith("%packages")) {
             throw new KickstartParsingException("Packages section didn't start with " +
                     "%packages tag.");
         }
@@ -281,7 +281,7 @@ public class KickstartBuilder {
             return;
         }
 
-        if (!(lines.get(0)).startsWith(prefix)) {
+        if (!lines.get(0).startsWith(prefix)) {
             throw new KickstartParsingException("Pre section didn't start with " +
                     "%pre tag.");
         }

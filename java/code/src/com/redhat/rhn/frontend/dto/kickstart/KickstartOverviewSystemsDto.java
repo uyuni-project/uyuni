@@ -157,7 +157,7 @@ public class KickstartOverviewSystemsDto extends BaseDto {
      * @return whether or not the current system is a bare metal
      */
     public boolean getIsBareMetal() {
-        return (getOldServerId() == null && getNewServerId() == null);
+        return getOldServerId() == null && getNewServerId() == null;
     }
 
     /**

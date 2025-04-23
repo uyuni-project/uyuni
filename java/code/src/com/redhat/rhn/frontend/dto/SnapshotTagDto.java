@@ -115,7 +115,7 @@ public class SnapshotTagDto extends BaseDto {
     * null if not selectable
     */
    public void setSelectable(Integer selectableIn) {
-       selectable = (selectableIn != null);
+       selectable = selectableIn != null;
    }
 
    /**
@@ -123,7 +123,7 @@ public class SnapshotTagDto extends BaseDto {
     * null if not selectable
     */
    public void setSelectable(Long selectableIn) {
-       selectable = (selectableIn != null);
+       selectable = selectableIn != null;
    }
 
    /**

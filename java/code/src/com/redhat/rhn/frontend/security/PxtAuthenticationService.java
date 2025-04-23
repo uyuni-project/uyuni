@@ -143,9 +143,9 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
     }
 
     private boolean isAuthenticationRequired(HttpServletRequest request) {
-        return (!pxtDelegate.isPxtSessionKeyValid(request) ||
+        return !pxtDelegate.isPxtSessionKeyValid(request) ||
                pxtDelegate.isPxtSessionExpired(request) ||
-               pxtDelegate.getWebUserId(request) == null);
+               pxtDelegate.getWebUserId(request) == null;
     }
 
     @Override

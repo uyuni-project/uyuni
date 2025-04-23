@@ -102,7 +102,7 @@ public class KickstartIpCommand extends BaseKickstartCommand {
      * @return whether this range is valid (octets are 0-255)
      */
     public boolean validateIpRange(long[] oct1In, long[] oct2In) {
-        return (validateIp(oct1In) && validateIp(oct2In));
+        return validateIp(oct1In) && validateIp(oct2In);
     }
 
     /**
@@ -112,7 +112,7 @@ public class KickstartIpCommand extends BaseKickstartCommand {
      * @return whether this range is valid (octets are 0-255)
      */
     public boolean validateIpRange(Long [] oct1In, Long[] oct2In) {
-        return (validateIp(convertLongArr(oct1In)) && validateIp(convertLongArr(oct2In)));
+        return validateIp(convertLongArr(oct1In)) && validateIp(convertLongArr(oct2In));
     }
 
     /**
@@ -145,8 +145,8 @@ public class KickstartIpCommand extends BaseKickstartCommand {
      */
     private boolean validateIp(long [] ipIn) {
         boolean retval = true;
-        for (int i = 0; (i < ipIn.length) && retval; i++) {
-            retval = (ipIn[i] >= MIN_OCTET) && (ipIn[i] <= MAX_OCTET);
+        for (int i = 0; i < ipIn.length && retval; i++) {
+            retval = ipIn[i] >= MIN_OCTET && ipIn[i] <= MAX_OCTET;
         }
         return retval;
     }
@@ -171,10 +171,10 @@ public class KickstartIpCommand extends BaseKickstartCommand {
         long max = iprIn.getMax().getNumber();
         long min = iprIn.getMin().getNumber();
         List l = KickstartFactory.lookupRangeByOrg(this.ksdata.getOrg());
-        for (Iterator itr = l.iterator(); (itr.hasNext() && !found);) {
+        for (Iterator itr = l.iterator(); itr.hasNext() && !found;) {
             KickstartIpRange ksr = (KickstartIpRange) itr.next();
-            found = ((ksr.getMax() <= max) && (ksr.getMax() >= min)) ||
-                ((ksr.getMin() <= max) && (ksr.getMin() >= min));
+            found = ksr.getMax() <= max && ksr.getMax() >= min ||
+                    ksr.getMin() <= max && ksr.getMin() >= min;
         }
 
         return found;

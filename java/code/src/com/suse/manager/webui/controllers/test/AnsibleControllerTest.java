@@ -148,7 +148,7 @@ public class AnsibleControllerTest extends BaseTestCaseWithUser {
     @Test
     public void testParseInventoryAndGetHostnames() {
         List<InventoryTestCase> testCases = getTestInventories();
-        testCases.stream().forEach((testCase) -> {
+        testCases.stream().forEach(testCase -> {
             Set<String> gotHostnames = AnsibleManager.parseInventoryAndGetHostnames(testCase.getInventory());
             assertEquals(gotHostnames, testCase.getExpectedResult());
         });

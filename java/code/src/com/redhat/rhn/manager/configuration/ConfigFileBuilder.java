@@ -89,7 +89,7 @@ public class ConfigFileBuilder {
                 lookupConfigFile(user, cc.getId(), path);
         }
 
-        return (file != null);
+        return file != null;
     }
 
     /**
@@ -145,7 +145,7 @@ public class ConfigFileBuilder {
             }
         }
         else {
-            if ((prevRevision != null) &&
+            if (prevRevision != null &&
                     form.matchesRevision(prevRevision)) {
                 return prevRevision;
             }

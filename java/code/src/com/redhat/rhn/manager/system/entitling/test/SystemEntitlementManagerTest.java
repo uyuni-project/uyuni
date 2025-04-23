@@ -133,7 +133,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         UserTestUtils.addVirtualization(user.getOrg());
 
         Server guest =
-            (host.getGuests().iterator().next()).getGuestSystem();
+            host.getGuests().iterator().next().getGuestSystem();
         guest.addChannel(ChannelTestUtils.createBaseChannel(user));
         ServerTestUtils.addVirtualization(user, guest);
 

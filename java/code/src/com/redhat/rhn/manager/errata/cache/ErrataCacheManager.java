@@ -78,7 +78,7 @@ public class ErrataCacheManager extends HibernateFactory {
             return 0;
         }
         Long cnt = (Long) dr.get(0).get("num_items");
-        return (cnt != null) ? cnt.intValue() : 0;
+        return cnt != null ? cnt.intValue() : 0;
     }
 
     /**

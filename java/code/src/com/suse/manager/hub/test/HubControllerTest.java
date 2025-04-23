@@ -139,15 +139,15 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     }
 
     private static Stream<Arguments> onlyGetApis() {
-        return allApiEndpoints().filter(e -> (HttpMethod.get == e.get()[0]));
+        return allApiEndpoints().filter(e -> HttpMethod.get == e.get()[0]);
     }
 
     private static Stream<Arguments> onlyPostApis() {
-        return allApiEndpoints().filter(e -> (HttpMethod.post == e.get()[0]));
+        return allApiEndpoints().filter(e -> HttpMethod.post == e.get()[0]);
     }
 
     private static Stream<Arguments> onlyHubApis() {
-        return allApiEndpoints().filter(e -> (IssRole.HUB == e.get()[2]));
+        return allApiEndpoints().filter(e -> IssRole.HUB == e.get()[2]);
     }
 
     private static boolean noHubApis() {
@@ -155,7 +155,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     }
 
     private static Stream<Arguments> onlyPeripheralApis() {
-        return allApiEndpoints().filter(e -> (IssRole.PERIPHERAL == e.get()[2]));
+        return allApiEndpoints().filter(e -> IssRole.PERIPHERAL == e.get()[2]);
     }
 
     private static boolean noPeripheralApis() {
@@ -414,13 +414,13 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
         assertTrue(allOrgs.size() >= 3, "All 3 test test orgs are not listed");
         assertTrue(allOrgs.stream()
-                        .anyMatch(e -> (e.getOrgId() == org1.getId()) && (e.getOrgName().startsWith("org1"))),
+                        .anyMatch(e -> e.getOrgId() == org1.getId() && e.getOrgName().startsWith("org1")),
                 apiUnderTest + " API call not listing test organization [org1]");
         assertTrue(allOrgs.stream()
-                        .anyMatch(e -> (e.getOrgId() == org2.getId()) && (e.getOrgName().startsWith("org2"))),
+                        .anyMatch(e -> e.getOrgId() == org2.getId() && e.getOrgName().startsWith("org2")),
                 apiUnderTest + " API call not listing test organization [org2]");
         assertTrue(allOrgs.stream()
-                        .anyMatch(e -> (e.getOrgId() == org3.getId()) && (e.getOrgName().startsWith("org3"))),
+                        .anyMatch(e -> e.getOrgId() == org3.getId() && e.getOrgName().startsWith("org3")),
                 apiUnderTest + " API call not listing test organization [org3]");
     }
 

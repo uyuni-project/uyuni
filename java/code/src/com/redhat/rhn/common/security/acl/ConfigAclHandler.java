@@ -121,7 +121,7 @@ public class ConfigAclHandler extends BaseHandler {
         //somewhat slow because it loads up every file instead of justing
         //finding one and then bailing.
         ConfigChannel cc = getChannel(ctx, params);
-        return (!cc.getConfigFiles().isEmpty());
+        return !cc.getConfigFiles().isEmpty();
     }
 
     /**

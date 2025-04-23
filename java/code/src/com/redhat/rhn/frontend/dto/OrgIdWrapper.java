@@ -51,6 +51,6 @@ public class OrgIdWrapper {
     /** {@inheritDoc} */
     @Override
     public String toString() {
-        return (orgId == null) ? null : orgId.toString();
+        return orgId == null ? null : orgId.toString();
     }
 }

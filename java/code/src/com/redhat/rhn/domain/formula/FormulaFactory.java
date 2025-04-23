@@ -779,7 +779,7 @@ public class FormulaFactory {
                                     .map(Map.class::cast)
                                     .orElseGet(Collections::emptyMap)))
                     .filter(ExporterConfig::isEnabled)
-                    .filter(e -> (proxyEnabled && proxyPort.isPresent()) || (!proxyEnabled && e.getPort().isPresent()))
+                    .filter(e -> proxyEnabled && proxyPort.isPresent() || !proxyEnabled && e.getPort().isPresent())
                     .map(exporterConfig -> new EndpointInfo(
                             formulaData.getSystemID(),
                             exporterConfig.getEndpointNameOrFallback(),

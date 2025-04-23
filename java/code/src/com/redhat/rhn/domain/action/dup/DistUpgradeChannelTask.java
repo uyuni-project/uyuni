@@ -78,8 +78,8 @@ public class DistUpgradeChannelTask extends BaseDomainHelper implements Serializ
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((channel == null) ? 0 : channel.hashCode());
-        result = prime * result + ((details == null) ? 0 : details.hashCode());
+        result = prime * result + (channel == null ? 0 : channel.hashCode());
+        result = prime * result + (details == null ? 0 : details.hashCode());
         result = prime * result + task;
         return result;
     }

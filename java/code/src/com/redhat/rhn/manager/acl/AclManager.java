@@ -80,6 +80,6 @@ public class AclManager {
             context.put("user", user);
         }
 
-        return (aclObj.evalAcl(context, acl));
+        return aclObj.evalAcl(context, acl);
     }
 }

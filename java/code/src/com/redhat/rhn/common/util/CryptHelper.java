@@ -90,7 +90,7 @@ public class CryptHelper {
         StringBuilder out = new StringBuilder();
 
         while (length > 0) {
-            out.append(b64t.substring((value & 0x3f), (value & 0x3f) + 1));
+            out.append(b64t.substring(value & 0x3f, (value & 0x3f) + 1));
             --length;
             value >>= 6;
         }

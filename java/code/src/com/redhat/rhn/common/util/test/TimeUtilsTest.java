@@ -27,7 +27,7 @@ public class TimeUtilsTest  {
 
     @Test
     public void testCurrentTimeSeconds() {
-        assertTrue(timeEquals((System.currentTimeMillis() / 1000),
+        assertTrue(timeEquals(System.currentTimeMillis() / 1000,
                      TimeUtils.currentTimeSeconds()));
     }
 
@@ -41,6 +41,6 @@ public class TimeUtilsTest  {
      */
     public static boolean timeEquals(long timeOne, long timeTwo) {
         //how about within two units of time
-        return (timeTwo > (timeOne - 2) && timeTwo < (timeOne + 2));
+        return timeTwo > timeOne - 2 && timeTwo < timeOne + 2;
     }
 }

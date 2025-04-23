@@ -157,7 +157,7 @@ public class VirtualInstanceManager extends BaseManager {
                     vinst.lookupVirtualInstanceByUuid(guid);
 
             Map<String, String> vmData = optionalVmData.get(name);
-            VirtualInstanceState st = (vmData != null && vmData.get("vmState") != null) ?
+            VirtualInstanceState st = vmData != null && vmData.get("vmState") != null ?
                     vinst.getState(vmData.get("vmState"))
                             .orElse(vinst.getUnknownState()) : vinst.getUnknownState();
 

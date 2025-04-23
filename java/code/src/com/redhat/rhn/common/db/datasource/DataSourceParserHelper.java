@@ -322,10 +322,10 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
             }
 
             String column = parsedAttributes.getValue("column");
-            elaboratorJoinColumn = (column == null) ? "id" : column.toLowerCase();
+            elaboratorJoinColumn = column == null ? "id" : column.toLowerCase();
 
             String mult = parsedAttributes.getValue("multiple");
-            multiple = (mult != null && mult.equals("t"));
+            multiple = mult != null && mult.equals("t");
 
             parameterList = new ArrayList<>();
             String parameters = parsedAttributes.getValue("params");

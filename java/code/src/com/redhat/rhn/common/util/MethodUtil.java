@@ -145,7 +145,7 @@ public class MethodUtil {
                     Object curr = params[j];
                     if (log.isDebugEnabled()) {
                         log.debug("Trying to translate from: {} to: {} isInstance: {}",
-                                (curr == null) ? null : curr.getClass(), types[j], types[j].isInstance(curr));
+                                curr == null ? null : curr.getClass(), types[j], types[j].isInstance(curr));
                     }
                     if (curr != null && curr.getClass().isPrimitive() &&
                             types[j].isPrimitive()) {
@@ -154,7 +154,7 @@ public class MethodUtil {
                         }
                         converted[j] = curr;
                     }
-                    if ((curr == null && !types[j].isPrimitive()) ||
+                    if (curr == null && !types[j].isPrimitive() ||
                             types[j].isInstance(curr)) {
                         if (log.isDebugEnabled()) {
                             log.debug("same type");
@@ -187,8 +187,8 @@ public class MethodUtil {
                            " in class: " + o.getClass().getName() + " with params: [";
             for (int i = 0; i < params.length; i++) {
                 if (params[i] != null) {
-                    message = message + ("type: " + params[i].getClass().getName() +
-                              ", value: " + params[i]);
+                    message = message + "type: " + params[i].getClass().getName() +
+                            ", value: " + params[i];
                     if (i < params.length - 1) {
                         message = message + ", ";
                     }

@@ -341,9 +341,9 @@ public class ErrataHandler extends BaseHandler {
         }
         if (details.containsKey("advisory_type")) {
             String pea = "Product Enhancement Advisory"; // hack for checkstyle
-            if (!(details.get("advisory_type")).equals("Security Advisory") &&
-            !(details.get("advisory_type")).equals(pea) &&
-            !(details.get("advisory_type")).equals("Bug Fix Advisory")) {
+            if (!details.get("advisory_type").equals("Security Advisory") &&
+            !details.get("advisory_type").equals(pea) &&
+            !details.get("advisory_type").equals("Bug Fix Advisory")) {
                 throw new InvalidParameterException("Invalid advisory type");
             }
             errata.setAdvisoryType((String)details.get("advisory_type"));
@@ -688,7 +688,7 @@ public class ErrataHandler extends BaseHandler {
             Package pkg = PackageManager.lookupByIdAndUser(Long.valueOf(packageId),
                     loggedInUser);
 
-            if ((pkg != null) && (!errata.getPackages().contains(pkg))) {
+            if (pkg != null && !errata.getPackages().contains(pkg)) {
                 errata.addPackage(pkg);
                 packagesAdded++;
             }
@@ -734,7 +734,7 @@ public class ErrataHandler extends BaseHandler {
             Package pkg = PackageManager.lookupByIdAndUser(Long.valueOf(packageId),
                     loggedInUser);
 
-            if ((pkg != null) && (errata.getPackages().contains(pkg))) {
+            if (pkg != null && errata.getPackages().contains(pkg)) {
                 errata.removePackage(pkg);
                 packagesRemoved++;
             }

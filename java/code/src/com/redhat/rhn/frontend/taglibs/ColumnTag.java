@@ -407,7 +407,7 @@ public class ColumnTag extends TagSupport {
      * @return true if the header needs to be displayed.
      */
     private boolean showHeader() {
-        return (pageContext.getAttribute("current") == null);
+        return pageContext.getAttribute("current") == null;
     }
 
     /**
@@ -597,7 +597,7 @@ public class ColumnTag extends TagSupport {
     }
 
     private boolean showUrl() {
-        return ((getUrl() != null) && isRenderUrl());
+        return getUrl() != null && isRenderUrl();
     }
 
     /**

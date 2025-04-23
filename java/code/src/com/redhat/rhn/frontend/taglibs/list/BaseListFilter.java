@@ -53,7 +53,7 @@ public abstract class BaseListFilter implements ListFilter {
         criteria = criteria.toLowerCase();
         if (methodName != null) {
             String value = ListTagUtil.getBeanValue(object, methodName);
-            return (value != null) &&
+            return value != null &&
                     value.toLowerCase().contains(criteria);
         }
         return false;

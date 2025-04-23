@@ -72,7 +72,7 @@ public class SystemDetailsMessageFilterTest extends MockObjectTestCase {
         SystemDetailsMessageFilter filter = new SystemDetailsMessageFilter();
         filter.processSystemMessages(request, minionServer);
         ActionMessages messages =
-                ((ActionMessages) request.getSession().getAttribute("org.apache.struts.action.ERROR"));
+                (ActionMessages) request.getSession().getAttribute("org.apache.struts.action.ERROR");
         assertNull(messages);
     }
 }

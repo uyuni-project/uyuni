@@ -174,8 +174,8 @@ public class IpAddressRange {
      * @return is this IPaddress contained in this range
      */
     public boolean isIpAddressContained(IpAddress addrIn) {
-        return (addrIn.getNumber() >= this.min.getNumber() &&
-                addrIn.getNumber() <= this.max.getNumber());
+        return addrIn.getNumber() >= this.min.getNumber() &&
+                addrIn.getNumber() <= this.max.getNumber();
     }
 
     /**
@@ -184,7 +184,7 @@ public class IpAddressRange {
      * @return if this range is before the other
      */
     public boolean isRangeBefore(IpAddressRange rangeIn) {
-        return (this.max.getNumber() < rangeIn.min.getNumber());
+        return this.max.getNumber() < rangeIn.min.getNumber();
     }
 
     /**
@@ -193,7 +193,7 @@ public class IpAddressRange {
      * @return if this range is after the other
      */
     public boolean isRangeAfter(IpAddressRange rangeIn) {
-        return (this.min.getNumber() > rangeIn.max.getNumber());
+        return this.min.getNumber() > rangeIn.max.getNumber();
     }
 
     /**
@@ -202,7 +202,7 @@ public class IpAddressRange {
      * @return is this range is disjoint from the other
      */
     public boolean isDisjoint(IpAddressRange rangeIn) {
-        return (this.isRangeBefore(rangeIn) || this.isRangeAfter(rangeIn));
+        return this.isRangeBefore(rangeIn) || this.isRangeAfter(rangeIn);
     }
 
     /**
@@ -211,8 +211,8 @@ public class IpAddressRange {
      * @return is this range a subset of the other
      */
     public boolean isSubset(IpAddressRange rangeIn) {
-        return (this.min.getNumber() >= rangeIn.min.getNumber() &&
-                this.max.getNumber() <= rangeIn.max.getNumber());
+        return this.min.getNumber() >= rangeIn.min.getNumber() &&
+                this.max.getNumber() <= rangeIn.max.getNumber();
     }
 
     /**
@@ -221,8 +221,8 @@ public class IpAddressRange {
      * @return does this range contain the other range
      */
     public boolean isSuperset(IpAddressRange rangeIn) {
-        return (this.min.getNumber() <= rangeIn.min.getNumber() &&
-                this.max.getNumber() >= rangeIn.max.getNumber());
+        return this.min.getNumber() <= rangeIn.min.getNumber() &&
+                this.max.getNumber() >= rangeIn.max.getNumber();
     }
 
     /**
@@ -231,8 +231,8 @@ public class IpAddressRange {
      * @return can this range coexist with other ranges in org
      */
     public boolean canCoexist(IpAddressRange rangeIn) {
-        return ((this.isDisjoint(rangeIn) || this.isSubset(rangeIn) ||
-                this.isSuperset(rangeIn)) && !this.equals(rangeIn));
+        return (this.isDisjoint(rangeIn) || this.isSubset(rangeIn) ||
+                this.isSuperset(rangeIn)) && !this.equals(rangeIn);
 
     }
 }

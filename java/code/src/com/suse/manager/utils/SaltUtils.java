@@ -352,8 +352,8 @@ public class SaltUtils {
                 e.getKey().endsWith("-release") ||
                 // Live patching requires refresh to fetch the updated LP version
                 e.getKey().startsWith("kernel-livepatch-") ||
-                (e.getValue().getNewValue().isLeft() &&
-                 e.getValue().getOldValue().isLeft())
+                        e.getValue().getNewValue().isLeft() &&
+                         e.getValue().getOldValue().isLeft()
         );
 
         if (fullRefreshNeeded) {
@@ -1700,7 +1700,7 @@ public class SaltUtils {
         InstalledPackage pkg = new InstalledPackage();
         pkg.setEvr(packageEvr);
         pkg.setInstallTime(pkgInfo.getInstallDateUnixTime()
-                .map(time -> new Date((time * 1000)))
+                .map(time -> new Date(time * 1000))
                 .orElse(null));
         pkg.setName(packageName);
         pkg.setServer(server);
@@ -2170,7 +2170,7 @@ public class SaltUtils {
             return;
         }
         Date bootTime = new Date(
-                System.currentTimeMillis() - (uptimeSeconds * 1000));
+                System.currentTimeMillis() - uptimeSeconds * 1000);
         LOG.debug("Set last boot for {} to {}", minion.getMinionId(), bootTime);
         minion.setLastBoot(bootTime.getTime() / 1000);
 

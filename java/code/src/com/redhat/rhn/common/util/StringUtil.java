@@ -409,20 +409,20 @@ public class StringUtil {
         endChars.add('.');
         endChars.add(',');
 
-        if (space == -1 || (space > line && line != -1)) {
+        if (space == -1 || space > line && line != -1) {
             end = line;
         }
         else {
             end = space;
         }
 
-        if (end == -1 || (end > tag && tag != -1)) {
+        if (end == -1 || end > tag && tag != -1) {
             end = tag;
         }
 
         // dot before the end
-        if (end > 0 && (endChars.contains(
-                entireToken.charAt(end - 1)))) {
+        if (end > 0 && endChars.contains(
+                entireToken.charAt(end - 1))) {
             end--;
         }
         // dot at the end
@@ -460,13 +460,13 @@ public class StringUtil {
         LocalizationService ls = LocalizationService.getInstance();
         String number = null;
         String type = null;
-        if (bytes >= (1024 * 1024)) { // show in megabytes (with two decimals)
+        if (bytes >= 1024 * 1024) { // show in megabytes (with two decimals)
             number = ls.formatNumber(bytes / (1024.0 * 1024),
-                    (wholeNum ? 0 : 2));
+                    wholeNum ? 0 : 2);
             type = "mb";
         }
         else if (bytes >= 1024) { // show in kilobytes (with one decimal)
-            number = ls.formatNumber(bytes / 1024.0, (wholeNum ? 0 : 1));
+            number = ls.formatNumber(bytes / 1024.0, wholeNum ? 0 : 1);
             type = "kb";
         }
         else { // show in bytes (with no decimals)
@@ -512,7 +512,7 @@ public class StringUtil {
     public static String categorizeTime(long target, int maxUnit, int minUnit) {
         checkUnits(maxUnit, minUnit);
         long now = System.currentTimeMillis();
-        long elapsedTime = (now > target ? (now - target) : (target - now));
+        long elapsedTime = now > target ? now - target : target - now;
 
         // Start by filling an array with the number of "whole units"
         // for each of the units requested, from max to min.
@@ -524,7 +524,7 @@ public class StringUtil {
                 unitValues[currUnit] = elapsedTime / MILLIS_PER_UNIT[currUnit];
             }
             else {
-                elapsedTime -= (unitValues[currUnit + 1] * MILLIS_PER_UNIT[currUnit + 1]);
+                elapsedTime -= unitValues[currUnit + 1] * MILLIS_PER_UNIT[currUnit + 1];
                 unitValues[currUnit] = elapsedTime / MILLIS_PER_UNIT[currUnit];
             }
         }
@@ -565,7 +565,7 @@ public class StringUtil {
         long valInMaxUnits;
 
         long now = System.currentTimeMillis();
-        long elapsedTime = (now > target ? (now - target) : (target - now));
+        long elapsedTime = now > target ? now - target : target - now;
         int theUnit = findMaximumUnitFor(elapsedTime, maxUnit);
 
         // maxUnit is now one of entered-value,
@@ -578,8 +578,8 @@ public class StringUtil {
         // If the remainder > half a unit, round up.
         // Note: we don't round seconds
         if (theUnit != SECONDS_UNITS &&
-                remainder >= (MILLIS_PER_UNIT[theUnit - 1] *
-                        (UNITS_PER_NEXT[theUnit - 1] / 2))) {
+                remainder >= MILLIS_PER_UNIT[theUnit - 1] *
+                        (UNITS_PER_NEXT[theUnit - 1] / 2)) {
             valInMaxUnits++;
         }
 
@@ -663,7 +663,7 @@ public class StringUtil {
      * other kinds of non-Linux EOLs, so we can use it on uploaded files as well
      */
     public static String webToLinux(String inWebStr) {
-        return (inWebStr == null ? null : inWebStr.replace("\r\n", "\n"));
+        return inWebStr == null ? null : inWebStr.replace("\r\n", "\n");
     }
 
     /**

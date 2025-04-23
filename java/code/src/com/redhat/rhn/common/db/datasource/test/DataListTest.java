@@ -142,7 +142,7 @@ public class DataListTest extends RhnBaseTestCase {
         }
 
         public boolean isElaborated() {
-            return (elaborated > 0);
+            return elaborated > 0;
         }
 
         public int getElaborated() {

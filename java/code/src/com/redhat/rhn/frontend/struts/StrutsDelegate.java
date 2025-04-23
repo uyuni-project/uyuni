@@ -192,7 +192,7 @@ public class StrutsDelegate {
     public void saveMessages(HttpServletRequest request, ActionMessages messages) {
         HttpSession session = request.getSession();
 
-        if ((messages == null) || messages.isEmpty()) {
+        if (messages == null || messages.isEmpty()) {
             session.removeAttribute(Globals.ERROR_KEY);
             session.removeAttribute(Globals.MESSAGE_KEY);
             return;

@@ -242,6 +242,6 @@ public class CheckinCandidatesSimulationTest  {
      * Calculate percentage value.
      */
     private double getPercentage(long number, long total) {
-        return ((double) number / (double) total) * 100;
+        return (double) number / (double) total * 100;
     }
 }

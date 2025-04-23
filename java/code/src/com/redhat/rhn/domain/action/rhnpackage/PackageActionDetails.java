@@ -166,10 +166,10 @@ public class PackageActionDetails extends ActionChild {
         if (!(other instanceof PackageActionDetails castOther)) {
             return false;
         }
-        return new EqualsBuilder().append((getParentAction() == null ? null :
-                                       getParentAction().getId()),
-                                       (castOther.getParentAction() == null ? null :
-                                       castOther.getParentAction().getId()))
+        return new EqualsBuilder().append(getParentAction() == null ? null :
+                                       getParentAction().getId(),
+                        castOther.getParentAction() == null ? null :
+                        castOther.getParentAction().getId())
                                   .append(packageId, castOther.getPackageId())
                                   .append(parameter, castOther.getParameter())
                                   .append(packageName, castOther.getPackageName())
@@ -182,8 +182,8 @@ public class PackageActionDetails extends ActionChild {
     @Override
     public int hashCode() {
         int result = 37 * (getParentAction() == null ? 0 :
-                          (getParentAction().getId() == null ? 0 :
-                           getParentAction().getId().intValue()));
+                getParentAction().getId() == null ? 0 :
+                 getParentAction().getId().intValue());
         result += 37 * (packageId == null ? 0 : packageId.intValue());
         result += 37 * (parameter == null ? 0 : parameter.hashCode());
         result += 37 * (packageName == null ? 0 : packageName.hashCode());

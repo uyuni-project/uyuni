@@ -495,8 +495,8 @@ public class OrgHandler extends BaseHandler {
 
             // unless the user is a satellite admin, they are not permitted to transfer
             // systems from an org that they do not belong to
-            if ((!loggedInUser.hasRole(RoleFactory.SAT_ADMIN)) &&
-                    (!loggedInUser.getOrg().equals(server.getOrg()))) {
+            if (!loggedInUser.hasRole(RoleFactory.SAT_ADMIN) &&
+                    !loggedInUser.getOrg().equals(server.getOrg())) {
                 throw new PermissionCheckFailureException(server);
             }
 
@@ -623,7 +623,7 @@ public class OrgHandler extends BaseHandler {
         Map<String, Object> result = new HashMap<>();
         result.put("enabled", retentionPeriod != null);
         result.put("retention_period",
-                (retentionPeriod != null) ? retentionPeriod : Long.valueOf(0));
+                retentionPeriod != null ? retentionPeriod : Long.valueOf(0));
         return result;
     }
 

@@ -1009,7 +1009,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         List<PackageDto> list = ChannelManager.listErrataPackages(c, e);
         assertEquals(list.size(), 1);
-        assertEquals(list.get(0).getId(), (bothP.getId()));
+        assertEquals(list.get(0).getId(), bothP.getId());
 
 
     }

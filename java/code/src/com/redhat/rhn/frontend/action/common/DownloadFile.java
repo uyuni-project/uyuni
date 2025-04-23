@@ -662,8 +662,8 @@ public class DownloadFile extends DownloadAction {
         }
         // Update kickstart session
         if (ksession != null &&
-                (!(ksession.getState().getLabel().equals(KickstartSessionState.COMPLETE) ||
-                        ksession.getState().getLabel().equals(KickstartSessionState.FAILED)))) {
+                !(ksession.getState().getLabel().equals(KickstartSessionState.COMPLETE) ||
+                        ksession.getState().getLabel().equals(KickstartSessionState.FAILED))) {
             ksession.setState(newState);
             if (ksession.getPackageFetchCount() == null) {
                 ksession.setPackageFetchCount(0L);

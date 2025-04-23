@@ -584,7 +584,7 @@ public class DatePicker {
             (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT,
                     DateFormat.SHORT, locale);
         String pattern = sdf.toPattern();
-        isLatin = (pattern.indexOf('a') >= 0);
+        isLatin = pattern.indexOf('a') >= 0;
         // HACK: check whether month or date comes first
         isDayBeforeMonth = pattern.indexOf('d') < pattern.indexOf('M');
     }

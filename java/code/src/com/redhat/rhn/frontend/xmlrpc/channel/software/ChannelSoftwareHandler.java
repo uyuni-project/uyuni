@@ -721,7 +721,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         ccc.setGpgKeyFp(gpgKey.get("fingerprint"));
         ccc.setGpgCheck(gpgCheck);
 
-        return (ccc.create() != null) ? 1 : 0;
+        return ccc.create() != null ? 1 : 0;
     }
     /**
      * Creates a software channel, parent_channel_label can be empty string
@@ -1550,7 +1550,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     }
 
     private void scheduleErrataCacheUpdate(Org org, Channel channel, long delay) {
-        delay /= (24 * 60 * 60);
+        delay /= 24 * 60 * 60;
 
         Task task = TaskFactory.lookup(org, ErrataCacheWorker.BY_CHANNEL, channel.getId());
         if (task == null) {

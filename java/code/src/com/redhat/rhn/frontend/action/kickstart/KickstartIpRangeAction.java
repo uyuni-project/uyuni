@@ -156,14 +156,14 @@ public class KickstartIpRangeAction extends RhnAction {
 
         ValidatorError retval = null;
 
-        Long [] octet1 = { ((Long)form.get(OCTET1A)),
-                           ((Long)form.get(OCTET1B)),
-                           ((Long)form.get(OCTET1C)),
-                           ((Long)form.get(OCTET1D)), };
-        Long [] octet2 = { ((Long)form.get(OCTET2A)),
-                           ((Long)form.get(OCTET2B)),
-                           ((Long)form.get(OCTET2C)),
-                           ((Long)form.get(OCTET2D)), };
+        Long [] octet1 = {(Long)form.get(OCTET1A),
+                (Long)form.get(OCTET1B),
+                (Long)form.get(OCTET1C),
+                (Long)form.get(OCTET1D), };
+        Long [] octet2 = {(Long)form.get(OCTET2A),
+                (Long)form.get(OCTET2B),
+                (Long)form.get(OCTET2C),
+                (Long)form.get(OCTET2D), };
 
         if (!cmd.validateIpRange(octet1, octet2)) {
             retval = new ValidatorError("kickstart.iprange_validate.failure");

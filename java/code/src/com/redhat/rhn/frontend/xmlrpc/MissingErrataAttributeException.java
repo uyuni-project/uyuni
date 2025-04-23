@@ -29,7 +29,7 @@ public class MissingErrataAttributeException extends FaultException {
      */
     public MissingErrataAttributeException(String attribute) {
         super(2609, "invalidActionType", LocalizationService.getInstance().
-                getMessage("api.errata.missingerrataaction", (attribute)));
+                getMessage("api.errata.missingerrataaction", attribute));
     }
 
     /**
@@ -41,6 +41,6 @@ public class MissingErrataAttributeException extends FaultException {
      */
     public MissingErrataAttributeException(String attribute, Throwable cause) {
         super(2609, "invalidActionType", LocalizationService.getInstance().
-                getMessage("api.errata.missingerrataaction", (attribute)), cause);
+                getMessage("api.errata.missingerrataaction", attribute), cause);
     }
 }

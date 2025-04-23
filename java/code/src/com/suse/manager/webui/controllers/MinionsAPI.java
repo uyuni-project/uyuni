@@ -210,7 +210,7 @@ public class MinionsAPI {
         Map<String, Long> visibleToUser = MinionServerFactory.lookupVisibleToUser(user)
                 .collect(Collectors.toMap(MinionServer::getMinionId, MinionServer::getId));
 
-        Predicate<String> isVisible = (minionId) ->
+        Predicate<String> isVisible = minionId ->
             visibleToUser.containsKey(minionId) || !serverIdMapping.containsKey(minionId);
 
         var minions = SaltMinionJson.fromFingerprints(fingerprints, visibleToUser, isVisible);

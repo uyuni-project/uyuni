@@ -789,7 +789,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return contact method label
      */
     public Optional<String> getContactMethodLabel() {
-        String label = (this.contactMethod == null) ? null : this.contactMethod.getLabel();
+        String label = this.contactMethod == null ? null : this.contactMethod.getLabel();
         return Optional.ofNullable(label);
     }
 
@@ -942,7 +942,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public Device getDevice(String dev) {
         for (Device d : getDevices()) {
-            if ((d.getDevice() != null) && (d.getDevice().equals(dev))) {
+            if (d.getDevice() != null && d.getDevice().equals(dev)) {
                 return d;
             }
         }
@@ -1182,7 +1182,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return Returns the primary hostname for this server
      */
     public String getDecodedHostname() {
-        return (hostname == null) ? null : IDN.toUnicode(hostname);
+        return hostname == null ? null : IDN.toUnicode(hostname);
     }
 
     /**
@@ -1600,7 +1600,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return true if the system is a virtual host
      */
     public boolean isVirtualHost() {
-        return (SystemManager.isVirtualHost(getOrg().getId(), getId())) ||
+        return SystemManager.isVirtualHost(getOrg().getId(), getId()) ||
                 hasVirtualizationEntitlement();
     }
 
@@ -1879,11 +1879,11 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public boolean isInactive() {
         Date lastCheckin = this.getLastCheckin();
-        long millisInDay = (1000 * 60 * 60 * 24);
+        long millisInDay = 1000 * 60 * 60 * 24;
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         long threshold = factory.getLongConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue();
         Date yesterday = new Timestamp(System.currentTimeMillis() -
-                (millisInDay * threshold));
+                millisInDay * threshold);
         return lastCheckin.before(yesterday);
     }
 
@@ -2451,8 +2451,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return <code>true</code> if OS supports CoCo Attestation
      */
     public boolean doesOsSupportCoCoAttestation() {
-        return (isSLES15() && getRelease().equals("15.6")) ||
-            (isLeap15() && getRelease().equals("15.6"));
+        return isSLES15() && getRelease().equals("15.6") ||
+                isLeap15() && getRelease().equals("15.6");
     }
 
     /**
@@ -2699,7 +2699,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public boolean isConvertibleToProxy() {
         return !isProxy() && (
                 ConfigDefaults.get().isUyuni() || isSLEMicro5() || isSEMicro6() ||
-                        (isSLES() && (getRelease().equals("15.6") || getRelease().equals("15.7")))
+                        isSLES() && (getRelease().equals("15.6") || getRelease().equals("15.7"))
         );
     }
 

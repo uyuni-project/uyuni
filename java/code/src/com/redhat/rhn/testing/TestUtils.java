@@ -308,7 +308,7 @@ public class TestUtils {
             elements = e.getStackTrace();
         }
         // Only show 10 lines of the trace
-        for (int i = 0; ((i < elements.length) && i < depth); i++) {
+        for (int i = 0; i < elements.length && i < depth; i++) {
             System.out.println("Stack: [" + i + "]: " + elements[i].getClassName() +
                                "." + elements[i].getMethodName() + " : " +
                                elements[i].getLineNumber());
@@ -441,8 +441,8 @@ public class TestUtils {
                 IllegalArgumentException("java.l10n_debug is set to false.  " +
                         "This test doesnt mean anything if its set to false. ");
         }
-        return (checkMe.startsWith(
-            Config.get().getString("java.l10n_debug_marker", "$$$")));
+        return checkMe.startsWith(
+            Config.get().getString("java.l10n_debug_marker", "$$$"));
     }
 
     /**

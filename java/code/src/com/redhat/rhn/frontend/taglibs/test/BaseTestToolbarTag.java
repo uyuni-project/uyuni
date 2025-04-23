@@ -75,7 +75,7 @@ public abstract class BaseTestToolbarTag extends RhnBaseTestCase {
         }
 
         public boolean aclIsFoo(Map<String, Object> ctx, String[] params) {
-            return (params[0].equals("foo"));
+            return params[0].equals("foo");
         }
     }
 

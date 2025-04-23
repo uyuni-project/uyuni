@@ -115,8 +115,8 @@ public class DateRangePicker {
         }
         req.setAttribute("start", start);
         req.setAttribute("end", end);
-        assert (start.getDate() != null);
-        assert (end.getDate() != null);
+        assert start.getDate() != null;
+        assert end.getDate() != null;
         return retval;
     }
 

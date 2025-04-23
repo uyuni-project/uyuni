@@ -58,7 +58,7 @@ public class ThrottlingServiceTest {
 
     @Test
     public void testMultipleResources() {
-        ThrowingConsumer<String> call = (res) -> service.call(1, res, 1, ThrottlingService.DEF_THROTTLE_PERIOD_SECS);
+        ThrowingConsumer<String> call = res -> service.call(1, res, 1, ThrottlingService.DEF_THROTTLE_PERIOD_SECS);
 
         assertDoesNotThrow(() -> call.accept("/resource/one"), "Call must be allowed");
         assertThrows(TooManyCallsException.class, () -> call.accept("/resource/one"), "Call must not be allowed");
@@ -67,7 +67,7 @@ public class ThrottlingServiceTest {
 
     @Test
     public void testMultipleUsers() {
-        ThrowingConsumer<Long> call = (uid) -> service.call(uid, "/my/resource", 1,
+        ThrowingConsumer<Long> call = uid -> service.call(uid, "/my/resource", 1,
                 ThrottlingService.DEF_THROTTLE_PERIOD_SECS);
 
         assertDoesNotThrow(() -> call.accept(1L), "Call must be allowed");

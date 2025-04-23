@@ -1525,7 +1525,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         List<ShortSystemInfo> sysList = handler.searchByName(admin, "ydjdk1");
         assertEquals(1, sysList.size());
         SystemOverview result = sysList.get(0);
-        assertEquals(server.getId().intValue(), (result.getId().intValue()));
+        assertEquals(server.getId().intValue(), result.getId().intValue());
         assertEquals("ydjdk1234", result.getName());
         assertNotNull(result.getLastCheckin());
     }

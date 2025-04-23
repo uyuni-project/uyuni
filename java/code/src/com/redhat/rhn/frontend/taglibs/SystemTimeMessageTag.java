@@ -55,7 +55,7 @@ public class SystemTimeMessageTag extends TagSupport {
         try {
             out = pageContext.getOut();
             out.print(getMessage());
-            return (EVAL_PAGE);
+            return EVAL_PAGE;
         }
         catch (Exception e) {
             throw new JspException("Error writing to JSP file:", e);
@@ -71,10 +71,10 @@ public class SystemTimeMessageTag extends TagSupport {
 
         Date now = new Date();
         Date lastCheckIn = server.getLastCheckin();
-        Date expectedCheckIn = new Date(lastCheckIn.getTime() + (1000 * 60 * 60 * 2));
+        Date expectedCheckIn = new Date(lastCheckIn.getTime() + 1000 * 60 * 60 * 2);
         //expected check in is two hours after last check in, regardless of threshold
         long checkInAgo = now.getTime() - lastCheckIn.getTime();
-        Long days = (((checkInAgo / 1000) / 60) / 60) / 24;
+        Long days = checkInAgo / 1000 / 60 / 60 / 24;
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         boolean awol = days.intValue() >
                 factory.getIntegerConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue();

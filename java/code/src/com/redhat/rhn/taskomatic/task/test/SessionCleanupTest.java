@@ -43,7 +43,7 @@ public class SessionCleanupTest extends RhnBaseTestCase {
         /* we set the expire time of our test websession to an insanely large negative
         number this ensures that we do not accidentally delete real entries in the
         database */
-        s.setExpires((System.currentTimeMillis() / 1000) * -2);
+        s.setExpires(System.currentTimeMillis() / 1000 * -2);
         WebSessionFactory.save(s);
         assertNotNull(s.getId());
         Config c = Config.get();

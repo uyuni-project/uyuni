@@ -52,21 +52,21 @@ public class KickstartInstallType extends BaseDomainHelper {
      * @return if this installer type is rhel 9 or greater
      */
     public boolean isRhel9OrGreater() {
-        return (isRhel8OrGreater() && !isRhel8());
+        return isRhel8OrGreater() && !isRhel8();
     }
 
     /**
      * @return if this installer type is rhel 8 or greater
      */
     public boolean isRhel8OrGreater() {
-        return (isRhel7OrGreater() && !isRhel7());
+        return isRhel7OrGreater() && !isRhel7();
     }
 
     /**
      * @return if this installer type is rhel 7 or greater (for rhel8)
      */
     public boolean isRhel7OrGreater() {
-        return (!isRhel6());
+        return !isRhel6();
     }
 
     /**
@@ -172,21 +172,21 @@ public class KickstartInstallType extends BaseDomainHelper {
      * @return if this installer type is SLES 15 or greater (for SLES 15+)
      */
     public boolean isSLES15OrGreater() {
-        return (isSLES12OrGreater() && !isSLES12());
+        return isSLES12OrGreater() && !isSLES12();
     }
 
     /**
      * @return if this installer type is SLES 12 or greater (for SLES 15)
      */
     public boolean isSLES12OrGreater() {
-        return (isSLES11OrGreater() && !isSLES11());
+        return isSLES11OrGreater() && !isSLES11();
     }
 
     /**
      * @return if this installer type is SLES 11 or greater (for SLES 12)
      */
     public boolean isSLES11OrGreater() {
-        return (isSLES10OrGreater() && !isSLES10());
+        return isSLES10OrGreater() && !isSLES10();
     }
 
     /**
@@ -194,7 +194,7 @@ public class KickstartInstallType extends BaseDomainHelper {
      */
     public boolean isSLES10OrGreater() {
         // we need to reverse logic here
-        return (!isRhel() && !isFedora() && !isGeneric() && isSLES());
+        return !isRhel() && !isFedora() && !isGeneric() && isSLES();
     }
 
     /**

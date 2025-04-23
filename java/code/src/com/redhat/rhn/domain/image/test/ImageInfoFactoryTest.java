@@ -580,7 +580,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
 
         assertFalse(user.getOrg().getPillars().stream()
-              .filter(item -> (category.equals(item.getCategory())))
+              .filter(item -> category.equals(item.getCategory()))
               .findAny().isPresent());
 
     }

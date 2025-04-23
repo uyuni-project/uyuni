@@ -749,8 +749,8 @@ public class MaintenanceManager {
                 return false;
             })
             .filter(Opt.fold(calendarOpt,
-                    () -> (sa -> true),
-                    c -> (sa -> !isActionInMaintenanceWindow(sa.getParentAction(), schedule, calendarOpt))))
+                    () -> sa -> true,
+                    c -> sa -> !isActionInMaintenanceWindow(sa.getParentAction(), schedule, calendarOpt)))
             .collect(Collectors.groupingBy(ServerAction::getParentAction,
                     Collectors.mapping(ServerAction::getServer, toList())));
 

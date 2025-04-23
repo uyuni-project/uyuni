@@ -63,7 +63,7 @@ public class AuditSearchAction extends RhnAction {
         String startDisp;
 
         if (startMilli != null && startMilli >= 0) {
-            startDisp = (new Date(startMilli)).toString();
+            startDisp = new Date(startMilli).toString();
         }
         else {
             yesterday = Calendar.getInstance();
@@ -84,7 +84,7 @@ public class AuditSearchAction extends RhnAction {
         String endDisp;
 
         if (endMilli != null && endMilli > 0 && endMilli != Long.MAX_VALUE) {
-            endDisp = (new Date(endMilli)).toString();
+            endDisp = new Date(endMilli).toString();
         }
         else {
             endMilli = Calendar.getInstance().getTime().getTime();
@@ -185,7 +185,7 @@ public class AuditSearchAction extends RhnAction {
         // should we look at the DatePickers?
         parseDates = dform.get("parseDates") != null;
         // did we receive a form with some checkboxes checked?
-        submitted = (autypes != null && autypes.length > 0);
+        submitted = autypes != null && autypes.length > 0;
         // can we mark this section reviewed?
         unrev = dform.get("unreviewable") != null;
         // get the "page creation time" to determine cache usage
@@ -232,7 +232,7 @@ public class AuditSearchAction extends RhnAction {
                     cacheSeqno.compareTo(seqno) >= 0) {
                 log.debug("actual search");
                 result = AuditManager.getAuditLogs(autypes, machine, start, end);
-                session.setAttribute("auditCacheSeqno", (new Date()).getTime());
+                session.setAttribute("auditCacheSeqno", new Date().getTime());
                 session.setAttribute("auditResultCache", result);
             }
             else {
@@ -271,7 +271,7 @@ public class AuditSearchAction extends RhnAction {
 
         // set the page creation time
         // + 1 so that it's greater than the auditCacheSeqno above
-        request.setAttribute("seqno", (new Date()).getTime() + 1);
+        request.setAttribute("seqno", new Date().getTime() + 1);
 
         // add any accumulated messages to be displayed
         addMessages(request, amsgs);

@@ -320,7 +320,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
             " in class: " + this.getClass().getName() + " with params: [";
             for (Iterator iter = params.iterator(); iter.hasNext();) {
                 Object param = iter.next();
-                message += (param.getClass().getName());
+                message += param.getClass().getName();
                     if (iter.hasNext()) {
                         message = message + ", ";
                     }
@@ -445,7 +445,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
     protected void validateEntitlements(List<Entitlement> entitlements) {
 
         for (Entitlement ent : entitlements) {
-            if ((ent == null) || (ent.isPermanent())) {
+            if (ent == null || ent.isPermanent()) {
                 throw new InvalidEntitlementException();
             }
         }

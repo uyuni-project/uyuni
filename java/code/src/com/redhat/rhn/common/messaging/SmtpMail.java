@@ -273,7 +273,7 @@ public class SmtpMail implements Mail {
         if (addrs != null) {
             for (int x = 0; x < addrs.length; x++) {
                 buf.append(addrs[x].toString());
-                if (addrs.length > 1 && x < (addrs.length - 1)) {
+                if (addrs.length > 1 && x < addrs.length - 1) {
                     buf.append(",");
                 }
             }

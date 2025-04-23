@@ -153,18 +153,18 @@ public class ExtGroupDetailAction extends RhnAction {
             String label = role.getLabel();
             if (UserFactory.IMPLIEDROLES.contains(role)) {
                 // channel, config, system group, activation key
-                boolean hasOrgAdmin = extGroup != null && extGroup.getRoles().contains((RoleFactory.ORG_ADMIN));
+                boolean hasOrgAdmin = extGroup != null && extGroup.getRoles().contains(RoleFactory.ORG_ADMIN);
                 SelectableLabelValueBean bean = new SelectableLabelValueBean(
                         LocalizationService.getInstance().getMessage(label),
                         label,
                         hasOrgAdmin ||
-                            (extGroup != null && extGroup.getRoles().contains(role)),
+                                extGroup != null && extGroup.getRoles().contains(role),
                         hasOrgAdmin && UserFactory.IMPLIEDROLES.contains(role));
                 regularRoles.add(bean);
             }
             else {
                 // org and satellite admin
-                boolean hasSatAdmin = extGroup != null && extGroup.getRoles().contains((RoleFactory.SAT_ADMIN));
+                boolean hasSatAdmin = extGroup != null && extGroup.getRoles().contains(RoleFactory.SAT_ADMIN);
                 SelectableLabelValueBean bean = new SelectableLabelValueBean(
                         LocalizationService.getInstance().getMessage(label),
                         label,

@@ -71,7 +71,7 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
     @Override
     public Long getWebUserId(HttpServletRequest request) {
         WebSession session = getPxtSessionIfExists(request);
-        return ((session == null) ? null : session.getWebUserId());
+        return session == null ? null : session.getWebUserId();
     }
 
     /**

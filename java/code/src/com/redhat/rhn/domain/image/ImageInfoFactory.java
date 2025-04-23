@@ -100,8 +100,8 @@ public class ImageInfoFactory extends HibernateFactory {
         boolean isDocker = profile.asDockerfileProfile().isPresent();
         boolean isKiwi = profile.asKiwiProfile().isPresent();
 
-        if ((!server.hasContainerBuildHostEntitlement() && isDocker) ||
-                (!server.hasOSImageBuildHostEntitlement() && isKiwi)) {
+        if (!server.hasContainerBuildHostEntitlement() && isDocker ||
+                !server.hasOSImageBuildHostEntitlement() && isKiwi) {
             throw new IllegalArgumentException("Server is not a build host.");
         }
 
@@ -185,8 +185,8 @@ public class ImageInfoFactory extends HibernateFactory {
             throws TaskomaticApiException {
         MinionServer server = image.getBuildServer();
 
-        if ((!server.hasContainerBuildHostEntitlement() && image.getImageType().equals(ImageProfile.TYPE_DOCKERFILE)) ||
-                (!server.hasOSImageBuildHostEntitlement() && image.getImageType().equals(ImageProfile.TYPE_KIWI))) {
+        if (!server.hasContainerBuildHostEntitlement() && image.getImageType().equals(ImageProfile.TYPE_DOCKERFILE) ||
+                !server.hasOSImageBuildHostEntitlement() && image.getImageType().equals(ImageProfile.TYPE_KIWI)) {
             throw new IllegalArgumentException("Server is not a build host.");
         }
 

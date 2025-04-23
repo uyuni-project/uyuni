@@ -48,7 +48,7 @@ public class RendererHelperTest extends RhnBaseTestCase {
     private static final int PAGE_SIZE = 5;
 
     private static final int TOTAL_SERVERS_COUNT = PAGE_SIZE + 5;
-    private static final int EQUAL_SERVERS_COUNT = TOTAL_SERVERS_COUNT - (PAGE_SIZE / 2);
+    private static final int EQUAL_SERVERS_COUNT = TOTAL_SERVERS_COUNT - PAGE_SIZE / 2;
 
     @Test
     public void testSortOverviews() throws Exception {

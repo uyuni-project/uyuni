@@ -121,8 +121,8 @@ public class DiffAction extends RhnAction {
         else if (other.isSymlink()) {
             ConfigFileName target = info.getTargetFileName();
             ConfigFileName otarget = oinfo.getTargetFileName();
-            if ((target == null  && otarget != null) ||
-                   (target != null  && otarget == null) ||
+            if (target == null  && otarget != null ||
+                    target != null  && otarget == null ||
                    !otarget.equals(target)) {
                 request.setAttribute("difftargetpath", "true");
             }
@@ -130,8 +130,8 @@ public class DiffAction extends RhnAction {
 
         if (!revision.getConfigFileType().getLabel()
                 .equals(other.getConfigFileType().getLabel()) ||
-                (revision.isFile() && revision.getConfigContent().isBinary() !=
-                    other.getConfigContent().isBinary())) {
+                revision.isFile() && revision.getConfigContent().isBinary() !=
+                    other.getConfigContent().isBinary()) {
             request.setAttribute("difftype", "true");
         }
 

@@ -1345,7 +1345,7 @@ public class ContentSyncManager {
         List<String> urls = new LinkedList<>();
 
         // Debian repo
-        if (repo.getDistroTarget() != null && (List.of("amd64", "arm64").contains(repo.getDistroTarget()))) {
+        if (repo.getDistroTarget() != null && List.of("amd64", "arm64").contains(repo.getDistroTarget())) {
             // There is not only 1 file we can test.
             // https://wiki.debian.org/DebianRepository/Format
             relFiles.add("Packages.xz");
@@ -2635,7 +2635,7 @@ public class ContentSyncManager {
                 int status = MgrSyncUtils.sendHeadRequest(uri.toString(),
                         user, password).getStatusLine().getStatusCode();
                 LOG.debug("accessibleUrl: {} returned status {}", uri, status);
-                return (status == HttpURLConnection.HTTP_OK);
+                return status == HttpURLConnection.HTTP_OK;
             }
         }
         catch (IOException e) {

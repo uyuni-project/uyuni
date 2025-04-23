@@ -932,7 +932,7 @@ public class ErrataFactory extends HibernateFactory {
         // only update the cache if exactly one of patches is retracted
         if (previousAdvisoryStatus != cloned.getAdvisoryStatus() &&
                 (previousAdvisoryStatus == RETRACTED || cloned.getAdvisoryStatus() == RETRACTED)) {
-            boolean retract = (cloned.getAdvisoryStatus() == RETRACTED);
+            boolean retract = cloned.getAdvisoryStatus() == RETRACTED;
             cloned.getChannels().forEach(c -> {
                 processRetracted(cloned.getId(), c.getId(), retract);
                 ChannelFactory.refreshNewestPackageCache(c, "sync errata");

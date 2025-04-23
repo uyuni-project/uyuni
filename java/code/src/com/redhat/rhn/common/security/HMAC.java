@@ -42,8 +42,8 @@ public class HMAC {
         int hn, ln, cx;
         StringBuilder buf = new StringBuilder(a.length * 2);
         for (cx = 0; cx < a.length; cx++) {
-            hn = ((a[cx]) & 0x00ff) / 16;
-            ln = (a[cx]) & 0x000f;
+            hn = (a[cx] & 0x00ff) / 16;
+            ln = a[cx] & 0x000f;
             buf.append(HEXCHARS.charAt(hn));
             buf.append(HEXCHARS.charAt(ln));
         }

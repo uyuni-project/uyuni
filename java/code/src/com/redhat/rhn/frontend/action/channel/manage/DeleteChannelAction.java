@@ -74,7 +74,7 @@ public class DeleteChannelAction extends RhnAction {
                 SystemManager.countSubscribedToChannelWithoutOrg(channel.getOrg().getId(), channelId));
 
         if (context.isSubmitted()) {
-            if ((request.getParameter("unsubscribeSystems") != null) || subscribedSystemsCount == 0) {
+            if (request.getParameter("unsubscribeSystems") != null || subscribedSystemsCount == 0) {
                 DataResult<PackageOverview> dr;
                 try {
                     dr = PackageManager.listCustomPackageForChannel(channelId, user.getOrg().getId(), false);

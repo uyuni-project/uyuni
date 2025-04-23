@@ -513,8 +513,8 @@ public class ProfileHandler extends BaseHandler {
         if (preScripts.size() != myPreScripts.size()) {
             throw new IllegalArgumentException("Too many pre script IDs.");
         }
-        if ((postScriptsBeforeRegistration.size() + postScriptsAfterRegistration.size() !=
-                myPostScripts.size())) {
+        if (postScriptsBeforeRegistration.size() + postScriptsAfterRegistration.size() !=
+                myPostScripts.size()) {
             throw new IllegalArgumentException("Too many post script IDs.");
         }
 
@@ -992,7 +992,7 @@ public class ProfileHandler extends BaseHandler {
 
                // the following is a workaround to ensure that the options are rendered
                // on the UI on separate lines.
-               if (i < (options.size() - 1)) {
+               if (i < options.size() - 1) {
                    option += "\r";
                }
 

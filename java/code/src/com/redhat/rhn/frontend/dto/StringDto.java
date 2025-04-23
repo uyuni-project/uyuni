@@ -64,7 +64,7 @@ public class StringDto {
      */
     @Override
     public int hashCode() {
-        return (value == null) ? 0 : value.hashCode();
+        return value == null ? 0 : value.hashCode();
     }
 
     /**

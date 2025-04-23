@@ -154,9 +154,9 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         /* Don't do plans for queries that use system tables or for
          * dummy queries.
          */
-        return (m != null && m.getParsedQuery() != null &&
+        return m != null && m.getParsedQuery() != null &&
                 (m.getName().equals("tablespace_overview") ||
-                 m.getParsedQuery().getSqlStatement().trim().startsWith("--")));
+                 m.getParsedQuery().getSqlStatement().trim().startsWith("--"));
     }
 
     @Test

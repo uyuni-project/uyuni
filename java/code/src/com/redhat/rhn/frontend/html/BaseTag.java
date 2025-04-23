@@ -128,7 +128,7 @@ public abstract class BaseTag {
             ret.append("\"");
         }
         if (selfClosing) {
-            ret.append((spaceBeforeEndTag ? " />" : "/>"));
+            ret.append(spaceBeforeEndTag ? " />" : "/>");
         }
         else {
             ret.append(">");
@@ -183,7 +183,7 @@ public abstract class BaseTag {
      * @return true if this tag has a body defined.
      */
     public boolean hasBody() {
-        return (!body.isEmpty());
+        return !body.isEmpty();
     }
 
 }

@@ -85,7 +85,7 @@ public class SubscriptionMatchProcessor {
                     // see https://github.com/SUSE/spacewalk/wiki/
                     // Subscription-counting#definitions
                     s.getPhysical() ?
-                        (s.getVirtualHost() ? "virtualHost" : "nonVirtual") :
+                            s.getVirtualHost() ? "virtualHost" : "nonVirtual" :
                         "virtualGuest",
                     output.getMatches().stream()
                         .filter(m -> m.getSystemId().equals(s.getId()))

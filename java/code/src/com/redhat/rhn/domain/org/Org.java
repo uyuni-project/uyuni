@@ -506,8 +506,8 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
             if (!sgt.isBase()) {
                 Entitlement ent = EntitlementManager.getByName(sgt.getLabel());
                 if (ent != null) {
-                    if ((EntitlementManager.OSIMAGE_BUILD_HOST_ENTITLED.equals(ent.getLabel()) &&
-                            !Config.get().getBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED)) ||
+                    if (EntitlementManager.OSIMAGE_BUILD_HOST_ENTITLED.equals(ent.getLabel()) &&
+                            !Config.get().getBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED) ||
                             EntitlementManager.ANSIBLE_MANAGED_ENTITLED.equals(ent.getLabel())) {
                         continue;
                     }
@@ -565,7 +565,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      * @return default token, null if none exists.
      */
     public Token getToken() {
-        return (regTokenOrgDefault != null) ? regTokenOrgDefault.getToken() : null;
+        return regTokenOrgDefault != null ? regTokenOrgDefault.getToken() : null;
     }
 
     /**

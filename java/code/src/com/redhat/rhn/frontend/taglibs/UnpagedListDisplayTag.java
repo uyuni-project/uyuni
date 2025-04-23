@@ -212,7 +212,7 @@ public class UnpagedListDisplayTag extends ListDisplayTagBase {
      * @return true if parent-string, false else
      */
     public boolean isParent(String s) {
-        return (s != null && s.startsWith("p"));
+        return s != null && s.startsWith("p");
     }
 
     /**
@@ -221,7 +221,7 @@ public class UnpagedListDisplayTag extends ListDisplayTagBase {
      * @return true if child-string, false else
      */
     public boolean isChild(String s) {
-        return (s != null && s.startsWith("c"));
+        return s != null && s.startsWith("c");
     }
 
     //////////////////////////////////////////////////////////////////////////

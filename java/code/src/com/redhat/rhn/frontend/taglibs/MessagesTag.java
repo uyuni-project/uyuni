@@ -49,7 +49,7 @@ public class MessagesTag extends TagSupport {
             baseTag.setAttribute("class", "alert alert-info");
 
             out.print(baseTag.renderOpenTag());
-            return (EVAL_BODY_INCLUDE);
+            return EVAL_BODY_INCLUDE;
         }
         catch (Exception e) {
             throw new JspException("Error writing to JSP file:", e);
@@ -66,7 +66,7 @@ public class MessagesTag extends TagSupport {
             out = pageContext.getOut();
             out.print(baseTag.renderCloseTag());
             removeMessagesFromSession();
-            return (EVAL_PAGE);
+            return EVAL_PAGE;
         }
         catch (Exception e) {
             throw new JspException("Error writing to JSP file:", e);

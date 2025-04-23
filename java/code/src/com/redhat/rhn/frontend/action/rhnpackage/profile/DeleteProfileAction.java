@@ -83,7 +83,7 @@ public class DeleteProfileAction extends RhnAction {
             }
             forward = strutsDelegate.forwardParams(mapping.findForward("deleted"),
                     params);
-            if (log.isDebugEnabled() && (forward != null)) {
+            if (log.isDebugEnabled() && forward != null) {
                 log.debug("Where are we going [{}]", forward);
             }
         }

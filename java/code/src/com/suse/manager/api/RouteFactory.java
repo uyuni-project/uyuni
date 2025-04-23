@@ -329,6 +329,6 @@ public class RouteFactory {
     private int compareSerializerHierarchy(ApiResponseSerializer<?> a, ApiResponseSerializer<?> b) {
         Class<?> aClass = a.getSupportedClass();
         Class<?> bClass = b.getSupportedClass();
-        return aClass.isAssignableFrom(bClass) ? -1 : (bClass.isAssignableFrom(aClass) ? 1 : 0);
+        return aClass.isAssignableFrom(bClass) ? -1 : bClass.isAssignableFrom(aClass) ? 1 : 0;
     }
 }

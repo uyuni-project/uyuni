@@ -151,8 +151,8 @@ public class EditPackagesAction extends RhnAction {
 
                 // if noBase is checked and the current package is @base, ignore it
                 PackageName pn = PackageFactory.lookupOrCreatePackageByName(pkg);
-                if ((pn.getName().toLowerCase().replaceAll("\\s", "")
-                        .equals("@base")) && (ksdata.getNoBase())) {
+                if (pn.getName().toLowerCase().replaceAll("\\s", "")
+                        .equals("@base") && ksdata.getNoBase()) {
                     continue;
                 }
 

@@ -324,7 +324,7 @@ public class ContentManager {
     public int removeEnvironment(String envLabel, String projectLabel, User user) {
         ensureOrgAdmin(user);
         return lookupEnvironment(envLabel, projectLabel, user)
-                .map((env) -> {
+                .map(env -> {
                     ContentProjectFactory.removeEnvironment(env);
                     return 1;
                 })
@@ -398,7 +398,7 @@ public class ContentManager {
     public void detachSource(String projectLabel, Type sourceType, String sourceLabel, User user) {
         ensureOrgAdmin(user);
         ProjectSource src = lookupProjectSource(projectLabel, sourceType, sourceLabel, user)
-                .orElseThrow(() -> (new EntityNotExistsException(sourceLabel)));
+                .orElseThrow(() -> new EntityNotExistsException(sourceLabel));
         if (src.getState() == ATTACHED) {
             src.getContentProject().removeSource(src);
         }

@@ -293,7 +293,7 @@ public class ReportDBHelper {
         //just to be sure that user doesn't have any permission, because in that case the drop role might fails
         revokeDBUser(session, dbName, username);
 
-        session.createNativeQuery(("GRANT %1$s TO current_user").formatted(username)).executeUpdate();
+        session.createNativeQuery("GRANT %1$s TO current_user".formatted(username)).executeUpdate();
         session.createNativeQuery("REASSIGN OWNED BY %1$s TO current_user".formatted(username)).executeUpdate();
         session.createNativeQuery("DROP OWNED BY %1$s".formatted(username)).executeUpdate();
         session.createNativeQuery("DROP ROLE %1$s".formatted(username)).executeUpdate();

@@ -416,8 +416,8 @@ public class DailySummary extends RhnJavaJob {
 
         hdr.append(StringUtils.repeat(" ", longestActionLength));
         for (String status : statusSet) {
-            hdr.append(status + StringUtils.repeat(" ", (longestStatusLength +
-                    ERRATA_SPACER) - status.length()));
+            hdr.append(status + StringUtils.repeat(" ", longestStatusLength +
+                    ERRATA_SPACER - status.length()));
         }
 
         if (!errataActions.isEmpty()) {
@@ -453,7 +453,7 @@ public class DailySummary extends RhnJavaJob {
         StringBuffer formattedActions = new StringBuffer();
         for (String actionName : actionTree.keySet()) {
             formattedActions.append(actionName +
-                   StringUtils.repeat(" ", (longestActionLength - (actionName.length()))));
+                   StringUtils.repeat(" ", longestActionLength - actionName.length()));
             for (String status : statusSet) {
                 Map<String, Integer> counts = actionTree.get(actionName);
                 Integer theCount = counts.get(status);

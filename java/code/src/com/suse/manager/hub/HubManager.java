@@ -754,7 +754,7 @@ public class HubManager {
             // Send the local GPG key used to sign metadata, if configured.
             // This force metadata checking on the peripheral server when mirroring from the Hub
             String localGpgKey =
-                    (ConfigDefaults.get().isMetadataSigningEnabled()) ? CertificateUtils.loadGpgKey() : null;
+                    ConfigDefaults.get().isMetadataSigningEnabled() ? CertificateUtils.loadGpgKey() : null;
 
             // Register this server on the remote with the hub role
             internalApi.registerHub(localAccessToken.getSerializedForm(), localRootCA, localGpgKey);
@@ -1472,7 +1472,7 @@ public class HubManager {
             Stream.iterate(channel, Objects::nonNull, Channel::getParentChannel).forEach(allChannels::add);
 
             for (Channel ch : allChannels) {
-                if (ch.isCustom() && (peripheralOrgIdWhenCustomChannel == null)) {
+                if (ch.isCustom() && peripheralOrgIdWhenCustomChannel == null) {
                     throw new IllegalArgumentException(
                             String.format("A peripheral OrgID must be specified for custom channel with label [%s]",
                                     channelLabel));

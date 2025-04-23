@@ -210,7 +210,7 @@ public class ColumnTag extends BodyTagSupport {
     }
 
     protected void renderHeader() throws JspException {
-        if ((headerKey == null) && (headerText == null)) {
+        if (headerKey == null && headerText == null) {
             return;
         }
         ListTagUtil.write(pageContext, "<th");
@@ -330,7 +330,7 @@ public class ColumnTag extends BodyTagSupport {
         ListCommand command = ListTagUtil.getCurrentCommand(this, pageContext);
 
         if (styleClass != null ||
-                (isCurrColumnSorted() && command != ListCommand.COL_HEADER)) {
+                isCurrColumnSorted() && command != ListCommand.COL_HEADER) {
             ListTagUtil.write(pageContext, " class=\"");
             if (styleClass != null) {
                 ListTagUtil.write(pageContext, styleClass);

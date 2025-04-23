@@ -57,7 +57,7 @@ public class ScheduleDetailAction extends RhnAction {
         Map<String, Object> params = makeParamMap(request);
         RequestContext ctx = new RequestContext(request);
         User loggedInUser = ctx.getCurrentUser();
-        Long scheduleId = ctx.getParamAsLong(("schid"));
+        Long scheduleId = ctx.getParamAsLong("schid");
 
         if (ctx.hasParam("schid")) {
             params.put("schid", scheduleId);
@@ -197,7 +197,7 @@ public class ScheduleDetailAction extends RhnAction {
                 Map<String, Object> bunch = tapi.lookupBunchByName(loggedInUser, bunchName);
                 request.setAttribute("bunchdescription", bunch.get("description"));
                 RecurringEventPicker.prepopulatePicker(request, "date",
-                        (String) schedule.get(("cron_expr")));
+                        (String) schedule.get("cron_expr"));
             }
             catch (TaskomaticApiException e) {
                 createErrorMessage(request,

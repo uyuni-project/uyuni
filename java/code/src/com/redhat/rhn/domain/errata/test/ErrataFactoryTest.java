@@ -452,8 +452,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         Package pkg = clonedErratum.getPackages().iterator().next();
         InstalledPackage installedPackage = PackageTestUtils.createInstalledPackage(pkg);
         PackageEvr evr = pkg.getPackageEvr();
-        installedPackage.setEvr((PackageEvrFactory.lookupOrCreatePackageEvr(
-                evr.getEpoch(), "0.1.0", evr.getRelease(), pkg.getPackageType()))); // older version
+        installedPackage.setEvr(PackageEvrFactory.lookupOrCreatePackageEvr(
+                evr.getEpoch(), "0.1.0", evr.getRelease(), pkg.getPackageType())); // older version
         // assumption
         assertTrue(pkg.getPackageEvr().compareTo(installedPackage.getEvr()) > 0);
         installedPackage.setServer(server);

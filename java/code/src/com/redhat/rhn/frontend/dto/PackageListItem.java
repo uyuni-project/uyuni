@@ -111,8 +111,8 @@ public class PackageListItem extends IdComboDto {
         }
 
         if (lockedStatus != null &&
-            (!lockedStatus.equals(PackageManager.PKG_PENDING_LOCK) &&
-             (!lockedStatus.equals(PackageManager.PKG_PENDING_UNLOCK)))) {
+                !lockedStatus.equals(PackageManager.PKG_PENDING_LOCK) &&
+                !lockedStatus.equals(PackageManager.PKG_PENDING_UNLOCK)) {
             throw new Exception(String.format("Unknown lock status: %s", lockedStatus));
         }
 
@@ -570,9 +570,9 @@ public class PackageListItem extends IdComboDto {
      * @return String representation of package's NEVR
      */
     public String getNevr() {
-        String e = (this.getEpoch() != null) ? this.getEpoch() : "0";
-        String v = (this.getVersion() != null) ? this.getVersion() : "0";
-        String r = (this.getRelease() != null) ? this.getRelease() : "0";
+        String e = this.getEpoch() != null ? this.getEpoch() : "0";
+        String v = this.getVersion() != null ? this.getVersion() : "0";
+        String r = this.getRelease() != null ? this.getRelease() : "0";
         return this.getName() + "-" + e + ":" + v + "-" + r;
     }
 
@@ -582,10 +582,10 @@ public class PackageListItem extends IdComboDto {
      * @return String representation of package's NEVRA
      */
     public String getNevra() {
-        String e = (this.getEpoch() != null) ? this.getEpoch() : "0";
-        String v = (this.getVersion() != null) ? this.getVersion() : "0";
-        String r = (this.getRelease() != null) ? this.getRelease() : "0";
-        String a = (this.getArch() != null) ? this.getArch() : "0";
+        String e = this.getEpoch() != null ? this.getEpoch() : "0";
+        String v = this.getVersion() != null ? this.getVersion() : "0";
+        String r = this.getRelease() != null ? this.getRelease() : "0";
+        String a = this.getArch() != null ? this.getArch() : "0";
         return this.getName() + "-" + e + ":" + v + "-" + r + "." + a;
     }
 

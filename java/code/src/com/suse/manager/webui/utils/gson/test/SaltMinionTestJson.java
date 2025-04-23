@@ -72,7 +72,7 @@ public class SaltMinionTestJson extends MockObjectTestCase {
         registered.put("m2", 2L);
         registered.put("m4", 4L); // registered not visible
 
-        Predicate<String> isVisible = (minionId) -> visibleToUser.containsKey(minionId) ||
+        Predicate<String> isVisible = minionId -> visibleToUser.containsKey(minionId) ||
                 !registered.containsKey(minionId);
 
         List<SaltMinionJson> minions = SaltMinionJson.fromFingerprints(fingerprints, visibleToUser, isVisible);

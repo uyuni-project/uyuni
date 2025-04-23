@@ -101,7 +101,7 @@ public class SystemCompareDto {
         for (List list : lists) {
             List<Item> itemized = new LinkedList<>();
             for (Object o : list) {
-                String s = (o != null) ? String.valueOf(o).trim() : "";
+                String s = o != null ? String.valueOf(o).trim() : "";
                 Item i = new Item();
                 i.value = s;
                 itemized.add(i);
@@ -131,7 +131,7 @@ public class SystemCompareDto {
         List<Item> compared = new LinkedList<>();
         Map<String, Integer> similarity = new HashMap<>();
         for (Object o : strings) {
-            String s = (o != null) ? String.valueOf(o).trim() : "";
+            String s = o != null ? String.valueOf(o).trim() : "";
             Item i = new Item();
             i.value = s;
             compared.add(i);

@@ -44,7 +44,7 @@ public class ElaborationDecorator extends BaseListDecorator {
         Elaborator elab = TagHelper.lookupElaboratorFor(getCurrentList().
                                                                   getUniqueName(),
                                     getCurrentList().getContext().getRequest());
-        if ((data == null) || (data.isEmpty())) {
+        if (data == null || data.isEmpty()) {
             return;
         }
         if (elab == null) {

@@ -586,8 +586,8 @@ public class DownloadController {
             }
             halt(HttpStatus.SC_FORBIDDEN, String.format("You need a token to access %s", request.pathInfo()));
         }
-        if ((queryParams.size() > 1 && header == null) ||
-                (!queryParams.isEmpty() && header != null)) {
+        if (queryParams.size() > 1 && header == null ||
+                !queryParams.isEmpty() && header != null) {
             LOG.info("Bad Request: Only one token is accepted");
             halt(HttpStatus.SC_BAD_REQUEST, "Only one token is accepted");
         }

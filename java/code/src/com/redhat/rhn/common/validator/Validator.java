@@ -134,7 +134,7 @@ public class Validator {
             throw new ValidatorException(errorMessage, e);
         }
         // TODO: Get rid of the toString and determine the type
-        String data = (value == null) ? null : value.toString();
+        String data = value == null ? null : value.toString();
 
         ValidatorError validationMessage;
 
@@ -142,7 +142,7 @@ public class Validator {
         log.debug("Constraint: {}", constraint);
 
         boolean required = !constraint.getOptional() ||
-                (value != null && !value.equals(""));
+                value != null && !value.equals("");
         if (required) {
             boolean checkConstraint = true;
             if (constraint instanceof RequiredIfConstraint reqIfConst) {
@@ -194,7 +194,7 @@ public class Validator {
         String identifier =
             LocalizationService.getInstance().getMessage(constraint.getIdentifier());
 
-        if ((dataType.equals("int")) || (dataType.equals("java.lang.Integer"))) {
+        if (dataType.equals("int") || dataType.equals("java.lang.Integer")) {
             try {
                 Integer.parseInt(data);
             }
@@ -228,7 +228,7 @@ public class Validator {
                 }
             }
         }
-        else if ((dataType.equals("float")) || (dataType.equals("java.lang.Float"))) {
+        else if (dataType.equals("float") || dataType.equals("java.lang.Float")) {
             try {
                 Float.parseFloat(data);
             }
@@ -244,7 +244,7 @@ public class Validator {
                 }
             }
         }
-        else if ((dataType.equals("double")) || (dataType.equals("java.lang.Double"))) {
+        else if (dataType.equals("double") || dataType.equals("java.lang.Double")) {
             try {
                 Double.parseDouble(data);
             }
@@ -263,8 +263,8 @@ public class Validator {
         }
 
         else if (dataType.equals("java.lang.Boolean") &&
-                !((data.equalsIgnoreCase("true")) || (data.equalsIgnoreCase("false")) ||
-                (data.equalsIgnoreCase("yes")) || (data.equalsIgnoreCase("no")))) {
+                !(data.equalsIgnoreCase("true") || data.equalsIgnoreCase("false") ||
+                        data.equalsIgnoreCase("yes") || data.equalsIgnoreCase("no"))) {
                 validationMessage = new ValidatorError("errors.invalid", identifier);
             }
 

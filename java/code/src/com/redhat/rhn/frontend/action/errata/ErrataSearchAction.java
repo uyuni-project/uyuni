@@ -167,11 +167,11 @@ public class ErrataSearchAction extends BaseSearchAction {
         }
 
         Boolean eTypeBug =
-            (form.get(ERRATA_BUG) == null ? Boolean.FALSE : (Boolean)form.get(ERRATA_BUG));
+                form.get(ERRATA_BUG) == null ? Boolean.FALSE : (Boolean)form.get(ERRATA_BUG);
         Boolean eTypeSec =
-            (form.get(ERRATA_SEC) == null ? Boolean.FALSE : (Boolean)form.get(ERRATA_SEC));
+                form.get(ERRATA_SEC) == null ? Boolean.FALSE : (Boolean)form.get(ERRATA_SEC);
         Boolean eTypeEnh =
-            (form.get(ERRATA_ENH) == null ? Boolean.FALSE : (Boolean)form.get(ERRATA_ENH));
+                form.get(ERRATA_ENH) == null ? Boolean.FALSE : (Boolean)form.get(ERRATA_ENH);
 
         // If no errata-type is set, set them all
         if (!(eTypeBug || eTypeSec || eTypeEnh)) {
@@ -243,7 +243,7 @@ public class ErrataSearchAction extends BaseSearchAction {
             args.add(preprocessSearchString(searchString, mode));
         }
 
-        if ((dateSearch && StringUtils.isBlank(searchString)) || OPT_CVE.equals(mode)) {
+        if (dateSearch && StringUtils.isBlank(searchString) || OPT_CVE.equals(mode)) {
             // Tells search server to search the database
             path = "db.search";
         }

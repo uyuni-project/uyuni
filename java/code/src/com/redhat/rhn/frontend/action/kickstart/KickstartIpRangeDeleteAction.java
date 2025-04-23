@@ -64,9 +64,9 @@ public class KickstartIpRangeDeleteAction extends RhnAction {
                     ctx.getCurrentUser());
 
         // make sure get params came across request
-        if ((request.getParameter(MIN)) == null ||
-                (request.getParameter(MAX)) == null ||
-                (ctx.getRequiredParam(RequestContext.KICKSTART_ID) == null)) {
+        if (request.getParameter(MIN) == null ||
+                request.getParameter(MAX) == null ||
+                ctx.getRequiredParam(RequestContext.KICKSTART_ID) == null) {
             throw new BadParameterException("Missing min, max and/or ksid for ks ip range");
         }
         // make sure org has permission

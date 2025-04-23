@@ -194,7 +194,7 @@ public class ContentProjectFactory extends HibernateFactory {
         consume(
                 predecessor,
                 () -> insertFirstEnvironment(newEnv),
-                (pred) -> appendEnvironment(newEnv, pred));
+                pred -> appendEnvironment(newEnv, pred));
     }
 
     private static void insertFirstEnvironment(ContentEnvironment newEnv) {

@@ -161,7 +161,7 @@ public class ForwardWrapper extends ActionForward {
      */
     public Long getLongParam(String pname) {
         String v = getParam(pname);
-        return (v == null) ? null : Long.valueOf(v);
+        return v == null ? null : Long.valueOf(v);
     }
 
     /**

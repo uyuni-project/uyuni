@@ -98,8 +98,8 @@ public class ServerChannelIdPair {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int) (cid ^ (cid >>> 32));
-        result = prime * result + (int) (sid ^ (sid >>> 32));
+        result = prime * result + (int) (cid ^ cid >>> 32);
+        result = prime * result + (int) (sid ^ sid >>> 32);
         return result;
     }
 

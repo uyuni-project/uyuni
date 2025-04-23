@@ -180,7 +180,7 @@ public class ConfigurationValidation {
         boolean valid = false;
         try {
             int i = Integer.parseInt(in);
-            valid = (i > 0);
+            valid = i > 0;
         }
         catch (Exception e) {
             valid = false;
@@ -195,7 +195,7 @@ public class ConfigurationValidation {
      * @return true if valid, false otherwise
      */
     public static boolean validateUserOrGroup(String in) {
-        return (in != null && in.matches("^[a-zA-Z0-9_][a-zA-Z0-9_\\-]*$"));
+        return in != null && in.matches("^[a-zA-Z0-9_][a-zA-Z0-9_\\-]*$");
     }
 
     /**

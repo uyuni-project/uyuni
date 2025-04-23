@@ -426,7 +426,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
                 this.admin, CHAIN_LABEL).isEmpty());
         assertTrue(this.ach.removeAction(
                 this.admin, CHAIN_LABEL,
-                ((Long) (this.ach.listChainActions(this.admin, CHAIN_LABEL).get(0))
+                ((Long) this.ach.listChainActions(this.admin, CHAIN_LABEL).get(0)
                         .get("id")).intValue()) > 0);
         assertTrue(this.ach.listChainActions(this.admin, CHAIN_LABEL).isEmpty());
     }

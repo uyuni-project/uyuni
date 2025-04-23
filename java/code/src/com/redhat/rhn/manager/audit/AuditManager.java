@@ -68,8 +68,8 @@ public class AuditManager /* extends BaseManager */ {
      */
     public static void markReviewed(String machine, Long start, Long end, String username) throws IOException {
         try (FileWriter fwr = new FileWriter(reviewFile, true)) { // append!
-            fwr.write(machine + "," + (start / 1000) + "," + (end / 1000) + "," +
-                username + "," + (new Date().getTime() / 1000) + "\n");
+            fwr.write(machine + "," + start / 1000 + "," + end / 1000 + "," +
+                username + "," + new Date().getTime() / 1000 + "\n");
         }
     }
 
@@ -99,8 +99,8 @@ public class AuditManager /* extends BaseManager */ {
 
                 File auditLog = new File(
                     logDirStr + File.separator + aureview.getName() + "/audit/audit-" +
-                    (fileStart / 1000) + "-" +
-                    (fileEnd / 1000) + ".parsed");
+                            fileStart / 1000 + "-" +
+                            fileEnd / 1000 + ".parsed");
 
                 dr.addAll(readAuditFile(auditLog, types, start, end));
             }
@@ -359,7 +359,7 @@ public class AuditManager /* extends BaseManager */ {
         String str, part1, reviewedBy = null;
         String[] revInfo;
 
-        part1 = machine + "," + (start / 1000) + "," + (end / 1000) + ",";
+        part1 = machine + "," + start / 1000 + "," + end / 1000 + ",";
 
         try (BufferedReader brdr = new BufferedReader(new FileReader(reviewFile))) {
 

@@ -92,8 +92,8 @@ public class SystemMigrateAction extends RhnAction {
 
                 // unless the user is a satellite admin, they are not permitted to migrate
                 // systems from an org that they do not belong to
-                if ((!user.hasRole(RoleFactory.SAT_ADMIN)) &&
-                    (!user.getOrg().equals(s.getOrg()))) {
+                if (!user.hasRole(RoleFactory.SAT_ADMIN) &&
+                        !user.getOrg().equals(s.getOrg())) {
                     ValidatorError err = new ValidatorError("system.migrate.user_no_perms");
                     getStrutsDelegate().saveMessages(request,
                             RhnValidationHelper.validatorErrorToActionErrors(err));

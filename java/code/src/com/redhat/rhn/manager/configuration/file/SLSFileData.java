@@ -124,7 +124,7 @@ public class SLSFileData extends ConfigFileData {
         if (!super.matchesRevision(cRevision)) {
             return Boolean.FALSE;
         }
-        return (isBinary() == cRevision.getConfigContent().isBinary()) &&
+        return isBinary() == cRevision.getConfigContent().isBinary() &&
                 getContents().equals(cRevision.getConfigContent().getContentsString());
     }
 

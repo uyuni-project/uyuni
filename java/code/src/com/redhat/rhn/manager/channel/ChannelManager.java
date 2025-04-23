@@ -2206,7 +2206,7 @@ public class ChannelManager extends BaseManager {
      * @return list of compatible package arches.
      */
     public static List<String> listCompatiblePackageArches(String[] channelArchLabels) {
-        if (channelArchLabels == null || (channelArchLabels.length < 1)) {
+        if (channelArchLabels == null || channelArchLabels.length < 1) {
             return new ArrayList<>();
         }
 
@@ -2499,7 +2499,7 @@ public class ChannelManager extends BaseManager {
                 TaskConstants.TASK_QUERY_REPOMD_DETAILS_QUERY);
         Map<String, Object> params = new HashMap<>();
         params.put("channel_label", channel);
-        return (!selector.execute(params).isEmpty());
+        return !selector.execute(params).isEmpty();
     }
 
     /**

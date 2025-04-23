@@ -688,7 +688,7 @@ public class SystemHandler extends BaseHandler {
 
         List<EssentialChannelDto> list = ChannelManager.listBaseChannelsForSystem(loggedInUser, server);
         for (EssentialChannelDto ch : list) {
-            Boolean currentBase = (baseChannel != null) &&
+            Boolean currentBase = baseChannel != null &&
                     baseChannel.getId().equals(ch.getId());
             returnList.add(createChannelMap(ch, currentBase));
         }
@@ -768,8 +768,8 @@ public class SystemHandler extends BaseHandler {
         }
         int offsetHrs = offset / 1000 / 60 / 60;
         int offsetMins = offset / 1000 / 60 % 60;
-        c.add(Calendar.HOUR_OF_DAY, (-offsetHrs));
-        c.add(Calendar.MINUTE, (-offsetMins));
+        c.add(Calendar.HOUR_OF_DAY, -offsetHrs);
+        c.add(Calendar.MINUTE, -offsetMins);
         c.set(Calendar.MILLISECOND, 0);
         return c.getTime();
     }
@@ -1234,7 +1234,7 @@ public class SystemHandler extends BaseHandler {
             String pkgEpoch = StringUtils.trim((String) pkg.get("epoch"));
             // If epoch is null, we arrived here from the isNvreInstalled(...n,v,r) method;
             // therefore, just skip the comparison
-            if ((epoch != null) && !pkgEpoch.equals(StringUtils.trim(epoch))) {
+            if (epoch != null && !pkgEpoch.equals(StringUtils.trim(epoch))) {
                 continue;
             }
 
@@ -2451,8 +2451,8 @@ public class SystemHandler extends BaseHandler {
             if (action.getArchived() != null) {
                 result.put("archived", action.getArchived());
             }
-            if ((action.getSchedulerUser() != null) &&
-                    (action.getSchedulerUser().getLogin() != null)) {
+            if (action.getSchedulerUser() != null &&
+                    action.getSchedulerUser().getLogin() != null) {
                 result.put("scheduler_user", action.getSchedulerUser().getLogin());
             }
             if (action.getPrerequisite() != null) {
@@ -5881,7 +5881,7 @@ public class SystemHandler extends BaseHandler {
         }
 
         // put a more intelligible exception
-        if ((server.getBaseEntitlement() == null) && (!addOnEnts.isEmpty())) {
+        if (server.getBaseEntitlement() == null && !addOnEnts.isEmpty()) {
             throw new InvalidEntitlementException("Base entitlement missing");
         }
 
@@ -6751,7 +6751,7 @@ public class SystemHandler extends BaseHandler {
                 preferIpv6Gateway, ksDistro);
 
         rec.setHostName(hostName);
-        rec.setGateway((preferIpv6Gateway) ? gw6 : gw4);
+        rec.setGateway(preferIpv6Gateway ? gw6 : gw4);
         rec.setNameServers(Optional.of(nameservers));
         meta.put(KickstartFormatter.STATIC_NETWORK_VAR, command);
         rec.setKsMeta(Optional.of(meta));
@@ -7291,7 +7291,7 @@ public class SystemHandler extends BaseHandler {
      */
     public int tagLatestSnapshot(User loggedInUser, Integer sid, String tagName) {
         Server server = lookupServer(loggedInUser, sid);
-        if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
+        if (!server.hasEntitlement(EntitlementManager.MANAGEMENT)) {
             throw new FaultException(-2, "provisionError",
                     "System does not support snapshots");
         }

@@ -192,7 +192,7 @@ public abstract class ListSetHelper extends ListHelper {
 
     private void syncSelections(List dataSet,
                     HttpServletRequest request) {
-        if ((dataSet != null) && (!dataSet.isEmpty())) {
+        if (dataSet != null && !dataSet.isEmpty()) {
             if (dataSet.get(0) instanceof Selectable) {
                 syncSelections(dataSet);
             }

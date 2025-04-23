@@ -230,7 +230,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
             if (event.getSummary().equals(String.format("System migration scheduled by %s", origOrgAdmin.getLogin())) &&
                 event.getDetails().contains("From organization: " + origOrg.getName()) &&
                 event.getDetails().contains("To organization: " + destOrg.getName()) &&
-                (event.getCreated() != null)) {
+                    event.getCreated() != null) {
                 migrationRecorded = true;
             }
         }
@@ -269,7 +269,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
             if (event.getSummary().equals(String.format("System migration scheduled by %s", origOrgAdmin.getLogin())) &&
                 event.getDetails().contains("From organization: " + origOrg.getName()) &&
                 event.getDetails().contains("To organization: " + destOrg.getName()) &&
-                (event.getCreated() != null)) {
+                    event.getCreated() != null) {
                 migrationRecorded = true;
             }
         }

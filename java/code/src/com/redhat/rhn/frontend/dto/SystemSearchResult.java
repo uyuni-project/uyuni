@@ -72,7 +72,7 @@ public class SystemSearchResult extends SystemOverview {
         String field = getMatchingField();
         log.info("Will look up field <{}> to determine why this matched", field);
         try {
-            if ((field != null) && (!StringUtils.isBlank(field))) {
+            if (field != null && !StringUtils.isBlank(field)) {
                 value = BeanUtils.getProperty(this, field);
                 log.info("SystemSearchResult.Id = {} BeanUtils.getProperty(sr, {}) = {}", getId(), field, value);
             }
@@ -155,7 +155,7 @@ public class SystemSearchResult extends SystemOverview {
       * @return the hostname in IDN encoding
       */
     public String getDecodedHostname() {
-        return (hostname == null) ? null : IDN.toUnicode(hostname);
+        return hostname == null ? null : IDN.toUnicode(hostname);
     }
 
     /**

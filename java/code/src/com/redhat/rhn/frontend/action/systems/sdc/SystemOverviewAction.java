@@ -133,9 +133,9 @@ public class SystemOverviewAction extends RhnAction {
 
         //Order entitlements
         List<Entitlement> entitlements = s.getEntitlements().stream().sorted(
-                (e1, e2) -> (e1.isBase() && e2.isBase()) || (!e1.isBase() && !e2.isBase()) ?
+                (e1, e2) -> e1.isBase() && e2.isBase() || !e1.isBase() && !e2.isBase() ?
                         e1.getHumanReadableLabel().compareTo(e2.getHumanReadableLabel()) :
-                        (e1.isBase() ? -1 : 1))
+                        e1.isBase() ? -1 : 1)
                 .collect(Collectors.toList());
 
         request.setAttribute("rebootRequired", rebootRequired);

@@ -303,7 +303,7 @@ public class RhnValidationHelper {
      */
     public static boolean getFailedValidation(HttpServletRequest request) {
         String failed = (String) request.getAttribute(FAILED_KEY);
-        return (failed != null && failed.equals("true"));
+        return failed != null && failed.equals("true");
     }
 
     /**

@@ -538,7 +538,7 @@ public class SystemRecord extends CobblerObject {
      */
     public boolean isNetbootEnabled() {
         return Boolean.TRUE.toString().
-                equalsIgnoreCase((String.valueOf(dataMap.get(NETBOOT_ENABLED))));
+                equalsIgnoreCase(String.valueOf(dataMap.get(NETBOOT_ENABLED)));
     }
 
     /**

@@ -933,7 +933,7 @@ public abstract class CobblerObject {
             return new HashSet<>();
         }
         String keys = StringUtils.defaultString(key.get());
-        String[] sets = (keys).split(",");
+        String[] sets = keys.split(",");
         return new HashSet<>(Arrays.asList(sets));
     }
 

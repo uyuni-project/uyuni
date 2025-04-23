@@ -411,8 +411,8 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
         try {
             updated = ucc.update(ctx.getParamAsLong("cid"));
             String sharing = (String) form.get(SUBSCRIPTIONS);
-            updated.setGloballySubscribable((sharing != null) &&
-                    ("all".equals(sharing)), loggedInUser.getOrg());
+            updated.setGloballySubscribable(sharing != null &&
+                    "all".equals(sharing), loggedInUser.getOrg());
             updated = HibernateFactory.reload(updated);
             ServerFactory.listMinionsByChannel(updated.getId()).stream()
                     .forEach(ms -> MinionPillarManager.INSTANCE.generatePillar(ms, false, Collections.emptySet()));
@@ -473,7 +473,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
         command.setSupportPolicy(StringUtil.nullIfEmpty(form.getString(SUPPORT_POLICY)));
         command.setAccess(form.getString(ORG_SHARING));
         String sharing = form.getString(SUBSCRIPTIONS);
-        command.setGloballySubscribable((sharing != null) && ("all".equals(sharing)));
+        command.setGloballySubscribable(sharing != null && "all".equals(sharing));
 
 
         try {

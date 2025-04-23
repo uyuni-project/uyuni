@@ -702,7 +702,7 @@ public class ChannelFactory extends HibernateFactory {
             return false;
         }
         Object o = singleton.lookupObjectByNamedQuery("Channel.verifyLabel", Map.of(LABEL, label), false);
-        return (o != null);
+        return o != null;
     }
 
     /**
@@ -716,7 +716,7 @@ public class ChannelFactory extends HibernateFactory {
             return false;
         }
         Object o = singleton.lookupObjectByNamedQuery("Channel.verifyName", Map.of("name", name), false);
-        return (o != null);
+        return o != null;
     }
 
     /**
@@ -1572,11 +1572,11 @@ public class ChannelFactory extends HibernateFactory {
             channelInfo.setPeripheralOrgId(peripheralOrgId);
         }
 
-        String parentChannelLabel = (null == channel.getParentChannel()) ? null :
+        String parentChannelLabel = null == channel.getParentChannel() ? null :
                 channel.getParentChannel().getLabel();
         channelInfo.setParentChannelLabel(parentChannelLabel);
 
-        String channelArchLabel = (null == channel.getChannelArch()) ? null :
+        String channelArchLabel = null == channel.getChannelArch() ? null :
                 channel.getChannelArch().getLabel();
         channelInfo.setChannelArchLabel(channelArchLabel);
 
@@ -1585,7 +1585,7 @@ public class ChannelFactory extends HibernateFactory {
         channelInfo.setSummary(channel.getSummary());
         channelInfo.setDescription(channel.getDescription());
 
-        String productNameLabel = (null == channel.getProductName()) ? null :
+        String productNameLabel = null == channel.getProductName() ? null :
                 channel.getProductName().getLabel();
         channelInfo.setProductNameLabel(productNameLabel);
 
@@ -1597,10 +1597,10 @@ public class ChannelFactory extends HibernateFactory {
         channelInfo.setEndOfLifeDate(channel.getEndOfLife());
         channelInfo.setChecksumTypeLabel(channel.getChecksumTypeLabel());
 
-        String channelProductProduct = (null == channel.getProduct()) ? null :
+        String channelProductProduct = null == channel.getProduct() ? null :
                 channel.getProduct().getProduct();
         channelInfo.setChannelProductProduct(channelProductProduct);
-        String channelProductVersion = (null == channel.getProduct()) ? null :
+        String channelProductVersion = null == channel.getProduct() ? null :
                 channel.getProduct().getVersion();
         channelInfo.setChannelProductVersion(channelProductVersion);
 
@@ -1839,7 +1839,7 @@ public class ChannelFactory extends HibernateFactory {
         Org org = null;
         if (null != modifyChannelInfo.getPeripheralOrgId()) {
             org = OrgFactory.lookupById(modifyChannelInfo.getPeripheralOrgId());
-            if ((null != modifyChannelInfo.getPeripheralOrgId()) && (null == org)) {
+            if (null != modifyChannelInfo.getPeripheralOrgId() && null == org) {
                 throw new IllegalArgumentException("No org id to modify [" +
                         modifyChannelInfo.getPeripheralOrgId() +
                         "] for channel [" + modifyChannelInfo.getLabel() + "]");
@@ -1885,8 +1885,8 @@ public class ChannelFactory extends HibernateFactory {
         setValueIfNotNull(channel, modifyChannelInfo.getGpgKeyFp(), Channel::setGPGKeyFp);
         setValueIfNotNull(channel, modifyChannelInfo.getEndOfLifeDate(), Channel::setEndOfLife);
 
-        if ((null != modifyChannelInfo.getChannelProductProduct()) &&
-                (null != modifyChannelInfo.getChannelProductVersion())) {
+        if (null != modifyChannelInfo.getChannelProductProduct() &&
+                null != modifyChannelInfo.getChannelProductVersion()) {
             channel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(
                     modifyChannelInfo.getChannelProductProduct(),
                     modifyChannelInfo.getChannelProductVersion()));

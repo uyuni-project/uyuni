@@ -126,7 +126,7 @@ public class KubernetesManager {
                             imgBuildRevision = Optional.of(imageInfo.getRevisionNumber());
                             usage = Optional.of(imgToUsage.computeIfAbsent(
                                     imageInfo.getId(),
-                                    (infoId) -> new ImageUsage(imageInfo)));
+                                    infoId -> new ImageUsage(imageInfo)));
                         }
                         else {
                             LOG.debug("Image build history not found for digest: {} (maybe the image was not " +

@@ -93,7 +93,7 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
                 kstree = trees.get(trees.size() - 1);
                 form.set(TREE, kstree.getId());
             }
-            if (kstree == null && (trees != null && !trees.isEmpty())) {
+            if (kstree == null && trees != null && !trees.isEmpty()) {
                 kstree = KickstartFactory.lookupKickstartTreeByIdAndOrg(tree.getId(),
                         ctx.getCurrentUser().getOrg());
             }

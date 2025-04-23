@@ -177,7 +177,7 @@ public class ConfigRevision extends BaseDomainHelper {
      * @return true if file-type is 'file'
      */
     public boolean isFile() {
-        return (configFileType != null && configFileType.getLabel().equals("file"));
+        return configFileType != null && configFileType.getLabel().equals("file");
     }
 
     /**
@@ -185,7 +185,7 @@ public class ConfigRevision extends BaseDomainHelper {
      * @return true if file-type is 'sls'
      */
     public boolean isSls() {
-        return (configFileType != null && configFileType.getLabel().equals("sls"));
+        return configFileType != null && configFileType.getLabel().equals("sls");
     }
 
     /**
@@ -201,7 +201,7 @@ public class ConfigRevision extends BaseDomainHelper {
      * @return true if file-type is 'directory'
      */
     public boolean isDirectory() {
-        return (configFileType != null && configFileType.getLabel().equals("directory"));
+        return configFileType != null && configFileType.getLabel().equals("directory");
     }
 
     /**
@@ -209,7 +209,7 @@ public class ConfigRevision extends BaseDomainHelper {
      * @return true if file-type is 'symlink'
      */
     public boolean isSymlink() {
-        return (configFileType != null && configFileType.getLabel().equals("symlink"));
+        return configFileType != null && configFileType.getLabel().equals("symlink");
     }
 
     /**

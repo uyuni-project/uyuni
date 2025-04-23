@@ -690,7 +690,7 @@ public class CachedStatement implements Serializable {
                         obj = currentResults.get(pos);
                     }
                     // if pointers are null, we are doing an elaborator.
-                    addToObject(columns, rs, obj, (pointers != null));
+                    addToObject(columns, rs, obj, pointers != null);
                     // bug 141664: Don't add to the DataResult if we are
                     // elaborating the data.
                     if (pointers == null) {
@@ -854,12 +854,12 @@ public class CachedStatement implements Serializable {
         // this : August 23, 2005 12:00:00 AM PDT
         // vs the real date: August 23, 2005 1:36:12 PM PDT
         if (columnValue instanceof Date ||
-                ("oracle.sql.TIMESTAMPLTZ"
-                     .equals(columnValue.getClass().getCanonicalName())) ||
-                ("oracle.sql.TIMESTAMP"
-                     .equals(columnValue.getClass().getCanonicalName())) ||
-                ("oracle.sql.TIMESTAMPTZ"
-                     .equals(columnValue.getClass().getCanonicalName()))) {
+                "oracle.sql.TIMESTAMPLTZ"
+                     .equals(columnValue.getClass().getCanonicalName()) ||
+                "oracle.sql.TIMESTAMP"
+                     .equals(columnValue.getClass().getCanonicalName()) ||
+                "oracle.sql.TIMESTAMPTZ"
+                     .equals(columnValue.getClass().getCanonicalName())) {
             return rs.getTimestamp(columnName);
         }
         else if (columnValue instanceof BigDecimal) {

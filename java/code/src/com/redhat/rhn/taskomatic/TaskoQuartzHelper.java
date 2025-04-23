@@ -258,7 +258,7 @@ public class TaskoQuartzHelper {
     }
 
     private static boolean isCronExpressionEmpty(String cronExpr) {
-        return (cronExpr == null || cronExpr.isEmpty());
+        return cronExpr == null || cronExpr.isEmpty();
     }
 
     /**

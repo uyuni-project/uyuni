@@ -455,7 +455,7 @@ public class ActivationKeyHandler extends BaseHandler {
         }
 
         if (details.containsKey("usage_limit")) {
-            Long usageLimit = Long.valueOf(((Integer) details.get("usage_limit")));
+            Long usageLimit = Long.valueOf((Integer) details.get("usage_limit"));
             aKey.setUsageLimit(usageLimit);
         }
 
@@ -1179,6 +1179,6 @@ public class ActivationKeyHandler extends BaseHandler {
        */
       public int checkConfigDeployment(User loggedInUser, String key) {
           ActivationKey ac = lookupKey(key, loggedInUser);
-          return (ac.getDeployConfigs() ? 1 : 0);
+          return ac.getDeployConfigs() ? 1 : 0;
       }
 }

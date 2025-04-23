@@ -297,7 +297,7 @@ public class ImageInfoJson {
         }
 
         this.customData = customDataIn.stream().collect(Collectors.toMap(
-                (cd) -> cd.getKey().getLabel(), ImageInfoCustomDataValue::getValue));
+                cd -> cd.getKey().getLabel(), ImageInfoCustomDataValue::getValue));
     }
 
     /**

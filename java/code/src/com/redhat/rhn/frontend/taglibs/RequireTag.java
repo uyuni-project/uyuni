@@ -105,10 +105,10 @@ public class RequireTag extends TagSupport {
                 // acl methods must be in the following form
                 // aclXxxYyy(Object context, String[] params) and invoked
                 // xxx_yyy(param);
-                return (EVAL_BODY_INCLUDE);
+                return EVAL_BODY_INCLUDE;
             }
 
-            return (SKIP_BODY);
+            return SKIP_BODY;
         }
         catch (Exception e) {
             throw new JspException("Error writing to JSP file:", e);

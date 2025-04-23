@@ -238,12 +238,12 @@ public class ErrataMailer extends RhnJavaJob {
         for (Row row : servers) {
             String release = (String) row.get("release");
             printWriter.print(release);
-            for (int i = 0; i < (11 - release.length()); i++) {
+            for (int i = 0; i < 11 - release.length(); i++) {
                 printWriter.print(' ');
             }
             String arch = (String) row.get("arch");
             printWriter.print(arch);
-            for (int i = 0; i < (11 - arch.length()); i++) {
+            for (int i = 0; i < 11 - arch.length(); i++) {
                 printWriter.print(' ');
             }
             printWriter.println((String) row.get("name"));

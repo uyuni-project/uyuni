@@ -108,13 +108,13 @@ public class PackageFilter extends ContentFilter<Package> {
         if (field.equals("nevr")) {
             int relIdx = value.lastIndexOf('-');
             int verIdx = value.lastIndexOf('-', relIdx - 1);
-            return (verIdx > 0) && value.substring(0, verIdx).equals(pack.getPackageName().getName());
+            return verIdx > 0 && value.substring(0, verIdx).equals(pack.getPackageName().getName());
         }
         else if (field.equals("nevra")) {
             int relIdx = value.lastIndexOf('-');
             int verIdx = value.lastIndexOf('-', relIdx - 1);
             int archIdx = value.lastIndexOf('.');
-            return (verIdx > 0) && (archIdx > 0) &&
+            return verIdx > 0 && archIdx > 0 &&
                    value.substring(0, verIdx).equals(pack.getPackageName().getName()) &&
                    value.substring(archIdx + 1).equals(pack.getPackageArch().getLabel());
         }

@@ -435,12 +435,12 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                                 .getActionChainSLSFileName(actionChain.getId(), minionSummary1, 2))
                         .toFile());
 
-        assertEquals(("pkg_installed:\n" +
+        assertEquals("pkg_installed:\n" +
                         "    pkg.installed:\n" +
                         "    -   refresh: true\n" +
                         "    -   pkgs:\n" +
                         "        -   salt.x86_64: 2018.3.0-4.1\n" +
-                        "        -   salt-minion.x86_64: 2018.3.0-4.1\n"), fileContent);
+                        "        -   salt-minion.x86_64: 2018.3.0-4.1\n", fileContent);
     }
 
     @Test

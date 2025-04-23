@@ -147,7 +147,7 @@ public class CSVTag extends BodyTagSupport {
     @Override
     public int doEndTag() throws JspException {
         setupPageData();
-        if ((null != exportColumns) && (null != pageData)) {
+        if (null != exportColumns && null != pageData) {
             renderExport();
         }
         release();

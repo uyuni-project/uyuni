@@ -83,7 +83,7 @@ public class ActivationKeysController {
      * @return the json response
      */
     public static String getChannels(Request request, Response response, User user) {
-        return withActivationKey(request, response, user, (activationKey) -> result(response,
+        return withActivationKey(request, response, user, activationKey -> result(response,
                 success(ChannelsJson.fromChannelSet(activationKey.getChannels())), new TypeToken<>() { }));
     }
 
@@ -139,7 +139,7 @@ public class ActivationKeysController {
             return result(response, success(jsonChannels), new TypeToken<>() { });
         }
         else {
-            return withChannel(request, response, user, (base) -> {
+            return withChannel(request, response, user, base -> {
                 jsonChannels.add(generateChannelJson(base, user));
                 return result(response, success(jsonChannels), new TypeToken<>() { });
             });

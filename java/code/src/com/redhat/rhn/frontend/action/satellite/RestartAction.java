@@ -49,7 +49,7 @@ public class RestartAction extends RhnAction {
         RequestContext ctx = new RequestContext(request);
 
         if (isSubmitted(form)) {
-            Boolean restart = ((Boolean) form.get(RESTART));
+            Boolean restart = (Boolean) form.get(RESTART);
             if (BooleanUtils.toBooleanDefaultIfNull(restart, false)) {
                 RestartSatelliteEvent event = new
                     RestartSatelliteEvent(ctx.getCurrentUser());

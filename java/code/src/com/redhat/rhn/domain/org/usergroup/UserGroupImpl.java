@@ -177,7 +177,7 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
      */
     @Override
     public boolean isAssociatedRole(Role rin) {
-        return (rin.equals(role));
+        return rin.equals(role);
     }
 
     /**

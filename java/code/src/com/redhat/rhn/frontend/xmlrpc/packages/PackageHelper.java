@@ -111,10 +111,10 @@ public class PackageHelper {
         addEntry(pkgMap, "part_of_retracted_patch",
                     pkg.isPartOfRetractedPatch());
         Long sz = pkg.getPackageSize();
-        addEntry(pkgMap, "size", (sz == null) ? "" : String.valueOf(sz));
+        addEntry(pkgMap, "size", sz == null ? "" : String.valueOf(sz));
 
         sz = pkg.getPayloadSize();
-        addEntry(pkgMap, "payload_size", (sz == null) ? "" : String.valueOf(sz));
+        addEntry(pkgMap, "payload_size", sz == null ? "" : String.valueOf(sz));
 
         return pkgMap;
     }

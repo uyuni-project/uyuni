@@ -1525,7 +1525,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
         int newFamilyNumbers = ChannelFamilyFactory.getAllChannelFamilies().size();
         // 2 families added with suffix none, alpha and beta
-        assertEquals(familynumbers + (3 * 2), newFamilyNumbers);
+        assertEquals(familynumbers + 3 * 2, newFamilyNumbers);
 
         // Change the name
         for (ChannelFamilyJson cf : channelFamilies) {
@@ -1536,7 +1536,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         csm.updateChannelFamilies(channelFamilies);
 
         newFamilyNumbers = ChannelFamilyFactory.getAllChannelFamilies().size();
-        assertEquals(familynumbers + (3 * 2), newFamilyNumbers);
+        assertEquals(familynumbers + 3 * 2, newFamilyNumbers);
 
         // Assert everything is as expected
         for (ChannelFamilyJson cf : channelFamilies) {
@@ -1912,7 +1912,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         // different mirror has no effect as you cannot overwrite fromdir option
         assertFalse(csm.isRefreshNeeded("https://mirror.example.com/"));
 
-        ManagerInfoFactory.setLastMgrSyncRefresh(System.currentTimeMillis() - (48 * 60 * 60 * 1000));
+        ManagerInfoFactory.setLastMgrSyncRefresh(System.currentTimeMillis() - 48 * 60 * 60 * 1000);
         assertTrue(csm.isRefreshNeeded(null));
     }
 

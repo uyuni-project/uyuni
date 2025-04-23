@@ -547,7 +547,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             }
             else {
                 ctx.getRequest().setAttribute("distro_kernel_params",
-                        (distro.getKernelOptions().get() instanceof Map) ?
+                        distro.getKernelOptions().get() instanceof Map ?
                             distro.convertOptionsMap(distro.getKernelOptions().get()) :
                             distro.getKernelOptions().get());
             }
@@ -557,7 +557,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             }
             else {
                 ctx.getRequest().setAttribute("distro_post_kernel_params",
-                        (distro.getKernelOptionsPost().get() instanceof Map) ?
+                        distro.getKernelOptionsPost().get() instanceof Map ?
                             distro.convertOptionsMap(distro.getKernelOptionsPost().get()) :
                             distro.getKernelOptionsPost().get());
             }
@@ -571,7 +571,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             }
             else {
                 ctx.getRequest().setAttribute("profile_kernel_params",
-                        (profile.getKernelOptions().get() instanceof Map) ?
+                        profile.getKernelOptions().get() instanceof Map ?
                              profile.convertOptionsMap(profile.getKernelOptions().get()) :
                              profile.getKernelOptions().get());
             }
@@ -581,7 +581,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             }
             else {
                 ctx.getRequest().setAttribute("profile_post_kernel_params",
-                        (profile.getKernelOptionsPost().get() instanceof Map) ?
+                        profile.getKernelOptionsPost().get() instanceof Map ?
                              profile.convertOptionsMap(profile.getKernelOptionsPost().get()) :
                              profile.getKernelOptionsPost().get());
             }

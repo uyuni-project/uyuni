@@ -472,7 +472,7 @@ public class RecurringActionController {
         else if (action.getRecurringActionType() instanceof RecurringState stateType) {
             stateType.setTestMode(details.isTest());
             if (json.getRecurringActionId() == null ||
-                    (json.getRecurringActionId() != null && details.getStates() != null)) {
+                    json.getRecurringActionId() != null && details.getStates() != null) {
                 Set<RecurringStateConfig> newConfig = getStateConfigFromJson(details.getStates(), action.getCreator());
                 ((RecurringState) action.getRecurringActionType()).saveStateConfig(newConfig);
             }

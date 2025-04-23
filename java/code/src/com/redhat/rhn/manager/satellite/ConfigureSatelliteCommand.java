@@ -104,7 +104,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
         if (logger.isDebugEnabled()) {
             logger.debug("getCommandArguments(String, Iterator) - end - return value={}", (Object)returnStringArray);
         }
-        return (anythingChanged ? returnStringArray : null);
+        return anythingChanged ? returnStringArray : null;
     }
 
     /**

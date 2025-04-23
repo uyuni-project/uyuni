@@ -50,7 +50,7 @@ public class Translator extends Translations {
      * @return Returns the string representation of i
      */
     public static String int2String(Integer i) {
-        return (i == null) ? "" : i.toString();
+        return i == null ? "" : i.toString();
     }
 
     /**
@@ -72,7 +72,7 @@ public class Translator extends Translations {
      * @return Returns the boolean representation of i
      */
     public static boolean int2Boolean(Integer i) {
-        return (i != null) && i.equals(1);
+        return i != null && i.equals(1);
     }
 
     /**
@@ -81,7 +81,7 @@ public class Translator extends Translations {
      * @return Returns the boolean representation of i
      */
     public static boolean long2Boolean(Long i) {
-        return (i != null) && i == 1;
+        return i != null && i == 1;
     }
 
     /** Convert from Integer to User
@@ -97,7 +97,7 @@ public class Translator extends Translations {
      * @return The resulting long
      */
     public static long long2Objlong(Long l) {
-        return (l == null) ? 0 : l;
+        return l == null ? 0 : l;
     }
 
     /**
@@ -106,7 +106,7 @@ public class Translator extends Translations {
      * @return Integer version of the Long.
      */
     public static Integer long2Integer(Long l) {
-        return (l == null) ? null : l.intValue();
+        return l == null ? null : l.intValue();
     }
 
     /**
@@ -115,7 +115,7 @@ public class Translator extends Translations {
      * @return int version of the Long.
      */
     public static int long2Int(Long l) {
-        return (l == null) ? 0 : l.intValue();
+        return l == null ? 0 : l.intValue();
     }
 
     /** Convert from BigDecimal to int
@@ -123,7 +123,7 @@ public class Translator extends Translations {
      * @return The resulting int
      */
     public static int bigDecimal2Int(BigDecimal bd) {
-        return (bd == null) ? 0 : bd.intValue();
+        return bd == null ? 0 : bd.intValue();
     }
 
     /** Convert from BigDecimal to Integer
@@ -131,7 +131,7 @@ public class Translator extends Translations {
      * @return The resulting Integer
      */
     public static Integer bigDecimal2IntObject(BigDecimal bd) {
-        return (bd == null) ? Integer.valueOf(0) : Integer.valueOf(bd.intValue());
+        return bd == null ? Integer.valueOf(0) : Integer.valueOf(bd.intValue());
     }
 
     /** Convert from BigDecimal to long
@@ -139,7 +139,7 @@ public class Translator extends Translations {
      * @return The resulting long
      */
     public static long bigDecimal2Long(BigDecimal bd) {
-        return (bd == null) ? 0 : bd.longValue();
+        return bd == null ? 0 : bd.longValue();
     }
 
     /**
@@ -148,7 +148,7 @@ public class Translator extends Translations {
      * @return The resulting Long
      */
     public static Long bigDecimal2LongObj(BigDecimal bd) {
-        return (bd == null) ? null : bd.longValue();
+        return bd == null ? null : bd.longValue();
     }
 
     /**
@@ -173,7 +173,7 @@ public class Translator extends Translations {
      * @return The resulting string.
      */
     public static String double2String(Double d) {
-        return (d == null) ? "0" : d.toString();
+        return d == null ? "0" : d.toString();
     }
 
     /**
@@ -182,7 +182,7 @@ public class Translator extends Translations {
      * @return List.toString()
      */
     public static String list2String(List<Object> l) {
-        return (l == null) ? "" : l.toString();
+        return l == null ? "" : l.toString();
     }
 
     /**
@@ -191,7 +191,7 @@ public class Translator extends Translations {
      * @return map.toString()
      */
     public static String map2String(Map<?, ?> m) {
-        return (m == null) ? "" : m.toString();
+        return m == null ? "" : m.toString();
     }
 
     /**
@@ -200,7 +200,7 @@ public class Translator extends Translations {
      * @return The resulting string.
      */
     public static String boolean2String(Boolean b) {
-        return (b == null) ? Boolean.FALSE.toString() : b.toString();
+        return b == null ? Boolean.FALSE.toString() : b.toString();
     }
 
     /**
@@ -210,7 +210,7 @@ public class Translator extends Translations {
      * @return Resulting string
      */
     public static String date2String(Date d) {
-        return (d == null) ? "" : d.toString();
+        return d == null ? "" : d.toString();
     }
 
     /**
@@ -219,6 +219,6 @@ public class Translator extends Translations {
      * @return a boolean primitive
      */
     public static boolean boolean2boolean(Boolean b) {
-        return (b != null) && b;
+        return b != null && b;
     }
 }

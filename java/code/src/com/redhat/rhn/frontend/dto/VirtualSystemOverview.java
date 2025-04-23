@@ -288,7 +288,7 @@ public class VirtualSystemOverview extends SystemOverview {
      * @return whether the current system is UI isVirtualHost
      */
     public boolean getIsVirtualHost() {
-        return (this.getUuid() == null);
+        return this.getUuid() == null;
     }
 
     /**

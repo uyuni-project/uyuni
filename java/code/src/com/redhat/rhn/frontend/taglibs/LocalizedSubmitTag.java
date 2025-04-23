@@ -50,7 +50,7 @@ public class LocalizedSubmitTag extends SubmitTag {
     @Override
     public String getStyleClass() {
         if (super.getStyleClass() != null) {
-            return (super.getStyleClass());
+            return super.getStyleClass();
         }
         return "btn btn-primary";
     }
@@ -62,7 +62,7 @@ public class LocalizedSubmitTag extends SubmitTag {
     public int doStartTag() throws JspException {
         this.setValue(LocalizationService.getInstance().getMessage(getValueKey()));
         super.doStartTag();
-        return (SKIP_BODY);
+        return SKIP_BODY;
     }
 
     /**

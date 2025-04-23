@@ -60,7 +60,7 @@ public class PeripheralServerEntitlement extends Entitlement {
             return false;
         }
         return super.isAllowedOnServer(server) &&
-                ((server.getBaseEntitlement() instanceof SaltEntitlement) ||
-                 (server.getBaseEntitlement() instanceof ForeignEntitlement));
+                (server.getBaseEntitlement() instanceof SaltEntitlement ||
+                        server.getBaseEntitlement() instanceof ForeignEntitlement);
     }
 }

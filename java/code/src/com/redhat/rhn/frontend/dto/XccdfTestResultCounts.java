@@ -186,7 +186,7 @@ public abstract class XccdfTestResultCounts extends BaseDto {
 
     private Long getCountOf(String resultLabel) {
         Long result = getCountMap().get(resultLabel);
-        return (result != null) ? result : 0;
+        return result != null ? result : 0;
     }
 
     private Map<String, Long> getCountMap() {

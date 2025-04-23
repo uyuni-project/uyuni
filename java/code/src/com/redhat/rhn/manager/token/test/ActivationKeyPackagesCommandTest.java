@@ -95,7 +95,7 @@ public class ActivationKeyPackagesCommandTest extends BaseTestCaseWithUser {
                 foundPkg1 = true;
             }
             else if (pkg.getPackageName().getName().equals("pkg2") &&
-                     (pkg.getPackageArch() == null) &&
+                    pkg.getPackageArch() == null &&
                      pkg.getToken().equals(key.getToken())) {
                 foundPkg2 = true;
             }

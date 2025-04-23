@@ -59,6 +59,6 @@ public class UpgradeCommandTest extends BaseTestCaseWithUser {
         assertNotNull(ksession);
 
         List<Task> tasks = TaskFactory.getTaskListByNameLike(UpgradeCommand.UPGRADE_KS_PROFILES);
-        assertTrue((tasks == null || tasks.isEmpty()));
+        assertTrue(tasks == null || tasks.isEmpty());
     }
 }

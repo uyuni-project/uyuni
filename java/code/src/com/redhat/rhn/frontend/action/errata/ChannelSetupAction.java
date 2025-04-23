@@ -85,8 +85,8 @@ public class ChannelSetupAction extends RhnListAction {
             }
             //Else we check and see if the original channel was listed in
             //      the original errata
-            else if (e != null && (e.isCloned() && errataInChannel(((ClonedErrata) e).getOriginal(),
-                    channel.getOriginalId()))) {
+            else if (e != null && e.isCloned() && errataInChannel(((ClonedErrata) e).getOriginal(),
+                    channel.getOriginalId())) {
                 pkgs = ChannelManager.relevantPackages(channel.getId(), e);
             } //if it wasn't then no packages are listed
             else {

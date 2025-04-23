@@ -194,10 +194,10 @@ public class StringUtilTest  {
 
     @Test
     public void testCategorizeTime3() {
-        long oneWeek = (1000 * 60 * 60 * 24 * 7);
-        long oneDay = (1000 * 60 * 60 * 24);
-        long oneHour = (1000 * 60 * 60);
-        long oneMinute = (1000 * 60);
+        long oneWeek = 1000 * 60 * 60 * 24 * 7;
+        long oneDay = 1000 * 60 * 60 * 24;
+        long oneHour = 1000 * 60 * 60;
+        long oneMinute = 1000 * 60;
 
         // The tests want to know an exact string.
         // If the system we're running on is slow enough, there may (or may not!) be
@@ -231,7 +231,7 @@ public class StringUtilTest  {
         result = StringUtil.categorizeTime(testDate, maxUnit, minUnit);
         assertEquals("47 hours 1 minute ago", result);
         // 600 minutes ago
-        testDate = System.currentTimeMillis() - (600 * oneMinute);
+        testDate = System.currentTimeMillis() - 600 * oneMinute;
         maxUnit = StringUtil.MINUTES_UNITS;
         minUnit = StringUtil.MINUTES_UNITS;
         result = StringUtil.categorizeTime(testDate, maxUnit, minUnit);
@@ -245,31 +245,31 @@ public class StringUtilTest  {
 
         // 5 weeks 5 days 5 hours and 5 minutes from now
         testDate = System.currentTimeMillis() +
-            (5 * oneWeek + 5 * oneDay + 5 * oneHour + 5 * oneMinute + slop);
+                5 * oneWeek + 5 * oneDay + 5 * oneHour + 5 * oneMinute + slop;
         maxUnit = StringUtil.WEEKS_UNITS;
         minUnit = StringUtil.MINUTES_UNITS;
         result = StringUtil.categorizeTime(testDate, maxUnit, minUnit);
         assertEquals("5 weeks 5 days 5 hours 5 minutes from now", result);
         // 0 weeks 0 days 1 hour from now
-        testDate = System.currentTimeMillis() + (oneHour + slop);
+        testDate = System.currentTimeMillis() + oneHour + slop;
         maxUnit = StringUtil.WEEKS_UNITS;
         minUnit = StringUtil.HOURS_UNITS;
         result = StringUtil.categorizeTime(testDate, maxUnit, minUnit);
         assertEquals("0 weeks 0 days 1 hour from now", result);
          // 25 days 5 hours from now
-        testDate = System.currentTimeMillis() + (25 * oneDay + 5 * oneHour + slop);
+        testDate = System.currentTimeMillis() + 25 * oneDay + 5 * oneHour + slop;
         maxUnit = StringUtil.DAYS_UNITS;
         minUnit = StringUtil.HOURS_UNITS;
         result = StringUtil.categorizeTime(testDate, maxUnit, minUnit);
         assertEquals("25 days 5 hours from now", result);
         // 47 hours and 1 minute from now
-        testDate = System.currentTimeMillis() + (47 * oneHour + oneMinute + slop);
+        testDate = System.currentTimeMillis() + 47 * oneHour + oneMinute + slop;
         maxUnit = StringUtil.HOURS_UNITS;
         minUnit = StringUtil.MINUTES_UNITS;
         result = StringUtil.categorizeTime(testDate, maxUnit, minUnit);
         assertEquals("47 hours 1 minute from now", result);
         // 600 minutes from now
-        testDate = System.currentTimeMillis() + (600 * oneMinute + slop);
+        testDate = System.currentTimeMillis() + 600 * oneMinute + slop;
         maxUnit = StringUtil.MINUTES_UNITS;
         minUnit = StringUtil.MINUTES_UNITS;
         result = StringUtil.categorizeTime(testDate, maxUnit, minUnit);
@@ -278,10 +278,10 @@ public class StringUtilTest  {
 
     @Test
     public void testCategorizeTime2() {
-        long oneWeek = (1000 * 60 * 60 * 24 * 7);
-        long oneDay = (1000 * 60 * 60 * 24);
-        long oneHour = (1000 * 60 * 60);
-        long oneMinute = (1000 * 60);
+        long oneWeek = 1000 * 60 * 60 * 24 * 7;
+        long oneDay = 1000 * 60 * 60 * 24;
+        long oneHour = 1000 * 60 * 60;
+        long oneMinute = 1000 * 60;
 
         long testDate;
         int maxUnit;
@@ -296,7 +296,7 @@ public class StringUtilTest  {
         assertEquals("6 weeks ago", result);
 
         // 10 sec ago
-        testDate = System.currentTimeMillis() - (20 * 1000);
+        testDate = System.currentTimeMillis() - 20 * 1000;
         maxUnit = StringUtil.WEEKS_UNITS;
         result = StringUtil.categorizeTime(testDate, maxUnit);
         assertEquals("20 seconds ago", result);
@@ -320,7 +320,7 @@ public class StringUtilTest  {
         assertEquals("47 hours ago", result);
 
         // 600 minutes ago
-        testDate = System.currentTimeMillis() - (600 * oneMinute);
+        testDate = System.currentTimeMillis() - 600 * oneMinute;
         maxUnit = StringUtil.MINUTES_UNITS;
         result = StringUtil.categorizeTime(testDate, maxUnit);
         assertEquals("600 minutes ago", result);
@@ -334,7 +334,7 @@ public class StringUtilTest  {
 
     @Test
     public void testCategorizeTimeWeekAndYear() {
-        long oneDay = (1000 * 60 * 60 * 24);
+        long oneDay = 1000 * 60 * 60 * 24;
         long oneWeek = oneDay * 7;
         long oneMonth = oneWeek * 4;
         long oneYear = oneMonth * 12;

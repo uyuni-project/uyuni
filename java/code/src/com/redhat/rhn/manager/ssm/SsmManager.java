@@ -289,7 +289,7 @@ public class SsmManager {
                                                         Server srv,
                                                         ChannelChangeDto srvChange) {
         boolean baseChange =
-                (currentBase.isPresent() && !currentBase.get().getId().equals(srvChange.getNewBaseId().orElse(null))) ||
+                currentBase.isPresent() && !currentBase.get().getId().equals(srvChange.getNewBaseId().orElse(null)) ||
                 !(currentBase.isPresent() && srvChange.getNewBaseId().isPresent());
 
         boolean newBaseIsCompatible = true;

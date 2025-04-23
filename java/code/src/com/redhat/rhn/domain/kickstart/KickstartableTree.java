@@ -240,8 +240,8 @@ public class KickstartableTree extends BaseDomainHelper {
      */
     public boolean basePathIsUrl() {
         String defaultLocation = this.getBasePath().toLowerCase();
-        return (defaultLocation.startsWith("http://") ||
-                defaultLocation.startsWith("ftp://"));
+        return defaultLocation.startsWith("http://") ||
+                defaultLocation.startsWith("ftp://");
     }
 
 

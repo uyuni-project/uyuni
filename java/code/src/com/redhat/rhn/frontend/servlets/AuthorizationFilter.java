@@ -67,7 +67,7 @@ public class AuthorizationFilter implements Filter {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("ENTER AuthorizationFilter.doFilter: {} [{}] ({})", request.getRemoteAddr(), new Date(),
-                    ((HttpServletRequest) (request)).getRequestURI());
+                    ((HttpServletRequest) request).getRequestURI());
         }
 
         HttpServletRequest hreq = new RhnHttpServletRequest((HttpServletRequest) request);

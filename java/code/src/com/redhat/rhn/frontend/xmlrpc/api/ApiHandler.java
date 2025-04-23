@@ -191,8 +191,8 @@ public class ApiHandler extends BaseHandler {
         if (classType.equals(String.class)) {
             return "string";
         }
-        else if ((classType.equals(Integer.class)) ||
-                 (classType.equals(int.class))) {
+        else if (classType.equals(Integer.class) ||
+                classType.equals(int.class)) {
             return "int";
         }
         else if (classType.equals(Date.class)) {
@@ -205,10 +205,10 @@ public class ApiHandler extends BaseHandler {
         else if (classType.equals(Map.class)) {
             return "struct";
         }
-        else if ((classType.equals(List.class)) ||
-                 (classType.equals(Set.class)) ||
-                 (classType.toString().contains("class [L")) ||
-                 (classType.toString().contains("class [I"))) {
+        else if (classType.equals(List.class) ||
+                classType.equals(Set.class) ||
+                classType.toString().contains("class [L") ||
+                classType.toString().contains("class [I")) {
             return "array";
         }
         else if (classType.toString().contains("class [B")) {

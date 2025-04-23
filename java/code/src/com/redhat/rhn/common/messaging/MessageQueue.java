@@ -253,7 +253,7 @@ public class MessageQueue {
      * @return boolean true if MessageQueue is running.
      */
     public static boolean isMessaging() {
-        return (dispatcher != null && !dispatcher.isStopped());
+        return dispatcher != null && !dispatcher.isStopped();
     }
 
 

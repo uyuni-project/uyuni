@@ -184,7 +184,7 @@ public class Access extends BaseHandler {
         queryParams.put("label", label);
         queryParams.put("org_id", user.getOrg().getId());
         DataResult<Row> dr = m.execute(queryParams);
-        return (!dr.isEmpty());
+        return !dr.isEmpty();
     }
 
     /**
@@ -201,7 +201,7 @@ public class Access extends BaseHandler {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("org_id", user.getOrg().getId());
         DataResult<OrgProxyServer> dr = m.execute(queryParams);
-        return (!dr.isEmpty());
+        return !dr.isEmpty();
     }
 
     /**
@@ -450,7 +450,7 @@ public class Access extends BaseHandler {
      */
     public boolean aclUserAuthenticated(Map<String, Object> ctx, String[] params) {
         User user = (User)ctx.get("user");
-        return (user != null);
+        return user != null;
     }
 
     /**
@@ -462,7 +462,7 @@ public class Access extends BaseHandler {
      * @return true if the system is a satellite and has any users.
      */
     public boolean aclNeedFirstUser(Map<String, Object> ctx, String[] p) {
-        return !(UserFactory.satelliteHasUsers());
+        return !UserFactory.satelliteHasUsers();
     }
 
     /**
@@ -499,7 +499,7 @@ public class Access extends BaseHandler {
         User user = (User) ctx.get("user");
         if (user != null) {
             List<ChannelPerms> chans = UserManager.channelManagement(user, null);
-            return (user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) || !chans.isEmpty();
+            return user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN) || !chans.isEmpty();
         }
 
         return false;

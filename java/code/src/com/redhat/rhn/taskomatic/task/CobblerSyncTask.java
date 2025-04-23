@@ -129,7 +129,7 @@ public class CobblerSyncTask extends RhnJavaJob {
             CobblerProfileSyncCommand profSync = new CobblerProfileSyncCommand();
             profSync.store();
 
-            LAST_UPDATED.set((new Date()).getTime() / 1000 + 1);
+            LAST_UPDATED.set(new Date().getTime() / 1000 + 1);
         }
         catch (RuntimeException re) {
             log.error("RuntimeExceptionError trying to sync to cobbler: {}", re.getMessage(), re);

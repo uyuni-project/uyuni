@@ -75,7 +75,7 @@ public class LockUnlockSystemAction extends RhnListAction {
                 for (Long longIn : set.getElementValues()) {
                     Server server = SystemManager.lookupByIdAndUser(
                             longIn, context.getCurrentUser());
-                    if (lck && (server.getLock() == null)) {
+                    if (lck && server.getLock() == null) {
                         if (reason == null) {
                             reason = LocalizationService.getInstance()
                                     .getMessage("sdc.details.overview.lock.reason");
@@ -85,7 +85,7 @@ public class LockUnlockSystemAction extends RhnListAction {
                                 server, reason);
                         locledSys++;
                     }
-                    else if (unlck && (server.getLock() != null)) {
+                    else if (unlck && server.getLock() != null) {
                         SystemManager.unlockServer(context.getCurrentUser(), server);
                         unlockedSys++;
                     }

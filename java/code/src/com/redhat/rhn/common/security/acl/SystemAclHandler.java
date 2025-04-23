@@ -87,7 +87,7 @@ public class SystemAclHandler extends BaseHandler {
         queryParams.put("label", label);
         queryParams.put("sid", sid);
         DataResult<Row> dr = m.execute(queryParams);
-        return (!dr.isEmpty());
+        return !dr.isEmpty();
     }
 
     /**
@@ -103,7 +103,7 @@ public class SystemAclHandler extends BaseHandler {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("sid", sid);
         DataResult<Row> dr = m.execute(queryParams);
-        return (!dr.isEmpty());
+        return !dr.isEmpty();
     }
 
     /**
@@ -119,7 +119,7 @@ public class SystemAclHandler extends BaseHandler {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("sid", sid);
         DataResult<Row> dr = m.execute(queryParams);
-        return (!dr.isEmpty());
+        return !dr.isEmpty();
     }
 
     /**
@@ -130,7 +130,7 @@ public class SystemAclHandler extends BaseHandler {
      */
     public boolean aclSystemKickstartSessionExists(Map<String, Object> ctx, String[] params) {
         Long sid = getAsLong(ctx.get("sid"));
-        return (KickstartFactory.lookupKickstartSessionByServer(sid) != null);
+        return KickstartFactory.lookupKickstartSessionByServer(sid) != null;
     }
 
     /**

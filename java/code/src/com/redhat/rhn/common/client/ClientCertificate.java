@@ -216,7 +216,7 @@ public class ClientCertificate {
             if (!m.getName().equals(FIELDS)) {
                 String[] values = m.getValues();
                 struct.addBody(createStringMember(m.getName(),
-                        (values != null && values.length > 0) ? values[0] : ""));
+                        values != null && values.length > 0 ? values[0] : ""));
             }
             else {
                 struct.addBody(createFieldMember(m.getName(), m.getValues()));

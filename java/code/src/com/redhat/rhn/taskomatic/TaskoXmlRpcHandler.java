@@ -237,7 +237,7 @@ public class TaskoXmlRpcHandler {
         // check for inconsistencies
         // quartz unschedules job after trigger end time
         // so better handle quartz and schedules separately
-        if ((scheduleList.isEmpty()) && (trigger == null)) {
+        if (scheduleList.isEmpty() && trigger == null) {
             log.error("Unscheduling of bunch {} failed: no such job label", jobLabel);
             return 0;
         }
@@ -581,8 +581,8 @@ public class TaskoXmlRpcHandler {
     private void isAlreadyScheduled(Integer orgId, String jobLabel) throws SchedulerException, InvalidParamException {
 
         if (!TaskoFactory.listActiveSchedulesByOrgAndLabel(orgId, jobLabel).isEmpty() ||
-                (SchedulerKernel.getScheduler().getTrigger(triggerKey(jobLabel,
-                        TaskoQuartzHelper.getGroupName(orgId))) != null)) {
+                SchedulerKernel.getScheduler().getTrigger(triggerKey(jobLabel,
+                        TaskoQuartzHelper.getGroupName(orgId))) != null) {
             throw new InvalidParamException("jobLabel already in use");
         }
     }

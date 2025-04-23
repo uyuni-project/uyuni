@@ -164,12 +164,12 @@ public class ListViewHelper {
             tmp.setFilter(true);
             this.filteredResult = tmp;
             this.filteredResult.setStart(start);
-            this.filteredResult.setEnd((start + this.filteredResult.size()) - 1);
+            this.filteredResult.setEnd(start + this.filteredResult.size() - 1);
         }
         else {
             this.result = this.result.slice(start - 1, end - 1);
             this.result.setStart(start);
-            this.result.setEnd((start + this.result.size()) - 1);
+            this.result.setEnd(start + this.result.size() - 1);
         }
     }
 
@@ -242,12 +242,12 @@ public class ListViewHelper {
         boolean retval = false;
         String prevFilter = getPreviousFilterParam();
         String currentFilter = getFilterParam();
-        if ((prevFilter != null && currentFilter != null) &&
+        if (prevFilter != null && currentFilter != null &&
                 !prevFilter.equals(currentFilter)) {
             retval = true;
 
         }
-        else if ((prevFilter == null && currentFilter != null) || prevFilter != null &&
+        else if (prevFilter == null && currentFilter != null || prevFilter != null &&
                 currentFilter == null) {
             retval = true;
         }

@@ -82,7 +82,7 @@ public class VisibleSystems extends BaseDto {
      * null if not selectable
      */
     public void setSelectable(Integer selectableIn) {
-       selectable = (selectableIn != null);
+       selectable = selectableIn != null;
     }
 
     /**
@@ -90,7 +90,7 @@ public class VisibleSystems extends BaseDto {
      * one if selectable, null if not selectable
      */
     public void setSelectable(Long selectableIn) {
-        selectable = (selectableIn != null);
+        selectable = selectableIn != null;
     }
 
     /**

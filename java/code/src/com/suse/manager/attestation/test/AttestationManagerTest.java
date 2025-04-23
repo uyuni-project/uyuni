@@ -241,7 +241,7 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
     public void testFilterListReports() throws InterruptedException {
         mgr.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
 
-        long epochStart = (new Date().getTime() / 1000);
+        long epochStart = new Date().getTime() / 1000;
         for (int i = 10; i > 0; i--) {
             createFakeAttestationReport(user, server);
             HibernateFactory.getSession().flush();

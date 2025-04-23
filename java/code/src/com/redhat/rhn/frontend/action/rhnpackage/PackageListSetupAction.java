@@ -39,7 +39,7 @@ public class PackageListSetupAction extends BaseSystemPackagesAction {
         // Master ptf will be selectable only if unistallation is supported by the package manager
         boolean ptfUninstallationSupported = ServerFactory.isPtfUninstallationSupported(server);
         result.stream()
-              .filter(p -> p.isPartOfPtf() || (!ptfUninstallationSupported && p.isMasterPtfPackage()))
+              .filter(p -> p.isPartOfPtf() || !ptfUninstallationSupported && p.isMasterPtfPackage())
               .forEach(p -> p.setSelectable(false));
 
         return result;

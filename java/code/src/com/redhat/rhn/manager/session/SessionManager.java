@@ -290,7 +290,7 @@ public class SessionManager extends BaseManager {
                                                SEC_PARM_TOKENIZER_CHAR + vals[1]);
         long currTime = Calendar.getInstance().getTimeInMillis();
         long timeStamped = Long.parseLong(vals[1]);
-        if ((currTime - timeStamped) <= TIMEOUT_VAL &&
+        if (currTime - timeStamped <= TIMEOUT_VAL &&
                 newEncoded.equals(vals[2])) {
             if (logger.isDebugEnabled()) {
                 logger.debug("isValidTimestampedParamString(String[])" +

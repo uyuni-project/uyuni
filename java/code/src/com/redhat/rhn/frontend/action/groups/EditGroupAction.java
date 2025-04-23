@@ -177,8 +177,8 @@ public class EditGroupAction extends RhnAction {
         // Ugly condition for two error cases:
         //     creating page + group name exists
         //     editing page + group name exists except our group
-        if (((sgid == null) && (newGroup != null)) ||
-                (sgid != null) && (newGroup != null) && (!sgid.equals(newGroup.getId()))) {
+        if (sgid == null && newGroup != null ||
+                sgid != null && newGroup != null && !sgid.equals(newGroup.getId())) {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("systemgroup.create.alreadyexists"));
         }

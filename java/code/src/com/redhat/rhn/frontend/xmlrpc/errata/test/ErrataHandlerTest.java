@@ -747,7 +747,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Set<Channel> channels = cloned.getChannels();
         assertEquals(1, channels.size());
 
-        Channel sameChannel = ((Channel)channels.toArray()[0]);
+        Channel sameChannel = (Channel)channels.toArray()[0];
         assertEquals(channel, sameChannel);
 
         Set<Package> packs = sameChannel.getPackages();

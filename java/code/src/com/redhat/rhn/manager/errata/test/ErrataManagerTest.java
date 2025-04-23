@@ -147,7 +147,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Channel channel = ChannelTestUtils.createTestChannel(user);
         searchByPackagesIdsHelper(
                 Optional.of(channel),
-                (pids) -> ErrataManager.searchByPackageIdsWithOrg(pids, user.getOrg()));
+                pids -> ErrataManager.searchByPackageIdsWithOrg(pids, user.getOrg()));
     }
 
     private void searchByPackagesIdsHelper(Optional<Channel> channel,

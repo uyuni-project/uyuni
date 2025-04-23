@@ -68,7 +68,7 @@ public class ResetPasswordSubmitAction extends UserEditActionHelper {
         DynaActionForm form = (DynaActionForm) formIn;
         Map<String, Object> params = makeParamMap(request);
 
-        String token = (form.get("token") == null ? null : form.get("token").toString());
+        String token = form.get("token") == null ? null : form.get("token").toString();
         ResetPassword rp = ResetPasswordFactory.lookupByToken(token);
         ActionErrors errors = ResetPasswordFactory.findErrors(rp);
 

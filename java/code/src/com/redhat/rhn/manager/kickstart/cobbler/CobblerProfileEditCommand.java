@@ -92,7 +92,7 @@ public class CobblerProfileEditCommand extends CobblerProfileCommand {
             String cobFileName = ksData.buildCobblerFileName();
             if (!cobName.equals(prof.getName()) ||
                     !cobFileName.equals(ksData.getCobblerFileName()) ||
-                    !(new File(cobFileName)).exists()) {
+                    !new File(cobFileName).exists()) {
                 // delete current cfg file
                 KickstartFactory.removeKickstartTemplatePath(ksData);
                 // create new cfg file

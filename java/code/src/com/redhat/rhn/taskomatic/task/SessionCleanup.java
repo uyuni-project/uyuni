@@ -46,7 +46,7 @@ public class SessionCleanup extends RhnJavaJob {
         //retrieves info from user preferences
         long window = c.getInt("web.session_database_lifetime");
 
-        long bound = (System.currentTimeMillis() / 1000) - (2 * window);
+        long bound = System.currentTimeMillis() / 1000 - 2 * window;
 
         log.debug("session_cleanup: starting delete of stale sessions");
         if (log.isDebugEnabled()) {

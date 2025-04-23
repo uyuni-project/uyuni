@@ -204,8 +204,8 @@ public class SSHServiceDriver extends AbstractQueueDriver<SystemSummary> {
     private boolean isDefaultSchedule() {
         List<TaskoSchedule> schedules =
                 TaskoFactory.listActiveSchedulesByOrgAndLabel(null, JOB_LABEL);
-        return (schedules.size() == 1) &&
-                (schedules.get(0).getCronExpr().equals("0 * * * * ?"));
+        return schedules.size() == 1 &&
+                schedules.get(0).getCronExpr().equals("0 * * * * ?");
     }
 
     /**

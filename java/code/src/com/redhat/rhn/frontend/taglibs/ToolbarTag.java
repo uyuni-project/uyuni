@@ -602,7 +602,7 @@ public class ToolbarTag extends TagSupport {
             buf.append(renderIcon());
 
             out.print(buf.toString());
-            return (EVAL_BODY_INCLUDE);
+            return EVAL_BODY_INCLUDE;
         }
         catch (Exception e) {
             throw new JspException("Error writing to JSP file:", e);
@@ -625,7 +625,7 @@ public class ToolbarTag extends TagSupport {
             buf.append(baseTag.renderCloseTag());
 
             out.print(buf.toString());
-            return (EVAL_PAGE);
+            return EVAL_PAGE;
         }
         catch (Exception e) {
             throw new JspException("Error writing to JSP file:", e);
@@ -783,7 +783,7 @@ public class ToolbarTag extends TagSupport {
     }
 
     private boolean assertNotEmpty(String str) {
-        return (str != null && !"".equals(str));
+        return str != null && !"".equals(str);
     }
 
     /**

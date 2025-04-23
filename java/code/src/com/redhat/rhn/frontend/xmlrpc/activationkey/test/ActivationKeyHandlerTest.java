@@ -670,23 +670,23 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         boolean foundPkg1 = false, foundPkg2 = false, foundPkg3 = false;
 
         for (TokenPackage pkg : activationKey.getPackages()) {
-            if ((pkg.getPackageName() != null) &&
+            if (pkg.getPackageName() != null &&
                 pkg.getPackageName().getName().equals("pkg1")) {
 
-                if ((pkg.getPackageArch() != null) &&
+                if (pkg.getPackageArch() != null &&
                     pkg.getPackageArch().getLabel().equals("i386")) {
 
                     foundPkg1 = true;
                 }
             }
-            else if ((pkg.getPackageName() != null) &&
+            else if (pkg.getPackageName() != null &&
                      pkg.getPackageName().getName().equals("pkg2")) {
 
                 if (pkg.getPackageArch() == null) {
                     foundPkg2 = true;
                 }
             }
-            else if ((pkg.getPackageName() != null) &&
+            else if (pkg.getPackageName() != null &&
                      pkg.getPackageName().getName().equals("pkg3")) {
 
                 if (pkg.getPackageArch() == null) {

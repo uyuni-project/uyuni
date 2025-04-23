@@ -359,7 +359,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
-        Server guest = (host.getGuests().iterator().next()).
+        Server guest = host.getGuests().iterator().next().
             getGuestSystem();
         Long sid = guest.getId();
 
@@ -386,7 +386,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
-        Server guest = (host.getGuests().iterator().next()).
+        Server guest = host.getGuests().iterator().next().
             getGuestSystem();
         Long sid = guest.getId();
 
@@ -1006,7 +1006,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 assertEquals(2, result1Packages.size());
             }
             else if (map.get("id").equals(server2.getId())) {
-                assertEquals(server2.getName(), (map.get("system_name")));
+                assertEquals(server2.getName(), map.get("system_name"));
 
                 assertInstanceOf(List.class, map.get("elaborator0"));
                 List result2Packages = (List)map.get("elaborator0");
@@ -1031,7 +1031,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         server = ServerFactory.lookupById(server.getId());
         int sizeAfter = server.getNotes().size();
-        assertEquals(sizeAfter, (sizeBefore + 1));
+        assertEquals(sizeAfter, sizeBefore + 1);
 
         Note deleteMe = server.getNotes().iterator().next();
 
@@ -1060,7 +1060,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         server = ServerFactory.lookupById(server.getId());
         int sizeAfter = server.getNotes().size();
-        assertEquals(sizeAfter, (sizeBefore + 4));
+        assertEquals(sizeAfter, sizeBefore + 4);
 
         // Test
         SystemManager.deleteNotes(admin, server.getId());
@@ -1177,7 +1177,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(5, dr.size());
         assertTrue(dr.iterator().hasNext());
 
-        SystemOverview m = (dr.iterator().next());
+        SystemOverview m = dr.iterator().next();
         assertNotNull(m.getName());
     }
 

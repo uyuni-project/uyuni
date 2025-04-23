@@ -150,7 +150,7 @@ public class ServerGroupManager implements Serializable {
      */
     public void validateAccessCredentials(User user,
                                     ServerGroup group, String groupIdentifier) {
-        if (group == null || (group.isManaged() && !canAccess(user, group))) {
+        if (group == null || group.isManaged() && !canAccess(user, group)) {
             LocalizationService ls = LocalizationService.getInstance();
             throw new LookupException("Unable to locate or access server group: " + groupIdentifier,
                     ls.getMessage("lookup.servergroup.title"),

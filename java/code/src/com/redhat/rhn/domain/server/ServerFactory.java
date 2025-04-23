@@ -264,8 +264,8 @@ public class ServerFactory extends HibernateFactory {
     public static Map<String, Long> getMinionIdMap(Long id) {
         List<Object[]> result = SINGLETON.listObjectsByNamedQuery("Server.listMinionIdMappings", Map.of("user_id", id));
         return result.stream().collect(toMap(
-                row -> (String)(row[0]),
-                row -> (Long)(row[1]))
+                row -> (String) row[0],
+                row -> (Long) row[1])
         );
     }
 
@@ -1107,7 +1107,7 @@ public class ServerFactory extends HibernateFactory {
 
         List<ServerSnapshot> snaps = null;
 
-        if ((startDate != null) && (endDate != null)) {
+        if (startDate != null && endDate != null) {
             params.put("start_date", startDate);
             params.put("end_date", endDate);
             snaps = SINGLETON.listObjectsByNamedQuery("ServerSnapshot.findBetweenDates", params);
@@ -1166,7 +1166,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static void deleteSnapshots(Org org, Date startDate, Date endDate) {
 
-        if ((startDate != null) && (endDate != null)) {
+        if (startDate != null && endDate != null) {
             HibernateFactory.getSession()
             .getNamedQuery("ServerSnapshot.deleteBetweenDates")
             .setParameter("org", org)
@@ -1209,7 +1209,7 @@ public class ServerFactory extends HibernateFactory {
     public static void deleteSnapshots(Org org, Server server,
             Date startDate, Date endDate) {
 
-        if ((startDate != null) && (endDate != null)) {
+        if (startDate != null && endDate != null) {
             HibernateFactory.getSession()
             .getNamedQuery("ServerSnapshot.deleteForServerBetweenDates")
             .setParameter("org", org)

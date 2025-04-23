@@ -136,7 +136,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      */
     @Override
     public void execute(EventMessage msg) {
-        RegisterMinionEventMessage registerMinionEventMessage = ((RegisterMinionEventMessage) msg);
+        RegisterMinionEventMessage registerMinionEventMessage = (RegisterMinionEventMessage) msg;
         Optional<MinionStartupGrains> startupGrainsOpt = Opt.or(registerMinionEventMessage.getMinionStartupGrains(),
                 () -> saltApi.getGrains(registerMinionEventMessage.getMinionId(),
                         new TypeToken<MinionStartupGrains>() { }, "machine_id", "saltboot_initrd", "susemanager"));

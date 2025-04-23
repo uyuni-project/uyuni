@@ -2498,7 +2498,7 @@ public class SystemManager extends BaseManager {
 
         // Grab the host from the first guest in the list:
         Long firstGuestId = guestIds.get(0);
-        Server host = (viFactory.lookupById(firstGuestId)).
+        Server host = viFactory.lookupById(firstGuestId).
                 getHostSystem();
 
         VirtualInstanceState running = VirtualInstanceFactory.getInstance().
@@ -3059,7 +3059,7 @@ public class SystemManager extends BaseManager {
                                                                 List<String> ignored, Long inactiveHours) {
 
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.HOUR, (0 - inactiveHours.intValue()));
+        cal.add(Calendar.HOUR, 0 - inactiveHours.intValue());
 
         SelectMode ipMode = ModeFactory.getMode("System_queries",
                 query);
@@ -3748,7 +3748,7 @@ public class SystemManager extends BaseManager {
             throw new IllegalArgumentException(pkgName.getName() + " :not available in assigned channels of " +
                     minion.getId());
         }
-        else if ((isAvailable && pkgState == PackageStates.INSTALLED) || pkgState == PackageStates.REMOVED) {
+        else if (isAvailable && pkgState == PackageStates.INSTALLED || pkgState == PackageStates.REMOVED) {
             pkgStates.removeIf(ps -> ps.getName().equals(pkgName));
             PackageState packageState = new PackageState();
             packageState.setStateRevision(stateRev);

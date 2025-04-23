@@ -201,9 +201,9 @@ public class ConfigFileForm extends ScrubbingDynaActionForm {
      * @return true IFF the above conditions are true
      */
     protected boolean canDisplayContent(ConfigRevision cr) {
-        return (cr.isFile() || cr.isSls() &&
+        return cr.isFile() || cr.isSls() &&
                 !cr.getConfigContent().isBinary() &&
-                cr.getConfigContent().getFileSize() < MAX_EDITABLE_SIZE);
+                cr.getConfigContent().getFileSize() < MAX_EDITABLE_SIZE;
     }
 
     private boolean isUpload() {

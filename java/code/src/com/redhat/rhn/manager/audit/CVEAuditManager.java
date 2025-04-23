@@ -1082,10 +1082,10 @@ public class CVEAuditManager {
             // channels, they might be partly patched. To cover this case, check if a newer patch is available in the
             // same channel, or the original channel if this is a clone.
             Optional<CVEPatchStatus> newerPatch = packageResults.stream()
-                    .filter(r -> instChannel.getId().equals(r.getChannelId().get()) || (instChannel.isCloned() &&
+                    .filter(r -> instChannel.getId().equals(r.getChannelId().get()) || instChannel.isCloned() &&
                             instChannel.asCloned().map(ClonedChannel::getOriginal)
                                     .map(Channel::getId)
-                                    .stream().anyMatch(id -> id.equals(r.getChannelId().get()))))
+                                    .stream().anyMatch(id -> id.equals(r.getChannelId().get())))
                     .filter(r -> li.getPackageEvr().get().compareTo(r.getPackageEvr().get()) < 0)
                     .max(evrComparator);
 

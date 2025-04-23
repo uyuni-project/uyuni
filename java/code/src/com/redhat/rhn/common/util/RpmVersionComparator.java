@@ -114,7 +114,7 @@ public class RpmVersionComparator implements Comparator<String> {
                 return -1;  /* arbitrary */
             }
             if (b2 == e2) {
-                return (isnum ? 1 : -1);
+                return isnum ? 1 : -1;
             }
 
             if (isnum) {
@@ -138,7 +138,7 @@ public class RpmVersionComparator implements Comparator<String> {
             String seg2 = str2.substring(b2, e2);
             int rc = seg1.compareTo(seg2);
             if (rc != 0) {
-                return  (rc < 0) ? -1 : 1;
+                return  rc < 0 ? -1 : 1;
             }
             //  Reinitilize
             b1 = e1;
@@ -200,6 +200,6 @@ public class RpmVersionComparator implements Comparator<String> {
     }
 
     private char xchar(String s, int i) {
-        return (i < s.length() ? s.charAt(i) : '\0');
+        return i < s.length() ? s.charAt(i) : '\0';
     }
 }

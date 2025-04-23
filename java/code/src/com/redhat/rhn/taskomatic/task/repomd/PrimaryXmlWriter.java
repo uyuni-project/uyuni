@@ -318,7 +318,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
             String[] parts = evr.split(":");
             String vr;
             if (parts.length != 1) {
-                if (parts[0] != null && !(parts[0].isEmpty())) {
+                if (parts[0] != null && !parts[0].isEmpty()) {
                     map.put("epoch", parts[0]);
                 }
                 vr = parts[1];
@@ -416,6 +416,6 @@ public class PrimaryXmlWriter extends RepomdWriter {
      *         are enabled, otherwise false.
      */
     private boolean hasPreFlag(long senseIn) {
-        return (senseIn & ((1 << 6) | (1 << 9) | (1 << 10) | (1 << 24))) > 0;
+        return (senseIn & (1 << 6 | 1 << 9 | 1 << 10 | 1 << 24)) > 0;
     }
 }

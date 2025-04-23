@@ -498,7 +498,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                                             Object pillarValue, LocalCall<?> call) {
         assertEquals("state", call.getModuleName());
         assertEquals("apply", call.getFunctionName());
-        Map<String, Object> kwargs = ((Map<String, Object>)call.getPayload().get("kwarg"));
+        Map<String, Object> kwargs = (Map<String, Object>)call.getPayload().get("kwarg");
         assertTrue(((List<String>)kwargs.get("mods")).contains(expectedState),
                 "State does not call: " + expectedState);
         if (pillarEntry != null) {
@@ -996,7 +996,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() { {
             oneOf(saltServiceMock).callAsync(
                 with(any(LocalCall.class)),
-                with((new MinionListMatcher(List.of(secondMinion.getMinionId())))),
+                with(new MinionListMatcher(List.of(secondMinion.getMinionId()))),
                 with(any(Optional.class))
             );
             LocalAsyncResult<?> result = new LocalAsyncResult<>() {

@@ -277,7 +277,7 @@ public class VirtualHostManagerController {
      * @return the json response
      */
     public static String update(Request request, Response response, User user) {
-        return withVirtualHostManager(request, response, user, (vhm) -> {
+        return withVirtualHostManager(request, response, user, vhm -> {
             List<String> errors = new LinkedList<>();
             Map<String, String> gathererModuleParams =
                     paramsFromQueryMap(request.queryMap().toMap());
@@ -376,7 +376,7 @@ public class VirtualHostManagerController {
      */
     public static String getKubeconfigContexts(Request request,
                                                Response response, User user) {
-        return withVirtualHostManager(request, response, user, (vhm) -> {
+        return withVirtualHostManager(request, response, user, vhm -> {
             String kubeconfigPath = vhm.getConfigs().stream()
                     .filter(cfg -> CONFIG_KUBECONFIG.equals(cfg.getParameter()))
                     .map(VirtualHostManagerConfig::getValue)
@@ -612,7 +612,7 @@ public class VirtualHostManagerController {
      * @return dummy string to satisfy spark
      */
     public static Object refresh(Request request, Response response, User user) {
-        return withVirtualHostManager(request, response, user, (vhm) -> {
+        return withVirtualHostManager(request, response, user, vhm -> {
             String label = vhm.getLabel();
             String message = null;
             Map<String, String> params = new HashMap<>();

@@ -84,9 +84,9 @@ public class RuleResultComparator {
      * either on xccdf:idents or result of evaluation
      */
     public Boolean getDiffers() {
-        return (first == null || second == null ||
+        return first == null || second == null ||
                 !first.getLabel().equals(second.getLabel()) ||
-                !first.getIdentsString().equals(second.getIdentsString()));
+                !first.getIdentsString().equals(second.getIdentsString());
     }
 
     /**

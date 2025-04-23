@@ -494,7 +494,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testCorrectChannelWithTokenInUrl() throws Exception {
-        testCorrectChannel((tokenChannel) -> {
+        testCorrectChannel(tokenChannel -> {
             Map<String, String> params = new HashMap<>();
             params.put(tokenChannel, "");
             return getMockRequestWithParams(params);
@@ -509,7 +509,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testCorrectChannelWithTokenInHeader() throws Exception {
-        testCorrectChannel((tokenChannel) -> {
+        testCorrectChannel(tokenChannel -> {
             Map<String, String> headers = new HashMap<>();
             headers.put("X-Mgr-Auth", tokenChannel);
             return getMockRequestWithParamsAndHeaders(Collections.emptyMap(), headers);
@@ -518,7 +518,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testDownloadDebPackage() throws Exception {
-        testCorrectChannel(() -> debPackageFile, (tokenChannel) -> {
+        testCorrectChannel(() -> debPackageFile, tokenChannel -> {
             Map<String, String> headers = new HashMap<>();
             headers.put("Authorization", "Basic " + Base64.getEncoder().encodeToString(tokenChannel.getBytes()));
             return getMockRequestWithParamsAndHeaders(Collections.emptyMap(), headers, debUriFile);
@@ -527,7 +527,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testParseDebPackageVersion() throws Exception {
-        testCorrectChannel(() -> debPackageFile2, (tokenChannel) -> {
+        testCorrectChannel(() -> debPackageFile2, tokenChannel -> {
             Map<String, String> headers = new HashMap<>();
             headers.put("Authorization", "Basic " + Base64.getEncoder().encodeToString(tokenChannel.getBytes()));
             return getMockRequestWithParamsAndHeaders(Collections.emptyMap(), headers, debUriFile2);

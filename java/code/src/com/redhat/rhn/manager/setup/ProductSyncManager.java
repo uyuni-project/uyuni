@@ -253,7 +253,7 @@ public class ProductSyncManager {
 
             Date lastSyncDate = channelStatus.getLastSyncDate();
             if (maxLastSyncDate == null ||
-                    (lastSyncDate != null && lastSyncDate.after(maxLastSyncDate))) {
+                    lastSyncDate != null && lastSyncDate.after(maxLastSyncDate)) {
                 maxLastSyncDate = lastSyncDate;
             }
         }
@@ -275,7 +275,7 @@ public class ProductSyncManager {
         else {
             syncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
             int totalChannels = product.getMandatoryChannels().size();
-            syncStatus.setSyncProgress((finishedCounter * 100) / totalChannels);
+            syncStatus.setSyncProgress(finishedCounter * 100 / totalChannels);
         }
 
         return syncStatus;

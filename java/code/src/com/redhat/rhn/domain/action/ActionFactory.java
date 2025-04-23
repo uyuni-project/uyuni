@@ -302,7 +302,7 @@ public class ActionFactory extends HibernateFactory {
         query.setParameter("serverId", serverId);
         query.setParameter("label", "kickstart.initiate");
         List<ServerAction> retval = query.list();
-        return (retval != null && !retval.isEmpty());
+        return retval != null && !retval.isEmpty();
     }
 
     /**

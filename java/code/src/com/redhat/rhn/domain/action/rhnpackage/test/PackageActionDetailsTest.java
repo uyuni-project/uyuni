@@ -166,9 +166,9 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
         pad.setParameter("upgrade");
         Long testid = 100L;
 
-        pad.setArch((HibernateFactory.getSession().createNativeQuery("""
+        pad.setArch(HibernateFactory.getSession().createNativeQuery("""
                 SELECT p.* from rhnPackageArch as p WHERE p.id = :id
-                """, PackageArch.class).setParameter("id", testid).getSingleResult()));
+                """, PackageArch.class).setParameter("id", testid).getSingleResult());
         pad.setPackageName(PackageNameTest.createTestPackageName());
 
         ((PackageAction) parent).addDetail(pad);

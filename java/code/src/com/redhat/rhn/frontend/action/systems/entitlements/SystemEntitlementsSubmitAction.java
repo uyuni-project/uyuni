@@ -104,7 +104,7 @@ public class SystemEntitlementsSubmitAction extends
         String entType = form.getString(SystemEntitlementsSetupAction.ADDON_ENTITLEMENT);
 
         Entitlement ent = EntitlementManager.getByName(entType);
-        return (ent == null || ent.isBase()) ? null : ent;
+        return ent == null || ent.isBase() ? null : ent;
     }
 
     /**

@@ -109,8 +109,8 @@ public class OvalServlet extends HttpServlet {
 
     private String getFormat(HttpServletRequest request) {
         String format = request.getParameter("format");
-        if (format == null || (!format.equalsIgnoreCase("xml") &&
-                !format.equals("zip"))) {
+        if (format == null || !format.equalsIgnoreCase("xml") &&
+                !format.equals("zip")) {
             format = "xml";
         }
         else {

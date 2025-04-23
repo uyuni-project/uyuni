@@ -71,7 +71,7 @@ public class TaskoSchedule {
         data = serializeMap(dataIn);
         setCronExpr(cronExprIn);
         setActiveFrom(Objects.requireNonNullElseGet(activeFromIn, Date::new));
-        if ((cronExprIn == null) || (cronExprIn.isEmpty())) {
+        if (cronExprIn == null || cronExprIn.isEmpty()) {
             // set activeFrom for single runs
             setActiveTill(getActiveFrom());
         }
@@ -86,7 +86,7 @@ public class TaskoSchedule {
      */
     public void sanityCheckForPredefinedSchedules() {
         if (getActiveTill() == null) {
-            if ((cronExpr == null) || (cronExpr.isEmpty())) {
+            if (cronExpr == null || cronExpr.isEmpty()) {
                 // set activeTill for single runs
                 setActiveTill(new Date());
                 HibernateFactory.commitTransaction();
@@ -295,6 +295,6 @@ public class TaskoSchedule {
      * @return true, if it's a cron schedule
      */
     public boolean isCronSchedule() {
-        return (cronExpr != null) && !cronExpr.isEmpty();
+        return cronExpr != null && !cronExpr.isEmpty();
     }
 }

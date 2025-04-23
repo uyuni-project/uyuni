@@ -101,7 +101,7 @@ public class HubHandlerTest extends BaseHandlerTestCase {
     @BeforeEach
     public void setupTest() {
         context.setThreadingPolicy(new Synchroniser());
-        context.setImposteriser((ByteBuddyClassImposteriser.INSTANCE));
+        context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
         hubManagerMock = context.mock(HubManager.class);
         migratorFactoryMock = context.mock(IssMigratorFactory.class);
@@ -519,7 +519,7 @@ public class HubHandlerTest extends BaseHandlerTestCase {
     }
 
     private static Map<String, String> mapWithNull(String... keyValuePairs) {
-        if (keyValuePairs == null || (keyValuePairs.length % 2) != 0) {
+        if (keyValuePairs == null || keyValuePairs.length % 2 != 0) {
             throw new IllegalArgumentException();
         }
 

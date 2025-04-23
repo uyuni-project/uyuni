@@ -96,7 +96,7 @@ public class ErrataSetupAction extends RhnAction implements Listable<ErrataOverv
             zyppPluginInstalled = PackageFactory.lookupByNameAndServer(
                     ZYPP_PLUGIN, server) != null;
         }
-        request.setAttribute("supported", (isSUSEMinion || zyppPluginInstalled));
+        request.setAttribute("supported", isSUSEMinion || zyppPluginInstalled);
 
         ListRhnSetHelper help = new ListRhnSetHelper(this, request, getSetDecl(sid));
         help.setListName(LIST_NAME);

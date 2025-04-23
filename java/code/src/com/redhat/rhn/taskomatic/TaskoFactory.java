@@ -394,7 +394,7 @@ public class TaskoFactory extends HibernateFactory {
     public static TaskoRun lookupRunByOrgAndId(Integer orgId, Integer runId)
         throws InvalidParamException {
         TaskoRun run = lookupRunById(runId.longValue());
-        if ((run == null) || (!runBelongToOrg(orgId, run))) {
+        if (run == null || !runBelongToOrg(orgId, run)) {
             throw new InvalidParamException("No such run id");
         }
         return run;
@@ -476,7 +476,7 @@ public class TaskoFactory extends HibernateFactory {
 
     private static boolean runBelongToOrg(Integer orgId, TaskoRun run) {
         if (orgId == null) {
-            return (run.getOrgId() == null);
+            return run.getOrgId() == null;
         }
         return orgId.equals(run.getOrgId());
     }
@@ -534,8 +534,8 @@ public class TaskoFactory extends HibernateFactory {
         String jobLabel = "single-" + bunchName + "-";
         int count = 0;
         while (!TaskoFactory.listSchedulesByOrgAndLabel(orgId, jobLabel + count).isEmpty() ||
-                (SchedulerKernel.getScheduler() != null && SchedulerKernel.getScheduler()
-                        .getTrigger(triggerKey(jobLabel + count, TaskoQuartzHelper.getGroupName(orgId))) != null)) {
+                SchedulerKernel.getScheduler() != null && SchedulerKernel.getScheduler()
+                        .getTrigger(triggerKey(jobLabel + count, TaskoQuartzHelper.getGroupName(orgId))) != null) {
             count++;
         }
         return jobLabel + count;

@@ -632,7 +632,7 @@ public class SaltServerActionService {
                 failActionChain(minionId, firstChunkActionId, Optional.of("No action chain result"));
             }
             else if (!stateApplyResult.isResult() && (stateApplyResult.getChanges() == null ||
-                    (stateApplyResult.getChanges().isJsonObject()) &&
+                    stateApplyResult.getChanges().isJsonObject() &&
                             ((JsonObject)stateApplyResult.getChanges()).size() == 0)) {
                 LOG.error("Error handling action chain execution: {}", stateApplyResult.getComment());
                 failActionChain(minionId, firstChunkActionId, Optional.of(stateApplyResult.getComment()));
@@ -738,7 +738,7 @@ public class SaltServerActionService {
         catch (JsonSyntaxException e) {
             LOG.error("Unexpected response: {}", stateChanges, e);
             String msg = stateChanges.toString();
-            if ((stateChanges.isJsonObject()) &&
+            if (stateChanges.isJsonObject() &&
                     ((JsonObject)stateChanges).get("ret") != null) {
                 msg = ((JsonObject)stateChanges).get("ret").toString();
             }
@@ -1976,7 +1976,7 @@ public class SaltServerActionService {
                             // SSH login is blocked when a reboot is ongoing. Reschedule this action later again
                             LOG.info("System is going down. Configure re-try in 3 minutes");
                             sa.setStatus(STATUS_QUEUED);
-                            sa.setRemainingTries((sa.getRemainingTries() - 1L));
+                            sa.setRemainingTries(sa.getRemainingTries() - 1L);
                             sa.setPickupTime(null);
                             sa.setCompletionTime(null);
                             action.setEarliestAction(Date.from(Instant.now().plus(3, ChronoUnit.MINUTES)));

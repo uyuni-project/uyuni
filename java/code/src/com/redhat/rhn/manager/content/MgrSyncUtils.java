@@ -337,7 +337,7 @@ public class MgrSyncUtils {
                 // Our CDN tokens use this key
                 queryParam.startsWith("dlauth=") ||
                 // typical Akamai token values
-                (queryParam.contains("exp=") && queryParam.contains("hmac="));
+                queryParam.contains("exp=") && queryParam.contains("hmac=");
         LOG.debug("{} isAuthToken: {}", queryParam, ret);
         return ret;
     }

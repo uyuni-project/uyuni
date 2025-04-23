@@ -1711,10 +1711,10 @@ public class ErrataManager extends BaseManager {
         // throw Exception if that's not the case
         if (onlyRelevant) {
             boolean allRelevant = errataIds.isEmpty() ||
-                    (errataIds.stream()
+                    errataIds.stream()
                     .allMatch(eid -> serverApplicableErrataMap.values().stream()
                     .allMatch(eids -> eids.contains(eid))) &&
-                    !serverApplicableErrataMap.isEmpty());
+                    !serverApplicableErrataMap.isEmpty();
 
             if (!allRelevant) {
                 throw new InvalidErrataException();

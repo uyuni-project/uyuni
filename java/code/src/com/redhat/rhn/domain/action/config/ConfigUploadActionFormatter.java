@@ -74,14 +74,14 @@ public class ConfigUploadActionFormatter extends ActionFormatter {
         HtmlTag strong = new HtmlTag("strong");
         strong.addBody(LocalizationService.getInstance()
                 .getMessage(transKey));
-        return (strong.render() + "<br />");
+        return strong.render() + "<br />";
     }
 
     private String renderFileName(ConfigFileName name) {
         //paths can have pretty much any character including newlines,
         //spaces, and control characters. Escaping html here is only
         //going to work happily for file names that make some kind of sense.
-        return (StringEscapeUtils.escapeHtml4(name.getPath()) + "<br />");
+        return StringEscapeUtils.escapeHtml4(name.getPath()) + "<br />";
     }
 
     private void displayChannels(StringBuilder buffy, Set<ConfigChannelAssociation> channelSet) {

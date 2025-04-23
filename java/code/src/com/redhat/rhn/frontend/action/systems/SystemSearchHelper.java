@@ -282,7 +282,7 @@ public class SystemSearchHelper {
             Integer numDays = Integer.parseInt(terms);
             Calendar startDate = Calendar.getInstance();
             // SearchRange:  [TargetDate - NOW]
-            startDate.add(Calendar.DATE, (-1 * numDays) - 1);
+            startDate.add(Calendar.DATE, -1 * numDays - 1);
             query = "registered:{\"" + formatDateString(startDate.getTime()) +
                 "\" TO \"" + formatDateString(
                 Calendar.getInstance().getTime()) +
@@ -770,7 +770,7 @@ public class SystemSearchHelper {
 
             Map<String, Object> sMap1 = results.get(serverId1);
             Map<String, Object> sMap2 = results.get(serverId2);
-            if ((sMap1 == null) && (sMap2 == null)) {
+            if (sMap1 == null && sMap2 == null) {
                 return compareByNameAndSID(sys1, sys2);
             }
 
@@ -782,9 +782,9 @@ public class SystemSearchHelper {
                 return S1_FIRST;
             }
 
-            Double score1 = (sMap1.containsKey(SCORE) ? (Double) sMap1.get(SCORE) : null);
-            Double score2 = (sMap2.containsKey(SCORE) ? (Double) sMap2.get(SCORE) : null);
-            if ((score1 == null) && (score2 == null)) {
+            Double score1 = sMap1.containsKey(SCORE) ? (Double) sMap1.get(SCORE) : null;
+            Double score2 = sMap2.containsKey(SCORE) ? (Double) sMap2.get(SCORE) : null;
+            if (score1 == null && score2 == null) {
                 return compareByNameAndSID(sys1, sys2);
             }
             if (score1 == null) {
@@ -817,7 +817,7 @@ public class SystemSearchHelper {
         // Sort by profile-name if there is one, then by reverse-sid-order
         private int compareByNameAndSID(SystemOverview sys1, SystemOverview sys2) {
 
-            if ((sys1.getName() == null) && (sys2.getName() == null)) {
+            if (sys1.getName() == null && sys2.getName() == null) {
                 return sys2.getId().compareTo(sys1.getId());
             }
 
@@ -877,7 +877,7 @@ public class SystemSearchHelper {
             }
             Map<String, Object> sMap1 = results.get(serverId1);
             Map<String, Object> sMap2 = results.get(serverId2);
-            if ((sMap1 == null) && (sMap2 == null)) {
+            if (sMap1 == null && sMap2 == null) {
                 return 0;
             }
             if (sMap1 == null) {
@@ -888,7 +888,7 @@ public class SystemSearchHelper {
             }
             String val1 = (String)sMap1.get(MATCHING_FIELD_VALUE);
             String val2 = (String)sMap2.get(MATCHING_FIELD_VALUE);
-            if ((val1 == null) && (val2 == null)) {
+            if (val1 == null && val2 == null) {
                 return 0;
             }
             if (val1 == null) {

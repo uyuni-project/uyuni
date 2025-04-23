@@ -78,7 +78,7 @@ public class RenderEngine {
             if (i == 0) {
                 node.setFirst(true);
             }
-            else if (i == (size - 1)) {
+            else if (i == size - 1) {
                 node.setLast(true);
             }
 

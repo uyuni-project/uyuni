@@ -460,7 +460,7 @@ public class SparkApplicationHelper {
             boolean committed = false;
             try {
                 //Checking if the response is valid should fix rollback for failing responses (e.g. from controllers)
-                boolean isValidResponse = (responseIn.status() == HttpStatus.SC_OK);
+                boolean isValidResponse = responseIn.status() == HttpStatus.SC_OK;
                 if (isValidResponse && HibernateFactory.inTransaction()) {
                     HibernateFactory.commitTransaction();
                 }

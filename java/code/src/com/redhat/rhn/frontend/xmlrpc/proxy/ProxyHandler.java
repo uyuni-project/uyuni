@@ -119,7 +119,7 @@ public class ProxyHandler extends BaseHandler {
     public int isProxy(String clientcert)
         throws MethodInvalidParamException {
         Server server = validateClientCertificate(clientcert);
-        return (server.isProxy() ? 1 : 0);
+        return server.isProxy() ? 1 : 0;
     }
 
     /**

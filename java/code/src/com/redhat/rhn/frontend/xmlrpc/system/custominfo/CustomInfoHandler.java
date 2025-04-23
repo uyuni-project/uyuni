@@ -51,7 +51,7 @@ public class CustomInfoHandler extends BaseHandler {
     public int createKey(User loggedInUser, String keyLabel,
                 String keyDescription) throws FaultException {
 
-        if ((keyLabel.length() < 2) || (keyDescription.length() < 2)) {
+        if (keyLabel.length() < 2 || keyDescription.length() < 2) {
             throw new FaultException(-1, "labelOrDescriptionTooShort",
                     "Label and description must be at least two characters long");
         }
@@ -96,7 +96,7 @@ public class CustomInfoHandler extends BaseHandler {
                     "A custom key with label: " + keyLabel + "does not exist.");
         }
 
-        if ((keyDescription.length() < 2)) {
+        if (keyDescription.length() < 2) {
             throw new FaultException(-1, "labelOrDescriptionTooShort",
                     "Label and description must be at least two characters long");
         }

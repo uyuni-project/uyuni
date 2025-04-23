@@ -306,7 +306,7 @@ public class NavTreeIndex {
     private boolean canViewUrl(NavNode node, int depth) {
         AclGuard guard = tree.getGuard();
         // purposefully an or, not an and
-        return (guard == null || guard.canRender(node, depth));
+        return guard == null || guard.canRender(node, depth);
     }
 
     /**

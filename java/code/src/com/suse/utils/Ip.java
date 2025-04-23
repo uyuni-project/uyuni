@@ -75,9 +75,9 @@ public class Ip {
         byte[] addr = new byte[size];
         int b = 0;
         for (int i = 0; i < mask; i++) {
-            b += 1 << (7 - i % Byte.SIZE);
+            b += 1 << 7 - i % Byte.SIZE;
             if (i % Byte.SIZE == 7 || i == mask - 1) {
-                addr[(i / Byte.SIZE)] = (byte)b;
+                addr[i / Byte.SIZE] = (byte)b;
                 b = 0;
             }
         }

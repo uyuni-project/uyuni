@@ -95,11 +95,11 @@ public class SUSEProductUpgrade extends BaseDomainHelper implements Serializable
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((details == null) ? 0 : details.hashCode());
+        result = prime * result + (details == null ? 0 : details.hashCode());
         result = prime * result +
-                ((fromProduct == null) ? 0 : fromProduct.hashCode());
+                (fromProduct == null ? 0 : fromProduct.hashCode());
         result = prime * result +
-                ((toProduct == null) ? 0 : toProduct.hashCode());
+                (toProduct == null ? 0 : toProduct.hashCode());
         return result;
     }
 

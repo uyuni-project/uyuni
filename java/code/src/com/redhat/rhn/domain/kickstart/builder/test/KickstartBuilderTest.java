@@ -87,7 +87,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         KickstartParser parser = createKickstartParser("samplekickstart1.ks");
         assertEquals(27, parser.getOptionLines().size());
         assertEquals(102, parser.getPackageLines().size());
-        assertTrue((parser.getPackageLines().get(0)).startsWith("%packages"));
+        assertTrue(parser.getPackageLines().get(0).startsWith("%packages"));
         assertEquals(40, parser.getPreScriptLines().size());
         assertEquals(0, parser.getPostScriptLines().size());
     }

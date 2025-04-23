@@ -62,8 +62,8 @@ public class UpdateBaseChannelCommand extends BaseUpdateChannelCommand {
         Channel newChannel = null;
 
         // if new channel equals old, there's nothing to do
-        if ((oldChannel == null && baseChannelId == -1) ||
-            (oldChannel != null && oldChannel.getId() == baseChannelId.longValue())) {
+        if (oldChannel == null && baseChannelId == -1 ||
+                oldChannel != null && oldChannel.getId() == baseChannelId.longValue()) {
             return null;
         }
 

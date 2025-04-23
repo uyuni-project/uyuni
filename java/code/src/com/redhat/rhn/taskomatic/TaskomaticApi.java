@@ -845,7 +845,7 @@ public class TaskomaticApi {
     public void scheduleSingleRootCaCertUpdate(Map<String, String> filenameToRootCaCertMap)
             throws TaskomaticApiException {
 
-        if ((null == filenameToRootCaCertMap) || filenameToRootCaCertMap.isEmpty()) {
+        if (null == filenameToRootCaCertMap || filenameToRootCaCertMap.isEmpty()) {
             return; // nothing to do: avoid invoke call, to spare a potential exception
         }
 

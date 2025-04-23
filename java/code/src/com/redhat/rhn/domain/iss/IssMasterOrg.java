@@ -119,8 +119,8 @@ public class IssMasterOrg extends BaseDto {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((masterOrgId == null) ? 0 : masterOrgId.hashCode());
-        result = prime * result + ((masterOrgName == null) ? 0 : masterOrgName.hashCode());
+        result = prime * result + (masterOrgId == null ? 0 : masterOrgId.hashCode());
+        result = prime * result + (masterOrgName == null ? 0 : masterOrgName.hashCode());
         return result;
     }
 
