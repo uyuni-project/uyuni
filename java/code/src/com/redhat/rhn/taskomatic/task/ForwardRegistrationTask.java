@@ -124,7 +124,11 @@ public class ForwardRegistrationTask extends RhnJavaJob {
     }
 
     protected Optional<SCCCredentials> getSCCCredentialsWhenHub(IssHub hub) {
-        Optional<SCCCredentials> optHubCredential = Optional.ofNullable(hub.getMirrorCredentials());
+        List<SCCCredentials> credentials = CredentialsFactory.listSCCCredentials();
+        Optional<SCCCredentials> optHubCredential = credentials.stream()
+                .filter(c -> hub.getFqdn().equals(c.getUrl()))
+                .findFirst();
+
         if (optHubCredential.isEmpty()) {
             log.warn("No Hub SCC Credentials for {} - skipping forwarding registration", hub.getFqdn());
         }

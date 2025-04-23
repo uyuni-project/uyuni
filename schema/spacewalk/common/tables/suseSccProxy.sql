@@ -13,20 +13,8 @@
 -- in this software or its documentation.
 --
 
-DO $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'scc_proxy_status_t') THEN
-        CREATE TYPE scc_proxy_status_t AS ENUM (
-            'scc_creation_pending',
-            'scc_created',
-            'scc_removal_pending'
-        );
-    ELSE
-        RAISE NOTICE 'type "scc_proxy_status_t" already exists, skipping';
-    END IF;
-END $$;
 
-CREATE TABLE IF NOT EXISTS suseSCCproxy
+CREATE TABLE suseSccProxy
 (
     proxy_id            BIGINT CONSTRAINT suse_sccproxy_proxy_id_pk PRIMARY KEY
                                                   GENERATED ALWAYS AS IDENTITY,

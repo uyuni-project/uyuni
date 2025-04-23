@@ -14,14 +14,14 @@ import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import org.hibernate.annotations.Type;
+
 import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -145,7 +145,7 @@ public class SCCProxyRecord extends BaseDomainHelper {
         return ofNullable(sccRegistrationErrorTime);
     }
 
-    @Enumerated(EnumType.STRING)
+    @Type(type = "com.suse.scc.proxy.SccProxyStatusEnumType")
     public SccProxyStatus getStatus() {
         return status;
     }

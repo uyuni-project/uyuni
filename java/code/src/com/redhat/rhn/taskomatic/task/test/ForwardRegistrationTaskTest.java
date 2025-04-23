@@ -464,7 +464,6 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
             throw new IllegalStateException("optCred should have a value");
         }
         mockForwardRegistrationTask.executeSCCTasksCore(sccRegManager, sccProxyFactory, optCred.get());
-        HibernateFactory.getSession().flush();
 
         assertPostConditionsCount(systemSize, 0, systemSize);
 
