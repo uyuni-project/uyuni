@@ -169,4 +169,14 @@ public class ResultJson<T> {
     public T getData() {
         return data;
     }
+
+    /**
+     * @return return the special json structure defined by the SCC API
+     */
+    public Map<String, Object> toSccResult() {
+        if (isSuccess()) {
+            return Map.of("success", Boolean.TRUE);
+        }
+        return Map.of("type", "error", "error", String.join(" ", getMessages()));
+    }
 }

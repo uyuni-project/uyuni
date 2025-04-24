@@ -189,7 +189,11 @@ public class ForwardRegistrationTask extends RhnJavaJob {
         List<SCCProxyRecord> proxyDeregister = sccProxyFactory.listDeregisterItems();
         log.debug("{} ProxyRecords found to delete", proxyDeregister.size());
 
+        List<SCCProxyRecord> proxyVirtHosts = sccProxyFactory.findVirtualizationHosts();
+        log.debug("{} VirtHosts ProxyRecords found to send", proxyVirtHosts.size());
+
         sccRegManager.proxyDeregister(proxyDeregister, false);
         sccRegManager.proxyRegister(proxyForwardRegistration, sccPrimaryOrProxyCredentials);
+        sccRegManager.proxyVirtualInfo(proxyVirtHosts, sccPrimaryOrProxyCredentials);
     }
 }
