@@ -29,6 +29,7 @@ import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -52,7 +53,8 @@ public class ProxyConfigUpdateFileAcquisitor implements ProxyConfigUpdateContext
                     "server_ssh_key_pub", String.class,
                     "server_ssh_push", String.class,
                     "server_ssh_push_pub", String.class
-            )
+            ),
+            "replace_fqdns", List.of(String.class)
     );
     private static final Logger LOG = LogManager.getLogger(ProxyConfigUpdateFileAcquisitor.class);
     private static final String ERROR_MESSAGE_MISSING_ENTRY =
