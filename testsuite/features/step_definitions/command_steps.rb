@@ -1071,8 +1071,8 @@ When(/I generate a supportconfig for the server$/) do
 end
 
 When(/I obtain and extract the supportconfig from the server$/) do
-  supportconfig_path = "/root/server-supportconfig.tar.gz"
-  test_runner_file = "/root/server-supportconfig.tar.gz"
+  supportconfig_path = '/root/server-supportconfig.tar.gz'
+  test_runner_file = '/root/server-supportconfig.tar.gz'
   get_target('server').scp_download(supportconfig_path, test_runner_file)
   `mkdir /root/server-supportconfig && tar xzvf /root/server-supportconfig.tar.gz -C /root/server-supportconfig`
   `mv /root/server-supportconfig/scc_* /root/server-supportconfig/test-server`
