@@ -12,5 +12,6 @@
 CREATE TYPE scc_proxy_status_t AS ENUM (
     'scc_creation_pending',
     'scc_created',
-    'scc_removal_pending'
+    'scc_removal_pending',
+    'scc_virthost_pending'
 );
