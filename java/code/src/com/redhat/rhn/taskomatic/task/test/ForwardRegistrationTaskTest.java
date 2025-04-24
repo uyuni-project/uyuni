@@ -233,6 +233,10 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         Config.get().setString(ConfigDefaults.REG_BATCH_SIZE, String.valueOf(batchSize));
 
+        for (SCCRegCacheItem item : getAllSCCRegCacheItems()) {
+            SCCCachingFactory.deleteRegCacheItem(item);
+        }
+
         servers = new ArrayList<>();
         for (int i = 0; i < systemSize; i++) {
             Server testSystem = ServerTestUtils.createTestSystem();
@@ -314,6 +318,11 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         endpoints.initRoutes(null);
     }
 
+    private List<SCCRegCacheItem> getAllSCCRegCacheItems() {
+        return HibernateFactory.getSession()
+                .createNativeQuery("SELECT * FROM suseSCCRegCache", SCCRegCacheItem.class)
+                .getResultList();
+    }
 
     private void assertPreConditions() {
         assertEquals(
@@ -457,6 +466,12 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         SCCWebClient sccClient = new SCCWebClient(sccConfig, newAdapter);
         SCCProxyFactory sccProxyFactory = new SCCProxyFactory();
 
+        assertEquals(systemSize, testSystems.size());
+        assertEquals(systemSize, servers.size());
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATION_PENDING).size());
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATED).size());
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_REMOVAL_PENDING).size());
+
         SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(sccClient, sccProxyFactory);
 
         Optional<SCCCredentials> optCred = mockForwardRegistrationTask.findSccCredentials();
@@ -469,8 +484,8 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
         List<SCCProxyRecord> proxyRecords =
                 sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATION_PENDING);
-        assertEquals(this.systemSize, proxyRecords.size());
-        if (this.systemSize == proxyRecords.size()) {
+        assertEquals(systemSize, proxyRecords.size());
+        if (systemSize == proxyRecords.size()) {
             SCCProxyRecord proxyRecord = proxyRecords.get(0);
             assertTrue(proxyRecord.getOptSccId().isEmpty());
             assertEquals(PERIPHERAL_FQDN, proxyRecord.getPeripheralFqdn());
@@ -480,12 +495,10 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATED).size());
         assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_REMOVAL_PENDING).size());
 
-        List<SCCRegCacheItem> sccRegCacheItems = HibernateFactory.getSession()
-                .createNativeQuery("SELECT * FROM suseSCCRegCache", SCCRegCacheItem.class)
-                .getResultList();
+        List<SCCRegCacheItem> sccRegCacheItems = getAllSCCRegCacheItems();
 
-        assertEquals(this.systemSize, sccRegCacheItems.size());
-        if (this.systemSize == sccRegCacheItems.size()) {
+        assertEquals(systemSize, sccRegCacheItems.size());
+        if (systemSize == sccRegCacheItems.size()) {
             SCCRegCacheItem sccRegCacheItem = sccRegCacheItems.get(0);
             assertFalse(sccRegCacheItem.isSccRegistrationRequired());
             assertTrue(sccRegCacheItem.getOptSccId().isPresent());
@@ -497,7 +510,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         ServerFactory.delete(servers.get(1));
 
         mockForwardRegistrationTask.executeSCCTasksCore(sccRegManager, sccProxyFactory, optCred.get());
-        assertEquals(this.systemSize - 2,
+        assertEquals(systemSize - 2,
                 sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATION_PENDING).size());
         assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATED).size());
         assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_REMOVAL_PENDING).size());
