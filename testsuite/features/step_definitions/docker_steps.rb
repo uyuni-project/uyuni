@@ -22,25 +22,26 @@ When(/^I enter URI, username and password for registry$/) do
 end
 
 When(/^I wait at most (\d+) seconds until image "([^"]*)" with version "([^"]*)" is built successfully via API$/) do |timeout, name, version|
-  images_list = $api_test.image.list_images
-  log "List of images: #{images_list}"
   image_id = 0
-  images_list.each do |element|
-    if element['name'] == name && element['version'] == version
-      image_id = element['id']
-      break
-    end
-  end
-  raise KeyError, 'unable to find the image id' if image_id.zero?
-
   repeat_until_timeout(timeout: timeout.to_i, message: 'image build did not complete') do
-    image_details = $api_test.image.get_details(image_id)
-    log "Image Details: #{image_details}"
-    break if image_details['buildStatus'] == 'completed'
-    raise SystemCallError, 'image build failed.' if image_details['buildStatus'] == 'failed'
-
+    if image_id.zero?
+      images_list = $api_test.image.list_images
+      log "List of images: #{images_list}"
+      images_list.each do |element|
+        if element['name'] == name && element['version'] == version
+          image_id = element['id']
+          break
+        end
+      end
+    else
+      image_details = $api_test.image.get_details(image_id)
+      log "Image Details: #{image_details}"
+      break if image_details['buildStatus'] == 'completed'
+      raise SystemCallError, 'image build failed.' if image_details['buildStatus'] == 'failed'
+    end
     sleep 5
   end
+  raise KeyError, 'unable to find the image id' if image_id.zero?
 end
 
 When(/^I wait at most (\d+) seconds until image "([^"]*)" with version "([^"]*)" is inspected successfully via API$/) do |timeout, name, version|
