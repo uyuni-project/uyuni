@@ -49,7 +49,7 @@ public class SCCProxyRecord extends BaseDomainHelper {
     }
 
     /**
-     * Constructor
+     * Constructor with status SCC_CREATION_PENDING
      *
      * @param peripheralFqdnIn peripheral from which the request comes from
      * @param sccLoginIn login of the system to register in SCC
@@ -57,11 +57,25 @@ public class SCCProxyRecord extends BaseDomainHelper {
      * @param sccCreationJsonIn original creation json of the system to register in SCC
      */
     public SCCProxyRecord(String peripheralFqdnIn, String sccLoginIn, String sccPasswdIn, String sccCreationJsonIn) {
+        this(peripheralFqdnIn, sccLoginIn, sccPasswdIn, sccCreationJsonIn, SccProxyStatus.SCC_CREATION_PENDING);
+    }
+
+    /**
+     * Constructor
+     *
+     * @param peripheralFqdnIn peripheral from which the request comes from
+     * @param sccLoginIn login of the system to register in SCC
+     * @param sccPasswdIn password of the system to register in SCC
+     * @param sccCreationJsonIn original creation json of the system to register in SCC
+     * @param statusIn the status of this entry
+     */
+    public SCCProxyRecord(String peripheralFqdnIn, String sccLoginIn, String sccPasswdIn, String sccCreationJsonIn,
+                          SccProxyStatus statusIn) {
         peripheralFqdn = peripheralFqdnIn;
         sccLogin = sccLoginIn;
         sccPasswd = sccPasswdIn;
         sccCreationJson = sccCreationJsonIn;
-        status = SccProxyStatus.SCC_CREATION_PENDING;
+        status = statusIn;
     }
 
     @Id

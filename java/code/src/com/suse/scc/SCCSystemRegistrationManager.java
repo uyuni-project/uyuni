@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCUpdateSystemJson;
@@ -27,6 +28,9 @@ import com.suse.scc.model.SCCVirtualizationHostJson;
 import com.suse.scc.proxy.SCCProxyFactory;
 import com.suse.scc.proxy.SCCProxyRecord;
 import com.suse.scc.registration.SCCSystemRegistration;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
@@ -45,6 +49,11 @@ public class SCCSystemRegistrationManager {
     private final SCCClient sccClient;
     private final SCCProxyFactory sccProxyFactory;
     private final SCCSystemRegistration sccSystemRegistration;
+
+    private final Gson gson = new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+            .create();
 
     /**
      * Constructor
@@ -224,7 +233,7 @@ public class SCCSystemRegistrationManager {
         ArrayList<List<SCCVirtualizationHostJson>> batches = new ArrayList<>(
                 IntStream.range(0, virtHosts.size()).boxed().collect(
                         Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
-                                Collectors.mapping(e -> virtHosts.get(e), Collectors.toList())
+                                Collectors.mapping(virtHosts::get, Collectors.toList())
                         )).values());
         for (List<SCCVirtualizationHostJson> batch: batches) {
             try {
@@ -233,6 +242,37 @@ public class SCCSystemRegistrationManager {
             }
             catch (SCCClientException e) {
                 LOG.error("SCC error while updating virtualization hosts", e);
+            }
+            catch (Exception e) {
+                LOG.error("Error updating virtualization hosts", e);
+            }
+        }
+    }
+
+    /**
+     * Insert or Update virtualization host data at SCC
+     * @param proxyVirtHosts the virtual host data
+     * @param sccPrimaryOrProxyCredentialsIn primary credential
+     */
+    public void proxyVirtualInfo(List<SCCProxyRecord> proxyVirtHosts, SCCCredentials sccPrimaryOrProxyCredentialsIn) {
+        ArrayList<List<SCCProxyRecord>> batches = new ArrayList<>(
+                IntStream.range(0, proxyVirtHosts.size()).boxed().collect(
+                        Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
+                                Collectors.mapping(proxyVirtHosts::get, Collectors.toList())
+                        )).values());
+
+        for (List<SCCProxyRecord> recordBatch: batches) {
+            try {
+                List<SCCVirtualizationHostJson> batch = recordBatch.stream()
+                        .map(r -> gson.fromJson(r.getSccCreationJson(), SCCVirtualizationHostJson.class))
+                        .toList();
+                sccClient.setVirtualizationHost(batch, sccPrimaryOrProxyCredentialsIn.getUsername(),
+                        sccPrimaryOrProxyCredentialsIn.getPassword());
+                recordBatch.forEach(sccProxyFactory::remove);
+            }
+            catch (SCCClientException e) {
+                LOG.error("SCC error while updating virtualization hosts", e);
+                recordBatch.forEach(r -> r.setSccRegistrationErrorTime(new Date()));
             }
             catch (Exception e) {
                 LOG.error("Error updating virtualization hosts", e);
