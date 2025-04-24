@@ -11,6 +11,7 @@
 package com.suse.scc.proxy;
 
 import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCVirtualizationHostJson;
 import com.suse.utils.Json;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class SCCProxyManager {
     /**
      * Creates systems from the lists and stores data to be later registered to SCC
      *
-     * @param systemsList a list of {@Link SCCRegisterSystemJson} to be created
+     * @param systemsList a list of {@link SCCRegisterSystemJson} to be created
      * @param peripheralFqdnIn the fqdn of the peripheral
      * @return list of corresponding generated records
      */
@@ -81,5 +82,31 @@ public class SCCProxyManager {
         }
 
         return false; //not found
+    }
+
+    /**
+     * Store virtual host systems to forward it later to SCC
+     *
+     * @param virtHostsList the list of virtual hosts
+     * @param peripheralFqdn the peripheral FQDN
+     */
+    public void setVirtualizationHosts(List<SCCVirtualizationHostJson> virtHostsList, String peripheralFqdn) {
+        for (SCCVirtualizationHostJson host : virtHostsList) {
+            String sccLogin = host.getIdentifier();
+            String sccCreationJson = Json.GSON.toJson(host);
+
+            Optional<SCCProxyRecord> proxyRecord = sccProxyFactory.lookupBySccLoginAndStatus(
+                    sccLogin, SccProxyStatus.SCC_VIRTHOST_PENDING);
+            SCCProxyRecord record = proxyRecord
+                    .map(r -> {
+                        r.setPeripheralFqdn(peripheralFqdn);
+                        r.setSccCreationJson(sccCreationJson);
+                        r.setSccRegistrationErrorTime(null);
+                        return r;
+                    })
+                    .orElse(new SCCProxyRecord(peripheralFqdn, sccLogin, null, sccCreationJson,
+                            SccProxyStatus.SCC_VIRTHOST_PENDING));
+            sccProxyFactory.save(record);
+        }
     }
 }
