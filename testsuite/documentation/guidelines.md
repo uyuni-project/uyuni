@@ -129,9 +129,10 @@ product's feature, not how you want to test it. This is the role of the scenario
 * Don't fall in the case where same step can trigger two different regular expressions
 
 In the implementation:
+* Try to avoid calling steps from inside the Ruby code, use Ruby functions instead
 * We are phasing out minitest assertions like ```assert_equal```, use `fail` instead
 * Don't use global variables, prefer member variables
-* Inside a step definition use `log` instead of `puts`, as the `puts` method will not be capture by Cucumber.
+* Use `log` instead of `puts`, as the `puts` method will not be captured by Cucumber.
 
 ## Other
 
