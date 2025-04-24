@@ -40,6 +40,7 @@ import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
 import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
+import com.suse.scc.model.SCCVirtualizationHostJson;
 import com.suse.scc.proxy.SCCProxyManager;
 
 import com.google.gson.Gson;
@@ -162,7 +163,10 @@ public class SCCEndpoints {
         //
         put(SHOULD_BE_REMOVED + "/connect/organizations/systems", asJson(withSCCAuth(this::createSystems)));
         delete(SHOULD_BE_REMOVED + "/connect/organizations/systems/:id", asJson(withSCCAuth(this::deleteSystem)));
+        put(SHOULD_BE_REMOVED + "/connect/organizations/virtualization_hosts",
+                asJson(withSCCAuth(this::setVirtualizationHosts)));
     }
+
 
     private final Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
@@ -401,5 +405,23 @@ public class SCCEndpoints {
         catch (Exception ex) {
             return internalServerError(response, ex.getMessage());
         }
+    }
+
+    private String setVirtualizationHosts(Request request, Response response, HubSCCCredentials credentials) {
+        try {
+            TypeToken<Map<String, List<SCCVirtualizationHostJson>>> typeToken = new TypeToken<>() { };
+            Map<String, List<SCCVirtualizationHostJson>> payload = gson.fromJson(request.body(), typeToken.getType());
+            if (!payload.containsKey("virtualization_hosts")) {
+                return badRequest(response, "wrong json input: missing virtualization_hosts key");
+            }
+            List<SCCVirtualizationHostJson> virtHostsList = payload.get("virtualization_hosts");
+
+            sccProxyManager.setVirtualizationHosts(virtHostsList, credentials.getPeripheralUrl());
+            response.status(HttpStatus.SC_OK); //200
+        }
+        catch (Exception ex) {
+            return internalServerError(response, ex.getMessage());
+        }
+        return null;
     }
 }

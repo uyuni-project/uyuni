@@ -64,6 +64,22 @@ public class SCCProxyFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup {@link SCCProxyRecord} object by sccLogin and the status
+     *
+     * @param sccLoginIn the scc login
+     * @param statusIn the status
+     * @return return {@link SCCProxyRecord} or empty
+     */
+    public Optional<SCCProxyRecord> lookupBySccLoginAndStatus(String sccLoginIn, SccProxyStatus statusIn) {
+        return getSession()
+                .createQuery("FROM SCCProxyRecord WHERE sccLogin = :sccLogin AND status = :status",
+                        SCCProxyRecord.class)
+                .setParameter("sccLogin", sccLoginIn)
+                .setParameter("status", statusIn)
+                .uniqueResultOptional();
+    }
+
+    /**
      * Lookup {@link SCCProxyRecord} list of objects with given status
      *
      * @param statusIn the status
@@ -115,5 +131,14 @@ public class SCCProxyFactory extends HibernateFactory {
      */
     public List<SCCProxyRecord> listDeregisterItems() {
         return lookupByStatusAndRetry(SccProxyStatus.SCC_REMOVAL_PENDING);
+    }
+
+    /**
+     * Returns virtualization host items which should be forwarded to SCC
+     *
+     * @return list of {@link SCCProxyRecord}
+     */
+    public List<SCCProxyRecord> findVirtualizationHosts() {
+        return lookupByStatusAndRetry(SccProxyStatus.SCC_VIRTHOST_PENDING);
     }
 }
