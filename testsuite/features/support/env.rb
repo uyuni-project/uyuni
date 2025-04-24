@@ -455,18 +455,6 @@ Before('@sle12sp5_paygo_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_paygo_minion']
 end
 
-Before('@sle15sp2_client') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp2_client']
-end
-
-Before('@sle15sp2_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp2_minion']
-end
-
-Before('@sle15sp2_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp2_ssh_minion']
-end
-
 Before('@sle15sp3_client') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp3_client']
 end
@@ -521,6 +509,18 @@ end
 
 Before('@sle15sp6_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp6_ssh_minion']
+end
+
+Before('@sle15sp7_client') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp7_client']
+end
+
+Before('@sle15sp7_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp7_minion']
+end
+
+Before('@sle15sp7_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp7_ssh_minion']
 end
 
 Before('@opensuse156arm_minion') do
