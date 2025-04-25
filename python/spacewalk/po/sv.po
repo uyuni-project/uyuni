@@ -1259,8 +1259,8 @@ msgstr ""
 #~ "\n"
 #~ msgstr ""
 #~ "\n"
-#~ "Om du har ett registreringsnummer, registrera det först på http://www."
-#~ "redhat.com/apps/activate/ och försök sedan igen.\n"
+#~ "Om du har ett registreringsnummer, registrera det först på http://"
+#~ "www.redhat.com/apps/activate/ och försök sedan igen.\n"
 #~ "\n"
 
 #, fuzzy
