@@ -44,7 +44,6 @@ GMOFILES = $(patsubst %.po,%.gmo,$(POFILES))
 DISTFILES = POTFILES.in $(PACKAGE).pot $(POFILES) $(GMOFILES)
 
 POTFILES = \
-	$(shell find ../yast/ -name \*.rb | sort) \
 	$(shell find ../ -name \*.py | sort)
 
 CATALOGS = $(GMOFILES)
