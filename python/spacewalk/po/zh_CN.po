@@ -134,8 +134,8 @@ msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
-"您的帐户无权访问与 (release='%(release)s', "
-"arch='%(arch)s')%(www_activation)s 匹配的任何通道"
+"您的帐户无权访问与 (release='%(release)s', arch='%(arch)s')"
+"%(www_activation)s 匹配的任何通道"
 
 #: ../server/rhnChannel.py:2236
 #, python-format

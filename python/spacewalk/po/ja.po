@@ -140,9 +140,8 @@ msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
-"ご使用のアカウントには (release='%(release)s', "
-"arch='%(arch)s')%(www_activation)s に一致するチャンネルのいずれにもアクセスが"
-"ありません"
+"ご使用のアカウントには (release='%(release)s', arch='%(arch)s')"
+"%(www_activation)s に一致するチャンネルのいずれにもアクセスがありません"
 
 #: ../server/rhnChannel.py:2236
 #, python-format
@@ -1615,8 +1614,8 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 #~ "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s)."
 #~ "\"man mgr-inter-sync\" for more information."
 #~ msgstr ""
-#~ "デバッグのみ: XML／データベース取り込み処理に対する最大バッチサイズ (1.."
-#~ "%s) 。詳しくは \"man mgr-inter-sync\" をお読みください。"
+#~ "デバッグのみ: XML／データベース取り込み処理に対する最大バッチサイズ "
+#~ "(1..%s) 。詳しくは \"man mgr-inter-sync\" をお読みください。"
 
 #~ msgid "alternative SSL CA Cert (fullpath to cert file)"
 #~ msgstr "代替 SSL CA 証明書 (証明書ファイルに対するフルパス)"
