@@ -11709,148 +11709,152 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
         <source>No Playbook selected</source>
         <target state="translated">No s'ha seleccionat cap llibre de reproducció.</target>
       </trans-unit>
-    <trans-unit id="hub.cannot_refresh_certificate" xml:space="preserve">
+      <trans-unit id="hub.cannot_refresh_certificate" xml:space="preserve">
         <source>An error occurred while attempting to refresh the root certificate authorities. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">S'ha produït un error en intentar actualitzar les autoritats de certificació d'arrel. Si us plau, comproveu els registres del servidor.</target>
+      </trans-unit>
       <trans-unit id="hub.migration_success" xml:space="preserve">
         <source>The migration from ISSv{0} was completed successfully.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">La migració des d'ISSv{0} s'ha completat correctament.</target>
+      </trans-unit>
       <trans-unit id="hub.unexpected_error_migrating" xml:space="preserve">
         <source>An expected error happened during the migration process: {0}. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">S'ha produït un error esperat durant el procés de migració: {0}. Si us plau, comproveu els registres del servidor.</target>
+      </trans-unit>
       <trans-unit id="hub.migration.no_slaves" xml:space="preserve">
         <source>This server does not have any ISSv1 slave</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Aquest servidor no té cap esclau ISSv1</target>
+      </trans-unit>
       <trans-unit id="hub.migration.slave_not_exit" xml:space="preserve">
         <source>Slave {0} does not exist</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">L'esclau {0} no existeix</target>
+      </trans-unit>
       <trans-unit id="hub.migration.no_migration_data" xml:space="preserve">
         <source>Slave {0} has no migration data and will not be migrated</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">L'esclau {0} no té dades de migració i no es migrarà</target>
+      </trans-unit>
       <trans-unit id="hub.migration.slave_disabled" xml:space="preserve">
         <source>Slave {0} is currently disabled and will not be migrated</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">L'esclau {0} està actualment desactivat i no es migrarà</target>
+      </trans-unit>
       <trans-unit id="hub.migration.unable_to_migrate" xml:space="preserve">
         <source>Unable to migrate server {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No es pot migrar el servidor {0}: {1}</target>
+      </trans-unit>
       <trans-unit id="hub.migration.fail_channel_config" xml:space="preserve">
         <source>Unable to configure channels for peripheral {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No es poden configurar canals per al perifèric {0}: {1}</target>
+      </trans-unit>
       <trans-unit id="hub.migration.removal_slave" xml:space="preserve">
         <source>Unable remove ISSv1 data for slave {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No es poden eliminar les dades ISSv1 de l'esclau {0}: {1}</target>
+      </trans-unit>
       <trans-unit id="hub.migration.removal_peripheral" xml:space="preserve">
         <source>Unable to remove partially migrated peripheral {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No es pot eliminar el perifèric mig migrat {0}: {1}</target>
+      </trans-unit>
       <trans-unit id="hub.invalid_id" xml:space="preserve">
         <source>The specified peripheral id is invalid.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">L'identificador de perifèric especificat no és vàlid.</target>
+      </trans-unit>
       <trans-unit id="onboardingfailed" xml:space="preserve">
         <source>Onboarding failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">La incorporació ha fallat</target>
+      </trans-unit>
       <trans-unit id="channelsyncfailed" xml:space="preserve">
         <source>Channel sync failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">La sincronització del canal ha fallat</target>
+      </trans-unit>
       <trans-unit id="channelsyncfinished" xml:space="preserve">
         <source>Channel sync finished</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">S'ha acabat la sincronització del canal</target>
+      </trans-unit>
       <trans-unit id="createbootstraprepofailed" xml:space="preserve">
         <source>Creating Bootstrap Repository failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No s'ha pogut crear el dipòsit d'arrencada</target>
+      </trans-unit>
       <trans-unit id="stateapplyfailed" xml:space="preserve">
         <source>State apply failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Ha fallat aplicar l'estat</target>
+      </trans-unit>
       <trans-unit id="paygauthenticationupdatefailed" xml:space="preserve">
         <source>PAYG refresh failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No s'ha pogut actualitzar PAYG</target>
+      </trans-unit>
       <trans-unit id="endoflifeperiod" xml:space="preserve">
         <source>End of Life Period</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Període de fi de vida</target>
+      </trans-unit>
       <trans-unit id="subscriptionwarning" xml:space="preserve">
         <source>Subscription Warning</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Avís de subscripció</target>
+      </trans-unit>
       <trans-unit id="updateavailable" xml:space="preserve">
         <source>Updates are Available</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Hi ha actualitzacions disponibles</target>
+      </trans-unit>
       <trans-unit id="paygnotcompliantwarning" xml:space="preserve">
         <source>PAYG instance is not compliant</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">La instància PAYG no compleix</target>
+      </trans-unit>
       <trans-unit id="sccoptoutwarning" xml:space="preserve">
         <source>SCC Data Sync Disabled</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Sincronització de dades SCC desactivada</target>
+      </trans-unit>
       <trans-unit id="hubregistrationchanged" xml:space="preserve">
         <source>Hub Registration Changed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">El registre del concentrador ha canviat</target>
+      </trans-unit>
       <trans-unit id="notification.not_found" xml:space="preserve">
         <source>Cannot retry: a notification with id '{0}' does not exist.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No es pot tornar a provar: no existeix una notificació amb l'identificador {0}.</target>
+      </trans-unit>
       <trans-unit id="notification.type_not_actionable" xml:space="preserve">
         <source>Cannot retry: the notification type '{0}' is not actionable.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No es pot tornar a provar: el tipus de notificació {0} no es pot accionar.</target>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfailed.action.not_found" xml:space="preserve">
         <source>Failed to restart reposync. A channel with id {0} does not exist.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No s'ha pogut reiniciar la sincronització del dipòsit. No existeix un canal amb l'identificador {0}.</target>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfailed.action.failed" xml:space="preserve">
         <source>Failed to restart reposync for the channel '{0}': {1}.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No s'ha pogut reiniciar la sincronització del dipòsit per al canal {0}: {1}.</target>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfailed.action.success" xml:space="preserve">
         <source>Reposync restarted for the channel '{0}'</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">S'ha reiniciat la sincronització del dipòsit per al canal {0}</target>
+      </trans-unit>
       <trans-unit id="notification.onboardingfailed.action.success" xml:space="preserve">
         <source>Onboarding restarted for the minion with id '{0}'</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">S'ha reiniciat la incorporació per al minion amb l'identificador {0}</target>
+      </trans-unit>
       <trans-unit id="notification.hub.registered.summary" xml:space="preserve">
         <source>This server is now a peripheral of {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Aquest servidor és ara un perifèric de {0}</target>
+      </trans-unit>
       <trans-unit id="notification.hub.registered.details" xml:space="preserve">
         <source>&lt;p&gt;This server has been registered as a peripheral of hub {0} and will start to receive data from it.&lt;/p&gt; &lt;p&gt;Check the &lt;a href="/rhn/manager/admin/hub/hub-details"&gt;Hub details page&lt;/a&gt; for more information.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">&lt;p&gt;Aquest servidor s'ha registrat com a perifèric del concentrador {0} i començarà a rebre dades d'aquest.&lt;/p&gt; &lt;p&gt;Comproveu la &lt;a href="/rhn/manager/admin/hub/hub-details"&gt;pàgina de detalls del concentrador&lt;/a&gt; per a més informació.&lt;/p&gt;</target>
+      </trans-unit>
       <trans-unit id="notification.hub.hub_deregistered.summary" xml:space="preserve">
         <source>This server is no longer a peripheral of {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Aquest servidor ja no és un perifèric de {0}</target>
+      </trans-unit>
       <trans-unit id="notification.hub.hub_deregistered.details" xml:space="preserve">
         <source>&lt;p&gt;The hub {0} has de-registered this server, which means it is no longer acting as its peripheral.&lt;/p&gt; &lt;p&gt;Review your configuration, as all the channels that were previously synced from the hub will no loger be updated.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">&lt;p&gt;El concentrador {0} ha anul·lat el registre d'aquest servidor, la qual cosa significa que ja no actua com a perifèric.&lt;/p&gt; &lt;p&gt;Reviseu la configuració, ja que tots els canals que s'havien sincronitzat prèviament des del concentrador ja no s'actualitzaran.&lt;/p&gt;</target>
+      </trans-unit>
       <trans-unit id="notification.hub.peripheral_deregistered.summary" xml:space="preserve">
         <source>Server {0} is no longer a peripheral.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">El servidor {0} ja no és un perifèric.</target>
+      </trans-unit>
       <trans-unit id="notification.hub.peripheral_deregistered.details" xml:space="preserve">
         <source>&lt;p&gt;The peripheral {0} has de-registered from this hub, and it is no longer manageable as a peripheral..&lt;/p&gt; &lt;p&gt;Any existing synchronization configuration has been removed.&lt;/p&gt;</source>
+        <target state="translated">&lt;p&gt;El perifèric {0} s'ha donat de baixa d'aquest concentrador i ja no es pot gestionar com a perifèric...&lt;/p&gt; &lt;p&gt;S'ha eliminat qualsevol configuració de sincronització existent.&lt;/p&gt;</target>
+      </trans-unit>
+    <trans-unit id="hub.error_peripheral_not_registrable" xml:space="preserve">
+        <source>The server {0} cannot be registered as a peripheral of this hub</source>
       <target state="new"/>
   </trans-unit>
       </body>
