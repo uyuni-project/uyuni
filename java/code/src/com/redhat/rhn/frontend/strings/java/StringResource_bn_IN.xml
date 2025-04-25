@@ -11111,6 +11111,10 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>&lt;p&gt;The peripheral {0} has de-registered from this hub, and it is no longer manageable as a peripheral..&lt;/p&gt; &lt;p&gt;Any existing synchronization configuration has been removed.&lt;/p&gt;</source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="hub.error_peripheral_not_registrable" xml:space="preserve">
+        <source>The server {0} cannot be registered as a peripheral of this hub</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>

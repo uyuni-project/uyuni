@@ -11853,6 +11853,10 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <source>&lt;p&gt;The peripheral {0} has de-registered from this hub, and it is no longer manageable as a peripheral..&lt;/p&gt; &lt;p&gt;Any existing synchronization configuration has been removed.&lt;/p&gt;</source>
         <target state="translated">&lt;p&gt;Periféria {0} má zrušenú registráciu z tohto hubu a už ju nie je možné spravovať ako perifériu..&lt;/p&gt; &lt;p&gt;Všetky existujúce konfigurácie synchronizácie boli odstránené.&lt;/p&gt;</target>
       </trans-unit>
-    </body>
+    <trans-unit id="hub.error_peripheral_not_registrable" xml:space="preserve">
+        <source>The server {0} cannot be registered as a peripheral of this hub</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
