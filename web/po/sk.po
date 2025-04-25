@@ -5037,8 +5037,8 @@ msgid ""
 msgstr ""
 "PAYG inštancie SUSE Multi-Linux Manager musia po poskytnutí prihlasovacích "
 "údajov postúpiť registračné údaje do SCC. Údaje sa odošlú nezávisle od "
-"nastavenia konfigurácie. Ak chcete toto upozornenie skryť, nastavte v rhn."
-"conf 'forward_registration = 1'."
+"nastavenia konfigurácie. Ak chcete toto upozornenie skryť, nastavte v "
+"rhn.conf 'forward_registration = 1'."
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."

@@ -6742,8 +6742,8 @@ msgid ""
 "for the key 'ssh_push_sudo_user' is 'root'. This user is set after "
 "{productName}'s SSH key is deployed during the bootstrap procedure."
 msgstr ""
-"该用户仅在引导期间有效。以后的连接将由 rhn.conf 中指定的用户建"
-"立。\"ssh_push_sudo_user\" 键的默认用户为 \"root\"。此用户在引导期间 "
+"该用户仅在引导期间有效。以后的连接将由 rhn.conf 中指定的用户建立。"
+"\"ssh_push_sudo_user\" 键的默认用户为 \"root\"。此用户在引导期间 "
 "{productName} 的 SSH 密钥部署后设置。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:527

@@ -5102,8 +5102,8 @@ msgid ""
 "= 1' in rhn.conf."
 msgstr ""
 "SUSE Manager PAYG 인스턴스는 자격 증명이 제공되면 등록 데이터를 SCC로 전달해"
-"야 합니다. 데이터는 구성 설정과 관계없이 전송됩니다. 이 경고를 숨기려면 rhn."
-"conf에서 'forward_registration = 1'을 설정하십시오."
+"야 합니다. 데이터는 구성 설정과 관계없이 전송됩니다. 이 경고를 숨기려면 "
+"rhn.conf에서 'forward_registration = 1'을 설정하십시오."
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
