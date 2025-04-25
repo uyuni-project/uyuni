@@ -231,7 +231,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "Setup Wizard" text
     And I wait until I do not see "Loading" text
     Then I should not see a "Operation not successful" text
-    And I select "250" from "pageSize"
+    And I select "250" from page size
     And I should only see success signs in the product list
 
 @scc_credentials
