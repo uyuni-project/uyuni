@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-11 13:25+0200\n"
+"POT-Creation-Date: 2025-04-25 09:41+0200\n"
 "PO-Revision-Date: 2025-03-09 11:56+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -233,7 +233,7 @@ msgstr "アクション"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:115
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:54
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:194
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:196
 #: ../html/src/manager/images/image-view-patches.tsx:87
 #: ../html/src/manager/images/image-view.tsx:690
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
@@ -2648,11 +2648,11 @@ msgstr "PAYGの接続の削除"
 msgid "Are you sure you want to delete connection"
 msgstr "接続を削除してよろしいですか"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:148
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:150
 msgid "Refresh the product catalog from SUSE Customer Center"
 msgstr "SUSE カスタマーセンターから製品カタログを更新"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:180
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:182
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:376
@@ -2660,16 +2660,16 @@ msgstr "SUSE カスタマーセンターから製品カタログを更新"
 msgid "Refresh"
 msgstr "更新"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:183
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:185
 msgid "Please be patient, this might take several minutes."
 msgstr "この処理にはしばらくの時間がかかります。お待ちください。"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:188
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:190
 #: ../html/src/manager/images/image-view-overview.tsx:143
 msgid "Completed"
 msgstr "完了しました"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:193
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:195
 msgid "Operation not successful: Empty reply from the server"
 msgstr "操作は成功しませんでした: サーバからの応答が空です"
 

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-11 13:25+0200\n"
+"POT-Creation-Date: 2025-04-25 09:41+0200\n"
 "PO-Revision-Date: 2025-04-11 16:56+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
@@ -234,7 +234,7 @@ msgstr "Accions"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:115
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:54
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:194
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:196
 #: ../html/src/manager/images/image-view-patches.tsx:87
 #: ../html/src/manager/images/image-view.tsx:690
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
@@ -1202,7 +1202,8 @@ msgstr "Canals sincronitzats correctament amb el perifèric!"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:243
 msgid "Please select at least one channel to add or remove from sync"
-msgstr "Seleccioneu almenys un canal per afegir o eliminar de la sincronització"
+msgstr ""
+"Seleccioneu almenys un canal per afegir o eliminar de la sincronització"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:293
 msgid "Channels to Add"
@@ -2576,11 +2577,11 @@ msgstr "Suprimeix la connexió PAYG"
 msgid "Are you sure you want to delete connection"
 msgstr "Esteu segur que voleu suprimir la connexió"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:148
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:150
 msgid "Refresh the product catalog from SUSE Customer Center"
 msgstr "Refresca el catàleg de productes de SUSE Customer Center"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:180
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:182
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:376
@@ -2588,16 +2589,16 @@ msgstr "Refresca el catàleg de productes de SUSE Customer Center"
 msgid "Refresh"
 msgstr "Refresca"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:183
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:185
 msgid "Please be patient, this might take several minutes."
 msgstr "Si us plau, tingueu paciència, això pot trigar diversos minuts."
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:188
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:190
 #: ../html/src/manager/images/image-view-overview.tsx:143
 msgid "Completed"
 msgstr "Completat"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:193
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:195
 msgid "Operation not successful: Empty reply from the server"
 msgstr "Operació no correcta: Resposta buida del servidor"
 

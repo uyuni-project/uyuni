@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-11 13:25+0200\n"
+"POT-Creation-Date: 2025-04-25 09:41+0200\n"
 "PO-Revision-Date: 2025-04-09 15:56+0000\n"
 "Last-Translator: Fran Serrador <serrador@proton.me>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -238,7 +238,7 @@ msgstr "Acciones"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:115
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:54
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:194
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:196
 #: ../html/src/manager/images/image-view-patches.tsx:87
 #: ../html/src/manager/images/image-view.tsx:690
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
@@ -2638,11 +2638,11 @@ msgstr "Eliminar proyecto"
 msgid "Are you sure you want to delete connection"
 msgstr "¿Confirma que quiere eliminar el proyecto"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:148
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:150
 msgid "Refresh the product catalog from SUSE Customer Center"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:180
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:182
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:376
@@ -2650,16 +2650,16 @@ msgstr ""
 msgid "Refresh"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:183
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:185
 msgid "Please be patient, this might take several minutes."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:188
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:190
 #: ../html/src/manager/images/image-view-overview.tsx:143
 msgid "Completed"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:193
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:195
 msgid "Operation not successful: Empty reply from the server"
 msgstr ""
 
