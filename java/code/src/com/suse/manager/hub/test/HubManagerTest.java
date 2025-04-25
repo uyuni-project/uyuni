@@ -58,6 +58,7 @@ import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.ManagerInfoJson;
+import com.suse.manager.model.hub.ServerInfoJson;
 import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -511,17 +512,17 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
-        mockTaskomaticApi.setExpectations(1,
-                List.of("tasko.scheduleSingleSatBunchRun"),
-                List.of("root-ca-cert-update-bunch"),
+        mockTaskomaticApi.setExpectations(0,
+                List.of(),
+                List.of(),
                 "hub_dummy2.hub.fqdn_root_ca.pem", "", "");
         hubManager.saveNewServer(getValidToken("dummy2.hub.fqdn"), IssRole.HUB, "", "");
         mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
-        mockTaskomaticApi.setExpectations(1,
-                List.of("tasko.scheduleSingleSatBunchRun"),
-                List.of("root-ca-cert-update-bunch"),
+        mockTaskomaticApi.setExpectations(0,
+                List.of(),
+                List.of(),
                 "hub_dummy3.hub.fqdn_root_ca.pem", "", "");
         hubManager.saveNewServer(getValidToken("dummy3.hub.fqdn"), IssRole.HUB, null, null);
         mockTaskomaticApi.verifyTaskoCall();
@@ -537,17 +538,17 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
-        mockTaskomaticApi.setExpectations(1,
-                List.of("tasko.scheduleSingleSatBunchRun"),
-                List.of("root-ca-cert-update-bunch"),
+        mockTaskomaticApi.setExpectations(0,
+                List.of(),
+                List.of(),
                 "peripheral_dummy2.periph.fqdn_root_ca.pem", "", "");
         hubManager.saveNewServer(getValidToken("dummy2.periph.fqdn"), IssRole.PERIPHERAL, "", "");
         mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
-        mockTaskomaticApi.setExpectations(1,
-                List.of("tasko.scheduleSingleSatBunchRun"),
-                List.of("root-ca-cert-update-bunch"),
+        mockTaskomaticApi.setExpectations(0,
+                List.of(),
+                List.of(),
                 "peripheral_dummy3.periph.fqdn_root_ca.pem", "", "");
         hubManager.saveNewServer(getValidToken("dummy3.periph.fqdn"), IssRole.PERIPHERAL, null, null);
         mockTaskomaticApi.verifyTaskoCall();
@@ -641,7 +642,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             allowing(internalClient).deregister();
         }});
 
-        hubManager.deregister(satAdmin, fqdn, false);
+        hubManager.deregister(satAdmin, fqdn, IssRole.HUB, false);
 
         assertNull(hubFactory.lookupAccessTokenFor(fqdn));
         assertNull(hubFactory.lookupIssuedToken(fqdn));
@@ -652,7 +653,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void canDeregisterHubLocalOnly() throws Exception {
         String fqdn = LOCAL_SERVER_FQDN;
-        hubManager.deregister(satAdmin, fqdn, true);
+        hubManager.deregister(satAdmin, fqdn, IssRole.HUB, true);
 
         assertNull(hubFactory.lookupAccessTokenFor(fqdn));
         assertNull(hubFactory.lookupIssuedToken(fqdn));
@@ -673,7 +674,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             allowing(internalClient).deregister();
         }});
 
-        hubManager.deregister(satAdmin, fqdn, false);
+        hubManager.deregister(satAdmin, fqdn, IssRole.PERIPHERAL, false);
 
         assertNull(hubFactory.lookupAccessTokenFor(fqdn));
         assertNull(hubFactory.lookupIssuedToken(fqdn));
@@ -685,7 +686,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     public void canDeregisterPeripheralLocalOnly() throws Exception {
         String fqdn = LOCAL_SERVER_FQDN;
 
-        hubManager.deregister(satAdmin, fqdn, true);
+        hubManager.deregister(satAdmin, fqdn, IssRole.PERIPHERAL, true);
 
         assertNull(hubFactory.lookupAccessTokenFor(fqdn));
         assertNull(hubFactory.lookupIssuedToken(fqdn));
@@ -766,6 +767,9 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             allowing(internalClient).storeReportDbCredentials(with(any(String.class)), with(any(String.class)));
 
             allowing(internalClient).scheduleProductRefresh();
+
+            allowing(internalClient).getServerInfo();
+            will(returnValue(new ServerInfoJson()));
         }});
 
         // Register the remote server as PERIPHERAL for this local server

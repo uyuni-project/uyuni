@@ -47,20 +47,6 @@ Feature: Sanity checks
     And "sle12sp5_minion" should communicate with the server using public interface
     And the clock from "sle12sp5_minion" should be exact
 
-@sle15sp2_minion
-  Scenario: The SLES 15 SP2 minion is healthy
-    Then "sle15sp2_minion" should have a FQDN
-    And reverse resolution should work for "sle15sp2_minion"
-    And "sle15sp2_minion" should communicate with the server using public interface
-    And the clock from "sle15sp2_minion" should be exact
-
-@sle15sp2_ssh_minion
-  Scenario: The SLES 15 SP2 Salt SSH minion is healthy
-    Then "sle15sp2_ssh_minion" should have a FQDN
-    And reverse resolution should work for "sle15sp2_ssh_minion"
-    And "sle15sp2_ssh_minion" should communicate with the server using public interface
-    And the clock from "sle15sp2_ssh_minion" should be exact
-
 @sle15sp3_minion
   Scenario: The SLES 15 SP3 minion is healthy
     Then "sle15sp3_minion" should have a FQDN
@@ -116,6 +102,20 @@ Feature: Sanity checks
     And reverse resolution should work for "sle15sp6_ssh_minion"
     And "sle15sp6_ssh_minion" should communicate with the server using public interface
     And the clock from "sle15sp6_ssh_minion" should be exact
+
+@sle15sp7_minion
+  Scenario: The SLES 15 SP7 minion is healthy
+    Then "sle15sp7_minion" should have a FQDN
+    And reverse resolution should work for "sle15sp7_minion"
+    And "sle15sp7_minion" should communicate with the server using public interface
+    And the clock from "sle15sp7_minion" should be exact
+
+@sle15sp7_ssh_minion
+  Scenario: The SLES 15 SP7 Salt SSH minion is healthy
+    Then "sle15sp7_ssh_minion" should have a FQDN
+    And reverse resolution should work for "sle15sp7_ssh_minion"
+    And "sle15sp7_ssh_minion" should communicate with the server using public interface
+    And the clock from "sle15sp7_ssh_minion" should be exact
 
 @slemicro51_minion
   Scenario: The SLE Micro 5.1 minion is healthy
@@ -242,6 +242,20 @@ Feature: Sanity checks
     And reverse resolution should work for "alma9_ssh_minion"
     And "alma9_ssh_minion" should communicate with the server using public interface
     And the clock from "alma9_ssh_minion" should be exact
+
+@amazon2023_minion
+  Scenario: The Amazon 2023 Salt minion is healthy
+    Then "amazon2023_minion" should have a FQDN
+    And reverse resolution should work for "amazon2023_minion"
+    And "amazon2023_minion" should communicate with the server using public interface
+    And the clock from "amazon2023_minion" should be exact
+
+@amazon2023_ssh_minion
+  Scenario: The Amazon 2023 Salt SSH minion is healthy
+    Then "amazon2023_ssh_minion" should have a FQDN
+    And reverse resolution should work for "amazon2023_ssh_minion"
+    And "amazon2023_ssh_minion" should communicate with the server using public interface
+    And the clock from "amazon2023_ssh_minion" should be exact
 
 @centos7_minion
   Scenario: The CentOS 7 Salt minion is healthy

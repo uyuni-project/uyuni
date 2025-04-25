@@ -64,7 +64,7 @@ Feature: Build container images and CVE audit them
     And I wait at most 660 seconds until event "Image Build suse_key scheduled" is completed
     # We should see the same result via API.
     # Also, check that all inspect actions are finished:
-    And I wait at most 600 seconds until image "suse_key" with version "latest" is built successfully via API
+    And I wait at most 900 seconds until image "suse_key" with version "latest" is built successfully via API
     And I wait at most 300 seconds until image "suse_key" with version "latest" is inspected successfully via API
 
 @skip_if_github_validation
@@ -76,7 +76,7 @@ Feature: Build container images and CVE audit them
     Given I am on the Systems overview page of this "build_host"
     When I schedule the build of image "suse_simple" via API calls
     And I wait at most 660 seconds until event "Image Build suse_simple scheduled" is completed
-    And I wait at most 600 seconds until image "suse_simple" with version "latest" is built successfully via API
+    And I wait at most 900 seconds until image "suse_simple" with version "latest" is built successfully via API
     And I wait at most 300 seconds until image "suse_simple" with version "latest" is inspected successfully via API
 
 @skip_if_github_validation
@@ -89,7 +89,7 @@ Feature: Build container images and CVE audit them
     When I schedule the build of image "suse_real_key" via API calls
     And I wait at most 660 seconds until event "Image Build suse_real_key scheduled" is completed
     And I wait at most 60 seconds until all "3" container images are built correctly on the Image List page
-    And I wait at most 600 seconds until image "suse_real_key" with version "latest" is built successfully via API
+    And I wait at most 900 seconds until image "suse_real_key" with version "latest" is built successfully via API
     And I wait at most 300 seconds until image "suse_real_key" with version "latest" is inspected successfully via API
     When I wait until no Salt job is running on "build_host"
 
@@ -100,7 +100,7 @@ Feature: Build container images and CVE audit them
 @scc_credentials
   Scenario: Build suse_key images with different versions
     When I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
-    And I wait at most 600 seconds until image "suse_key" with version "Latest_key-activation1" is built successfully via API
+    And I wait at most 900 seconds until image "suse_key" with version "Latest_key-activation1" is built successfully via API
     And I wait at most 300 seconds until image "suse_key" with version "Latest_key-activation1" is inspected successfully via API
     When I wait until no Salt job is running on "build_host"
 
@@ -110,7 +110,7 @@ Feature: Build container images and CVE audit them
 
   Scenario: Build suse_simple image with different versions
     When I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
-    And I wait at most 600 seconds until image "suse_simple" with version "Latest_simple" is built successfully via API
+    And I wait at most 900 seconds until image "suse_simple" with version "Latest_simple" is built successfully via API
     And I wait at most 300 seconds until image "suse_simple" with version "Latest_simple" is inspected successfully via API
     When I wait until no Salt job is running on "build_host"
 
@@ -131,7 +131,7 @@ Feature: Build container images and CVE audit them
 
   Scenario: Rebuild suse_simple image
     When I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
-    And I wait at most 600 seconds until image "suse_simple" with version "Latest_simple" is built successfully via API
+    And I wait at most 900 seconds until image "suse_simple" with version "Latest_simple" is built successfully via API
     And I wait at most 300 seconds until image "suse_simple" with version "Latest_simple" is inspected successfully via API
     When I wait until no Salt job is running on "build_host"
 
@@ -142,7 +142,7 @@ Feature: Build container images and CVE audit them
 @scc_credentials
   Scenario: Rebuild suse_key image
     When I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
-    And I wait at most 600 seconds until image "suse_key" with version "Latest_key-activation1" is built successfully via API
+    And I wait at most 900 seconds until image "suse_key" with version "Latest_key-activation1" is built successfully via API
     And I wait at most 300 seconds until image "suse_key" with version "Latest_key-activation1" is inspected successfully via API
     When I wait until no Salt job is running on "build_host"
 
@@ -159,7 +159,7 @@ Feature: Build container images and CVE audit them
     And I click on "submit-btn"
     And I wait until no Salt job is running on "build_host"
     Then I wait until I see "GUI_BUILT_IMAGE" text
-    And I wait at most 600 seconds until image "suse_real_key" with version "GUI_BUILT_IMAGE" is built successfully via API
+    And I wait at most 900 seconds until image "suse_real_key" with version "GUI_BUILT_IMAGE" is built successfully via API
     And I wait at most 300 seconds until image "suse_real_key" with version "GUI_BUILT_IMAGE" is inspected successfully via API
 
 @scc_credentials
@@ -172,7 +172,7 @@ Feature: Build container images and CVE audit them
     And I click on "submit-btn"
     And I wait until no Salt job is running on "build_host"
     Then I wait until I see "GUI_DOCKERADMIN" text
-    And I wait at most 600 seconds until image "suse_real_key" with version "GUI_DOCKERADMIN" is built successfully via API
+    And I wait at most 900 seconds until image "suse_real_key" with version "GUI_DOCKERADMIN" is built successfully via API
     And I wait at most 300 seconds until image "suse_real_key" with version "GUI_DOCKERADMIN" is inspected successfully via API
 
 @scc_credentials

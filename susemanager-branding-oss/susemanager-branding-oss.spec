@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-branding-oss
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,21 +15,24 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+## The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
 
 %global susemanager_shared_path %{_datadir}/susemanager
 %global wwwroot %{susemanager_shared_path}/www
 %global wwwdocroot %{wwwroot}/htdocs
 Name:           susemanager-branding-oss
-Version:        5.1.1
+Version:        5.1.2
 Release:        0
-Summary:        SUSE Manager branding oss specific files
+Summary:        %{productprettyname} branding oss specific files
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
-BuildRequires:  skelcd-EULA-suse-manager-server-container
-Requires:       skelcd-EULA-suse-manager-server-container
+BuildRequires:  skelcd-EULA-multi-linux-manager-server
+Requires:       skelcd-EULA-multi-linux-manager-server
+Conflicts:      skelcd-EULA-suse-manager-server-container
 Conflicts:      oracle-server
 Conflicts:      susemanager-branding
 Provides:       susemanager-branding = %{version}
@@ -42,13 +45,13 @@ ExcludeArch:    i586 x86_64 ppc64le s390x aarch64
 
 %description
 A collection of files which are specific for
-SUSE Manager oss flavors.
+%{productprettyname} oss flavors.
 
 %prep
 %setup -q
 
 %build
-cp %{_datadir}/licenses/product/SUSE-Manager-Server/license.txt license.txt
+cp %{_datadir}/licenses/product/Multi-Linux-Manager-Server/license.txt license.txt
 echo "<p>" > eula.html
 cat license.txt | sed 's/^$/<\/p><p>/' >> eula.html
 echo "</p>" >> eula.html

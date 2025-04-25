@@ -161,6 +161,17 @@ When(/^I uncheck "([^"]*)"$/) do |identifier|
   raise ScriptError, "Checkbox #{identifier} not unchecked." if has_checked_field?(identifier)
 end
 
+When(/^I (check|uncheck) "([^"]*)" by label$/) do |action, label|
+  checkbox = find(:xpath, "//label[text()='#{label}']/preceding-sibling::input[@type='checkbox']")
+  if action == 'check'
+    checkbox.set(true)
+    raise ScriptError, "Checkbox #{label} not checked." unless has_checked_field?(label)
+  elsif action == 'uncheck'
+    checkbox.set(false)
+    raise ScriptError, "Checkbox #{label} not unchecked." unless has_unchecked_field?(label)
+  end
+end
+
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
   if has_select?(field, with_options: [option], wait: 1)
     select(option, from: field)

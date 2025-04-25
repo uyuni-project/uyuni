@@ -1,4 +1,0 @@
-- Introduce Role-Based Access Control
-- Introduce 'access' API namespace to manage Role-Based Access
-  Control
-- Update 'user' API namespace to support RBAC roles

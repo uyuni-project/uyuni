@@ -48,7 +48,7 @@
     <script src="/javascript/spacewalk-essentials.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-checkall.js?cb=${cb_version}"></script>
 
-    <script src='/javascript/manager/main.bundle.js?cb=${cb_version}'></script>
+    <script src='/javascript/manager/main.js?cb=${cb_version}'></script>
     <script src='/javascript/momentjs/moment-with-langs.min.js?cb=${cb_version}' type='text/javascript'></script>
     <decorator:head />
   </head>

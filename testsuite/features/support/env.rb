@@ -51,6 +51,7 @@ $private_net = ENV.fetch('PRIVATENET', nil) if ENV['PRIVATENET']
 $mirror = ENV.fetch('MIRROR', nil)
 $server_http_proxy = ENV.fetch('SERVER_HTTP_PROXY', nil) if ENV['SERVER_HTTP_PROXY']
 $custom_download_endpoint = ENV.fetch('CUSTOM_DOWNLOAD_ENDPOINT', nil) if ENV['CUSTOM_DOWNLOAD_ENDPOINT']
+$build_sources = ENV.fetch('BUILD_SOURCES', nil) if ENV['BUILD_SOURCES']
 $no_auth_registry = ENV.fetch('NO_AUTH_REGISTRY', nil) if ENV['NO_AUTH_REGISTRY']
 $auth_registry = ENV.fetch('AUTH_REGISTRY', nil) if ENV['AUTH_REGISTRY']
 $current_user = 'admin'
@@ -331,6 +332,14 @@ Before('@alma9_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma9_ssh_minion']
 end
 
+Before('@amazon2023_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['amazon2023_minion']
+end
+
+Before('@amazon2023_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['amazon2023_ssh_minion']
+end
+
 Before('@centos7_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['centos7_minion']
 end
@@ -419,14 +428,6 @@ Before('@sle12sp5_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_ssh_minion']
 end
 
-Before('@sle15sp2_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp2_minion']
-end
-
-Before('@sle15sp2_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp2_ssh_minion']
-end
-
 Before('@sle15sp3_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp3_minion']
 end
@@ -457,6 +458,14 @@ end
 
 Before('@sle15sp6_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp6_ssh_minion']
+end
+
+Before('@sle15sp7_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp7_minion']
+end
+
+Before('@sle15sp7_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp7_ssh_minion']
 end
 
 Before('@opensuse156arm_minion') do

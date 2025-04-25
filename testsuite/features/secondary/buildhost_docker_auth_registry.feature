@@ -41,7 +41,7 @@ Feature: Build image with authenticated registry
     And I click on "submit-btn"
     Then I wait until I see "auth_registry_profile" text
     # Verify the status of images in the authenticated image store
-    When I wait at most 660 seconds until image "auth_registry_profile" with version "latest" is built successfully via API
+    When I wait at most 900 seconds until image "auth_registry_profile" with version "latest" is built successfully via API
     And I wait at most 300 seconds until image "auth_registry_profile" with version "latest" is inspected successfully via API
     And I wait until no Salt job is running on "build_host"
     And I refresh the page

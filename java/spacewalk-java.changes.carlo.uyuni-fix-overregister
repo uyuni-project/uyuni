@@ -1,0 +1,2 @@
+- Fix: Correctly register and deregister hubs and peripherals
+  with multiple roles

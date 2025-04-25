@@ -9,8 +9,6 @@ ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
 # Extra packages can be added via project configuration
 ARG EXTRAPACKAGES
 
-ADD --chown=root:root root.tar.gz /
-
 # Main packages
 RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
     zypper ref && zypper --non-interactive up && \
@@ -70,6 +68,8 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
     systemctl enable prometheus-node_exporter && \
     systemctl enable sssd
 
+ADD --chown=root:root root.tar.gz /
+
 # Initialize environments to sync configuration and package files to persistent volumes
 RUN systemctl enable timezone_alignment && \
     uyuni-configfiles-sync init /etc/apache2/ && \
@@ -97,7 +97,7 @@ LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.1.4
+LABEL org.opencontainers.image.version=5.1.5
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

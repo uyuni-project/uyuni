@@ -44,6 +44,7 @@ import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
+import com.suse.manager.model.hub.ServerInfoJson;
 import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
@@ -104,6 +105,7 @@ public class HubController {
         post("/hub/ping", asJson(usingTokenAuthentication(this::ping)));
         post("/hub/sync/deregister", asJson(usingTokenAuthentication(onlyFromRegistered(this::deregister))));
         post("/hub/sync/registerHub", asJson(usingTokenAuthentication(onlyFromUnregistered(this::registerHub))));
+        get("/hub/serverInfo", asJson(usingTokenAuthentication(this::getServerInfo)));
         post("/hub/sync/replaceTokens", asJson(usingTokenAuthentication(onlyFromHub(this::replaceTokens))));
         post("/hub/sync/storeCredentials", asJson(usingTokenAuthentication(onlyFromHub(this::storeCredentials))));
         post("/hub/sync/setHubDetails", asJson(usingTokenAuthentication(onlyFromHub(this::setHubDetails))));
@@ -290,6 +292,11 @@ public class HubController {
         }
     }
 
+    private String getServerInfo(Request request, Response response, IssAccessToken token) {
+        ServerInfoJson serverInfoJson = hubManager.getServerInfo(token);
+        return success(response, serverInfoJson);
+    }
+
     private String storeCredentials(Request request, Response response, IssAccessToken token) {
         SCCCredentialsJson storeRequest = GSON.fromJson(request.body(), SCCCredentialsJson.class);
 
@@ -334,11 +341,17 @@ public class HubController {
 
         try {
             hubManager.syncChannels(token, channelInfoList);
+            Date earliest = Date.from(Instant.now().plus(10, ChronoUnit.SECONDS));
+            taskomaticApi.scheduleProductRefresh(earliest, false);
             return success(response);
         }
         catch (IllegalArgumentException ex) {
             LOGGER.error("Illegal arguments in syncChannels", ex);
             return badRequest(response, ex.getMessage());
+        }
+        catch (TaskomaticApiException ex) {
+            LOGGER.error("Scheduling a product refresh failed. ", ex);
+            return internalServerError(response, "Scheduling product refresh failed");
         }
         catch (Exception e) {
             LOGGER.error("Internal server error in syncChannels", e);

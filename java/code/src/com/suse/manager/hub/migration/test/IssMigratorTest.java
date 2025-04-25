@@ -54,6 +54,8 @@ import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssPeripheralChannels;
+import com.suse.manager.model.hub.IssRole;
+import com.suse.manager.model.hub.ServerInfoJson;
 import com.suse.manager.model.hub.migration.MigrationMessage;
 import com.suse.manager.model.hub.migration.MigrationResult;
 import com.suse.manager.model.hub.migration.MigrationResultCode;
@@ -685,7 +687,9 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
         private void allowRegistration(SlaveMigrationData data, HubInternalClient internalClientMock)
             throws TaskomaticApiException, CertificateException, IOException {
             allowing(taskomaticApi)
-                .scheduleSingleRootCaCertUpdate("peripheral_" + data.fqdn() + "_root_ca.pem", data.rootCA());
+                    .scheduleSingleRootCaCertUpdate(IssRole.PERIPHERAL, data.fqdn(), data.rootCA());
+            allowing(taskomaticApi)
+                    .scheduleSingleRootCaCertDelete(IssRole.PERIPHERAL, data.fqdn());
 
             allowing(hubClientFactory).newInternalClient(data.fqdn(), data.token(), data.rootCA());
             will(returnValue(internalClientMock));
@@ -703,12 +707,16 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
             will(returnValue(null));
 
             allowing(internalClientMock).scheduleProductRefresh();
+            allowing(internalClientMock).getServerInfo();
+            will(returnValue(new ServerInfoJson()));
         }
 
         private void failingRegistration(SlaveMigrationData data, HubInternalClient internalClientMock)
             throws TaskomaticApiException, CertificateException, IOException {
             allowing(taskomaticApi)
-                .scheduleSingleRootCaCertUpdate("peripheral_" + data.fqdn() + "_root_ca.pem", data.rootCA());
+                    .scheduleSingleRootCaCertUpdate(IssRole.PERIPHERAL, data.fqdn(), data.rootCA());
+            allowing(taskomaticApi)
+                    .scheduleSingleRootCaCertDelete(IssRole.PERIPHERAL, data.fqdn());
 
             allowing(hubClientFactory).newInternalClient(data.fqdn(), data.token(), data.rootCA());
             will(returnValue(internalClientMock));
@@ -719,6 +727,9 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
                 with(anyOf(nullValue(String.class), any(String.class)))
             );
             will(throwException(new IOException("Remote failure")));
+
+            allowing(internalClientMock).getServerInfo();
+            will(returnValue(new ServerInfoJson()));
         }
 
         private void allowChannelSetup(HubInternalClient internalClientMock,

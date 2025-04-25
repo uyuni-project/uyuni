@@ -1,0 +1,2 @@
+- Call product refresh after the channel sync call to finish the
+  setup on the peripheral server
