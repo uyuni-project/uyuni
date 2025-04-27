@@ -202,7 +202,7 @@ public class Notification {
 
         // if there are unread messages, notify it to all attached WebSocket sessions
         wsSessions.forEach((session, watched) -> {
-            if (watched.contains(property)) {
+            if (session.isOpen() && watched.contains(property)) {
                 Optional.ofNullable(session.getUserProperties().get(WEB_USER_ID))
                         .map(webUserID -> UserFactory.lookupById((Long) webUserID))
                         .ifPresent(user -> sendData(session, user, Set.of(property)));
