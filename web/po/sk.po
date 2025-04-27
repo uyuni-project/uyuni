@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-25 09:41+0200\n"
-"PO-Revision-Date: 2025-04-20 15:59+0000\n"
+"PO-Revision-Date: 2025-04-27 20:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.11\n"
+"X-Generator: Weblate 5.11.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -823,15 +823,15 @@ msgstr ""
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:194
 msgid ""
 "The migration process was not successfull and reported the following errors"
-msgstr ""
+msgstr "Proces migrácie nebol úspešný a hlásil nasledujúce chyby"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:226
 msgid "This slave is currently disabled and cannot be selected for migration"
-msgstr ""
+msgstr "Tento podriadený je v súčasnosti zakázaný a nie je možné ho vybrať na migráciu"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:227
 msgid "Check to migrate this server to a peripheral"
-msgstr ""
+msgstr "Začiarknite migráciu tohto servera na perifériu"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:246
 msgid "Not defined"
@@ -861,7 +861,7 @@ msgstr "Upraviť"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:252
 msgid "Set access token for {fqdn}"
-msgstr ""
+msgstr "Nastaviť prístupový token pre {fqdn}"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:253
 msgid "Access token"
@@ -878,11 +878,11 @@ msgstr "Nie je potrebné"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:292
 msgid "The root CA is the same of the hub."
-msgstr ""
+msgstr "Koreňová CA je rovnaká ako pre hub."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:293
 msgid "This server has a different root CA."
-msgstr ""
+msgstr "Tento server má inú koreňovú CA."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:296
 msgid ""
@@ -940,7 +940,7 @@ msgstr "Stiahnuť koreňovú CA"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:66
 msgid "View details of peripheral {fqdn}"
-msgstr ""
+msgstr "Zobraziť podrobnosti o periférii {fqdn}"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:136
 msgid "Register a new peripheral server"
@@ -1164,13 +1164,13 @@ msgstr "Jeden synchronizovaný kanál"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:189
 msgid "{nSyncedChannels} syncronized channels, from one organization"
-msgstr ""
+msgstr "{nSyncedChannels} synchronizované kanály z jednej organizácie"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:192
 msgid ""
 "{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different "
 "organizations"
-msgstr ""
+msgstr "{nSyncedChannels} synchronizované kanály z {nSyncedOrgs} rôznych organizácií"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:198
 msgid "Root Certificate Authority successfully modified."
@@ -1190,7 +1190,7 @@ msgstr "Žiadne zmeny, ktoré by sa mali uplatniť"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:215
 msgid "Channels synced correctly to peripheral!"
-msgstr ""
+msgstr "Kanály správne synchronizované k periférii!"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:243
 msgid "Please select at least one channel to add or remove from sync"
