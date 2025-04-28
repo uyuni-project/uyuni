@@ -25,9 +25,11 @@ const EditAnsibleVarsModal = (props: Props) => {
   const data = yaml.load(props.renderContent);
   const varsObject = data[0].vars;
 
+  // State to store updated YAML variables
+  const [updatedVars, setUpdatedVars] = useState(varsObject);
   const [open, setOpen] = useState(false);
-  const onCreateToken = () => {
-    console.log(varsObject);
+  const onSave = () => {
+    console.log("Final values", updatedVars);
   }
   return (
     <>
@@ -45,7 +47,7 @@ const EditAnsibleVarsModal = (props: Props) => {
         isOpen={open}
         title="Edit Variables"
         className="modal-lg"
-        content={<AnsibleVarYamlEditor data={varsObject} />}
+        content={<AnsibleVarYamlEditor data={varsObject} onDataChange={setUpdatedVars} />}
         onClose={() => setOpen(false)}
         footer={
           <React.Fragment>
@@ -67,7 +69,7 @@ const EditAnsibleVarsModal = (props: Props) => {
                   text={t("Save")}
                   handler={() => {
                     setOpen(false);
-                    onCreateToken()
+                    onSave()
                   }}
                 />
               </div>
