@@ -1,0 +1,1 @@
+- Fix WrongClassException at registration (bsc#1241907)
