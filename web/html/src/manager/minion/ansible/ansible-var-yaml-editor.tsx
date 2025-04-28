@@ -7,7 +7,10 @@ import { DropdownButton, Button } from "components/buttons";
 import { useFormikContext } from "formik";
 import { Field, MultiField } from "components/formik/field";
 import { Form, OnSubmit } from "components/formik/Form";
-import { StringVariableEditor } from "./string-variable-editor"
+import DictionaryEditor from "./variables/dictionary-editor"
+import ListEditor from "./variables/list-editor"
+import StringEditor from "./variables/string-editor"
+import BooleanEditor from "./variables/boolean-editor";
 
 const isDictionary = (obj) => {
   if (typeof obj !== "object" || obj === null || Array.isArray(obj)) return false;
@@ -24,22 +27,24 @@ const variablesList = ["List", "Dictionary", "String", "Boolean"];
 
 type Props = {
   data: Record<string, any>;
+  onDataChange: (updatedData: Record<string, any>) => void;
 };
 
-
-
 const AnsibleVarYamlEditor = (props: Props) => {
+  const {
+    data,
+    onDataChange,
+  } = props;
+
   const [visibleInputPath, setVisibleInputPath] = useState(null);
   const [varType, setVarType] = useState(null);
-  const [pendingListKey, setPendingListKey] = useState(null);
-  const [pendingListItems, setPendingListItems] = useState([""]);
 
   const generateId = (path) => `id_${path.split(".").join("_")}`;
 
-  // titles for collapse
+  // Titles for collapse top level
   const levelOneTitles = (obj) => Object.keys(obj);
 
-
+  // Nested level
   const nestedLevelTitles = (prefix, value) => {
     const current = get(value, prefix);
     let paths = [];
@@ -60,211 +65,44 @@ const AnsibleVarYamlEditor = (props: Props) => {
     return paths;
   };
 
-  const KeyValueEditor = ({ path, value, onDelete, setFieldValue }) => {
-    console.log("KeyValueEditor");
-    const [newKey, setNewKey] = useState("");
-    const [newValue, setNewValue] = useState("");
-    const [showInputs, setShowInputs] = useState(false);
-    const [showFocus, setShowFocus] = useState(false);
-
-    const handleAdd = () => {
-      if (!newKey.trim()) return;
-
-      let val = newValue;
-      if (newValue === "true") val = true;
-      else if (newValue === "false") val = false;
-      setFieldValue(`${path}.${newKey}`, val);
-      setNewKey("");
-      setNewValue("");
-      setShowInputs(false);
-      setShowFocus(true)
-    };
-
-    const handleValKeyDown = (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        handleAdd();
-      }
-    };
-
-    return (
-      <>
-        {Object.entries(value).map(([k]) => (
-          <div key={k} className="row mt-2">
-            <div className="col-md-4 text-right"><label>{k}</label></div>
-            <div className="col-md-8">
-              <Field autoFocus={showFocus} name={`${path}.${k}`} children={<Button
-                className="btn-default btn-sm"
-                handler={() => onDelete(`${path}.${k}`)}
-                title={t("Remove item")}
-                icon="fa-minus"
-              />} />
-            </div>
-          </div>
-        ))}
-        <div>
-          {showInputs && (
-            <div className="row mt-2">
-              <div className="col-md-4"></div>
-              <div className="col-md-8">
-                <input
-                  className="form-control"
-                  placeholder="New key"
-                  value={newKey}
-                  onChange={(e) => setNewKey(e.target.value)}
-                  onBlur={handleAdd}
-                  onKeyDown={handleValKeyDown}
-                />
-              </div>
-            </div>)}
-          <div className="row mt-2">
-            <div className="col-md-4"></div>
-            <div className="col-md-8">
-              {!showInputs && (
-                <Button
-                  className=" btn-default btn-sm mt-2"
-                  icon="fa-plus"
-                  text={t("Add new key")}
-                  handler={() => setShowInputs(true)}
-                />
-              )}
-            </div>
-          </div>
-        </div>
-      </>
-    )
-  };
-
   const YamlPreview = () => {
     const { values } = useFormikContext();
     const [yamlOutput, setYamlOutput] = useState("");
 
     useEffect(() => {
+      if (onDataChange) {
+        onDataChange(values);
+      }
       setYamlOutput(yaml.dump({ vars: values }, { quotingType: '"', forceQuotes: true }));
     }, [values]);
 
     return <pre>{yamlOutput}</pre>;
   };
 
-  const handleVariable = useCallback((path, name, setFieldValue) => {
+  const handleVariable = useCallback((path, name) => {
     setVisibleInputPath(path);
     setVarType(name);
-
   }, []);
 
   const renderVariableDiv = useCallback((path, setFieldValue) => {
-    const [newKeyString, setNewKeyString] = useState({});
-    const [newValueString, setNewValueString] = useState({});
-
     if (varType === "String" && visibleInputPath === path) {
-      return (
-        <div className="row ">
-          <div>String</div>
-          <div className="form-group ">
-            <input
-              className="form-control"
-              placeholder="New variable key"
-              value={newKeyString[path] || ""}
-              onChange={(e) => setNewKeyString({ [path]: e.target.value })}
-            />
-          </div>
-          <div className="form-group ">
-            <input
-              className="form-control mt-2"
-              placeholder="New variable value"
-              value={newValueString[path] || ""}
-              onChange={(e) => setNewValueString({ [path]: e.target.value })}
-            />
-          </div>
-          <div className="form-group ">
-            <Button
-              text={t("Add")}
-              icon="fa-plus"
-              className="btn btn-sm btn-primary mt-2"
-              handler={() => {
-                const key = newKeyString[path]?.trim();
-                const val = newValueString[path]?.trim();
-                if (key) {
-                  setFieldValue(`${path}.${key}`, val || "");
-                  setNewKeyString({ [path]: "" });
-                  setNewValueString({ [path]: "" });
-                }
-              }}
-            />
-          </div>
-        </div >)
+      return <StringEditor path={path} setFieldValue={setFieldValue} onClose={() => setVarType(null)} />
     }
-
     if (varType === "List" && visibleInputPath === path) {
-      const handleAddList = () => {
-        if (pendingListKey) {
-          setFieldValue(`${path}.${pendingListKey}`, pendingListItems);
-          setPendingListKey("");
-          setPendingListItems([""]);
-          setVarType(null);
-          setVisibleInputPath(null);
-        }
-      };
-
-      return (
-        <div className="row">
-          <div className="form-group col-md-4">
-            <input
-              className="form-control"
-              placeholder="List key"
-              value={pendingListKey}
-              onChange={(e) => setPendingListKey(e.target.value)}
-            />
-          </div>
-          <div className="form-group col-md-6">
-            {pendingListItems.map((item, idx) => (
-              <input
-                key={idx}
-                className="form-control mb-1"
-                placeholder={`Item ${idx + 1}`}
-                value={item}
-                onChange={(e) => {
-                  const updated = [...pendingListItems];
-                  updated[idx] = e.target.value;
-                  setPendingListItems(updated);
-                }}
-              />
-            ))}
-            <Button
-              className="btn-sm btn-default mt-1"
-              icon="fa-plus"
-              text={t("Add Item")}
-              handler={() => setPendingListItems([...pendingListItems, ""])}
-            />
-          </div>
-          <div className="form-group col-md-2">
-            <Button
-              className="btn btn-sm btn-primary"
-              text={t("Add List")}
-              handler={handleAddList}
-            />
-          </div>
-        </div>
-      );
+      return (<ListEditor path={path} setFieldValue={setFieldValue} onClose={() => setVarType(null)} setVisibleInputPath={setVisibleInputPath} />)
     }
-
-
     if (varType === "Dictionary" && visibleInputPath === path) {
-      return (
-        <div className="row align-items-center">
-          <h3>Dictionary</h3>
-        </div>)
+      return (<DictionaryEditor path={path} setFieldValue={setFieldValue} onClose={() => setVarType(null)} />)
     }
     if (varType === "Boolean" && visibleInputPath === path) {
       return (
-        <div className="row align-items-center">
-          <h3>Boolean</h3>
-        </div>)
+        <BooleanEditor path={path} setFieldValue={setFieldValue} />);
     }
-  }, [varType, visibleInputPath, pendingListKey, pendingListItems]);
+  }, [varType, visibleInputPath]);
 
+  // Retrieve the value at the specified path within the YAML structure
   const renderEditor = (path, values, setFieldValue) => {
-    console.log('renderEditor')
+    // console.log('renderEditor')
     const value = get(values, path);
 
     const removeItem = (targetPath) => {
@@ -301,18 +139,31 @@ const AnsibleVarYamlEditor = (props: Props) => {
       );
     }
 
-    // Dictionary variable — Add new var - TODO
+    // Dictionary variable — Add new key and value
     if (isDictionary(value)) {
       return (
         <>
-          <KeyValueEditor path={path} value={value} onDelete={removeItem} setFieldValue={setFieldValue} />
+          {Object.entries(value).map(([k]) => (
+            <div key={k} className="row mt-2">
+              <div className="col-md-4 text-right"><label>{k}</label></div>
+              <div className="col-md-8">
+                <Field name={`${path}.${k}`} children={<Button
+                  className="btn-default btn-sm"
+                  handler={() => removeItem(`${path}.${k}`)}
+                  title={t("Remove item")}
+                  icon="fa-minus"
+                />} />
+              </div>
+            </div>
+          ))}
+          <DictionaryEditor path={path} setFieldValue={setFieldValue} onClose={() => setVarType(null)} value={value} edit={true} />
         </>
       );
     }
 
     if (typeof value === "object" && value !== null) {
       return (
-        <div className="row">
+        <div className="row pb-3">
           <div className="col-md-4">Click the Add Variable button and select a
             variable type from the list to add new variable to <strong>{path.split(".").pop()}</strong> object.</div>
           <div className="col-md-8">
@@ -327,9 +178,9 @@ const AnsibleVarYamlEditor = (props: Props) => {
                 </a>
               ))}
             />
-            <div>{renderVariableDiv(path, setFieldValue)}
-            </div>
+
           </div>
+          {renderVariableDiv(path, setFieldValue)}
         </div >
       );
     }
@@ -361,7 +212,8 @@ const AnsibleVarYamlEditor = (props: Props) => {
   };
 
   const handleSubmit = (values) => {
-    console.log("Submit:", values);
+    console.log("Submitted Values:", values);
+    console.log("YAML Output:\n", yaml.dump({ vars: values }, { quotingType: '"', forceQuotes: true }));
   };
 
   return (
@@ -378,6 +230,7 @@ const AnsibleVarYamlEditor = (props: Props) => {
               <div className="yaml-editor">
                 {levelOneTitles(values).map((path) => (
                   <Panel
+                    key={generateId(path)}
                     headingLevel="h5"
                     collapseId={generateId(path)}
                     title={path.split(".").join(" > ")}
@@ -385,6 +238,7 @@ const AnsibleVarYamlEditor = (props: Props) => {
                   > {renderEditor(path, values, setFieldValue)}
                     {nestedLevelTitles(path, values).map((p) => (
                       <Panel
+                        key={generateId(p)}
                         headingLevel="h5"
                         collapseId={generateId(p)}
                         title={p.split(".").join(" > ")}
