@@ -269,7 +269,7 @@ class ProductsPageWrapper extends React.Component {
       .catch(this.handleResponseError);
   };
 
-  handleResponseError = (jqXHR: JQueryXHR, arg = "") => {
+  handleResponseError = (jqXHR: JQueryXHR, arg = {}) => {
     const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
       messageMap[msg] ? t(messageMap[msg], arg) : null
     );
@@ -288,8 +288,8 @@ class ProductsPageWrapper extends React.Component {
       const submitButtonTitle = this.state.sccSyncRunning
         ? t("The product catalog is still refreshing, please wait.")
         : this.state.selectedItems.length === 0
-        ? t("Select some product first.")
-        : undefined;
+          ? t("Select some product first.")
+          : undefined;
       const addProductButton =
         this.state.sccSyncRunning || this.state.selectedItems.length === 0 || this.state.addingProducts ? (
           <Button
