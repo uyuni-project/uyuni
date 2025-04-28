@@ -59,7 +59,6 @@ public class EditActionTest extends RhnBaseTestCase {
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
         RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
         RhnMockDynaActionForm form = new RhnMockDynaActionForm("errataEditForm");
-        //request.setSession(session);
         request.setupServerName("mymachine.rhndev.redhat.com");
 
         RequestContext requestContext = new RequestContext(request);

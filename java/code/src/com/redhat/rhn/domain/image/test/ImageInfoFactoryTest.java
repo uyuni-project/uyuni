@@ -405,7 +405,6 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         assertEquals(3, infoList.size());
         infoList.forEach(i -> assertEquals("suma-3.1-base", i.getName()));
-        //assertFalse(infoList.get(0).getVersion().equals(infoList.get(1).getVersion()));
 
         info = ImageInfoFactory.lookupByName("suma-3.1-base", "v2.0", store.getId()).get();
 

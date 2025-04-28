@@ -218,10 +218,6 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testTwoVsOneKernelPackages()  {
-        /*
-         *     public static List comparePackageLists(DataResult profiles,
-            DataResult systems, String param) {
-         */
 
         List<PackageListItem> a = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
@@ -267,7 +263,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         assertEquals(1, diff.size());
         PackageMetadata pm = (PackageMetadata) diff.get(0);
         assertNotNull(pm);
-        // assertEquals(PackageMetadata.KEY_OTHER_NEWER, pm.getComparisonAsInt());
+        // assertEquals(PackageMetadata.KEY_OTHER_NEWER, pm.getComparisonAsInt())
         // Changed this to KEY_OTHER_ONLY because for systems with multiple revs of
         // same package we are now
         assertEquals(PackageMetadata.KEY_OTHER_ONLY, pm.getComparisonAsInt());
@@ -610,7 +606,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
         List<PackageMetadata> diff = ProfileManager.comparePackageLists(new DataResult<>(a),
                 new DataResult<>(b), "foo");
-        // This used to assert: assertEquals(0, diff.size());
+        // This used to assert: assertEquals(0, diff.size())
         // but we now support showing what older packages exist on a system
         assertEquals(2, diff.size());
 
@@ -669,7 +665,6 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         assertNotNull(pm);
         assertEquals("kernel-2.6.9-22.EL", pm.getOther().getEvr());
         assertEquals(PackageMetadata.KEY_OTHER_ONLY, pm.getComparisonAsInt());
-        // assertEquals("kernel-2.4.21-27.EL", pm.getSystem().getEvr());
     }
 
     @Test

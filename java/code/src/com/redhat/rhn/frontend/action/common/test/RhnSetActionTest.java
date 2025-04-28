@@ -64,7 +64,6 @@ public class RhnSetActionTest extends RhnBaseTestCase {
 
     @Test
     public void testUpdateList() throws Exception {
-        //TestAction action = new TestAction();
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action);
         sah.setupClampListBounds();
