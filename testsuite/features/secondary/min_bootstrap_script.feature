@@ -10,7 +10,6 @@
 #       container. Reported Bug: https://bugzilla.suse.com/show_bug.cgi?id=1220864
 
 @skip_if_containerized_server
-@skip_if_github_validation
 @sle_minion
 @scope_onboarding
 Feature: Register a Salt minion with a bootstrap script
