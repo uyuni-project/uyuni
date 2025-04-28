@@ -215,6 +215,9 @@ public class MirrorCredentialsRenderer {
     public String listSubscriptions(HttpServletRequest request, HttpServletResponse response, Long id)
             throws ServletException, IOException {
         // Load credentials for given ID and the subscriptions
+        if (null == id) {
+            throw new ContentSyncException("Credentials ID not available");
+        }
         MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
         MirrorCredentialsDto creds = credsManager.findMirrorCredentials(id);
         if (logger.isDebugEnabled()) {
