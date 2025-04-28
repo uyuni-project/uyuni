@@ -16,7 +16,7 @@ const BooleanEditor = (props: Props) => {
 
   const [newKey, setNewKey] = useState("");
   const [newValue, setNewValue] = useState(false);
-  console.log("newValue", newValue);
+
   const handleAddBoolean = () => {
     if (!newKey.trim()) return;
     setFieldValue(`${path}.${newKey}`, newValue);
@@ -29,11 +29,11 @@ const BooleanEditor = (props: Props) => {
       {
         <div className="border-top mt-4 mb-4 pt-3">
           <div className="d-block" >
-            <h4 className="pull-left">Add Boolean</h4>
+            <h4 className="pull-left">{t("Add Boolean")}</h4>
             <Button className="pull-right" icon="fa-times" handler={() => onClose()} />
           </div>
           <div className="row">
-            <div className="col-md-4 text-right"><label>Name</label></div>
+            <div className="col-md-4 text-right"><label>{t("Name")}</label></div>
             <div className="col-md-8 form-group">
               <input
                 className="form-control"

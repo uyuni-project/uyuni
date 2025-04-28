@@ -27,7 +27,7 @@ const ListEditor = ({ path, setFieldValue, onClose, setVisibleInputPath }) => {
         <Button icon="fa-times" handler={onClose} />
       </div>
       <div className="row">
-        <div className="col-md-4 text-right"><label>Name</label></div>
+        <div className="col-md-4 text-right"><label>{t("Name")}</label></div>
         <div className="col-md-8 form-group">
           <input
             className="form-control"
@@ -38,7 +38,7 @@ const ListEditor = ({ path, setFieldValue, onClose, setVisibleInputPath }) => {
         </div>
       </div>
       <div className="row">
-        <div className="col-md-4 text-right"><label>Items</label></div>
+        <div className="col-md-4 text-right"><label>{t("Items")}</label></div>
         <div className="col-md-8 form-group">
           {pendingListItems.map((item, idx) => (
             <div className="d-flex p-0 gap-2 mb-2" key={`item-${idx}`}>
@@ -62,12 +62,6 @@ const ListEditor = ({ path, setFieldValue, onClose, setVisibleInputPath }) => {
               }
             </div>
           ))}
-          {/* <Button
-            className="btn-sm btn-default mt-1"
-            icon="fa-plus"
-            text={t("Add Item")}
-            handler={() => setPendingListItems([...pendingListItems, ""])}
-          /> */}
         </div>
       </div>
       <div className="row">
