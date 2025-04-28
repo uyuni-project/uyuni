@@ -6,7 +6,6 @@
 # - features/secondary/min_bootstrap_script.feature
 # If the minion fails to bootstrap again.
 
-@skip_if_github_validation
 @scope_onboarding
 Feature: Bootstrap a Salt minion via the GUI using SSH key
 

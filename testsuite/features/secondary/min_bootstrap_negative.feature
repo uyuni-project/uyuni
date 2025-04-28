@@ -1,7 +1,6 @@
 # Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_github_validation
 @sle_minion
 @scope_onboarding
 Feature: Negative tests for bootstrapping normal minions

@@ -12,7 +12,6 @@
 # - features/secondary/min_move_from_and_to_proxy.feature
 # If the minion fails to bootstrap again.
 
-@skip_if_github_validation
 @sle_minion
 @scope_salt
 Feature: Verify that Salt mgrcompat state works when the new module.run syntax is enabled
