@@ -17,6 +17,7 @@ package com.redhat.rhn.taskomatic.task.test;
 
 import static org.apache.http.entity.ContentType.APPLICATION_JSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -28,8 +29,13 @@ import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerInfo;
+import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.task.ForwardRegistrationTask;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -38,7 +44,10 @@ import com.suse.manager.hub.test.ControllerTestUtils;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.model.hub.IssPeripheral;
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.scc.SCCEndpoints;
 import com.suse.scc.SCCSystemRegistrationManager;
 import com.suse.scc.client.SCCClientException;
@@ -49,10 +58,15 @@ import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
 import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.model.SCCUpdateSystemJson;
+import com.suse.scc.model.SCCVirtualizationHostJson;
 import com.suse.scc.proxy.SCCProxyFactory;
 import com.suse.scc.proxy.SCCProxyManager;
 import com.suse.scc.proxy.SCCProxyRecord;
 import com.suse.scc.proxy.SccProxyStatus;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -76,6 +90,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -89,6 +104,8 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
     private List<Server> servers;
     private List<SCCRegCacheItem> testSystems;
 
+    private SystemEntitlementManager systemEntitlementManager;
+
     private MockSCCWebClient mockSccWebClient;
     private MockForwardRegistrationTask mockForwardRegistrationTask;
     private SCCProxyFactory testSccProxyFactory;
@@ -96,6 +113,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
     private Integer systemSize;
     private Integer batchSize;
+    private int virtualHostsSize = 0;
     private boolean allowFirstCallToFail;
     private boolean allowAllCallsToFail;
 
@@ -104,20 +122,28 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
     private static final String PERIPHERAL_USERNAME = "peripheral-000002";
     private static final String PERIPHERAL_PASSWD = "not so secret";
 
+
     static class MockSCCWebClient extends SCCWebClient {
         protected int callCnt;
+        protected int callVirtHostCnt;
 
         MockSCCWebClient(SCCConfig configIn) {
             super(configIn);
             callCnt = 0;
+            callVirtHostCnt = 0;
         }
 
         public int getCallCnt() {
             return callCnt;
         }
 
+        public int getCallVirtHostCnt() {
+            return callVirtHostCnt;
+        }
+
         public void resetCallCnt() {
             callCnt = 0;
+            callVirtHostCnt = 0;
         }
 
         @Override
@@ -155,14 +181,35 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
                     new BasicStatusLine(new ProtocolVersion("http", 1, 1),
                             HttpStatus.SC_BAD_REQUEST, null), null);
 
-            if (request.getMethod().compareToIgnoreCase("PUT") == 0) {
+            if (request.getMethod().compareToIgnoreCase("PUT") == 0 &&
+                    request.getURI().getPath().contains("/connect/organizations/virtualization_hosts")) {
+                executeRequestSetVirtualizationHosts(request, username, password, response);
+            }
+            else if (request.getMethod().compareToIgnoreCase("PUT") == 0) {
                 executeRequestCreateSystems(request, username, password, response);
             }
-            if (request.getMethod().compareToIgnoreCase("DELETE") == 0) {
+            else if (request.getMethod().compareToIgnoreCase("DELETE") == 0) {
                 executeRequestDeleteSystems(request, username, password, response);
             }
 
             return response;
+        }
+
+        public void executeRequestSetVirtualizationHosts(HttpRequestBase request, String username,
+                                                String password, HttpResponse response) {
+            try {
+                HttpEntity entity = ((HttpPut) request).getEntity(); // example
+                String requestBody = EntityUtils.toString(entity);
+
+                ControllerTestUtils.simulateApiEndpointCallBasicAuth(
+                        "/hub/scc/connect/organizations/virtualization_hosts", HttpMethod.put,
+                        username, password, requestBody);
+
+                response.setStatusCode(HttpServletResponse.SC_OK);
+            }
+            catch (Exception eIn) {
+                throw new IllegalStateException(eIn);
+            }
         }
 
         public void executeRequestCreateSystems(HttpRequestBase request, String username,
@@ -195,7 +242,127 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
                         HttpMethod.delete, username, password, id);
 
                 response.setEntity(new StringEntity(res.toString(), APPLICATION_JSON));
-                response.setStatusCode(HttpServletResponse.SC_CREATED);
+                response.setStatusCode(HttpServletResponse.SC_NO_CONTENT);
+            }
+            catch (Exception eIn) {
+                throw new IllegalStateException(eIn);
+            }
+        }
+    }
+
+    static class MockSccHttpClientAdapter extends HttpClientAdapter {
+        private final Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+                .create();
+        private long sccid;
+        private int virtualhostcnt;
+        private int deletedcnt;
+
+        MockSccHttpClientAdapter(SCCConfig configIn) {
+            super(configIn.getAdditionalCerts(), false);
+            sccid = 0;
+            virtualhostcnt = 0;
+            deletedcnt = 0;
+        }
+
+        public long getRegisteredSystemsCnt() {
+            return sccid;
+        }
+
+        public int getVirtualHostsForwaredCnt() {
+            return virtualhostcnt;
+        }
+
+        public int getDeletedCnt() {
+            return deletedcnt;
+        }
+
+        @Override
+        public HttpResponse executeRequest(HttpRequestBase request, String username,
+                                           String password) throws IOException {
+            HttpResponseFactory factory = new DefaultHttpResponseFactory();
+            HttpResponse response = factory.newHttpResponse(
+                    new BasicStatusLine(new ProtocolVersion("http", 1, 1),
+                            HttpStatus.SC_BAD_REQUEST, null), null);
+
+            if (request.getMethod().compareToIgnoreCase("PUT") == 0 &&
+                    request.getURI().getPath().contains("/connect/organizations/virtualization_hosts")) {
+                executeRequestSetVirtualizationHosts(request, username, password, response);
+            }
+            else if (request.getMethod().compareToIgnoreCase("PUT") == 0) {
+                executeRequestCreateSystems(request, username, password, response);
+            }
+            else if (request.getMethod().compareToIgnoreCase("DELETE") == 0) {
+                executeRequestDeleteSystems(request, username, password, response);
+            }
+
+            return response;
+        }
+
+        public void executeRequestSetVirtualizationHosts(HttpRequestBase request, String username,
+                                                         String password, HttpResponse response) {
+            try {
+                HttpEntity entity = ((HttpPut) request).getEntity(); // example
+                String requestBody = EntityUtils.toString(entity);
+
+                TypeToken<Map<String, List<SCCVirtualizationHostJson>>> typeToken = new TypeToken<>() { };
+                Map<String, List<SCCVirtualizationHostJson>> payload = gson.fromJson(requestBody, typeToken.getType());
+                if (!payload.containsKey("virtualization_hosts")) {
+                    fail("wrong json input: missing virtualization_hosts key");
+                }
+                List<SCCVirtualizationHostJson> virtHostsList = payload.get("virtualization_hosts");
+                virtualhostcnt += virtHostsList.size();
+
+                response.setStatusCode(HttpServletResponse.SC_OK);
+            }
+            catch (Exception eIn) {
+                throw new IllegalStateException(eIn);
+            }
+        }
+
+        public void executeRequestCreateSystems(HttpRequestBase request, String username,
+                                                String password, HttpResponse response) {
+            try {
+                HttpEntity entity = ((HttpPut) request).getEntity(); // example
+                String requestBody = EntityUtils.toString(entity);
+
+                assertContains(request.getURI().getPath(), "connect/organizations/systems");
+
+                TypeToken<Map<String, List<SCCRegisterSystemJson>>> typeToken = new TypeToken<>() { };
+                Map<String, List<SCCRegisterSystemJson>> payload = gson.fromJson(requestBody, typeToken.getType());
+
+                if (!payload.containsKey("systems")) {
+                    fail("wrong json input: missing systems key");
+                }
+                List<SCCRegisterSystemJson> systemsList = payload.get("systems");
+
+                List<SCCSystemCredentialsJson> systemsResponse = new ArrayList<>();
+                for (SCCRegisterSystemJson sj : systemsList) {
+                    sccid++;
+                    systemsResponse.add(new SCCSystemCredentialsJson(
+                            sj.getLogin(),
+                            sj.getPassword(),
+                            sccid,
+                            new Date(0)));
+                }
+
+                response.setStatusCode(HttpStatus.SC_CREATED);
+                response.setEntity(new StringEntity(
+                        gson.toJson(new SCCOrganizationSystemsUpdateResponse(systemsResponse)), APPLICATION_JSON));
+            }
+            catch (Exception eIn) {
+                fail(eIn);
+            }
+        }
+
+        public void executeRequestDeleteSystems(HttpRequestBase request, String username,
+                                                String password, HttpResponse response) {
+            try {
+                deletedcnt++;
+
+                response.setEntity(new StringEntity("", APPLICATION_JSON));
+                response.setStatusCode(HttpServletResponse.SC_NO_CONTENT);
             }
             catch (Exception eIn) {
                 throw new IllegalStateException(eIn);
@@ -211,6 +378,11 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         batchSize = 3;
         allowFirstCallToFail = false;
         allowAllCallsToFail = false;
+
+        SaltApi saltApi = new TestSaltApi();
+        systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
+        );
     }
 
     private void setupTest() throws Exception {
@@ -256,6 +428,27 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
                 .collect(Collectors.toList());
     }
 
+    private void setupVirtualHostWithGuest() throws Exception {
+        Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
+        host.getServerInfo().setCheckin(new Date(0));
+        servers.add(host);
+        systemSize += 1;
+        virtualHostsSize += 1;
+        host.getVirtualGuests().stream().map(VirtualInstance::getGuestSystem).forEach(guest -> {
+            guest.getServerInfo().setCheckin(new Date(0));
+            servers.add(guest);
+            systemSize += 1;
+        });
+        HibernateFactory.getSession().flush();
+
+
+        SCCCachingFactory.initNewSystemsToForward();
+        List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
+        testSystems = allUnregistered.stream()
+                .filter(i -> i.getOptServer().get().getServerInfo().getCheckin().equals(new Date(0)))
+                .collect(Collectors.toList());
+    }
+
     private void setupCreateTestSCCWebClient() throws URISyntaxException {
         String url = "https://localhost";
         SCCConfig sccConfig = new SCCConfigBuilder()
@@ -265,6 +458,13 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
                 .setUuid("uuid")
                 .createSCCConfig();
         mockSccWebClient = new MockSCCWebClient(sccConfig) {
+            @Override
+            public void setVirtualizationHost(List<SCCVirtualizationHostJson> virtHostInfo,
+                                              String username, String password) throws SCCClientException {
+                callVirtHostCnt += 1;
+                assertEquals(virtualHostsSize, virtHostInfo.size());
+            }
+
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
                     List<SCCRegisterSystemJson> systems, String username, String password
@@ -447,6 +647,134 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
     }
 
     @Test
+    public void testSuccessVirtHost() throws Exception {
+        systemSize = 0;
+        setupTest();
+        setupVirtualHostWithGuest();
+
+        assertPreConditions();
+        mockForwardRegistrationTask.executeSCCTasksCore(testSccSystemRegMan, testSccProxyFactory, primaryCredentials);
+        assertPostConditionsCount(2, 0, 2);
+        assertEquals(virtualHostsSize, mockSccWebClient.getCallVirtHostCnt());
+    }
+
+    @Test
+    public void testForwardVirtualHostsFromPeripheralToHub() throws Exception {
+        // Cleanup all systems which might exist from previous tests
+        ServerFactory.list().forEach(ServerFactory::delete);
+        systemSize = 0;
+        setupTest();
+        setupAsPeripheral();
+        setupAsHub();
+        setupEndpoint();
+        setupVirtualHostWithGuest();
+
+        assertPreConditions();
+
+        HubFactory hubFactory = new HubFactory();
+        IssHub issHub = hubFactory.lookupIssHub().orElseThrow();
+        URI url = new URI("https://%1$s/rhn/hub/scc/".formatted(issHub.getFqdn()));
+        String uuid = ContentSyncManager.getUUID();
+        SCCConfig sccConfig = new SCCConfigBuilder()
+                .setUrl(url)
+                .setUsername("")
+                .setPassword("")
+                .setUuid(uuid)
+                .createSCCConfig();
+        MockHttpClientAdapter newAdapter = new MockHttpClientAdapter(sccConfig);
+        SCCWebClient sccClient = new SCCWebClient(sccConfig, newAdapter);
+        SCCProxyFactory sccProxyFactory = new SCCProxyFactory();
+
+        Optional<SCCCredentials> optCred = mockForwardRegistrationTask.findSccCredentials();
+        if (optCred.isEmpty()) {
+            throw new IllegalStateException("optCred should have a value");
+        }
+
+        assertEquals(systemSize, testSystems.size());
+        assertEquals(systemSize, servers.size());
+
+        // verify on the Peripheral:
+        // - 2 systems pending registration against the hub
+        // - 1 virtual hosts pending forward
+        assertEquals(2, SCCCachingFactory.findSystemsToForwardRegistration().size());
+        assertEquals(0, SCCCachingFactory.listRegItemsByCredentials(optCred.get()).size());
+        assertEquals(0, SCCCachingFactory.listDeregisterItems().size());
+        assertEquals(1, SCCCachingFactory.listVirtualizationHosts().size());
+
+        // verify on the Hub:
+        // - 0 systems pending to be registered against SCC
+        // - 0 virtual host pending to be set in SCC
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATION_PENDING).size());
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATED).size());
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_REMOVAL_PENDING).size());
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_VIRTHOST_PENDING).size());
+
+        SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(sccClient, sccProxyFactory);
+
+        mockForwardRegistrationTask.executeSCCTasksCore(sccRegManager, sccProxyFactory, optCred.get());
+
+        assertPostConditionsCount(systemSize, 0, systemSize);
+
+        // verify on the Peripheral:
+        // - 2 systems registered against the hub
+        // - no virtual host needs to be forwarded
+        assertEquals(0, SCCCachingFactory.findSystemsToForwardRegistration().size());
+        assertEquals(2, SCCCachingFactory.listRegItemsByCredentials(optCred.get()).size());
+        assertEquals(0, SCCCachingFactory.listDeregisterItems().size());
+        assertEquals(0, SCCCachingFactory.listVirtualizationHosts().size());
+
+        // verify on the Hub:
+        // - 2 systems pending to be registered against SCC
+        // - 1 virtual host pending to be set in SCC
+        assertEquals(2, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATION_PENDING).size());
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATED).size());
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_REMOVAL_PENDING).size());
+        assertEquals(1, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_VIRTHOST_PENDING).size());
+
+        // delete systems to perform later a clean data forwarding against SCC
+        testSystems.stream()
+                .flatMap(c -> c.getOptServer().stream())
+                .forEach(ServerFactory::delete);
+
+        // verify on the Peripheral:
+        // - 2 systems are registered at the Hub
+        // - 2 systems requires de-registration from the hub
+        assertEquals(0, SCCCachingFactory.findSystemsToForwardRegistration().size());
+        assertEquals(2, SCCCachingFactory.listRegItemsByCredentials(optCred.get()).size());
+        assertEquals(2, SCCCachingFactory.listDeregisterItems().size());
+        assertEquals(0, SCCCachingFactory.listVirtualizationHosts().size());
+
+        SCCCachingFactory.listDeregisterItems().forEach(SCCCachingFactory::deleteRegCacheItem);
+
+        URI sccUrl = new URI("https://scc.local/");
+        SCCConfig newSccConfig = new SCCConfigBuilder()
+                .setUrl(sccUrl)
+                .setUsername("")
+                .setPassword("")
+                .setUuid(uuid)
+                .createSCCConfig();
+        MockSccHttpClientAdapter sccAdapter = new MockSccHttpClientAdapter(newSccConfig);
+        SCCWebClient newSccClient = new SCCWebClient(newSccConfig, sccAdapter);
+
+        SCCSystemRegistrationManager newSccRegManager = new SCCSystemRegistrationManager(newSccClient, sccProxyFactory);
+
+        mockForwardRegistrationTask.executeSCCTasksCore(newSccRegManager, sccProxyFactory, optCred.get());
+
+        // verify on the Hub:
+        // - 2 proxy systems registered against SCC
+        // - 0 virtual host pending to be set in SCC
+        /*
+        TODO: the registration of proxied clients not yet implemented
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATION_PENDING).size());
+        assertEquals(2, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATED).size());
+        */
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_REMOVAL_PENDING).size());
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_VIRTHOST_PENDING).size());
+        assertEquals(1, sccAdapter.getVirtualHostsForwaredCnt());
+
+    }
+
+    @Test
     public void testWithHub() throws Exception {
         systemSize = 5;
         setupTest();
@@ -456,7 +784,9 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
         assertPreConditions();
 
-        URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
+        HubFactory hubFactory = new HubFactory();
+        IssHub issHub = hubFactory.lookupIssHub().orElseThrow();
+        URI url = new URI("https://%1$s/rhn/hub/scc/".formatted(issHub.getFqdn()));
         String uuid = ContentSyncManager.getUUID();
         SCCConfig sccConfig = new SCCConfigBuilder()
                 .setUrl(url)
