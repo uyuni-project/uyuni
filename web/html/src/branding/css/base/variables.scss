@@ -126,6 +126,7 @@ $input-border-color: $eos-bc-gray-700;
 $modal-color: $white;
 $modal-backdrop-color: rgba($eos-bc-gray-1000, 50%);
 
+
 /* Other elements */
 $body-background: $white;
 $notification-badge: $orange-light;
@@ -151,3 +152,10 @@ $suse: "SUSE", Helvetica, Arial, sans-serif;
 
 /* Manually map Bootstrap's fonts since our setup is a bit unorthodox */
 $icon-font-path: "../../bootstrap/fonts/";
+
+/* Bootstrap border variables */
+:root {
+  --bs-border-width: 1px;
+  --bs-border-style: solid;
+  --bs-border-color: #{$eos-bc-gray-100};
+}
