@@ -32,10 +32,9 @@ class ErrorBoundary extends React.Component<Props, State> {
 
 const PageWrapper = ErrorBoundary;
 
-// The types could be improved here, possibly similar to how React.ElementRef handles it
-function withPageWrapper<WrapperProps>(
-  Component: React.ComponentClass<WrapperProps> | ((props: WrapperProps) => JSX.Element)
-) {
+function withPageWrapper<WrapperProps extends Record<string, unknown>>(
+  Component: React.ComponentType<WrapperProps>
+): React.FC<WrapperProps> {
   return function WrapperComponent(props: WrapperProps) {
     return (
       <PageWrapper>

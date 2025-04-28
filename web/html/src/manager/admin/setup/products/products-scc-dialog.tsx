@@ -130,7 +130,7 @@ class SCCDialog extends React.Component<Props> {
     }
   };
 
-  handleResponseError = (jqXHR: JQueryXHR, arg = "") => {
+  handleResponseError = (jqXHR: JQueryXHR, arg = {}) => {
     this.finishSync();
     const stepList = this.state.steps;
     const currentStep = stepList.find((s) => s.inProgress);
@@ -162,8 +162,8 @@ class SCCDialog extends React.Component<Props> {
                           ? "fa fa-check text-success"
                           : "fa fa-exclamation-triangle text-warning"
                         : s.inProgress
-                        ? "fa fa-spinner fa-spin"
-                        : "fa fa-circle-o text-muted"
+                          ? "fa fa-spinner fa-spin"
+                          : "fa fa-circle-o text-muted"
                     }
                   />
                   <span>{s.label}</span>

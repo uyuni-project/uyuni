@@ -74,7 +74,7 @@ const ListFilters = (props: Props) => {
       setDisplayedFilters(mapResponseToFilterForm(remainingFilters));
       const remainingSelection = selectedIdentifiers.filter((item) => item !== identifier(row));
       setSelectedIdentifiers(remainingSelection);
-    } catch (error) {
+    } catch (error: any) {
       showErrorToastr(error?.messages ?? error);
     }
   };
@@ -91,7 +91,7 @@ const ListFilters = (props: Props) => {
 
       const remainingFilters = await onAction(undefined, "get");
       setDisplayedFilters(mapResponseToFilterForm(remainingFilters));
-    } catch (error) {
+    } catch (error: any) {
       showErrorToastr(error?.messages ?? error);
     }
   };

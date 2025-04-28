@@ -910,7 +910,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
       .catch(this.handleResponseError);
   }
 
-  handleResponseError = (jqXHR, arg = "") => {
+  handleResponseError = (jqXHR, arg = {}) => {
     const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
       messageMap[msg] ? t(messageMap[msg], arg) : null
     );

@@ -1,7 +1,7 @@
 import _isNil from "lodash/isNil";
 import validator from "validator";
 
-type SingleOrArray<T> = T | T[];
+type SingleOrArray<T> = T | T[] | undefined;
 interface TreeLikeModel<T = any> {
   [key: string]: SingleOrArray<T | TreeLikeModel<T>>;
 }
