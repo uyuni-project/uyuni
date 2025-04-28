@@ -796,7 +796,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
         if (server.isPresent()) {
             Server s = server.get();
-            if (!s.asMinionServer().isPresent()) {
+            if (s.asMinionServer().isEmpty()) {
                 // change the type of the hibernate entity from Server to MinionServer
                 SystemManager.addMinionInfoToServer(s.getId(), minionId);
                 // need to clear the session to avoid NonUniqueObjectException
