@@ -211,11 +211,6 @@ const AnsibleVarYamlEditor = (props: Props) => {
     return null;
   };
 
-  const handleSubmit = (values) => {
-    console.log("Submitted Values:", values);
-    console.log("YAML Output:\n", yaml.dump({ vars: values }, { quotingType: '"', forceQuotes: true }));
-  };
-
   return (
     <>
       <div className="row">
@@ -224,7 +219,7 @@ const AnsibleVarYamlEditor = (props: Props) => {
       </div>
 
       <div className="variable-content">
-        <Form initialValues={props.data} onSubmit={handleSubmit} enableReinitialize className="d-flex w-100">
+        <Form initialValues={props.data} enableReinitialize className="d-flex w-100">
           {({ values, setFieldValue }) => (
             <>
               <div className="yaml-editor">
