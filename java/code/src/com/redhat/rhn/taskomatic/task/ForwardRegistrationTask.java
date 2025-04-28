@@ -140,7 +140,14 @@ public class ForwardRegistrationTask extends RhnJavaJob {
     // Do SCC related tasks like insert, update and delete system in SCC
     protected void executeSCCTasks(SCCCredentials credentialsIn) {
         try {
-            URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
+            IssHub issHub = credentialsIn.getIssHub();
+            URI url;
+            if (null == issHub) {
+                url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
+            }
+            else {
+                url = new URI("https://%1$s/rhn/hub/scc/".formatted(issHub.getFqdn()));
+            }
             String uuid = ContentSyncManager.getUUID();
             SCCCachingFactory.initNewSystemsToForward();
             SCCConfig sccConfig = new SCCConfigBuilder()
@@ -192,7 +199,11 @@ public class ForwardRegistrationTask extends RhnJavaJob {
         List<SCCProxyRecord> proxyDeregister = sccProxyFactory.listDeregisterItems();
         log.debug("{} ProxyRecords found to delete", proxyDeregister.size());
 
+        List<SCCProxyRecord> proxyVirtHosts = sccProxyFactory.findVirtualizationHosts();
+        log.debug("{} VirtHosts ProxyRecords found to send", proxyVirtHosts.size());
+
         sccRegManager.proxyDeregister(proxyDeregister, false);
         sccRegManager.proxyRegister(proxyForwardRegistration, sccPrimaryOrProxyCredentials);
+        sccRegManager.proxyVirtualInfo(proxyVirtHosts, sccPrimaryOrProxyCredentials);
     }
 }

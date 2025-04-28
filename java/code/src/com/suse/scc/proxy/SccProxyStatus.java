@@ -17,7 +17,8 @@ import com.redhat.rhn.domain.Labeled;
 public enum SccProxyStatus implements Labeled {
     SCC_CREATION_PENDING,
     SCC_CREATED,
-    SCC_REMOVAL_PENDING;
+    SCC_REMOVAL_PENDING,
+    SCC_VIRTHOST_PENDING;
 
     @Override
     public String getLabel() {
