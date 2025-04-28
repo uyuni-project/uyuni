@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-25 09:41+0200\n"
-"PO-Revision-Date: 2025-04-27 20:59+0000\n"
+"PO-Revision-Date: 2025-04-28 18:43+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -1194,7 +1194,7 @@ msgstr "Kanály správne synchronizované k periférii!"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:243
 msgid "Please select at least one channel to add or remove from sync"
-msgstr ""
+msgstr "Vyberte aspoň jeden kanál, ktorý chcete pridať alebo odstrániť zo synchronizácie"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:293
 msgid "Channels to Add"
@@ -1249,7 +1249,7 @@ msgstr "Arch"
 msgid ""
 "Some custom channels do not have a sync organization selected. Please select "
 "organizations before confirming."
-msgstr ""
+msgstr "Niektoré vlastné kanály nemajú vybranú synchronizovanú organizáciu. Prosím, vyberte organizácie pred potvrdením."
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:324
 msgid "No channels selected to add"
@@ -1286,7 +1286,7 @@ msgstr "Potvrdiť"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:397
 msgid "{peripheralFqdn} - Peripheral Sync Channels"
-msgstr ""
+msgstr "{peripheralFqdn} - Periférne synchronizované kanály"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:407
 msgid "Back to details"
@@ -1300,7 +1300,7 @@ msgstr "Použiť zmeny"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:429
 msgid "Sync Channels from Hub to Peripheral"
-msgstr ""
+msgstr "Synchronizácia kanálov z hubu na perifériu"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:439
 msgid "Confirm Channel Synchronization Changes"
@@ -2327,15 +2327,15 @@ msgstr "Prístupové tokeny"
 
 #: ../html/src/manager/admin/hub/migrate-from-v1.renderer.tsx:14
 msgid "Migrate from ISSv1 Slaves"
-msgstr ""
+msgstr "Migrácia z podriadených ISSv1"
 
 #: ../html/src/manager/admin/hub/migrate-from-v2.renderer.tsx:13
 msgid "Migrate from ISSv2"
-msgstr ""
+msgstr "Migrácia z ISSv2"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:20
 msgid "{fqdn} - Peripheral Details"
-msgstr ""
+msgstr "{fqdn} - Podrobnosti o periférii"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
@@ -2355,15 +2355,15 @@ msgstr "Migrovať"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:41
 msgid "Migrate an existing configuration of a previous version of ISS"
-msgstr ""
+msgstr "Migrácia existujúcej konfigurácie predchádzajúcej verzie ISS"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:48
 msgid "Migrate ISS v1..."
-msgstr ""
+msgstr "Migrovať ISS v1..."
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:57
 msgid "Migrate ISS v2..."
-msgstr ""
+msgstr "Migrovať ISS v2..."
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:57
 msgid ""
