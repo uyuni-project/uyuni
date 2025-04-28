@@ -130,7 +130,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
     return future;
   };
 
-  handleResponseError = (jqXHR: JQueryXHR, arg: string = "") => {
+  handleResponseError = (jqXHR: JQueryXHR, arg = {}) => {
     const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
       messageMap[msg] ? t(messageMap[msg], arg) : null
     );
