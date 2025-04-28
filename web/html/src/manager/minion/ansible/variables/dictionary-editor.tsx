@@ -58,7 +58,7 @@ const DictionaryEditor = (props: Props) => {
             <Button icon="fa-times" handler={onClose} />
           </div>
           <div className="row">
-            <div className="col-md-4 text-right"><label>Name</label></div>
+            <div className="col-md-4 text-right"><label>{t("Name")}</label></div>
             <div className="col-md-8 form-group">
               <input
                 className="form-control"
@@ -70,7 +70,7 @@ const DictionaryEditor = (props: Props) => {
           </div>
         </>)}
       <div className="row">
-        <div className="col-md-4 text-right"><label>Key-Value Pairs</label></div>
+        <div className="col-md-4 text-right"><label>{t("Key-Value Pairs")}</label></div>
         <div className="col-md-8 form-group">
           {entries.map((entry, idx) => (
             <div className="d-flex gap-3 p-0 m-0 mb-3" key={idx}>
