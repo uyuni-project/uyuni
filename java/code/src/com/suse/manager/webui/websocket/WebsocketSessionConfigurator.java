@@ -15,6 +15,9 @@
 
 package com.suse.manager.webui.websocket;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.servlet.http.HttpSession;
 import javax.websocket.HandshakeResponse;
 import javax.websocket.server.HandshakeRequest;
@@ -26,11 +29,17 @@ import javax.websocket.server.ServerEndpointConfig;
  * WebsocketSessionConfigurator
  */
 public class WebsocketSessionConfigurator extends ServerEndpointConfig.Configurator {
+    private static final Logger LOG = LogManager.getLogger(WebsocketSessionConfigurator.class);
+
     @Override
     public void modifyHandshake(ServerEndpointConfig config,
             HandshakeRequest request,
             HandshakeResponse response) {
         HttpSession httpSession = (HttpSession)request.getHttpSession();
+        if (null == httpSession || null == httpSession.getAttribute("webUserID")) {
+            LOG.debug("unable to set webUserID for the websession");
+            return;
+        }
         config.getUserProperties().put("webUserID", httpSession.getAttribute("webUserID"));
     }
 }

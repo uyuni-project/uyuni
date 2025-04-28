@@ -60,7 +60,7 @@ public class ManagerVersion implements Comparable<ManagerVersion>, Serializable 
             throw new IllegalArgumentException("Version string cannot be null");
         }
 
-        String[] parts = versionStringIn.split("\\.");
+        String[] parts = versionStringIn.split("[. ]");
         if (isUyuni) {
             if (parts.length != 2) {
                 throw new IllegalArgumentException(

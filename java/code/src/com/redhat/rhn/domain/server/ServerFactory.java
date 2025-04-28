@@ -1502,11 +1502,10 @@ public class ServerFactory extends HibernateFactory {
      * @return the server if any
      */
     public static Optional<Server> findByMachineId(String machineId) {
-        return getSession().createNativeQuery("""
-                                      SELECT *, 0 as clazz_ from rhnServer
-                                      WHERE machine_id = :machine
-                                      """, Server.class)
-                .setParameter("machine", machineId, StandardBasicTypes.STRING)
+        return getSession().createQuery("""
+                FROM Server WHERE machineId = :machineId
+                """, Server.class)
+                .setParameter("machineId", machineId, StandardBasicTypes.STRING)
                 .uniqueResultOptional();
     }
 
