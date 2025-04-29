@@ -8,7 +8,7 @@ import PagedDataEndpoint from "./paged-data-endpoint";
 
 jest.mock("../network");
 
-const MockedNetwork = mocked(Network, true);
+const MockedNetwork = mocked(Network, { shallow: true });
 
 const PATH = "/my/test/url";
 const ORIGIN = "https://my.domain";
