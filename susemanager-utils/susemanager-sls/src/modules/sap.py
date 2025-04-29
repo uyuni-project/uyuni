@@ -3,7 +3,6 @@ import os
 import re
 
 __virtualname__ = "sap"
-__grains__ = {}
 SAP_BASE_PATH = "/usr/sap"
 SAP_REGEX = re.compile(r"/usr/sap/([A-Z][A-Z0-9]{2})/([A-Z]+)(\d{2})\b")
 
