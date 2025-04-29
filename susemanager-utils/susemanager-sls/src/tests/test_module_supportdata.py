@@ -21,7 +21,12 @@ def patch_salt():
         with patch(
             "src.modules.supportdata._get_supportdata_dir",
             MagicMock(return_value="/var/log/supportdata"),
-        ), patch("os.makedirs", MagicMock(return_value=True)):
+        ), patch(
+            "src.modules.supportdata._cleanup_outdated_data",
+            MagicMock(),
+        ), patch(
+            "os.makedirs", MagicMock(return_value=True)
+        ):
             yield
 
 
