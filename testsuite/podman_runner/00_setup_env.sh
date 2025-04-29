@@ -12,7 +12,7 @@ if [ -z "${UYUNI_VERSION}" ];then
 fi
 
 echo "Killing old containers"
-containers="auth_registry buildhost deblike_minion rhlike_minion sle_minion opensusessh server controller uyuni-db"
+containers="auth_registry buildhost deblikeminion rhlikeminion sleminion opensusessh server controller uyuni-db"
 for i in ${containers};do
     sudo -i podman kill ${i}
 done
