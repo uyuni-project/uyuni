@@ -1,0 +1,5 @@
+- Better handling of system list filtering (bsc#1242004)
+- CVE-2025-23392: URL encode the user input in the page to avoid
+  string escape
+- CVE-2025-23393: quote and filter the filter and sort columns
+  in the paged query builder
