@@ -14,6 +14,8 @@ Feature: Advanced content management
     And I enter "docker_admin" as "label"
     And I enter the URI of the registry as "uri"
     And I click on "create-btn"
+    Then I wait until table row contains a "galaxy-registry" text
+
   @scc_credentials
   Scenario: Create a profile as Docker admin
     When I follow the left menu "Images > Profiles"
