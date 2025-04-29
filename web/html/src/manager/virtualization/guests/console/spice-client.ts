@@ -98,10 +98,10 @@ class SpiceClient implements ConsoleClientType {
         onagent: this.onAgentConnected,
         onsuccess: this.onConnect,
       });
-    } catch (e) {
+    } catch (e: any) {
       this.disconnect();
       if (this.disconnected != null && e != null) {
-        this.disconnected(e.message);
+        this.disconnected(e?.message);
       }
     }
   };
