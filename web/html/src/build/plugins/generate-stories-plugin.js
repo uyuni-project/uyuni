@@ -70,6 +70,7 @@ module.exports = class GenerateStoriesPlugin {
 
 const storyTemplate = (filePath, safeName, groupName) =>
   `
+// @ts-ignore
 import ${safeName}_component from "${filePath}";
 import ${safeName}_raw from "${filePath}?raw";
 

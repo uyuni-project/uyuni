@@ -8,7 +8,7 @@ import * as React from "react";
  * the props and a different layer adds the rest.
  * Please use this sparingly since it makes refactoring and understanding intent by reading code considerably harder.
  */
-export function cloneReactElement<P>(
+export function cloneReactElement<P extends (Partial<unknown> & React.Attributes) | undefined>(
   element: React.ReactNode | ((props: P) => JSX.Element),
   props?: P,
   ...children: React.ReactNode[]
