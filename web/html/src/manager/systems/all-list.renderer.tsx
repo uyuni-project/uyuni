@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import _unescape from "lodash/unescape";
+
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { MessagesContainer } from "components/toastr";
@@ -16,7 +18,7 @@ export const renderer = (id: string, docsLocale: string, { isAdmin, queryColumn,
   SpaRenderer.renderNavigationReact(
     <>
       <MessagesContainer />
-      <AllSystems docsLocale={docsLocale} isAdmin={isAdmin} queryColumn={queryColumn} query={query} />
+      <AllSystems docsLocale={docsLocale} isAdmin={isAdmin} queryColumn={queryColumn} query={_unescape(query)} />
     </>,
     document.getElementById(id)
   );
