@@ -5,7 +5,9 @@ Module for Getting Supportdata
 from typing import Any, Dict, List
 import logging
 import os
+import re
 import shutil
+import time
 
 from datetime import datetime
 
@@ -22,6 +24,21 @@ log = logging.getLogger(__name__)
 
 def _get_supportdata_dir():
     return "/var/log/supportdata-" + datetime.now().strftime("%Y%m%d%H%M%S")
+
+
+def _cleanup_outdated_data():
+    def _log_error(*args):
+        path = args[1]
+        err = args[2]
+        log.error("Failed to remove %s: %s", path, err[1])
+
+    for d in os.listdir("/var/log/"):
+        fullpath = os.path.join("/var/log", d)
+        if os.path.isdir(fullpath) and re.match(r"^supportdata-[0-9]+$", d):
+            if (time.time() - os.path.getmtime(fullpath)) > 3600:
+                # older than 1 hour
+                # pylint: disable-next=deprecated-argument
+                shutil.rmtree(fullpath, onerror=_log_error)
 
 
 def _get_command(output_dir: str) -> List[str]:
@@ -73,6 +90,7 @@ def get(cmd_args: str = "", **kwargs) -> Dict[str, Any]:
     returncode = None
 
     del kwargs
+    _cleanup_outdated_data()
 
     output_dir = _get_supportdata_dir()
     extra_args = cmd_args.split()
