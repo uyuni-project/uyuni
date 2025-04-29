@@ -25,7 +25,7 @@ postgres_exporter_cleanup:
 
 postgres_exporter_configuration:
   file.managed:
-    - name: /etc/postgres_exporter/postgres_exporter_queries.yaml
+    - name: /etc/sysconfig/prometheus-postgres_exporter/postgres_exporter_queries.yaml
     - makedirs: True
     - source:
       - salt://srvmonitoring/postgres_exporter_queries.yaml
@@ -36,11 +36,11 @@ postgres_exporter_configuration:
 postgres_exporter_service:
   file.managed:
     - names:
-      - /etc/systemd/system/prometheus-postgres_exporter.service.d/60-server.conf:
+      - /etc/sysconfig/prometheus-postgres_exporter/systemd/60-server.conf:
         - source: salt://srvmonitoring/prometheus-postgres_exporter
         - user: root
         - mode: 644
-      - /etc/postgres_exporter/pg_passwd:
+      - /etc/sysconfig/prometheus-postgres_exporter/pg_passwd:
         - source: salt://srvmonitoring/pg_passwd
         - user: prometheus
         - mode: 600
