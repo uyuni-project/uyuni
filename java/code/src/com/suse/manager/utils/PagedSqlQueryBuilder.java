@@ -53,6 +53,8 @@ public class PagedSqlQueryBuilder {
 
     private static final Pattern NUMBER_FILTER_REGEX = Pattern.compile("^([<>!=]{0,2}) *([^ ]*)$");
 
+    private static final Pattern INVALID_COLUMN_CHARS_REGEX = Pattern.compile("[^A-Za-z0-9-_.]");
+
     private static final Logger LOG = LogManager.getLogger(PagedSqlQueryBuilder.class);
 
     private String select;
@@ -135,7 +137,7 @@ public class PagedSqlQueryBuilder {
     public static FilterWithValue parseFilterAsText(Optional<PageControl> pc) {
         String filter = "";
         Object filterValue = "";
-        String filterColumn = pc.map(PageControl::getFilterColumn).orElse("");
+        String filterColumn = sanitizeColumnNames(pc.map(PageControl::getFilterColumn).orElse(""));
 
         if (pc.map(PageControl::hasFilter).orElse(false)) {
             String operator = "ILIKE";
@@ -199,7 +201,7 @@ public class PagedSqlQueryBuilder {
      * @return the parse filter and its value
      */
     public static FilterWithValue parseFilterAsBoolean(Optional<PageControl> pc) {
-        String filterColumn = pc.map(PageControl::getFilterColumn).orElse("");
+        String filterColumn = sanitizeColumnNames(pc.map(PageControl::getFilterColumn).orElse(""));
         return parseFilterAsComparable(pc, EQUAL_OPERATOR_ONLY_REGEX, EQUAL_FILTER_REGEX, (operator, value) -> {
             if (Stream.of("true", "false").anyMatch(v -> v.equalsIgnoreCase(value))) {
                 return new FilterWithValue(
@@ -217,15 +219,12 @@ public class PagedSqlQueryBuilder {
      * @return the parse filter and its value
      */
     public static FilterWithValue parseFilterAsDate(Optional<PageControl> pc) {
-        String filterColumn = pc.map(PageControl::getFilterColumn).orElse("");
+        String filterColumn = sanitizeColumnNames(pc.map(PageControl::getFilterColumn).orElse(""));
         return parseFilterAsComparable(pc, NUMBER_OPERATOR_ONLY_REGEX, NUMBER_FILTER_REGEX, (operator, value) -> {
             try {
                 LocalDate.parse(value);
-                return new FilterWithValue(
-                        String.format(" CAST(%s AS DATE) %s CAST(:filter_value AS DATE) ",
-                                filterColumn, operator),
-                       value
-                );
+                return new FilterWithValue(String.format(" CAST(%s AS DATE) %s CAST(:filter_value AS DATE) ",
+                        filterColumn, operator), value);
             }
             catch (DateTimeException e) {
                 // That wasn't a date, ignore
@@ -242,7 +241,7 @@ public class PagedSqlQueryBuilder {
      * @return the parse filter and its value
      */
     public static FilterWithValue parseFilterAsNumber(Optional<PageControl> pc) {
-        String filterColumn = pc.map(PageControl::getFilterColumn).orElse("");
+        String filterColumn = sanitizeColumnNames(pc.map(PageControl::getFilterColumn).orElse(""));
         return parseFilterAsComparable(pc, NUMBER_OPERATOR_ONLY_REGEX, NUMBER_FILTER_REGEX, (operator, value) -> {
             Number filterValue;
             try {
@@ -278,7 +277,9 @@ public class PagedSqlQueryBuilder {
     }
 
     /**
-     * Run the queries and result the page
+     * Run the queries and result the page.
+     *
+     * Note that the sort and filter columns can only contain digits, letters, dots, underscores and dashes.
      *
      * @param parameters the query parameters
      * @param pc the page control
@@ -306,7 +307,8 @@ public class PagedSqlQueryBuilder {
         String sortSql = "";
         if (pageControl.map(PageControl::getSortColumn).orElse(null) != null) {
             String sortDirection = pc.isSortDescending() ? "DESC" : "ASC";
-            sortSql = String.format(" ORDER BY %s %s", pc.getSortColumn(), sortDirection);
+            String sortColumn = sanitizeColumnNames(pc.getSortColumn());
+            sortSql = String.format(" ORDER BY %s %s", sortColumn, sortDirection);
         }
         String sql = String.format(
                 "SELECT %s FROM %s WHERE %s%s",
@@ -385,6 +387,10 @@ public class PagedSqlQueryBuilder {
             LOG.error("Cannot create {} objects from Tuple", clazz.getName());
             return List.of();
         }
+    }
+
+    private static String sanitizeColumnNames(String name) {
+        return INVALID_COLUMN_CHARS_REGEX.matcher(name).replaceAll("");
     }
 
     /**
