@@ -32,7 +32,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@babel/runtime v7.16.3 - The Babel Team (https://babel.dev/team)
+@babel/runtime v7.26.10 - The Babel Team (https://babel.dev/team)
 https://github.com/babel/babel.git
 --------------------------------------------------------------------------------
 
@@ -3018,7 +3018,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 --------------------------------------------------------------------------------
-regenerator-runtime v0.13.5 - Ben Newman <bn@cs.stanford.edu>
+regenerator-runtime v0.13.7 - Ben Newman <bn@cs.stanford.edu>
 https://github.com/facebook/regenerator/tree/master/packages/regenerator-runtime
 --------------------------------------------------------------------------------
 
