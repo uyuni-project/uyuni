@@ -23,19 +23,27 @@ class TestSCOrg:
 
         shell.user_confirm = MagicMock(return_value=False)
         shell.client.org.create = MagicMock()
-        prompt_user = MagicMock(side_effect=[
-            "Stark Industries", "ironman", "Dr.", "Tony", "Stark", "t.stark@si.biz",
-        ])
-        mgetpass = MagicMock(side_effect=[
-            "123", "3456", "donotmatch", "dontmatch", "foo", "foo"
-        ])
+        prompt_user = MagicMock(
+            side_effect=[
+                "Stark Industries",
+                "ironman",
+                "Dr.",
+                "Tony",
+                "Stark",
+                "t.stark@si.biz",
+            ]
+        )
+        mgetpass = MagicMock(
+            side_effect=["123", "3456", "donotmatch", "dontmatch", "foo", "foo"]
+        )
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.prompt_user", prompt_user) as pmu, \
-            patch("spacecmd.org.getpass", mgetpass) as gtps, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.prompt_user", prompt_user
+        ) as pmu, patch("spacecmd.org.getpass", mgetpass) as gtps, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_create(shell, "")
 
         assert not mprint.called
@@ -45,12 +53,12 @@ class TestSCOrg:
         assert logger.warning.called
 
         expectations = [
-            (('Organization Name:',), {"noblank": True}),
-            (('Username:',), {"noblank": True}),
-            (('Prefix (Dr., Mr., Miss, Mrs., Ms.):',), {"noblank": True}),
-            (('First Name:',), {"noblank": True}),
-            (('Last Name:',), {"noblank": True}),
-            (('Email:',), {"noblank": True})
+            (("Organization Name:",), {"noblank": True}),
+            (("Username:",), {"noblank": True}),
+            (("Prefix (Dr., Mr., Miss, Mrs., Ms.):",), {"noblank": True}),
+            (("First Name:",), {"noblank": True}),
+            (("Last Name:",), {"noblank": True}),
+            (("Email:",), {"noblank": True}),
         ]
 
         for call in prompt_user.call_args_list:
@@ -61,9 +69,13 @@ class TestSCOrg:
             expectations.pop(0)
         assert not expectations
 
-        assert_list_args_expect(logger.warning.call_args_list,
-                                ["Password must be at least 5 characters",
-                                 "Passwords don't match", ])
+        assert_list_args_expect(
+            logger.warning.call_args_list,
+            [
+                "Password must be at least 5 characters",
+                "Passwords don't match",
+            ],
+        )
 
     def test_org_delete_noargs(self, shell):
         """
@@ -95,8 +107,9 @@ class TestSCOrg:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_delete(shell, "ACME-Enterprises")
 
         assert not shell.client.org.delete.called
@@ -105,11 +118,10 @@ class TestSCOrg:
         assert logger.warning.called
         assert mprint.called
 
-        assert_expect(mprint.call_args_list,
-                      "Organisation 'ACME-Enterprises' was not found")
-        expectations = [
-            ('No organisation found for the name %s', 'ACME-Enterprises')
-        ]
+        assert_expect(
+            mprint.call_args_list, "Organisation 'ACME-Enterprises' was not found"
+        )
+        expectations = [("No organisation found for the name %s", "ACME-Enterprises")]
         for call in logger.warning.call_args_list:
             args, kw = call
             assert args == next(iter(expectations))
@@ -130,8 +142,9 @@ class TestSCOrg:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_delete(shell, "ACME-Enterprises")
 
         assert not shell.client.org.delete.called
@@ -155,8 +168,9 @@ class TestSCOrg:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_delete(shell, "ACME-Enterprises")
 
         assert not shell.help_org_delete.called
@@ -196,8 +210,9 @@ class TestSCOrg:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_rename(shell, "ACME-Enterprises Big-Stuff")
 
         assert not shell.client.org.updateName.called
@@ -206,11 +221,10 @@ class TestSCOrg:
         assert logger.warning.called
         assert mprint.called
 
-        assert_expect(mprint.call_args_list,
-                      "Organisation 'ACME-Enterprises' was not found")
-        expectations = [
-            ('No organisation found for the name %s', 'ACME-Enterprises')
-        ]
+        assert_expect(
+            mprint.call_args_list, "Organisation 'ACME-Enterprises' was not found"
+        )
+        expectations = [("No organisation found for the name %s", "ACME-Enterprises")]
         for call in logger.warning.call_args_list:
             args, kw = call
             assert args == next(iter(expectations))
@@ -230,8 +244,9 @@ class TestSCOrg:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_rename(shell, "ACME-Enterprises Big-Stuff")
 
         assert not shell.help_org_delete.called
@@ -253,8 +268,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_addtrust(shell, "")
 
         assert not shell.get_org_id.called
@@ -274,8 +290,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_addtrust(shell, "trust me")
 
         assert not shell.client.org.trusts.addTrust.called
@@ -284,10 +301,18 @@ class TestSCOrg:
         assert mprint.called
         assert logger.warning.called
         assert_expect(mprint.call_args_list, "Organisation 'trust' was not found")
-        assert_args_expect(logger.warning.call_args_list,
-                           [
-                               (('No organisation found for the name %s', 'trust',), {})
-                           ])
+        assert_args_expect(
+            logger.warning.call_args_list,
+            [
+                (
+                    (
+                        "No organisation found for the name %s",
+                        "trust",
+                    ),
+                    {},
+                )
+            ],
+        )
 
     def test_org_addtrust_no_dst_org(self, shell):
         """
@@ -302,8 +327,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_addtrust(shell, "trust someone")
 
         assert not shell.client.org.trusts.addTrust.called
@@ -311,11 +337,21 @@ class TestSCOrg:
         assert shell.get_org_id.called
         assert mprint.called
         assert logger.warning.called
-        assert_expect(mprint.call_args_list, "Organisation 'someone' to trust for, was not found")
-        assert_args_expect(logger.warning.call_args_list,
-                           [
-                               (('No trust organisation found for the name %s', 'someone',), {})
-                           ])
+        assert_expect(
+            mprint.call_args_list, "Organisation 'someone' to trust for, was not found"
+        )
+        assert_args_expect(
+            logger.warning.call_args_list,
+            [
+                (
+                    (
+                        "No trust organisation found for the name %s",
+                        "someone",
+                    ),
+                    {},
+                )
+            ],
+        )
 
     def test_org_removetrust_noarg(self, shell):
         """
@@ -330,8 +366,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_removetrust(shell, "")
 
         assert not shell.client.org.trusts.removeTrust.called
@@ -353,8 +390,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_removetrust(shell, "trust bad-guys")
 
         assert not shell.client.org.trusts.removeTrust.called
@@ -364,8 +402,10 @@ class TestSCOrg:
         assert mprint.called
 
         assert_expect(mprint.call_args_list, "Organisation 'trust' was not found")
-        assert_args_expect(logger.warning.call_args_list,
-                           [(('No organisation found for the name %s', 'trust'), {})])
+        assert_args_expect(
+            logger.warning.call_args_list,
+            [(("No organisation found for the name %s", "trust"), {})],
+        )
 
     def test_org_removetrust_no_dst(self, shell):
         """
@@ -380,8 +420,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_removetrust(shell, "trust bad-guys")
 
         assert not shell.client.org.trusts.removeTrust.called
@@ -390,9 +431,13 @@ class TestSCOrg:
         assert logger.warning.called
         assert mprint.called
 
-        assert_expect(mprint.call_args_list, "Organisation 'bad-guys' to trust for, was not found")
-        assert_args_expect(logger.warning.call_args_list,
-                           [(('No trust organisation found for the name %s', 'bad-guys'), {})])
+        assert_expect(
+            mprint.call_args_list, "Organisation 'bad-guys' to trust for, was not found"
+        )
+        assert_args_expect(
+            logger.warning.call_args_list,
+            [(("No trust organisation found for the name %s", "bad-guys"), {})],
+        )
 
     def test_org_trustdetails_noarg(self, shell):
         """
@@ -409,8 +454,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_trustdetails(shell, "")
 
         assert not shell.get_org_id.called
@@ -434,8 +480,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_trustdetails(shell, "notfound")
 
         assert not shell.client.org.trusts.getDetails.called
@@ -446,11 +493,13 @@ class TestSCOrg:
         assert mprint.called
         assert logger.warning.called
 
-        assert_expect(mprint.call_args_list,
-                      "Trusted organisation 'notfound' was not found")
-        assert_args_expect(logger.warning.call_args_list,
-                           [(('No trusted organisation found for the name %s',
-                              'notfound'), {})])
+        assert_expect(
+            mprint.call_args_list, "Trusted organisation 'notfound' was not found"
+        )
+        assert_args_expect(
+            logger.warning.call_args_list,
+            [(("No trusted organisation found for the name %s", "notfound"), {})],
+        )
 
     def test_org_trustdetails(self, shell):
         """
@@ -461,25 +510,32 @@ class TestSCOrg:
         """
         shell.help_org_trustdetails = MagicMock()
         shell.get_org_id = MagicMock(return_value=1)
-        shell.client.org.trusts.getDetails = MagicMock(return_value={
-            "trusted_since": "Mi 29. Mai 15:02:26 CEST 2019",
-            "systems_transferred_from": 3,
-            "systems_transferred_to": 8
-        })
-        shell.client.org.trusts.listChannelsConsumed = MagicMock(return_value=[
-            {"name": "base_channel"},
-            {"name": "special_channel"},
-        ])
-        shell.client.org.trusts.listChannelsProvided = MagicMock(return_value=[
-            {"name": "base_channel"},
-            {"name": "suse_channel"},
-            {"name": "rh_channel"},
-        ])
+        shell.client.org.trusts.getDetails = MagicMock(
+            return_value={
+                "trusted_since": "Mi 29. Mai 15:02:26 CEST 2019",
+                "systems_transferred_from": 3,
+                "systems_transferred_to": 8,
+            }
+        )
+        shell.client.org.trusts.listChannelsConsumed = MagicMock(
+            return_value=[
+                {"name": "base_channel"},
+                {"name": "special_channel"},
+            ]
+        )
+        shell.client.org.trusts.listChannelsProvided = MagicMock(
+            return_value=[
+                {"name": "base_channel"},
+                {"name": "suse_channel"},
+                {"name": "rh_channel"},
+            ]
+        )
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_trustdetails(shell, "myorg")
 
         assert not shell.help_org_trustdetails.called
@@ -491,13 +547,18 @@ class TestSCOrg:
         assert mprint.called
 
         exp = [
-           'Trusted Organization:   myorg',
-           'Trusted Since:          Mi 29. Mai 15:02:26 CEST 2019',
-           'Systems Transferred From:  3', 'Systems Transferred To:    8', '',
-           'Channels Consumed', '-----------------',
-           'base_channel\nspecial_channel', '',
-           'Channels Provided', '-----------------',
-            'base_channel\nrh_channel\nsuse_channel'
+            "Trusted Organization:   myorg",
+            "Trusted Since:          Mi 29. Mai 15:02:26 CEST 2019",
+            "Systems Transferred From:  3",
+            "Systems Transferred To:    8",
+            "",
+            "Channels Consumed",
+            "-----------------",
+            "base_channel\nspecial_channel",
+            "",
+            "Channels Provided",
+            "-----------------",
+            "base_channel\nrh_channel\nsuse_channel",
         ]
 
         assert_list_args_expect(mprint.call_args_list, exp)
@@ -509,18 +570,20 @@ class TestSCOrg:
         :param shell:
         :return:
         """
-        shell.client.org.listOrgs = MagicMock(return_value=[
-            {"name": "suse"},
-            {"name": "rh"},
-            {"name": "other"},
-        ])
+        shell.client.org.listOrgs = MagicMock(
+            return_value=[
+                {"name": "suse"},
+                {"name": "rh"},
+                {"name": "other"},
+            ]
+        )
         mprint = MagicMock()
         with patch("spacecmd.org.print", mprint):
             out = spacecmd.org.do_org_list(shell, "", doreturn=False)
 
         assert out is None
         assert mprint.called
-        assert_expect(mprint.call_args_list, 'other\nrh\nsuse')
+        assert_expect(mprint.call_args_list, "other\nrh\nsuse")
 
     def test_org_list_data_ret(self, shell):
         """
@@ -529,11 +592,13 @@ class TestSCOrg:
         :param shell:
         :return:
         """
-        shell.client.org.listOrgs = MagicMock(return_value=[
-            {"name": "suse"},
-            {"name": "rh"},
-            {"name": "other"},
-        ])
+        shell.client.org.listOrgs = MagicMock(
+            return_value=[
+                {"name": "suse"},
+                {"name": "rh"},
+                {"name": "other"},
+            ]
+        )
         mprint = MagicMock()
         with patch("spacecmd.org.print", mprint):
             out = spacecmd.org.do_org_list(shell, "", doreturn=True)
@@ -555,8 +620,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_listtrusts(shell, "")
 
         assert not shell.get_org_id.called
@@ -576,8 +642,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_listtrusts(shell, "notfound")
 
         assert not shell.client.org.trusts.listTrusts.called
@@ -587,8 +654,10 @@ class TestSCOrg:
         assert logger.warning.called
 
         assert_expect(mprint.call_args_list, "Organisation 'notfound' was not found")
-        assert_args_expect(logger.warning.call_args_list,
-                           [(('No organisation found for the name %s', 'notfound'), {})])
+        assert_args_expect(
+            logger.warning.call_args_list,
+            [(("No organisation found for the name %s", "notfound"), {})],
+        )
 
     def test_org_listtrusts_no_trusts(self, shell):
         """
@@ -603,8 +672,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_listtrusts(shell, "notfound")
 
         assert not shell.help_org_listtrusts.called
@@ -614,7 +684,9 @@ class TestSCOrg:
         assert logger.warning.called
 
         assert_expect(mprint.call_args_list, "No trust organisation has been found")
-        assert_expect(logger.warning.call_args_list, "No trust organisation has been found")
+        assert_expect(
+            logger.warning.call_args_list, "No trust organisation has been found"
+        )
 
     def test_org_listtrusts(self, shell):
         """
@@ -625,17 +697,20 @@ class TestSCOrg:
         """
         shell.help_org_listtrusts = MagicMock()
         shell.get_org_id = MagicMock(return_value=1)
-        shell.client.org.trusts.listTrusts = MagicMock(return_value=[
-            {"orgName": "suse", "trustEnabled": True},
-            {"orgName": "west", "trustEnabled": True},
-            {"orgName": "acme", "trustEnabled": True},
-            {"orgName": "ubuntu", "trustEnabled": False},
-        ])
+        shell.client.org.trusts.listTrusts = MagicMock(
+            return_value=[
+                {"orgName": "suse", "trustEnabled": True},
+                {"orgName": "west", "trustEnabled": True},
+                {"orgName": "acme", "trustEnabled": True},
+                {"orgName": "ubuntu", "trustEnabled": False},
+            ]
+        )
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_listtrusts(shell, "notfound")
 
         assert not logger.warning.called
@@ -658,8 +733,9 @@ class TestSCOrg:
         shell.get_org_id = MagicMock()
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_listusers(shell, "")
 
         assert not shell.client.org.listUsers.called
@@ -680,8 +756,9 @@ class TestSCOrg:
         shell.get_org_id = MagicMock(return_value=None)
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_listusers(shell, "foo")
 
         assert not shell.client.org.listUsers.called
@@ -690,8 +767,10 @@ class TestSCOrg:
         assert mprint.called
         assert logger.warning.called
         assert_expect(mprint.call_args_list, "Organisation 'foo' was not found")
-        assert_args_expect(logger.warning.call_args_list,
-                           [(('No organisation found for the name %s', 'foo'), {})])
+        assert_args_expect(
+            logger.warning.call_args_list,
+            [(("No organisation found for the name %s", "foo"), {})],
+        )
 
     def test_org_listusers(self, shell):
         """
@@ -701,15 +780,15 @@ class TestSCOrg:
         :return:
         """
         shell.help_org_listusers = MagicMock()
-        shell.client.org.listUsers = MagicMock(return_value=[
-            {"login": "olafur"},
-            {"login": "gunnuhver"}
-        ])
+        shell.client.org.listUsers = MagicMock(
+            return_value=[{"login": "olafur"}, {"login": "gunnuhver"}]
+        )
         shell.get_org_id = MagicMock(return_value=1)
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_listusers(shell, "suse")
 
         assert not shell.help_org_listusers.called
@@ -717,7 +796,7 @@ class TestSCOrg:
         assert shell.client.org.listUsers.called
         assert shell.get_org_id.called
         assert mprint.called
-        assert_expect(mprint.call_args_list, 'gunnuhver\nolafur')
+        assert_expect(mprint.call_args_list, "gunnuhver\nolafur")
 
     def test_org_details_noarg(self, shell):
         """
@@ -731,8 +810,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_details(shell, "")
 
         assert not logger.warning.called
@@ -748,17 +828,24 @@ class TestSCOrg:
         :return:
         """
         shell.help_org_details = MagicMock()
-        shell.client.org.getDetails = MagicMock(return_value={
-            "name": "Test Organisation", "active_users": 42,
-            "systems": 5, "trusts": 1, "system_groups": 6,
-            "activation_keys": 2, "kickstart_profiles": 7,
-            "configuration_channels": 1
-        })
+        shell.client.org.getDetails = MagicMock(
+            return_value={
+                "name": "Test Organisation",
+                "active_users": 42,
+                "systems": 5,
+                "trusts": 1,
+                "system_groups": 6,
+                "activation_keys": 2,
+                "kickstart_profiles": 7,
+                "configuration_channels": 1,
+            }
+        )
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, \
-            patch("spacecmd.org.logging", logger) as lgr:
+        with patch("spacecmd.org.print", mprint) as prn, patch(
+            "spacecmd.org.logging", logger
+        ) as lgr:
             spacecmd.org.do_org_details(shell, "testorg")
 
         assert not logger.warning.called
@@ -767,13 +854,13 @@ class TestSCOrg:
         assert shell.client.org.getDetails.called
 
         exp = [
-            'Name:                   Test Organisation',
-            'Active Users:           42',
-            'Systems:                5',
-            'Trusts:                 1',
-            'System Groups:          6',
-            'Activation Keys:        2',
-            'Kickstart Profiles:     7',
-            'Configuration Channels: 1',
+            "Name:                   Test Organisation",
+            "Active Users:           42",
+            "Systems:                5",
+            "Trusts:                 1",
+            "System Groups:          6",
+            "Activation Keys:        2",
+            "Kickstart Profiles:     7",
+            "Configuration Channels: 1",
         ]
         assert_list_args_expect(mprint.call_args_list, exp)

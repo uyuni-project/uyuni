@@ -106,6 +106,7 @@ aggregated = False
 # CLASSES
 #
 
+
 class Name:
 
     @classmethod
@@ -115,11 +116,11 @@ class Name:
             for bn in cls.basenames(fn):
                 names.append(bn)
             return tuple(names)
-        if not isinstance(nss, (tuple,list)):
+        if not isinstance(nss, (tuple, list)):
             nss = (nss,)
         for ns in nss:
             for bn in cls.basenames(fn):
-                name = '%s/%s' % (ns, bn)
+                name = "%s/%s" % (ns, bn)
                 names.append(name)
         return tuple(names)
 
@@ -127,7 +128,7 @@ class Name:
     def basenames(cls, fn):
         names = [fn]
         try:
-            basename, ext = fn.rsplit('.', 1)
+            basename, ext = fn.rsplit(".", 1)
             names.append(basename)
         except:
             pass
@@ -135,11 +136,11 @@ class Name:
 
     @classmethod
     def qualified(cls, name):
-        return ( '/' in name )
+        return "/" in name
 
     @classmethod
     def unqualified(cls, name):
-        return ( not cls.qualified(name) )
+        return not cls.qualified(name)
 
 
 class DepTab:
@@ -169,18 +170,17 @@ class DepTab:
                 deps += expanded
             return deps
 
-
         def __repr__(self):
             s = []
             s.append(self.subject)
-            s.append('::')
+            s.append("::")
             s.append(str(self.deps))
-            s.append('@')
+            s.append("@")
             s.append(self.info)
-            s.append('/%d' % self.hits)
-            return ''.join(s)
+            s.append("/%d" % self.hits)
+            return "".join(s)
 
-    pattern = re.compile('[,\s]+')
+    pattern = re.compile("[,\s]+")
 
     def __init__(self):
         self.content = []
@@ -195,13 +195,13 @@ class DepTab:
         for line in self.lines(fp):
             if self.setoption(ns, line[1]):
                 continue
-            parts = line[1].split('::', 1)
+            parts = line[1].split("::", 1)
             if len(parts) < 2:
                 continue
-            info = '%s:%d' % (path, line[0])
+            info = "%s:%d" % (path, line[0])
             subject = parts[0].strip()
             entry = self.Entry(self, info, subject)
-            parts[1] = parts[1].replace('\\', '')
+            parts[1] = parts[1].replace("\\", "")
             deps = []
             for dep in self.values(parts[1]):
                 dep = dep.strip()
@@ -214,7 +214,7 @@ class DepTab:
             entry.deps = tuple(deps)
             if star_entry is not None:
                 entry.deps = star_entry.deps + entry.deps
-            if subject == '*':
+            if subject == "*":
                 star_entry = entry
                 continue
             self.content.append(entry)
@@ -223,13 +223,13 @@ class DepTab:
         fp.close()
 
     def setoption(self, ns, line):
-        parts = line.split('=', 1)
+        parts = line.split("=", 1)
         if len(parts) == 2:
             tag = parts[0].strip()
-            if tag == 'path':
+            if tag == "path":
                 values = []
                 for v in self.values(parts[1]):
-                    if v == '.':
+                    if v == ".":
                         v = ns
                     values.append(v)
                 self.options[tag] = values
@@ -247,11 +247,11 @@ class DepTab:
             ln += 1
             if not len(line):
                 continue
-            if line[0] == '#':
+            if line[0] == "#":
                 continue
-            if len(lines) and lines[-1][1].endswith('\\\n'):
+            if len(lines) and lines[-1][1].endswith("\\\n"):
                 last = lines.pop()[1][:-2]
-                joined = ' '.join((last, line))
+                joined = " ".join((last, line))
                 lines.append((ln, joined))
             else:
                 lines.append((ln, line))
@@ -269,10 +269,10 @@ class DepTab:
         return result
 
     def expand(self, keyset, history):
-        result = ([],[])
+        result = ([], [])
         for key in keyset:
             if key in history:
-                print('circular (alias) reference:%s' % history)
+                print("circular (alias) reference:%s" % history)
                 continue
             alias = self.aliases.get(key)
             if alias is None:
@@ -288,14 +288,15 @@ class DepTab:
 
     def findaliases(self):
         self.aliases = {}
-        for s,e in self.index.items():
+        for s, e in self.index.items():
             if e.hits == 0:
                 self.aliases[s] = e
         return self
 
+
 class Reader:
 
-    EXT = ['sql', 'pks', 'pkb']
+    EXT = ["sql", "pks", "pkb"]
 
     def __init__(self):
         self.deptab = DepTab()
@@ -312,10 +313,9 @@ class Reader:
         sorted = self.deplist.sort()
         return [x[2] for x in sorted]
 
-
     def opendeptabs(self, directories):
         for d in directories:
-            for fn, path in self.files(d, ('deps',)):
+            for fn, path in self.files(d, ("deps",)):
                 self.deptab.read(d, path)
         return self
 
@@ -333,12 +333,12 @@ class Reader:
         return self
 
     def path(self, d, fn):
-        return '%s/%s' % (d, fn)
+        return "%s/%s" % (d, fn)
 
     def files(self, d, extensions):
         files = []
         for fn, dir in self.flattened(d):
-            parts = fn.rsplit('.', 1)
+            parts = fn.rsplit(".", 1)
             if len(parts) != 2:
                 continue
             if parts[1] in extensions:
@@ -356,10 +356,11 @@ class Reader:
 
     def fsort(self, a, b):
         def cmp(a, b):
-            return (a > b) - (a < b) 
+            return (a > b) - (a < b)
+
         try:
-            A = a[0].rsplit('.', 1)
-            B = b[0].rsplit('.', 1)
+            A = a[0].rsplit(".", 1)
+            B = b[0].rsplit(".", 1)
             BC = cmp(A[0], B[0])
             if BC:
                 return BC
@@ -368,6 +369,7 @@ class Reader:
             return cmp(IA, IB)
         except:
             return 0
+
 
 class Writer:
 
@@ -379,11 +381,11 @@ class Writer:
         self.aggregated = aggregated
 
     def write(self, sorted, output):
-        self.copy('clean.sql', output, True)
-        self.copy('start.sql', output, True)
+        self.copy("clean.sql", output, True)
+        self.copy("start.sql", output, True)
         for p in sorted:
             self.copy(p, output)
-        self.copy('end.sql', output, True)
+        self.copy("end.sql", output, True)
 
     def copy(self, path, output, optional=False):
         if optional:
@@ -392,17 +394,16 @@ class Writer:
         f = open(path)
         output.write(self.comment % path)
         for line in f.readlines():
-            if line.startswith('--'):
+            if line.startswith("--"):
                 continue
-            if line.startswith('@'):
+            if line.startswith("@"):
                 self.copy(line[1:].strip(), output)
                 continue
-            if line.startswith('\i'):
+            if line.startswith("\i"):
                 self.copy(line[2:].strip(), output)
                 continue
             output.write(line)
         f.close()
-
 
 
 class Postgres(Writer):
@@ -413,10 +414,9 @@ class Postgres(Writer):
             return
         self.start(output)
         for p in sorted:
-            entry = '\\i %s' % p
-            output.write('\n')
+            entry = "\\i %s" % p
+            output.write("\n")
             output.write(entry)
-
 
 
 class DepList:
@@ -469,7 +469,7 @@ class DepList:
         return self.sorted
 
     def find(self, key):
-        if not isinstance(key, (tuple,list)):
+        if not isinstance(key, (tuple, list)):
             key = (key,)
         for k in key:
             v = self.index.get(k)
@@ -494,13 +494,15 @@ class DepList:
         except:
             pass
 
+
 #
 # FUNCTIONS
 #
 
+
 def generate(path, reader, writer, output, directories):
     os.chdir(path)
-    out = open(output, 'w')
+    out = open(output, "w")
     ds = []
     for fn in directories:
         if os.path.isdir(fn):
@@ -508,84 +510,85 @@ def generate(path, reader, writer, output, directories):
     reader.read(ds)
     sorted = reader.sort()
     overrides = reader.overrides
-    print('\nOVERRIDES (%d):' % len(overrides))
+    print("\nOVERRIDES (%d):" % len(overrides))
     for entry in overrides:
         print('\t"%s" overridden by "%s"' % entry)
-    unused = \
-        [x for x in reader.deptab.content if x.hits == 0]
-    print('\nUNUSED RULES (%d):' % len(unused))
+    unused = [x for x in reader.deptab.content if x.hits == 0]
+    print("\nUNUSED RULES (%d):" % len(unused))
     for entry in unused:
         if entry.hits == 0:
-            print('\t%s @%s' % (entry.subject,entry.info))
+            print("\t%s @%s" % (entry.subject, entry.info))
     unfound = reader.deplist.unfound
-    print('\nUNFOUND (rule) REFERENCES (%d):' % len(unfound))
+    print("\nUNFOUND (rule) REFERENCES (%d):" % len(unfound))
     for unf in unfound:
         print('\t"%s" @%s' % unf)
     if verbose:
         ln = 1
-        print('\n\nFILES (%d):' % len(sorted))
+        print("\n\nFILES (%d):" % len(sorted))
         for p in sorted:
-            print('\t%d %s' % (ln, p))
+            print("\t%d %s" % (ln, p))
             ln += 1
     writer.write(sorted, out)
     out.close()
     errnum = 0
-    if (len(overrides)+len(unused)+len(unfound) > 0): errnum = 1
+    if len(overrides) + len(unused) + len(unfound) > 0:
+        errnum = 1
     return errnum
+
 
 def usage():
     s = []
-    s.append('Usage blend: [OPTIONS] directory ...')
-    s.append(' Options:')
-    s.append('  -h, --help')
-    s.append('      Show usage information.')
-    s.append('  -v, --verbose')
-    s.append('      Show extra processing information.')
-    s.append('  -a, --aggregated')
-    s.append('      Aggregate the contents vs. reference by includes')
-    s.append('  -s, --style')
-    s.append('      The output style (postres ).')
-    s.append('  -o, --output')
-    s.append('      The output file.  Default: main.sql')
-    s.append('  -d, --directory')
-    s.append('      The working directory to process.')
-    print('\n'.join(s))
+    s.append("Usage blend: [OPTIONS] directory ...")
+    s.append(" Options:")
+    s.append("  -h, --help")
+    s.append("      Show usage information.")
+    s.append("  -v, --verbose")
+    s.append("      Show extra processing information.")
+    s.append("  -a, --aggregated")
+    s.append("      Aggregate the contents vs. reference by includes")
+    s.append("  -s, --style")
+    s.append("      The output style (postres ).")
+    s.append("  -o, --output")
+    s.append("      The output file.  Default: main.sql")
+    s.append("  -d, --directory")
+    s.append("      The working directory to process.")
+    print("\n".join(s))
+
 
 def main(argv):
-    path = '.'
+    path = "."
     global verbose, aggregated
     reader = Reader()
     writer = Postgres()
-    output = 'main.sql'
-    flags = 'vhad:o:s:'
+    output = "main.sql"
+    flags = "vhad:o:s:"
     keywords = [
-        '--help',
-        '--verbose',
-        '--directory',
-        '--output',
-        '--style'
-        '--aggregated',
+        "--help",
+        "--verbose",
+        "--directory",
+        "--output",
+        "--style" "--aggregated",
     ]
     try:
         opts, args = getopt(argv, flags, keywords)
         for opt, arg in opts:
-            if opt in ('-h', '--help'):
+            if opt in ("-h", "--help"):
                 usage()
                 sys.exit(0)
-            if opt in ('-v', '--verbose'):
+            if opt in ("-v", "--verbose"):
                 verbose = True
                 continue
-            if opt in ('-a', '--aggregated'):
+            if opt in ("-a", "--aggregated"):
                 aggregated = True
                 continue
-            if opt in ('-o', '--output'):
+            if opt in ("-o", "--output"):
                 output = arg
                 continue
-            if opt in ('-d', '--directory'):
+            if opt in ("-d", "--directory"):
                 path = arg
                 continue
-            if opt in ('-s', '--style'):
-                if arg == 'postgres':
+            if opt in ("-s", "--style"):
+                if arg == "postgres":
                     writer = Postgres()
                     continue
                 raise Exception('style "%s" not valid' % arg)
@@ -597,6 +600,6 @@ def main(argv):
         usage()
         sys.exit(2)
 
-if __name__ == '__main__':
-    main(sys.argv[1:])
 
+if __name__ == "__main__":
+    main(sys.argv[1:])

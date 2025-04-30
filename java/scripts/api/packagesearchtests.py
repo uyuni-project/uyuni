@@ -4,6 +4,7 @@ import unittest
 
 from config import *
 
+
 class PackageSearchTests(RhnTestCase):
 
     def test_searchByNameAndSummary(self):
@@ -15,7 +16,7 @@ class PackageSearchTests(RhnTestCase):
         self.assertTrue(pkgs != None)
         self.assertTrue(len(pkgs) > 0)
         for p in pkgs:
-            #print "Package name = %s, version = %s, release = %s" % (p["name"], p["version"], p["release"])
+            # print "Package name = %s, version = %s, release = %s" % (p["name"], p["version"], p["release"])
             self.assertTrue(p.has_key("id"))
             self.assertTrue(p.has_key("name"))
             self.assertTrue(p.has_key("epoch"))
@@ -24,7 +25,7 @@ class PackageSearchTests(RhnTestCase):
             self.assertTrue(p.has_key("arch"))
             self.assertTrue(p.has_key("description"))
             self.assertTrue(p.has_key("summary"))
-        #print "%s packages were returned" % (len(pkgs))
+        # print "%s packages were returned" % (len(pkgs))
 
     def test_searchByNameAndDescription(self):
         """
@@ -35,7 +36,7 @@ class PackageSearchTests(RhnTestCase):
         self.assertTrue(pkgs != None)
         self.assertTrue(len(pkgs) > 0)
         for p in pkgs:
-            #print "Package name = %s, version = %s, release = %s" % (p["name"], p["version"], p["release"])
+            # print "Package name = %s, version = %s, release = %s" % (p["name"], p["version"], p["release"])
             self.assertTrue(p.has_key("id"))
             self.assertTrue(p.has_key("name"))
             self.assertTrue(p.has_key("epoch"))
@@ -44,7 +45,7 @@ class PackageSearchTests(RhnTestCase):
             self.assertTrue(p.has_key("arch"))
             self.assertTrue(p.has_key("description"))
             self.assertTrue(p.has_key("summary"))
-        #print "%s packages were returned" % (len(pkgs))
+        # print "%s packages were returned" % (len(pkgs))
 
     def test_searchByName(self):
         """
@@ -55,7 +56,7 @@ class PackageSearchTests(RhnTestCase):
         self.assertTrue(pkgs != None)
         self.assertTrue(len(pkgs) > 0)
         for p in pkgs:
-            #print "Package name = %s, version = %s, release = %s" % (p["name"], p["version"], p["release"])
+            # print "Package name = %s, version = %s, release = %s" % (p["name"], p["version"], p["release"])
             self.assertTrue(p.has_key("id"))
             self.assertTrue(p.has_key("name"))
             self.assertTrue(p.has_key("epoch"))
@@ -64,7 +65,7 @@ class PackageSearchTests(RhnTestCase):
             self.assertTrue(p.has_key("arch"))
             self.assertTrue(p.has_key("description"))
             self.assertTrue(p.has_key("summary"))
-        #print "%s packages were returned" % (len(pkgs))
+        # print "%s packages were returned" % (len(pkgs))
 
     def test_searchFreeFormSpecificVersion(self):
         """
@@ -75,7 +76,7 @@ class PackageSearchTests(RhnTestCase):
         self.assertTrue(pkgs != None)
         self.assertTrue(len(pkgs) > 0)
         for p in pkgs:
-            #print "Package name = %s, version = %s, release = %s" % (p["name"], p["version"], p["release"])
+            # print "Package name = %s, version = %s, release = %s" % (p["name"], p["version"], p["release"])
             self.assertTrue(p.has_key("id"))
             self.assertTrue(p.has_key("name"))
             self.assertTrue(p.has_key("epoch"))
@@ -84,7 +85,7 @@ class PackageSearchTests(RhnTestCase):
             self.assertTrue(p.has_key("arch"))
             self.assertTrue(p.has_key("description"))
             self.assertTrue(p.has_key("summary"))
-        #print "%s packages were returned" % (len(pkgs))
+        # print "%s packages were returned" % (len(pkgs))
 
     def test_searchFreeFormWithChannel(self):
         """
@@ -92,11 +93,13 @@ class PackageSearchTests(RhnTestCase):
         """
         luceneQuery = "name:virt"
         channelLabel = "rhel-i386-server-vt-5"
-        pkgs = client.packages.search.advancedWithChannel(self.session_key, luceneQuery, channelLabel)
+        pkgs = client.packages.search.advancedWithChannel(
+            self.session_key, luceneQuery, channelLabel
+        )
         self.assertTrue(pkgs != None)
         self.assertTrue(len(pkgs) > 0)
         for p in pkgs:
-            #print "Package name = %s, version = %s, release = %s" % (p["name"], p["version"], p["release"])
+            # print "Package name = %s, version = %s, release = %s" % (p["name"], p["version"], p["release"])
             self.assertTrue(p.has_key("id"))
             self.assertTrue(p.has_key("name"))
             self.assertTrue(p.has_key("epoch"))
@@ -105,7 +108,7 @@ class PackageSearchTests(RhnTestCase):
             self.assertTrue(p.has_key("arch"))
             self.assertTrue(p.has_key("description"))
             self.assertTrue(p.has_key("summary"))
-        #print "%s packages were returned" % (len(pkgs))
+        # print "%s packages were returned" % (len(pkgs))
 
     def test_searchFreeFormWithActKey(self):
         """
@@ -113,11 +116,13 @@ class PackageSearchTests(RhnTestCase):
         """
         luceneQuery = "name:vim OR name:sh"
         actkey = "1-testkeyname"
-        pkgs = client.packages.search.advancedWithActKey(self.session_key, luceneQuery, actkey)
+        pkgs = client.packages.search.advancedWithActKey(
+            self.session_key, luceneQuery, actkey
+        )
         self.assertTrue(pkgs != None)
         self.assertTrue(len(pkgs) > 0)
         for p in pkgs:
-            #print "Package name = %s, version = %s, release = %s" % (p["name"], p["version"], p["release"])
+            # print "Package name = %s, version = %s, release = %s" % (p["name"], p["version"], p["release"])
             self.assertTrue(p.has_key("id"))
             self.assertTrue(p.has_key("name"))
             self.assertTrue(p.has_key("epoch"))
@@ -126,7 +131,8 @@ class PackageSearchTests(RhnTestCase):
             self.assertTrue(p.has_key("arch"))
             self.assertTrue(p.has_key("description"))
             self.assertTrue(p.has_key("summary"))
-        #print "%s packages were returned" % (len(pkgs))
+        # print "%s packages were returned" % (len(pkgs))
+
 
 if __name__ == "__main__":
     unittest.main()

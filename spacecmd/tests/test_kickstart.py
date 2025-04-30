@@ -17,6 +17,7 @@ class TestSCKickStart:
     """
     Test kickstart.
     """
+
     def test_kickstart_clone_interactive_no_profiles(self, shell):
         """
         Test do_kickstart_clone interactive. No profiles found.
@@ -26,15 +27,15 @@ class TestSCKickStart:
         """
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.kickstart.print", mprint) as prt, \
-                patch("spacecmd.kickstart.logging", logger) as lgr:
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+            "spacecmd.kickstart.logging", logger
+        ) as lgr:
             spacecmd.kickstart.do_kickstart_clone(shell, "")
 
         assert not mprint.called
         assert not shell.client.kickstart.cloneProfile.called
         assert logger.error.called
-        assert_expect(logger.error.call_args_list,
-                      "No kickstart profiles available")
+        assert_expect(logger.error.call_args_list, "No kickstart profiles available")
 
     def test_kickstart_clone_interactive_wrong_profile_entered(self, shell):
         """
@@ -45,13 +46,13 @@ class TestSCKickStart:
         """
         mprint = MagicMock()
         logger = MagicMock()
-        prompter = MagicMock(side_effect=[
-            "posix_compliance_problem", "POSIX"])
-        shell.do_kickstart_list = MagicMock(return_value=[
-            "default_kickstart_profile", "some_other_profile"])
-        with patch("spacecmd.kickstart.print", mprint) as prt, \
-                patch("spacecmd.kickstart.logging", logger) as lgr, \
-                patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
+        prompter = MagicMock(side_effect=["posix_compliance_problem", "POSIX"])
+        shell.do_kickstart_list = MagicMock(
+            return_value=["default_kickstart_profile", "some_other_profile"]
+        )
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+            "spacecmd.kickstart.logging", logger
+        ) as lgr, patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
             spacecmd.kickstart.do_kickstart_clone(shell, "")
 
         assert not shell.client.kickstart.cloneProfile.called
@@ -59,14 +60,27 @@ class TestSCKickStart:
         assert prompter.called
         assert logger.error.called
 
-        assert_expect(logger.error.call_args_list,
-                      "Kickstart profile you've entered was not found")
-        assert_list_args_expect(mprint.call_args_list,
-                                ['', 'Kickstart Profiles', '------------------',
-                                 'default_kickstart_profile\nsome_other_profile', ''])
-        assert_args_expect(prompter.call_args_list,
-                           [(('Original Profile:',), {"noblank": True}),
-                            (('Cloned Profile:',), {"noblank": True})])
+        assert_expect(
+            logger.error.call_args_list,
+            "Kickstart profile you've entered was not found",
+        )
+        assert_list_args_expect(
+            mprint.call_args_list,
+            [
+                "",
+                "Kickstart Profiles",
+                "------------------",
+                "default_kickstart_profile\nsome_other_profile",
+                "",
+            ],
+        )
+        assert_args_expect(
+            prompter.call_args_list,
+            [
+                (("Original Profile:",), {"noblank": True}),
+                (("Cloned Profile:",), {"noblank": True}),
+            ],
+        )
 
     def test_kickstart_clone_arg_wrong_profile_entered(self, shell):
         """
@@ -78,20 +92,25 @@ class TestSCKickStart:
         mprint = MagicMock()
         logger = MagicMock()
         prompter = MagicMock()
-        shell.do_kickstart_list = MagicMock(return_value=[
-            "default_kickstart_profile", "some_other_profile"])
-        with patch("spacecmd.kickstart.print", mprint) as prt, \
-                patch("spacecmd.kickstart.logging", logger) as lgr, \
-                patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
-            spacecmd.kickstart.do_kickstart_clone(shell, "-n posix_compliance_problem -c POSIX")
+        shell.do_kickstart_list = MagicMock(
+            return_value=["default_kickstart_profile", "some_other_profile"]
+        )
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+            "spacecmd.kickstart.logging", logger
+        ) as lgr, patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
+            spacecmd.kickstart.do_kickstart_clone(
+                shell, "-n posix_compliance_problem -c POSIX"
+            )
 
         assert not prompter.called
         assert not shell.client.kickstart.cloneProfile.called
         assert not mprint.called
         assert logger.error.called
 
-        assert_expect(logger.error.call_args_list,
-                      "Kickstart profile you've entered was not found")
+        assert_expect(
+            logger.error.call_args_list,
+            "Kickstart profile you've entered was not found",
+        )
 
     def test_kickstart_clone_arg_no_name_entered(self, shell):
         """
@@ -103,11 +122,12 @@ class TestSCKickStart:
         mprint = MagicMock()
         logger = MagicMock()
         prompter = MagicMock()
-        shell.do_kickstart_list = MagicMock(return_value=[
-            "default_kickstart_profile", "some_other_profile"])
-        with patch("spacecmd.kickstart.print", mprint) as prt, \
-                patch("spacecmd.kickstart.logging", logger) as lgr, \
-                patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
+        shell.do_kickstart_list = MagicMock(
+            return_value=["default_kickstart_profile", "some_other_profile"]
+        )
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+            "spacecmd.kickstart.logging", logger
+        ) as lgr, patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
             spacecmd.kickstart.do_kickstart_clone(shell, "-c POSIX")
 
         assert not prompter.called
@@ -126,18 +146,21 @@ class TestSCKickStart:
         mprint = MagicMock()
         logger = MagicMock()
         prompter = MagicMock()
-        shell.do_kickstart_list = MagicMock(return_value=[
-            "default_kickstart_profile", "some_other_profile"])
-        with patch("spacecmd.kickstart.print", mprint) as prt, \
-                patch("spacecmd.kickstart.logging", logger) as lgr, \
-                patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
+        shell.do_kickstart_list = MagicMock(
+            return_value=["default_kickstart_profile", "some_other_profile"]
+        )
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+            "spacecmd.kickstart.logging", logger
+        ) as lgr, patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
             spacecmd.kickstart.do_kickstart_clone(shell, "-n whatever_profile")
 
         assert not prompter.called
         assert not shell.client.kickstart.cloneProfile.called
         assert not mprint.called
         assert logger.error.called
-        assert_expect(logger.error.call_args_list, "The Kickstart clone name is required")
+        assert_expect(
+            logger.error.call_args_list, "The Kickstart clone name is required"
+        )
 
     def test_kickstart_clone_args(self, shell):
         """
@@ -149,22 +172,26 @@ class TestSCKickStart:
         mprint = MagicMock()
         logger = MagicMock()
         prompter = MagicMock()
-        shell.do_kickstart_list = MagicMock(return_value=[
-            "default_kickstart_profile", "some_other_profile"])
+        shell.do_kickstart_list = MagicMock(
+            return_value=["default_kickstart_profile", "some_other_profile"]
+        )
         name, clone = "default_kickstart_profile", "new_default_profile"
-        with patch("spacecmd.kickstart.print", mprint) as prt, \
-                patch("spacecmd.kickstart.logging", logger) as lgr, \
-                patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+            "spacecmd.kickstart.logging", logger
+        ) as lgr, patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
             spacecmd.kickstart.do_kickstart_clone(
-                shell, "-n {} -c {}".format(name, clone))
+                shell, "-n {} -c {}".format(name, clone)
+            )
 
         assert not prompter.called
         assert not mprint.called
         assert not logger.error.called
         assert shell.client.kickstart.cloneProfile.called
 
-        assert_args_expect(shell.client.kickstart.cloneProfile.call_args_list,
-                           [((shell.session, name, clone), {})])
+        assert_args_expect(
+            shell.client.kickstart.cloneProfile.call_args_list,
+            [((shell.session, name, clone), {})],
+        )
 
     def test_kickstart_listscripts_noarg(self, shell):
         """
@@ -175,8 +202,9 @@ class TestSCKickStart:
         """
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.kickstart.print", mprint) as prt, \
-                patch("spacecmd.kickstart.logging", logger) as lgr:
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+            "spacecmd.kickstart.logging", logger
+        ) as lgr:
             spacecmd.kickstart.do_kickstart_listscripts(shell, "")
 
         assert not shell.client.kickstart.profile.listScripts.called
@@ -192,17 +220,19 @@ class TestSCKickStart:
         mprint = MagicMock()
         logger = MagicMock()
         shell.client.kickstart.profile.listScripts = MagicMock(return_value=[])
-        with patch("spacecmd.kickstart.print", mprint) as prt, \
-                patch("spacecmd.kickstart.logging", logger) as lgr:
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+            "spacecmd.kickstart.logging", logger
+        ) as lgr:
             spacecmd.kickstart.do_kickstart_listscripts(shell, "some_profile")
 
         assert not shell.help_kickstart_listscripts.called
         assert not mprint.called
         assert shell.client.kickstart.profile.listScripts.called
         assert logger.error.called
-        assert_args_expect(logger.error.call_args_list,
-                           [(("No scripts has been found for profile '%s'",
-                              "some_profile"), {})])
+        assert_args_expect(
+            logger.error.call_args_list,
+            [(("No scripts has been found for profile '%s'", "some_profile"), {})],
+        )
 
     def test_kickstart_listscripts_scripts_found(self, shell):
         """
@@ -215,20 +245,29 @@ class TestSCKickStart:
         logger = MagicMock()
         shell.client.kickstart.profile.listScripts = MagicMock(
             return_value=[
-                {"id": 1, "script_type": "shell",
-                 "chroot": "/dev/null", "interpreter": "/bin/bash",
-                 "contents": """#!/bin/bash
+                {
+                    "id": 1,
+                    "script_type": "shell",
+                    "chroot": "/dev/null",
+                    "interpreter": "/bin/bash",
+                    "contents": """#!/bin/bash
 echo 'Hello there!'
-                 """},
-                {"id": 2, "script_type": "shell",
-                 "chroot": "/dev/null", "interpreter": "/bin/bash",
-                 "contents": """#!/bin/bash
+                 """,
+                },
+                {
+                    "id": 2,
+                    "script_type": "shell",
+                    "chroot": "/dev/null",
+                    "interpreter": "/bin/bash",
+                    "contents": """#!/bin/bash
 echo 'some more hello'
-                 """
-                 },
-            ])
-        with patch("spacecmd.kickstart.print", mprint) as prt, \
-                patch("spacecmd.kickstart.logging", logger) as lgr:
+                 """,
+                },
+            ]
+        )
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+            "spacecmd.kickstart.logging", logger
+        ) as lgr:
             spacecmd.kickstart.do_kickstart_listscripts(shell, "some_profile")
 
         assert not shell.help_kickstart_listscripts.called
@@ -236,14 +275,28 @@ echo 'some more hello'
         assert mprint.called
         assert shell.client.kickstart.profile.listScripts.called
 
-        assert_list_args_expect(mprint.call_args_list,
-                                ['ID:          1', 'Type:        shell',
-                                 'Chroot:      /dev/null', 'Interpreter: /bin/bash', '',
-                                 'Contents', '--------', "#!/bin/bash\necho 'Hello there!'\n                 ",
-                                 '----------', 'ID:          2', 'Type:        shell',
-                                 'Chroot:      /dev/null', 'Interpreter: /bin/bash', '',
-                                 'Contents', '--------', "#!/bin/bash\necho 'some more hello'\n                 "]
-                                )
+        assert_list_args_expect(
+            mprint.call_args_list,
+            [
+                "ID:          1",
+                "Type:        shell",
+                "Chroot:      /dev/null",
+                "Interpreter: /bin/bash",
+                "",
+                "Contents",
+                "--------",
+                "#!/bin/bash\necho 'Hello there!'\n                 ",
+                "----------",
+                "ID:          2",
+                "Type:        shell",
+                "Chroot:      /dev/null",
+                "Interpreter: /bin/bash",
+                "",
+                "Contents",
+                "--------",
+                "#!/bin/bash\necho 'some more hello'\n                 ",
+            ],
+        )
 
     def test_kickstart_list_nodata(self, shell):
         """
@@ -254,19 +307,25 @@ echo 'some more hello'
         """
         mprint = MagicMock()
         logger = MagicMock()
-        shell.client.kickstart.listKickstarts = MagicMock(return_value=[
-            {"name": "default_kickstart"}, {"name": "whatever_kickstart"},
-            {"name": "some_profile_kickstart"}
-        ])
-        with patch("spacecmd.kickstart.print", mprint) as prt, \
-                patch("spacecmd.kickstart.logging", logger) as lgr:
+        shell.client.kickstart.listKickstarts = MagicMock(
+            return_value=[
+                {"name": "default_kickstart"},
+                {"name": "whatever_kickstart"},
+                {"name": "some_profile_kickstart"},
+            ]
+        )
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+            "spacecmd.kickstart.logging", logger
+        ) as lgr:
             out = spacecmd.kickstart.do_kickstart_list(shell, "", doreturn=False)
 
         assert not logger.error.called
         assert out is None
         assert mprint.called
-        assert_expect(mprint.call_args_list,
-                      'default_kickstart\nsome_profile_kickstart\nwhatever_kickstart')
+        assert_expect(
+            mprint.call_args_list,
+            "default_kickstart\nsome_profile_kickstart\nwhatever_kickstart",
+        )
 
     def test_kickstart_list_nodata_noprofiles(self, shell):
         """
@@ -278,15 +337,15 @@ echo 'some more hello'
         mprint = MagicMock()
         logger = MagicMock()
         shell.client.kickstart.listKickstarts = MagicMock(return_value=[])
-        with patch("spacecmd.kickstart.print", mprint) as prt, \
-                patch("spacecmd.kickstart.logging", logger) as lgr:
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+            "spacecmd.kickstart.logging", logger
+        ) as lgr:
             out = spacecmd.kickstart.do_kickstart_list(shell, "", doreturn=False)
 
         assert not mprint.called
         assert logger.error.called
         assert out is None
-        assert_expect(logger.error.call_args_list,
-                      "No kickstart profiles available")
+        assert_expect(logger.error.call_args_list, "No kickstart profiles available")
 
     def test_kickstart_list_data(self, shell):
         """
@@ -297,19 +356,27 @@ echo 'some more hello'
         """
         mprint = MagicMock()
         logger = MagicMock()
-        shell.client.kickstart.listKickstarts = MagicMock(return_value=[
-            {"name": "default_kickstart"}, {"name": "whatever_kickstart"},
-            {"name": "some_profile_kickstart"}
-        ])
-        with patch("spacecmd.kickstart.print", mprint) as prt, \
-                patch("spacecmd.kickstart.logging", logger) as lgr:
+        shell.client.kickstart.listKickstarts = MagicMock(
+            return_value=[
+                {"name": "default_kickstart"},
+                {"name": "whatever_kickstart"},
+                {"name": "some_profile_kickstart"},
+            ]
+        )
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+            "spacecmd.kickstart.logging", logger
+        ) as lgr:
             out = spacecmd.kickstart.do_kickstart_list(shell, "", doreturn=True)
 
         assert not mprint.called
         assert not logger.error.called
         assert out is not None
         assert len(out) == 3
-        assert out == ["default_kickstart", "some_profile_kickstart", "whatever_kickstart"]
+        assert out == [
+            "default_kickstart",
+            "some_profile_kickstart",
+            "whatever_kickstart",
+        ]
 
     def test_kickstart_list_data_no_profiles(self, shell):
         """
@@ -321,8 +388,9 @@ echo 'some more hello'
         mprint = MagicMock()
         logger = MagicMock()
         shell.client.kickstart.listKickstarts = MagicMock(return_value=[])
-        with patch("spacecmd.kickstart.print", mprint) as prt, \
-                patch("spacecmd.kickstart.logging", logger) as lgr:
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+            "spacecmd.kickstart.logging", logger
+        ) as lgr:
             out = spacecmd.kickstart.do_kickstart_list(shell, "", doreturn=True)
 
         assert not mprint.called
@@ -354,9 +422,9 @@ echo 'some more hello'
         :param shell:
         :return:
         """
-        shell.do_kickstart_list = MagicMock(return_value=[
-            "first_profile", "second_profile", "third_profile"
-        ])
+        shell.do_kickstart_list = MagicMock(
+            return_value=["first_profile", "second_profile", "third_profile"]
+        )
         logger = MagicMock()
         with patch("spacecmd.kickstart.logging", logger) as lgr:
             spacecmd.kickstart.do_kickstart_delete(shell, "fourth_profile")
@@ -367,12 +435,12 @@ echo 'some more hello'
         assert shell.do_kickstart_list.called
         assert shell.help_kickstart_delete.called
 
-        assert_expect(logger.error.call_args_list,
-                      'No valid kickstart labels passed as arguments!')
-        assert_expect(logger.debug.call_args_list,
-                      'Got labels to delete of []')
-        assert_args_expect(shell.do_kickstart_list.call_args_list,
-                           [(('', True), {})])
+        assert_expect(
+            logger.error.call_args_list,
+            "No valid kickstart labels passed as arguments!",
+        )
+        assert_expect(logger.debug.call_args_list, "Got labels to delete of []")
+        assert_args_expect(shell.do_kickstart_list.call_args_list, [(("", True), {})])
 
     def test_kickstart_delete_wildcard_arg(self, shell):
         """
@@ -381,13 +449,12 @@ echo 'some more hello'
         :param shell:
         :return:
         """
-        shell.do_kickstart_list = MagicMock(return_value=[
-            "first_profile", "second_profile", "third_profile"
-        ])
+        shell.do_kickstart_list = MagicMock(
+            return_value=["first_profile", "second_profile", "third_profile"]
+        )
         logger = MagicMock()
         with patch("spacecmd.kickstart.logging", logger) as lgr:
-            spacecmd.kickstart.do_kickstart_delete(
-                shell, "*_profile")
+            spacecmd.kickstart.do_kickstart_delete(shell, "*_profile")
 
         assert not shell.help_kickstart_delete.called
         assert not logger.error.called
@@ -395,10 +462,14 @@ echo 'some more hello'
         assert shell.do_kickstart_list.called
         assert logger.debug.called
 
-        assert_args_expect(shell.client.kickstart.deleteProfile.call_args_list,
-                           [((shell.session, "first_profile"), {}),
-                            ((shell.session, "second_profile"), {}),
-                            ((shell.session, "third_profile"), {})])
+        assert_args_expect(
+            shell.client.kickstart.deleteProfile.call_args_list,
+            [
+                ((shell.session, "first_profile"), {}),
+                ((shell.session, "second_profile"), {}),
+                ((shell.session, "third_profile"), {}),
+            ],
+        )
 
     def test_kickstart_delete_profile_all_yes(self, shell):
         """
@@ -408,13 +479,14 @@ echo 'some more hello'
         :return:
         """
         shell.options.yes = True
-        shell.do_kickstart_list = MagicMock(return_value=[
-            "first_profile", "second_profile", "third_profile"
-        ])
+        shell.do_kickstart_list = MagicMock(
+            return_value=["first_profile", "second_profile", "third_profile"]
+        )
         logger = MagicMock()
         with patch("spacecmd.kickstart.logging", logger) as lgr:
             spacecmd.kickstart.do_kickstart_delete(
-                shell, "first_profile second_profile")
+                shell, "first_profile second_profile"
+            )
 
         assert not shell.help_kickstart_delete.called
         assert not logger.error.called
@@ -423,9 +495,13 @@ echo 'some more hello'
         assert shell.do_kickstart_list.called
         assert logger.debug.called
 
-        assert_args_expect(shell.client.kickstart.deleteProfile.call_args_list,
-                           [((shell.session, "first_profile"), {}),
-                            ((shell.session, "second_profile"), {})])
+        assert_args_expect(
+            shell.client.kickstart.deleteProfile.call_args_list,
+            [
+                ((shell.session, "first_profile"), {}),
+                ((shell.session, "second_profile"), {}),
+            ],
+        )
 
     def test_kickstart_delete_profile_interactive(self, shell):
         """
@@ -436,13 +512,14 @@ echo 'some more hello'
         """
         shell.options.yes = False
         shell.user_confirm = MagicMock(return_value=True)
-        shell.do_kickstart_list = MagicMock(return_value=[
-            "first_profile", "second_profile", "third_profile"
-        ])
+        shell.do_kickstart_list = MagicMock(
+            return_value=["first_profile", "second_profile", "third_profile"]
+        )
         logger = MagicMock()
         with patch("spacecmd.kickstart.logging", logger) as lgr:
             spacecmd.kickstart.do_kickstart_delete(
-                shell, "first_profile second_profile")
+                shell, "first_profile second_profile"
+            )
 
         assert not shell.help_kickstart_delete.called
         assert not logger.error.called
@@ -451,9 +528,13 @@ echo 'some more hello'
         assert shell.do_kickstart_list.called
         assert logger.debug.called
 
-        assert_args_expect(shell.client.kickstart.deleteProfile.call_args_list,
-                           [((shell.session, "first_profile"), {}),
-                            ((shell.session, "second_profile"), {})])
+        assert_args_expect(
+            shell.client.kickstart.deleteProfile.call_args_list,
+            [
+                ((shell.session, "first_profile"), {}),
+                ((shell.session, "second_profile"), {}),
+            ],
+        )
 
     def test_kickstart_listcryptokeys_noargs(self, shell):
         """
@@ -478,13 +559,15 @@ echo 'some more hello'
         :param shell:
         :return:
         """
-        shell.client.kickstart.profile.system.listKeys = MagicMock(return_value=[
-            {"description": "c_key"},
-            {"description": "b_key"},
-            {"description": "a_key"},
-            {"description": "z_key"},
-            {"description": "x_key"},
-        ])
+        shell.client.kickstart.profile.system.listKeys = MagicMock(
+            return_value=[
+                {"description": "c_key"},
+                {"description": "b_key"},
+                {"description": "a_key"},
+                {"description": "z_key"},
+                {"description": "x_key"},
+            ]
+        )
         mprint = MagicMock()
         with patch("spacecmd.kickstart.print", mprint) as prt:
             data = spacecmd.kickstart.do_kickstart_listcryptokeys(shell, "some_profile")
@@ -494,8 +577,7 @@ echo 'some more hello'
         assert data is None
         assert shell.client.kickstart.profile.system.listKeys.called
 
-        assert_expect(mprint.call_args_list,
-                      'a_key\nb_key\nc_key\nx_key\nz_key')
+        assert_expect(mprint.call_args_list, "a_key\nb_key\nc_key\nx_key\nz_key")
 
     def test_kickstart_listcryptokeys_cryptokeys_as_data(self, shell):
         """
@@ -504,22 +586,25 @@ echo 'some more hello'
         :param shell:
         :return:
         """
-        shell.client.kickstart.profile.system.listKeys = MagicMock(return_value=[
-            {"description": "c_key"},
-            {"description": "b_key"},
-            {"description": "a_key"},
-            {"description": "z_key"},
-            {"description": "x_key"},
-        ])
+        shell.client.kickstart.profile.system.listKeys = MagicMock(
+            return_value=[
+                {"description": "c_key"},
+                {"description": "b_key"},
+                {"description": "a_key"},
+                {"description": "z_key"},
+                {"description": "x_key"},
+            ]
+        )
         mprint = MagicMock()
         with patch("spacecmd.kickstart.print", mprint) as prt:
             data = spacecmd.kickstart.do_kickstart_listcryptokeys(
-                shell, "some_profile", doreturn=True)
+                shell, "some_profile", doreturn=True
+            )
 
         assert not shell.help_kickstart_listcryptokeys.called
         assert not mprint.called
         assert data is not None
-        assert data == ['a_key', 'b_key', 'c_key', 'x_key', 'z_key']
+        assert data == ["a_key", "b_key", "c_key", "x_key", "z_key"]
         assert shell.client.kickstart.profile.system.listKeys.called
 
     def test_kickstart_listcryptokeys_no_cryptokeys(self, shell):
@@ -532,10 +617,12 @@ echo 'some more hello'
         shell.client.kickstart.profile.system.listKeys = MagicMock(return_value=[])
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.kickstart.print", mprint) as prt, \
-                patch("spacecmd.kickstart.logging", logger) as lgr:
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+            "spacecmd.kickstart.logging", logger
+        ) as lgr:
             data = spacecmd.kickstart.do_kickstart_listcryptokeys(
-                shell, "some_profile", doreturn=False)
+                shell, "some_profile", doreturn=False
+            )
 
         assert not shell.help_kickstart_listcryptokeys.called
         assert not mprint.called
@@ -543,8 +630,7 @@ echo 'some more hello'
         assert data is None
         assert shell.client.kickstart.profile.system.listKeys.called
 
-        assert_expect(logger.error.call_args_list,
-                      "No crypto keys has been found")
+        assert_expect(logger.error.call_args_list, "No crypto keys has been found")
 
     def test_kickstart_addcryptokeys_noarg(self, shell):
         """
@@ -568,8 +654,10 @@ echo 'some more hello'
         assert not shell.help_kickstart_addcryptokeys.called
         assert shell.client.kickstart.profile.system.addKeys.called
 
-        assert_args_expect(shell.client.kickstart.profile.system.addKeys.call_args_list,
-                           [((shell.session, "my_profile", ["key1", "key2"]), {})])
+        assert_args_expect(
+            shell.client.kickstart.profile.system.addKeys.call_args_list,
+            [((shell.session, "my_profile", ["key1", "key2"]), {})],
+        )
 
     def test_kickstart_removecryptokeys_noargs(self, shell):
         """
@@ -628,9 +716,9 @@ echo 'some more hello'
         :return:
         """
         mprint = MagicMock()
-        shell.client.kickstart.profile.keys.getActivationKeys = MagicMock(return_value=[
-            {}, {}, {}, {}
-        ])
+        shell.client.kickstart.profile.keys.getActivationKeys = MagicMock(
+            return_value=[{}, {}, {}, {}]
+        )
         with patch("spacecmd.kickstart.print", mprint) as prt:
             out = spacecmd.kickstart.do_kickstart_listactivationkeys(shell, "")
 
@@ -645,16 +733,20 @@ echo 'some more hello'
         :return:
         """
         mprint = MagicMock()
-        shell.client.kickstart.profile.keys.getActivationKeys = MagicMock(return_value=[
-            {"key": "zettakey"}, {"key": "one"}, {"key": "two"}, {"key": "andthree"}
-        ])
+        shell.client.kickstart.profile.keys.getActivationKeys = MagicMock(
+            return_value=[
+                {"key": "zettakey"},
+                {"key": "one"},
+                {"key": "two"},
+                {"key": "andthree"},
+            ]
+        )
         with patch("spacecmd.kickstart.print", mprint) as prt:
             out = spacecmd.kickstart.do_kickstart_listactivationkeys(shell, "profile")
 
         assert out is None
         assert mprint.called
-        assert_expect(mprint.call_args_list,
-                      'andthree\none\ntwo\nzettakey')
+        assert_expect(mprint.call_args_list, "andthree\none\ntwo\nzettakey")
 
     def test_kickstart_listactivationkeys_data_sorted(self, shell):
         """
@@ -664,16 +756,23 @@ echo 'some more hello'
         :return:
         """
         mprint = MagicMock()
-        shell.client.kickstart.profile.keys.getActivationKeys = MagicMock(return_value=[
-            {"key": "zettakey"}, {"key": "one"}, {"key": "two"}, {"key": "andthree"}
-        ])
+        shell.client.kickstart.profile.keys.getActivationKeys = MagicMock(
+            return_value=[
+                {"key": "zettakey"},
+                {"key": "one"},
+                {"key": "two"},
+                {"key": "andthree"},
+            ]
+        )
         with patch("spacecmd.kickstart.print", mprint) as prt:
-            out = spacecmd.kickstart.do_kickstart_listactivationkeys(shell, "profile", doreturn=True)
+            out = spacecmd.kickstart.do_kickstart_listactivationkeys(
+                shell, "profile", doreturn=True
+            )
 
         assert not mprint.called
         assert out is not None
         assert len(out) == 4
-        assert out == ['andthree', 'one', 'two', 'zettakey']
+        assert out == ["andthree", "one", "two", "zettakey"]
 
     def test_kickstart_addactivationkeys_noarg(self, shell):
         """
@@ -829,9 +928,15 @@ echo 'some more hello'
             return_value=copy.deepcopy(advanced_opts)
         )
         shell.kickstart_getcontents = MagicMock(return_value="")
-        details = spacecmd.kickstart.export_kickstart_getdetails(shell, "testing-testing", [{
-            "label": "testing-testing",
-        }])
+        details = spacecmd.kickstart.export_kickstart_getdetails(
+            shell,
+            "testing-testing",
+            [
+                {
+                    "label": "testing-testing",
+                }
+            ],
+        )
         assert details["advanced_opts"] == expected
 
     def test_help_kickstart_importjson(self, shell):

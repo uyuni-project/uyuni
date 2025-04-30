@@ -13,7 +13,9 @@ from spacewalk.satellite_tools.ulnauth import ULNAuth
 
 # for testing add the relative path to the load path
 if "spacewalk-uln-resolver" in sys.argv[0]:
-    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '../python'))
+    sys.path.insert(
+        0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "../python")
+    )
 
 from zypp_plugin import Plugin
 
@@ -22,6 +24,7 @@ class SpacewalkULNPlugin(Plugin):
     """
     ULN authentication Plugin
     """
+
     def __init__(self):
         Plugin.__init__(self)
         self._uln_auth = ULNAuth()
@@ -33,17 +36,16 @@ class SpacewalkULNPlugin(Plugin):
         :returns: None
         """
         try:
-            self._uln_auth.authenticate(headers['url'])
-            self.auth_headers = {
-                "X-ULN-Api-User-Key": self._uln_auth.token
-            }
+            self._uln_auth.authenticate(headers["url"])
+            self.auth_headers = {"X-ULN-Api-User-Key": self._uln_auth.token}
         except Exception as exc:
             self.answer("ERROR", {}, str(exc))
-        hostname, label = self._uln_auth.get_hostname(headers.pop('url'))
+        hostname, label = self._uln_auth.get_hostname(headers.pop("url"))
         url = self._uln_auth.url + "/XMLRPC/GET-REQ/" + label
         if headers:
-           url += "?{}".format(urllib.parse.urlencode(headers))
+            url += "?{}".format(urllib.parse.urlencode(headers))
         self.answer("RESOLVEDURL", self.auth_headers, url)
+
 
 plugin = SpacewalkULNPlugin()
 plugin.main()

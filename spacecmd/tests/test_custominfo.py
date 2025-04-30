@@ -12,6 +12,7 @@ class TestSCCusomInfo:
     """
     Test for custominfo API.
     """
+
     def test_do_custominfo_createkey_no_keyname(self, shell):
         """
         Test do_custominfo_createkey do not break on no key name provided, falling back to interactive mode.
@@ -25,7 +26,6 @@ class TestSCCusomInfo:
 
         assert "Empty key" in exc2str(exc)
 
-
     def test_do_custominfo_createkey_no_descr(self, shell):
         """
         Test do_custominfo_createkey description gets the name of the key, if not provided.
@@ -37,7 +37,9 @@ class TestSCCusomInfo:
             custominfo.do_custominfo_createkey(shell, "")
 
         assert shell.client.system.custominfo.createKey.called
-        session, keyname, descr = shell.client.system.custominfo.createKey.call_args_list[0][0]
+        session, keyname, descr = (
+            shell.client.system.custominfo.createKey.call_args_list[0][0]
+        )
         assert shell.session == session
         assert keyname == descr
 
@@ -52,7 +54,9 @@ class TestSCCusomInfo:
             custominfo.do_custominfo_createkey(shell, "")
 
         assert shell.client.system.custominfo.createKey.called
-        session, keyname, descr = shell.client.system.custominfo.createKey.call_args_list[0][0]
+        session, keyname, descr = (
+            shell.client.system.custominfo.createKey.call_args_list[0][0]
+        )
         assert shell.session == session
         assert keyname != descr
         assert keyname == "keyname"
@@ -68,7 +72,9 @@ class TestSCCusomInfo:
         custominfo.do_custominfo_createkey(shell, "keyname keydescr")
 
         assert shell.client.system.custominfo.createKey.called
-        session, keyname, descr = shell.client.system.custominfo.createKey.call_args_list[0][0]
+        session, keyname, descr = (
+            shell.client.system.custominfo.createKey.call_args_list[0][0]
+        )
         assert shell.session == session
         assert keyname != descr
         assert keyname == "keyname"
@@ -119,7 +125,7 @@ class TestSCCusomInfo:
         """
         Test do_custominfo_listkeys calls lists all keys calling listAllKeys API function to STDOUT.
         """
-        keylist=[
+        keylist = [
             {"label": "some_key"},
             {"label": "some_other_key"},
             {"label": "this_key_stays"},
@@ -136,7 +142,7 @@ class TestSCCusomInfo:
         """
         Test do_custominfo_listkeys calls lists all keys calling listAllKeys API function as data.
         """
-        keylist=[
+        keylist = [
             {"label": "some_key"},
             {"label": "some_other_key"},
             {"label": "this_key_stays"},
@@ -155,7 +161,7 @@ class TestSCCusomInfo:
         """
         Test do_custominfo_details shows help when no arguments has been passed.
         """
-        keylist=["some_key", "some_other_key", "this_key_stays"]
+        keylist = ["some_key", "some_other_key", "this_key_stays"]
         shell.help_custominfo_details = MagicMock(side_effect=Exception("Help info"))
         shell.client.system.custominfo.listAllKeys = MagicMock()
         shell.do_custominfo_listkeys = MagicMock(return_value=keylist)
@@ -184,8 +190,14 @@ class TestSCCusomInfo:
                 custominfo.do_custominfo_details(shell, "keyname")
 
         assert not shell.client.system.custominfo.listAllKeys.called
-        assert logger.debug.call_args_list[0][0][0] == "customkey_details called with args: 'keyname', keys: ''."
-        assert logger.error.call_args_list[0][0][0] == "No keys matched argument 'keyname'."
+        assert (
+            logger.debug.call_args_list[0][0][0]
+            == "customkey_details called with args: 'keyname', keys: ''."
+        )
+        assert (
+            logger.error.call_args_list[0][0][0]
+            == "No keys matched argument 'keyname'."
+        )
 
     def test_do_custominfo_details_keydetails_notfound(self, shell):
         """
@@ -223,15 +235,15 @@ class TestSCCusomInfo:
                 custominfo.do_custominfo_details(shell, "key*")
 
         expectations = [
-            'Label:        key_one',
-            'Description:  N/A',
-            'Modified:     N/A',
-            'System Count: 0',
-            '***',
-            'Label:        key_two',
-            'Description:  N/A',
-            'Modified:     N/A',
-            'System Count: 0'
+            "Label:        key_one",
+            "Description:  N/A",
+            "Modified:     N/A",
+            "System Count: 0",
+            "***",
+            "Label:        key_two",
+            "Description:  N/A",
+            "Modified:     N/A",
+            "System Count: 0",
         ]
 
         assert shell.client.system.custominfo.listAllKeys.called
@@ -246,8 +258,18 @@ class TestSCCusomInfo:
         shell.SEPARATOR = "***"
         shell.client.system.custominfo.listAllKeys = MagicMock(
             return_value=[
-                {"label": "key_one", "description": "descr one", "last_modified": "123", "system_count": 1},
-                {"label": "key_two", "description": "descr two", "last_modified": "234", "system_count": 2},
+                {
+                    "label": "key_one",
+                    "description": "descr one",
+                    "last_modified": "123",
+                    "system_count": 1,
+                },
+                {
+                    "label": "key_two",
+                    "description": "descr two",
+                    "last_modified": "234",
+                    "system_count": 2,
+                },
             ]
         )
         shell.do_custominfo_listkeys = MagicMock(return_value=["key_one", "key_two"])
@@ -259,15 +281,15 @@ class TestSCCusomInfo:
                 custominfo.do_custominfo_details(shell, "key*")
 
         expectations = [
-            'Label:        key_one',
-            'Description:  descr one',
-            'Modified:     123',
-            'System Count: 1',
-            '***',
-            'Label:        key_two',
-            'Description:  descr two',
-            'Modified:     234',
-            'System Count: 2'
+            "Label:        key_one",
+            "Description:  descr one",
+            "Modified:     123",
+            "System Count: 1",
+            "***",
+            "Label:        key_two",
+            "Description:  descr two",
+            "Modified:     234",
+            "System Count: 2",
         ]
 
         assert shell.client.system.custominfo.listAllKeys.called
@@ -292,7 +314,9 @@ class TestSCCusomInfo:
         Test do_custominfo_updatekey with no arguments falls to the interactive prompt.
         """
         shell.client.system.custominfo.updateKey = MagicMock()
-        prompt = MagicMock(side_effect=["keyname", Exception("interactive mode for descr")])
+        prompt = MagicMock(
+            side_effect=["keyname", Exception("interactive mode for descr")]
+        )
         with patch("spacecmd.custominfo.prompt_user", prompt):
             with pytest.raises(Exception) as exc:
                 custominfo.do_custominfo_updatekey(shell, "")
@@ -318,10 +342,14 @@ class TestSCCusomInfo:
         shell.client.system.custominfo.updateKey = MagicMock()
         prompt = MagicMock(side_effect=[Exception("interactive mode for descr")])
         with patch("spacecmd.custominfo.prompt_user", prompt):
-            custominfo.do_custominfo_updatekey(shell, "keyname 'some key description here'")
+            custominfo.do_custominfo_updatekey(
+                shell, "keyname 'some key description here'"
+            )
 
         assert shell.client.system.custominfo.updateKey.called
-        session, keyname, description = shell.client.system.custominfo.updateKey.call_args_list[0][0]
+        session, keyname, description = (
+            shell.client.system.custominfo.updateKey.call_args_list[0][0]
+        )
         assert shell.session == session
         assert keyname == "keyname"
         assert description == "some key description here"

@@ -20,24 +20,29 @@ import sys
 from optparse import OptionParser
 from spacewalk.susemanager import mgr_clean_old_patchnames
 
-def main():
-    parser = OptionParser(version="%prog 0.1",
-                          description="Remove patches with old patchnames from the given channels")
 
-    parser.add_option("-a", "--all", action="store_true", dest="all",
-                      help="iterate over all channels")
-    parser.add_option("-c", "--channel", action="store", dest="channel",
-                      help="channel name")
-    parser.add_option('-d', '--debug', dest='debug', default=0,
-                      help="debugging")
+def main():
+    parser = OptionParser(
+        version="%prog 0.1",
+        description="Remove patches with old patchnames from the given channels",
+    )
+
+    parser.add_option(
+        "-a", "--all", action="store_true", dest="all", help="iterate over all channels"
+    )
+    parser.add_option(
+        "-c", "--channel", action="store", dest="channel", help="channel name"
+    )
+    parser.add_option("-d", "--debug", dest="debug", default=0, help="debugging")
 
     (options, args) = parser.parse_args()
 
-    cleaner = mgr_clean_old_patchnames.Cleaner(all=options.all,
-                                      channel=options.channel,
-                                      debug=options.debug)
+    cleaner = mgr_clean_old_patchnames.Cleaner(
+        all=options.all, channel=options.channel, debug=options.debug
+    )
 
     cleaner.run()
+
 
 if __name__ == "__main__":
     try:

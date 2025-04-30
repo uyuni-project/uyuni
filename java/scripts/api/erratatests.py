@@ -5,10 +5,11 @@ import unittest
 from config import *
 
 # User TODO: Provide a CVE that does exist
-VALID_CVE="CVE-2008-1294"
+VALID_CVE = "CVE-2008-1294"
 
 # User TODO: Provide a CVE that does not exist
-INVALID_CVE="CVE-0000-9999"
+INVALID_CVE = "CVE-0000-9999"
+
 
 class Errata(RhnTestCase):
 
@@ -27,14 +28,13 @@ class Errata(RhnTestCase):
         # to represent a valid CVE...
 
         erratas = client.errata.findByCve(self.session_key, VALID_CVE)
-#        print erratas
+        #        print erratas
         self.assertTrue(len(erratas) > 0)
 
         erratas = client.errata.findByCve(self.session_key, INVALID_CVE)
-#        print erratas
+        #        print erratas
         self.assertTrue(len(erratas) == 0)
+
 
 if __name__ == "__main__":
     unittest.main()
-
-

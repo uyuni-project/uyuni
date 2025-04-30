@@ -30,17 +30,19 @@ import sys
 import xml.parsers.expat
 import commands
 
+
 def start_element(name, attrs, filename):
     if name == "mode":
-        query_name = attrs['name']
+        query_name = attrs["name"]
         grep_for_hits(filename, query_name)
+
 
 def dummy_element(name):
     pass
 
+
 def grep_for_hits(filename, query_name):
-    cmd = "grep -r %s * | grep -v '.xml' | wc -l" \
-            % query_name
+    cmd = "grep -r %s * | grep -v '.xml' | wc -l" % query_name
     (status, output) = commands.getstatusoutput(cmd)
     hits = int(output)
     used = open("used_queries", "a")
@@ -53,15 +55,18 @@ def grep_for_hits(filename, query_name):
     used.close()
     unused.close()
 
+
 if __name__ == "__main__":
     cwd = os.getcwd()
     files = sys.argv[1:]
     for filename in files:
         print("Scanning %s" % filename)
-        f = open(filename, 'r')
+        f = open(filename, "r")
         p = xml.parsers.expat.ParserCreate()
 
-        p.StartElementHandler = lambda x, y: start_element(x, y, os.path.basename(filename))
+        p.StartElementHandler = lambda x, y: start_element(
+            x, y, os.path.basename(filename)
+        )
         p.EndElementHandler = dummy_element
         p.CharacterDataHandler = dummy_element
 

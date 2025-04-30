@@ -48,7 +48,10 @@ def server_grains():
         else:
             grains["has_report_db"] = False
         rhndef = _simple_parse_rhn_conf(RHNCONFDEF)
-        if rhndef.get("product_name", "uyuni") in ["SUSE Multi-Linux Manager", "SUSE Manager"]:
+        if rhndef.get("product_name", "uyuni") in [
+            "SUSE Multi-Linux Manager",
+            "SUSE Manager",
+        ]:
             grains["is_uyuni"] = False
         else:
             grains["is_uyuni"] = True

@@ -13,6 +13,7 @@ class TestSCUser:
     """
     Test suite for "user" module.
     """
+
     def test_user_create_interactive(self, shell):
         """
         Test do_user_create interactive mode.
@@ -24,18 +25,33 @@ class TestSCUser:
         shell.user_confirm = MagicMock(return_value=1)
         logger = MagicMock()
         getps = MagicMock(return_value="1234567890")
-        prompter = MagicMock(side_effect=["lksw", "Luke", "Skywalker",
-                                          "l.skywalker@suse.com"])
-        with patch("spacecmd.user.logging", logger) as lgr, \
-                patch("spacecmd.user.prompt_user", prompter) as pmt, \
-                patch("spacecmd.user.getpass", getps) as gpw:
+        prompter = MagicMock(
+            side_effect=["lksw", "Luke", "Skywalker", "l.skywalker@suse.com"]
+        )
+        with patch("spacecmd.user.logging", logger) as lgr, patch(
+            "spacecmd.user.prompt_user", prompter
+        ) as pmt, patch("spacecmd.user.getpass", getps) as gpw:
             spacecmd.user.do_user_create(shell, "")
 
         assert shell.client.user.create.called
         assert not logger.warning.called
-        assert_args_expect(shell.client.user.create.call_args_list,
-                           [((shell.session, 'lksw', '1234567890', 'Luke',
-                              'Skywalker', 'l.skywalker@suse.com', 1), {})])
+        assert_args_expect(
+            shell.client.user.create.call_args_list,
+            [
+                (
+                    (
+                        shell.session,
+                        "lksw",
+                        "1234567890",
+                        "Luke",
+                        "Skywalker",
+                        "l.skywalker@suse.com",
+                        1,
+                    ),
+                    {},
+                )
+            ],
+        )
 
     def test_user_create_args(self, shell):
         """
@@ -49,18 +65,34 @@ class TestSCUser:
         logger = MagicMock()
         getps = MagicMock(return_value="1234567890")
         prompter = MagicMock(side_effect=Exception("Should not happen"))
-        with patch("spacecmd.user.logging", logger) as lgr, \
-                patch("spacecmd.user.prompt_user", prompter) as pmt, \
-                patch("spacecmd.user.getpass", getps) as gpw:
-            spacecmd.user.do_user_create(shell, "-u lksw -f Luke -l Skywalker "
-                                                "-e l.skywalker@suse.com -p 1234567890")
+        with patch("spacecmd.user.logging", logger) as lgr, patch(
+            "spacecmd.user.prompt_user", prompter
+        ) as pmt, patch("spacecmd.user.getpass", getps) as gpw:
+            spacecmd.user.do_user_create(
+                shell,
+                "-u lksw -f Luke -l Skywalker " "-e l.skywalker@suse.com -p 1234567890",
+            )
 
         assert shell.client.user.create.called
         assert not logger.error.called
         assert not logger.warning.called
-        assert_args_expect(shell.client.user.create.call_args_list,
-                           [((shell.session, 'lksw', '1234567890', 'Luke',
-                              'Skywalker', 'l.skywalker@suse.com', 0), {})])
+        assert_args_expect(
+            shell.client.user.create.call_args_list,
+            [
+                (
+                    (
+                        shell.session,
+                        "lksw",
+                        "1234567890",
+                        "Luke",
+                        "Skywalker",
+                        "l.skywalker@suse.com",
+                        0,
+                    ),
+                    {},
+                )
+            ],
+        )
 
     def test_user_create_no_username(self, shell):
         """
@@ -74,11 +106,12 @@ class TestSCUser:
         logger = MagicMock()
         getps = MagicMock(return_value="1234567890")
         prompter = MagicMock(side_effect=Exception("Should not happen"))
-        with patch("spacecmd.user.logging", logger) as lgr, \
-                patch("spacecmd.user.prompt_user", prompter) as pmt, \
-                patch("spacecmd.user.getpass", getps) as gpw:
-            spacecmd.user.do_user_create(shell, "-f Luke -l Skywalker "
-                                                "-e l.skywalker@suse.com -p 1234567890")
+        with patch("spacecmd.user.logging", logger) as lgr, patch(
+            "spacecmd.user.prompt_user", prompter
+        ) as pmt, patch("spacecmd.user.getpass", getps) as gpw:
+            spacecmd.user.do_user_create(
+                shell, "-f Luke -l Skywalker " "-e l.skywalker@suse.com -p 1234567890"
+            )
 
         assert not shell.client.user.create.called
         assert not logger.warning.called
@@ -97,11 +130,12 @@ class TestSCUser:
         logger = MagicMock()
         getps = MagicMock(return_value="1234567890")
         prompter = MagicMock(side_effect=Exception("Should not happen"))
-        with patch("spacecmd.user.logging", logger) as lgr, \
-                patch("spacecmd.user.prompt_user", prompter) as pmt, \
-                patch("spacecmd.user.getpass", getps) as gpw:
-            spacecmd.user.do_user_create(shell, "-u lksw -l Skywalker "
-                                                "-e l.skywalker@suse.com -p 1234567890")
+        with patch("spacecmd.user.logging", logger) as lgr, patch(
+            "spacecmd.user.prompt_user", prompter
+        ) as pmt, patch("spacecmd.user.getpass", getps) as gpw:
+            spacecmd.user.do_user_create(
+                shell, "-u lksw -l Skywalker " "-e l.skywalker@suse.com -p 1234567890"
+            )
 
         assert not shell.client.user.create.called
         assert not logger.warning.called
@@ -120,11 +154,12 @@ class TestSCUser:
         logger = MagicMock()
         getps = MagicMock(return_value="1234567890")
         prompter = MagicMock(side_effect=Exception("Should not happen"))
-        with patch("spacecmd.user.logging", logger) as lgr, \
-                patch("spacecmd.user.prompt_user", prompter) as pmt, \
-                patch("spacecmd.user.getpass", getps) as gpw:
-            spacecmd.user.do_user_create(shell, "-u lksw -f Luke "
-                                                "-e l.skywalker@suse.com -p 1234567890")
+        with patch("spacecmd.user.logging", logger) as lgr, patch(
+            "spacecmd.user.prompt_user", prompter
+        ) as pmt, patch("spacecmd.user.getpass", getps) as gpw:
+            spacecmd.user.do_user_create(
+                shell, "-u lksw -f Luke " "-e l.skywalker@suse.com -p 1234567890"
+            )
 
         assert not shell.client.user.create.called
         assert not logger.warning.called
@@ -143,11 +178,12 @@ class TestSCUser:
         logger = MagicMock()
         getps = MagicMock(return_value="1234567890")
         prompter = MagicMock(side_effect=Exception("Should not happen"))
-        with patch("spacecmd.user.logging", logger) as lgr, \
-                patch("spacecmd.user.prompt_user", prompter) as pmt, \
-                patch("spacecmd.user.getpass", getps) as gpw:
-            spacecmd.user.do_user_create(shell, "-u lksw -f Luke -l Skywalker "
-                                                "-p 1234567890")
+        with patch("spacecmd.user.logging", logger) as lgr, patch(
+            "spacecmd.user.prompt_user", prompter
+        ) as pmt, patch("spacecmd.user.getpass", getps) as gpw:
+            spacecmd.user.do_user_create(
+                shell, "-u lksw -f Luke -l Skywalker " "-p 1234567890"
+            )
 
         assert not shell.client.user.create.called
         assert not logger.warning.called
@@ -166,11 +202,12 @@ class TestSCUser:
         logger = MagicMock()
         getps = MagicMock(return_value="1234567890")
         prompter = MagicMock(side_effect=Exception("Should not happen"))
-        with patch("spacecmd.user.logging", logger) as lgr, \
-                patch("spacecmd.user.prompt_user", prompter) as pmt, \
-                patch("spacecmd.user.getpass", getps) as gpw:
-            spacecmd.user.do_user_create(shell, "-u lksw -f Luke -l Skywalker "
-                                                "-e l.skywalker@suse.com")
+        with patch("spacecmd.user.logging", logger) as lgr, patch(
+            "spacecmd.user.prompt_user", prompter
+        ) as pmt, patch("spacecmd.user.getpass", getps) as gpw:
+            spacecmd.user.do_user_create(
+                shell, "-u lksw -f Luke -l Skywalker " "-e l.skywalker@suse.com"
+            )
 
         assert not shell.client.user.create.called
         assert not logger.warning.called
@@ -189,20 +226,38 @@ class TestSCUser:
         logger = MagicMock()
         getps = MagicMock(return_value="1234567890")
         prompter = MagicMock(side_effect=Exception("Should not happen"))
-        with patch("spacecmd.user.logging", logger) as lgr, \
-                patch("spacecmd.user.prompt_user", prompter) as pmt, \
-                patch("spacecmd.user.getpass", getps) as gpw:
-            spacecmd.user.do_user_create(shell, "-u lksw -f Luke -l Skywalker --pam "
-                                                "-e l.skywalker@suse.com -p 123123123")
+        with patch("spacecmd.user.logging", logger) as lgr, patch(
+            "spacecmd.user.prompt_user", prompter
+        ) as pmt, patch("spacecmd.user.getpass", getps) as gpw:
+            spacecmd.user.do_user_create(
+                shell,
+                "-u lksw -f Luke -l Skywalker --pam "
+                "-e l.skywalker@suse.com -p 123123123",
+            )
 
         assert not logger.error.called
         assert shell.client.user.create.called
         assert logger.warning.called
-        assert_expect(logger.warning.call_args_list,
-                      "Note: password was ignored due to PAM mode")
-        assert_args_expect(shell.client.user.create.call_args_list,
-                           [((shell.session, 'lksw', '', 'Luke',
-                              'Skywalker', 'l.skywalker@suse.com', 1), {})])
+        assert_expect(
+            logger.warning.call_args_list, "Note: password was ignored due to PAM mode"
+        )
+        assert_args_expect(
+            shell.client.user.create.call_args_list,
+            [
+                (
+                    (
+                        shell.session,
+                        "lksw",
+                        "",
+                        "Luke",
+                        "Skywalker",
+                        "l.skywalker@suse.com",
+                        1,
+                    ),
+                    {},
+                )
+            ],
+        )
 
     def test_user_delete_noargs(self, shell):
         """
@@ -379,10 +434,12 @@ class TestSCUser:
         :param shell:
         :return:
         """
-        shell.client.user.listUsers = MagicMock(return_value=[
-            {"login": "pointyhaired"},
-            {"login": "someone-else"},
-        ])
+        shell.client.user.listUsers = MagicMock(
+            return_value=[
+                {"login": "pointyhaired"},
+                {"login": "someone-else"},
+            ]
+        )
         mprint = MagicMock()
 
         with patch("spacecmd.user.print", mprint) as prt:
@@ -399,10 +456,12 @@ class TestSCUser:
         :param shell:
         :return:
         """
-        shell.client.user.listUsers = MagicMock(return_value=[
-            {"login": "pointyhaired"},
-            {"login": "someone-else"},
-        ])
+        shell.client.user.listUsers = MagicMock(
+            return_value=[
+                {"login": "pointyhaired"},
+                {"login": "someone-else"},
+            ]
+        )
         mprint = MagicMock()
 
         with patch("spacecmd.user.print", mprint) as prt:
@@ -422,15 +481,15 @@ class TestSCUser:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.user.print", mprint) as prt, \
-                patch("spacecmd.user.logging", logger) as lgr:
+        with patch("spacecmd.user.print", mprint) as prt, patch(
+            "spacecmd.user.logging", logger
+        ) as lgr:
             out = spacecmd.user.do_user_listavailableroles(shell, "")
         assert out is None
         assert not mprint.called
         assert logger.error.called
 
-        assert_expect(logger.error.call_args_list,
-                      "No roles has been found")
+        assert_expect(logger.error.call_args_list, "No roles has been found")
 
     def test_user_listavailableroles_no_data_with_roles(self, shell):
         """
@@ -439,19 +498,21 @@ class TestSCUser:
         :param shell:
         :return:
         """
-        shell.client.user.listAssignableRoles = MagicMock(return_value=["bofh", "coffee"])
+        shell.client.user.listAssignableRoles = MagicMock(
+            return_value=["bofh", "coffee"]
+        )
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.user.print", mprint) as prt, \
-                patch("spacecmd.user.logging", logger) as lgr:
+        with patch("spacecmd.user.print", mprint) as prt, patch(
+            "spacecmd.user.logging", logger
+        ) as lgr:
             out = spacecmd.user.do_user_listavailableroles(shell, "")
         assert out is None
         assert not logger.error.called
         assert mprint.called
 
-        assert_expect(mprint.call_args_list,
-                      "bofh\ncoffee")
+        assert_expect(mprint.call_args_list, "bofh\ncoffee")
 
     def test_user_listavailableroles_with_data_no_roles(self, shell):
         """
@@ -464,8 +525,9 @@ class TestSCUser:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.user.print", mprint) as prt, \
-                patch("spacecmd.user.logging", logger) as lgr:
+        with patch("spacecmd.user.print", mprint) as prt, patch(
+            "spacecmd.user.logging", logger
+        ) as lgr:
             out = spacecmd.user.do_user_listavailableroles(shell, "", doreturn=True)
         assert out is not None
         assert not mprint.called
@@ -479,12 +541,15 @@ class TestSCUser:
         :param shell:
         :return:
         """
-        shell.client.user.listAssignableRoles = MagicMock(return_value=["bofh", "coffee"])
+        shell.client.user.listAssignableRoles = MagicMock(
+            return_value=["bofh", "coffee"]
+        )
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.user.print", mprint) as prt, \
-                patch("spacecmd.user.logging", logger) as lgr:
+        with patch("spacecmd.user.print", mprint) as prt, patch(
+            "spacecmd.user.logging", logger
+        ) as lgr:
             out = spacecmd.user.do_user_listavailableroles(shell, "", doreturn=True)
         assert out is not None
         assert not logger.error.called
@@ -518,8 +583,10 @@ class TestSCUser:
 
         assert not shell.help_user_addrole.called
         assert shell.client.user.addRole.called
-        assert_args_expect(shell.client.user.addRole.call_args_list,
-                           [((shell.session, "bofh", "coffee"), {})])
+        assert_args_expect(
+            shell.client.user.addRole.call_args_list,
+            [((shell.session, "bofh", "coffee"), {})],
+        )
 
     def test_user_removerole_noargs(self, shell):
         """
@@ -548,8 +615,10 @@ class TestSCUser:
 
         assert not shell.help_user_removerole.called
         assert shell.client.user.removeRole.called
-        assert_args_expect(shell.client.user.removeRole.call_args_list,
-                           [((shell.session, "bofh", "coffee"), {})])
+        assert_args_expect(
+            shell.client.user.removeRole.call_args_list,
+            [((shell.session, "bofh", "coffee"), {})],
+        )
 
     def test_user_addgroup_noargs(self, shell):
         """
@@ -578,8 +647,10 @@ class TestSCUser:
 
         assert not shell.help_user_addgroup.called
         assert shell.client.user.addAssignedSystemGroups.called
-        assert_args_expect(shell.client.user.addAssignedSystemGroups.call_args_list,
-                           [((shell.session, "bofh", ["coffee", "teamaker"], False), {})])
+        assert_args_expect(
+            shell.client.user.addAssignedSystemGroups.call_args_list,
+            [((shell.session, "bofh", ["coffee", "teamaker"], False), {})],
+        )
 
     def test_user_adddefaultgroup_noargs(self, shell):
         """
@@ -608,8 +679,10 @@ class TestSCUser:
 
         assert not shell.help_user_adddefaultgroup.called
         assert shell.client.user.addDefaultSystemGroups.called
-        assert_args_expect(shell.client.user.addDefaultSystemGroups.call_args_list,
-                           [((shell.session, "bofh", ["coffee", "teamaker"]), {})])
+        assert_args_expect(
+            shell.client.user.addDefaultSystemGroups.call_args_list,
+            [((shell.session, "bofh", ["coffee", "teamaker"]), {})],
+        )
 
     def test_user_removegroup_noargs(self, shell):
         """
@@ -638,8 +711,10 @@ class TestSCUser:
 
         assert not shell.help_user_removegroup.called
         assert shell.client.user.removeAssignedSystemGroups.called
-        assert_args_expect(shell.client.user.removeAssignedSystemGroups.call_args_list,
-                           [((shell.session, "bofh", ["coffee", "teamaker"], True), {})])
+        assert_args_expect(
+            shell.client.user.removeAssignedSystemGroups.call_args_list,
+            [((shell.session, "bofh", ["coffee", "teamaker"], True), {})],
+        )
 
     def test_user_removedefaultgroup_noargs(self, shell):
         """
@@ -668,8 +743,10 @@ class TestSCUser:
 
         assert not shell.help_user_removedefaultgroup.called
         assert shell.client.user.removeDefaultSystemGroups.called
-        assert_args_expect(shell.client.user.removeDefaultSystemGroups.call_args_list,
-                           [((shell.session, "bofh", ["coffee", "teamaker"]), {})])
+        assert_args_expect(
+            shell.client.user.removeDefaultSystemGroups.call_args_list,
+            [((shell.session, "bofh", ["coffee", "teamaker"]), {})],
+        )
 
     def test_user_setfirstname_noargs(self, shell):
         """
@@ -703,8 +780,10 @@ class TestSCUser:
         assert not shell.help_user_setfirstname.called
         assert shell.client.user.setDetails.called
 
-        assert_args_expect(shell.client.user.setDetails.call_args_list,
-                           [((shell.session, "bofh", {"first_name": "Operator"}), {})])
+        assert_args_expect(
+            shell.client.user.setDetails.call_args_list,
+            [((shell.session, "bofh", {"first_name": "Operator"}), {})],
+        )
 
     def test_user_setlastname_noargs(self, shell):
         """
@@ -738,8 +817,10 @@ class TestSCUser:
         assert not shell.help_user_setlastname.called
         assert shell.client.user.setDetails.called
 
-        assert_args_expect(shell.client.user.setDetails.call_args_list,
-                           [((shell.session, "bofh", {"last_name": "Hell"}), {})])
+        assert_args_expect(
+            shell.client.user.setDetails.call_args_list,
+            [((shell.session, "bofh", {"last_name": "Hell"}), {})],
+        )
 
     def test_user_setemail_noargs(self, shell):
         """
@@ -773,8 +854,10 @@ class TestSCUser:
         assert not shell.help_user_setemail.called
         assert shell.client.user.setDetails.called
 
-        assert_args_expect(shell.client.user.setDetails.call_args_list,
-                           [((shell.session, "bofh", {"email": "b@op.com"}), {})])
+        assert_args_expect(
+            shell.client.user.setDetails.call_args_list,
+            [((shell.session, "bofh", {"email": "b@op.com"}), {})],
+        )
 
     def test_user_setprefix_noargs(self, shell):
         """
@@ -808,8 +891,10 @@ class TestSCUser:
         assert not shell.help_user_setprefix.called
         assert shell.client.user.setDetails.called
 
-        assert_args_expect(shell.client.user.setDetails.call_args_list,
-                           [((shell.session, "bofh", {"prefix": " "}), {})])
+        assert_args_expect(
+            shell.client.user.setDetails.call_args_list,
+            [((shell.session, "bofh", {"prefix": " "}), {})],
+        )
 
     def test_user_setprefix_pref(self, shell):
         """
@@ -827,8 +912,10 @@ class TestSCUser:
         assert not shell.help_user_setprefix.called
         assert shell.client.user.setDetails.called
 
-        assert_args_expect(shell.client.user.setDetails.call_args_list,
-                           [((shell.session, "bofh", {"prefix": "Bst"}), {})])
+        assert_args_expect(
+            shell.client.user.setDetails.call_args_list,
+            [((shell.session, "bofh", {"prefix": "Bst"}), {})],
+        )
 
     def test_user_setpassword_noargs(self, shell):
         """
@@ -862,8 +949,10 @@ class TestSCUser:
         assert not shell.help_user_setpassword.called
         assert shell.client.user.setDetails.called
 
-        assert_args_expect(shell.client.user.setDetails.call_args_list,
-                           [((shell.session, "someuser", {"password": "toto"}), {})])
+        assert_args_expect(
+            shell.client.user.setDetails.call_args_list,
+            [((shell.session, "someuser", {"password": "toto"}), {})],
+        )
 
     def test_user_details_noargs(self, shell):
         """
@@ -881,8 +970,9 @@ class TestSCUser:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.user.print", mprint) as prt, \
-                patch("spacecmd.user.logging", logger) as lgr:
+        with patch("spacecmd.user.print", mprint) as prt, patch(
+            "spacecmd.user.logging", logger
+        ) as lgr:
             spacecmd.user.do_user_details(shell, "")
 
         assert not shell.client.user.getDetails.called
@@ -902,8 +992,11 @@ class TestSCUser:
         :return:
         """
         shell.help_user_details = MagicMock()
-        shell.client.user.getDetails = MagicMock(side_effect=xmlrpclib.Fault(
-            faultCode=42, faultString="User caused disks spinning backwards"))
+        shell.client.user.getDetails = MagicMock(
+            side_effect=xmlrpclib.Fault(
+                faultCode=42, faultString="User caused disks spinning backwards"
+            )
+        )
         shell.client.user.listRoles = MagicMock()
         shell.client.user.listAssignedSystemGroups = MagicMock()
         shell.client.user.listDefaultSystemGroups = MagicMock()
@@ -911,8 +1004,9 @@ class TestSCUser:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.user.print", mprint) as prt, \
-                patch("spacecmd.user.logging", logger) as lgr:
+        with patch("spacecmd.user.print", mprint) as prt, patch(
+            "spacecmd.user.logging", logger
+        ) as lgr:
             spacecmd.user.do_user_details(shell, "hairypointed othermissing")
 
         assert not shell.client.user.listRoles.called
@@ -925,14 +1019,19 @@ class TestSCUser:
         assert logger.debug.called
         assert shell.client.user.getDetails.called
 
-        assert_list_args_expect(logger.warning.call_args_list,
-                                ["hairypointed is not a valid user",
-                                 "othermissing is not a valid user"])
-        assert_list_args_expect(logger.debug.call_args_list,
-                                ["Error '42' while getting data about user "
-                                 "'hairypointed': User caused disks spinning backwards",
-                                 "Error '42' while getting data about user "
-                                 "'othermissing': User caused disks spinning backwards"])
+        assert_list_args_expect(
+            logger.warning.call_args_list,
+            ["hairypointed is not a valid user", "othermissing is not a valid user"],
+        )
+        assert_list_args_expect(
+            logger.debug.call_args_list,
+            [
+                "Error '42' while getting data about user "
+                "'hairypointed': User caused disks spinning backwards",
+                "Error '42' while getting data about user "
+                "'othermissing': User caused disks spinning backwards",
+            ],
+        )
 
     def test_user_details_get_data(self, shell):
         """
@@ -942,28 +1041,48 @@ class TestSCUser:
         :return:
         """
         shell.help_user_details = MagicMock()
-        shell.client.user.getDetails = MagicMock(side_effect=[
-            {"first_name": "John", "last_name": "Smith", "email": "j.smith@company.com",
-             "last_login_date": "1999.01.02", "created_date": "1999.01.01", "enabled": False},
-            {"first_name": "Bofh", "last_name": "Operator", "email": "bofh@company.com",
-             "last_login_date": "2019.01.01", "created_date": "1980.01.01", "enabled": True},
-        ])
-        shell.client.user.listRoles = MagicMock(side_effect=[
-            ["printer", "spectator"], ["coffee", "bofh"],
-        ])
-        shell.client.user.listAssignedSystemGroups = MagicMock(side_effect=[
-            [{"name": "beer"}, {"name": "schinken"}, {"name": "swimming pool"}],
-            [{"name": "butterfly catchers"}, {"name": "chessplayers"}],
-        ])
-        shell.client.user.listDefaultSystemGroups = MagicMock(side_effect=[
-            [{"name": "something"}], []
-        ])
+        shell.client.user.getDetails = MagicMock(
+            side_effect=[
+                {
+                    "first_name": "John",
+                    "last_name": "Smith",
+                    "email": "j.smith@company.com",
+                    "last_login_date": "1999.01.02",
+                    "created_date": "1999.01.01",
+                    "enabled": False,
+                },
+                {
+                    "first_name": "Bofh",
+                    "last_name": "Operator",
+                    "email": "bofh@company.com",
+                    "last_login_date": "2019.01.01",
+                    "created_date": "1980.01.01",
+                    "enabled": True,
+                },
+            ]
+        )
+        shell.client.user.listRoles = MagicMock(
+            side_effect=[
+                ["printer", "spectator"],
+                ["coffee", "bofh"],
+            ]
+        )
+        shell.client.user.listAssignedSystemGroups = MagicMock(
+            side_effect=[
+                [{"name": "beer"}, {"name": "schinken"}, {"name": "swimming pool"}],
+                [{"name": "butterfly catchers"}, {"name": "chessplayers"}],
+            ]
+        )
+        shell.client.user.listDefaultSystemGroups = MagicMock(
+            side_effect=[[{"name": "something"}], []]
+        )
         shell.client.org.getDetails = MagicMock(return_value={"name": "company.com"})
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.user.print", mprint) as prt, \
-                patch("spacecmd.user.logging", logger) as lgr:
+        with patch("spacecmd.user.print", mprint) as prt, patch(
+            "spacecmd.user.logging", logger
+        ) as lgr:
             spacecmd.user.do_user_details(shell, "hairypointed bofh")
 
         assert not shell.help_user_details.called
@@ -976,14 +1095,45 @@ class TestSCUser:
         assert shell.client.user.getDetails.called
         assert mprint.called
 
-        assert_list_args_expect(mprint.call_args_list,
-                                ['Username:      hairypointed', 'First Name:    John', 'Last Name:     Smith',
-                                 'Email Address: j.smith@company.com', 'Organisation:  company.com',
-                                 'Last Login:    1999.01.02', 'Created:       1999.01.01', 'Enabled:       False',
-                                 '', 'Roles', '-----', 'printer\nspectator', '', 'Assigned Groups', '---------------',
-                                 'beer\nschinken\nswimming pool', '', 'Default Groups', '--------------', 'something',
-                                 '----------', 'Username:      bofh', 'First Name:    Bofh', 'Last Name:     Operator',
-                                 'Email Address: bofh@company.com', 'Organisation:  company.com',
-                                 'Last Login:    2019.01.01', 'Created:       1980.01.01', 'Enabled:       True',
-                                 '', 'Roles', '-----', 'bofh\ncoffee', '', 'Assigned Groups', '---------------',
-                                 'butterfly catchers\nchessplayers'])
+        assert_list_args_expect(
+            mprint.call_args_list,
+            [
+                "Username:      hairypointed",
+                "First Name:    John",
+                "Last Name:     Smith",
+                "Email Address: j.smith@company.com",
+                "Organisation:  company.com",
+                "Last Login:    1999.01.02",
+                "Created:       1999.01.01",
+                "Enabled:       False",
+                "",
+                "Roles",
+                "-----",
+                "printer\nspectator",
+                "",
+                "Assigned Groups",
+                "---------------",
+                "beer\nschinken\nswimming pool",
+                "",
+                "Default Groups",
+                "--------------",
+                "something",
+                "----------",
+                "Username:      bofh",
+                "First Name:    Bofh",
+                "Last Name:     Operator",
+                "Email Address: bofh@company.com",
+                "Organisation:  company.com",
+                "Last Login:    2019.01.01",
+                "Created:       1980.01.01",
+                "Enabled:       True",
+                "",
+                "Roles",
+                "-----",
+                "bofh\ncoffee",
+                "",
+                "Assigned Groups",
+                "---------------",
+                "butterfly catchers\nchessplayers",
+            ],
+        )

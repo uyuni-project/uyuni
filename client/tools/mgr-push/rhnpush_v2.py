@@ -49,9 +49,9 @@ class PackageUpload(connection.PackageUpload):
     # Encodes an array of variables into Base64 (column-separated)
     @staticmethod
     def encode_values(arr):
-        val = ':'.join([x.strip() for x in map(base64.encodestring, arr)])
+        val = ":".join([x.strip() for x in map(base64.encodestring, arr)])
         # Get rid of the newlines
-        val = val.replace('\n', '')
+        val = val.replace("\n", "")
         # And split the result into lines of fixed size
         line_len = 80
         result = []
@@ -59,7 +59,7 @@ class PackageUpload(connection.PackageUpload):
         while 1:
             if start >= len(val):
                 break
-            result.append(val[start:start + line_len])
+            result.append(val[start : start + line_len])
             start = start + line_len
         return result
 

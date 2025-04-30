@@ -10,10 +10,12 @@ except:
 
 from zypp_plugin import Plugin
 
+
 class SpacewalkExtraHTTPHeaders(Plugin):
     """
     Plugin to add extra HTTP Headers to Zypper requests
     """
+
     def RESOLVEURL(self, headers, body):
         """
         Resolve URL.
@@ -22,14 +24,15 @@ class SpacewalkExtraHTTPHeaders(Plugin):
         """
         try:
             self.http_headers = {}
-            if 'headers_file' in headers:
-                if os.path.isfile(headers['headers_file']):
-                    with open(headers['headers_file']) as headers_file:
+            if "headers_file" in headers:
+                if os.path.isfile(headers["headers_file"]):
+                    with open(headers["headers_file"]) as headers_file:
                         self.http_headers = json.load(headers_file)
 
         except Exception as exc:
             self.answer("ERROR", {}, str(exc))
-        self.answer("RESOLVEDURL", self.http_headers, unquote(headers['url']))
+        self.answer("RESOLVEDURL", self.http_headers, unquote(headers["url"]))
+
 
 plugin = SpacewalkExtraHTTPHeaders()
 plugin.main()

@@ -55,40 +55,52 @@ class DepSolver:
 
     def setup(self):
         """
-         Load the repos into repostore to query package dependencies
+        Load the repos into repostore to query package dependencies
         """
         for repo in self.repos:
-            solv_repo = self.pool.add_repo(str(repo['id']))
-            solv_path = os.path.join(repo['relative_path'], 'solv')
-            if not os.path.isfile(solv_path) or not solv_repo.add_solv(solv.xfopen(str(solv_path)), 0):
-                raise Exception("Repository solv file cannot be found at: {}".format(solv_path))
+            solv_repo = self.pool.add_repo(str(repo["id"]))
+            solv_path = os.path.join(repo["relative_path"], "solv")
+            if not os.path.isfile(solv_path) or not solv_repo.add_solv(
+                solv.xfopen(str(solv_path)), 0
+            ):
+                raise Exception(
+                    "Repository solv file cannot be found at: {}".format(solv_path)
+                )
         self.pool.addfileprovides()
         self.pool.createwhatprovides()
 
     def getDependencylist(self):
         """
-         Get dependency list and suggested packages for package names provided.
-         The dependency lookup is only one level in this case.
-         The package name format could be any of the following:
-         name, name.arch, name-ver-rel.arch, name-ver, name-ver-rel,
-         epoch:name-ver-rel.arch, name-epoch:ver-rel.arch
+        Get dependency list and suggested packages for package names provided.
+        The dependency lookup is only one level in this case.
+        The package name format could be any of the following:
+        name, name.arch, name-ver-rel.arch, name-ver, name-ver-rel,
+        epoch:name-ver-rel.arch, name-epoch:ver-rel.arch
         """
         pkgselection = self.pool.Selection()
-        flags = solv.Selection.SELECTION_NAME|solv.Selection.SELECTION_PROVIDES|solv.Selection.SELECTION_GLOB
-        flags |= solv.Selection.SELECTION_CANON|solv.Selection.SELECTION_DOTARCH|solv.Selection.SELECTION_ADD
+        flags = (
+            solv.Selection.SELECTION_NAME
+            | solv.Selection.SELECTION_PROVIDES
+            | solv.Selection.SELECTION_GLOB
+        )
+        flags |= (
+            solv.Selection.SELECTION_CANON
+            | solv.Selection.SELECTION_DOTARCH
+            | solv.Selection.SELECTION_ADD
+        )
         for pkg in self.pkgs:
             pkgselection.select(pkg, flags)
         return self.__locateDeps(pkgselection.solvables())
 
     def getRecursiveDepList(self):
         """
-         Get dependency list and suggested packages for package names provided.
-         The dependency lookup is recursive. All available packages in the repo
-         are returned matching whatprovides.
-         The package name format could be any of the following:
-         name, name.arch, name-ver-rel.arch, name-ver, name-ver-rel,
-         epoch:name-ver-rel.arch, name-epoch:ver-rel.arch
-         returns a dictionary of {'n-v-r.a' : [n,v,e,r,a],...}
+        Get dependency list and suggested packages for package names provided.
+        The dependency lookup is recursive. All available packages in the repo
+        are returned matching whatprovides.
+        The package name format could be any of the following:
+        name, name.arch, name-ver-rel.arch, name-ver, name-ver-rel,
+        epoch:name-ver-rel.arch, name-epoch:ver-rel.arch
+        returns a dictionary of {'n-v-r.a' : [n,v,e,r,a],...}
         """
         solved = []
         to_solve = self.pkgs
@@ -114,8 +126,13 @@ class DepSolver:
 
         if not self.quiet:
             print(("Solving Dependencies (%i): " % len(pkgs)))
-            pb = ProgressBar(prompt='', endTag=' - complete',
-                             finalSize=len(pkgs), finalBarLength=40, stream=sys.stdout)
+            pb = ProgressBar(
+                prompt="",
+                endTag=" - complete",
+                finalSize=len(pkgs),
+                finalBarLength=40,
+                stream=sys.stdout,
+            )
             pb.printAll(1)
 
         for pkg in pkgs:
@@ -173,11 +190,19 @@ class DepSolver:
         return print_doc_str
 
 
-if __name__ == '__main__':
-    parser = OptionParser(usage="Usage: %prog [repoid] [repodata_path] [pkgname1] [pkgname2] ... [pkgnameM]")
-    parser.add_option("-i", "--input-file", action="store",
-                      help="YAML file to use as input. This would ignore all other input passed in the command line")
-    parser.add_option("-y", "--output-yaml", action="count", help="Produce a YAML formatted output")
+if __name__ == "__main__":
+    parser = OptionParser(
+        usage="Usage: %prog [repoid] [repodata_path] [pkgname1] [pkgname2] ... [pkgnameM]"
+    )
+    parser.add_option(
+        "-i",
+        "--input-file",
+        action="store",
+        help="YAML file to use as input. This would ignore all other input passed in the command line",
+    )
+    parser.add_option(
+        "-y", "--output-yaml", action="count", help="Produce a YAML formatted output"
+    )
     (options, _args) = parser.parse_args()
 
     arg_repo = []
@@ -198,15 +223,21 @@ if __name__ == '__main__':
         #
         try:
             repo_cfg = yaml.load(open(options.input_file))
-            for repository in repo_cfg['repositories']:
-                arg_repo.append({'id': repository, 'relative_path': repo_cfg['repositories'][repository]})
-            arg_pkgs = repo_cfg['packages']
+            for repository in repo_cfg["repositories"]:
+                arg_repo.append(
+                    {
+                        "id": repository,
+                        "relative_path": repo_cfg["repositories"][repository],
+                    }
+                )
+            arg_pkgs = repo_cfg["packages"]
         except Exception as exc:  # pylint: disable=broad-except
             parser.error("Error reading input file: {}".format(exc))
             sys.exit(1)
     elif len(_args) >= 3:
-        arg_repo = [{'id': _args[0],
-                     'relative_path': _args[1] }]  # path to where repodata is located
+        arg_repo = [
+            {"id": _args[0], "relative_path": _args[1]}
+        ]  # path to where repodata is located
         arg_pkgs = _args[2:]
     else:
         parser.error("Wrong number of arguments")
@@ -216,18 +247,19 @@ if __name__ == '__main__':
     deplist = dsolve.getDependencylist()
 
     if options.output_yaml:
-        output = {
-            'packages': [],
-            'dependencies' : {}
-        }
+        output = {"packages": [], "dependencies": {}}
         for package in deplist:
             pkg_tag = str(package)
-            output['packages'].append(pkg_tag)
-            output['dependencies'][pkg_tag] = {}
+            output["packages"].append(pkg_tag)
+            output["dependencies"][pkg_tag] = {}
             for dependency in deplist[package]:
-                output['dependencies'][pkg_tag][str(dependency)] = [str(x) for x in deplist[package][dependency]]
+                output["dependencies"][pkg_tag][str(dependency)] = [
+                    str(x) for x in deplist[package][dependency]
+                ]
         sys.stdout.write(yaml.dump(output))
     else:
         result_set = dsolve.processResults(deplist)
         print(result_set)
-        print("Printable dependency Results: \n\n %s" % dsolve.printable_result(deplist))
+        print(
+            "Printable dependency Results: \n\n %s" % dsolve.printable_result(deplist)
+        )

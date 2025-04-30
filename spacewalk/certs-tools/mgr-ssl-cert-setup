@@ -28,8 +28,8 @@ except ImportError as e:
     sys.stderr.write(str(e) + "\n")
     sys.exit(1)
 
-#-------------------------------------------------------------------------------
-if __name__ == '__main__':
+# -------------------------------------------------------------------------------
+if __name__ == "__main__":
     try:
         sys.exit(certs.mgr_ssl_cert_setup.main() or 0)
     except KeyboardInterrupt:
@@ -40,5 +40,4 @@ if __name__ == '__main__':
     except:
         sys.stderr.write("\nERROR: unhandled exception occurred:\n")
         raise
-#===============================================================================
-
+# ===============================================================================

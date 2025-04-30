@@ -14,6 +14,7 @@ class TestSCErrata:
     """
     Test suite for "errata" module.
     """
+
     def test_errata_list_nodata(self, shell):
         """
         Test do_errata_list return no data
@@ -82,10 +83,20 @@ class TestSCErrata:
 
         shell.help_errata_listaffectedsystems = MagicMock()
         shell.expand_errata = MagicMock(return_value=["webstack", "databases"])
-        shell.client.errata.listAffectedSystems = MagicMock(side_effect=[
-            [{"name": "web1.suse.com"}, {"name": "web2.suse.com"}, {"name": "web3.suse.com"}],
-            [{"name": "db1.suse.com"}, {"name": "db2.suse.com"}, {"name": "db3.suse.com"}],
-        ])
+        shell.client.errata.listAffectedSystems = MagicMock(
+            side_effect=[
+                [
+                    {"name": "web1.suse.com"},
+                    {"name": "web2.suse.com"},
+                    {"name": "web3.suse.com"},
+                ],
+                [
+                    {"name": "db1.suse.com"},
+                    {"name": "db2.suse.com"},
+                    {"name": "db3.suse.com"},
+                ],
+            ]
+        )
         mprint = MagicMock()
 
         with patch("spacecmd.errata.print", mprint) as prt:
@@ -96,9 +107,16 @@ class TestSCErrata:
         assert shell.expand_errata.called
         assert mprint.called
 
-        assert_list_args_expect(mprint.call_args_list,
-                                ['webstack:', 'web1.suse.com\nweb2.suse.com\nweb3.suse.com',
-                                 '----------', 'databases:', 'db1.suse.com\ndb2.suse.com\ndb3.suse.com'])
+        assert_list_args_expect(
+            mprint.call_args_list,
+            [
+                "webstack:",
+                "web1.suse.com\nweb2.suse.com\nweb3.suse.com",
+                "----------",
+                "databases:",
+                "db1.suse.com\ndb2.suse.com\ndb3.suse.com",
+            ],
+        )
 
     def test_errata_listcves_noargs(self, shell):
         """
@@ -149,10 +167,12 @@ class TestSCErrata:
         :return:
         """
         shell.help_errata_listcves = MagicMock()
-        shell.client.errata.listCves = MagicMock(side_effect=[
-            ["CVE-1", "CVE-2", "CVE-3"],
-            ["CVE-11", "CVE-22", "CVE-33"],
-        ])
+        shell.client.errata.listCves = MagicMock(
+            side_effect=[
+                ["CVE-1", "CVE-2", "CVE-3"],
+                ["CVE-11", "CVE-22", "CVE-33"],
+            ]
+        )
         shell.expand_errata = MagicMock(return_value=["one", "two"])
         mprint = MagicMock()
 
@@ -164,9 +184,16 @@ class TestSCErrata:
         assert shell.expand_errata.called
         assert mprint.called
 
-        assert_list_args_expect(mprint.call_args_list,
-                                ['one:', 'CVE-1\nCVE-2\nCVE-3', '----------',
-                                 'two:', 'CVE-11\nCVE-22\nCVE-33'])
+        assert_list_args_expect(
+            mprint.call_args_list,
+            [
+                "one:",
+                "CVE-1\nCVE-2\nCVE-3",
+                "----------",
+                "two:",
+                "CVE-11\nCVE-22\nCVE-33",
+            ],
+        )
 
     def test_errata_findbycve_noargs(self, shell):
         """
@@ -194,11 +221,17 @@ class TestSCErrata:
         :return:
         """
         shell.help_errata_findbycve = MagicMock()
-        shell.client.errata.findByCve = MagicMock(side_effect=[
-            [{"advisory_name": "CVE-123-a"}, {"advisory_name": "CVE-123-b"}],
-            [{"advisory_name": "CVE-234-a"}, {"advisory_name": "CVE-234-b"}, {"advisory_name": "CVE-234-c"}],
-            [{"advisory_name": "CVE-345-a"}],
-        ])
+        shell.client.errata.findByCve = MagicMock(
+            side_effect=[
+                [{"advisory_name": "CVE-123-a"}, {"advisory_name": "CVE-123-b"}],
+                [
+                    {"advisory_name": "CVE-234-a"},
+                    {"advisory_name": "CVE-234-b"},
+                    {"advisory_name": "CVE-234-c"},
+                ],
+                [{"advisory_name": "CVE-345-a"}],
+            ]
+        )
         mprint = MagicMock()
 
         with patch("spacecmd.errata.print", mprint) as prt:
@@ -208,10 +241,22 @@ class TestSCErrata:
         assert shell.client.errata.findByCve.called
         assert mprint.called
 
-        assert_list_args_expect(mprint.call_args_list,
-                                ['123:', 'CVE-123-a', 'CVE-123-b', '----------',
-                                 '234:', 'CVE-234-a', 'CVE-234-b', 'CVE-234-c',
-                                 '----------', '345:', 'CVE-345-a'])
+        assert_list_args_expect(
+            mprint.call_args_list,
+            [
+                "123:",
+                "CVE-123-a",
+                "CVE-123-b",
+                "----------",
+                "234:",
+                "CVE-234-a",
+                "CVE-234-b",
+                "CVE-234-c",
+                "----------",
+                "345:",
+                "CVE-345-a",
+            ],
+        )
 
     def test_errata_details_noargs(self, shell):
         """
@@ -249,7 +294,9 @@ class TestSCErrata:
         :return:
         """
         shell.help_errata_details = MagicMock()
-        shell.client.errata.getDetails = MagicMock(side_effect=xmlrpclib.Fault(faultCode=42, faultString="Kaboom!"))
+        shell.client.errata.getDetails = MagicMock(
+            side_effect=xmlrpclib.Fault(faultCode=42, faultString="Kaboom!")
+        )
         shell.client.errata.listPackages = MagicMock()
         shell.client.errata.listAffectedSystems = MagicMock()
         shell.client.errata.listCves = MagicMock()
@@ -258,8 +305,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, \
-                patch("spacecmd.errata.logging", logger) as lgr:
+        with patch("spacecmd.errata.print", mprint) as prt, patch(
+            "spacecmd.errata.logging", logger
+        ) as lgr:
             spacecmd.errata.do_errata_details(shell, "cve*")
 
         assert shell.client.errata.getDetails.called
@@ -271,11 +319,13 @@ class TestSCErrata:
         assert logger.warning.called
         assert not shell.help_errata_details.called
 
-        assert_args_expect(logger.warning.call_args_list,
-                           [
-                               (("cve-one is not a valid erratum",), {}),
-                               (("cve-two is not a valid erratum",), {}),
-                           ])
+        assert_args_expect(
+            logger.warning.call_args_list,
+            [
+                (("cve-one is not a valid erratum",), {}),
+                (("cve-two is not a valid erratum",), {}),
+            ],
+        )
 
     def test_errata_details_erratum_data(self, shell):
         """
@@ -285,101 +335,113 @@ class TestSCErrata:
         :return:
         """
         shell.help_errata_details = MagicMock()
-        shell.client.errata.getDetails = MagicMock(side_effect=[
-            {
-                "product": "PRODUCT-1", "type": "TYPE-1", "issue_date": "DATE-1",
-                "topic": "The quick brown fox jumped over the lazy dog",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
-                               "Morbi volutpat felis sem, nec condimentum magna facilisis sed. "
-                               "Vestibulum id ultrices nisi, mattis laoreet turpis. "
-                               "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices "
-                               "posuere cubilia Curae; Nam tincidunt quam quis tellus convallis, "
-                               "auctor aliquet leo porta. Integer ac justo arcu.",
-                "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
-                         "Morbi volutpat felis sem, nec condimentum magna facilisis sed. "
-                         "Vestibulum id ultrices nisi, mattis laoreet turpis. Vestibulum ante "
-                         "ipsum primis in faucibus orci luctus et ultrices posuere cubilia "
-                         "Curae; Nam tincidunt quam quis tellus convallis, auctor aliquet leo porta. "
-                         "Integer ac justo arcu.",
-                "solution": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
-                            "Morbi volutpat felis sem, nec condimentum magna facilisis sed. "
-                            "Vestibulum id ultrices nisi, mattis laoreet turpis. "
-                            "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices "
-                            "posuere cubilia Curae; Nam tincidunt quam quis tellus convallis, "
-                            "auctor aliquet leo porta. Integer ac justo arcu.",
-                "references": "AAA:AAA00-00.00 "
-                              "URL:http://foo.test.com/pub/advisory/00 "
-                              "BID:0000 "
-                              "URL:http://www.securityfocus.com/bid/0000 "
-                              "XF:weblogic-http-response-information(00000) "
-                              "URL:http://www.iss.net/security_center/static/00000.php ",
-                "advisory_status": "retracted",
-                "vendor_advisory": "https://www.test.com/support/update/update-up-123456-1",
-
-            },
-            {
-                "product": "PRODUCT-2", "type": "TYPE-2", "issue_date": "DATE-2",
-                "topic": "The quick brown fox jumped over the lazy dog",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
-                               "Morbi volutpat felis sem, nec condimentum magna facilisis sed. "
-                               "Vestibulum id ultrices nisi, mattis laoreet turpis. "
-                               "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices "
-                               "posuere cubilia Curae; Nam tincidunt quam quis tellus convallis, "
-                               "auctor aliquet leo porta. Integer ac justo arcu.",
-                "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
-                         "Morbi volutpat felis sem, nec condimentum magna facilisis sed. "
-                         "Vestibulum id ultrices nisi, mattis laoreet turpis. Vestibulum ante "
-                         "ipsum primis in faucibus orci luctus et ultrices posuere cubilia "
-                         "Curae; Nam tincidunt quam quis tellus convallis, auctor aliquet leo porta. "
-                         "Integer ac justo arcu.",
-                "solution": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
-                            "Morbi volutpat felis sem, nec condimentum magna facilisis sed. "
-                            "Vestibulum id ultrices nisi, mattis laoreet turpis. "
-                            "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices "
-                            "posuere cubilia Curae; Nam tincidunt quam quis tellus convallis, "
-                            "auctor aliquet leo porta. Integer ac justo arcu.",
-                "references": "AAA:AAA11-11.11 "
-                              "URL:http://foo.test.com/pub/advisory/11 "
-                              "BID:1111 "
-                              "URL:http://www.securityfocus.com/bid/1111 "
-                              "XF:weblogic-http-response-information(11111) "
-                              "URL:http://www.iss.net/security_center/static/11111.php ",
-                "vendor_advisory": "https://www.test.com/support/update/update-up-123456-2",
-
-            },
-        ])
-        shell.client.errata.listPackages = MagicMock(side_effect=[
-            [
-                {"name": "vim", "version": "42", "release": "123", "arch": "x86"},
-                {"name": "pico", "version": "1", "release": "234", "arch": "x86"},
-            ],
-            [
-                {"name": "vim", "version": "28", "release": "45", "arch": "x86"},
-                {"name": "pico", "version": "2", "release": "12", "arch": "x86"},
-            ],
-        ])
-        shell.client.errata.listAffectedSystems = MagicMock(side_effect=[
-            [10001000, 10001002, 10001005],
-            [10001000, 10001001],
-        ])
-        shell.client.errata.listCves = MagicMock(side_effect=[
-            ["CVE-1", "CVE-1a"],
-            ["CVE-2", "CVE-2a", "CVE-2b"],
-        ])
-        shell.client.errata.applicableToChannels = MagicMock(side_effect=[
-            [
-                {"label": "base_channel"}, {"label": "editors_channel"}
-            ],
-            [
-                {"label": "another_base_channel"}, {"label": "special_editors_channel"}
-            ],
-        ])
+        shell.client.errata.getDetails = MagicMock(
+            side_effect=[
+                {
+                    "product": "PRODUCT-1",
+                    "type": "TYPE-1",
+                    "issue_date": "DATE-1",
+                    "topic": "The quick brown fox jumped over the lazy dog",
+                    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+                    "Morbi volutpat felis sem, nec condimentum magna facilisis sed. "
+                    "Vestibulum id ultrices nisi, mattis laoreet turpis. "
+                    "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices "
+                    "posuere cubilia Curae; Nam tincidunt quam quis tellus convallis, "
+                    "auctor aliquet leo porta. Integer ac justo arcu.",
+                    "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+                    "Morbi volutpat felis sem, nec condimentum magna facilisis sed. "
+                    "Vestibulum id ultrices nisi, mattis laoreet turpis. Vestibulum ante "
+                    "ipsum primis in faucibus orci luctus et ultrices posuere cubilia "
+                    "Curae; Nam tincidunt quam quis tellus convallis, auctor aliquet leo porta. "
+                    "Integer ac justo arcu.",
+                    "solution": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+                    "Morbi volutpat felis sem, nec condimentum magna facilisis sed. "
+                    "Vestibulum id ultrices nisi, mattis laoreet turpis. "
+                    "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices "
+                    "posuere cubilia Curae; Nam tincidunt quam quis tellus convallis, "
+                    "auctor aliquet leo porta. Integer ac justo arcu.",
+                    "references": "AAA:AAA00-00.00 "
+                    "URL:http://foo.test.com/pub/advisory/00 "
+                    "BID:0000 "
+                    "URL:http://www.securityfocus.com/bid/0000 "
+                    "XF:weblogic-http-response-information(00000) "
+                    "URL:http://www.iss.net/security_center/static/00000.php ",
+                    "advisory_status": "retracted",
+                    "vendor_advisory": "https://www.test.com/support/update/update-up-123456-1",
+                },
+                {
+                    "product": "PRODUCT-2",
+                    "type": "TYPE-2",
+                    "issue_date": "DATE-2",
+                    "topic": "The quick brown fox jumped over the lazy dog",
+                    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+                    "Morbi volutpat felis sem, nec condimentum magna facilisis sed. "
+                    "Vestibulum id ultrices nisi, mattis laoreet turpis. "
+                    "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices "
+                    "posuere cubilia Curae; Nam tincidunt quam quis tellus convallis, "
+                    "auctor aliquet leo porta. Integer ac justo arcu.",
+                    "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+                    "Morbi volutpat felis sem, nec condimentum magna facilisis sed. "
+                    "Vestibulum id ultrices nisi, mattis laoreet turpis. Vestibulum ante "
+                    "ipsum primis in faucibus orci luctus et ultrices posuere cubilia "
+                    "Curae; Nam tincidunt quam quis tellus convallis, auctor aliquet leo porta. "
+                    "Integer ac justo arcu.",
+                    "solution": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+                    "Morbi volutpat felis sem, nec condimentum magna facilisis sed. "
+                    "Vestibulum id ultrices nisi, mattis laoreet turpis. "
+                    "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices "
+                    "posuere cubilia Curae; Nam tincidunt quam quis tellus convallis, "
+                    "auctor aliquet leo porta. Integer ac justo arcu.",
+                    "references": "AAA:AAA11-11.11 "
+                    "URL:http://foo.test.com/pub/advisory/11 "
+                    "BID:1111 "
+                    "URL:http://www.securityfocus.com/bid/1111 "
+                    "XF:weblogic-http-response-information(11111) "
+                    "URL:http://www.iss.net/security_center/static/11111.php ",
+                    "vendor_advisory": "https://www.test.com/support/update/update-up-123456-2",
+                },
+            ]
+        )
+        shell.client.errata.listPackages = MagicMock(
+            side_effect=[
+                [
+                    {"name": "vim", "version": "42", "release": "123", "arch": "x86"},
+                    {"name": "pico", "version": "1", "release": "234", "arch": "x86"},
+                ],
+                [
+                    {"name": "vim", "version": "28", "release": "45", "arch": "x86"},
+                    {"name": "pico", "version": "2", "release": "12", "arch": "x86"},
+                ],
+            ]
+        )
+        shell.client.errata.listAffectedSystems = MagicMock(
+            side_effect=[
+                [10001000, 10001002, 10001005],
+                [10001000, 10001001],
+            ]
+        )
+        shell.client.errata.listCves = MagicMock(
+            side_effect=[
+                ["CVE-1", "CVE-1a"],
+                ["CVE-2", "CVE-2a", "CVE-2b"],
+            ]
+        )
+        shell.client.errata.applicableToChannels = MagicMock(
+            side_effect=[
+                [{"label": "base_channel"}, {"label": "editors_channel"}],
+                [
+                    {"label": "another_base_channel"},
+                    {"label": "special_editors_channel"},
+                ],
+            ]
+        )
         shell.expand_errata = MagicMock(return_value=["cve-one", "cve-two"])
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, \
-                patch("spacecmd.errata.logging", logger) as lgr:
+        with patch("spacecmd.errata.print", mprint) as prt, patch(
+            "spacecmd.errata.logging", logger
+        ) as lgr:
             spacecmd.errata.do_errata_details(shell, "cve*")
 
         assert not logger.warning.called
@@ -391,60 +453,130 @@ class TestSCErrata:
         assert shell.client.errata.applicableToChannels.called
         assert mprint.called
 
-        assert_list_args_expect(mprint.call_args_list,
-                                ['Name:       cve-one', 'Product:    PRODUCT-1', 'Type:       TYPE-1',
-                                 'Status:     retracted', 'Issue Date: DATE-1', '', 'Topic', '-----',
-                                 'The quick brown fox jumped over the lazy dog', '', 'Description', '-----------',
-                                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, '
-                                 'nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet '
-                                 'turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere '
-                                 'cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. '
-                                 'Integer ac justo\narcu.', '', 'Notes', '-----',
-                                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, '
-                                 'nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet '
-                                 'turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere '
-                                 'cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. '
-                                 'Integer ac justo\narcu.',
-                                 '', 'CVEs', '----', 'CVE-1\nCVE-1a', '', 'Vendor Advisory', '---------------',
-                                 'https://www.test.com/support/update/update-up-123456-1', '', 'Solution', '--------',
-                                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, '
-                                 'nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet '
-                                 'turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere '
-                                 'cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. '
-                                 'Integer ac justo\narcu.', '', 'References', '----------',
-                                 'AAA:AAA00-00.00 URL:http://foo.test.com/pub/advisory/00 BID:0000\n'
-                                 'URL:http://www.securityfocus.com/bid/0000 XF:weblogic-http-response-\n'
-                                 'information(00000)\nURL:http://www.iss.net/security_center/static/00000.php', '',
-                                 'Affected Channels', '-----------------', 'base_channel\neditors_channel', '',
-                                 'Affected Systems', '----------------', '3', '', 'Affected Packages',
-                                 '-----------------', 'pico-1-234.x86\nvim-42-123.x86', '----------',
-                                 'Name:       cve-two', 'Product:    PRODUCT-2', 'Type:       TYPE-2',
-                                 'Status:     N/A', 'Issue Date: DATE-2', '', 'Topic', '-----',
-                                 'The quick brown fox jumped over the lazy dog', '', 'Description', '-----------',
-                                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, '
-                                 'nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet '
-                                 'turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere '
-                                 'cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. '
-                                 'Integer ac justo\narcu.', '', 'Notes', '-----',
-                                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, '
-                                 'nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet '
-                                 'turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere '
-                                 'cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. '
-                                 'Integer ac justo\narcu.',
-                                 '', 'CVEs', '----', 'CVE-2\nCVE-2a\nCVE-2b', '', 'Vendor Advisory', '---------------',
-                                 'https://www.test.com/support/update/update-up-123456-2', '', 'Solution', '--------',
-                                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, '
-                                 'nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet '
-                                 'turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere '
-                                 'cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. '
-                                 'Integer ac justo\narcu.', '', 'References', '----------',
-                                 'AAA:AAA11-11.11 URL:http://foo.test.com/pub/advisory/11 BID:1111\n'
-                                 'URL:http://www.securityfocus.com/bid/1111 XF:weblogic-http-response-\n'
-                                 'information(11111)\nURL:http://www.iss.net/security_center/static/11111.php',
-                                 '', 'Affected Channels', '-----------------', 'another_base_channel\n'
-                                                                               'special_editors_channel',
-                                 '', 'Affected Systems', '----------------', '2', '', 'Affected Packages',
-                                 '-----------------', 'pico-2-12.x86\nvim-28-45.x86'])
+        assert_list_args_expect(
+            mprint.call_args_list,
+            [
+                "Name:       cve-one",
+                "Product:    PRODUCT-1",
+                "Type:       TYPE-1",
+                "Status:     retracted",
+                "Issue Date: DATE-1",
+                "",
+                "Topic",
+                "-----",
+                "The quick brown fox jumped over the lazy dog",
+                "",
+                "Description",
+                "-----------",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, "
+                "nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet "
+                "turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere "
+                "cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. "
+                "Integer ac justo\narcu.",
+                "",
+                "Notes",
+                "-----",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, "
+                "nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet "
+                "turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere "
+                "cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. "
+                "Integer ac justo\narcu.",
+                "",
+                "CVEs",
+                "----",
+                "CVE-1\nCVE-1a",
+                "",
+                "Vendor Advisory",
+                "---------------",
+                "https://www.test.com/support/update/update-up-123456-1",
+                "",
+                "Solution",
+                "--------",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, "
+                "nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet "
+                "turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere "
+                "cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. "
+                "Integer ac justo\narcu.",
+                "",
+                "References",
+                "----------",
+                "AAA:AAA00-00.00 URL:http://foo.test.com/pub/advisory/00 BID:0000\n"
+                "URL:http://www.securityfocus.com/bid/0000 XF:weblogic-http-response-\n"
+                "information(00000)\nURL:http://www.iss.net/security_center/static/00000.php",
+                "",
+                "Affected Channels",
+                "-----------------",
+                "base_channel\neditors_channel",
+                "",
+                "Affected Systems",
+                "----------------",
+                "3",
+                "",
+                "Affected Packages",
+                "-----------------",
+                "pico-1-234.x86\nvim-42-123.x86",
+                "----------",
+                "Name:       cve-two",
+                "Product:    PRODUCT-2",
+                "Type:       TYPE-2",
+                "Status:     N/A",
+                "Issue Date: DATE-2",
+                "",
+                "Topic",
+                "-----",
+                "The quick brown fox jumped over the lazy dog",
+                "",
+                "Description",
+                "-----------",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, "
+                "nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet "
+                "turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere "
+                "cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. "
+                "Integer ac justo\narcu.",
+                "",
+                "Notes",
+                "-----",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, "
+                "nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet "
+                "turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere "
+                "cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. "
+                "Integer ac justo\narcu.",
+                "",
+                "CVEs",
+                "----",
+                "CVE-2\nCVE-2a\nCVE-2b",
+                "",
+                "Vendor Advisory",
+                "---------------",
+                "https://www.test.com/support/update/update-up-123456-2",
+                "",
+                "Solution",
+                "--------",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, "
+                "nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet "
+                "turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere "
+                "cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. "
+                "Integer ac justo\narcu.",
+                "",
+                "References",
+                "----------",
+                "AAA:AAA11-11.11 URL:http://foo.test.com/pub/advisory/11 BID:1111\n"
+                "URL:http://www.securityfocus.com/bid/1111 XF:weblogic-http-response-\n"
+                "information(11111)\nURL:http://www.iss.net/security_center/static/11111.php",
+                "",
+                "Affected Channels",
+                "-----------------",
+                "another_base_channel\n" "special_editors_channel",
+                "",
+                "Affected Systems",
+                "----------------",
+                "2",
+                "",
+                "Affected Packages",
+                "-----------------",
+                "pico-2-12.x86\nvim-28-45.x86",
+            ],
+        )
 
     def test_errata_details_erratum_none_data(self, shell):
         """
@@ -455,25 +587,30 @@ class TestSCErrata:
         """
         shell.help_errata_details = MagicMock()
         shell.client.errata.getDetails = MagicMock(side_effect=[{}, {}])
-        shell.client.errata.listPackages = MagicMock(side_effect=[
-            [
-                {"name": "vim", "version": "42", "release": "123", "arch": "x86"},
-                {"name": "pico", "version": "1", "release": "234", "arch": "x86"},
-            ],
-            [
-                {"name": "vim", "version": "28", "release": "45", "arch": "x86"},
-                {"name": "pico", "version": "2", "release": "12", "arch": "x86"},
-            ],
-        ])
+        shell.client.errata.listPackages = MagicMock(
+            side_effect=[
+                [
+                    {"name": "vim", "version": "42", "release": "123", "arch": "x86"},
+                    {"name": "pico", "version": "1", "release": "234", "arch": "x86"},
+                ],
+                [
+                    {"name": "vim", "version": "28", "release": "45", "arch": "x86"},
+                    {"name": "pico", "version": "2", "release": "12", "arch": "x86"},
+                ],
+            ]
+        )
         shell.client.errata.listAffectedSystems = MagicMock(side_effect=[[], []])
         shell.client.errata.listCves = MagicMock(side_effect=[[], []])
-        shell.client.errata.applicableToChannels = MagicMock(side_effect=[[{}, {}], [{}, {}]])
+        shell.client.errata.applicableToChannels = MagicMock(
+            side_effect=[[{}, {}], [{}, {}]]
+        )
         shell.expand_errata = MagicMock(return_value=["cve-one", "cve-two"])
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, \
-                patch("spacecmd.errata.logging", logger) as lgr:
+        with patch("spacecmd.errata.print", mprint) as prt, patch(
+            "spacecmd.errata.logging", logger
+        ) as lgr:
             spacecmd.errata.do_errata_details(shell, "cve*")
 
         assert not logger.warning.called
@@ -485,21 +622,94 @@ class TestSCErrata:
         assert shell.client.errata.applicableToChannels.called
         assert mprint.called
 
-        assert_list_args_expect(mprint.call_args_list,
-                                ['Name:       cve-one', 'Product:    N/A', 'Type:       N/A', 'Status:     N/A',
-                                 'Issue Date: N/A', '', 'Topic', '-----', 'N/A', '', 'Description', '-----------', 'N/A',
-                                 '', 'CVEs', '----', '', '', 'Vendor Advisory', '---------------', 'N/A',
-                                 '', 'Solution', '--------', 'N/A', '', 'References',
-                                 '----------', 'N/A', '', 'Affected Channels',
-                                 '-----------------', '', '', 'Affected Systems', '----------------', '0', '',
-                                 'Affected Packages', '-----------------', 'pico-1-234.x86\nvim-42-123.x86',
-                                 '----------', 'Name:       cve-two', 'Product:    N/A', 'Type:       N/A',
-                                 'Status:     N/A', 'Issue Date: N/A', '', 'Topic', '-----', 'N/A', '', 'Description',
-                                 '-----------', 'N/A', '', 'CVEs', '----', '', '', 'Vendor Advisory', '---------------',
-                                 'N/A', '', 'Solution', '--------', 'N/A', '',
-                                 'References', '----------', 'N/A', '', 'Affected Channels', '-----------------', '',
-                                 '', 'Affected Systems', '----------------', '0', '', 'Affected Packages',
-                                 '-----------------', 'pico-2-12.x86\nvim-28-45.x86'])
+        assert_list_args_expect(
+            mprint.call_args_list,
+            [
+                "Name:       cve-one",
+                "Product:    N/A",
+                "Type:       N/A",
+                "Status:     N/A",
+                "Issue Date: N/A",
+                "",
+                "Topic",
+                "-----",
+                "N/A",
+                "",
+                "Description",
+                "-----------",
+                "N/A",
+                "",
+                "CVEs",
+                "----",
+                "",
+                "",
+                "Vendor Advisory",
+                "---------------",
+                "N/A",
+                "",
+                "Solution",
+                "--------",
+                "N/A",
+                "",
+                "References",
+                "----------",
+                "N/A",
+                "",
+                "Affected Channels",
+                "-----------------",
+                "",
+                "",
+                "Affected Systems",
+                "----------------",
+                "0",
+                "",
+                "Affected Packages",
+                "-----------------",
+                "pico-1-234.x86\nvim-42-123.x86",
+                "----------",
+                "Name:       cve-two",
+                "Product:    N/A",
+                "Type:       N/A",
+                "Status:     N/A",
+                "Issue Date: N/A",
+                "",
+                "Topic",
+                "-----",
+                "N/A",
+                "",
+                "Description",
+                "-----------",
+                "N/A",
+                "",
+                "CVEs",
+                "----",
+                "",
+                "",
+                "Vendor Advisory",
+                "---------------",
+                "N/A",
+                "",
+                "Solution",
+                "--------",
+                "N/A",
+                "",
+                "References",
+                "----------",
+                "N/A",
+                "",
+                "Affected Channels",
+                "-----------------",
+                "",
+                "",
+                "Affected Systems",
+                "----------------",
+                "0",
+                "",
+                "Affected Packages",
+                "-----------------",
+                "pico-2-12.x86\nvim-28-45.x86",
+            ],
+        )
 
     def test_errata_delete_noargs(self, shell):
         """
@@ -517,8 +727,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, \
-                patch("spacecmd.errata.logging", logger) as lgr:
+        with patch("spacecmd.errata.print", mprint) as prt, patch(
+            "spacecmd.errata.logging", logger
+        ) as lgr:
             spacecmd.errata.do_errata_delete(shell, "")
 
         assert not shell.expand_errata.called
@@ -547,8 +758,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, \
-                patch("spacecmd.errata.logging", logger) as lgr:
+        with patch("spacecmd.errata.print", mprint) as prt, patch(
+            "spacecmd.errata.logging", logger
+        ) as lgr:
             spacecmd.errata.do_errata_delete(shell, "CVE-X")
 
         assert not shell.user_confirm.called
@@ -561,8 +773,7 @@ class TestSCErrata:
         assert logger.warning.called
         assert shell.expand_errata.called
 
-        assert_expect(logger.warning.call_args_list,
-                      "No patches to delete")
+        assert_expect(logger.warning.call_args_list, "No patches to delete")
 
     def test_errata_delete_no_errata_non_interactive(self, shell):
         """
@@ -574,18 +785,21 @@ class TestSCErrata:
         shell.help_errata_delete = MagicMock()
         shell.expand_errata = MagicMock(return_value=["CVE-1", "CVE-2"])
         shell.user_confirm = MagicMock()
-        shell.client.errata.applicableToChannels = MagicMock(side_effect=[
-            ["base_channel", "special_channel"],
-            ["vim_users_channel"],
-        ])
+        shell.client.errata.applicableToChannels = MagicMock(
+            side_effect=[
+                ["base_channel", "special_channel"],
+                ["vim_users_channel"],
+            ]
+        )
         shell.client.errata.delete = MagicMock()
         shell.generate_errata_cache = MagicMock()
         shell.options.yes = True
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, \
-                patch("spacecmd.errata.logging", logger) as lgr:
+        with patch("spacecmd.errata.print", mprint) as prt, patch(
+            "spacecmd.errata.logging", logger
+        ) as lgr:
             spacecmd.errata.do_errata_delete(shell, "CVE-X")
 
         assert not shell.help_errata_delete.called
@@ -598,14 +812,35 @@ class TestSCErrata:
         assert logger.info.called
         assert shell.expand_errata.called
 
-        assert_list_args_expect(mprint.call_args_list,
-                                ['Erratum            Channels',
-                                 '-------            --------',
-                                 'CVE-1                     2',
-                                 'CVE-2                     1'])
-        assert_list_args_expect(logger.info.call_args_list, ['Deleted 2 patches'])
-        assert_args_expect(shell.client.errata.delete.call_args_list,
-                           [((shell.session, "CVE-1",), {}), ((shell.session, "CVE-2",), {})])
+        assert_list_args_expect(
+            mprint.call_args_list,
+            [
+                "Erratum            Channels",
+                "-------            --------",
+                "CVE-1                     2",
+                "CVE-2                     1",
+            ],
+        )
+        assert_list_args_expect(logger.info.call_args_list, ["Deleted 2 patches"])
+        assert_args_expect(
+            shell.client.errata.delete.call_args_list,
+            [
+                (
+                    (
+                        shell.session,
+                        "CVE-1",
+                    ),
+                    {},
+                ),
+                (
+                    (
+                        shell.session,
+                        "CVE-2",
+                    ),
+                    {},
+                ),
+            ],
+        )
 
     def test_errata_publish_noargs(self, shell):
         """
@@ -621,8 +856,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, \
-                patch("spacecmd.errata.logging", logger) as lgr:
+        with patch("spacecmd.errata.print", mprint) as prt, patch(
+            "spacecmd.errata.logging", logger
+        ) as lgr:
             spacecmd.errata.do_errata_publish(shell, "")
 
         assert not shell.expand_errata.called
@@ -646,8 +882,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, \
-                patch("spacecmd.errata.logging", logger) as lgr:
+        with patch("spacecmd.errata.print", mprint) as prt, patch(
+            "spacecmd.errata.logging", logger
+        ) as lgr:
             spacecmd.errata.do_errata_publish(shell, "CVE-1 base_channel")
 
         assert not shell.user_confirm.called
@@ -656,8 +893,9 @@ class TestSCErrata:
         assert not shell.help_errata_publish.called
         assert shell.expand_errata.called
         assert logger.warning.called
-        assert_list_args_expect(logger.warning.call_args_list,
-                                ["No patches to publish"])
+        assert_list_args_expect(
+            logger.warning.call_args_list, ["No patches to publish"]
+        )
 
     def test_errata_publish_no_interactive(self, shell):
         """
@@ -674,8 +912,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, \
-                patch("spacecmd.errata.logging", logger) as lgr:
+        with patch("spacecmd.errata.print", mprint) as prt, patch(
+            "spacecmd.errata.logging", logger
+        ) as lgr:
             spacecmd.errata.do_errata_publish(shell, "CVE-1 base_channel")
 
         assert not logger.warning.called
@@ -684,11 +923,15 @@ class TestSCErrata:
         assert shell.client.errata.publish.called
         assert mprint.called
         assert shell.expand_errata.called
-        assert_expect(mprint.call_args_list, 'one\nthree\ntwo')
-        assert_args_expect(shell.client.errata.publish.call_args_list,
-                           [((shell.session, 'one', ['base_channel']), {}),
-                            ((shell.session, 'two', ['base_channel']), {}),
-                            ((shell.session, 'three', ['base_channel']), {})])
+        assert_expect(mprint.call_args_list, "one\nthree\ntwo")
+        assert_args_expect(
+            shell.client.errata.publish.call_args_list,
+            [
+                ((shell.session, "one", ["base_channel"]), {}),
+                ((shell.session, "two", ["base_channel"]), {}),
+                ((shell.session, "three", ["base_channel"]), {}),
+            ],
+        )
 
     def test_errata_search_noargs(self, shell):
         """
@@ -705,8 +948,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, \
-                patch("spacecmd.errata.logging", logger) as lgr:
+        with patch("spacecmd.errata.print", mprint) as prt, patch(
+            "spacecmd.errata.logging", logger
+        ) as lgr:
             spacecmd.errata.do_errata_search(shell, "")
 
         assert not shell.expand_errata.called
@@ -726,10 +970,16 @@ class TestSCErrata:
         shell.help_errata_search = MagicMock()
         shell.expand_errata = MagicMock()
         shell.generate_errata_cache = MagicMock()
-        shell.client.errata.findByCve = MagicMock(return_value=[
-            {"date": None, "issue_date": "2019 01 01", "advisory_name": "CVE-123",
-             "advisory_synopsis": "<SYNOPSIS>"}
-        ])
+        shell.client.errata.findByCve = MagicMock(
+            return_value=[
+                {
+                    "date": None,
+                    "issue_date": "2019 01 01",
+                    "advisory_name": "CVE-123",
+                    "advisory_synopsis": "<SYNOPSIS>",
+                }
+            ]
+        )
         shell.all_errata = {}
         mprint = MagicMock()
         logger = MagicMock()
@@ -745,9 +995,9 @@ class TestSCErrata:
             """
             mp_out.append(erratum)
 
-        with patch("spacecmd.errata.print", mprint) as prt, \
-                patch("spacecmd.errata.print_errata_summary", prn_err_summary) as pes, \
-                patch("spacecmd.errata.logging", logger) as lgr:
+        with patch("spacecmd.errata.print", mprint) as prt, patch(
+            "spacecmd.errata.print_errata_summary", prn_err_summary
+        ) as pes, patch("spacecmd.errata.logging", logger) as lgr:
             out = spacecmd.errata.do_errata_search(shell, "CVE-123-23456")
 
         assert not shell.expand_errata.called
@@ -759,8 +1009,12 @@ class TestSCErrata:
         assert shell.client.errata.findByCve.called
         assert type(mp_out) == list
         assert len(mp_out) == 1
-        for key, value in {'date': None, 'issue_date': '2019 01 01',
-                           'advisory_name': 'CVE-123', 'advisory_synopsis': '<SYNOPSIS>'}.items():
+        for key, value in {
+            "date": None,
+            "issue_date": "2019 01 01",
+            "advisory_name": "CVE-123",
+            "advisory_synopsis": "<SYNOPSIS>",
+        }.items():
             assert key in mp_out[0]
             assert mp_out[0][key] == value
 
@@ -774,19 +1028,27 @@ class TestSCErrata:
         shell.help_errata_search = MagicMock()
         shell.expand_errata = MagicMock()
         shell.generate_errata_cache = MagicMock()
-        shell.client.errata.findByCve = MagicMock(return_value=[
-            {"date": None, "issue_date": "2019 01 01", "advisory_name": "CVE-123",
-             "advisory_synopsis": "<SYNOPSIS>"}
-        ])
+        shell.client.errata.findByCve = MagicMock(
+            return_value=[
+                {
+                    "date": None,
+                    "issue_date": "2019 01 01",
+                    "advisory_name": "CVE-123",
+                    "advisory_synopsis": "<SYNOPSIS>",
+                }
+            ]
+        )
         shell.all_errata = {}
         mprint = MagicMock()
         logger = MagicMock()
         prn_err_summary = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, \
-                patch("spacecmd.errata.print_errata_summary", prn_err_summary) as pes, \
-                patch("spacecmd.errata.logging", logger) as lgr:
-            out = spacecmd.errata.do_errata_search(shell, "CVE-123-23456", doreturn=True)
+        with patch("spacecmd.errata.print", mprint) as prt, patch(
+            "spacecmd.errata.print_errata_summary", prn_err_summary
+        ) as pes, patch("spacecmd.errata.logging", logger) as lgr:
+            out = spacecmd.errata.do_errata_search(
+                shell, "CVE-123-23456", doreturn=True
+            )
 
         assert not shell.expand_errata.called
         assert not shell.generate_errata_cache.called
@@ -796,7 +1058,7 @@ class TestSCErrata:
         assert not prn_err_summary.called
         assert out is not None
         assert shell.client.errata.findByCve.called
-        assert out == ['CVE-123']
+        assert out == ["CVE-123"]
 
     def test_errata_apply_noargs(self, shell):
         """
@@ -817,8 +1079,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, \
-                patch("spacecmd.errata.logging", logger) as lgr:
+        with patch("spacecmd.errata.print", mprint) as prt, patch(
+            "spacecmd.errata.logging", logger
+        ) as lgr:
             spacecmd.errata.do_errata_apply(shell, "")
 
         assert not shell.user_confirm.called
@@ -853,8 +1116,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, \
-                patch("spacecmd.errata.logging", logger) as lgr:
+        with patch("spacecmd.errata.print", mprint) as prt, patch(
+            "spacecmd.errata.logging", logger
+        ) as lgr:
             spacecmd.errata.do_errata_apply(shell, "foo -s 201901011030")
 
         assert not shell.help_errata_apply.called
@@ -867,8 +1131,7 @@ class TestSCErrata:
         assert not mprint.called
         assert logger.warning.called
 
-        assert_expect(logger.warning.call_args_list,
-                      "No patches to apply")
+        assert_expect(logger.warning.call_args_list, "No patches to apply")
 
     def test_errata_apply_non_interactive_affects_no_system(self, shell):
         """
@@ -881,7 +1144,9 @@ class TestSCErrata:
         shell.user_confirm = MagicMock()
         shell.check_api_version = MagicMock()
         shell.get_system_id = MagicMock()
-        shell.expand_errata = MagicMock(return_value=["cve-one", "cve-two", "cve-three"])
+        shell.expand_errata = MagicMock(
+            return_value=["cve-one", "cve-two", "cve-three"]
+        )
         shell.client.errata.listAffectedSystems = MagicMock(return_value=[])
         shell.client.system.getUnscheduledErrata = MagicMock()
         shell.client.system.scheduleApplyErrata = MagicMock()
@@ -891,8 +1156,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, \
-                patch("spacecmd.errata.logging", logger) as lgr:
+        with patch("spacecmd.errata.print", mprint) as prt, patch(
+            "spacecmd.errata.logging", logger
+        ) as lgr:
             spacecmd.errata.do_errata_apply(shell, "cve* -s 201901011030")
 
         assert not shell.help_errata_apply.called
@@ -907,12 +1173,15 @@ class TestSCErrata:
         assert logger.warning.called
         assert logger.debug.called
 
-        assert_list_args_expect(logger.debug.call_args_list,
-                                ['cve-one does not affect any systems',
-                                 'cve-two does not affect any systems',
-                                 'cve-three does not affect any systems'])
-        assert_expect(logger.warning.call_args_list,
-                      "No patches to apply")
+        assert_list_args_expect(
+            logger.debug.call_args_list,
+            [
+                "cve-one does not affect any systems",
+                "cve-two does not affect any systems",
+                "cve-three does not affect any systems",
+            ],
+        )
+        assert_expect(logger.warning.call_args_list, "No patches to apply")
 
     def test_errata_apply_non_interactive_api_10_11(self, shell):
         """
@@ -924,30 +1193,36 @@ class TestSCErrata:
         shell.help_errata_apply = MagicMock()
         shell.user_confirm = MagicMock(return_value=True)
         shell.check_api_version = MagicMock(return_value=True)
-        shell.get_system_id = lambda data: zlib.adler32(data.encode("utf-8")) & 0xffffffff
+        shell.get_system_id = (
+            lambda data: zlib.adler32(data.encode("utf-8")) & 0xFFFFFFFF
+        )
         shell.get_erratum_name = lambda data: "CVE-{}-name".format(data)
         shell.expand_errata = MagicMock(return_value=["CVE-1", "CVE-2"])
-        shell.client.errata.listAffectedSystems = MagicMock(side_effect=[
-            [{"name": "web1.foo.com"}, {"name": "web2.foo.com"}],
-            [{"name": "db1.foo.com"}, {"name": "db2.foo.com"}],
-        ])
-        shell.client.system.getUnscheduledErrata = MagicMock(side_effect=[
-            [
-                {"id": "1", "advisory_name": "CVE-1"},
-                {"id": "2", "advisory_name": "CVE-2"},
-            ],
-            [
-                {"id": "1", "advisory_name": "CVE-1"},
-                {"id": "2", "advisory_name": "CVE-2"},
-                {"id": "3", "advisory_name": "CVE-3"},
-            ],
-            [
-                {"id": "1", "advisory_name": "CVE-1"},
-            ],
-            [
-                {"id": "4", "advisory_name": "CVE-4"},
-            ],
-        ])
+        shell.client.errata.listAffectedSystems = MagicMock(
+            side_effect=[
+                [{"name": "web1.foo.com"}, {"name": "web2.foo.com"}],
+                [{"name": "db1.foo.com"}, {"name": "db2.foo.com"}],
+            ]
+        )
+        shell.client.system.getUnscheduledErrata = MagicMock(
+            side_effect=[
+                [
+                    {"id": "1", "advisory_name": "CVE-1"},
+                    {"id": "2", "advisory_name": "CVE-2"},
+                ],
+                [
+                    {"id": "1", "advisory_name": "CVE-1"},
+                    {"id": "2", "advisory_name": "CVE-2"},
+                    {"id": "3", "advisory_name": "CVE-3"},
+                ],
+                [
+                    {"id": "1", "advisory_name": "CVE-1"},
+                ],
+                [
+                    {"id": "4", "advisory_name": "CVE-4"},
+                ],
+            ]
+        )
         shell.client.system.scheduleApplyErrata = MagicMock()
         shell.all_errata = {}
         shell.options = MagicMock()
@@ -955,8 +1230,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, \
-                patch("spacecmd.errata.logging", logger) as lgr:
+        with patch("spacecmd.errata.print", mprint) as prt, patch(
+            "spacecmd.errata.logging", logger
+        ) as lgr:
             spacecmd.errata.do_errata_apply(shell, "cve* -s 201901011030")
 
         assert not shell.help_errata_apply.called
@@ -970,19 +1246,33 @@ class TestSCErrata:
         assert shell.client.errata.listAffectedSystems.called
         assert shell.expand_errata.called
 
-        assert_list_args_expect(mprint.call_args_list,
-                                ['Errata             Systems', '--------------     -------',
-                                 'CVE-1                    2\nCVE-2                    2', '',
-                                 'Start Time: 20190101T10:30:00'])
+        assert_list_args_expect(
+            mprint.call_args_list,
+            [
+                "Errata             Systems",
+                "--------------     -------",
+                "CVE-1                    2\nCVE-2                    2",
+                "",
+                "Start Time: 20190101T10:30:00",
+            ],
+        )
 
-        assert_list_args_expect(logger.info.call_args_list,
-                                ['Scheduled 3 system(s) for CVE-1-name',
-                                 'Scheduled 2 system(s) for CVE-2-name'])
+        assert_list_args_expect(
+            logger.info.call_args_list,
+            [
+                "Scheduled 3 system(s) for CVE-1-name",
+                "Scheduled 2 system(s) for CVE-2-name",
+            ],
+        )
 
         dt = spacecmd.errata.parse_time_input("201901011030")
-        assert_args_expect(shell.client.system.scheduleApplyErrata.call_args_list,
-                           [((shell.session, [370082775, 370672600, 464454735], ['1'], dt), {}),
-                            ((shell.session, [370082775, 370672600], ['2'], dt), {})])
+        assert_args_expect(
+            shell.client.system.scheduleApplyErrata.call_args_list,
+            [
+                ((shell.session, [370082775, 370672600, 464454735], ["1"], dt), {}),
+                ((shell.session, [370082775, 370672600], ["2"], dt), {}),
+            ],
+        )
 
     def test_errata_apply_non_interactive_api_non1011_version(self, shell):
         """
@@ -994,30 +1284,36 @@ class TestSCErrata:
         shell.help_errata_apply = MagicMock()
         shell.user_confirm = MagicMock(return_value=True)
         shell.check_api_version = MagicMock(return_value=False)
-        shell.get_system_id = lambda data: zlib.adler32(data.encode("utf-8")) & 0xffffffff
+        shell.get_system_id = (
+            lambda data: zlib.adler32(data.encode("utf-8")) & 0xFFFFFFFF
+        )
         shell.get_erratum_name = lambda data: "CVE-{}-name".format(data)
         shell.expand_errata = MagicMock(return_value=["CVE-1", "CVE-2"])
-        shell.client.errata.listAffectedSystems = MagicMock(side_effect=[
-            [{"name": "web1.foo.com"}, {"name": "web2.foo.com"}],
-            [{"name": "db1.foo.com"}, {"name": "db2.foo.com"}],
-        ])
-        shell.client.system.getUnscheduledErrata = MagicMock(side_effect=[
-            [
-                {"id": "1", "advisory_name": "CVE-1"},
-                {"id": "2", "advisory_name": "CVE-2"},
-            ],
-            [
-                {"id": "1", "advisory_name": "CVE-1"},
-                {"id": "2", "advisory_name": "CVE-2"},
-                {"id": "3", "advisory_name": "CVE-3"},
-            ],
-            [
-                {"id": "1", "advisory_name": "CVE-1"},
-            ],
-            [
-                {"id": "4", "advisory_name": "CVE-4"},
-            ],
-        ])
+        shell.client.errata.listAffectedSystems = MagicMock(
+            side_effect=[
+                [{"name": "web1.foo.com"}, {"name": "web2.foo.com"}],
+                [{"name": "db1.foo.com"}, {"name": "db2.foo.com"}],
+            ]
+        )
+        shell.client.system.getUnscheduledErrata = MagicMock(
+            side_effect=[
+                [
+                    {"id": "1", "advisory_name": "CVE-1"},
+                    {"id": "2", "advisory_name": "CVE-2"},
+                ],
+                [
+                    {"id": "1", "advisory_name": "CVE-1"},
+                    {"id": "2", "advisory_name": "CVE-2"},
+                    {"id": "3", "advisory_name": "CVE-3"},
+                ],
+                [
+                    {"id": "1", "advisory_name": "CVE-1"},
+                ],
+                [
+                    {"id": "4", "advisory_name": "CVE-4"},
+                ],
+            ]
+        )
         shell.client.system.scheduleApplyErrata = MagicMock()
         shell.all_errata = {}
         shell.options = MagicMock()
@@ -1025,8 +1321,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, \
-                patch("spacecmd.errata.logging", logger) as lgr:
+        with patch("spacecmd.errata.print", mprint) as prt, patch(
+            "spacecmd.errata.logging", logger
+        ) as lgr:
             spacecmd.errata.do_errata_apply(shell, "cve* -s 201901011030")
 
         assert not shell.help_errata_apply.called
@@ -1040,18 +1337,33 @@ class TestSCErrata:
         assert shell.client.errata.listAffectedSystems.called
         assert shell.expand_errata.called
 
-        assert_list_args_expect(mprint.call_args_list,
-                                ['Errata             Systems', '--------------     -------',
-                                 'CVE-1                    2\nCVE-2                    2','',
-                                 'Start Time: 20190101T10:30:00'])
-        assert_list_args_expect(logger.warning.call_args_list,
-                                ['No patches to schedule for web2.foo.com'])
-        assert_list_args_expect(logger.info.call_args_list,
-                                ['Scheduled 2 patches for db1.foo.com',
-                                 'Scheduled 2 patches for db2.foo.com',
-                                 'Scheduled 1 patches for web1.foo.com'])
+        assert_list_args_expect(
+            mprint.call_args_list,
+            [
+                "Errata             Systems",
+                "--------------     -------",
+                "CVE-1                    2\nCVE-2                    2",
+                "",
+                "Start Time: 20190101T10:30:00",
+            ],
+        )
+        assert_list_args_expect(
+            logger.warning.call_args_list, ["No patches to schedule for web2.foo.com"]
+        )
+        assert_list_args_expect(
+            logger.info.call_args_list,
+            [
+                "Scheduled 2 patches for db1.foo.com",
+                "Scheduled 2 patches for db2.foo.com",
+                "Scheduled 1 patches for web1.foo.com",
+            ],
+        )
         dt = spacecmd.errata.parse_time_input("201901011030")
-        assert_args_expect(shell.client.system.scheduleApplyErrata.call_args_list,
-                           [((shell.session, 370082775, ['1', '2'], dt), {}),
-                            ((shell.session, 370672600, ['1', '2'], dt), {}),
-                            ((shell.session, 464454735, ['1'], dt), {})])
+        assert_args_expect(
+            shell.client.system.scheduleApplyErrata.call_args_list,
+            [
+                ((shell.session, 370082775, ["1", "2"], dt), {}),
+                ((shell.session, 370672600, ["1", "2"], dt), {}),
+                ((shell.session, 464454735, ["1"], dt), {}),
+            ],
+        )

@@ -5,12 +5,12 @@
 
 LIBPATH = "/usr/share/rhn"
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import sys
     import os
 
     if os.getuid() != 0:
-        sys.stderr.write('ERROR: must be root to execute\n')
+        sys.stderr.write("ERROR: must be root to execute\n")
         sys.exit(0)
 
     LIBPATH = os.path.abspath(LIBPATH)
@@ -20,8 +20,10 @@ if __name__ == '__main__':
     try:
         from PackageManager import rhn_package_manager
     except ImportError as e:
-        sys.stderr.write("Unable to find package management libraries.\n"
-                         "Path not correct? '%s'\n" % LIBPATH)
+        sys.stderr.write(
+            "Unable to find package management libraries.\n"
+            "Path not correct? '%s'\n" % LIBPATH
+        )
         raise
 
     try:

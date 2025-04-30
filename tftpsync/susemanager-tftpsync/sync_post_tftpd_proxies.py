@@ -46,10 +46,11 @@ def register():
 
 
 def run(api, args):
-    del args # unused, required API
-    logger.info("sync_post_tftp_proxies started - this can take a while (to see the progress check the cobbler logs)")
+    del args  # unused, required API
+    logger.info(
+        "sync_post_tftp_proxies started - this can take a while (to see the progress check the cobbler logs)"
+    )
     settings = api.settings()
-
 
     # test if proxies are configured:
     try:
@@ -66,13 +67,16 @@ def run(api, args):
         for dirname, _dirnames, filenames in os.walk(tftpbootdir):
             for fname in filenames:
                 path = os.path.join(dirname, fname)
-                if '.link_cache' in path:
+                if ".link_cache" in path:
                     continue
-                push_futures.append(executor.submit(check_push, path, tftpbootdir, settings))
+                push_futures.append(
+                    executor.submit(check_push, path, tftpbootdir, settings)
+                )
 
         _update_pxe_cache([f.result() for f in futures.as_completed(push_futures)])
 
     return 0
+
 
 def _update_pxe_cache(thread_results):
     cache = {}
@@ -133,15 +137,15 @@ def delete_from_proxies(path, settings):
     return ProxyDelete.Result
 
 
-def find_delete_from_proxies(tftpbootdir, settings, lcache='/var/lib/cobbler'):
+def find_delete_from_proxies(tftpbootdir, settings, lcache="/var/lib/cobbler"):
     """Delete files from proxies"""
     db = {}
     changed = False
     del_paths = list()
     try:
-        dbfile = os.path.join(lcache, 'pxe_cache.json')
+        dbfile = os.path.join(lcache, "pxe_cache.json")
         if os.path.exists(dbfile):
-            db = json.load(open(dbfile, 'r'))
+            db = json.load(open(dbfile, "r"))
     except:
         logger.error("Cannot load cachefile")
         return
@@ -162,19 +166,19 @@ def find_delete_from_proxies(tftpbootdir, settings, lcache='/var/lib/cobbler'):
     if changed:
         for p in del_paths:
             del db[p]
-        json.dump(db, open(dbfile, 'w'))
+        json.dump(db, open(dbfile, "w"))
 
 
-def check_push(fn, tftpbootdir, settings, lcache='/var/lib/cobbler'):
+def check_push(fn, tftpbootdir, settings, lcache="/var/lib/cobbler"):
     """
     Returns the sha1sum of the file
     """
 
     db = {}
     try:
-        dbfile = os.path.join(lcache, 'pxe_cache.json')
+        dbfile = os.path.join(lcache, "pxe_cache.json")
         if os.path.exists(dbfile):
-            db = json.load(open(dbfile, 'r'))
+            db = json.load(open(dbfile, "r"))
     except:
         pass
 
@@ -195,8 +199,8 @@ def check_push(fn, tftpbootdir, settings, lcache='/var/lib/cobbler'):
             if _DEBUG:
                 logger.debug("mtime differ - old: %s new: %s", db[fn][0], mtime)
             if os.path.exists(fn):
-                cmd = '/usr/bin/sha1sum %s' % fn
-                key = utils.subprocess_get(cmd).split(' ')[0]
+                cmd = "/usr/bin/sha1sum %s" % fn
+                key = utils.subprocess_get(cmd).split(" ")[0]
                 if _DEBUG:
                     logger.debug("checking checksum - old: %s new: %s", db[fn][1], key)
                 if key == db[fn][1]:
@@ -205,8 +209,8 @@ def check_push(fn, tftpbootdir, settings, lcache='/var/lib/cobbler'):
             needpush = False
     if key is None:
         if os.path.exists(fn):
-            cmd = '/usr/bin/sha1sum %s' % fn
-            key = utils.subprocess_get(cmd).split(' ')[0]
+            cmd = "/usr/bin/sha1sum %s" % fn
+            key = utils.subprocess_get(cmd).split(" ")[0]
 
     if _DEBUG:
         logger.debug("push(%s) ? %s", fn, needpush)
@@ -216,17 +220,18 @@ def check_push(fn, tftpbootdir, settings, lcache='/var/lib/cobbler'):
         ProxySync.Result = True
         ProxySync.ResultLock.release()
 
-        format = 'other'
+        format = "other"
         if "pxelinux.cfg" in fn:
-            format = 'pxe'
+            format = "pxe"
         elif "grub" in fn:
-            format = 'grub'
+            format = "grub"
         if sync_to_proxies(fn, tftpbootdir, format, settings):
             db[fn] = (mtime, key)
             logger.info("Push successful")
         else:
             logger.info("Push failed")
     return db
+
 
 class ProxySync(threading.Thread):
     Result = True
@@ -245,7 +250,12 @@ class ProxySync(threading.Thread):
         """Sync file to proxy"""
         ret = True
 
-        logger.info("uploading %s to proxy %s as %s", self.filename, self.proxy, os.path.basename(self.filename))
+        logger.info(
+            "uploading %s to proxy %s as %s",
+            self.filename,
+            self.proxy,
+            os.path.basename(self.filename),
+        )
         opener = build_opener(MultipartPostHandler.MultipartPostHandler)
         path = os.path.dirname(self.filename)
         if not path.startswith(self.tftpbootdir):
@@ -257,10 +267,12 @@ class ProxySync(threading.Thread):
                 "file_name": os.path.basename(self.filename),
                 "file": open(self.filename, "rb"),
                 "file_type": self.format,
-                "directory": path
+                "directory": path,
             }
             try:
-                response = opener.open("http://%s/tftpsync/add/" % self.proxy, params, self.timeout)
+                response = opener.open(
+                    "http://%s/tftpsync/add/" % self.proxy, params, self.timeout
+                )
             except Exception as e:
                 ret = False
                 logger.error("uploading to proxy %s failed: %s", self.proxy, e)
@@ -287,13 +299,15 @@ class ProxyDelete(threading.Thread):
 
         logger.info("removing %s from %s", self.path, self.proxy)
 
-        p = {'file_name': os.path.basename(self.path),
-             'directory': os.path.dirname(self.path),
-             'file_type': 'other'}
+        p = {
+            "file_name": os.path.basename(self.path),
+            "directory": os.path.dirname(self.path),
+            "file_type": "other",
+        }
         if "pxelinux.cfg" in self.path:
-            p["file_type"] = 'pxe'
+            p["file_type"] = "pxe"
         elif "grub" in self.path:
-            p["file_type"] = 'grub'
+            p["file_type"] = "grub"
 
         parameters = urlencode(p)
 

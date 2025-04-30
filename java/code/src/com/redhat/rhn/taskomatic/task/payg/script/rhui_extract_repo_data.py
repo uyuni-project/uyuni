@@ -23,8 +23,8 @@ import traceback
 import urllib.request
 import urllib.parse as urlparse
 
-PATTERN_SECTION = r'^\[(.+)\]$'
-PATTERN_KV = r'\s*=\s*'
+PATTERN_SECTION = r"^\[(.+)\]$"
+PATTERN_KV = r"\s*=\s*"
 
 ID_DOC_HEADER = "X-RHUI-ID"
 ID_SIG_HEADER = "X-RHUI-SIGNATURE"
@@ -41,12 +41,14 @@ opener = urllib.request.build_opener(proxy_handler)
 
 cloud_vendor = "unknown"
 
+
 def system_exit(code, messages=None):
     "Exit with a code and optional message(s). Saved a few lines of code."
-    
+
     for message in messages:
         print(message, file=sys.stderr)
     sys.exit(code)
+
 
 def _read_aws_metadata(url, token):
     req = urllib.request.Request(url)
@@ -57,32 +59,35 @@ def _read_aws_metadata(url, token):
     except urllib.error.URLError as e:
         system_exit(3, ["Unable to get aws metadata ({})".format(e)])
 
+
 def _get_token():
-    req = urllib.request.Request(url=TOKEN_URL,
-        data=b'', method='PUT')
-    req.add_header(TOKEN_TTL_HEADER, '3600') # Time to live in seconds
+    req = urllib.request.Request(url=TOKEN_URL, data=b"", method="PUT")
+    req.add_header(TOKEN_TTL_HEADER, "3600")  # Time to live in seconds
     with opener.open(req) as response:
         return response.read()
 
+
 def _load_id(token):
-    '''
+    """
     Loads and returns the Amazon metadata for identifying the instance.
 
     @rtype: string
-    '''
+    """
     return _read_aws_metadata(ID_DOC_URL, token)
 
 
 def _load_signature(token):
-    '''
+    """
     Loads and returns the signature of hte Amazon identification metadata.
 
     @rtype: string
-    '''
+    """
     return _read_aws_metadata(ID_SIG_URL, token)
+
 
 def _get_arch():
     return platform.processor()
+
 
 def is_rhui_instance():
     return is_rhui
@@ -94,15 +99,21 @@ def get_rhui_url(url):
     If yes, return it, otherwise return an empty string
     """
     global cloud_vendor
-    surl = url.strip().replace(',', "")
+    surl = url.strip().replace(",", "")
     urlparams = urlparse.urlparse(surl)
-    if urlparams.hostname.startswith("rhui") and urlparams.hostname.endswith(".redhat.com"):
+    if urlparams.hostname.startswith("rhui") and urlparams.hostname.endswith(
+        ".redhat.com"
+    ):
         cloud_vendor = "aws"
         return surl
-    elif urlparams.hostname.startswith("rhui") and urlparams.hostname.endswith(".microsoft.com"):
+    elif urlparams.hostname.startswith("rhui") and urlparams.hostname.endswith(
+        ".microsoft.com"
+    ):
         cloud_vendor = "azure"
         return surl
-    elif urlparams.hostname.startswith("rhui.") and urlparams.hostname.endswith(".googlecloud.com"):
+    elif urlparams.hostname.startswith("rhui.") and urlparams.hostname.endswith(
+        ".googlecloud.com"
+    ):
         cloud_vendor = "gcp"
         return surl
     elif urlparams.hostname.startswith("packages.cloud.google.com"):
@@ -119,9 +130,15 @@ def _parse_repositories():
     repo_dict = {}
 
     try:
-        repos_out = subprocess.check_output(["yum", "repolist", "--all", "-v"], stderr=subprocess.PIPE, universal_newlines=True)
+        repos_out = subprocess.check_output(
+            ["yum", "repolist", "--all", "-v"],
+            stderr=subprocess.PIPE,
+            universal_newlines=True,
+        )
     except subprocess.CalledProcessError as e:
-        system_exit(2, ["Got error when getting repo processed URL(error {}):".format(e)])
+        system_exit(
+            2, ["Got error when getting repo processed URL(error {}):".format(e)]
+        )
     repo_id = ""
     repo_url = ""
     for line in repos_out.split("\n"):
@@ -133,14 +150,14 @@ def _parse_repositories():
         elif line.startswith("Repo-mirrors"):
             repo_url = get_rhui_url(line.split(":", 1)[1])
         elif repo_url == "" and line.startswith("Repo-baseurl"):
-            repo_url = get_rhui_url(re.split('\s+', line)[2])
+            repo_url = get_rhui_url(re.split("\s+", line)[2])
         elif line.strip() == "":
-            if (repo_id != "" and repo_url != ""):
-                repo_dict[repo_id] = { "url" : repo_url }
+            if repo_id != "" and repo_url != "":
+                repo_dict[repo_id] = {"url": repo_url}
             repo_id = ""
             repo_url = ""
-    if (repo_id != "" and repo_url != ""):
-        repo_dict[repo_id] = { "url" : repo_url }
+    if repo_id != "" and repo_url != "":
+        repo_dict[repo_id] = {"url": repo_url}
 
     # parse the repositories to get the matching certificates
     for repofile in glob.glob("/etc/yum.repos.d/*.repo"):
@@ -152,15 +169,15 @@ def _parse_repositories():
                 if re.match(PATTERN_SECTION, s):
                     ident = re.findall(PATTERN_SECTION, s)[0]
                     state = 1
-                    if '$basearch' in ident:
-                        ident = ident.replace('$basearch', _get_arch())
+                    if "$basearch" in ident:
+                        ident = ident.replace("$basearch", _get_arch())
                 elif state == 1 and ident and ident in repo_dict:
                     if "=" in s:
-                        k,v = re.split(PATTERN_KV, s, 1)
+                        k, v = re.split(PATTERN_KV, s, 1)
                         if k in ["sslclientcert", "sslclientkey", "sslcacert"]:
                             repo_dict[ident][k] = v
                             if "sslcacert" not in repo_dict[ident]:
-                                repo_dict[ident]["sslcacert"] = "Bundle" # default
+                                repo_dict[ident]["sslcacert"] = "Bundle"  # default
                     elif s == "":
                         ident = ""
                         state = 0
@@ -188,7 +205,6 @@ def _get_rhui_info():
         return {}
 
 
-
 def _get_certificate_info():
     """
     Return a dict with all RHUI certificates and keys using
@@ -197,7 +213,7 @@ def _get_certificate_info():
     usedCrts = set()
     for d in repo_dict.values():
         for k, v in d.items():
-            if k.startswith('ssl'):
+            if k.startswith("ssl"):
                 usedCrts.add(v)
 
     certs = {}
@@ -225,10 +241,13 @@ def load_instance_info():
     header_auth = _get_rhui_info()
     certs = _get_certificate_info()
 
-    return { "type": "RHUI",
-             "header_auth": header_auth,
-             "certs": certs,
-             "repositories": repo_dict}
+    return {
+        "type": "RHUI",
+        "header_auth": header_auth,
+        "certs": certs,
+        "repositories": repo_dict,
+    }
+
 
 def main():
     _parse_repositories()
@@ -239,7 +258,7 @@ def main():
     print(json.dumps(rhui_data))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     try:
         main()
         sys.exit(0)
@@ -248,7 +267,7 @@ if __name__ == '__main__':
     except SystemExit as e:
         sys.exit(e.code)
     except Exception as e:
-        #traceback.print_exc()
+        # traceback.print_exc()
         system_exit(9, ["ERROR: {}".format(e)])
 
 # Error codes

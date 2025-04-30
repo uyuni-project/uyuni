@@ -17,6 +17,7 @@ import os
 import pwd
 import sys
 
+
 def get_home_dir():
     userid = os.getuid()
     info = pwd.getpwuid(userid)
@@ -35,11 +36,13 @@ def make_common_attr_equal(object1, object2):
             continue
 
         # Make sure that object2 has the attribute as well. and that it's not equal to ''.
-        if attr not in object2.__dict__ or object2.__dict__[attr] == '':
+        if attr not in object2.__dict__ or object2.__dict__[attr] == "":
             continue
 
         # Make sure the attributes are the same type OR that the attribute in object1 is None.
-        if isinstance(object1.__dict__[attr], (type(object2.__dict__[attr]), type(None))):
+        if isinstance(
+            object1.__dict__[attr], (type(object2.__dict__[attr]), type(None))
+        ):
             if object1.__dict__[attr] != object2.__dict__[attr]:
                 object1.__dict__[attr] = object2.__dict__[attr]
             else:
@@ -54,7 +57,7 @@ def make_common_attr_equal(object1, object2):
 # This is just to make it shut up.
 def tupleify_urlparse(urlparse_object):
     ret = []
-    if hasattr(urlparse_object, 'scheme'):
+    if hasattr(urlparse_object, "scheme"):
         ret.append(urlparse_object.scheme)
         ret.append(urlparse_object.netloc)
         ret.append(urlparse_object.path)
@@ -67,8 +70,9 @@ def tupleify_urlparse(urlparse_object):
     if sys.version_info[0] == 3:
         for i in range(0, 6):
             if not isinstance(ret[i], str):
-                ret[i] = ret[i].decode('ascii')
+                ret[i] = ret[i].decode("ascii")
     return tuple(ret)
+
 
 if __name__ == "__main__":
     # This is just for testing purposes.

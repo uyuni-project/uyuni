@@ -10,6 +10,7 @@ skip = ["emptyspace.jsp"]
 idpattern = re.compile('id="([^"]+)"')
 sourcepattern = re.compile(r"<source>.*</source>", re.S)
 
+
 def getid(line):
     try:
         return idpattern.search(line).group(1)
@@ -19,7 +20,7 @@ def getid(line):
 
 
 def align(orig, translation):
-    #import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
     newfile = []
     node = ""
     source = ""
@@ -61,7 +62,7 @@ def align(orig, translation):
                         newfile[n] = (item[0], nd)
                         found = True
                         print("Node found: {0}".format(currentid))
-                        break;
+                        break
                 source = ""
                 currentid = None
             elif currentid:
@@ -86,18 +87,17 @@ def align(orig, translation):
 
 usage = sys.argv[0] + " <branding file> <merge to file>"
 try:
-  branding = sys.argv[1]
-  mergeto = sys.argv[2]
+    branding = sys.argv[1]
+    mergeto = sys.argv[2]
 
-  if not os.path.exists(branding):
-      print(usage)
-      sys.exit(1)
-  if not os.path.exists(mergeto):
-      print(usage)
-      sys.exit(1)
+    if not os.path.exists(branding):
+        print(usage)
+        sys.exit(1)
+    if not os.path.exists(mergeto):
+        print(usage)
+        sys.exit(1)
 
-  align(mergeto, branding)
+    align(mergeto, branding)
 except:
     print(usage)
     raise
-

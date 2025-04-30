@@ -13,6 +13,7 @@ class TestSCCryptokey:
     """
     Test cryptokey API.
     """
+
     def test_cryptokey_create_no_keytype(self, shell):
         """
         Test do_cryptokey_create without correct key type.
@@ -28,10 +29,11 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
-            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
-            patch("spacecmd.cryptokey.editor", editor) as edt, \
-            patch("spacecmd.cryptokey.logging", logger) as lgr:
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
+            "spacecmd.cryptokey.read_file", read_file
+        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
+            "spacecmd.cryptokey.logging", logger
+        ) as lgr:
             spacecmd.cryptokey.do_cryptokey_create(shell, "")
 
         assert not shell.help_cryptokey_create.called
@@ -58,10 +60,11 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
-            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
-            patch("spacecmd.cryptokey.editor", editor) as edt, \
-            patch("spacecmd.cryptokey.logging", logger) as lgr:
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
+            "spacecmd.cryptokey.read_file", read_file
+        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
+            "spacecmd.cryptokey.logging", logger
+        ) as lgr:
             spacecmd.cryptokey.do_cryptokey_create(shell, "")
 
         assert not shell.help_cryptokey_create.called
@@ -88,10 +91,11 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
-            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
-            patch("spacecmd.cryptokey.editor", editor) as edt, \
-            patch("spacecmd.cryptokey.logging", logger) as lgr:
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
+            "spacecmd.cryptokey.read_file", read_file
+        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
+            "spacecmd.cryptokey.logging", logger
+        ) as lgr:
             spacecmd.cryptokey.do_cryptokey_create(shell, "")
 
         assert not shell.help_cryptokey_create.called
@@ -118,11 +122,14 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
-            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
-            patch("spacecmd.cryptokey.editor", editor) as edt, \
-            patch("spacecmd.cryptokey.logging", logger) as lgr:
-            spacecmd.cryptokey.do_cryptokey_create(shell, "-t g -d description -f /tmp/file.txt")
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
+            "spacecmd.cryptokey.read_file", read_file
+        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
+            "spacecmd.cryptokey.logging", logger
+        ) as lgr:
+            spacecmd.cryptokey.do_cryptokey_create(
+                shell, "-t g -d description -f /tmp/file.txt"
+            )
 
         assert not editor.called
         assert not shell.help_cryptokey_create.called
@@ -152,11 +159,14 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
-            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
-            patch("spacecmd.cryptokey.editor", editor) as edt, \
-            patch("spacecmd.cryptokey.logging", logger) as lgr:
-            spacecmd.cryptokey.do_cryptokey_create(shell, "-t s -d description -f /tmp/file.txt")
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
+            "spacecmd.cryptokey.read_file", read_file
+        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
+            "spacecmd.cryptokey.logging", logger
+        ) as lgr:
+            spacecmd.cryptokey.do_cryptokey_create(
+                shell, "-t s -d description -f /tmp/file.txt"
+            )
 
         assert not editor.called
         assert not shell.help_cryptokey_create.called
@@ -186,10 +196,11 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
-            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
-            patch("spacecmd.cryptokey.editor", editor) as edt, \
-            patch("spacecmd.cryptokey.logging", logger) as lgr:
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
+            "spacecmd.cryptokey.read_file", read_file
+        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
+            "spacecmd.cryptokey.logging", logger
+        ) as lgr:
             spacecmd.cryptokey.do_cryptokey_update(shell, "")
 
         assert not shell.help_cryptokey_update.called
@@ -216,10 +227,11 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
-            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
-            patch("spacecmd.cryptokey.editor", editor) as edt, \
-            patch("spacecmd.cryptokey.logging", logger) as lgr:
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
+            "spacecmd.cryptokey.read_file", read_file
+        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
+            "spacecmd.cryptokey.logging", logger
+        ) as lgr:
             spacecmd.cryptokey.do_cryptokey_update(shell, "")
 
         assert not shell.help_cryptokey_update.called
@@ -246,10 +258,11 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
-            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
-            patch("spacecmd.cryptokey.editor", editor) as edt, \
-            patch("spacecmd.cryptokey.logging", logger) as lgr:
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
+            "spacecmd.cryptokey.read_file", read_file
+        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
+            "spacecmd.cryptokey.logging", logger
+        ) as lgr:
             spacecmd.cryptokey.do_cryptokey_update(shell, "")
 
         assert not shell.help_cryptokey_update.called
@@ -276,11 +289,14 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
-            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
-            patch("spacecmd.cryptokey.editor", editor) as edt, \
-            patch("spacecmd.cryptokey.logging", logger) as lgr:
-            spacecmd.cryptokey.do_cryptokey_update(shell, "-t g -d description -f /tmp/file.txt")
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
+            "spacecmd.cryptokey.read_file", read_file
+        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
+            "spacecmd.cryptokey.logging", logger
+        ) as lgr:
+            spacecmd.cryptokey.do_cryptokey_update(
+                shell, "-t g -d description -f /tmp/file.txt"
+            )
 
         assert not editor.called
         assert not shell.help_cryptokey_update.called
@@ -310,11 +326,14 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
-            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
-            patch("spacecmd.cryptokey.editor", editor) as edt, \
-            patch("spacecmd.cryptokey.logging", logger) as lgr:
-            spacecmd.cryptokey.do_cryptokey_update(shell, "-t s -d description -f /tmp/file.txt")
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
+            "spacecmd.cryptokey.read_file", read_file
+        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
+            "spacecmd.cryptokey.logging", logger
+        ) as lgr:
+            spacecmd.cryptokey.do_cryptokey_update(
+                shell, "-t s -d description -f /tmp/file.txt"
+            )
 
         assert not editor.called
         assert not shell.help_cryptokey_update.called
@@ -342,8 +361,9 @@ class TestSCCryptokey:
         filter_results = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.cryptokey.logging", logger) as lgr, \
-            patch("spacecmd.cryptokey.filter_results", filter_results) as frl:
+        with patch("spacecmd.cryptokey.logging", logger) as lgr, patch(
+            "spacecmd.cryptokey.filter_results", filter_results
+        ) as frl:
             spacecmd.cryptokey.do_cryptokey_delete(shell, "")
 
         assert not logger.error.called
@@ -366,8 +386,9 @@ class TestSCCryptokey:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.cryptokey.logging", logger) as lgr, \
-            patch("spacecmd.cryptokey.print", mprint) as prn:
+        with patch("spacecmd.cryptokey.logging", logger) as lgr, patch(
+            "spacecmd.cryptokey.print", mprint
+        ) as prn:
             spacecmd.cryptokey.do_cryptokey_delete(shell, "foo*")
 
         assert not shell.client.kickstart.keys.delete.called
@@ -391,8 +412,9 @@ class TestSCCryptokey:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.cryptokey.logging", logger) as lgr, \
-            patch("spacecmd.cryptokey.print", mprint) as prn:
+        with patch("spacecmd.cryptokey.logging", logger) as lgr, patch(
+            "spacecmd.cryptokey.print", mprint
+        ) as prn:
             spacecmd.cryptokey.do_cryptokey_delete(shell, "t*")
 
         assert not shell.client.kickstart.keys.delete.called
@@ -401,7 +423,7 @@ class TestSCCryptokey:
         assert shell.user_confirm.called
         assert mprint.called
 
-        assert_expect(mprint.call_args_list, 'three\ntwo')
+        assert_expect(mprint.call_args_list, "three\ntwo")
 
     def test_cryptokey_delete_confirmed_deleted(self, shell):
         """
@@ -416,8 +438,9 @@ class TestSCCryptokey:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.cryptokey.logging", logger) as lgr, \
-            patch("spacecmd.cryptokey.print", mprint) as prn:
+        with patch("spacecmd.cryptokey.logging", logger) as lgr, patch(
+            "spacecmd.cryptokey.print", mprint
+        ) as prn:
             spacecmd.cryptokey.do_cryptokey_delete(shell, "t*")
 
         assert not logger.error.called
@@ -426,10 +449,16 @@ class TestSCCryptokey:
         assert shell.user_confirm.called
         assert mprint.called
 
-        assert_expect(mprint.call_args_list, 'three\ntwo')
+        assert_expect(mprint.call_args_list, "three\ntwo")
         exp = [
-            (shell.session, "two",),
-            (shell.session, "three",),
+            (
+                shell.session,
+                "two",
+            ),
+            (
+                shell.session,
+                "three",
+            ),
         ]
 
         for call in shell.client.kickstart.keys.delete.call_args_list:
@@ -459,7 +488,7 @@ class TestSCCryptokey:
         assert not mprint.called
         assert bool(out)
         assert shell.client.kickstart.keys.listAllKeys.called
-        assert out == ['keydescr-1', 'keydescr-2']
+        assert out == ["keydescr-1", "keydescr-2"]
 
     def test_cryptokey_list_stdout(self, shell):
         """
@@ -497,8 +526,9 @@ class TestSCCryptokey:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.cryptokey.print", mprint) as mpt, \
-            patch("spacecmd.cryptokey.logging", logger) as lgr:
+        with patch("spacecmd.cryptokey.print", mprint) as mpt, patch(
+            "spacecmd.cryptokey.logging", logger
+        ) as lgr:
             spacecmd.cryptokey.do_cryptokey_details(shell, "")
 
         assert not mprint.called
@@ -519,8 +549,9 @@ class TestSCCryptokey:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.cryptokey.print", mprint) as mpt, \
-            patch("spacecmd.cryptokey.logging", logger) as lgr:
+        with patch("spacecmd.cryptokey.print", mprint) as mpt, patch(
+            "spacecmd.cryptokey.logging", logger
+        ) as lgr:
             spacecmd.cryptokey.do_cryptokey_details(shell, "somekey")
 
         assert not mprint.called
@@ -529,7 +560,9 @@ class TestSCCryptokey:
         assert shell.do_cryptokey_list.called
         assert logger.error.called
 
-        assert_expect(logger.error.call_args_list, "No keys matched argument ['somekey']")
+        assert_expect(
+            logger.error.call_args_list, "No keys matched argument ['somekey']"
+        )
 
     def test_cryptokey_details_listing(self, shell):
         """
@@ -538,18 +571,23 @@ class TestSCCryptokey:
         :param shell:
         :return:
         """
-        shell.client.kickstart.keys.getDetails = MagicMock(side_effect=[
-            {"description": "first descr", "type": "SSL", "content": "one data"},
-            {"description": "second descr", "type": "GPG", "content": "two data"},
-        ])
-        shell.do_cryptokey_list = MagicMock(return_value=["key-one", "key-two", "three"])
+        shell.client.kickstart.keys.getDetails = MagicMock(
+            side_effect=[
+                {"description": "first descr", "type": "SSL", "content": "one data"},
+                {"description": "second descr", "type": "GPG", "content": "two data"},
+            ]
+        )
+        shell.do_cryptokey_list = MagicMock(
+            return_value=["key-one", "key-two", "three"]
+        )
         shell.SEPARATOR = "---"
         shell.help_cryptokey_details = MagicMock()
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.cryptokey.print", mprint) as mpt, \
-            patch("spacecmd.cryptokey.logging", logger) as lgr:
+        with patch("spacecmd.cryptokey.print", mprint) as mpt, patch(
+            "spacecmd.cryptokey.logging", logger
+        ) as lgr:
             spacecmd.cryptokey.do_cryptokey_details(shell, "key*")
 
         assert not shell.help_cryptokey_details.called
@@ -560,10 +598,15 @@ class TestSCCryptokey:
         assert shell.do_cryptokey_list.called
 
         exp = [
-            'Description: first descr',
-            'Type:        SSL', '', 'one data', '---',
-            'Description: second descr',
-            'Type:        GPG', '', 'two data',
+            "Description: first descr",
+            "Type:        SSL",
+            "",
+            "one data",
+            "---",
+            "Description: second descr",
+            "Type:        GPG",
+            "",
+            "two data",
         ]
 
         for call in mprint.call_args_list:
@@ -586,8 +629,9 @@ class TestSCCryptokey:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.cryptokey.print", mprint) as mpt, \
-            patch("spacecmd.cryptokey.logging", logger) as lgr:
+        with patch("spacecmd.cryptokey.print", mprint) as mpt, patch(
+            "spacecmd.cryptokey.logging", logger
+        ) as lgr:
             spacecmd.cryptokey.do_cryptokey_details(shell, "somekey")
 
         assert not mprint.called
@@ -597,4 +641,6 @@ class TestSCCryptokey:
         assert shell.do_cryptokey_list.called
         assert logger.warning.called
 
-        assert_expect(logger.warning.call_args_list, "somekey is not a valid crypto key")
+        assert_expect(
+            logger.warning.call_args_list, "somekey is not a valid crypto key"
+        )
