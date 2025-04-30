@@ -56,7 +56,7 @@ Feature: Virtual host manager web UI
     When I follow the left menu "Systems > Virtual Host Managers"
     And I follow "file-vmware"
     And I click on "Delete"
-    And I wait for "1" second
+    And I wait until I see "Delete Virtual Host Manager" text
     And I click on "Delete" in "Delete Virtual Host Manager" modal
     And I wait until I see "Virtual Host Manager has been deleted." text
     Then I should see a "No Virtual Host Managers." text
