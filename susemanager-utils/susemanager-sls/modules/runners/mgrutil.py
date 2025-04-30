@@ -11,6 +11,7 @@ import shutil
 import salt.utils
 import subprocess
 import tempfile
+import time
 from salt.utils.minions import CkMinions
 
 
@@ -126,6 +127,25 @@ def _cmd(cmd):
     }
 
 
+def _cleanup_outdated_data(workdir):
+    for root, dirs, files in os.walk(workdir, topdown=False):
+        for name in files:
+            fpath = os.path.join(root, name)
+            if (time.time() - os.path.getmtime(fpath)) > (2 * 24 * 3600):
+                # remove files which are older than 2 days
+                try:
+                    os.remove(fpath)
+                except OSError as e:
+                    log.error("Failed to remove %s: %s", fpath, e)
+        for name in dirs:
+            dpath = os.path.join(root, name)
+            if len(os.listdir(dpath)) == 0:
+                try:
+                    os.rmdir(dpath)
+                except OSError as e:
+                    log.error("Failed to remove %s: %s", dpath, e)
+
+
 def move_minion_uploaded_files(
     minion=None, dirtomove=None, basepath=None, actionpath=None
 ):
@@ -187,6 +207,11 @@ def move_minion_uploaded_files(
             exc_info=True,
         )
         return {False: str(err)}
+    finally:
+        # pylint: disable-next=undefined-variable
+        fdir = os.path.join(__opts__["cachedir"], "minions", minion, "files")
+        _cleanup_outdated_data(fdir)
+
     return {True: scapstorepath}
 
 
