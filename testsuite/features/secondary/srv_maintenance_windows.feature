@@ -16,7 +16,7 @@ Feature: Maintenance windows
 
   Scenario: Create single calendar
     When I follow the left menu "Schedule > Maintenance Windows > Calendars"
-    And I click on "Create"
+    And I click on "Create" in element "maintenance-windows"
     Then I should see a "Calendar Name" text
     When I enter "singlecalendar" as "name"
     And I add "maintenance-windows-exchange.ics" calendar file as url
@@ -25,7 +25,7 @@ Feature: Maintenance windows
 
   Scenario: Create multi calendar
     When I follow the left menu "Schedule > Maintenance Windows > Calendars"
-    And I click on "Create"
+    And I click on "Create" in element "maintenance-windows"
     Then I should see a "Calendar Name" text
     When I enter "multicalendar" as "name"
     And I add "maintenance-windows-multi-exchange-1.ics" calendar file as url
@@ -34,7 +34,7 @@ Feature: Maintenance windows
 
   Scenario: Create a single schedule
     When I follow the left menu "Schedule > Maintenance Windows > Schedules"
-    And I click on "Create"
+    And I click on "Create" in element "maintenance-windows"
     Then I should see a "Schedule Name" text
     When I enter "singleschedule" as "name"
     And I choose "SINGLE"
@@ -45,7 +45,7 @@ Feature: Maintenance windows
 
   Scenario: Create multi schedules
     When I follow the left menu "Schedule > Maintenance Windows > Schedules"
-    And I click on "Create"
+    And I click on "Create" in element "maintenance-windows"
     Then I should see a "Schedule Name" text
     When I enter "SAP Maintenance Window" as "name"
     And I choose "MULTI"
