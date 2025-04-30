@@ -151,7 +151,8 @@ def test_issue_warning_string_all_params():
         severe=False,
     )
     assert (
-        str(issue) == f"WARNING: {IssueType.WRONG_SPACING} for package mypackage in file myfile.txt#L1"
+        str(issue)
+        == f"WARNING: {IssueType.WRONG_SPACING} for package mypackage in file myfile.txt#L1"
     )
 
 
@@ -159,7 +160,8 @@ def test_issue_gh_action_string(monkeypatch):
     monkeypatch.setenv("GITHUB_ACTION", "true")
     issue = Issue(IssueType.WRONG_CAP, "myfile.txt", 3, 5)
     assert (
-        str(issue) == f"::error file=myfile.txt,line=3,endLine=5::{IssueType.WRONG_CAP} in file myfile.txt#L3-5"
+        str(issue)
+        == f"::error file=myfile.txt,line=3,endLine=5::{IssueType.WRONG_CAP} in file myfile.txt#L3-5"
     )
 
 
@@ -176,7 +178,10 @@ def test_get_pkg_index(validator, file_list):
     assert 1 == len(pkg_idx["mypkg-extra"]["files"])
     assert 1 == len(pkg_idx["mypkg-extra"]["changes"])
     assert "pkg/path-extra/myfile-extra.txt" in pkg_idx["mypkg-extra"]["files"]
-    assert "pkg/path-extra/mypkg-extra.changes.my.feature" in pkg_idx["mypkg-extra"]["changes"]
+    assert (
+        "pkg/path-extra/mypkg-extra.changes.my.feature"
+        in pkg_idx["mypkg-extra"]["changes"]
+    )
 
     assert "otherpkg" in pkg_idx
     assert 1 == len(pkg_idx["otherpkg"]["files"])
@@ -304,21 +309,13 @@ def test_validate_chlog_file_multiple_issues_and_entries(validator, chlog_file):
 
 # Tests for the basic rules
 
+
 @pytest.mark.parametrize(
     "entry_text, issue_msg",
     [
-        (
-            "- This entry has\n  trailing whitespaces \n",
-            IssueType.TRAIL_WHITESPACE
-        ),
-        (
-            "- This entry has an  extra whitespace\n",
-            IssueType.MULTI_WHITESPACEi
-        ),
-        (
-            " - This is an invalid changelog entry\n",
-            IssueType.WRONG_INDENT
-        ),
+        ("- This entry has\n  trailing whitespaces \n", IssueType.TRAIL_WHITESPACE),
+        ("- This entry has an  extra whitespace\n", IssueType.MULTI_WHITESPACEi),
+        (" - This is an invalid changelog entry\n", IssueType.WRONG_INDENT),
         (
             "- This is an invalid changelog entry\n This line has only 1 leading whitespace instead of 2\n",
             IssueType.WRONG_INDENT,
@@ -331,12 +328,8 @@ def test_validate_chlog_file_multiple_issues_and_entries(validator, chlog_file):
             "- This is an invalid changelog entry without a newline at the end",
             IssueType.MISSING_NEWLINE,
         ),
-        ("- This entry\n\n  has an empty line in between\n",
-            IssueType.EMPTY_LINE
-        ),
-        ("- this entry has wrong capitalization\n",
-            IssueType.WRONG_CAP
-        ),
+        ("- This entry\n\n  has an empty line in between\n", IssueType.EMPTY_LINE),
+        ("- this entry has wrong capitalization\n", IssueType.WRONG_CAP),
         (
             "- This entry has wrong capitalization\n  in the. second sentence\n",
             IssueType.WRONG_CAP,
@@ -349,9 +342,7 @@ def test_validate_chlog_file_multiple_issues_and_entries(validator, chlog_file):
             "- This entry does not have a space.After a full stop\n",
             IssueType.WRONG_SPACING,
         ),
-        ("- This entry does not have a space:After a colon\n",
-            IssueType.WRONG_SPACING
-        ),
+        ("- This entry does not have a space:After a colon\n", IssueType.WRONG_SPACING),
         (
             "- Entry with version string 2.0 with.Wrong spacing.\n",
             IssueType.WRONG_SPACING,
@@ -360,9 +351,7 @@ def test_validate_chlog_file_multiple_issues_and_entries(validator, chlog_file):
             "- This entry is" + " very" * 10 + " long\n",
             IssueType.LINE_TOO_LONG.format(DEFAULT_LINE_LENGTH),
         ),
-        ("- Here's a duplicate\n- Here's a duplicate\n",
-            IssueType.DUPLICATE_ENTRY
-        ),
+        ("- Here's a duplicate\n- Here's a duplicate\n", IssueType.DUPLICATE_ENTRY),
     ],
 )
 def test_validate_chlog_file_rules(validator, chlog_file, entry_text, issue_msg):
@@ -373,6 +362,7 @@ def test_validate_chlog_file_rules(validator, chlog_file, entry_text, issue_msg)
 
 
 # Tests for tracker validation rules
+
 
 def test_validate_trackers(validator_with_trackers, chlog_file):
     chlog_file.write_text("- This entry has a tracker (tckr#99)\n")
@@ -437,7 +427,9 @@ def test_validate_trackers_with_pr(validator_with_trackers, chlog_file):
         ),
     ],
 )
-def test_validate_trackers_tracker_mismatch(validator_with_trackers, chlog_file, entry_text, issue_msg):
+def test_validate_trackers_tracker_mismatch(
+    validator_with_trackers, chlog_file, entry_text, issue_msg
+):
     # Set PR number to validate trackers against the PR
     validator_with_trackers.git_repo = "test/repo"
     validator_with_trackers.pr_number = 999
@@ -468,6 +460,7 @@ def test_validate_no_changes_in_pkg(validator, chlog_file):
 
 
 # Tests for changelogs for correct packages
+
 
 def test_validate_missing_chlog(validator, chlog_file):
     issues = validator.validate(["pkg/path/myfile.txt"])
@@ -501,6 +494,7 @@ def test_validate_change_in_subdir(validator, base_path):
 
 
 # Tests for Bugzilla trackers
+
 
 def test_validate_bsc(validator_with_trackers, chlog_file):
     chlog_file.write_text("- This is an entry with a valid BZ tracker (bsc#1000000)\n")

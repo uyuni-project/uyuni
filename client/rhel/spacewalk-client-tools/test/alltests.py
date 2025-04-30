@@ -25,13 +25,17 @@ import testUp2dateUtils
 
 from unittest import TestSuite
 
+
 def suite():
     # Append all test suites here:
-    return TestSuite((
-        testConfig.suite(),
-        testTransactions.suite(),
-        testUp2dateUtils.suite(),
-    ))
+    return TestSuite(
+        (
+            testConfig.suite(),
+            testTransactions.suite(),
+            testUp2dateUtils.suite(),
+        )
+    )
+
 
 if __name__ == "__main__":
     unittest.main(defaultTest="suite")

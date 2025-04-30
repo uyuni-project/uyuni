@@ -1,10 +1,12 @@
 """
 Unit tests for the sap module
 """
+
 from ..modules import sap
 
 from unittest.mock import patch, MagicMock
 import pytest
+
 
 @pytest.mark.parametrize(
     "mock_walk_return, expected_result",
@@ -29,6 +31,7 @@ def test_get_workloads(mock_walk_return, expected_result):
     mock_os_walk = MagicMock(return_value=mock_walk_return)
     with patch("os.path.exists", mock_os_path_exists), patch("os.walk", mock_os_walk):
         assert sap.get_workloads() == expected_result
+
 
 def test_no_sap_directory():
     with patch("os.path.exists", return_value=False):

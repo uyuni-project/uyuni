@@ -14,23 +14,25 @@ from rhn import SSL
 from rhn import rpclib
 from rhn.tb import raise_with_tb
 
-try: # python2
-     import httplib
-     import urllib2
-     import urlparse
-     import xmlrpclib
-except ImportError: # python3
-     import http.client as httplib
-     import urllib.request as urllib2
-     import urllib.parse as urlparse
-     import xmlrpc.client as xmlrpclib
+try:  # python2
+    import httplib
+    import urllib2
+    import urlparse
+    import xmlrpclib
+except ImportError:  # python3
+    import http.client as httplib
+    import urllib.request as urllib2
+    import urllib.parse as urlparse
+    import xmlrpc.client as xmlrpclib
 
 import gettext
-t = gettext.translation('rhn-client-tools', fallback=True)
+
+t = gettext.translation("rhn-client-tools", fallback=True)
 # Python 3 translations don't have a ugettext method
-if not hasattr(t, 'ugettext'):
+if not hasattr(t, "ugettext"):
     t.ugettext = t.gettext
 _ = t.ugettext
+
 
 def stdoutMsgCallback(msg):
     print(msg)
@@ -51,8 +53,7 @@ class RetryServer(rpclib.Server):
                 raise
             except httplib.BadStatusLine:
                 self.log.log_me("Error: Server Unavailable. Please try later.")
-                stdoutMsgCallback(
-                      _("Error: Server Unavailable. Please try later."))
+                stdoutMsgCallback(_("Error: Server Unavailable. Please try later."))
                 sys.exit(-1)
             except:
                 server = self.serverList.next()
@@ -71,13 +72,16 @@ class RetryServer(rpclib.Server):
 
                 # use the next serverURL
                 parse_res = urlparse.urlsplit(self.serverList.server())
-                typ = parse_res[0] # scheme
-                self._host = parse_res[1] # netloc
-                self._handler = parse_res[2] # path
+                typ = parse_res[0]  # scheme
+                self._host = parse_res[1]  # netloc
+                self._handler = parse_res[2]  # path
                 typ = typ.lower()
                 if typ not in ("http", "https"):
-                    raise_with_tb(rpclib.InvalidRedirectionError(
-                        "Redirected to unsupported protocol %s" % typ))
+                    raise_with_tb(
+                        rpclib.InvalidRedirectionError(
+                            "Redirected to unsupported protocol %s" % typ
+                        )
+                    )
                 self._orig_handler = self._handler
                 self._type = typ
                 self._uri = self.serverList.server()
@@ -88,7 +92,6 @@ class RetryServer(rpclib.Server):
             # if we get this far, we succedded
             break
         return ret
-
 
     def __getattr__(self, name):
         # magic method dispatcher
@@ -104,7 +107,6 @@ class ServerList:
     def server(self):
         self.serverurl = self.serverList[self.index]
         return self.serverurl
-
 
     def next(self):
         self.index = self.index + 1
@@ -149,22 +151,23 @@ def getServer(refreshCallback=None, serverOverride=None, timeout=None, caChain=N
         proxyPassword = cfg["proxyPassword"] or None
 
     lang = None
-    for env in 'LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG':
+    for env in "LANGUAGE", "LC_ALL", "LC_MESSAGES", "LANG":
         if env in os.environ:
             if not os.environ[env]:
                 # sometimes unset
                 continue
-            lang = os.environ[env].split(':')[0]
-            lang = lang.split('.')[0]
+            lang = os.environ[env].split(":")[0]
+            lang = lang.split(".")[0]
             break
 
-
-    s = RetryServer(serverList.server(),
-                    refreshCallback=refreshCallback,
-                    proxy=proxyHost,
-                    username=proxyUser,
-                    password=proxyPassword,
-                    timeout=timeout)
+    s = RetryServer(
+        serverList.server(),
+        refreshCallback=refreshCallback,
+        proxy=proxyHost,
+        username=proxyUser,
+        password=proxyPassword,
+        timeout=timeout,
+    )
     s.addServerList(serverList)
 
     s.add_header("X-Up2date-Version", up2dateUtils.version())
@@ -173,13 +176,13 @@ def getServer(refreshCallback=None, serverOverride=None, timeout=None, caChain=N
         s.setlang(lang)
 
     # require SSL CA file to be able to authenticate the SSL connections
-    need_ca = [ True for i in s.serverList.serverList
-                     if urlparse.urlparse(i)[0] == 'https']
+    need_ca = [
+        True for i in s.serverList.serverList if urlparse.urlparse(i)[0] == "https"
+    ]
     if need_ca:
         for rhns_ca_cert in rhns_ca_certs:
             if not os.access(rhns_ca_cert, os.R_OK):
-                msg = "%s: %s" % (_("ERROR: can not find server CA file"),
-                                     rhns_ca_cert)
+                msg = "%s: %s" % (_("ERROR: can not find server CA file"), rhns_ca_cert)
                 log.log_me("%s" % msg)
                 raise up2dateErrors.SSLCertificateFileNotFound(msg)
 

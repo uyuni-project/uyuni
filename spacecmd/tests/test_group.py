@@ -31,8 +31,9 @@ class TestSCGroup:
         shell.ssm.keys = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr:
             spacecmd.group.do_group_addsystems(shell, "")
 
         assert not shell.get_system_id.called
@@ -57,8 +58,9 @@ class TestSCGroup:
         shell.ssm.keys = MagicMock(return_value=[])
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr:
             spacecmd.group.do_group_addsystems(shell, "groupname ssm")
 
         assert not shell.get_system_id.called
@@ -83,8 +85,9 @@ class TestSCGroup:
         shell.ssm.keys = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr:
             spacecmd.group.do_group_addsystems(shell, "groupname something*")
 
         assert not shell.get_system_id.called
@@ -109,8 +112,9 @@ class TestSCGroup:
         shell.ssm.keys = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr:
             spacecmd.group.do_group_addsystems(shell, "groupname something*")
 
         assert not mprint.called
@@ -121,8 +125,10 @@ class TestSCGroup:
         assert shell.client.systemgroup.addOrRemoveSystems.called
         assert shell.expand_systems.called
 
-        assert_args_expect(shell.client.systemgroup.addOrRemoveSystems.call_args_list,
-                           [((shell.session, 'groupname', ['1000010000', '1000010001'], True), {})])
+        assert_args_expect(
+            shell.client.systemgroup.addOrRemoveSystems.call_args_list,
+            [((shell.session, "groupname", ["1000010000", "1000010001"], True), {})],
+        )
 
     def test_group_removesystems_noargs(self, shell):
         """
@@ -140,8 +146,9 @@ class TestSCGroup:
         shell.user_confirm = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr:
             spacecmd.group.do_group_removesystems(shell, "")
 
         assert not shell.get_system_id.called
@@ -169,8 +176,9 @@ class TestSCGroup:
         shell.user_confirm = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr:
             spacecmd.group.do_group_removesystems(shell, "somegroup ssm")
 
         assert not shell.get_system_id.called
@@ -200,8 +208,9 @@ class TestSCGroup:
         shell.user_confirm = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr:
             spacecmd.group.do_group_removesystems(shell, "somegroup somesystem")
 
         assert not shell.get_system_id.called
@@ -231,8 +240,9 @@ class TestSCGroup:
         shell.user_confirm = MagicMock(return_value=True)
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr:
             spacecmd.group.do_group_removesystems(shell, "somegroup somesystem")
 
         assert not logger.error.called
@@ -244,10 +254,13 @@ class TestSCGroup:
         assert shell.expand_systems.called
         assert shell.client.systemgroup.addOrRemoveSystems.called
 
-        assert_args_expect(shell.client.systemgroup.addOrRemoveSystems.call_args_list,
-                           [((shell.session, 'somegroup', ['1000010000', '1000010001'], False), {})])
-        assert_list_args_expect(mprint.call_args_list,
-                                ["Systems", "-------", "one\ntwo"])
+        assert_args_expect(
+            shell.client.systemgroup.addOrRemoveSystems.call_args_list,
+            [((shell.session, "somegroup", ["1000010000", "1000010001"], False), {})],
+        )
+        assert_list_args_expect(
+            mprint.call_args_list, ["Systems", "-------", "one\ntwo"]
+        )
 
     def test_group_create_noarg(self, shell):
         """
@@ -266,8 +279,10 @@ class TestSCGroup:
         assert prompter.called
         assert shell.client.systemgroup.create.called
 
-        assert_args_expect(shell.client.systemgroup.create.call_args_list,
-                           [((shell.session, 'Jeff', msg), {})])
+        assert_args_expect(
+            shell.client.systemgroup.create.call_args_list,
+            [((shell.session, "Jeff", msg), {})],
+        )
 
     def test_group_create_name_only(self, shell):
         """
@@ -286,8 +301,10 @@ class TestSCGroup:
         assert prompter.called
         assert shell.client.systemgroup.create.called
 
-        assert_args_expect(shell.client.systemgroup.create.call_args_list,
-                           [((shell.session, 'Jeff', msg), {})])
+        assert_args_expect(
+            shell.client.systemgroup.create.call_args_list,
+            [((shell.session, "Jeff", msg), {})],
+        )
 
     def test_group_create_descr_only(self, shell):
         """
@@ -306,8 +323,10 @@ class TestSCGroup:
         assert not prompter.called
         assert shell.client.systemgroup.create.called
 
-        assert_args_expect(shell.client.systemgroup.create.call_args_list,
-                           [((shell.session, 'Jeff', msg), {})])
+        assert_args_expect(
+            shell.client.systemgroup.create.call_args_list,
+            [((shell.session, "Jeff", msg), {})],
+        )
 
     def test_group_delete_noarg(self, shell):
         """
@@ -360,9 +379,11 @@ class TestSCGroup:
         assert shell.client.systemgroup.delete.called
         assert shell.user_confirm.called
 
-        groups = [[((shell.session, "groupone"), {})],
-                  [((shell.session, "grouptwo"), {})],
-                  [((shell.session, "groupthree"), {})],]
+        groups = [
+            [((shell.session, "groupone"), {})],
+            [((shell.session, "grouptwo"), {})],
+            [((shell.session, "groupthree"), {})],
+        ]
         for call in shell.client.systemgroup.delete.call_args_list:
             assert_args_expect([call], next(iter(groups)))
             groups.pop(0)
@@ -382,8 +403,9 @@ class TestSCGroup:
         shell.client.systemgroup.getDetails = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr:
             spacecmd.group.do_group_backup(shell, "")
 
         assert not shell.do_group_list.called
@@ -401,6 +423,7 @@ class TestSCGroup:
         :param shell:
         :return:
         """
+
         def exp_user(path):
             """
             Fake expand user
@@ -418,16 +441,17 @@ class TestSCGroup:
                 {"description": "Group B description", "id": 1},
             ]
         )
-        shell.client.formula.getFormulasByGroupId = MagicMock(
-            side_effect = [[], ['pxe']]
-            )
+        shell.client.formula.getFormulasByGroupId = MagicMock(side_effect=[[], ["pxe"]])
         shell.client.formula.getGroupFormulaData = MagicMock(
-            return_value = {"pxe": {
-                "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
-                "initrd_name": "initrd",
-                "kernel_name": "linux",
-                "pxe_root_directory": "/srv/saltboot"
-            }})
+            return_value={
+                "pxe": {
+                    "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
+                    "initrd_name": "initrd",
+                    "kernel_name": "linux",
+                    "pxe_root_directory": "/srv/saltboot",
+                }
+            }
+        )
         mprint = MagicMock()
         logger = MagicMock()
         dumper = MagicMock()
@@ -435,11 +459,13 @@ class TestSCGroup:
         _datetime = MagicMock()
         _datetime.now = MagicMock(return_value=datetime.datetime(2019, 1, 1))
 
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr, \
-            patch("spacecmd.group.os.path.expanduser", exp_user) as exu, \
-            patch("spacecmd.group.json_dump_to_file", dumper) as opr, \
-            patch("spacecmd.group.datetime", _datetime) as dtm:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr, patch("spacecmd.group.os.path.expanduser", exp_user) as exu, patch(
+            "spacecmd.group.json_dump_to_file", dumper
+        ) as opr, patch(
+            "spacecmd.group.datetime", _datetime
+        ) as dtm:
             spacecmd.group.do_group_backup(shell, "ALL")
 
         assert not logger.called
@@ -449,32 +475,37 @@ class TestSCGroup:
         assert mprint.called
         assert dumper.called
 
-        assert_list_args_expect(mprint.call_args_list,
-                                ['Backup Group: group-a',
-                                 'Output File: /opt/spacecmd/spacecmd-backup/group/2019-01-01/group-a',
-                                 'Backup Group: group-b',
-                                 'Output File: /opt/spacecmd/spacecmd-backup/group/2019-01-01/group-b'
-                                 ])
-        calls = [call({
-                        "description": "Group A description",
-                        "formulas": {}
-                    },
-                    '/opt/spacecmd/spacecmd-backup/group/2019-01-01/group-a'),
-                call({
-                        "description": "Group B description",
-                        "formulas": {
+        assert_list_args_expect(
+            mprint.call_args_list,
+            [
+                "Backup Group: group-a",
+                "Output File: /opt/spacecmd/spacecmd-backup/group/2019-01-01/group-a",
+                "Backup Group: group-b",
+                "Output File: /opt/spacecmd/spacecmd-backup/group/2019-01-01/group-b",
+            ],
+        )
+        calls = [
+            call(
+                {"description": "Group A description", "formulas": {}},
+                "/opt/spacecmd/spacecmd-backup/group/2019-01-01/group-a",
+            ),
+            call(
+                {
+                    "description": "Group B description",
+                    "formulas": {
+                        "pxe": {
                             "pxe": {
-                                "pxe": {
-                                    "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
-                                    "initrd_name": "initrd",
-                                    "kernel_name": "linux",
-                                    "pxe_root_directory": "/srv/saltboot"
-                                }
+                                "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
+                                "initrd_name": "initrd",
+                                "kernel_name": "linux",
+                                "pxe_root_directory": "/srv/saltboot",
                             }
                         }
                     },
-                    '/opt/spacecmd/spacecmd-backup/group/2019-01-01/group-b')
-                ]
+                },
+                "/opt/spacecmd/spacecmd-backup/group/2019-01-01/group-b",
+            ),
+        ]
         dumper.assert_has_calls(calls)
 
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=False))
@@ -486,6 +517,7 @@ class TestSCGroup:
         :param shell:
         :return:
         """
+
         def exp_user(path):
             """
             Fake expand user
@@ -511,11 +543,13 @@ class TestSCGroup:
         _datetime = MagicMock()
         _datetime.now = MagicMock(return_value=datetime.datetime(2019, 1, 1))
 
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr, \
-            patch("spacecmd.group.os.path.expanduser", exp_user) as exu, \
-            patch("spacecmd.group.open", _open) as opr, \
-            patch("spacecmd.group.datetime", _datetime) as dtm:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr, patch("spacecmd.group.os.path.expanduser", exp_user) as exu, patch(
+            "spacecmd.group.open", _open
+        ) as opr, patch(
+            "spacecmd.group.datetime", _datetime
+        ) as dtm:
             spacecmd.group.do_group_backup(shell, "ALL")
 
         assert not shell.help_group_backup.called
@@ -526,9 +560,18 @@ class TestSCGroup:
         assert logger.error.called
         assert shell.do_group_list.called
 
-        assert_args_expect(logger.error.call_args_list,
-                           [(('Could not create output directory: %s',
-                              '/opt/spacecmd/spacecmd-backup/group/2019-01-01'), {})])
+        assert_args_expect(
+            logger.error.call_args_list,
+            [
+                (
+                    (
+                        "Could not create output directory: %s",
+                        "/opt/spacecmd/spacecmd-backup/group/2019-01-01",
+                    ),
+                    {},
+                )
+            ],
+        )
 
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=False))
     @patch("spacecmd.group.os.makedirs", MagicMock(side_effect=OSError))
@@ -539,6 +582,7 @@ class TestSCGroup:
         :param shell:
         :return:
         """
+
         def exp_user(path):
             """
             Fake expand user
@@ -564,11 +608,13 @@ class TestSCGroup:
         _datetime = MagicMock()
         _datetime.now = MagicMock(return_value=datetime.datetime(2019, 1, 1, 15, 0, 0))
 
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr, \
-            patch("spacecmd.group.os.path.expanduser", exp_user) as exu, \
-            patch("spacecmd.group.open", _open) as opr, \
-            patch("spacecmd.group.datetime", _datetime) as dtm:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr, patch("spacecmd.group.os.path.expanduser", exp_user) as exu, patch(
+            "spacecmd.group.open", _open
+        ) as opr, patch(
+            "spacecmd.group.datetime", _datetime
+        ) as dtm:
             spacecmd.group.do_group_backup(shell, "ALL /dev/null/%Y-%m-%T")
 
         assert not shell.help_group_backup.called
@@ -579,9 +625,18 @@ class TestSCGroup:
         assert logger.error.called
         assert shell.do_group_list.called
 
-        assert_args_expect(logger.error.call_args_list,
-                           [(('Could not create output directory: %s',
-                              '/opt/spacecmd/dev/null/2019-01-15:00:00'), {})])
+        assert_args_expect(
+            logger.error.call_args_list,
+            [
+                (
+                    (
+                        "Could not create output directory: %s",
+                        "/opt/spacecmd/dev/null/2019-01-15:00:00",
+                    ),
+                    {},
+                )
+            ],
+        )
 
     @patch("spacecmd.group.os.path.abspath", MagicMock(return_value="/opt/backup"))
     @patch("spacecmd.group.os.listdir", MagicMock(return_value=[]))
@@ -601,8 +656,9 @@ class TestSCGroup:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr:
             spacecmd.group.do_group_restore(shell, "")
 
         assert not shell.do_group_list.called
@@ -625,6 +681,7 @@ class TestSCGroup:
         :param shell:
         :return:
         """
+
         def _abspath(path):
             """
             Fake os.path.abspath that expands to /tmp/test
@@ -642,9 +699,9 @@ class TestSCGroup:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr, \
-            patch("spacecmd.group.os.path.abspath", _abspath) as abp:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr, patch("spacecmd.group.os.path.abspath", _abspath) as abp:
             spacecmd.group.do_group_restore(shell, "ALL")
 
         assert not shell.do_group_list.called
@@ -657,10 +714,11 @@ class TestSCGroup:
         assert logger.debug.called
         assert logger.error.called
 
-        assert_expect(logger.debug.call_args_list,
-                      "Input Directory: /tmp/test/ALL")
-        assert_expect(logger.error.call_args_list,
-                      'Restore dir /tmp/test/ALL does not exits or is not a directory')
+        assert_expect(logger.debug.call_args_list, "Input Directory: /tmp/test/ALL")
+        assert_expect(
+            logger.error.call_args_list,
+            "Restore dir /tmp/test/ALL does not exits or is not a directory",
+        )
 
     @patch("spacecmd.group.os.listdir", MagicMock(return_value=[]))
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
@@ -672,6 +730,7 @@ class TestSCGroup:
         :param shell:
         :return:
         """
+
         def _abspath(path):
             """
             Fake os.path.abspath that expands to /tmp/test
@@ -689,9 +748,9 @@ class TestSCGroup:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr, \
-            patch("spacecmd.group.os.path.abspath", _abspath) as abp:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr, patch("spacecmd.group.os.path.abspath", _abspath) as abp:
             spacecmd.group.do_group_restore(shell, "ALL")
 
         assert not shell.do_group_list.called
@@ -704,10 +763,11 @@ class TestSCGroup:
         assert logger.debug.called
         assert logger.error.called
 
-        assert_expect(logger.debug.call_args_list,
-                      "Input Directory: /tmp/test/ALL")
-        assert_expect(logger.error.call_args_list,
-                      'Restore dir /tmp/test/ALL has no restore items')
+        assert_expect(logger.debug.call_args_list, "Input Directory: /tmp/test/ALL")
+        assert_expect(
+            logger.error.call_args_list,
+            "Restore dir /tmp/test/ALL has no restore items",
+        )
 
     @patch("spacecmd.group.os.listdir", MagicMock(return_value=["group-a"]))
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
@@ -720,6 +780,7 @@ class TestSCGroup:
         :param shell:
         :return:
         """
+
         def _abspath(path):
             """
             Fake os.path.abspath that expands to /tmp/test
@@ -739,10 +800,11 @@ class TestSCGroup:
         opener = MagicMock()
         _open = MagicMock(return_value=opener)
 
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr, \
-            patch("spacecmd.group.open", _open) as opn, \
-            patch("spacecmd.group.os.path.abspath", _abspath) as abp:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr, patch("spacecmd.group.open", _open) as opn, patch(
+            "spacecmd.group.os.path.abspath", _abspath
+        ) as abp:
             spacecmd.group.do_group_restore(shell, "/opt/backup group-a group-b")
 
         assert not shell.do_group_list.called
@@ -755,9 +817,13 @@ class TestSCGroup:
         assert logger.debug.called
         assert logger.error.called
 
-        assert_args_expect(logger.error.call_args_list,
-                           [(('Group group-b was not found in backup',), {}),
-                            (('Found %s missing groups, terminating', 1), {})])
+        assert_args_expect(
+            logger.error.call_args_list,
+            [
+                (("Group group-b was not found in backup",), {}),
+                (("Found %s missing groups, terminating", 1), {}),
+            ],
+        )
 
     @patch("spacecmd.group.os.listdir", MagicMock(return_value=["group-a"]))
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
@@ -770,6 +836,7 @@ class TestSCGroup:
         :param shell:
         :return:
         """
+
         def _abspath(path):
             """
             Fake os.path.abspath that expands to /tmp/test
@@ -781,42 +848,50 @@ class TestSCGroup:
 
         shell.help_group_restore = MagicMock()
         shell.do_group_list = MagicMock(return_value=["group-a", "group-b"])
-        shell.client.systemgroup.getDetails = MagicMock(side_effect=[
-            {"description": "Description of Group A", "id": 1},
-            {"description": "Description of Group B", "id": 1},
-        ])
-        shell.client.formula.getFormulasByGroupId = MagicMock(
-            side_effect = [['pxe'], []]
-            )
+        shell.client.systemgroup.getDetails = MagicMock(
+            side_effect=[
+                {"description": "Description of Group A", "id": 1},
+                {"description": "Description of Group B", "id": 1},
+            ]
+        )
+        shell.client.formula.getFormulasByGroupId = MagicMock(side_effect=[["pxe"], []])
         shell.client.formula.getGroupFormulaData = MagicMock(
-            side_effect = [{"pxe": {
-                "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
-                "initrd_name": "initrd",
-                "kernel_name": "linux",
-                "pxe_root_directory": "/srv/saltboot"
-            }}])
+            side_effect=[
+                {
+                    "pxe": {
+                        "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
+                        "initrd_name": "initrd",
+                        "kernel_name": "linux",
+                        "pxe_root_directory": "/srv/saltboot",
+                    }
+                }
+            ]
+        )
         shell.client.systemgroup.update = MagicMock()
         shell.client.systemgroup.create = MagicMock()
         logger = MagicMock()
         mprint = MagicMock()
-        json = MagicMock(return_value={
-                    "description": "Description of Group A",
-                    "formulas": {
+        json = MagicMock(
+            return_value={
+                "description": "Description of Group A",
+                "formulas": {
+                    "pxe": {
                         "pxe": {
-                            "pxe": {
-                                "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
-                                "initrd_name": "initrd",
-                                "kernel_name": "linux",
-                                "pxe_root_directory": "/srv/saltboot"
-                            }
+                            "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
+                            "initrd_name": "initrd",
+                            "kernel_name": "linux",
+                            "pxe_root_directory": "/srv/saltboot",
                         }
                     }
-                })
+                },
+            }
+        )
 
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr, \
-            patch("spacecmd.group.json_read_from_file", json) as opr, \
-            patch("spacecmd.group.os.path.abspath", _abspath) as abp:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr, patch("spacecmd.group.json_read_from_file", json) as opr, patch(
+            "spacecmd.group.os.path.abspath", _abspath
+        ) as abp:
             spacecmd.group.do_group_restore(shell, "/opt/backup group-a")
 
         assert not shell.client.systemgroup.update.called
@@ -831,8 +906,7 @@ class TestSCGroup:
 
         json.assert_called_once()
 
-        assert_expect(logger.error.call_args_list,
-                      "Group group-a already restored")
+        assert_expect(logger.error.call_args_list, "Group group-a already restored")
 
     @patch("spacecmd.group.os.listdir", MagicMock(return_value=["group-a"]))
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
@@ -845,6 +919,7 @@ class TestSCGroup:
         :param shell:
         :return:
         """
+
         def _abspath(path):
             """
             Fake os.path.abspath that expands to /tmp/test
@@ -856,26 +931,26 @@ class TestSCGroup:
 
         shell.help_group_restore = MagicMock()
         shell.do_group_list = MagicMock(return_value=["group-a", "group-b"])
-        shell.client.systemgroup.getDetails = MagicMock(side_effect=[
-            {"description": "Description of Group A", "id": 1},
-            {"description": "Description of Group B", "id": 1},
-        ])
-        shell.client.formula.getFormulasByGroupId = MagicMock(
-            side_effect = [[], []]
-            )
+        shell.client.systemgroup.getDetails = MagicMock(
+            side_effect=[
+                {"description": "Description of Group A", "id": 1},
+                {"description": "Description of Group B", "id": 1},
+            ]
+        )
+        shell.client.formula.getFormulasByGroupId = MagicMock(side_effect=[[], []])
         shell.client.systemgroup.update = MagicMock()
         shell.client.systemgroup.create = MagicMock()
         logger = MagicMock()
         mprint = MagicMock()
-        json = MagicMock(return_value={
-                    "description": "Group A description",
-                    "formulas": {}
-                })
+        json = MagicMock(
+            return_value={"description": "Group A description", "formulas": {}}
+        )
 
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr, \
-            patch("spacecmd.group.json_read_from_file", json) as opr, \
-            patch("spacecmd.group.os.path.abspath", _abspath) as abp:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr, patch("spacecmd.group.json_read_from_file", json) as opr, patch(
+            "spacecmd.group.os.path.abspath", _abspath
+        ) as abp:
             spacecmd.group.do_group_restore(shell, "/opt/backup group-a")
 
         assert not shell.client.systemgroup.create.called
@@ -890,8 +965,7 @@ class TestSCGroup:
 
         json.assert_called_once()
 
-        assert_expect(logger.info.call_args_list,
-                      'Updating data for group: group-a')
+        assert_expect(logger.info.call_args_list, "Updating data for group: group-a")
 
     @patch("spacecmd.group.os.listdir", MagicMock(return_value=["group-a"]))
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
@@ -904,6 +978,7 @@ class TestSCGroup:
         :param shell:
         :return:
         """
+
         def _abspath(path):
             """
             Fake os.path.abspath that expands to /tmp/test
@@ -915,43 +990,51 @@ class TestSCGroup:
 
         shell.help_group_restore = MagicMock()
         shell.do_group_list = MagicMock(return_value=["group-a", "group-b"])
-        shell.client.systemgroup.getDetails = MagicMock(side_effect=[
-            {"description": "Description of Group A", "id": 1},
-            {"description": "Description of Group B", "id": 1},
-        ])
-        shell.client.formula.getFormulasByGroupId = MagicMock(
-            side_effect = [['pxe'], []]
-            )
+        shell.client.systemgroup.getDetails = MagicMock(
+            side_effect=[
+                {"description": "Description of Group A", "id": 1},
+                {"description": "Description of Group B", "id": 1},
+            ]
+        )
+        shell.client.formula.getFormulasByGroupId = MagicMock(side_effect=[["pxe"], []])
         shell.client.formula.getGroupFormulaData = MagicMock(
-            side_effect = [{"pxe": {
-                "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
-                "initrd_name": "initrd",
-                "kernel_name": "linux",
-                "pxe_root_directory": "/srv/saltboot"
-            }}])
+            side_effect=[
+                {
+                    "pxe": {
+                        "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
+                        "initrd_name": "initrd",
+                        "kernel_name": "linux",
+                        "pxe_root_directory": "/srv/saltboot",
+                    }
+                }
+            ]
+        )
         shell.client.systemgroup.update = MagicMock()
         shell.client.systemgroup.create = MagicMock()
         shell.client.formula.setGroupFormulaData = MagicMock()
 
         logger = MagicMock()
         mprint = MagicMock()
-        json = MagicMock(return_value={
-                    "description": "Group A description",
-                    "formulas": {
+        json = MagicMock(
+            return_value={
+                "description": "Group A description",
+                "formulas": {
                     "pxe": {
                         "pxe": {
                             "initrd_name": "initrd",
                             "kernel_name": "linux",
-                            "pxe_root_directory": "/srv/tftpboot"
+                            "pxe_root_directory": "/srv/tftpboot",
                         }
                     }
-                }
-            })
+                },
+            }
+        )
 
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr, \
-            patch("spacecmd.group.json_read_from_file", json) as opr, \
-            patch("spacecmd.group.os.path.abspath", _abspath) as abp:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr, patch("spacecmd.group.json_read_from_file", json) as opr, patch(
+            "spacecmd.group.os.path.abspath", _abspath
+        ) as abp:
             spacecmd.group.do_group_restore(shell, "/opt/backup group-a")
 
         assert not shell.client.systemgroup.create.called
@@ -967,16 +1050,19 @@ class TestSCGroup:
         json.assert_called_once()
 
         shell.client.formula.setGroupFormulaData.assert_called_with(
-                    ANY,
-                    1, 'pxe',
-                    { "pxe": {
-                        "initrd_name": "initrd",
-                        "kernel_name": "linux",
-                        "pxe_root_directory": "/srv/tftpboot"
-                    }})
+            ANY,
+            1,
+            "pxe",
+            {
+                "pxe": {
+                    "initrd_name": "initrd",
+                    "kernel_name": "linux",
+                    "pxe_root_directory": "/srv/tftpboot",
+                }
+            },
+        )
 
-        assert_expect(logger.info.call_args_list,
-                      'Updating data for group: group-a')
+        assert_expect(logger.info.call_args_list, "Updating data for group: group-a")
 
     @patch("spacecmd.group.os.listdir", MagicMock(return_value=["group-a"]))
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
@@ -989,6 +1075,7 @@ class TestSCGroup:
         :param shell:
         :return:
         """
+
         def _abspath(path):
             """
             Fake os.path.abspath that expands to /tmp/test
@@ -1000,25 +1087,27 @@ class TestSCGroup:
 
         shell.help_group_restore = MagicMock()
         shell.do_group_list = MagicMock(return_value=["group-a", "group-b"])
-        shell.client.systemgroup.getDetails = MagicMock(side_effect=[
-            {"description": "Description of Group A", "id": 1},
-            {"description": "Description of Group B", "id": 1},
-        ])
-        shell.client.formula.getFormulasByGroupId = MagicMock(
-            side_effect = [[], []]
-            )
+        shell.client.systemgroup.getDetails = MagicMock(
+            side_effect=[
+                {"description": "Description of Group A", "id": 1},
+                {"description": "Description of Group B", "id": 1},
+            ]
+        )
+        shell.client.formula.getFormulasByGroupId = MagicMock(side_effect=[[], []])
         shell.client.systemgroup.update = MagicMock()
         shell.client.systemgroup.create = MagicMock()
         logger = MagicMock()
         mprint = MagicMock()
         json = MagicMock(return_value=None)
-        opener = mock_open(read_data = 'Group A description newer')
+        opener = mock_open(read_data="Group A description newer")
 
-        with patch("spacecmd.group.print", mprint) as prn, \
-            patch("spacecmd.group.logging", logger) as lgr, \
-            patch("spacecmd.group.json_read_from_file", json) as opr, \
-            patch("spacecmd.group.open", opener) as opn, \
-            patch("spacecmd.group.os.path.abspath", _abspath) as abp:
+        with patch("spacecmd.group.print", mprint) as prn, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr, patch("spacecmd.group.json_read_from_file", json) as opr, patch(
+            "spacecmd.group.open", opener
+        ) as opn, patch(
+            "spacecmd.group.os.path.abspath", _abspath
+        ) as abp:
             spacecmd.group.do_group_restore(shell, "/opt/backup group-a")
 
         assert not shell.client.systemgroup.create.called
@@ -1031,10 +1120,13 @@ class TestSCGroup:
         assert shell.client.systemgroup.getDetails.called
         assert logger.debug.called
 
-        assert_list_args_expect(logger.info.call_args_list,
-                      ['Assuming group to be in old plain text format',
-                       'Updating data for group: group-a'])
-
+        assert_list_args_expect(
+            logger.info.call_args_list,
+            [
+                "Assuming group to be in old plain text format",
+                "Updating data for group: group-a",
+            ],
+        )
 
     def test_group_list_data(self, shell):
         """
@@ -1043,9 +1135,9 @@ class TestSCGroup:
         :param shell:
         :return:
         """
-        shell.client.systemgroup.listAllGroups = MagicMock(return_value=[
-            {"name": "group-a"}, {"name": "group-b"}
-        ])
+        shell.client.systemgroup.listAllGroups = MagicMock(
+            return_value=[{"name": "group-a"}, {"name": "group-b"}]
+        )
         mprint = MagicMock()
         with patch("spacecmd.group.print", mprint):
             out = spacecmd.group.do_group_list(shell, "", doreturn=True)
@@ -1062,9 +1154,9 @@ class TestSCGroup:
         :param shell:
         :return:
         """
-        shell.client.systemgroup.listAllGroups = MagicMock(return_value=[
-            {"name": "group-a"}, {"name": "group-b"}
-        ])
+        shell.client.systemgroup.listAllGroups = MagicMock(
+            return_value=[{"name": "group-a"}, {"name": "group-b"}]
+        )
         mprint = MagicMock()
         with patch("spacecmd.group.print", mprint):
             out = spacecmd.group.do_group_list(shell, "", doreturn=False)
@@ -1073,8 +1165,7 @@ class TestSCGroup:
         assert out is None
         assert mprint.called
 
-        assert_expect(mprint.call_args_list,
-                      "group-a\ngroup-b")
+        assert_expect(mprint.call_args_list, "group-a\ngroup-b")
 
     def test_group_listsystems_noargs(self, shell):
         """
@@ -1088,8 +1179,9 @@ class TestSCGroup:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.group.print", mprint) as prt, \
-            patch("spacecmd.group.logging", logger) as lgr:
+        with patch("spacecmd.group.print", mprint) as prt, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr:
             out = spacecmd.group.do_group_listsystems(shell, "", doreturn=True)
 
         assert not shell.client.systemgroup.listSystems.called
@@ -1106,15 +1198,20 @@ class TestSCGroup:
         :return:
         """
         shell.help_group_listsystems = MagicMock()
-        shell.client.systemgroup.listSystems = MagicMock(return_value=[
-            {"profile_name": "system-d"}, {"profile_name": "system-c"},
-            {"profile_name": "system-b"}, {"profile_name": "system-a"},
-        ])
+        shell.client.systemgroup.listSystems = MagicMock(
+            return_value=[
+                {"profile_name": "system-d"},
+                {"profile_name": "system-c"},
+                {"profile_name": "system-b"},
+                {"profile_name": "system-a"},
+            ]
+        )
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.group.print", mprint) as prt, \
-            patch("spacecmd.group.logging", logger) as lgr:
+        with patch("spacecmd.group.print", mprint) as prt, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr:
             out = spacecmd.group.do_group_listsystems(shell, "group-a", doreturn=True)
 
         assert not shell.help_group_listsystems.called
@@ -1132,15 +1229,20 @@ class TestSCGroup:
         :return:
         """
         shell.help_group_listsystems = MagicMock()
-        shell.client.systemgroup.listSystems = MagicMock(return_value=[
-            {"profile_name": "system-d"}, {"profile_name": "system-c"},
-            {"profile_name": "system-b"}, {"profile_name": "system-a"},
-        ])
+        shell.client.systemgroup.listSystems = MagicMock(
+            return_value=[
+                {"profile_name": "system-d"},
+                {"profile_name": "system-c"},
+                {"profile_name": "system-b"},
+                {"profile_name": "system-a"},
+            ]
+        )
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.group.print", mprint) as prt, \
-            patch("spacecmd.group.logging", logger) as lgr:
+        with patch("spacecmd.group.print", mprint) as prt, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr:
             out = spacecmd.group.do_group_listsystems(shell, "group-a", doreturn=False)
 
         assert not shell.help_group_listsystems.called
@@ -1162,9 +1264,12 @@ class TestSCGroup:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.group.print", mprint) as prt, \
-                patch("spacecmd.group.logging", logger) as lgr:
-            out = spacecmd.group.do_group_listsystems(shell, "group-a group-b", doreturn=True)
+        with patch("spacecmd.group.print", mprint) as prt, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr:
+            out = spacecmd.group.do_group_listsystems(
+                shell, "group-a group-b", doreturn=True
+            )
 
         assert not logger.warning.called
         assert not shell.client.systemgroup.listSystems.called
@@ -1185,8 +1290,9 @@ class TestSCGroup:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prt, \
-            patch("spacecmd.group.logging", logger) as lgr:
+        with patch("spacecmd.group.print", mprint) as prt, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr:
             spacecmd.group.do_group_details(shell, "")
 
         assert not logger.warning.called
@@ -1204,13 +1310,15 @@ class TestSCGroup:
         """
         shell.help_group_details = MagicMock()
         shell.client.systemgroup.getDetails = MagicMock(
-            side_effect=xmlrpclib.Fault(faultCode=42, faultString="kaboom!"))
+            side_effect=xmlrpclib.Fault(faultCode=42, faultString="kaboom!")
+        )
         shell.client.systemgroup.listSystems = MagicMock()
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prt, \
-            patch("spacecmd.group.logging", logger) as lgr:
+        with patch("spacecmd.group.print", mprint) as prt, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr:
             spacecmd.group.do_group_details(shell, "cucumber-group")
 
         assert not shell.client.systemgroup.listSystems.called
@@ -1219,8 +1327,9 @@ class TestSCGroup:
         assert logger.warning.called
         assert shell.client.systemgroup.getDetails.called
 
-        assert_expect(logger.warning.call_args_list,
-                      'The group "cucumber-group" is invalid')
+        assert_expect(
+            logger.warning.call_args_list, 'The group "cucumber-group" is invalid'
+        )
 
     def test_group_details_short_report(self, shell):
         """
@@ -1230,22 +1339,44 @@ class TestSCGroup:
         :return:
         """
         shell.help_group_details = MagicMock()
-        shell.client.systemgroup.getDetails = MagicMock(side_effect=[
-            {"id": 1, "name": "Group A", "description": "Test group A", "system_count": 5},
-            {"id": 2, "name": "Group B", "description": "Test group B", "system_count": 10},
-            {"id": 3, "name": "Group C", "description": "Test group C", "system_count": 25}
-        ])
-        shell.client.systemgroup.listSystems = MagicMock(side_effect=[
-            [{"profile_name": "prf-a"}, {"profile_name": "prf-b"}],
-            [{"profile_name": "prf-c"}, {"profile_name": "prf-d"}],
-            [{"profile_name": "prf-e"}, {"profile_name": "prf-f"}],
-        ])
+        shell.client.systemgroup.getDetails = MagicMock(
+            side_effect=[
+                {
+                    "id": 1,
+                    "name": "Group A",
+                    "description": "Test group A",
+                    "system_count": 5,
+                },
+                {
+                    "id": 2,
+                    "name": "Group B",
+                    "description": "Test group B",
+                    "system_count": 10,
+                },
+                {
+                    "id": 3,
+                    "name": "Group C",
+                    "description": "Test group C",
+                    "system_count": 25,
+                },
+            ]
+        )
+        shell.client.systemgroup.listSystems = MagicMock(
+            side_effect=[
+                [{"profile_name": "prf-a"}, {"profile_name": "prf-b"}],
+                [{"profile_name": "prf-c"}, {"profile_name": "prf-d"}],
+                [{"profile_name": "prf-e"}, {"profile_name": "prf-f"}],
+            ]
+        )
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prt, \
-            patch("spacecmd.group.logging", logger) as lgr:
-            spacecmd.group.do_group_details(shell, "group-a group-b group-c", short=True)
+        with patch("spacecmd.group.print", mprint) as prt, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr:
+            spacecmd.group.do_group_details(
+                shell, "group-a group-b group-c", short=True
+            )
 
         assert not shell.help_group_details.called
         assert not logger.warning.called
@@ -1253,21 +1384,25 @@ class TestSCGroup:
         assert shell.client.systemgroup.listSystems.called
         assert mprint.called
 
-        assert_list_args_expect(mprint.call_args_list,
-                                ['ID:                1',
-                                 'Name:              Group A',
-                                 'Description:       Test group A',
-                                 'Number of Systems: 5',
-                                 '----------',
-                                 'ID:                2',
-                                 'Name:              Group B',
-                                 'Description:       Test group B',
-                                 'Number of Systems: 10',
-                                 '----------',
-                                 'ID:                3',
-                                 'Name:              Group C',
-                                 'Description:       Test group C',
-                                 'Number of Systems: 25'])
+        assert_list_args_expect(
+            mprint.call_args_list,
+            [
+                "ID:                1",
+                "Name:              Group A",
+                "Description:       Test group A",
+                "Number of Systems: 5",
+                "----------",
+                "ID:                2",
+                "Name:              Group B",
+                "Description:       Test group B",
+                "Number of Systems: 10",
+                "----------",
+                "ID:                3",
+                "Name:              Group C",
+                "Description:       Test group C",
+                "Number of Systems: 25",
+            ],
+        )
 
     def test_group_details_long_report(self, shell):
         """
@@ -1277,21 +1412,41 @@ class TestSCGroup:
         :return:
         """
         shell.help_group_details = MagicMock()
-        shell.client.systemgroup.getDetails = MagicMock(side_effect=[
-            {"id": 1, "name": "Group A", "description": "Test group A", "system_count": 5},
-            {"id": 2, "name": "Group B", "description": "Test group B", "system_count": 10},
-            {"id": 3, "name": "Group C", "description": "Test group C", "system_count": 25}
-        ])
-        shell.client.systemgroup.listSystems = MagicMock(side_effect=[
-            [{"profile_name": "prf-a"}, {"profile_name": "prf-b"}],
-            [{"profile_name": "prf-c"}, {"profile_name": "prf-d"}],
-            [{"profile_name": "prf-e"}, {"profile_name": "prf-f"}],
-        ])
+        shell.client.systemgroup.getDetails = MagicMock(
+            side_effect=[
+                {
+                    "id": 1,
+                    "name": "Group A",
+                    "description": "Test group A",
+                    "system_count": 5,
+                },
+                {
+                    "id": 2,
+                    "name": "Group B",
+                    "description": "Test group B",
+                    "system_count": 10,
+                },
+                {
+                    "id": 3,
+                    "name": "Group C",
+                    "description": "Test group C",
+                    "system_count": 25,
+                },
+            ]
+        )
+        shell.client.systemgroup.listSystems = MagicMock(
+            side_effect=[
+                [{"profile_name": "prf-a"}, {"profile_name": "prf-b"}],
+                [{"profile_name": "prf-c"}, {"profile_name": "prf-d"}],
+                [{"profile_name": "prf-e"}, {"profile_name": "prf-f"}],
+            ]
+        )
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prt, \
-            patch("spacecmd.group.logging", logger) as lgr:
+        with patch("spacecmd.group.print", mprint) as prt, patch(
+            "spacecmd.group.logging", logger
+        ) as lgr:
             spacecmd.group.do_group_details(shell, "group-a group-b group-c")
 
         assert not shell.help_group_details.called
@@ -1300,30 +1455,34 @@ class TestSCGroup:
         assert shell.client.systemgroup.listSystems.called
         assert mprint.called
 
-        assert_list_args_expect(mprint.call_args_list,
-                                ['ID:                1',
-                                 'Name:              Group A',
-                                 'Description:       Test group A',
-                                 'Number of Systems: 5',
-                                 '',
-                                 'Members',
-                                 '-------',
-                                 'prf-a\nprf-b',
-                                 '----------',
-                                 'ID:                2',
-                                 'Name:              Group B',
-                                 'Description:       Test group B',
-                                 'Number of Systems: 10',
-                                 '',
-                                 'Members',
-                                 '-------',
-                                 'prf-c\nprf-d',
-                                 '----------',
-                                 'ID:                3',
-                                 'Name:              Group C',
-                                 'Description:       Test group C',
-                                 'Number of Systems: 25',
-                                 '',
-                                 'Members',
-                                 '-------',
-                                 'prf-e\nprf-f'])
+        assert_list_args_expect(
+            mprint.call_args_list,
+            [
+                "ID:                1",
+                "Name:              Group A",
+                "Description:       Test group A",
+                "Number of Systems: 5",
+                "",
+                "Members",
+                "-------",
+                "prf-a\nprf-b",
+                "----------",
+                "ID:                2",
+                "Name:              Group B",
+                "Description:       Test group B",
+                "Number of Systems: 10",
+                "",
+                "Members",
+                "-------",
+                "prf-c\nprf-d",
+                "----------",
+                "ID:                3",
+                "Name:              Group C",
+                "Description:       Test group C",
+                "Number of Systems: 25",
+                "",
+                "Members",
+                "-------",
+                "prf-e\nprf-f",
+            ],
+        )

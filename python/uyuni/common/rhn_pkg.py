@@ -82,7 +82,6 @@ DEFAULT_CHECKSUM_TYPE = "md5"
 
 # pylint: disable-next=invalid-name
 class A_Package:
-
     """virtual class that implements shared methods for RPM/MPM/DEB package object"""
 
     # pylint: disable=R0902

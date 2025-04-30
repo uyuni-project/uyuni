@@ -12,7 +12,7 @@ except ImportError:
     sys.stderr.write(str(e) + "\n")
     sys.exit(1)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     try:
         sys.exit(rhnpush_main.main() or 0)
     except KeyboardInterrupt:

@@ -19,7 +19,6 @@ from uyuni.common import usix
 
 
 class RequestedChannels:
-
     """Bookkeeping of the state of various channels
     Argument to constructor is the list of requested channels
     """

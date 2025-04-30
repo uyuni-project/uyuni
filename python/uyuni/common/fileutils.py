@@ -328,6 +328,7 @@ def makedirs(path, mode=int("0755", 8), user=None, group=None):
 
 class GecosCache:
     "Cache getpwnam() and getgrnam() calls"
+
     # pylint: disable-next=invalid-name
     __shared_data = {}
 

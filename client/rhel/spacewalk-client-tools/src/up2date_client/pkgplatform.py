@@ -5,10 +5,11 @@
 #
 
 # substituted to the prefered platfrom by Makefile
-_platform='@PLATFORM@'
+_platform = "@PLATFORM@"
+
+
 def getPlatform():
-    if _platform != '@PLAT' + 'FORM@':
+    if _platform != "@PLAT" + "FORM@":
         return _platform
     else:
-        return 'rpm'
-
+        return "rpm"
