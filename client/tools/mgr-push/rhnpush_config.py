@@ -39,44 +39,44 @@ class rhnpushConfigParser:
 
     def get_ca_bundle_path(self):
         if os.system("/usr/bin/grep -iq '^ID_LIKE=.*suse' /etc/os-release") == 0:
-            return '/etc/ssl/ca-bundle.pem'
+            return "/etc/ssl/ca-bundle.pem"
         if os.system("/usr/bin/grep -iq '^ID_LIKE=.*rhel' /etc/os-release") == 0:
-            return '/etc/pki/tls/certs/ca-bundle.crt'
+            return "/etc/pki/tls/certs/ca-bundle.crt"
         if os.system("/usr/bin/grep -iq '^ID_LIKE=.*debian' /etc/os-release") == 0:
-            return '/etc/ssl/certs/ca-certificates.crt'
+            return "/etc/ssl/certs/ca-certificates.crt"
 
     def __init__(self, filename=None, ensure_consistency=False):
 
         # Defaults that are used if the ensure_consistency parameter of the constructor is true
         # and the config file that is being read is missing some values.
         self.options_defaults = {
-            'newest':   '0',
-            'usage':   '0',
-            'header':   '0',
-            'test':   '0',
-            'nullorg':   '0',
-            'source':   '0',
-            'stdin':   '0',
-            'verbose':   '0',
-            'force':   '0',
-            'nosig':   '0',
-            'list':   '0',
-            'exclude':   '',
-            'files':   '',
-            'orgid':   '',
-            'reldir':   '',
-            'count':   '',
-            'dir':   '',
-            'server':   'http://rhn.redhat.com/APP',
-            'channel':   '',
-            'cache_lifetime': '600',
-            'new_cache':   '0',
-            'extended_test':   '0',
-            'no_session_caching':   '0',
-            'proxy':   '',
-            'tolerant':   '0',
-            'ca_chain':  self.get_ca_bundle_path(),
-            'timeout': None
+            "newest": "0",
+            "usage": "0",
+            "header": "0",
+            "test": "0",
+            "nullorg": "0",
+            "source": "0",
+            "stdin": "0",
+            "verbose": "0",
+            "force": "0",
+            "nosig": "0",
+            "list": "0",
+            "exclude": "",
+            "files": "",
+            "orgid": "",
+            "reldir": "",
+            "count": "",
+            "dir": "",
+            "server": "http://rhn.redhat.com/APP",
+            "channel": "",
+            "cache_lifetime": "600",
+            "new_cache": "0",
+            "extended_test": "0",
+            "no_session_caching": "0",
+            "proxy": "",
+            "tolerant": "0",
+            "ca_chain": self.get_ca_bundle_path(),
+            "timeout": None,
         }
 
         # Used to parse the config file.
@@ -93,7 +93,7 @@ class rhnpushConfigParser:
             self._read_config_files()
 
         # Take all of the options read from the configuration file and add them as attributes
-        #(instance variables, member variables, whatever) of this object.
+        # (instance variables, member variables, whatever) of this object.
         self._add_config_as_attr(ensure_consistency=ensure_consistency)
 
     # Use the ConfigParser to read in the configuration file.
@@ -102,7 +102,9 @@ class rhnpushConfigParser:
             self.settings.read([self.filename])
         except IOError:
             e = sys.exc_info()[1]
-            print(("Config File Error: line %s, file %s: %s" % (e.lineno, e.filename, e)))
+            print(
+                ("Config File Error: line %s, file %s: %s" % (e.lineno, e.filename, e))
+            )
             sys.exit(1)
 
     def write(self, fileobj):
@@ -110,7 +112,9 @@ class rhnpushConfigParser:
             self.settings.write(fileobj)
         except IOError:
             e = sys.exc_info()[1]
-            print(("Config File Error: line %s, file %s: %s" % (e.lineno, e.filename, e)))
+            print(
+                ("Config File Error: line %s, file %s: %s" % (e.lineno, e.filename, e))
+            )
             sys.exit(1)
 
     # Returns an option read in from the configuration files and specified by the string variable option.
@@ -121,7 +125,9 @@ class rhnpushConfigParser:
             return self.settings.get(self.section, option)
         except (ConfigParser.NoOptionError, ConfigParser.NoSectionError):
             e = sys.exc_info()[1]
-            print("Option/Section Error: line %s, file %s: %s" % (e.lineno, e.filename, e))
+            print(
+                "Option/Section Error: line %s, file %s: %s" % (e.lineno, e.filename, e)
+            )
             sys.exit(1)
 
     # Returns the keys of the attributes of the object.

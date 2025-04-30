@@ -13,7 +13,7 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 
 ## system imports
 import struct
@@ -37,7 +37,7 @@ class CommunicationError(Exception):
 
 
 def readSocket(fd, n):
-    """ Reads exactly n bytes from the file descriptor fd (if possible) """
+    """Reads exactly n bytes from the file descriptor fd (if possible)"""
     result = ""  # The result
     while n > 0:
         buff = fd.read(n)
@@ -69,10 +69,9 @@ def recv(rfile):
     buff = readSocket(rfile, n)
     if len(buff) != n:
         # Incomplete read
-        raise CommunicationError(0,
-                                 "Expected %d bytes; got only %d" % (n, len(buff)))
+        raise CommunicationError(0, "Expected %d bytes; got only %d" % (n, len(buff)))
 
-    n,  = struct.unpack("!L", buff)
+    (n,) = struct.unpack("!L", buff)
 
     if n > 65536:
         # The buffer to be read is too big
@@ -81,7 +80,6 @@ def recv(rfile):
     buff = readSocket(rfile, n)
     if len(buff) != n:
         # Incomplete read
-        raise CommunicationError(0,
-                                 "Expected %d bytes; got only %d" % (n, len(buff)))
+        raise CommunicationError(0, "Expected %d bytes; got only %d" % (n, len(buff)))
 
     return loads(buff)

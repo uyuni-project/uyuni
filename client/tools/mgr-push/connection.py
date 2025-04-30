@@ -16,6 +16,7 @@
 import socket
 import base64
 import sys
+
 # pylint: disable=F0401,E0611,W0632
 from rhn import connections, rpclib
 
@@ -28,11 +29,13 @@ if sys.version_info[0] == 3:
     from urllib.parse import urlparse
 else:
     from urlparse import urlparse
-    from urllib import splitport # pylint: disable=C0412
+    from urllib import splitport  # pylint: disable=C0412
+
 
 # pylint: disable=W0622
 class ConnectionError(Exception):
     pass
+
 
 # pylint: disable=R0902
 
@@ -59,27 +62,29 @@ class BaseConnection:
         self._timeout = timeout
 
     def get_connection(self):
-        if self._scheme not in ['http', 'https']:
+        if self._scheme not in ["http", "https"]:
             raise ValueError("Unsupported scheme", self._scheme)
         params = {}
         if self._timeout is not None:
-            params['timeout'] = self._timeout
+            params["timeout"] = self._timeout
         if self._proxy_host:
-            params.update({
-                'host': self._host,
-                'port': self._port,
-                'proxy': "%s:%s" % (self._proxy_host, self._proxy_port),
-                'username': self._proxy_username,
-                'password': self._proxy_password,
-            })
-            if self._scheme == 'http':
+            params.update(
+                {
+                    "host": self._host,
+                    "port": self._port,
+                    "proxy": "%s:%s" % (self._proxy_host, self._proxy_port),
+                    "username": self._proxy_username,
+                    "password": self._proxy_password,
+                }
+            )
+            if self._scheme == "http":
                 return connections.HTTPProxyConnection(**params)
-            params['trusted_certs'] = self._trusted_certs
+            params["trusted_certs"] = self._trusted_certs
             return connections.HTTPSProxyConnection(**params)
         else:
-            if self._scheme == 'http':
+            if self._scheme == "http":
                 return connections.HTTPConnection(self._host, self._port, **params)
-            params['trusted_certs'] = self._trusted_certs
+            params["trusted_certs"] = self._trusted_certs
             return connections.HTTPSConnection(self._host, self._port, **params)
 
     def connect(self):
@@ -89,8 +94,7 @@ class BaseConnection:
     def putrequest(self, method, url=None, skip_host=0):
         if url is None:
             url = self._path
-        return self._connection.putrequest(method, url=url,
-                                           skip_host=skip_host)
+        return self._connection.putrequest(method, url=url, skip_host=skip_host)
 
     def __getattr__(self, name):
         return getattr(self._connection, name)
@@ -129,12 +133,13 @@ class PackageUpload:
             self.connection.connect()
         except socket.error:
             e = sys.exc_info()[1]
-            raise_with_tb(ConnectionError("Error connecting", str(e)), sys.exc_info()[2])
+            raise_with_tb(
+                ConnectionError("Error connecting", str(e)), sys.exc_info()[2]
+            )
 
         # Add content_length
-        if 'Content-Length' not in self.headers and \
-                content_length is not None:
-            self.set_header('Content-Length', content_length)
+        if "Content-Length" not in self.headers and content_length is not None:
+            self.set_header("Content-Length", content_length)
         self.connection.putrequest(method)
 
         # Additional headers
@@ -160,7 +165,9 @@ class PackageUpload:
                 self.connection.send(buf)
             except IOError:
                 e = sys.exc_info()[1]
-                raise_with_tb(ConnectionError("Error sending body", str(e)), sys.exc_info()[2])
+                raise_with_tb(
+                    ConnectionError("Error sending body", str(e)), sys.exc_info()[2]
+                )
 
     def send_http(self, method, stream_body=None):
         if stream_body is None:
@@ -193,21 +200,25 @@ class PackageUpload:
             return -1, "Not an RPM: %s" % filename
 
         # Set some package data members
-        self.package_name = a_pkg.header['name']
-        self.package_epoch = a_pkg.header['epoch']
-        self.package_version = a_pkg.header['version']
-        self.package_release = a_pkg.header['release']
+        self.package_name = a_pkg.header["name"]
+        self.package_epoch = a_pkg.header["epoch"]
+        self.package_version = a_pkg.header["version"]
+        self.package_release = a_pkg.header["release"]
         if a_pkg.header.is_source:
             if 1051 in a_pkg.header.keys():
-                self.package_arch = 'nosrc'
+                self.package_arch = "nosrc"
             else:
-                self.package_arch = 'src'
+                self.package_arch = "src"
         else:
-            self.package_arch = a_pkg.header['arch']
+            self.package_arch = a_pkg.header["arch"]
         self.packaging = a_pkg.header.packaging
 
-        nvra = [self.package_name, self.package_version, self.package_release,
-                self.package_arch]
+        nvra = [
+            self.package_name,
+            self.package_version,
+            self.package_release,
+            self.package_arch,
+        ]
 
         if isinstance(nvra[3], IntType):
             # Old rpm format
@@ -229,14 +240,16 @@ class PackageUpload:
         self.set_header("%s-%s" % (prefix, "Package-Release"), nvra[2])
         self.set_header("%s-%s" % (prefix, "Package-Arch"), nvra[3])
         self.set_header("%s-%s" % (prefix, "Packaging"), self.packaging)
-        if self.checksum_type == 'md5':
+        if self.checksum_type == "md5":
             self.set_header("%s-%s" % (prefix, "File-MD5sum"), self.checksum)
         else:
-            self.set_header("%s-%s" % (prefix, "File-Checksum-Type"), self.checksum_type)
+            self.set_header(
+                "%s-%s" % (prefix, "File-Checksum-Type"), self.checksum_type
+            )
             self.set_header("%s-%s" % (prefix, "File-Checksum"), self.checksum)
 
         a_pkg.input_stream.seek(0, 0)
-        self._response = self.send_http('POST', stream_body=a_pkg.input_stream)
+        self._response = self.send_http("POST", stream_body=a_pkg.input_stream)
         a_pkg.input_stream.close()
 
         retval = self.process_response()
@@ -251,9 +264,18 @@ class PackageUpload:
             return status, "OK"
         if status == 201:
             # Created
-            return (status, "%s %s: %s-%s-%s.%s.rpm already uploaded" % (
-                self.checksum_type, self.checksum,
-                self.nvra[0], self.nvra[1], self.nvra[2], self.nvra[3]))
+            return (
+                status,
+                "%s %s: %s-%s-%s.%s.rpm already uploaded"
+                % (
+                    self.checksum_type,
+                    self.checksum,
+                    self.nvra[0],
+                    self.nvra[1],
+                    self.nvra[2],
+                    self.nvra[3],
+                ),
+            )
         if status in (404, 409):
             # Conflict
             errstring = self.get_error_message(self._resp_headers)
@@ -272,23 +294,23 @@ class PackageUpload:
         return status, data
 
     def get_error_message(self, headers):
-        prefix = self.header_prefix + '-Error'
-        text = [x[1] for x in headers.getaddrlist(prefix + '-String')]
+        prefix = self.header_prefix + "-Error"
+        text = [x[1] for x in headers.getaddrlist(prefix + "-String")]
         # text is a list now, convert it to a string
-        text = '\n'.join(text)
+        text = "\n".join(text)
         # pylint: disable=W1505
         text = base64.decodestring(text)
         return text
 
 
-def parse_url(url, scheme="http", path='/'):
-    _scheme, netloc, _path, params, query, fragment = tupleify_urlparse(
-        urlparse(url))
+def parse_url(url, scheme="http", path="/"):
+    _scheme, netloc, _path, params, query, fragment = tupleify_urlparse(urlparse(url))
     if not netloc:
         # No scheme - trying to patch it up ourselves?
         url = scheme + "://" + url
         _scheme, netloc, _path, params, query, fragment = tupleify_urlparse(
-            urlparse(url))
+            urlparse(url)
+        )
 
     if not netloc:
         # XXX

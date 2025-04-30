@@ -10,6 +10,7 @@ skip = ["emptyspace.jsp"]
 idpattern = re.compile('id="([^"]+)"')
 sourcepattern = re.compile(r"<source>.*</source>", re.S)
 
+
 def getid(line):
     try:
         return idpattern.search(line).group(1)
@@ -19,7 +20,7 @@ def getid(line):
 
 
 def align(orig, translation):
-    #import pdb; pdb.set_trace()yy
+    # import pdb; pdb.set_trace()yy
     newfile = []
     node = ""
     source = ""
@@ -59,7 +60,7 @@ def align(orig, translation):
         print("translation: {0}".format(translation))
         for tline in t:
             if not currentid and "trans-unit" in tline:
-                #import pdb; pdb.set_trace()
+                # import pdb; pdb.set_trace()
                 currentid = getid(tline)
                 print("id: {0}".format(currentid))
                 node += tline
@@ -71,7 +72,7 @@ def align(orig, translation):
                         nd = sourcepattern.sub(item[2].strip(), node)
                         newfile[n] = (item[0], nd, item[2])
                         found = True
-                        break;
+                        break
                 if not found:
                     print("Node not found: {0}".format(node))
                 node = ""
@@ -93,12 +94,15 @@ def align(orig, translation):
                 new.write(line)
 
 
-files = os.listdir('.')
-#print files
+files = os.listdir(".")
+# print files
 
 for translation in files:
 
-    if translation.startswith('StringResource_') and translation.endswith('.xml') and translation != 'StringResource_en_US.xml':
-        #print 'processing ' + str(file)
-        align('StringResource_en_US.xml', translation)
-
+    if (
+        translation.startswith("StringResource_")
+        and translation.endswith(".xml")
+        and translation != "StringResource_en_US.xml"
+    ):
+        # print 'processing ' + str(file)
+        align("StringResource_en_US.xml", translation)

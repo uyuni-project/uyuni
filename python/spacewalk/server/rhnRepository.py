@@ -40,7 +40,6 @@ from .repomd import repository
 
 
 class Repository(rhnRepository.Repository):
-
     """Cache class to perform RHN server file system and DB actions.
 
     This class gets all data from the file system and oracle.

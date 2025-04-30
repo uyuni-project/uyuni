@@ -24,7 +24,7 @@ import zipfile
 import tarfile
 import sys
 
-if not hasattr(zipfile, 'ZIP64_LIMIT'):
+if not hasattr(zipfile, "ZIP64_LIMIT"):
     sys.stderr.write("%s requires zipfile with ZIP64 support.\n" % sys.argv[0])
     sys.exit(3)
 
@@ -46,11 +46,11 @@ class UnknownArchiveError(ArchiveException):
 class InvalidArchiveError(ArchiveException):
     pass
 
+
 # base archive parsing class ---------------------------------------------
 
 
 class ArchiveParser(object):
-
     """Explode an zip or (compressed) tar archive and parse files and
     directories contained therein"""
 
@@ -69,7 +69,7 @@ class ArchiveParser(object):
         # bug: 171086: support for older versions of tempfile (ie python 2.2)
         tempfile.tempdir = tempdir
         self._temp_dir = tempfile.mktemp()
-        os.mkdir(self._temp_dir, int('0700', 8))
+        os.mkdir(self._temp_dir, int("0700", 8))
 
         self._explode()
 
@@ -86,20 +86,24 @@ class ArchiveParser(object):
     def _get_archive_dir(self):
         """[internal] find the archive's top level directory name"""
 
-        raise NotImplementedError("ArchiveParser: abstract base class method '_get_archive_dir'")
+        raise NotImplementedError(
+            "ArchiveParser: abstract base class method '_get_archive_dir'"
+        )
 
     def _explode_cmd(self):
         """[internal] find the appropriate command to open the archive"""
 
-        raise NotImplementedError("ArchiveParser: abstract base class method '_explode_cmd'")
+        raise NotImplementedError(
+            "ArchiveParser: abstract base class method '_explode_cmd'"
+        )
 
     def _explode(self):
         """[internal] Explode a archive for neutral parsing"""
 
         cmd = self._explode_cmd()
 
-        assert self._archive is not None        # assigned in _copy_archive
-        assert self._archive_dir is not None    # assigned in _explode_cmd
+        assert self._archive is not None  # assigned in _copy_archive
+        assert self._archive_dir is not None  # assigned in _explode_cmd
 
         if cmd:
             _my_popen(cmd)
@@ -107,9 +111,13 @@ class ArchiveParser(object):
             if os.path.isdir(self._archive_dir):
                 return
 
-            raise InvalidArchiveError("Archive did not expand to %s" % self._archive_dir)
+            raise InvalidArchiveError(
+                "Archive did not expand to %s" % self._archive_dir
+            )
 
-        raise InvalidArchiveError("Could not find command to open archive: %s" % self._archive)
+        raise InvalidArchiveError(
+            "Could not find command to open archive: %s" % self._archive
+        )
 
     # private helper methods ---------------------------------------------
 
@@ -175,7 +183,7 @@ class ArchiveParser(object):
 
     def read(self, filename):
         """Returns the contents of the file, or None on error
-           First occurence of that file in archive is returned
+        First occurence of that file in archive is returned
         """
 
         f = self._find(filename)
@@ -185,9 +193,9 @@ class ArchiveParser(object):
         return None
 
     def direct_read(self, filename):
-        """ Returns the contens of the file, file is relative path in archive.
-            Top most level (_get_archive_dir) is automaticaly added.
-         """
+        """Returns the contens of the file, file is relative path in archive.
+        Top most level (_get_archive_dir) is automaticaly added.
+        """
         # pylint: disable=W0703
         f = os.path.join(os.path.abspath(self._archive_dir), filename)
         contents = None
@@ -213,7 +221,7 @@ class ArchiveParser(object):
         os.chdir(parent_dir)
 
         zip_file = os.path.join(self._parent_dir, "%s.zip" % zip_dir)
-        fd = zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_DEFLATED)
+        fd = zipfile.ZipFile(zip_file, "w", zipfile.ZIP_DEFLATED)
         for base, _dirs, files in os.walk(zip_dir):
             fd.write(base)
             for f in files:
@@ -239,13 +247,14 @@ class ArchiveParser(object):
 
         return None
 
+
 # parser for zip archives ------------------------------------------------
 
 
 class ZipParser(ArchiveParser):
 
     def __init__(self, archive, tempdir="/tmp/"):
-        self.zip_file = zipfile.ZipFile(archive, 'r')
+        self.zip_file = zipfile.ZipFile(archive, "r")
         ArchiveParser.__init__(self, archive, tempdir)
 
     def _get_archive_dir(self):
@@ -253,19 +262,22 @@ class ZipParser(ArchiveParser):
 
     def _explode(self):
         """Explode zip archive"""
-        self._archive_dir = os.path.join(self._temp_dir,
-                                         self._get_archive_dir()).rstrip('/')
+        self._archive_dir = os.path.join(
+            self._temp_dir, self._get_archive_dir()
+        ).rstrip("/")
 
         try:
             self.zip_file.extractall(self._temp_dir)
         except Exception:
             e = sys.exc_info()[1]
-            raise InvalidArchiveError("Archive did not expand to %s: %s" %
-                                      (self._archive_dir, str(e)))
+            raise InvalidArchiveError(
+                "Archive did not expand to %s: %s" % (self._archive_dir, str(e))
+            )
         return
 
     def _explode_cmd(self):
         pass
+
 
 # parser for tar archives ------------------------------------------------
 
@@ -273,7 +285,7 @@ class ZipParser(ArchiveParser):
 class TarParser(ArchiveParser):
 
     def __init__(self, archive, tempdir="/tmp/"):
-        self.tar_file = tarfile.open(archive, 'r')
+        self.tar_file = tarfile.open(archive, "r")
         ArchiveParser.__init__(self, archive, tempdir)
 
     def _get_archive_dir(self):
@@ -287,12 +299,14 @@ class TarParser(ArchiveParser):
             self.tar_file.extractall(path=self._temp_dir)
         except Exception:
             e = sys.exc_info()[1]
-            raise InvalidArchiveError("Archive did not expand to %s: %s" %
-                                      (self._archive_dir, str(e)))
+            raise InvalidArchiveError(
+                "Archive did not expand to %s: %s" % (self._archive_dir, str(e))
+            )
         return
 
     def _explode_cmd(self):
         pass
+
 
 # parser for cpio archives -----------------------------------------------
 
@@ -308,10 +322,17 @@ class CpioParser(ArchiveParser):
         self._archive_dir = os.path.join(self._temp_dir, self._get_archive_dir())
 
         if not _has_executable("pkgtrans"):
-            raise ArchiveException("cannot open %s, 'pkgtrans' not found" % self._archive)
+            raise ArchiveException(
+                "cannot open %s, 'pkgtrans' not found" % self._archive
+            )
 
-        return "cd %s; mkdir %s; pkgtrans %s %s all" % \
-               (self._temp_dir, self._archive_dir, self._archive, self._archive_dir)
+        return "cd %s; mkdir %s; pkgtrans %s %s all" % (
+            self._temp_dir,
+            self._archive_dir,
+            self._archive,
+            self._archive_dir,
+        )
+
 
 # internal helper methods ------------------------------------------------
 
@@ -324,7 +345,7 @@ def _has_executable(exc):
         return None
 
     # this is posix specific
-    dirs = os.environ["PATH"].split(':')
+    dirs = os.environ["PATH"].split(":")
 
     for dirname in dirs:
         path = os.path.join(dirname, exc)
@@ -338,13 +359,21 @@ def _my_popen(cmd):
     """Execute a command as a subprocess and return its exit status"""
 
     # pylint: disable=E1101
-    popen = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE, close_fds=True, shell=True)
+    popen = subprocess.Popen(
+        cmd,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        close_fds=True,
+        shell=True,
+    )
     popen.stdin.close()
 
     txt = ""
     while 1:
-        rd, _wr, ex = select.select([popen.stdout, popen.stderr], [], [popen.stdout, popen.stderr], 5)
+        rd, _wr, ex = select.select(
+            [popen.stdout, popen.stderr], [], [popen.stdout, popen.stderr], 5
+        )
         if ex:
             txt += popen.stdout.read()
             txt += popen.stderr.read()
@@ -359,6 +388,7 @@ def _my_popen(cmd):
 
     return
 
+
 # NOTE these next two functions rely on file magic to determine the compression
 # and archive types. some file magic information can be found here:
 # http://www.astro.keele.ac.uk/oldusers/rno/Computing/File_magic.html
@@ -371,7 +401,7 @@ def _decompress(archive):
     sfx_list = None
 
     # determine which type of compression we're dealing with, if any
-    fd = open(archive, 'r')
+    fd = open(archive, "r")
     magic = fd.read(2)
     fd.close()
 
@@ -379,11 +409,11 @@ def _decompress(archive):
         cmd = "bunzip2"
         sfx_list = (".bz2", ".bz")
 
-    elif magic == "\x1F\x9D":
+    elif magic == "\x1f\x9d":
         cmd = "uncompress"
         sfx_list = (".Z",)
 
-    elif magic == "\x1F\x8B":
+    elif magic == "\x1f\x8b":
         cmd = "gunzip"
         sfx_list = (".gz",)
 
@@ -391,7 +421,9 @@ def _decompress(archive):
     if cmd:
 
         if not _has_executable(cmd):
-            raise ArchiveException("Cannot decompress %s, '%s' not found" % (archive, cmd))
+            raise ArchiveException(
+                "Cannot decompress %s, '%s' not found" % (archive, cmd)
+            )
 
         print("Decompressing archive")
 
@@ -399,11 +431,12 @@ def _decompress(archive):
 
         # remove the now invalid suffix from the archive name
         for sfx in sfx_list:
-            if archive[-len(sfx):] == sfx:
-                archive = archive[:-len(sfx)]
+            if archive[-len(sfx) :] == sfx:
+                archive = archive[: -len(sfx)]
                 break
 
     return archive
+
 
 # archive parser factory -------------------------------------------------
 
@@ -414,7 +447,7 @@ def get_archive_parser(archive, tempdir="/tmp/"):
     # decompress the archive
     archive = _decompress(archive)
     parserClass = None
-    fd = open(archive, 'r')
+    fd = open(archive, "r")
 
     magic = fd.read(4)
     if magic == "PK\x03\x04":
