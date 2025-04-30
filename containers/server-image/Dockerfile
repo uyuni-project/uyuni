@@ -70,7 +70,7 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
     rm /etc/krb5.conf.d/crypto-policies && \
     ln -s /etc/crypto-policies/back-ends/krb5.config /etc/krb5.conf.d/crypto-policies && \
     mv "/etc/krb5.conf.d" "/etc/rhn/krb5.conf.d" && \
-    ln -s "/etc/rhn/krb5.conf.d" "/etc/krb5.conf.d" && \
+    ln -s "/etc/rhn/krb5.conf.d" "/etc/krb5.conf.d"
 
 ADD --chown=root:root root.tar.gz /
 
