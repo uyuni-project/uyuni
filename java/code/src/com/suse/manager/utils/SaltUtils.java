@@ -977,8 +977,10 @@ public class SaltUtils {
                 var actionPath = MinionActionUtils.getActionPath(minionServer, actionId);
 
                 //TODO: add additional options required for tunnel
-                var rsync = "rsync -p --chown salt:susemanager --chmod=660 -e 'ssh -i %s' root@%s:%s/* %s/."
-                        .formatted(SaltSSHService.SSH_KEY_PATH, hostname, supportDataDir, actionPath);
+                var user = SaltSSHService.getSSHUser();
+                var port = Optional.ofNullable(minionServer.getSSHPushPort()).orElse(SaltSSHService.SSH_PUSH_PORT);
+                var rsync = "rsync -p --chown salt:susemanager --chmod=660 -e 'ssh -p %d -i %s' %s@%s:%s/* %s/."
+                        .formatted(port, SaltSSHService.SSH_KEY_PATH, user, hostname, supportDataDir, actionPath);
                 var copyResult = saltApi.execOnMaster(rsync);
                 if (copyResult.isEmpty()) {
                     serverAction.fail("Error copying supportdata");
@@ -1095,10 +1097,10 @@ public class SaltUtils {
                     action.getId());
             var bundle = actionPath.resolve("bundle.tar");
             var dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_hhmm").withZone(ZoneOffset.UTC);
-            var proxy = minionServer.isProxy();
-            var prefix = proxy ? "_P_" : "_M_";
-            var uploadName = "SR%s%s_%s_%s.tar"
-                    .formatted(prefix, caseNumber, minionServer.getMinionId(), dateTimeFormatter.format(Instant.now()));
+            var prefix = minionServer.isProxy() ? "PXY" :
+                         minionServer.isMgrServer() ? "SRV" : "MIN";
+            var uploadName = "SR%s_%s_%s_%s.tar"
+                    .formatted(caseNumber, prefix, minionServer.getHostname(), dateTimeFormatter.format(Instant.now()));
 
             if (jsonResult.isJsonPrimitive() && jsonResult.getAsJsonPrimitive().isString() &&
                     jsonResult.getAsJsonPrimitive().getAsString().equals("supportdata")) {
