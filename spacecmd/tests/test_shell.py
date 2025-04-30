@@ -15,6 +15,7 @@ class TestSCShell:
     """
     Test shell in spacecmd.
     """
+
     @patch("spacecmd.shell.atexit", MagicMock())
     def test_shell_history(self):
         """
@@ -23,8 +24,10 @@ class TestSCShell:
         assert SpacewalkShell.HISTORY_LENGTH == 1024
 
     @patch("spacecmd.shell.atexit", MagicMock())
-    @patch("spacecmd.shell.readline.get_completer_delims",
-           MagicMock(return_value=readline.get_completer_delims()))
+    @patch(
+        "spacecmd.shell.readline.get_completer_delims",
+        MagicMock(return_value=readline.get_completer_delims()),
+    )
     @patch("spacecmd.shell.sys.exit", MagicMock())
     def test_shell_delimeters(self):
         """
@@ -35,8 +38,9 @@ class TestSCShell:
         m_logger = MagicMock()
 
         cpl_setter = MagicMock()
-        with patch("spacecmd.shell.logging", m_logger) as lgr, \
-            patch("spacecmd.shell.readline.set_completer_delims", cpl_setter):
+        with patch("spacecmd.shell.logging", m_logger) as lgr, patch(
+            "spacecmd.shell.readline.set_completer_delims", cpl_setter
+        ):
             options = MagicMock()
             options.nohistory = True
             shell = SpacewalkShell(options, cfg_dir, None)
@@ -44,14 +48,18 @@ class TestSCShell:
             assert shell.history_file == "{}/history".format(cfg_dir)
             assert not m_logger.error.called
             assert cpl_setter.call_args[0][0] != readline.get_completer_delims()
-            assert cpl_setter.call_args[0][0] == ' \t\n`~!@#$%^&*()=+[{]}\\|;\'",<>?'
+            assert cpl_setter.call_args[0][0] == " \t\n`~!@#$%^&*()=+[{]}\\|;'\",<>?"
 
     @patch("spacecmd.shell.atexit", MagicMock())
     @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
-    @patch("spacecmd.shell.readline.get_completer_delims",
-           MagicMock(return_value=readline.get_completer_delims()))
+    @patch(
+        "spacecmd.shell.readline.get_completer_delims",
+        MagicMock(return_value=readline.get_completer_delims()),
+    )
     @patch("spacecmd.shell.sys.exit", MagicMock())
-    @patch("spacecmd.shell.os.path.isfile", MagicMock(side_effect=IOError("No such file")))
+    @patch(
+        "spacecmd.shell.os.path.isfile", MagicMock(side_effect=IOError("No such file"))
+    )
     def test_shell_no_history_file(self):
         """
         Test shell no history file should capture IOError and log it.
@@ -72,7 +80,10 @@ class TestSCShell:
     @patch("spacecmd.shell.print", MagicMock())
     @patch("spacecmd.shell.sys.exit", MagicMock(side_effect=Exception("Exit attempt")))
     @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
-    @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
+    @patch(
+        "spacecmd.shell.readline.get_completer_delims",
+        MagicMock(return_value=readline.get_completer_delims()),
+    )
     def test_shell_precmd_exit_keywords(self):
         """
         Test 'precmd' method of the shell on exit keywords.
@@ -88,7 +99,10 @@ class TestSCShell:
 
     @patch("spacecmd.shell.atexit", MagicMock())
     @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
-    @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
+    @patch(
+        "spacecmd.shell.readline.get_completer_delims",
+        MagicMock(return_value=readline.get_completer_delims()),
+    )
     def test_shell_precmd_common_keywords(self):
         """
         Test 'precmd' method of the shell on common keywords, e.g. login, logout, clear etc.
@@ -102,7 +116,10 @@ class TestSCShell:
 
     @patch("spacecmd.shell.atexit", MagicMock())
     @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
-    @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
+    @patch(
+        "spacecmd.shell.readline.get_completer_delims",
+        MagicMock(return_value=readline.get_completer_delims()),
+    )
     def test_shell_precmd_empty_line(self):
         """
         Test 'precmd' method of the shell on empty line.
@@ -115,7 +132,10 @@ class TestSCShell:
 
     @patch("spacecmd.shell.atexit", MagicMock())
     @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
-    @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
+    @patch(
+        "spacecmd.shell.readline.get_completer_delims",
+        MagicMock(return_value=readline.get_completer_delims()),
+    )
     def test_shell_precmd_session_login(self):
         """
         Test 'precmd' method of the shell on session login.
@@ -132,7 +152,10 @@ class TestSCShell:
 
     @patch("spacecmd.shell.atexit", MagicMock())
     @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
-    @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
+    @patch(
+        "spacecmd.shell.readline.get_completer_delims",
+        MagicMock(return_value=readline.get_completer_delims()),
+    )
     def test_shell_precmd_help_keyword(self):
         """
         Test 'precmd' method of the shell on --help/-h arguments.
@@ -148,7 +171,10 @@ class TestSCShell:
 
     @patch("spacecmd.shell.atexit", MagicMock())
     @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
-    @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
+    @patch(
+        "spacecmd.shell.readline.get_completer_delims",
+        MagicMock(return_value=readline.get_completer_delims()),
+    )
     def test_shell_precmd_one_char_cmd(self):
         """
         Test 'precmd' method one char.
@@ -164,8 +190,14 @@ class TestSCShell:
     @patch("spacecmd.shell.atexit", MagicMock())
     @patch("spacecmd.shell.print", MagicMock())
     @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
-    @patch("spacecmd.shell.readline.get_history_item", MagicMock(return_value="repeated item"))
-    @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
+    @patch(
+        "spacecmd.shell.readline.get_history_item",
+        MagicMock(return_value="repeated item"),
+    )
+    @patch(
+        "spacecmd.shell.readline.get_completer_delims",
+        MagicMock(return_value=readline.get_completer_delims()),
+    )
     def test_shell_precmd_history(self):
         """
         Test 'precmd' method getting history item.
@@ -180,7 +212,10 @@ class TestSCShell:
 
     @patch("spacecmd.shell.atexit", MagicMock())
     @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
-    @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
+    @patch(
+        "spacecmd.shell.readline.get_completer_delims",
+        MagicMock(return_value=readline.get_completer_delims()),
+    )
     def test_shell_postcmd(self):
         """
         Test 'postcmd' method of the shell.
@@ -196,7 +231,10 @@ class TestSCShell:
 
     @patch("spacecmd.shell.atexit", MagicMock())
     @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
-    @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
+    @patch(
+        "spacecmd.shell.readline.get_completer_delims",
+        MagicMock(return_value=readline.get_completer_delims()),
+    )
     def test_shell_default(self):
         """
         Test 'default' method of the shell.

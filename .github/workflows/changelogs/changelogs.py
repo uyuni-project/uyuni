@@ -53,7 +53,9 @@ class RegexRules:
                     name = tracker.find("name").text
                     regex = tracker.find("regex").text
                 except AttributeError:
-                    raise Exception(f"Error parsing '{tracker_filename}': not a tracker XML file")
+                    raise Exception(
+                        f"Error parsing '{tracker_filename}': not a tracker XML file"
+                    )
                 trackers[name] = regex
 
             logging.info(f"Found {len(trackers.keys())} tracker definition(s)")
@@ -251,7 +253,9 @@ class ChangelogValidator:
 
         return bzapi
 
-    def get_modified_files_for_pkg(self, pkg_path: str, pkg_name: str, files: list[str]) -> dict[str, list[str]]:
+    def get_modified_files_for_pkg(
+        self, pkg_path: str, pkg_name: str, files: list[str]
+    ) -> dict[str, list[str]]:
         """Return a dictionary of modified files in a package
 
         The files lists are split into 2 different groups in the dictionary:
@@ -274,9 +278,15 @@ class ChangelogValidator:
 
         if logging.getLogger().isEnabledFor(logging.DEBUG):
             if len(pkg_files):
-                logging.debug(f"Found {len(pkg_files)} file(s) in package {pkg_name}:\n  " + "\n  ".join(pkg_files))
+                logging.debug(
+                    f"Found {len(pkg_files)} file(s) in package {pkg_name}:\n  "
+                    + "\n  ".join(pkg_files)
+                )
             if len(pkg_chlogs):
-                logging.debug(f"Found {len(pkg_chlogs)} changelog(s) in package {pkg_name}:\n  " + "\n  ".join(pkg_chlogs))
+                logging.debug(
+                    f"Found {len(pkg_chlogs)} changelog(s) in package {pkg_name}:\n  "
+                    + "\n  ".join(pkg_chlogs)
+                )
 
         return {"files": pkg_files, "changes": pkg_chlogs}
 
@@ -354,7 +364,9 @@ class ChangelogValidator:
 
         return trackers
 
-    def get_pr_trackers(self, git_repo: str, pr_number: int) -> dict[str, list[tuple[str, str]]]:
+    def get_pr_trackers(
+        self, git_repo: str, pr_number: int
+    ) -> dict[str, list[tuple[str, str]]]:
         """Get all the trackers mentioned in a PR
 
         The trackers are extracted from the PR title and the commit messages.
@@ -365,35 +377,61 @@ class ChangelogValidator:
 
         logging.info(f"Requesting information for PR#{pr_number} at '{git_repo}'")
 
-        pr_path = f'repos/{git_repo}/pulls/{pr_number}'
-        stream = os.popen(f'gh api {pr_path} -q ".title" && gh api {pr_path}/commits -q ".[].commit.message | select(length > 0)"')
+        pr_path = f"repos/{git_repo}/pulls/{pr_number}"
+        stream = os.popen(
+            f'gh api {pr_path} -q ".title" && gh api {pr_path}/commits -q ".[].commit.message | select(length > 0)"'
+        )
         title_and_commits = stream.read()
         if stream.close():
-            raise Exception("An error occurred when getting the PR information from the GitHub API.")
+            raise Exception(
+                "An error occurred when getting the PR information from the GitHub API."
+            )
 
-        logging.debug(f"Retrieved title and commit messages for PR#{pr_number}:\n{title_and_commits}")
+        logging.debug(
+            f"Retrieved title and commit messages for PR#{pr_number}:\n{title_and_commits}"
+        )
         return self.extract_trackers(title_and_commits)
 
-    def validate_chlog_entry(self, entry: Entry, entries_in_file: list[Entry]) -> list[Issue]:
+    def validate_chlog_entry(
+        self, entry: Entry, entries_in_file: list[Entry]
+    ) -> list[Issue]:
         """Validate a single changelog entry"""
 
         issues = []
         # Test capitalization
-        if re.match(self.regex.WRONG_CAP_START, entry.entry) or re.search(self.regex.WRONG_CAP_AFTER, entry.entry):
-            issues.append(Issue(IssueType.WRONG_CAP, entry.file, entry.line, entry.end_line))
+        if re.match(self.regex.WRONG_CAP_START, entry.entry) or re.search(
+            self.regex.WRONG_CAP_AFTER, entry.entry
+        ):
+            issues.append(
+                Issue(IssueType.WRONG_CAP, entry.file, entry.line, entry.end_line)
+            )
 
         # Test spacing (ignored in version strings)
         # Test to check if a match overlaps with a version string
-        overlaps = lambda ver_str, match: ver_str.start() <= match.start() and ver_str.end() >= match.end()
+        overlaps = (
+            lambda ver_str, match: ver_str.start() <= match.start()
+            and ver_str.end() >= match.end()
+        )
         for match in re.finditer(self.regex.WRONG_SPACING, entry.entry):
             # Ignore if part of a version string
-            if not any(overlaps(ver_str, match) for ver_str in re.finditer(self.regex.VERSION_REGEX, entry.entry[:match.end()])):
-                issues.append(Issue(IssueType.WRONG_SPACING, entry.file, entry.line, entry.end_line))
+            if not any(
+                overlaps(ver_str, match)
+                for ver_str in re.finditer(
+                    self.regex.VERSION_REGEX, entry.entry[: match.end()]
+                )
+            ):
+                issues.append(
+                    Issue(
+                        IssueType.WRONG_SPACING, entry.file, entry.line, entry.end_line
+                    )
+                )
                 break
 
         # Test duplication
         if any(e.entry == entry.entry for e in entries_in_file):
-            issues.append(Issue(IssueType.DUPLICATE_ENTRY, entry.file, entry.line, entry.end_line))
+            issues.append(
+                Issue(IssueType.DUPLICATE_ENTRY, entry.file, entry.line, entry.end_line)
+            )
 
         return issues
 
@@ -426,7 +464,9 @@ class ChangelogValidator:
         f = open(file_path, "r")
         issues = []
         entries = []
-        entry_buf: list[str] = [] # List to buffer the lines in a single changelog entry
+        entry_buf: list[str] = (
+            []
+        )  # List to buffer the lines in a single changelog entry
 
         for line_no, line in enumerate(f, start=1):
             if not line.endswith("\n"):
@@ -650,10 +690,7 @@ def parse_args():
     )
 
     parser.add_argument(
-        "-v",
-        "--verbose",
-        action="store_true",
-        help="enable verbose output"
+        "-v", "--verbose", action="store_true", help="enable verbose output"
     )
 
     parser.add_argument(
@@ -744,15 +781,23 @@ def main():
         logging.info("Changelog test passed")
         return 0
 
-    logging.info("Changelog test {} with {} issue(s):".format("failed" if is_fail else "passed", len(issues)))
+    logging.info(
+        "Changelog test {} with {} issue(s):".format(
+            "failed" if is_fail else "passed", len(issues)
+        )
+    )
     if not is_gh_action:
         print("-" * 60)
-    for i in issues: print(i)
+    for i in issues:
+        print(i)
 
     if is_fail:
         print()
-        print("{}See https://github.com/uyuni-project/uyuni/wiki/Contributing for a guide to writing changelogs."
-          .format("::notice::" if is_gh_action else ""))
+        print(
+            "{}See https://github.com/uyuni-project/uyuni/wiki/Contributing for a guide to writing changelogs.".format(
+                "::notice::" if is_gh_action else ""
+            )
+        )
         return 1
 
     return 0

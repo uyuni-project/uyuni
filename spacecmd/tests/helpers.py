@@ -13,6 +13,7 @@ class FileHandleMock(StringIO):
     """
     Filehandle mock
     """
+
     def __init__(self):
         self._init_params = None
         StringIO.__init__(self)
@@ -76,7 +77,9 @@ def assert_expect(calls, *expectations):
     expectations = list(expectations)
     for call in calls:
         expectation = next(iter(expectations))
-        assert call[0][0] == expectation, "Expected '{}', got '{}'".format(expectation, call[0][0])
+        assert call[0][0] == expectation, "Expected '{}', got '{}'".format(
+            expectation, call[0][0]
+        )
         expectations.pop(0)
     assert not expectations
 

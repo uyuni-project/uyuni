@@ -15,6 +15,7 @@ class TestSCActivationKey:
     """
     Test activation key.
     """
+
     def test_completer_ak_addpackages(self, shell):
         """
         Test tab completer activation keys on addpackages.
@@ -22,7 +23,9 @@ class TestSCActivationKey:
         text = "Communications satellite used by the military for star wars."
         completer = MagicMock()
         with patch("spacecmd.activationkey.tab_completer", completer):
-            spacecmd.activationkey.complete_activationkey_addpackages(shell, text, "do this", None, None)
+            spacecmd.activationkey.complete_activationkey_addpackages(
+                shell, text, "do this", None, None
+            )
             assert completer.called
             call_id, ret_text = completer.call_args_list[0][0]
             assert call_id == "do_activation_list"
@@ -33,6 +36,7 @@ class TestSCActivationKeyMethods:
     """
     Test actuvation key methods.
     """
+
     def test_do_activationkey_addpackages_noargs(self, shell):
         """
         Test add packages method call shows help on no args.
@@ -60,7 +64,9 @@ class TestSCActivationKeyMethods:
         shell.help_activationkey_addpackages = MagicMock()
         shell.client.activationkey.addPackages = MagicMock()
 
-        spacecmd.activationkey.do_activationkey_addpackages(shell, "call something here")
+        spacecmd.activationkey.do_activationkey_addpackages(
+            shell, "call something here"
+        )
         assert not shell.help_activationkey_addpackages.called
         assert shell.client.activationkey.addPackages.called
         session, fun, args = shell.client.activationkey.addPackages.call_args_list[0][0]
@@ -102,7 +108,9 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_removepackages(shell, "key package")
         assert not shell.help_activationkey_removepackages.called
         assert shell.client.activationkey.removePackages.called
-        session, fun, args = shell.client.activationkey.removePackages.call_args_list[0][0]
+        session, fun, args = shell.client.activationkey.removePackages.call_args_list[
+            0
+        ][0]
         assert session == shell.session
         assert fun == "key"
         assert isinstance(args, list)
@@ -141,7 +149,9 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_addgroups(shell, "key group")
         assert not shell.help_activationkey_addgroups.called
         assert shell.client.activationkey.addServerGroups.called
-        session, fun, args = shell.client.activationkey.addServerGroups.call_args_list[0][0]
+        session, fun, args = shell.client.activationkey.addServerGroups.call_args_list[
+            0
+        ][0]
         assert session == shell.session
         assert fun == "key"
         assert isinstance(args, list)
@@ -180,7 +190,9 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_removegroups(shell, "key group")
         assert not shell.help_activationkey_removegroups.called
         assert shell.client.activationkey.removeServerGroups.called
-        session, fun, args = shell.client.activationkey.removeServerGroups.call_args_list[0][0]
+        session, fun, args = (
+            shell.client.activationkey.removeServerGroups.call_args_list[0][0]
+        )
         assert session == shell.session
         assert fun == "key"
         assert isinstance(args, list)
@@ -216,15 +228,19 @@ class TestSCActivationKeyMethods:
         shell.help_activationkey_addentitlements = MagicMock()
         shell.client.activationkey.addEntitlements = MagicMock()
 
-        spacecmd.activationkey.do_activationkey_addentitlements(shell, "key entitlement")
+        spacecmd.activationkey.do_activationkey_addentitlements(
+            shell, "key entitlement"
+        )
         assert not shell.help_activationkey_addentitlements.called
         assert shell.client.activationkey.addEntitlements.called
-        session, fun, args = shell.client.activationkey.addEntitlements.call_args_list[0][0]
+        session, fun, args = shell.client.activationkey.addEntitlements.call_args_list[
+            0
+        ][0]
         assert session == shell.session
         assert fun == "key"
         assert isinstance(args, list)
         assert len(args) == 1
-        assert args == ['entitlement']
+        assert args == ["entitlement"]
 
     def test_do_activationkey_addentitlements_noargs(self, shell):
         """
@@ -255,15 +271,19 @@ class TestSCActivationKeyMethods:
         shell.help_activationkey_addentitlements = MagicMock()
         shell.client.activationkey.addEntitlements = MagicMock()
 
-        spacecmd.activationkey.do_activationkey_addentitlements(shell, "key entitlement")
+        spacecmd.activationkey.do_activationkey_addentitlements(
+            shell, "key entitlement"
+        )
         assert not shell.help_activationkey_addentitlements.called
         assert shell.client.activationkey.addEntitlements.called
-        session, fun, args = shell.client.activationkey.addEntitlements.call_args_list[0][0]
+        session, fun, args = shell.client.activationkey.addEntitlements.call_args_list[
+            0
+        ][0]
         assert session == shell.session
         assert fun == "key"
         assert isinstance(args, list)
         assert len(args) == 1
-        assert args == ['entitlement']
+        assert args == ["entitlement"]
 
     def test_do_activationkey_removeentitlements_noargs(self, shell):
         """
@@ -294,15 +314,19 @@ class TestSCActivationKeyMethods:
         shell.help_activationkey_removeentitlements = MagicMock()
         shell.client.activationkey.removeEntitlements = MagicMock()
 
-        spacecmd.activationkey.do_activationkey_removeentitlements(shell, "key entitlement")
+        spacecmd.activationkey.do_activationkey_removeentitlements(
+            shell, "key entitlement"
+        )
         assert not shell.help_activationkey_removeentitlements.called
         assert shell.client.activationkey.removeEntitlements.called
-        session, fun, args = shell.client.activationkey.removeEntitlements.call_args_list[0][0]
+        session, fun, args = (
+            shell.client.activationkey.removeEntitlements.call_args_list[0][0]
+        )
         assert session == shell.session
         assert fun == "key"
         assert isinstance(args, list)
         assert len(args) == 1
-        assert args == ['entitlement']
+        assert args == ["entitlement"]
 
     def test_do_activationkey_addchildchannels_noargs(self, shell):
         """
@@ -333,15 +357,19 @@ class TestSCActivationKeyMethods:
         shell.help_activationkey_addchildchannels = MagicMock()
         shell.client.activationkey.addChildChannels = MagicMock()
 
-        spacecmd.activationkey.do_activationkey_addchildchannels(shell, "key some_channel")
+        spacecmd.activationkey.do_activationkey_addchildchannels(
+            shell, "key some_channel"
+        )
         assert not shell.help_activationkey_addchildchannels.called
         assert shell.client.activationkey.addChildChannels.called
-        session, fun, args = shell.client.activationkey.addChildChannels.call_args_list[0][0]
+        session, fun, args = shell.client.activationkey.addChildChannels.call_args_list[
+            0
+        ][0]
         assert session == shell.session
         assert fun == "key"
         assert isinstance(args, list)
         assert len(args) == 1
-        assert args == ['some_channel']
+        assert args == ["some_channel"]
 
     def test_do_activationkey_removechildchannels_noargs(self, shell):
         """
@@ -372,22 +400,28 @@ class TestSCActivationKeyMethods:
         shell.help_activationkey_removechildchannels = MagicMock()
         shell.client.activationkey.removeChildChannels = MagicMock()
 
-        spacecmd.activationkey.do_activationkey_removechildchannels(shell, "key some_channel")
+        spacecmd.activationkey.do_activationkey_removechildchannels(
+            shell, "key some_channel"
+        )
         assert not shell.help_activationkey_removechildchannels.called
         assert shell.client.activationkey.removeChildChannels.called
-        session, fun, args = shell.client.activationkey.removeChildChannels.call_args_list[0][0]
+        session, fun, args = (
+            shell.client.activationkey.removeChildChannels.call_args_list[0][0]
+        )
         assert session == shell.session
         assert fun == "key"
         assert isinstance(args, list)
         assert len(args) == 1
-        assert args == ['some_channel']
+        assert args == ["some_channel"]
 
     def test_do_activationkey_listchildchannels_noargs(self, shell):
         """
         Test listchildchannels command triggers help on no args
         """
         shell.help_activationkey_listchildchannels = MagicMock()
-        shell.client.activationkey.getDetails = MagicMock(return_value={"child_channel_labels"})
+        shell.client.activationkey.getDetails = MagicMock(
+            return_value={"child_channel_labels"}
+        )
 
         spacecmd.activationkey.do_activationkey_listchildchannels(shell, "")
         assert shell.help_activationkey_listchildchannels.called
@@ -398,9 +432,9 @@ class TestSCActivationKeyMethods:
         Test listchildchannels command prints child channels by the activation key passed.
         """
         shell.help_activationkey_listchildchannels = MagicMock()
-        shell.client.activationkey.getDetails = MagicMock(return_value={
-            "child_channel_labels": ["one", "two", "three"]
-        })
+        shell.client.activationkey.getDetails = MagicMock(
+            return_value={"child_channel_labels": ["one", "two", "three"]}
+        )
 
         mprint = MagicMock()
         with patch("spacecmd.activationkey.print", mprint):
@@ -412,7 +446,9 @@ class TestSCActivationKeyMethods:
         Test listbasechannels command triggers help on no args
         """
         shell.help_activationkey_listbasechannel = MagicMock()
-        shell.client.activationkey.getDetails = MagicMock(return_value={"base_channel_label"})
+        shell.client.activationkey.getDetails = MagicMock(
+            return_value={"base_channel_label"}
+        )
 
         spacecmd.activationkey.do_activationkey_listbasechannel(shell, "")
         assert shell.help_activationkey_listbasechannel.called
@@ -423,9 +459,11 @@ class TestSCActivationKeyMethods:
         Test listbasechannels command prints base channel by the activation key passed.
         """
         shell.help_activationkey_listbasechannel = MagicMock()
-        shell.client.activationkey.getDetails = MagicMock(return_value={
-            "base_channel_label": "Darth Vader",
-        })
+        shell.client.activationkey.getDetails = MagicMock(
+            return_value={
+                "base_channel_label": "Darth Vader",
+            }
+        )
 
         mprint = MagicMock()
         with patch("spacecmd.activationkey.print", mprint):
@@ -438,7 +476,9 @@ class TestSCActivationKeyMethods:
         """
         shell.help_activationkey_listgroups = MagicMock()
         shell.client.activationkey.getDetails = MagicMock()
-        shell.client.systemgroup.getDetails = MagicMock(site_effect=[{"name": "RD-2D"}, {"name": "C-3PO"}])
+        shell.client.systemgroup.getDetails = MagicMock(
+            site_effect=[{"name": "RD-2D"}, {"name": "C-3PO"}]
+        )
 
         spacecmd.activationkey.do_activationkey_listgroups(shell, "")
         assert shell.help_activationkey_listgroups.called
@@ -449,8 +489,12 @@ class TestSCActivationKeyMethods:
         Test listgroups command prints groups by the activation key passed.
         """
         shell.help_activationkey_listgroups = MagicMock()
-        shell.client.activationkey.getDetails = MagicMock(return_value={"server_group_ids": [2, 3]})
-        shell.client.systemgroup.getDetails = MagicMock(side_effect=[{"name": "RD-2D"}, {"name": "C-3PO"}])
+        shell.client.activationkey.getDetails = MagicMock(
+            return_value={"server_group_ids": [2, 3]}
+        )
+        shell.client.systemgroup.getDetails = MagicMock(
+            side_effect=[{"name": "RD-2D"}, {"name": "C-3PO"}]
+        )
 
         mprint = MagicMock()
         with patch("spacecmd.activationkey.print", mprint):
@@ -475,12 +519,14 @@ class TestSCActivationKeyMethods:
         Test listentitlements command prints entitlements by the activation key passed.
         """
         shell.help_activationkey_listentitlements = MagicMock()
-        shell.client.activationkey.getDetails = MagicMock(return_value={"entitlements": ["one", "two", "three"]})
+        shell.client.activationkey.getDetails = MagicMock(
+            return_value={"entitlements": ["one", "two", "three"]}
+        )
 
         mprint = MagicMock()
         with patch("spacecmd.activationkey.print", mprint):
             spacecmd.activationkey.do_activationkey_listentitlements(shell, "key")
-        assert mprint.call_args_list[0][0][0] == 'one\ntwo\nthree'
+        assert mprint.call_args_list[0][0][0] == "one\ntwo\nthree"
 
     def test_do_activationkey_listpackages_noargs(self, shell):
         """
@@ -499,10 +545,12 @@ class TestSCActivationKeyMethods:
         """
         shell.help_activationkey_listpackages = MagicMock()
         shell.client.activationkey.getDetails = MagicMock(
-            return_value={"packages": [
-                {"name": "libzypp", "arch": "ZX80"},
-                {"name": "java-17-openjdk-devel", "arch": "CBM64"},
-            ]}
+            return_value={
+                "packages": [
+                    {"name": "libzypp", "arch": "ZX80"},
+                    {"name": "java-17-openjdk-devel", "arch": "CBM64"},
+                ]
+            }
         )
 
         mprint = MagicMock()
@@ -520,10 +568,12 @@ class TestSCActivationKeyMethods:
         """
         shell.help_activationkey_listpackages = MagicMock()
         shell.client.activationkey.getDetails = MagicMock(
-            return_value={"packages": [
-                {"name": "libzypp"},
-                {"name": "java-17-openjdk-devel"},
-            ]}
+            return_value={
+                "packages": [
+                    {"name": "libzypp"},
+                    {"name": "java-17-openjdk-devel"},
+                ]
+            }
         )
 
         mprint = MagicMock()
@@ -553,7 +603,7 @@ class TestSCActivationKeyMethods:
         channels = [
             {"label": "commodore64"},
             {"label": "pascal_for_msdos"},
-            {"label": "lightsaber_patches"}
+            {"label": "lightsaber_patches"},
         ]
         shell.help_activationkey_listconfigchannels = MagicMock()
         shell.client.activationkey.listConfigChannels = MagicMock(return_value=channels)
@@ -562,7 +612,10 @@ class TestSCActivationKeyMethods:
         with patch("spacecmd.activationkey.print", mprint):
             spacecmd.activationkey.do_activationkey_listconfigchannels(shell, "key")
         assert mprint.called
-        assert mprint.call_args_list[0][0][0] == 'commodore64\nlightsaber_patches\npascal_for_msdos'
+        assert (
+            mprint.call_args_list[0][0][0]
+            == "commodore64\nlightsaber_patches\npascal_for_msdos"
+        )
 
     def test_do_activationkey_addconfigchannels_noargs(self, shell):
         """
@@ -583,7 +636,9 @@ class TestSCActivationKeyMethods:
         shell.client.activationkey.addConfigChannels = MagicMock()
 
         with pytest.raises(Exception) as exc:
-            spacecmd.activationkey.do_activationkey_addconfigchannels(shell, "--you-shall-not-pass=True")
+            spacecmd.activationkey.do_activationkey_addconfigchannels(
+                shell, "--you-shall-not-pass=True"
+            )
 
         assert "unrecognized arguments" in exc2str(exc)
         assert not shell.help_activationkey_addconfigchannels.called
@@ -597,12 +652,16 @@ class TestSCActivationKeyMethods:
         shell.help_activationkey_addconfigchannels = MagicMock()
         shell.client.activationkey.addConfigChannels = MagicMock()
 
-        spacecmd.activationkey.do_activationkey_addconfigchannels(shell, "key rd2d-upgrade -b")
+        spacecmd.activationkey.do_activationkey_addconfigchannels(
+            shell, "key rd2d-upgrade -b"
+        )
 
         assert not shell.help_activationkey_addconfigchannels.called
         assert shell.client.activationkey.addConfigChannels.called
 
-        session, keys, channels, order = shell.client.activationkey.addConfigChannels.call_args_list[0][0]
+        session, keys, channels, order = (
+            shell.client.activationkey.addConfigChannels.call_args_list[0][0]
+        )
         assert shell.session == session
         assert len(keys) == len(channels) == 1
         assert "key" in keys
@@ -611,8 +670,12 @@ class TestSCActivationKeyMethods:
         assert not order
 
         shell.client.activationkey.addConfigChannels = MagicMock()
-        spacecmd.activationkey.do_activationkey_addconfigchannels(shell, "key rd2d-upgrade")
-        session, keys, channels, order = shell.client.activationkey.addConfigChannels.call_args_list[0][0]
+        spacecmd.activationkey.do_activationkey_addconfigchannels(
+            shell, "key rd2d-upgrade"
+        )
+        session, keys, channels, order = (
+            shell.client.activationkey.addConfigChannels.call_args_list[0][0]
+        )
         assert shell.session == session
         assert len(keys) == len(channels) == 1
         assert "key" in keys
@@ -621,8 +684,12 @@ class TestSCActivationKeyMethods:
         assert order
 
         shell.client.activationkey.addConfigChannels = MagicMock()
-        spacecmd.activationkey.do_activationkey_addconfigchannels(shell, "key rd2d-upgrade -t")
-        session, keys, channels, order = shell.client.activationkey.addConfigChannels.call_args_list[0][0]
+        spacecmd.activationkey.do_activationkey_addconfigchannels(
+            shell, "key rd2d-upgrade -t"
+        )
+        session, keys, channels, order = (
+            shell.client.activationkey.addConfigChannels.call_args_list[0][0]
+        )
         assert shell.session == session
         assert len(keys) == len(channels) == 1
         assert "key" in keys
@@ -640,7 +707,7 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_removeconfigchannels(shell, "")
         assert shell.help_activationkey_removeconfigchannels.called
         assert not shell.client.activationkey.removeConfigChannels.called
-    
+
     def test_do_activationkey_removeconfigchannels_insuff_args(self, shell):
         """
         Test removeconfigchannels command triggers help on insufficient args.
@@ -660,18 +727,24 @@ class TestSCActivationKeyMethods:
         shell.client.activationkey.removeConfigChannels = MagicMock()
 
         mprint = MagicMock()
-        spacecmd.activationkey.do_activationkey_removeconfigchannels(shell, "key some_patches")
+        spacecmd.activationkey.do_activationkey_removeconfigchannels(
+            shell, "key some_patches"
+        )
         assert not shell.help_activationkey_removeconfigchannels.called
         assert shell.client.activationkey.removeConfigChannels.called
 
-        session, keys, channels = shell.client.activationkey.removeConfigChannels.call_args_list[0][0]
+        session, keys, channels = (
+            shell.client.activationkey.removeConfigChannels.call_args_list[0][0]
+        )
         assert shell.session == session
         assert "key" in keys
         assert "some_patches" in channels
         assert len(keys) == len(channels) == 1
 
-    @patch("spacecmd.activationkey.config_channel_order",
-           MagicMock(return_value=["lightsaber_patches", "rd2d_upgrade"]))
+    @patch(
+        "spacecmd.activationkey.config_channel_order",
+        MagicMock(return_value=["lightsaber_patches", "rd2d_upgrade"]),
+    )
     def test_do_activationkey_setconfigchannelorder_noargs(self, shell):
         """
         Test setconfigchannelorder command triggers help on no args.
@@ -686,8 +759,10 @@ class TestSCActivationKeyMethods:
             assert shell.help_activationkey_setconfigchannelorder.called
             assert not shell.client.activationkey.setConfigChannels.called
 
-    @patch("spacecmd.activationkey.config_channel_order",
-           MagicMock(return_value=["lightsaber_patches", "rd2d_upgrade"]))
+    @patch(
+        "spacecmd.activationkey.config_channel_order",
+        MagicMock(return_value=["lightsaber_patches", "rd2d_upgrade"]),
+    )
     def test_do_activationkey_setconfigchannelorder_args(self, shell):
         """
         Test setconfigchannelorder command triggers setConfigChannels API call with proper function
@@ -712,7 +787,9 @@ class TestSCActivationKeyMethods:
         Test call activation key API "create".
         """
         shell.client.activationkey.create = MagicMock(return_value="superglue")
-        shell.list_base_channels = MagicMock(return_value=["lightsaber_patches_sle42sp8"])
+        shell.list_base_channels = MagicMock(
+            return_value=["lightsaber_patches_sle42sp8"]
+        )
 
         logger = MagicMock()
         with patch("spacecmd.activationkey.logging", logger):
@@ -722,27 +799,37 @@ class TestSCActivationKeyMethods:
         assert shell.client.activationkey.create.called
         assert logger.info.call_args_list[0][0][0] == "Created activation key superglue"
 
-        session, name, descr, bch, entl, universal = shell.client.activationkey.create.call_args_list[0][0]
+        session, name, descr, bch, entl, universal = (
+            shell.client.activationkey.create.call_args_list[0][0]
+        )
         assert shell.session == session
         assert name == descr == bch == ""
         assert entl == []
         assert not universal
 
         shell.client.activationkey.create = MagicMock(return_value="woodblock")
-        shell.list_base_channels = MagicMock(return_value=["lightsaber_patches_sle42sp8"])
+        shell.list_base_channels = MagicMock(
+            return_value=["lightsaber_patches_sle42sp8"]
+        )
 
         logger = MagicMock()
         with patch("spacecmd.activationkey.logging", logger):
             spacecmd.activationkey.do_activationkey_create(
-                shell, ("--name lightsaber --description 'The signature weapon of the Jedi Order' "
-                        "--base-channel lightsaber_patches_sle42sp8 --entitlements expanded,universe "
-                        "--universal"))
+                shell,
+                (
+                    "--name lightsaber --description 'The signature weapon of the Jedi Order' "
+                    "--base-channel lightsaber_patches_sle42sp8 --entitlements expanded,universe "
+                    "--universal"
+                ),
+            )
 
         assert logger.info.called
         assert shell.client.activationkey.create.called
         assert logger.info.call_args_list[0][0][0] == "Created activation key woodblock"
 
-        session, name, descr, bch, entl, universal = shell.client.activationkey.create.call_args_list[0][0]
+        session, name, descr, bch, entl, universal = (
+            shell.client.activationkey.create.call_args_list[0][0]
+        )
         assert shell.session == session
         assert name == "lightsaber"
         assert "Jedi Order" in descr
@@ -761,7 +848,10 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_delete.called
         assert not shell.client.activationkey.delete.called
 
-    @patch("spacecmd.activationkey.filter_results", MagicMock(return_value=["some_patches", "some_stuff"]))
+    @patch(
+        "spacecmd.activationkey.filter_results",
+        MagicMock(return_value=["some_patches", "some_stuff"]),
+    )
     def test_do_activationkey_activationkey_delete_args(self, shell):
         """
         Test activationkey_delete command is calling "delete" (key) API.
@@ -771,15 +861,18 @@ class TestSCActivationKeyMethods:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.activationkey.print", mprint) as mpr, \
-             patch("spacecmd.activationkey.logging", logger) as lgr:
+        with patch("spacecmd.activationkey.print", mprint) as mpr, patch(
+            "spacecmd.activationkey.logging", logger
+        ) as lgr:
             spacecmd.activationkey.do_activationkey_delete(shell, "key some*")
             assert not shell.help_activationkey_delete.called
 
         assert not logger.error.called
         assert logger.debug.called
-        assert logger.debug.call_args_list[0][0][0] == ("activationkey_delete called with args"
-                                                        " ['key', 'some.*'], keys=['some_patches', 'some_stuff']")
+        assert logger.debug.call_args_list[0][0][0] == (
+            "activationkey_delete called with args"
+            " ['key', 'some.*'], keys=['some_patches', 'some_stuff']"
+        )
         assert logger.debug.call_args_list[1][0][0] == "Deleting key some_patches"
         assert logger.debug.call_args_list[2][0][0] == "Deleting key some_stuff"
 
@@ -792,7 +885,10 @@ class TestSCActivationKeyMethods:
             keys.pop(keys.index(keyname))
         assert not keys
 
-    @patch("spacecmd.activationkey.filter_results", MagicMock(return_value=["some_patches", "some_stuff"]))
+    @patch(
+        "spacecmd.activationkey.filter_results",
+        MagicMock(return_value=["some_patches", "some_stuff"]),
+    )
     def test_do_activationkey_activationkey_list_args(self, shell):
         """
         Test activationkey_list command is calling listActivationKeys API.
@@ -801,15 +897,22 @@ class TestSCActivationKeyMethods:
             return_value=[
                 {"key": "some_patches", "description": "Some key"},
                 {"key": "some_stuff", "description": "Some other key"},
-                {"key": "some_reactivation", "description": "Kickstart re-activation key"},
+                {
+                    "key": "some_reactivation",
+                    "description": "Kickstart re-activation key",
+                },
             ]
         )
 
         mprint = MagicMock()
         with patch("spacecmd.activationkey.print", mprint) as mpr:
-            ret = sorted(spacecmd.activationkey.do_activationkey_list(shell, "key some*", doreturn=True))
+            ret = sorted(
+                spacecmd.activationkey.do_activationkey_list(
+                    shell, "key some*", doreturn=True
+                )
+            )
         assert len(ret) == 2
-        assert ret == ['some_patches', 'some_stuff']
+        assert ret == ["some_patches", "some_stuff"]
 
     def test_do_activationkey_listsystems_noargs(self, shell):
         """
@@ -840,7 +943,7 @@ class TestSCActivationKeyMethods:
         assert not shell.help_activationkey_listsystems.called
         assert shell.client.activationkey.listActivatedSystems.called
         assert mprint.called
-        assert mprint.call_args_list[0][0][0] == 'chair.lan\nhouseshoe.lan'
+        assert mprint.call_args_list[0][0][0] == "chair.lan\nhouseshoe.lan"
 
     def test_do_activationkey_details_noargs(self, shell):
         """
@@ -895,23 +998,45 @@ class TestSCActivationKeyMethods:
         )
 
         mprint = MagicMock()
-        with patch("spacecmd.activationkey.print", mprint) as mpr:        
+        with patch("spacecmd.activationkey.print", mprint) as mpr:
             out = spacecmd.activationkey.do_activationkey_details(shell, "somekey")
         assert mprint.called
 
-        expectation = ['Key:                    somekey',
-                       'Description:            Key description', 'Universal Default:      yes',
-                       'Usage Limit:            42', 'Deploy Config Channels: False',
-                       'Contact Method:         230V/AC', '', 'Software Channels', '-----------------',
-                       'base_channel', ' |-- child_channel_1', ' |-- child_channel_2', '',
-                       'Configuration Channels', '----------------------', 'somekey_config_channel_1',
-                       'somekey_config_channel_2', '', 'Entitlements', '------------',
-                       'entitlement_1\nentitlement_2', '', 'System Groups', '-------------',
-                       'group_a\ngroup_b\ngroup_c', '', 'Packages', '--------', 'emacs']
+        expectation = [
+            "Key:                    somekey",
+            "Description:            Key description",
+            "Universal Default:      yes",
+            "Usage Limit:            42",
+            "Deploy Config Channels: False",
+            "Contact Method:         230V/AC",
+            "",
+            "Software Channels",
+            "-----------------",
+            "base_channel",
+            " |-- child_channel_1",
+            " |-- child_channel_2",
+            "",
+            "Configuration Channels",
+            "----------------------",
+            "somekey_config_channel_1",
+            "somekey_config_channel_2",
+            "",
+            "Entitlements",
+            "------------",
+            "entitlement_1\nentitlement_2",
+            "",
+            "System Groups",
+            "-------------",
+            "group_a\ngroup_b\ngroup_c",
+            "",
+            "Packages",
+            "--------",
+            "emacs",
+        ]
         assert len(out) == len(expectation)
         for idx, line in enumerate(out):
             assert line == expectation[idx]
-    
+
     def test_do_activationkey_enableconfigdeployment_noargs(self, shell):
         """
         Test activationkey_enableconfigdeployment command is invoking help message on insufficient arguments.
@@ -932,12 +1057,23 @@ class TestSCActivationKeyMethods:
 
         logger = MagicMock()
         with patch("spacecmd.activationkey.logging", logger):
-            spacecmd.activationkey.do_activationkey_enableconfigdeployment(shell, "foo bar baz")
+            spacecmd.activationkey.do_activationkey_enableconfigdeployment(
+                shell, "foo bar baz"
+            )
 
         assert logger.debug.called
-        assert logger.debug.call_args_list[0][0][0] == "Enabling config file deployment for foo"
-        assert logger.debug.call_args_list[1][0][0] == "Enabling config file deployment for bar"
-        assert logger.debug.call_args_list[2][0][0] == "Enabling config file deployment for baz"
+        assert (
+            logger.debug.call_args_list[0][0][0]
+            == "Enabling config file deployment for foo"
+        )
+        assert (
+            logger.debug.call_args_list[1][0][0]
+            == "Enabling config file deployment for bar"
+        )
+        assert (
+            logger.debug.call_args_list[2][0][0]
+            == "Enabling config file deployment for baz"
+        )
 
         keynames = ["foo", "bar", "baz"]
         assert shell.client.activationkey.enableConfigDeployment.called
@@ -968,12 +1104,23 @@ class TestSCActivationKeyMethods:
 
         logger = MagicMock()
         with patch("spacecmd.activationkey.logging", logger):
-            spacecmd.activationkey.do_activationkey_disableconfigdeployment(shell, "foo bar baz")
+            spacecmd.activationkey.do_activationkey_disableconfigdeployment(
+                shell, "foo bar baz"
+            )
 
         assert logger.debug.called
-        assert logger.debug.call_args_list[0][0][0] == "Disabling config file deployment for foo"
-        assert logger.debug.call_args_list[1][0][0] == "Disabling config file deployment for bar"
-        assert logger.debug.call_args_list[2][0][0] == "Disabling config file deployment for baz"
+        assert (
+            logger.debug.call_args_list[0][0][0]
+            == "Disabling config file deployment for foo"
+        )
+        assert (
+            logger.debug.call_args_list[1][0][0]
+            == "Disabling config file deployment for bar"
+        )
+        assert (
+            logger.debug.call_args_list[2][0][0]
+            == "Disabling config file deployment for baz"
+        )
 
         keynames = ["foo", "bar", "baz"]
         assert shell.client.activationkey.disableConfigDeployment.called
@@ -1016,8 +1163,12 @@ class TestSCActivationKeyMethods:
         shell.client.activationkey.setDetails = MagicMock()
         shell.client.activationkey.getDetails = MagicMock(return_value=key_details)
 
-        spacecmd.activationkey.do_activationkey_setbasechannel(shell, "red_key death_star_patches_channel")
-        session, keyname, details = shell.client.activationkey.setDetails.call_args_list[0][0]
+        spacecmd.activationkey.do_activationkey_setbasechannel(
+            shell, "red_key death_star_patches_channel"
+        )
+        session, keyname, details = (
+            shell.client.activationkey.setDetails.call_args_list[0][0]
+        )
         assert shell.session == session
         assert keyname == "red_key"
 
@@ -1040,8 +1191,12 @@ class TestSCActivationKeyMethods:
         shell.client.activationkey.setDetails = MagicMock()
         shell.client.activationkey.getDetails = MagicMock(return_value=key_details)
 
-        spacecmd.activationkey.do_activationkey_setbasechannel(shell, "red_key death_star_patches_channel")
-        session, keyname, details = shell.client.activationkey.setDetails.call_args_list[0][0]
+        spacecmd.activationkey.do_activationkey_setbasechannel(
+            shell, "red_key death_star_patches_channel"
+        )
+        session, keyname, details = (
+            shell.client.activationkey.setDetails.call_args_list[0][0]
+        )
         assert shell.session == session
         assert keyname == "red_key"
 
@@ -1084,7 +1239,9 @@ class TestSCActivationKeyMethods:
         shell.client.activationkey.getDetails = MagicMock(return_value=key_details)
 
         spacecmd.activationkey.do_activationkey_setusagelimit(shell, "red_key 42")
-        session, keyname, details = shell.client.activationkey.setDetails.call_args_list[0][0]
+        session, keyname, details = (
+            shell.client.activationkey.setDetails.call_args_list[0][0]
+        )
         assert shell.session == session
         assert keyname == "red_key"
 
@@ -1122,7 +1279,9 @@ class TestSCActivationKeyMethods:
         shell.client.activationkey.getDetails = MagicMock(return_value=key_details)
 
         spacecmd.activationkey.do_activationkey_setuniversaldefault(shell, "red_key 42")
-        session, keyname, details = shell.client.activationkey.setDetails.call_args_list[0][0]
+        session, keyname, details = (
+            shell.client.activationkey.setDetails.call_args_list[0][0]
+        )
         assert shell.session == session
         assert keyname == "red_key"
 
@@ -1136,21 +1295,25 @@ class TestSCActivationKeyMethods:
         """
         Test export_activationkey_getdetails XMLRPC failure.
         """
-    
+
         key_details = {
             "server_group_ids": [],
         }
         logger = MagicMock()
         shell.client.activationkey.getDetails = MagicMock()
-        shell.client.activationkey.listConfigChannels = MagicMock(side_effect=xmlrpclib.Fault("boom", "box"))
+        shell.client.activationkey.listConfigChannels = MagicMock(
+            side_effect=xmlrpclib.Fault("boom", "box")
+        )
         shell.client.activationkey.checkConfigDeployment = MagicMock()
         shell.client.systemgroup.getDetails = MagicMock(return_value=key_details)
 
         with patch("spacecmd.activationkey.logging", logger):
             spacecmd.activationkey.export_activationkey_getdetails(shell, "")
-        assert logger.debug.call_args_list[1][0][0] == ("activationkey.listConfigChannel threw an exeception, "
-                                                        "setting config_channels=False")
-        
+        assert logger.debug.call_args_list[1][0][0] == (
+            "activationkey.listConfigChannel threw an exeception, "
+            "setting config_channels=False"
+        )
+
     def test_export_activationkey_getdetails(self, shell):
         """
         Test export_activationkey_getdetails.
@@ -1177,27 +1340,27 @@ class TestSCActivationKeyMethods:
         shell.client.systemgroup.getDetails = MagicMock(side_effect=gr_details)
 
         with patch("spacecmd.activationkey.logging", logger):
-            out = spacecmd.activationkey.export_activationkey_getdetails(shell, "red_key")
+            out = spacecmd.activationkey.export_activationkey_getdetails(
+                shell, "red_key"
+            )
 
         {
-            'server_group_ids': [1, 2, 3],
-            'config_channels': ['rd2d_patches_channel',
-                                'k_2so_firmware_channel'],
-            'config_deploy': True,
-            'server_groups': ['first', 'second', 'third']
+            "server_group_ids": [1, 2, 3],
+            "config_channels": ["rd2d_patches_channel", "k_2so_firmware_channel"],
+            "config_deploy": True,
+            "server_groups": ["first", "second", "third"],
         }
 
         assert "server_group_ids" in out
         assert out["server_group_ids"] == [1, 2, 3]
         assert "config_channels" in out
-        for cfg_channel in ['rd2d_patches_channel',
-                            'k_2so_firmware_channel']:
+        for cfg_channel in ["rd2d_patches_channel", "k_2so_firmware_channel"]:
             assert cfg_channel in out["config_channels"]
         assert "config_deploy" in out
         assert out["config_deploy"]
         assert "server_groups" in out
         assert len(out["server_groups"]) == 3
-        for srv_group in ['first', 'second', 'third']:
+        for srv_group in ["first", "second", "third"]:
             assert srv_group in out["server_groups"]
 
     @patch("spacecmd.activationkey.json_dump_to_file", MagicMock())
@@ -1218,14 +1381,20 @@ class TestSCActivationKeyMethods:
         assert logger.error.called
         assert logger.info.called
 
-        assert logger.error.call_args_list[0][0][0] == "Failed to save exported keys to file: akey_all.json"
-        assert logger.debug.call_args_list[0][0][0] == "About to dump 3 keys to akey_all.json"
+        assert (
+            logger.error.call_args_list[0][0][0]
+            == "Failed to save exported keys to file: akey_all.json"
+        )
+        assert (
+            logger.debug.call_args_list[0][0][0]
+            == "About to dump 3 keys to akey_all.json"
+        )
 
         expectation = [
-            'Exporting ALL activation keys to akey_all.json',
-            'Exporting key one to akey_all.json',
-            'Exporting key two to akey_all.json',
-            'Exporting key three to akey_all.json',
+            "Exporting ALL activation keys to akey_all.json",
+            "Exporting key one to akey_all.json",
+            "Exporting key two to akey_all.json",
+            "Exporting key three to akey_all.json",
         ]
         for idx, call in enumerate(logger.info.call_args_list):
             assert call[0][0] == expectation[idx]
@@ -1248,14 +1417,20 @@ class TestSCActivationKeyMethods:
         assert logger.error.called
         assert logger.info.called
 
-        assert logger.error.call_args_list[0][0][0] == "Failed to save exported keys to file: somefile.json"
-        assert logger.debug.call_args_list[0][0][0] == "Passed filename do_activationkey_export somefile.json"
+        assert (
+            logger.error.call_args_list[0][0][0]
+            == "Failed to save exported keys to file: somefile.json"
+        )
+        assert (
+            logger.debug.call_args_list[0][0][0]
+            == "Passed filename do_activationkey_export somefile.json"
+        )
 
         expectation = [
-            'Exporting ALL activation keys to somefile.json',
-            'Exporting key one to somefile.json',
-            'Exporting key two to somefile.json',
-            'Exporting key three to somefile.json',
+            "Exporting ALL activation keys to somefile.json",
+            "Exporting key one to somefile.json",
+            "Exporting key two to somefile.json",
+            "Exporting key three to somefile.json",
         ]
         for idx, call in enumerate(logger.info.call_args_list):
             assert call[0][0] == expectation[idx]
@@ -1274,7 +1449,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_import.called
         assert not shell.import_activationkey_fromdetails.called
         assert logger.error.called
-        assert logger.error.call_args_list[0][0][0] == 'No filename passed'
+        assert logger.error.call_args_list[0][0][0] == "No filename passed"
 
     def test_do_activationkey_fromdetails_existingkey(self, shell):
         """
@@ -1291,7 +1466,9 @@ class TestSCActivationKeyMethods:
 
         logger = MagicMock()
         with patch("spacecmd.activationkey.logging", logger):
-            ret = spacecmd.activationkey.import_activationkey_fromdetails(shell, {"key": "somekey"})
+            ret = spacecmd.activationkey.import_activationkey_fromdetails(
+                shell, {"key": "somekey"}
+            )
         assert not shell.client.activationkey.create.called
         assert shell.do_activationkey_list.called
         assert not shell.client.activationkey.addChildChannels.called
@@ -1303,7 +1480,10 @@ class TestSCActivationKeyMethods:
         assert not shell.client.activationkey.addPackages.called
 
         assert logger.warning.called
-        assert logger.warning.call_args_list[0][0][0] == 'somekey already exists! Skipping!'
+        assert (
+            logger.warning.call_args_list[0][0][0]
+            == "somekey already exists! Skipping!"
+        )
         assert type(ret) == bool
         assert not ret
 
@@ -1331,7 +1511,7 @@ class TestSCActivationKeyMethods:
                     "description": "Key description",
                     "entitlements": ["one", "two", "three"],
                     "universal_default": True,
-                }
+                },
             )
         assert shell.do_activationkey_list.called
         assert shell.client.activationkey.create.called
@@ -1342,10 +1522,15 @@ class TestSCActivationKeyMethods:
         assert not shell.client.activationkey.addServerGroups.called
         assert not shell.client.activationkey.addServerGroups.called
         assert not shell.client.activationkey.addPackages.called
-        assert logger.debug.call_args_list[0][0][0] == "Found key somekey, importing as somekey"
+        assert (
+            logger.debug.call_args_list[0][0][0]
+            == "Found key somekey, importing as somekey"
+        )
 
         assert len(shell.client.activationkey.create.call_args_list[0][0]) == 6
-        session, keyname, descr, basech, entl, udef = shell.client.activationkey.create.call_args_list[0][0]
+        session, keyname, descr, basech, entl, udef = (
+            shell.client.activationkey.create.call_args_list[0][0]
+        )
         assert shell.session == session
         assert keyname == "somekey"
         assert descr == "Key description"
@@ -1377,10 +1562,12 @@ class TestSCActivationKeyMethods:
                     "description": "Key description",
                     "entitlements": ["one", "two", "three"],
                     "universal_default": True,
-                }
+                },
             )
         assert len(shell.client.activationkey.create.call_args_list[0][0]) == 7
-        session, keyname, descr, basech, ulim, entl, udef = shell.client.activationkey.create.call_args_list[0][0]
+        session, keyname, descr, basech, ulim, entl, udef = (
+            shell.client.activationkey.create.call_args_list[0][0]
+        )
         assert shell.session == session
         assert keyname == "somekey"
         assert descr == "Key description"
@@ -1390,7 +1577,7 @@ class TestSCActivationKeyMethods:
         assert udef
 
         # This is expected: see mock return on API call "create".
-        assert logger.error.call_args_list[0][0][0] == 'Failed to import key somekey'
+        assert logger.error.call_args_list[0][0][0] == "Failed to import key somekey"
 
     def test_do_activationkey_fromdetails_no_cfgdeploy(self, shell):
         """
@@ -1429,11 +1616,13 @@ class TestSCActivationKeyMethods:
                     "server_groups": ["one", "two", "three"],
                     "packages": ["emacs"],
                     "config_deploy": 0,
-                }
+                },
             )
         assert not shell.client.activationkey.enableConfigDeployment.called
         assert shell.client.activationkey.disableConfigDeployment.called
-        session, keydata = shell.client.activationkey.disableConfigDeployment.call_args_list[0][0]
+        session, keydata = (
+            shell.client.activationkey.disableConfigDeployment.call_args_list[0][0]
+        )
         assert shell.session == session
         assert keydata == shell.client.activationkey.create()
 
@@ -1474,11 +1663,13 @@ class TestSCActivationKeyMethods:
                     "server_groups": ["one", "two", "three"],
                     "packages": ["emacs"],
                     "config_deploy": 1,
-                }
+                },
             )
         assert shell.client.activationkey.enableConfigDeployment.called
         assert not shell.client.activationkey.disableConfigDeployment.called
-        session, keydata = shell.client.activationkey.enableConfigDeployment.call_args_list[0][0]
+        session, keydata = (
+            shell.client.activationkey.enableConfigDeployment.call_args_list[0][0]
+        )
         assert shell.session == session
         assert keydata == shell.client.activationkey.create()
 
@@ -1519,18 +1710,25 @@ class TestSCActivationKeyMethods:
                     "server_groups": ["one", "two", "three"],
                     "packages": ["emacs"],
                     "config_deploy": 1,
-                }
+                },
             )
-        session, keyprm, gids = shell.client.activationkey.addServerGroups.call_args_list[0][0]
+        session, keyprm, gids = (
+            shell.client.activationkey.addServerGroups.call_args_list[0][0]
+        )
         assert shell.session == session
-        assert keyprm == {'name': 'whatever'}
+        assert keyprm == {"name": "whatever"}
         assert gids == [1, 2, 3]
 
-        session, keyprm, pkgs = shell.client.activationkey.addPackages.call_args_list[0][0]
+        session, keyprm, pkgs = shell.client.activationkey.addPackages.call_args_list[
+            0
+        ][0]
         assert pkgs == ["emacs"]
 
     @patch("spacecmd.activationkey.is_interactive", MagicMock(return_value=False))
-    @patch("spacecmd.activationkey.prompt_user", MagicMock(side_effect=["original_key", "cloned_key"]))
+    @patch(
+        "spacecmd.activationkey.prompt_user",
+        MagicMock(side_effect=["original_key", "cloned_key"]),
+    )
     def test_do_activationkey_clone_noargs(self, shell):
         """
         Test do_activationkey_clone no arguments requires some.
@@ -1556,10 +1754,16 @@ class TestSCActivationKeyMethods:
         assert not shell.do_configchannel_list.called
         assert not shell.import_activtionkey_fromdetails.called
         assert ret is 1
-        assert logger.error.call_args_list[0][0][0] == 'Error - must specify either -c or -x options!'
+        assert (
+            logger.error.call_args_list[0][0][0]
+            == "Error - must specify either -c or -x options!"
+        )
 
     @patch("spacecmd.activationkey.is_interactive", MagicMock(return_value=False))
-    @patch("spacecmd.activationkey.prompt_user", MagicMock(side_effect=["original_key", "cloned_key"]))
+    @patch(
+        "spacecmd.activationkey.prompt_user",
+        MagicMock(side_effect=["original_key", "cloned_key"]),
+    )
     def test_do_activationkey_clone_wrongargs(self, shell):
         """
         Test do_activationkey_clone wrong arguments prompts for correction.
@@ -1578,7 +1782,10 @@ class TestSCActivationKeyMethods:
         assert "unrecognized arguments: --nonsense=true" in exc2str(exc)
 
     @patch("spacecmd.activationkey.is_interactive", MagicMock(return_value=False))
-    @patch("spacecmd.activationkey.prompt_user", MagicMock(side_effect=["original_key", "cloned_key"]))
+    @patch(
+        "spacecmd.activationkey.prompt_user",
+        MagicMock(side_effect=["original_key", "cloned_key"]),
+    )
     def test_do_activationkey_clone_existing_clone_arg(self, shell):
         """
         Test do_activationkey_clone existing clone name passed to the arguments.
@@ -1593,7 +1800,9 @@ class TestSCActivationKeyMethods:
 
         logger = MagicMock()
         with patch("spacecmd.activationkey.logging", logger):
-            ret = spacecmd.activationkey.do_activationkey_clone(shell, "-c key_clone_name")
+            ret = spacecmd.activationkey.do_activationkey_clone(
+                shell, "-c key_clone_name"
+            )
 
         assert logger.error.called
         assert not shell.help_activationkey_clone.called
@@ -1603,11 +1812,16 @@ class TestSCActivationKeyMethods:
         assert not shell.list_child_channels.called
         assert not shell.do_configchannel_list.called
         assert not shell.import_activtionkey_fromdetails.called
-        assert logger.error.call_args_list[0][0][0] == "Key key_clone_name already exists"
+        assert (
+            logger.error.call_args_list[0][0][0] == "Key key_clone_name already exists"
+        )
         assert ret is 1
 
     @patch("spacecmd.activationkey.is_interactive", MagicMock(return_value=False))
-    @patch("spacecmd.activationkey.prompt_user", MagicMock(side_effect=["original_key", "cloned_key"]))
+    @patch(
+        "spacecmd.activationkey.prompt_user",
+        MagicMock(side_effect=["original_key", "cloned_key"]),
+    )
     def test_do_activationkey_clone_noargs_to_clone(self, shell):
         """
         Test do_activationkey_clone no arguments to a clone name passed to the arguments.
@@ -1622,7 +1836,9 @@ class TestSCActivationKeyMethods:
 
         logger = MagicMock()
         with patch("spacecmd.activationkey.logging", logger):
-            ret = spacecmd.activationkey.do_activationkey_clone(shell, "-c key_clone_name")
+            ret = spacecmd.activationkey.do_activationkey_clone(
+                shell, "-c key_clone_name"
+            )
 
         assert logger.error.called
         assert shell.help_activationkey_clone.called
@@ -1632,11 +1848,17 @@ class TestSCActivationKeyMethods:
         assert not shell.list_child_channels.called
         assert not shell.do_configchannel_list.called
         assert not shell.import_activtionkey_fromdetails.called
-        assert logger.error.call_args_list[0][0][0] == "Error no activationkey to clone passed!"
+        assert (
+            logger.error.call_args_list[0][0][0]
+            == "Error no activationkey to clone passed!"
+        )
         assert ret is 1
 
     @patch("spacecmd.activationkey.is_interactive", MagicMock(return_value=False))
-    @patch("spacecmd.activationkey.prompt_user", MagicMock(side_effect=["original_key", "cloned_key"]))
+    @patch(
+        "spacecmd.activationkey.prompt_user",
+        MagicMock(side_effect=["original_key", "cloned_key"]),
+    )
     def test_do_activationkey_clone_keyargs_to_clone_filtered(self, shell):
         """
         Test do_activationkey_clone filtered out keys.
@@ -1651,7 +1873,9 @@ class TestSCActivationKeyMethods:
 
         logger = MagicMock()
         with patch("spacecmd.activationkey.logging", logger):
-            ret = spacecmd.activationkey.do_activationkey_clone(shell, "orig_key -c key_clone_name")
+            ret = spacecmd.activationkey.do_activationkey_clone(
+                shell, "orig_key -c key_clone_name"
+            )
 
         assert not logger.error.called
         assert not shell.help_activationkey_clone.called
@@ -1671,7 +1895,10 @@ class TestSCActivationKeyMethods:
             assert call[0][0] == expectations[idx]
 
     @patch("spacecmd.activationkey.is_interactive", MagicMock(return_value=False))
-    @patch("spacecmd.activationkey.prompt_user", MagicMock(side_effect=["original_key", "cloned_key"]))
+    @patch(
+        "spacecmd.activationkey.prompt_user",
+        MagicMock(side_effect=["original_key", "cloned_key"]),
+    )
     def test_do_activationkey_clone_keyargs_unfiltered(self, shell):
         """
         Test do_activationkey_clone not filtered out keys.
@@ -1686,7 +1913,9 @@ class TestSCActivationKeyMethods:
 
         logger = MagicMock()
         with patch("spacecmd.activationkey.logging", logger):
-            ret = spacecmd.activationkey.do_activationkey_clone(shell, "key_some* -c key_clone_name")
+            ret = spacecmd.activationkey.do_activationkey_clone(
+                shell, "key_some* -c key_clone_name"
+            )
         expectations = [
             "Got args=['key_some.*'] 1",
             "Filtered akeys ['key_some_clone_name']",
@@ -1705,7 +1934,7 @@ class TestSCActivationKeyMethods:
         with patch("spacecmd.activationkey.logging", logger):
             assert not spacecmd.activationkey.check_activationkey(shell, "")
         assert logger.error.called
-        assert logger.error.call_args_list[0][0][0] == 'no activationkey label given'
+        assert logger.error.call_args_list[0][0][0] == "no activationkey label given"
 
     def test_check_activationkey_not_a_key(self, shell):
         """
@@ -1714,9 +1943,14 @@ class TestSCActivationKeyMethods:
         shell.is_activationkey = MagicMock(return_value=False)
         logger = MagicMock()
         with patch("spacecmd.activationkey.logging", logger):
-            assert not spacecmd.activationkey.check_activationkey(shell, "some_not_a_key")
+            assert not spacecmd.activationkey.check_activationkey(
+                shell, "some_not_a_key"
+            )
         assert logger.error.called
-        assert logger.error.call_args_list[0][0][0] == 'invalid activationkey label some_not_a_key'
+        assert (
+            logger.error.call_args_list[0][0][0]
+            == "invalid activationkey label some_not_a_key"
+        )
 
     def test_check_activationkey_correct_key(self, shell):
         """
@@ -1772,18 +2006,32 @@ class TestSCActivationKeyMethods:
         Test dump activation key helper returns key diffs.
         """
         shell.help_activationkey_diff = MagicMock()
-        shell.dump_activationkey = MagicMock(side_effect=[["some data"], ["some data again"]])
+        shell.dump_activationkey = MagicMock(
+            side_effect=[["some data"], ["some data again"]]
+        )
         shell.check_activationkey = MagicMock(return_value=True)
         shell.do_activationkey_getcorresponding = MagicMock(return_value="some_channel")
 
-        gsdd = MagicMock(return_value=({"one": "two", "three": "three"}, {"one": "two", "three": "four"}))
-        with patch("spacecmd.activationkey.get_string_diff_dicts", gsdd), \
-             patch("spacecmd.activationkey.print") as mprint:
+        gsdd = MagicMock(
+            return_value=(
+                {"one": "two", "three": "three"},
+                {"one": "two", "three": "four"},
+            )
+        )
+        with patch("spacecmd.activationkey.get_string_diff_dicts", gsdd), patch(
+            "spacecmd.activationkey.print"
+        ) as mprint:
             spacecmd.activationkey.do_activationkey_diff(shell, "some_key")
 
         assert_list_args_expect(
             mprint.call_args_list,
-            ['--- some_key\n', '+++ some_channel\n', '@@ -1 +1 @@\n', '-some data', '+some data again']
+            [
+                "--- some_key\n",
+                "+++ some_channel\n",
+                "@@ -1 +1 @@\n",
+                "-some data",
+                "+some data again",
+            ],
         )
 
     def test_do_activationkey_diable_noargs(self, shell):
@@ -1866,7 +2114,9 @@ class TestSCActivationKeyMethods:
         shell.help_activationkey_enable = MagicMock()
         shell.client.activationkey.setDetails = MagicMock()
 
-        spacecmd.activationkey.do_activationkey_setdescription(shell, "key_one some description of it here")
+        spacecmd.activationkey.do_activationkey_setdescription(
+            shell, "key_one some description of it here"
+        )
         assert not shell.help_activationkey_enable.called
         assert shell.client.activationkey.setDetails.called
 
@@ -1903,5 +2153,3 @@ class TestSCActivationKeyMethods:
             assert shell.session == session
             assert "contact_method" in arg
             assert arg["contact_method"] == "230V"
-
-    

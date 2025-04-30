@@ -17,5 +17,6 @@
 #
 # Copyright (c) 2020 SUSE LLC
 
+
 def _N(message):
     return message

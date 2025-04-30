@@ -1,6 +1,7 @@
 """
 libmod operations
 """
+
 import os
 
 # pylint: disable-next=unused-import

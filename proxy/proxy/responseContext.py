@@ -18,17 +18,16 @@
 # response, header, and connection sets which can be used to easily maintain
 # the proxy's response state in the event of redirects.
 
-CXT_RESP_HEADERS = 'headers'
-CXT_RESP_BODYFD = 'bodyFd'
-CXT_CONNECTION = 'connection'
+CXT_RESP_HEADERS = "headers"
+CXT_RESP_BODYFD = "bodyFd"
+CXT_CONNECTION = "connection"
 
 
 class ResponseContext:
-
-    """ This class provides a response context for use by the proxy broker
-        and redirect components.  This context provides a stackable set of
-        response, header, and connection sets which can be used to easily maintain
-        the proxy's response state in the event of redirects. """
+    """This class provides a response context for use by the proxy broker
+    and redirect components.  This context provides a stackable set of
+    response, header, and connection sets which can be used to easily maintain
+    the proxy's response state in the event of redirects."""
 
     # Constructors and Destructors ############################################
 
@@ -39,53 +38,53 @@ class ResponseContext:
     # Public Interface ########################################################
 
     def getHeaders(self):
-        """ Get the current response headers. """
+        """Get the current response headers."""
         return self._getCurrentContext()[CXT_RESP_HEADERS]
 
     def setHeaders(self, responseHeaders):
-        """ Set the current response headers. """
+        """Set the current response headers."""
         self._getCurrentContext()[CXT_RESP_HEADERS] = responseHeaders
 
     def getBodyFd(self):
-        """ Get the current response body file descriptor. """
+        """Get the current response body file descriptor."""
         return self._getCurrentContext()[CXT_RESP_BODYFD]
 
     def setBodyFd(self, responseBodyFd):
-        """ Set the current response body file descriptor. """
+        """Set the current response body file descriptor."""
         self._getCurrentContext()[CXT_RESP_BODYFD] = responseBodyFd
 
     def getConnection(self):
-        """ Get the current connection object. """
+        """Get the current connection object."""
         return self._getCurrentContext()[CXT_CONNECTION]
 
     def setConnection(self, connection):
-        """ Set the current connection object. """
+        """Set the current connection object."""
         self._getCurrentContext()[CXT_CONNECTION] = connection
 
     def add(self):
-        """ Add a new context to the stack. The new context becomes the current
-            one.
+        """Add a new context to the stack. The new context becomes the current
+        one.
         """
         self._contextStack.append(self._createContext())
 
     def remove(self):
-        """ Remove the current context. """
+        """Remove the current context."""
         if not self._isEmpty():
             self.close()
             self._contextStack.pop()
 
     def close(self):
-        """ Close the current context. """
+        """Close the current context."""
         context = self._getCurrentContext()
         self._closeContext(context)
 
     def clear(self):
-        """ Close and remove all contexts. """
+        """Close and remove all contexts."""
         while self._contextStack:
             self.remove()
 
     def __str__(self):
-        """ String representation. """
+        """String representation."""
         return str(self._contextStack)
 
     # Helper Methods ##########################################################
@@ -105,12 +104,12 @@ class ResponseContext:
         return self._contextStack[-1]
 
     @staticmethod
-    def _createContext(responseHeaders=None,
-                       responseBodyFd=None,
-                       connection=None):
-        return {CXT_RESP_HEADERS: responseHeaders,
-                CXT_RESP_BODYFD: responseBodyFd,
-                CXT_CONNECTION: connection}
+    def _createContext(responseHeaders=None, responseBodyFd=None, connection=None):
+        return {
+            CXT_RESP_HEADERS: responseHeaders,
+            CXT_RESP_BODYFD: responseBodyFd,
+            CXT_CONNECTION: connection,
+        }
 
 
 ###############################################################################

@@ -19,7 +19,6 @@
 
 
 class SequenceServer:
-
     """Given a sequence to serve, this class dishes them out in chunks
     or one at a time. This was written originally to reduce redundant
     code. Used only by class Syncer.

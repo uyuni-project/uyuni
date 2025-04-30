@@ -192,9 +192,11 @@ def cpu_data():
             # pylint: disable-next=logging-format-interpolation,consider-using-f-string
             log.warning("lscpu: {0}".format(str(error)))
 
+
 # -----------------------------------------------------------------------------
 # Grain for Architecture-Specific CPU Data
 # -----------------------------------------------------------------------------
+
 
 def _read_file(path):
     """
@@ -262,7 +264,7 @@ def _add_arm64_extras(specs):
     try:
         ret = __salt__["cmd.run_all"](
             "{0} -t processor".format(dmidecode),
-            output_loglevel="quiet"
+            output_loglevel="quiet",
         )
 
         if ret["retcode"] == 0:
@@ -292,7 +294,9 @@ def _add_z_systems_extras(specs):
         return
 
     try:
-        ret = __salt__["cmd.run_all"]("{0} -s".format(read_values), output_loglevel="quiet")
+        ret = __salt__["cmd.run_all"](
+            "{0} -s".format(read_values), output_loglevel="quiet"
+        )
         if ret["retcode"] == 0:
             output = ret["stdout"]
 
@@ -320,6 +324,7 @@ def _add_z_systems_extras(specs):
     except (CommandExecutionError, OSError):
         log.warning("Failed to retrieve z System CPU details.", exc_info=True)
 
+
 def _get_architecture():
     """
     Returns the system architecture.
@@ -330,6 +335,7 @@ def _get_architecture():
     except (CommandExecutionError, OSError):
         log.warning("Failed to determine system architecture.", exc_info=True)
         return "unknown"
+
 
 def arch_specs():
     """

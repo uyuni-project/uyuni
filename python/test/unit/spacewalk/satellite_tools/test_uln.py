@@ -185,7 +185,7 @@ def test_auth_uln(uln_auth_instance):
     # pylint: disable-next=unused-variable
     with patch("ulnauth.ServerList", server_list) as srv_lst, patch(
         "ulnauth.RetryServer",
-        retry_server
+        retry_server,
         # pylint: disable-next=unused-variable
     ) as rtr_srv:
         uln_auth_instance.get_credentials = MagicMock(
