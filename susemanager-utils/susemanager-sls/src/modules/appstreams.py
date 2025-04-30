@@ -3,12 +3,14 @@
 import re
 import subprocess
 import logging
+
 try:
     from salt.utils.path import which as _which
 except ImportError:
     from salt.utils import which as _which
 
 log = logging.getLogger(__name__)
+
 
 # pylint: disable-next=invalid-name
 def __virtual__():
@@ -18,6 +20,7 @@ def __virtual__():
     if not (_which("dnf")):
         return (False, "dnf is not available on the system")
     return True
+
 
 def _get_enabled_module_names():
     # Run the DNF command to list enabled modules
@@ -31,22 +34,29 @@ def _get_enabled_module_names():
             lines = result.stdout.splitlines()
 
             # Find the indexes where the actual module information starts
-            start_indexes = [i for i, line in enumerate(lines) if "Name" in line and "Stream" in line]
+            start_indexes = [
+                i for i, line in enumerate(lines) if "Name" in line and "Stream" in line
+            ]
             all_module_names = []
 
             if start_indexes:
                 for start_index in start_indexes:
                     # Find the index where the module information ends
                     end_index = next(
-                        (i for i, line in enumerate(lines)
-                        if not line and i > start_index),
-                        len(lines)
+                        (
+                            i
+                            for i, line in enumerate(lines)
+                            if not line and i > start_index
+                        ),
+                        len(lines),
                     )
 
                     # Extract module names
                     module_names = [
                         f"{parts[0]}:{parts[1]}"
-                        for line in lines[start_index + 1:end_index] # Skip the header line
+                        for line in lines[
+                            start_index + 1 : end_index
+                        ]  # Skip the header line
                         for parts in [line.split()]
                     ]
                     all_module_names += module_names
@@ -60,13 +70,14 @@ def _get_enabled_module_names():
     else:
         log.error(f"Error running DNF command: {result.stderr}")
 
+
 def _parse_nsvca(module_info_output):
     attrs = {
-        "name": re.compile(r'^Name\s+:\s+(\S+)'),
-        "stream": re.compile(r'^Stream\s+:\s+(\S+)'),
-        "version": re.compile(r'^Version\s+:\s+(\S+)'),
-        "context": re.compile(r'^Context\s+:\s+(\S+)'),
-        "architecture": re.compile(r'^Architecture\s+:\s+(\S+)'),
+        "name": re.compile(r"^Name\s+:\s+(\S+)"),
+        "stream": re.compile(r"^Stream\s+:\s+(\S+)"),
+        "version": re.compile(r"^Version\s+:\s+(\S+)"),
+        "context": re.compile(r"^Context\s+:\s+(\S+)"),
+        "architecture": re.compile(r"^Architecture\s+:\s+(\S+)"),
     }
     result = {}
 
@@ -140,8 +151,9 @@ def _get_module_info(module_names):
 
     return nsvca_info_list
 
+
 def _execute_action(action, appstreams):
-    '''
+    """
     Execute the specified action (enable/disable) for the given appstreams.
     action
         The action to perform (either "enable" or "disable")
@@ -150,22 +162,23 @@ def _execute_action(action, appstreams):
 
     Returns:
         Tuple: (result, comment, changes)
-    '''
+    """
     if isinstance(appstreams, str):
         appstreams = [appstreams]
 
     cmd = ["dnf", "module", action, "-y"] + appstreams
     return subprocess.run(cmd, check=False, capture_output=True)
 
+
 def enable(appstreams):
-    '''
+    """
     Enable the specified appstreams using dnf.
     appstreams
         List or string of appstreams to enable
 
     Returns:
         Tuple: (result, comment, changes)
-    '''
+    """
     result = True
     comment = ""
     changes = {}
@@ -177,7 +190,7 @@ def enable(appstreams):
         enabled = [m for m in after if m not in before]
         if enabled:
             comment = "AppStreams enabled."
-            changes = { "enabled": enabled }
+            changes = {"enabled": enabled}
         else:
             comment = "Nothing changed."
     else:
@@ -186,15 +199,16 @@ def enable(appstreams):
 
     return result, comment, changes
 
+
 def disable(appstreams):
-    '''
+    """
     Disable the specified appstreams using dnf.
     appstreams
         List or string of appstreams to disable
 
     Returns:
         Tuple: (result, comment, changes)
-    '''
+    """
     result = True
     comment = ""
     changes = {}
@@ -206,7 +220,7 @@ def disable(appstreams):
         disabled = [m for m in before if m not in after]
         if disabled:
             comment = "AppStreams disabled."
-            changes = { "disabled": disabled }
+            changes = {"disabled": disabled}
         else:
             comment = "Nothing changed."
     else:
@@ -214,6 +228,7 @@ def disable(appstreams):
         comment = cmd_result.stderr.decode("utf-8").strip()
 
     return result, comment, changes
+
 
 def get_enabled_modules():
     enabled_module_names = _get_enabled_module_names()

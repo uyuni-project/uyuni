@@ -13,6 +13,7 @@ class TestSCSSM:
     """
     Test for SSM module API.
     """
+
     def test_ssm_add_noarg(self, shell):
         """
         Test do_ssm_add no args.
@@ -27,8 +28,9 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, \
-            patch("spacecmd.ssm.save_cache", save_cache) as svc:
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+            "spacecmd.ssm.save_cache", save_cache
+        ) as svc:
             ssm.do_ssm_add(shell, "")
 
         assert not logger.warning.called
@@ -49,8 +51,9 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, \
-            patch("spacecmd.ssm.save_cache", save_cache) as svc:
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+            "spacecmd.ssm.save_cache", save_cache
+        ) as svc:
             ssm.do_ssm_add(shell, "example.com")
 
         assert logger.warning.called
@@ -75,8 +78,9 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, \
-            patch("spacecmd.ssm.save_cache", save_cache) as svc:
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+            "spacecmd.ssm.save_cache", save_cache
+        ) as svc:
             ssm.do_ssm_add(shell, "example.com")
 
         assert logger.warning.called
@@ -84,7 +88,9 @@ class TestSCSSM:
         assert not shell.help_ssm_add.called
         assert save_cache.called
 
-        assert_expect(logger.warning.call_args_list, "example.com is already in the list")
+        assert_expect(
+            logger.warning.call_args_list, "example.com is already in the list"
+        )
         assert_expect(logger.debug.call_args_list, "Systems Selected: 1")
 
         for call in save_cache.call_args_list:
@@ -108,8 +114,9 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, \
-            patch("spacecmd.ssm.save_cache", save_cache) as svc:
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+            "spacecmd.ssm.save_cache", save_cache
+        ) as svc:
             ssm.do_ssm_add(shell, "new.com")
 
         assert not logger.warning.called
@@ -141,8 +148,9 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, \
-            patch("spacecmd.ssm.save_cache", save_cache) as svc:
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+            "spacecmd.ssm.save_cache", save_cache
+        ) as svc:
             ssm.do_ssm_intersect(shell, "")
 
         assert shell.help_ssm_intersect.called
@@ -164,8 +172,9 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, \
-            patch("spacecmd.ssm.save_cache", save_cache) as svc:
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+            "spacecmd.ssm.save_cache", save_cache
+        ) as svc:
             ssm.do_ssm_intersect(shell, "unknown")
 
         assert not shell.help_ssm_intersect.called
@@ -192,8 +201,9 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, \
-            patch("spacecmd.ssm.save_cache", save_cache) as svc:
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+            "spacecmd.ssm.save_cache", save_cache
+        ) as svc:
             ssm.do_ssm_intersect(shell, "existing.com")
 
         assert not shell.help_ssm_intersect.called
@@ -206,7 +216,7 @@ class TestSCSSM:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
 
-        assert shell.ssm == {'existing.com': {'name': 'keptalive'}}
+        assert shell.ssm == {"existing.com": {"name": "keptalive"}}
 
         for call in save_cache.call_args_list:
             args, kw = call
@@ -227,8 +237,9 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, \
-            patch("spacecmd.ssm.save_cache", save_cache) as svc:
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+            "spacecmd.ssm.save_cache", save_cache
+        ) as svc:
             ssm.do_ssm_remove(shell, "")
 
         assert shell.help_ssm_remove.called
@@ -250,8 +261,9 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, \
-            patch("spacecmd.ssm.save_cache", save_cache) as svc:
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+            "spacecmd.ssm.save_cache", save_cache
+        ) as svc:
             ssm.do_ssm_remove(shell, "unknown")
 
         assert not shell.help_ssm_remove.called
@@ -275,15 +287,16 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, \
-            patch("spacecmd.ssm.save_cache", save_cache) as svc:
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+            "spacecmd.ssm.save_cache", save_cache
+        ) as svc:
             ssm.do_ssm_remove(shell, "unknown")
 
         assert not shell.help_ssm_remove.called
         assert not logger.warning.called
         assert logger.debug.called
         assert save_cache.called
-        assert shell.ssm == {'keepalive.io': {}}
+        assert shell.ssm == {"keepalive.io": {}}
 
         exp = ["Removed remove.me", "Systems Selected: 1"]
         for call in logger.debug.call_args_list:
@@ -308,9 +321,9 @@ class TestSCSSM:
             logger = MagicMock()
             mprint = MagicMock()
             save_cache = MagicMock()
-            with patch("spacecmd.ssm.logging", logger) as lgr, \
-                patch("spacecmd.ssm.save_cache", save_cache) as svc, \
-                patch("spacecmd.ssm.print", mprint) as prn:
+            with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+                "spacecmd.ssm.save_cache", save_cache
+            ) as svc, patch("spacecmd.ssm.print", mprint) as prn:
                 ssm.do_ssm_list(shell, args=args)
 
             assert len(shell.ssm) == 2
@@ -331,9 +344,9 @@ class TestSCSSM:
             logger = MagicMock()
             mprint = MagicMock()
             save_cache = MagicMock()
-            with patch("spacecmd.ssm.logging", logger) as lgr, \
-                patch("spacecmd.ssm.save_cache", save_cache) as svc, \
-                patch("spacecmd.ssm.print", mprint) as prn:
+            with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+                "spacecmd.ssm.save_cache", save_cache
+            ) as svc, patch("spacecmd.ssm.print", mprint) as prn:
                 ssm.do_ssm_clear(shell, args=args)
 
             assert not shell.ssm

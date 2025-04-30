@@ -44,11 +44,11 @@ class ArchiveTest(unittest.TestCase):
         if not os.path.isdir(TEST_DIR):
             os.makedirs(TEST_DIR)
 
-        fd = open(TEST_FILE_PATH, 'w')
+        fd = open(TEST_FILE_PATH, "w")
         fd.write(TEST_CONTENTS)
         fd.close()
 
-        fzip = zipfile.ZipFile(TEST_ARCHIVE, 'w')
+        fzip = zipfile.ZipFile(TEST_ARCHIVE, "w")
         fzip.write(TEST_FILE_PATH)
         fzip.close()
 
@@ -88,6 +88,7 @@ class ArchiveTest(unittest.TestCase):
         p = archive.get_archive_parser(TEST_ARCHIVE)
         contents = p.read(TEST_FILE)
         assert contents == TEST_CONTENTS
+
 
 # run the tests ----------------------------------------------------------
 

@@ -1,4 +1,3 @@
-
 #
 # Client code for Update Agent
 # Copyright (c) 1999--2016 Red Hat, Inc.  Distributed under GPLv2.
@@ -37,12 +36,11 @@ class TransactionData:
         # size is never used directly for this, it's here as a place holder
         # arch is optional, if the server specifies it, go with what
         # removed packages only need [n,v,r,e,arch]
-        self.data['packages'] = []
+        self.data["packages"] = []
         # list of flags to set for the transaction
-        self.data['flags'] = []
-        self.data['vsflags'] = []
-        self.data['probFilterFlags'] = []
-
+        self.data["flags"] = []
+        self.data["vsflags"] = []
+        self.data["probFilterFlags"] = []
 
     def display(self):
         out = ""
@@ -50,24 +48,44 @@ class TransactionData:
         installed = []
         updated = []
         misc = []
-        for (pkgInfo, mode) in self.data['packages']:
-            if mode == 'u':
+        for pkgInfo, mode in self.data["packages"]:
+            if mode == "u":
                 updated.append(pkgInfo)
-            elif mode == 'i':
+            elif mode == "i":
                 installed.append(pkgInfo)
-            elif mode == 'e':
+            elif mode == "e":
                 removed.append(pkgInfo)
             else:
                 misc.append(pkgInfo)
         for pkgInfo in removed:
-            out = out + "\t\t[e] %s-%s-%s:%s\n" % (pkgInfo[0], pkgInfo[1], pkgInfo[2], pkgInfo[3])
+            out = out + "\t\t[e] %s-%s-%s:%s\n" % (
+                pkgInfo[0],
+                pkgInfo[1],
+                pkgInfo[2],
+                pkgInfo[3],
+            )
         for pkgInfo in installed:
-            out = out + "\t\t[i] %s-%s-%s:%s\n" % (pkgInfo[0], pkgInfo[1], pkgInfo[2], pkgInfo[3])
+            out = out + "\t\t[i] %s-%s-%s:%s\n" % (
+                pkgInfo[0],
+                pkgInfo[1],
+                pkgInfo[2],
+                pkgInfo[3],
+            )
         for pkgInfo in updated:
-            out = out + "\t\t[u] %s-%s-%s:%s\n" % (pkgInfo[0], pkgInfo[1], pkgInfo[2], pkgInfo[3])
+            out = out + "\t\t[u] %s-%s-%s:%s\n" % (
+                pkgInfo[0],
+                pkgInfo[1],
+                pkgInfo[2],
+                pkgInfo[3],
+            )
         for pkgInfo in misc:
-            out = out + "\t\t[%s] %s-%s-%s:%s\n" % (pkgInfo[5], pkgInfo[0], pkgInfo[1],
-                                                    pkgInfo[2], pkgInfo[3])
+            out = out + "\t\t[%s] %s-%s-%s:%s\n" % (
+                pkgInfo[5],
+                pkgInfo[0],
+                pkgInfo[1],
+                pkgInfo[2],
+                pkgInfo[3],
+            )
         return out
 
 
@@ -76,22 +94,24 @@ class TransactionData:
 class Up2dateTransaction:
     def __init__(self):
         self.ts = rpm.TransactionSet()
-        self._methods = ['dbMatch',
-                         'check',
-                         'order',
-                         'addErase',
-                         'addInstall',
-                         'run',
-                         'IDTXload',
-                         'IDTXglob',
-                         'rollback',
-                         'pgpImportPubkey',
-                         'pgpPrtPkts',
-                         'Debug',
-                         'setFlags',
-                         'setVSFlags',
-                         'setProbFilter',
-                         'hdrFromFdno']
+        self._methods = [
+            "dbMatch",
+            "check",
+            "order",
+            "addErase",
+            "addInstall",
+            "run",
+            "IDTXload",
+            "IDTXglob",
+            "rollback",
+            "pgpImportPubkey",
+            "pgpPrtPkts",
+            "Debug",
+            "setFlags",
+            "setVSFlags",
+            "setProbFilter",
+            "hdrFromFdno",
+        ]
         self.tsflags = []
 
     def __getattr__(self, attr):
@@ -116,11 +136,11 @@ class Up2dateTransaction:
         del self.tsflags[-1]
         self.ts.setVSFlags(self.tsflags[-1])
 
+
 def initReadOnlyTransaction():
     global read_ts
     if read_ts == None:
-        read_ts =  Up2dateTransaction()
+        read_ts = Up2dateTransaction()
         # FIXME: replace with macro defination
         read_ts.pushVSFlags(-1)
     return read_ts
-

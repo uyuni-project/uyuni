@@ -5,6 +5,7 @@ __virtualname__ = "sap"
 __grains__ = {}
 SAP_REGEX = re.compile(r"/usr/sap/([A-Z][A-Z0-9]{2})/([A-Z]+)(\d{2})\b")
 
+
 def __virtual__():
     """
     Only load the module if the operating system is SLES.
@@ -12,6 +13,7 @@ def __virtual__():
     if __grains__.get("os_family") == "Suse":
         return True
     return (False, "This module is only available on SLES systems.")
+
 
 def get_workloads():
     """
@@ -32,6 +34,8 @@ def get_workloads():
             if match:
                 system_id = match.group(1)
                 instance_type = match.group(2)
-                sap_systems.append({"system_id": system_id, "instance_type": instance_type})
+                sap_systems.append(
+                    {"system_id": system_id, "instance_type": instance_type}
+                )
 
     return sap_systems

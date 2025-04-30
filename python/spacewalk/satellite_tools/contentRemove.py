@@ -33,7 +33,6 @@ from socket import getfqdn
 
 
 class RemoteApi:
-
     """Class for connecting to the XMLRPC spacewalk interface"""
 
     cache = {}

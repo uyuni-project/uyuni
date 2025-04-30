@@ -18,13 +18,14 @@ from spacewalk.common.rhnConfig import CFG, initCFG
 
 
 def systemExit(code, msgs=None):
-    """ exit with message and code """
+    """exit with message and code"""
     if msgs:
         if type(msgs) not in [type([]), type(())]:
-            msgs = (msgs, )
+            msgs = (msgs,)
         for msg in msgs:
-            sys.stderr.write(str(msg) + '\n')
+            sys.stderr.write(str(msg) + "\n")
     sys.exit(code)
+
 
 import csv
 from optparse import Option, OptionParser
@@ -32,7 +33,7 @@ import re
 import errno
 
 
-sys.path.append('/usr/share/spacewalk')
+sys.path.append("/usr/share/spacewalk")
 import reports
 
 try:
@@ -42,10 +43,11 @@ except KeyboardInterrupt:
 
 
 def getClause(clause, word):
-    """ get clause and column from swith """
+    """get clause and column from swith"""
     prefix = "--%s-" % clause
     assert word.startswith(prefix), "%s is not prefix of %s" % (prefix, word)
-    return clause, word[len(prefix):]
+    return clause, word[len(prefix) :]
+
 
 def getDataDir(reportdb):
     if reportdb:
@@ -53,59 +55,113 @@ def getDataDir(reportdb):
     else:
         return "legacy"
 
+
 def getDatabaseType(reportdb):
     if reportdb:
         return "reporting database"
     else:
         return "legacy"
 
+
 def processCommandline(argv):
-    """ process the commandline """
+    """process the commandline"""
     optionsTable = [
-        Option('--multival-on-rows', action='store_true', dest='multivalonrows',
-            help='if there are multiple values for certain field, repeat the rows'),
-        Option('--multival-separator', action='store', dest='multivalseparator',
-            default=';',
-            help='if there are multiple values for certain field, separate them with this string' \
-                ' (unless --multival-on-rows)'),
-        Option('--info', action='store_true',
-            help='print synopsis of the report in the list of report, or description of individual reports specified'),
-        Option('--list-fields', action='store_true',
-            dest='listfields',
-            help='list fields of the report instead of running the report'),
-        Option('--list-fields-info', action='store_true',
-            dest='listfieldsinfo',
-            help='as --list-fields but also prints description for each column'),
+        Option(
+            "--multival-on-rows",
+            action="store_true",
+            dest="multivalonrows",
+            help="if there are multiple values for certain field, repeat the rows",
+        ),
+        Option(
+            "--multival-separator",
+            action="store",
+            dest="multivalseparator",
+            default=";",
+            help="if there are multiple values for certain field, separate them with this string"
+            " (unless --multival-on-rows)",
+        ),
+        Option(
+            "--info",
+            action="store_true",
+            help="print synopsis of the report in the list of report, or description of individual reports specified",
+        ),
+        Option(
+            "--list-fields",
+            action="store_true",
+            dest="listfields",
+            help="list fields of the report instead of running the report",
+        ),
+        Option(
+            "--list-fields-info",
+            action="store_true",
+            dest="listfieldsinfo",
+            help="as --list-fields but also prints description for each column",
+        ),
         # This '<column-id>' is here just so optparse can generate nice help message,
         # parsing logic is couple of lines lower...
-        Option('--where-<column-id>', action='store', metavar='VALUE',
-            dest='_where_trap',
-            help='limit the output to records where column-id has value VALUE'),
-        Option('--ne-where-<column-id>', action='store', metavar='VALUE',
-            dest='_where_trap',
-            help='limit the output to records where column-id has value not equal to VALUE'),
-        Option('--le-where-<column-id>', action='store', metavar='VALUE',
-            dest='_where_trap',
-            help='limit the output to records where column-id has value less than or equal to VALUE'),
-        Option('--ge-where-<column-id>', action='store', metavar='VALUE',
-            dest='_where_trap',
-            help='limit the output to records where column-id has value greater than or equal to VALUE'),
-        Option('--like-<column-id>', action='store', metavar='VALUE',
-            dest='_like_trap',
-            help='limit the output to records where column-id has value like VALUE (string only)'),
-        Option('-p', '--param', action='append', metavar='PARAM=VALUE',
-            dest='params',
-            help='Parameter value to pass to the report, overriding the default.'),
-        Option('--timezone', action='store', type='str',
-            dest='timezone',
-            help='set timezone for all dates reported to custom one instead of UTC'),
-        Option('--legacy-report', action='store_false', dest='use_reportdb', default=True,
-               help='use the legacy SQL statement instead of the reporting database'),
+        Option(
+            "--where-<column-id>",
+            action="store",
+            metavar="VALUE",
+            dest="_where_trap",
+            help="limit the output to records where column-id has value VALUE",
+        ),
+        Option(
+            "--ne-where-<column-id>",
+            action="store",
+            metavar="VALUE",
+            dest="_where_trap",
+            help="limit the output to records where column-id has value not equal to VALUE",
+        ),
+        Option(
+            "--le-where-<column-id>",
+            action="store",
+            metavar="VALUE",
+            dest="_where_trap",
+            help="limit the output to records where column-id has value less than or equal to VALUE",
+        ),
+        Option(
+            "--ge-where-<column-id>",
+            action="store",
+            metavar="VALUE",
+            dest="_where_trap",
+            help="limit the output to records where column-id has value greater than or equal to VALUE",
+        ),
+        Option(
+            "--like-<column-id>",
+            action="store",
+            metavar="VALUE",
+            dest="_like_trap",
+            help="limit the output to records where column-id has value like VALUE (string only)",
+        ),
+        Option(
+            "-p",
+            "--param",
+            action="append",
+            metavar="PARAM=VALUE",
+            dest="params",
+            help="Parameter value to pass to the report, overriding the default.",
+        ),
+        Option(
+            "--timezone",
+            action="store",
+            type="str",
+            dest="timezone",
+            help="set timezone for all dates reported to custom one instead of UTC",
+        ),
+        Option(
+            "--legacy-report",
+            action="store_false",
+            dest="use_reportdb",
+            default=True,
+            help="use the legacy SQL statement instead of the reporting database",
+        ),
     ]
 
     optionParser = OptionParser(
         usage="usage: %s [options] [report_name]" % sys.argv[0],
-        option_list=optionsTable)
+        option_list=optionsTable,
+    )
 
     i = 0
     unused = []
@@ -117,30 +173,32 @@ def processCommandline(argv):
         clause = None
         column = None
         rest = None
-        for x in ['where', 'ne-where', 'le-where', 'ge-where', 'like']:
+        for x in ["where", "ne-where", "le-where", "ge-where", "like"]:
             if argv[i].startswith("--%s-" % x):
                 clause, rest = getClause(x, argv[i])
                 break
             elif argv[i] == "--%s" % x or argv[i].startswith("--%s=" % x):
-                optionParser.error('no such option: %s' % argv[i])
+                optionParser.error("no such option: %s" % argv[i])
         else:
             unused.append(argv[i])
             i += 1
             continue
         try:
-            column, value = rest.split('=', 1)
+            column, value = rest.split("=", 1)
         except ValueError:
             if i + 1 >= len(argv):
-                optionParser.error('option %s has to have a parameter' % argv[i])
+                optionParser.error("option %s has to have a parameter" % argv[i])
             column = rest
             value = argv[i + 1]
             i += 1
-        if column == '':
-            optionParser.error('<column-id> is required')
-        if column == '<column-id>':
-            optionParser.error('use actual column-id in the --where-<column-id> parameter')
+        if column == "":
+            optionParser.error("<column-id> is required")
+        if column == "<column-id>":
+            optionParser.error(
+                "use actual column-id in the --where-<column-id> parameter"
+            )
 
-        column = column.replace('-', '_')
+        column = column.replace("-", "_")
 
         # where[column][clause].append(value)
         where.setdefault(column, {}).setdefault(clause, []).append(value)
@@ -152,7 +210,7 @@ def processCommandline(argv):
     sys.argv[1:] = args
 
     if not options.timezone:
-        options.timezone = 'UTC'
+        options.timezone = "UTC"
 
     return options, where
 
@@ -163,25 +221,27 @@ def __field_str(v):
     try:
         return v.tobytes().decode()
     except:
-        return '<binary data>'
+        return "<binary data>"
     return v
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     options, where = processCommandline(sys.argv[1:])
-    initCFG('server.satellite')
+    initCFG("server.satellite")
 
     reportdb_configured = not CFG.REPORT_DB_NAME is None
 
     if not reportdb_configured and options.use_reportdb:
-        sys.stderr.write("Warning: Reporting database is not configured. Fallback to legacy reports\n")
+        sys.stderr.write(
+            "Warning: Reporting database is not configured. Fallback to legacy reports\n"
+        )
         options.use_reportdb = False
 
     dataDir = getDataDir(options.use_reportdb)
 
     try:
         if len(sys.argv) > 2:
-            systemExit(-5, 'Only one report name expected.')
+            systemExit(-5, "Only one report name expected.")
         if len(sys.argv) > 1:
             report_name = sys.argv[1]
 
@@ -191,16 +251,16 @@ if __name__ == '__main__':
                 for param_value in options.params:
                     matcher = re.match("^([^=]+)=([^=]+)$", param_value)
                     if not matcher:
-                        systemExit(-5, 'Invalid parameter value: ' + param_value)
+                        systemExit(-5, "Invalid parameter value: " + param_value)
                     params[matcher.group(1)] = matcher.group(2)
 
             try:
                 report = reports.report(report_name, dataDir, params)
-            except(reports.spacewalk_unknown_report):
+            except reports.spacewalk_unknown_report:
                 if not reportdb_configured:
                     # if reportdb is not configured, we have already looked for the legacy report and it's missing.
                     # This means we do not have an alternative.
-                    systemExit(-4, 'Unknown report [%s].' % report_name)
+                    systemExit(-4, "Unknown report [%s]." % report_name)
 
                 # Check if the other type of report is available
                 options.use_reportdb = not options.use_reportdb
@@ -208,9 +268,16 @@ if __name__ == '__main__':
 
                 try:
                     report = reports.report(report_name, dataDir, params)
-                    sys.stderr.write("Warning: %s does not exists as a %s report. Using the %s one\n" % (report_name, getDatabaseType(not options.use_reportdb), getDatabaseType(options.use_reportdb)))
-                except(reports.spacewalk_unknown_report):
-                    systemExit(-4, 'Unknown report [%s].' % report_name)
+                    sys.stderr.write(
+                        "Warning: %s does not exists as a %s report. Using the %s one\n"
+                        % (
+                            report_name,
+                            getDatabaseType(not options.use_reportdb),
+                            getDatabaseType(options.use_reportdb),
+                        )
+                    )
+                except reports.spacewalk_unknown_report:
+                    systemExit(-4, "Unknown report [%s]." % report_name)
 
             need_exit = None
             if options.info:
@@ -246,32 +313,41 @@ if __name__ == '__main__':
             pi = 1
             for column in where:
                 if column not in report.columns:
-                    systemExit(-6, 'Unknown column [%s] in report [%s].' % (column, report_name))
+                    systemExit(
+                        -6,
+                        "Unknown column [%s] in report [%s]." % (column, report_name),
+                    )
                 for v in (val for vals in where[column].values() for val in vals):
-                    if report.column_types[column] == 'i' and not re.match('^[0-9]+$', v):
-                        systemExit(-7, 'Column [%s] in report [%s] only accepts integer value.' % (column, report_name))
+                    if report.column_types[column] == "i" and not re.match(
+                        "^[0-9]+$", v
+                    ):
+                        systemExit(
+                            -7,
+                            "Column [%s] in report [%s] only accepts integer value."
+                            % (column, report_name),
+                        )
 
                 for clause, values in where[column].items():
                     l = []
                     for v in values:
-                        l.append(':p%d' % pi)
-                        the_dict_where['p%d' % pi] = v
+                        l.append(":p%d" % pi)
+                        the_dict_where["p%d" % pi] = v
                         pi += 1
 
                     # Column named "group" can be a little complicated...
-                    if column.lower() == 'group':
-                       column = '"%s"' % column.lower()
+                    if column.lower() == "group":
+                        column = '"%s"' % column.lower()
 
-                    if clause == 'where':
-                        conjunct = '%s in ( %s )' % (column, ", ".join(l))
-                    elif clause == 'ne-where':
-                        conjunct = '%s not in ( %s )' % (column, ", ".join(l))
-                    elif clause == 'le-where':
-                        conjunct = " and ".join('%s <= %s' % (column, v) for v in l)
-                    elif clause == 'ge-where':
-                        conjunct = " and ".join('%s >= %s' % (column, v) for v in l)
-                    elif clause == 'like':
-                        conjunct = " and ".join('%s like %s' % (column, v) for v in l)
+                    if clause == "where":
+                        conjunct = "%s in ( %s )" % (column, ", ".join(l))
+                    elif clause == "ne-where":
+                        conjunct = "%s not in ( %s )" % (column, ", ".join(l))
+                    elif clause == "le-where":
+                        conjunct = " and ".join("%s <= %s" % (column, v) for v in l)
+                    elif clause == "ge-where":
+                        conjunct = " and ".join("%s >= %s" % (column, v) for v in l)
+                    elif clause == "like":
+                        conjunct = " and ".join("%s like %s" % (column, v) for v in l)
                     else:
                         assert False, "Unsupported clause"
 
@@ -284,18 +360,25 @@ if __name__ == '__main__':
             the_sql = report.sql
 
             if the_sql_where:
-                the_sql = the_sql.replace('-- where placeholder', 'where %s' % ' and '.join(the_sql_where))
+                the_sql = the_sql.replace(
+                    "-- where placeholder", "where %s" % " and ".join(the_sql_where)
+                )
 
-            tz = rhnSQL.prepare('set session timezone to :tz')
+            tz = rhnSQL.prepare("set session timezone to :tz")
             tz.execute(tz=options.timezone)
 
             h = rhnSQL.prepare(the_sql)
-            h.execute(**dict(tuple(report.params.items()) + tuple(the_dict_where.items())))
+            h.execute(
+                **dict(tuple(report.params.items()) + tuple(the_dict_where.items()))
+            )
 
             db_columns = [x[0].lower() for x in h.description]
             if db_columns != report.columns:
-                systemExit(-3,
-                    "Columns in report spec and in the database do not match:\nexpected %s\n     got %s" % (report.columns, db_columns))
+                systemExit(
+                    -3,
+                    "Columns in report spec and in the database do not match:\nexpected %s\n     got %s"
+                    % (report.columns, db_columns),
+                )
             writer.writerow(report.columns)
 
             row = h.fetchone()
@@ -324,7 +407,11 @@ if __name__ == '__main__':
                                 # store the dupe value from previous row
                                 multival_dupes[m][prevrow[m]] = 1
                             if not row[m] in multival_dupes[m]:
-                                outrow[m] = str(outrow[m]) + options.multivalseparator + str(row[m])
+                                outrow[m] = (
+                                    str(outrow[m])
+                                    + options.multivalseparator
+                                    + str(row[m])
+                                )
                                 multival_dupes[m][row[m]] = 1
                             else:
                                 # check another multival
@@ -347,7 +434,7 @@ if __name__ == '__main__':
         else:
             for report_name in sorted(reports.available_reports(dataDir)):
                 if options.info:
-                    synopsis = ''
+                    synopsis = ""
                     try:
                         report = reports.report(report_name)
                         synopsis = report.synopsis
@@ -368,4 +455,3 @@ if __name__ == '__main__':
             sys.exit(0)
         else:
             raise
-
