@@ -17,6 +17,7 @@ package com.suse.manager.webui.utils;
 
 import static com.suse.utils.Opt.flatMap;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
@@ -57,7 +58,6 @@ import java.nio.file.attribute.UserPrincipalLookupService;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -203,18 +203,14 @@ public class MinionActionUtils {
     public static Path getActionPath(MinionServer minion, Long actionId) throws IOException {
         String actionPath = getActionPath(minion.getOrg().getId(),
                         minion.getId(), actionId);
-        Path mountPoint = Paths.get(com.redhat.rhn.common.conf.Config.get()
-                .getString(ConfigDefaults.MOUNT_POINT));
+        Path mountPoint = Paths.get(Config.get().getString(ConfigDefaults.MOUNT_POINT));
         // create dirs
         Path result = Files.createDirectories(mountPoint.resolve(actionPath));
         Path actionDir = result;
 
-        UserPrincipalLookupService lookupService = FileSystems.getDefault()
-                .getUserPrincipalLookupService();
-        GroupPrincipal susemanagerGroup = lookupService
-                .lookupPrincipalByGroupName("susemanager");
-        GroupPrincipal wwwGroup = lookupService
-                .lookupPrincipalByGroupName("www");
+        UserPrincipalLookupService lookupService = FileSystems.getDefault().getUserPrincipalLookupService();
+        GroupPrincipal susemanagerGroup = lookupService.lookupPrincipalByGroupName("susemanager");
+        GroupPrincipal wwwGroup = lookupService.lookupPrincipalByGroupName("www");
         // systems/<orgId>/<serverId>/actions/<actionId>
         changeGroupAndPerms(actionDir, susemanagerGroup);
         // systems/<orgId>/<serverId>/actions
@@ -239,7 +235,7 @@ public class MinionActionUtils {
             ActionFactory.pendingMinionServerActions().stream().flatMap(a -> {
                     if (a.getEarliestAction().toInstant()
                             .atZone(ZoneId.systemDefault())
-                            .isBefore(now.minus(1, ChronoUnit.HOURS))) {
+                            .isBefore(now.minusHours(1))) {
                         return a.getServerActions()
                                 .stream()
                                 .filter(sa -> sa.getServer().asMinionServer().isPresent() &&
@@ -255,9 +251,7 @@ public class MinionActionUtils {
 
         List<String> minionIds = serverActions.stream().flatMap(sa ->
                 sa.getServer().asMinionServer()
-                        .map(MinionServer::getMinionId)
-                        .map(Stream::of)
-                        .orElseGet(Stream::empty)
+                        .map(MinionServer::getMinionId).stream()
         ).collect(Collectors.toList());
 
         Map<String, Result<List<SaltUtil.RunningInfo>>> running =
