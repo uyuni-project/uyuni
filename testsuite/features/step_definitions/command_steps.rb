@@ -639,14 +639,6 @@ When(/^the controller stops mocking a Redfish host$/) do
   `rm -rf /root/DSP2043_2019.1*`
 end
 
-When(/^I setup a health check environment on the controller$/) do
-  `sh #{File.dirname(__FILE__)}/../upload_files/health_check_setup.sh setup`
-end
-
-When(/^I clean the health check environment on the controller$/) do
-  `sh #{File.dirname(__FILE__)}/../upload_files/health_check_setup.sh clean`
-end
-
 When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
   system_name = get_system_name(host)
   # copy state file to server
@@ -806,6 +798,15 @@ end
 When(/^I run "([^"]*)" on "([^"]*)" without error control$/) do |cmd, host|
   node = get_target(host)
   _out, $fail_code = node.run(cmd, check_errors: false)
+end
+
+When(/^I run "([^"]*)" on "([^"]*)" with timeout at most (\d+) seconds$/) do |cmd, host, timeout|
+  node = get_target(host)
+  repeat_until_timeout(timeout: timeout.to_i, message: "Cmd '#{cmd}' failed") do
+    _output, return_code = node.run(cmd, check_errors: false)
+    break if return_code.zero?
+    sleep 1
+  end
 end
 
 Then(/^the command should fail$/) do
@@ -1074,9 +1075,10 @@ When(/I obtain and extract the supportconfig from the server$/) do
   supportconfig_path = '/root/server-supportconfig.tar.gz'
   test_runner_file = '/root/server-supportconfig.tar.gz'
   get_target('server').scp_download(supportconfig_path, test_runner_file)
+  `rm -rf /root/server-supportconfig`
   `mkdir /root/server-supportconfig && tar xzvf /root/server-supportconfig.tar.gz -C /root/server-supportconfig`
   `mv /root/server-supportconfig/scc_* /root/server-supportconfig/test-server`
-  `tar xJvf /root/server-supportconfig/test-server/uyuni-server-supportconfig.txz -C /root/server-supportconfig`
+  `tar xJvf /root/server-supportconfig/test-server/*supportconfig.txz -C /root/server-supportconfig`
   `mv /root/server-supportconfig/scc_suse_*/ /root/server-supportconfig/uyuni-server-supportconfig/`
 end
 
