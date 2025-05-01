@@ -1,4 +1,5 @@
-const { promises: fs, constants, createReadStream } = require("fs");
+const fs = require("fs").promises;
+const { constants, createReadStream } = require("fs");
 const { createHash } = require("crypto");
 
 const fileExists = async (path) => {

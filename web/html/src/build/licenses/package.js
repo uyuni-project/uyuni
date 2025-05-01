@@ -1,57 +1,68 @@
-const { promises: fs } = require("fs");
+const fs = require("fs").promises;
 const path = require("path");
+const { getLicense } = require("./license");
 
-const getPackageName = (fullName) => {
-  if (fullName.startsWith("@")) {
-    return fullName.split("@").slice(0, 2).join("@");
-  }
-  return fullName.split("@")[0];
+const resolveDependencyPath = (packageName, baseDirectory) => {
+  const parts = packageName.startsWith("@") ? packageName.split("/") : [packageName];
+  return path.join(baseDirectory, "node_modules", ...parts);
 };
 
-const buildPackageMap = async (startDirectory) => {
-  const packageMap = new Map();
-
-  async function visit(directory) {
-    let entries;
+// Packages may be nested in subdependencies or hoisted up, try and look everywhere reasonable and then throw if we still don't find a match
+const findPackageJson = async (packageName, searchStartDirectory) => {
+  let currentDirectory = searchStartDirectory;
+  while (true) {
+    const packageDirectory = resolveDependencyPath(packageName, currentDirectory);
     try {
-      entries = await fs.readdir(directory, { withFileTypes: true });
+      const json = await fs.readFile(path.join(packageDirectory, "package.json"), "utf8");
+      return {
+        packageJson: JSON.parse(json),
+        packageDirectory,
+      };
     } catch {
-      return;
+      const parentDirectory = path.dirname(currentDirectory);
+      if (parentDirectory === currentDirectory) break;
+      currentDirectory = parentDirectory;
+    }
+  }
+  throw new TypeError(`Unable to find package.json for "${packageName}" in "${searchStartDirectory}"`);
+};
+
+const getDependencyMap = async (rootDirectory) => {
+  const visited = new Set();
+  const licenseMap = new Map();
+
+  const walk = async (packageName, baseDirectory) => {
+    const { packageJson, packageDirectory } = await findPackageJson(packageName, baseDirectory);
+
+    if (!packageJson.name || !packageJson.version) {
+      throw new RangeError(`Invalid package.json for "${packageName}"`);
     }
 
-    await Promise.all(
-      entries.map(async (entry) => {
-        if (!entry.isDirectory()) return;
+    const uniqueKey = `${packageJson.name}@${packageJson.version}`;
+    if (visited.has(uniqueKey)) return;
+    visited.add(uniqueKey);
 
-        const entryPath = path.join(directory, entry.name);
-        const packageJsonPath = path.join(entryPath, "package.json");
+    const license = await getLicense(packageJson, packageDirectory);
 
-        try {
-          const stat = await fs.stat(packageJsonPath);
-          if (stat.isFile()) {
-            const pkgJson = await fs.readFile(packageJsonPath, "utf8");
-            const pkg = JSON.parse(pkgJson);
-            if (pkg.name) {
-              if (!packageMap.has(pkg.name)) {
-                packageMap.set(pkg.name, []);
-              }
-              packageMap.get(pkg.name).push(packageJsonPath);
-            }
-          }
-        } catch {
-          // Ignore missing or invalid package.json
-        }
+    if (!licenseMap.has(packageJson.name)) {
+      licenseMap.set(packageJson.name, []);
+    }
 
-        await visit(entryPath);
-      })
-    );
-  }
+    const existing = licenseMap.get(packageJson.name);
+    const entryKey = JSON.stringify(license);
+    if (!existing.some((e) => JSON.stringify(e) === entryKey)) {
+      existing.push(license);
+    }
 
-  await visit(startDirectory);
-  return packageMap;
+    const dependencies = Object.keys(packageJson.dependencies || {});
+    await Promise.all(dependencies.map((name) => walk(name, packageDirectory)));
+  };
+
+  const rootPackageJson = JSON.parse(await fs.readFile(path.join(rootDirectory, "package.json"), "utf8"));
+  const rootDependencies = Object.keys(rootPackageJson.dependencies || {});
+  await Promise.all(rootDependencies.map((name) => walk(name, rootDirectory)));
+
+  return licenseMap;
 };
 
-module.exports = {
-  getPackageName,
-  buildPackageMap,
-};
+module.exports = { getDependencyMap };
