@@ -1,7 +1,6 @@
 const { promises: fs } = require("fs");
 const path = require("path");
 
-// Yarn outputs dependency names in format `name@version`, e.g. `foo@1.2.3`, but scoped package names include an @ at the start, e.g. `@foo/bar@1.2.3`.
 const getPackageName = (fullName) => {
   if (fullName.startsWith("@")) {
     return fullName.split("@").slice(0, 2).join("@");
@@ -30,18 +29,17 @@ const buildPackageMap = async (startDirectory) => {
         try {
           const stat = await fs.stat(packageJsonPath);
           if (stat.isFile()) {
-            try {
-              const pkgJson = await fs.readFile(packageJsonPath, "utf8");
-              const pkg = JSON.parse(pkgJson);
-              if (pkg.name) {
-                packageMap.set(pkg.name, packageJsonPath);
+            const pkgJson = await fs.readFile(packageJsonPath, "utf8");
+            const pkg = JSON.parse(pkgJson);
+            if (pkg.name) {
+              if (!packageMap.has(pkg.name)) {
+                packageMap.set(pkg.name, []);
               }
-            } catch {
-              // Do nothing
+              packageMap.get(pkg.name).push(packageJsonPath);
             }
           }
         } catch {
-          // Do nothing
+          // Ignore missing or invalid package.json
         }
 
         await visit(entryPath);
