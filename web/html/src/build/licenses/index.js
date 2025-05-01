@@ -5,7 +5,7 @@ const { getDependencies } = require("./yarn");
 const { applyOverrides } = require("./override");
 const { getPackageName, buildPackageMap } = require("./package");
 const { fileExists, getFileHash } = require("./fs");
-const { template } = require("./template");
+const { template, separator } = require("./template");
 
 const dirname = path.dirname(__filename);
 const webHtmlSrc = path.resolve(dirname, "../..");
@@ -113,7 +113,18 @@ const hashFile = path.resolve(vendors, "npm.licenses.hash.txt");
     );
     await fs.writeFile(licenseListFile, `module.exports = ${JSON.stringify(licenseTypes)};`, "utf8");
 
-    console.log(licenseInfo);
+    // console.log(licenseInfo);
+
+    const lines = [];
+
+    for (const name of Object.keys(licenseInfo).sort()) {
+      const entries = licenseInfo[name].sort((a, b) => a.version.localeCompare(b.version));
+      for (const { version, licenseText } of entries) {
+        lines.push(`${name}@${version}\n\n${licenseText}`);
+      }
+    }
+
+    console.log(template(lines));
 
     // TODO: Reenable
     // Only once everything else is done, update the hash

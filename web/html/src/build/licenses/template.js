@@ -1,6 +1,9 @@
+const separator = "\n\n--------------------------------------------------------------------------------\n\n";
+
 const template = (licenseTypes) => `THIRD PARTY SOFTWARE NOTICES AND INFORMATION
 Do Not Translate or Localize
 
-${licenseTypes}`;
+${separator}
+${licenseTypes.join(separator)}`;
 
-module.exports = { template };
+module.exports = { template, separator };
