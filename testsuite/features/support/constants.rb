@@ -1342,7 +1342,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
 # Formula: (end date - startup date) * 2, rounded to upper 60 seconds
 # Please keep this list sorted alphabetically
 TIMEOUT_BY_CHANNEL_NAME = {
-  'almalinux8-appstream-x86_64' => 1680
+  'almalinux8-appstream-x86_64' => 1680,
   'almalinux8-uyuni-client-devel-x86_64' => 60,
   'almalinux8-x86_64' => 420,
   'almalinux8-x86_64-appstream' => 1740,
