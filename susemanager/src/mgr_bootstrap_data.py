@@ -974,6 +974,30 @@ DATA = {
         "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/1/bootstrap/",
     },
+    "SL-MICRO-6.2-aarch64": {
+        "PDID": [2914, 3112],
+        "BETAPDID": [3116],
+        "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/2/bootstrap/",
+    },
+    "SL-MICRO-6.2-ppc64le": {
+        "PDID": [2916, 3114],
+        "BETAPDID": [3118],
+        "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/2/bootstrap/",
+    },
+    "SL-MICRO-6.2-s390x": {
+        "PDID": [2915, 3113],
+        "BETAPDID": [3117],
+        "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/2/bootstrap/",
+    },
+    "SL-MICRO-6.2-x86_64": {
+        "PDID": [2913, 3111],
+        "BETAPDID": [3115],
+        "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/2/bootstrap/",
+    },
     "centos-7-x86_64": {
         "PDID": [-12, 3033],
         "BETAPDID": [3035],
