@@ -145,7 +145,7 @@ Feature: Update activation keys
     And I select the parent channel for the "proxy_nontransactional" from "selectedBaseChannel"
     And I wait for child channels to appear
     And I include the recommended child channels
-    And I wait until "SLE-Manager-Tools15-Pool for x86_64 SP7" has been checked
+    And I wait until "ManagerTools-SLE15-Pool for x86_64 SP7" has been checked
     And I check "SUSE-Manager-Proxy-5.1-Pool for x86_64"
     And I check "SUSE-Manager-Proxy-5.1-Updates for x86_64"
     And I click on "Update Activation Key"

@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2024 SUSE LLC
+# Copyright (c) 2022-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @slemicro54_ssh_minion
@@ -44,10 +44,10 @@ Feature: Migrate a SLE Micro 5.4 Salt SSH minion to SLE Micro 5.5
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I should see the child channel "SLE-Manager-Tools-For-Micro5-Pool for x86_64 5.5" "unselected"
-    When I select the child channel "SLE-Manager-Tools-For-Micro5-Pool for x86_64 5.5"
-    Then I should see the child channel "SLE-Manager-Tools-For-Micro5-Pool for x86_64 5.5" "selected"
-    And I click on "Next"
+    Then I should see the child channel "ManagerTools-SLE-Micro5-Pool for x86_64 5.5" "unselected"
+    When I select the child channel "ManagerTools-SLE-Micro5-Pool for x86_64 5.5"
+    Then I should see the child channel "ManagerTools-SLE-Micro5-Pool for x86_64 5.5" "selected"
+    When I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text

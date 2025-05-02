@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 SUSE LLC
+# Copyright (c) 2023-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # This feature depends on
@@ -32,8 +32,8 @@ Feature: Migrate Salt to bundled Salt on a SLES 15 SP5 minion
     And I wait until I do not see "Loading..." text
     And I check radio button "SLE-Product-SLES15-SP5-Pool for x86_64"
     And I wait until I see "SLE-Module-Basesystem15-SP5-Pool for x86_64" text
-    And I check "SLE-Manager-Tools15-Pool for x86_64 SP5"
-    And I check "SLE-Manager-Tools15-Updates for x86_64 SP5"
+    And I check "ManagerTools-SLE15-Pool for x86_64 SP5"
+    And I check "ManagerTools-SLE15-Updates for x86_64 SP5"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
