@@ -20,17 +20,36 @@ import com.suse.oval.ovaltypes.CriterionType;
 import com.suse.oval.ovaltypes.DefinitionClassEnum;
 import com.suse.oval.ovaltypes.DefinitionType;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UbuntuVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
+
+    private static final Logger LOG = LogManager.getLogger(UbuntuVulnerablePackageExtractor.class);
+
+
     private static final Pattern AFFECTED_PACKAGE_REGEX =
             Pattern.compile("(?<packageName>\\S+) package in .* is affected and may need fixing.");
+    private static final Pattern AFFECTED_PACKAGE_REGEX_V2 =
+            Pattern.compile("(?<packageName>\\S+) package in .* is affected and needs fixing.");
+    private static final Pattern AFFECTED_PACKAGE_REGEX_V3 =
+            Pattern.compile("(?<packageName>\\S+) package in .* is affected, " +
+                    "but a decision has been made to defer addressing it.*");
     private static final Pattern PATCHED_PACKAGE_REGEX =
             Pattern.compile("(?<packageName>\\S+) package in .*, is related to the CVE in some way and has " +
                     "been fixed \\(note: '(?<evr>\\S+)'\\).");
+    private static final Pattern PATCHED_PACKAGE_REGEX_V2 =
+            Pattern.compile("(?<packageName>\\S+) package in .* was vulnerable but has " +
+                    "been fixed \\(note: '(?<evr>\\S+)'\\).");
+
+    // sqlite3 package in noble is affected and needs fixing
+    // krb5 package in noble is affected, but a decision has been made to defer addressing it (note: '2025-04-17')
+
     protected UbuntuVulnerablePackageExtractor(DefinitionType definitionIn) {
         super(definitionIn);
     }
@@ -40,14 +59,26 @@ public class UbuntuVulnerablePackageExtractor extends CriteriaTreeBasedExtractor
         CriterionType criterionType = (CriterionType) criteria;
 
         Matcher affectedPackageMatcher = AFFECTED_PACKAGE_REGEX.matcher(criterionType.getComment());
+        Matcher affectedPackageMatcherV2 = AFFECTED_PACKAGE_REGEX_V2.matcher(criterionType.getComment());
+        Matcher affectedPackageMatcherV3 = AFFECTED_PACKAGE_REGEX_V3.matcher(criterionType.getComment());
         Matcher patchedPackageMatcher = PATCHED_PACKAGE_REGEX.matcher(criterionType.getComment());
+        Matcher patchedPackageMatcherV2 = PATCHED_PACKAGE_REGEX_V2.matcher(criterionType.getComment());
 
         VulnerablePackage vulnerablePackage;
         if (affectedPackageMatcher.matches()) {
             vulnerablePackage = extractAffectedPackage(affectedPackageMatcher);
         }
+        else if (affectedPackageMatcherV2.matches()) {
+            vulnerablePackage = extractPatchedPackage(affectedPackageMatcherV2);
+        }
+        else if (affectedPackageMatcherV3.matches()) {
+            vulnerablePackage = extractPatchedPackage(affectedPackageMatcherV3);
+        }
         else if (patchedPackageMatcher.matches()) {
             vulnerablePackage = extractPatchedPackage(patchedPackageMatcher);
+        }
+        else if (patchedPackageMatcherV2.matches()) {
+            vulnerablePackage = extractPatchedPackage(patchedPackageMatcherV2);
         }
         else {
             return Collections.emptyList();
@@ -106,8 +137,15 @@ public class UbuntuVulnerablePackageExtractor extends CriteriaTreeBasedExtractor
             return false;
         }
 
-        return AFFECTED_PACKAGE_REGEX.asMatchPredicate().test(criterionType.getComment()) ||
-                PATCHED_PACKAGE_REGEX.asMatchPredicate().test(criterionType.getComment());
+        boolean matches =  AFFECTED_PACKAGE_REGEX.asMatchPredicate().test(criterionType.getComment()) ||
+                AFFECTED_PACKAGE_REGEX_V2.asMatchPredicate().test(criterionType.getComment()) ||
+                AFFECTED_PACKAGE_REGEX_V3.asMatchPredicate().test(criterionType.getComment()) ||
+                PATCHED_PACKAGE_REGEX.asMatchPredicate().test(criterionType.getComment()) ||
+                PATCHED_PACKAGE_REGEX_V2.asMatchPredicate().test(criterionType.getComment());
+        if (!matches) {
+            LOG.debug("Criteria didn't match any parsing regex: " + criterionType.getComment());
+        }
+        return matches;
     }
 
     @Override
