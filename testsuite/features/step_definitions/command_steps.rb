@@ -805,6 +805,7 @@ When(/^I run "([^"]*)" on "([^"]*)" with timeout at most (\d+) seconds$/) do |cm
   repeat_until_timeout(timeout: timeout.to_i, message: "Cmd '#{cmd}' failed") do
     _output, return_code = node.run(cmd, check_errors: false)
     break if return_code.zero?
+
     sleep 1
   end
 end
