@@ -30,4 +30,4 @@ Feature: Health Check tool based on a supportconfig
   Scenario: Cleanup: Remove health check tool
     When I run "mgr-health-check stop" on "localhost"
     Then I run "test $(podman ps | grep health-check | wc -l) == 0" on "localhost"
-    And I run "rm /root/server-supportconfig* -rf" on "localhost"
+    And I run "rm /root/server-supportconfig -rf" on "localhost"
