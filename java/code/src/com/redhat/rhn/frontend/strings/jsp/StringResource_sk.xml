@@ -7655,35 +7655,35 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="system_entitlements.provisioning.removed.success" xml:space="preserve">
         <source>Removed &lt;strong&gt;Provisioning&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
-        <target/>
+        <target state="translated">Odstránené &lt;strong&gt;Poskytovanie&lt;/strong&gt; z &lt;strong&gt;{0}&lt;/strong&gt; systému(ov).</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.provisioning.noManagement" xml:space="preserve">
         <source>&lt;strong&gt;Provisioning&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Provisioning&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Provisioning&lt;/strong&gt; entitlement to these system(s).</source>
-        <target/>
+        <target state="translated">Oprávnenie na &lt;strong&gt;Poskytovanie&lt;/strong&gt; sa nepodarilo pre &lt;strong&gt;{0}&lt;/strong&gt; systém(y), pretože nemali základné oprávnenia na &lt;strong&gt;Správu&lt;/strong&gt;. Neúspešné systémy sú stále vybrané nižšie. Ak kliknete nižšie na tlačidlo &lt;strong&gt;Nastaviť na oprávnenú správu&lt;/strong&gt;, potom vyberiete položku &lt;strong&gt;Poskytovania&lt;/strong&gt; v rozbaľovacom zozname, ktorý sa nachádza v &lt;strong&gt;sekcii doplnkových oprávnení&lt;/strong&gt; a potom kliknete nižšie na tlačidlo &lt;strong&gt;Pridať oprávnenie&lt;/strong&gt;, budete môcť pridať oprávnenie &lt;strong&gt;Poskytovania&lt;/strong&gt; pre tieto systém(y).</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.virtualization.success_note" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; We subscribed the system(s) to the {0} and {1} channel as well as scheduled an install of the {2} package to prepare the system(s) for hosting virtual guests.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;POZNÁMKA:&lt;/strong&gt; Systém(y) sme prihlásili do kanálov {0} a {1} a naplánovali sme inštaláciu balíka {2}, aby sme systém(y) pripravili na hosťovanie virtuálnych hostí.</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.virtualization_host.success" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Virtualization.&lt;/strong&gt;.  &lt;br/&gt; &lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization Platform it has been downgraded to Virtualization. </source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; systém(y) nastavené na &lt;strong&gt;Virtualizáciu.&lt;/strong&gt;.  &lt;br/&gt; &lt;strong&gt;POZNÁMKA: &lt;/strong&gt;Ak systém mal predtým virtualizačnú platformu, bolo to znížené na virtualizáciu. </target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.virtualization_host.removed.success" xml:space="preserve">
         <source>Removed &lt;strong&gt;Virtualization&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s)  This will cause any guests associated with the selected host to consume physical Channel and System entitlements.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;Virtualizácia&lt;/strong&gt; bola odstránená z &lt;strong&gt;{0}&lt;/strong&gt; systému(ov)  To spôsobí, že všetci hostia priradení k vybranému hostiteľovi spotrebujú fyzické oprávnenia kanálov a systémov.</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
