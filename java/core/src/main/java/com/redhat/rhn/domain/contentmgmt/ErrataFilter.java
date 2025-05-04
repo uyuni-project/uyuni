@@ -36,12 +36,17 @@ import javax.persistence.Transient;
  */
 @Entity
 @DiscriminatorValue("errata")
-public class ErrataFilter extends ContentFilter<Errata> {
+public class ErrataFilter extends ContentFilter {
 
     private Pattern pattern;
 
     @Override
-    public boolean test(Errata erratum) {
+    public boolean test(Object o) {
+        if (!(o instanceof Errata)) {
+            return false;
+        }
+
+        Errata erratum = (Errata) o;
         FilterCriteria.Matcher matcher = getCriteria().getMatcher();
         String field = getCriteria().getField();
         String value = getCriteria().getValue();
