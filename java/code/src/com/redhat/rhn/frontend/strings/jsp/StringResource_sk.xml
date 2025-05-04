@@ -7599,14 +7599,14 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="system_entitlements.provisioning.removed.success" xml:space="preserve">
         <source>Removed &lt;strong&gt;Provisioning&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
-        <target state="translated">Odstránené &lt;strong&gt;Poskytovanie&lt;/strong&gt; z &lt;strong&gt;{0}&lt;/strong&gt; systému(ov).</target>
+        <target state="translated">&lt;strong&gt;Poskytovanie&lt;/strong&gt; bolo odstránené z &lt;strong&gt;{0}&lt;/strong&gt; systému(ov).</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.provisioning.noManagement" xml:space="preserve">
         <source>&lt;strong&gt;Provisioning&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Provisioning&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Provisioning&lt;/strong&gt; entitlement to these system(s).</source>
-        <target state="translated">Oprávnenie na &lt;strong&gt;Poskytovanie&lt;/strong&gt; sa nepodarilo pre &lt;strong&gt;{0}&lt;/strong&gt; systém(y), pretože nemali základné oprávnenia na &lt;strong&gt;Správu&lt;/strong&gt;. Neúspešné systémy sú stále vybrané nižšie. Ak kliknete nižšie na tlačidlo &lt;strong&gt;Nastaviť na oprávnenú správu&lt;/strong&gt;, potom vyberiete položku &lt;strong&gt;Poskytovania&lt;/strong&gt; v rozbaľovacom zozname, ktorý sa nachádza v &lt;strong&gt;sekcii doplnkových oprávnení&lt;/strong&gt; a potom kliknete nižšie na tlačidlo &lt;strong&gt;Pridať oprávnenie&lt;/strong&gt;, budete môcť pridať oprávnenie &lt;strong&gt;Poskytovania&lt;/strong&gt; pre tieto systém(y).</target>
+        <target state="translated">Oprávnenie &lt;strong&gt;Poskytovania&lt;/strong&gt; bolo neúspešné pre &lt;strong&gt;{0}&lt;/strong&gt; systém(y), pretože nemali základné oprávnenia na &lt;strong&gt;Správu&lt;/strong&gt;. Neúspešné systémy sú stále vybrané nižšie. Ak kliknete nižšie na tlačidlo &lt;strong&gt;Nastaviť na oprávnenú správu&lt;/strong&gt;, potom vyberiete položku &lt;strong&gt;Poskytovania&lt;/strong&gt; v rozbaľovacom zozname, ktorý sa nachádza v &lt;strong&gt;sekcii doplnkových oprávnení&lt;/strong&gt; a potom kliknete nižšie na tlačidlo &lt;strong&gt;Pridať oprávnenie&lt;/strong&gt;, budete môcť pridať oprávnenie &lt;strong&gt;Poskytovania&lt;/strong&gt; pre tieto systém(y).</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
@@ -7634,35 +7634,35 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="system_entitlements.virtualization_host.noManagement" xml:space="preserve">
         <source>&lt;strong&gt;Virtualization&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Virtualization&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Virtualization&lt;/strong&gt; entitlement to these system(s).</source>
-        <target/>
+        <target state="translated">Oprávnenie &lt;strong&gt;Virtualizácie&lt;/strong&gt; bolo neúspešné pre &lt;strong&gt;{0}&lt;/strong&gt; systém(y), pretože nemali základné oprávnenia na &lt;strong&gt;Správu&lt;/strong&gt;. Neúspešné systémy sú stále vybrané nižšie. Ak kliknete nižšie na tlačidlo &lt;strong&gt;Nastaviť na oprávnenú správu&lt;/strong&gt;, potom vyberiete položku &lt;strong&gt;Virtualizácie&lt;/strong&gt; v rozbaľovacom zozname, ktorý sa nachádza v &lt;strong&gt;sekcii doplnkových oprávnení&lt;/strong&gt; a potom kliknete nižšie na tlačidlo &lt;strong&gt;Pridať oprávnenie&lt;/strong&gt;, budete môcť pridať oprávnenie &lt;strong&gt;Virtualizácie&lt;/strong&gt; pre tieto systém(y).</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.virtualization_host.noSolarisSupport" xml:space="preserve">
         <source>&lt;strong&gt;Virtualization&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because Virtualization is not supported on Solaris systems.</source>
-        <target/>
+        <target state="translated">Oprávnenie &lt;strong&gt;Virtualizácie&lt;/strong&gt; bolo neúspešné pre &lt;strong&gt;{0}&lt;/strong&gt; systém(y), pretože virtualizácia nie je podporovaná na systémoch Solaris.</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.monitoring.success" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Monitoring&lt;/strong&gt;.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; systém(y) nastavené na &lt;strong&gt;Monitorovanie&lt;/strong&gt;.</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.monitoring.removed.success" xml:space="preserve">
         <source>Removed &lt;strong&gt;Monitoring&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;Monitorovanie&lt;/strong&gt; bolo odstránené z &lt;strong&gt;{0}&lt;/strong&gt; systému(ov).</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.monitoring.noManagement" xml:space="preserve">
         <source>&lt;strong&gt;Monitoring&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Monitoring&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Monitoring&lt;/strong&gt; entitlement to these system(s).</source>
-        <target/>
+        <target state="translated">Oprávnenie &lt;strong&gt;Monitorovania&lt;/strong&gt; bolo neúspešné pre &lt;strong&gt;{0}&lt;/strong&gt; systém(y), pretože nemali základné oprávnenia na &lt;strong&gt;Správu&lt;/strong&gt;. Neúspešné systémy sú stále vybrané nižšie. Ak kliknete nižšie na tlačidlo &lt;strong&gt;Nastaviť na oprávnenú správu&lt;/strong&gt;, potom vyberiete položku &lt;strong&gt;Monitorovania&lt;/strong&gt; v rozbaľovacom zozname, ktorý sa nachádza v &lt;strong&gt;sekcii doplnkových oprávnení&lt;/strong&gt; a potom kliknete nižšie na tlačidlo &lt;strong&gt;Pridať oprávnenie&lt;/strong&gt;, budete môcť pridať oprávnenie &lt;strong&gt;Monitorovania&lt;/strong&gt; pre tieto systém(y).</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
