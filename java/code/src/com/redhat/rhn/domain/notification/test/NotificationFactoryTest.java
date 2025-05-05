@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.notification.types.ChannelSyncFinished;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.notification.types.StateApplyFailed;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -88,6 +89,23 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, UserNotificationFactory.unreadUserNotificationsSize(user));
         assertEquals(1, UserNotificationFactory.listUnreadByUser(user).size());
         assertEquals(1, UserNotificationFactory.listAllByUser(user).size());
+        mailer.verify();
+    }
+
+    @Test
+    public final void testUserDisabledNotification() {
+        mailer.setExpectedSendCount(0);
+        UserNotificationFactory.setMailer(mailer);
+        user.setEmailNotify(0);
+
+        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
+        NotificationMessage msg = UserNotificationFactory.createNotificationMessage(
+                new ChannelSyncFinished(1L, "dumma-channel"));
+        UserNotificationFactory.storeNotificationMessageFor(msg);
+
+        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
+        assertEquals(0, UserNotificationFactory.listUnreadByUser(user).size());
+        assertEquals(0, UserNotificationFactory.listAllByUser(user).size());
         mailer.verify();
     }
 
