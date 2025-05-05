@@ -7725,33 +7725,33 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="system_entitlements.monitoring.noSolarisSupport" xml:space="preserve">
         <source>&lt;strong&gt;Monitoring&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because Monitoring is not supported on Solaris systems.</source>
-        <target/>
+        <target state="translated">Oprávnenie &lt;strong&gt;Monitorovania&lt;/strong&gt; bolo neúspešné pre &lt;strong&gt;{0}&lt;/strong&gt; systém(y), pretože monitorovanie nie je podporované na systémoch Solaris.</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.virtualization.setup_error" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to add &lt;strong&gt;Virtualization(Platform)&lt;/strong&gt;.  This was caused by errors attempting to automatically subscribe the system to the @@PRODUCT_NAME@@ Tools and RHEL Virtualization channels which are required for virtualization.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; systém(y) boli neúspešné pri pridaní &lt;strong&gt;(Platformy) Virtualizácie&lt;/strong&gt;.  Príčinou boli chyby pri pokuse o automatické prihlásenie systému do kanálov nástrojov @@PRODUCT_NAME@@ a virtualizácie RHEL, ktoré sú potrebné pre virtualizáciu.</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.unknown.error" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to add an entitlement.  This was caused by an unknown error.  Please contact support.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; systém(y) boli neúspešné pri pridávaní oprávnenia.  Bolo to spôsobené neznámou chybou.  Obráťte sa, prosím, na podporu.</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Registered" xml:space="preserve">
         <source>Registered</source>
-        <target/>
+        <target state="translated">Registrované</target>
       </trans-unit>
       <!--  System search -->
       <trans-unit id="search.alt.img" xml:space="preserve">
         <source>Search Icon</source>
-        <target/>
+        <target state="translated">Ikona vyhľadávania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
