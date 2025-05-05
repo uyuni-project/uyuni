@@ -43,5 +43,5 @@ jobs:
           build-args: |
             AWS_REDIS_USER=${{ secrets.REDIS_USER }}
             AWS_REDIS_PASS=${{ secrets.REDIS_PASS }}
-            AWS_REDIS_HOST=${{ secrets.REDIS_HOST }}
+            AWS_REDIS_HOST=${{ secrets.REDIS_HOST_NEW }}
             AWS_REDIS_PORT=${{ secrets.REDIS_PORT }}
