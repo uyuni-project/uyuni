@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 SUSE LLC
+ * Copyright (c) 2018--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.redhat.rhn.manager.ssm.test;
@@ -45,6 +41,7 @@ import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.manager.ssm.ChannelChangeAction;
 import com.redhat.rhn.manager.ssm.ChannelChangeDto;
 import com.redhat.rhn.manager.ssm.ScheduleChannelChangesResultDto;
 import com.redhat.rhn.manager.ssm.SsmAllowedChildChannelsDto;
@@ -609,8 +606,8 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         change1.setOldBaseId(Optional.of(server1.getBaseChannel().getId()));
         change1.setNewBaseDefault(true);
         change1.setNewBaseId(Optional.of(baseChannel.getId()));
-        change1.getChildChannelActions().put(childChannel1.getId(), ChannelChangeDto.ChannelAction.SUBSCRIBE);
-        change1.getChildChannelActions().put(childChannel2.getId(), ChannelChangeDto.ChannelAction.NO_CHANGE);
+        change1.getChildChannelActions().put(childChannel1.getId(), ChannelChangeAction.SUBSCRIBE);
+        change1.getChildChannelActions().put(childChannel2.getId(), ChannelChangeAction.NO_CHANGE);
         changes.add(change1);
         Date earliest = new Date();
 
@@ -670,16 +667,16 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         change1.setOldBaseId(Optional.of(server1.getBaseChannel().getId()));
         change1.setNewBaseDefault(true);
         change1.setNewBaseId(Optional.of(baseChannel.getId()));
-        change1.getChildChannelActions().put(childChannel1.getId(), ChannelChangeDto.ChannelAction.SUBSCRIBE);
-        change1.getChildChannelActions().put(childChannel2.getId(), ChannelChangeDto.ChannelAction.NO_CHANGE);
+        change1.getChildChannelActions().put(childChannel1.getId(), ChannelChangeAction.SUBSCRIBE);
+        change1.getChildChannelActions().put(childChannel2.getId(), ChannelChangeAction.NO_CHANGE);
         changes.add(change1);
 
         ChannelChangeDto change2 = new ChannelChangeDto();
         change2.setOldBaseId(Optional.of(server2.getBaseChannel().getId()));
         change2.setNewBaseDefault(true);
         change2.setNewBaseId(Optional.of(baseChannel2.getId()));
-        change2.getChildChannelActions().put(childChannel2_1.getId(), ChannelChangeDto.ChannelAction.SUBSCRIBE);
-        change2.getChildChannelActions().put(childChannel2_2.getId(), ChannelChangeDto.ChannelAction.SUBSCRIBE);
+        change2.getChildChannelActions().put(childChannel2_1.getId(), ChannelChangeAction.SUBSCRIBE);
+        change2.getChildChannelActions().put(childChannel2_2.getId(), ChannelChangeAction.SUBSCRIBE);
         changes.add(change2);
 
         Date earliest = new Date();
@@ -776,15 +773,15 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         change1.setOldBaseId(Optional.of(server1.getBaseChannel().getId()));
         change1.setNewBaseDefault(true);
         change1.setNewBaseId(Optional.of(baseChannel.getId()));
-        change1.getChildChannelActions().put(childChannel1.getId(), ChannelChangeDto.ChannelAction.SUBSCRIBE);
-        change1.getChildChannelActions().put(childChannel2.getId(), ChannelChangeDto.ChannelAction.NO_CHANGE);
+        change1.getChildChannelActions().put(childChannel1.getId(), ChannelChangeAction.SUBSCRIBE);
+        change1.getChildChannelActions().put(childChannel2.getId(), ChannelChangeAction.NO_CHANGE);
         changes.add(change1);
 
         ChannelChangeDto change2 = new ChannelChangeDto();
         change2.setOldBaseId(Optional.of(server2.getBaseChannel().getId()));
         change2.setNewBaseDefault(false);
         change2.setNewBaseId(Optional.of(parent2.getId()));
-        change2.getChildChannelActions().put(child21.getId(), ChannelChangeDto.ChannelAction.SUBSCRIBE);
+        change2.getChildChannelActions().put(child21.getId(), ChannelChangeAction.SUBSCRIBE);
         changes.add(change2);
 
         Date earliest = new Date();
@@ -852,15 +849,15 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         change1.setOldBaseId(Optional.of(server1.getBaseChannel().getId()));
         change1.setNewBaseDefault(true);
         change1.setNewBaseId(Optional.of(baseChannel.getId()));
-        change1.getChildChannelActions().put(childChannel1.getId(), ChannelChangeDto.ChannelAction.SUBSCRIBE);
-        change1.getChildChannelActions().put(childChannel2.getId(), ChannelChangeDto.ChannelAction.NO_CHANGE);
+        change1.getChildChannelActions().put(childChannel1.getId(), ChannelChangeAction.SUBSCRIBE);
+        change1.getChildChannelActions().put(childChannel2.getId(), ChannelChangeAction.NO_CHANGE);
         changes.add(change1);
 
         ChannelChangeDto change2 = new ChannelChangeDto();
         change2.setOldBaseId(Optional.of(server2.getBaseChannel().getId()));
         change2.setNewBaseDefault(false);
         change2.setNewBaseId(Optional.of(customBase.getId()));
-        change2.getChildChannelActions().put(customBaseChild1.getId(), ChannelChangeDto.ChannelAction.SUBSCRIBE);
+        change2.getChildChannelActions().put(customBaseChild1.getId(), ChannelChangeAction.SUBSCRIBE);
         changes.add(change2);
 
         Date earliest = new Date();
@@ -953,15 +950,15 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         change1.setOldBaseId(Optional.empty());
         change1.setNewBaseDefault(true);
         change1.setNewBaseId(Optional.of(baseChannel.getId()));
-        change1.getChildChannelActions().put(childChannel1.getId(), ChannelChangeDto.ChannelAction.SUBSCRIBE);
-        change1.getChildChannelActions().put(childChannel2.getId(), ChannelChangeDto.ChannelAction.NO_CHANGE);
+        change1.getChildChannelActions().put(childChannel1.getId(), ChannelChangeAction.SUBSCRIBE);
+        change1.getChildChannelActions().put(childChannel2.getId(), ChannelChangeAction.NO_CHANGE);
         changes.add(change1);
 
         ChannelChangeDto change2 = new ChannelChangeDto();
         change2.setOldBaseId(Optional.of(server2.getBaseChannel().getId()));
         change2.setNewBaseDefault(false);
         change2.setNewBaseId(Optional.of(customBase.getId()));
-        change2.getChildChannelActions().put(customBaseChild1.getId(), ChannelChangeDto.ChannelAction.SUBSCRIBE);
+        change2.getChildChannelActions().put(customBaseChild1.getId(), ChannelChangeAction.SUBSCRIBE);
         changes.add(change2);
 
         Date earliest = new Date();
@@ -1027,7 +1024,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         server1.addChannel(parent1);
         server1.addChannel(child11);
 
-        Channel parent2 = ChannelFactoryTest.createTestChannel(org2); //ChannelFactoryTest.createTestChannel(user);
+        Channel parent2 = ChannelFactoryTest.createTestChannel(org2);
         parent2.setParentChannel(null);
         Channel child21 = ChannelFactoryTest.createTestChannel(user);
         child21.setParentChannel(parent2);
@@ -1046,7 +1043,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         change.setOldBaseId(Optional.of(server1.getBaseChannel().getId()));
         change.setNewBaseDefault(false);
         change.setNewBaseId(Optional.of(parent2.getId()));
-        change.getChildChannelActions().put(child21.getId(), ChannelChangeDto.ChannelAction.SUBSCRIBE);
+        change.getChildChannelActions().put(child21.getId(), ChannelChangeAction.SUBSCRIBE);
         changes.add(change);
 
         Date earliest = new Date();
@@ -1091,7 +1088,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         change.setOldBaseId(Optional.empty());
         change.setNewBaseDefault(false);
         change.setNewBaseId(Optional.of(parent2.getId()));
-        change.getChildChannelActions().put(child21.getId(), ChannelChangeDto.ChannelAction.SUBSCRIBE);
+        change.getChildChannelActions().put(child21.getId(), ChannelChangeAction.SUBSCRIBE);
         changes.add(change);
 
         Date earliest = new Date();

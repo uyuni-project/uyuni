@@ -137,9 +137,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
             assertNotNull(u);
             assertEquals(userId, u.getId());
             lastId = userId;
-            // s.setWebUserId(null);
             WebSessionFactory.save(s);
-            // flushAndEvict(s);
             s = (WebSession) reload(s);
             TestCaseHelper.tearDownHelper();
         }

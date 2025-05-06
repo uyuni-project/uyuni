@@ -213,6 +213,20 @@ jobs:
       - name: Run acceptance tests
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
         run: ./testsuite/podman_runner/${{ inputs.tests }}
+      
+      - name: Upload Cucumber JSON Reports
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 #v4.6.1
+        with:
+          name: cucumber_json_reports_${{ inputs.server_id }}
+          path: ./testsuite/results/**/*.json
+          if-no-files-found: warn
+          # Duration after which the artifact will expire in days.
+          # The maximum is 90 days.
+          retention-days: 90 
+          # Default compression level is '6', the same as GNU Gzip.
+          # For more details: https://github.com/actions/upload-artifact?tab=readme-ov-file#altering-compressions-level-speed-v-size
+          compression-level: 6
 
       - name: Get server logs
         if: ${{ failure() && !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true'}}

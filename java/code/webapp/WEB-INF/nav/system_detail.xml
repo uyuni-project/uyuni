@@ -157,8 +157,8 @@
 
     <rhn-tab name="Power Management" url="/rhn/systems/details/kickstart/PowerManagement.do" acl="system_feature(ftr_kickstart)" node-id="power_management" />
 
-    <rhn-tab name="Snapshots" acl="authoized_for(systems.snapshots); client_capable(packages.runTransaction) or client_capable(configfiles.deploy); system_feature(ftr_snapshotting)" url="/rhn/systems/details/history/snapshots/Index.do" showChildrenIfActive="0">
-      <rhn-tab name="Rollback" acl="authoized_for(systems.snapshots, W); " url="/rhn/systems/details/history/snapshots/Rollback.do" />
+    <rhn-tab name="Snapshots" acl="authorized_for(systems.snapshots); client_capable(packages.runTransaction) or client_capable(configfiles.deploy); system_feature(ftr_snapshotting)" url="/rhn/systems/details/history/snapshots/Index.do" showChildrenIfActive="0">
+      <rhn-tab name="Rollback" acl="authorized_for(systems.snapshots, W); " url="/rhn/systems/details/history/snapshots/Rollback.do" />
       <rhn-tab name="Groups" url="/rhn/systems/details/history/snapshots/Groups.do" />
       <rhn-tab name="Channels" url="/rhn/systems/details/history/snapshots/Channels.do" />
       <rhn-tab name="Packages" url="/rhn/systems/details/history/snapshots/Packages.do">
@@ -170,7 +170,7 @@
         <rhn-tab-url>/rhn/systems/details/history/snapshots/SnapshotTagCreate.do</rhn-tab-url>
       </rhn-tab>
     </rhn-tab>
-    <rhn-tab name="Snapshot Tags" acl="authoized_for(systems.snapshots); client_capable(packages.runTransaction) or client_capable(configfiles.deploy); system_feature(ftr_snapshotting)">
+    <rhn-tab name="Snapshot Tags" acl="authorized_for(systems.snapshots); client_capable(packages.runTransaction) or client_capable(configfiles.deploy); system_feature(ftr_snapshotting)">
       <rhn-tab-url>/rhn/systems/details/history/snapshots/Tags.do</rhn-tab-url>
       <rhn-tab-url>/rhn/systems/details/history/snapshots/TagCreate.do</rhn-tab-url>
     </rhn-tab>

@@ -35,7 +35,7 @@ INSTALL_DATA = ${INSTALL} -m 644
 
 GMSGFMT = /usr/bin/msgfmt
 MSGFMT = /usr/bin/msgfmt
-MSGMERGE = /usr/bin/msgmerge --previous
+MSGMERGE = /usr/bin/msgmerge --previous --no-wrap --update
 
 INCLUDES = -I.. -I$(top_srcdir)/intl
 
@@ -44,7 +44,6 @@ GMOFILES = $(patsubst %.po,%.gmo,$(POFILES))
 DISTFILES = POTFILES.in $(PACKAGE).pot $(POFILES) $(GMOFILES)
 
 POTFILES = \
-	$(shell find ../yast/ -name \*.rb | sort) \
 	$(shell find ../ -name \*.py | sort)
 
 CATALOGS = $(GMOFILES)
@@ -157,7 +156,7 @@ update-po: Makefile POTFILES.in $(PACKAGE).pot
 	  lang=`echo $$cat | sed 's/\.gmo$$//'`; \
 	  echo "$$lang:"; \
 	  cp $$lang.po $$lang.old.po; \
-	  if $(MSGMERGE) -o $$lang.po $$lang.po $(PACKAGE).pot; then \
+	  if $(MSGMERGE) $$lang.po $(PACKAGE).pot; then \
 	    rm -f $$lang.old.po ; \
 	  else \
 	    echo "msgmerge for $$cat failed!"; \

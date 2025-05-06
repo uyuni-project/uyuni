@@ -118,7 +118,7 @@ public class UserNotificationFactory extends HibernateFactory {
     public static boolean isNotificationTypeDisabled(NotificationMessage notificationIn) {
         List<String> disableNotificationsBy = ConfigDefaults.get().getNotificationsTypeDisabled();
 
-        return disableNotificationsBy.contains(notificationIn.getType().name());
+        return disableNotificationsBy.contains(notificationIn.getType().getLabel());
     }
 
     /**

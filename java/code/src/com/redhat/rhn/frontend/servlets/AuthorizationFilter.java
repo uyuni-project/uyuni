@@ -155,6 +155,10 @@ public class AuthorizationFilter implements Filter {
     }
 
     private void handleSparkAccess(HttpServletRequest hreq, Set<String> noAuthEndpoints) {
+        if (!authenticationService.requestURIRequiresAuthentication(hreq)) {
+            // The request URI doesn't require authentication.
+            return;
+        }
         RouteMatch route = ServletRoutes.get().find(
                 HttpMethod.get(hreq.getMethod().toLowerCase()),
                 hreq.getServletPath(), hreq.getContentType());
@@ -163,9 +167,8 @@ public class AuthorizationFilter implements Filter {
             throw new PermissionException("Route not found to verify authorization for: " + hreq.getRequestURI());
         }
 
-        // Check if the request URI needs authentication. If so, also check if the URI needs authorization as well.
-        if (!authenticationService.requestURIRequiresAuthentication(hreq) ||
-                noAuthEndpoints.contains(route.getMatchUri())) {
+        if (noAuthEndpoints.contains(route.getMatchUri())) {
+            // The request URI doesn't require authorization.
             return;
         }
 

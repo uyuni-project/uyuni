@@ -50,7 +50,6 @@ public class ClientCertificateDigesterTest extends RhnBaseTestCase {
         assertNotNull(cert, "SystemId is null");
 
         // hardcoded key from test system
-        //cert.validate("3050cf46ac0417297e2dd964fdaac1ae");
         cert.validate("h13MzDNjItVNsXd2YOU7etBUh8EefWdKouUM7DETP5ISYWxXAa9vnWYZV7LD7EuM");
     }
 

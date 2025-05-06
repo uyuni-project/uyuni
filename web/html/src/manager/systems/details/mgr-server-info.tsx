@@ -63,7 +63,7 @@ class MgrServer extends React.Component<Props, State> {
       });
   }
 
-  handleResponseError = (jqXHR, arg = "") => {
+  handleResponseError = (jqXHR, arg = {}) => {
     this.setState({
       messages: Network.responseErrorMessage(jqXHR, (status, msg) => (messageMap[msg] ? t(messageMap[msg], arg) : msg)),
     });

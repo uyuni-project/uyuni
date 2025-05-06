@@ -630,7 +630,6 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         tmpHandler.endElement("package");
         tmpHandler.endDocument();
 
-        //st.flush();
         String test = st.toString();
         System.out.println(test);
 

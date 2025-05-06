@@ -1074,16 +1074,16 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       ],
     'rockylinux8' => # CHECKED
       %w[
-        rockylinux8-x86_64
-        rockylinux8-appstream-x86_64
-        rockylinux8-extras-x86_64
+        rockylinux-8-x86_64
+        rockylinux-8-appstream-x86_64
+        rockylinux-8-extras-x86_64
         rockylinux8-uyuni-client-devel-x86_64
       ],
     'rockylinux9' => # CHECKED
       %w[
-        rockylinux9-x86_64
-        rockylinux9-appstream-x86_64
-        rockylinux9-extras-x86_64
+        rockylinux-9-x86_64
+        rockylinux-9-appstream-x86_64
+        rockylinux-9-extras-x86_64
         rockylinux9-uyuni-client-devel-x86_64
       ],
     'oraclelinux9' => # CHECKED
@@ -1349,7 +1349,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
 # Formula: (end date - startup date) * 2, rounded to upper 60 seconds
 # Please keep this list sorted alphabetically
 TIMEOUT_BY_CHANNEL_NAME = {
-  'almalinux8-appstream-x86_64' => 1260,
+  'almalinux8-appstream-x86_64' => 1680,
   'almalinux8-uyuni-client-devel-x86_64' => 60,
   'almalinux8-x86_64' => 540,
   'almalinux8-x86_64-appstream' => 1740,
@@ -1459,19 +1459,19 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'oraclelinux9-uyuni-client-devel-x86_64' => 120,
   'oraclelinux9-x86_64' => 840,
   'res-7-ltss-updates-x86_64' => 960,
-  'res7-x86_64' => 21_000,
+  'res7-x86_64' => 24_240,
   'res8-manager-tools-pool-x86_64-rocky' => 60,
   'res8-manager-tools-updates-x86_64-rocky' => 60,
   'rhel-x86_64-server-7' => 60,
   'rocky-8-iso' => 600,
   'rockylinux8-uyuni-client-devel-x86_64' => 120,
-  'rockylinux8-x86_64' => 660,
-  'rockylinux8-x86_64-appstream' => 1560,
-  'rockylinux8-x86_64-extras' => 420,
-  'rockylinux9-appstream-x86_64' => 480,
+  'rockylinux-8-x86_64' => 720,
+  'rockylinux-8-x86_64-appstream' => 1680,
+  'rockylinux-8-x86_64-extras' => 420,
+  'rockylinux-9-appstream-x86_64' => 660,
   'rockylinux9-uyuni-client-devel-x86_64' => 120,
-  'rockylinux9-x86_64' => 120,
-  'rockylinux9-x86_64-extras' => 120,
+  'rockylinux-9-x86_64' => 120,
+  'rockylinux-9-x86_64-extras' => 120,
   'sle15-sp3-installer-updates-x86_64' => 60,
   'sle15-sp4-installer-updates-x86_64' => 60,
   'sle-micro-5.3-devel-uyuni-client-x86_64' => 120,
@@ -1570,16 +1570,16 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-product-sles15-sp7-updates-x86_64' => 60,
   'sles12-sp5-installer-updates-x86_64' => 60,
   'sles12-sp5-pool-x86_64' => 180,
-  'sles12-sp5-updates-x86_64' => 2280,
+  'sles12-sp5-updates-x86_64' => 2820,
   'sles12-sp5-uyuni-client-devel-x86_64' => 120,
   'sles15-sp3-devel-uyuni-client-x86_64' => 120,
   'sles15-sp4-devel-uyuni-client-x86_64' => 120,
   'sles15-sp5-devel-uyuni-client-x86_64' => 120,
   'sles15-sp6-devel-uyuni-client-x86_64' => 120,
   'sles15-sp7-devel-uyuni-client-x86_64' => 60,
-  'sll-9-updates-x86_64' => 720,
+  'sll-9-updates-x86_64' => 2280,
   'sll-as-9-updates-x86_64' => 1620,
-  'sll-cb-9-updates-x86_64' => 2640,
+  'sll-cb-9-updates-x86_64' => 4320,
   'sl-micro-6.0-devel-uyuni-client-x86_64' => 120,
   'sl-micro-6.0-pool-x86_64' => 120,
   'sl-micro-6.1-devel-uyuni-client-x86_64' => 120,

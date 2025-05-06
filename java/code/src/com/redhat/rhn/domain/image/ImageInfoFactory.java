@@ -21,8 +21,8 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Pillar;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -95,7 +95,8 @@ public class ImageInfoFactory extends HibernateFactory {
      * @return the ImageInfo
      */
     public static ImageInfo createImageInfo(long buildHostId, String version, ImageProfile profile) {
-        MinionServer server = ServerFactory.lookupById(buildHostId).asMinionServer().get();
+        MinionServer server = MinionServerFactory.lookupById(buildHostId)
+                .orElseThrow(() -> new IllegalArgumentException("No build host found with id: " + buildHostId));
 
         boolean isDocker = profile.asDockerfileProfile().isPresent();
         boolean isKiwi = profile.asKiwiProfile().isPresent();
@@ -219,7 +220,8 @@ public class ImageInfoFactory extends HibernateFactory {
     public static Long scheduleImport(long buildHostId, String name, String version,
             ImageStore store, Optional<Set<Channel>> channels, Date earliest, User user)
         throws TaskomaticApiException {
-        MinionServer server = ServerFactory.lookupById(buildHostId).asMinionServer().get();
+        MinionServer server = MinionServerFactory.lookupById(buildHostId)
+                .orElseThrow(() -> new IllegalArgumentException("No build host found with id: " + buildHostId));
 
         if (!server.hasContainerBuildHostEntitlement()) {
             throw new IllegalArgumentException("Server is not a build host.");

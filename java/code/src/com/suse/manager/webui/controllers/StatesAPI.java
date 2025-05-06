@@ -514,7 +514,7 @@ public class StatesAPI {
                         Org org = getEntityIfExists(OrgFactory.lookupById(json.getTargetId()));
                         checkUserHasPermissionsOnOrg(org);
                         List<Long> minionServerIds = MinionServerFactory
-                                .lookupByOrg(org.getId()).stream()
+                                .lookupByOrg(org).stream()
                                 .map(MinionServer::getId)
                                 .collect(Collectors.toList());
 

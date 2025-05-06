@@ -143,7 +143,6 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         migrationManager.removeOrgRelationships(origOrgAdmins.iterator().next(), server);
         server = ServerFactory.lookupById(server.getId());
 
-        //serverGroup1 = (ManagedServerGroup) reload(serverGroup1);
         assertEquals(0, serverGroup1.getCurrentMembers().intValue());
 
         assertEquals(0, server.getManagedGroups().size());

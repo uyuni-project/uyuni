@@ -39,7 +39,6 @@ public class KickstartWizardHelperTest extends BaseTestCaseWithUser {
         String origConfig = Config.get().getString(ConfigDefaults.PRODUCT_NAME);
         Config.get().setString(ConfigDefaults.PRODUCT_NAME, ConfigDefaults.SPACEWALK.get(0));
         // applies to SUSE Manager too
-        // assertTrue(ConfigDefaults.get().isSpacewalk());
         List types = helper.getVirtualizationTypes();
         assertNotNull(types);
         boolean found = false;

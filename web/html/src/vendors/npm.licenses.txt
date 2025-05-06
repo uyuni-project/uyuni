@@ -32,7 +32,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@babel/runtime v7.16.3 - The Babel Team (https://babel.dev/team)
+@babel/runtime v7.26.10 - The Babel Team (https://babel.dev/team)
 https://github.com/babel/babel.git
 --------------------------------------------------------------------------------
 
@@ -1006,12 +1006,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 --------------------------------------------------------------------------------
-dompurify v3.1.7 - Dr.-Ing. Mario Heiderich, Cure53 <mario@cure53.de> (https://cure53.de/)
+dompurify v3.2.5 - Dr.-Ing. Mario Heiderich, Cure53 <mario@cure53.de> (https://cure53.de/)
 git://github.com/cure53/DOMPurify.git
 --------------------------------------------------------------------------------
 
 DOMPurify
-Copyright 2024 Dr.-Ing. Mario Heiderich, Cure53
+Copyright 2025 Dr.-Ing. Mario Heiderich, Cure53
 
 DOMPurify is free software; you can redistribute it and/or modify it under the
 terms of either:
@@ -2998,7 +2998,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 --------------------------------------------------------------------------------
-regenerator-runtime v0.13.5 - Ben Newman <bn@cs.stanford.edu>
+regenerator-runtime v0.13.7 - Ben Newman <bn@cs.stanford.edu>
 https://github.com/facebook/regenerator/tree/master/packages/regenerator-runtime
 --------------------------------------------------------------------------------
 

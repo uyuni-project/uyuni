@@ -552,7 +552,7 @@ public enum SaltStateGeneratorService {
      * @param org the org
      */
     public void removeOrg(Org org) {
-        MinionServerFactory.lookupByOrg(org.getId())
+        MinionServerFactory.lookupByOrg(org)
                 .forEach(this::removeServer);
         removeRecurringStateFiles(org);
         removeConfigChannelAssignments(org);
