@@ -34,6 +34,7 @@ import java.util.Map;
  *
  */
 public class SsmOperationManager extends BaseManager {
+    public static final String SSM_OPERATION_QUERIES = "ssm_operation_queries";
 
     /**
      * Private constructor to enforce static nature of the class.
@@ -52,7 +53,7 @@ public class SsmOperationManager extends BaseManager {
             throw new IllegalArgumentException("user cannot be null");
         }
 
-        SelectMode m = ModeFactory.getMode("ssm_operation_queries", "find_all_operations");
+        SelectMode m = ModeFactory.getMode(SSM_OPERATION_QUERIES, "find_all_operations");
 
         Map<String, Object> params = new HashMap<>(1);
         params.put("user_id", user.getId());
@@ -72,7 +73,7 @@ public class SsmOperationManager extends BaseManager {
         }
 
         SelectMode m =
-            ModeFactory.getMode("ssm_operation_queries", "find_operations_with_status");
+            ModeFactory.getMode(SSM_OPERATION_QUERIES, "find_operations_with_status");
 
         Map<String, Object> params = new HashMap<>(2);
         params.put("user_id", user.getId());
@@ -93,7 +94,7 @@ public class SsmOperationManager extends BaseManager {
         }
 
         SelectMode m =
-            ModeFactory.getMode("ssm_operation_queries", "find_operations_with_status");
+            ModeFactory.getMode(SSM_OPERATION_QUERIES, "find_operations_with_status");
 
         Map<String, Object> params = new HashMap<>(2);
         params.put("user_id", user.getId());
@@ -115,7 +116,7 @@ public class SsmOperationManager extends BaseManager {
             throw new IllegalArgumentException("user cannot be null");
         }
 
-        SelectMode m = ModeFactory.getMode("ssm_operation_queries", "find_operation_by_id");
+        SelectMode m = ModeFactory.getMode(SSM_OPERATION_QUERIES, "find_operation_by_id");
 
         Map<String, Object> params = new HashMap<>(2);
         params.put("user_id", user.getId());
@@ -167,13 +168,13 @@ public class SsmOperationManager extends BaseManager {
 
         // Select the operation ID manually from the sequence so we can add the mappings
         // from the operation to the servers
-        selectMode = ModeFactory.getMode("ssm_operation_queries", "get_seq_nextval");
+        selectMode = ModeFactory.getMode(SSM_OPERATION_QUERIES, "get_seq_nextval");
         DataResult nextValResult = selectMode.execute(params);
         Map<String, Object> nextValMap = (Map<String, Object>) nextValResult.get(0);
         long operationId = (Long) nextValMap.get("nextval");
 
         // Add the operation data
-        writeMode = ModeFactory.getWriteMode("ssm_operation_queries", "create_operation");
+        writeMode = ModeFactory.getWriteMode(SSM_OPERATION_QUERIES, "create_operation");
 
         params.clear();
         params.put("op_id", operationId);
@@ -204,7 +205,7 @@ public class SsmOperationManager extends BaseManager {
         }
 
         WriteMode m =
-            ModeFactory.getWriteMode("ssm_operation_queries", "update_status");
+            ModeFactory.getWriteMode(SSM_OPERATION_QUERIES, "update_status");
 
         Map<String, Object> params = new HashMap<>(3);
         params.put("user_id", user.getId());
@@ -222,7 +223,7 @@ public class SsmOperationManager extends BaseManager {
      *         entry (key: server_id) containing the server ID
      */
     public static DataResult<ServerOperationDataDto> findServerDataForOperation(long operationId) {
-        SelectMode m = ModeFactory.getMode("ssm_operation_queries",
+        SelectMode m = ModeFactory.getMode(SSM_OPERATION_QUERIES,
             "find_server_data_for_operation_id");
 
         Map<String, Object> params = new HashMap<>(1);
@@ -244,7 +245,7 @@ public class SsmOperationManager extends BaseManager {
     public static void associateServersWithOperation(long operationId, long userId,
                                                      String setLabel) {
         WriteMode writeMode =
-            ModeFactory.getWriteMode("ssm_operation_queries", "map_servers_to_operation");
+            ModeFactory.getWriteMode(SSM_OPERATION_QUERIES, "map_servers_to_operation");
 
         Map<String, Object> params = new HashMap<>(3);
         params.put("op_id", operationId);
@@ -264,7 +265,7 @@ public class SsmOperationManager extends BaseManager {
     public static void associateServersWithOperation(long operationId, long userId,
                                                          List<Long> sidsIn) {
         WriteMode writeMode =
-            ModeFactory.getWriteMode("ssm_operation_queries",
+            ModeFactory.getWriteMode(SSM_OPERATION_QUERIES,
                                         "map_sids_to_operation");
         Map<String, Object> params = new HashMap<>(2);
         params.put("op_id", operationId);
@@ -280,7 +281,7 @@ public class SsmOperationManager extends BaseManager {
      */
     public static void addNoteToOperationOnServer(long operationId, long serverId,
         String note) {
-        WriteMode writeMode = ModeFactory.getWriteMode("ssm_operation_queries",
+        WriteMode writeMode = ModeFactory.getWriteMode(SSM_OPERATION_QUERIES,
             "add_note_to_operation_on_server");
         Map<String, Object> params = new HashMap<>();
         params.put("op_id", operationId);
