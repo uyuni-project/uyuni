@@ -7,7 +7,7 @@ Feature: Pay as you go
   I want to list available ssh connections and add or remove them
 
   Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+    Given I am authorized
 
   Scenario: Enter minimal information for payg ssh connection data
     When I follow the left menu "Admin > Setup Wizard > PAYG Connections"
