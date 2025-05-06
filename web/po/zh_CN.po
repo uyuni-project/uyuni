@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-25 10:20+0200\n"
+"POT-Creation-Date: 2025-05-06 11:50+0200\n"
 "PO-Revision-Date: 2025-03-10 13:56+0000\n"
 "Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web-5-0/zh_CN/>\n"
@@ -656,17 +656,21 @@ msgstr "已成功启用监视。"
 msgid "Monitoring disabled successfully."
 msgstr "已成功禁用监视。"
 
-msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
-msgstr "Tomcat Prometheus 导出器已启动，但 JMX 配置已禁用。 "
+msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
+msgstr "Tomcat 普罗米修斯导出器已启动，但 JMX 配置已禁用。请单击 \"启用\" 按钮以启用 JMX 配置，或单击 \"禁用\" 以停止普罗米修斯导出器。"
 
-msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
-msgstr "Tomcat Prometheus 导出器已关闭，但 JMX 配置已启用。 "
+msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
+msgstr "Tomcat 普罗米修斯导出器已关闭，但 JMX 配置已启用。请单击 \"禁用\" 按钮以禁用 JMX 配置，或单击 \"启用\" 以启动普罗米修斯导出器。"
 
-msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. "
-msgstr "Taskomatic Prometheus 导出器已启动，但 JMX 配置已禁用。 "
+#, fuzzy
+#| msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
+msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
+msgstr "Tomcat 普罗米修斯导出器已启动，但 JMX 配置已禁用。请单击 \"启用\" 按钮以启用 JMX 配置，或单击 \"禁用\" 以停止普罗米修斯导出器。"
 
-msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. "
-msgstr "Taskomatic Prometheus 导出器已关闭，但 JMX 配置已启用。 "
+#, fuzzy
+#| msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
+msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
+msgstr "Tomcat 普罗米修斯导出器已关闭，但 JMX 配置已启用。请单击 \"禁用\" 按钮以禁用 JMX 配置，或单击 \"启用\" 以启动普罗米修斯导出器。"
 
 msgid "Monitoring status hasn't changed."
 msgstr "监控状态未更改。"
@@ -4520,6 +4524,18 @@ msgstr "未找到资源。"
 msgid "HTTP Error code "
 msgstr "HTTP 错误代码 "
 
+#~ msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
+#~ msgstr "Tomcat Prometheus 导出器已启动，但 JMX 配置已禁用。 "
+
+#~ msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
+#~ msgstr "Tomcat Prometheus 导出器已关闭，但 JMX 配置已启用。 "
+
+#~ msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. "
+#~ msgstr "Taskomatic Prometheus 导出器已启动，但 JMX 配置已禁用。 "
+
+#~ msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. "
+#~ msgstr "Taskomatic Prometheus 导出器已关闭，但 JMX 配置已启用。 "
+
 #~ msgid "Learn more about"
 #~ msgstr "了解详细信息"
 
@@ -4884,12 +4900,6 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "e.g. \"0 15 2 ? * 7\""
 #~ msgstr "例如 \"0 15 2 ? * 7\""
-
-#~ msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
-#~ msgstr "Tomcat 普罗米修斯导出器已启动，但 JMX 配置已禁用。请单击 \"启用\" 按钮以启用 JMX 配置，或单击 \"禁用\" 以停止普罗米修斯导出器。"
-
-#~ msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
-#~ msgstr "Tomcat 普罗米修斯导出器已关闭，但 JMX 配置已启用。请单击 \"禁用\" 按钮以禁用 JMX 配置，或单击 \"启用\" 以启动普罗米修斯导出器。"
 
 #~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
 #~ msgstr "如果您使用的是书签，该页面可能自创建书签以来已移到其他位置。请使用顶部（或左侧）导航栏找到所需的页面；如果您要查找文档，请务必更新书签。"

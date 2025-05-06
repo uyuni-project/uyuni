@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-25 10:20+0200\n"
+"POT-Creation-Date: 2025-05-06 11:50+0200\n"
 "PO-Revision-Date: 2025-03-09 04:56+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-5-0/ja/>\n"
@@ -656,17 +656,21 @@ msgstr "モニタリングの有効化が正常に完了しました。"
 msgid "Monitoring disabled successfully."
 msgstr "モニタリングの無効化が正常に完了しました。"
 
-msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
-msgstr "Tomcat Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。 "
+msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
+msgstr "Tomcat Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。有効化ボタンを押して JMX 設定を有効化するか、もしくは無効化ボタンを押して Prometheus エクスポータを停止してください。"
 
-msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
-msgstr "Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。 "
+msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
+msgstr "Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。無効化ボタンを押して JMX 設定を無効化するか、もしくは有効化ボタンを押して Prometheus エクスポータを開始してください。"
 
-msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. "
-msgstr "Taskomatic Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。 "
+#, fuzzy
+#| msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
+msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
+msgstr "Tomcat Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。有効化ボタンを押して JMX 設定を有効化するか、もしくは無効化ボタンを押して Prometheus エクスポータを停止してください。"
 
-msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. "
-msgstr "Taskomatic Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。 "
+#, fuzzy
+#| msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
+msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
+msgstr "Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。無効化ボタンを押して JMX 設定を無効化するか、もしくは有効化ボタンを押して Prometheus エクスポータを開始してください。"
 
 msgid "Monitoring status hasn't changed."
 msgstr "モニタリング状態は変更されていません。"
@@ -4512,6 +4516,18 @@ msgstr "リソースが見つかりませんでした。"
 msgid "HTTP Error code "
 msgstr "HTTP エラーコード "
 
+#~ msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
+#~ msgstr "Tomcat Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。 "
+
+#~ msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
+#~ msgstr "Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。 "
+
+#~ msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. "
+#~ msgstr "Taskomatic Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。 "
+
+#~ msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. "
+#~ msgstr "Taskomatic Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。 "
+
 #~ msgid "Learn more about"
 #~ msgstr "下記についてさらに詳しく"
 
@@ -4876,12 +4892,6 @@ msgstr "HTTP エラーコード "
 
 #~ msgid "e.g. \"0 15 2 ? * 7\""
 #~ msgstr "例: \"0 15 2 ? * 7\""
-
-#~ msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
-#~ msgstr "Tomcat Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。有効化ボタンを押して JMX 設定を有効化するか、もしくは無効化ボタンを押して Prometheus エクスポータを停止してください。"
-
-#~ msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
-#~ msgstr "Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。無効化ボタンを押して JMX 設定を無効化するか、もしくは有効化ボタンを押して Prometheus エクスポータを開始してください。"
 
 #~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
 #~ msgstr "ブックマークを使用している場合、ブックマークを作成した後に異なる場所にページが移動していることがあります。このような場合は、上部 (もしくは左) のナビゲーションバーをお使いのうえ、必要なページを検索して、ドキュメントが見つかった場合は、ブックマークを更新してください。"
