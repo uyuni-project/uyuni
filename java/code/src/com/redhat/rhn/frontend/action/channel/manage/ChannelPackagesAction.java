@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListSetHelper;
-import com.redhat.rhn.frontend.taglibs.list.AlphaBarHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
@@ -79,9 +78,8 @@ public class ChannelPackagesAction extends RhnAction {
         RhnListSetHelper helper = new RhnListSetHelper(request);
 
         RhnSet set =  RhnSetDecl.PACKAGES_TO_REMOVE.get(user);
-        String alphaBarPressed = request.getParameter(
-                AlphaBarHelper.makeAlphaKey(TagHelper.generateUniqueName(LIST_NAME)));
-        if (!requestContext.isSubmitted() && alphaBarPressed == null) {
+
+        if (!requestContext.isSubmitted()) {
             set.clear();
             RhnSetManager.store(set);
         }
