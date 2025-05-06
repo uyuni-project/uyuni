@@ -10,8 +10,7 @@ msgstr ""
 "POT-Creation-Date: 2021-04-19 14:08+0200\n"
 "PO-Revision-Date: 2025-04-09 23:56+0000\n"
 "Last-Translator: Fran Serrador <serrador@proton.me>\n"
-"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/susemanager/"
-"es/>\n"
+"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/susemanager/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,353 +18,219 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.10.4\n"
 
-#: ../yast/susemanager_ask.rb:38
-msgid "Set up #{@product_name} from scratch"
-msgstr "Configurar un nuevo #{@product_name}"
+#~ msgid "Set up #{@product_name} from scratch"
+#~ msgstr "Configurar un nuevo #{@product_name}"
 
-#: ../yast/susemanager_ask.rb:48
-msgid "Migrate a #{@product_name} compatible server"
-msgstr "Migrar un servidor compatible de #{@product_name}"
+#~ msgid "Migrate a #{@product_name} compatible server"
+#~ msgstr "Migrar un servidor compatible de #{@product_name}"
 
-#: ../yast/susemanager_ask.rb:60
-msgid ""
-"<p>Choose if you are setting up #{@product_name} from scratch or migrating "
-"to #{@product_name} from a #{@product_name} compatible server.</p>"
-msgstr ""
-"<p>Seleccione si va a configurar un nuevo #{@product_name} o a migrar a "
-"#{@product_name} desde un servidor compatible con #{@product_name}.</p>"
+#~ msgid "<p>Choose if you are setting up #{@product_name} from scratch or migrating to #{@product_name} from a #{@product_name} compatible server.</p>"
+#~ msgstr "<p>Seleccione si va a configurar un nuevo #{@product_name} o a migrar a #{@product_name} desde un servidor compatible con #{@product_name}.</p>"
 
-#: ../yast/susemanager_ask.rb:65
-msgid "#{@product_name} Setup"
-msgstr "Configuración de #{@product_name}"
+#~ msgid "#{@product_name} Setup"
+#~ msgstr "Configuración de #{@product_name}"
 
-#: ../yast/susemanager_cert.rb:43
-msgid "Organization"
-msgstr "Organización"
+#~ msgid "Organization"
+#~ msgstr "Organización"
 
-#: ../yast/susemanager_cert.rb:45
-msgid "Organization Unit"
-msgstr "Unidad organizativa"
+#~ msgid "Organization Unit"
+#~ msgstr "Unidad organizativa"
 
-#: ../yast/susemanager_cert.rb:47
-msgid "City"
-msgstr "Ciudad"
+#~ msgid "City"
+#~ msgstr "Ciudad"
 
-#: ../yast/susemanager_cert.rb:49
-msgid "State"
-msgstr "Estado"
+#~ msgid "State"
+#~ msgstr "Estado"
 
-#: ../yast/susemanager_cert.rb:51
-msgid "Country"
-msgstr "País"
+#~ msgid "Country"
+#~ msgstr "País"
 
-#: ../yast/susemanager_cert.rb:53
-msgid "E-mail"
-msgstr "Correo electrónico"
+#~ msgid "E-mail"
+#~ msgstr "Correo electrónico"
 
-#: ../yast/susemanager_cert.rb:114
-msgid "SSL Pass&word"
-msgstr "Con&traseña SSL"
+#~ msgid "SSL Pass&word"
+#~ msgstr "Con&traseña SSL"
 
-#: ../yast/susemanager_cert.rb:121 ../yast/susemanager_db.rb:106
-msgid "R&epeat Password"
-msgstr "R&epetir contraseña"
+#~ msgid "R&epeat Password"
+#~ msgstr "R&epetir contraseña"
 
-#: ../yast/susemanager_cert.rb:132
-msgid ""
-"<p>Here, enter data needed for the creation of an SSL certificate. The "
-"certificate is used for a number of purposes like connections to a SUSE "
-"Manager Proxy server, HTTPS protocol in browsers, and more.</p>"
-msgstr ""
-"<p>Introduzca aquí los datos necesarios para crear un certificado SSL. El "
-"certificado se usará para varios propósitos: conexión a un servidor SUSE "
-"Manager Proxy, protocolo HTTPS en navegadores web y otros.</p>"
+#~ msgid "<p>Here, enter data needed for the creation of an SSL certificate. The certificate is used for a number of purposes like connections to a SUSE Manager Proxy server, HTTPS protocol in browsers, and more.</p>"
+#~ msgstr "<p>Introduzca aquí los datos necesarios para crear un certificado SSL. El certificado se usará para varios propósitos: conexión a un servidor SUSE Manager Proxy, protocolo HTTPS en navegadores web y otros.</p>"
 
-#: ../yast/susemanager_cert.rb:137
-msgid "Certificate Setup"
-msgstr "Configuración de certificado"
+#~ msgid "Certificate Setup"
+#~ msgstr "Configuración de certificado"
 
-#: ../yast/susemanager_cert.rb:169
-msgid "The value of '%1' is empty."
-msgstr "El valor '%1' está vacío."
+#~ msgid "The value of '%1' is empty."
+#~ msgstr "El valor '%1' está vacío."
 
-#: ../yast/susemanager_cert.rb:180 ../yast/susemanager_db.rb:140
-#: ../yast/susemanager_migration.rb:146
-msgid "Password is missing."
-msgstr "Contraseña no especificada."
+#~ msgid "Password is missing."
+#~ msgstr "Contraseña no especificada."
 
-#: ../yast/susemanager_cert.rb:185 ../yast/susemanager_db.rb:145
-#: ../yast/susemanager_migration.rb:163
-msgid "Passwords do not match."
-msgstr "Las contraseñas no coinciden."
+#~ msgid "Passwords do not match."
+#~ msgstr "Las contraseñas no coinciden."
 
-#: ../yast/susemanager_cert.rb:193 ../yast/susemanager_db.rb:153
-msgid "The password should have at least %1 characters."
-msgstr "La contraseña ha de tener al menos %1 caracteres."
+#~ msgid "The password should have at least %1 characters."
+#~ msgstr "La contraseña ha de tener al menos %1 caracteres."
 
-#: ../yast/susemanager_cert.rb:204 ../yast/susemanager_db.rb:164
-#: ../yast/susemanager_migration.rb:154
-msgid ""
-"The password contains invalid characters.\n"
-"The invalid characters are: %1"
-msgstr ""
-"La contraseña contiene caracteres inválidos.\n"
-"No se aceptan los caracteres: %1"
+#~ msgid ""
+#~ "The password contains invalid characters.\n"
+#~ "The invalid characters are: %1"
+#~ msgstr ""
+#~ "La contraseña contiene caracteres inválidos.\n"
+#~ "No se aceptan los caracteres: %1"
 
-#: ../yast/susemanager_congratulate.rb:35
-msgid "<p>#{@product_name} Setup is now complete.</p><br>\n"
-msgstr "<p>La configuración de #{@product_name} ha finalizado.</p><br>\n"
+#~ msgid "<p>#{@product_name} Setup is now complete.</p><br>\n"
+#~ msgstr "<p>La configuración de #{@product_name} ha finalizado.</p><br>\n"
 
-#: ../yast/susemanager_congratulate.rb:51
-msgid "Setup Completed"
-msgstr "Configuración finalizada"
+#~ msgid "Setup Completed"
+#~ msgstr "Configuración finalizada"
 
-#: ../yast/susemanager_db.rb:90
-msgid "Database &User"
-msgstr "&Usuario de base de datos"
+#~ msgid "Database &User"
+#~ msgstr "&Usuario de base de datos"
 
-#: ../yast/susemanager_db.rb:98
-msgid "Database &Password"
-msgstr "Contraseña base de da&tos"
+#~ msgid "Database &Password"
+#~ msgstr "Contraseña base de da&tos"
 
-#: ../yast/susemanager_db.rb:115
-msgid ""
-"<p>By default SUSE Manager is using an internal postgresql database named '"
-msgstr ""
-"<p>Por defecto, SUSE Manager usa una base de datos PostgreSQL llamada '"
+#~ msgid "<p>By default SUSE Manager is using an internal postgresql database named '"
+#~ msgstr "<p>Por defecto, SUSE Manager usa una base de datos PostgreSQL llamada '"
 
-#: ../yast/susemanager_db.rb:125
-msgid "Database Settings"
-msgstr "Configuración de base de datos"
+#~ msgid "Database Settings"
+#~ msgstr "Configuración de base de datos"
 
-#: ../yast/susemanager_db.rb:178
-msgid ""
-"The password failed the cracklib check with:\n"
-"'%1'"
-msgstr ""
-"Contraseña no segura según cracklib:\n"
-"'%1'"
+#~ msgid ""
+#~ "The password failed the cracklib check with:\n"
+#~ "'%1'"
+#~ msgstr ""
+#~ "Contraseña no segura según cracklib:\n"
+#~ "'%1'"
 
-#: ../yast/susemanager_manager.rb:84
-msgid "&IP Address of the #{@product_name} Server"
-msgstr "Dirección &IP del #{@product_name} Server"
+#~ msgid "&IP Address of the #{@product_name} Server"
+#~ msgstr "Dirección &IP del #{@product_name} Server"
 
-#: ../yast/susemanager_manager.rb:94
-msgid "#{@product_name} &Administrator e-mail address"
-msgstr "Correo electrónico del &administrador de #{@product_name}"
+#~ msgid "#{@product_name} &Administrator e-mail address"
+#~ msgstr "Correo electrónico del &administrador de #{@product_name}"
 
-#: ../yast/susemanager_manager.rb:101
-msgid "Advertise #{@product_name} via SLP"
-msgstr "Anunciar #{@product_name} con SLP"
+#~ msgid "Advertise #{@product_name} via SLP"
+#~ msgstr "Anunciar #{@product_name} con SLP"
 
-#: ../yast/susemanager_manager.rb:112
-msgid ""
-"<p>Fill in <b>Administrator e-mail address</b>. It is used for notifications "
-"by #{@product_name}.</p>"
-msgstr ""
-"<p>Complete <b>la dirección de correo electrónico del administrador</b>. Se "
-"usa para notificaciones de #{@product_name}.</p>"
+#~ msgid "<p>Fill in <b>Administrator e-mail address</b>. It is used for notifications by #{@product_name}.</p>"
+#~ msgstr "<p>Complete <b>la dirección de correo electrónico del administrador</b>. Se usa para notificaciones de #{@product_name}.</p>"
 
-#: ../yast/susemanager_manager.rb:152
-msgid "The Administrator e-mail address is not valid."
-msgstr "La dirección de correo electrónico del administrador es inválida."
+#~ msgid "The Administrator e-mail address is not valid."
+#~ msgstr "La dirección de correo electrónico del administrador es inválida."
 
-#: ../yast/susemanager_migration.rb:73
-msgid "&Hostname of source #{@product_name} Server"
-msgstr "&Nombre de la máquina #{@product_name} Server origen"
+#~ msgid "&Hostname of source #{@product_name} Server"
+#~ msgstr "&Nombre de la máquina #{@product_name} Server origen"
 
-#: ../yast/susemanager_migration.rb:80
-msgid "&Domain name"
-msgstr "Nombre de &dominio"
+#~ msgid "&Domain name"
+#~ msgstr "Nombre de &dominio"
 
-#: ../yast/susemanager_migration.rb:87
-msgid "Source #{@product_name} Database &User Name"
-msgstr "Nombre del &usuario de base de datos del #{@product_name} origen"
+#~ msgid "Source #{@product_name} Database &User Name"
+#~ msgstr "Nombre del &usuario de base de datos del #{@product_name} origen"
 
-#: ../yast/susemanager_migration.rb:94
-msgid "Source #{@product_name} Database &Password"
-msgstr "Contraseña de base de datos del #{@product_name} origen"
+#~ msgid "Source #{@product_name} Database &Password"
+#~ msgstr "Contraseña de base de datos del #{@product_name} origen"
 
-#: ../yast/susemanager_migration.rb:101
-msgid "&Repeat Password"
-msgstr "&Repetir contraseña"
+#~ msgid "&Repeat Password"
+#~ msgstr "&Repetir contraseña"
 
-#: ../yast/susemanager_migration.rb:108
-msgid "Source #{@product_name} Database &Name"
-msgstr "&Nombre de base de datos del #{@product_name} origen"
+#~ msgid "Source #{@product_name} Database &Name"
+#~ msgstr "&Nombre de base de datos del #{@product_name} origen"
 
-#: ../yast/susemanager_migration.rb:121
-msgid "Migration from previous #{@product_name} to new #{@product_name}"
-msgstr "Migración del anterior #{@product_name} al nuevo #{@product_name}"
+#~ msgid "Migration from previous #{@product_name} to new #{@product_name}"
+#~ msgstr "Migración del anterior #{@product_name} al nuevo #{@product_name}"
 
-#: ../yast/susemanager_migration.rb:138
-msgid "Hostname is missing."
-msgstr "Falta el nombre de máquina."
+#~ msgid "Hostname is missing."
+#~ msgstr "Falta el nombre de máquina."
 
-#: ../yast/susemanager_reqs.rb:65
-msgid "already setup"
-msgstr "ya configurado"
+#~ msgid "already setup"
+#~ msgstr "ya configurado"
 
-#: ../yast/susemanager_reqs.rb:67
-msgid ""
-"#{@product_name} is already set up. Do you want to delete the existing setup "
-"and start all over again?"
-msgstr ""
-"#{@product_name} ya está configurado. ¿Desea borrar la configuración actual "
-"y empezar de nuevo?"
+#~ msgid "#{@product_name} is already set up. Do you want to delete the existing setup and start all over again?"
+#~ msgstr "#{@product_name} ya está configurado. ¿Desea borrar la configuración actual y empezar de nuevo?"
 
-#: ../yast/susemanager_reqs.rb:71
-msgid "Continue"
-msgstr "Continuar"
+#~ msgid "Continue"
+#~ msgstr "Continuar"
 
-#: ../yast/susemanager_reqs.rb:72 ../yast/susemanager_reqs.rb:93
-#: ../yast/susemanager_reqs.rb:120 ../yast/susemanager_reqs.rb:147
-#: ../yast/susemanager_reqs.rb:165 ../yast/susemanager_reqs.rb:185
-#: ../yast/susemanager_reqs.rb:205 ../yast/susemanager_reqs.rb:245
-#: ../yast/susemanager_reqs.rb:261
-msgid "Exit installation"
-msgstr "Salir de la instalación"
+#~ msgid "Exit installation"
+#~ msgstr "Salir de la instalación"
 
-#: ../yast/susemanager_reqs.rb:86
-msgid "Not enough memory"
-msgstr "Memoria insuficiente"
+#~ msgid "Not enough memory"
+#~ msgstr "Memoria insuficiente"
 
-#: ../yast/susemanager_reqs.rb:88
-msgid ""
-"#{@product_name} requires 8G of memory to be installed and 16G for good "
-"perfomance. If you continue the product will not function correctly."
-msgstr ""
-"#{@product_name} requiere 8G de memoria para instalarse y 16G para buen "
-"rendimiento. Si continúa, el producto no funcionará correctamente."
+#~ msgid "#{@product_name} requires 8G of memory to be installed and 16G for good perfomance. If you continue the product will not function correctly."
+#~ msgstr "#{@product_name} requiere 8G de memoria para instalarse y 16G para buen rendimiento. Si continúa, el producto no funcionará correctamente."
 
-#: ../yast/susemanager_reqs.rb:92 ../yast/susemanager_reqs.rb:119
-#: ../yast/susemanager_reqs.rb:146 ../yast/susemanager_reqs.rb:164
-#: ../yast/susemanager_reqs.rb:184 ../yast/susemanager_reqs.rb:204
-#: ../yast/susemanager_reqs.rb:244 ../yast/susemanager_reqs.rb:260
-msgid "Continue anyway"
-msgstr "Continuar a pesar de todo"
+#~ msgid "Continue anyway"
+#~ msgstr "Continuar a pesar de todo"
 
-#: ../yast/susemanager_reqs.rb:109 ../yast/susemanager_reqs.rb:136
 #, c-format
-msgid "    Not enough disk space (only %1G free)"
-msgstr "    Espacio en disco insuficiente (solo %1G libres)"
+#~ msgid "    Not enough disk space (only %1G free)"
+#~ msgstr "    Espacio en disco insuficiente (solo %1G libres)"
 
-#: ../yast/susemanager_reqs.rb:115
-msgid ""
-"#{@product_name} requires 100G of free disk space in /var/spacewalk to be "
-"installed. If you continue the product will not function correctly."
-msgstr ""
-"#{@product_name} requiere 100G de disco libre en /var/spacewalk para "
-"instalarse. Si continúa, el producto no funcionará correctamente."
+#~ msgid "#{@product_name} requires 100G of free disk space in /var/spacewalk to be installed. If you continue the product will not function correctly."
+#~ msgstr "#{@product_name} requiere 100G de disco libre en /var/spacewalk para instalarse. Si continúa, el producto no funcionará correctamente."
 
-#: ../yast/susemanager_reqs.rb:142
-msgid ""
-"#{@product_name} requires 50G of free disk space in /var/lib/pgsql to be "
-"installed. If you continue the product will not function correctly."
-msgstr ""
-"#{@product_name} requiere 50G de disco libre en /var/lib/pgsql para "
-"instalarse. Si continúa, el producto no funcionará correctamente."
+#~ msgid "#{@product_name} requires 50G of free disk space in /var/lib/pgsql to be installed. If you continue the product will not function correctly."
+#~ msgstr "#{@product_name} requiere 50G de disco libre en /var/lib/pgsql para instalarse. Si continúa, el producto no funcionará correctamente."
 
-#: ../yast/susemanager_reqs.rb:158
-msgid "Hostname command failed"
-msgstr "El comando hostname ha fallado"
+#~ msgid "Hostname command failed"
+#~ msgstr "El comando hostname ha fallado"
 
-#: ../yast/susemanager_reqs.rb:160
-msgid ""
-"The execution of 'hostname -f' failed. The product will not install "
-"correctly."
-msgstr ""
-"La ejecución de 'hostname -f' falló. El producto no se instalará "
-"correctamente."
+#~ msgid "The execution of 'hostname -f' failed. The product will not install correctly."
+#~ msgstr "La ejecución de 'hostname -f' falló. El producto no se instalará correctamente."
 
-#: ../yast/susemanager_reqs.rb:178 ../yast/susemanager_reqs.rb:198
-#: ../yast/susemanager_reqs.rb:238
-msgid "Illegal FQHN"
-msgstr "FQHN ilegal"
+#~ msgid "Illegal FQHN"
+#~ msgstr "FQHN ilegal"
 
-#: ../yast/susemanager_reqs.rb:180
-msgid ""
-"The FQHN must contain at least 2 dots. The product will not function "
-"correctly."
-msgstr ""
-"El FQHN debe contener al menos 2 puntos. El producto no funcionará "
-"correctamente."
+#~ msgid "The FQHN must contain at least 2 dots. The product will not function correctly."
+#~ msgstr "El FQHN debe contener al menos 2 puntos. El producto no funcionará correctamente."
 
-#: ../yast/susemanager_reqs.rb:200
-msgid ""
-"The FQHN must not contain the '_' (undersorce) character. The product will "
-"not function correctly."
-msgstr ""
-"El FQHN no puede contener el carácter '_' (subrayado). El producto no "
-"funcionará correctamente."
+#~ msgid "The FQHN must not contain the '_' (undersorce) character. The product will not function correctly."
+#~ msgstr "El FQHN no puede contener el carácter '_' (subrayado). El producto no funcionará correctamente."
 
-#: ../yast/susemanager_reqs.rb:240
-msgid ""
-"The output of 'hostname -f' does not match the real hostname. The product "
-"will not install correctly."
-msgstr ""
-"La salida de 'hostname -f' no coincide con el nombre de máquina real. El "
-"producto no funcionará correctamente."
+#~ msgid "The output of 'hostname -f' does not match the real hostname. The product will not install correctly."
+#~ msgstr "La salida de 'hostname -f' no coincide con el nombre de máquina real. El producto no funcionará correctamente."
 
-#: ../yast/susemanager_reqs.rb:254
-msgid "Illegal Hostname"
-msgstr "Nombre de máquina ilegal"
+#~ msgid "Illegal Hostname"
+#~ msgstr "Nombre de máquina ilegal"
 
-#: ../yast/susemanager_reqs.rb:256
-msgid ""
-"Your hostname contains upper case characters. The product will not function "
-"correctly."
-msgstr ""
-"El nombre de máquina contiene mayúsculas. El producto no funcionará "
-"correctamente."
+#~ msgid "Your hostname contains upper case characters. The product will not function correctly."
+#~ msgstr "El nombre de máquina contiene mayúsculas. El producto no funcionará correctamente."
 
-#: ../yast/susemanager_write.rb:54
-msgid "Setup is prepared."
-msgstr "Configuración preparada."
+#~ msgid "Setup is prepared."
+#~ msgstr "Configuración preparada."
 
-#: ../yast/susemanager_write.rb:59 ../yast/susemanager_write.rb:68
-msgid "Setup script output"
-msgstr "Salida del script de configuración"
+#~ msgid "Setup script output"
+#~ msgstr "Salida del script de configuración"
 
-#: ../yast/susemanager_write.rb:63 ../yast/susemanager_write.rb:72
-msgid "Error output"
-msgstr "Salida de error"
+#~ msgid "Error output"
+#~ msgstr "Salida de error"
 
-#: ../yast/susemanager_write.rb:83
-msgid "Now you can start the migration process using the mgr-setup script.\n"
-msgstr "Ya puede iniciar el proceso de migración usando el script mgr-setup.\n"
+#~ msgid "Now you can start the migration process using the mgr-setup script.\n"
+#~ msgstr "Ya puede iniciar el proceso de migración usando el script mgr-setup.\n"
 
-#: ../yast/susemanager_write.rb:107
-msgid ""
-"<p>Now, the configuration script is running, and it will take some time.</"
-"p>\n"
-"<p>The script output and possible error output can be watched on the screen."
-"</p>"
-msgstr ""
-"<p>El script de configuración se está ejecutando y tardará un tiempo.</p>\n"
-"<p>Puede ver en pantalla la salida del script y cualquier error que se "
-"produjera.</p>"
+#~ msgid ""
+#~ "<p>Now, the configuration script is running, and it will take some time.</p>\n"
+#~ "<p>The script output and possible error output can be watched on the screen.</p>"
+#~ msgstr ""
+#~ "<p>El script de configuración se está ejecutando y tardará un tiempo.</p>\n"
+#~ "<p>Puede ver en pantalla la salida del script y cualquier error que se produjera.</p>"
 
-#: ../yast/susemanager_write.rb:111
-msgid "Write Settings"
-msgstr "Guardar configuración"
+#~ msgid "Write Settings"
+#~ msgstr "Guardar configuración"
 
-#: ../yast/susemanager_write.rb:122
-msgid "Now you can either start the setup process directly or exit the\n"
-msgstr "Ya puede iniciar el proceso de configuración o salir de\n"
+#~ msgid "Now you can either start the setup process directly or exit the\n"
+#~ msgstr "Ya puede iniciar el proceso de configuración o salir de\n"
 
-#: ../yast/susemanager_write.rb:134
-msgid "Setup is running. Please wait..."
-msgstr "Se está ejecutando la configuración. Por favor, espere..."
+#~ msgid "Setup is running. Please wait..."
+#~ msgstr "Se está ejecutando la configuración. Por favor, espere..."
 
-#: ../yast/susemanager_write.rb:166
-msgid "Setup is completed."
-msgstr "Configuración finalizada."
+#~ msgid "Setup is completed."
+#~ msgstr "Configuración finalizada."
 
-#: ../yast/susemanager_write.rb:169
-msgid "Setup failed."
-msgstr "Ha fallado la configuración."
+#~ msgid "Setup failed."
+#~ msgstr "Ha fallado la configuración."
 
-#: ../yast/susemanager_write.rb:185
-msgid "Setup has been aborted."
-msgstr "Configuración abortada."
+#~ msgid "Setup has been aborted."
+#~ msgstr "Configuración abortada."
