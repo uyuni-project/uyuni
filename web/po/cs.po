@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-25 10:20+0200\n"
+"POT-Creation-Date: 2025-05-06 11:50+0200\n"
 "PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -706,17 +706,21 @@ msgstr "Monitorování bylo úspěšně aktivováno."
 msgid "Monitoring disabled successfully."
 msgstr "Monitorování bylo úspěšně deaktivováno."
 
-msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
-msgstr "Exportér Tomcat Prometheus je připraven, ale konfigurace JMX je zakázána. "
+msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
+msgstr "Exportér Tomcat Prometheus je aktivní, ale konfigurace JMX je deaktivována. Kliknutím na tlačítko Povolit povolíte konfiguraci JMX nebo kliknutím Zakázat zastavíte exportér Prometheus."
 
-msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
-msgstr "Exportér Tomcat Prometheus není připraven, ale konfigurace JMX je povolena. "
+msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
+msgstr "Exportér Tomcat Prometheus nefunguje, ale konfigurace JMX je povolena. Stisknutím tlačítka Zakázat zakážete konfiguraci JMX nebo stisknutím Povolit spustíte exportér Prometheus."
 
-msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. "
-msgstr "Exportér Taskomatic Prometheus je aktivní, ale konfigurace JMX je deaktivována. "
+#, fuzzy
+#| msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
+msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
+msgstr "Exportér Tomcat Prometheus je aktivní, ale konfigurace JMX je deaktivována. Kliknutím na tlačítko Povolit povolíte konfiguraci JMX nebo kliknutím Zakázat zastavíte exportér Prometheus."
 
-msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. "
-msgstr "Exportér Taskomatic Prometheus neběží, ale konfigurace JMX je povolena. "
+#, fuzzy
+#| msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
+msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
+msgstr "Exportér Tomcat Prometheus nefunguje, ale konfigurace JMX je povolena. Stisknutím tlačítka Zakázat zakážete konfiguraci JMX nebo stisknutím Povolit spustíte exportér Prometheus."
 
 msgid "Monitoring status hasn't changed."
 msgstr "Stav monitorování se nezměnil."
@@ -4673,6 +4677,18 @@ msgstr "Zdroj nebyl nalezen."
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
 
+#~ msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
+#~ msgstr "Exportér Tomcat Prometheus je připraven, ale konfigurace JMX je zakázána. "
+
+#~ msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
+#~ msgstr "Exportér Tomcat Prometheus není připraven, ale konfigurace JMX je povolena. "
+
+#~ msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. "
+#~ msgstr "Exportér Taskomatic Prometheus je aktivní, ale konfigurace JMX je deaktivována. "
+
+#~ msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. "
+#~ msgstr "Exportér Taskomatic Prometheus neběží, ale konfigurace JMX je povolena. "
+
 #~ msgid "Bare-metal systems"
 #~ msgstr "Serverové systémy s jediným virtuálem"
 
@@ -5026,12 +5042,6 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "e.g. \"0 15 2 ? * 7\""
 #~ msgstr "např. \"0 15 2 ? * 7\""
-
-#~ msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
-#~ msgstr "Exportér Tomcat Prometheus je aktivní, ale konfigurace JMX je deaktivována. Kliknutím na tlačítko Povolit povolíte konfiguraci JMX nebo kliknutím Zakázat zastavíte exportér Prometheus."
-
-#~ msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
-#~ msgstr "Exportér Tomcat Prometheus nefunguje, ale konfigurace JMX je povolena. Stisknutím tlačítka Zakázat zakážete konfiguraci JMX nebo stisknutím Povolit spustíte exportér Prometheus."
 
 #~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
 #~ msgstr "Jestliže jste použili záložku, mohla se stránka od vytvoření záložky přesunout na jiné místo. Pomocí horních (nebo levých) navigačních panelů najděte hledanou stránku, a najdete-li dokument, nezapomeňte záložku aktualizovat."
