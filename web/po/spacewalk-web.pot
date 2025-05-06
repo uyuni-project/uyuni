@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-25 09:41+0200\n"
+"POT-Creation-Date: 2025-05-06 11:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -160,7 +160,7 @@ msgstr ""
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:66
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:49
 #: ../html/src/components/target-systems.tsx:34
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:61
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:57
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:68
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:285
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
@@ -286,7 +286,7 @@ msgstr ""
 #: ../html/src/components/hub/ModalEditButton.tsx:94
 #: ../html/src/components/large-text-attachment.tsx:184
 #: ../html/src/components/panels/CreatorPanel.tsx:125
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:144
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:115
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:197
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:35
@@ -532,7 +532,7 @@ msgid "{rangeInputName} end"
 msgstr ""
 
 #: ../html/src/components/formik/field/FieldBase.tsx:30
-#: ../html/src/components/input/InputBase.tsx:278
+#: ../html/src/components/input/InputBase.tsx:279
 msgid "required"
 msgstr ""
 
@@ -567,8 +567,8 @@ msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr ""
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:157
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:159
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:160
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:130
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:131
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
 msgid "Reset"
 msgstr ""
@@ -2058,133 +2058,139 @@ msgstr ""
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:38
 msgid ""
 "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
+"Click the Enable button to enable the JMX configuration or click Disable to "
+"stop the Prometheus exporter."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:42
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:41
 msgid ""
 "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
+"Click the Disable button to disable the JMX configuration or click Enable to "
+"start the Prometheus exporter."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:46
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:44
 msgid ""
 "The Taskomatic Prometheus exporter is up but the JMX configuration is "
-"disabled. "
+"disabled. Click the Enable button to enable the JMX configuration or click "
+"Disable to stop the Prometheus exporter."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:50
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:47
 msgid ""
 "The Taskomatic Prometheus exporter is down but the JMX configuration is "
-"enabled. "
+"enabled. Click the Disable button to disable the JMX configuration or click "
+"Enable to start the Prometheus exporter."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:56
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:52
 msgid "Monitoring status hasn't changed."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:57
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:53
 msgid "An error occurred. Monitoring status unknown. Refresh the page."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:62
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:58
 msgid "Tomcat (Java JMX)"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:63
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:59
 msgid "Taskomatic (Java JMX)"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:64
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:60
 msgid "PostgreSQL database"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:65
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:61
 msgid "Server self monitoring"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:81
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:83
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:77
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:79
 #: ../html/src/manager/appstreams/panel-appstream.tsx:22
 msgid "Enabled"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:91
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:93
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:87
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:89
 msgid "Disabled"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:152
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:148
 msgid "Server Monitoring"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:154
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:150
 msgid ""
 "The server uses <link>Prometheus</link> exporters to expose metrics about "
 "your environment."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:163
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:159
 msgid ""
 "Refer to the <link>documentation</link> to learn how to consume these "
 "metrics."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:254
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:274
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:294
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:316
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:250
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:270
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:290
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:312
 msgid "Enable"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:261
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:281
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:301
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:324
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:257
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:277
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:297
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:320
 msgid "Disable"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:338
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:334
 msgid "{productName} Configuration - Monitoring"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:345
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:341
 msgid "Set up monitoring for your {productName} server."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:351
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:347
 msgid "General"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:356
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:352
 msgid "Bootstrap Script"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:361
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:357
 msgid "Organizations"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:366
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:362
 msgid "Restart"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:371
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:367
 msgid "Cobbler"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:375
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:384
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:396
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:371
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:380
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:392
 msgid "Monitoring"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:378
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:374
 msgid "Password Policy"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:407
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:403
 msgid "Restarting"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:408
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:404
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
@@ -2313,68 +2319,68 @@ msgstr ""
 msgid "Add PAYG Connection"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:47
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:18
 msgid "Server Configuration - Password Policy"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:50
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:21
 msgid "Set up your server local users password policy."
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:53
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:24
 msgid "Password Policy Settings"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:58
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:29
 msgid "Min Password Length"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:65
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:36
 msgid "Max Password Length"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:72
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:43
 msgid "Require Digits"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:79
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:50
 msgid "Require Lowercase Characters"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:86
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:57
 msgid "Require Uppercase Characters"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:93
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:64
 msgid "Restrict Consecutive Characters"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:100
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:71
 msgid "Require Special Characters"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:107
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:78
 msgid "Allowed Special Characters"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:119
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:90
 msgid "Restrict Characters Occurrences"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:126
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:97
 msgid "Max Characters Occurrences"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:143
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:114
 msgid "Save Password Policy"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:149
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:120
 msgid "Password Policy Changed"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:166
-msgid "Password Policy reset to defaults"
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:139
+msgid "Password Policy Reset to Default"
 msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66

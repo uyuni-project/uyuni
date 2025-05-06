@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-25 09:41+0200\n"
+"POT-Creation-Date: 2025-05-06 11:31+0200\n"
 "PO-Revision-Date: 2025-04-11 16:56+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
@@ -29,12 +29,8 @@ msgid "remaining"
 msgstr "restant"
 
 #: ../html/javascript/spacewalk-essentials.js:427
-msgid ""
-"The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
-"Edge"
-msgstr ""
-"El navegador Internet Explorer no està suportat. Proveu d'utilitzar el "
-"Firefox, Chrome o Edge"
+msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
+msgstr "El navegador Internet Explorer no està suportat. Proveu d'utilitzar el Firefox, Chrome o Edge"
 
 #: ../html/src/components/CoCoScansList.tsx:75
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
@@ -44,12 +40,8 @@ msgstr "L'acció ha estat <link>programada</link>."
 
 #: ../html/src/components/CoCoScansList.tsx:90
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:77
-msgid ""
-"Unable to schedule action. Please check the server logs for detailed "
-"information."
-msgstr ""
-"No s'ha pogut programar l'acció. Si us plau, comproveu els registres del "
-"servidor per obtenir informació detallada."
+msgid "Unable to schedule action. Please check the server logs for detailed information."
+msgstr "No s'ha pogut programar l'acció. Si us plau, comproveu els registres del servidor per obtenir informació detallada."
 
 #: ../html/src/components/CoCoScansList.tsx:122
 msgid "Confirm Attestation Execution"
@@ -87,8 +79,7 @@ msgstr "Detalls de l'informe d'autenticació"
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr ""
-"Fórmula desada. No es necessita aplicar l'estat alt per a aquesta fórmula."
+msgstr "Fórmula desada. No es necessita aplicar l'estat alt per a aquesta fórmula."
 
 #: ../html/src/components/FormulaForm.tsx:168
 msgid "Please input required fields: {fields}"
@@ -99,12 +90,8 @@ msgid "Invalid format of fields: {fields}"
 msgstr "El format dels camps no és vàlid: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:213
-msgid ""
-"On this page you can configure Salt Formulas to automatically install and "
-"configure software."
-msgstr ""
-"En aquesta pàgina podeu configurar Fórmules Salt per instal·lar i configurar "
-"automàticament el programari."
+msgid "On this page you can configure Salt Formulas to automatically install and configure software."
+msgstr "En aquesta pàgina podeu configurar Fórmules Salt per instal·lar i configurar automàticament el programari."
 
 #: ../html/src/components/FormulaForm.tsx:268
 msgid "Expand All Sections"
@@ -127,15 +114,8 @@ msgid "new action chain"
 msgstr "nova cadena d'acció"
 
 #: ../html/src/components/action-schedule.tsx:198
-msgid ""
-"There are multiple maintenance schedules for selected systems. Make sure "
-"that systems in the set use at most 1 maintenance schedule if you want to "
-"schedule by date or maintenance window."
-msgstr ""
-"Hi ha múltiples horaris de manteniment per als sistemes seleccionats. "
-"Assegureu-vos que els sistemes del conjunt utilitzen com a màxim 1 "
-"planificació de manteniment si voleu programar per data o finestra de "
-"manteniment."
+msgid "There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window."
+msgstr "Hi ha múltiples horaris de manteniment per als sistemes seleccionats. Assegureu-vos que els sistemes del conjunt utilitzen com a màxim 1 planificació de manteniment si voleu programar per data o finestra de manteniment."
 
 #: ../html/src/components/action-schedule.tsx:205
 msgid "No upcoming maintenance windows"
@@ -172,7 +152,7 @@ msgstr "La prova  {identifier} s'executa el dia {date} a les {time}"
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:66
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:49
 #: ../html/src/components/target-systems.tsx:34
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:61
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:57
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:68
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:285
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
@@ -298,7 +278,7 @@ msgstr "Processa la sortida"
 #: ../html/src/components/hub/ModalEditButton.tsx:94
 #: ../html/src/components/large-text-attachment.tsx:184
 #: ../html/src/components/panels/CreatorPanel.tsx:125
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:144
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:115
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:197
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:35
@@ -366,12 +346,8 @@ msgid "Are you sure you want to {action} {name}"
 msgstr "Esteu segur que voleu {action} {name}"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:84
-msgid ""
-"Are you sure you want to {action} the selected {name}s? ({count} {name}s "
-"selected)"
-msgstr ""
-"Esteu segur que voleu {action} el {name} seleccionat? ({count} {name}s "
-"seleccionats)"
+msgid "Are you sure you want to {action} the selected {name}s? ({count} {name}s selected)"
+msgstr "Esteu segur que voleu {action} el {name} seleccionat? ({count} {name}s seleccionats)"
 
 #: ../html/src/components/dialog/DangerDialog.tsx:61
 #: ../html/src/components/dialog/DangerDialog.tsx:62
@@ -546,7 +522,7 @@ msgid "{rangeInputName} end"
 msgstr "Acaba {rangeInputName}"
 
 #: ../html/src/components/formik/field/FieldBase.tsx:30
-#: ../html/src/components/input/InputBase.tsx:278
+#: ../html/src/components/input/InputBase.tsx:279
 msgid "required"
 msgstr "requerit"
 
@@ -564,14 +540,8 @@ msgid " No group"
 msgstr " Cap grup"
 
 #: ../html/src/components/formula-selection.tsx:272
-msgid ""
-"On this page you can select Salt Formulas for this group/system, which can "
-"then be configured on group and system level. This allows you to "
-"automatically install and configure software."
-msgstr ""
-"En aquesta pàgina podeu seleccionar Fórmules de sal per a aquest grup/"
-"sistema, que es poden configurar a nivell de grup i de sistema. Això permet "
-"instal·lar i configurar automàticament el programari."
+msgid "On this page you can select Salt Formulas for this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software."
+msgstr "En aquesta pàgina podeu seleccionar Fórmules de sal per a aquest grup/sistema, que es poden configurar a nivell de grup i de sistema. Això permet instal·lar i configurar automàticament el programari."
 
 #: ../html/src/components/formula-selection.tsx:299
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:65
@@ -581,13 +551,11 @@ msgstr "Fórmules"
 
 #: ../html/src/components/formulas/EditGroup.tsx:358
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr ""
-"Aquest camp s'utilitza com a identificador de «clau» en les dades de pilar "
-"resultants."
+msgstr "Aquest camp s'utilitza com a identificador de «clau» en les dades de pilar resultants."
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:157
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:159
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:160
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:130
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:131
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
 msgid "Reset"
 msgstr "Restableix"
@@ -661,12 +629,8 @@ msgid "New token successfully issued"
 msgstr "El testimoni nou s'ha emès correctament"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:186
-msgid ""
-"The new token was generated successfully. Make sure to copy it now as you "
-"will not be able to see this again."
-msgstr ""
-"El testimoni nou s'ha generat amb èxit. Assegureu-vos de copiar-lo ara, ja "
-"que no podreu tornar a veure-ho."
+msgid "The new token was generated successfully. Make sure to copy it now as you will not be able to see this again."
+msgstr "El testimoni nou s'ha generat amb èxit. Assegureu-vos de copiar-lo ara, ja que no podreu tornar a veure-ho."
 
 #: ../html/src/components/hub/AddTokenButton.tsx:200
 msgid "Copy"
@@ -697,20 +661,12 @@ msgid "Confirm deregistration"
 msgstr "Confirmeu la baixa"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:64
-msgid ""
-"Are you sure you want to deregister from hub {fqdn}? If you do, you will no "
-"longer receive data from it."
-msgstr ""
-"Esteu segur que voleu donar-vos de baixa del centre {fqdn}? Si ho fa, ja no "
-"rebrà dades d'ella."
+msgid "Are you sure you want to deregister from hub {fqdn}? If you do, you will no longer receive data from it."
+msgstr "Esteu segur que voleu donar-vos de baixa del centre {fqdn}? Si ho fa, ja no rebrà dades d'ella."
 
 #: ../html/src/components/hub/DeregisterServer.tsx:70
-msgid ""
-"Are you sure you want to deregister peripheral {fqdn}? All the current "
-"configuration will be lost."
-msgstr ""
-"Segur que voleu cancel·lar el registre del perifèric {fqdn}? Se'n perdrà "
-"tota la configuració actual."
+msgid "Are you sure you want to deregister peripheral {fqdn}? All the current configuration will be lost."
+msgstr "Segur que voleu cancel·lar el registre del perifèric {fqdn}? Se'n perdrà tota la configuració actual."
 
 #: ../html/src/components/hub/DeregisterServer.tsx:86
 msgid "The server {fqdn} has been successfully deregistered."
@@ -815,24 +771,16 @@ msgid "Migration failed"
 msgstr "La migració ha fallat"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:193
-msgid ""
-"Some of the servers where migrated successfully, but some errors happened "
-"during the process."
-msgstr ""
-"Alguns dels servidors s'han migrat correctament, però s'han produït alguns "
-"errors durant el procés."
+msgid "Some of the servers where migrated successfully, but some errors happened during the process."
+msgstr "Alguns dels servidors s'han migrat correctament, però s'han produït alguns errors durant el procés."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:194
-msgid ""
-"The migration process was not successfull and reported the following errors"
-msgstr ""
-"El procés de migració no ha tingut èxit i s'ha informat dels errors següents"
+msgid "The migration process was not successfull and reported the following errors"
+msgstr "El procés de migració no ha tingut èxit i s'ha informat dels errors següents"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:226
 msgid "This slave is currently disabled and cannot be selected for migration"
-msgstr ""
-"Aquest esclau està actualment desactivat i no es pot seleccionar per a la "
-"migració"
+msgstr "Aquest esclau està actualment desactivat i no es pot seleccionar per a la migració"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:227
 msgid "Check to migrate this server to a peripheral"
@@ -890,21 +838,12 @@ msgid "This server has a different root CA."
 msgstr "Aquest servidor té una CA d'arrel diferent."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:296
-msgid ""
-"Ensure the certificate you are providing for {fqdn} is correct before "
-"proceeding. A wrong value will prevent the connection with the hub."
-msgstr ""
-"Assegureu-vos que el certificat que proporcioneu per a {fqdn} sigui correcte "
-"abans de continuar. Un valor incorrecte impedirà la connexió amb el "
-"concentrador."
+msgid "Ensure the certificate you are providing for {fqdn} is correct before proceeding. A wrong value will prevent the connection with the hub."
+msgstr "Assegureu-vos que el certificat que proporcioneu per a {fqdn} sigui correcte abans de continuar. Un valor incorrecte impedirà la connexió amb el concentrador."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:301
-msgid ""
-"Are you sure you want to remove the current Root Certificate Authority for "
-"{fqdn}?"
-msgstr ""
-"Segur que voleu eliminar l'autoritat de certificació d'arrel actual per a "
-"{fqdn}?"
+msgid "Are you sure you want to remove the current Root Certificate Authority for {fqdn}?"
+msgstr "Segur que voleu eliminar l'autoritat de certificació d'arrel actual per a {fqdn}?"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:321
 #: ../html/src/manager/notifications/notifications-list.tsx:339
@@ -961,12 +900,8 @@ msgid "Peripheral Server FQDN"
 msgstr "Servidor Perifèric FQDN"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:158
-msgid ""
-"The unique, DNS-resolvable fully-qualified domain name of the server to "
-"register."
-msgstr ""
-"L'únic nom de domini completament qualificat del servidor que s'ha de "
-"registrar."
+msgid "The unique, DNS-resolvable fully-qualified domain name of the server to register."
+msgstr "L'únic nom de domini completament qualificat del servidor que s'ha de registrar."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:168
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:169
@@ -986,10 +921,8 @@ msgid "Administrator User/Password"
 msgstr "Administrador Usuari/Contrasenya"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:185
-msgid ""
-"The token that grant access to the remote server to establish the connection."
-msgstr ""
-"El testimoni que dona accés al servidor remot per establir la connexió."
+msgid "The token that grant access to the remote server to establish the connection."
+msgstr "El testimoni que dona accés al servidor remot per establir la connexió."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
@@ -1013,12 +946,8 @@ msgid "Root CA certificate"
 msgstr "Certificat de CA d'arrel"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:218
-msgid ""
-"The Root certificate authority of the remote server, that must be trusted to "
-"establish a secure connection."
-msgstr ""
-"L'autoritat del certificat Root del servidor remot, que s'ha de confiar per "
-"establir una connexió segura."
+msgid "The Root certificate authority of the remote server, that must be trusted to establish a secure connection."
+msgstr "L'autoritat del certificat Root del servidor remot, que s'ha de confiar per establir una connexió segura."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
 #: ../html/src/components/large-text-attachment.tsx:144
@@ -1061,63 +990,36 @@ msgid "Clear fields"
 msgstr "Neteja els camps"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:16
-msgid ""
-"A customized Root Certificate Authority is currently configured for this hub."
-msgstr ""
-"Actualment hi ha configurada una Autoritat de Certificats Root "
-"personalitzada per a aquest hub."
+msgid "A customized Root Certificate Authority is currently configured for this hub."
+msgstr "Actualment hi ha configurada una Autoritat de Certificats Root personalitzada per a aquest hub."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:17
-msgid ""
-"A customized Root Certificate Authority is currently configured for this "
-"peripheral."
-msgstr ""
-"Actualment s'ha configurat una autoritat de certificació d'arrel "
-"personalitzada per a aquest perifèric."
+msgid "A customized Root Certificate Authority is currently configured for this peripheral."
+msgstr "Actualment s'ha configurat una autoritat de certificació d'arrel personalitzada per a aquest perifèric."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:20
 msgid "This hub is currently using the default Root Certificate Authority."
-msgstr ""
-"Aquest centre està utilitzant l'autoritat de certificats Root per defecte."
+msgstr "Aquest centre està utilitzant l'autoritat de certificats Root per defecte."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:21
-msgid ""
-"This peripheral is currently using the default Root Certificate Authority."
-msgstr ""
-"Aquest perifèric usa actualment l'autoritat de certificació d'arrel "
-"predeterminada."
+msgid "This peripheral is currently using the default Root Certificate Authority."
+msgstr "Aquest perifèric usa actualment l'autoritat de certificació d'arrel predeterminada."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:25
-msgid ""
-"Ensure the certificate you are providing is correct before proceeding. A "
-"wrong value will break the connection with the hub."
-msgstr ""
-"Assegureu-vos que el certificat que proporcioneu sigui correcte abans de "
-"procedir. Un valor incorrecte trencarà la connexió amb el hub."
+msgid "Ensure the certificate you are providing is correct before proceeding. A wrong value will break the connection with the hub."
+msgstr "Assegureu-vos que el certificat que proporcioneu sigui correcte abans de procedir. Un valor incorrecte trencarà la connexió amb el hub."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:28
-msgid ""
-"Ensure the certificate you are providing is correct before proceeding. A "
-"wrong value will break the connection with the peripheral."
-msgstr ""
-"Assegureu-vos que el certificat que proporcioneu és correcte abans de "
-"continuar. Un valor incorrecte trencarà la connexió amb el perifèric."
+msgid "Ensure the certificate you are providing is correct before proceeding. A wrong value will break the connection with the peripheral."
+msgstr "Assegureu-vos que el certificat que proporcioneu és correcte abans de continuar. Un valor incorrecte trencarà la connexió amb el perifèric."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:33
-msgid ""
-"Are you sure you want to delete the current Root Certificate Authority? This "
-"change may break the connection with the hub."
-msgstr ""
-"Esteu segur que voleu suprimir l'actual Autoritat de Certificats Arrel? "
-"Aquest canvi pot trencar la connexió amb el hub."
+msgid "Are you sure you want to delete the current Root Certificate Authority? This change may break the connection with the hub."
+msgstr "Esteu segur que voleu suprimir l'actual Autoritat de Certificats Arrel? Aquest canvi pot trencar la connexió amb el hub."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:36
-msgid ""
-"Are you sure you want to delete the current Root Certificate Authority? This "
-"change may break the connection with the peripheral."
-msgstr ""
-"Assegureu-vos que el certificat que proporcioneu és correcte abans de "
-"continuar. Un valor incorrecte trencarà la connexió amb el perifèric."
+msgid "Are you sure you want to delete the current Root Certificate Authority? This change may break the connection with the peripheral."
+msgstr "Assegureu-vos que el certificat que proporcioneu és correcte abans de continuar. Un valor incorrecte trencarà la connexió amb el perifèric."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:67
 msgid "Server FQDN:"
@@ -1141,8 +1043,7 @@ msgstr "Clau pública del GPG:"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:123
 msgid "A customized GPG key is currently configured for this hub."
-msgstr ""
-"Actualment s'ha configurat una clau GPG personalitzada per a aquest hub."
+msgstr "Actualment s'ha configurat una clau GPG personalitzada per a aquest hub."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:124
 msgid "This hub is currently not using a custom GPG key."
@@ -1173,12 +1074,8 @@ msgid "{nSyncedChannels} syncronized channels, from one organization"
 msgstr "{nSyncedChannels} canals sincronitzats, d'una organització"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:192
-msgid ""
-"{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different "
-"organizations"
-msgstr ""
-"{nSyncedChannels} canals sincronitzats, de {nSyncedOrgs} organitzacions "
-"diferents"
+msgid "{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different organizations"
+msgstr "{nSyncedChannels} canals sincronitzats, de {nSyncedOrgs} organitzacions diferents"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:198
 msgid "Root Certificate Authority successfully modified."
@@ -1202,8 +1099,7 @@ msgstr "Canals sincronitzats correctament amb el perifèric!"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:243
 msgid "Please select at least one channel to add or remove from sync"
-msgstr ""
-"Seleccioneu almenys un canal per afegir o eliminar de la sincronització"
+msgstr "Seleccioneu almenys un canal per afegir o eliminar de la sincronització"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:293
 msgid "Channels to Add"
@@ -1255,12 +1151,8 @@ msgid "Arch"
 msgstr "Arc"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:318
-msgid ""
-"Some custom channels do not have a sync organization selected. Please select "
-"organizations before confirming."
-msgstr ""
-"Alguns canals personalitzats no tenen una organització de sincronització "
-"seleccionada. Seleccioneu organitzacions abans de confirmar-ho."
+msgid "Some custom channels do not have a sync organization selected. Please select organizations before confirming."
+msgstr "Alguns canals personalitzats no tenen una organització de sincronització seleccionada. Seleccioneu organitzacions abans de confirmar-ho."
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:324
 msgid "No channels selected to add"
@@ -1393,38 +1285,25 @@ msgstr "Confirmeu l'eliminació del testimoni d'accés"
 
 #: ../html/src/components/hub/TokenTable.tsx:181
 msgid "Are you sure you want to delete this token. It is currently not used."
-msgstr ""
-"Esteu segur que voleu suprimir aquest testimoni. Actualment no s'utilitza."
+msgstr "Esteu segur que voleu suprimir aquest testimoni. Actualment no s'utilitza."
 
 #: ../html/src/components/hub/TokenTable.tsx:220
 msgid "This access token cannot be deleted. It is currently used by hub {fqdn}"
-msgstr ""
-"Aquest testimoni d'accés no es pot suprimir. Actualment l'utilitza el hub "
-"{fqdn}"
+msgstr "Aquest testimoni d'accés no es pot suprimir. Actualment l'utilitza el hub {fqdn}"
 
 #: ../html/src/components/hub/TokenTable.tsx:224
-msgid ""
-"This access token cannot be deleted. It is currently used by peripheral "
-"{fqdn}"
-msgstr ""
-"Aquest testimoni d'accés no es pot suprimir. Actualment és utilitzat pel "
-"perifèric {fqdn}"
+msgid "This access token cannot be deleted. It is currently used by peripheral {fqdn}"
+msgstr "Aquest testimoni d'accés no es pot suprimir. Actualment és utilitzat pel perifèric {fqdn}"
 
 #. token issued for another server currently valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:235
-msgid ""
-"Invalidating this access token will prevent the hub {fqdn} from accesssing."
-msgstr ""
-"La invalidació d'aquest testimoni d'accés impedirà l'accés al hub {fqdn}."
+msgid "Invalidating this access token will prevent the hub {fqdn} from accesssing."
+msgstr "La invalidació d'aquest testimoni d'accés impedirà l'accés al hub {fqdn}."
 
 #. token issued for another server currently valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:238
-msgid ""
-"Invalidating this access token will prevent the peripheral {fqdn} from "
-"accesssing."
-msgstr ""
-"La invalidació d'aquest testimoni d'accés impedirà que s'hi accedeixi el "
-"perifèric {fqdn}."
+msgid "Invalidating this access token will prevent the peripheral {fqdn} from accesssing."
+msgstr "La invalidació d'aquest testimoni d'accés impedirà que s'hi accedeixi el perifèric {fqdn}."
 
 #. token issued for another server currently not valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:241
@@ -1434,36 +1313,27 @@ msgstr "Si activeu aquest testimoni d'accés, es concedirà accés al hub {fqdn}
 #. token issued for another server currently not valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:244
 msgid "Enabling this access token will grant access to the peripheral {fqdn}."
-msgstr ""
-"Si activeu aquest testimoni d'accés, es concedirà accés al perifèric {fqdn}."
+msgstr "Si activeu aquest testimoni d'accés, es concedirà accés al perifèric {fqdn}."
 
 #. token received from another server currently valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:247
 msgid "Invalidating this access token will prevent access to the hub {fqdn}."
-msgstr ""
-"La invalidació d'aquest testimoni d'accés impedirà l'accés al hub {fqdn}."
+msgstr "La invalidació d'aquest testimoni d'accés impedirà l'accés al hub {fqdn}."
 
 #. token received from another server currently valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:250
-msgid ""
-"Invalidating this access token will prevent access to the peripheral {fqdn}."
-msgstr ""
-"La invalidació d'aquest testimoni d'accés impedirà l'accés al perifèric "
-"{fqdn}."
+msgid "Invalidating this access token will prevent access to the peripheral {fqdn}."
+msgstr "La invalidació d'aquest testimoni d'accés impedirà l'accés al perifèric {fqdn}."
 
 #. token received from another server currently not valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:253
 msgid "Enabling this access token will restore access to the hub {fqdn}."
-msgstr ""
-"Si activeu aquest testimoni d'accés, es restaurarà l'accés al hub {fqdn}."
+msgstr "Si activeu aquest testimoni d'accés, es restaurarà l'accés al hub {fqdn}."
 
 #. token received from another server currently not valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:256
-msgid ""
-"Enabling this access token will restore access to the peripheral {fqdn}."
-msgstr ""
-"Si activeu aquest testimoni d'accés, es restaurarà l'accés al perifèric "
-"{fqdn}."
+msgid "Enabling this access token will restore access to the peripheral {fqdn}."
+msgstr "Si activeu aquest testimoni d'accés, es restaurarà l'accés al perifèric {fqdn}."
 
 #: ../html/src/components/input/datetime/DateTime.example.tsx:24
 msgid "Time"
@@ -1711,12 +1581,8 @@ msgid "Monthly:"
 msgstr "Mensual:"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:468
-msgid ""
-"Days are limited to 28 to have a recurring schedule available for all the "
-"months"
-msgstr ""
-"Els dies estan limitats a 28 per tenir disponible una programació recurrent "
-"per a tots els mesos"
+msgid "Days are limited to 28 to have a recurring schedule available for all the months"
+msgstr "Els dies estan limitats a 28 per tenir disponible una programació recurrent per a tots els mesos"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:483
 msgid "Custom Quartz format:"
@@ -1772,11 +1638,8 @@ msgid "Reboot state will be put last."
 msgstr "L'estat de reinici es posarà al final."
 
 #: ../html/src/components/states-picker.tsx:132
-msgid ""
-"'Reboot system' and 'Reboot system if needed' states cannot be used together."
-msgstr ""
-"Els estats \"sistema de reinici\" i \"sistema de reinici si és necessari\" "
-"no es poden utilitzar junts."
+msgid "'Reboot system' and 'Reboot system if needed' states cannot be used together."
+msgstr "Els estats \"sistema de reinici\" i \"sistema de reinici si és necessari\" no es poden utilitzar junts."
 
 #: ../html/src/components/states-picker.tsx:155
 msgid "State assignments have been saved."
@@ -1788,8 +1651,7 @@ msgstr "S'ha produït un error en desar."
 
 #: ../html/src/components/states-picker.tsx:308
 msgid "No states assigned. Use search to find and assign states."
-msgstr ""
-"No s'ha assignat cap estat. Utilitza la cerca per trobar i assignar estats."
+msgstr "No s'ha assignat cap estat. Utilitza la cerca per trobar i assignar estats."
 
 #: ../html/src/components/states-picker.tsx:367
 #: ../html/src/manager/images/image-view.tsx:818
@@ -1889,11 +1751,8 @@ msgid "Assign"
 msgstr "Assigna"
 
 #: ../html/src/components/states-picker.tsx:513
-msgid ""
-"Select the systems to schedule for immediate state execution and confirm."
-msgstr ""
-"Seleccioneu els sistemes a programar per a l'execució immediata de l'estat i "
-"confirmeu."
+msgid "Select the systems to schedule for immediate state execution and confirm."
+msgstr "Seleccioneu els sistemes a programar per a l'execució immediata de l'estat i confirmeu."
 
 #: ../html/src/components/states-picker.tsx:523
 msgid "This table is empty"
@@ -2108,38 +1967,23 @@ msgstr "Cal reiniciar perquè els canvis de configuració tinguin efecte."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:26
 msgid "An internal error has occurred. See the server logs for details."
-msgstr ""
-"S'ha produït un error intern. Per a més detalls, vegeu els registres del "
-"servidor."
+msgstr "S'ha produït un error intern. Per a més detalls, vegeu els registres del servidor."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:27
 msgid "Enabling monitoring failed. See the server logs for details."
-msgstr ""
-"Ha fallat l'habilitació del seguiment. Per a més detalls, vegeu els "
-"registres del servidor."
+msgstr "Ha fallat l'habilitació del seguiment. Per a més detalls, vegeu els registres del servidor."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:29
-msgid ""
-"Failed to enable all monitoring services. Some services are still disabled. "
-"See the server logs for details."
-msgstr ""
-"No s'han pogut habilitar tots els serveis de seguiment. Alguns serveis "
-"encara estan desactivats. Per a més detalls, vegeu els registres del "
-"servidor."
+msgid "Failed to enable all monitoring services. Some services are still disabled. See the server logs for details."
+msgstr "No s'han pogut habilitar tots els serveis de seguiment. Alguns serveis encara estan desactivats. Per a més detalls, vegeu els registres del servidor."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:31
 msgid "Disabling monitoring failed. See the server logs for details."
-msgstr ""
-"Ha fallat la inhabilitació del monitoratge. Per a més detalls, vegeu els "
-"registres del servidor."
+msgstr "Ha fallat la inhabilitació del monitoratge. Per a més detalls, vegeu els registres del servidor."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:33
-msgid ""
-"Failed to disable all monitoring services. Some services are still enabled. "
-"See the server logs for details."
-msgstr ""
-"No s'han pogut desactivar tots els serveis de monitorització. Alguns serveis "
-"encara estan habilitats. Per a més detalls, vegeu els registres del servidor."
+msgid "Failed to disable all monitoring services. Some services are still enabled. See the server logs for details."
+msgstr "No s'han pogut desactivar tots els serveis de monitorització. Alguns serveis encara estan habilitats. Per a més detalls, vegeu els registres del servidor."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:35
 msgid "Monitoring enabled successfully."
@@ -2150,154 +1994,131 @@ msgid "Monitoring disabled successfully."
 msgstr "El seguiment s'ha desactivat correctament."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:38
-msgid ""
-"The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
+msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
 msgstr ""
-"L'exportador Tomcat Prometheus està activat però la configuració JMX està "
-"desactivada. "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:42
-msgid ""
-"The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:41
+msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
 msgstr ""
-"L'exportador Tomcat Prometheus està desactivat, però la configuració JMX "
-"està activada. "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:46
-msgid ""
-"The Taskomatic Prometheus exporter is up but the JMX configuration is "
-"disabled. "
-msgstr ""
-"L'exportador Taskomatic Prometheus està actiu, però la configuració JMX està "
-"desactivada. "
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:44
+#, fuzzy
+#| msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. "
+msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
+msgstr "L'exportador Taskomatic Prometheus està actiu, però la configuració JMX està desactivada. "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:50
-msgid ""
-"The Taskomatic Prometheus exporter is down but the JMX configuration is "
-"enabled. "
-msgstr ""
-"L'exportador Taskomatic Prometheus està desactivat, però la configuració JMX "
-"està activada. "
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:47
+#, fuzzy
+#| msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. "
+msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
+msgstr "L'exportador Taskomatic Prometheus està desactivat, però la configuració JMX està activada. "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:56
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:52
 msgid "Monitoring status hasn't changed."
 msgstr "L'estat de seguiment no ha canviat."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:57
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:53
 msgid "An error occurred. Monitoring status unknown. Refresh the page."
-msgstr ""
-"S'ha produït un error. Estat de seguiment desconegut. Actualitza la pàgina."
+msgstr "S'ha produït un error. Estat de seguiment desconegut. Actualitza la pàgina."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:62
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:58
 msgid "Tomcat (Java JMX)"
 msgstr "Tomcat (Java JMX)"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:63
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:59
 msgid "Taskomatic (Java JMX)"
 msgstr "Taskomatic (Java JMX)"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:64
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:60
 msgid "PostgreSQL database"
 msgstr "Base de dades PostgreSQL"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:65
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:61
 msgid "Server self monitoring"
 msgstr "Autocontrol del servidor"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:81
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:83
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:77
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:79
 #: ../html/src/manager/appstreams/panel-appstream.tsx:22
 msgid "Enabled"
 msgstr "Habilitat"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:91
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:93
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:87
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:89
 msgid "Disabled"
 msgstr "Desactivat"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:152
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:148
 msgid "Server Monitoring"
 msgstr "Seguiment del servidor"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:154
-msgid ""
-"The server uses <link>Prometheus</link> exporters to expose metrics about "
-"your environment."
-msgstr ""
-"El servidor usa exportadors <link>Prometheus</link> per exposar mètriques "
-"sobre el vostre entorn."
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:150
+msgid "The server uses <link>Prometheus</link> exporters to expose metrics about your environment."
+msgstr "El servidor usa exportadors <link>Prometheus</link> per exposar mètriques sobre el vostre entorn."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:163
-msgid ""
-"Refer to the <link>documentation</link> to learn how to consume these "
-"metrics."
-msgstr ""
-"Consulteu la <link>documentació</link> per saber com consumir aquestes "
-"mètriques."
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:159
+msgid "Refer to the <link>documentation</link> to learn how to consume these metrics."
+msgstr "Consulteu la <link>documentació</link> per saber com consumir aquestes mètriques."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:254
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:274
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:294
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:316
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:250
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:270
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:290
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:312
 msgid "Enable"
 msgstr "Activa"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:261
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:281
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:301
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:324
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:257
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:277
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:297
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:320
 msgid "Disable"
 msgstr "Desactiva"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:338
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:334
 msgid "{productName} Configuration - Monitoring"
 msgstr "Configuració per a {productName} - Supervisió"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:345
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:341
 msgid "Set up monitoring for your {productName} server."
 msgstr "Configureu la supervisió per al servidor {productName}."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:351
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:347
 msgid "General"
 msgstr "General"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:356
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:352
 msgid "Bootstrap Script"
 msgstr "Script Bootstrap"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:361
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:357
 msgid "Organizations"
 msgstr "Organitzacions"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:366
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:362
 msgid "Restart"
 msgstr "Reinicia"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:371
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:367
 msgid "Cobbler"
 msgstr "Cobbler"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:375
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:384
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:396
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:371
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:380
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:392
 msgid "Monitoring"
 msgstr "Seguiment"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:378
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:374
 msgid "Password Policy"
 msgstr "Política per a les contrasenyes"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:407
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:403
 msgid "Restarting"
 msgstr "Reinici"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:408
-msgid ""
-" Tomcat and Taskomatic is needed for the configuration changes to take "
-"effect."
-msgstr ""
-" El Tomcat i el Taskomatic són necessaris perquè els canvis de configuració "
-"tinguin efecte."
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:404
+msgid " Tomcat and Taskomatic is needed for the configuration changes to take effect."
+msgstr " El Tomcat i el Taskomatic són necessaris perquè els canvis de configuració tinguin efecte."
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:41
 msgid "Add new PAYG ssh connection data"
@@ -2345,8 +2166,7 @@ msgstr "Actualment no hi ha cap hub configurat per a aquest servidor. "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:53
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
-msgstr ""
-"Aquest servidor està actualment registrat com a perifèric del hub {fqdn}. "
+msgstr "Aquest servidor està actualment registrat com a perifèric del hub {fqdn}. "
 
 #: ../html/src/manager/admin/hub/list-tokens.tsx:20
 msgid "Access Tokens"
@@ -2366,9 +2186,7 @@ msgstr "{fqdn} - Detalls del perifèric"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
-msgstr ""
-"El servidor {fqdn} està registrat actualment com a perifèric d'aquest "
-"concentrador. "
+msgstr "El servidor {fqdn} està registrat actualment com a perifèric d'aquest concentrador. "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:26
 msgid "Peripherals Configuration"
@@ -2395,12 +2213,8 @@ msgid "Migrate ISS v2..."
 msgstr "Migra ISS v2..."
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:57
-msgid ""
-"This server is configured as a Peripheral server in a Hub configuration. "
-"Managing PAYG Connections is disabled."
-msgstr ""
-"Aquest servidor està configurat com un servidor Perifèric en una "
-"configuració de Hub. La gestió de les connexions PAYG està desactivada."
+msgid "This server is configured as a Peripheral server in a Hub configuration. Managing PAYG Connections is disabled."
+msgstr "Aquest servidor està configurat com un servidor Perifèric en una configuració de Hub. La gestió de les connexions PAYG està desactivada."
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:66
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:95
@@ -2427,81 +2241,77 @@ msgstr "mai"
 msgid "Add PAYG Connection"
 msgstr "Afegeix una connexió PAYG"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:47
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:18
 msgid "Server Configuration - Password Policy"
 msgstr "Configuració del servidor - Política per a les contrasenyes"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:50
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:21
 msgid "Set up your server local users password policy."
-msgstr ""
-"Configureu la política de les contrasenyes dels usuaris locals del servidor."
+msgstr "Configureu la política de les contrasenyes dels usuaris locals del servidor."
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:53
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:24
 msgid "Password Policy Settings"
 msgstr "Configuració de la política per a les contrasenyes"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:58
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:29
 msgid "Min Password Length"
 msgstr "Longitud mínima de la contrasenya"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:65
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:36
 msgid "Max Password Length"
 msgstr "Longitud màxima de la contrasenya"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:72
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:43
 msgid "Require Digits"
 msgstr "Requereix dígits"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:79
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:50
 msgid "Require Lowercase Characters"
 msgstr "Requereix caràcters en minúscula"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:86
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:57
 msgid "Require Uppercase Characters"
 msgstr "Requereix caràcters en majúscula"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:93
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:64
 msgid "Restrict Consecutive Characters"
 msgstr "Restringeix els caràcters consecutius"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:100
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:71
 msgid "Require Special Characters"
 msgstr "Requereix caràcters especials"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:107
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:78
 msgid "Allowed Special Characters"
 msgstr "Caràcters especials permesos"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:119
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:90
 msgid "Restrict Characters Occurrences"
 msgstr "Restringeix l'ocurrència de caràcters"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:126
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:97
 msgid "Max Characters Occurrences"
 msgstr "Màxim d'ocurrències de caràcters"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:143
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:114
 msgid "Save Password Policy"
 msgstr "Desa la política de les contrasenyes"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:149
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:120
 msgid "Password Policy Changed"
 msgstr "La política de les contrasenyes ha canviat"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:166
-msgid "Password Policy reset to defaults"
-msgstr ""
-"La política per a les contrasenyes es restableix als valors predeterminats"
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:139
+#, fuzzy
+#| msgid "Password Policy reset to defaults"
+msgid "Password Policy Reset to Default"
+msgstr "La política per a les contrasenyes es restableix als valors predeterminats"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
 #: ../html/src/manager/login/use-login-api.ts:60
-msgid ""
-"Request interrupted or invalid response received from the server. Please try "
-"again."
-msgstr ""
-"Sol·licitud de resposta interrompuda o no vàlida rebuda del servidor. Torneu-"
-"ho a provar."
+msgid "Request interrupted or invalid response received from the server. Please try again."
+msgstr "Sol·licitud de resposta interrompuda o no vàlida rebuda del servidor. Torneu-ho a provar."
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:33
@@ -2530,11 +2340,8 @@ msgid "Editing ssh connection data.."
 msgstr "S'estan editant les dades de connexió ssh."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:44
-msgid ""
-"When editing the SSH connection all needed credentials must be re-provided."
-msgstr ""
-"En editar la connexió SSH s'han de tornar a proporcionar totes les "
-"credencials necessàries."
+msgid "When editing the SSH connection all needed credentials must be re-provided."
+msgstr "En editar la connexió SSH s'han de tornar a proporcionar totes les credencials necessàries."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
@@ -2603,12 +2410,8 @@ msgid "Operation not successful: Empty reply from the server"
 msgstr "Operació no correcta: Resposta buida del servidor"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:132
-msgid ""
-"No SUSE Multi-Linux Manager Server Subscription available. Products "
-"requiring Client Tools Channel will not be shown."
-msgstr ""
-"No hi ha disponible cap subscripció al servidor SUSE MultiLinux. No es "
-"mostraran els productes que requereixin el canal Eines del client."
+msgid "No SUSE Multi-Linux Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
+msgstr "No hi ha disponible cap subscripció al servidor SUSE MultiLinux. No es mostraran els productes que requereixin el canal Eines del client."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:179
 msgid "The product catalog refresh is running..."
@@ -2616,21 +2419,15 @@ msgstr "S'està executant l'actualització del catàleg de productes..."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:205
 msgid "The following product installations failed. Please check log files."
-msgstr ""
-"Han fallat les següents instal·lacions de productes. Si us plau, comproveu "
-"els fitxers de registre."
+msgstr "Han fallat les següents instal·lacions de productes. Si us plau, comproveu els fitxers de registre."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:250
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "Els canals seleccionats s'han programat correctament per sincronitzar."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:284
-msgid ""
-"A refresh of the product data is currently running in the background. Please "
-"try again later."
-msgstr ""
-"Una actualització de les dades del producte s'està executant actualment en "
-"segon pla. Torneu-ho a provar més tard."
+msgid "A refresh of the product data is currently running in the background. Please try again later."
+msgstr "Una actualització de les dades del producte s'està executant actualment en segon pla. Torneu-ho a provar més tard."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:289
 msgid "The product catalog is still refreshing, please wait."
@@ -2654,29 +2451,16 @@ msgid "Why aren't all products displayed in the list?"
 msgstr "Per què no es mostren tots els productes a la llista?"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:375
-msgid ""
-"The products displayed on this list are directly linked to your Organization "
-"credentials (Mirror credentials) as well as your SUSE subscriptions."
-msgstr ""
-"Els productes que es mostren en aquesta llista estan directament vinculats a "
-"les vostres credencials d'organització (credencials de Microsoft) així com a "
-"les vostres subscripcions SUSE."
+msgid "The products displayed on this list are directly linked to your Organization credentials (Mirror credentials) as well as your SUSE subscriptions."
+msgstr "Els productes que es mostren en aquesta llista estan directament vinculats a les vostres credencials d'organització (credencials de Microsoft) així com a les vostres subscripcions SUSE."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:380
-msgid ""
-"If you believe there are products missing, make sure you have added the "
-"correct Organization credentials in the previous wizard step."
-msgstr ""
-"Si creieu que falten productes, assegureu-vos que heu afegit les credencials "
-"d'organització correctes en el pas anterior de l'assistent."
+msgid "If you believe there are products missing, make sure you have added the correct Organization credentials in the previous wizard step."
+msgstr "Si creieu que falten productes, assegureu-vos que heu afegit les credencials d'organització correctes en el pas anterior de l'assistent."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:390
-msgid ""
-"This server is configured as a Peripheral server in a Hub configuration. "
-"Products can only be managed on the Hub server."
-msgstr ""
-"Aquest servidor està configurat com un servidor Perifèric en una "
-"configuració de Hub. Els productes només es poden gestionar al servidor Hub."
+msgid "This server is configured as a Peripheral server in a Hub configuration. Products can only be managed on the Hub server."
+msgstr "Aquest servidor està configurat com un servidor Perifèric en una configuració de Hub. Els productes només es poden gestionar al servidor Hub."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:505
 msgid "Filter by product Description"
@@ -2709,8 +2493,7 @@ msgstr " canals sincronitzats"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:815
 msgid "To enable this product, the parent product should be selected first"
-msgstr ""
-"Per a habilitar aquest producte, primer s'ha de seleccionar el producte pare"
+msgstr "Per a habilitar aquest producte, primer s'ha de seleccionar el producte pare"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:816
 msgid "Select this product"
@@ -2793,10 +2576,8 @@ msgid "hostname:port"
 msgstr "nom de l'ordinador:port"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:88
-msgid ""
-"For example: <code>example.com:8080</code> or <code>192.0.2.0:8080</code>"
-msgstr ""
-"Per exemple: <code>example.com:8080</code> or <code>192.0.2.0:8080</code>"
+msgid "For example: <code>example.com:8080</code> or <code>192.0.2.0:8080</code>"
+msgstr "Per exemple: <code>example.com:8080</code> or <code>192.0.2.0:8080</code>"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:105
 msgid "HTTP Proxy Username"
@@ -2816,14 +2597,8 @@ msgid "HTTP Proxy"
 msgstr "Servidor intermediari HTTP"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:132
-msgid ""
-"If this server uses an HTTP proxy to access the outside network, you can use "
-"this form to configure it. If that is not the case, move on to "
-"<link>Organization Credentials</link>."
-msgstr ""
-"Si aquest servidor utilitza un servidor intermediari HTTP per accedir a la "
-"xarxa externa, podeu utilitzar aquest formulari per configurar-lo. Si aquest "
-"no és el cas, passeu a les <link>Credencials de l'organització</link>."
+msgid "If this server uses an HTTP proxy to access the outside network, you can use this form to configure it. If that is not the case, move on to <link>Organization Credentials</link>."
+msgstr "Si aquest servidor utilitza un servidor intermediari HTTP per accedir a la xarxa externa, podeu utilitzar aquest formulari per configurar-lo. Si aquest no és el cas, passeu a les <link>Credencials de l'organització</link>."
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:59
 msgid "Verifying proxy settings"
@@ -2891,12 +2666,8 @@ msgid "Runtime Status"
 msgstr "Estat d'execució"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:185
-msgid ""
-"The server is running or has finished executing the following tasks during "
-"the latest 5 minutes."
-msgstr ""
-"El servidor s'està executant o ha acabat d'executar les següents tasques "
-"durant els darrers 5 minuts."
+msgid "The server is running or has finished executing the following tasks during the latest 5 minutes."
+msgstr "El servidor s'està executant o ha acabat d'executar les següents tasques durant els darrers 5 minuts."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:188
 msgid "Data is refreshed every "
@@ -2945,9 +2716,7 @@ msgstr "De moment no hi ha tasques executant-se al servidor."
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
 msgid "Session expired, please reload the page to see up-to-date data."
-msgstr ""
-"La sessió ha caducat, torneu a carregar la pàgina per veure les dades "
-"actualitzades."
+msgstr "La sessió ha caducat, torneu a carregar la pàgina per veure les dades actualitzades."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:263
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
@@ -2964,11 +2733,8 @@ msgid "AppStream {stream} has {count} packages:"
 msgstr "AppStream {stream} té {count} paquets:"
 
 #: ../html/src/manager/appstreams/appstreams.tsx:68
-msgid ""
-"Updating the selection of AppStream modules has been <link>scheduled</link>."
-msgstr ""
-"L'actualització de la selecció de mòduls AppStream ha estat "
-"<link>programada</link>."
+msgid "Updating the selection of AppStream modules has been <link>scheduled</link>."
+msgstr "L'actualització de la selecció de mòduls AppStream ha estat <link>programada</link>."
 
 #: ../html/src/manager/appstreams/appstreams.tsx:116
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
@@ -2977,12 +2743,8 @@ msgid "AppStreams"
 msgstr "AppStreams"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:31
-msgid ""
-"Please review the changes below before scheduling an action to apply the "
-"changes on the system."
-msgstr ""
-"Reviseu els canvis següents abans de programar una acció per aplicar els "
-"canvis al sistema."
+msgid "Please review the changes below before scheduling an action to apply the changes on the system."
+msgstr "Reviseu els canvis següents abans de programar una acció per aplicar els canvis al sistema."
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:49
 msgid "Streams to be enabled:"
@@ -2994,8 +2756,7 @@ msgstr "Fluxos a desactivar:"
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:35
 msgid "The following AppStream modules are currently available to the system."
-msgstr ""
-"Els següents mòduls d'AppStream estan actualment disponibles per al sistema."
+msgstr "Els següents mòduls d'AppStream estan actualment disponibles per al sistema."
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:55
 msgid "Packages in {stream}"
@@ -3017,13 +2778,11 @@ msgstr "Afectats, hi ha pedaços disponibles en canals que no estan assignats"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
 msgid "The client is affected by a vulnerability and we have a patch for it,"
-msgstr ""
-"El client es veu afectat per una vulnerabilitat i tenim un pegat per a això,"
+msgstr "El client es veu afectat per una vulnerabilitat i tenim un pegat per a això,"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
-msgstr ""
-"Afectats, hi ha pedaços disponibles en un objectiu de migració de productes"
+msgstr "Afectats, hi ha pedaços disponibles en un objectiu de migració de productes"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:60
@@ -3035,12 +2794,8 @@ msgid "Not affected"
 msgstr "No afectat"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:65
-msgid ""
-"The client is not affected because none of the known CVE vulnerable packages "
-"are installed."
-msgstr ""
-"El client no es veu afectat perquè no s'instal·la cap dels paquets "
-"vulnerables CVE coneguts."
+msgid "The client is not affected because none of the known CVE vulnerable packages are installed."
+msgstr "El client no es veu afectat perquè no s'instal·la cap dels paquets vulnerables CVE coneguts."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:69
 msgid "Patched"
@@ -3055,24 +2810,16 @@ msgid "Affected, patch is unavailable"
 msgstr "Afectat, el pedaç no està disponible"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:75
-msgid ""
-"The client is affected by a vulnerability for which a patch has not yet been "
-"released."
-msgstr ""
-"El client es veu afectat per una vulnerabilitat per la qual encara no s'ha "
-"alliberat un pegat."
+msgid "The client is affected by a vulnerability for which a patch has not yet been released."
+msgstr "El client es veu afectat per una vulnerabilitat per la qual encara no s'ha alliberat un pegat."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
 msgid "Affected, patch is unavailable in relevant channels"
 msgstr "Afectat, el pedaç no està disponible als canals pertinents"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-msgid ""
-"The client is affected by a vulnerability for which a patch has been "
-"released,"
-msgstr ""
-"El client es veu afectat per una vulnerabilitat per la qual s'ha alliberat "
-"un pegat,"
+msgid "The client is affected by a vulnerability for which a patch has been released,"
+msgstr "El client es veu afectat per una vulnerabilitat per la qual s'ha alliberat un pegat,"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "Affected, partial patch available in assigned channel"
@@ -3083,12 +2830,8 @@ msgid "Unknown, CVE metadata not available"
 msgstr "Desconegut, les metadades CVE no estan disponibles"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:97
-msgid ""
-"It is not possible to scan the client server for CVE vulnerabilities without "
-"channels or OVAL metadata."
-msgstr ""
-"No és possible escanejar el servidor client per a vulnerabilitats CVE sense "
-"canals ni metadades OVAL."
+msgid "It is not possible to scan the client server for CVE vulnerabilities without channels or OVAL metadata."
+msgstr "No és possible escanejar el servidor client per a vulnerabilitats CVE sense canals ni metadades OVAL."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:235
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:248
@@ -3101,15 +2844,11 @@ msgstr "Estat del pedaç desconegut"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:241
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
-msgstr ""
-"Les dades OVAL estan fora de sincronització. Possibles vulnerabilitats "
-"perdudes"
+msgstr "Les dades OVAL estan fora de sincronització. Possibles vulnerabilitats perdudes"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
 msgid "Server product channels out of sync; no patch information available"
-msgstr ""
-"Canals de producte del servidor fora de sincronització; no hi ha informació "
-"de pedaç disponible"
+msgstr "Canals de producte del servidor fora de sincronització; no hi ha informació de pedaç disponible"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:254
 msgid "CVE Audit"
@@ -3146,8 +2885,7 @@ msgstr "Instal·la un pedaç nou en aquest sistema."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:440
 msgid "Patch available, but system needs to be migrated to a newer Product."
-msgstr ""
-"Patch disponible, però el sistema ha de ser migrat a un producte més nou."
+msgstr "Patch disponible, però el sistema ha de ser migrat a un producte més nou."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:452
 msgid "Patch available, but needs to be cloned into Channel."
@@ -3194,12 +2932,8 @@ msgid "Match data status"
 msgstr "Concorda amb l'estat de les dades"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:88
-msgid ""
-"Could not start a matching run. Please contact your administrator to make "
-"sure the task scheduler is running."
-msgstr ""
-"No s'ha pogut iniciar una execució coincident. Contacteu amb l'administrador "
-"per assegurar-vos que el programador de tasques s'està executant."
+msgid "Could not start a matching run. Please contact your administrator to make sure the task scheduler is running."
+msgstr "No s'ha pogut iniciar una execució coincident. Contacteu amb l'administrador per assegurar-vos que el programador de tasques s'està executant."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:97
 msgid "No match data is currently available."
@@ -3207,30 +2941,19 @@ msgstr "Actualment no hi ha dades de concordança disponibles."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:99
 msgid "You can also trigger a first run now by clicking the button below."
-msgstr ""
-"També podeu activar una primera execució ara fent clic al botó de sota."
+msgstr "També podeu activar una primera execució ara fent clic al botó de sota."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:107
-msgid ""
-"Matching data is currently being recomputed, it was started {timeFromNow}."
-msgstr ""
-"Actualment s'està tornant a calcular les dades coincidents, s'ha iniciat "
-"{timeFromNow}."
+msgid "Matching data is currently being recomputed, it was started {timeFromNow}."
+msgstr "Actualment s'està tornant a calcular les dades coincidents, s'ha iniciat {timeFromNow}."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:117
-msgid ""
-"Latest successful match data was computed {timeFromNow}, you can trigger a "
-"new run by clicking the button below."
-msgstr ""
-"S'han calculat {timeFromNow} les últimes dades de coincidència, podeu "
-"activar una nova execució fent clic al botó de sota."
+msgid "Latest successful match data was computed {timeFromNow}, you can trigger a new run by clicking the button below."
+msgstr "S'han calculat {timeFromNow} les últimes dades de coincidència, podeu activar una nova execució fent clic al botó de sota."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:126
-msgid ""
-"Match data is computed via a task schedule, nightly by default (you can "
-msgstr ""
-"Les dades de coincidència es calculen a través d'una planificació de "
-"tasques, de manera nocturna per defecte (podeu "
+msgid "Match data is computed via a task schedule, nightly by default (you can "
+msgstr "Les dades de coincidència es calculen a través d'una planificació de tasques, de manera nocturna per defecte (podeu "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:128
 msgid "change the task schedule from the administration page"
@@ -3249,54 +2972,36 @@ msgid "Unsupported part number detected"
 msgstr "S'ha detectat un número de part no admès"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:38
-msgid ""
-"Physical system is reported as virtual guest, please check hardware data"
-msgstr ""
-"El sistema físic s'informa com a convidat virtual, si us plau, comproveu les "
-"dades del maquinari"
+msgid "Physical system is reported as virtual guest, please check hardware data"
+msgstr "El sistema físic s'informa com a convidat virtual, si us plau, comproveu les dades del maquinari"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:42
 msgid "Virtual guest has unknown host, assuming it is a physical system"
-msgstr ""
-"El convidat virtual té un amfitrió desconegut, suposant que sigui un sistema "
-"físic"
+msgstr "El convidat virtual té un amfitrió desconegut, suposant que sigui un sistema físic"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:46
 msgid "System has an unknown number of sockets, assuming 16"
 msgstr "El sistema té un nombre desconegut de sòcols, suposant 16"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:50
-msgid ""
-"Two subscriptions with the same part number are in a bundle - merged into a "
-"single one"
-msgstr ""
-"Dues subscripcions amb el mateix número de part estan en un paquet - "
-"fusionat en un sol"
+msgid "Two subscriptions with the same part number are in a bundle - merged into a single one"
+msgstr "Dues subscripcions amb el mateix número de part estan en un paquet - fusionat en un sol"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
-msgid ""
-"Two subscriptions with the same part number (and other properties) have been "
-"merged together - start/end dates might be indicative"
-msgstr ""
-"S'han fusionat dues subscripcions amb el mateix número de part (i altres "
-"propietats) - les dates d'inici/final poden ser indicatives"
+msgid "Two subscriptions with the same part number (and other properties) have been merged together - start/end dates might be indicative"
+msgstr "S'han fusionat dues subscripcions amb el mateix número de part (i altres propietats) - les dates d'inici/final poden ser indicatives"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:60
 msgid "Pinned match adjusted due to merged subscriptions"
-msgstr ""
-"S'ha ajustat la coincidència fixada a causa de les subscripcions fusionades"
+msgstr "S'ha ajustat la coincidència fixada a causa de les subscripcions fusionades"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:62
 msgid "Subscription IDs"
 msgstr "Identificadors de subscripció"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:73
-msgid ""
-"Subscription with unsupported part number and no associated product has been "
-"ignored."
-msgstr ""
-"Subscripció amb número de part no suportat i no s'ha ignorat cap producte "
-"associat."
+msgid "Subscription with unsupported part number and no associated product has been ignored."
+msgstr "Subscripció amb número de part no suportat i no s'ha ignorat cap producte associat."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:94
 msgid "Please review warning and information messages below."
@@ -3323,37 +3028,20 @@ msgid "Pins"
 msgstr "Pins"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:95
-msgid ""
-"You can pin a subscription to a system to suggest a certain association to "
-"the matching algorithm. "
-msgstr ""
-"Podeu fixar una subscripció a un sistema per suggerir una certa associació a "
-"l'algorisme coincident. "
+msgid "You can pin a subscription to a system to suggest a certain association to the matching algorithm. "
+msgstr "Podeu fixar una subscripció a un sistema per suggerir una certa associació a l'algorisme coincident. "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:98
-msgid ""
-"Next time a matching is attempted, the algorithm will try to produce a "
-"result that applies the subscription to the system you specified. "
-msgstr ""
-"La propera vegada que s'intenti una coincidència, l'algorisme intentarà "
-"produir un resultat que apliqui la subscripció al sistema que heu "
-"especificat. "
+msgid "Next time a matching is attempted, the algorithm will try to produce a result that applies the subscription to the system you specified. "
+msgstr "La propera vegada que s'intenti una coincidència, l'algorisme intentarà produir un resultat que apliqui la subscripció al sistema que heu especificat. "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:101
-msgid ""
-"Note that the algorithm might determine that a certain pin cannot be "
-"respected, "
-msgstr ""
-"Tingueu en compte que l'algorisme pot determinar que un pin determinat no es "
-"pot respectar, "
+msgid "Note that the algorithm might determine that a certain pin cannot be respected, "
+msgstr "Tingueu en compte que l'algorisme pot determinar que un pin determinat no es pot respectar, "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:103
-msgid ""
-"depending on a subscription's availablility and applicability rules, in that "
-"case it will be shown as not satisfied. "
-msgstr ""
-"Segons les normes d'availilitat i aplicabilitat d'una subscripció, en aquest "
-"cas es mostrarà com a no satisfeta. "
+msgid "depending on a subscription's availablility and applicability rules, in that case it will be shown as not satisfied. "
+msgstr "Segons les normes d'availilitat i aplicabilitat d'una subscripció, en aquest cas es mostrarà com a no satisfeta. "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:117
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:144
@@ -3438,13 +3126,8 @@ msgid "Save Pin"
 msgstr "Desa el pin"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:400
-msgid ""
-"No subscriptions have been found to match this system, considering all "
-"products installed, either directly or in virtual guests."
-msgstr ""
-"No s'ha trobat cap subscripció que coincideixi amb aquest sistema, tenint en "
-"compte tots els productes instal·lats, ja sigui directament o en convidats "
-"virtuals."
+msgid "No subscriptions have been found to match this system, considering all products installed, either directly or in virtual guests."
+msgstr "No s'ha trobat cap subscripció que coincideixi amb aquest sistema, tenint en compte tots els productes instal·lats, ja sigui directament o en convidats virtuals."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:65
 msgid "Filter by description"
@@ -3604,12 +3287,8 @@ msgid "Filter deleted successfully"
 msgstr "El filtre s'ha suprimit correctament"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:73
-msgid ""
-"Bear in mind that all the associated projects need to be rebuilt after a "
-"filter update"
-msgstr ""
-"Tingues en compte que tots els projectes associats necessiten ser "
-"reconstruïts després d'una actualització de filtre"
+msgid "Bear in mind that all the associated projects need to be rebuilt after a filter update"
+msgstr "Tingues en compte que tots els projectes associats necessiten ser reconstruïts després d'una actualització de filtre"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:80
 msgid "Filter Name"
@@ -3620,12 +3299,8 @@ msgid "Prefix"
 msgstr "Prefix"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:93
-msgid ""
-"The prefix will be prepended to the name of every individual filter created "
-"by the template"
-msgstr ""
-"El prefix s'anteposarà al nom de cada filtre individual creat per la "
-"plantilla"
+msgid "The prefix will be prepended to the name of every individual filter created by the template"
+msgstr "El prefix s'anteposarà al nom de cada filtre individual creat per la plantilla"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
 msgid "Use a template"
@@ -3740,11 +3415,8 @@ msgid "Rule"
 msgstr "Regla"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:85
-msgid ""
-"Some of the selected filters are used in projects and can not be deleted."
-msgstr ""
-"Alguns dels filtres seleccionats s'utilitzen en projectes i no es poden "
-"suprimir."
+msgid "Some of the selected filters are used in projects and can not be deleted."
+msgstr "Alguns dels filtres seleccionats s'utilitzen en projectes i no es poden suprimir."
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:138
 msgid "Select unused"
@@ -4027,12 +3699,8 @@ msgid "Building project"
 msgstr "Construir projecte"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:96
-msgid ""
-"The project contains channels with unsynchronized patches. They will be "
-"synchronized depending on your Organization settings."
-msgstr ""
-"El projecte conté canals amb pedaços no sincronitzats. Se sincronitzaran "
-"segons la configuració de l'organització."
+msgid "The project contains channels with unsynchronized patches. They will be synchronized depending on your Organization settings."
+msgstr "El projecte conté canals amb pedaços no sincronitzats. Se sincronitzaran segons la configuració de l'organització."
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:108
 msgid "Version Message"
@@ -4075,12 +3743,8 @@ msgid "Environment {name} deleted successfully"
 msgstr "L'entorn {name} s'ha suprimit correctament"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:138
-msgid ""
-"This environment cannot be deleted since it is being used in an "
-"<link>autoinstallation distribution</link>."
-msgstr ""
-"Aquest entorn no es pot suprimir perquè s'està utilitzant en una distribució "
-"d'instal·lació automàtica <link>."
+msgid "This environment cannot be deleted since it is being used in an <link>autoinstallation distribution</link>."
+msgstr "Aquest entorn no es pot suprimir perquè s'està utilitzant en una distribució d'instal·lació automàtica <link>."
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:23
 msgid "New"
@@ -4151,11 +3815,8 @@ msgid "filter out"
 msgstr "filtra"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:180
-msgid ""
-"select from the full source even if you have excluded them before with deny"
-msgstr ""
-"seleccioneu des de la font completa fins i tot si les heu exclòs abans amb "
-"denegació"
+msgid "select from the full source even if you have excluded them before with deny"
+msgstr "seleccioneu des de la font completa fins i tot si les heu exclòs abans amb denegació"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:54
 msgid "No version to promote or colliding environment build in progress"
@@ -4311,54 +3972,29 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "No s'ha trobat la pàgina que heu sol·licitat, {currentUrl}."
 
 #: ../html/src/manager/errors/not-found.tsx:12
-msgid ""
-"If you typed this address into your browser, double-check the spelling and "
-"capitalization."
-msgstr ""
-"Si heu introduït aquesta adreça al vostre navegador, comproveu l'ortografia "
-"i la majúscules."
+msgid "If you typed this address into your browser, double-check the spelling and capitalization."
+msgstr "Si heu introduït aquesta adreça al vostre navegador, comproveu l'ortografia i la majúscules."
 
 #: ../html/src/manager/errors/not-found.tsx:18
-msgid ""
-"If you followed a link, the link may be incorrect or outdated. Click on the "
-"back button in your "
-msgstr ""
-"Si heu seguit un enllaç, l'enllaç pot ser incorrecte o obsolet. Feu clic al "
-"botó enrere de la vostra "
+msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
+msgstr "Si heu seguit un enllaç, l'enllaç pot ser incorrecte o obsolet. Feu clic al botó enrere de la vostra "
 
 #: ../html/src/manager/errors/not-found.tsx:25
-msgid ""
-"If you used a bookmark, the page may have moved to a different location "
-"since the bookmark was "
-msgstr ""
-"Si heu utilitzat un punt, la pàgina pot haver-se mogut a una ubicació "
-"diferent des que el punt de llibre era "
+msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
+msgstr "Si heu utilitzat un punt, la pàgina pot haver-se mogut a una ubicació diferent des que el punt de llibre era "
 
 #: ../html/src/manager/errors/not-found.tsx:32
-msgid ""
-"If you feel you've reached this page in error, please contact us with "
-"details of how you received "
-msgstr ""
-"Si creieu que heu arribat a aquesta pàgina per error, poseu-vos en contacte "
-"amb nosaltres amb detalls de com heu rebut "
+msgid "If you feel you've reached this page in error, please contact us with details of how you received "
+msgstr "Si creieu que heu arribat a aquesta pàgina per error, poseu-vos en contacte amb nosaltres amb detalls de com heu rebut "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
-msgid ""
-"Applying the config channels has been scheduled for each minion server in "
-"this group"
-msgstr ""
-"S'ha programat l'aplicació dels canals de configuració per a cada servidor "
-"minion d'aquest grup"
+msgid "Applying the config channels has been scheduled for each minion server in this group"
+msgstr "S'ha programat l'aplicació dels canals de configuració per a cada servidor minion d'aquest grup"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-msgid ""
-"Formula saved. Edit configuration options in the enabled formulas and apply "
-"the <link>Highstate</link> for the changes to take effect."
-msgstr ""
-"Fórmula desada. Editeu les opcions de configuració a les fórmules "
-"habilitades i apliqueu el <link>Highstate</link> perquè els canvis tinguin "
-"efecte."
+msgid "Formula saved. Edit configuration options in the enabled formulas and apply the <link>Highstate</link> for the changes to take effect."
+msgstr "Fórmula desada. Editeu les opcions de configuració a les fórmules habilitades i apliqueu el <link>Highstate</link> perquè els canvis tinguin efecte."
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:24
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:21
@@ -4369,12 +4005,8 @@ msgstr "Tipus de destinació no vàlid."
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
-msgid ""
-"Formula saved. Apply the <link>Highstate</link> for the changes to take "
-"effect."
-msgstr ""
-"Fórmula desada. Aplica el <link>Highstate</link> perquè els canvis tinguin "
-"efecte."
+msgid "Formula saved. Apply the <link>Highstate</link> for the changes to take effect."
+msgstr "Fórmula desada. Aplica el <link>Highstate</link> perquè els canvis tinguin efecte."
 
 #: ../html/src/manager/header/search/search.tsx:10
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
@@ -4411,12 +4043,8 @@ msgstr "S'ha programat la construcció de la imatge."
 
 #: ../html/src/manager/images/image-build.tsx:41
 #: ../html/src/manager/images/image-import.tsx:20
-msgid ""
-"There was an error while scheduling a task. Please make sure that the task "
-"scheduler is running."
-msgstr ""
-"S'ha produït un error en programar una tasca. Assegureu-vos que el "
-"programador de tasques s'està executant."
+msgid "There was an error while scheduling a task. Please make sure that the task scheduler is running."
+msgstr "S'ha produït un error en programar una tasca. Assegureu-vos que el programador de tasques s'està executant."
 
 #: ../html/src/manager/images/image-build.tsx:205
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1048
@@ -4499,9 +4127,7 @@ msgstr "Importa una imatge"
 
 #: ../html/src/manager/images/image-import.tsx:246
 msgid "You can import Container images only using this feature."
-msgstr ""
-"Només podeu importar imatges del contenidor utilitzant aquesta "
-"característica."
+msgstr "Només podeu importar imatges del contenidor utilitzant aquesta característica."
 
 #: ../html/src/manager/images/image-import.tsx:272
 msgid "Image name"
@@ -4572,12 +4198,8 @@ msgid "Create Image Profile"
 msgstr "Crea un perfil d'imatge"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:531
-msgid ""
-"Label is required and must be a unique string and it cannot include any "
-"colons (:)."
-msgstr ""
-"L'etiqueta és requerida i ha de ser una cadena única i no pot incloure punts "
-"(:)."
+msgid "Label is required and must be a unique string and it cannot include any colons (:)."
+msgstr "L'etiqueta és requerida i ha de ser una cadena única i no pot incloure punts (:)."
 
 #: ../html/src/manager/images/image-profiles.tsx:26
 msgid "Dockerfile"
@@ -4625,12 +4247,8 @@ msgid "Are you sure you want to delete the selected profile?"
 msgstr "Esteu segur que voleu suprimir el perfil seleccionat?"
 
 #: ../html/src/manager/images/image-profiles.tsx:244
-msgid ""
-"Are you sure you want to delete selected profiles? ({count} profiles "
-"selected)"
-msgstr ""
-"Esteu segur que voleu suprimir els perfils seleccionats? ({count} perfils "
-"seleccionats)"
+msgid "Are you sure you want to delete selected profiles? ({count} profiles selected)"
+msgstr "Esteu segur que voleu suprimir els perfils seleccionats? ({count} perfils seleccionats)"
 
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
@@ -4689,11 +4307,8 @@ msgid "Are you sure you want to delete the selected store?"
 msgstr "Esteu segur que voleu suprimir el magatzem seleccionat?"
 
 #: ../html/src/manager/images/image-stores.tsx:237
-msgid ""
-"Are you sure you want to delete selected stores? ({count} stores selected)"
-msgstr ""
-"Esteu segur que voleu suprimir les botigues seleccionades? ({count} botigues "
-"seleccionades)"
+msgid "Are you sure you want to delete selected stores? ({count} stores selected)"
+msgstr "Esteu segur que voleu suprimir les botigues seleccionades? ({count} botigues seleccionades)"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
 #: ../html/src/manager/images/image-view.tsx:793
@@ -5036,65 +4651,32 @@ msgid "Are you sure you want to delete the selected image?"
 msgstr "Esteu segur que voleu suprimir la imatge seleccionada?"
 
 #: ../html/src/manager/images/image-view.tsx:742
-msgid ""
-"Are you sure you want to delete selected images? ({count} images selected)"
-msgstr ""
-"Esteu segur que voleu suprimir les imatges seleccionades? ({count} imatges "
-"seleccionades)"
+msgid "Are you sure you want to delete selected images? ({count} images selected)"
+msgstr "Esteu segur que voleu suprimir les imatges seleccionades? ({count} imatges seleccionades)"
 
 #: ../html/src/manager/login/messages.tsx:14
-msgid ""
-"A schema upgrade is required. Please upgrade your schema at your earliest "
-"convenience to receive latest bug fixes and avoid potential problems."
-msgstr ""
-"Es requereix una actualització de l'esquema. Actualitzeu el vostre esquema "
-"com més aviat millor per rebre les últimes correccions d'errors i evitar "
-"possibles problemes."
+msgid "A schema upgrade is required. Please upgrade your schema at your earliest convenience to receive latest bug fixes and avoid potential problems."
+msgstr "Es requereix una actualització de l'esquema. Actualitzeu el vostre esquema com més aviat millor per rebre les últimes correccions d'errors i evitar possibles problemes."
 
 #: ../html/src/manager/login/messages.tsx:23
-msgid ""
-"Unable to validate the disk space availability. Please contact your system "
-"admistrator if this problem persists."
-msgstr ""
-"No s'ha pogut validar la disponibilitat d'espai del disc. Si us plau, poseu-"
-"vos en contacte amb l'administrador del sistema si aquest problema "
-"persisteix."
+msgid "Unable to validate the disk space availability. Please contact your system admistrator if this problem persists."
+msgstr "No s'ha pogut validar la disponibilitat d'espai del disc. Si us plau, poseu-vos en contacte amb l'administrador del sistema si aquest problema persisteix."
 
 #: ../html/src/manager/login/messages.tsx:28
-msgid ""
-"Some important directories are missing. Please contact your system "
-"administrator to review the configuration."
-msgstr ""
-"Falten alguns directoris importants. Si us plau, poseu-vos en contacte amb "
-"l'administrador del sistema per revisar la configuració."
+msgid "Some important directories are missing. Please contact your system administrator to review the configuration."
+msgstr "Falten alguns directoris importants. Si us plau, poseu-vos en contacte amb l'administrador del sistema per revisar la configuració."
 
 #: ../html/src/manager/login/messages.tsx:33
-msgid ""
-"The available disk space on the server is running low. Please contact your "
-"system administrator to add more disk space."
-msgstr ""
-"L'espai de disc disponible en el servidor està funcionant baix. Poseu-vos en "
-"contacte amb l'administrador del sistema per afegir més espai al disc."
+msgid "The available disk space on the server is running low. Please contact your system administrator to add more disk space."
+msgstr "L'espai de disc disponible en el servidor està funcionant baix. Poseu-vos en contacte amb l'administrador del sistema per afegir més espai al disc."
 
 #: ../html/src/manager/login/messages.tsx:38
-msgid ""
-"The available disk space on the server is critically low. Please contact "
-"your system administrator to add more disk space."
-msgstr ""
-"L'espai de disc disponible al servidor és críticament baix. Poseu-vos en "
-"contacte amb l'administrador del sistema per afegir més espai al disc."
+msgid "The available disk space on the server is critically low. Please contact your system administrator to add more disk space."
+msgstr "L'espai de disc disponible al servidor és críticament baix. Poseu-vos en contacte amb l'administrador del sistema per afegir més espai al disc."
 
 #: ../html/src/manager/login/messages.tsx:53
-msgid ""
-"SUSE Multi-Linux Manager PAYG instances must forward registration data to "
-"SCC when credentials are provided. Data will be sent independently of the "
-"configuration setting. To hide this warning please set 'forward_registration "
-"= 1' in rhn.conf."
-msgstr ""
-"Les instàncies de SUSE MultiLinux PAYG han de reenviar les dades de registre "
-"a SCC quan es proporcionen credencials. Les dades s'enviaran independentment "
-"de la configuració. Per ocultar aquest avís, establiu 'registre previ . 1' a "
-"rhn.conf."
+msgid "SUSE Multi-Linux Manager PAYG instances must forward registration data to SCC when credentials are provided. Data will be sent independently of the configuration setting. To hide this warning please set 'forward_registration = 1' in rhn.conf."
+msgstr "Les instàncies de SUSE MultiLinux PAYG han de reenviar les dades de registre a SCC quan es proporcionen credencials. Les dades s'enviaran independentment de la configuració. Per ocultar aquest avís, establiu 'registre previ . 1' a rhn.conf."
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
@@ -5102,12 +4684,8 @@ msgstr "S'està iniciant la sessió..."
 
 #: ../html/src/manager/login/susemanager/login.tsx:41
 #: ../html/src/manager/login/uyuni/login.tsx:40
-msgid ""
-"Discover a new way of managing your servers, packages, patches and more via "
-"one interface."
-msgstr ""
-"Descobreix una nova manera de gestionar els teus servidors, paquets, pedaços "
-"i més a través d'una interfície."
+msgid "Discover a new way of managing your servers, packages, patches and more via one interface."
+msgstr "Descobreix una nova manera de gestionar els teus servidors, paquets, pedaços i més a través d'una interfície."
 
 #: ../html/src/manager/login/susemanager/login.tsx:44
 msgid "<link>Learn more</link> about {productName}."
@@ -5135,15 +4713,11 @@ msgstr "El vostre compte s'ha desactivat."
 
 #: ../html/src/manager/login/use-login-api.ts:16
 msgid "This user has read only API access. WebUI login is denied."
-msgstr ""
-"Aquest usuari només té accés a l'API de lectura. S'ha denegat l'accés a "
-"WebUI."
+msgstr "Aquest usuari només té accés a l'API de lectura. S'ha denegat l'accés a WebUI."
 
 #: ../html/src/manager/login/use-login-api.ts:30
 msgid "Are you sure you want to close this page while login is in progress?"
-msgstr ""
-"Esteu segur que voleu tancar aquesta pàgina mentre l'inici de sessió està en "
-"curs?"
+msgstr "Esteu segur que voleu tancar aquesta pàgina mentre l'inici de sessió està en curs?"
 
 #: ../html/src/manager/login/uyuni/login.tsx:42
 msgid "Learn more about {productName}:"
@@ -5197,10 +4771,8 @@ msgstr "Esteu segur que voleu suprimir l'element seleccionat?"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:45
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:48
-msgid ""
-"This will remove the current schedule from all the systems assigned to it."
-msgstr ""
-"Això eliminarà la planificació actual de tots els sistemes assignats a ella."
+msgid "This will remove the current schedule from all the systems assigned to it."
+msgstr "Això eliminarà la planificació actual de tots els sistemes assignats a ella."
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:46
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
@@ -5310,8 +4882,7 @@ msgstr "Confirmeu l'actualització del calendari"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:185
 msgid "Refreshing the calendar will reschedule all affected actions."
-msgstr ""
-"En actualitzar el calendari es reprogramaran totes les accions afectades."
+msgstr "En actualitzar el calendari es reprogramaran totes les accions afectades."
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
@@ -5352,15 +4923,11 @@ msgstr "Calendaris de manteniment"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:46
 msgid "Below is a list of Maintenance Schedules available to the current user."
-msgstr ""
-"A continuació es mostra una llista de Planes de manteniment disponibles per "
-"a l'usuari actual."
+msgstr "A continuació es mostra una llista de Planes de manteniment disponibles per a l'usuari actual."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:47
 msgid "Below is a list of Maintenance Calendars available to the current user."
-msgstr ""
-"A continuació es mostra una llista de calendaris de manteniment disponibles "
-"per a l'usuari actual."
+msgstr "A continuació es mostra una llista de calendaris de manteniment disponibles per a l'usuari actual."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:50
 msgid "schedule"
@@ -5368,8 +4935,7 @@ msgstr "planificació"
 
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:30
 msgid "No schedules created. Use Create to add a schedule."
-msgstr ""
-"No s'ha creat cap planificació. Utilitzeu Crea per a afegir una planificació."
+msgstr "No s'ha creat cap planificació. Utilitzeu Crea per a afegir una planificació."
 
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:88
 msgid "This will remove the schedule from all the systems assigned to it."
@@ -5388,12 +4954,8 @@ msgid "Calendar successfully refreshed"
 msgstr "El calendari s'ha actualitzat correctament"
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:23
-msgid ""
-"Any pending maintenance-only actions for these systems will be cancelled "
-"unless they are inside the new maintenance windows."
-msgstr ""
-"Qualsevol acció pendent de manteniment d'aquests sistemes es cancel·larà "
-"tret que es trobi dins de les noves finestres de manteniment."
+msgid "Any pending maintenance-only actions for these systems will be cancelled unless they are inside the new maintenance windows."
+msgstr "Qualsevol acció pendent de manteniment d'aquests sistemes es cancel·larà tret que es trobi dins de les noves finestres de manteniment."
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:26
 msgid "Are you sure you want to proceed?"
@@ -5434,12 +4996,8 @@ msgid "Assign a maintenance schedule to {count} system(s)"
 msgstr "Assigna una planificació de manteniment a {count} sistemes"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:22
-msgid ""
-"Assigning a schedule will replace any prior assignments in all of the "
-"systems in the set."
-msgstr ""
-"L'assignació d'un calendari substituirà qualsevol activitat prèvia en tots "
-"els sistemes del conjunt."
+msgid "Assigning a schedule will replace any prior assignments in all of the systems in the set."
+msgstr "L'assignació d'un calendari substituirà qualsevol activitat prèvia en tots els sistemes del conjunt."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:123
 msgid "No Playbook found."
@@ -5480,17 +5038,11 @@ msgstr "S'està carregant el contingut."
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:57
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:50
 msgid "An error occurred while loading data. Please check server logs."
-msgstr ""
-"S'ha produït un error en carregar les dades. Si us plau, comproveu els "
-"registres del servidor."
+msgstr "S'ha produït un error en carregar les dades. Si us plau, comproveu els registres del servidor."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:159
-msgid ""
-"Ansible Control Node Configuration: add paths for Playbook discovery and "
-"Inventory files introspection."
-msgstr ""
-"Configuració del node de controlNSNSIBLE: afegeix camins per al descobriment "
-"de llibres de reproducció i la introspecció de fitxers d'inventari."
+msgid "Ansible Control Node Configuration: add paths for Playbook discovery and Inventory files introspection."
+msgstr "Configuració del node de controlNSNSIBLE: afegeix camins per al descobriment de llibres de reproducció i la introspecció de fitxers d'inventari."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:166
 msgid "Playbook Directories"
@@ -5669,12 +5221,8 @@ msgid "Proxy Configuration"
 msgstr "Configuració del servidor intermediari"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:183
-msgid ""
-"Convert an already onboarded minion to a proxy or update the configuration "
-"of an existing proxy."
-msgstr ""
-"Converteix un minion ja integrat en un servidor intermediari o actualitza la "
-"configuració d'un servidor intermediari existent."
+msgid "Convert an already onboarded minion to a proxy or update the configuration of an existing proxy."
+msgstr "Converteix un minion ja integrat en un servidor intermediari o actualitza la configuració d'un servidor intermediari existent."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:193
 msgid "Convert Minion to Proxy"
@@ -5688,8 +5236,7 @@ msgstr "FQDN pare"
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:199
 #: ../html/src/manager/proxy/container-config.tsx:213
 msgid "The FQDN of the parent (server or proxy) to connect to."
-msgstr ""
-"El FQDN del pare (servidor o servidor intermediari) al qual connectar-se."
+msgstr "El FQDN del pare (servidor o servidor intermediari) al qual connectar-se."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:201
 #: ../html/src/manager/proxy/container-config.tsx:212
@@ -5728,9 +5275,7 @@ msgstr "Correu electrònic de l'administrador del servidor intermediari"
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:231
 #: ../html/src/manager/proxy/container-config.tsx:243
 msgid "The container-based proxy administrator email address"
-msgstr ""
-"L'adreça electrònica de l'administrador del servidor intermediari basat en "
-"contenidors"
+msgstr "L'adreça electrònica de l'administrador del servidor intermediari basat en contenidors"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:232
 #: ../html/src/manager/proxy/container-config.tsx:244
@@ -5751,13 +5296,8 @@ msgid "Replace"
 msgstr "Reemplaça"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:262
-msgid ""
-"Keeping the current certificates means no changes will be made to the Root "
-"CA, Intermediate CAs, Proxy certificate, or Proxy SSL private key."
-msgstr ""
-"Mantenir els certificats actuals significa que no es faran canvis als CA "
-"d'arrel, a les CA intermèdies, al certificat d'intermediari o a la clau "
-"privada SSL d'intermediari."
+msgid "Keeping the current certificates means no changes will be made to the Root CA, Intermediate CAs, Proxy certificate, or Proxy SSL private key."
+msgstr "Mantenir els certificats actuals significa que no es faran canvis als CA d'arrel, a les CA intermèdies, al certificat d'intermediari o a la clau privada SSL d'intermediari."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:273
 msgid "Root CA"
@@ -5903,12 +5443,8 @@ msgid "Install Program Temporary Fixes (PTFs)"
 msgstr "Instal·la les correccions temporals del programa (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:29
-msgid ""
-"The following Program Temporary Fixes (PTFs) are available for installation "
-"on this system. "
-msgstr ""
-"Les següents Correccions Temporals del Programa (PTFs) estan disponibles per "
-"a la instal·lació en aquest sistema. "
+msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
+msgstr "Les següents Correccions Temporals del Programa (PTFs) estan disponibles per a la instal·lació en aquest sistema. "
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
 msgid "No Program Temporary Fixes (PTFs) available."
@@ -5927,12 +5463,8 @@ msgid "Remove Program Temporary Fixes (PTFs)"
 msgstr "Elimina les correccions temporals del programa (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:29
-msgid ""
-"The following Program Temporary Fixes (PTFs) are currently installed on this "
-"system. "
-msgstr ""
-"Les següents Correccions Temporals del Programa (PTFs) estan instal·lades "
-"actualment en aquest sistema. "
+msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
+msgstr "Les següents Correccions Temporals del Programa (PTFs) estan instal·lades actualment en aquest sistema. "
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
 msgid "No Program Temporary Fixes (PTFs) installed."
@@ -6044,25 +5576,17 @@ msgstr "El missatge s'ha suprimit correctament"
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:339
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:29
 msgid "Websocket connection closed. Refresh the page to try again."
-msgstr ""
-"S'ha tancat la connexió a Websocket. Refresca la pàgina per tornar-ho a "
-"provar."
+msgstr "S'ha tancat la connexió a Websocket. Refresca la pàgina per tornar-ho a provar."
 
 #: ../html/src/manager/notifications/notifications.tsx:55
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:359
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:35
 msgid "Error connecting to server. Refresh the page to try again."
-msgstr ""
-"S'ha produït un error en connectar al servidor. Refresca la pàgina per "
-"tornar-ho a provar."
+msgstr "S'ha produït un error en connectar al servidor. Refresca la pàgina per tornar-ho a provar."
 
 #: ../html/src/manager/organizations/config-channels/org-config-channels.tsx:29
-msgid ""
-"Applying the config channels has been scheduled for each minion server in "
-"this organization"
-msgstr ""
-"S'ha programat l'aplicació dels canals de configuració per a cada servidor "
-"minion en aquesta organització"
+msgid "Applying the config channels has been scheduled for each minion server in this organization"
+msgstr "S'ha programat l'aplicació dels canals de configuració per a cada servidor minion en aquesta organització"
 
 #: ../html/src/manager/packages/list.tsx:80
 msgid "Packages in no channel"
@@ -6098,16 +5622,11 @@ msgstr "Proveïdor de continguts"
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
-msgstr ""
-"La configuració del servidor intermediari basat en contenidors s'ha generat "
-"correctament."
+msgstr "La configuració del servidor intermediari basat en contenidors s'ha generat correctament."
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:33
-msgid ""
-"Generation of the proxy configuration in progress: waiting for a response..."
-msgstr ""
-"Generació de la configuració del servidor intermediari en curs: esperant una "
-"resposta..."
+msgid "Generation of the proxy configuration in progress: waiting for a response..."
+msgstr "Generació de la configuració del servidor intermediari en curs: esperant una resposta..."
 
 #: ../html/src/manager/proxy/container-config.tsx:179
 #: ../html/src/manager/proxy/container-config.tsx:195
@@ -6115,15 +5634,8 @@ msgid "Container Based Proxy Configuration"
 msgstr "Configuració del servidor intermediari basat en el contenidor"
 
 #: ../html/src/manager/proxy/container-config.tsx:185
-msgid ""
-"You can generate a set of configuration files and certificates in order to "
-"register and run a container-based proxy. Once the following form is filled "
-"out and submitted you will get a .tar.gz archive to download."
-msgstr ""
-"Podeu generar un conjunt de fitxers de configuració i certificats per tal de "
-"registrar i executar un servidor intermediari basat en contenidors. Un cop "
-"omplert i enviat el següent formulari, obtindreu un arxiu .tar.gz per "
-"descarregar."
+msgid "You can generate a set of configuration files and certificates in order to register and run a container-based proxy. Once the following form is filled out and submitted you will get a .tar.gz archive to download."
+msgstr "Podeu generar un conjunt de fitxers de configuració i certificats per tal de registrar i executar un servidor intermediari basat en contenidors. Un cop omplert i enviat el següent formulari, obtindreu un arxiu .tar.gz per descarregar."
 
 #: ../html/src/manager/proxy/container-config.tsx:199
 msgid "Proxy FQDN"
@@ -6354,12 +5866,8 @@ msgid "The following recurring actions have been created."
 msgstr "S'han creat les següents accions recurrents."
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:125
-msgid ""
-"To create new recurring actions head to the system, group or organization "
-"you want to create the action for."
-msgstr ""
-"Per a crear noves accions recurrents aneu al sistema, grup o organització "
-"per a la qual voleu crear l'acció."
+msgid "To create new recurring actions head to the system, group or organization you want to create the action for."
+msgstr "Per a crear noves accions recurrents aneu al sistema, grup o organització per a la qual voleu crear l'acció."
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:170
 msgid "Frequency"
@@ -6390,12 +5898,8 @@ msgid "Error when deleting the action. Check if Taskomatic is running"
 msgstr "Error en suprimir l'acció. Comprova si el Taskomatic s'està executant"
 
 #: ../html/src/manager/recurring/recurring-actions.tsx:149
-msgid ""
-"The below times are displayed in the server time zone {timeZone}. The "
-"scheduled time will be the server time."
-msgstr ""
-"Les hores següents es mostren a la zona horària del servidor {timeZone}. "
-"L'hora programada serà l'hora del servidor."
+msgid "The below times are displayed in the server time zone {timeZone}. The scheduled time will be the server time."
+msgstr "Les hores següents es mostren a la zona horària del servidor {timeZone}. L'hora programada serà l'hora del servidor."
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:54
 msgid "Change Playbook"
@@ -6519,16 +6023,8 @@ msgid "Matching ssh-push minions..."
 msgstr "Coincidència amb ssh-push minions..."
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:62
-msgid ""
-"The formula catalog page enables viewing of currently installed <link>Salt "
-"Formulas</link>. Apply these formulas to individual systems or server "
-"groups. Formulas allow automatic installation and configuration of software "
-"and may be installed via RPM packages."
-msgstr ""
-"La pàgina del catàleg de fórmules permet visualitzar les <link>Fórmules de "
-"sal</link>. Aplicar aquestes fórmules a sistemes individuals o grups de "
-"servidors. Les fórmules permeten la instal·lació automàtica i la "
-"configuració del programari i es poden instal·lar a través de paquets RPM."
+msgid "The formula catalog page enables viewing of currently installed <link>Salt Formulas</link>. Apply these formulas to individual systems or server groups. Formulas allow automatic installation and configuration of software and may be installed via RPM packages."
+msgstr "La pàgina del catàleg de fórmules permet visualitzar les <link>Fórmules de sal</link>. Aplicar aquestes fórmules a sistemes individuals o grups de servidors. Les fórmules permeten la instal·lació automàtica i la configuració del programari i es poden instal·lar a través de paquets RPM."
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:95
 msgid "Formula Catalog"
@@ -6656,12 +6152,8 @@ msgid "Development debugging page"
 msgstr "Pàgina de depuració del desenvolupament"
 
 #: ../html/src/manager/storybook/storybook.tsx:50
-msgid ""
-"This is a hidden page used by developers, if you found it by accident, good "
-"job!"
-msgstr ""
-"Aquesta és una pàgina amagada utilitzada pels desenvolupadors, si l'heu "
-"trobat per accident, bona feina!"
+msgid "This is a hidden page used by developers, if you found it by accident, good job!"
+msgstr "Aquesta és una pàgina amagada utilitzada pels desenvolupadors, si l'heu trobat per accident, bona feina!"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:35
 msgid "{productName} Default"
@@ -6688,12 +6180,8 @@ msgid "Child Channels:"
 msgstr "Canals fills:"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:160
-msgid ""
-"Any system registered using this activation key will be subscribed to the "
-"selected child channels."
-msgstr ""
-"Qualsevol sistema registrat amb aquesta clau d'activació es subscriureu als "
-"canals fills seleccionats."
+msgid "Any system registered using this activation key will be subscribed to the selected child channels."
+msgstr "Qualsevol sistema registrat amb aquesta clau d'activació es subscriureu als canals fills seleccionats."
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:37
 msgid "Error updating activation key."
@@ -6746,25 +6234,12 @@ msgid "Error Details"
 msgstr "Detalls de l'error"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:329
-msgid ""
-"Request interrupted or invalid response received from the server. Please "
-"check if your minion was bootstrapped correctly."
-msgstr ""
-"Sol·licitud de resposta interrompuda o no vàlida rebuda del servidor. Si us "
-"plau, comproveu si el vostre minion s'ha arrencat correctament."
+msgid "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
+msgstr "Sol·licitud de resposta interrompuda o no vàlida rebuda del servidor. Si us plau, comproveu si el vostre minion s'ha arrencat correctament."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:357
-msgid ""
-"Bootstrap process initiated. Your system should be visible at the following "
-"location shortly: <link>systems</link>. If any issues arise, you'll receive "
-"an error notification. In case you're working with a transactional system, "
-"please perform a system reboot to complete the registration process."
-msgstr ""
-"S'ha iniciat el procés de Bootstrap. El vostre sistema hauria de ser visible "
-"en la següent ubicació: <link>systems</link>. Si sorgeix algun problema, "
-"rebreu una notificació d'error. En cas que treballeu amb un sistema "
-"transaccional, si us plau, realitzeu un reinici del sistema per completar el "
-"procés de registre."
+msgid "Bootstrap process initiated. Your system should be visible at the following location shortly: <link>systems</link>. If any issues arise, you'll receive an error notification. In case you're working with a transactional system, please perform a system reboot to complete the registration process."
+msgstr "S'ha iniciat el procés de Bootstrap. El vostre sistema hauria de ser visible en la següent ubicació: <link>systems</link>. Si sorgeix algun problema, rebreu una notificació d'error. En cas que treballeu amb un sistema transaccional, si us plau, realitzeu un reinici del sistema per completar el procés de registre."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:377
 msgid "Show additional details about this error"
@@ -6792,12 +6267,8 @@ msgid "e.g., ••••••••••••"
 msgstr "per exemple, ,"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
-msgid ""
-"The file will be stored in a temporary file on the server and will be "
-"deleted after the bootstrapping procedure"
-msgstr ""
-"El fitxer s'emmagatzemarà en un fitxer temporal al servidor i s'eliminarà "
-"després del procediment d'arrencada"
+msgid "The file will be stored in a temporary file on the server and will be deleted after the bootstrapping procedure"
+msgstr "El fitxer s'emmagatzemarà en un fitxer temporal al servidor i s'eliminarà després del procediment d'arrencada"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:452
 msgid "Leave empty for no passphrase"
@@ -6808,29 +6279,16 @@ msgid "Bootstrap Minions"
 msgstr "Minions Bootstrap"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:467
-msgid ""
-"You can add systems to be managed by providing SSH credentials only. "
-"{productName} will prepare the system remotely and will perform the "
-"registration."
-msgstr ""
-"Podeu afegir sistemes que es gestionaran proporcionant només credencials "
-"SSH. {productName} prepararà el sistema remotament i realitzarà el registre."
+msgid "You can add systems to be managed by providing SSH credentials only. {productName} will prepare the system remotely and will perform the registration."
+msgstr "Podeu afegir sistemes que es gestionaran proporcionant només credencials SSH. {productName} prepararà el sistema remotament i realitzarà el registre."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:481
 msgid "e.g., host.domain.com"
 msgstr "p. ex., host.domain.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:518
-msgid ""
-"The user will have an effect only during the bootstrap process. Further "
-"connections will be made by the user specified in rhn.conf. The default user "
-"for the key 'ssh_push_sudo_user' is 'root'. This user is set after "
-"{productName}'s SSH key is deployed during the bootstrap procedure."
-msgstr ""
-"L'usuari només tindrà un efecte durant el procés d'arrencada. L'usuari "
-"especificat a rhn.conf farà més connexions. L'usuari per defecte de la clau "
-"«sshpushsudouser» és «root». Aquest usuari s'estableix després que la clau "
-"SSH de {productName} es desplegui durant el procediment d'arrencada."
+msgid "The user will have an effect only during the bootstrap process. Further connections will be made by the user specified in rhn.conf. The default user for the key 'ssh_push_sudo_user' is 'root'. This user is set after {productName}'s SSH key is deployed during the bootstrap procedure."
+msgstr "L'usuari només tindrà un efecte durant el procés d'arrencada. L'usuari especificat a rhn.conf farà més connexions. L'usuari per defecte de la clau «sshpushsudouser» és «root». Aquest usuari s'estableix després que la clau SSH de {productName} es desplegui durant el procediment d'arrencada."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:527
 msgid "Authentication Method"
@@ -6855,28 +6313,20 @@ msgid "Leave empty when no reactivation is wanted"
 msgstr "Deixeu-ho buit quan no es vulgui reactivar"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:630
-msgid ""
-"The hostname of the proxy is not fully qualified. This may cause problems "
-"when accessing the channels."
-msgstr ""
-"El nom del servidor intermediari no està completament qualificat. Això pot "
-"causar problemes a l'hora d'accedir als canals."
+msgid "The hostname of the proxy is not fully qualified. This may cause problems when accessing the channels."
+msgstr "El nom del servidor intermediari no està completament qualificat. Això pot causar problemes a l'hora d'accedir als canals."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:647
 msgid "Disable SSH strict host key checking during bootstrap process"
-msgstr ""
-"Inhabilita la comprovació estricta de la clau de l'amfitrió SSH durant el "
-"procés d'arrencada"
+msgstr "Inhabilita la comprovació estricta de la clau de l'amfitrió SSH durant el procés d'arrencada"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:663
 msgid "Manage system completely via SSH (will not install an agent)"
 msgstr "Gestiona completament el sistema via SSH (no instal·larà un agent)"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:679
-msgid ""
-"Are you sure you want to close this page while bootstrapping is in progress ?"
-msgstr ""
-"Esteu segur que voleu tancar aquesta pàgina mentre l'arrencada està en curs?"
+msgid "Are you sure you want to close this page while bootstrapping is in progress ?"
+msgstr "Esteu segur que voleu tancar aquesta pàgina mentre l'arrencada està en curs?"
 
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:114
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:73
@@ -6885,9 +6335,7 @@ msgstr "Capacitat de computació confidencial"
 
 #: ../html/src/manager/systems/delete-system.tsx:12
 msgid "Cleanup timed out. Please check if the machine is reachable."
-msgstr ""
-"S'ha esgotat el temps d'espera de la neteja. Si us plau, comprovi si la "
-"màquina és accessible."
+msgstr "S'ha esgotat el temps d'espera de la neteja. Si us plau, comprovi si la màquina és accessible."
 
 #: ../html/src/manager/systems/delete-system.tsx:13
 msgid "No result found in state apply response."
@@ -6916,9 +6364,7 @@ msgstr "El sistema no és un servidor perifèric"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:33
 msgid "Setting new credentials for the report database failed"
-msgstr ""
-"Ha fallat l'establiment de noves credencials per a la base de dades "
-"d'informes"
+msgstr "Ha fallat l'establiment de noves credencials per a la base de dades d'informes"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:51
 msgid "New password generated and changed on the peripheral server"
@@ -7044,9 +6490,7 @@ msgstr "Sistema virtual"
 
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
-msgstr ""
-"Si us plau, seleccioneu una llista de minions (no servidors intermediaris o "
-"clients tradicionals)."
+msgstr "Si us plau, seleccioneu una llista de minions (no servidors intermediaris o clients tradicionals)."
 
 #: ../html/src/manager/systems/proxy.tsx:67
 msgid "Change of proxy server has been "
@@ -7084,9 +6528,7 @@ msgstr "Neteja el conjunt de sistemes seleccionat"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24
 msgid "Error scheduling job in Taskomatic. Please check the logs."
-msgstr ""
-"S'ha produït un error en la planificació del treball a Taskomatic. Si us "
-"plau, comproveu els registres."
+msgstr "S'ha produït un error en la planificació del treball a Taskomatic. Si us plau, comproveu els registres."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:33
 msgid "Could not determine system default channel."
@@ -7123,26 +6565,12 @@ msgid "System Default Base Channel"
 msgstr "Canal base per defecte del sistema"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:151
-msgid ""
-"As a Channel Administrator, you may change the base channels your systems "
-"are subscribed to. Valid channels are either channels created by your "
-"organization, or the default SUSE base channel for your operating system "
-"version and processor type. Systems will be unsubscribed from all channels, "
-"and subscribed to their new base channels. "
-msgstr ""
-"Com a administrador de canals, podeu canviar els canals base als quals estan "
-"subscrits els vostres sistemes. Els canals vàlids són canals creats per la "
-"vostra organització, o el canal base SUSE per defecte per a la versió del "
-"sistema operatiu i el tipus de processador. Els sistemes es donaran de baixa "
-"de tots els canals, i se subscriuran als seus nous canals base. "
+msgid "As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default SUSE base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels. "
+msgstr "Com a administrador de canals, podeu canviar els canals base als quals estan subscrits els vostres sistemes. Els canals vàlids són canals creats per la vostra organització, o el canal base SUSE per defecte per a la versió del sistema operatiu i el tipus de processador. Els sistemes es donaran de baixa de tots els canals, i se subscriuran als seus nous canals base. "
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:156
-msgid ""
-"This operation can have a dramatic effect on the packages and patches "
-"available to the systems, and should be used with caution."
-msgstr ""
-"Aquesta operació pot tenir un efecte dramàtic en els paquets i pegats "
-"disponibles per als sistemes, i s'ha d'utilitzar amb precaució."
+msgid "This operation can have a dramatic effect on the packages and patches available to the systems, and should be used with caution."
+msgstr "Aquesta operació pot tenir un efecte dramàtic en els paquets i pegats disponibles per als sistemes, i s'ha d'utilitzar amb precaució."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:173
 msgid "Current base Channel"
@@ -7196,29 +6624,19 @@ msgstr "Cancel·la la subscripció"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:550
 msgid "Below is a list of channels in your organization. "
-msgstr ""
-"A continuació es mostra una llista de canals de la vostra organització. "
+msgstr "A continuació es mostra una llista de canals de la vostra organització. "
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:552
 msgid "To make no changes for a channel, check Do Nothing for that channel."
-msgstr ""
-"Per a no fer canvis per a un canal, marqueu No fer res per a aquest canal."
+msgstr "Per a no fer canvis per a un canal, marqueu No fer res per a aquest canal."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:553
-msgid ""
-"To subscribe selected systems to a channel, check Subscribed for that "
-"channel."
-msgstr ""
-"Per a subscriure els sistemes seleccionats a un canal, marqueu Subscrit per "
-"a aquest canal."
+msgid "To subscribe selected systems to a channel, check Subscribed for that channel."
+msgstr "Per a subscriure els sistemes seleccionats a un canal, marqueu Subscrit per a aquest canal."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:554
-msgid ""
-"To unsubscribe selected systems from a channel, check Unsubscribed for that "
-"channel."
-msgstr ""
-"Per a cancel·lar la subscripció als sistemes seleccionats d'un canal, "
-"marqueu Cancel·la la subscripció per a aquest canal."
+msgid "To unsubscribe selected systems from a channel, check Unsubscribed for that channel."
+msgstr "Per a cancel·lar la subscripció als sistemes seleccionats d'un canal, marqueu Cancel·la la subscripció per a aquest canal."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:564
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:733
@@ -7271,24 +6689,12 @@ msgid "Changing the channels has been "
 msgstr "Canviar els canals ha estat "
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:584
-msgid ""
-"You can change the base software channel your system is subscribed to. The "
-"system will be unsubscribed from all software channels, and subscribed to "
-"the new base software channel."
-msgstr ""
-"Podeu canviar el canal de programari base al qual està subscrit el vostre "
-"sistema. El sistema es donarà de baixa de tots els canals de programari, i "
-"se subscriurà al nou canal de programari base."
+msgid "You can change the base software channel your system is subscribed to. The system will be unsubscribed from all software channels, and subscribed to the new base software channel."
+msgstr "Podeu canviar el canal de programari base al qual està subscrit el vostre sistema. El sistema es donarà de baixa de tots els canals de programari, i se subscriurà al nou canal de programari base."
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:610
-msgid ""
-"This system is subscribed to the checked channels beneath, if any. Disabled "
-"checkboxes indicate channels that can't be manually subscribed or "
-"unsubscribed from."
-msgstr ""
-"Aquest sistema està subscrit als canals comprovats de sota, si n'hi ha. Les "
-"caselles de selecció desactivades indiquen canals que no es poden subscriure "
-"o cancel·lar manualment."
+msgid "This system is subscribed to the checked channels beneath, if any. Disabled checkboxes indicate channels that can't be manually subscribed or unsubscribed from."
+msgstr "Aquest sistema està subscrit als canals comprovats de sota, si n'hi ha. Les caselles de selecció desactivades indiquen canals que no es poden subscriure o cancel·lar manualment."
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:629
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:630
@@ -7315,9 +6721,7 @@ msgstr "Canal de programari base"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:54
 msgid "Refreshing the data for this Virtual Host Manager has been triggered."
-msgstr ""
-"S'ha activat l'actualització de les dades d'aquest gestor de servidors "
-"virtuals."
+msgstr "S'ha activat l'actualització de les dades d'aquest gestor de servidors virtuals."
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:69
 msgid "Properties"
@@ -7423,11 +6827,8 @@ msgid "Session expired, please reload the page."
 msgstr "La sessió ha caducat, torneu a carregar la pàgina."
 
 #: ../html/src/utils/network.ts:99
-msgid ""
-"Authorization error, please reload the page or try to logout/login again."
-msgstr ""
-"Error d'autorització. Torneu a carregar la pàgina o torneu a intentar tancar "
-"la sessió."
+msgid "Authorization error, please reload the page or try to logout/login again."
+msgstr "Error d'autorització. Torneu a carregar la pàgina o torneu a intentar tancar la sessió."
 
 #: ../html/src/utils/network.ts:101
 msgid "Resource not found."
@@ -7436,6 +6837,12 @@ msgstr "No s'ha trobat el recurs."
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "Codi d'error HTTP "
+
+#~ msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
+#~ msgstr "L'exportador Tomcat Prometheus està activat però la configuració JMX està desactivada. "
+
+#~ msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
+#~ msgstr "L'exportador Tomcat Prometheus està desactivat, però la configuració JMX està activada. "
 
 #~ msgid "Onboarding failed"
 #~ msgstr "Ha fallat l'embarcament"

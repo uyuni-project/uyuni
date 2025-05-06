@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-25 09:41+0200\n"
+"POT-Creation-Date: 2025-05-06 11:31+0200\n"
 "PO-Revision-Date: 2025-04-28 18:43+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
@@ -29,12 +29,8 @@ msgid "remaining"
 msgstr "zostávajúce"
 
 #: ../html/javascript/spacewalk-essentials.js:427
-msgid ""
-"The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
-"Edge"
-msgstr ""
-"Prehliadač Internet Explorer nie je podporovaný. Skúste použiť Firefox, "
-"Chrome, alebo Edge"
+msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
+msgstr "Prehliadač Internet Explorer nie je podporovaný. Skúste použiť Firefox, Chrome, alebo Edge"
 
 #: ../html/src/components/CoCoScansList.tsx:75
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
@@ -44,12 +40,8 @@ msgstr "Akcia bola <link>naplánovaná</link>."
 
 #: ../html/src/components/CoCoScansList.tsx:90
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:77
-msgid ""
-"Unable to schedule action. Please check the server logs for detailed "
-"information."
-msgstr ""
-"Nie je možné naplánovať akciu. Prosím, skontrolujte záznamy servera, aby ste "
-"získali podrobné informácie."
+msgid "Unable to schedule action. Please check the server logs for detailed information."
+msgstr "Nie je možné naplánovať akciu. Prosím, skontrolujte záznamy servera, aby ste získali podrobné informácie."
 
 #: ../html/src/components/CoCoScansList.tsx:122
 msgid "Confirm Attestation Execution"
@@ -98,12 +90,8 @@ msgid "Invalid format of fields: {fields}"
 msgstr "Neplatný formát polí: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:213
-msgid ""
-"On this page you can configure Salt Formulas to automatically install and "
-"configure software."
-msgstr ""
-"Na tejto stránke môžete nakonfigurovať vzorce Salt na automatickú inštaláciu "
-"a konfiguráciu softvéru."
+msgid "On this page you can configure Salt Formulas to automatically install and configure software."
+msgstr "Na tejto stránke môžete nakonfigurovať vzorce Salt na automatickú inštaláciu a konfiguráciu softvéru."
 
 #: ../html/src/components/FormulaForm.tsx:268
 msgid "Expand All Sections"
@@ -126,14 +114,8 @@ msgid "new action chain"
 msgstr "nový reťazec akcií"
 
 #: ../html/src/components/action-schedule.tsx:198
-msgid ""
-"There are multiple maintenance schedules for selected systems. Make sure "
-"that systems in the set use at most 1 maintenance schedule if you want to "
-"schedule by date or maintenance window."
-msgstr ""
-"Pre vybrané systémy existuje viacero plánov údržby. Ak chcete plánovať podľa "
-"dátumu alebo okna údržby, uistite sa, že systémy v sade používajú najviac 1 "
-"plán údržby."
+msgid "There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window."
+msgstr "Pre vybrané systémy existuje viacero plánov údržby. Ak chcete plánovať podľa dátumu alebo okna údržby, uistite sa, že systémy v sade používajú najviac 1 plán údržby."
 
 #: ../html/src/components/action-schedule.tsx:205
 msgid "No upcoming maintenance windows"
@@ -170,7 +152,7 @@ msgstr "Atestácia #{identifier} vykonaná dňa {date} o {time}"
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:66
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:49
 #: ../html/src/components/target-systems.tsx:34
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:61
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:57
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:68
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:285
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
@@ -296,7 +278,7 @@ msgstr "Výstup procesu"
 #: ../html/src/components/hub/ModalEditButton.tsx:94
 #: ../html/src/components/large-text-attachment.tsx:184
 #: ../html/src/components/panels/CreatorPanel.tsx:125
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:144
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:115
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:197
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:35
@@ -364,12 +346,8 @@ msgid "Are you sure you want to {action} {name}"
 msgstr "Naozaj chcete {action} {name}"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:84
-msgid ""
-"Are you sure you want to {action} the selected {name}s? ({count} {name}s "
-"selected)"
-msgstr ""
-"Naozaj chcete {action} vybrané položky {name}? ({count} položiek {name} "
-"vybraných)"
+msgid "Are you sure you want to {action} the selected {name}s? ({count} {name}s selected)"
+msgstr "Naozaj chcete {action} vybrané položky {name}? ({count} položiek {name} vybraných)"
 
 #: ../html/src/components/dialog/DangerDialog.tsx:61
 #: ../html/src/components/dialog/DangerDialog.tsx:62
@@ -544,7 +522,7 @@ msgid "{rangeInputName} end"
 msgstr "{rangeInputName} koniec"
 
 #: ../html/src/components/formik/field/FieldBase.tsx:30
-#: ../html/src/components/input/InputBase.tsx:278
+#: ../html/src/components/input/InputBase.tsx:279
 msgid "required"
 msgstr "požadované"
 
@@ -562,14 +540,8 @@ msgid " No group"
 msgstr " Žiadna skupina"
 
 #: ../html/src/components/formula-selection.tsx:272
-msgid ""
-"On this page you can select Salt Formulas for this group/system, which can "
-"then be configured on group and system level. This allows you to "
-"automatically install and configure software."
-msgstr ""
-"Na tejto stránke môžete vybrať vzorce Salt pre túto skupinu/systém, ktoré je "
-"potom možné nakonfigurovať na úrovni skupiny a systému. To vám umožňuje "
-"automaticky inštalovať a konfigurovať softvér."
+msgid "On this page you can select Salt Formulas for this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software."
+msgstr "Na tejto stránke môžete vybrať vzorce Salt pre túto skupinu/systém, ktoré je potom možné nakonfigurovať na úrovni skupiny a systému. To vám umožňuje automaticky inštalovať a konfigurovať softvér."
 
 #: ../html/src/components/formula-selection.tsx:299
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:65
@@ -579,13 +551,11 @@ msgstr "Vzorce"
 
 #: ../html/src/components/formulas/EditGroup.tsx:358
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr ""
-"Toto pole sa používa ako 'kľúčový' identifikátor vo výsledných pilierových "
-"údajoch."
+msgstr "Toto pole sa používa ako 'kľúčový' identifikátor vo výsledných pilierových údajoch."
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:157
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:159
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:160
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:130
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:131
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
 msgid "Reset"
 msgstr "Resetovať"
@@ -659,12 +629,8 @@ msgid "New token successfully issued"
 msgstr "Úspešne vydaný nový token"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:186
-msgid ""
-"The new token was generated successfully. Make sure to copy it now as you "
-"will not be able to see this again."
-msgstr ""
-"Nový token bol úspešne vygenerovaný. Uistite sa, že ste si ho skopírovali, "
-"pretože ho už nebudete môcť vidieť."
+msgid "The new token was generated successfully. Make sure to copy it now as you will not be able to see this again."
+msgstr "Nový token bol úspešne vygenerovaný. Uistite sa, že ste si ho skopírovali, pretože ho už nebudete môcť vidieť."
 
 #: ../html/src/components/hub/AddTokenButton.tsx:200
 msgid "Copy"
@@ -695,20 +661,12 @@ msgid "Confirm deregistration"
 msgstr "Potvrdiť zrušenie registrácie"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:64
-msgid ""
-"Are you sure you want to deregister from hub {fqdn}? If you do, you will no "
-"longer receive data from it."
-msgstr ""
-"te si istí, že chcete zrušiť registráciu z hubu {fqdn}? Ak tak urobíte, už z "
-"neho nebudete dostávať dáta."
+msgid "Are you sure you want to deregister from hub {fqdn}? If you do, you will no longer receive data from it."
+msgstr "te si istí, že chcete zrušiť registráciu z hubu {fqdn}? Ak tak urobíte, už z neho nebudete dostávať dáta."
 
 #: ../html/src/components/hub/DeregisterServer.tsx:70
-msgid ""
-"Are you sure you want to deregister peripheral {fqdn}? All the current "
-"configuration will be lost."
-msgstr ""
-"Ste si istí, že chcete zrušiť registráciu periférie {fqdn}? Celá aktuálna "
-"konfigurácia sa stratí."
+msgid "Are you sure you want to deregister peripheral {fqdn}? All the current configuration will be lost."
+msgstr "Ste si istí, že chcete zrušiť registráciu periférie {fqdn}? Celá aktuálna konfigurácia sa stratí."
 
 #: ../html/src/components/hub/DeregisterServer.tsx:86
 msgid "The server {fqdn} has been successfully deregistered."
@@ -813,16 +771,11 @@ msgid "Migration failed"
 msgstr "Migrácia bola neúspešná"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:193
-msgid ""
-"Some of the servers where migrated successfully, but some errors happened "
-"during the process."
-msgstr ""
-"Niektoré servery boli úspešne migrované, ale počas procesu sa vyskytli "
-"niektoré chyby."
+msgid "Some of the servers where migrated successfully, but some errors happened during the process."
+msgstr "Niektoré servery boli úspešne migrované, ale počas procesu sa vyskytli niektoré chyby."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:194
-msgid ""
-"The migration process was not successfull and reported the following errors"
+msgid "The migration process was not successfull and reported the following errors"
 msgstr "Proces migrácie nebol úspešný a hlásil nasledujúce chyby"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:226
@@ -885,20 +838,12 @@ msgid "This server has a different root CA."
 msgstr "Tento server má inú koreňovú CA."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:296
-msgid ""
-"Ensure the certificate you are providing for {fqdn} is correct before "
-"proceeding. A wrong value will prevent the connection with the hub."
-msgstr ""
-"Pred pokračovaním sa uistite, že certifikát, ktorý poskytujete pre {fqdn}, "
-"je správny. Nesprávna hodnota zabráni spojeniu s hubom."
+msgid "Ensure the certificate you are providing for {fqdn} is correct before proceeding. A wrong value will prevent the connection with the hub."
+msgstr "Pred pokračovaním sa uistite, že certifikát, ktorý poskytujete pre {fqdn}, je správny. Nesprávna hodnota zabráni spojeniu s hubom."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:301
-msgid ""
-"Are you sure you want to remove the current Root Certificate Authority for "
-"{fqdn}?"
-msgstr ""
-"Ste si istí, že chcete odstrániť aktuálnu koreňovú certifikačnú autoritu pre "
-"{fqdn}?"
+msgid "Are you sure you want to remove the current Root Certificate Authority for {fqdn}?"
+msgstr "Ste si istí, že chcete odstrániť aktuálnu koreňovú certifikačnú autoritu pre {fqdn}?"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:321
 #: ../html/src/manager/notifications/notifications-list.tsx:339
@@ -955,12 +900,8 @@ msgid "Peripheral Server FQDN"
 msgstr "FQDN periférneho servera"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:158
-msgid ""
-"The unique, DNS-resolvable fully-qualified domain name of the server to "
-"register."
-msgstr ""
-"Jedinečný, plne kvalifikovaný názov domény servera rozpoznateľný DNS, ktorý "
-"sa má zaregistrovať."
+msgid "The unique, DNS-resolvable fully-qualified domain name of the server to register."
+msgstr "Jedinečný, plne kvalifikovaný názov domény servera rozpoznateľný DNS, ktorý sa má zaregistrovať."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:168
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:169
@@ -969,8 +910,7 @@ msgstr "Režim registrácie"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:170
 msgid "Define how to connect to the remote server to initiate the registration"
-msgstr ""
-"Definovanie spôsobu pripojenia k vzdialenému serveru na začatie registrácie"
+msgstr "Definovanie spôsobu pripojenia k vzdialenému serveru na začatie registrácie"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:177
 msgid "Existing token"
@@ -981,10 +921,8 @@ msgid "Administrator User/Password"
 msgstr "Administrátor používateľ/heslo"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:185
-msgid ""
-"The token that grant access to the remote server to establish the connection."
-msgstr ""
-"Token, ktorý poskytuje prístup k vzdialenému serveru na vytvorenie spojenia."
+msgid "The token that grant access to the remote server to establish the connection."
+msgstr "Token, ktorý poskytuje prístup k vzdialenému serveru na vytvorenie spojenia."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
@@ -1008,12 +946,8 @@ msgid "Root CA certificate"
 msgstr "Certifikát koreňovej CA"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:218
-msgid ""
-"The Root certificate authority of the remote server, that must be trusted to "
-"establish a secure connection."
-msgstr ""
-"Koreňová certifikačná autorita vzdialeného servera, ktorá musí byť "
-"dôveryhodná na vytvorenie bezpečného pripojenia."
+msgid "The Root certificate authority of the remote server, that must be trusted to establish a secure connection."
+msgstr "Koreňová certifikačná autorita vzdialeného servera, ktorá musí byť dôveryhodná na vytvorenie bezpečného pripojenia."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
 #: ../html/src/components/large-text-attachment.tsx:144
@@ -1056,63 +990,36 @@ msgid "Clear fields"
 msgstr "Vymazať polia"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:16
-msgid ""
-"A customized Root Certificate Authority is currently configured for this hub."
-msgstr ""
-"Pre tento hub je v súčasnosti nastavená vlastná koreňová certifikačná "
-"autorita."
+msgid "A customized Root Certificate Authority is currently configured for this hub."
+msgstr "Pre tento hub je v súčasnosti nastavená vlastná koreňová certifikačná autorita."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:17
-msgid ""
-"A customized Root Certificate Authority is currently configured for this "
-"peripheral."
-msgstr ""
-"Pre túto perifériu je v súčasnosti nastavená vlastná koreňová certifikačná "
-"autorita."
+msgid "A customized Root Certificate Authority is currently configured for this peripheral."
+msgstr "Pre túto perifériu je v súčasnosti nastavená vlastná koreňová certifikačná autorita."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:20
 msgid "This hub is currently using the default Root Certificate Authority."
-msgstr ""
-"Tento hub v súčasnosti používa predvolenú koreňovú certifikačnú autoritu."
+msgstr "Tento hub v súčasnosti používa predvolenú koreňovú certifikačnú autoritu."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:21
-msgid ""
-"This peripheral is currently using the default Root Certificate Authority."
-msgstr ""
-"Táto periféria v súčasnosti používa predvolenú koreňovú certifikačnú "
-"autoritu."
+msgid "This peripheral is currently using the default Root Certificate Authority."
+msgstr "Táto periféria v súčasnosti používa predvolenú koreňovú certifikačnú autoritu."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:25
-msgid ""
-"Ensure the certificate you are providing is correct before proceeding. A "
-"wrong value will break the connection with the hub."
-msgstr ""
-"Pred pokračovaním sa uistite, či je poskytnutý certifikát správny. Nesprávna "
-"hodnota spôsobí prerušenie spojenia s hubom."
+msgid "Ensure the certificate you are providing is correct before proceeding. A wrong value will break the connection with the hub."
+msgstr "Pred pokračovaním sa uistite, či je poskytnutý certifikát správny. Nesprávna hodnota spôsobí prerušenie spojenia s hubom."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:28
-msgid ""
-"Ensure the certificate you are providing is correct before proceeding. A "
-"wrong value will break the connection with the peripheral."
-msgstr ""
-"Pred pokračovaním sa uistite, či je poskytnutý certifikát správny. Nesprávna "
-"hodnota spôsobí prerušenie spojenia s perifériou."
+msgid "Ensure the certificate you are providing is correct before proceeding. A wrong value will break the connection with the peripheral."
+msgstr "Pred pokračovaním sa uistite, či je poskytnutý certifikát správny. Nesprávna hodnota spôsobí prerušenie spojenia s perifériou."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:33
-msgid ""
-"Are you sure you want to delete the current Root Certificate Authority? This "
-"change may break the connection with the hub."
-msgstr ""
-"Ste si istí, že chcete vymazať aktuálnu koreňovú certifikačnú autoritu? Táto "
-"zmena môže prerušiť spojenie s hubom."
+msgid "Are you sure you want to delete the current Root Certificate Authority? This change may break the connection with the hub."
+msgstr "Ste si istí, že chcete vymazať aktuálnu koreňovú certifikačnú autoritu? Táto zmena môže prerušiť spojenie s hubom."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:36
-msgid ""
-"Are you sure you want to delete the current Root Certificate Authority? This "
-"change may break the connection with the peripheral."
-msgstr ""
-"Ste si istí, že chcete vymazať aktuálnu koreňovú certifikačnú autoritu? Táto "
-"zmena môže prerušiť spojenie s perifériou."
+msgid "Are you sure you want to delete the current Root Certificate Authority? This change may break the connection with the peripheral."
+msgstr "Ste si istí, že chcete vymazať aktuálnu koreňovú certifikačnú autoritu? Táto zmena môže prerušiť spojenie s perifériou."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:67
 msgid "Server FQDN:"
@@ -1167,9 +1074,7 @@ msgid "{nSyncedChannels} syncronized channels, from one organization"
 msgstr "{nSyncedChannels} synchronizované kanály z jednej organizácie"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:192
-msgid ""
-"{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different "
-"organizations"
+msgid "{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different organizations"
 msgstr "{nSyncedChannels} synchronizované kanály z {nSyncedOrgs} rôznych organizácií"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:198
@@ -1246,9 +1151,7 @@ msgid "Arch"
 msgstr "Arch"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:318
-msgid ""
-"Some custom channels do not have a sync organization selected. Please select "
-"organizations before confirming."
+msgid "Some custom channels do not have a sync organization selected. Please select organizations before confirming."
 msgstr "Niektoré vlastné kanály nemajú vybranú synchronizovanú organizáciu. Prosím, vyberte organizácie pred potvrdením."
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:324
@@ -1386,30 +1289,21 @@ msgstr "Určite chcete tento token vymazať. V súčasnosti sa nepoužíva."
 
 #: ../html/src/components/hub/TokenTable.tsx:220
 msgid "This access token cannot be deleted. It is currently used by hub {fqdn}"
-msgstr ""
-"Tento prístupový token sa nemôže vymazať. V súčasnosti ho používa hub {fqdn}"
+msgstr "Tento prístupový token sa nemôže vymazať. V súčasnosti ho používa hub {fqdn}"
 
 #: ../html/src/components/hub/TokenTable.tsx:224
-msgid ""
-"This access token cannot be deleted. It is currently used by peripheral "
-"{fqdn}"
-msgstr ""
-"Tento prístupový token sa nemôže vymazať. V súčasnosti ho používa periféria "
-"{fqdn}"
+msgid "This access token cannot be deleted. It is currently used by peripheral {fqdn}"
+msgstr "Tento prístupový token sa nemôže vymazať. V súčasnosti ho používa periféria {fqdn}"
 
 #. token issued for another server currently valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:235
-msgid ""
-"Invalidating this access token will prevent the hub {fqdn} from accesssing."
+msgid "Invalidating this access token will prevent the hub {fqdn} from accesssing."
 msgstr "Zneplatnenie tohto prístupového tokenu zabráni prístupu k hubu {fqdn}."
 
 #. token issued for another server currently valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:238
-msgid ""
-"Invalidating this access token will prevent the peripheral {fqdn} from "
-"accesssing."
-msgstr ""
-"Zneplatnenie tohto prístupového tokenu zabráni prístupu k periférii {fqdn}."
+msgid "Invalidating this access token will prevent the peripheral {fqdn} from accesssing."
+msgstr "Zneplatnenie tohto prístupového tokenu zabráni prístupu k periférii {fqdn}."
 
 #. token issued for another server currently not valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:241
@@ -1419,8 +1313,7 @@ msgstr "Povolením tohto prístupového tokenu sa udelí prístup k hubu {fqdn}.
 #. token issued for another server currently not valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:244
 msgid "Enabling this access token will grant access to the peripheral {fqdn}."
-msgstr ""
-"Povolením tohto prístupového tokenu sa udelí prístup k periférii {fqdn}."
+msgstr "Povolením tohto prístupového tokenu sa udelí prístup k periférii {fqdn}."
 
 #. token received from another server currently valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:247
@@ -1429,10 +1322,8 @@ msgstr "Zneplatnenie tohto prístupového tokenu zabráni prístupu k hubu {fqdn
 
 #. token received from another server currently valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:250
-msgid ""
-"Invalidating this access token will prevent access to the peripheral {fqdn}."
-msgstr ""
-"Zneplatnenie tohto prístupového tokenu zabráni prístupu k periférii {fqdn}."
+msgid "Invalidating this access token will prevent access to the peripheral {fqdn}."
+msgstr "Zneplatnenie tohto prístupového tokenu zabráni prístupu k periférii {fqdn}."
 
 #. token received from another server currently not valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:253
@@ -1441,10 +1332,8 @@ msgstr "Povolením tohto prístupového tokenu sa obnoví prístup k hubu {fqdn}
 
 #. token received from another server currently not valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:256
-msgid ""
-"Enabling this access token will restore access to the peripheral {fqdn}."
-msgstr ""
-"Povolením tohto prístupového tokenu sa obnoví prístup k periférii {fqdn}."
+msgid "Enabling this access token will restore access to the peripheral {fqdn}."
+msgstr "Povolením tohto prístupového tokenu sa obnoví prístup k periférii {fqdn}."
 
 #: ../html/src/components/input/datetime/DateTime.example.tsx:24
 msgid "Time"
@@ -1692,12 +1581,8 @@ msgid "Monthly:"
 msgstr "Mesačne:"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:468
-msgid ""
-"Days are limited to 28 to have a recurring schedule available for all the "
-"months"
-msgstr ""
-"Dni sú obmedzené na 28, aby bol k dispozícii opakujúci sa plán pre všetky "
-"mesiace"
+msgid "Days are limited to 28 to have a recurring schedule available for all the months"
+msgstr "Dni sú obmedzené na 28, aby bol k dispozícii opakujúci sa plán pre všetky mesiace"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:483
 msgid "Custom Quartz format:"
@@ -1753,11 +1638,8 @@ msgid "Reboot state will be put last."
 msgstr "Stav reštartu bude uvedený ako posledný."
 
 #: ../html/src/components/states-picker.tsx:132
-msgid ""
-"'Reboot system' and 'Reboot system if needed' states cannot be used together."
-msgstr ""
-"Stavy \"Reštartovať systém\" a \"Reštartovať systém v prípade potreby\" sa "
-"nemôžu používať spoločne."
+msgid "'Reboot system' and 'Reboot system if needed' states cannot be used together."
+msgstr "Stavy \"Reštartovať systém\" a \"Reštartovať systém v prípade potreby\" sa nemôžu používať spoločne."
 
 #: ../html/src/components/states-picker.tsx:155
 msgid "State assignments have been saved."
@@ -1769,9 +1651,7 @@ msgstr "Pri ukladaní sa vyskytla chyba."
 
 #: ../html/src/components/states-picker.tsx:308
 msgid "No states assigned. Use search to find and assign states."
-msgstr ""
-"Neboli priradené žiadne stavy. Na nájdenie a priradenie stavov použite "
-"vyhľadávanie."
+msgstr "Neboli priradené žiadne stavy. Na nájdenie a priradenie stavov použite vyhľadávanie."
 
 #: ../html/src/components/states-picker.tsx:367
 #: ../html/src/manager/images/image-view.tsx:818
@@ -1871,11 +1751,8 @@ msgid "Assign"
 msgstr "Priradiť"
 
 #: ../html/src/components/states-picker.tsx:513
-msgid ""
-"Select the systems to schedule for immediate state execution and confirm."
-msgstr ""
-"Vyberte systémy, ktoré chcete naplánovať na okamžité vykonanie stavu, a "
-"potvrďte."
+msgid "Select the systems to schedule for immediate state execution and confirm."
+msgstr "Vyberte systémy, ktoré chcete naplánovať na okamžité vykonanie stavu, a potvrďte."
 
 #: ../html/src/components/states-picker.tsx:523
 msgid "This table is empty"
@@ -2094,29 +1971,19 @@ msgstr "Nastala interná chyba. Podrobnosti nájdete v záznamoch servera."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:27
 msgid "Enabling monitoring failed. See the server logs for details."
-msgstr ""
-"Povolenie monitorovania zlyhalo. Podrobnosti nájdete v záznamoch servera."
+msgstr "Povolenie monitorovania zlyhalo. Podrobnosti nájdete v záznamoch servera."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:29
-msgid ""
-"Failed to enable all monitoring services. Some services are still disabled. "
-"See the server logs for details."
-msgstr ""
-"Nepodarilo sa povoliť všetky monitorovacie služby. Niektoré služby sú stále "
-"zakázané. Podrobnosti nájdete v záznamoch servera."
+msgid "Failed to enable all monitoring services. Some services are still disabled. See the server logs for details."
+msgstr "Nepodarilo sa povoliť všetky monitorovacie služby. Niektoré služby sú stále zakázané. Podrobnosti nájdete v záznamoch servera."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:31
 msgid "Disabling monitoring failed. See the server logs for details."
-msgstr ""
-"Zakázanie monitorovania zlyhalo. Podrobnosti nájdete v záznamoch servera."
+msgstr "Zakázanie monitorovania zlyhalo. Podrobnosti nájdete v záznamoch servera."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:33
-msgid ""
-"Failed to disable all monitoring services. Some services are still enabled. "
-"See the server logs for details."
-msgstr ""
-"Nepodarilo sa zakázať všetky monitorovacie služby. Niektoré služby sú stále "
-"povolené. Podrobnosti nájdete v záznamoch servera."
+msgid "Failed to disable all monitoring services. Some services are still enabled. See the server logs for details."
+msgstr "Nepodarilo sa zakázať všetky monitorovacie služby. Niektoré služby sú stále povolené. Podrobnosti nájdete v záznamoch servera."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:35
 msgid "Monitoring enabled successfully."
@@ -2127,151 +1994,131 @@ msgid "Monitoring disabled successfully."
 msgstr "Monitorovanie bolo úspešne zakázané."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:38
-msgid ""
-"The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
-msgstr ""
-"Exportér Tomcat Prometheus je pripravený, ale konfigurácia JMX je zakázaná. "
+msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
+msgstr "Exportér Tomcat Prometheus je pripravený, ale konfigurácia JMX je zakázaná. Kliknutím na tlačidlo Povoliť sa povolí konfigurácia JMX alebo kliknutím na Zakázať sa zastaví exportér Prometheus."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:42
-msgid ""
-"The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
-msgstr ""
-"Exportér Tomcat Prometheus nie je pripravený, ale konfigurácia JMX je "
-"povolená. "
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:41
+msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
+msgstr "Exportér Tomcat Prometheus nie je pripravený, ale konfigurácia JMX je povolená. Kliknutím na tlačidlo Zakázať sa zakáže konfigurácia JMX alebo kliknutím na Povoliť sa spustí exportér Prometheus."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:46
-msgid ""
-"The Taskomatic Prometheus exporter is up but the JMX configuration is "
-"disabled. "
-msgstr ""
-"Exportér Taskomatic Prometheus je pripravený, ale konfigurácia JMX je "
-"zakázaná. "
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:44
+#, fuzzy
+#| msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
+msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
+msgstr "Exportér Tomcat Prometheus je pripravený, ale konfigurácia JMX je zakázaná. Kliknutím na tlačidlo Povoliť sa povolí konfigurácia JMX alebo kliknutím na Zakázať sa zastaví exportér Prometheus."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:50
-msgid ""
-"The Taskomatic Prometheus exporter is down but the JMX configuration is "
-"enabled. "
-msgstr ""
-"Exportér Taskomatic Prometheus nie je pripravený, ale konfigurácia JMX je "
-"povolená. "
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:47
+#, fuzzy
+#| msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
+msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
+msgstr "Exportér Tomcat Prometheus nie je pripravený, ale konfigurácia JMX je povolená. Kliknutím na tlačidlo Zakázať sa zakáže konfigurácia JMX alebo kliknutím na Povoliť sa spustí exportér Prometheus."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:56
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:52
 msgid "Monitoring status hasn't changed."
 msgstr "Stav monitorovania sa nezmenil."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:57
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:53
 msgid "An error occurred. Monitoring status unknown. Refresh the page."
 msgstr "Vyskytla sa chyba. Stav monitorovania nie je známy. Obnovte stránku."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:62
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:58
 msgid "Tomcat (Java JMX)"
 msgstr "Tomcat (Java JMX)"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:63
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:59
 msgid "Taskomatic (Java JMX)"
 msgstr "Taskomatic (Java JMX)"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:64
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:60
 msgid "PostgreSQL database"
 msgstr "Databáza PostgreSQL"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:65
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:61
 msgid "Server self monitoring"
 msgstr "Vlastné monitorovanie servera"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:81
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:83
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:77
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:79
 #: ../html/src/manager/appstreams/panel-appstream.tsx:22
 msgid "Enabled"
 msgstr "Povolené"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:91
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:93
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:87
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:89
 msgid "Disabled"
 msgstr "Zakázané"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:152
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:148
 msgid "Server Monitoring"
 msgstr "Monitorovanie servera"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:154
-msgid ""
-"The server uses <link>Prometheus</link> exporters to expose metrics about "
-"your environment."
-msgstr ""
-"Server používa exportéry <link>Prometheus</link> na zobrazenie metrík o "
-"vašom prostredí."
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:150
+msgid "The server uses <link>Prometheus</link> exporters to expose metrics about your environment."
+msgstr "Server používa exportéry <link>Prometheus</link> na zobrazenie metrík o vašom prostredí."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:163
-msgid ""
-"Refer to the <link>documentation</link> to learn how to consume these "
-"metrics."
-msgstr ""
-"Informácie o tom, ako tieto metriky používať, nájdete v <link>dokumentácii</"
-"link>."
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:159
+msgid "Refer to the <link>documentation</link> to learn how to consume these metrics."
+msgstr "Informácie o tom, ako tieto metriky používať, nájdete v <link>dokumentácii</link>."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:254
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:274
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:294
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:316
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:250
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:270
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:290
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:312
 msgid "Enable"
 msgstr "Povoliť"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:261
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:281
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:301
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:324
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:257
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:277
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:297
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:320
 msgid "Disable"
 msgstr "Zakázať"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:338
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:334
 msgid "{productName} Configuration - Monitoring"
 msgstr "Konfigurácia {productName} - Monitorovanie"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:345
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:341
 msgid "Set up monitoring for your {productName} server."
 msgstr "Nastavte monitorovanie pre váš server {productName}."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:351
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:347
 msgid "General"
 msgstr "Všeobecné"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:356
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:352
 msgid "Bootstrap Script"
 msgstr "Zavádzací skript"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:361
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:357
 msgid "Organizations"
 msgstr "Organizácie"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:366
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:362
 msgid "Restart"
 msgstr "Reštart"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:371
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:367
 msgid "Cobbler"
 msgstr "Cobbler"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:375
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:384
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:396
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:371
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:380
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:392
 msgid "Monitoring"
 msgstr "Monitorovanie"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:378
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:374
 msgid "Password Policy"
 msgstr "Pravidlá pre heslá"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:407
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:403
 msgid "Restarting"
 msgstr "Reštartovanie"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:408
-msgid ""
-" Tomcat and Taskomatic is needed for the configuration changes to take "
-"effect."
-msgstr ""
-" Tomcat a Taskomatic sú potrebné na to, aby sa prejavili konfiguračné zmeny."
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:404
+msgid " Tomcat and Taskomatic is needed for the configuration changes to take effect."
+msgstr " Tomcat a Taskomatic sú potrebné na to, aby sa prejavili konfiguračné zmeny."
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:41
 msgid "Add new PAYG ssh connection data"
@@ -2366,12 +2213,8 @@ msgid "Migrate ISS v2..."
 msgstr "Migrovať ISS v2..."
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:57
-msgid ""
-"This server is configured as a Peripheral server in a Hub configuration. "
-"Managing PAYG Connections is disabled."
-msgstr ""
-"Tento server je nakonfigurovaný ako periférny server v konfigurácii pre hub. "
-"Spravovanie pripojení PAYG je zakázané."
+msgid "This server is configured as a Peripheral server in a Hub configuration. Managing PAYG Connections is disabled."
+msgstr "Tento server je nakonfigurovaný ako periférny server v konfigurácii pre hub. Spravovanie pripojení PAYG je zakázané."
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:66
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:95
@@ -2398,79 +2241,77 @@ msgstr "nikdy"
 msgid "Add PAYG Connection"
 msgstr "Pridať pripojenie PAYG"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:47
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:18
 msgid "Server Configuration - Password Policy"
 msgstr "Konfigurácia servera - Pravidlá pre heslá"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:50
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:21
 msgid "Set up your server local users password policy."
 msgstr "Nastavte pravidlá pre heslá lokálnych používateľov servera."
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:53
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:24
 msgid "Password Policy Settings"
 msgstr "Nastavenia pravidiel pre heslá"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:58
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:29
 msgid "Min Password Length"
 msgstr "Min. dĺžka hesla"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:65
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:36
 msgid "Max Password Length"
 msgstr "Max. dĺžka hesla"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:72
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:43
 msgid "Require Digits"
 msgstr "Vyžadujú sa číslice"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:79
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:50
 msgid "Require Lowercase Characters"
 msgstr "Vyžadujú sa malé písmená"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:86
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:57
 msgid "Require Uppercase Characters"
 msgstr "Vyžadujú sa veľké písmená"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:93
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:64
 msgid "Restrict Consecutive Characters"
 msgstr "Obmedzenie po sebe idúcich znakov"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:100
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:71
 msgid "Require Special Characters"
 msgstr "Vyžadujú sa špeciálne znaky"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:107
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:78
 msgid "Allowed Special Characters"
 msgstr "Povolené špeciálne znaky"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:119
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:90
 msgid "Restrict Characters Occurrences"
 msgstr "Obmedzenie výskytu znakov"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:126
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:97
 msgid "Max Characters Occurrences"
 msgstr "Max. výskyt znakov"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:143
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:114
 msgid "Save Password Policy"
 msgstr "Uložiť pravidlá pre heslá"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:149
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:120
 msgid "Password Policy Changed"
 msgstr "Zmenené pravidlá pre heslá"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:166
-msgid "Password Policy reset to defaults"
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:139
+#, fuzzy
+#| msgid "Password Policy reset to defaults"
+msgid "Password Policy Reset to Default"
 msgstr "Obnoviť predvolené nastavenia pravidiel pre heslá"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
 #: ../html/src/manager/login/use-login-api.ts:60
-msgid ""
-"Request interrupted or invalid response received from the server. Please try "
-"again."
-msgstr ""
-"Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď. "
-"Prosím, skúste znova."
+msgid "Request interrupted or invalid response received from the server. Please try again."
+msgstr "Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď. Prosím, skúste znova."
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:33
@@ -2499,11 +2340,8 @@ msgid "Editing ssh connection data.."
 msgstr "Úprava údajov pripojenia ssh.."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:44
-msgid ""
-"When editing the SSH connection all needed credentials must be re-provided."
-msgstr ""
-"Pri úprave pripojenia SSH je potrebné opätovne zadať všetky potrebné "
-"prihlasovacie údaje."
+msgid "When editing the SSH connection all needed credentials must be re-provided."
+msgstr "Pri úprave pripojenia SSH je potrebné opätovne zadať všetky potrebné prihlasovacie údaje."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
@@ -2572,12 +2410,8 @@ msgid "Operation not successful: Empty reply from the server"
 msgstr "Operácia nebola úspešná: Prázdna odpoveď zo servera"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:132
-msgid ""
-"No SUSE Multi-Linux Manager Server Subscription available. Products "
-"requiring Client Tools Channel will not be shown."
-msgstr ""
-"Nie je k dispozícii predplatné servera SUSE Multi-Linux Manager. Produkty "
-"vyžadujúce kanál nástrojov klienta sa nebudú zobrazovať."
+msgid "No SUSE Multi-Linux Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
+msgstr "Nie je k dispozícii predplatné servera SUSE Multi-Linux Manager. Produkty vyžadujúce kanál nástrojov klienta sa nebudú zobrazovať."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:179
 msgid "The product catalog refresh is running..."
@@ -2585,21 +2419,15 @@ msgstr "Obnovovanie katalógu produktov prebieha..."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:205
 msgid "The following product installations failed. Please check log files."
-msgstr ""
-"Nasledujúce inštalácie produktov zlyhali. Skontrolujte, prosím, súbory "
-"záznamov."
+msgstr "Nasledujúce inštalácie produktov zlyhali. Skontrolujte, prosím, súbory záznamov."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:250
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "Synchronizácia vybraných kanálov bola úspešne naplánovaná."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:284
-msgid ""
-"A refresh of the product data is currently running in the background. Please "
-"try again later."
-msgstr ""
-"Obnovovanie produktových údajov momentálne beží na pozadí. Skúste znova "
-"neskôr, prosím."
+msgid "A refresh of the product data is currently running in the background. Please try again later."
+msgstr "Obnovovanie produktových údajov momentálne beží na pozadí. Skúste znova neskôr, prosím."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:289
 msgid "The product catalog is still refreshing, please wait."
@@ -2623,29 +2451,16 @@ msgid "Why aren't all products displayed in the list?"
 msgstr "Prečo nie sú v zozname zobrazené všetky produkty?"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:375
-msgid ""
-"The products displayed on this list are directly linked to your Organization "
-"credentials (Mirror credentials) as well as your SUSE subscriptions."
-msgstr ""
-"Produkty zobrazené v tomto zozname sú priamo spojené s prihlasovacími údajmi "
-"vašej organizácie (prihlasovacími údajmi zrkadla) ako aj s vašimi "
-"predplatnými SUSE."
+msgid "The products displayed on this list are directly linked to your Organization credentials (Mirror credentials) as well as your SUSE subscriptions."
+msgstr "Produkty zobrazené v tomto zozname sú priamo spojené s prihlasovacími údajmi vašej organizácie (prihlasovacími údajmi zrkadla) ako aj s vašimi predplatnými SUSE."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:380
-msgid ""
-"If you believe there are products missing, make sure you have added the "
-"correct Organization credentials in the previous wizard step."
-msgstr ""
-"Ak sa domnievate, že niektoré produkty chýbajú, uistite sa, že ste pridali "
-"správne prihlasovacie údaje organizácie v predchádzajúcom kroku sprievodcu."
+msgid "If you believe there are products missing, make sure you have added the correct Organization credentials in the previous wizard step."
+msgstr "Ak sa domnievate, že niektoré produkty chýbajú, uistite sa, že ste pridali správne prihlasovacie údaje organizácie v predchádzajúcom kroku sprievodcu."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:390
-msgid ""
-"This server is configured as a Peripheral server in a Hub configuration. "
-"Products can only be managed on the Hub server."
-msgstr ""
-"Tento server je nakonfigurovaný ako periférny server v konfigurácii pre hub. "
-"Produkty možno spravovať len na hub serveri."
+msgid "This server is configured as a Peripheral server in a Hub configuration. Products can only be managed on the Hub server."
+msgstr "Tento server je nakonfigurovaný ako periférny server v konfigurácii pre hub. Produkty možno spravovať len na hub serveri."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:505
 msgid "Filter by product Description"
@@ -2678,9 +2493,7 @@ msgstr " kanály synchronizované"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:815
 msgid "To enable this product, the parent product should be selected first"
-msgstr ""
-"Ak chcete povoliť tento produkt, najskôr by mal byť vybraný rodičovský "
-"produkt"
+msgstr "Ak chcete povoliť tento produkt, najskôr by mal byť vybraný rodičovský produkt"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:816
 msgid "Select this product"
@@ -2763,10 +2576,8 @@ msgid "hostname:port"
 msgstr "názov_hostiteľa:port"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:88
-msgid ""
-"For example: <code>example.com:8080</code> or <code>192.0.2.0:8080</code>"
-msgstr ""
-"Napríklad: <code>example.com:8080</code> alebo <code>192.0.2.0:8080</code>"
+msgid "For example: <code>example.com:8080</code> or <code>192.0.2.0:8080</code>"
+msgstr "Napríklad: <code>example.com:8080</code> alebo <code>192.0.2.0:8080</code>"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:105
 msgid "HTTP Proxy Username"
@@ -2786,14 +2597,8 @@ msgid "HTTP Proxy"
 msgstr "HTTP Proxy"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:132
-msgid ""
-"If this server uses an HTTP proxy to access the outside network, you can use "
-"this form to configure it. If that is not the case, move on to "
-"<link>Organization Credentials</link>."
-msgstr ""
-"Ak tento server používa na prístup k vonkajšej sieti HTTP proxy, môžete ho "
-"pomocou tohto formulára nakonfigurovať. Ak to nie je tento prípad, prejdite "
-"na <link>Prihlasovacie údaje organizácie</link>."
+msgid "If this server uses an HTTP proxy to access the outside network, you can use this form to configure it. If that is not the case, move on to <link>Organization Credentials</link>."
+msgstr "Ak tento server používa na prístup k vonkajšej sieti HTTP proxy, môžete ho pomocou tohto formulára nakonfigurovať. Ak to nie je tento prípad, prejdite na <link>Prihlasovacie údaje organizácie</link>."
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:59
 msgid "Verifying proxy settings"
@@ -2861,12 +2666,8 @@ msgid "Runtime Status"
 msgstr "Stav behu programu"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:185
-msgid ""
-"The server is running or has finished executing the following tasks during "
-"the latest 5 minutes."
-msgstr ""
-"Server je spustený alebo dokončil vykonávanie nasledujúcich úloh počas "
-"posledných 5 minút."
+msgid "The server is running or has finished executing the following tasks during the latest 5 minutes."
+msgstr "Server je spustený alebo dokončil vykonávanie nasledujúcich úloh počas posledných 5 minút."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:188
 msgid "Data is refreshed every "
@@ -2915,9 +2716,7 @@ msgstr "Momentálne na serveri nie sú spustené žiadne úlohy."
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
 msgid "Session expired, please reload the page to see up-to-date data."
-msgstr ""
-"Sedenie vypršalo, prosím, znovu načítajte stránku, aby ste zobrazili "
-"aktuálne údaje."
+msgstr "Sedenie vypršalo, prosím, znovu načítajte stránku, aby ste zobrazili aktuálne údaje."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:263
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
@@ -2934,8 +2733,7 @@ msgid "AppStream {stream} has {count} packages:"
 msgstr "AppStream {stream} má {count} balíkov:"
 
 #: ../html/src/manager/appstreams/appstreams.tsx:68
-msgid ""
-"Updating the selection of AppStream modules has been <link>scheduled</link>."
+msgid "Updating the selection of AppStream modules has been <link>scheduled</link>."
 msgstr "Aktualizácia výberu modulov AppStream bola <link>naplánovaná</link>."
 
 #: ../html/src/manager/appstreams/appstreams.tsx:116
@@ -2945,12 +2743,8 @@ msgid "AppStreams"
 msgstr "Položky AppStream"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:31
-msgid ""
-"Please review the changes below before scheduling an action to apply the "
-"changes on the system."
-msgstr ""
-"Prosím, skontrolujte nižšie uvedené zmeny pred naplánovaním akcie na "
-"vykonanie zmien v systéme."
+msgid "Please review the changes below before scheduling an action to apply the changes on the system."
+msgstr "Prosím, skontrolujte nižšie uvedené zmeny pred naplánovaním akcie na vykonanie zmien v systéme."
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:49
 msgid "Streams to be enabled:"
@@ -3000,12 +2794,8 @@ msgid "Not affected"
 msgstr "Neovplyvnené"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:65
-msgid ""
-"The client is not affected because none of the known CVE vulnerable packages "
-"are installed."
-msgstr ""
-"Klient nie je ovplyvnený, pretože nie je nainštalovaný žiadny zo známych "
-"zraniteľných balíkov CVE."
+msgid "The client is not affected because none of the known CVE vulnerable packages are installed."
+msgstr "Klient nie je ovplyvnený, pretože nie je nainštalovaný žiadny zo známych zraniteľných balíkov CVE."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:69
 msgid "Patched"
@@ -3020,20 +2810,15 @@ msgid "Affected, patch is unavailable"
 msgstr "Ovplyvnené, oprava nie je k dispozícii"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:75
-msgid ""
-"The client is affected by a vulnerability for which a patch has not yet been "
-"released."
-msgstr ""
-"Klient je ovplyvnený zraniteľnosťou, pre ktorú ešte nebola vydaná oprava."
+msgid "The client is affected by a vulnerability for which a patch has not yet been released."
+msgstr "Klient je ovplyvnený zraniteľnosťou, pre ktorú ešte nebola vydaná oprava."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
 msgid "Affected, patch is unavailable in relevant channels"
 msgstr "Ovplyvnené, oprava nie je k dispozícii v príslušných kanáloch"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-msgid ""
-"The client is affected by a vulnerability for which a patch has been "
-"released,"
+msgid "The client is affected by a vulnerability for which a patch has been released,"
 msgstr "Klient je ovplyvnený zraniteľnosťou, pre ktorú bola vydaná oprava,"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
@@ -3045,12 +2830,8 @@ msgid "Unknown, CVE metadata not available"
 msgstr "Neznáme, metadáta CVE nie sú k dispozícii"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:97
-msgid ""
-"It is not possible to scan the client server for CVE vulnerabilities without "
-"channels or OVAL metadata."
-msgstr ""
-"Bez kanálov alebo metadát OVAL nie je možné skenovať klientsky server na "
-"zraniteľnosti CVE."
+msgid "It is not possible to scan the client server for CVE vulnerabilities without channels or OVAL metadata."
+msgstr "Bez kanálov alebo metadát OVAL nie je možné skenovať klientsky server na zraniteľnosti CVE."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:235
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:248
@@ -3063,14 +2844,11 @@ msgstr "Neznámy stav opravy"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:241
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
-msgstr ""
-"Dáta OVAL nie sú synchronizované. Potenciálne prehliadnuté zraniteľnosti"
+msgstr "Dáta OVAL nie sú synchronizované. Potenciálne prehliadnuté zraniteľnosti"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
 msgid "Server product channels out of sync; no patch information available"
-msgstr ""
-"Kanály produktu servera nie sú synchronizované; nie sú k dispozícii žiadne "
-"informácie o opravách"
+msgstr "Kanály produktu servera nie sú synchronizované; nie sú k dispozícii žiadne informácie o opravách"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:254
 msgid "CVE Audit"
@@ -3107,8 +2885,7 @@ msgstr "Inštalovať novú opravu na tento systém."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:440
 msgid "Patch available, but system needs to be migrated to a newer Product."
-msgstr ""
-"Oprava je k dispozícii, ale systém je potrebné migrovať na novší produkt."
+msgstr "Oprava je k dispozícii, ale systém je potrebné migrovať na novší produkt."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:452
 msgid "Patch available, but needs to be cloned into Channel."
@@ -3155,12 +2932,8 @@ msgid "Match data status"
 msgstr "Stav údajov priradenia"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:88
-msgid ""
-"Could not start a matching run. Please contact your administrator to make "
-"sure the task scheduler is running."
-msgstr ""
-"Nepodarilo sa spustiť beh priraďovania. Prosím, kontaktujte svojho "
-"administrátora a uistite sa, že je spustený plánovač úloh."
+msgid "Could not start a matching run. Please contact your administrator to make sure the task scheduler is running."
+msgstr "Nepodarilo sa spustiť beh priraďovania. Prosím, kontaktujte svojho administrátora a uistite sa, že je spustený plánovač úloh."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:97
 msgid "No match data is currently available."
@@ -3171,26 +2944,16 @@ msgid "You can also trigger a first run now by clicking the button below."
 msgstr "Môžete tiež teraz spustiť prvý beh kliknutím na tlačidlo nižšie."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:107
-msgid ""
-"Matching data is currently being recomputed, it was started {timeFromNow}."
-msgstr ""
-"Priraďovacie dáta sa momentálne prepočítavajú, bolo to spustené "
-"{timeFromNow}."
+msgid "Matching data is currently being recomputed, it was started {timeFromNow}."
+msgstr "Priraďovacie dáta sa momentálne prepočítavajú, bolo to spustené {timeFromNow}."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:117
-msgid ""
-"Latest successful match data was computed {timeFromNow}, you can trigger a "
-"new run by clicking the button below."
-msgstr ""
-"Najnovšie úspešné dáta priradenia boli vypočítané {timeFromNow}, nový beh "
-"môžete spustiť kliknutím na tlačidlo nižšie."
+msgid "Latest successful match data was computed {timeFromNow}, you can trigger a new run by clicking the button below."
+msgstr "Najnovšie úspešné dáta priradenia boli vypočítané {timeFromNow}, nový beh môžete spustiť kliknutím na tlačidlo nižšie."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:126
-msgid ""
-"Match data is computed via a task schedule, nightly by default (you can "
-msgstr ""
-"Dáta priradenia sa počítajú podľa plánu úloh, každú noc v predvolenom "
-"nastavení (môžete "
+msgid "Match data is computed via a task schedule, nightly by default (you can "
+msgstr "Dáta priradenia sa počítajú podľa plánu úloh, každú noc v predvolenom nastavení (môžete "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:128
 msgid "change the task schedule from the administration page"
@@ -3209,35 +2972,24 @@ msgid "Unsupported part number detected"
 msgstr "Bolo zistené nepodporované číslo časti"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:38
-msgid ""
-"Physical system is reported as virtual guest, please check hardware data"
-msgstr ""
-"Fyzický systém je hlásený ako virtuálny hosť. prosím, skontrolujte "
-"hardvérové údaje"
+msgid "Physical system is reported as virtual guest, please check hardware data"
+msgstr "Fyzický systém je hlásený ako virtuálny hosť. prosím, skontrolujte hardvérové údaje"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:42
 msgid "Virtual guest has unknown host, assuming it is a physical system"
-msgstr ""
-"Virtuálny hosť má neznámeho hostiteľa za predpokladu, že ide o fyzický systém"
+msgstr "Virtuálny hosť má neznámeho hostiteľa za predpokladu, že ide o fyzický systém"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:46
 msgid "System has an unknown number of sockets, assuming 16"
 msgstr "Systém má neznámy počet soketov, predpokladá sa 16"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:50
-msgid ""
-"Two subscriptions with the same part number are in a bundle - merged into a "
-"single one"
-msgstr ""
-"Dve predplatné s rovnakým číslom časti sú vo zväzku - zlúčené do jedného"
+msgid "Two subscriptions with the same part number are in a bundle - merged into a single one"
+msgstr "Dve predplatné s rovnakým číslom časti sú vo zväzku - zlúčené do jedného"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
-msgid ""
-"Two subscriptions with the same part number (and other properties) have been "
-"merged together - start/end dates might be indicative"
-msgstr ""
-"Dve predplatné s rovnakým číslom čast (a ďalšími vlastnosťami) boli zlúčené "
-"dohromady - dátum začiatku/konca môže byť orientačný"
+msgid "Two subscriptions with the same part number (and other properties) have been merged together - start/end dates might be indicative"
+msgstr "Dve predplatné s rovnakým číslom čast (a ďalšími vlastnosťami) boli zlúčené dohromady - dátum začiatku/konca môže byť orientačný"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:60
 msgid "Pinned match adjusted due to merged subscriptions"
@@ -3248,12 +3000,8 @@ msgid "Subscription IDs"
 msgstr "ID položiek predplatného"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:73
-msgid ""
-"Subscription with unsupported part number and no associated product has been "
-"ignored."
-msgstr ""
-"Predplatné s nepodporovaným číslom časti a žiadnym súvisiacim produktom bolo "
-"ignorované."
+msgid "Subscription with unsupported part number and no associated product has been ignored."
+msgstr "Predplatné s nepodporovaným číslom časti a žiadnym súvisiacim produktom bolo ignorované."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:94
 msgid "Please review warning and information messages below."
@@ -3280,36 +3028,20 @@ msgid "Pins"
 msgstr "Pripnutia"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:95
-msgid ""
-"You can pin a subscription to a system to suggest a certain association to "
-"the matching algorithm. "
-msgstr ""
-"Môžete pripnúť predplatné systému, aby ste navrhli určité priradenie "
-"algoritmu priraďovania. "
+msgid "You can pin a subscription to a system to suggest a certain association to the matching algorithm. "
+msgstr "Môžete pripnúť predplatné systému, aby ste navrhli určité priradenie algoritmu priraďovania. "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:98
-msgid ""
-"Next time a matching is attempted, the algorithm will try to produce a "
-"result that applies the subscription to the system you specified. "
-msgstr ""
-"Pri ďalšom pokuse o priradenie sa algoritmus pokúsi dosiahnuť výsledok, "
-"ktorým aplikuje predplatné na vami zadaný systém. "
+msgid "Next time a matching is attempted, the algorithm will try to produce a result that applies the subscription to the system you specified. "
+msgstr "Pri ďalšom pokuse o priradenie sa algoritmus pokúsi dosiahnuť výsledok, ktorým aplikuje predplatné na vami zadaný systém. "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:101
-msgid ""
-"Note that the algorithm might determine that a certain pin cannot be "
-"respected, "
-msgstr ""
-"Treba upozorniť, že algoritmus môže rozhodnúť, že určité pripnutie nemožno "
-"rešpektovať, "
+msgid "Note that the algorithm might determine that a certain pin cannot be respected, "
+msgstr "Treba upozorniť, že algoritmus môže rozhodnúť, že určité pripnutie nemožno rešpektovať, "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:103
-msgid ""
-"depending on a subscription's availablility and applicability rules, in that "
-"case it will be shown as not satisfied. "
-msgstr ""
-"v závislosti od pravidiel dostupnosti a použiteľnosti predplatného, v takom "
-"prípade sa zobrazí, že je nespokojný. "
+msgid "depending on a subscription's availablility and applicability rules, in that case it will be shown as not satisfied. "
+msgstr "v závislosti od pravidiel dostupnosti a použiteľnosti predplatného, v takom prípade sa zobrazí, že je nespokojný. "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:117
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:144
@@ -3340,9 +3072,7 @@ msgstr "Vymazať pripnutie"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:169
 msgid "No pins defined. You can create one with the button below."
-msgstr ""
-"Nie sú definované žiadne pripnutia. Môžete si ich vytvoriť pomocou tlačidla "
-"nižšie."
+msgstr "Nie sú definované žiadne pripnutia. Môžete si ich vytvoriť pomocou tlačidla nižšie."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:174
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:175
@@ -3396,12 +3126,8 @@ msgid "Save Pin"
 msgstr "Uložiť pripnutie"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:400
-msgid ""
-"No subscriptions have been found to match this system, considering all "
-"products installed, either directly or in virtual guests."
-msgstr ""
-"Nenašli sa žiadne predplatné, ktoré by zodpovedali tomuto systému vzhľadom "
-"na všetky nainštalované produkty, či už priamo alebo vo virtuálnych hosťoch."
+msgid "No subscriptions have been found to match this system, considering all products installed, either directly or in virtual guests."
+msgstr "Nenašli sa žiadne predplatné, ktoré by zodpovedali tomuto systému vzhľadom na všetky nainštalované produkty, či už priamo alebo vo virtuálnych hosťoch."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:65
 msgid "Filter by description"
@@ -3561,12 +3287,8 @@ msgid "Filter deleted successfully"
 msgstr "Filter bol úspešne vymazaný"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:73
-msgid ""
-"Bear in mind that all the associated projects need to be rebuilt after a "
-"filter update"
-msgstr ""
-"Majte na pamäti, že všetky pridružené projekty musia byť po aktualizácii "
-"filtra znovu zostavené"
+msgid "Bear in mind that all the associated projects need to be rebuilt after a filter update"
+msgstr "Majte na pamäti, že všetky pridružené projekty musia byť po aktualizácii filtra znovu zostavené"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:80
 msgid "Filter Name"
@@ -3577,12 +3299,8 @@ msgid "Prefix"
 msgstr "Predpona"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:93
-msgid ""
-"The prefix will be prepended to the name of every individual filter created "
-"by the template"
-msgstr ""
-"Predpona bude doplnená pred názov každého jednotlivého filtra vytvoreného "
-"podľa šablóny"
+msgid "The prefix will be prepended to the name of every individual filter created by the template"
+msgstr "Predpona bude doplnená pred názov každého jednotlivého filtra vytvoreného podľa šablóny"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
 msgid "Use a template"
@@ -3697,10 +3415,8 @@ msgid "Rule"
 msgstr "Pravidlo"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:85
-msgid ""
-"Some of the selected filters are used in projects and can not be deleted."
-msgstr ""
-"Niektoré z vybraných filtrov sa používajú v projektoch a nemožno ich vymazať."
+msgid "Some of the selected filters are used in projects and can not be deleted."
+msgstr "Niektoré z vybraných filtrov sa používajú v projektoch a nemožno ich vymazať."
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:138
 msgid "Select unused"
@@ -3983,12 +3699,8 @@ msgid "Building project"
 msgstr "Zostavovanie projektu"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:96
-msgid ""
-"The project contains channels with unsynchronized patches. They will be "
-"synchronized depending on your Organization settings."
-msgstr ""
-"Projekt obsahuje kanály s nesynchronizovanými opravami. Budú synchronizované "
-"v závislosti od vašich nastavení organizácie."
+msgid "The project contains channels with unsynchronized patches. They will be synchronized depending on your Organization settings."
+msgstr "Projekt obsahuje kanály s nesynchronizovanými opravami. Budú synchronizované v závislosti od vašich nastavení organizácie."
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:108
 msgid "Version Message"
@@ -4031,12 +3743,8 @@ msgid "Environment {name} deleted successfully"
 msgstr "Prostredie {name} bolo úspešne vymazané"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:138
-msgid ""
-"This environment cannot be deleted since it is being used in an "
-"<link>autoinstallation distribution</link>."
-msgstr ""
-"Toto prostredie nemožno odstrániť, pretože sa používa v <link>distribúcii s "
-"automatickou inštaláciou</link>."
+msgid "This environment cannot be deleted since it is being used in an <link>autoinstallation distribution</link>."
+msgstr "Toto prostredie nemožno odstrániť, pretože sa používa v <link>distribúcii s automatickou inštaláciou</link>."
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:23
 msgid "New"
@@ -4107,14 +3815,12 @@ msgid "filter out"
 msgstr "odfiltrovať"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:180
-msgid ""
-"select from the full source even if you have excluded them before with deny"
+msgid "select from the full source even if you have excluded them before with deny"
 msgstr "vyberte z úplného zdroja, aj keď ste ich predtým vylúčili s odmietnuť"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:54
 msgid "No version to promote or colliding environment build in progress"
-msgstr ""
-"Žiadna verzia na povýšenie alebo prebieha kolidujúce zostavenie prostredia"
+msgstr "Žiadna verzia na povýšenie alebo prebieha kolidujúce zostavenie prostredia"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:60
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:116
@@ -4266,53 +3972,29 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "Požadovaná stránka {currentUrl} sa nenašla."
 
 #: ../html/src/manager/errors/not-found.tsx:12
-msgid ""
-"If you typed this address into your browser, double-check the spelling and "
-"capitalization."
-msgstr ""
-"Ak ste zadali túto adresu do svojho prehliadača, znova skontrolujte pravopis "
-"a veľké písmená."
+msgid "If you typed this address into your browser, double-check the spelling and capitalization."
+msgstr "Ak ste zadali túto adresu do svojho prehliadača, znova skontrolujte pravopis a veľké písmená."
 
 #: ../html/src/manager/errors/not-found.tsx:18
-msgid ""
-"If you followed a link, the link may be incorrect or outdated. Click on the "
-"back button in your "
-msgstr ""
-"Ak ste nasledovali odkaz, ten môže byť nesprávny alebo zastaraný. Kliknite "
-"na tlačidlo späť vo vašom "
+msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
+msgstr "Ak ste nasledovali odkaz, ten môže byť nesprávny alebo zastaraný. Kliknite na tlačidlo späť vo vašom "
 
 #: ../html/src/manager/errors/not-found.tsx:25
-msgid ""
-"If you used a bookmark, the page may have moved to a different location "
-"since the bookmark was "
-msgstr ""
-"Ak ste použili záložku, stránka sa mohla presunúť na iné miesto, odkedy bola "
-"záložka "
+msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
+msgstr "Ak ste použili záložku, stránka sa mohla presunúť na iné miesto, odkedy bola záložka "
 
 #: ../html/src/manager/errors/not-found.tsx:32
-msgid ""
-"If you feel you've reached this page in error, please contact us with "
-"details of how you received "
-msgstr ""
-"Ak si myslíte, že ste sa na túto stránku dostali omylom, prosím, kontaktujte "
-"nás s podrobnosťami o tom, ako ste dostali "
+msgid "If you feel you've reached this page in error, please contact us with details of how you received "
+msgstr "Ak si myslíte, že ste sa na túto stránku dostali omylom, prosím, kontaktujte nás s podrobnosťami o tom, ako ste dostali "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
-msgid ""
-"Applying the config channels has been scheduled for each minion server in "
-"this group"
-msgstr ""
-"Použitie konfiguračných kanálov bolo naplánované pre každý server minion v "
-"tejto skupine"
+msgid "Applying the config channels has been scheduled for each minion server in this group"
+msgstr "Použitie konfiguračných kanálov bolo naplánované pre každý server minion v tejto skupine"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-msgid ""
-"Formula saved. Edit configuration options in the enabled formulas and apply "
-"the <link>Highstate</link> for the changes to take effect."
-msgstr ""
-"Vzorec bol uložený. Upraviť možnosti konfigurácie v povolených vzorcoch a "
-"použiť <link>Highstate</link>, aby sa zmeny prejavili."
+msgid "Formula saved. Edit configuration options in the enabled formulas and apply the <link>Highstate</link> for the changes to take effect."
+msgstr "Vzorec bol uložený. Upraviť možnosti konfigurácie v povolených vzorcoch a použiť <link>Highstate</link>, aby sa zmeny prejavili."
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:24
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:21
@@ -4323,11 +4005,8 @@ msgstr "Neplatný typ cieľa."
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
-msgid ""
-"Formula saved. Apply the <link>Highstate</link> for the changes to take "
-"effect."
-msgstr ""
-"Vzorec bol uložený. Použite <link>Highstate</link>, aby sa zmeny prejavili."
+msgid "Formula saved. Apply the <link>Highstate</link> for the changes to take effect."
+msgstr "Vzorec bol uložený. Použite <link>Highstate</link>, aby sa zmeny prejavili."
 
 #: ../html/src/manager/header/search/search.tsx:10
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
@@ -4364,12 +4043,8 @@ msgstr "Zostavenie obrazu bolo naplánované."
 
 #: ../html/src/manager/images/image-build.tsx:41
 #: ../html/src/manager/images/image-import.tsx:20
-msgid ""
-"There was an error while scheduling a task. Please make sure that the task "
-"scheduler is running."
-msgstr ""
-"Pri plánovaní úlohy sa vyskytla chyba. Prosím, preverte, či je spustený "
-"plánovač úloh."
+msgid "There was an error while scheduling a task. Please make sure that the task scheduler is running."
+msgstr "Pri plánovaní úlohy sa vyskytla chyba. Prosím, preverte, či je spustený plánovač úloh."
 
 #: ../html/src/manager/images/image-build.tsx:205
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1048
@@ -4523,12 +4198,8 @@ msgid "Create Image Profile"
 msgstr "Vytvoriť profil obrazu"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:531
-msgid ""
-"Label is required and must be a unique string and it cannot include any "
-"colons (:)."
-msgstr ""
-"Označenie je povinné a musí to byť jedinečný reťazec, ktorý nesmie obsahovať "
-"žiadne dvojbodky (:)."
+msgid "Label is required and must be a unique string and it cannot include any colons (:)."
+msgstr "Označenie je povinné a musí to byť jedinečný reťazec, ktorý nesmie obsahovať žiadne dvojbodky (:)."
 
 #: ../html/src/manager/images/image-profiles.tsx:26
 msgid "Dockerfile"
@@ -4576,9 +4247,7 @@ msgid "Are you sure you want to delete the selected profile?"
 msgstr "Naozaj chcete vymazať vybraný profil?"
 
 #: ../html/src/manager/images/image-profiles.tsx:244
-msgid ""
-"Are you sure you want to delete selected profiles? ({count} profiles "
-"selected)"
+msgid "Are you sure you want to delete selected profiles? ({count} profiles selected)"
 msgstr "Naozaj chcete vymazať vybrané profily? ({count} vybraných profilov)"
 
 #: ../html/src/manager/images/image-store-edit.tsx:165
@@ -4638,8 +4307,7 @@ msgid "Are you sure you want to delete the selected store?"
 msgstr "Naozaj chcete vymazať vybrané úložisko?"
 
 #: ../html/src/manager/images/image-stores.tsx:237
-msgid ""
-"Are you sure you want to delete selected stores? ({count} stores selected)"
+msgid "Are you sure you want to delete selected stores? ({count} stores selected)"
 msgstr "Naozaj chcete vymazať vybrané úložiská? ({count} vybraných úložísk)"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
@@ -4983,62 +4651,32 @@ msgid "Are you sure you want to delete the selected image?"
 msgstr "Naozaj chcete vymazať vybraný obraz?"
 
 #: ../html/src/manager/images/image-view.tsx:742
-msgid ""
-"Are you sure you want to delete selected images? ({count} images selected)"
+msgid "Are you sure you want to delete selected images? ({count} images selected)"
 msgstr "Naozaj chcete vymazať vybrané obrazy? ({count} vybraných obrazov)"
 
 #: ../html/src/manager/login/messages.tsx:14
-msgid ""
-"A schema upgrade is required. Please upgrade your schema at your earliest "
-"convenience to receive latest bug fixes and avoid potential problems."
-msgstr ""
-"Vyžaduje sa zvýšenie verzie schémy. Zvýšte verziu svojej schémy hneď, ako sa "
-"vám to bude hodiť, aby ste dostávali najnovšie opravy chýb a vyhli sa "
-"potenciálnym problémom."
+msgid "A schema upgrade is required. Please upgrade your schema at your earliest convenience to receive latest bug fixes and avoid potential problems."
+msgstr "Vyžaduje sa zvýšenie verzie schémy. Zvýšte verziu svojej schémy hneď, ako sa vám to bude hodiť, aby ste dostávali najnovšie opravy chýb a vyhli sa potenciálnym problémom."
 
 #: ../html/src/manager/login/messages.tsx:23
-msgid ""
-"Unable to validate the disk space availability. Please contact your system "
-"admistrator if this problem persists."
-msgstr ""
-"Nie je možné overiť dostupnosť miesta na disku. Prosím, kontaktujte svojho "
-"systémového administrátora, ak tento problém pretrváva."
+msgid "Unable to validate the disk space availability. Please contact your system admistrator if this problem persists."
+msgstr "Nie je možné overiť dostupnosť miesta na disku. Prosím, kontaktujte svojho systémového administrátora, ak tento problém pretrváva."
 
 #: ../html/src/manager/login/messages.tsx:28
-msgid ""
-"Some important directories are missing. Please contact your system "
-"administrator to review the configuration."
-msgstr ""
-"Chýbajú niektoré dôležité adresáre. Prosím, kontaktujte svojho systémového "
-"administrátora, aby skontroloval konfiguráciu."
+msgid "Some important directories are missing. Please contact your system administrator to review the configuration."
+msgstr "Chýbajú niektoré dôležité adresáre. Prosím, kontaktujte svojho systémového administrátora, aby skontroloval konfiguráciu."
 
 #: ../html/src/manager/login/messages.tsx:33
-msgid ""
-"The available disk space on the server is running low. Please contact your "
-"system administrator to add more disk space."
-msgstr ""
-"Dostupné miesto na disku na serveri je nedostatočné. Prosím, kontaktuje "
-"svojho systémového administrátora, aby pridal viac miesta na disku."
+msgid "The available disk space on the server is running low. Please contact your system administrator to add more disk space."
+msgstr "Dostupné miesto na disku na serveri je nedostatočné. Prosím, kontaktuje svojho systémového administrátora, aby pridal viac miesta na disku."
 
 #: ../html/src/manager/login/messages.tsx:38
-msgid ""
-"The available disk space on the server is critically low. Please contact "
-"your system administrator to add more disk space."
-msgstr ""
-"Dostupné miesto na disku na serveri je kriticky nízke. Prosíme, kontaktuje "
-"svojho systémového administrátora, aby pridal viac miesta na disku."
+msgid "The available disk space on the server is critically low. Please contact your system administrator to add more disk space."
+msgstr "Dostupné miesto na disku na serveri je kriticky nízke. Prosíme, kontaktuje svojho systémového administrátora, aby pridal viac miesta na disku."
 
 #: ../html/src/manager/login/messages.tsx:53
-msgid ""
-"SUSE Multi-Linux Manager PAYG instances must forward registration data to "
-"SCC when credentials are provided. Data will be sent independently of the "
-"configuration setting. To hide this warning please set 'forward_registration "
-"= 1' in rhn.conf."
-msgstr ""
-"PAYG inštancie SUSE Multi-Linux Manager musia po poskytnutí prihlasovacích "
-"údajov postúpiť registračné údaje do SCC. Údaje sa odošlú nezávisle od "
-"nastavenia konfigurácie. Ak chcete toto upozornenie skryť, nastavte v "
-"rhn.conf 'forward_registration = 1'."
+msgid "SUSE Multi-Linux Manager PAYG instances must forward registration data to SCC when credentials are provided. Data will be sent independently of the configuration setting. To hide this warning please set 'forward_registration = 1' in rhn.conf."
+msgstr "PAYG inštancie SUSE Multi-Linux Manager musia po poskytnutí prihlasovacích údajov postúpiť registračné údaje do SCC. Údaje sa odošlú nezávisle od nastavenia konfigurácie. Ak chcete toto upozornenie skryť, nastavte v rhn.conf 'forward_registration = 1'."
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
@@ -5046,12 +4684,8 @@ msgstr "Prihlasovanie ..."
 
 #: ../html/src/manager/login/susemanager/login.tsx:41
 #: ../html/src/manager/login/uyuni/login.tsx:40
-msgid ""
-"Discover a new way of managing your servers, packages, patches and more via "
-"one interface."
-msgstr ""
-"Objavte nový spôsob správy serverov, balíkov, opráv a ďalšieho "
-"prostredníctvom jedného rozhrania."
+msgid "Discover a new way of managing your servers, packages, patches and more via one interface."
+msgstr "Objavte nový spôsob správy serverov, balíkov, opráv a ďalšieho prostredníctvom jedného rozhrania."
 
 #: ../html/src/manager/login/susemanager/login.tsx:44
 msgid "<link>Learn more</link> about {productName}."
@@ -5079,9 +4713,7 @@ msgstr "Váš účet bol deaktivovaný."
 
 #: ../html/src/manager/login/use-login-api.ts:16
 msgid "This user has read only API access. WebUI login is denied."
-msgstr ""
-"Tento používateľ má prístup iba na čítanie API. Prihlásenie WebUI je "
-"zamietnuté."
+msgstr "Tento používateľ má prístup iba na čítanie API. Prihlásenie WebUI je zamietnuté."
 
 #: ../html/src/manager/login/use-login-api.ts:30
 msgid "Are you sure you want to close this page while login is in progress?"
@@ -5139,10 +4771,8 @@ msgstr "Naozaj chcete zmazať vybranú položku?"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:45
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:48
-msgid ""
-"This will remove the current schedule from all the systems assigned to it."
-msgstr ""
-"Týmto sa odstráni aktuálny plán zo všetkých systémov, ktoré sú mu priradené."
+msgid "This will remove the current schedule from all the systems assigned to it."
+msgstr "Týmto sa odstráni aktuálny plán zo všetkých systémov, ktoré sú mu priradené."
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:46
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
@@ -5272,8 +4902,7 @@ msgstr "Pridať kalendár"
 
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:45
 msgid "No calendars created. Use Create to add a calendar."
-msgstr ""
-"Nie sú vytvorené žiadne kalendáre. Pomocou Vytvoriť môžete pridať kalendár."
+msgstr "Nie sú vytvorené žiadne kalendáre. Pomocou Vytvoriť môžete pridať kalendár."
 
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:103
 msgid "This will unassign all schedules from this calendar."
@@ -5294,15 +4923,11 @@ msgstr "Kalendáre údržby"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:46
 msgid "Below is a list of Maintenance Schedules available to the current user."
-msgstr ""
-"Nižšie je uvedený zoznam plánov údržby, ktoré sú k dispozícii aktuálnemu "
-"používateľovi."
+msgstr "Nižšie je uvedený zoznam plánov údržby, ktoré sú k dispozícii aktuálnemu používateľovi."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:47
 msgid "Below is a list of Maintenance Calendars available to the current user."
-msgstr ""
-"Nižšie je uvedený zoznam kalendárov údržby, ktoré sú k dispozícii aktuálnemu "
-"používateľovi."
+msgstr "Nižšie je uvedený zoznam kalendárov údržby, ktoré sú k dispozícii aktuálnemu používateľovi."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:50
 msgid "schedule"
@@ -5329,12 +4954,8 @@ msgid "Calendar successfully refreshed"
 msgstr "Kalendár bol úspešne obnovený"
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:23
-msgid ""
-"Any pending maintenance-only actions for these systems will be cancelled "
-"unless they are inside the new maintenance windows."
-msgstr ""
-"Všetky čakajúce akcie iba na údržbu týchto systémov budú zrušené, pokiaľ "
-"nebudú vo vnútri nových okien údržby."
+msgid "Any pending maintenance-only actions for these systems will be cancelled unless they are inside the new maintenance windows."
+msgstr "Všetky čakajúce akcie iba na údržbu týchto systémov budú zrušené, pokiaľ nebudú vo vnútri nových okien údržby."
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:26
 msgid "Are you sure you want to proceed?"
@@ -5375,12 +4996,8 @@ msgid "Assign a maintenance schedule to {count} system(s)"
 msgstr "Priradiť plán údržby k {count} systému(om)"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:22
-msgid ""
-"Assigning a schedule will replace any prior assignments in all of the "
-"systems in the set."
-msgstr ""
-"Priradenie plánu nahradí všetky predchádzajúce priradenia vo všetkých "
-"systémoch v sade."
+msgid "Assigning a schedule will replace any prior assignments in all of the systems in the set."
+msgstr "Priradenie plánu nahradí všetky predchádzajúce priradenia vo všetkých systémoch v sade."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:123
 msgid "No Playbook found."
@@ -5421,16 +5038,11 @@ msgstr "Načítava sa obsah.."
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:57
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:50
 msgid "An error occurred while loading data. Please check server logs."
-msgstr ""
-"Pri načítavaní dát sa vyskytla chyba. Prosím, skontrolujte záznamy servera."
+msgstr "Pri načítavaní dát sa vyskytla chyba. Prosím, skontrolujte záznamy servera."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:159
-msgid ""
-"Ansible Control Node Configuration: add paths for Playbook discovery and "
-"Inventory files introspection."
-msgstr ""
-"Konfigurácia riadiaceho uzla Ansible: pridať cesty pre zisťovanie scenárov a "
-"sebapozorovanie inventárnych súborov."
+msgid "Ansible Control Node Configuration: add paths for Playbook discovery and Inventory files introspection."
+msgstr "Konfigurácia riadiaceho uzla Ansible: pridať cesty pre zisťovanie scenárov a sebapozorovanie inventárnych súborov."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:166
 msgid "Playbook Directories"
@@ -5602,20 +5214,15 @@ msgstr "Naplánovanie akcie konfigurácie proxy..."
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:114
 #: ../html/src/manager/proxy/container-config.tsx:142
 msgid "Request interrupted or invalid response received from the server."
-msgstr ""
-"Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď."
+msgstr "Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:179
 msgid "Proxy Configuration"
 msgstr "Konfigurácia proxy"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:183
-msgid ""
-"Convert an already onboarded minion to a proxy or update the configuration "
-"of an existing proxy."
-msgstr ""
-"Konvertovať už začlenený minion na proxy alebo aktualizovať konfiguráciu "
-"existujúceho proxy."
+msgid "Convert an already onboarded minion to a proxy or update the configuration of an existing proxy."
+msgstr "Konvertovať už začlenený minion na proxy alebo aktualizovať konfiguráciu existujúceho proxy."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:193
 msgid "Convert Minion to Proxy"
@@ -5689,13 +5296,8 @@ msgid "Replace"
 msgstr "Nahradiť"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:262
-msgid ""
-"Keeping the current certificates means no changes will be made to the Root "
-"CA, Intermediate CAs, Proxy certificate, or Proxy SSL private key."
-msgstr ""
-"Zachovanie aktuálnych certifikátov znamená, že sa nevykonajú žiadne zmeny v "
-"koreňovej CA, sprostredkujúcich CA, proxy certifikáte ani v proxy SSL "
-"súkromnom kľúči."
+msgid "Keeping the current certificates means no changes will be made to the Root CA, Intermediate CAs, Proxy certificate, or Proxy SSL private key."
+msgstr "Zachovanie aktuálnych certifikátov znamená, že sa nevykonajú žiadne zmeny v koreňovej CA, sprostredkujúcich CA, proxy certifikáte ani v proxy SSL súkromnom kľúči."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:273
 msgid "Root CA"
@@ -5841,12 +5443,8 @@ msgid "Install Program Temporary Fixes (PTFs)"
 msgstr "Inštalovať Program Temporary Fixes (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:29
-msgid ""
-"The following Program Temporary Fixes (PTFs) are available for installation "
-"on this system. "
-msgstr ""
-"Na inštaláciu v tomto systéme sú k dispozícii nasledujúce Program Temporary "
-"Fixes (PTFs). "
+msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
+msgstr "Na inštaláciu v tomto systéme sú k dispozícii nasledujúce Program Temporary Fixes (PTFs). "
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
 msgid "No Program Temporary Fixes (PTFs) available."
@@ -5865,12 +5463,8 @@ msgid "Remove Program Temporary Fixes (PTFs)"
 msgstr "Odstrániť Program Temporary Fixes (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:29
-msgid ""
-"The following Program Temporary Fixes (PTFs) are currently installed on this "
-"system. "
-msgstr ""
-"V tomto systéme sú v súčasnosti nainštalované nasledujúce Program Temporary "
-"Fixes (PTFs). "
+msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
+msgstr "V tomto systéme sú v súčasnosti nainštalované nasledujúce Program Temporary Fixes (PTFs). "
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
 msgid "No Program Temporary Fixes (PTFs) installed."
@@ -5991,12 +5585,8 @@ msgid "Error connecting to server. Refresh the page to try again."
 msgstr "Chyba pri pripájaní k serveru. Obnovte stránku a skúste to znova."
 
 #: ../html/src/manager/organizations/config-channels/org-config-channels.tsx:29
-msgid ""
-"Applying the config channels has been scheduled for each minion server in "
-"this organization"
-msgstr ""
-"Použitie konfiguračných kanálov bolo naplánované pre každý server minion v "
-"tejto organizácii"
+msgid "Applying the config channels has been scheduled for each minion server in this organization"
+msgstr "Použitie konfiguračných kanálov bolo naplánované pre každý server minion v tejto organizácii"
 
 #: ../html/src/manager/packages/list.tsx:80
 msgid "Packages in no channel"
@@ -6032,12 +5622,10 @@ msgstr "Poskytovateľ obsahu"
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
-msgstr ""
-"Konfigurácia proxy založeného na kontajneroch bola vygenerovaná správne."
+msgstr "Konfigurácia proxy založeného na kontajneroch bola vygenerovaná správne."
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:33
-msgid ""
-"Generation of the proxy configuration in progress: waiting for a response..."
+msgid "Generation of the proxy configuration in progress: waiting for a response..."
 msgstr "Prebieha generovanie konfigurácie proxy: čaká sa na odpoveď..."
 
 #: ../html/src/manager/proxy/container-config.tsx:179
@@ -6046,14 +5634,8 @@ msgid "Container Based Proxy Configuration"
 msgstr "Konfigurácia proxy založeného na kontajneroch"
 
 #: ../html/src/manager/proxy/container-config.tsx:185
-msgid ""
-"You can generate a set of configuration files and certificates in order to "
-"register and run a container-based proxy. Once the following form is filled "
-"out and submitted you will get a .tar.gz archive to download."
-msgstr ""
-"Môžete vygenerovať sadu konfiguračných súborov a certifikátov na registráciu "
-"a spustenie proxy servera založeného na kontajneroch. Po vyplnení a odoslaní "
-"nasledujúceho formulára dostanete na stiahnutie archív .tar.gz."
+msgid "You can generate a set of configuration files and certificates in order to register and run a container-based proxy. Once the following form is filled out and submitted you will get a .tar.gz archive to download."
+msgstr "Môžete vygenerovať sadu konfiguračných súborov a certifikátov na registráciu a spustenie proxy servera založeného na kontajneroch. Po vyplnení a odoslaní nasledujúceho formulára dostanete na stiahnutie archív .tar.gz."
 
 #: ../html/src/manager/proxy/container-config.tsx:199
 msgid "Proxy FQDN"
@@ -6284,12 +5866,8 @@ msgid "The following recurring actions have been created."
 msgstr "Boli vytvorené nasledujúce opakujúce sa akcie."
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:125
-msgid ""
-"To create new recurring actions head to the system, group or organization "
-"you want to create the action for."
-msgstr ""
-"Ak chcete vytvoriť nové opakujúce sa akcie, prejdite do systému, skupiny "
-"alebo organizácie, pre ktorú chcete akciu vytvoriť."
+msgid "To create new recurring actions head to the system, group or organization you want to create the action for."
+msgstr "Ak chcete vytvoriť nové opakujúce sa akcie, prejdite do systému, skupiny alebo organizácie, pre ktorú chcete akciu vytvoriť."
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:170
 msgid "Frequency"
@@ -6320,12 +5898,8 @@ msgid "Error when deleting the action. Check if Taskomatic is running"
 msgstr "Chyba pri vymazávaní akcie. Skontrolujte, či je spustený Taskomatic"
 
 #: ../html/src/manager/recurring/recurring-actions.tsx:149
-msgid ""
-"The below times are displayed in the server time zone {timeZone}. The "
-"scheduled time will be the server time."
-msgstr ""
-"Nižšie uvedené časy sa zobrazujú v časovom pásme servera {timeZone}. "
-"Naplánovaný čas bude časom servera."
+msgid "The below times are displayed in the server time zone {timeZone}. The scheduled time will be the server time."
+msgstr "Nižšie uvedené časy sa zobrazujú v časovom pásme servera {timeZone}. Naplánovaný čas bude časom servera."
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:54
 msgid "Change Playbook"
@@ -6449,16 +6023,8 @@ msgid "Matching ssh-push minions..."
 msgstr "Priraďovanie ssh-push klientom minion..."
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:62
-msgid ""
-"The formula catalog page enables viewing of currently installed <link>Salt "
-"Formulas</link>. Apply these formulas to individual systems or server "
-"groups. Formulas allow automatic installation and configuration of software "
-"and may be installed via RPM packages."
-msgstr ""
-"Stránka katalógu vzorcov umožňuje zobraziť aktuálne nainštalované "
-"<link>Vzorce Salt</link>. Tieto vzorce použite na jednotlivé systémy alebo "
-"skupiny serverov. Vzorce umožňujú automatickú inštaláciu a konfiguráciu "
-"softvéru a môžu sa inštalovať prostredníctvom balíkov RPM."
+msgid "The formula catalog page enables viewing of currently installed <link>Salt Formulas</link>. Apply these formulas to individual systems or server groups. Formulas allow automatic installation and configuration of software and may be installed via RPM packages."
+msgstr "Stránka katalógu vzorcov umožňuje zobraziť aktuálne nainštalované <link>Vzorce Salt</link>. Tieto vzorce použite na jednotlivé systémy alebo skupiny serverov. Vzorce umožňujú automatickú inštaláciu a konfiguráciu softvéru a môžu sa inštalovať prostredníctvom balíkov RPM."
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:95
 msgid "Formula Catalog"
@@ -6586,12 +6152,8 @@ msgid "Development debugging page"
 msgstr "Stránka ladenia vývoja"
 
 #: ../html/src/manager/storybook/storybook.tsx:50
-msgid ""
-"This is a hidden page used by developers, if you found it by accident, good "
-"job!"
-msgstr ""
-"Toto je skrytá stránka používaná vývojármi, ak ste ju našli náhodou, dobrá "
-"práca!"
+msgid "This is a hidden page used by developers, if you found it by accident, good job!"
+msgstr "Toto je skrytá stránka používaná vývojármi, ak ste ju našli náhodou, dobrá práca!"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:35
 msgid "{productName} Default"
@@ -6618,12 +6180,8 @@ msgid "Child Channels:"
 msgstr "Kanály potomkov:"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:160
-msgid ""
-"Any system registered using this activation key will be subscribed to the "
-"selected child channels."
-msgstr ""
-"Akýkoľvek systém zaregistrovaný pomocou tohto aktivačného kľúča bude "
-"prihlásený k vybraným kanálom potomkov."
+msgid "Any system registered using this activation key will be subscribed to the selected child channels."
+msgstr "Akýkoľvek systém zaregistrovaný pomocou tohto aktivačného kľúča bude prihlásený k vybraným kanálom potomkov."
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:37
 msgid "Error updating activation key."
@@ -6676,24 +6234,12 @@ msgid "Error Details"
 msgstr "Podrobnosti o chybách"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:329
-msgid ""
-"Request interrupted or invalid response received from the server. Please "
-"check if your minion was bootstrapped correctly."
-msgstr ""
-"Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď. "
-"Prosím, skontrolujte, či bol váš klient minion správne zavedený."
+msgid "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
+msgstr "Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď. Prosím, skontrolujte, či bol váš klient minion správne zavedený."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:357
-msgid ""
-"Bootstrap process initiated. Your system should be visible at the following "
-"location shortly: <link>systems</link>. If any issues arise, you'll receive "
-"an error notification. In case you're working with a transactional system, "
-"please perform a system reboot to complete the registration process."
-msgstr ""
-"Spustený proces zavádzania. Váš systém by mal byť čoskoro viditeľný na "
-"nasledujúcom mieste: <link>systémy</link>. Ak sa vyskytnú nejaké problémy, "
-"dostanete oznámenie o chybe. V prípade, že pracujete s transakčným systémom, "
-"vykonajte reštart systému, aby ste dokončili proces registrácie."
+msgid "Bootstrap process initiated. Your system should be visible at the following location shortly: <link>systems</link>. If any issues arise, you'll receive an error notification. In case you're working with a transactional system, please perform a system reboot to complete the registration process."
+msgstr "Spustený proces zavádzania. Váš systém by mal byť čoskoro viditeľný na nasledujúcom mieste: <link>systémy</link>. Ak sa vyskytnú nejaké problémy, dostanete oznámenie o chybe. V prípade, že pracujete s transakčným systémom, vykonajte reštart systému, aby ste dokončili proces registrácie."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:377
 msgid "Show additional details about this error"
@@ -6721,12 +6267,8 @@ msgid "e.g., ••••••••••••"
 msgstr "napr. ••••••••••••"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
-msgid ""
-"The file will be stored in a temporary file on the server and will be "
-"deleted after the bootstrapping procedure"
-msgstr ""
-"Súbor bude uložený v dočasnom súbore na serveri a bude vymazaný po "
-"zavádzacej procedúre"
+msgid "The file will be stored in a temporary file on the server and will be deleted after the bootstrapping procedure"
+msgstr "Súbor bude uložený v dočasnom súbore na serveri a bude vymazaný po zavádzacej procedúre"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:452
 msgid "Leave empty for no passphrase"
@@ -6737,30 +6279,16 @@ msgid "Bootstrap Minions"
 msgstr "Zavádzať klientov minion"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:467
-msgid ""
-"You can add systems to be managed by providing SSH credentials only. "
-"{productName} will prepare the system remotely and will perform the "
-"registration."
-msgstr ""
-"Systémy, ktoré sa majú spravovať, môžete pridať iba poskytnutím "
-"prihlasovacích údajov SSH. {productName} pripraví systém vzdialene a vykoná "
-"registráciu."
+msgid "You can add systems to be managed by providing SSH credentials only. {productName} will prepare the system remotely and will perform the registration."
+msgstr "Systémy, ktoré sa majú spravovať, môžete pridať iba poskytnutím prihlasovacích údajov SSH. {productName} pripraví systém vzdialene a vykoná registráciu."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:481
 msgid "e.g., host.domain.com"
 msgstr "napr. host.domain.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:518
-msgid ""
-"The user will have an effect only during the bootstrap process. Further "
-"connections will be made by the user specified in rhn.conf. The default user "
-"for the key 'ssh_push_sudo_user' is 'root'. This user is set after "
-"{productName}'s SSH key is deployed during the bootstrap procedure."
-msgstr ""
-"Používateľ bude mať účinok iba počas zavádzacieho procesu. Ďalšie pripojenia "
-"uskutoční používateľ uvedený v rhn.conf. Predvolený používateľ pre kľúč "
-"'ssh_push_sudo_user' je 'root'. Tento používateľ je nastavený po nasadení "
-"kľúča SSH {productName} počas zavádzacej procedúry."
+msgid "The user will have an effect only during the bootstrap process. Further connections will be made by the user specified in rhn.conf. The default user for the key 'ssh_push_sudo_user' is 'root'. This user is set after {productName}'s SSH key is deployed during the bootstrap procedure."
+msgstr "Používateľ bude mať účinok iba počas zavádzacieho procesu. Ďalšie pripojenia uskutoční používateľ uvedený v rhn.conf. Predvolený používateľ pre kľúč 'ssh_push_sudo_user' je 'root'. Tento používateľ je nastavený po nasadení kľúča SSH {productName} počas zavádzacej procedúry."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:527
 msgid "Authentication Method"
@@ -6785,12 +6313,8 @@ msgid "Leave empty when no reactivation is wanted"
 msgstr "Ponechať prázdne, ak sa nevyžaduje reaktivácia"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:630
-msgid ""
-"The hostname of the proxy is not fully qualified. This may cause problems "
-"when accessing the channels."
-msgstr ""
-"Názov hostiteľa servera proxy nie je plne kvalifikovaný. To môže spôsobiť "
-"problémy pri prístupe ku kanálom."
+msgid "The hostname of the proxy is not fully qualified. This may cause problems when accessing the channels."
+msgstr "Názov hostiteľa servera proxy nie je plne kvalifikovaný. To môže spôsobiť problémy pri prístupe ku kanálom."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:647
 msgid "Disable SSH strict host key checking during bootstrap process"
@@ -6801,8 +6325,7 @@ msgid "Manage system completely via SSH (will not install an agent)"
 msgstr "Spravovať systém kompletne cez SSH (neinštaluje sa agent)"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:679
-msgid ""
-"Are you sure you want to close this page while bootstrapping is in progress ?"
+msgid "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr "Naozaj chcete zavrieť túto stránku, kým prebieha zavádzanie?"
 
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:114
@@ -6967,9 +6490,7 @@ msgstr "Virtuálny systém"
 
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
-msgstr ""
-"Prosím, vyberte zoznam klientov minion (nie proxy serverov alebo tradičných "
-"klientov)."
+msgstr "Prosím, vyberte zoznam klientov minion (nie proxy serverov alebo tradičných klientov)."
 
 #: ../html/src/manager/systems/proxy.tsx:67
 msgid "Change of proxy server has been "
@@ -7044,26 +6565,12 @@ msgid "System Default Base Channel"
 msgstr "Predvolený základný kanál systému"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:151
-msgid ""
-"As a Channel Administrator, you may change the base channels your systems "
-"are subscribed to. Valid channels are either channels created by your "
-"organization, or the default SUSE base channel for your operating system "
-"version and processor type. Systems will be unsubscribed from all channels, "
-"and subscribed to their new base channels. "
-msgstr ""
-"Ako administrátor kanálov môžete zmeniť základné kanály, ku ktorým sú "
-"prihlásené vaše systémy. Platné kanály sú buď kanály vytvorené vašou "
-"organizáciou, alebo predvolený základný kanál SUSE pre verziu vášho "
-"operačného systému a typ procesora. Systémy budú odhlásené zo všetkých "
-"kanálov a prihlásené k novým základným kanálom. "
+msgid "As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default SUSE base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels. "
+msgstr "Ako administrátor kanálov môžete zmeniť základné kanály, ku ktorým sú prihlásené vaše systémy. Platné kanály sú buď kanály vytvorené vašou organizáciou, alebo predvolený základný kanál SUSE pre verziu vášho operačného systému a typ procesora. Systémy budú odhlásené zo všetkých kanálov a prihlásené k novým základným kanálom. "
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:156
-msgid ""
-"This operation can have a dramatic effect on the packages and patches "
-"available to the systems, and should be used with caution."
-msgstr ""
-"Táto operácia môže mať dramatický vplyv na balíky a opravy dostupné pre "
-"systémy a mala by sa použiť obozretne."
+msgid "This operation can have a dramatic effect on the packages and patches available to the systems, and should be used with caution."
+msgstr "Táto operácia môže mať dramatický vplyv na balíky a opravy dostupné pre systémy a mala by sa použiť obozretne."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:173
 msgid "Current base Channel"
@@ -7121,25 +6628,15 @@ msgstr "Nižšie je uvedený zoznam kanálov vo vašej organizácii. "
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:552
 msgid "To make no changes for a channel, check Do Nothing for that channel."
-msgstr ""
-"Ak pre kanál nechcete robiť žiadne zmeny, zaškrtnite Nerobiť nič pre tento "
-"kanál."
+msgstr "Ak pre kanál nechcete robiť žiadne zmeny, zaškrtnite Nerobiť nič pre tento kanál."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:553
-msgid ""
-"To subscribe selected systems to a channel, check Subscribed for that "
-"channel."
-msgstr ""
-"Ak chcete prihlásiť vybrané systémy ku kanálu, zaškrtnite Prihlásený pre "
-"tento kanál."
+msgid "To subscribe selected systems to a channel, check Subscribed for that channel."
+msgstr "Ak chcete prihlásiť vybrané systémy ku kanálu, zaškrtnite Prihlásený pre tento kanál."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:554
-msgid ""
-"To unsubscribe selected systems from a channel, check Unsubscribed for that "
-"channel."
-msgstr ""
-"Ak chcete odhlásiť vybrané systémy z kanála, zaškrtnite Odhlásený pre tento "
-"kanál."
+msgid "To unsubscribe selected systems from a channel, check Unsubscribed for that channel."
+msgstr "Ak chcete odhlásiť vybrané systémy z kanála, zaškrtnite Odhlásený pre tento kanál."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:564
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:733
@@ -7192,24 +6689,12 @@ msgid "Changing the channels has been "
 msgstr "Zmena kanálov bola "
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:584
-msgid ""
-"You can change the base software channel your system is subscribed to. The "
-"system will be unsubscribed from all software channels, and subscribed to "
-"the new base software channel."
-msgstr ""
-"Môžete zmeniť základný softvérový kanál, ku ktorému je váš systém "
-"prihlásený. Systém bude odhlásený zo všetkých softvérových kanálov a bude "
-"prihlásený k novému základnému softvérovému kanálu."
+msgid "You can change the base software channel your system is subscribed to. The system will be unsubscribed from all software channels, and subscribed to the new base software channel."
+msgstr "Môžete zmeniť základný softvérový kanál, ku ktorému je váš systém prihlásený. Systém bude odhlásený zo všetkých softvérových kanálov a bude prihlásený k novému základnému softvérovému kanálu."
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:610
-msgid ""
-"This system is subscribed to the checked channels beneath, if any. Disabled "
-"checkboxes indicate channels that can't be manually subscribed or "
-"unsubscribed from."
-msgstr ""
-"Tento systém je prihlásený k zaškrtnutým kanálom uvedeným nižšie, ak nejaké "
-"sú. Zablokované zaškrtávacie polia označujú kanály, ku ktorým nie je možné "
-"sa ručne prihlásiť alebo odhlásiť."
+msgid "This system is subscribed to the checked channels beneath, if any. Disabled checkboxes indicate channels that can't be manually subscribed or unsubscribed from."
+msgstr "Tento systém je prihlásený k zaškrtnutým kanálom uvedeným nižšie, ak nejaké sú. Zablokované zaškrtávacie polia označujú kanály, ku ktorým nie je možné sa ručne prihlásiť alebo odhlásiť."
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:629
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:630
@@ -7342,11 +6827,8 @@ msgid "Session expired, please reload the page."
 msgstr "Sedenie vypršalo, prosím, znovu načítajte stránku."
 
 #: ../html/src/utils/network.ts:99
-msgid ""
-"Authorization error, please reload the page or try to logout/login again."
-msgstr ""
-"Chyba oprávnenia, znovu načítajte stránku alebo sa skúste znova odhlásiť/"
-"prihlásiť."
+msgid "Authorization error, please reload the page or try to logout/login again."
+msgstr "Chyba oprávnenia, znovu načítajte stránku alebo sa skúste znova odhlásiť/prihlásiť."
 
 #: ../html/src/utils/network.ts:101
 msgid "Resource not found."
@@ -7355,6 +6837,18 @@ msgstr "Zdroj sa nenašiel."
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
+
+#~ msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
+#~ msgstr "Exportér Tomcat Prometheus je pripravený, ale konfigurácia JMX je zakázaná. "
+
+#~ msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
+#~ msgstr "Exportér Tomcat Prometheus nie je pripravený, ale konfigurácia JMX je povolená. "
+
+#~ msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. "
+#~ msgstr "Exportér Taskomatic Prometheus je pripravený, ale konfigurácia JMX je zakázaná. "
+
+#~ msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. "
+#~ msgstr "Exportér Taskomatic Prometheus nie je pripravený, ale konfigurácia JMX je povolená. "
 
 #~ msgid "Onboarding failed"
 #~ msgstr "Začlenenie sa zlyhalo"
@@ -7428,12 +6922,8 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Please install libvirt python module."
 #~ msgstr "Prosím, nainštalujte modul libvirt python."
 
-#~ msgid ""
-#~ "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-#~ "modules are loaded."
-#~ msgstr ""
-#~ "KVM ani Xen nie sú spustené. Uistite sa, že sú nainštalované a moduly "
-#~ "jadra sú načítané."
+#~ msgid "Neither KVM nor Xen is running. Ensure they are installed and the kernel modules are loaded."
+#~ msgstr "KVM ani Xen nie sú spustené. Uistite sa, že sú nainštalované a moduly jadra sú načítané."
 
 #~ msgid "{name} selected"
 #~ msgstr "Vybrané {name}"
@@ -7472,8 +6962,7 @@ msgstr "Kód chyby HTTP "
 #~ msgstr "Voľby jadra"
 
 #~ msgid "Cluster support is disabled since VirtualDomain resource agent "
-#~ msgstr ""
-#~ "Podpora klastra je vypnutá, pretože agent prostriedkov VirtualDomain "
+#~ msgstr "Podpora klastra je vypnutá, pretože agent prostriedkov VirtualDomain "
 
 #~ msgid "Define as a cluster resource"
 #~ msgstr "Definovať ako prostriedok klastra"
@@ -7535,11 +7024,8 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Hosted Virtual Systems"
 #~ msgstr "Hosťované virtuálne systémy"
 
-#~ msgid ""
-#~ "This is a list of virtual guests which are configured to run on this host."
-#~ msgstr ""
-#~ "Toto je zoznam virtuálnych hostí, ktorí sú nakonfigurovaní, aby bežali na "
-#~ "tomto hostiteľovi."
+#~ msgid "This is a list of virtual guests which are configured to run on this host."
+#~ msgstr "Toto je zoznam virtuálnych hostí, ktorí sú nakonfigurovaní, aby bežali na tomto hostiteľovi."
 
 #~ msgid "Guest"
 #~ msgstr "Hosť"
@@ -7619,19 +7105,11 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Virtual Networks"
 #~ msgstr "Virtuálne siete"
 
-#~ msgid ""
-#~ "This is a list of virtual networks which are configured to run on this "
-#~ "host."
-#~ msgstr ""
-#~ "Toto je zoznam virtuálnych sietí, ktoré sú nakonfigurované, aby bežali na "
-#~ "tomto hostiteľovi."
+#~ msgid "This is a list of virtual networks which are configured to run on this host."
+#~ msgstr "Toto je zoznam virtuálnych sietí, ktoré sú nakonfigurované, aby bežali na tomto hostiteľovi."
 
-#~ msgid ""
-#~ "The Salt version on this system does not support virtual network creating "
-#~ "and editing"
-#~ msgstr ""
-#~ "Verzia Salt v tomto systéme nepodporuje vytváranie a úpravy virtuálnych "
-#~ "sietí"
+#~ msgid "The Salt version on this system does not support virtual network creating and editing"
+#~ msgstr "Verzia Salt v tomto systéme nepodporuje vytváranie a úpravy virtuálnych sietí"
 
 #~ msgid "Autostart"
 #~ msgstr "Automatické spustenie"
@@ -7843,12 +7321,8 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Untagged"
 #~ msgstr "Neoznačené"
 
-#~ msgid ""
-#~ "Use an existing and configured bridge device. No iptables rule, IP "
-#~ "address or DHCP/DNS service are added"
-#~ msgstr ""
-#~ "Použiť existujúce a nakonfigurované zariadenie mosta. Nie je pridané "
-#~ "žiadne pravidlo iptables, IP adresa alebo služba DHCP/DNS"
+#~ msgid "Use an existing and configured bridge device. No iptables rule, IP address or DHCP/DNS service are added"
+#~ msgstr "Použiť existujúce a nakonfigurované zariadenie mosta. Nie je pridané žiadne pravidlo iptables, IP adresa alebo služba DHCP/DNS"
 
 #~ msgid "Virtual network using the host IP routing stack and NAT"
 #~ msgstr "Virtuálna sieť používajúca smerovací zásobník hostiteľa IP a NAT"
@@ -7856,20 +7330,14 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Virtual network using the host IP routing stack, without NAT"
 #~ msgstr "Virtuálna sieť používajúca smerovací zásobník hostiteľa IP, bez NAT"
 
-#~ msgid ""
-#~ "Virtual network using the host IP routing stack, without firewall rules "
-#~ "and NAT"
-#~ msgstr ""
-#~ "Virtuálna sieť používajúca smerovací zásobník hostiteľa IP, bez pravidiel "
-#~ "pre firewall a NAT"
+#~ msgid "Virtual network using the host IP routing stack, without firewall rules and NAT"
+#~ msgstr "Virtuálna sieť používajúca smerovací zásobník hostiteľa IP, bez pravidiel pre firewall a NAT"
 
 #~ msgid "Virtual network with no connection to other networks"
 #~ msgstr "Virtuálna sieť bez pripojenia k iným sieťam"
 
-#~ msgid ""
-#~ "Network based on macvtap driver to use a pool of physical interfaces. "
-#~ msgstr ""
-#~ "Sieť založená na ovládači macvtap na použitie fondu fyzických rozhraní. "
+#~ msgid "Network based on macvtap driver to use a pool of physical interfaces. "
+#~ msgstr "Sieť založená na ovládači macvtap na použitie fondu fyzických rozhraní. "
 
 #~ msgid "SR-IOV pool"
 #~ msgstr "fond SR-IOV"
@@ -7878,9 +7346,7 @@ msgstr "Kód chyby HTTP "
 #~ msgstr "Prejsť cez jedno zariadenie fondu virtuálnych funkcií SR-IOV"
 
 #~ msgid "Could not get network devices from the server. Please try again."
-#~ msgstr ""
-#~ "Zo servera sa nepodarilo získať sieťové zariadenia. Prosím, skúste to "
-#~ "znova."
+#~ msgstr "Zo servera sa nepodarilo získať sieťové zariadenia. Prosím, skúste to znova."
 
 #~ msgid "Create Virtual Storage Pool"
 #~ msgstr "Vytvoriť virtuálny úložný fond"
@@ -7912,12 +7378,8 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Virtual Storage Pools and Volumes"
 #~ msgstr "Virtuálne úložné fondy a zväzky"
 
-#~ msgid ""
-#~ "This is the list of storage pools defined on this host containing virtual "
-#~ "guests disks."
-#~ msgstr ""
-#~ "Toto je zoznam úložných fondov definovaných na tomto hostiteľovi, ktoré "
-#~ "obsahujú disky virtuálnych hostí."
+#~ msgid "This is the list of storage pools defined on this host containing virtual guests disks."
+#~ msgstr "Toto je zoznam úložných fondov definovaných na tomto hostiteľovi, ktoré obsahujú disky virtuálnych hostí."
 
 #~ msgid "Filter by pool or volume name"
 #~ msgstr "Filtrovať podľa názvu zväzku alebo fondu"
@@ -8000,11 +7462,8 @@ msgstr "Kód chyby HTTP "
 #~ msgid "SELinux label"
 #~ msgstr "Označenie SELinux"
 
-#~ msgid ""
-#~ "Could not get storage pool capabilities from the server. Please try again."
-#~ msgstr ""
-#~ "Zo servera sa nepodarilo získať spôsobilosti úložných fondov. Prosím, "
-#~ "skúste to znova."
+#~ msgid "Could not get storage pool capabilities from the server. Please try again."
+#~ msgstr "Zo servera sa nepodarilo získať spôsobilosti úložných fondov. Prosím, skúste to znova."
 
 #~ msgid "Learn more about"
 #~ msgstr "Zistiť viac o"
@@ -8099,17 +7558,11 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Manage"
 #~ msgstr "Spravovať"
 
-#~ msgid ""
-#~ "Action has been successfully added to the action chain <link>'{name}'</"
-#~ "link>."
+#~ msgid "Action has been successfully added to the action chain <link>'{name}'</link>."
 #~ msgstr "Akcia bola úspešne pridaná do reťazca akcií <link>'{name}'</link>."
 
-#~ msgid ""
-#~ "The following channel installations for '{product}' failed. Please check "
-#~ "log files."
-#~ msgstr ""
-#~ "Nasledujúce inštalácie kanálov pre '{product}' zlyhali. Skontrolujte, "
-#~ "prosím, súbory záznamov."
+#~ msgid "The following channel installations for '{product}' failed. Please check log files."
+#~ msgstr "Nasledujúce inštalácie kanálov pre '{product}' zlyhali. Skontrolujte, prosím, súbory záznamov."
 
 #~ msgid "Instance Details for '{name}'"
 #~ msgstr "Podrobnosti inštancie pre '{name}'"
@@ -8129,14 +7582,8 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Delete Pay-as-you-go"
 #~ msgstr "Vymazať priebežnú platbu"
 
-#~ msgid ""
-#~ "Successfully bootstrapped host! Your system should appear in "
-#~ "<link>systems</link> shortly. If it is a transactional system, please "
-#~ "reboot it to finish registration."
-#~ msgstr ""
-#~ "Úspešne zavedený hostiteľ! krátko. Váš systém by sa mal čoskoro objaviť v "
-#~ "<link>systémoch</link>. Ak ide o transakčný systém, reštartujte ho a "
-#~ "dokončite registráciu."
+#~ msgid "Successfully bootstrapped host! Your system should appear in <link>systems</link> shortly. If it is a transactional system, please reboot it to finish registration."
+#~ msgstr "Úspešne zavedený hostiteľ! krátko. Váš systém by sa mal čoskoro objaviť v <link>systémoch</link>. Ak ide o transakčný systém, reštartujte ho a dokončite registráciu."
 
 #~ msgid " for the changes to take effect."
 #~ msgstr " aby sa prejavili zmeny."
@@ -8208,14 +7655,10 @@ msgstr "Kód chyby HTTP "
 #~ msgstr "FQDN stroja, v ktorom sú umiestnené kontajnery"
 
 #~ msgid "CA certificate to use to sign the SSL certificate in PEM format"
-#~ msgstr ""
-#~ "Certifikát CA, ktorý sa má použiť na podpísanie certifikátu SSL vo "
-#~ "formáte PEM"
+#~ msgstr "Certifikát CA, ktorý sa má použiť na podpísanie certifikátu SSL vo formáte PEM"
 
 #~ msgid "CA private key to use to sign the SSL certificate in PEM format"
-#~ msgstr ""
-#~ "Súkromný kľúč CA, ktorý sa má použiť na podpísanie certifikátu SSL vo "
-#~ "formáte PEM"
+#~ msgstr "Súkromný kľúč CA, ktorý sa má použiť na podpísanie certifikátu SSL vo formáte PEM"
 
 #~ msgid "Proxy CRT content in PEM format"
 #~ msgstr "Obsah proxy CRT vo formáte PEM"
@@ -8298,17 +7741,11 @@ msgstr "Kód chyby HTTP "
 #~ msgid "NOTE: before joining a new node, make sure that the node has:"
 #~ msgstr "POZNÁMKA: pred pripojením nového uzla sa uistite, že uzol má:"
 
-#~ msgid ""
-#~ "Container as a Service Platform (CaaSP) channels assigned - or any "
-#~ "children channels of CaaSP channels"
-#~ msgstr ""
-#~ "Priradené kanály Container as a Service Platform (CaaSP) - alebo "
-#~ "akékoľvek kanály potomkov z kanálov CaaSP"
+#~ msgid "Container as a Service Platform (CaaSP) channels assigned - or any children channels of CaaSP channels"
+#~ msgstr "Priradené kanály Container as a Service Platform (CaaSP) - alebo akékoľvek kanály potomkov z kanálov CaaSP"
 
-#~ msgid ""
-#~ "The management node can access the node as root via ssh without password"
-#~ msgstr ""
-#~ "Uzol správy môže pristupovať k uzlu ako root prostredníctvom ssh bez hesla"
+#~ msgid "The management node can access the node as root via ssh without password"
+#~ msgstr "Uzol správy môže pristupovať k uzlu ako root prostredníctvom ssh bez hesla"
 
 #~ msgid "Select system to join"
 #~ msgstr "Vybrať systém, ktorý sa má pripojiť"
@@ -8367,12 +7804,8 @@ msgstr "Kód chyby HTTP "
 #~ msgid "later or equal than"
 #~ msgstr "neskorší alebo rovnaký ako"
 
-#~ msgid ""
-#~ "provided channel that corresponds to the installed SUSE Linux version. "
-#~ "Instead of the default, "
-#~ msgstr ""
-#~ "poskytnutý kanál, ktorý zodpovedá nainštalovanej verzii SUSE Linux. "
-#~ "Namiesto predvoleného, "
+#~ msgid "provided channel that corresponds to the installed SUSE Linux version. Instead of the default, "
+#~ msgstr "poskytnutý kanál, ktorý zodpovedá nainštalovanej verzii SUSE Linux. Namiesto predvoleného, "
 
 #~ msgid "Upcoming Maintenance Windows"
 #~ msgstr "Nadchádzajúce okná údržby"
@@ -8380,53 +7813,17 @@ msgstr "Kód chyby HTTP "
 #~ msgid "End"
 #~ msgstr "Koniec"
 
-#~ msgid ""
-#~ "Multiple Group formulas detected. Only one formula for \"{0}\" can be "
-#~ "used on each system!"
-#~ msgstr ""
-#~ "Bolo zistené viacnásobné skupinové vzorce. V každom systéme je možné "
-#~ "použiť iba jeden vzorec pre \"{0}\"!"
+#~ msgid "Multiple Group formulas detected. Only one formula for \"{0}\" can be used on each system!"
+#~ msgstr "Bolo zistené viacnásobné skupinové vzorce. V každom systéme je možné použiť iba jeden vzorec pre \"{0}\"!"
 
 #~ msgid "e.g. \"0 15 2 ? * 7\""
 #~ msgstr "napr. \"0 15 2 ? * 7\""
 
-#~ msgid ""
-#~ "The Tomcat Prometheus exporter is up but the JMX configuration is "
-#~ "disabled. Click the Enable button to enable the JMX configuration or "
-#~ "click Disable to stop the Prometheus exporter."
-#~ msgstr ""
-#~ "Exportér Tomcat Prometheus je pripravený, ale konfigurácia JMX je "
-#~ "zakázaná. Kliknutím na tlačidlo Povoliť sa povolí konfigurácia JMX alebo "
-#~ "kliknutím na Zakázať sa zastaví exportér Prometheus."
+#~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
+#~ msgstr "Ak ste použili záložku, od vytvorenia záložky sa stránka mohla presunúť na iné miesto. Pomocou horných (alebo ľavých) navigačných panelov nájdite stránku, ktorú hľadáte, a ak dokument nájdete, nezabudnite aktualizovať svoju záložku."
 
-#~ msgid ""
-#~ "The Tomcat Prometheus exporter is down but the JMX configuration is "
-#~ "enabled. Click the Disable button to disable the JMX configuration or "
-#~ "click Enable to start the Prometheus exporter."
-#~ msgstr ""
-#~ "Exportér Tomcat Prometheus nie je pripravený, ale konfigurácia JMX je "
-#~ "povolená. Kliknutím na tlačidlo Zakázať sa zakáže konfigurácia JMX alebo "
-#~ "kliknutím na Povoliť sa spustí exportér Prometheus."
-
-#~ msgid ""
-#~ "If you used a bookmark, the page may have moved to a different location "
-#~ "since the bookmark was created. Use the top (or left) navigation bars to "
-#~ "find the page you are looking for, and if you find the document be sure "
-#~ "to update your bookmark."
-#~ msgstr ""
-#~ "Ak ste použili záložku, od vytvorenia záložky sa stránka mohla presunúť "
-#~ "na iné miesto. Pomocou horných (alebo ľavých) navigačných panelov nájdite "
-#~ "stránku, ktorú hľadáte, a ak dokument nájdete, nezabudnite aktualizovať "
-#~ "svoju záložku."
-
-#~ msgid ""
-#~ "Session expired, please reload the page to receive notifications in real-"
-#~ "time."
-#~ msgstr ""
-#~ "Sedenie vypršalo, prosím, znovu načítajte stránku, aby ste dostávali "
-#~ "upozornenia v reálnom čase."
+#~ msgid "Session expired, please reload the page to receive notifications in real-time."
+#~ msgstr "Sedenie vypršalo, prosím, znovu načítajte stránku, aby ste dostávali upozornenia v reálnom čase."
 
 #~ msgid "Session expired, please reload the page to run command on systems."
-#~ msgstr ""
-#~ "Sedenie vypršalo, prosím, znovu načítajte stránku, aby ste spustili "
-#~ "príkaz v systémoch."
+#~ msgstr "Sedenie vypršalo, prosím, znovu načítajte stránku, aby ste spustili príkaz v systémoch."
