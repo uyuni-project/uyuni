@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024 SUSE LLC.
+# Copyright (c) 2013-2025 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
@@ -582,11 +582,41 @@ def update_controller_ca
   certutil -d sql:/root/.pki/nssdb -A -t TC -n "susemanager" -i  /etc/pki/trust/anchors/#{server_name}.cert`
 end
 
-# This method checks if the synchronization for the given channel is completed
+# This method returns the timeout, in seconds, for syncing the given channel
+#
+# @param channel_name [String] the channel to check
+# @return [Integer] number of seconds representing the timeout
+def channel_timeout(channel)
+  if channel.include?('custom_channel') || channel.include?('ptf')
+    log 'Timeout of 10 minutes for a custom channel'
+    return 600
+  elsif TIMEOUT_BY_CHANNEL_NAME[channel].nil?
+    log "Unknown timeout for channel #{channel}, assuming one minute"
+    return 60
+  end
+
+  TIMEOUT_BY_CHANNEL_NAME[channel]
+end
+
+# This method checks if the given channel has been fully synced
 #
 # @param channel_name [String] the channel to check
 # @return [Boolean] true if the synchronization is completed, false otherwise
 def channel_sync_completed?(channel_name)
+  if channel_reposync_completed?(channel_name)
+    return true if channel_is_synced?(channel_name)
+
+    log "WARN: Repository metadata for #{channel_name} seems not synchronized. Even if the reposync log says it is."
+  end
+
+  false
+end
+
+# This method checks if the reposync for the given channel is completed
+#
+# @param channel_name [String] the channel to check
+# @return [Boolean] true if the reposync is completed, false otherwise
+def channel_reposync_completed?(channel_name)
   log_tmp_file = '/tmp/reposync.log'
   get_target('server').extract('/var/log/rhn/reposync.log', log_tmp_file)
   raise ScriptError, 'The file with repository synchronization logs doesn\'t exist or is empty' if !File.exist?(log_tmp_file) || File.empty?(log_tmp_file)
@@ -599,17 +629,14 @@ def channel_sync_completed?(channel_name)
     elsif line.include?('Channel: ') && !line.include?(channel_name)
       channel_found = false
     elsif line.include?('Sync of channel completed.') && channel_found
-      return true if channel_is_synced?(channel_name)
-
-      log "WARN: Repository metadata for #{channel_name} seems not synchronized. Even if the reposync log says it is."
-      return false
+      return true
     end
   end
 
   false
 end
 
-# Determines whether a channel is synchronized on the server.
+# Determines whether the given channel is synchronized on the server.
 #
 # @param channel [String] The name of the channel to check.
 # @return [Boolean] Returns true if the channel is synchronized, false otherwise.
