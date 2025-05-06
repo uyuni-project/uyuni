@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 11:50+0200\n"
-"PO-Revision-Date: 2025-04-19 09:59+0000\n"
+"PO-Revision-Date: 2025-05-06 14:19+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web-5-0/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11\n"
+"X-Generator: Weblate 5.11.3\n"
 
 msgid "remaining"
 msgstr "restant"
@@ -648,20 +648,16 @@ msgid "Monitoring disabled successfully."
 msgstr "El seguiment s'ha desactivat correctament."
 
 msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
-msgstr ""
+msgstr "L'exportador de Tomcat Prometheus està activat, però la configuració de JMX està desactivada. Feu clic al botó Habilita per habilitar la configuració de JMX o feu clic a Inhabilita per aturar l'exportador de Prometheus."
 
 msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
-msgstr ""
+msgstr "L'exportador Tomcat Prometheus està inactiu, però la configuració de JMX està habilitada. Feu clic al botó Inhabilita per desactivar la configuració de JMX o feu clic a Habilita per iniciar l'exportador de Prometheus."
 
-#, fuzzy
-#| msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. "
 msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
-msgstr "L'exportador Taskomatic Prometheus està actiu, però la configuració JMX està desactivada. "
+msgstr "L'exportador Taskomatic Prometheus està activat, però la configuració de JMX està desactivada. Feu clic al botó Habilita per habilitar la configuració JMX o feu clic a Inhabilita per aturar l'exportador de Prometheus."
 
-#, fuzzy
-#| msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. "
 msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
-msgstr "L'exportador Taskomatic Prometheus està desactivat, però la configuració JMX està activada. "
+msgstr "L'exportador Taskomatic Prometheus està inactiu, però la configuració de JMX està habilitada. Feu clic al botó Inhabilita per desactivar la configuració de JMX o feu clic a Habilita per iniciar l'exportador de Prometheus."
 
 msgid "Monitoring status hasn't changed."
 msgstr "L'estat de seguiment no ha canviat."
