@@ -130,7 +130,7 @@ class SCCDialog extends React.Component<Props> {
     }
   };
 
-  handleResponseError = (jqXHR: JQueryXHR, arg = "") => {
+  handleResponseError = (jqXHR: JQueryXHR, arg = {}) => {
     this.finishSync();
     const stepList = this.state.steps;
     const currentStep = stepList.find((s) => s.inProgress);

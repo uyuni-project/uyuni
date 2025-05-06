@@ -60,14 +60,14 @@ public class PagedSqlQueryBuilderTest extends MockObjectTestCase {
 
     private static Stream<Arguments> provideDataForParseFilter() {
         return Stream.of(
-                Arguments.of("text", "foo", " col1 ILIKE :filter_value ", "%foo%"),
+                Arguments.of("text", "foo", " co.l-_1 ILIKE :filter_value ", "%foo%"),
                 Arguments.of("number", ">", "", ""),
-                Arguments.of("number", "0", " col1 = :filter_value ", 0L),
-                Arguments.of("number", ">123", " col1 > :filter_value ", 123L),
-                Arguments.of("number", "!= 123.45", " col1 != :filter_value ", 123.45),
-                Arguments.of("boolean", "true", " col1 = CAST(:filter_value AS BOOLEAN) ", "true"),
-                Arguments.of("boolean", "False", " col1 = CAST(:filter_value AS BOOLEAN) ", "False"),
-                Arguments.of("date", "<2022-07-12", " CAST(col1 AS DATE) < CAST(:filter_value AS DATE) ",
+                Arguments.of("number", "0", " co.l-_1 = :filter_value ", 0L),
+                Arguments.of("number", ">123", " co.l-_1 > :filter_value ", 123L),
+                Arguments.of("number", "!= 123.45", " co.l-_1 != :filter_value ", 123.45),
+                Arguments.of("boolean", "true", " co.l-_1 = CAST(:filter_value AS BOOLEAN) ", "true"),
+                Arguments.of("boolean", "False", " co.l-_1 = CAST(:filter_value AS BOOLEAN) ", "False"),
+                Arguments.of("date", "<2022-07-12", " CAST(co.l-_1 AS DATE) < CAST(:filter_value AS DATE) ",
                         "2022-07-12")
         );
     }
@@ -85,7 +85,7 @@ public class PagedSqlQueryBuilderTest extends MockObjectTestCase {
 
         PageControl pc = new PageControl();
         pc.setFilter(true);
-        pc.setFilterColumn("col1");
+        pc.setFilterColumn("co+;\".l-_1");
         pc.setFilterData(data);
 
         PagedSqlQueryBuilder.FilterWithValue filter = parser.apply(Optional.of(pc));
@@ -97,10 +97,10 @@ public class PagedSqlQueryBuilderTest extends MockObjectTestCase {
     @Test
     public void testRun() {
         PageControl pc = new PageControl(50, 25);
-        pc.setSortColumn("name");
+        pc.setSortColumn("na;+\".m-_e");
         pc.setSortDescending(true);
         pc.setFilter(true);
-        pc.setFilterColumn("col1");
+        pc.setFilterColumn("co;+.l-_1");
         pc.setFilterData("foo");
 
         Map<String, Object> params = Map.of("value", 123);
@@ -110,11 +110,11 @@ public class PagedSqlQueryBuilderTest extends MockObjectTestCase {
         NativeQuery<Tuple> mockCountQuery = mock(NativeQuery.class, "countQuery");
 
         String expectedSql = "SELECT S.id, O.name FROM SomeTable S, OtherTable O " +
-                "WHERE (S.id = O.sid AND O.value = :value) AND  col1 ILIKE :filter_value  " +
-                "ORDER BY name DESC";
+                "WHERE (S.id = O.sid AND O.value = :value) AND  co.l-_1 ILIKE :filter_value  " +
+                "ORDER BY na.m-_e DESC";
 
         String expectedCountSql = "SELECT count(fake_id) FROM SomeTable S, OtherTable O " +
-                "WHERE (S.id = O.sid AND O.value = :value) AND  col1 ILIKE :filter_value ";
+                "WHERE (S.id = O.sid AND O.value = :value) AND  co.l-_1 ILIKE :filter_value ";
 
         context().checking(new Expectations() {{
             oneOf(sessionMock).createNativeQuery(expectedSql, Tuple.class); will(returnValue(mockQuery));

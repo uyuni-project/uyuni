@@ -269,7 +269,7 @@ class ProductsPageWrapper extends React.Component {
       .catch(this.handleResponseError);
   };
 
-  handleResponseError = (jqXHR: JQueryXHR, arg = "") => {
+  handleResponseError = (jqXHR: JQueryXHR, arg = {}) => {
     const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
       messageMap[msg] ? t(messageMap[msg], arg) : null
     );

@@ -210,7 +210,8 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     if (!this.props.disabled && (value || this.props.required)) {
       const noValue =
         this.isEmptyValue(value) ||
-        (Array.isArray(this.props.name) && Object.values(value).filter((v) => !this.isEmptyValue(v)).length === 0);
+        (Array.isArray(this.props.name) &&
+          Object.values(value as unknown[]).filter((v) => !this.isEmptyValue(v)).length === 0);
       if (this.props.required && noValue) {
         isValid = false;
       } else if (this.props.validators) {

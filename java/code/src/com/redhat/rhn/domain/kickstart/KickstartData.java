@@ -708,7 +708,6 @@ public class KickstartData {
                 }
             }
         }
-        logger.debug("returning: {}", retval);
         return Collections.unmodifiableSet(retval);
     }
 

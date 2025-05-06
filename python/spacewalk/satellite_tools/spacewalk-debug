@@ -522,6 +522,10 @@ find $DIR -name "server.key*" -delete
 find $DIR -name "server.pem*" -delete
 find $DIR -name "rhn-org-httpd-ssl*" -delete
 
+# Remove bootloader linux+initrd files
+find $DIR/salt-states/generated-sls/bootloader/ -type f -exec truncate -s 0 {} \;
+touch $DIR/salt-states/generated-sls/bootloader/DATA_GOT_TRUNCATED_VIA_SUPPORTCONFIG
+
 # fix permissions
 chmod -R 700 $DIR
 

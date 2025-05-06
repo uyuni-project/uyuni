@@ -213,7 +213,7 @@ export function GuestProperties(props: Props) {
                                     />
                                   </>
                                 )}
-                                {initialModel.vmType === undefined && props.cobblerProfiles !== {} && (
+                                {initialModel.vmType === undefined && (
                                   <>
                                     <Select
                                       labelClass="col-md-3"

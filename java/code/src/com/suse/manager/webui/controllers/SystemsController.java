@@ -306,8 +306,8 @@ public class SystemsController {
         String filterQuery = pageHelper.getQuery();
 
         data.put("is_admin", userIn.hasRole(RoleFactory.ORG_ADMIN));
-        data.put("query", filterQuery != null ? String.format("'%s'", filterQuery) : "null");
-        data.put("queryColumn", filterColumn != null ? String.format("'%s'", filterColumn) : "null");
+        data.put("query", filterQuery != null ? String.format("\"%s\"", filterQuery) : "");
+        data.put("queryColumn", filterColumn != null ? String.format("\"%s\"", filterColumn) : "");
         return new ModelAndView(data, "templates/systems/virtual-list.jade");
     }
 
@@ -327,8 +327,8 @@ public class SystemsController {
         String filterQuery = pageHelper.getQuery();
 
         data.put("is_admin", userIn.hasRole(RoleFactory.ORG_ADMIN));
-        data.put("query", filterQuery != null ? String.format("'%s'", filterQuery) : "null");
-        data.put("queryColumn", filterColumn != null ? String.format("'%s'", filterColumn) : "null");
+        data.put("query", filterQuery != null ? filterQuery : "");
+        data.put("queryColumn", filterColumn != null ? filterColumn : "");
         return new ModelAndView(data, "templates/systems/all-list.jade");
     }
 

@@ -51,10 +51,6 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     habootstrap-formula \
     salt-shaptools \
     inter-server-sync \
-    golang-github-prometheus-node_exporter \
-    prometheus-postgres_exporter \
-    golang-github-QubitProducts-exporter_exporter \
-    prometheus-jmx_exporter \
     spacecmd \
     javamail \
     libyui-ncurses-pkg16 \
@@ -79,14 +75,16 @@ RUN chmod a+x /usr/lib/postfix/systemd/config_postfix
 
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
 
-RUN mkdir -p /etc/postgres_exporter \
+RUN rm /etc/sysconfig/prometheus-postgres_exporter
+RUN mkdir -p /etc/sysconfig/prometheus-postgres_exporter/systemd \
+             /etc/systemd/system/prometheus-postgres_exporter.service.d \
              /etc/prometheus-jmx_exporter/tomcat \
              /usr/lib/systemd/system/tomcat.service.d \
              /etc/prometheus-jmx_exporter/taskomatic \
              /usr/lib/systemd/system/taskomatic.service.d
 
-COPY postgres_exporter_queries.yaml /etc/postgres_exporter/postgres_exporter_queries.yaml
-COPY postgres-exporter /etc/sysconfig/prometheus-postgres_exporter
+RUN touch /etc/sysconfig/prometheus-postgres_exporter/systemd/60-server.conf
+RUN ln -s /etc/sysconfig/prometheus-postgres_exporter/systemd/60-server.conf /etc/systemd/system/prometheus-postgres_exporter.service.d/60-server.conf
 COPY java_agent.yaml /etc/prometheus-jmx_exporter/tomcat/java_agent.yml
 COPY java_agent.yaml /etc/prometheus-jmx_exporter/taskomatic/java_agent.yml
 COPY tomcat_jmx.conf /usr/lib/systemd/system/tomcat.service.d/jmx.conf
