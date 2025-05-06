@@ -252,11 +252,11 @@ public class SystemsControllerTest extends BaseControllerTestCase {
         HashMap model = (HashMap) virtualSystemsModelAndView.getModel();
         assertAll(
                 () -> assertTrue(model.containsKey("queryColumn")),
-                () -> assertEquals(String.format("'%s'", paramQC), model.get("queryColumn"))
+                () -> assertEquals(String.format("\"%s\"", paramQC), model.get("queryColumn"))
         );
         assertAll(
                 () -> assertTrue(model.containsKey("query")),
-                () -> assertEquals(String.format("'%s'", paramQ), model.get("query"))
+                () -> assertEquals(String.format("\"%s\"", paramQ), model.get("query"))
         );
     }
 
