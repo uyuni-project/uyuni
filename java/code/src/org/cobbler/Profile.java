@@ -728,10 +728,10 @@ public class Profile extends CobblerObject {
         // FIXME: The inheritance in Cobbler should not be broken with this method. Thus it should be completely
         //        removed.
         super.syncRedHatManagementKeys(keysToRemove, keysToAdd);
-        for (SystemRecord record :
+        for (SystemRecord systemRecord :
                 SystemRecord.listByAssociatedProfile(client, this.getName())) {
-            record.syncRedHatManagementKeys(keysToRemove, keysToAdd);
-            record.save();
+            systemRecord.syncRedHatManagementKeys(keysToRemove, keysToAdd);
+            systemRecord.save();
         }
     }
 
