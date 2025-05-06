@@ -8701,9 +8701,6 @@ Thank you for using @@PRODUCT_NAME@@.
 --the @@PRODUCT_NAME@@ Team
 </source>
       </trans-unit>
-      <trans-unit id="alphabar.label" xml:space="preserve">
-        <source>Select first character</source>
-      </trans-unit>
       <trans-unit id="lookup.customkey.title" xml:space="preserve">
         <source>We're sorry, but the custom key could not be found.</source>
       </trans-unit>

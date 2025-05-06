@@ -179,7 +179,6 @@ public class ListTagUtil {
         String url = (String) request.getAttribute(ListTagHelper.PARENT_URL);
         String sortByLabel = makeSortByLabel(listName);
         String sortByDir =   makeSortDirLabel(listName);
-        String alphaKey =   AlphaBarHelper.makeAlphaKey(listName);
         StringBuilder params = new StringBuilder();
         if (url.indexOf('?') < 0) {
             params.append("?");
@@ -191,7 +190,7 @@ public class ListTagUtil {
         for (Enumeration<String> en = request.getParameterNames(); en.hasMoreElements();) {
             String paramName = en.nextElement();
             if (!sortByLabel.equals(paramName) && !sortByDir.equals(paramName) &&
-                    !alphaKey.equals(paramName) && !paramsToIgnore.contains(paramName)) {
+                    !paramsToIgnore.contains(paramName)) {
                 if (params.length() > 1) {
                     params.append("&amp;");
                 }
