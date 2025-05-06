@@ -11853,10 +11853,10 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
         <source>&lt;p&gt;The peripheral {0} has de-registered from this hub, and it is no longer manageable as a peripheral..&lt;/p&gt; &lt;p&gt;Any existing synchronization configuration has been removed.&lt;/p&gt;</source>
         <target state="translated">&lt;p&gt;El perifèric {0} s'ha donat de baixa d'aquest concentrador i ja no es pot gestionar com a perifèric...&lt;/p&gt; &lt;p&gt;S'ha eliminat qualsevol configuració de sincronització existent.&lt;/p&gt;</target>
       </trans-unit>
-    <trans-unit id="hub.error_peripheral_not_registrable" xml:space="preserve">
+      <trans-unit id="hub.error_peripheral_not_registrable" xml:space="preserve">
         <source>The server {0} cannot be registered as a peripheral of this hub</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">El servidor {0} no es pot registrar com a perifèric d'aquest concentrador.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

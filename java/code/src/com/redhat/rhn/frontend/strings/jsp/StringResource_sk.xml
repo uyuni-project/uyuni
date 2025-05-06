@@ -5985,7 +5985,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="ssm.misc.index.entitle.header" xml:space="preserve">
         <source>Add Or Remove Add-On System Types</source>
-        <target state="translated">Pridať alebo odstrániť prídavné systémové typy</target>
+        <target state="translated">Pridať alebo odstrániť doplnkové typy systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
@@ -7441,14 +7441,14 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemgroup.create.creategroup" xml:space="preserve">
         <source>Create Group</source>
-        <target/>
+        <target state="translated">Vytvoriť skupinu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.edit.editgroup" xml:space="preserve">
         <source>Update Group</source>
-        <target/>
+        <target state="translated">Aktualizovať skupinu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
@@ -7456,91 +7456,91 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!--System Entitlements Page - entitlements.jsp -->
       <trans-unit id="systementitlements.jsp.header" xml:space="preserve">
         <source>System Types</source>
-        <target/>
+        <target state="translated">Typy systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.para1" xml:space="preserve">
         <source>System Types define the set of functionalities available for each system in @@PRODUCT_NAME@@ such as the ability of installing software or creating guest virtual machines.</source>
-        <target/>
+        <target state="translated">Typy systémov definujú súbor funkcií dostupných pre každý systém v @@PRODUCT_NAME@@, ako napríklad možnosť inštalácie softvéru alebo vytvárania hosťujúcich virtuálnych strojov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.para2" xml:space="preserve">
         <source>A list of your profiled systems follows, with their base and add-on system types shown in the appropriate columns. To change system types, select the systems you wish to modify, and choose the appropriate action below.</source>
-        <target/>
+        <target state="translated">Nasleduje zoznam profilovaných systémov s ich základnými a doplnkovými typmi systémov zobrazenými v príslušných stĺpcoch. Ak chcete zmeniť typy systémov, vyberte systémy, ktoré chcete upraviť, a nižšie vyberte príslušnú akciu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.nodata" xml:space="preserve">
         <source>No systems.</source>
-        <target/>
+        <target state="translated">Žiadne systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.baseentitlement" xml:space="preserve">
         <source>Base System Type</source>
-        <target/>
+        <target state="translated">Základný typ systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.addonentitlement" xml:space="preserve">
         <source>Add-On System Type</source>
-        <target/>
+        <target state="translated">Doplnkový typ systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.set_to_manage_entitled" xml:space="preserve">
         <source>Set to Management Type</source>
-        <target/>
+        <target state="translated">Nastavenie na typ správy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.set_to_unentitled" xml:space="preserve">
         <source>none</source>
-        <target/>
+        <target state="translated">žiadne</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.add_entitlement" xml:space="preserve">
         <source>Add System Type</source>
-        <target/>
+        <target state="translated">Pridať typ systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.remove_entitlement" xml:space="preserve">
         <source>Remove System Type</source>
-        <target/>
+        <target state="translated">Odstrániť typ systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.entitlement_counts" xml:space="preserve">
         <source>System Type Counts</source>
-        <target/>
+        <target state="translated">Počty typov systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.entitlement_counts_message" xml:space="preserve">
         <source>{0} system(s).</source>
-        <target/>
+        <target state="translated">{0} systém(y).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.base_entitlements" xml:space="preserve">
         <source>Base System Types</source>
-        <target/>
+        <target state="translated">Základné typy systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
@@ -7548,14 +7548,14 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!--System Entitlements Page Validation errors and status messages-->
       <trans-unit id="system_entitlements.emptyselectionerror" xml:space="preserve">
         <source>No Systems selected. Please select a system before executing an action.</source>
-        <target/>
+        <target state="translated">Nie sú vybrané žiadne systémy. Prosím, vyberte systém pred vykonaním akcie.</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.setToManagementEntitled.success" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Management&lt;/strong&gt;.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; systém(y) nastavený(é) &lt;strong&gt;Správu&lt;/strong&gt;.</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
@@ -7563,131 +7563,132 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <trans-unit id="system_entitlements.setToManagementEntitled.failure" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Management&lt;/strong&gt; entitled, but you do not have  enough &lt;strong&gt;Management&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional management entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Management&lt;/strong&gt; entitlements, you will be able to upgrade these systems.
     </source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; systém(y) bol(i) úspešne nastavený(é) oprávnené na &lt;strong&gt;Správu&lt;/strong&gt;, ale nemáte dostatok oprávnení na &lt;strong&gt;Správu&lt;/strong&gt; pre zostávajúci(e) &lt;strong&gt;{1}&lt;/strong&gt; systém(y). Ďalšie oprávnenia na správu si môžete zakúpiť v &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;obchode @@PRODUCT_NAME@@&lt;/strong&gt;&lt;/a&gt;. Po získaní ďalších oprávnení na &lt;strong&gt;Správu&lt;/strong&gt; budete môcť zvýšiť verziu týchto systémov.
+    </target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.unentitle.success" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s)  &lt;strong&gt;Unentitled&lt;/strong&gt;.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; systém(y)  &lt;strong&gt;Neprávnené&lt;/strong&gt;.</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.unentitle.failure" xml:space="preserve">
         <source>Unable to  &lt;strong&gt;Unentitle {0}&lt;/strong&gt; system(s).</source>
-        <target/>
+        <target state="translated">Nie je možné  &lt;strong&gt;Zrušiť oprávnenie {0}&lt;/strong&gt; systému(om).</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.provisioning.success" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Provisioning&lt;/strong&gt;.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; systém(y) nastavený(é) na &lt;strong&gt;Poskytovanie&lt;/strong&gt;.</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.provisioning.removed.success" xml:space="preserve">
         <source>Removed &lt;strong&gt;Provisioning&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;Poskytovanie&lt;/strong&gt; bolo odstránené z &lt;strong&gt;{0}&lt;/strong&gt; systému(ov).</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.provisioning.noManagement" xml:space="preserve">
         <source>&lt;strong&gt;Provisioning&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Provisioning&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Provisioning&lt;/strong&gt; entitlement to these system(s).</source>
-        <target/>
+        <target state="translated">Oprávnenie &lt;strong&gt;Poskytovania&lt;/strong&gt; bolo neúspešné pre &lt;strong&gt;{0}&lt;/strong&gt; systém(y), pretože nemali základné oprávnenia na &lt;strong&gt;Správu&lt;/strong&gt;. Neúspešné systémy sú stále vybrané nižšie. Ak kliknete nižšie na tlačidlo &lt;strong&gt;Nastaviť na oprávnenú správu&lt;/strong&gt;, potom vyberiete položku &lt;strong&gt;Poskytovania&lt;/strong&gt; v rozbaľovacom zozname, ktorý sa nachádza v &lt;strong&gt;sekcii doplnkových oprávnení&lt;/strong&gt; a potom kliknete nižšie na tlačidlo &lt;strong&gt;Pridať oprávnenie&lt;/strong&gt;, budete môcť pridať oprávnenie &lt;strong&gt;Poskytovania&lt;/strong&gt; pre tieto systém(y).</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.virtualization.success_note" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; We subscribed the system(s) to the {0} and {1} channel as well as scheduled an install of the {2} package to prepare the system(s) for hosting virtual guests.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;POZNÁMKA:&lt;/strong&gt; Systém(y) sme prihlásili do kanálov {0} a {1} a naplánovali sme inštaláciu balíka {2}, aby sme systém(y) pripravili na hosťovanie virtuálnych hostí.</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.virtualization_host.success" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Virtualization.&lt;/strong&gt;.  &lt;br/&gt; &lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization Platform it has been downgraded to Virtualization. </source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; systém(y) nastavené na &lt;strong&gt;Virtualizáciu.&lt;/strong&gt;.  &lt;br/&gt; &lt;strong&gt;POZNÁMKA: &lt;/strong&gt;Ak systém mal predtým virtualizačnú platformu, bolo to znížené na virtualizáciu. </target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.virtualization_host.removed.success" xml:space="preserve">
         <source>Removed &lt;strong&gt;Virtualization&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s)  This will cause any guests associated with the selected host to consume physical Channel and System entitlements.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;Virtualizácia&lt;/strong&gt; bola odstránená z &lt;strong&gt;{0}&lt;/strong&gt; systému(ov)  To spôsobí, že všetci hostia priradení k vybranému hostiteľovi spotrebujú fyzické oprávnenia kanálov a systémov.</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.virtualization_host.noManagement" xml:space="preserve">
         <source>&lt;strong&gt;Virtualization&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Virtualization&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Virtualization&lt;/strong&gt; entitlement to these system(s).</source>
-        <target/>
+        <target state="translated">Oprávnenie &lt;strong&gt;Virtualizácie&lt;/strong&gt; bolo neúspešné pre &lt;strong&gt;{0}&lt;/strong&gt; systém(y), pretože nemali základné oprávnenia na &lt;strong&gt;Správu&lt;/strong&gt;. Neúspešné systémy sú stále vybrané nižšie. Ak kliknete nižšie na tlačidlo &lt;strong&gt;Nastaviť na oprávnenú správu&lt;/strong&gt;, potom vyberiete položku &lt;strong&gt;Virtualizácie&lt;/strong&gt; v rozbaľovacom zozname, ktorý sa nachádza v &lt;strong&gt;sekcii doplnkových oprávnení&lt;/strong&gt; a potom kliknete nižšie na tlačidlo &lt;strong&gt;Pridať oprávnenie&lt;/strong&gt;, budete môcť pridať oprávnenie &lt;strong&gt;Virtualizácie&lt;/strong&gt; pre tieto systém(y).</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.virtualization_host.noSolarisSupport" xml:space="preserve">
         <source>&lt;strong&gt;Virtualization&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because Virtualization is not supported on Solaris systems.</source>
-        <target/>
+        <target state="translated">Oprávnenie &lt;strong&gt;Virtualizácie&lt;/strong&gt; bolo neúspešné pre &lt;strong&gt;{0}&lt;/strong&gt; systém(y), pretože virtualizácia nie je podporovaná na systémoch Solaris.</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.monitoring.success" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Monitoring&lt;/strong&gt;.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; systém(y) nastavené na &lt;strong&gt;Monitorovanie&lt;/strong&gt;.</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.monitoring.removed.success" xml:space="preserve">
         <source>Removed &lt;strong&gt;Monitoring&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;Monitorovanie&lt;/strong&gt; bolo odstránené z &lt;strong&gt;{0}&lt;/strong&gt; systému(ov).</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.monitoring.noManagement" xml:space="preserve">
         <source>&lt;strong&gt;Monitoring&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Monitoring&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Monitoring&lt;/strong&gt; entitlement to these system(s).</source>
-        <target/>
+        <target state="translated">Oprávnenie &lt;strong&gt;Monitorovania&lt;/strong&gt; bolo neúspešné pre &lt;strong&gt;{0}&lt;/strong&gt; systém(y), pretože nemali základné oprávnenia na &lt;strong&gt;Správu&lt;/strong&gt;. Neúspešné systémy sú stále vybrané nižšie. Ak kliknete nižšie na tlačidlo &lt;strong&gt;Nastaviť na oprávnenú správu&lt;/strong&gt;, potom vyberiete položku &lt;strong&gt;Monitorovania&lt;/strong&gt; v rozbaľovacom zozname, ktorý sa nachádza v &lt;strong&gt;sekcii doplnkových oprávnení&lt;/strong&gt; a potom kliknete nižšie na tlačidlo &lt;strong&gt;Pridať oprávnenie&lt;/strong&gt;, budete môcť pridať oprávnenie &lt;strong&gt;Monitorovania&lt;/strong&gt; pre tieto systém(y).</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.monitoring.noSolarisSupport" xml:space="preserve">
         <source>&lt;strong&gt;Monitoring&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because Monitoring is not supported on Solaris systems.</source>
-        <target/>
+        <target state="translated">Oprávnenie &lt;strong&gt;Monitorovania&lt;/strong&gt; bolo neúspešné pre &lt;strong&gt;{0}&lt;/strong&gt; systém(y), pretože monitorovanie nie je podporované na systémoch Solaris.</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.virtualization.setup_error" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to add &lt;strong&gt;Virtualization(Platform)&lt;/strong&gt;.  This was caused by errors attempting to automatically subscribe the system to the @@PRODUCT_NAME@@ Tools and RHEL Virtualization channels which are required for virtualization.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; systém(y) boli neúspešné pri pridaní &lt;strong&gt;(Platformy) Virtualizácie&lt;/strong&gt;.  Príčinou boli chyby pri pokuse o automatické prihlásenie systému do kanálov nástrojov @@PRODUCT_NAME@@ a virtualizácie RHEL, ktoré sú potrebné pre virtualizáciu.</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.unknown.error" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to add an entitlement.  This was caused by an unknown error.  Please contact support.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; systém(y) boli neúspešné pri pridávaní oprávnenia.  Bolo to spôsobené neznámou chybou.  Obráťte sa, prosím, na podporu.</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Registered" xml:space="preserve">
         <source>Registered</source>
-        <target/>
+        <target state="translated">Registrované</target>
       </trans-unit>
       <!--  System search -->
       <trans-unit id="search.alt.img" xml:space="preserve">
         <source>Search Icon</source>
-        <target/>
+        <target state="translated">Ikona vyhľadávania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
@@ -29528,21 +29529,21 @@ given channel.</source>
         </context-group>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="system.event.inventory" xml:space="preserve">
-          <source>Inventory:</source>
+      <trans-unit id="system.event.inventory" xml:space="preserve">
+        <source>Inventory:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ansible_managed" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="ansible_managed" xml:space="preserve">
         <source>Ansible Managed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="proxy_entitled" xml:space="preserve">
         <source>Proxy</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
