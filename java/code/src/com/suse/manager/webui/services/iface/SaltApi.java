@@ -381,6 +381,14 @@ public interface SaltApi extends Serializable {
     <R> Optional<R> callSync(LocalCall<R> call, String minionId);
 
     /**
+     * Executes a command on the salt master and returns its result.
+     *
+     * @param cmd command to execute on the salt master
+     * @return response of the command
+     */
+    Optional<String> execOnMaster(String cmd);
+
+    /**
      * Run a remote command on a given minion asynchronously.
      * @param target the target
      * @param cmd the command to execute
