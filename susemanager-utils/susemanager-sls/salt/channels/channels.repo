@@ -56,8 +56,15 @@ gpgkey={{ args['gpgkeyurl']|replace(pillar.get('mgr_origin_server', 'no-replace-
 gpgkey=file:///etc/pki/rpm-gpg/mgr-gpg-pub.key
 {%- endif %}
 {%- if grains['os_family'] == 'RedHat' %}
+{%- set dnf_version = salt['pkg.version']("dnf") %}
+{#- DNF was tested to be working with GET parameters for versions >= 4.0.9 #}
+{%- set dnf_supports_params = dnf_version and salt['pkg.version_cmp'](dnf_version, "4.0.9") >= 0 %}
+{%- if dnf_supports_params %}
+baseurl={{protocol}}://{{hostname}}:{{port}}/rhn/manager/download/{{ chan }}?{{ args['token'] }}
+{%- else %}
 baseurl={{protocol}}://{{hostname}}:{{port}}/rhn/manager/download/{{ chan }}
 susemanager_token={{ args['token'] }}
+{%- endif %}
 gpgcheck={{ 1 if args['gpgcheck'] == "1" or args['pkg_gpgcheck'] != "0" else 0 }}
 repo_gpgcheck={{ args['gpgcheck'] }}
 {%- if grains['osmajorrelease'] >= 8 and args['cloned_nonmodular'] %}
