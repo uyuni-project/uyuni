@@ -5,7 +5,9 @@ const { applyOverrides } = require("./override");
 const readLicenseText = async (packageDirectory) => {
   const files = await fs.readdir(packageDirectory);
   const licenseFilename = files.find((name) => /^(license|licence|copying)/i.test(name));
-  if (!licenseFilename) return "";
+  if (!licenseFilename) {
+    return undefined;
+  }
   return await fs.readFile(path.join(packageDirectory, licenseFilename), "utf8");
 };
 
@@ -18,9 +20,10 @@ const getLicense = async (dependency, packageDirectory) => {
   if (typeof dependency.license === "string") {
     license = applyOverrides(name, version, dependency.license);
   } else if (Array.isArray(dependency.licenses)) {
+    // Some legacy packages do not conform with the modern spec and keep license info as an array in package.json
     const types = new Set(
       dependency.licenses
-        .map((item) => (typeof item === "object" && item && item.type ? item.type : null))
+        .map((item) => item?.type)
         .filter(Boolean)
         .map((item) => applyOverrides(name, version, item))
     );

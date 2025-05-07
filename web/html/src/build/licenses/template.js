@@ -1,9 +1,13 @@
-const separator = "\n\n--------------------------------------------------------------------------------\n\n";
+const separator = "\n--------------------------------------------------------------------------------\n";
 
-const template = (licenseTypes) => `THIRD PARTY SOFTWARE NOTICES AND INFORMATION
+const itemTemplate = (name, version, licenseText) => `
+Package: ${name}@${version}
+License text:
+
+${licenseText}`;
+
+const fileTemplate = (licenseTypes) => `THIRD PARTY SOFTWARE NOTICES AND INFORMATION
 Do NOT translate or localize
+${separator}${licenseTypes.join(separator)}`;
 
-${separator}
-${licenseTypes.join(separator)}`;
-
-module.exports = { template, separator };
+module.exports = { itemTemplate, fileTemplate };

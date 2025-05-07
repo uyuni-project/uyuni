@@ -3,7 +3,7 @@ const path = require("path");
 
 const { getDependencyMap } = require("./package");
 const { fileExists, getFileHash } = require("./fs");
-const { template } = require("./template");
+const { fileTemplate, itemTemplate } = require("./template");
 
 const dirname = path.dirname(__filename);
 const webHtmlSrc = path.resolve(dirname, "../..");
@@ -19,7 +19,9 @@ const hashFile = path.resolve(vendors, "npm.licenses.hash.txt");
   let previousHash;
   try {
     previousHash = await fs.readFile(hashFile, "utf8");
-  } catch {}
+  } catch {
+    // Do nothing
+  }
 
   const currentHash = await getFileHash(path.resolve(webHtmlSrc, "yarn.lock"));
   if (previousHash && previousHash === currentHash && licenseTextExists && licenseListExists) {
@@ -31,26 +33,29 @@ const hashFile = path.resolve(vendors, "npm.licenses.hash.txt");
   try {
     const dependencies = await getDependencyMap(webHtmlSrc);
 
-    const licenseTypes = Array.from(
-      new Set(
-        Object.values(dependencies)
-          .flat()
-          .map((entry) => entry.license)
-          .sort()
-          .filter(Boolean)
-      )
+    // Aggregate all available license texts
+    const lines = Array.from(dependencies.keys())
+      .sort()
+      .flatMap((name) =>
+        dependencies
+          .get(name)
+          .sort((a, b) => a.version.localeCompare(b.version))
+          // Not all packages include the license text in the distribution, even when they should
+          .filter((item) => typeof item.licenseText !== "undefined")
+          .map((item) => itemTemplate(name, item.version, item.licenseText))
+      );
+    await fs.writeFile(licenseTextFile, fileTemplate(lines), "utf8");
+
+    // Get a list of all licenses to populate `spacewalk-web.spec`
+    const licenseTypes = new Set(
+      Array.from(dependencies.values())
+        .flat()
+        .map((item) => item.license)
+        .filter(Boolean)
+        .sort((a, b) => a.localeCompare(b))
     );
+    console.log(licenseTypes.keys());
     await fs.writeFile(licenseListFile, `module.exports = ${JSON.stringify(licenseTypes)};`, "utf8");
-
-    const lines = [];
-    for (const name of Array.from(dependencies.keys()).sort()) {
-      const entries = dependencies.get(name).sort((a, b) => a.version.localeCompare(b.version));
-      for (const { version, licenseText } of entries) {
-        lines.push(`${name}@${version}\n\n${licenseText}`);
-      }
-    }
-
-    console.log(template(lines));
 
     // TODO: Reenable
     // await fs.writeFile(hashFile, currentHash, "utf8");
