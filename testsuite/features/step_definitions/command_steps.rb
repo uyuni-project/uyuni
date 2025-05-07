@@ -800,6 +800,16 @@ When(/^I run "([^"]*)" on "([^"]*)" without error control$/) do |cmd, host|
   _out, $fail_code = node.run(cmd, check_errors: false)
 end
 
+When(/^I run "([^"]*)" on "([^"]*)" with timeout at most (\d+) seconds$/) do |cmd, host, timeout|
+  node = get_target(host)
+  repeat_until_timeout(timeout: timeout.to_i, message: "Cmd '#{cmd}' failed") do
+    _output, return_code = node.run(cmd, check_errors: false)
+    break if return_code.zero?
+
+    sleep 1
+  end
+end
+
 Then(/^the command should fail$/) do
   raise ScriptError, 'Previous command must fail, but has NOT failed!' if $fail_code.zero?
 end
@@ -1054,6 +1064,23 @@ end
 When(/I copy the distribution inside the container on the server$/) do
   node = get_target('server')
   node.run('mgradm distro copy /tmp/tftpboot-installation/SLE-15-SP4-x86_64 SLE-15-SP4-TFTP', runs_in_container: false)
+end
+
+When(/I generate a supportconfig for the server$/) do
+  node = get_target('server')
+  node.run('mgradm support config', runs_in_container: false)
+  node.run('mv /root/scc_*.tar.gz /root/server-supportconfig.tar.gz', runs_in_container: false)
+end
+
+When(/I obtain and extract the supportconfig from the server$/) do
+  supportconfig_path = '/root/server-supportconfig.tar.gz'
+  test_runner_file = '/root/server-supportconfig.tar.gz'
+  get_target('server').scp_download(supportconfig_path, test_runner_file)
+  `rm -rf /root/server-supportconfig`
+  `mkdir /root/server-supportconfig && tar xzvf /root/server-supportconfig.tar.gz -C /root/server-supportconfig`
+  `mv /root/server-supportconfig/scc_* /root/server-supportconfig/test-server`
+  `tar xJvf /root/server-supportconfig/test-server/*supportconfig.txz -C /root/server-supportconfig`
+  `mv /root/server-supportconfig/scc_suse_*/ /root/server-supportconfig/uyuni-server-supportconfig/`
 end
 
 When(/I remove the autoinstallation files from the server$/) do
