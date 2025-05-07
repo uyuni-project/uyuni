@@ -122,7 +122,7 @@ begin
 
     SELECT date_diff_in_days(CAST(new_last_checkin AS TIMESTAMP), NOW()) > C.threshold INTO awol
     FROM (SELECT CAST(coalesce(value, default_value) AS INTEGER) AS threshold
-            FROM rhnconfiguration WHERE key = 'system_checkin_threshold') C;
+            FROM rhnconfiguration WHERE key = 'SYSTEM_CHECKIN_THRESHOLD') C;
 
     select created,
            (SELECT wc.login FROM web_contact wc WHERE wc.id = s.creator_id) as creator_name
