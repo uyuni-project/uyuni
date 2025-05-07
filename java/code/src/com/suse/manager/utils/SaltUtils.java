@@ -975,12 +975,21 @@ public class SaltUtils {
         if (minionServer.isSSHPush()) {
             try {
                 var actionPath = MinionActionUtils.getActionPath(minionServer, actionId);
-
-                //TODO: add additional options required for tunnel
                 var user = SaltSSHService.getSSHUser();
                 var port = Optional.ofNullable(minionServer.getSSHPushPort()).orElse(SaltSSHService.SSH_PUSH_PORT);
-                var rsync = "rsync -p --chown salt:susemanager --chmod=660 -e 'ssh -o ConnectTimeout=2 -p %d -i %s' %s@%s:%s/* %s/."
-                        .formatted(port, SaltSSHService.SSH_KEY_PATH, user, hostname, supportDataDir, actionPath);
+                String method = minionServer.getContactMethod().getLabel();
+                List<String> proxyPath = SaltSSHService.proxyPathToHostnames(minionServer.getServerPaths(),
+                        Optional.empty());
+                List<String> proxyCommand = SaltSSHService.sshProxyCommandOption(proxyPath, method, hostname, port)
+                        .orElse(List.of());
+                String sshOptions = "-o ConnectTimeout=2 " + proxyCommand.stream()
+                        .map("-o %s"::formatted)
+                        .collect(Collectors.joining(" "));
+
+                var rsync = "rsync -p --chown salt:susemanager --chmod=660 -e \"ssh %s -p %d -i %s\" %s@%s:%s/* %s/."
+                        .formatted(sshOptions, port, SaltSSHService.SSH_KEY_PATH, user, hostname,
+                                supportDataDir, actionPath);
+                LOG.info(rsync);
                 var copyResult = saltApi.execOnMaster(rsync);
                 String error = copyResult.orElse("Error copying supportdata");
                 if (!error.isBlank()) {
