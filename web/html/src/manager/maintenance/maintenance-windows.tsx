@@ -39,7 +39,6 @@ function getHashAction() {
 
 const MaintenanceWindows = () => {
   const [messages, setMessages] = useState<any[]>([]);
-  const [items, setItems] = useState<any[]>([]);
   const [action, setAction] = useState<string | undefined>();
   const [selected, setSelected] = useState<any | undefined>();
   const [calendarNames, setCalendarNames] = useState<any>();
@@ -61,17 +60,6 @@ const MaintenanceWindows = () => {
       setAction(newAction);
     }
     clearMessages();
-  };
-
-  const listMaintenanceWindowItems = () => {
-    /* Returns a list of maintenance schedules or calendars depending on the type provided */
-    return MaintenanceWindowsApi.list(window.type)
-      .then((newItems) => {
-        setAction(undefined);
-        setSelected(undefined);
-        setItems(newItems);
-      })
-      .catch(handleResponseError);
   };
 
   const getCalendarNames = () => {
@@ -159,9 +147,9 @@ const MaintenanceWindows = () => {
   const handleForwardAction = (newAction?: string) => {
     const loc = window.location;
     if (newAction === undefined || newAction === "back") {
-      listMaintenanceWindowItems().then((data) => {
-        window.history.pushState(null, "", loc.pathname + loc.search);
-      });
+      // listMaintenanceWindowItems().then((data) => {
+      //   window.history.pushState(null, "", loc.pathname + loc.search);
+      // });
     } else {
       setAction(newAction);
       window.history.pushState(null, "", loc.pathname + loc.search + "#/" + newAction);
@@ -203,7 +191,6 @@ const MaintenanceWindows = () => {
       ) : (
         <MaintenanceWindowsList
           type={window.type}
-          data={items}
           onActionChanged={handleForwardAction}
           onSelect={handleDetailsAction}
           onEdit={handleEditAction}
