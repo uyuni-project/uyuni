@@ -1,25 +1,25 @@
-import React, { useState, useEffect, useCallback } from "react";
-import get from "lodash/get";
-import unset from "lodash/unset";
-import yaml from "js-yaml";
-import { Panel } from "components/panels/Panel";
-import { DropdownButton, Button } from "components/buttons";
+import React, { useCallback, useEffect, useState } from "react";
+
 import { useFormikContext } from "formik";
+import yaml from "js-yaml";
+import get from "lodash/get";
+
+import { Button, DropdownButton } from "components/buttons";
 import { Field, MultiField } from "components/formik/field";
-import { Form, OnSubmit } from "components/formik/Form";
-import DictionaryEditor from "./variables/dictionary-editor"
-import ListEditor from "./variables/list-editor"
-import StringEditor from "./variables/string-editor"
+import { Form } from "components/formik/Form";
+import { Panel } from "components/panels/Panel";
+import { MessagesContainer } from "components/toastr/toastr";
+
 import BooleanEditor from "./variables/boolean-editor";
+import DictionaryEditor from "./variables/dictionary-editor";
+import ExtraVariabl from "./variables/extra-var";
+import ListEditor from "./variables/list-editor";
+import StringEditor from "./variables/string-editor";
 
 const isDictionary = (obj) => {
   if (typeof obj !== "object" || obj === null || Array.isArray(obj)) return false;
   return Object.values(obj).every(
-    (val) =>
-      typeof val === "string" ||
-      typeof val === "number" ||
-      typeof val === "boolean" ||
-      val === null
+    (val) => typeof val === "string" || typeof val === "number" || typeof val === "boolean" || val === null
   );
 };
 
@@ -27,17 +27,16 @@ const variablesList = ["List", "Dictionary", "String", "Boolean"];
 
 type Props = {
   data: Record<string, any>;
-  onDataChange: (updatedData: Record<string, any>) => void;
+  onDataChange: (values: Record<string, any>) => void;
+  onExtraVarChange: (extravalues: string) => void;
 };
 
 const AnsibleVarYamlEditor = (props: Props) => {
-  const {
-    data,
-    onDataChange,
-  } = props;
-
+  const { data, onDataChange, onExtraVarChange } = props;
   const [visibleInputPath, setVisibleInputPath] = useState(null);
   const [varType, setVarType] = useState(null);
+  const [expandAllClicked, setExpandAllClicked] = useState(false);
+  const [expandAllState, setExpandAllState] = useState(false);
 
   const generateId = (path) => `id_${path.split(".").join("_")}`;
 
@@ -46,11 +45,11 @@ const AnsibleVarYamlEditor = (props: Props) => {
 
   // Nested level
   const nestedLevelTitles = (prefix, value) => {
-    const current = get(value, prefix);
-    let paths = [];
+    const current = get(value, prefix) as any;
+    let paths: string[] = [];
 
     // don't render seconnd level for array or Dictionary
-    if (!current || typeof current !== 'object' || Array.isArray(current) || isDictionary(current)) return [];
+    if (!current || typeof current !== "object" || Array.isArray(current) || isDictionary(current)) return [];
 
     for (const key in current) {
       const path = `${prefix}.${key}`;
@@ -66,13 +65,11 @@ const AnsibleVarYamlEditor = (props: Props) => {
   };
 
   const YamlPreview = () => {
-    const { values } = useFormikContext();
+    const { values } = useFormikContext<Record<string, any>>();
     const [yamlOutput, setYamlOutput] = useState("");
 
     useEffect(() => {
-      if (onDataChange) {
-        onDataChange(values);
-      }
+      onDataChange?.(values);
       setYamlOutput(yaml.dump({ vars: values }, { quotingType: '"', forceQuotes: true }));
     }, [values]);
 
@@ -84,21 +81,23 @@ const AnsibleVarYamlEditor = (props: Props) => {
     setVarType(name);
   }, []);
 
-  const renderVariableDiv = useCallback((path, setFieldValue) => {
-    if (varType === "String" && visibleInputPath === path) {
-      return <StringEditor path={path} setFieldValue={setFieldValue} onClose={() => setVarType(null)} />
-    }
-    if (varType === "List" && visibleInputPath === path) {
-      return (<ListEditor path={path} setFieldValue={setFieldValue} onClose={() => setVarType(null)} setVisibleInputPath={setVisibleInputPath} />)
-    }
-    if (varType === "Dictionary" && visibleInputPath === path) {
-      return (<DictionaryEditor path={path} setFieldValue={setFieldValue} onClose={() => setVarType(null)} />)
-    }
-    if (varType === "Boolean" && visibleInputPath === path) {
-      return (
-        <BooleanEditor path={path} setFieldValue={setFieldValue} />);
-    }
-  }, [varType, visibleInputPath]);
+  const renderVariableDiv = useCallback(
+    (path, setFieldValue) => {
+      if (varType === "String" && visibleInputPath === path) {
+        return <StringEditor path={path} setFieldValue={setFieldValue} onClose={() => setVarType(null)} />;
+      }
+      if (varType === "List" && visibleInputPath === path) {
+        return <ListEditor path={path} setFieldValue={setFieldValue} onClose={() => setVarType(null)} />;
+      }
+      if (varType === "Dictionary" && visibleInputPath === path) {
+        return <DictionaryEditor path={path} setFieldValue={setFieldValue} onClose={() => setVarType(null)} />;
+      }
+      if (varType === "Boolean" && visibleInputPath === path) {
+        return <BooleanEditor path={path} setFieldValue={setFieldValue} />;
+      }
+    },
+    [varType, visibleInputPath]
+  );
 
   // Retrieve the value at the specified path within the YAML structure
   const renderEditor = (path, values, setFieldValue) => {
@@ -116,12 +115,14 @@ const AnsibleVarYamlEditor = (props: Props) => {
           <div className="col-md-8">
             <Field
               name={path}
-              children={<Button
-                className="btn-default btn-sm"
-                handler={() => removeItem(path)}
-                title={t("Remove item")}
-                icon="fa-minus"
-              />}
+              children={
+                <Button
+                  className="btn-default btn-sm"
+                  handler={() => removeItem(path)}
+                  title={t("Remove item")}
+                  icon="fa-minus"
+                />
+              }
             />
           </div>
         </div>
@@ -130,12 +131,12 @@ const AnsibleVarYamlEditor = (props: Props) => {
 
     if (Array.isArray(value)) {
       return (
-        <div className="row mt-2" >
+        <div className="row mt-2">
           <div className="col-md-4"></div>
           <div className="col-md-8">
             <MultiField name={path} defaultNewItemValue="" />
           </div>
-        </div >
+        </div>
       );
     }
 
@@ -145,18 +146,31 @@ const AnsibleVarYamlEditor = (props: Props) => {
         <>
           {Object.entries(value).map(([k]) => (
             <div key={k} className="row mt-2">
-              <div className="col-md-4 text-right"><label>{k}</label></div>
+              <div className="col-md-4 control-label">
+                <label>{k}</label>
+              </div>
               <div className="col-md-8">
-                <Field name={`${path}.${k}`} children={<Button
-                  className="btn-default btn-sm"
-                  handler={() => removeItem(`${path}.${k}`)}
-                  title={t("Remove item")}
-                  icon="fa-minus"
-                />} />
+                <Field
+                  name={`${path}.${k}`}
+                  children={
+                    <Button
+                      className="btn-default btn-sm"
+                      handler={() => removeItem(`${path}.${k}`)}
+                      title={t("Remove item")}
+                      icon="fa-minus"
+                    />
+                  }
+                />
               </div>
             </div>
           ))}
-          <DictionaryEditor path={path} setFieldValue={setFieldValue} onClose={() => setVarType(null)} value={value} edit={true} />
+          <DictionaryEditor
+            path={path}
+            setFieldValue={setFieldValue}
+            onClose={() => setVarType(null)}
+            value={value}
+            edit={true}
+          />
         </>
       );
     }
@@ -164,8 +178,10 @@ const AnsibleVarYamlEditor = (props: Props) => {
     if (typeof value === "object" && value !== null) {
       return (
         <div className="row pb-3">
-          <div className="col-md-4">Click the Add Variable button and select a
-            variable type from the list to add new variable to <strong>{path.split(".").pop()}</strong> object.</div>
+          <div className="col-md-4">
+            Click the Add Variable button and select a variable type from the list to add new variable to{" "}
+            <strong>{path.split(".").pop()}</strong> object.
+          </div>
           <div className="col-md-8">
             <DropdownButton
               text={t("Add Variable")}
@@ -173,15 +189,15 @@ const AnsibleVarYamlEditor = (props: Props) => {
               title={t("Add a Variable")}
               className="btn-default"
               items={variablesList.map((name) => (
-                <a data-senna-off href="#" onClick={() => handleVariable(path, name)}>
+                // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                <a key={name} data-senna-off href="#" onClick={() => handleVariable(path, name)}>
                   {name.toLocaleLowerCase()}
                 </a>
               ))}
             />
-
           </div>
           {renderVariableDiv(path, setFieldValue)}
-        </div >
+        </div>
       );
     }
 
@@ -191,22 +207,14 @@ const AnsibleVarYamlEditor = (props: Props) => {
           <div className="col-md-4"></div>
           <div className="col-md-8">
             <label className="radio col-md-4">
-              <input
-                type="radio"
-                checked={value === true}
-                onChange={() => setFieldValue(path, true)}
-              /> {t("True")}
+              <input type="radio" checked={value === true} onChange={() => setFieldValue(path, true)} /> {t("True")}
             </label>
             <label className="radio col-md-4">
-              <input
-                type="radio"
-                checked={value === false}
-                onChange={() => setFieldValue(path, false)}
-              /> {t("False")}
+              <input type="radio" checked={value === false} onChange={() => setFieldValue(path, false)} /> {t("False")}
             </label>
           </div>
         </div>
-      )
+      );
     }
     return null;
   };
@@ -214,15 +222,28 @@ const AnsibleVarYamlEditor = (props: Props) => {
   return (
     <>
       <div className="row">
-        <p className="col-md-7">Set the value of existing variables to override previously defined variables.</p>
-        <h3 className="col-md-4">Yaml Preview</h3>
+        <div className="col-md-7">
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            Set the value of existing variables to override previously defined variables.
+            <Button
+              text={expandAllState ? "Collapse All" : "Expand All"}
+              className="btn-default btn-sm"
+              handler={() => {
+                setExpandAllClicked(true);
+                setExpandAllState((prev) => !prev);
+              }}
+            />
+          </div>
+        </div>
+        <div className="col-md-4 d-flex align-items-center">
+          <h4 className="m-0">Yaml Preview</h4>
+        </div>
       </div>
-
-      <div className="variable-content">
-        <Form initialValues={props.data} enableReinitialize className="d-flex w-100">
+      <div className="variable-content border-top">
+        <Form initialValues={data} onSubmit={() => {}} enableReinitialize className="d-flex w-100">
           {({ values, setFieldValue }) => (
             <>
-              <div className="yaml-editor">
+              <div className="yaml-editor col-md-7">
                 {levelOneTitles(values).map((path) => (
                   <Panel
                     key={generateId(path)}
@@ -230,7 +251,9 @@ const AnsibleVarYamlEditor = (props: Props) => {
                     collapseId={generateId(path)}
                     title={path.split(".").join(" > ")}
                     className="panel-trasnparent"
-                  > {renderEditor(path, values, setFieldValue)}
+                    collapsClose={expandAllClicked ? !expandAllState : false}
+                  >
+                    {renderEditor(path, values, setFieldValue)}
                     {nestedLevelTitles(path, values).map((p) => (
                       <Panel
                         key={generateId(p)}
@@ -238,16 +261,19 @@ const AnsibleVarYamlEditor = (props: Props) => {
                         collapseId={generateId(p)}
                         title={p.split(".").join(" > ")}
                         className="panel-trasnparent"
-                        collapsClose={true}
+                        collapsClose={expandAllClicked ? !expandAllState : true}
                       >
                         {renderEditor(p, values, setFieldValue)}
                       </Panel>
-                    ))
-                    }
+                    ))}
                   </Panel>
                 ))}
+                <div>
+                  <MessagesContainer />
+                  <ExtraVariabl setExtraVars={onExtraVarChange} />
+                </div>
               </div>
-              <div className="yaml-preview">
+              <div className="yaml-preview col-md-4">
                 <YamlPreview />
               </div>
             </>

@@ -20,7 +20,12 @@
     > .panel-heading {
       font-size: $font-size-base;
 
-      h1, h2, h3, h4, h5, h6 {
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
         font-size: $font-size-h4;
         font-weight: 500;
       }
@@ -43,6 +48,24 @@
   .panel-body .min-height-panel {
     min-height: 20px;
   }
+
+  &.panel-trasnparent {
+    background: transparent !important;
+    margin-bottom: 0;
+
+    .panel-heading {
+      padding: 10px 4px;
+      border-top: 1px solid $eos-bc-gray-100;
+
+      &:hover {
+        background-color: $eos-bc-gray-50;
+      }
+    }
+
+    .panel-body {
+      padding: 10px 14px;
+    }
+  }
 }
 
 dl:last-child {
@@ -56,26 +79,6 @@ dl:last-child {
   border: none !important;
   box-shadow: none !important;
   margin: 0 !important;
-}
-
-.panel {
-  &.panel-trasnparent {
-  background: transparent!important;
-  margin-bottom: 0;
-
-  .panel-heading {
-    padding: 10px 4px;
-    border-top: 1px solid $eos-bc-gray-100;
-
-    &:hover {
-      background-color: $eos-bc-gray-50;
-    }
-  }
-
-  .panel-body {
-    padding: 10px 14px
-  }
-}
 }
 
 @include onSuma {
