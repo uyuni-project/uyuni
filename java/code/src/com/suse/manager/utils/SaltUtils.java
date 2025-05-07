@@ -712,8 +712,8 @@ public class SaltUtils {
         else if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
             handleFilesDiff(jsonResult, action);
             serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.diffed"));
-            /**
-             * For comparison we are simply using file.managed state in dry-run mode, Salt doesn't return
+            /*
+             * For comparison, we are simply using file.managed state in dry-run mode, Salt doesn't return
              * 'result' attribute(actionFailed method check this attribute) when File(File, Dir, Symlink)
              * already exist on the system and action is considered as Failed even though there was no error.
              */
@@ -979,11 +979,12 @@ public class SaltUtils {
                 //TODO: add additional options required for tunnel
                 var user = SaltSSHService.getSSHUser();
                 var port = Optional.ofNullable(minionServer.getSSHPushPort()).orElse(SaltSSHService.SSH_PUSH_PORT);
-                var rsync = "rsync -p --chown salt:susemanager --chmod=660 -e 'ssh -p %d -i %s' %s@%s:%s/* %s/."
+                var rsync = "rsync -p --chown salt:susemanager --chmod=660 -e 'ssh -o ConnectTimeout=2 -p %d -i %s' %s@%s:%s/* %s/."
                         .formatted(port, SaltSSHService.SSH_KEY_PATH, user, hostname, supportDataDir, actionPath);
                 var copyResult = saltApi.execOnMaster(rsync);
-                if (copyResult.isEmpty()) {
-                    serverAction.fail("Error copying supportdata");
+                String error = copyResult.orElse("Error copying supportdata");
+                if (!error.isBlank()) {
+                    serverAction.fail(error);
                     return Optional.empty();
                 }
 
