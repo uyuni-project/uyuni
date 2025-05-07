@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import { Button } from "components/buttons";
 
 type Props = {
@@ -8,32 +9,29 @@ type Props = {
 };
 
 const BooleanEditor = (props: Props) => {
-  const {
-    path,
-    setFieldValue,
-    onClose
-  } = props;
+  const { path, setFieldValue, onClose } = props;
 
   const [newKey, setNewKey] = useState("");
-  const [newValue, setNewValue] = useState(false);
-
+  const [newValue, setNewValue] = useState<boolean>(false);
   const handleAddBoolean = () => {
     if (!newKey.trim()) return;
     setFieldValue(`${path}.${newKey}`, newValue);
     setNewKey("");
-    setNewValue("");
+    setNewValue(false);
   };
 
   return (
     <>
       {
-        <div className="border-top mt-4 mb-4 pt-3">
-          <div className="d-block" >
-            <h4 className="pull-left">{t("Add Boolean")}</h4>
-            <Button className="pull-right" icon="fa-times" handler={() => onClose()} />
+        <div className="border-top mt-4 mb-4 p-0">
+          <div className="d-block">
+            <h5 className="pull-left">{t("Add Boolean")}</h5>
+            <Button className="pull-right" icon="fa-times" handler={() => onClose?.()} />
           </div>
           <div className="row">
-            <div className="col-md-4 text-right"><label>{t("Name")}</label></div>
+            <div className="col-md-4 control-label">
+              <label>{t("Name")}</label>
+            </div>
             <div className="col-md-8 form-group">
               <input
                 className="form-control"
@@ -48,32 +46,20 @@ const BooleanEditor = (props: Props) => {
             <div className="col-md-4"></div>
             <div className="col-md-8 form-group">
               <label className="d-flex gap-3 p-0">
-                <input
-                  type="radio"
-                  checked={newValue === true}
-                  onChange={() => setNewValue(true)}
-                /> {t("True")}
+                <input type="radio" checked={newValue === true} onChange={() => setNewValue(true)} /> {t("True")}
               </label>
               <label className="d-flex gap-3 p-0 mt-2">
-                <input
-                  type="radio"
-                  checked={newValue === false}
-                  onChange={() => setNewValue(false)}
-                /> {t("False")}
+                <input type="radio" checked={newValue === false} onChange={() => setNewValue(false)} /> {t("False")}
               </label>
             </div>
           </div>
-          <div className="d-flex offset-md-4 mt-3" >
-            <Button
-              className=" btn-primary btn-sm mt-2"
-              text={t("Add Boolean")}
-              handler={handleAddBoolean}
-            />
+          <div className="d-flex offset-md-4 mt-3">
+            <Button className=" btn-primary btn-sm mt-2" text={t("Add Boolean")} handler={handleAddBoolean} />
           </div>
         </div>
       }
     </>
-  )
+  );
 };
 
 export default BooleanEditor;
