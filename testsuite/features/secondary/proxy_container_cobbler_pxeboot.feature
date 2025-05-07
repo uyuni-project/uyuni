@@ -117,14 +117,14 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
     And I follow "15-sp4-cobbler"
     And I follow "Delete Autoinstallation"
     And I click on "Delete Autoinstallation"
-    Then I should not see a "15-sp4-cobbler" text
+    And I wait until I do not see "15-sp4-cobbler" text
 
   Scenario: Cleanup: remove the auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "SLE-15-SP4-TFTP"
     And I follow "Delete Distribution"
     And I click on "Delete Distribution"
-    Then I should not see a "SLE-15-SP4-TFTP" text
+    And I wait until I do not see "SLE-15-SP4-TFTP" text
 
   Scenario: Cleanup: remove the auto installation files
     When I remove packages "tftpboot-installation-SLE-15-SP4-x86_64 expect" from this "build_host"
