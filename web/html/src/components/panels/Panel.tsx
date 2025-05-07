@@ -11,7 +11,7 @@ type Props = {
   footer?: React.ReactNode;
   children: React.ReactNode;
   buttons?: React.ReactNode;
-  collapsClose?: boolean
+  collapsClose?: boolean;
 };
 
 const Panel = (props: Props) => {
@@ -63,12 +63,14 @@ const Panel = (props: Props) => {
                   aria-expanded="false"
                 >
                   <i
-                    className={`fa fa-chevron-down show-on-collapsed ${props.customIconClass ? props.customIconClass : ""
-                      }`}
+                    className={`fa fa-chevron-down show-on-collapsed ${
+                      props.customIconClass ? props.customIconClass : ""
+                    }`}
                   />
                   <i
-                    className={`fa fa-chevron-right hide-on-collapsed ${props.customIconClass ? props.customIconClass : ""
-                      }`}
+                    className={`fa fa-chevron-right hide-on-collapsed ${
+                      props.customIconClass ? props.customIconClass : ""
+                    }`}
                   />
                   {titleContent}
                 </div>
@@ -82,7 +84,10 @@ const Panel = (props: Props) => {
       )}
 
       {props.collapseId ? (
-        <div id={`${props.collapseId}-panel-closable`} className={`panel-collapse collapse ${props.collapsClose ? "" : 'show'}`}>
+        <div
+          id={`${props.collapseId}-panel-closable`}
+          className={`panel-collapse collapse ${props.collapsClose ? "" : "show"}`}
+        >
           {bodyContent}
         </div>
       ) : (
