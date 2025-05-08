@@ -20,13 +20,16 @@ const findPackageJson = async (packageName, searchStartDirectory) => {
       };
     } catch {
       const parentDirectory = path.dirname(currentDirectory);
-      if (parentDirectory === currentDirectory) break;
+      if (parentDirectory === currentDirectory) {
+        break;
+      }
       currentDirectory = parentDirectory;
     }
   }
   throw new TypeError(`Unable to find package.json for "${packageName}" in "${searchStartDirectory}"`);
 };
 
+// Get a map of all production dependencies and their license information
 const getDependencyMap = async (rootDirectory) => {
   const visited = new Set();
   const licenseMap = new Map();
@@ -39,7 +42,9 @@ const getDependencyMap = async (rootDirectory) => {
     }
 
     const uniqueKey = `${packageJson.name}@${packageJson.version}`;
-    if (visited.has(uniqueKey)) return;
+    if (visited.has(uniqueKey)) {
+      return;
+    }
     visited.add(uniqueKey);
 
     const license = await getLicense(packageJson, packageDirectory);
