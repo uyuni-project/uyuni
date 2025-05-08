@@ -1391,6 +1391,22 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * List all custom channels which URL access a specific FQDN
+     * Mainly used for finding repos pointing to a Hub
+     * @param fqdn the FQDN
+     * @return a list of {@link ContentSource}
+     */
+    public static List<ContentSource> findCustomContentSourcesForHubFqdn(String fqdn) {
+        return getSession().createNativeQuery("""
+                SELECT * FROM rhnContentSource
+                 WHERE org_id IS NOT NULL
+                 AND source_url like :urlstart
+                """, ContentSource.class)
+                .setParameter("urlstart", "https://%s/%%".formatted(fqdn))
+                .list();
+    }
+
+    /**
      * Find a vendor content source (org is null) for a given repo URL.
      *
      * @param repoUrl url to match against

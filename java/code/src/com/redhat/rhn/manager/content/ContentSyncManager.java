@@ -1009,14 +1009,24 @@ public class ContentSyncManager {
     }
 
     private void refreshCustomRepoAuthentication(List<SCCRepositoryJson> customReposIn, SCCCredentials creds) {
+        IssHub issHub = creds.getIssHub();
+        if (issHub == null) {
+            LOG.debug("Only Peripheral server manage custom channels via SCC API");
+            return;
+        }
+        Set<ContentSource> toDeleteCustomRepos = new HashSet<>(
+                ChannelFactory.findCustomContentSourcesForHubFqdn(issHub.getFqdn()));
+
         for (SCCRepositoryJson repo : customReposIn) {
             Channel customChannel = ChannelFactory.lookupByLabel(repo.getName());
             if (!isValidCustomChannel(repo, customChannel)) {
                 LOG.error("Invalid custom repo/channel {} - {}", repo, customChannel);
                 return;
             }
-            refreshOrCreateRepository(repo, customChannel, creds.getIssHub());
+            toDeleteCustomRepos.removeAll(customChannel.getSources());
+            refreshOrCreateRepository(repo, customChannel, issHub);
         }
+        toDeleteCustomRepos.forEach(ChannelFactory::remove);
     }
 
     /**
