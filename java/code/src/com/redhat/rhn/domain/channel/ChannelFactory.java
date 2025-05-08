@@ -1621,7 +1621,7 @@ public class ChannelFactory extends HibernateFactory {
         String hostname = ConfigDefaults.get().getJavaHostname();
         String channelLabel = channel.getLabel();
 
-        Optional<String> tokenString = SCCEndpoints.buildHubRepositoryToken(channelLabel);
+        Optional<String> tokenString = SCCEndpoints.buildHubRepositoryToken(channel);
         if (tokenString.isPresent()) {
             SCCRepositoryJson repositoryInfo;
             if (channel.getOrg() != null) {
