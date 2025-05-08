@@ -33,7 +33,7 @@ const hashFile = path.resolve(vendors, "npm.licenses.hash.txt");
   try {
     const dependencies = await getDependencyMap(webHtmlSrc);
 
-    // Aggregate all available license texts
+    // Aggregate all available license texts into `web/html/src/vendors/npm.licenses.txt`
     const lines = Array.from(dependencies.keys())
       .sort()
       .flatMap((name) =>
@@ -46,19 +46,19 @@ const hashFile = path.resolve(vendors, "npm.licenses.hash.txt");
       );
     await fs.writeFile(licenseTextFile, fileTemplate(lines), "utf8");
 
-    // Get a list of all licenses to populate `spacewalk-web.spec`
-    const licenseTypes = new Set(
-      Array.from(dependencies.values())
-        .flat()
-        .map((item) => item.license)
-        .filter(Boolean)
-        .sort((a, b) => a.localeCompare(b))
-    );
-    console.log(licenseTypes.keys());
+    // Aggregate a list of all unique licenses into `web/html/src/vendors/npm.licenses.structured.js`, other build tooling uses this to populate `spacewalk-web.spec`
+    const licenseTypes = [
+      ...new Set(
+        Array.from(dependencies.values())
+          .flat()
+          .map((item) => item.license)
+          .filter(Boolean)
+          .sort((a, b) => a.localeCompare(b))
+      ),
+    ];
     await fs.writeFile(licenseListFile, `module.exports = ${JSON.stringify(licenseTypes)};`, "utf8");
 
-    // TODO: Reenable
-    // await fs.writeFile(hashFile, currentHash, "utf8");
+    await fs.writeFile(hashFile, currentHash, "utf8");
   } catch (error) {
     console.error(error);
     console.error("\nUnable to identify all licenses, did you run `yarn install`?\n");

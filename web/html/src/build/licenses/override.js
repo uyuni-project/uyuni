@@ -1,6 +1,16 @@
 const applyOverrides = (name, version, license) => {
   /**
+   * If the license is "X OR Y" or "X AND B", but doesn't include parentheses, wrap it so
+   */
+  const hasParens = /^\(.*\)$/.test(license);
+  if ((license.includes(" OR ") || license.includes(" AND ")) && !hasParens) {
+    license = `(${license})`;
+  }
+
+  /**
    * These packages delcare "BSD" without any other info in the package.json, but the license text in the repo is actually BSD-3-Clause
+   *
+   * Schema: [NPM package name, version number]
    */
   const underspecifiedBsd = [
     ["ace-builds", "1.3.3"],
