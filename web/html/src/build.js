@@ -9,6 +9,7 @@ const { hideBin } = require("yargs/helpers");
 const { fillSpecFile } = require("./build/fill-spec-file");
 const config = require("./build/webpack.config");
 const checkPackage = require("./build/check-package");
+const { aggregateLicenses } = require("./build/licenses");
 
 const opts = yargs(hideBin(process.argv))
   .version(false)
@@ -51,6 +52,10 @@ if (opts.verbose) {
   try {
     if (opts.checkPackageJson) {
       await checkPackage();
+    }
+
+    if (opts.mode === "production") {
+      await aggregateLicenses();
     }
 
     webpack(config(process.env, opts), (err, stats) => {

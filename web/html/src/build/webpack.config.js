@@ -1,7 +1,6 @@
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
-const LicenseCheckerWebpackPlugin = require("license-checker-webpack-plugin");
 const webpackAlias = require("./webpack.alias");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
@@ -85,19 +84,6 @@ module.exports = (env, opts) => {
       outputFile: path.resolve(__dirname, "../manager/storybook/stories.generated.ts"),
     }),
   ];
-
-  if (isProductionMode) {
-    pluginsInUse = [
-      ...pluginsInUse,
-      new LicenseCheckerWebpackPlugin({
-        outputFilename: "../vendors/npm.licenses.structured.js",
-        outputWriter: path.resolve(__dirname, "../vendors/licenses.template.ejs"),
-      }),
-      new LicenseCheckerWebpackPlugin({
-        outputFilename: "../vendors/npm.licenses.txt",
-      }),
-    ];
-  }
 
   if (opts.verbose) {
     console.log("pluginsInUse:");
