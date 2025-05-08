@@ -32,6 +32,19 @@ Feature: Main landing page options and preferences
     And I should see a "SUSE Multi-Linux Manager LICENSE AGREEMENT" text
     When I close the last opened window
 
+@susemanager
+  Scenario: Access the EULA
+    Given I am authorized
+    When I follow the left menu "Help"
+    And I switch to last opened window
+    Then I should see a "SUSE Multi-Linux Manager Documentation" text
+    When I click on a button within the item containing "Legal"
+    And I wait until I see "End User License Agreement" text
+    And I follow "End User License Agreement"
+    Then I should see a "End User License Agreement" text
+    And I should see a "End User License Agreement for SUSE Software" text
+    When I close the last opened window
+
   Scenario: Log into Uyuni
     Given I am not authorized
     When I go to the home page
