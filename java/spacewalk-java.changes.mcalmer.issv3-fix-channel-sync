@@ -1,0 +1,3 @@
+- Fix custom channel sync from a peripheral server (bsc#1242889)
+- Generate tokens for custom channels which include the correct
+  organization id
