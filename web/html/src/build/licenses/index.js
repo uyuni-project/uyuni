@@ -13,7 +13,7 @@ const licenseTextFile = path.resolve(vendors, "npm.licenses.txt");
 const licenseListFile = path.resolve(vendors, "npm.licenses.structured.js");
 const hashFile = path.resolve(vendors, "npm.licenses.hash.txt");
 
-(async () => {
+async function aggregateLicenses() {
   const licenseTextExists = await fileExists(licenseTextFile);
   const licenseListExists = await fileExists(licenseListFile);
   let previousHash;
@@ -26,7 +26,6 @@ const hashFile = path.resolve(vendors, "npm.licenses.hash.txt");
   const currentHash = await getFileHash(path.resolve(webHtmlSrc, "yarn.lock"));
   if (previousHash && previousHash === currentHash && licenseTextExists && licenseListExists) {
     console.info("Skipping license check, hashes match");
-    process.exitCode = 0;
     return;
   }
 
@@ -61,7 +60,10 @@ const hashFile = path.resolve(vendors, "npm.licenses.hash.txt");
     await fs.writeFile(hashFile, currentHash, "utf8");
   } catch (error) {
     console.error(error);
-    console.error("\nUnable to identify all licenses, did you run `yarn install`?\n");
-    process.exitCode ||= 1;
+    throw new Error("Unable to identify all licenses, did you run `yarn install`?");
   }
-})();
+}
+
+module.exports = {
+  aggregateLicenses,
+};
