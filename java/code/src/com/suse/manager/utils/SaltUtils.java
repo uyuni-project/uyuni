@@ -981,8 +981,7 @@ public class SaltUtils {
                         Optional.empty());
                 Optional<List<String>> proxyCommand = SaltSSHService.sshProxyCommandOption(proxyPath,
                         minionServer.getContactMethod().getLabel(),
-                        minionServer.getMinionId(),
-                        Optional.ofNullable(minionServer.getSSHPushPort()).orElse(SaltSSHService.SSH_PUSH_PORT));
+                        minionServer.getMinionId(), port);
 
                 String sshOptions = "-o ConnectTimeout=2 " + String.join(" ",
                         proxyCommand
