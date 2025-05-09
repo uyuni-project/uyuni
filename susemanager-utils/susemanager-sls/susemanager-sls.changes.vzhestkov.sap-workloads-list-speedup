@@ -1,0 +1,1 @@
+- Optimize sap module to prevent high IO workload (bsc#1241455)
