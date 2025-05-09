@@ -70,6 +70,7 @@ import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.salt.netapi.parser.JsonParser;
+import com.suse.scc.SCCEndpoints;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientUtils;
@@ -911,8 +912,9 @@ public class ContentSyncManager {
         //REPO HANDLING
         List<SCCRepository> oesRepos = SCCCachingFactory.lookupRepositoriesByChannelFamily(OES_CHANNEL_FAMILY);
         List<SCCRepositoryJson> nonOESJRepos = repositories.stream()
-            .filter(jsonRepo -> oesRepos.stream().noneMatch(oes -> oes.getSccId().equals(jsonRepo.getSCCId())))
-            .toList();
+                .filter(jsonRepo -> oesRepos.stream().noneMatch(oes -> oes.getSccId().equals(jsonRepo.getSCCId())))
+                .filter(jsonRepo -> !jsonRepo.getSCCId().equals(SCCEndpoints.CUSTOM_REPO_FAKE_SCC_ID))
+                .toList();
 
         for (SCCRepositoryJson jsonRepo : nonOESJRepos) {
             SCCRepository repo = availableReposById.get(jsonRepo.getSCCId());
@@ -1623,8 +1625,11 @@ public class ContentSyncManager {
 
         PackageArch pArch = packageArchMap.computeIfAbsent(p.getArch(), PackageFactory::lookupPackageArchByLabel);
         if (pArch == null && p.getArch() != null) {
-            // unsupported architecture, skip the product
-            LOG.error("Unknown architecture '{}'. This may be caused by a missing database migration", p.getArch());
+            if (!p.getArch().equals("multi-arch")) {
+                // unsupported architecture, skip the product
+                LOG.error("Unknown architecture '{}'. This may be caused by a missing database migration", p.getArch());
+            }
+            // multi-arch is used by SCC - we do not handle these products, no need to write an error message
         }
         else {
             product.setArch(pArch);
@@ -1670,8 +1675,11 @@ public class ContentSyncManager {
 
         PackageArch pArch = packageArchMap.computeIfAbsent(p.getArch(), PackageFactory::lookupPackageArchByLabel);
         if (pArch == null && p.getArch() != null) {
-            // unsupported architecture, skip the product
-            LOG.error("Unknown architecture '{}'. This may be caused by a missing database migration", p.getArch());
+            if (!p.getArch().equals("multi-arch")) {
+                // unsupported architecture, skip the product
+                LOG.error("Unknown architecture '{}'. This may be caused by a missing database migration", p.getArch());
+            }
+            // multi-arch is used by SCC - we do not handle these products, no need to write an error message
         }
         else {
             product.setArch(pArch);
