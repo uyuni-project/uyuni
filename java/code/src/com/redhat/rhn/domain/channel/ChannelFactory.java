@@ -1757,6 +1757,17 @@ public class ChannelFactory extends HibernateFactory {
         channel.setSupportPolicy(channelInfo.getSupportPolicy());
         channel.setUpdateTag(channelInfo.getUpdateTag());
         channel.setInstallerUpdates(channelInfo.isInstallerUpdates());
+        if (org != null) {
+            channel.addChannelFamily(org.getPrivateChannelFamily());
+        }
+
+        // need to save before calling stored proc below
+        ChannelFactory.save(channel);
+
+        if (org != null) {
+            // this ends up being a mode query call, must have saved the channel to get an id
+            channel.setGloballySubscribable(false, org);
+        }
 
         // rebuild repository
         ContentSyncManager csm = new ContentSyncManager();
