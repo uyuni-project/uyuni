@@ -903,7 +903,6 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
         modifyInfo.setChannelProductProduct("channelProductProduct_diff");
         modifyInfo.setChannelProductVersion("channelProductVersion_diff");
-        modifyInfo.setChannelAccess("acc_diff"); //max 10
         modifyInfo.setMaintainerName("maintainerName__diff");
         modifyInfo.setMaintainerEmail("maintainerEmail_diff");
         modifyInfo.setMaintainerPhone("maintainerPhone_diff");

@@ -279,14 +279,11 @@ public class DownloadController {
      * @return an object to make spark happy
      */
     public Object downloadMetadataHub(Request request, Response response) {
-        Long sccid = Long.parseLong(request.params(":sccrepoid"));
         String filename = request.params(":file");
-
-        List<Channel> vendorChannelBySccId = ChannelFactory.findVendorChannelBySccId(sccid);
-        String channelLabel = vendorChannelBySccId.stream().map(Channel::getLabel).findFirst().orElseThrow(() -> {
-            LOG.error("Repository for SCC ID {} not found", sccid);
-            return halt(HttpStatus.SC_NOT_FOUND, "Repository not found");
-        });
+        String channelLabel = getChannelLabelFromHubRequest(request).orElseThrow(() -> {
+                LOG.error("Repository for SCC ID {} not found", request.params(":sccrepoid"));
+                return halt(HttpStatus.SC_NOT_FOUND, "Repository not found");
+            });
         return downloadMetadata(request, response, channelLabel, filename);
     }
 
@@ -343,12 +340,9 @@ public class DownloadController {
      * @return an object to make spark happy
      */
     public Object downloadMediaFilesHub(Request request, Response response) {
-        Long sccid = Long.parseLong(request.params(":sccrepoid"));
         String filename = request.params(":file");
-
-        List<Channel> vendorChannelBySccId = ChannelFactory.findVendorChannelBySccId(sccid);
-        String channelLabel = vendorChannelBySccId.stream().map(Channel::getLabel).findFirst().orElseThrow(() -> {
-            LOG.error("Repository for SCC ID {} not found", sccid);
+        String channelLabel = getChannelLabelFromHubRequest(request).orElseThrow(() -> {
+            LOG.error("Repository for SCC ID {} not found", request.params(":sccrepoid"));
             return halt(HttpStatus.SC_NOT_FOUND, "Repository not found");
         });
         return downloadMediaFiles(request, response, channelLabel, filename);
@@ -455,18 +449,11 @@ public class DownloadController {
      * @return an object to make spark happy
      */
     public Object downloadPackageHub(Request request, Response response) {
-
-        // we can't use request.params(:file)
-        // See https://bugzilla.suse.com/show_bug.cgi?id=972158
-        // https://github.com/perwendel/spark/issues/490
-        Long sccid = Long.parseLong(request.params(":sccrepoid"));
-
-        List<Channel> vendorChannelBySccId = ChannelFactory.findVendorChannelBySccId(sccid);
-        String channel = vendorChannelBySccId.stream().map(Channel::getLabel).findFirst().orElseThrow(() -> {
-            LOG.error("Repository for SCC ID {} not found", sccid);
+        String channelLabel = getChannelLabelFromHubRequest(request).orElseThrow(() -> {
+            LOG.error("Repository for SCC ID {} not found", request.params(":sccrepoid"));
             return halt(HttpStatus.SC_NOT_FOUND, "Repository not found");
         });
-        return downloadPackage(request, response, channel);
+        return downloadPackage(request, response, channelLabel);
     }
 
     /**
@@ -679,7 +666,7 @@ public class DownloadController {
         }
         catch (TokenParsingException e) {
             LOG.info("Forbidden: Token ...{} is not valid to access {} in {}: {}",
-                () -> sanitizeToken(token), () -> filename, () -> channel, () -> e.getMessage());
+                () -> sanitizeToken(token), () -> filename, () -> channel, e::getMessage);
             halt(HttpStatus.SC_FORBIDDEN,
                 "Token is not valid to access %s in %s: %s".formatted(filename, channel, e.getMessage()));
         }
@@ -757,6 +744,17 @@ public class DownloadController {
                 halt(HttpStatus.SC_FORBIDDEN,
                         "Forbidden: Short-token is not valid or is expired");
             }
+        }
+    }
+
+    private Optional<String> getChannelLabelFromHubRequest(Request request) {
+        try {
+            Long sccid = Long.parseLong(request.params(":sccrepoid"));
+            List<Channel> vendorChannelBySccId = ChannelFactory.findVendorChannelBySccId(sccid);
+            return vendorChannelBySccId.stream().map(Channel::getLabel).findFirst();
+        }
+        catch (NumberFormatException e) {
+            return Optional.ofNullable(request.params(":sccrepoid"));
         }
     }
 }

@@ -1391,6 +1391,22 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * List all custom channels which URL access a specific FQDN
+     * Mainly used for finding repos pointing to a Hub
+     * @param fqdn the FQDN
+     * @return a list of {@link ContentSource}
+     */
+    public static List<ContentSource> findCustomContentSourcesForHubFqdn(String fqdn) {
+        return getSession().createNativeQuery("""
+                SELECT * FROM rhnContentSource
+                 WHERE org_id IS NOT NULL
+                 AND source_url like :urlstart
+                """, ContentSource.class)
+                .setParameter("urlstart", "https://%s/%%".formatted(fqdn))
+                .list();
+    }
+
+    /**
      * Find a vendor content source (org is null) for a given repo URL.
      *
      * @param repoUrl url to match against
@@ -1604,7 +1620,6 @@ public class ChannelFactory extends HibernateFactory {
                 channel.getProduct().getVersion();
         channelInfo.setChannelProductVersion(channelProductVersion);
 
-        channelInfo.setChannelAccess(channel.getAccess());
         channelInfo.setMaintainerName(channel.getMaintainerName());
         channelInfo.setMaintainerEmail(channel.getMaintainerEmail());
         channelInfo.setMaintainerPhone(channel.getMaintainerPhone());
@@ -1621,7 +1636,7 @@ public class ChannelFactory extends HibernateFactory {
         String hostname = ConfigDefaults.get().getJavaHostname();
         String channelLabel = channel.getLabel();
 
-        Optional<String> tokenString = SCCEndpoints.buildHubRepositoryToken(channelLabel);
+        Optional<String> tokenString = SCCEndpoints.buildHubRepositoryToken(channel);
         if (tokenString.isPresent()) {
             SCCRepositoryJson repositoryInfo;
             if (channel.getOrg() != null) {
@@ -1734,13 +1749,23 @@ public class ChannelFactory extends HibernateFactory {
                     channelInfo.getChannelProductProduct(), channelInfo.getChannelProductVersion()));
         }
 
-        channel.setAccess(channelInfo.getChannelAccess());
         channel.setMaintainerName(channelInfo.getMaintainerName());
         channel.setMaintainerEmail(channelInfo.getMaintainerEmail());
         channel.setMaintainerPhone(channelInfo.getMaintainerPhone());
         channel.setSupportPolicy(channelInfo.getSupportPolicy());
         channel.setUpdateTag(channelInfo.getUpdateTag());
         channel.setInstallerUpdates(channelInfo.isInstallerUpdates());
+        if (org != null) {
+            channel.addChannelFamily(org.getPrivateChannelFamily());
+        }
+
+        // need to save before calling stored proc below
+        ChannelFactory.save(channel);
+
+        if (org != null) {
+            // this ends up being a mode query call, must have saved the channel to get an id
+            channel.setGloballySubscribable(false, org);
+        }
 
         // rebuild repository
         ContentSyncManager csm = new ContentSyncManager();
@@ -1892,7 +1917,6 @@ public class ChannelFactory extends HibernateFactory {
                     modifyChannelInfo.getChannelProductVersion()));
         }
 
-        setValueIfNotNull(channel, modifyChannelInfo.getChannelAccess(), Channel::setAccess);
         setValueIfNotNull(channel, modifyChannelInfo.getMaintainerName(), Channel::setMaintainerName);
         setValueIfNotNull(channel, modifyChannelInfo.getMaintainerEmail(), Channel::setMaintainerEmail);
         setValueIfNotNull(channel, modifyChannelInfo.getMaintainerPhone(), Channel::setMaintainerPhone);

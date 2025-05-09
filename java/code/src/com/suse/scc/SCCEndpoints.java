@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
@@ -168,12 +169,14 @@ public class SCCEndpoints {
 
     /**
      * Build and return a short living token for a Hub repository sync
-     * @param channelLabel the channel label to the create the token for
+     * @param channel the channel to the create the token for
      * @return the token
      */
-    public static Optional<String> buildHubRepositoryToken(String channelLabel) {
+    public static Optional<String> buildHubRepositoryToken(Channel channel) {
+        String channelLabel = channel.getLabel();
         try {
-            DownloadTokenBuilder builder = new DownloadTokenBuilder(0)
+            Long oid = Optional.ofNullable(channel.getOrg()).map(Org::getId).orElse(0L);
+            DownloadTokenBuilder builder = new DownloadTokenBuilder(oid)
                     .usingServerSecret()
                     // Short lived 2 day + 4 hours tokens refreshed on ever sync
                     .expiringAfterMinutes(2L * (24 + 2) * 60)
@@ -225,7 +228,7 @@ public class SCCEndpoints {
         var jsonRepos = channels.stream().map(c -> {
             Channel channel = c.getChannel();
             String label = channel.getLabel();
-            String tokenString = buildHubRepositoryToken(label).orElse("");
+            String tokenString = buildHubRepositoryToken(channel).orElse("");
             return SUSEProductFactory.lookupByChannelLabelFirst(label)
                     .map(channelTemplate -> buildVendorRepoJson(channelTemplate, hostname, tokenString))
                     .orElseGet(() -> buildCustomRepoJson(label, hostname, tokenString));
