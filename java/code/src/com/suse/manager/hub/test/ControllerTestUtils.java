@@ -408,7 +408,7 @@ public class ControllerTestUtils {
         assertEquals(modifyInfo.getLabel(), ch.getLabel());
 
         if (null != modifyInfo.getPeripheralOrgId()) {
-            checkMethod.accept(modifyInfo.getPeripheralOrgId(), ch.getOrg().getId());
+            assertEquals(modifyInfo.getPeripheralOrgId(), ch.getOrg().getId());
         }
 
         checkMethod.accept(modifyInfo.getOriginalChannelLabel(), ch.getOriginal().getLabel());
@@ -434,10 +434,10 @@ public class ControllerTestUtils {
         checkMethod.accept(modifyInfo.isInstallerUpdates(), ch.isInstallerUpdates());
     }
 
-    public void createTestChannel(ChannelInfoDetailsJson modifyInfo, User userIn) throws Exception {
+    public void createTestChannel(ChannelInfoDetailsJson modifyInfo, Org orgIn) throws Exception {
         ChannelFamily cfam = ChannelFamilyFactoryTest.createTestChannelFamily();
         String query = "ChannelArch.findById";
         ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheById(500L, query);
-        ChannelFactoryTest.createTestChannel(modifyInfo.getName(), modifyInfo.getLabel(), userIn.getOrg(), arch, cfam);
+        ChannelFactoryTest.createTestChannel(modifyInfo.getName(), modifyInfo.getLabel(), orgIn, arch, cfam);
     }
 }
