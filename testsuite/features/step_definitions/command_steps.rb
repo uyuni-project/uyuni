@@ -1368,13 +1368,13 @@ end
 
 # ReportDB
 
-Given(/^I can connect to the ReportDB on the Server$/) do
+Then(/^I should be able to connect to the ReportDB on the server$/) do
   # connect and quit database
   _result, return_code = get_target('server').run(reportdb_server_query('\\q'))
   raise SystemCallError, 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
 end
 
-Given(/^I have a user allowed to create roles on the ReportDB$/) do
+Then(/^there should be a user allowed to create roles on the ReportDB $/) do
   users_and_permissions, return_code = get_target('server').run(reportdb_server_query('\\du'))
   raise SystemCallError, 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
 
@@ -1419,11 +1419,9 @@ end
 
 When(/^I connect to the ReportDB with read-only user from external machine$/) do
   node = get_target('server')
-  output, _code = node.run_local('dig +short reportdb A')
-  reportdb_ip = output.strip
 
   # connection from the controller to the reportdb in the server
-  $reportdb_ro_conn = PG.connect(host: reportdb_ip, port: 5432, dbname: 'reportdb', user: $reportdb_ro_user, password: 'linux')
+  $reportdb_ro_conn = PG.connect(host: node.public_ip, port: 5432, dbname: 'reportdb', user: $reportdb_ro_user, password: 'linux')
 end
 
 Then(/^I should be able to query the ReportDB$/) do
@@ -1462,21 +1460,17 @@ end
 
 Then(/^I should be able to connect to the ReportDB with the ReportDB admin user$/) do
   node = get_target('server')
-  output, _code = node.run_local('dig +short reportdb A')
-  reportdb_ip = output.strip
 
   # connection from the controller to the reportdb in the server
-  reportdb_admin_conn = PG.connect(host: reportdb_ip, port: 5432, dbname: 'reportdb', user: $reportdb_admin_user, password: $reportdb_admin_password)
+  reportdb_admin_conn = PG.connect(host: node.public_ip, port: 5432, dbname: 'reportdb', user: $reportdb_admin_user, password: $reportdb_admin_password)
   raise SystemCallError, 'Couldn\'t connect to ReportDB with admin from external machine' unless reportdb_admin_conn.status.zero?
 end
 
 Then(/^I should not be able to connect to product database with the ReportDB admin user$/) do
   node = get_target('server')
-  output, _code = node.run_local('dig +short db A')
-  db_ip = output.strip
 
   dbname = 'susemanager'
-  reportdb_admin_conn = PG.connect(host: db_ip, port: 5432, dbname: dbname, user: $reportdb_admin_user, password: $reportdb_admin_password)
+  reportdb_admin_conn = PG.connect(host: node.public_ip, port: 5432, dbname: dbname, user: $reportdb_admin_user, password: $reportdb_admin_password)
   assert_raises PG::InsufficientPrivilege do
     reportdb_admin_conn.exec('select * from rhnserver;')
   end
