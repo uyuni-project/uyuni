@@ -1,3 +1,5 @@
+- Set channel family and channel permissions when creating a
+  custom channel on the peripheral server (bsc#1242324)
 - Fix removal of custom channel URLs on the peripheral server
   (bsc#1242324)
 - Fix custom channel sync from a peripheral server (bsc#1242889)
