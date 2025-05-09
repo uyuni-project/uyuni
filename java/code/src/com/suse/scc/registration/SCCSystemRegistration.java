@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 
 import com.suse.scc.client.SCCClient;
+import com.suse.scc.proxy.SCCProxyRecord;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ import java.util.List;
 public class SCCSystemRegistration {
 
     protected final List<SCCSystemRegistrationContextHandler> contextHandlerChain = new ArrayList<>();
+    protected final List<SCCSystemRegistrationContextHandler> proxyContextHandlerChain = new ArrayList<>();
 
     /**
      * Constructor
@@ -39,6 +41,10 @@ public class SCCSystemRegistration {
                 new SCCSystemRegistrationSystemDataAcquisitor(),
                 new SCCSystemRegistrationCreateUpdateSystems(),
                 new SCCSystemRegistrationUpdateCachedItems()
+        ));
+        this.proxyContextHandlerChain.addAll(asList(
+                new SCCProxyRegistrationCreateUpdateSystems(),
+                new SCCProxyRegistrationUpdateProxyRecords()
         ));
     }
 
@@ -52,6 +58,23 @@ public class SCCSystemRegistration {
     public void register(SCCClient sccClient, List<SCCRegCacheItem> items, SCCCredentials primaryCredential) {
         SCCSystemRegistrationContext context = new SCCSystemRegistrationContext(sccClient, items, primaryCredential);
         for (SCCSystemRegistrationContextHandler handler : contextHandlerChain) {
+            handler.handle(context);
+        }
+    }
+
+    /**
+     * Registers the given items in SCC as hub being the SCC proxy for peripherals
+     * NOTE: arguments have been shuffled on purpose,
+     * to avoid "methods have the same erasure" error with above register method
+     *
+     * @param sccClient         the SCC client
+     * @param proxyRecords      the items to register as hub being the SCC proxy for peripherals
+     * @param primaryCredential the current primary organization credential
+     */
+    public void proxyRegister(SCCClient sccClient, List<SCCProxyRecord> proxyRecords, SCCCredentials primaryCredential) {
+        SCCSystemRegistrationContext context =
+                new SCCSystemRegistrationContext(sccClient, primaryCredential, proxyRecords);
+        for (SCCSystemRegistrationContextHandler handler : proxyContextHandlerChain) {
             handler.handle(context);
         }
     }

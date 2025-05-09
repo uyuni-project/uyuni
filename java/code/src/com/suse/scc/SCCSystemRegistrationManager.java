@@ -202,7 +202,7 @@ public class SCCSystemRegistrationManager {
      * @param primaryCredential the current primary organization credential
      */
     public void proxyRegister(List<SCCProxyRecord> proxyRecords, SCCCredentials primaryCredential) {
-        //new SCCSystemRegistration().register(sccClient, items, primaryCredential)
+        sccSystemRegistration.proxyRegister(sccClient, proxyRecords, primaryCredential);
     }
 
     /**

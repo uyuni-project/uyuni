@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
+import com.suse.scc.proxy.SCCProxyRecord;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ public class SCCSystemRegistrationContext {
 
     private final SCCClient sccClient;
     private final List<SCCRegCacheItem> items;
+    private final List<SCCProxyRecord> proxyRecords;
     private final SCCCredentials primaryCredential;
 
     private final Map<String, SCCRegCacheItem> itemsByLogin;
@@ -39,6 +41,7 @@ public class SCCSystemRegistrationContext {
     private final List<SCCRegCacheItem> paygSystems;
 
     private final List<SCCSystemCredentialsJson> registeredSystems;
+    private final List<SCCSystemCredentialsJson> proxyRegisteredSystems;
 
     /**
      * Constructor
@@ -53,11 +56,38 @@ public class SCCSystemRegistrationContext {
     ) {
         this.sccClient = sccClientIn;
         this.items = itemsIn;
+        this.proxyRecords = new ArrayList<>();
         this.primaryCredential = primaryCredentialIn;
 
         this.itemsByLogin = new HashMap<>();
         this.pendingRegistrationSystemsByLogin = new HashMap<>();
         this.registeredSystems = new ArrayList<>();
+        this.proxyRegisteredSystems = new ArrayList<>();
+        this.paygSystems = new ArrayList<>();
+    }
+
+    /**
+     * Constructor
+     * @param sccClientIn the scc client
+     * @param primaryCredentialIn the primary credential
+     * @param proxyRecordsIn the proxy records
+     */
+    //NOTE: arguments have been shuffled on purpose,
+    //to avoid "methods have the same erasure" error with above constructor
+    public SCCSystemRegistrationContext(
+            SCCClient sccClientIn,
+            SCCCredentials primaryCredentialIn,
+            List<SCCProxyRecord> proxyRecordsIn
+    ) {
+        this.sccClient = sccClientIn;
+        this.items = new ArrayList<>();
+        this.proxyRecords = proxyRecordsIn;
+        this.primaryCredential = primaryCredentialIn;
+
+        this.itemsByLogin = new HashMap<>();
+        this.pendingRegistrationSystemsByLogin = new HashMap<>();
+        this.registeredSystems = new ArrayList<>();
+        this.proxyRegisteredSystems = new ArrayList<>();
         this.paygSystems = new ArrayList<>();
     }
 
@@ -67,6 +97,10 @@ public class SCCSystemRegistrationContext {
 
     public List<SCCRegCacheItem> getItems() {
         return items;
+    }
+
+    public List<SCCProxyRecord> getProxyRecords() {
+        return proxyRecords;
     }
 
     public SCCCredentials getPrimaryCredential() {
@@ -85,8 +119,12 @@ public class SCCSystemRegistrationContext {
         return registeredSystems;
     }
 
+    public List<SCCSystemCredentialsJson> getProxyRegisteredSystems() {
+        return proxyRegisteredSystems;
+    }
+
     /**
-     * Set item default values for whenever they are consideres as not requiring registration..
+     * Set item default values for whenever they are considers as not requiring registration..
      * @param item the item to set
      */
     public void setItemAsNonRegistrationRequiredItem(SCCRegCacheItem item) {

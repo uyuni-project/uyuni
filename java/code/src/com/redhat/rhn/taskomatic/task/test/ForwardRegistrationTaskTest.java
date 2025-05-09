@@ -16,6 +16,8 @@
 package com.redhat.rhn.taskomatic.task.test;
 
 import static org.apache.http.entity.ContentType.APPLICATION_JSON;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.conf.Config;
@@ -28,6 +30,7 @@ import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.taskomatic.task.ForwardRegistrationTask;
@@ -41,6 +44,7 @@ import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.scc.SCCEndpoints;
 import com.suse.scc.SCCSystemRegistrationManager;
+import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCConfigBuilder;
@@ -53,6 +57,7 @@ import com.suse.scc.proxy.SCCProxyFactory;
 import com.suse.scc.proxy.SCCProxyManager;
 import com.suse.scc.proxy.SCCProxyRecord;
 import com.suse.scc.proxy.SccProxyStatus;
+import com.suse.scc.registration.SCCSystemRegistration;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -127,6 +132,23 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         }
     }
 
+    static class MockSCCSystemRegistrationManager extends SCCSystemRegistrationManager {
+        MockSCCSystemRegistrationManager(SCCClient sccClientIn, SCCProxyFactory sccProxyFactoryIn) {
+            super(sccClientIn, sccProxyFactoryIn);
+        }
+
+        MockSCCSystemRegistrationManager(SCCClient sccClientIn, SCCProxyFactory sccProxyFactoryIn,
+                                         SCCSystemRegistration sccSystemRegistrationIn) {
+            super(sccClientIn, sccProxyFactoryIn, sccSystemRegistrationIn);
+        }
+
+        @Override
+        public void updateLastSeen(SCCCredentials primaryCredential) {
+            //do nothing
+        }
+    }
+
+    //override protected methods for testing purposes
     static class MockForwardRegistrationTask extends ForwardRegistrationTask {
         @Override
         public void executeSCCTasksCore(SCCSystemRegistrationManager sccRegManager,
@@ -135,26 +157,60 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
             super.executeSCCTasksCore(sccRegManager, sccProxyFactory, sccPrimaryOrProxyCredentials);
         }
 
+        @Override
+        public void executeSCCTasksAsServer(SCCSystemRegistrationManager sccRegManager,
+                                            SCCCredentials sccPrimaryOrProxyCredentials) {
+            super.executeSCCTasksAsServer(sccRegManager, sccPrimaryOrProxyCredentials);
+        }
 
         @Override
-        public Optional<SCCCredentials> findSccCredentials() {
-            return super.findSccCredentials();
+        public void executeSCCTasksAsProxy(SCCSystemRegistrationManager sccRegManager,
+                                           SCCProxyFactory sccProxyFactory,
+                                           SCCCredentials sccPrimaryOrProxyCredentials) {
+            super.executeSCCTasksAsProxy(sccRegManager, sccProxyFactory, sccPrimaryOrProxyCredentials);
+        }
+
+        @Override
+        public void setupTaskConfiguration() {
+            super.setupTaskConfiguration();
+        }
+
+        public Optional<SCCCredentials> getTaskConfigSccCredentials() {
+            return taskConfigSccCredentials;
+        }
+
+        public URI getTaskConfigSccUrl() {
+            return taskConfigSccUrl;
+        }
+
+        public boolean getTaskConfigIsSccProxy() {
+            return taskConfigIsSccProxy;
         }
     }
 
     static class MockHttpClientAdapter extends HttpClientAdapter {
+        private boolean doNothingWhenExecuteRequest = false;
+
         MockHttpClientAdapter(SCCConfig configIn) {
             super(configIn.getAdditionalCerts(), false);
+        }
+
+        public void setDoNothingWhenExecuteRequest(boolean boolIn) {
+            doNothingWhenExecuteRequest = boolIn;
         }
 
         @Override
         public HttpResponse executeRequest(HttpRequestBase request, String username,
                                            String password) throws IOException {
             HttpResponseFactory factory = new DefaultHttpResponseFactory();
+
             HttpResponse response = factory.newHttpResponse(
                     new BasicStatusLine(new ProtocolVersion("http", 1, 1),
                             HttpStatus.SC_BAD_REQUEST, null), null);
 
+            if (doNothingWhenExecuteRequest) {
+                return executeRequestDoNothing();
+            }
             if (request.getMethod().compareToIgnoreCase("PUT") == 0) {
                 executeRequestCreateSystems(request, username, password, response);
             }
@@ -163,6 +219,19 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
             }
 
             return response;
+        }
+
+        public HttpResponse executeRequestDoNothing() {
+            try {
+                HttpResponseFactory factory = new DefaultHttpResponseFactory();
+
+                return factory.newHttpResponse(
+                        new BasicStatusLine(new ProtocolVersion("http", 1, 1),
+                                HttpStatus.SC_NOT_FOUND, null), null);
+            }
+            catch (Exception eIn) {
+                throw new IllegalStateException(eIn);
+            }
         }
 
         public void executeRequestCreateSystems(HttpRequestBase request, String username,
@@ -195,7 +264,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
                         HttpMethod.delete, username, password, id);
 
                 response.setEntity(new StringEntity(res.toString(), APPLICATION_JSON));
-                response.setStatusCode(HttpServletResponse.SC_CREATED);
+                response.setStatusCode(HttpServletResponse.SC_NO_CONTENT);
             }
             catch (Exception eIn) {
                 throw new IllegalStateException(eIn);
@@ -299,9 +368,11 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         SCCCredentials sccCredentialsTowardsHub =
                 CredentialsFactory.createSCCCredentials(PERIPHERAL_USERNAME, PERIPHERAL_PASSWD);
         sccCredentialsTowardsHub.setUrl(HUB_FQDN);
+        sccCredentialsTowardsHub.setIssHub(hub);
 
         CredentialsFactory.storeCredentials(sccCredentialsTowardsHub);
     }
+
 
     private void setupAsHub() {
         HubSCCCredentials sccCredentialsTowardsPeripheral =
@@ -456,7 +527,13 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
         assertPreConditions();
 
-        URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
+        mockForwardRegistrationTask.setupTaskConfiguration();
+        Optional<SCCCredentials> optCred = mockForwardRegistrationTask.getTaskConfigSccCredentials();
+        if (optCred.isEmpty()) {
+            throw new IllegalStateException("optCred should have a value");
+        }
+
+        URI url = mockForwardRegistrationTask.getTaskConfigSccUrl();
         String uuid = ContentSyncManager.getUUID();
         SCCConfig sccConfig = new SCCConfigBuilder()
                 .setUrl(url)
@@ -468,27 +545,25 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         SCCWebClient sccClient = new SCCWebClient(sccConfig, newAdapter);
         SCCProxyFactory sccProxyFactory = new SCCProxyFactory();
 
+        assertEquals(url.toString(), "https://hub.local/rhn/hub/scc");
         assertEquals(systemSize, testSystems.size());
         assertEquals(systemSize, servers.size());
         assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATION_PENDING).size());
         assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATED).size());
         assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_REMOVAL_PENDING).size());
 
-        SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(sccClient, sccProxyFactory);
+        MockSCCSystemRegistrationManager mockSccRegManager =
+                new MockSCCSystemRegistrationManager(sccClient, sccProxyFactory);
 
-        Optional<SCCCredentials> optCred = mockForwardRegistrationTask.findSccCredentials();
-        if (optCred.isEmpty()) {
-            throw new IllegalStateException("optCred should have a value");
-        }
-        mockForwardRegistrationTask.executeSCCTasksCore(sccRegManager, sccProxyFactory, optCred.get());
+        //mockForwardRegistrationTask.executeSCCTasksCore(mockSccRegManager, sccProxyFactory, optCred.get());
+        mockForwardRegistrationTask.executeSCCTasksAsServer(mockSccRegManager, optCred.get());
 
         assertPostConditionsCount(systemSize, 0, systemSize);
 
         List<SCCProxyRecord> proxyRecords =
                 sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATION_PENDING);
 
-        //TODO FIXME
-        /*
+        //TODO FIXME FROM HERE
         assertEquals(systemSize, proxyRecords.size());
         if (systemSize == proxyRecords.size()) {
             SCCProxyRecord proxyRecord = proxyRecords.get(0);
@@ -496,12 +571,13 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
             assertEquals(PERIPHERAL_FQDN, proxyRecord.getPeripheralFqdn());
             assertTrue(proxyRecord.getProxyId() > 0);
         }
-        */
+        //TODO FIXME TO HERE
+
 
         assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATED).size());
         assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_REMOVAL_PENDING).size());
-        //TODO FIXME
-        /*
+
+        //TODO FIXME FROM HERE
         List<SCCRegCacheItem> sccRegCacheItems = getAllSCCRegCacheItems();
 
         assertEquals(systemSize, sccRegCacheItems.size());
@@ -516,12 +592,95 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         ServerFactory.delete(servers.get(0));
         ServerFactory.delete(servers.get(1));
 
-        mockForwardRegistrationTask.executeSCCTasksCore(sccRegManager, sccProxyFactory, optCred.get());
+        //mockForwardRegistrationTask.executeSCCTasksCore(mockSccRegManager, sccProxyFactory, optCred.get());
+        mockForwardRegistrationTask.executeSCCTasksAsServer(mockSccRegManager, optCred.get());
+
+        assertEquals(systemSize - 2,
+                sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATION_PENDING).size());
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATED).size());
+        assertEquals(2, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_REMOVAL_PENDING).size());
+        //TODO FIXME TO HERE
+
+        //delete all
+        for (Server server : servers) {
+            ServerFactory.delete(server);
+        }
+
+        newAdapter.setDoNothingWhenExecuteRequest(true);
+        mockForwardRegistrationTask.executeSCCTasksAsProxy(mockSccRegManager, sccProxyFactory, optCred.get());
+
         assertEquals(systemSize - 2,
                 sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATION_PENDING).size());
         assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATED).size());
         assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_REMOVAL_PENDING).size());
-       */
+
     }
 
+    private String buildTestCreationJson(String login, String passwd) {
+        return """
+                {
+                   "login":"%s",
+                   "password":"%s",
+                   "hwinfo":{
+                      "cpus":0,
+                      "sockets":0,
+                      "mem_total":1024,
+                      "arch":"i386",
+                      "sap":[]
+                   },
+                   "products":[],
+                   "regcodes":[],
+                   "last_seen_at":"Jan 1, 1970, 1:00:00 AM"
+                }
+                """.formatted(login, passwd)
+                .replace("\n", "")
+                .replace("   ", "");
+    }
+
+
+    @Test
+    public void testWithHubAndScc() throws Exception {
+        long seed = 369;
+        long recordNumber = 5;
+        SCCProxyFactory sccProxyFactory = new SCCProxyFactory();
+        for (long num = seed; num < (seed + recordNumber); num++) {
+            SCCProxyRecord pr = new SCCProxyRecord();
+            pr.setPeripheralFqdn("peripheral.local");
+            pr.setSccLogin("52156f60-8aa2-4165-8645-367efdc2a510-1000010" + num);
+            pr.setSccPasswd("6HnC8EAa5zQBe8tStM6wRzO8LGR3s505zFUdh03ni4ZcsepA9ovDND2L" + num);
+            pr.setSccCreationJson(buildTestCreationJson(pr.getSccLogin(), pr.getSccPasswd()));
+            pr.setSccId(num);
+            pr.setSccRegistrationErrorTime(null);
+            pr.setStatus(SccProxyStatus.SCC_CREATION_PENDING);
+            sccProxyFactory.save(pr);
+        }
+
+        setupCreateTestObjects();
+        mockForwardRegistrationTask.setupTaskConfiguration();
+        Optional<SCCCredentials> optCred = mockForwardRegistrationTask.getTaskConfigSccCredentials();
+        if (optCred.isEmpty()) {
+            throw new IllegalStateException("optCred should have a value");
+        }
+
+        URI url = mockForwardRegistrationTask.getTaskConfigSccUrl();
+        String uuid = ContentSyncManager.getUUID();
+        SCCConfig sccConfig = new SCCConfigBuilder()
+                .setUrl(url)
+                .setUsername("")
+                .setPassword("")
+                .setUuid(uuid)
+                .createSCCConfig();
+        MockHttpClientAdapter newAdapter = new MockHttpClientAdapter(sccConfig);
+        SCCWebClient sccClient = new SCCWebClient(sccConfig, newAdapter);
+
+        assertEquals(url.toString(), "https://scc.suse.com");
+        assertEquals(recordNumber, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATION_PENDING).size());
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATED).size());
+        assertEquals(0, sccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_REMOVAL_PENDING).size());
+
+        MockSCCSystemRegistrationManager mockSccRegManager =
+                new MockSCCSystemRegistrationManager(sccClient, sccProxyFactory);
+
+        mockForwardRegistrationTask.executeSCCTasksAsProxy(mockSccRegManager, sccProxyFactory, optCred.get());
+    }
 }

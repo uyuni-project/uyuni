@@ -47,12 +47,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
-
 public class ForwardRegistrationTask extends RhnJavaJob {
 
     // initialize first run between 30 minutes and 3 hours from now
     private static LocalDateTime nextLastSeenUpdateRun = LocalDateTime.now().plusMinutes(
             ThreadLocalRandom.current().nextInt(30, 3 * 60));
+
+    //task setup
+    protected Optional<SCCCredentials> taskConfigSccCredentials = Optional.empty();
+    protected URI taskConfigSccUrl = null;
+    protected boolean taskConfigIsSccProxy = false;
 
     @Override
     public String getConfigNamespace() {
@@ -83,88 +87,47 @@ public class ForwardRegistrationTask extends RhnJavaJob {
         }
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) == null) {
 
-            Optional<SCCCredentials> optPrimCred = findSccCredentials();
-            if (optPrimCred.isEmpty()) {
+            setupTaskConfiguration();
+            if (taskConfigSccCredentials.isEmpty()) {
                 return;
             }
-            int waitTimeSec = ThreadLocalRandom.current().nextInt(0, 15 * 60);
-            if (log.isDebugEnabled()) {
-                // no waiting when debug is on
-                waitTimeSec = 1;
-            }
-            try {
-                Thread.sleep(Duration.ofSeconds(waitTimeSec).toMillis());
-            }
-            catch (InterruptedException e) {
-                log.debug("Sleep interrupted", e);
-                Thread.currentThread().interrupt();
-            }
-            optPrimCred.ifPresent(credentials -> executeSCCTasks(credentials));
+
+            waitRandomTimeWithinMinutes(15);
+
+            taskConfigSccCredentials.ifPresent(this::executeSCCTasks);
         }
     }
-
-    protected Optional<SCCCredentials> findSccCredentials() {
-        HubFactory hubFactory = new HubFactory();
-        Optional<IssHub> optHub = hubFactory.lookupIssHub();
-        return optHub.flatMap(this::getSCCCredentialsWhenHub).or(this::getSCCCredentials);
-    }
-
-    protected Optional<SCCCredentials> getSCCCredentials() {
-        List<SCCCredentials> credentials = CredentialsFactory.listSCCCredentials();
-        Optional<SCCCredentials> optPrimCred = credentials.stream()
-                .filter(c -> c.isPrimary())
-                .findFirst();
-        if (log.isDebugEnabled() && optPrimCred.isEmpty()) {
-            // We cannot update SCC without credentials
-            // Standard Uyuni case
-            log.debug("No SCC Credentials - skipping forwarding registration");
-        }
-
-        return optPrimCred;
-    }
-
-    protected Optional<SCCCredentials> getSCCCredentialsWhenHub(IssHub hub) {
-        List<SCCCredentials> credentials = CredentialsFactory.listSCCCredentials();
-        Optional<SCCCredentials> optHubCredential = credentials.stream()
-                .filter(c -> hub.getFqdn().equals(c.getUrl()))
-                .findFirst();
-
-        if (optHubCredential.isEmpty()) {
-            log.warn("No Hub SCC Credentials for {} - skipping forwarding registration", hub.getFqdn());
-        }
-
-        return optHubCredential;
-    }
-
 
     // Do SCC related tasks like insert, update and delete system in SCC
-    protected void executeSCCTasks(SCCCredentials credentialsIn) {
-        try {
-            URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
-            String uuid = ContentSyncManager.getUUID();
-            SCCCachingFactory.initNewSystemsToForward();
-            SCCConfig sccConfig = new SCCConfigBuilder()
-                    .setUrl(url)
-                    .setUsername("")
-                    .setPassword("")
-                    .setUuid(uuid)
-                    .createSCCConfig();
-            SCCClient sccClient = new SCCWebClient(sccConfig);
-            SCCProxyFactory sccProxyFactory = new SCCProxyFactory();
+    protected void executeSCCTasks(SCCCredentials sccPrimaryOrProxyCredentials) {
+        String uuid = ContentSyncManager.getUUID();
+        SCCCachingFactory.initNewSystemsToForward();
+        SCCConfig sccConfig = new SCCConfigBuilder()
+                .setUrl(taskConfigSccUrl)
+                .setUsername("")
+                .setPassword("")
+                .setUuid(uuid)
+                .createSCCConfig();
+        SCCClient sccClient = new SCCWebClient(sccConfig);
+        SCCProxyFactory sccProxyFactory = new SCCProxyFactory();
 
-            SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(sccClient, sccProxyFactory);
+        SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(sccClient, sccProxyFactory);
 
-            executeSCCTasksCore(sccRegManager, sccProxyFactory, credentialsIn);
-        }
-        catch (URISyntaxException e) {
-            log.error(e.getMessage(), e);
-        }
+        executeSCCTasksCore(sccRegManager, sccProxyFactory, sccPrimaryOrProxyCredentials);
     }
 
-    // core execution routine
     protected void executeSCCTasksCore(SCCSystemRegistrationManager sccRegManager,
                                        SCCProxyFactory sccProxyFactory,
                                        SCCCredentials sccPrimaryOrProxyCredentials) {
+        executeSCCTasksAsServer(sccRegManager, sccPrimaryOrProxyCredentials);
+        if (taskConfigIsSccProxy) {
+            executeSCCTasksAsProxy(sccRegManager, sccProxyFactory, sccPrimaryOrProxyCredentials);
+        }
+    }
+
+    // normal server tasks: direct to SCC
+    protected void executeSCCTasksAsServer(SCCSystemRegistrationManager sccRegManager,
+                                           SCCCredentials sccPrimaryOrProxyCredentials) {
         List<SCCRegCacheItem> forwardRegistration = SCCCachingFactory.findSystemsToForwardRegistration();
         log.debug("{} RegCacheItems found to forward", forwardRegistration.size());
 
@@ -185,6 +148,12 @@ public class ForwardRegistrationTask extends RhnJavaJob {
                         ThreadLocalRandom.current().nextInt(22 * 60, 26 * 60));
             }
         }
+    }
+
+    // tasks acting as proxy for peripherals
+    protected void executeSCCTasksAsProxy(SCCSystemRegistrationManager sccRegManager,
+                                          SCCProxyFactory sccProxyFactory,
+                                          SCCCredentials sccPrimaryOrProxyCredentials) {
 
         List<SCCProxyRecord> proxyForwardRegistration = sccProxyFactory.findSystemsToForwardRegistration();
         log.debug("{} ProxyRecords found to forward", proxyForwardRegistration.size());
@@ -195,4 +164,63 @@ public class ForwardRegistrationTask extends RhnJavaJob {
         sccRegManager.proxyDeregister(proxyDeregister, false);
         sccRegManager.proxyRegister(proxyForwardRegistration, sccPrimaryOrProxyCredentials);
     }
+
+    private void waitRandomTimeWithinMinutes(int minutes) {
+        int waitTimeSec = ThreadLocalRandom.current().nextInt(0, minutes * 60);
+        if (log.isDebugEnabled()) {
+            // no waiting when debug is on
+            waitTimeSec = 1;
+        }
+        try {
+            Thread.sleep(Duration.ofSeconds(waitTimeSec).toMillis());
+        }
+        catch (InterruptedException e) {
+            log.debug("Sleep interrupted", e);
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    protected void setupTaskConfiguration() {
+        HubFactory hubFactory = new HubFactory();
+        Optional<IssHub> optHub = hubFactory.lookupIssHub();
+        taskConfigSccCredentials = optHub.flatMap(this::getSCCCredentialsWhenPeripheral).or(this::getSCCCredentials);
+
+        try {
+            taskConfigSccUrl = new URI(optHub.map(h -> "https://%1$s/rhn/hub/scc".formatted(h.getFqdn()))
+                    .orElse(Config.get().getString(ConfigDefaults.SCC_URL)));
+        }
+        catch (URISyntaxException e) {
+            log.error(e.getMessage(), e);
+        }
+
+        taskConfigIsSccProxy = optHub.isPresent();
+    }
+
+    private Optional<SCCCredentials> getSCCCredentials() {
+        List<SCCCredentials> credentials = CredentialsFactory.listSCCCredentials();
+        Optional<SCCCredentials> optPrimCred = credentials.stream()
+                .filter(SCCCredentials::isPrimary)
+                .findFirst();
+        if (log.isDebugEnabled() && optPrimCred.isEmpty()) {
+            // We cannot update SCC without credentials
+            // Standard Uyuni case
+            log.debug("No SCC Credentials - skipping forwarding registration");
+        }
+
+        return optPrimCred;
+    }
+
+    private Optional<SCCCredentials> getSCCCredentialsWhenPeripheral(IssHub hub) {
+        List<SCCCredentials> credentials = CredentialsFactory.listSCCCredentials();
+        Optional<SCCCredentials> optHubCredential = credentials.stream()
+                .filter(c -> hub.getFqdn().equals(c.getUrl()))
+                .findFirst();
+
+        if (optHubCredential.isEmpty()) {
+            log.warn("No Hub SCC Credentials for {} - skipping forwarding registration", hub.getFqdn());
+        }
+
+        return optHubCredential;
+    }
+
 }
