@@ -1620,7 +1620,6 @@ public class ChannelFactory extends HibernateFactory {
                 channel.getProduct().getVersion();
         channelInfo.setChannelProductVersion(channelProductVersion);
 
-        channelInfo.setChannelAccess(channel.getAccess());
         channelInfo.setMaintainerName(channel.getMaintainerName());
         channelInfo.setMaintainerEmail(channel.getMaintainerEmail());
         channelInfo.setMaintainerPhone(channel.getMaintainerPhone());
@@ -1750,7 +1749,6 @@ public class ChannelFactory extends HibernateFactory {
                     channelInfo.getChannelProductProduct(), channelInfo.getChannelProductVersion()));
         }
 
-        channel.setAccess(channelInfo.getChannelAccess());
         channel.setMaintainerName(channelInfo.getMaintainerName());
         channel.setMaintainerEmail(channelInfo.getMaintainerEmail());
         channel.setMaintainerPhone(channelInfo.getMaintainerPhone());
@@ -1919,7 +1917,6 @@ public class ChannelFactory extends HibernateFactory {
                     modifyChannelInfo.getChannelProductVersion()));
         }
 
-        setValueIfNotNull(channel, modifyChannelInfo.getChannelAccess(), Channel::setAccess);
         setValueIfNotNull(channel, modifyChannelInfo.getMaintainerName(), Channel::setMaintainerName);
         setValueIfNotNull(channel, modifyChannelInfo.getMaintainerEmail(), Channel::setMaintainerEmail);
         setValueIfNotNull(channel, modifyChannelInfo.getMaintainerPhone(), Channel::setMaintainerPhone);
