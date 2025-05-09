@@ -29,7 +29,6 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.satellite_tools.progress_bar import ProgressBar
 from spacewalk.server.rhnPackage import unlink_package_file
 from spacewalk.server import rhnSQL
-from socket import getfqdn
 
 
 class RemoteApi:
@@ -83,7 +82,7 @@ class RemoteApi:
 
 
 def __applyChannelState(server_ids, username, password):
-    xmlrpc = RemoteApi("https://" + getfqdn() + "/rpc/api", username, password)
+    xmlrpc = RemoteApi("http://localhost/rpc/api", username, password)
     return xmlrpc.apply_channel_state(server_ids)
 
 
