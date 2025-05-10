@@ -1,0 +1,2 @@
+- Fix ISSv3 channel sync API bug: a custom channel cannot be
+  re-assigned to a different peripheral organization
