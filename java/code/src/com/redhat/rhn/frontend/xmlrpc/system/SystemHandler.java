@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -9221,7 +9221,7 @@ public class SystemHandler extends BaseHandler {
             }
 
             Action action = ActionManager.scheduleSupportDataAction(loggedInUser, sid.longValue(),
-                    caseNumber, parameter, UploadGeoType.valueOf(uploadGeo), earliestOccurrence);
+                    caseNumber, parameter, UploadGeoType.byLabel(StringUtils.lowerCase(uploadGeo)), earliestOccurrence);
             taskomaticApi.scheduleActionExecution(action);
             return action.getId().intValue();
         }
@@ -9230,6 +9230,9 @@ public class SystemHandler extends BaseHandler {
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException eIn) {
             throw new TaskomaticApiException(eIn.getMessage());
+        }
+        catch (IllegalArgumentException ex) {
+            throw new InvalidParameterException("invalid upload geo type " + uploadGeo);
         }
     }
 
