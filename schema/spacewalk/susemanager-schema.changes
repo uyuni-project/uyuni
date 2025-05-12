@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon May 12 23:19:42 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.7-0
+  * Added RBAC info for endpoint /hub/serverInfo
+  * Add missing RBAC mappings (bsc#1241893)
+
+-------------------------------------------------------------------
 Fri Apr 11 17:14:45 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.6-0
