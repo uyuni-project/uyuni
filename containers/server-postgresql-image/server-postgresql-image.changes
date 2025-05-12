@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 13 00:18:25 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.3
+  * Image rebuilt to the newest version with updated dependencies
+
+-------------------------------------------------------------------
 Fri Apr 11 18:02:13 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.2
