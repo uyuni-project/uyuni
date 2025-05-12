@@ -1,4 +1,5 @@
 export default {
+  "minion/details/support-data": () => import("./details/support-data.renderer"),
   "minion/config-channels/minion-config-channels": () => import("./config-channels/minion-config-channels"),
   "minion/formula/minion-formula": () => import("./formula/minion-formula.renderer"),
   "minion/formula/minion-formula-selection": () => import("./formula/minion-formula-selection.renderer"),
