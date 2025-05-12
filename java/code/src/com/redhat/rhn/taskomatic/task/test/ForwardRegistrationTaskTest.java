@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.taskomatic.task.test;
 
-import static com.suse.scc.SCCEndpoints.SHOULD_BE_REMOVED;
 import static org.apache.http.entity.ContentType.APPLICATION_JSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -173,7 +172,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
                 String requestBody = EntityUtils.toString(entity);
 
                 String result = (String) ControllerTestUtils.simulateApiEndpointCallBasicAuth(
-                        SHOULD_BE_REMOVED + "/connect/organizations/systems", HttpMethod.put,
+                        "/hub/scc/connect/organizations/systems", HttpMethod.put,
                         username, password, requestBody);
 
                 response.setEntity(new StringEntity(result, APPLICATION_JSON));
@@ -192,7 +191,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
                 String id = url.substring(index + 1);
 
                 Object res = ControllerTestUtils.simulateApiEndpointCallBasicAuth(
-                        SHOULD_BE_REMOVED + "/connect/organizations/systems/:id",
+                        "/hub/scc/connect/organizations/systems/:id",
                         HttpMethod.delete, username, password, id);
 
                 response.setEntity(new StringEntity(res.toString(), APPLICATION_JSON));
