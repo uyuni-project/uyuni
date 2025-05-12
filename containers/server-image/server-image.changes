@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Tue May 13 00:15:55 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.6
+  * Fix broken /etc/rhn/krb5.conf.d/crypto-policies symlink
+    (bsc#1237938)
+  * Make the Python interpreter version configurable (bsc#1240645)
+  * Persist postfix first configuration lock file in /etc/postfix
+    (bsc#1239744)
+  * No sync when a user modified file was not changed between
+    2 image versions
+  * No backup for files which would be replaced directly from
+    RPM as well
+  * Move Prometheus PostgreSQL exporter configuration to
+    the persisted volume /etc/sysconfig (bsc#1239903)
+
+-------------------------------------------------------------------
 Fri Apr 11 18:00:18 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.5
