@@ -9032,6 +9032,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.system.schedule_support_data_upload' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/system/scheduleSupportDataUpload' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.system.schedule_sync_packages_with_system' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/system/scheduleSyncPackagesWithSystem' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
