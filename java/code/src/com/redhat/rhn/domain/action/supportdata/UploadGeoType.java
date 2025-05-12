@@ -13,6 +13,8 @@ package com.redhat.rhn.domain.action.supportdata;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.Labeled;
 
+import java.util.Arrays;
+
 public enum UploadGeoType implements Labeled {
     EU,
     US;
@@ -24,5 +26,18 @@ public enum UploadGeoType implements Labeled {
 
     public String getDescription() {
         return LocalizationService.getInstance().getMessage("supportdata.uploadGeoType." + this.name().toLowerCase());
+    }
+
+    /**
+     * Retrieve a UploadGeoType by its label
+     * @param label the label
+     * @return the UploadGeoType instance identified by the given label
+     * @throws IllegalArgumentException when the label does not match any known UploadGeoType
+     */
+    public static UploadGeoType byLabel(String label) {
+        return Arrays.stream(UploadGeoType.values())
+            .filter(uploadGeo -> uploadGeo.getLabel().equals(label))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("No UploadGeoType found with label " + label));
     }
 }
