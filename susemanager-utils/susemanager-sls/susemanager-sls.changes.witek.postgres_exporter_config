@@ -1,2 +1,0 @@
-- Move Prometheus PostgreSQL exporter configuration to
-  the persisted volume /etc/sysconfig (bsc#1239903)
