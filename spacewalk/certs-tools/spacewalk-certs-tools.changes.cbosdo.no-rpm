@@ -1,2 +1,0 @@
-- Remove rhn-ssl-tool --gen-server RPM feature and options
-  (bsc#1235696)
