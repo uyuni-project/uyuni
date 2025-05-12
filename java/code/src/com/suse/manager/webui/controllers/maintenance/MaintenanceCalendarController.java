@@ -90,6 +90,9 @@ public class MaintenanceCalendarController {
         get("/manager/schedule/maintenance/calendars",
                 withUserPreferences(withCsrfToken(withUser(MaintenanceCalendarController::maintenanceCalendars))),
                 jade);
+        get("/manager/schedule/maintenance/calendars/create",
+                withUserPreferences(withCsrfToken(withUser(MaintenanceCalendarController::maintenanceCalendarCreate))),
+                jade);
         get("/manager/api/maintenance/calendar/list", withUser(MaintenanceCalendarController::list));
         get("/manager/api/maintenance/calendar/:id/details", withUser(MaintenanceCalendarController::details));
         get("/manager/api/maintenance/calendar/names", asJson(withUser(MaintenanceCalendarController::getNames)));
@@ -100,7 +103,7 @@ public class MaintenanceCalendarController {
     }
 
     /**
-     * Handler for the Maintenance Calendars page.
+     * Handler for the Maintenance Calendars list page.
      *
      * @param request the request object
      * @param response the response object
@@ -111,7 +114,23 @@ public class MaintenanceCalendarController {
         Map<String, Object> params = new HashMap<>();
         params.put("type", "calendar");
         params.put("isAdmin", user.hasRole(RoleFactory.ORG_ADMIN));
-        return new ModelAndView(params, "templates/schedule/maintenance-windows.jade");
+        return new ModelAndView(params, "templates/schedule/maintenance-windows-list.jade");
+    }
+
+    /**
+     * Handler for the Maintenance Calendars create page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView maintenanceCalendarCreate(Request request, Response response, User user) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("action", "create");
+        params.put("type", "calendar");
+        params.put("isAdmin", user.hasRole(RoleFactory.ORG_ADMIN));
+        return new ModelAndView(params, "templates/schedule/maintenance-window-create-edit.jade");
     }
 
     /**

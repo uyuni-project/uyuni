@@ -131,7 +131,7 @@ public class MaintenanceScheduleController {
         Map<String, Object> params = new HashMap<>();
         params.put("type", "schedule");
         params.put("isAdmin", user.hasRole(RoleFactory.ORG_ADMIN));
-        return new ModelAndView(params, "templates/schedule/maintenance-windows.jade");
+        return new ModelAndView(params, "templates/schedule/maintenance-windows-list.jade");
     }
 
     /**

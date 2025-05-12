@@ -1,9 +1,11 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
-import { Button } from "components/buttons";
-import { IconTag } from "components/icontag";
-import { HelpLink } from "components/utils";
+import SpaRenderer from "core/spa/spa-renderer";
+
+import { LinkButton } from "components/buttons";
+import { TopPanel } from "components/panels";
+import { MessagesContainer } from "components/toastr";
 
 import Network from "utils/network";
 
@@ -11,12 +13,13 @@ import MaintenanceWindowsApi from "../api/maintenance-windows-api";
 import MaintenanceCalendarList from "./calendar-list";
 import MaintenanceScheduleList from "./schedule-list";
 
-type MaintenanceListProps = {
+type Props = {
   type: "schedule" | "calendar";
+  isAdmin: boolean;
 };
 
-const MaintenanceWindowsList = (props: MaintenanceListProps) => {
-  const [items, setItems] = useState<any[]>([]);
+const MaintenanceWindowsList = (props: Props) => {
+  const [items, setItems] = useState<any[] | undefined>(undefined);
 
   const getMaintenanceWindowItems = () => {
     /* Returns a list of maintenance schedules or calendars depending on the type provided */
@@ -31,52 +34,40 @@ const MaintenanceWindowsList = (props: MaintenanceListProps) => {
 
   const buttons = [
     <div className="btn-group pull-right">
-      <Button
+      <LinkButton
         className="btn-primary"
-        disabled={!window.isAdmin}
+        disabled={!props.isAdmin}
         icon="fa-plus"
         text={t("Create")}
         title={t("Create a new maintenance schedule")}
-        handler={() => props.onActionChanged("create")}
+        href={`/rhn/manager/schedule/maintenance/${props.type === "calendar" ? "calendars" : "schedules"}/create`}
       />
     </div>,
   ];
 
   return (
-    <div>
-      <>
-        <h1>
-          <IconTag type="header-schedule" />
-          {props.type === "schedule" ? t("Maintenance Schedules") : t("Maintenance Calendars")}
-          <HelpLink url="reference/schedule/maintenance-windows.html" />
-        </h1>
-        <p>
-          {props.type === "schedule"
-            ? t("Below is a list of Maintenance Schedules available to the current user.")
-            : t("Below is a list of Maintenance Calendars available to the current user.")}
-        </p>
-        <div className="pull-right btn-group">{buttons}</div>
-        <h3>{t(props.type === "schedule" ? "Schedules" : "Calendars")}</h3>
-
-        {(props.type === "schedule" && (
-          <MaintenanceScheduleList
-            data={items}
-            onSelect={props.onSelect}
-            onEdit={props.onEdit}
-            onDelete={props.onDelete}
-          />
-        )) ||
-          (props.type === "calendar" && (
-            <MaintenanceCalendarList
-              data={items}
-              onSelect={props.onSelect}
-              onEdit={props.onEdit}
-              onDelete={props.onDelete}
-            />
-          ))}
-      </>
-    </div>
+    <TopPanel
+      title={props.type === "schedule" ? t("Maintenance Schedules") : t("Maintenance Calendars")}
+      icon="header-schedule"
+      helpUrl="reference/schedule/maintenance-windows.html"
+      button={buttons}
+    >
+      <p>
+        {props.type === "schedule"
+          ? t("Below is a list of Maintenance Schedules available to the current user.")
+          : t("Below is a list of Maintenance Calendars available to the current user.")}
+      </p>
+      {props.type === "schedule" ? <MaintenanceScheduleList data={items} /> : <MaintenanceCalendarList data={items} />}
+    </TopPanel>
   );
 };
 
-export { MaintenanceWindowsList };
+export const renderer = (id: string, props: Props) => {
+  SpaRenderer.renderNavigationReact(
+    <>
+      <MessagesContainer />
+      <MaintenanceWindowsList type={props.type} isAdmin={props.isAdmin} />
+    </>,
+    document.getElementById(id)
+  );
+};

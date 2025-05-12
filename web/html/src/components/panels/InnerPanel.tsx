@@ -8,7 +8,7 @@ type Props = {
   icon: string;
   buttons?: React.ReactNode[];
   buttonsLeft?: React.ReactNode[];
-  children: React.ReactNode;
+  children?: React.ReactNode;
   summary?: React.ReactNode;
   helpUrl?: string;
 };
@@ -50,11 +50,13 @@ function InnerPanel(props: Props) {
       </h2>
       <p>{props.summary}</p>
       {toolbar}
-      <div className="row">
-        <div className="panel panel-default">
-          <div className="panel-body">{props.children}</div>
+      {props.children ? (
+        <div className="row">
+          <div className="panel panel-default">
+            <div className="panel-body">{props.children}</div>
+          </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 }

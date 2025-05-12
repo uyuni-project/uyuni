@@ -10,10 +10,10 @@ import Network from "utils/network";
 
 import MaintenanceWindowsApi from "./api/maintenance-windows-api";
 import { MaintenanceWindowsDetails } from "./details/maintenance-windows-details";
-import { MaintenanceWindowsEdit } from "./edit/maintenance-windows-edit";
+import { MaintenanceWindowsEdit } from "./edit/maintenance-window-create-edit";
 import { MaintenanceWindowsList } from "./list/maintenance-windows-list";
 
-// See java/code/src/com/suse/manager/webui/templates/schedule/maintenance-windows.jade
+// See java/code/src/com/suse/manager/webui/templates/schedule/maintenance-windows-list.jade
 declare global {
   interface Window {
     timezone?: any;
@@ -164,41 +164,42 @@ const MaintenanceWindows = () => {
     setMessages(Network.responseErrorMessage(jqXHR));
   };
 
-  return (
-    <div>
-      <Messages items={messages} />
-      {action === "details" ? (
-        <MaintenanceWindowsDetails
-          type={window.type}
-          data={selected}
-          onCancel={handleForwardAction}
-          onEdit={handleEditAction}
-          onMessage={setMessages}
-          onDelete={deleteItem}
-          responseError={handleResponseError}
-          clearMessages={clearMessages}
-        />
-      ) : (action === "edit" || action === "create") && window.isAdmin ? (
-        <MaintenanceWindowsEdit
-          type={window.type}
-          calendarNames={calendarNames}
-          selected={selected}
-          messages={(i) => setMessages(i)}
-          onEdit={update}
-          onActionChanged={handleForwardAction}
-          onRefresh={refreshCalendar}
-        />
-      ) : (
-        <MaintenanceWindowsList
-          type={window.type}
-          onActionChanged={handleForwardAction}
-          onSelect={handleDetailsAction}
-          onEdit={handleEditAction}
-          onDelete={deleteItem}
-        />
-      )}
-    </div>
-  );
+  return <p>TODO: Obsolete</p>;
+  // return (
+  //   <div>
+  //     <Messages items={messages} />
+  //     {action === "details" ? (
+  //       <MaintenanceWindowsDetails
+  //         type={window.type}
+  //         data={selected}
+  //         onCancel={handleForwardAction}
+  //         onEdit={handleEditAction}
+  //         onMessage={setMessages}
+  //         onDelete={deleteItem}
+  //         responseError={handleResponseError}
+  //         clearMessages={clearMessages}
+  //       />
+  //     ) : (action === "edit" || action === "create") && window.isAdmin ? (
+  //       <MaintenanceWindowsEdit
+  //         type={window.type}
+  //         calendarNames={calendarNames}
+  //         selected={selected}
+  //         messages={(i) => setMessages(i)}
+  //         onEdit={update}
+  //         onActionChanged={handleForwardAction}
+  //         onRefresh={refreshCalendar}
+  //       />
+  //     ) : (
+  //       <MaintenanceWindowsList
+  //         type={window.type}
+  //         onActionChanged={handleForwardAction}
+  //         onSelect={handleDetailsAction}
+  //         onEdit={handleEditAction}
+  //         onDelete={deleteItem}
+  //       />
+  //     )}
+  //   </div>
+  // );
 };
 
 export const renderer = () =>

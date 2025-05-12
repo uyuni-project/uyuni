@@ -10,14 +10,11 @@ import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
 type CalendarListProps = {
-  data: {
+  data?: {
     id: number;
     name: string;
     scheduleNames: Array<Map<string, string>>;
   }[];
-  onSelect: (...args: any[]) => any;
-  onEdit: (...args: any[]) => any;
-  onDelete: (...args: any[]) => any;
 };
 
 const MaintenanceCalendarList = (props: CalendarListProps) => {
@@ -40,7 +37,8 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
   return (
     <div>
       <Table
-        data={props.data}
+        data={props.data ?? []}
+        loading={typeof props.data === "undefined"}
         identifier={(row) => row.name}
         emptyText={t("No calendars created. Use Create to add a calendar.")}
       >
@@ -69,7 +67,7 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
                 title={t("Details")}
                 icon="fa-list"
                 handler={() => {
-                  props.onSelect(row.id);
+                  // TODO: Navigate to details
                 }}
               />
               <Button
@@ -78,7 +76,7 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
                 title={t("Edit")}
                 icon="fa-edit"
                 handler={() => {
-                  props.onEdit(row.id);
+                  // TODO: Navigate to edit
                 }}
               />
               <ModalButton
@@ -104,7 +102,10 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
             <Check name="strategy" label={<b>{t("Cancel affected actions?")}</b>} divClass="col-md-6" />
           </Form>
         }
-        onConfirm={() => props.onDelete(addStrategy())}
+        onConfirm={() => {
+          // TODO: Delete with addStrategy()
+          // props.onDelete(addStrategy());
+        }}
         onClosePopUp={() => setCalendarToDelete({})}
       />
     </div>

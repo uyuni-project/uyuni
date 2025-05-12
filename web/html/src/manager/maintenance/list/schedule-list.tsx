@@ -8,15 +8,12 @@ import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
 type ScheduleListProps = {
-  data: {
+  data?: {
     id: number;
     name: string;
     calendarId?: number;
     calendarName?: string;
   }[];
-  onSelect: (...args: any[]) => any;
-  onEdit: (...args: any[]) => any;
-  onDelete: (...args: any[]) => any;
 };
 
 const MaintenanceScheduleList = (props: ScheduleListProps) => {
@@ -25,7 +22,8 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
   return (
     <>
       <Table
-        data={props.data}
+        data={props.data ?? []}
+        loading={typeof props.data === "undefined"}
         identifier={(row) => row.id}
         emptyText={t("No schedules created. Use Create to add a schedule.")}
       >
@@ -54,7 +52,7 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
                 title={t("Details")}
                 icon="fa-list"
                 handler={() => {
-                  props.onSelect(row.id);
+                  // TODO: Navigate to details
                 }}
               />
               <Button
@@ -63,7 +61,7 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
                 title={t("Edit")}
                 icon="fa-edit"
                 handler={() => {
-                  props.onEdit(row.id);
+                  // TODO: Navigate to edit
                 }}
               />
               <ModalButton
@@ -88,7 +86,10 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
             <div>{t("This will remove the schedule from all the systems assigned to it.")}</div>
           </>
         }
-        onConfirm={() => props.onDelete(scheduleToDelete)}
+        onConfirm={() => {
+          // TODO: Delete
+          //         onConfirm={() => props.onDelete(scheduleToDelete)}
+        }}
         onClosePopUp={() => setScheduleToDelete({})}
       />
     </>

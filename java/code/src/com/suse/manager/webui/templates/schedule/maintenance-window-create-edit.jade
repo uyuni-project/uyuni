@@ -1,0 +1,17 @@
+include /templates/common.jade
+
+#maintenance-window-create-edit
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.timezone = "#{h.renderTimezone()}";
+    window.localTime = "#{h.renderLocalTime()}";
+
+script(type='text/javascript').
+    spaImportReactPage('maintenance/maintenance-window-create-edit')
+        .then(function (module) { module.renderer('maintenance-window-create-edit', {
+            action: "#{action}",
+            type: "#{type}",
+            isAdmin: #{isAdmin},
+        })
+    });
