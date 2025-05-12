@@ -41,7 +41,7 @@ class _ButtonBase<P extends BaseProps = BaseProps, S extends BaseState = BaseSta
   renderIcon() {
     const text = this.props.text ?? this.props.children;
     const margin = text ? "" : " no-margin";
-    const icon = this.props.icon && <i className={"fa " + this.props.icon + margin} />;
+    const icon = this.props.icon && <i className={"fa " + this.props.icon + margin} aria-hidden="true" />;
 
     return icon;
   }
@@ -145,7 +145,7 @@ export class AsyncButton extends _ButtonBase<AsyncProps, AsyncState> {
         type={this.props.type ?? "button"}
       >
         {this.state.value === "waiting" ? (
-          <i className={"fa fa-circle-o-notch fa-spin" + margin}></i>
+          <i className={"fa fa-circle-o-notch fa-spin" + margin} aria-hidden="true"></i>
         ) : (
           this.renderIcon()
         )}

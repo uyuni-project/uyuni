@@ -21,6 +21,7 @@ type MaintenanceDetailsProps = {
 };
 
 const MaintenanceWindowsDetails = (props: MaintenanceDetailsProps) => {
+  Loggerhead.debug(`(re)render: MaintenanceWindowsDetails`);
   const [type] = useState(props.type);
 
   const buttons = [

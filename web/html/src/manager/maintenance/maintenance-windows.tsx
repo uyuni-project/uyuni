@@ -45,6 +45,16 @@ const MaintenanceWindows = () => {
   const [calendarNames, setCalendarNames] = useState<any>();
 
   useEffect(() => {
+    const listener = () => {
+      Loggerhead.debug(`navigation event: ${window.location.href}`);
+    };
+    (window as any).navigation.addEventListener("navigate", listener);
+    return () => {
+      (window as any).navigation.removeEventListener("navigate", listener);
+    };
+  }, []);
+
+  useEffect(() => {
     updateView(getHashAction(), getHashId());
     window.type === "schedule" && getCalendarNames();
     window.addEventListener("popstate", () => {
@@ -53,6 +63,7 @@ const MaintenanceWindows = () => {
   }, []);
 
   const updateView = (newAction, id) => {
+    Loggerhead.debug(`updateView: ${newAction} ${id}`);
     if (newAction === "details" && id) {
       getDetails(id, "details");
     } else if (id || !newAction) {
@@ -157,12 +168,17 @@ const MaintenanceWindows = () => {
   };
 
   const handleForwardAction = (newAction?: string) => {
+    Loggerhead.debug(`handleForwardAction: ${newAction}`);
     const loc = window.location;
+    Loggerhead.debug(`location: ${JSON.stringify(loc)}`);
     if (newAction === undefined || newAction === "back") {
+      Loggerhead.debug(`action 1`);
       listMaintenanceWindowItems().then((data) => {
+        Loggerhead.debug(`action 1 then: ${loc.pathname + loc.search}`);
         window.history.pushState(null, "", loc.pathname + loc.search);
       });
     } else {
+      Loggerhead.debug(`action 2: ${loc.pathname + loc.search + "#/" + newAction}`);
       setAction(newAction);
       window.history.pushState(null, "", loc.pathname + loc.search + "#/" + newAction);
     }

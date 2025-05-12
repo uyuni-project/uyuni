@@ -19,6 +19,7 @@ type MaintenanceEditProps = {
 };
 
 const MaintenanceWindowsEdit = (props: MaintenanceEditProps) => {
+  Loggerhead.debug(`(re)render: MaintenanceWindowsEdit`);
   /**
    * This ref is a parent-child bus with `useImperativeHandle`
    * See https://stackoverflow.com/a/37950970/1470607

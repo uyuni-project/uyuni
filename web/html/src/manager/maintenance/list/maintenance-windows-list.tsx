@@ -18,6 +18,7 @@ type MaintenanceListProps = {
 };
 
 const MaintenanceWindowsList = (props: MaintenanceListProps) => {
+  Loggerhead.debug(`(re)render: MaintenanceWindowsList`);
   const [type] = useState(props.type);
 
   const buttons = [
@@ -28,7 +29,10 @@ const MaintenanceWindowsList = (props: MaintenanceListProps) => {
         icon="fa-plus"
         text={t("Create")}
         title={t("Create a new maintenance schedule")}
-        handler={() => props.onActionChanged("create")}
+        handler={() => {
+          Loggerhead.debug(`clicked on create`);
+          props.onActionChanged("create");
+        }}
       />
     </div>,
   ];

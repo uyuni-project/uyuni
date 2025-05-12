@@ -116,6 +116,8 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
     },
   }));
 
+  Loggerhead.debug(`calendar-edit isEdit: ${props.isEdit}`);
+
   return (
     <Form onChange={(model) => onFormChanged(model)} model={model}>
       <Text
