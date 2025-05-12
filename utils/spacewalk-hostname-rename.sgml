@@ -14,7 +14,7 @@
 <RefNameDiv>
     <RefName><command>&SCRIPTCOMMAND;</command></RefName>
     <RefPurpose>
-    Reconfigures &PRODUCT; to use a different hostname/ip address.
+    Reconfigures &PRODUCT; to use a different hostname.
     </RefPurpose>
 </RefNameDiv>
 
@@ -22,7 +22,7 @@
     <Synopsis>
         <cmdsynopsis>
             <command>&SCRIPTCOMMAND;</command>
-            <arg choice='plain'><replaceable>IP_ADDRESS</replaceable></arg>
+            <arg choice='plain'><replaceable>NEW_FQDN</replaceable></arg>
             <arg>--ssl-country=<replaceable>SSL_COUNTRY</replaceable></arg>
             <arg>--ssl-state=<replaceable>SSL_STATE</replaceable></arg>
             <arg>--ssl-org=<replaceable>SSL_ORG</replaceable></arg>
@@ -38,18 +38,18 @@
 
 <RefSect1>
     <Title>Description</Title>
-    <para> After a system hostname or default IP gets changed on a &PRODUCT;, it is necessary to run &SCRIPTCOMMAND; to reconfigure to the new settings. Afterwards it may be necessary to reconfigure RHN Proxies and clients registered to the server.</para>
-    <para>&SCRIPTCOMMAND; takes one mandatory argument - <replaceable>IP_ADDRESS</replaceable> regardless of whether the IP address has changed or not. If there is a need to generate a new SSL certificate, all necessary information will be asked interactively, unless it is specified by the options.
-When the system hostname has not changed, the re-generation of a new SSL server certificate is not necessary. However, if at least one <option>--ssl-*</option> option is specified, certificate generation is forced.</para>
+    <para> To change the hostname configure for the server, it is necessary to run &SCRIPTCOMMAND; to reconfigure to the new settings. Afterwards it may be necessary to reconfigure Proxies and clients registered to the server.</para>
+    <para>&SCRIPTCOMMAND; takes one mandatory argument - <replaceable>NEW_FQDN</replaceable>. If there is a need to generate a new SSL certificate, all necessary information will be asked interactively, unless specified by the options.
+    If at least one <option>--ssl-*</option> option is specified, certificate generation is forced.</para>
 </RefSect1>
 
 <RefSect1>
     <Title>Options</Title>
     <variablelist>
         <varlistentry>
-            <term><replaceable>IP_ADDRESS</replaceable></term>
+            <term><replaceable>NEW_FQDN</replaceable></term>
             <listitem>
-                <para>Default IP address used for the &PRODUCT;.  Mandatory even if the IP address has not changed</para>
+                <para>New FQDN of the &PRODUCT; server.  Mandatory.</para>
             </listitem>
         </varlistentry>
         <varlistentry>
