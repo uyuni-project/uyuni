@@ -31,7 +31,7 @@
 %define apache_group apache
 %endif
 Name:           uyuni-base
-Version:        5.1.2
+Version:        5.1.3
 Release:        0
 Summary:        Uyuni Base Package
 License:        GPL-2.0-only
