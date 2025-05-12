@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon May 12 23:06:47 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.10-0
+  * Replace server hostname in chained proxy config (bsc#1236166)
+  * Move Prometheus PostgreSQL exporter configuration to
+    the persisted volume /etc/sysconfig (bsc#1239903)
+
+-------------------------------------------------------------------
 Fri Apr 11 17:28:26 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.9-0
