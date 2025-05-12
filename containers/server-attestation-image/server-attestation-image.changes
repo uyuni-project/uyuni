@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 13 00:11:17 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.6
+  * Fix the health check of the container (bsc#1240604)
+
+-------------------------------------------------------------------
 Fri Apr 11 17:42:15 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.5
