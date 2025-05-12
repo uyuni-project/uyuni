@@ -424,6 +424,12 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('systems.software.refresh', 'W', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('systems.details.support', 'R', 'Views for generating and uploading the support data')
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('systems.details.support', 'W', 'Schedule the support data action on the system')
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('systems.maintenance', 'W', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
