@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 #    sync_post_tftpd_proxies.py
 #    Copyright (C) 2013  Novell, Inc.
@@ -64,6 +65,7 @@ def run(api, args):
 
     push_futures = []
     with futures.ThreadPoolExecutor() as executor:
+        # pylint: disable-next=invalid-name,unused-variable
         for dirname, _dirnames, filenames in os.walk(tftpbootdir):
             for fname in filenames:
                 path = os.path.join(dirname, fname)
@@ -82,16 +84,20 @@ def _update_pxe_cache(thread_results):
     cache = {}
     for res in thread_results:
         cache.update(res)
+    # pylint: disable-next=unspecified-encoding
     with open("/var/lib/cobbler/pxe_cache.json", "w") as pxe_cache:
         json.dump(cache, pxe_cache)
 
 
+# pylint: disable-next=redefined-builtin
 def sync_to_proxies(filename, tftpbootdir, format, settings):
     """Sync file to all defined proxies"""
+    # pylint: disable-next=unused-variable
     ret = True
     # Proxy timeout
     try:
         timeout = settings.tftpsync_timeout
+    # pylint: disable-next=bare-except
     except:
         timeout = 15
 
@@ -114,6 +120,7 @@ def delete_from_proxies(path, settings):
     # Proxy timeout
     try:
         timeout = settings.tftpsync_timeout
+    # pylint: disable-next=bare-except
     except:
         timeout = 15
 
@@ -145,7 +152,9 @@ def find_delete_from_proxies(tftpbootdir, settings, lcache="/var/lib/cobbler"):
     try:
         dbfile = os.path.join(lcache, "pxe_cache.json")
         if os.path.exists(dbfile):
+            # pylint: disable-next=unspecified-encoding
             db = json.load(open(dbfile, "r"))
+    # pylint: disable-next=bare-except
     except:
         logger.error("Cannot load cachefile")
         return
@@ -155,6 +164,7 @@ def find_delete_from_proxies(tftpbootdir, settings, lcache="/var/lib/cobbler"):
             continue
         if os.path.exists(path):
             continue
+        # pylint: disable-next=consider-using-f-string
         relpath = path.replace("%s/" % tftpbootdir, "", 1)
         if delete_from_proxies(relpath, settings):
             changed = True
@@ -166,6 +176,7 @@ def find_delete_from_proxies(tftpbootdir, settings, lcache="/var/lib/cobbler"):
     if changed:
         for p in del_paths:
             del db[p]
+        # pylint: disable-next=unspecified-encoding
         json.dump(db, open(dbfile, "w"))
 
 
@@ -178,7 +189,9 @@ def check_push(fn, tftpbootdir, settings, lcache="/var/lib/cobbler"):
     try:
         dbfile = os.path.join(lcache, "pxe_cache.json")
         if os.path.exists(dbfile):
+            # pylint: disable-next=unspecified-encoding
             db = json.load(open(dbfile, "r"))
+    # pylint: disable-next=bare-except
     except:
         pass
 
@@ -199,6 +212,7 @@ def check_push(fn, tftpbootdir, settings, lcache="/var/lib/cobbler"):
             if _DEBUG:
                 logger.debug("mtime differ - old: %s new: %s", db[fn][0], mtime)
             if os.path.exists(fn):
+                # pylint: disable-next=consider-using-f-string
                 cmd = "/usr/bin/sha1sum %s" % fn
                 key = utils.subprocess_get(cmd).split(" ")[0]
                 if _DEBUG:
@@ -209,6 +223,7 @@ def check_push(fn, tftpbootdir, settings, lcache="/var/lib/cobbler"):
             needpush = False
     if key is None:
         if os.path.exists(fn):
+            # pylint: disable-next=consider-using-f-string
             cmd = "/usr/bin/sha1sum %s" % fn
             key = utils.subprocess_get(cmd).split(" ")[0]
 
@@ -220,6 +235,7 @@ def check_push(fn, tftpbootdir, settings, lcache="/var/lib/cobbler"):
         ProxySync.Result = True
         ProxySync.ResultLock.release()
 
+        # pylint: disable-next=redefined-builtin
         format = "other"
         if "pxelinux.cfg" in fn:
             format = "pxe"
@@ -233,10 +249,14 @@ def check_push(fn, tftpbootdir, settings, lcache="/var/lib/cobbler"):
     return db
 
 
+# pylint: disable-next=missing-class-docstring
 class ProxySync(threading.Thread):
+    # pylint: disable-next=invalid-name
     Result = True
+    # pylint: disable-next=invalid-name
     ResultLock = threading.Lock()
 
+    # pylint: disable-next=redefined-builtin
     def __init__(self, filename, tftpbootdir, format, proxy, timeout):
         threading.Thread.__init__(self)
 
@@ -262,6 +282,7 @@ class ProxySync(threading.Thread):
             logger.error("Invalid path: %s", path)
             ret = False
         if ret:
+            # pylint: disable-next=consider-using-f-string
             path = path.replace("%s/" % self.tftpbootdir, "", 1)
             params = {
                 "file_name": os.path.basename(self.filename),
@@ -270,9 +291,14 @@ class ProxySync(threading.Thread):
                 "directory": path,
             }
             try:
+                # pylint: disable-next=unused-variable
                 response = opener.open(
-                    "http://%s/tftpsync/add/" % self.proxy, params, self.timeout
+                    # pylint: disable-next=consider-using-f-string
+                    "http://%s/tftpsync/add/" % self.proxy,
+                    params,
+                    self.timeout,
                 )
+            # pylint: disable-next=broad-exception-caught
             except Exception as e:
                 ret = False
                 logger.error("uploading to proxy %s failed: %s", self.proxy, e)
@@ -282,8 +308,11 @@ class ProxySync(threading.Thread):
             ProxySync.ResultLock.release()
 
 
+# pylint: disable-next=missing-class-docstring
 class ProxyDelete(threading.Thread):
+    # pylint: disable-next=invalid-name
     Result = True
+    # pylint: disable-next=invalid-name
     ResultLock = threading.Lock()
 
     def __init__(self, path, proxy, timeout):
@@ -312,8 +341,11 @@ class ProxyDelete(threading.Thread):
         parameters = urlencode(p)
 
         try:
+            # pylint: disable-next=consider-using-f-string
             url = "https://%s/tftpsync/delete/?%s" % (self.proxy, parameters)
+            # pylint: disable-next=unused-variable
             data = urlopen(url, None, self.timeout)
+        # pylint: disable-next=broad-exception-caught
         except Exception as e:
             ret = False
             logger.info("delete from proxy %s failed: %s", self.proxy, e)

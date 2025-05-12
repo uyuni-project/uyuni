@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -18,6 +19,7 @@ import rhnpush_cache
 import time
 
 
+# pylint: disable-next=missing-class-docstring
 class UserInfoTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -29,10 +31,12 @@ class UserInfoTestCase(unittest.TestCase):
         self.userinfo = None
 
     def testCheckCacheTrue(self):
+        # pylint: disable-next=singleton-comparison
         assert self.userinfo.checkCache() == True
 
     def testCheckCacheFalse(self):
         time.sleep(7)
+        # pylint: disable-next=singleton-comparison
         assert self.userinfo.checkCache() == False
 
     def testSetUsernamePassword(self):
@@ -65,10 +69,12 @@ class UserInfoTestCase(unittest.TestCase):
         self.userinfo = rhnpush_cache.UserInfo(
             5, username="wregglej", password="password"
         )
+        # pylint: disable-next=singleton-comparison
         assert self.userinfo.isFresh() == True
 
     def testIsntFresh(self):
         time.sleep(6)
+        # pylint: disable-next=singleton-comparison
         assert self.userinfo.isFresh() == False
 
     def testSetCacheLifetime(self):
@@ -90,6 +96,7 @@ class UserInfoTestCase(unittest.TestCase):
         )
 
 
+# pylint: disable-next=missing-class-docstring
 class CacheManagerTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -101,11 +108,13 @@ class CacheManagerTestCase(unittest.TestCase):
     def testIsFresh(self):
         self.cache = rhnpush_cache.CacheManager(5)
         self.cache.setUsernamePassword("a", "b")
+        # pylint: disable-next=singleton-comparison
         assert self.cache.isFresh() == True
 
     def testIsntFresh(self):
         self.cache = rhnpush_cache.CacheManager(5)
         time.sleep(7)
+        # pylint: disable-next=singleton-comparison
         assert self.cache.isFresh() == False
 
     def testSetUsernamePassword(self):

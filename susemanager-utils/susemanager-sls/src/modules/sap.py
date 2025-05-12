@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: 2025 SUSE LLC
 #
 # SPDX-License-Identifier: Apache-2.0
+# pylint: disable=missing-module-docstring
 
 import glob
 import os
@@ -12,6 +13,7 @@ SAP_BASE_PATH = "/usr/sap"
 SAP_REGEX = re.compile(r"/usr/sap/([A-Z][A-Z0-9]{2})/([A-Z]+)(\d{2})\b")
 
 
+# pylint: disable-next=invalid-name
 def __virtual__():
     """
     Only load the module if the operating system is SLES.

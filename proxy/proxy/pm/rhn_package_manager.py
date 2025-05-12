@@ -64,6 +64,7 @@ PREFIX = "rhn"
 
 def main():
     # Initialize a command-line processing object with a table of options
+    # pylint: disable-next=invalid-name,invalid-name
     optionsTable = [
         Option("-v", "--verbose", action="count", help="Increase verbosity", default=1),
         Option(
@@ -162,6 +163,7 @@ def main():
         ),
     ]
     # Process the command line arguments
+    # pylint: disable-next=invalid-name,invalid-name
     optionParser = OptionParser(
         option_list=optionsTable, usage="USAGE: %prog [OPTION] [<package>]"
     )
@@ -237,12 +239,15 @@ def main():
     try:
         upload.uploadHeaders()
     except UploadError as e:
+        # pylint: disable-next=consider-using-f-string,consider-using-f-string
         sys.stderr.write("Upload error: %s\n" % e)
 
 
+# pylint: disable-next=missing-class-docstring,missing-class-docstring
 class UploadClass(uploadLib.UploadClass):
     # pylint: disable=R0904,W0221
 
+    # pylint: disable-next=invalid-name,invalid-name
     def setURL(self, path="/APP"):
         # overloaded for uploadlib.py
         if not CFG.RHN_PARENT:
@@ -277,9 +282,12 @@ class UploadClass(uploadLib.UploadClass):
             xml_path = os.path.join(export_dir, "channels", channel, "channel.xml.gz")
             if not os.access(xml_path, os.R_OK):
                 self.warn(
-                    0, "Could not find metadata for channel %s, skipping..." % channel
+                    0,
+                    # pylint: disable-next=consider-using-f-string
+                    "Could not find metadata for channel %s, skipping..." % channel,
                 )
                 print(
+                    # pylint: disable-next=consider-using-f-string,consider-using-f-string
                     "Could not find metadata for channel {}, skipping...".format(
                         channel
                     )
@@ -300,6 +308,7 @@ class UploadClass(uploadLib.UploadClass):
                 if str.encode(os.path.basename(rpm)[:-4]) in package_set:
                     self.files.append(rpm)
 
+    # pylint: disable-next=invalid-name,invalid-name
     def setServer(self):
         try:
             uploadLib.UploadClass.setServer(self)
@@ -318,22 +327,29 @@ class UploadClass(uploadLib.UploadClass):
         else:
             self.setUsernamePassword()
 
+    # pylint: disable-next=invalid-name,invalid-name
     def setProxyUsernamePassword(self):
         # overloaded for uploadlib.py
+        # pylint: disable-next=invalid-name,invalid-name
         self.proxyUsername = CFG.HTTP_PROXY_USERNAME
+        # pylint: disable-next=invalid-name,invalid-name
         self.proxyPassword = CFG.HTTP_PROXY_PASSWORD
 
+    # pylint: disable-next=invalid-name,invalid-name
     def setProxy(self):
         # overloaded for uploadlib.py
         self.proxy = CFG.HTTP_PROXY
 
+    # pylint: disable-next=invalid-name,invalid-name
     def setCAchain(self):
         # overloaded for uploadlib.py
         self.ca_chain = CFG.CA_CHAIN
 
+    # pylint: disable-next=invalid-name,invalid-name
     def setNoChannels(self):
         self.channels = self.options.channel
 
+    # pylint: disable-next=invalid-name,invalid-name
     def checkSync(self):
         # set the org
         self.setOrg()
@@ -350,10 +366,12 @@ class UploadClass(uploadLib.UploadClass):
         channel_list = self._listChannel()
 
         # Convert it to a hash of hashes
+        # pylint: disable-next=invalid-name,invalid-name
         remotePackages = {}
         for channel in self.channels:
             remotePackages[channel] = {}
         for p in channel_list:
+            # pylint: disable-next=invalid-name,invalid-name
             channelName = p[-1]
             key = tuple(p[:5])
             remotePackages[channelName][key] = None
@@ -367,8 +385,11 @@ class UploadClass(uploadLib.UploadClass):
             else:
                 checksum = None
 
+            # pylint: disable-next=invalid-name,invalid-name
             packagePaths = computePackagePaths(package, 0, PREFIX, checksum)
+            # pylint: disable-next=invalid-name,invalid-name
             for packagePath in packagePaths:
+                # pylint: disable-next=invalid-name,consider-using-f-string,invalid-name,consider-using-f-string
                 packagePath = "%s/%s" % (CFG.PKG_DIR, packagePath)
                 if os.path.isfile(packagePath):
                     found = True
@@ -380,14 +401,18 @@ class UploadClass(uploadLib.UploadClass):
             self.warn(0, "Channels in sync with the server")
             return
 
+        # pylint: disable-next=invalid-name,invalid-name
         for package, packagePath in missing:
+            # pylint: disable-next=invalid-name,invalid-name
             channelName = package[-1]
             self.warn(
                 0,
+                # pylint: disable-next=consider-using-f-string,consider-using-f-string
                 "Missing: %s in channel %s (path %s)"
                 % (rpmPackageName(package), channelName, packagePath),
             )
 
+    # pylint: disable-next=invalid-name,invalid-name
     def processPackage(self, package, filename, checksum=None):
         if self.options.dontcopy:
             return
@@ -399,9 +424,11 @@ class UploadClass(uploadLib.UploadClass):
         if not self.use_checksum_paths:
             checksum = None
         # Copy file to the prefered path
+        # pylint: disable-next=invalid-name,invalid-name
         packagePath = computePackagePaths(
             package, self.options.source, PREFIX, checksum
         )[0]
+        # pylint: disable-next=invalid-name,consider-using-f-string,invalid-name,consider-using-f-string
         packagePath = "%s/%s" % (CFG.PKG_DIR, packagePath)
         destdir = os.path.dirname(packagePath)
         if not os.path.isdir(destdir):
@@ -409,14 +436,17 @@ class UploadClass(uploadLib.UploadClass):
             try:
                 os.makedirs(destdir, 0o755)
             except OSError:
+                # pylint: disable-next=consider-using-f-string,consider-using-f-string
                 self.warn(0, "Could not create directory %s" % destdir)
                 return
+        # pylint: disable-next=consider-using-f-string,consider-using-f-string
         self.warn(1, "Copying %s to %s" % (filename, packagePath))
         shutil.copy2(filename, packagePath)
         # Make sure the file permissions are set correctly, so that Apache can
         # see the files
         os.chmod(packagePath, 0o644)
 
+    # pylint: disable-next=invalid-name,invalid-name
     def _listChannelSource(self):
         self.die(1, "Listing source rpms not supported")
 
@@ -446,7 +476,9 @@ class UploadClass(uploadLib.UploadClass):
             self.processPackage(fileinfo["nvrea"], filename, fileinfo["checksum"])
 
 
+# pylint: disable-next=invalid-name,invalid-name
 def rpmPackageName(p):
+    # pylint: disable-next=consider-using-f-string,consider-using-f-string
     return "%s-%s-%s.%s.rpm" % (p[0], p[1], p[2], p[4])
 
 

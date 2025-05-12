@@ -5,10 +5,13 @@ Tests for spacewalk-manager-channel-lifecycle script.
 import os
 import pytest
 import tempfile
+
+# pylint: disable-next=unused-import,unused-import
 from mock import MagicMock, patch
 from . import helpers
 
 helpers.symlink_source("spacewalk-manage-channel-lifecycle", "smcl")
+# pylint: disable-next=wrong-import-position
 from . import smcl
 
 helpers.unsymlink_source("smcl")

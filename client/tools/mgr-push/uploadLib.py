@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -25,6 +26,7 @@ import getpass
 # exceptions
 # pylint: disable=W0702,W0703
 
+# pylint: disable-next=unused-import
 import inspect
 from uyuni.common import rhn_mpm
 from uyuni.common.rhn_pkg import package_from_filename, get_package_header
@@ -66,8 +68,11 @@ class ServerFault(Exception):
 
     def __init__(self, faultCode=None, faultString="", faultExplanation=""):
         Exception.__init__(self)
+        # pylint: disable-next=invalid-name
         self.faultCode = faultCode
+        # pylint: disable-next=invalid-name
         self.faultString = faultString
+        # pylint: disable-next=invalid-name
         self.faultExplanation = faultExplanation
 
 
@@ -79,7 +84,9 @@ class UploadClass:
         self.username = None
         self.password = None
         self.proxy = None
+        # pylint: disable-next=invalid-name
         self.proxyUsername = None
+        # pylint: disable-next=invalid-name
         self.proxyPassword = None
         self.ca_chain = None
         self.force = None
@@ -90,7 +97,9 @@ class UploadClass:
         self.count = None
         self.server = None
         self.session = None
+        # pylint: disable-next=invalid-name
         self.orgId = None
+        # pylint: disable-next=invalid-name
         self.relativeDir = None
         self.use_session = True
         self.use_checksum_paths = False
@@ -105,39 +114,49 @@ class UploadClass:
         # pkilambi:bug#176358:this should exit with error code
         sys.exit(errcode)
 
+    # pylint: disable-next=invalid-name
     def setURL(self):
         # Redefine this in derived classes
         self.url = None
 
+    # pylint: disable-next=invalid-name
     def setUsernamePassword(self):
         # Use the stored values, if available
         username = self.username or self.options.username
         password = self.password or self.options.password
         self.username, self.password = getUsernamePassword(username, password)
 
+    # pylint: disable-next=invalid-name
     def setProxyUsernamePassword(self):
         self.proxyUsername = None
         self.proxyPassword = None
 
+    # pylint: disable-next=invalid-name
     def setCAchain(self):
         self.ca_chain = self.options.ca_chain
 
+    # pylint: disable-next=invalid-name
     def setProxy(self):
         if self.options.proxy is None or self.options.proxy == "":
             self.proxy = None
         else:
+            # pylint: disable-next=consider-using-f-string
             self.proxy = "http://%s" % self.options.proxy
 
+    # pylint: disable-next=invalid-name
     def setForce(self):
         self.force = None
 
+    # pylint: disable-next=invalid-name
     def setServer(self):
         # set the proxy
         self.setProxy()
 
         if self.proxy is None:
+            # pylint: disable-next=consider-using-f-string
             self.warn(1, "Connecting to %s" % self.url)
         else:
+            # pylint: disable-next=consider-using-f-string
             self.warn(1, "Connecting to %s (via proxy '%s')" % (self.url, self.proxy))
 
         # set the CA chain
@@ -152,23 +171,29 @@ class UploadClass:
             transfer=Output.TRANSFER_BINARY, encoding=Output.ENCODE_GZIP
         )
 
+    # pylint: disable-next=invalid-name
     def setChannels(self):
         if not self.options.channel:
             self.die(-1, "No channel was specified")
         self.channels = self.options.channel
+        # pylint: disable-next=consider-using-f-string
         self.warn(1, "Channels: %s" % " ".join(self.channels))
 
+    # pylint: disable-next=invalid-name
     setNoChannels = setChannels
 
+    # pylint: disable-next=invalid-name
     def setOrg(self):
         self.orgId = -1
 
+    # pylint: disable-next=invalid-name
     def setCount(self):
         if not self.options.count:
             self.count = HEADERS_PER_CALL
         else:
             self.count = self.options.count
 
+    # pylint: disable-next=invalid-name
     def setRelativeDir(self):
         self.relativeDir = None
 
@@ -187,14 +212,17 @@ class UploadClass:
             bf = os.path.basename(f)
             for pattern in self.options.exclude:
                 if fnmatch.fnmatch(bf, pattern):
+                    # pylint: disable-next=consider-using-f-string
                     self.warn(1, "Ignoring %s" % f)
                     self.files.remove(f)
         return self
 
+    # pylint: disable-next=invalid-name
     def readStdin(self):
         self.warn(1, "Reading package names from stdin")
         self.files = self.files + readStdin()
 
+    # pylint: disable-next=invalid-name
     def _listChannelSource(self):
         if self.use_session:
             return listChannelSourceBySession(
@@ -205,6 +233,7 @@ class UploadClass:
             self.server, self.username, self.password, self.channels
         )
 
+    # pylint: disable-next=invalid-name
     def _listChannel(self):
         if self.use_session:
             if self.use_checksum_paths:
@@ -261,6 +290,7 @@ class UploadClass:
 
     def get_newest_binary_packages(self):
         # Loop through the args and only keep the newest ones
+        # pylint: disable-next=invalid-name
         localPackagesHash = {}
         for filename in self.files:
             nvrea = self._processFile(filename, nosig=1)["nvrea"]
@@ -336,6 +366,7 @@ class UploadClass:
         l.sort()
         self.files = l
 
+    # pylint: disable-next=invalid-name
     def _listMissingSourcePackages(self):
         if self.use_session:
             return listMissingSourcePackagesBySession(
@@ -347,6 +378,7 @@ class UploadClass:
         )
 
     def get_missing_source_packages(self):
+        # pylint: disable-next=invalid-name
         localPackagesHash = {}
         for filename in self.files:
             localPackagesHash[os.path.basename(filename)] = filename
@@ -356,6 +388,7 @@ class UploadClass:
 
         to_push = []
         for pkg in pkglist:
+            # pylint: disable-next=invalid-name,unused-variable
             pkg_name, _pkg_channel = pkg[:2]
             if pkg_name not in localPackagesHash:
                 # We don't have it
@@ -374,6 +407,7 @@ class UploadClass:
     def _get_files(self):
         return self.files[:]
 
+    # pylint: disable-next=invalid-name
     def _uploadSourcePackageInfo(self, info):
         if self.use_session:
             return call(
@@ -389,6 +423,7 @@ class UploadClass:
             info,
         )
 
+    # pylint: disable-next=invalid-name
     def _uploadPackageInfo(self, info):
         if self.use_session:
             return call(
@@ -401,6 +436,7 @@ class UploadClass:
             self.server.packages.uploadPackageInfo, self.username, self.password, info
         )
 
+    # pylint: disable-next=invalid-name
     def uploadHeaders(self):
         # Set the forcing factor
         self.setForce()
@@ -426,6 +462,7 @@ class UploadClass:
         while file_list:
             chunk = file_list[: self.count]
             del file_list[: self.count]
+            # pylint: disable-next=invalid-name,invalid-name
             uploadedPackages, headersList = self._processBatch(
                 chunk,
                 relativeDir=self.relativeDir,
@@ -453,6 +490,7 @@ class UploadClass:
             if self.options.verbose:
                 ReportError("Uploading batch:")
                 for p in list(uploadedPackages.values())[0]:
+                    # pylint: disable-next=consider-using-f-string
                     ReportError("\t\t%s" % p)
 
             if source:
@@ -464,6 +502,7 @@ class UploadClass:
                 self.die(-1, "Upload attempt failed")
 
             # Append the package information
+            # pylint: disable-next=invalid-name,invalid-name
             alreadyUploaded, newPackages = ret
             pkglists = (alreadyUploaded, newPackages)
 
@@ -472,6 +511,7 @@ class UploadClass:
                     key = tuple(p[:5])
                     if key not in uploadedPackages:
                         # XXX Hmm
+                        # pylint: disable-next=consider-using-f-string
                         self.warn(1, "XXX XXX %s" % str(p))
                     filename, checksum = uploadedPackages[key]
                     # Some debugging
@@ -488,12 +528,15 @@ class UploadClass:
                     except TypeError:
                         self.processPackage(p, filename)
 
+    # pylint: disable-next=invalid-name
     def processPackage(self, package, filename, checksum=None):
         pass
 
+    # pylint: disable-next=invalid-name
     def checkSession(self, session):
         return call(self.server.packages.check_session, session)
 
+    # pylint: disable-next=invalid-name
     def readSession(self):
         # pylint: disable=W0703
         try:
@@ -502,6 +545,7 @@ class UploadClass:
         except Exception:
             self.session = None
 
+    # pylint: disable-next=invalid-name
     def writeSession(self, session):
         if self.session:
             self.session.setSessionString(session)
@@ -532,6 +576,7 @@ class UploadClass:
         self.use_checksum_paths = True
 
     @staticmethod
+    # pylint: disable-next=invalid-name,invalid-name
     def _processFile(filename, relativeDir=None, source=None, nosig=None):
         """Processes a file
         Returns a hash containing:
@@ -544,8 +589,10 @@ class UploadClass:
 
         # Is this a file?
         if not os.access(filename, os.R_OK):
+            # pylint: disable-next=consider-using-f-string
             raise UploadError("Could not stat the file %s" % filename)
         if not os.path.isfile(filename):
+            # pylint: disable-next=consider-using-f-string
             raise UploadError("%s is not a file" % filename)
 
         # Size
@@ -558,12 +605,16 @@ class UploadClass:
             assert a_pkg.header
         except:
             raise_with_tb(
-                UploadError("%s is not a valid package" % filename), sys.exc_info()[2]
+                # pylint: disable-next=consider-using-f-string
+                UploadError("%s is not a valid package" % filename),
+                sys.exc_info()[2],
             )
 
         if nosig is None and not a_pkg.header.is_signed():
             raise UploadError(
-                "ERROR: %s: unsigned rpm (use --nosig to force)" % filename
+                # pylint: disable-next=consider-using-f-string
+                "ERROR: %s: unsigned rpm (use --nosig to force)"
+                % filename
             )
 
         # Get the name, version, release, epoch, arch
@@ -591,15 +642,20 @@ class UploadClass:
         }
         if relativeDir:
             # Append the relative dir too
+            # pylint: disable-next=consider-using-f-string
             info["relativePath"] = "%s/%s" % (relativeDir, os.path.basename(filename))
         info["nvrea"] = tuple(lh)
         return info
 
+    # pylint: disable-next=invalid-name,invalid-name
     def _processBatch(self, batch, relativeDir, source, verbose, nosig=None):
+        # pylint: disable-next=invalid-name
         sentPackages = {}
+        # pylint: disable-next=invalid-name
         headersList = []
         for filename in batch:
             if verbose:
+                # pylint: disable-next=consider-using-f-string
                 print("Uploading %s" % filename)
             info = self._processFile(
                 filename, relativeDir=relativeDir, source=source, nosig=nosig
@@ -615,6 +671,7 @@ class UploadClass:
         return sentPackages, headersList
 
 
+# pylint: disable-next=invalid-name
 def readStdin():
     # Reads the standard input lines and returns a list
     l = []
@@ -626,6 +683,7 @@ def readStdin():
     return l
 
 
+# pylint: disable-next=invalid-name,invalid-name,invalid-name
 def getUsernamePassword(cmdlineUsername, cmdlinePassword):
     # Returns a username and password (either by returning the ones passed as
     # args, or the user's input
@@ -636,9 +694,11 @@ def getUsernamePassword(cmdlineUsername, cmdlinePassword):
     password = cmdlinePassword
 
     # Read the username, if not already specified
+    # pylint: disable-next=unspecified-encoding
     tty = open("/dev/tty", "w")
     tty.write("SUSE Multi-Linux Manager username: ")
     tty.close()
+    # pylint: disable-next=unspecified-encoding
     tty = open("/dev/tty", "r")
 
     while not username:
@@ -669,12 +729,16 @@ def getUsernamePassword(cmdlineUsername, cmdlinePassword):
 def listdir(directory):
     directory = os.path.abspath(os.path.normpath(directory))
     if not os.access(directory, os.R_OK | os.X_OK):
+        # pylint: disable-next=consider-using-f-string
         raise UploadError("Cannot read from directory %s" % directory)
     if not os.path.isdir(directory):
+        # pylint: disable-next=consider-using-f-string
         raise UploadError("%s not a directory" % directory)
     # Build the package list
+    # pylint: disable-next=invalid-name
     packagesList = []
     for f in os.listdir(directory):
+        # pylint: disable-next=consider-using-f-string
         packagesList.append("%s/%s" % (directory, f))
     return packagesList
 
@@ -701,11 +765,14 @@ def call(function, *params, **kwargs):
     return ret
 
 
+# pylint: disable-next=invalid-name
 def parseXMLRPCfault(fault):
     if not isinstance(fault, xmlrpclib.Fault):
         return None
+    # pylint: disable-next=invalid-name
     faultCode = fault.faultCode
     if faultCode and isinstance(faultCode, type(1)):
+        # pylint: disable-next=invalid-name
         faultCode = -faultCode
     return ServerFault(faultCode, "", fault.faultString)
 
@@ -795,6 +862,7 @@ def packageCompare(pkg1, pkg2, is_mpm=None):
     if is_mpm:
         func = rhn_mpm.labelCompare
     else:
+        # pylint: disable-next=import-outside-toplevel
         from uyuni.common import rhn_rpm
 
         func = rhn_rpm.labelCompare

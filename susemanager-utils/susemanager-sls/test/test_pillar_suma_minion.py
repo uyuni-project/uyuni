@@ -174,6 +174,7 @@ def test_using_context_in__get_cursor():
             "dbname": "test_db",
             "port": 1234,
         }
+        # pylint: disable-next=unnecessary-negation
         assert not "suma_minion_cnx" in suma_minion.__context__
 
     pg_connect_mock.reset_mock()

@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 # Main entry point for apacheServer.py for the Spacewalk Proxy
 # and/or SSL Redirect Server.
 #
@@ -55,6 +56,7 @@ from .rhnConstants import (
 )
 
 
+# pylint: disable-next=invalid-name
 def getComponentType(req):
     """
     Are we a 'proxy.broker' or a 'proxy.redirect'.
@@ -92,6 +94,7 @@ def getComponentType(req):
     return COMPONENT_BROKER
 
 
+# pylint: disable-next=invalid-name
 class apacheHandler(rhnApache):
     """Main apache entry point for the proxy."""
 
@@ -134,6 +137,7 @@ class apacheHandler(rhnApache):
         ret = self._transformKickstartRequest(req)
         return ret
 
+    # pylint: disable-next=invalid-name
     def _transformKickstartRequest(self, req):
         """If necessary, this routine will transform a "tinified" anaconda-
         generated kickstart request into a normalized form capable of being
@@ -162,15 +166,18 @@ class apacheHandler(rhnApache):
 
         if self._component == COMPONENT_BROKER:
             if req.uri.startswith(URI_PREFIX_KS):
+                # pylint: disable-next=consider-using-f-string
                 log_debug(3, "Found a kickstart URI: %s" % req.uri)
                 return self._transformKsRequestForBroker(req)
         elif self._component == COMPONENT_REDIRECT:
             if req.uri.startswith(URI_PREFIX_KS_CHECKSUM):
+                # pylint: disable-next=consider-using-f-string
                 log_debug(3, "Found a kickstart checksum URI: %s" % req.uri)
                 return self._transformKsRequestForRedirect(req)
 
         return apache.OK
 
+    # pylint: disable-next=invalid-name
     def _transformKsRequestForBroker(self, req):
 
         # Get the checksum for the requested resource from the satellite.
@@ -182,11 +189,13 @@ class apacheHandler(rhnApache):
         # If we got this far, we have the checksum.  Create a new URI based on
         # the checksum.
 
+        # pylint: disable-next=invalid-name
         newURI = self._generateCacheableKickstartURI(req.uri, checksum)
         if not newURI:
             # Couldn't create a cacheable URI, log an error and revert to
             # BZ 158236 behavior.
 
+            # pylint: disable-next=consider-using-f-string
             log_error('Could not create cacheable ks URI from "%s"' % req.uri)
             return apache.OK
 
@@ -195,6 +204,7 @@ class apacheHandler(rhnApache):
         # been cached yet.  We will also embed a header that holds the new URI,
         # so that the content handler can use it later.
 
+        # pylint: disable-next=consider-using-f-string
         log_debug(3, "Generated new kickstart URI: %s" % newURI)
         req.headers_in[HEADER_ACTUAL_URI] = req.uri
         req.headers_in[HEADER_EFFECTIVE_URI] = newURI
@@ -202,6 +212,7 @@ class apacheHandler(rhnApache):
         return apache.OK
 
     @staticmethod
+    # pylint: disable-next=invalid-name
     def _transformKsRequestForRedirect(req):
 
         # If we don't get the actual URI in the headers, we'll decline the
@@ -209,7 +220,9 @@ class apacheHandler(rhnApache):
 
         if not req.headers_in or HEADER_ACTUAL_URI not in req.headers_in:
             log_error(
-                "Kickstart request header did not include '%s'" % HEADER_ACTUAL_URI
+                # pylint: disable-next=consider-using-f-string
+                "Kickstart request header did not include '%s'"
+                % HEADER_ACTUAL_URI
             )
             return apache.DECLINED
 
@@ -217,10 +230,12 @@ class apacheHandler(rhnApache):
         # Remove it, and place it in the X-RHN-EffectiveURI header.
 
         req.headers_in[HEADER_EFFECTIVE_URI] = req.headers_in[HEADER_ACTUAL_URI]
+        # pylint: disable-next=consider-using-f-string
         log_debug(3, "Reverting to old URI: %s" % req.headers_in[HEADER_ACTUAL_URI])
 
         return apache.OK
 
+    # pylint: disable-next=invalid-name
     def _querySatelliteForChecksum(self, req):
         """Sends a HEAD request to the satellite for the purpose of obtaining
         the checksum for the requested resource.  A (status, checksum)
@@ -231,6 +246,7 @@ class apacheHandler(rhnApache):
         scheme = SCHEME_HTTP
         if req.server.port == 443:
             scheme = SCHEME_HTTPS
+        # pylint: disable-next=consider-using-f-string
         log_debug(6, "Using scheme: %s" % scheme)
 
         # Initiate a HEAD request to the satellite to retrieve the MD5 sum.
@@ -249,6 +265,7 @@ class apacheHandler(rhnApache):
             # we won't fail here.
 
             log_error(
+                # pylint: disable-next=consider-using-f-string
                 "HEAD req - Could not create connection to %s://%s:%s"
                 % (scheme, host, str(port))
             )
@@ -257,7 +274,9 @@ class apacheHandler(rhnApache):
         # We obtained the connection successfully.  Construct the URL that
         # we'll connect to.
 
+        # pylint: disable-next=invalid-name,consider-using-f-string
         pingURL = "%s://%s:%s%s" % (scheme, host, str(port), req.uri)
+        # pylint: disable-next=consider-using-f-string
         log_debug(6, "Ping URI: %s" % pingURL)
 
         hdrs = UserDictCase()
@@ -274,6 +293,7 @@ class apacheHandler(rhnApache):
         # Get the response.
 
         response = connection.getresponse()
+        # pylint: disable-next=consider-using-f-string
         log_debug(6, "Received response status: %s" % response.status)
         connection.close()
 
@@ -284,6 +304,7 @@ class apacheHandler(rhnApache):
 
             log_debug(
                 1,
+                # pylint: disable-next=consider-using-f-string
                 "HEAD req - Received error code in reponse: %s"
                 % (str(response.status)),
             )
@@ -291,6 +312,7 @@ class apacheHandler(rhnApache):
 
         # The request was successful.  Dig the MD5 checksum out of the headers.
 
+        # pylint: disable-next=invalid-name
         responseHdrs = response.msg
         if not responseHdrs:
             # No headers?!  This shouldn't happen at all.  But if it does,
@@ -313,6 +335,7 @@ class apacheHandler(rhnApache):
         return (apache.OK, checksum)
 
     @staticmethod
+    # pylint: disable-next=invalid-name,invalid-name
     def _generateCacheableKickstartURI(oldURI, checksum):
         """
         This routine computes a new cacheable URI based on the old URI and the
@@ -327,26 +350,33 @@ class apacheHandler(rhnApache):
         If for some reason the new URI could not be generated, return None.
         """
 
+        # pylint: disable-next=invalid-name
         newURI = URI_PREFIX_KS_CHECKSUM + checksum
 
         # Strip the first two path pieces off of the oldURI.
 
+        # pylint: disable-next=invalid-name
         uriParts = oldURI.split("/")
+        # pylint: disable-next=invalid-name
         numParts = 0
         for part in uriParts:
             if len(part) != 0:  # Account for double slashes ("//")
+                # pylint: disable-next=invalid-name
                 numParts += 1
                 if numParts > 2:
+                    # pylint: disable-next=invalid-name
                     newURI += "/" + part
 
         # If the URI didn't have enough parts, return None.
 
         if numParts <= 2:
+            # pylint: disable-next=invalid-name
             newURI = None
 
         return newURI
 
     @staticmethod
+    # pylint: disable-next=invalid-name
     def _createConnection(host, port, scheme):
         params = {"host": host, "port": port}
 
@@ -373,13 +403,17 @@ class apacheHandler(rhnApache):
         log_debug(4, "Component", self._component)
 
         if self._component == COMPONENT_BROKER:
+            # pylint: disable-next=import-outside-toplevel
             from .broker import rhnBroker
 
+            # pylint: disable-next=invalid-name
             handlerObj = rhnBroker.BrokerHandler(req)
         else:
             # Redirect
+            # pylint: disable-next=import-outside-toplevel
             from .redirect import rhnRedirect
 
+            # pylint: disable-next=invalid-name
             handlerObj = rhnRedirect.RedirectHandler(req)
 
         try:
@@ -392,7 +426,9 @@ class apacheHandler(rhnApache):
 
         # All good; we expect ret to be an HTTP return code
         if not isinstance(ret, type(1)):
+            # pylint: disable-next=consider-using-f-string
             raise rhnException("Invalid status code type %s" % type(ret))
+        # pylint: disable-next=consider-using-f-string
         log_debug(2, "Leaving with status code %s" % ret)
         return ret
 
@@ -466,6 +502,7 @@ class apacheHandler(rhnApache):
         )
         if xrepcon:
             fpath = rhnFlags.get("Download-Accelerator-Path")
+            # pylint: disable-next=consider-using-f-string
             log_debug(1, "Serving file %s" % fpath)
             req.headers_out["X-Replace-Content"] = fpath
             # Only set a byte rate if xrepcon is active
@@ -561,10 +598,12 @@ class apacheHandler(rhnApache):
             try:
                 response = rpclib.xmlrpclib.dumps(response, methodresponse=1)
             except TypeError as e:
+                # pylint: disable-next=consider-using-f-string
                 log_debug(-1, 'Error "%s" encoding response = %s' % (e, response))
                 Traceback(
                     "apacheHandler.response",
                     req,
+                    # pylint: disable-next=consider-using-f-string
                     extra='Error "%s" encoding response = %s' % (e, response),
                     severity="notification",
                 )
@@ -588,11 +627,13 @@ class apacheHandler(rhnApache):
             # I wrap this in an "if" so we don't parse a large file for no reason.
             log_debug(
                 4,
+                # pylint: disable-next=consider-using-f-string
                 "The response: %s[...SNIP (for sanity) SNIP...]%s"
                 % (response[:100], response[-100:]),
             )
         elif CFG.DEBUG >= 5:
             # if you absolutely must have that whole response in the log file
+            # pylint: disable-next=consider-using-f-string
             log_debug(5, "The response: %s" % response)
 
         # send the headers
@@ -612,6 +653,7 @@ class apacheHandler(rhnApache):
     @staticmethod
     def _response_fault_get(req, response):
         req.headers_out["X-RHN-Fault-Code"] = str(response.faultCode)
+        # pylint: disable-next=invalid-name
         faultString = (
             base64.encodestring(response.faultString.encode()).decode().strip()
         )  # pylint: disable=deprecated-method
@@ -623,6 +665,7 @@ class apacheHandler(rhnApache):
             setHeaderValue(req.headers_out, k, v)
         return apache.HTTP_NOT_FOUND
 
+    # pylint: disable-next=arguments-renamed
     def cleanupHandler(self, req):
         """Clean up stuff before we close down the session when we are
         called from apacheServer.Cleanup()
@@ -638,6 +681,7 @@ class apacheHandler(rhnApache):
             except OSError:
                 break
             else:
+                # pylint: disable-next=consider-using-f-string
                 log_error("Reaped child process %d with status %d" % (pid, status))
         ret = rhnApache.cleanupHandler(self, req)
         return ret

@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 # Spacewalk Proxy Server Broker handler code.
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
@@ -71,12 +72,19 @@ class BrokerHandler(SharedHandler):
         SharedHandler.__init__(self, req)
 
         # Initialize variables
+        # pylint: disable-next=invalid-name
         self.componentType = "proxy.broker"
+        # pylint: disable-next=invalid-name
         self.cachedClientInfo = None  # headers - session token
+        # pylint: disable-next=invalid-name
         self.authChannels = None
+        # pylint: disable-next=invalid-name
         self.clientServerId = None
+        # pylint: disable-next=invalid-name
         self.rhnParentXMLRPC = None
+        # pylint: disable-next=invalid-name
         self.authToken = None
+        # pylint: disable-next=invalid-name
         self.fullRequestURL = None
         hostname = ""
         # should *always* exist and be my ip address
@@ -103,6 +111,7 @@ class BrokerHandler(SharedHandler):
                 pass
         if not hostname and CFG.has_key("PROXY_FQDN"):
             # Not resolvable hostname, check container config
+            # pylint: disable-next=consider-using-f-string
             log_debug(2, "Using PROXY_FQDN config %s" % CFG.PROXY_FQDN)
             hostname = CFG.PROXY_FQDN
         if not hostname:
@@ -119,14 +128,17 @@ class BrokerHandler(SharedHandler):
             hostname = socket.gethostname()
             log_debug(
                 -1,
+                # pylint: disable-next=consider-using-f-string
                 "WARNING: no hostname in the incoming headers; "
                 "punting: %s" % hostname,
             )
         hostname = parseUrl(hostname)[1].split(":")[0]
+        # pylint: disable-next=invalid-name
         self.proxyAuth = proxy.rhnProxyAuth.get_proxy_auth(hostname)
 
         self._initConnectionVariables(req)
 
+    # pylint: disable-next=invalid-name
     def _initConnectionVariables(self, req):
         """set connection variables
         NOTE: self.{caChain,rhnParent,httpProxy*} are initialized
@@ -148,7 +160,9 @@ class BrokerHandler(SharedHandler):
 
         scheme = "http"
         # self.{caChain,httpProxy*,rhnParent} initialized in rhnShared.py
+        # pylint: disable-next=invalid-name
         effectiveURI = self._getEffectiveURI()
+        # pylint: disable-next=invalid-name
         effectiveURI_parts = urlparse(effectiveURI)
         # Fixup effectiveURI_parts, if effectiveURI is dirty.
         # We are doing this because the ubuntu clients request uris like
@@ -158,6 +172,7 @@ class BrokerHandler(SharedHandler):
             and effectiveURI_parts.netloc
             and effectiveURI_parts.netloc == "XMLRPC"
         ):
+            # pylint: disable-next=invalid-name
             effectiveURI_parts = urlparse(
                 urlunparse(
                     [
@@ -194,17 +209,20 @@ class BrokerHandler(SharedHandler):
                 )  # "Basic " == 6 characters
                 self.authToken = lpw[: lpw.find(":")]
                 del self.req.headers_in["Authorization"]
+            # pylint: disable-next=broad-exception-caught
             except Exception as e:
                 log_error("Unable to decode Authorization header.", e)
         elif "X-RHN-Auth" not in self.req.headers_in:
             self.authToken = effectiveURI_parts.query
 
         if req.method == "GET":
+            # pylint: disable-next=consider-using-f-string
             self.fullRequestURL = "%s://%s%s" % (
                 self.req.headers_in["REQUEST_SCHEME"],
                 self.rhnParent,
                 effectiveURI,
             )
+            # pylint: disable-next=invalid-name
             effectiveURI_parts = urlparse(
                 urlunparse(
                     [
@@ -229,16 +247,21 @@ class BrokerHandler(SharedHandler):
         )
         self.rhnParent = urlunparse((scheme, self.rhnParent) + effectiveURI_parts[2:])
 
+        # pylint: disable-next=consider-using-f-string
         log_debug(2, "set self.rhnParent:       %s" % self.rhnParent)
+        # pylint: disable-next=consider-using-f-string
         log_debug(2, "set self.rhnParentXMLRPC: %s" % self.rhnParentXMLRPC)
         if self.httpProxy:
             if self.httpProxyUsername and self.httpProxyPassword:
                 log_debug(
-                    2, "using self.httpProxy:     %s (authenticating)" % self.httpProxy
+                    2,
+                    # pylint: disable-next=consider-using-f-string
+                    "using self.httpProxy:     %s (authenticating)" % self.httpProxy,
                 )
             else:
                 log_debug(
                     2,
+                    # pylint: disable-next=consider-using-f-string
                     "using self.httpProxy:     %s (non-authenticating)"
                     % self.httpProxy,
                 )
@@ -252,6 +275,7 @@ class BrokerHandler(SharedHandler):
         log_debug(2)
         self._prepHandler()
 
+        # pylint: disable-next=invalid-name
         _oto = rhnFlags.get("outputTransportOptions")
 
         # tell parent that we can follow redirects, even if client is not able to
@@ -264,6 +288,7 @@ class BrokerHandler(SharedHandler):
         ip_path = None
         if "X-RHN-IP-Path" in _oto:
             ip_path = _oto["X-RHN-IP-Path"]
+        # pylint: disable-next=consider-using-f-string
         log_debug(4, "X-RHN-IP-Path is: %s" % repr(ip_path))
         client_ip = self.req.connection.remote_ip
         if ip_path is None:
@@ -276,6 +301,7 @@ class BrokerHandler(SharedHandler):
         if "X-RHN-Proxy-Auth" in _oto:
             log_debug(
                 5,
+                # pylint: disable-next=consider-using-f-string
                 "X-RHN-Proxy-Auth currently set to: %s"
                 % repr(_oto["X-RHN-Proxy-Auth"]),
             )
@@ -286,9 +312,11 @@ class BrokerHandler(SharedHandler):
             tokens = []
             if "X-RHN-Proxy-Auth" in _oto:
                 tokens = _oto["X-RHN-Proxy-Auth"].split(",")
+            # pylint: disable-next=consider-using-f-string
             log_debug(5, "Tokens: %s" % tokens)
 
         # GETs: authenticate user, and service local GETs.
+        # pylint: disable-next=invalid-name
         getResult = self.__local_GET_handler(self.req)
         if getResult is not None:
             # it's a GET request
@@ -299,12 +327,16 @@ class BrokerHandler(SharedHandler):
         #    if not... login...
         #    if good token, cache it.
         # 2. push into headers.
+        # pylint: disable-next=invalid-name
         authToken = self.proxyAuth.check_cached_token()
+        # pylint: disable-next=consider-using-f-string
         log_debug(5, "Auth token for this machine only! %s" % authToken)
         tokens = []
 
+        # pylint: disable-next=invalid-name
         _oto = rhnFlags.get("outputTransportOptions")
         if "X-RHN-Proxy-Auth" in _oto:
+            # pylint: disable-next=consider-using-f-string
             log_debug(5, "    (auth token prior): %s" % repr(_oto["X-RHN-Proxy-Auth"]))
             tokens = _oto["X-RHN-Proxy-Auth"].split(",")
 
@@ -313,6 +345,7 @@ class BrokerHandler(SharedHandler):
         tokens = [t for t in tokens if t]
 
         _oto["X-RHN-Proxy-Auth"] = ",".join(tokens)
+        # pylint: disable-next=consider-using-f-string
         log_debug(5, "    (auth token after): %s" % repr(_oto["X-RHN-Proxy-Auth"]))
 
         if self.fullRequestURL and self.authToken:
@@ -320,8 +353,10 @@ class BrokerHandler(SharedHandler):
             # because it was provided as 'X-Mgr-Auth' header.
             # In this case We need to append it to the URL to check if accessible
             # with the given auth token.
+            # pylint: disable-next=invalid-name
             checkURL = self.fullRequestURL
             if not self.authToken in checkURL:
+                # pylint: disable-next=invalid-name
                 checkURL += "?" + self.authToken
             if not suseLib.accessible(checkURL):
                 return apache.HTTP_FORBIDDEN
@@ -334,6 +369,7 @@ class BrokerHandler(SharedHandler):
         #   o If no errors, the loop is broken and we move on.
         #   o If an error, either we get a new token and try again,
         #     or we get a critical error and we fault.
+        # pylint: disable-next=invalid-name,unused-variable
         for _i in range(2):
             self._connectToParent()  # part 1
 
@@ -346,6 +382,7 @@ class BrokerHandler(SharedHandler):
             status = self._serverCommo()  # part 2
 
             # check for proxy authentication blowup.
+            # pylint: disable-next=invalid-name
             respHeaders = self.responseContext.getHeaders()
             if not respHeaders or "X-RHN-Proxy-Auth-Error" not in respHeaders:
                 # No proxy auth errors
@@ -353,6 +390,7 @@ class BrokerHandler(SharedHandler):
                 #      None that is is correct logic. It should be -taw
                 break
 
+            # pylint: disable-next=use-maxsplit-arg
             error = str(respHeaders["X-RHN-Proxy-Auth-Error"]).split(":")[0]
 
             # If a proxy other than this one needs to update its auth token
@@ -375,6 +413,7 @@ class BrokerHandler(SharedHandler):
                 )
             else:  # this should never happen.
                 msg = (
+                    # pylint: disable-next=consider-using-f-string
                     "SUSE Multi-Linux Manager Proxy login failed, error code is %s"
                     % error
                 )
@@ -405,6 +444,7 @@ class BrokerHandler(SharedHandler):
 
         # Support for yum byte-range
         if status not in (apache.OK, apache.HTTP_PARTIAL_CONTENT):
+            # pylint: disable-next=consider-using-f-string
             log_debug(1, "Leaving handler with status code %s" % status)
             return status
 
@@ -467,6 +507,7 @@ class BrokerHandler(SharedHandler):
 
     # --- PRIVATE METHODS ---
 
+    # pylint: disable-next=invalid-name
     def __handleAction(self, headers):
         log_debug(2)
         # Check if proxy is interested in this action, and execute any
@@ -475,6 +516,7 @@ class BrokerHandler(SharedHandler):
             # Don't know what to do
             return
 
+        # pylint: disable-next=consider-using-f-string
         log_debug(2, "Action is %s" % headers["X-RHN-Action"])
         # Now, is it a login? If so, cache the session token.
         if headers["X-RHN-Action"] != "login":
@@ -484,11 +526,13 @@ class BrokerHandler(SharedHandler):
         # A login. Cache the session token
         self.__cacheClientSessionToken(headers)
 
+    # pylint: disable-next=invalid-name
     def __local_GET_handler(self, req):
         """GETs: authenticate user, and service local GETs.
         if not a local fetch, return None
         """
 
+        # pylint: disable-next=consider-using-f-string
         log_debug(2, "request method: %s" % req.method)
         # Early test to check if this is a request the proxy can handle
         # Can we serve this request?
@@ -543,6 +587,7 @@ class BrokerHandler(SharedHandler):
 
             # Is this channel local?
             for ch in self.authChannels:
+                # pylint: disable-next=invalid-name,invalid-name,invalid-name,unused-variable,unused-variable
                 channel, _version, _isBaseChannel, isLocalChannel = ch[:4]
                 if channel == reqident and str(isLocalChannel) == "1":
                     # Local channel
@@ -552,6 +597,7 @@ class BrokerHandler(SharedHandler):
                 return None
 
         # --- LOCAL GET:
+        # pylint: disable-next=invalid-name
         localFlist = CFG.PROXY_LOCAL_FLIST or []
 
         if reqaction not in localFlist:
@@ -572,6 +618,7 @@ class BrokerHandler(SharedHandler):
         return result
 
     @staticmethod
+    # pylint: disable-next=invalid-name
     def __getSessionToken():
         """Get/test-for session token in headers (rhnFlags)"""
         log_debug(2)
@@ -579,6 +626,7 @@ class BrokerHandler(SharedHandler):
             raise rhnFault(33, "Missing session token")
         return rhnFlags.get("AUTH_SESSION_TOKEN")
 
+    # pylint: disable-next=invalid-name
     def __cacheClientSessionToken(self, headers):
         """pull session token from headers and push to caching daemon."""
 
@@ -589,6 +637,7 @@ class BrokerHandler(SharedHandler):
             # XXX: no client server ID in headers, should we care?
             # raise rhnFault(1000, _("Client Server ID not found in headers!"))
             return None
+        # pylint: disable-next=invalid-name
         serverId = "X-RHN-Server-ID"
 
         self.clientServerId = headers[serverId]
@@ -598,6 +647,7 @@ class BrokerHandler(SharedHandler):
         # "x-rhn-auth"
         prefix = "x-rhn-auth"
         l = len(prefix)
+        # pylint: disable-next=invalid-name
         tokenKeys = [x for x in list(headers.keys()) if x[:l].lower() == prefix]
         for k in tokenKeys:
             if k.lower() == "x-rhn-auth-channels":
@@ -610,6 +660,7 @@ class BrokerHandler(SharedHandler):
                 token[k] = headers[k]
 
         # Dump the proxy's clock skew in the dict
+        # pylint: disable-next=invalid-name
         serverTime = float(token["X-RHN-Auth-Server-Time"])
         token["X-RHN-Auth-Proxy-Clock-Skew"] = time.time() - serverTime
 
@@ -617,6 +668,7 @@ class BrokerHandler(SharedHandler):
         self.proxyAuth.set_client_token(self.clientServerId, token)
         return token
 
+    # pylint: disable-next=invalid-name
     def __callLocalRepository(self, req_type, identifier, funct, params):
         """Contacts the local repository and retrieves files"""
 
@@ -699,6 +751,7 @@ class BrokerHandler(SharedHandler):
                 % funct,
             )
 
+        # pylint: disable-next=consider-using-f-string
         log_debug(3, "Calling %s(%s)" % (funct, params))
         if params is None:
             params = ()
@@ -710,16 +763,19 @@ class BrokerHandler(SharedHandler):
 
         return ret
 
+    # pylint: disable-next=invalid-name
     def __checkAuthSessionTokenCache(self, token, channel):
         """Authentication / authorize the channel"""
 
         log_debug(2, token, channel)
         self.clientServerId = token["X-RHN-Server-ID"]
 
+        # pylint: disable-next=invalid-name
         cachedToken = self.proxyAuth.get_client_token(self.clientServerId)
         if not cachedToken:
             # maybe client logged in through different load-balanced proxy
             # try to update the cache an try again
+            # pylint: disable-next=invalid-name
             cachedToken = self.proxyAuth.update_client_token_if_valid(
                 self.clientServerId, token
             )
@@ -734,6 +790,7 @@ class BrokerHandler(SharedHandler):
 
         self.cachedClientInfo = UserDictCase(cachedToken)
 
+        # pylint: disable-next=invalid-name
         clockSkew = self.cachedClientInfo["X-RHN-Auth-Proxy-Clock-Skew"]
         del self.cachedClientInfo["X-RHN-Auth-Proxy-Clock-Skew"]
 
@@ -741,9 +798,12 @@ class BrokerHandler(SharedHandler):
         self.authChannels = self.cachedClientInfo["X-RHN-Auth-Channels"]
         del self.cachedClientInfo["X-RHN-Auth-Channels"]
         self.cachedClientInfo["X-RHN-Server-ID"] = self.clientServerId
+        # pylint: disable-next=consider-using-f-string
         log_debug(4, "Retrieved token from cache: %s" % self.cachedClientInfo)
 
+        # pylint: disable-next=invalid-name
         authChannels = [x[0] for x in self.authChannels]
+        # pylint: disable-next=consider-using-f-string
         log_debug(4, "Auth channels: '%s'" % authChannels)
 
         # Compare the two things
@@ -753,17 +813,20 @@ class BrokerHandler(SharedHandler):
         ):
             # Maybe the client logged in through a different load-balanced
             # proxy? Check validity of the token the client passed us.
+            # pylint: disable-next=invalid-name
             updatedToken = self.proxyAuth.update_client_token_if_valid(
                 self.clientServerId, token
             )
             # fix up the updated token the same way we did above
             if updatedToken:
                 self.cachedClientInfo = UserDictCase(updatedToken)
+                # pylint: disable-next=invalid-name
                 clockSkew = self.cachedClientInfo["X-RHN-Auth-Proxy-Clock-Skew"]
                 del self.cachedClientInfo["X-RHN-Auth-Proxy-Clock-Skew"]
                 self.authChannels = self.cachedClientInfo["X-RHN-Auth-Channels"]
                 del self.cachedClientInfo["X-RHN-Auth-Channels"]
                 self.cachedClientInfo["X-RHN-Server-ID"] = self.clientServerId
+                # pylint: disable-next=consider-using-f-string
                 log_debug(4, "Retrieved token from cache: %s" % self.cachedClientInfo)
 
             if not updatedToken or not _dictEquals(
@@ -773,6 +836,7 @@ class BrokerHandler(SharedHandler):
                 raise rhnFault(33)  # Invalid session key
 
         # Check the expiration
+        # pylint: disable-next=invalid-name
         serverTime = float(token["X-RHN-Auth-Server-Time"])
         offset = float(token["X-RHN-Auth-Expire-Offset"])
         if time.time() > serverTime + offset + clockSkew:
@@ -780,14 +844,18 @@ class BrokerHandler(SharedHandler):
             raise rhnFault(34)  # Session key has expired
 
         # Only autherized channels are the ones stored in the cache.
+        # pylint: disable-next=invalid-name
         authChannels = [x[0] for x in self.authChannels]
+        # pylint: disable-next=consider-using-f-string
         log_debug(4, "Auth channels: '%s'" % authChannels)
         # Check the authorization
         if channel not in authChannels:
+            # pylint: disable-next=consider-using-f-string
             log_debug(4, "Not subscribed to channel %s; unauthorized" % channel)
             raise rhnFault(35, _("Unauthorized channel access requested."))
 
 
+# pylint: disable-next=invalid-name
 def _dictEquals(d1, d2, exceptions=None):
     """Function that compare two dictionaries, ignoring certain keys"""
     exceptions = [x.lower() for x in (exceptions or [])]

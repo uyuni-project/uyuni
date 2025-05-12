@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -74,6 +75,7 @@ except AttributeError:
 
 class CustomJsonEncoder(json.JSONEncoder):
 
+    # pylint: disable-next=arguments-renamed
     def default(self, obj):  # pylint: disable=arguments-differ,method-hidden
         if isinstance(obj, xmlrpclib.DateTime):
             return datetime.fromtimestamp(time.mktime(obj.timetuple())).strftime(
@@ -128,6 +130,7 @@ def is_interactive(options):
 
 def load_cache(cachefile):
     data = {}
+    # pylint: disable-next=consider-using-f-string
     cachefile = "{}.json".format(cachefile)
     expire = datetime.now()
 
@@ -170,7 +173,9 @@ def save_cache(cachefile, data, expire=None):
         try:
             datetime.strptime(str(expire), _CACHE_DATE_FORMAT)
         except ValueError:
+            # pylint: disable-next=raise-missing-from
             raise ValueError(
+                # pylint: disable-next=consider-using-f-string
                 "Provided expire parameter must conform to {}".format(
                     _CACHE_DATE_FORMAT
                 )
@@ -178,6 +183,7 @@ def save_cache(cachefile, data, expire=None):
 
     if expire:
         data["expire"] = expire
+    # pylint: disable-next=consider-using-f-string
     cachefile = "{}.json".format(cachefile)
 
     try:
@@ -258,6 +264,7 @@ def editor(template="", delete=False):
     if os.path.isfile(file_name) and exit_code == 0:
         try:
             # read the session (format = username:session)
+            # pylint: disable-next=unspecified-encoding
             handle = open(file_name, "r")
             contents = handle.read()
             handle.close()
@@ -288,10 +295,12 @@ def prompt_user(prompt, noblank=False, multiline=False):
                     # python 2 must call raw_input() because input()
                     # also evaluates the user input and that causes
                     # problems.
+                    # pylint: disable-next=consider-using-f-string
                     userinput = raw_input("%s " % prompt)
                 except NameError:
                     # python 3 replaced raw_input() with input()...
                     # it no longer evaulates the user input.
+                    # pylint: disable-next=consider-using-f-string
                     userinput = input("%s " % prompt)
             if noblank:
                 if userinput != "":
@@ -328,6 +337,7 @@ def parse_time_input(userinput=""):
             # YYYYMMDD
             if not match.group(4) and not match.group(5):
                 timestamp = time.strptime(
+                    # pylint: disable-next=consider-using-f-string
                     "%s%s%s" % (match.group(1), match.group(2), match.group(3)),
                     date_format,
                 )
@@ -336,6 +346,7 @@ def parse_time_input(userinput=""):
                 date_format += "%H"
 
                 timestamp = time.strptime(
+                    # pylint: disable-next=consider-using-f-string
                     "%s%s%s%s"
                     % (match.group(1), match.group(2), match.group(3), match.group(4)),
                     date_format,
@@ -345,6 +356,7 @@ def parse_time_input(userinput=""):
                 date_format += "%H%M"
 
                 timestamp = time.strptime(
+                    # pylint: disable-next=consider-using-f-string
                     "%s%s%s%s%s"
                     % (
                         match.group(1),
@@ -360,6 +372,7 @@ def parse_time_input(userinput=""):
                 date_format += "%H%M%S"
 
                 timestamp = time.strptime(
+                    # pylint: disable-next=consider-using-f-string
                     "%s%s%s%s%s%s"
                     % (
                         match.group(1),
@@ -396,6 +409,7 @@ def parse_time_input(userinput=""):
             elif re.match("d", unit, re.I):
                 delta = timedelta(days=number)
 
+            # pylint: disable-next=possibly-used-before-assignment
             timestamp = datetime.now() + delta
 
     if timestamp:
@@ -442,6 +456,7 @@ def build_package_name(package):
     Args:
       packages: A single package object.
     """
+    # pylint: disable-next=consider-using-f-string
     name = "{name}-{version}-{release}".format(
         name=package.get("name"),
         version=package.get("version"),
@@ -452,6 +467,7 @@ def build_package_name(package):
     # "name-version-release:epoch.arch" is used. Such strings can be supplied
     # by users, therefore we need to stick to it.
     if epoch:
+        # pylint: disable-next=consider-using-f-string
         name += ":{epoch}".format(epoch=epoch)
 
     arch = package.get("arch", "").strip()
@@ -459,8 +475,10 @@ def build_package_name(package):
     if arch:
         # system.listPackages uses AMD64 instead of x86_64
         arch = re.sub("amd64", "x86_64", arch.lower())
+        # pylint: disable-next=consider-using-f-string
         name += ".{arch}".format(arch=arch)
     elif arch_label:
+        # pylint: disable-next=consider-using-f-string
         name += ".{arch}".format(arch=arch_label)
 
     return name
@@ -504,6 +522,7 @@ def print_errata_summary(erratum):
         erratum["date"] = date_parts[0]
 
     print(
+        # pylint: disable-next=consider-using-f-string
         "%s  %s  %s  %s"
         % (
             erratum.get("advisory_name").ljust(14),
@@ -567,6 +586,7 @@ def config_channel_order(all_channels=None, new_channels=None):
         print(_("Current Selections"))
         print("------------------")
         for i, new_channel in enumerate(new_channels, 1):
+            # pylint: disable-next=consider-using-f-string
             print("%i. %s" % (i, new_channel))
 
         print("")
@@ -662,6 +682,7 @@ def read_file(filename):
 
         Returns:
     """
+    # pylint: disable-next=unspecified-encoding
     with open(filename, "r") as fhd:
         return fhd.read()
 
@@ -695,6 +716,7 @@ def parse_str(s, type_to=None):
             return int(s)
 
         if s in ("False", "True"):
+            # pylint: disable-next=eval-used
             return eval(s)
 
         if re.match(r"{.*}", s):
@@ -793,6 +815,7 @@ def json_dump_to_file(obj, filename):
         logging.error(_N("Could not generate json data object!"))
     else:
         try:
+            # pylint: disable-next=unspecified-encoding
             with open(filename, "w") as fdh:
                 fdh.write(json_data)
             out = True
@@ -807,6 +830,7 @@ def json_dump_to_file(obj, filename):
 def json_read_from_file(filename):
     data = None
     try:
+        # pylint: disable-next=unspecified-encoding
         with open(filename) as fhd:
             data = json.loads(fhd.read())
     except IOError as exc:

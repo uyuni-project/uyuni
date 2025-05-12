@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# pylint: disable=missing-module-docstring
 import xml.etree.ElementTree as ET
 import os
 import logging
@@ -12,6 +13,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 class CommentedTreeBuilder(ET.TreeBuilder):
+    # pylint: disable-next=arguments-renamed
     def comment(self, data):
         self.start(ET.Comment, {})
         self.data(data)
@@ -38,6 +40,7 @@ def add_trans_units(body_element, trans_units, units_to_add):
         body_element.append(item)
 
 
+# pylint: disable-next=unused-argument
 def update_trans_units(body_element, trans_units, id_new_value_dict):
     to_update = [
         tr_unit for tr_unit in trans_units if tr_unit.attrib["id"] in id_new_value_dict
@@ -60,20 +63,25 @@ def process(original_file, translation_file):
     xml_tree_original = ET.parse(original_file, parser=original_file_parser)
     translation_file_parser = ET.XMLParser(target=CommentedTreeBuilder())
     xml_tree_translation = ET.parse(translation_file, parser=translation_file_parser)
+    # pylint: disable-next=unused-variable
     original_body_element, orig_trans_units = get_trans_units(xml_tree_original)
     translation_body_element, trans_trans_units = get_trans_units(xml_tree_translation)
+    # pylint: disable-next=logging-fstring-interpolation
     logging.debug(
         f"{len(orig_trans_units)} trans_units in original file {original_file}"
     )
+    # pylint: disable-next=logging-fstring-interpolation
     logging.debug(
         f"{len(trans_trans_units)} trans_units in translation file {translation_file}"
     )
 
     org_trans_units_ids = [tr_unit.attrib["id"] for tr_unit in orig_trans_units]
     trans_units_ids = [tr_unit.attrib["id"] for tr_unit in trans_trans_units]
+    # pylint: disable-next=logging-fstring-interpolation
     logging.debug(
         f"{org_trans_units_ids} trans_units IDs in original file {original_file}"
     )
+    # pylint: disable-next=logging-fstring-interpolation
     logging.debug(
         f"{trans_units_ids} trans_units in Ids translation file {translation_file}"
     )
@@ -82,6 +90,7 @@ def process(original_file, translation_file):
     to_remove = set(trans_units_ids).difference(set(org_trans_units_ids))
     if to_remove:
         logging.info("########## DELETING ORPHAN TRANS_UNITS ##########")
+        # pylint: disable-next=logging-fstring-interpolation
         logging.info(
             f"Trans-units with these Ids : {to_remove}, will be deleted from the {translation_file}"
         )
@@ -92,6 +101,7 @@ def process(original_file, translation_file):
     to_add = set(org_trans_units_ids).difference(set(trans_units_ids))
     if to_add:
         logging.info("########## ADDING MISSING TRANS_UNITS ##########")
+        # pylint: disable-next=logging-fstring-interpolation
         logging.info(
             f"Trans-units with these Ids : {to_add}, will be added to the {translation_file}"
         )
@@ -104,9 +114,11 @@ def process(original_file, translation_file):
     # Get again so we get the updated list after deletion/addition
     trans_trans_units = list(translation_body_element.findall(".//d:trans-unit", ns))
 
+    # pylint: disable-next=logging-fstring-interpolation
     logging.debug(
         f"{len(orig_trans_units)} trans_units in original file {original_file}"
     )
+    # pylint: disable-next=logging-fstring-interpolation
     logging.debug(
         f"{len(trans_trans_units)} trans_units in original file {original_file}"
     )
@@ -124,18 +136,22 @@ def process(original_file, translation_file):
             for k, _ in set(org_trans_units_srcs.items())
             - set(trans_units_srcs.items())
         }
+        # pylint: disable-next=logging-fstring-interpolation
         logging.info(
             f" These (id,new_source_value) -> {to_update}, will be updated in the {translation_file} "
         )
         update_trans_units(translation_body_element, trans_trans_units, to_update)
     else:
+        # pylint: disable-next=logging-not-lazy
         logging.info(
             (
+                # pylint: disable-next=consider-using-f-string
                 "Something went wrong, this should not have happend! Count of original units: "
                 "%d, count of translation units: %d."
                 % (len(orig_trans_units), len(trans_trans_units))
             )
         )
+        # pylint: disable-next=broad-exception-raised
         raise Exception("Mismatching orig/trans lengths")
     for t in list(translation_body_element.findall("d:trans-unit", ns)):
         if not t.get("{http://www.w3.org/XML/1998/namespace}space"):
@@ -173,5 +189,6 @@ for translation in files:
         and translation != "StringResource_en_US.xml"
     ):
         original = "StringResource_en_US.xml"
+        # pylint: disable-next=logging-not-lazy
         logging.info("\nprocessing " + str(translation))
         process(original, translation)

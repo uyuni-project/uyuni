@@ -2,10 +2,12 @@
 Unit tests for the container_runtime module
 """
 
+# pylint: disable-next=unused-import
 import os
 
 from ..modules import container_runtime
 
+# pylint: disable-next=unused-import
 from unittest.mock import patch, mock_open, MagicMock
 import pytest
 
@@ -33,6 +35,7 @@ def test_get_container_runtime(
     mock_exists = MagicMock(
         side_effect=lambda path: mock_exists_return.get(path, False)
     )
+    # pylint: disable-next=protected-access
     container_runtime._read_file = mock_read_file
     with patch("os.path.exists", mock_exists):
         assert container_runtime.get_container_runtime() == expected_result
@@ -49,10 +52,12 @@ def test_get_container_runtime(
 def test_detect_container_files(file_name, expected_result):
     mock_exists = MagicMock(side_effect=lambda path: path == file_name)
     with patch("os.path.exists", mock_exists):
+        # pylint: disable-next=protected-access
         assert container_runtime._detect_container_files() == expected_result
 
 
 def test_detect_container_files_not_found():
     mock_exists = MagicMock(side_effect=lambda path: False)
     with patch("os.path.exists", mock_exists):
+        # pylint: disable-next=protected-access
         assert container_runtime._detect_container_files() == "not-found"

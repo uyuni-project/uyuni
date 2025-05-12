@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -86,6 +87,7 @@ def do_configchannel_listsystems(self, args):
         return 1
 
     arg_parser = get_argument_parser()
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -122,6 +124,7 @@ def do_configchannel_listgroups(self, args):
         return 1
 
     arg_parser = get_argument_parser()
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -154,6 +157,7 @@ def complete_configchannel_listfiles(self, text, line, beg, end):
 def do_configchannel_listfiles(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -194,6 +198,7 @@ def complete_configchannel_forcedeploy(self, text, line, beg, end):
 def do_configchannel_forcedeploy(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args or len(args) > 1:
@@ -250,6 +255,7 @@ def complete_configchannel_filedetails(self, text, line, beg, end):
 def do_configchannel_filedetails(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not 4 > len(args) > 1:
@@ -344,6 +350,7 @@ def complete_configchannel_backup(self, text, line, beg, end):
 def do_configchannel_backup(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 1:
@@ -378,6 +385,7 @@ def do_configchannel_backup(self, args):
 
     fh_path = os.path.join(outputpath_base, ".metainfo")
     try:
+        # pylint: disable-next=unspecified-encoding
         fh = open(fh_path, "w")
     except IOError as exc:
         logging.error(_N('Could not create "%s" file: %s'), fh_path, str(exc))
@@ -387,19 +395,29 @@ def do_configchannel_backup(self, args):
         dumpfile = outputpath_base + details.get("path")
         dumpdir = dumpfile
         print(_("Output Path:   %s") % dumpfile)
+        # pylint: disable-next=consider-using-f-string
         fh.write("[%s]\n" % details.get("path"))
+        # pylint: disable-next=consider-using-f-string
         fh.write("type = %s\n" % details.get("type"))
+        # pylint: disable-next=consider-using-f-string
         fh.write("revision = %s\n" % details.get("revision"))
+        # pylint: disable-next=consider-using-f-string
         fh.write("creation = %s\n" % details.get("creation"))
+        # pylint: disable-next=consider-using-f-string
         fh.write("modified = %s\n" % details.get("modified"))
 
         if details.get("type") == "symlink":
+            # pylint: disable-next=consider-using-f-string
             fh.write("target_path = %s\n" % details.get("target_path"))
         else:
+            # pylint: disable-next=consider-using-f-string
             fh.write("owner = %s\n" % details.get("owner"))
+            # pylint: disable-next=consider-using-f-string
             fh.write("group = %s\n" % details.get("group"))
+            # pylint: disable-next=consider-using-f-string
             fh.write("permissions_mode = %s\n" % details.get("permissions_mode"))
 
+        # pylint: disable-next=consider-using-f-string
         fh.write("selinux_ctx = %s\n" % details.get("selinux_ctx"))
 
         if details.get("type") in ("file", "sls"):
@@ -409,8 +427,11 @@ def do_configchannel_backup(self, args):
             os.makedirs(dumpdir)
 
         if details.get("type") in ("file", "sls"):
+            # pylint: disable-next=consider-using-f-string
             fh.write("sha256 = %s\n" % details.get("sha256"))
+            # pylint: disable-next=consider-using-f-string
             fh.write("binary = %s\n" % details.get("binary"))
+            # pylint: disable-next=unspecified-encoding
             of = open(dumpfile, "w")
             of.write(details.get("contents") or "")
             of.close()
@@ -437,6 +458,7 @@ def complete_configchannel_details(self, text, line, beg, end):
 def do_configchannel_details(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -548,6 +570,7 @@ def complete_configchannel_delete(self, text, line, beg, end):
 def do_configchannel_delete(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -557,7 +580,9 @@ def do_configchannel_delete(self, args):
     # allow globbing of configchannel names
     channels = filter_results(self.do_configchannel_list("", True), args)
     logging.debug(
-        "configchannel_delete called with args %s, channels=%s" % (args, channels)
+        # pylint: disable-next=consider-using-f-string
+        "configchannel_delete called with args %s, channels=%s"
+        % (args, channels)
     )
 
     if not channels:
@@ -679,6 +704,7 @@ def configfile_getinfo(self, args, options, file_info=None, interactive=False):
                     else:
                         template = ""
 
+                    # pylint: disable-next=unused-variable
                     (contents, _ignore) = editor(template=template, delete=True)
     else:
         if not options.path:
@@ -871,6 +897,7 @@ def do_configchannel_addfile(self, args, update_path=""):
                 self.session, options.channel, [options.path]
             )
         except xmlrpclib.Fault:
+            # pylint: disable-next=consider-using-f-string
             logging.debug("No existing file information found for %s" % options.path)
             file_info = None
 
@@ -996,6 +1023,7 @@ def do_configchannel_updateinitsls(self, args, update_path=""):
                 template = contents
             else:
                 template = ""
+            # pylint: disable-next=unused-variable
             (contents, _ignore) = editor(template=template, delete=True)
 
         revision_input = prompt_user(_("Revision [next]:"))
@@ -1079,6 +1107,7 @@ def complete_configchannel_removefiles(self, text, line, beg, end):
 def do_configchannel_removefiles(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -1121,6 +1150,7 @@ def complete_configchannel_verifyfile(self, text, line, beg, end):
 def do_configchannel_verifyfile(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 3:
@@ -1188,6 +1218,7 @@ def export_configchannel_getdetails(self, channel):
     # we can iterate over each file, then we just error on individual files
     # instead of failing to export anything at all...
     for p in paths:
+        # pylint: disable-next=consider-using-f-string
         logging.debug("Found file %s for %s" % (p, channel))
         try:
             pinfo = self.client.configchannel.lookupFileInfo(self.session, channel, [p])
@@ -1314,6 +1345,7 @@ def do_configchannel_export(self, args):
             # If we are exporting exactly one cc, we default to ccname.json
             # otherwise, generic ccs.json name
             if len(ccs) == 1:
+                # pylint: disable-next=consider-using-f-string
                 filename = "%s.json" % ccs[0]
             else:
                 filename = "ccs.json"
@@ -1350,6 +1382,7 @@ def help_configchannel_import(self):
 def do_configchannel_import(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1408,6 +1441,7 @@ def import_configchannel_fromdetails(self, ccdetails):
             ret = None
             if filedetails["type"] == "symlink":
                 del filedetails["type"]
+                # pylint: disable-next=consider-using-f-string
                 logging.debug("Adding symlink %s" % filedetails)
                 ret = self.client.configchannel.createOrUpdateSymlink(
                     self.session, ccdetails["label"], path, filedetails
@@ -1453,6 +1487,7 @@ def import_configchannel_fromdetails(self, ccdetails):
                         filedetails["contents"] = filedetails["contents"].decode("utf8")
                         filedetails["contents_enc64"] = True
 
+                # pylint: disable-next=consider-using-f-string
                 logging.debug("Creating %s %s" % (filedetails["type"], filedetails))
                 if "type" in filedetails:
                     del filedetails["type"]
@@ -1461,6 +1496,7 @@ def import_configchannel_fromdetails(self, ccdetails):
                     self.session, ccdetails["label"], path, isdir, filedetails
                 )
             if ret is not None:
+                # pylint: disable-next=consider-using-f-string
                 logging.debug("Added file %s to %s" % (ret["path"], ccdetails["name"]))
             else:
                 logging.error(
@@ -1545,6 +1581,7 @@ def do_configchannel_clone(self, args):
         logging.error(_N("No suitable channels to clone has been found."))
 
     for cc in ccs:
+        # pylint: disable-next=consider-using-f-string
         logging.debug("Cloning %s" % cc)
         ccdetails = self.export_configchannel_getdetails(cc)
 
@@ -1659,6 +1696,7 @@ def complete_configchannel_diff(self, text, line, beg, end):
 def do_configchannel_diff(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not 1 <= len(args) < 3:
@@ -1715,6 +1753,7 @@ def complete_configchannel_sync(self, text, line, beg, end):
 def do_configchannel_sync(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not 1 <= len(args) < 3:

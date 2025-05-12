@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2014--2016 Red Hat, Inc.
 #
@@ -86,6 +87,7 @@ def parse_args():
 
 
 def read_username():
+    # pylint: disable-next=unspecified-encoding
     tty = open("/dev/tty", "r+")
     tty.write("Username: ")
     tty.close()
@@ -187,6 +189,7 @@ if __name__ == "__main__":
             time.strptime(options.date, strftime_format)
         )
     except ValueError as e:
+        # pylint: disable-next=consider-using-f-string
         sys.stderr.write("Error processing the specified date: %s\n" % e)
         sys.exit(1)
 
@@ -195,6 +198,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     (client, key) = (None, None)
+    # pylint: disable-next=consider-using-f-string
     client = xmlrpclib.Server("https://%s/rpc/api" % options.hostname, verbose=0)
 
     try:
@@ -250,6 +254,7 @@ if __name__ == "__main__":
             sys.stderr.write(broken_systems_msg02)
 
         for system_id in broken_systems:
+            # pylint: disable-next=consider-using-f-string
             sys.stderr.write("\t%s\n" % system_id)
 
         if options.install_packages:
@@ -264,6 +269,7 @@ if __name__ == "__main__":
     if options.output == "-":
         csv_file = sys.stdout
     else:
+        # pylint: disable-next=unspecified-encoding
         csv_file = open(options.output, "w+")
 
     csv_writer = csv.writer(csv_file, lineterminator="\n")
@@ -281,6 +287,7 @@ if __name__ == "__main__":
 
             pkg_string = None
             if pkg["epoch"]:
+                # pylint: disable-next=consider-using-f-string
                 pkg_string = "%s-%s:%s-%s.%s" % (
                     pkg["name"],
                     pkg["epoch"],
@@ -289,6 +296,7 @@ if __name__ == "__main__":
                     pkg["arch"],
                 )
             else:
+                # pylint: disable-next=consider-using-f-string
                 pkg_string = "%s-%s-%s.%s" % (
                     pkg["name"],
                     pkg["version"],
@@ -300,6 +308,7 @@ if __name__ == "__main__":
                 [
                     action_id,
                     i["id"],
+                    # pylint: disable-next=consider-using-f-string
                     "Installation of %s package on system %s" % (pkg_string, i["id"]),
                     options.date,
                 ]
@@ -314,6 +323,7 @@ if __name__ == "__main__":
                 )
             except xmlrpclib.Fault as e:
                 sys.stderr.write(
+                    # pylint: disable-next=consider-using-f-string
                     "Error scheduling certificate update on %s: %s\n"
                     % (system_id, e.faultString)
                 )
@@ -323,6 +333,7 @@ if __name__ == "__main__":
                 [
                     action_id,
                     system_id,
+                    # pylint: disable-next=consider-using-f-string
                     "Certificate update on %s" % system_id,
                     options.date,
                 ]

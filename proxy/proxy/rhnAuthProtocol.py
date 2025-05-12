@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 # Communication routines for sockets connecting to the auth token cache daemon
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
@@ -31,11 +32,14 @@ class CommunicationError(Exception):
 
     def __init__(self, faultCode, faultString, *params):
         Exception.__init__(self)
+        # pylint: disable-next=invalid-name
         self.faultCode = faultCode
+        # pylint: disable-next=invalid-name
         self.faultString = faultString
         self.args = params
 
 
+# pylint: disable-next=invalid-name
 def readSocket(fd, n):
     """Reads exactly n bytes from the file descriptor fd (if possible)"""
     result = ""  # The result
@@ -69,17 +73,20 @@ def recv(rfile):
     buff = readSocket(rfile, n)
     if len(buff) != n:
         # Incomplete read
+        # pylint: disable-next=consider-using-f-string
         raise CommunicationError(0, "Expected %d bytes; got only %d" % (n, len(buff)))
 
     (n,) = struct.unpack("!L", buff)
 
     if n > 65536:
         # The buffer to be read is too big
+        # pylint: disable-next=consider-using-f-string
         raise CommunicationError(1, "Block too big: %s" % len(buff))
 
     buff = readSocket(rfile, n)
     if len(buff) != n:
         # Incomplete read
+        # pylint: disable-next=consider-using-f-string
         raise CommunicationError(0, "Expected %d bytes; got only %d" % (n, len(buff)))
 
     return loads(buff)

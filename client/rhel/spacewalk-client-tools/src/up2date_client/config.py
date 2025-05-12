@@ -69,6 +69,7 @@ class ConfigFile:
 
     def __init__(self, filename=None):
         self.dict = {}
+        # pylint: disable-next=invalid-name
         self.fileName = filename
         if self.fileName:
             self.load()
@@ -76,12 +77,14 @@ class ConfigFile:
     def load(self, filename=None):
         if filename:
             self.fileName = filename
+        # pylint: disable-next=singleton-comparison
         if self.fileName == None:
             return
         if not os.access(self.fileName, os.R_OK):
             #            print("warning: can't access %s" % self.fileName)
             return
 
+        # pylint: disable-next=unspecified-encoding
         f = open(self.fileName, "r")
 
         multiline = ""
@@ -146,6 +149,7 @@ class ConfigFile:
         f.close()
 
     def save(self):
+        # pylint: disable-next=singleton-comparison
         if self.fileName == None:
             return
 
@@ -158,22 +162,28 @@ class ConfigFile:
         # and fails (see #130391)
         if not os.access(self.fileName, os.R_OK):
             if not os.access(os.path.dirname(self.fileName), os.R_OK):
+                # pylint: disable-next=consider-using-f-string
                 print(_("%s was not found" % os.path.dirname(self.fileName)))
                 return
 
+        # pylint: disable-next=unspecified-encoding
         f = open(self.fileName + ".new", "w")
         os.chmod(self.fileName + ".new", int("0644", 8))
 
         f.write("# Automatically generated Update Agent " "config file, do not edit.\n")
         f.write("# Format: 1.0\n")
         f.write("")
+        # pylint: disable-next=consider-using-dict-items,consider-iterating-dictionary
         for key in self.dict.keys():
             (comment, value) = self.dict[key]
+            # pylint: disable-next=consider-using-f-string
             f.write(sstr("%s[comment]=%s\n" % (key, comment)))
+            # pylint: disable-next=unidiomatic-typecheck
             if type(value) != type([]):
                 value = [value]
             if key in FileOptions:
                 value = map(os.path.abspath, value)
+            # pylint: disable-next=consider-using-f-string
             f.write(sstr("%s=%s\n" % (key, ";".join(map(str, value)))))
             f.write("\n")
         f.close()
@@ -193,6 +203,7 @@ class ConfigFile:
     def values(self):
         return [a[1] for a in self.dict.values()]
 
+    # pylint: disable-next=redefined-builtin
     def update(self, dict):
         self.dict.update(dict)
 
@@ -219,6 +230,7 @@ class ConfigFile:
 
 # a superclass for the ConfigFile that also handles runtime-only
 # config values
+# pylint: disable-next=missing-class-docstring
 class Config:
     def __init__(self, filename=None):
         self.stored = ConfigFile()
@@ -250,12 +262,14 @@ class Config:
     def values(self):
         ret = []
         for k in self.keys():
+            # pylint: disable-next=unnecessary-dunder-call
             ret.append(self.__getitem__(k))
         return ret
 
     def items(self):
         ret = []
         for k in self.keys():
+            # pylint: disable-next=unnecessary-dunder-call
             ret.append((k, self.__getitem__(k)))
         return ret
 
@@ -298,16 +312,20 @@ class Config:
             del self.runtime[name]
 
 
+# pylint: disable-next=invalid-name
 def getProxySetting():
     """returns proxy string in format hostname:port
     hostname is converted to Punycode (RFC3492) if needed
     """
+    # pylint: disable-next=redefined-outer-name
     cfg = initUp2dateConfig()
     proxy = None
+    # pylint: disable-next=invalid-name
     proxyHost = cfg["httpProxy"]
 
     if proxyHost:
         if proxyHost[:7] == "http://":
+            # pylint: disable-next=invalid-name
             proxyHost = proxyHost[7:]
         parts = proxyHost.split(":")
         parts[0] = str(idn_ascii_to_puny(parts[0]))
@@ -328,40 +346,51 @@ def convert_url_from_puny(url):
     return ustr(urlunsplit((s[0], idn_puny_to_unicode(s[1]), s[2], s[3], s[4])))
 
 
+# pylint: disable-next=invalid-name
 def getServerlURL():
     """return list of serverURL from config
     Note: in config may be one value or more values, but this
     function always return list
     """
+    # pylint: disable-next=redefined-outer-name
     cfg = initUp2dateConfig()
     # serverURL may be a list in the config file, so by default, grab the
     # first element.
+    # pylint: disable-next=unidiomatic-typecheck
     if type(cfg["serverURL"]) == type([]):
         return [convert_url_to_puny(i) for i in cfg["serverURL"]]
     else:
         return [convert_url_to_puny(cfg["serverURL"])]
 
 
+# pylint: disable-next=invalid-name,invalid-name
 def setServerURL(serverURL):
     """Set serverURL in config"""
+    # pylint: disable-next=redefined-outer-name
     cfg = initUp2dateConfig()
     cfg.set("serverURL", serverURL)
 
 
+# pylint: disable-next=invalid-name,invalid-name
 def setSSLCACert(sslCACert):
     """Set sslCACert in config"""
+    # pylint: disable-next=redefined-outer-name
     cfg = initUp2dateConfig()
     cfg.set("sslCACert", sslCACert)
 
 
+# pylint: disable-next=invalid-name
 def initUp2dateConfig(cfg_file="/etc/sysconfig/rhn/up2date"):
     """This function is the right way to get at the up2date config."""
+    # pylint: disable-next=global-variable-undefined
     global cfg
     try:
+        # pylint: disable-next=possibly-used-before-assignment
         cfg
     except NameError:
         cfg = None
 
+    # pylint: disable-next=singleton-comparison
     if cfg == None:
         cfg = Config(cfg_file)
         cfg["isatty"] = False

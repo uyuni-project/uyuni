@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# pylint: disable=missing-module-docstring,invalid-name
 # -*- coding: utf-8 -*-
 
 import sys
@@ -14,6 +15,7 @@ try:
     from spacewalk.common.rhnConfig import CFG, initCFG
     from spacewalk.server import rhnSQL
     from spacewalk.server.rhnPackage import unlink_package_file
+# pylint: disable-next=bare-except
 except:
     _LIBPATH = "/usr/share/rhn"
     # add to the path if need be
@@ -39,7 +41,9 @@ report = {}
 
 
 def is_sha256_capable():
+    # pylint: disable-next=import-outside-toplevel
     import rpm
+    # pylint: disable-next=import-outside-toplevel
     from rhn.stringutils import sstr
 
     ts = rpm.TransactionSet()
@@ -75,6 +79,7 @@ def package_find_by_src_id():
     return query
 
 
+# pylint: disable-next=redefined-outer-name
 def package_query(options, bind_path=False):
     query = """select %s
                  from %s
@@ -97,6 +102,7 @@ def package_query(options, bind_path=False):
     return query % (columns, tables)
 
 
+# pylint: disable-next=redefined-outer-name
 def check_db_vs_disk(options):
     for k in list(report_msg.keys()):
         report[k] = 0
@@ -149,12 +155,15 @@ def check_disk_exists(abs_path):
     return not os.path.isfile(abs_path)
 
 
+# pylint: disable-next=redefined-outer-name
 def not_on_disk(row, abs_path, options):
     if options.remove:
+        # pylint: disable-next=consider-using-f-string
         log(0, "Removed package path from db: %s" % row["path"])
         rhnSQL.execute("update rhnPackage set path = NULL where id = :id", id=row["id"])
         rhnSQL.commit()
     else:
+        # pylint: disable-next=consider-using-f-string
         log(0, "File missing: %s" % abs_path)
 
 
@@ -162,6 +171,7 @@ def check_disk_size(abs_path, size):
     file_size = os.stat(abs_path)[stat.ST_SIZE]
     ret = 0
     if file_size != size:
+        # pylint: disable-next=consider-using-f-string
         log(0, "File size mismatch: %s (%s vs. %s)" % (abs_path, size, file_size))
         ret = 1
     return ret
@@ -171,6 +181,7 @@ def check_disk_nevrao(abs_path, row, restore=None):
     file = {}
     try:
         (
+            # pylint: disable-next=invalid-name,unused-variable
             _redhat_,
             file["org_id"],
             file["checksum_prefix"],
@@ -181,6 +192,7 @@ def check_disk_nevrao(abs_path, row, restore=None):
             file["basename"],
         ) = row["path"].split("/")
     except ValueError:
+        # pylint: disable-next=consider-using-f-string
         log(0, "File path %s mismatch structure" % row["path"])
         return 1
     except AttributeError:
@@ -205,6 +217,7 @@ def check_disk_nevrao(abs_path, row, restore=None):
     else:
         row["evr"] = ""
     row["evr"] += row["version"] + "-" + row["release"]
+    # pylint: disable-next=consider-using-f-string
     row["basename"] = "%s-%s-%s.%s.%s" % (
         row["name"],
         row["version"],
@@ -224,6 +237,7 @@ def check_disk_nevrao(abs_path, row, restore=None):
     ):
         if file[key] != row[key]:
             if is_orphaned_rpm(row["id"]):
+                # pylint: disable-next=inconsistent-quotes
                 log(0, f"{row['basename']} is orphaned, consider removing it")
             else:
                 log(
@@ -231,12 +245,14 @@ def check_disk_nevrao(abs_path, row, restore=None):
                     f"File path mismatch: {abs_path} ({key}: {row[key]} vs. {file[key]})",
                 )
             if restore:
+                # pylint: disable-next=consider-using-f-string
                 log(2, "Beginning file path restoration: %s" % abs_path)
                 return restore_file_path(file, row)
             ret = 1
     return ret
 
 
+# pylint: disable-next=unused-argument
 def restore_file_path(file, row):
     prefix = CFG.MOUNT_POINT + "/"
     new_path = (
@@ -266,6 +282,7 @@ def restore_file_path(file, row):
     ):
         backup_path = tempfile.mkdtemp() + new_path
         os.makedirs(backup_path.rsplit("/", 1)[0])
+        # pylint: disable-next=consider-using-f-string
         log(0, "Target file path exists, moving to: %s" % backup_path)
         shutil.move(new_path, backup_path)
     elif not row["path"]:
@@ -277,6 +294,7 @@ def restore_file_path(file, row):
         os.makedirs(new_path.rsplit("/", 1)[0])
     except OSError as e:
         if e.errno != 17:  # something broke up
+            # pylint: disable-next=consider-using-f-string
             log(0, "File path restoration failed: %s" % row["path"])
             return 1
         else:
@@ -285,7 +303,9 @@ def restore_file_path(file, row):
         if not os.path.isfile(new_path):
             shutil.move(backup_path, new_path)
     except OSError:
+        # pylint: disable-next=consider-using-f-string
         log(0, "File path restoration failed, rolling back: %s" % row["path"])
+        # pylint: disable-next=singleton-comparison
         if cleanup == True:
             try:
                 os.removedirs(new_path.rsplit("/", 1)[0])
@@ -293,6 +313,7 @@ def restore_file_path(file, row):
                 if e.errno != 39:
                     log(
                         0,
+                        # pylint: disable-next=consider-using-f-string
                         "Could not rollback file path restoration: %s" % row["path"]
                         or "",
                     )
@@ -310,11 +331,13 @@ def restore_file_path(file, row):
         if e.errno == 2:
             log(
                 2,
+                # pylint: disable-next=consider-using-f-string
                 "File %s%s was removed by someone else but transaction has been successfully completed"
                 % (prefix, row["path"]),
             )
         elif e.errno != 39:
             log(4, "Unexpected error, computer is going to self destruct")
+    # pylint: disable-next=consider-using-f-string
     log(0, "File successfully restored, new file path: %s" % new_path)
     return 0
 
@@ -329,6 +352,7 @@ def delete_package_entry(row):
         h.execute()
         rhnSQL.commit()
         log(0, "Successfully removed DB package entry without path")
+    # pylint: disable-next=broad-exception-caught
     except Exception as e:
         log(0, "Failed to remove DB package entry: ", e)
         return 1
@@ -344,16 +368,20 @@ def check_disk_checksum(abs_path, checksum_type, db_checksum):
         h.update(fp.read())
         file_checksum = h.hexdigest()
         fp.close()
+    # pylint: disable-next=broad-exception-caught
     except Exception as exc:
+        # pylint: disable-next=consider-using-f-string
         log(0, "Unable to calculate checksum: {}".format(str(exc)))
         ret = 1
 
     if file_checksum is not None and file_checksum != db_checksum:
         log(
             0,
+            # pylint: disable-next=consider-using-f-string
             "File checksum mismatch: %s (%s: %s vs. %s)"
             % (abs_path, checksum_type, db_checksum, file_checksum),
         )
+        # pylint: disable-next=possibly-used-before-assignment
         if options.remove_mismatch:
             remove_mismatch(abs_path, options)
         ret = 1
@@ -361,11 +389,13 @@ def check_disk_checksum(abs_path, checksum_type, db_checksum):
     return ret
 
 
+# pylint: disable-next=unused-argument,unused-argument
 def check_disk_vs_db(disk_content=None, db_content=None):
     for k in list(report_msg.keys()):
         report[k] = 0
     query = package_query(options, bind_path=True)
     h = rhnSQL.prepare(query)
+    # pylint: disable-next=unused-variable
     for root, dirs, files in os.walk(os.path.join(CFG.MOUNT_POINT, "packages")):
         rel_root = root[len(CFG.MOUNT_POINT) + 1 :]
         for f in files:
@@ -445,29 +475,37 @@ def is_orphaned_srpm(path, file):
         h.execute(id=row["source_rpm_id"])
         row = h.fetchone_dict()
         if not row:
+            # pylint: disable-next=consider-using-f-string
             log(0, "SRPM without matching RPM in db: %s" % (path))
             return True
 
     return False
 
 
+# pylint: disable-next=redefined-outer-name
 def not_in_db(path, options):
     if options.remove:
         if is_srpm(path):
+            # pylint: disable-next=consider-using-f-string
             log(0, "Removed SRPM without matching RPM in db: %s" % (path))
         else:
+            # pylint: disable-next=consider-using-f-string
             log(0, "Removed file missing in db: %s" % (path))
         unlink_package_file(path)
     else:
         if not is_srpm(path):
+            # pylint: disable-next=consider-using-f-string
             log(0, "File missing in db: %s" % (path))
 
 
+# pylint: disable-next=redefined-outer-name,unused-argument
 def remove_mismatch(path, options):
+    # pylint: disable-next=consider-using-f-string
     log(0, "Removed file because checksum does not match: %s" % (path))
     unlink_package_file(path)
 
 
+# pylint: disable-next=redefined-outer-name
 def log(level, *args):
     log_debug(level, *args)
     verbose = options.verbose

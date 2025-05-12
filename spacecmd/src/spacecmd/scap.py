@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -57,6 +58,7 @@ def complete_system_scap_listxccdfscans(self, text, line, beg, end):
 def do_scap_listxccdfscans(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -114,6 +116,7 @@ def help_scap_getxccdfscanruleresults(self):
 def do_scap_getxccdfscanruleresults(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -156,6 +159,7 @@ def help_scap_getxccdfscandetails(self):
 def do_scap_getxccdfscandetails(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -231,6 +235,7 @@ def help_scap_schedulexccdfscan(self):
 def do_scap_schedulexccdfscan(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 3:

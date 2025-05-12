@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 #
 
 import time
@@ -29,6 +30,7 @@ class Log:
         Eg: log_me("I am a banana.")
 
         """
+        # pylint: disable-next=consider-using-f-string
         self.log_info = "[%s] %s" % (time.ctime(time.time()), self.app)
         s = ""
         for i in args:
@@ -41,36 +43,45 @@ class Log:
         self.write_log(s)
 
     def trace_me(self):
+        # pylint: disable-next=consider-using-f-string
         self.log_info = "[%s] %s" % (time.ctime(time.time()), self.app)
         x = traceback.extract_stack()
         msg = "".join(traceback.format_list(x))
         self.write_log(msg)
 
     def log_exception(self, logtype, value, tb):
+        # pylint: disable-next=consider-using-f-string
         self.log_info = "[%s] %s" % (time.ctime(time.time()), self.app)
         output = ["\n"]  # Accumulate the strings in a list
         output.append("Traceback (most recent call last):\n")
         output = output + traceback.format_list(traceback.extract_tb(tb))
+        # pylint: disable-next=consider-using-f-string
         output.append("%s: %s\n" % (logtype, value))
         self.write_log("".join(output))
 
     def write_log(self, s):
 
         log_name = self.cfg["logFile"] or "/var/log/up2date"
+        # pylint: disable-next=unspecified-encoding
         log_file = open(log_name, "a")
+        # pylint: disable-next=consider-using-f-string
         msg = "%s %s\n" % (ustr(self.log_info), ustr(s))
         log_file.write(sstr(msg))
         log_file.flush()
         log_file.close()
 
 
+# pylint: disable-next=invalid-name
 def initLog():
+    # pylint: disable-next=global-variable-undefined
     global log
     try:
+        # pylint: disable-next=self-assigning-variable
         log = log
     except NameError:
         log = None
 
+    # pylint: disable-next=singleton-comparison
     if log == None:
         log = Log()
 

@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -173,6 +174,7 @@ def complete_cryptokey_delete(self, text, line, beg, end):
 def do_cryptokey_delete(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=invalid-name,unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -181,6 +183,7 @@ def do_cryptokey_delete(self, args):
 
     # allow globbing of cryptokey names
     keys = filter_results(self.do_cryptokey_list("", True), args)
+    # pylint: disable-next=consider-using-f-string
     logging.debug("cryptokey_delete called with args %s, keys=%s" % (args, keys))
 
     if not keys:
@@ -233,6 +236,7 @@ def complete_cryptokey_details(self, text, line, beg, end):
 def do_cryptokey_details(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=invalid-name,unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -241,6 +245,7 @@ def do_cryptokey_details(self, args):
 
     # allow globbing of cryptokey names
     keys = filter_results(self.do_cryptokey_list("", True), args)
+    # pylint: disable-next=consider-using-f-string
     logging.debug("cryptokey_details called with args %s, keys=%s" % (args, keys))
 
     if not keys:

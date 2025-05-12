@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -44,6 +45,7 @@ class ArchiveTest(unittest.TestCase):
         if not os.path.isdir(TEST_DIR):
             os.makedirs(TEST_DIR)
 
+        # pylint: disable-next=unspecified-encoding
         fd = open(TEST_FILE_PATH, "w")
         fd.write(TEST_CONTENTS)
         fd.close()
