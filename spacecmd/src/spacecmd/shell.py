@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -57,6 +58,7 @@ class UnknownCallException(Exception):
         Exception.__init__(self)
 
 
+# pylint: disable-next=missing-class-docstring
 class SpacewalkShell(Cmd):
     __module_list = [
         "activationkey",
@@ -87,6 +89,7 @@ class SpacewalkShell(Cmd):
 
     # a SyntaxError is thrown if we don't wrap this in an 'exec'
     for module in __module_list:
+        # pylint: disable-next=consider-using-f-string
         exec("from spacecmd.%s import *" % module)
 
     # maximum length of history file
@@ -99,6 +102,7 @@ class SpacewalkShell(Cmd):
     current_line = ""
 
     # do nothing on an empty line
+    # pylint: disable-next=unnecessary-lambda-assignment
     emptyline = lambda self: None
 
     def __init__(self, options, conf_dir, config_parser):
@@ -192,6 +196,7 @@ class SpacewalkShell(Cmd):
 
         # print(the help message for a command if the user passed --help)
         if "--help" in parts or "-h" in parts:
+            # pylint: disable-next=consider-using-f-string
             return "help %s" % command
 
         # should we look for an item in the history?
@@ -222,6 +227,7 @@ class SpacewalkShell(Cmd):
                 if line:
                     history_match = True
                 else:
+                    # pylint: disable-next=broad-exception-raised
                     raise Exception
             except IndexError:
                 pass
@@ -244,6 +250,7 @@ class SpacewalkShell(Cmd):
         if history_match:
             if parts[1:]:
                 for arg in parts[1:]:
+                    # pylint: disable-next=consider-using-f-string
                     line += " '%s'" % arg
 
             readline.add_history(line)
@@ -255,6 +262,7 @@ class SpacewalkShell(Cmd):
 
     # update the prompt with the SSM size
     # pylint: disable=arguments-differ
+    # pylint: disable-next=arguments-renamed,arguments-renamed
     def postcmd(self, cmdresult, cmd):
         logging.debug("command=%s, return_value=%s", cmd, repr(cmdresult))
         self.prompt = re.sub("##", str(len(self.ssm)), self.prompt_template)

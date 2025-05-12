@@ -4,7 +4,11 @@ Test suite for Scap commands at spacecmd.
 """
 
 from unittest.mock import MagicMock, patch
+
+# pylint: disable-next=unused-import
 from helpers import shell, assert_expect
+
+# pylint: disable-next=unused-import
 import pytest
 import spacecmd.scap
 
@@ -14,6 +18,7 @@ class TestScap:
     Test suite for scap.
     """
 
+    # pylint: disable-next=redefined-outer-name
     def test_scap_listxccdfscans_noarg(self, shell):
         """
         Test calling scap listxccdfscans without arguments.
@@ -38,6 +43,7 @@ class TestScap:
         assert not shell.client.system.scap.listXccdfScans.called
         assert not mprint.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_scap_listxccdfscans_ssm_arg(self, shell):
         """
         Test calling scap listxccdfscans with ssm argument.
@@ -64,6 +70,7 @@ class TestScap:
         assert not shell.client.system.scap.listXccdfScans.called
         assert not mprint.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_scap_listxccdfscans_system_arg(self, shell):
         """
         Test calling scap listxccdfscans with a system name argument.
@@ -134,6 +141,7 @@ class TestScap:
         ]
         assert_expect(mprint.call_args_list, *expectations)
 
+    # pylint: disable-next=redefined-outer-name
     def test_scap_getxccdfscanruleresults_noargs(self, shell):
         """
         Test getxccdfscanruleresults without args
@@ -151,6 +159,7 @@ class TestScap:
         assert not shell.client.system.scap.getXccdfScanRuleResults.called
         assert not mprint.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_scap_getxccdfscanruleresults_xids_no_rules(self, shell):
         """
         Test getxccdfscanruleresults with XIDs but no rules
@@ -181,6 +190,7 @@ class TestScap:
         ]
         assert_expect(mprint.call_args_list, *expectations)
 
+    # pylint: disable-next=redefined-outer-name
     def test_scap_getxccdfscanruleresults_xids_with_rules(self, shell):
         """
         Test getxccdfscanruleresults with XIDs with rules
@@ -256,6 +266,7 @@ class TestScap:
         ]
         assert_expect(mprint.call_args_list, *expectations)
 
+    # pylint: disable-next=redefined-outer-name
     def test_scap_getxccdfscandetails_no_args(self, shell):
         """
         Test getxccdfscandetails with no args.
@@ -275,6 +286,7 @@ class TestScap:
         assert not shell.client.system.scap.getXccdfScanDetails.called
         assert not mprint.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_scap_getxccdfscandetails_xids(self, shell):
         """
         Test getxccdfscandetails with XID args.
@@ -404,6 +416,7 @@ class TestScap:
             assert arg == next(iter(expectations))
             expectations.pop(0)
 
+    # pylint: disable-next=redefined-outer-name
     def test_scap_schedulexccdfscan_no_args(self, shell):
         """
         Test for do_scap_schedulexccdfscan with no args.
@@ -429,6 +442,7 @@ class TestScap:
             assert not shell.client.system.scap.scheduleXccdfScan.called
             assert not mprint.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_scap_schedulexccdfscan_ssm_arg(self, shell):
         """
         Test for do_scap_schedulexccdfscan with SSM arg
@@ -452,6 +466,7 @@ class TestScap:
         assert not shell.get_system_id.called
         assert not shell.client.system.scap.scheduleXccdfScan.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_scap_schedulexccdfscan_systems_arg(self, shell):
         """
         Test for do_scap_schedulexccdfscan with systems arg
@@ -477,6 +492,7 @@ class TestScap:
 
         assert_expect(shell.expand_systems.call_args_list, ["some.example.com"])
 
+    # pylint: disable-next=redefined-outer-name
     def test_scap_schedulexccdfscan_systems_arg_with_data(self, shell):
         """
         Test for do_scap_schedulexccdfscan with systems arg with data
@@ -501,6 +517,7 @@ class TestScap:
         assert shell.client.system.scap.scheduleXccdfScan.called
 
         for call in shell.client.system.scap.scheduleXccdfScan.call_args_list:
+            # pylint: disable-next=unused-variable
             args, kw = call
             assert args == (
                 shell.session,

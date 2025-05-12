@@ -36,4 +36,5 @@ def test_get_workloads(mock_walk_return, expected_result):
 def test_no_sap_directory():
     with patch("os.path.exists", return_value=False):
         result = sap.get_workloads()
+        # pylint: disable-next=singleton-comparison
         assert (len(result) > 0) == False

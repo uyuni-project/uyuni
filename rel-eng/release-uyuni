@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# pylint: disable=missing-module-docstring,invalid-name
 import argparse
 import configparser
 import os
@@ -47,6 +48,7 @@ def copy_prjconf(args, prj):
     """Copy prjconfig between projects"""
     oprj = prj["origin"]
     dprj = prj["name"]
+    # pylint: disable-next=consider-using-f-string
     print("Reading prjconf from %s..." % oprj)
     prjconfig = obs_urlopen(args, "/source/" + oprj + "/_config")
     # We need this as a project returns 404 while it's being
@@ -59,12 +61,14 @@ def copy_prjconf(args, prj):
         except urllib.error.HTTPError as err:
             if err.code == 404:
                 print(
+                    # pylint: disable-next=consider-using-f-string
                     "Got HTTP %s: waiting for the project to be created..." % err.code
                 )
                 time.sleep(10)
                 continue
             else:
                 raise
+        # pylint: disable-next=try-except-raise
         except:
             raise
 
@@ -82,6 +86,7 @@ def clean_packages(args, oprj, dprj, keep_removed):
         if not dpackage in opackages:
             rpackages.append(dpackage)
     if rpackages:
+        # pylint: disable-next=consider-using-f-string
         print("The following packages from %s are not present at %s" % (dprj, oprj))
         for package in rpackages:
             print("- " + package)
@@ -90,6 +95,7 @@ def clean_packages(args, oprj, dprj, keep_removed):
             return
         print("As --keep_removed is not present, the packages will be removed")
         for package in rpackages:
+            # pylint: disable-next=consider-using-f-string
             data = {"comment": "Package removed for %s submission" % args.uyuniver}
             obs_urlopen(args, "/source/" + dprj + "/" + package, "DELETE", data)
 
@@ -131,6 +137,7 @@ def add_meta(args, prj):
     ET.SubElement(meta, "person", userid=args.user, role="maintainer")
     projects = {
         dprj: "openSUSE_Leap_" + args.leapver,
+        # pylint: disable-next=consider-using-f-string
         "openSUSE:Leap:%s:Update" % args.leapver: "standard",
     }
     create_meta_repo(
@@ -156,16 +163,19 @@ def disable_build(args, prj):
 def release_project(args, prj):
     """Release packages to a project from an origin"""
     data = {"cmd": "release", "nodelay": 1}
+    # pylint: disable-next=consider-using-f-string
     print("Releasing packages from %s to %s..." % (prj["origin"], prj["name"]))
     try:
         obs_urlopen(args, "/source/" + prj["origin"], "POST", data)
     except (urllib.request.URLError, socket.timeout) as error:
+        # pylint: disable-next=consider-using-f-string
         print("Error releasing: %s" % error)
 
 
 def lock_project(args, prj):
     """Lock a project"""
     data = {"cmd": "lock"}
+    # pylint: disable-next=consider-using-f-string
     print("Locking project %s..." % prj)
     obs_urlopen(args, "/source/" + prj, "POST", data)
 
@@ -189,6 +199,7 @@ def remove_project(args, prj, force=False):
         data = {"force": 1}
     else:
         data = {"force": 1}
+    # pylint: disable-next=consider-using-f-string
     print("Removing %s..." % prj)
     obs_urlopen(args, "/source/" + prj, "DELETE", data)
 
@@ -210,6 +221,7 @@ def project_is_locked(args, prj):
 def parse_arguments():
     """Parse arguments from command line"""
     parser = argparse.ArgumentParser(
+        # pylint: disable-next=consider-using-f-string
         description="Release a new Uyuni version to %s and a new directory %s:Snapshots:X:Y.Z"
         % (MASTER_PRJ, BASE_PRJ)
     )
@@ -269,6 +281,7 @@ def parse_arguments():
         "--keep-removed",
         action="store_true",
         dest="keep_removed",
+        # pylint: disable-next=consider-using-f-string
         help="If present, keeps the packages removed from %s and %s"
         % (MASTER_PRJ, MASTER_PRJ_OTHER),
         default=False,
@@ -277,6 +290,7 @@ def parse_arguments():
         "--copy-all",
         action="store_true",
         dest="copy_all",
+        # pylint: disable-next=consider-using-f-string
         help="If present, copy all packages to the %s, regardless of whatever are differences or not"
         % STABLE_PRJ,
         default=False,
@@ -286,13 +300,16 @@ def parse_arguments():
         raise RuntimeError("The new Uyuni version is mandatory")
     if not args.user or not args.password:
         try:
+            # pylint: disable-next=consider-using-f-string
             creds_path = "%s/.oscrc" % os.path.expanduser("~")
             creds = configparser.ConfigParser()
             creds.read(creds_path)
             args.user = creds.get(args.obsurl, "user")
             args.password = creds.get(args.obsurl, "pass")
         except Exception:
+            # pylint: disable-next=raise-missing-from
             raise RuntimeError(
+                # pylint: disable-next=consider-using-f-string
                 "Could not find credentials for %s at %s" % (args.obsurl, creds_path)
             )
     args.archs = args.archs.split(",")
@@ -326,6 +343,7 @@ def main():
     for prj in prjs_publish:
         if project_is_locked(args, prj["name"]):
             raise RuntimeError(
+                # pylint: disable-next=consider-using-f-string
                 "Project %s is locked, unlock it first with 'osc unlock %s', and then wait until all packages are unlocked"
                 % (prj["name"], prj["name"])
             )
@@ -333,15 +351,18 @@ def main():
     if project_exists(args, vprj):
         if not args.force:
             raise RuntimeError(
+                # pylint: disable-next=consider-using-f-string
                 "Project %s already exists and --force is not enabled" % vprj
             )
         else:
+            # pylint: disable-next=consider-using-f-string
             print("WARNING! Project %s will be removed and recreated!" % vprj)
             remove_project(args, vprj, force=True)
     # Evaluate and clean removed packages for Stable repository, if required
     clean_packages(args, MASTER_PRJ, STABLE_PRJ, args.keep_removed)
     for prj in prjs_publish:
         print(
+            # pylint: disable-next=consider-using-f-string
             "########################## Configuring %s... ##########################"
             % prj["name"]
         )
@@ -362,7 +383,9 @@ if __name__ == "__main__":
     try:
         main()
     except RuntimeError as err:
+        # pylint: disable-next=consider-using-f-string
         print("ERROR: %s" % err)
     except Exception as err:
+        # pylint: disable-next=consider-using-f-string
         print("ERROR: %s" % err)
         raise

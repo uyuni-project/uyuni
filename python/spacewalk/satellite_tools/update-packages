@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring,invalid-name
 #
 # wrapper for Script to update pacakge paths and gpg key ids.
 #
@@ -22,9 +23,11 @@
 if __name__ != "__main__":
     raise ImportError("module cannot be imported")
 
+# pylint: disable-next=wrong-import-position
 import sys
 
 
+# pylint: disable-next=invalid-name
 def systemExit(code, msgs=None):
     "Exit with a code and optional message(s). Saved a few lines of code."
 
@@ -36,6 +39,7 @@ def systemExit(code, msgs=None):
     sys.exit(code)
 
 
+# pylint: disable-next=wrong-import-position
 import os
 
 # quick check to see if you are a super-user.
@@ -50,6 +54,7 @@ except KeyboardInterrupt:
     systemExit(0, "\nUser interrupted process.")
 except ImportError:
     sys.stderr.write(
+        # pylint: disable-next=consider-using-f-string,undefined-variable
         "Unable to find RHN code tree.\n" "Path not correct? '%s'\n" % _LIBPATH
     )
     raise
@@ -72,10 +77,13 @@ try:
 except KeyboardInterrupt:
     systemExit(0, "\nUser interrupted process.")
 except ImportError as e:
+    # pylint: disable-next=consider-using-f-string
     systemExit(2, "Unable to find update package tool.\n" "Error: %s" % e)
 
 
+# pylint: disable-next=invalid-name
 def releaseLOCK():
+    # pylint: disable-next=global-variable-not-assigned
     global LOCK
     if LOCK:
         LOCK.release()

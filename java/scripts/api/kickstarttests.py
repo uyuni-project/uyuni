@@ -1,8 +1,10 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring
 
 import unittest
 import random
 
+# pylint: disable-next=wildcard-import
 from config import *
 
 KICKSTART_FILE = """
@@ -180,9 +182,11 @@ fi
 CHANNEL_LABEL = "rhel-i386-server-5"
 
 
+# pylint: disable-next=missing-class-docstring,undefined-variable
 class KickstartTests(RhnTestCase):
 
     def test_list_kickstartable_channels(self):
+        # pylint: disable-next=undefined-variable
         chans = client.kickstart.listKickstartableChannels(self.session_key)
         # should be true on any satellite we're testing against
         self.assertTrue(len(chans) > 0)
@@ -194,6 +198,7 @@ class KickstartTests(RhnTestCase):
             self.assertTrue(c.has_key("channel_summary"))
 
     def test_list_kickstartable_trees(self):
+        # pylint: disable-next=undefined-variable
         trees = client.kickstart.tree.list(self.session_key, CHANNEL_LABEL)
         # should be true on any satellite we're testing against
         self.assertTrue(len(trees) > 0)
@@ -204,23 +209,30 @@ class KickstartTests(RhnTestCase):
             self.assertTrue(t.has_key("label"))
 
     def test_import(self):
+        # pylint: disable-next=undefined-variable
         trees = client.kickstart.tree.list(self.session_key, CHANNEL_LABEL)
 
         # could fail if you ran it enough
+        # pylint: disable-next=consider-using-f-string
         ks_label = "test-profile-%s" % random.randint(100, 999)
 
+        # pylint: disable-next=undefined-variable
         client.kickstart.importFile(
             self.session_key, ks_label, "none", trees[0]["label"], False, KICKSTART_FILE
         )
 
     def test_create(self):
+        # pylint: disable-next=undefined-variable
         trees = client.kickstart.tree.list(self.session_key, CHANNEL_LABEL)
+        # pylint: disable-next=consider-using-f-string
         ks_label = "api-created-%s" % random.randint(100, 999)
+        # pylint: disable-next=undefined-variable
         client.kickstart.createProfile(
             self.session_key,
             ks_label,
             "none",
             trees[0]["label"],
+            # pylint: disable-next=undefined-variable
             SATELLITE_HOST,
             "rootpw",
         )

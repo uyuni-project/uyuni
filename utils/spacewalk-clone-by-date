@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# pylint: disable=missing-module-docstring,invalid-name
 #
 # Clonse channels by a particular date
 #
@@ -36,8 +37,11 @@ _LIBPATH = "/usr/share/rhn"
 if _LIBPATH not in sys.path:
     sys.path.append(_LIBPATH)
 
+# pylint: disable-next=wrong-import-position
 from utils import cloneByDate
+# pylint: disable-next=wrong-import-position
 from utils.cloneByDate import UserError
+# pylint: disable-next=wrong-import-position
 import warnings
 
 
@@ -92,12 +96,15 @@ def merge_config(options):
         return options
 
     if not os.path.isfile(options.config):
+        # pylint: disable-next=consider-using-f-string
         raise UserError("%s does not exist." % options.config)
 
     try:
+        # pylint: disable-next=unspecified-encoding
         config_file = open(options.config).read()
         config = json.load(StringIO(config_file))
     except:
+        # pylint: disable-next=raise-missing-from
         raise UserError("Configuration file is invalid, please check syntax.")
 
     # if soemthing is in the config and not passed in as an argument
@@ -126,12 +133,14 @@ def merge_config(options):
     # If from the command line there is only one channel tree. Transform single
     # channel tree to a list of channel trees, which is what the rest of the
     # code expects
+    # pylint: disable-next=unidiomatic-typecheck
     if type(options.channels) == dict:
         options.channels = [options.channels]
 
     for channel_dict in options.channels:
         for key in list(channel_dict.keys()):
             # handle the just-the-lable case
+            # pylint: disable-next=unidiomatic-typecheck
             if type(channel_dict[key]) == type(""):
                 channel_dict[key] = [channel_dict[key]]
 
@@ -147,11 +156,15 @@ def validate_list_dict(name, pkg_dict):
     """
     Validates a removelist or blacklist to be map with lists as values
     """
+    # pylint: disable-next=unidiomatic-typecheck
     if type(pkg_dict) != type({}):
+        # pylint: disable-next=consider-using-f-string
         raise UserError("%s  is not formatted correctly" % name)
     for key, value in list(pkg_dict.items()):
+        # pylint: disable-next=unidiomatic-typecheck
         if type(value) != type([]):
             raise UserError(
+                # pylint: disable-next=consider-using-f-string
                 "Channel %s in %s packages not formatted correctly" % (key, name)
             )
 
@@ -197,6 +210,7 @@ class HackedOptionParser(OptionParser):
         OptionParser._process_long_opt(self, rargs, values)
 
 
+# pylint: disable-next=unused-argument
 def vararg_callback(option, opt_str, value, parser):
     assert value is None
     value = []
@@ -226,14 +240,17 @@ def get_localhost_fqdn():
     """
     fqdn = None
     try:
+        # pylint: disable-next=unused-variable,unused-variable,unused-variable,unused-variable
         for family, socktype, proto, canonname, sockaddr in socket.getaddrinfo(
             socket.gethostname(), 0, 0, 0, 0, socket.AI_CANONNAME
         ):
             if canonname:
                 fqdn = canonname
                 break
+    # pylint: disable-next=unused-variable
     except socket.gaierror as exc:
         pass  # Silence here
+    # pylint: disable-next=broad-exception-caught
     except Exception as exc:
         print("Unhandled exception occurred while getting FQDN:", exc)
 
@@ -403,8 +420,10 @@ def parse_args():
         + "(default).",
     )
 
+    # pylint: disable-next=unused-variable
     (options, args) = parser.parse_args()
 
+    # pylint: disable-next=singleton-comparison
     if options.parents != None:
         # vararg_callback was designed for use with --channels, fix
         options.parents = options.parents[0]
@@ -416,6 +435,7 @@ def parse_args():
     # ensure that optparse is parsing the args correctly. We have to
     # check it again after the config file merge to make sure we have
     # channels.
+    # pylint: disable-next=singleton-comparison
     if options.channels != None:
         for channel_group in options.channels:
             if len(channel_group) < 2 or len(channel_group) > 5:
@@ -450,6 +470,7 @@ def parse_args():
     if options.errata and options.security_only:
         raise UserError("Cannot specify both --security_only and --errata.")
 
+    # pylint: disable-next=singleton-comparison
     if options.channels == None or len(options.channels) == 0:
         raise UserError("No channels specified. See --help for details.")
 
@@ -494,14 +515,17 @@ def parse_args():
                 channel_tree[channel.strip()] = channel_tree[channel]
                 del channel_tree[channel]
                 channel = channel.strip()
+            # pylint: disable-next=unidiomatic-typecheck
             if type(channel_tree[channel]) == list:
                 my_list = []
                 for element in channel_tree[channel]:
                     my_list.append(element.strip())
                 channel_tree[channel] = my_list
+            # pylint: disable-next=unidiomatic-typecheck
             elif type(channel_tree[channel]) == dict:
                 my_dict = {}
                 for key in list(channel_tree[channel].keys()):
+                    # pylint: disable-next=unidiomatic-typecheck
                     if type(channel_tree[channel][key]) == str:
                         my_dict[key.strip()] = channel_tree[channel][key].strip()
                     else:
@@ -521,12 +545,15 @@ def parse_time(time_str):
             split = time_str.split("-")
             date = datetime.datetime(int(split[0]), int(split[1]), int(split[2]))
         except:
+            # pylint: disable-next=raise-missing-from,consider-using-f-string
             raise UserError("Invalid date (%s)" % time_str)
         return date
     else:
+        # pylint: disable-next=consider-using-f-string
         raise UserError("Invalid date format (%s), expected YYYY-MM-DD" % time_str)
 
 
+# pylint: disable-next=invalid-name
 def systemExit(code, msgs=None):
     """
     Exit with a code and optional message(s). Saved a few lines of code.
@@ -546,6 +573,7 @@ def main():
     except KeyboardInterrupt:
         systemExit(0, "\nUser interrupted process.")
     except UserError as error:
+        # pylint: disable-next=consider-using-f-string
         systemExit(-1, "\n%s" % error)
     return 0
 
@@ -553,6 +581,7 @@ def main():
 if __name__ == "__main__":
     warnings.simplefilter("always", DeprecationWarning)
     warnings.warn(
+        # pylint: disable-next=f-string-without-interpolation
         f"spacewalk-clone-by-date is DEPRECATED. Please use Content Lifecycle Management Tool.",
         DeprecationWarning,
         stacklevel=2,

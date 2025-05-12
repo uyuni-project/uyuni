@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #   rhn-client-tools - RHN support tools and libraries
 #
 # Copyright (c) 2006--2016 Red Hat, Inc.
@@ -17,6 +18,8 @@
 #   02110-1301  USA
 
 import unittest
+
+# pylint: disable-next=unused-import
 import settestpath
 
 import testConfig

@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 #
 # Client code for Update Agent
 # Copyright (c) 1999--2016 Red Hat, Inc.  Distributed under GPLv2.
@@ -27,11 +28,19 @@ t = gettext.translation("rhn-client-tools", fallback=True)
 if not hasattr(t, "ugettext"):
     t.ugettext = t.gettext
 _ = t.ugettext
+# pylint: disable-next=wrong-import-position
 import OpenSSL
+
+# pylint: disable-next=wrong-import-position
 from rhn.stringutils import ustr
+
+# pylint: disable-next=wrong-import-position
 from up2date_client import config
+
+# pylint: disable-next=wrong-import-position
 from up2date_client import up2dateLog
 
+# pylint: disable-next=wrong-import-position
 import sys
 
 sys.path = sys.path[1:] + sys.path[:1]
@@ -43,6 +52,7 @@ except ImportError:
         from dnf.exceptions import Error as PmBaseError
     except ImportError:
 
+        # pylint: disable-next=missing-class-docstring
         class PmBaseError(Exception):
             def __init__(self, errmsg):
                 self.value = errmsg
@@ -109,9 +119,11 @@ class DebAndSuseRepoError(Error):
 
 
 try:
+    # pylint: disable-next=ungrouped-imports
     from yum.Errors import RepoError
 except ImportError:
     try:
+        # pylint: disable-next=ungrouped-imports
         from dnf.exceptions import RepoError
     except ImportError:
         RepoError = DebAndSuseRepoError
@@ -151,6 +163,7 @@ class CommunicationError(RhnServerException):
     premsg = _("Error communicating with server. " "The message was:\n")
 
 
+# pylint: disable-next=redefined-builtin
 class FileNotFoundError(Error):
     """
     Raise when a package or header that is requested returns
@@ -177,6 +190,7 @@ class RpmRemoveError(Error):
         self.args = args
         for key in self.args.keys():
             self.args[key] = ustr(self.args[key])
+            # pylint: disable-next=consider-using-f-string
             self.value = self.value + "%s failed because of %s\n" % (
                 key,
                 self.args[key],
@@ -188,6 +202,7 @@ class RpmRemoveError(Error):
 
 
 class NoLogError(Error):
+    # pylint: disable-next=super-init-not-called
     def __init__(self, msg):
         msg = ustr(msg)
         self.value = self.premsg + msg
@@ -225,6 +240,7 @@ class RegistrationDeniedError(RhnServerException):
     def __repr__(self):
         return self.value
 
+    # pylint: disable-next=invalid-name
     def changeExplanation(self):
         return _(
             """
@@ -278,19 +294,25 @@ class NetworkError(Error):
     premsg = _("Network error: ")
 
 
+# pylint: disable-next=missing-class-docstring
 class SSLCertificateVerifyFailedError(RepoError):
     def __init__(self):
         # Need to override __init__ because the base class requires a message arg
         # and this exception shouldn't.
+        # pylint: disable-next=invalid-name
         up2dateConfig = config.initUp2dateConfig()
+        # pylint: disable-next=invalid-name
         certFile = up2dateConfig["sslCACert"]
+        # pylint: disable-next=unspecified-encoding
         f = open(certFile, "r")
         buf = f.read()
         f.close()
+        # pylint: disable-next=invalid-name
         tempCert = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, buf)
         if tempCert.has_expired():
             RepoError.__init__(
                 self,
+                # pylint: disable-next=consider-using-f-string
                 "The certificate %s is expired. Please ensure you have the correct"
                 " certificate and your system time is correct." % certFile,
             )
@@ -348,6 +370,7 @@ class PasswordMaxLengthError(NoLogError):
     pass
 
 
+# pylint: disable-next=missing-class-docstring
 class InsuffMgmntEntsError(RhnServerException):
     def __init__(self, msg):
         RhnServerException.__init__(self, self.changeExplanation(msg))
@@ -355,7 +378,9 @@ class InsuffMgmntEntsError(RhnServerException):
     def __repr__(self):
         return self.value
 
+    # pylint: disable-next=invalid-name
     def changeExplanation(self, msg):
+        # pylint: disable-next=invalid-name
         newExpln = _(
             """
     Your organization does not have enough Management entitlements to register this

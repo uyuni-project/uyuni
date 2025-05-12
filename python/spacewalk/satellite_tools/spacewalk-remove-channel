@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring,invalid-name
 #
 # Module that removes channels from an installed satellite
 #
@@ -30,13 +31,18 @@ if os.getuid() != 0:
 
 try:
     from rhn import rhnLockfile  # new place for rhnLockfile
+# pylint: disable-next=bare-except
 except:
     from spacewalk.common import rhnLockfile  # old place for rhnLockfile
 
+# pylint: disable-next=wrong-import-position
 from spacewalk.common.rhnLog import initLOG
+# pylint: disable-next=wrong-import-position
 from spacewalk.common.rhnConfig import initCFG
+# pylint: disable-next=wrong-import-position
 from spacewalk.server import rhnSQL
 
+# pylint: disable-next=wrong-import-position
 from spacewalk.satellite_tools.contentRemove import (
     __listChannels,
     __serverCheck,
@@ -112,7 +118,9 @@ LOCK_DIR = "/run"
 
 def main():
 
+    # pylint: disable-next=global-variable-not-assigned
     global LOCK
+    # pylint: disable-next=global-variable-not-assigned
     global options_table
     parser = OptionParser(option_list=options_table)
 
@@ -120,6 +128,7 @@ def main():
 
     if args:
         for arg in args:
+            # pylint: disable-next=consider-using-f-string
             sys.stderr.write("Not a valid option ('%s'), try --help\n" % arg)
         sys.exit(-1)
 
@@ -131,9 +140,11 @@ def main():
         for command in ["spacewalk-remove-channel", "spacewalk-repo-sync"]:
             try:
                 LOCK.append(
+                    # pylint: disable-next=consider-using-f-string
                     rhnLockfile.Lockfile(os.path.join(LOCK_DIR, "%s.pid" % command))
                 )
             except rhnLockfile.LockfileLockedException:
+                # pylint: disable-next=consider-using-f-string
                 print("ERROR: An instance of %s is running, exiting." % command)
                 sys.exit(-1)
 
@@ -153,6 +164,7 @@ def main():
         sys.exit(0)
 
     # Verify if the channel is valid
+    # pylint: disable-next=unused-variable
     base_channel = ""
     channels = {}
     for channel in options.channel:
@@ -169,12 +181,14 @@ def main():
                 for ch in dict_parents[parent]:
                     channels[ch] = None
         if not matchs:
+            # pylint: disable-next=consider-using-f-string
             print("Unknown parent channel %s" % parent)
             sys.exit(-1)
 
     child_test_fail = False
     for channel in list(channels.keys()):
         if channel not in dict_label:
+            # pylint: disable-next=consider-using-f-string
             print("Unknown channel %s" % channel)
             sys.exit(-1)
         if not options.skip_channels and not options.just_kickstart_trees:
@@ -190,6 +204,7 @@ def main():
                     children.append(subch)
             if children:
                 print(
+                    # pylint: disable-next=consider-using-f-string
                     "Error: cannot remove channel %s: subchannel(s) exist: " % (channel)
                 )
                 for child in children:
@@ -205,6 +220,7 @@ def main():
                 clones_not_deleted.append(clone)
         if clones_not_deleted:
             print(
+                # pylint: disable-next=consider-using-f-string
                 "Error: cannot remove channel %s: clone channel(s) exist: " % (channel)
             )
             for clone_channel_error in clones_not_deleted:
@@ -246,12 +262,15 @@ def main():
     return 0
 
 
+# pylint: disable-next=invalid-name
 def releaseLOCK():
+    # pylint: disable-next=global-variable-not-assigned
     global LOCK
     for lock in LOCK:
         lock.release()
 
 
+# pylint: disable-next=invalid-name
 def systemExit(code, msgs=None):
     if msgs:
         if type(msgs) not in [type([]), type(())]:
@@ -269,13 +288,17 @@ if __name__ == "__main__":
         releaseLOCK()
         sys.exit(0)
     except UserError as error:
+        # pylint: disable-next=consider-using-f-string
         systemExit(-1, "\n%s" % error)
+    # pylint: disable-next=try-except-raise
     except SystemExit:
         # Normal exit
         raise
+    # pylint: disable-next=broad-exception-caught
     except Exception:
         e = sys.exc_info()[1]
         releaseLOCK()
+        # pylint: disable-next=consider-using-f-string
         sys.stderr.write("\nERROR: unhandled exception occurred: (%s).\n" % e)
         import traceback
 

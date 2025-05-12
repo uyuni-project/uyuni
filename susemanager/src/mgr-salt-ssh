@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# pylint: disable=invalid-name
 """
 Execute the salt ssh system
 """
@@ -37,6 +38,7 @@ if __name__ == "__main__":
     if not roster_spec:
         new_argv.insert(0, "--roster=uyuni")
     if not priv_key_spec:
+        # pylint: disable-next=consider-using-f-string
         new_argv.insert(0, "--priv={}".format(SSH_KEY))
     if not roster_spec or not priv_key_spec:
         new_argv.insert(0, executable)

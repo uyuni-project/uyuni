@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# pylint: disable=missing-module-docstring,invalid-name
 
 import sys
 import os
@@ -36,6 +37,7 @@ if os.path.exists(pg_hba_bak):
 os.rename(pg_hba_conf, pg_hba_bak)
 
 
+# pylint: disable-next=unspecified-encoding
 for line in open(pg_hba_bak).readlines():
     line = line.strip()
     if not line or line.startswith("#"):
@@ -49,8 +51,10 @@ for line in open(pg_hba_bak).readlines():
         dbconf[vals[1]][vals[0]] = []
     dbconf[vals[1]][vals[0]].append(vals)
 
+# pylint: disable-next=unspecified-encoding
 with open(pg_hba_conf, "w") as pghba:
     for db in dborder:
+        # pylint: disable-next=redefined-builtin
         for type in typeorder:
             if db in dbconf and type in dbconf[db]:
                 user_all_entries = []

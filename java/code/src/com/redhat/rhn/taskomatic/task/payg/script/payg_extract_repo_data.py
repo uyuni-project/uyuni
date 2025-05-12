@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2021 SUSE LLC
 #
@@ -13,15 +14,20 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+# pylint: disable-next=unused-import
 import csv
 import subprocess
 import xml.etree.ElementTree as ET
+
+# pylint: disable-next=unused-import
 from urllib.parse import urlparse, parse_qs
 import json
 import sys
 from pathlib import Path
 import glob
 import os
+
+# pylint: disable-next=unused-import
 import platform
 from collections import namedtuple
 
@@ -69,6 +75,7 @@ SuseCloudInfo = namedtuple("SuseCloudInfo", ["header_auth", "hostname"])
 
 
 def _get_suse_cloud_info():
+    # pylint: disable-next=redefined-builtin
     input = INPUT_TEMPLATE % (CREDENTIALS_NAME, "/")
     try:
         auth_data_output = subprocess.check_output(
@@ -81,6 +88,7 @@ def _get_suse_cloud_info():
         system_exit(
             3,
             [
+                # pylint: disable-next=consider-using-f-string
                 "Got error when getting repo processed URL and headers(error {}):".format(
                     e
                 )
@@ -113,7 +121,9 @@ def _get_instance_identification():
 def _extract_http_auth(credentials):
     credentials_file = "/etc/zypp/credentials.d/" + credentials
     if not Path(credentials_file).exists():
+        # pylint: disable-next=consider-using-f-string
         system_exit(5, ["Credentials file not found ({})".format(credentials_file)])
+    # pylint: disable-next=unspecified-encoding,invalid-name
     with open(credentials_file) as credFile:
         username = ""
         password = ""
@@ -133,15 +143,19 @@ def _extract_rmt_server_info(netloc):
             ["getent", "hosts", netloc], stderr=subprocess.PIPE, universal_newlines=True
         )
     except subprocess.CalledProcessError as e:
+        # pylint: disable-next=consider-using-f-string
         system_exit(4, ["unable to get ip for repository server (error {}):".format(e)])
 
+    # pylint: disable-next=use-maxsplit-arg
     server_ip = host_ip_output.split(" ")[0].strip()
     ca_cert_path = (
+        # pylint: disable-next=consider-using-f-string
         "/etc/pki/trust/anchors/registration_server_%s.pem"
         % server_ip.replace(".", "_")
     )
     if not Path(ca_cert_path).exists():
         ca_cert_path = (
+            # pylint: disable-next=consider-using-f-string
             "/usr/share/pki/trust/anchors/registration_server_%s.pem"
             % server_ip.replace(".", "_")
         )
@@ -149,11 +163,13 @@ def _extract_rmt_server_info(netloc):
             system_exit(
                 6,
                 [
+                    # pylint: disable-next=consider-using-f-string
                     "CA file for server {} not found (location '/etc/pki/trust/anchors/' or '/usr/share/pki/trust/anchors/')".format(
                         server_ip
                     )
                 ],
             )
+    # pylint: disable-next=unspecified-encoding
     with open(ca_cert_path) as f:
         server_ca = f.read()
     return {"hostname": netloc, "ip": server_ip, "server_ca": server_ca}
@@ -209,7 +225,9 @@ if __name__ == "__main__":
         system_exit(9, ["User interrupted process."])
     except SystemExit as e:
         sys.exit(e.code)
+    # pylint: disable-next=broad-exception-caught
     except Exception as e:
+        # pylint: disable-next=consider-using-f-string
         system_exit(9, ["ERROR: {}".format(e)])
 
 # Error codes

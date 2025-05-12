@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -72,6 +73,7 @@ def complete_snippet_details(self, text, line, beg, end):
 def do_snippet_details(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -151,6 +153,7 @@ def do_snippet_create(self, args, update_name=""):
         ):
             options.file = prompt_user("File:")
         else:
+            # pylint: disable-next=unused-variable
             (contents, _ignore) = editor(template=contents, delete=True)
     else:
         if not options.name:
@@ -193,6 +196,7 @@ def complete_snippet_update(self, text, line, beg, end):
 def do_snippet_update(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -217,6 +221,7 @@ def complete_snippet_delete(self, text, line, beg, end):
 def do_snippet_delete(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:

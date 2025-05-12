@@ -61,6 +61,7 @@ RPMTAG_NOSOURCE = 1051
 
 def main():
     # Initialize a command-line processing object with a table of options
+    # pylint: disable-next=invalid-name
     optionsTable = [
         Option("-v", "--verbose", action="count", help="Increase verbosity", default=0),
         Option(
@@ -188,6 +189,7 @@ def main():
         "tolerant",
     ]
     # pylint: disable=E1101,E1103
+    # pylint: disable-next=invalid-name
     optionParser = OptionParser(
         option_list=optionsTable, usage="%prog [OPTION] [<package>]"
     )
@@ -252,6 +254,7 @@ def main():
         return 1
 
 
+# pylint: disable-next=missing-class-docstring
 class UploadClass(uploadLib.UploadClass):
     # pylint: disable=E1101,W0201,W0632
 
@@ -259,6 +262,7 @@ class UploadClass(uploadLib.UploadClass):
         uploadLib.UploadClass.__init__(self, options, files)
         self.url_v2 = None
 
+    # pylint: disable-next=invalid-name
     def setURL(self):
         server = sstr(idn_ascii_to_puny(self.options.server))
         if server is None:
@@ -268,41 +272,50 @@ class UploadClass(uploadLib.UploadClass):
         )
         if not netloc:
             # No schema - trying to patch it up ourselves?
+            # pylint: disable-next=consider-using-f-string
             server = "http://%s" % server
             scheme, netloc, path, params, query, fragment = tupleify_urlparse(
                 urlparse.urlparse(server)
             )
 
         if not netloc:
+            # pylint: disable-next=consider-using-f-string
             self.die(2, "Invalid URL %s" % server)
         if path == "":
             path = "/APP"
         if scheme.lower() not in ("http", "https"):
+            # pylint: disable-next=consider-using-f-string
             self.die(3, "Unknown URL scheme %s" % scheme)
         self.url = urlparse.urlunparse((scheme, netloc, path, params, query, fragment))
         self.url_v2 = urlparse.urlunparse(
             (scheme, netloc, "/PACKAGE-PUSH", params, query, fragment)
         )
 
+    # pylint: disable-next=invalid-name
     def setOrg(self):
         if self.options.nullorg:
             if self.options.force:
                 self.die(1, "ERROR: You cannot force a package to a nullorg channel.")
             else:
                 # They push things to the None org id
+                # pylint: disable-next=invalid-name
                 self.orgId = ""
         else:
             self.orgId = self.options.orgid or -1
 
+    # pylint: disable-next=invalid-name
     def setForce(self):
         if self.options.force:
             self.force = 4
         else:
             self.force = None
 
+    # pylint: disable-next=invalid-name
     def setRelativeDir(self):
+        # pylint: disable-next=invalid-name
         self.relativeDir = self.options.reldir
 
+    # pylint: disable-next=invalid-name
     def setChannels(self):
         self.channels = self.options.channel or []
 
@@ -369,6 +382,7 @@ class UploadClass(uploadLib.UploadClass):
             test_auth = "Passed"
         else:
             test_auth = "Failed"
+        # pylint: disable-next=consider-using-f-string
         print("Testing connection and authentication:   %s" % test_auth)
 
     def _test_access(self):
@@ -378,6 +392,7 @@ class UploadClass(uploadLib.UploadClass):
             test_access = "Passed"
         else:
             test_access = "Failed"
+        # pylint: disable-next=consider-using-f-string
         print("Testing access to upload functionality on server:    %s" % test_access)
 
     # 12/22/05 wregglej 173287  Added a this funtion to test the new session authentication stuff.
@@ -422,6 +437,7 @@ class UploadClass(uploadLib.UploadClass):
         # have to be pushed before the cluster itself
         files1 = []
         files2 = []
+        # pylint: disable-next=access-member-before-definition
         for filename in self.files:
             if filename.startswith("patch-cluster-"):
                 files2.append(filename)
@@ -463,30 +479,38 @@ class UploadClass(uploadLib.UploadClass):
                 channel_packages.append(pkgs_info[pkg_key])
                 self.warn(
                     1,
+                    # pylint: disable-next=consider-using-f-string
                     "Package %s already exists on the SUSE Multi-Linux Manager Server-- Skipping Upload...."
                     % pkg,
                 )
                 continue
 
+            # pylint: disable-next=use-implicit-booleaness-not-comparison
             elif server_digest == ():
                 self.warn(
                     1,
+                    # pylint: disable-next=consider-using-f-string
                     "Package %s Not Found on SUSE Multi-Linux Manager Server -- Uploading"
                     % pkg,
                 )
 
             elif server_digest == "on-disk" and not self.options.force:
                 channel_packages.append(pkgs_info[pkg_key])
+                # pylint: disable-next=format-string-without-interpolation,consider-using-f-string
                 self.warn(0, "Package on disk but not on db -- Skipping Upload " % pkg)
                 continue
 
             elif server_digest != digest:
                 if self.options.force:
                     self.warn(
-                        1, "Package checksum %s mismatch  -- Forcing Upload" % pkg
+                        # pylint: disable-next=consider-using-f-string
+                        1,
+                        # pylint: disable-next=consider-using-f-string
+                        "Package checksum %s mismatch  -- Forcing Upload" % pkg,
                     )
                 else:
                     msg = (
+                        # pylint: disable-next=consider-using-f-string
                         "Error: Package %s already exists on the server with"
                         " a different checksum. Skipping upload to prevent"
                         " overwriting existing package. (You may use rhnpush with"
@@ -498,6 +522,7 @@ class UploadClass(uploadLib.UploadClass):
                     self.warn(0, msg)
                     continue
 
+            # pylint: disable-next=invalid-name,unused-variable
             for _t in range(0, tries):
                 try:
                     ret = self.package(pkg, checksum_type, checksum)
@@ -526,6 +551,7 @@ class UploadClass(uploadLib.UploadClass):
                 except:
                     self.warn(2, sys.exc_info()[1])
                     wait = random.randint(1, 5)
+                    # pylint: disable-next=consider-using-f-string
                     self.warn(0, "Waiting %d seconds and trying again..." % wait)
                     time.sleep(wait)
                 # The else clause gets executed in the stuff in the try-except block *succeeds*.
@@ -540,8 +566,10 @@ class UploadClass(uploadLib.UploadClass):
             else:
                 if not self.options.tolerant:
                     # pkilambi:bug#176358:this exits with a error code of 1
+                    # pylint: disable-next=consider-using-f-string
                     self.die(1, "Giving up after %d attempts" % tries)
                 else:
+                    # pylint: disable-next=consider-using-f-string
                     print("Giving up after %d attempts and continuing on..." % (tries,))
 
             # 5/13/05 wregglej - 154248 ?? we still want to add the packages if they're source.
@@ -579,7 +607,9 @@ class UploadClass(uploadLib.UploadClass):
 
             if not os.access(pkg, os.R_OK):
                 if not self.options.tolerant:
+                    # pylint: disable-next=consider-using-f-string
                     self.die(-1, "Could not read file %s" % pkg)
+                # pylint: disable-next=consider-using-f-string
                 self.warn(-1, "Could not read file %s" % pkg)
                 continue
             try:
@@ -589,15 +619,23 @@ class UploadClass(uploadLib.UploadClass):
             except InvalidPackageError:
                 if not self.options.tolerant:
                     self.die(
-                        -1, "ERROR: %s: This file doesn't appear to be a package" % pkg
+                        # pylint: disable-next=consider-using-f-string
+                        -1,
+                        # pylint: disable-next=consider-using-f-string
+                        "ERROR: %s: This file doesn't appear to be a package" % pkg,
                     )
                 self.warn(
-                    2, "ERROR: %s: This file doesn't appear to be a package" % pkg
+                    # pylint: disable-next=consider-using-f-string
+                    2,
+                    # pylint: disable-next=consider-using-f-string
+                    "ERROR: %s: This file doesn't appear to be a package" % pkg,
                 )
                 continue
             except IOError:
                 if not self.options.tolerant:
+                    # pylint: disable-next=consider-using-f-string
                     self.die(-1, "ERROR: %s: No such file or directory available" % pkg)
+                # pylint: disable-next=consider-using-f-string
                 self.warn(2, "ERROR: %s: No such file or directory available" % pkg)
                 continue
 
@@ -655,9 +693,12 @@ class UploadClass(uploadLib.UploadClass):
 
         return (checksum_data, pkg_hash, digest_hash)
 
+    # pylint: disable-next=invalid-name,invalid-name
     def package(self, package, fileChecksumType, fileChecksum):
+        # pylint: disable-next=consider-using-f-string
         self.warn(1, "Uploading package %s" % package)
         if not os.access(package, os.R_OK):
+            # pylint: disable-next=consider-using-f-string
             self.die(-1, "Could not read file %s" % package)
 
         try:
@@ -676,7 +717,9 @@ class UploadClass(uploadLib.UploadClass):
         if packaging == "rpm" and self.options.nosig is None and not h.is_signed():
             # pkilambi:bug#173886:force exit to check for sig if --nosig
             raise uploadLib.UploadError(
-                "ERROR: %s: unsigned rpm (use --nosig to force)" % package
+                # pylint: disable-next=consider-using-f-string
+                "ERROR: %s: unsigned rpm (use --nosig to force)"
+                % package
             )
 
         try:
@@ -699,20 +742,24 @@ class UploadClass(uploadLib.UploadClass):
                     + "uploading the newer version."
                 )
             else:
+                # pylint: disable-next=consider-using-f-string
                 strmsg = "Error: severity %s" % diff_level
             self.warn(
                 -1,
+                # pylint: disable-next=consider-using-f-string
                 "Uploading failed for %s\n%s\n\tDiff: %s"
                 % (package, strmsg, pdict["diff"]["diff"]),
             )
             if diff_level != 1:
                 # This will prevent us from annoyingly retrying when there is
                 # no reason to.
+                # pylint: disable-next=raise-missing-from
                 raise uploadLib.UploadError()
             return ret
 
         return ret
 
+    # pylint: disable-next=invalid-name,invalid-name
     def _push_package_v2(self, package, fileChecksumType, fileChecksum):
         self.warn(1, "Using POST request")
         pu = rhnpush_v2.PackageUpload(self.url_v2, self.options.proxy)
@@ -726,6 +773,7 @@ class UploadClass(uploadLib.UploadClass):
 
         ret = {}
         for tag in ("name", "version", "release", "epoch", "arch"):
+            # pylint: disable-next=consider-using-f-string
             val = getattr(pu, "package_%s" % tag)
             if val is None:
                 val = ""
@@ -741,7 +789,9 @@ class UploadClass(uploadLib.UploadClass):
                 # Raise the exception instead of silently dying
                 raise_with_tb(
                     uploadLib.UploadError(
-                        "Error pushing %s: %s (%s)" % (package, msgstr, status)
+                        # pylint: disable-next=consider-using-f-string
+                        "Error pushing %s: %s (%s)"
+                        % (package, msgstr, status)
                     ),
                     sys.exc_info()[2],
                 )
@@ -756,6 +806,7 @@ class UploadClass(uploadLib.UploadClass):
             raise AuthenticationRequired()
 
         if status != 200:
+            # pylint: disable-next=consider-using-f-string
             self.die(1, "Error pushing %s: %s (%s)" % (package, msgstr, status))
 
         return ret

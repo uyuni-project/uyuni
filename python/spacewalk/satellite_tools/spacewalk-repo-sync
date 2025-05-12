@@ -1,4 +1,5 @@
 #!/usr/bin/python3 -u
+# pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 # Copyright (c) 2011 SUSE LLC
@@ -19,11 +20,13 @@ import re
 
 try:
     #  python2
+    # pylint: disable-next=useless-import-alias
     import StringIO as StringIO
 except ImportError:
     #  python3
     import io as StringIO
 import json
+# pylint: disable-next=unused-import
 import shutil
 import sys
 import os
@@ -37,6 +40,7 @@ LOCK = None
 log_path = "/var/log/rhn/reposync.log"
 
 
+# pylint: disable-next=invalid-name
 def systemExit(code, msg=None):
     "Exit with a code and optional message(s). Saved a few lines of code."
     sys.stderr.write(str(msg) + "\n")
@@ -46,6 +50,7 @@ def systemExit(code, msg=None):
 try:
     from rhn import rhnLockfile
     from uyuni.common.context_managers import cfg_component
+    # pylint: disable-next=ungrouped-imports
     from spacewalk.common import rhnLog
     from spacewalk.common.rhnConfig import CFG, initCFG
     from spacewalk.satellite_tools import reposync
@@ -56,6 +61,7 @@ except ImportError:
     systemExit(1, "Unable to find code tree.\n" "Path not correct? " + str(sys.path))
 
 
+# pylint: disable-next=invalid-name
 def releaseLOCK():
     global LOCK
     if LOCK:
@@ -239,6 +245,7 @@ def main():
         action="count",
         help="Verbose output. Possible to accumulate: -vvv",
     )
+    # pylint: disable-next=unused-variable
     (options, args) = parser.parse_args()
 
     global LOCK
@@ -267,6 +274,7 @@ def main():
     if options.email:
         initEMAIL_LOG()
     rhnLog.initLOG(log_path, log_level)
+    # pylint: disable-next=consider-using-f-string
     log2disk(0, "Command: %s" % str(sys.argv))
 
     l_params = ["no_errata", "sync_kickstart", "fail", "no-strict"]
@@ -282,8 +290,10 @@ def main():
         log(0, "======================================")
         for ch in list(set(l_ch_custom) & set(d_chan_repo)):
             for repo in d_chan_repo[ch]:
+                # pylint: disable-next=consider-using-f-string
                 log(0, "%s | %s" % (ch, repo))
         for ch in list(set(l_ch_custom) - set(d_chan_repo)):
+            # pylint: disable-next=consider-using-f-string
             log(0, "%s | No repository set" % ch)
         return 0
 
@@ -292,13 +302,16 @@ def main():
 
     if options.config:
         try:
+            # pylint: disable-next=unspecified-encoding
             config_file = open(options.config).read()
             # strip  all whitespace
             config_file = re.sub(r"\s", "", config_file)
             config = json.load(StringIO.StringIO(config_file))
 
+        # pylint: disable-next=broad-exception-caught
         except Exception as e:
             systemExit(
+                # pylint: disable-next=consider-using-f-string
                 1, "Configuration file is invalid, please check syntax. Error [%s]" % e
             )
 
@@ -312,6 +325,7 @@ def main():
                 if not isinstance(repo, list):
                     systemExit(
                         1,
+                        # pylint: disable-next=consider-using-f-string
                         "Configuration file is invalid, "
                         "{0}'s value needs to be a list.".format(ch),
                     )
@@ -331,12 +345,16 @@ def main():
                     if ch in l_ch_custom and ch not in d_ch_repo_sync:
                         d_ch_repo_sync[ch] = []
             else:
+                # pylint: disable-next=consider-using-f-string
                 systemExit(1, "Channel %s is not custom base channel." % pch)
 
+    # pylint: disable-next=consider-using-dict-items
     for ch in d_ch_repo_sync:
         if ch not in l_ch_custom:
+            # pylint: disable-next=consider-using-f-string
             systemExit(1, "Channel %s is not custom or does not exist." % ch)
         if not d_ch_repo_sync[ch] and not ch in d_chan_repo:
+            # pylint: disable-next=consider-using-f-string
             log(0, "Channel %s Channel has no URL associated, skipping sync" % ch)
             l_no_ch_repo_sync.append(ch)
 
@@ -350,14 +368,17 @@ def main():
 
         for ch, repo in list(d_ch_repo_sync.items()):
             if repo:
+                # pylint: disable-next=consider-using-f-string
                 log(0, " %s : %s" % (ch, ", ".join(repo)))
             else:
+                # pylint: disable-next=consider-using-f-string
                 log(0, " %s : %s" % (ch, ", ".join(d_chan_repo[ch])))
 
         log(0, "======================================")
         log(0, "|             Parameters             |")
         log(0, "======================================")
         for key in l_params:
+            # pylint: disable-next=consider-using-f-string
             log(0, " %s: %s" % (key, str(getattr(options, key))))
         return 0
 
@@ -367,6 +388,7 @@ def main():
             if batch_size <= 0:
                 raise ValueError()
         except ValueError:
+            # pylint: disable-next=consider-using-f-string
             systemExit(1, "Invalid batch size: %s" % options.batch_size)
 
     reposync.clear_ssl_cache()
@@ -376,11 +398,13 @@ def main():
     for ch, repo in list(d_ch_repo_sync.items()):
 
         log(0, "======================================")
+        # pylint: disable-next=consider-using-f-string
         log(0, "| Channel: %s" % ch)
         log(0, "======================================")
         log(0, "Sync of channel started.")
         log2disk(
             0,
+            # pylint: disable-next=consider-using-f-string
             "Please check 'reposync/%s.log' for sync log of this channel." % ch,
             notimeYN=True,
         )
@@ -411,6 +435,7 @@ def main():
         rhnLog.initLOG(log_path, log_level)
         log2disk(0, "Sync of channel completed.")
 
+    # pylint: disable-next=consider-using-f-string,use-maxsplit-arg
     log(0, "Total time: %s" % str(total_time).split(".")[0])
     if options.email:
         reposync.send_mail()

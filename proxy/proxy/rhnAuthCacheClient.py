@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 # rhnAuthCacheClient.py
 # -------------------------------------------------------------------------------
 # Implements a client-side 'remote shelf' caching object used for
@@ -60,12 +61,14 @@ class _Method:
         self.__name = name
 
     def __getattr__(self, name):
+        # pylint: disable-next=consider-using-f-string
         return _Method(self.__send, "%s.%s" % (self.__name, name))
 
     def __call__(self, *args):
         return self.__send(self.__name, args)
 
     def __str__(self):
+        # pylint: disable-next=consider-using-f-string
         return "<_Method instance at %s>" % id(self)
 
     __repr__ = __str__
@@ -82,6 +85,7 @@ class Shelf:
 
     def __init__(self, server_addr):
         log_debug(6, server_addr)
+        # pylint: disable-next=invalid-name
         self.serverAddr = server_addr
 
     def __request(self, methodname, params):
@@ -95,9 +99,11 @@ class Shelf:
         except socket.error as e:
             sock.close()
             methodname = None
+            # pylint: disable-next=consider-using-f-string
             log_error("Error connecting to the auth cache: %s" % str(e))
             Traceback(
                 "Shelf.__request",
+                # pylint: disable-next=consider-using-f-string
                 extra="""
               Error connecting to the the authentication cache daemon.
               Make sure it is started on %s"""
@@ -127,6 +133,7 @@ class Shelf:
         except socket.error:
             wfile.close()
             sock.close()
+            # pylint: disable-next=consider-using-f-string
             log_error("Error communicating to the auth cache: %s" % str(e))
             Traceback(
                 "Shelf.__request",
@@ -155,6 +162,7 @@ class Shelf:
             log_error(e.faultString)
             rfile.close()
             sock.close()
+            # pylint: disable-next=consider-using-f-string
             log_error("Error communicating to the auth cache: %s" % str(e))
             Traceback(
                 "Shelf.__request",
@@ -185,6 +193,7 @@ class Shelf:
         return _Method(self.__request, name)
 
     def __str__(self):
+        # pylint: disable-next=consider-using-f-string
         return "<Remote-Shelf instance at %s>" % id(self)
 
 
@@ -199,7 +208,9 @@ if __name__ == "__main__":
     s = Shelf(("localhost", 9999))
     s["1234"] = [1, 2, 3, 4, None, None]
     s["blah"] = "testing 1 2 3"
+    # pylint: disable-next=consider-using-f-string
     print('Cached object s["1234"] = {}'.format(s["1234"]))
+    # pylint: disable-next=consider-using-f-string
     print('Cached object s["blah"] = {}'.format(s["blah"]))
     print("asdfrasdf" in s)
 

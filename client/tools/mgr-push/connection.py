@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -40,6 +41,7 @@ class ConnectionError(Exception):
 # pylint: disable=R0902
 
 
+# pylint: disable-next=missing-class-docstring
 class BaseConnection:
 
     def __init__(self, uri, proxy=None):
@@ -72,6 +74,7 @@ class BaseConnection:
                 {
                     "host": self._host,
                     "port": self._port,
+                    # pylint: disable-next=consider-using-f-string
                     "proxy": "%s:%s" % (self._proxy_host, self._proxy_port),
                     "username": self._proxy_username,
                     "password": self._proxy_password,
@@ -100,6 +103,7 @@ class BaseConnection:
         return getattr(self._connection, name)
 
 
+# pylint: disable-next=missing-class-docstring
 class PackageUpload:
     header_prefix = "X-RHN-Upload"
     user_agent = "rhn-package-upload"
@@ -182,6 +186,7 @@ class PackageUpload:
 
         return self._response
 
+    # pylint: disable-next=invalid-name,invalid-name
     def upload(self, filename, fileChecksumType, fileChecksum):
         """
         Uploads a file.
@@ -197,6 +202,7 @@ class PackageUpload:
             a_pkg = package_from_filename(filename)
             a_pkg.read_header()
         except InvalidPackageError:
+            # pylint: disable-next=consider-using-f-string
             return -1, "Not an RPM: %s" % filename
 
         # Set some package data members
@@ -222,6 +228,7 @@ class PackageUpload:
 
         if isinstance(nvra[3], IntType):
             # Old rpm format
+            # pylint: disable-next=consider-using-f-string
             return -1, "Deprecated RPM format: %s" % filename
 
         self.nvra = nvra
@@ -235,17 +242,26 @@ class PackageUpload:
         self.set_header("User-Agent", self.user_agent)
         # Custom RHN headers
         prefix = self.header_prefix
+        # pylint: disable-next=consider-using-f-string
         self.set_header("%s-%s" % (prefix, "Package-Name"), nvra[0])
+        # pylint: disable-next=consider-using-f-string
         self.set_header("%s-%s" % (prefix, "Package-Version"), nvra[1])
+        # pylint: disable-next=consider-using-f-string
         self.set_header("%s-%s" % (prefix, "Package-Release"), nvra[2])
+        # pylint: disable-next=consider-using-f-string
         self.set_header("%s-%s" % (prefix, "Package-Arch"), nvra[3])
+        # pylint: disable-next=consider-using-f-string
         self.set_header("%s-%s" % (prefix, "Packaging"), self.packaging)
         if self.checksum_type == "md5":
+            # pylint: disable-next=consider-using-f-string
             self.set_header("%s-%s" % (prefix, "File-MD5sum"), self.checksum)
         else:
             self.set_header(
-                "%s-%s" % (prefix, "File-Checksum-Type"), self.checksum_type
+                # pylint: disable-next=consider-using-f-string
+                "%s-%s" % (prefix, "File-Checksum-Type"),
+                self.checksum_type,
             )
+            # pylint: disable-next=consider-using-f-string
             self.set_header("%s-%s" % (prefix, "File-Checksum"), self.checksum)
 
         a_pkg.input_stream.seek(0, 0)
@@ -266,6 +282,7 @@ class PackageUpload:
             # Created
             return (
                 status,
+                # pylint: disable-next=consider-using-f-string
                 "%s %s: %s-%s-%s.%s.rpm already uploaded"
                 % (
                     self.checksum_type,
@@ -304,21 +321,25 @@ class PackageUpload:
 
 
 def parse_url(url, scheme="http", path="/"):
+    # pylint: disable-next=invalid-name,invalid-name
     _scheme, netloc, _path, params, query, fragment = tupleify_urlparse(urlparse(url))
     if not netloc:
         # No scheme - trying to patch it up ourselves?
         url = scheme + "://" + url
+        # pylint: disable-next=invalid-name,invalid-name
         _scheme, netloc, _path, params, query, fragment = tupleify_urlparse(
             urlparse(url)
         )
 
     if not netloc:
         # XXX
+        # pylint: disable-next=broad-exception-raised
         raise Exception()
 
     (host, port) = splitport(netloc)
 
     if not _path:
+        # pylint: disable-next=invalid-name
         _path = path
 
     return (_scheme, (host, port), _path, params, query, fragment)

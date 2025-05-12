@@ -4,6 +4,8 @@ Test suite for spacecmd.schedule module.
 """
 
 from unittest.mock import MagicMock, patch
+
+# pylint: disable-next=unused-import
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.schedule
 from xmlrpc import client as xmlrpclib
@@ -16,6 +18,7 @@ class TestSCSchedule:
 
     @patch("spacecmd.utils.input", create=True, new=MagicMock(return_value="y"))
     @patch("spacecmd.utils.raw_input", create=True, new=MagicMock(return_value="y"))
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_deletearchived_without_archived(self, shell):
         """
         Test do_schedule_deletearchived with no archived actions.
@@ -27,6 +30,7 @@ class TestSCSchedule:
         shell.help_schedule_deletearchived = MagicMock()
         shell.client.schedule.listAllArchivedActions = MagicMock(return_value=[])
         shell.client.schedule.deleteActions = MagicMock()
+        # pylint: disable-next=unused-variable
         logger = MagicMock()
 
         spacecmd.schedule.do_schedule_deletearchived(shell, "")
@@ -36,6 +40,7 @@ class TestSCSchedule:
 
     @patch("spacecmd.utils.input", create=True, new=MagicMock(return_value="y"))
     @patch("spacecmd.utils.raw_input", create=True, new=MagicMock(return_value="y"))
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_deletearchived_with_archived(self, shell):
         """
         Test do_schedule_deletearchived with archived actions.
@@ -51,6 +56,7 @@ class TestSCSchedule:
             archived_dummy_actions
         ] + [[]]
         shell.client.schedule.deleteActions = MagicMock()
+        # pylint: disable-next=unused-variable
         logger = MagicMock()
 
         spacecmd.schedule.do_schedule_deletearchived(shell, "")
@@ -60,6 +66,7 @@ class TestSCSchedule:
 
     @patch("spacecmd.utils.input", create=True, new=MagicMock(return_value="n"))
     @patch("spacecmd.utils.raw_input", create=True, new=MagicMock(return_value="n"))
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_deletearchived_with_archived_but_user_answer_is_no(self, shell):
         """
         Test do_schedule_deletearchived with archived actions and the user answers with
@@ -76,6 +83,7 @@ class TestSCSchedule:
             archived_dummy_actions
         ] + [[]]
         shell.client.schedule.deleteActions = MagicMock()
+        # pylint: disable-next=unused-variable
         logger = MagicMock()
 
         spacecmd.schedule.do_schedule_deletearchived(shell, "")
@@ -84,6 +92,7 @@ class TestSCSchedule:
 
     @patch("spacecmd.utils.input", create=True, new=MagicMock(return_value=""))
     @patch("spacecmd.utils.raw_input", create=True, new=MagicMock(return_value=""))
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_deletearchived_with_archived_but_no_user_answer(self, shell):
         """
         Test do_schedule_deletearchived with archived actions, but the user gives no answer.
@@ -100,12 +109,14 @@ class TestSCSchedule:
             archived_dummy_actions
         ] + [[]]
         shell.client.schedule.deleteActions = MagicMock()
+        # pylint: disable-next=unused-variable
         logger = MagicMock()
 
         spacecmd.schedule.do_schedule_deletearchived(shell, "")
 
         assert shell.client.schedule.deleteActions.call_count == 0
 
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_cancel_noargs(self, shell):
         """
         Test do_schedule_cancel without arguments.
@@ -121,8 +132,11 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging", logger
+            "spacecmd.schedule.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.schedule.do_schedule_cancel(shell, "")
 
@@ -133,6 +147,7 @@ class TestSCSchedule:
         assert not logger.warning.called
         assert shell.help_schedule_cancel.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_cancel_globbing(self, shell):
         """
         Test do_schedule_cancel with globbing.
@@ -148,8 +163,11 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging", logger
+            "spacecmd.schedule.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.schedule.do_schedule_cancel(shell, "*")
 
@@ -163,6 +181,7 @@ class TestSCSchedule:
 
         assert_expect(logger.info.call_args_list, "All pending actions left untouched")
 
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_cancel_invalid_action_id(self, shell):
         """
         Test do_schedule_cancel with invalid action ids.
@@ -178,8 +197,11 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging", logger
+            "spacecmd.schedule.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.schedule.do_schedule_cancel(shell, "1 two 3, and 4")
 
@@ -210,6 +232,7 @@ class TestSCSchedule:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_reschedule_noargs(self, shell):
         """
         Test do_schedule_reschedule without arguments.
@@ -225,8 +248,11 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging", logger
+            "spacecmd.schedule.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.schedule.do_schedule_reschedule(shell, "")
 
@@ -237,6 +263,7 @@ class TestSCSchedule:
         assert not logger.warning.called
         assert shell.help_schedule_reschedule.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_reschedule_globbing(self, shell):
         """
         Test do_schedule_reschedule with globbing.
@@ -252,8 +279,11 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging", logger
+            "spacecmd.schedule.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.schedule.do_schedule_reschedule(shell, "*")
 
@@ -264,6 +294,7 @@ class TestSCSchedule:
         assert shell.client.schedule.listFailedActions.called
         assert shell.user_confirm.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_reschedule_failed_actions(self, shell):
         """
         Test do_schedule_reschedule with failed actions.
@@ -281,8 +312,11 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging", logger
+            "spacecmd.schedule.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.schedule.do_schedule_reschedule(shell, "one 2 3, 5 and 4")
 
@@ -304,6 +338,7 @@ class TestSCSchedule:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_reschedule_missing_actions(self, shell):
         """
         Test do_schedule_reschedule with missing actions.
@@ -321,8 +356,11 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging", logger
+            "spacecmd.schedule.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.schedule.do_schedule_reschedule(shell, "one 5 and 6")
 
@@ -343,6 +381,7 @@ class TestSCSchedule:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_details_noargs(self, shell):
         """
         Test do_schedule_details without arguments.
@@ -360,8 +399,11 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging", logger
+            "spacecmd.schedule.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.schedule.do_schedule_details(shell, "")
 
@@ -374,6 +416,7 @@ class TestSCSchedule:
         assert not logger.warning.called
         assert shell.help_schedule_details.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_details_invalid_action_id(self, shell):
         """
         Test do_schedule_details with invalid action ID.
@@ -391,8 +434,11 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging", logger
+            "spacecmd.schedule.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.schedule.do_schedule_details(shell, "something")
 
@@ -407,6 +453,7 @@ class TestSCSchedule:
 
         assert_expect(logger.warning.call_args_list, 'The ID "something" is invalid')
 
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_details_missing_action_id(self, shell):
         """
         Test do_schedule_details with the missing action ID.
@@ -426,8 +473,11 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging", logger
+            "spacecmd.schedule.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.schedule.do_schedule_details(shell, "42")
 
@@ -443,6 +493,7 @@ class TestSCSchedule:
 
         assert_expect(logger.error.call_args_list, 'No action found with the ID "42"')
 
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_details_report(self, shell):
         """
         Test do_schedule_details report layout
@@ -496,8 +547,11 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging", logger
+            "spacecmd.schedule.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.schedule.do_schedule_details(shell, "3")
 
@@ -540,6 +594,7 @@ class TestSCSchedule:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_getoutput_noargs(self, shell):
         """
         Test do_schedule_getoutput without arguments.
@@ -554,8 +609,11 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging", logger
+            "spacecmd.schedule.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.schedule.do_schedule_getoutput(shell, "")
 
@@ -565,6 +623,7 @@ class TestSCSchedule:
         assert not logger.warning.called
         assert shell.help_schedule_getoutput.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_getoutput_invalid_action_id(self, shell):
         """
         Test do_schedule_getoutput with an invalid action ID.
@@ -579,8 +638,11 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging", logger
+            "spacecmd.schedule.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.schedule.do_schedule_getoutput(shell, "fortytwo")
 
@@ -596,6 +658,7 @@ class TestSCSchedule:
             logger.error.call_args_list, '"fortytwo" is not a valid action ID'
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_getoutput_no_script_results(self, shell):
         """
         Test do_schedule_getoutput with no script results (failed or None)
@@ -639,8 +702,11 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging", logger
+            "spacecmd.schedule.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.schedule.do_schedule_getoutput(shell, "42")
 
@@ -697,6 +763,7 @@ class TestSCSchedule:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_getoutput_no_any_results(self, shell):
         """
         Test do_schedule_getoutput with no any results available
@@ -714,8 +781,11 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging", logger
+            "spacecmd.schedule.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.schedule.do_schedule_getoutput(shell, "42")
 
@@ -742,6 +812,7 @@ class TestSCSchedule:
         )
         assert_args_expect(logger.error.call_args_list, [(("No systems found",), {})])
 
+    # pylint: disable-next=redefined-outer-name
     def test_schedule_getoutput_scripts(self, shell):
         """
         Test do_schedule_getoutput with scripts
@@ -782,8 +853,11 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging", logger
+            "spacecmd.schedule.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.schedule.do_schedule_getoutput(shell, "42")
 
