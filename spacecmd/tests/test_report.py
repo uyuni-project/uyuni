@@ -3,7 +3,11 @@
 Tests for report.
 """
 from unittest.mock import MagicMock, patch
+
+# pylint: disable-next=unused-import
 import pytest
+
+# pylint: disable-next=unused-import,unused-import
 from helpers import shell, assert_expect, exc2str
 import spacecmd.report
 
@@ -13,6 +17,7 @@ class TestSCReport:
     Test suite for report.
     """
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_inactivesystems_noargs(self, shell):
         """
         Test do_report_inactivesystems with no arguments.
@@ -24,6 +29,7 @@ class TestSCReport:
         shell.client.system.listInactiveSystems = MagicMock(return_value=[])
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_inactivesystems(shell, "")
 
@@ -34,6 +40,7 @@ class TestSCReport:
             shell.client.system.listInactiveSystems.call_args_list, shell.session
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_inactivesystems_systems(self, shell):
         """
         Test do_report_inactivesystems with no arguments, systems found.
@@ -50,6 +57,7 @@ class TestSCReport:
         )
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_inactivesystems(shell, "")
 
@@ -70,6 +78,7 @@ class TestSCReport:
             exp.pop(0)
         assert not exp
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_inactivesystems_wrong_args(self, shell):
         """
         Test do_report_inactivesystems with wrong days count, defaults to 7.
@@ -82,6 +91,7 @@ class TestSCReport:
             shell.client.system.listInactiveSystems = MagicMock(return_value=[])
             mprint = MagicMock()
 
+            # pylint: disable-next=unused-variable
             with patch("spacecmd.report.print", mprint) as prn:
                 spacecmd.report.do_report_inactivesystems(shell, m_arg)
 
@@ -93,6 +103,7 @@ class TestSCReport:
                 assert args == (shell.session, 7)
                 assert not kw
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_inactivesystems_args(self, shell):
         """
         Test do_report_inactivesystems with days count.
@@ -104,6 +115,7 @@ class TestSCReport:
         shell.client.system.listInactiveSystems = MagicMock(return_value=[])
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_inactivesystems(shell, "3")
 
@@ -115,6 +127,7 @@ class TestSCReport:
             assert args == (shell.session, 3)
             assert not kw
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_outofdatesystems(self, shell):
         """
         Test do_report_outofdatesystems.
@@ -130,6 +143,7 @@ class TestSCReport:
             ]
         )
         mprint = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_outofdatesystems(shell, "")
 
@@ -147,6 +161,7 @@ class TestSCReport:
             exp.pop(0)
         assert not exp
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_ungroupedsystems(self, shell):
         """
         Test do_report_ungroupedsystems.
@@ -162,12 +177,14 @@ class TestSCReport:
             ]
         )
         mprint = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_ungroupedsystems(shell, "")
 
         assert mprint.called
         assert_expect(mprint.call_args_list, "system-one\nsystem-three\nsystem-two")
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_errata_noargs(self, shell):
         """
         Test do_report_errata with no arguments (request all errata).
@@ -178,6 +195,7 @@ class TestSCReport:
         shell.client.errata.listAffectedSystems = MagicMock()
         shell.expand_errata = MagicMock()
         mprint = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_errata(shell, "")
 
@@ -189,6 +207,7 @@ class TestSCReport:
             "All errata requested - this may take " "a few minutes, please be patient!",
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_errata_not_found(self, shell):
         """
         Test do_report_errata with not found errata.
@@ -200,8 +219,11 @@ class TestSCReport:
         shell.expand_errata = MagicMock(return_value=[])
         mprint = MagicMock()
         logger = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn, patch(
-            "spacecmd.report.logging", logger
+            "spacecmd.report.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.report.do_report_errata(shell, "whatever")
 
@@ -209,6 +231,7 @@ class TestSCReport:
         assert mprint.called
         assert_expect(mprint.call_args_list, "No errata found for 'whatever'")
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_errata(self, shell):
         """
         Test do_report_errata on data.
@@ -226,8 +249,11 @@ class TestSCReport:
         shell.expand_errata = MagicMock(return_value=["vim", "apache", "java"])
         mprint = MagicMock()
         logger = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn, patch(
-            "spacecmd.report.logging", logger
+            "spacecmd.report.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.report.do_report_errata(shell, "ERRATA")
 
@@ -247,6 +273,7 @@ class TestSCReport:
             exp.pop(0)
         assert not exp
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_ipaddresses_noargs(self, shell):
         """
         Test do_report_ipaddresses without args, no systems found.
@@ -261,6 +288,7 @@ class TestSCReport:
         shell.client.system.getNetwork = MagicMock()
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_ipaddresses(shell, "")
 
@@ -270,6 +298,7 @@ class TestSCReport:
         assert not shell.client.system.getNetwork.called
         assert shell.get_system_names.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_ipaddresses_noargs_systems(self, shell):
         """
         Test do_report_ipaddresses without args, some systems found.
@@ -302,6 +331,7 @@ class TestSCReport:
         )
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_ipaddresses(shell, "")
 
@@ -322,6 +352,7 @@ class TestSCReport:
             exp.pop(0)
         assert not exp
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_ipaddresses_ssm_systems(self, shell):
         """
         Test do_report_ipaddresses systems from the ssm
@@ -349,6 +380,7 @@ class TestSCReport:
         )
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_ipaddresses(shell, "ssm")
 
@@ -368,6 +400,7 @@ class TestSCReport:
             exp.pop(0)
         assert not exp
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_ipaddresses_search_systems(self, shell):
         """
         Test do_report_ipaddresses systems searched
@@ -395,6 +428,7 @@ class TestSCReport:
         )
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_ipaddresses(shell, "search:system-*")
 
@@ -414,6 +448,7 @@ class TestSCReport:
             exp.pop(0)
         assert not exp
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_kernels_noargs(self, shell):
         """
         Test do_report_kernels with no arguments.
@@ -428,6 +463,7 @@ class TestSCReport:
         shell.client.system.getRunningKernel = MagicMock()
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_kernels(shell, "")
 
@@ -437,6 +473,7 @@ class TestSCReport:
         assert not shell.client.system.getRunningKernel.called
         assert shell.get_system_names.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_kernels_noargs_kernels(self, shell):
         """
         Test do_report_kernels with no arguments, kernels found.
@@ -463,6 +500,7 @@ class TestSCReport:
         )
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_kernels(shell, "")
 
@@ -484,6 +522,7 @@ class TestSCReport:
             exp.pop(0)
         assert not exp
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_kernels_ssm_kernels(self, shell):
         """
         Test do_report_kernels from system in the SSM.
@@ -505,6 +544,7 @@ class TestSCReport:
         )
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_kernels(shell, "ssm")
 
@@ -525,6 +565,7 @@ class TestSCReport:
             exp.pop(0)
         assert not exp
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_kernels_search_kernels(self, shell):
         """
         Test do_report_kernels from system by search
@@ -546,6 +587,7 @@ class TestSCReport:
         )
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_kernels(shell, "search:system-*")
 
@@ -567,6 +609,7 @@ class TestSCReport:
             exp.pop(0)
         assert not exp
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_duplicates_noapiver_10_11(self, shell):
         """
         Test do_report_duplicates, api version is not "10.11".
@@ -594,6 +637,7 @@ class TestSCReport:
         shell.SEPARATOR = "---"
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_duplicates(shell, "")
 
@@ -612,6 +656,7 @@ class TestSCReport:
             exp.pop(0)
         assert not exp
 
+    # pylint: disable-next=redefined-outer-name
     def test_report_duplicates_api_10_11(self, shell):
         """
         Test do_report_duplicates api version is "10.11".
@@ -687,6 +732,7 @@ class TestSCReport:
         shell.SEPARATOR = "---"
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_duplicates(shell, "")
 

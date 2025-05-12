@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -76,6 +77,7 @@ def print_package_comparison(self, results):
 
     # print(headers)
     print(
+        # pylint: disable-next=consider-using-f-string
         "%s  %s  %s  %s"
         % (
             _("Package").ljust(max_name),
@@ -86,6 +88,7 @@ def print_package_comparison(self, results):
     )
 
     print(
+        # pylint: disable-next=consider-using-f-string
         "%s  %s  %s  %s"
         % ("-" * max_name, "-" * max_this, "-" * max_other, "-" * max_comparison)
     )
@@ -96,6 +99,7 @@ def print_package_comparison(self, results):
             continue
 
         print(
+            # pylint: disable-next=consider-using-f-string
             "%s  %s  %s  %s"
             % (
                 item.get("package_name").ljust(max_name),
@@ -111,6 +115,7 @@ def print_package_comparison(self, results):
 
 def manipulate_child_channels(self, args, remove=False):
     arg_parser = get_argument_parser()
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -131,6 +136,7 @@ def manipulate_child_channels(self, args, remove=False):
 
     print(_("Systems"))
     print("-------")
+    # pylint: disable-next=consider-using-f-string
     print("\n".join(sorted(["%s" % x for x in systems])))
     print("")
 
@@ -188,6 +194,7 @@ def do_system_list(self, args, doreturn=False):
                 "\n".join(
                     sorted(
                         [
+                            # pylint: disable-next=consider-using-f-string
                             "%s : %s" % (v, k)
                             for k, v in self.get_system_names_ids().items()
                         ]
@@ -293,6 +300,7 @@ def help_system_search(self):
 def do_system_search(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1:
@@ -350,6 +358,7 @@ def do_system_search(self, args, doreturn=False):
     max_size = 0
     for s in results:
         # only use real matches, not the fuzzy ones we get back
+        # pylint: disable-next=consider-using-f-string
         if re.search(value, "%s" % s.get(key), re.I):
             if len(s.get("name")) > max_size:
                 max_size = len(s.get("name"))
@@ -364,6 +373,7 @@ def do_system_search(self, args, doreturn=False):
                 if key == "name":
                     print(s[0])
                 else:
+                    # pylint: disable-next=consider-using-f-string
                     print("%s  %s" % (s[0].ljust(max_size), str(s[1]).strip()))
 
     return 0
@@ -595,6 +605,7 @@ def complete_system_listhardware(self, text, line, beg, end):
 
 def do_system_listhardware(self, args):
     arg_parser = get_argument_parser()
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -798,6 +809,7 @@ def do_system_installpackage(self, args):
 
     if self.check_api_version("10.11"):
         for package in packages_to_install:
+            # pylint: disable-next=consider-using-f-string
             logging.debug("Finding the latest version of %s" % package)
 
             avail_packages = self.client.system.listLatestAvailablePackage(
@@ -815,7 +827,9 @@ def do_system_installpackage(self, args):
         # XXX: Satellite 5.3 compatibility
         for system_id in system_ids:
             logging.debug(
-                "Getting available packages for %s" % self.get_system_name(system_id)
+                # pylint: disable-next=consider-using-f-string
+                "Getting available packages for %s"
+                % self.get_system_name(system_id)
             )
 
             avail_packages = self.client.system.listLatestInstallablePackages(
@@ -836,6 +850,7 @@ def do_system_installpackage(self, args):
     add_separator = False
 
     warnings = []
+    # pylint: disable-next=consider-using-dict-items
     for system_id in jobs:
         if add_separator:
             print(self.SEPARATOR)
@@ -846,6 +861,7 @@ def do_system_installpackage(self, args):
             # stash the warnings and show at the end so the user can see them
             warnings.append(system_id)
 
+        # pylint: disable-next=consider-using-f-string
         print("%s:" % self.get_system_name(system_id))
         for package_id in jobs[system_id]:
             print(self.get_package_name(package_id))
@@ -866,6 +882,7 @@ def do_system_installpackage(self, args):
         return 1
 
     scheduled = 0
+    # pylint: disable-next=consider-using-dict-items
     for system_id in jobs:
         try:
             self.client.system.schedulePackageInstall(
@@ -955,6 +972,7 @@ def do_system_removepackage(self, args):
 
     jobs = {}
     for package_name in matching_packages:
+        # pylint: disable-next=consider-using-f-string
         logging.debug("Finding systems with %s" % package_name)
 
         installed_systems = {}
@@ -968,6 +986,7 @@ def do_system_removepackage(self, args):
         # API call needs to be made to schedule all the package removals
         # for each system
         for system in systems:
+            # pylint: disable-next=consider-iterating-dictionary
             if system in installed_systems.keys():
                 if system not in jobs:
                     jobs[system] = []
@@ -976,11 +995,13 @@ def do_system_removepackage(self, args):
 
     add_separator = False
 
+    # pylint: disable-next=consider-using-dict-items
     for system in jobs:
         if add_separator:
             print(self.SEPARATOR)
         add_separator = True
 
+        # pylint: disable-next=consider-using-f-string
         print("%s:" % system)
         for package in jobs[system]:
             print(self.get_package_name(package))
@@ -995,6 +1016,7 @@ def do_system_removepackage(self, args):
         return 1
 
     scheduled = 0
+    # pylint: disable-next=consider-using-dict-items
     for system in jobs:
         system_id = self.get_system_id(system)
         if not system_id:
@@ -1118,6 +1140,7 @@ def do_system_upgradepackage(self, args):
 
     add_separator = False
 
+    # pylint: disable-next=consider-using-dict-items
     for system in jobs:
         if add_separator:
             print(self.SEPARATOR)
@@ -1146,6 +1169,7 @@ def do_system_upgradepackage(self, args):
         hdr = _("Full package update on systems:")
         print(hdr)
         print("-" * len(hdr))
+        # pylint: disable-next=consider-using-f-string
         print("- {}".format(system))
 
     print("")
@@ -1155,6 +1179,7 @@ def do_system_upgradepackage(self, args):
         return 1
 
     scheduled = 0
+    # pylint: disable-next=consider-using-dict-items
     for system in jobs:
         system_id = self.get_system_id(system)
 
@@ -1199,6 +1224,7 @@ def complete_system_listupgrades(self, text, line, beg, end):
 def do_system_listupgrades(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1276,6 +1302,7 @@ def complete_system_listinstalledpackages(self, text, line, beg, end):
 def do_system_listinstalledpackages(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1331,6 +1358,7 @@ def complete_system_listconfigchannels(self, text, line, beg, end):
 def do_system_listconfigchannels(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1385,6 +1413,7 @@ def print_configfiles(self, quiet, filelist):
     # print(header when not in quiet mode)
     if not quiet:
         print(
+            # pylint: disable-next=consider-using-f-string
             "%s  %s  %s"
             % (
                 "path".ljust(max_path),
@@ -1393,10 +1422,12 @@ def print_configfiles(self, quiet, filelist):
             )
         )
 
+        # pylint: disable-next=consider-using-f-string
         print("%s  %s  %s" % ("-" * max_path, "-" * max_type, "-" * max_label))
 
     for f in filelist:
         print(
+            # pylint: disable-next=consider-using-f-string
             "%s  %s  %s"
             % (
                 f["path"].ljust(max_path),
@@ -1621,6 +1652,7 @@ def do_system_addconfigfile(self, args, update_path=""):
         return 1
 
     system_id = self.get_system_id(options.system)
+    # pylint: disable-next=consider-using-f-string
     logging.debug("Got ID %s for system %s" % (system_id, options.system))
 
     # check if this file already exists
@@ -1629,8 +1661,10 @@ def do_system_addconfigfile(self, args, update_path=""):
             self.session, system_id, [options.path], localopt
         )
         if file_info:
+            # pylint: disable-next=consider-using-f-string
             logging.debug("Found existing file_info %s" % file_info)
     except xmlrpclib.Fault:
+        # pylint: disable-next=consider-using-f-string
         logging.debug("No existing file information found for %s" % options.path)
 
     file_info = self.configfile_getinfo(args, options, file_info, interactive)
@@ -1751,6 +1785,7 @@ def complete_system_removeconfigchannels(self, text, line, beg, end):
 def do_system_removeconfigchannels(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -1798,6 +1833,7 @@ def complete_system_setconfigchannelorder(self, text, line, beg, end):
 def do_system_setconfigchannelorder(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1829,6 +1865,7 @@ def do_system_setconfigchannelorder(self, args):
     print(_("New Configuration Channels"))
     print("--------------------------")
     for i, new_channel in enumerate(new_channels, 1):
+        # pylint: disable-next=consider-using-f-string
         print("[%i] %s" % (i, new_channel))
 
     if not self.user_confirm():
@@ -1983,10 +2020,12 @@ def do_system_delete(self, args):
         colsize = 7
 
     print(_("%s  System ID") % _("Profile").ljust(colsize))
+    # pylint: disable-next=consider-using-f-string
     print("%s  ---------" % ("-" * colsize))
 
     # print(a summary for the user)
     for system_id in system_ids:
+        # pylint: disable-next=consider-using-f-string
         print("%s  %i" % (self.get_system_name(system_id).ljust(colsize), system_id))
 
     if not self.user_confirm(_("Delete these systems [y/N]:")):
@@ -2030,6 +2069,7 @@ def complete_system_lock(self, text, line, beg, end):
 def do_system_lock(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -2073,6 +2113,7 @@ def complete_system_unlock(self, text, line, beg, end):
 def do_system_unlock(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -2117,6 +2158,7 @@ def complete_system_rename(self, text, line, beg, end):
 def do_system_rename(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
@@ -2129,6 +2171,7 @@ def do_system_rename(self, args):
     if not system_id:
         return 1
 
+    # pylint: disable-next=consider-using-f-string
     print("%s (%s) -> %s" % (old_name, system_id, new_name))
     if not self.user_confirm():
         return 1
@@ -2163,6 +2206,7 @@ def complete_system_refreshpillar(self, text, line, beg, end):
 def do_system_refreshpillar(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     sids = []
@@ -2181,9 +2225,11 @@ def do_system_refreshpillar(self, args):
 
     self.client.system.refreshPillar(self.session, sids)
 
+    # pylint: disable-next=consider-using-f-string
     num = "%s" % len(sids)
     if num == "0":
         num = "all"
+    # pylint: disable-next=consider-using-f-string
     print('Refreshed Pillar data for "%s" systems' % (num))
     return 0
 
@@ -2205,6 +2251,7 @@ def complete_system_listcustomvalues(self, text, line, beg, end):
 def do_system_listcustomvalues(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -2239,6 +2286,7 @@ def do_system_listcustomvalues(self, args):
         values = self.client.system.getCustomValues(self.session, system_id)
 
         for v in values:
+            # pylint: disable-next=consider-using-f-string
             print("%s = %s" % (v, values[v]))
 
     return 0
@@ -2271,6 +2319,7 @@ def do_system_addcustomvalue(self, args):
     if not isinstance(args, list):
         arg_parser = get_argument_parser()
 
+        # pylint: disable-next=unused-variable
         (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 3:
@@ -2326,6 +2375,7 @@ def complete_system_updatecustomvalue(self, text, line, beg, end):
 def do_system_updatecustomvalue(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 3:
@@ -2359,6 +2409,7 @@ def complete_system_removecustomvalues(self, text, line, beg, end):
 def do_system_removecustomvalues(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -2476,6 +2527,7 @@ def complete_system_deletenotes(self, text, line, beg, end):
 def do_system_deletenotes(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -2537,6 +2589,7 @@ def complete_system_listnotes(self, text, line, beg, end):
 def do_system_listnotes(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -2571,6 +2624,7 @@ def do_system_listnotes(self, args):
         notes = self.client.system.listNotes(self.session, system_id)
 
         for n in notes:
+            # pylint: disable-next=consider-using-f-string
             print("%d. %s (%s)" % (n["id"], n["subject"], n["creator"]))
             print(n["note"])
             print("")
@@ -2596,6 +2650,7 @@ def complete_system_listfqdns(self, text, line, beg, end):
 def do_system_listfqdns(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -2657,6 +2712,7 @@ def complete_system_setbasechannel(self, text, line, beg, end):
 def do_system_setbasechannel(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
@@ -2827,6 +2883,7 @@ def complete_system_listbasechannel(self, text, line, beg, end):
 def do_system_listbasechannel(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -2881,6 +2938,7 @@ def complete_system_listchildchannels(self, text, line, beg, end):
 def do_system_listchildchannels(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -2989,6 +3047,7 @@ def complete_system_details(self, text, line, beg, end):
 def do_system_details(self, args, short=False):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -3098,6 +3157,7 @@ def do_system_details(self, args, short=False):
         print(base_channel.get("label"))
 
         for channel in child_channels:
+            # pylint: disable-next=consider-using-f-string
             print("  |-- %s" % channel.get("label"))
 
         if ranked_config_channels:
@@ -3139,6 +3199,7 @@ def complete_system_listerrata(self, text, line, beg, end):
 def do_system_listerrata(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -3271,6 +3332,7 @@ def complete_system_listevents(self, text, line, beg, end):
 def do_system_listevents(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -3456,6 +3518,7 @@ def do_system_eventdetails(self, args):
 
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -3506,6 +3569,7 @@ def do_system_eventdetails(self, args):
         except xmlrpclib.Fault:
             print(
                 _(
+                    # pylint: disable-next=consider-using-f-string
                     "No event %s found in the history of system %s"
                     % (event_id, system_id)
                 )
@@ -3563,6 +3627,7 @@ def complete_system_listentitlements(self, text, line, beg, end):
 def do_system_listentitlements(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -3622,6 +3687,7 @@ def complete_system_addentitlements(self, text, line, beg, end):
 def do_system_addentitlements(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -3677,6 +3743,7 @@ def complete_system_removeentitlement(self, text, line, beg, end):
 def do_system_removeentitlement(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -3755,6 +3822,7 @@ def complete_system_deletepackageprofile(self, text, line, beg, end):
 def do_system_deletepackageprofile(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -3871,6 +3939,7 @@ def complete_system_comparepackageprofile(self, text, line, beg, end):
 def do_system_comparepackageprofile(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -3905,6 +3974,7 @@ def do_system_comparepackageprofile(self, args):
             print(self.SEPARATOR)
         add_separator = True
 
+        # pylint: disable-next=consider-using-f-string
         print("%s:" % system)
         self.print_package_comparison(results)
 
@@ -3926,6 +3996,7 @@ def complete_system_comparepackages(self, text, line, beg, end):
 def do_system_comparepackages(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
@@ -3996,6 +4067,7 @@ def do_system_syncpackages(self, args):
             options.start_time = parse_time_input(options.start_time)
 
     # show a comparison and ask for confirmation
+    # pylint: disable-next=consider-using-f-string
     self.do_system_comparepackages("%s %s" % (source_id, target_id))
 
     print("")
@@ -4071,15 +4143,18 @@ def print_comparison_withchannel(
     tmp_system = []
     tmp_channel = []
     for item in results:
+        # pylint: disable-next=consider-using-f-string
         name_string = "%(name)s.%(arch)s" % item
         tmp_names.append(name_string)
         # Create two version-string lists, one for the version in the results
         # list, and another with the version string from the channel_latest
         # dict, if the channel contains a matching package
+        # pylint: disable-next=consider-using-f-string
         version_string = "%(version)s-%(release)s" % item
         tmp_system.append(version_string)
         key = item["name"], item["arch"]
         if key in channel_latest:
+            # pylint: disable-next=consider-using-f-string
             version_string = "%(version)s-%(release)s" % channel_latest[key]
             tmp_channel.append(version_string)
 
@@ -4090,6 +4165,7 @@ def print_comparison_withchannel(
 
     # print(headers)
     print(
+        # pylint: disable-next=consider-using-f-string
         "%s  %s  %s  %s"
         % (
             _("Package").ljust(max_name),
@@ -4100,20 +4176,25 @@ def print_comparison_withchannel(
     )
 
     print(
+        # pylint: disable-next=consider-using-f-string
         "%s  %s  %s  %s"
         % ("-" * max_name, "-" * max_system, "-" * max_channel, "-" * max_comparison)
     )
 
     # Then print(the packages)
     for item in channelnewer:
+        # pylint: disable-next=consider-using-f-string
         name_string = "%(name)s.%(arch)s" % item
+        # pylint: disable-next=consider-using-f-string
         version_string = "%(version)s-%(release)s" % item
         key = item["name"], item["arch"]
         if key in channel_latest:
+            # pylint: disable-next=consider-using-f-string
             channel_version = "%(version)s-%(release)s" % channel_latest[key]
         else:
             channel_version = "-"
         print(
+            # pylint: disable-next=consider-using-f-string
             "%s  %s  %s  %s"
             % (
                 name_string.ljust(max_name),
@@ -4123,14 +4204,18 @@ def print_comparison_withchannel(
             )
         )
     for item in systemnewer:
+        # pylint: disable-next=consider-using-f-string
         name_string = "%(name)s.%(arch)s" % item
+        # pylint: disable-next=consider-using-f-string
         version_string = "%(version)s-%(release)s" % item
         key = item["name"], item["arch"]
         if key in channel_latest:
+            # pylint: disable-next=consider-using-f-string
             channel_version = "%(version)s-%(release)s" % channel_latest[key]
         else:
             channel_version = "-"
         print(
+            # pylint: disable-next=consider-using-f-string
             "%s  %s  %s  %s"
             % (
                 name_string.ljust(max_name),
@@ -4140,10 +4225,13 @@ def print_comparison_withchannel(
             )
         )
     for item in channelmissing:
+        # pylint: disable-next=consider-using-f-string
         name_string = "%(name)s.%(arch)s" % item
+        # pylint: disable-next=consider-using-f-string
         version_string = "%(version)s-%(release)s" % item
         channel_version = "-"
         print(
+            # pylint: disable-next=consider-using-f-string
             "%s  %s  %s  %s"
             % (
                 name_string.ljust(max_name),
@@ -4200,12 +4288,15 @@ def do_system_comparewithchannel(self, args):
 
         instpkgs = self.client.system.listPackages(self.session, system_id)
         logging.debug(
-            "Got %d packages installed in system %s" % (len(instpkgs), system)
+            # pylint: disable-next=consider-using-f-string
+            "Got %d packages installed in system %s"
+            % (len(instpkgs), system)
         )
         # We need to filter to get only the latest installed packages,
         # because multiple versions (e.g kernel) can be installed
         packages = filter_latest_packages(instpkgs)
         logging.debug(
+            # pylint: disable-next=consider-using-f-string
             "Got latest %d packages installed in system %s"
             % (len(packages.keys()), system)
         )
@@ -4220,6 +4311,7 @@ def do_system_comparewithchannel(self, args):
                 self.help_system_comparewithchannel()
                 return None
             channels = [options.channel]
+            # pylint: disable-next=consider-using-f-string
             logging.debug("User specified channel %s" % options.channel)
         else:
             # No specified channel, so we create a list of all channels the
@@ -4238,6 +4330,7 @@ def do_system_comparewithchannel(self, args):
                     )
                 )
                 return 1
+            # pylint: disable-next=consider-using-f-string
             logging.debug("base channel %s for %s" % (basech["name"], system))
             childch = self.client.system.listSubscribedChildChannels(
                 self.session, system_id
@@ -4250,6 +4343,7 @@ def do_system_comparewithchannel(self, args):
         latestpkgs = {}
         for c in channels:
             if not c in channel_latest:
+                # pylint: disable-next=consider-using-f-string
                 logging.debug("Getting packages for channel %s" % c)
                 pkgs = self.client.channel.software.listAllPackages(self.session, c)
                 # filter_latest_packages Returns a dict of latest packages
@@ -4458,6 +4552,7 @@ def complete_system_show_packageversion(self, text, line, beg, end):
 def do_system_show_packageversion(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
@@ -4485,6 +4580,7 @@ def do_system_show_packageversion(self, args):
         for pkg in instpkgs:
             if pkg.get("name") == searchpkg:
                 print(
+                    # pylint: disable-next=consider-using-f-string
                     "%s\t%s\t%s\t%s\t%s\t%s"
                     % (
                         pkg.get("name"),
@@ -4522,6 +4618,7 @@ def complete_system_setcontactmethod(self, text, line, beg, end):
 def do_system_setcontactmethod(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -4646,6 +4743,7 @@ def help_system_listmigrationtargets(self):
 def do_system_listmigrationtargets(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1:
@@ -4916,6 +5014,7 @@ def do_system_bootstrap(self, args):
         args.append(int(options.proxyid))
     args.append(options.saltssh)
 
+    # pylint: disable-next=consider-using-f-string
     print(_("Bootstrapping '{}'. This may take a while.".format(options.hostname)))
     if options.ssh_password:
         self.client.system.bootstrap(
@@ -4928,6 +5027,7 @@ def do_system_bootstrap(self, args):
             *args,
         )
     else:
+        # pylint: disable-next=unspecified-encoding
         with open(options.ssh_privatekey_file, "r") as key:
             pkey = key.read()
 

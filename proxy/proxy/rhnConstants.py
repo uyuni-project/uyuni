@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# pylint: disable=invalid-name
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #

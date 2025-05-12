@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -52,12 +53,14 @@ def print_schedule_summary(self, action_type, args):
 
     if args:
         begin_date = parse_time_input(args[0])
+        # pylint: disable-next=consider-using-f-string
         logging.debug("Begin Date: %s" % begin_date)
     else:
         begin_date = None
 
     if len(args) > 1:
         end_date = parse_time_input(args[1])
+        # pylint: disable-next=consider-using-f-string
         logging.debug("End Date:   %s" % end_date)
     else:
         end_date = None
@@ -102,6 +105,7 @@ def print_schedule_summary(self, action_type, args):
 
         if self.check_api_version("10.11"):
             print(
+                # pylint: disable-next=consider-using-f-string
                 "%s  %s   %s  %s  %s    %s"
                 % (
                     str(action.get("id")).ljust(6),
@@ -127,6 +131,7 @@ def print_schedule_summary(self, action_type, args):
             )
 
             print(
+                # pylint: disable-next=consider-using-f-string
                 "%s  %s   %s  %s  %s    %s"
                 % (
                     str(action.get("id")).ljust(6),
@@ -158,6 +163,7 @@ def complete_schedule_cancel(self, text, line, beg, end):
 def do_schedule_cancel(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -217,6 +223,7 @@ def complete_schedule_reschedule(self, text, line, beg, end):
 def do_schedule_reschedule(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -268,6 +275,7 @@ def help_schedule_details(self):
 def do_schedule_details(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -340,6 +348,7 @@ def help_schedule_getoutput(self):
 def do_schedule_getoutput(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -509,6 +518,7 @@ def do_schedule_deletearchived(self, args):
 
     if args:
         date_limit = parse_time_input(args[0])
+        # pylint: disable-next=consider-using-f-string
         logging.debug("Date limit: %s" % date_limit)
     else:
         date_limit = None
@@ -519,6 +529,7 @@ def do_schedule_deletearchived(self, args):
     if date_limit:
         actions = [action for action in actions if action.get("earliest") < date_limit]
 
+    # pylint: disable-next=consider-using-f-string
     logging.debug("actions: {}".format(actions))
     if actions:
         if not _options.yes:
@@ -550,6 +561,7 @@ def do_schedule_deletearchived(self, args):
                     if i + BATCH_SIZE <= len(action_ids)
                     else len(action_ids)
                 )
+                # pylint: disable-next=consider-using-f-string
                 print("Deleted {} actions of {}".format(processed, len(action_ids)))
     else:
         print(_("No archived actions found."))
@@ -588,6 +600,7 @@ def do_schedule_archivecompleted(self, args):
 
     if args:
         date_limit = parse_time_input(args[0])
+        # pylint: disable-next=consider-using-f-string
         logging.debug("Date limit: %s" % date_limit)
     else:
         date_limit = None
@@ -598,6 +611,7 @@ def do_schedule_archivecompleted(self, args):
     if date_limit:
         actions = [action for action in actions if action.get("earliest") < date_limit]
 
+    # pylint: disable-next=consider-using-f-string
     logging.debug("actions: {}".format(actions))
     if actions:
         if not _options.yes:
@@ -629,6 +643,7 @@ def do_schedule_archivecompleted(self, args):
                     if i + BATCH_SIZE <= len(action_ids)
                     else len(action_ids)
                 )
+                # pylint: disable-next=consider-using-f-string
                 print("Archived {} actions of {}".format(processed, len(action_ids)))
     else:
         print(_("No completed actions found."))

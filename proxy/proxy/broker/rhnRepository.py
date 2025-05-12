@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 # rhnRepository.py                         - Perform local repository functions.
 # -------------------------------------------------------------------------------
 # This module contains the functionality for providing local packages.
@@ -81,13 +82,21 @@ class Repository(rhnRepository.Repository):
         rhnRepository.Repository.__init__(self, channelName)
         self.functions = CFG.PROXY_LOCAL_FLIST
         self.channelName = channelName
+        # pylint: disable-next=invalid-name
         self.channelVersion = channelVersion
+        # pylint: disable-next=invalid-name
         self.clientInfo = clientInfo
+        # pylint: disable-next=invalid-name
         self.rhnParent = rhnParent
+        # pylint: disable-next=invalid-name
         self.rhnParentXMLRPC = rhnParentXMLRPC
+        # pylint: disable-next=invalid-name
         self.httpProxy = httpProxy
+        # pylint: disable-next=invalid-name
         self.httpProxyUsername = httpProxyUsername
+        # pylint: disable-next=invalid-name
         self.httpProxyPassword = httpProxyPassword
+        # pylint: disable-next=invalid-name
         self.caChain = caChain
 
     def getPackagePath(
@@ -98,6 +107,7 @@ class Repository(rhnRepository.Repository):
         """
 
         log_debug(3, pkgFilename)
+        # pylint: disable-next=invalid-name,consider-using-f-string
         mappingName = "package_mapping:%s:" % self.channelName
         mapping = self._cacheObj(
             mappingName, self.channelVersion, self.__channelPackageMapping, ()
@@ -111,6 +121,7 @@ class Repository(rhnRepository.Repository):
             # Not certain if anything is needed here for Debian, but since what I've tested
             # works.   Leave it alone.
             if isSolarisArch(arch):
+                # pylint: disable-next=consider-using-f-string
                 pkgFilename = "%s-%s-%s.%s.pkg" % (
                     pkgFilename[0],
                     pkgFilename[1],
@@ -119,21 +130,27 @@ class Repository(rhnRepository.Repository):
                 )
 
         if pkgFilename not in mapping:
+            # pylint: disable-next=consider-using-f-string
             log_debug(3, "Package not in mapping: %s" % pkgFilename)
             raise NotLocalError
         # A list of possible file paths. Always a list, channel mappings are
         # cleared on package upgrade so we don't have to worry about the old
         # behavior of returning a string
+        # pylint: disable-next=invalid-name
         filePaths = mapping[pkgFilename]
         # Can we see a file at any of the possible filepaths?
+        # pylint: disable-next=invalid-name
         for filePath in filePaths:
+            # pylint: disable-next=invalid-name,consider-using-f-string
             filePath = "%s/%s" % (CFG.PKG_DIR, filePath)
             log_debug(4, "File path", filePath)
             if os.access(filePath, os.R_OK):
                 return filePath
+        # pylint: disable-next=consider-using-f-string
         log_debug(4, "Package not found locally: %s" % pkgFilename)
         raise NotLocalError(filePaths[0], pkgFilename)
 
+    # pylint: disable-next=arguments-renamed
     def getSourcePackagePath(self, pkgFilename):
         """OVERLOADS getSourcePackagePath in common/rhnRepository.
         snag src.rpm and nosrc.rpm from local repo, after ensuring
@@ -178,15 +195,20 @@ class Repository(rhnRepository.Repository):
             nvrea = list(parseRPMName(pkgFilename[:-10]))
             nvrea.append("nosrc")
 
+        # pylint: disable-next=invalid-name
         filePaths = computePackagePaths(nvrea, source=1, prepend=PREFIX)
+        # pylint: disable-next=invalid-name
         for filePath in filePaths:
+            # pylint: disable-next=invalid-name,consider-using-f-string
             filePath = "%s/%s" % (CFG.PKG_DIR, filePath)
             log_debug(4, "File path", filePath)
             if os.access(filePath, os.R_OK):
                 return filePath
+        # pylint: disable-next=consider-using-f-string
         log_debug(4, "Source package not found locally: %s" % pkgFilename)
         raise NotLocalError(filePaths[0], pkgFilename)
 
+    # pylint: disable-next=invalid-name,invalid-name,invalid-name
     def _cacheObj(self, fileName, version, dataProducer, params=None):
         """The real workhorse for all flavors of listall
         It tries to pull data out of a file; if it doesn't work,
@@ -199,7 +221,9 @@ class Repository(rhnRepository.Repository):
         """
 
         log_debug(4, fileName, version, params)
+        # pylint: disable-next=invalid-name
         fileDir = self._getPkgListDir()
+        # pylint: disable-next=invalid-name,consider-using-f-string
         filePath = "%s/%s-%s" % (fileDir, fileName, version)
         if os.access(filePath, os.R_OK):
             try:
@@ -207,6 +231,7 @@ class Repository(rhnRepository.Repository):
                 f = open(filePath, "rb")
                 data = f.read()
                 f.close()
+                # pylint: disable-next=invalid-name
                 stringObject = cPickle.loads(data)
                 return stringObject
             except (IOError, cPickle.UnpicklingError):  # corrupted cache file
@@ -215,6 +240,7 @@ class Repository(rhnRepository.Repository):
         # The file's not there; query the DB or whatever dataproducer used.
         if params is None:
             params = ()
+        # pylint: disable-next=invalid-name
         stringObject = dataProducer(*params)
         # Cache the thing
         cache(cPickle.dumps(stringObject, 1), fileDir, fileName, version)
@@ -222,6 +248,7 @@ class Repository(rhnRepository.Repository):
         return stringObject
 
     @staticmethod
+    # pylint: disable-next=invalid-name
     def _getPkgListDir():
         """Creates and returns the directory for cached lists of packages.
         Used by _cacheObj.
@@ -235,6 +262,7 @@ class Repository(rhnRepository.Repository):
             os.makedirs(PKG_LIST_DIR)
         return PKG_LIST_DIR
 
+    # pylint: disable-next=invalid-name
     def _listPackages(self):
         """Generates a list of objects by calling the function"""
         server = rpclib.GETServer(
@@ -248,6 +276,7 @@ class Repository(rhnRepository.Repository):
             server.add_trusted_cert(self.caChain)
         return server.listAllPackagesChecksum(self.channelName, self.channelVersion)
 
+    # pylint: disable-next=invalid-name
     def __channelPackageMapping(self):
         """fetch package list on behalf of the client"""
 
@@ -261,12 +290,14 @@ class Repository(rhnRepository.Repository):
         log_debug(6, self.clientInfo)
 
         try:
+            # pylint: disable-next=invalid-name
             packageList = self._listPackages()
         except xmlrpclib.ProtocolError as e:
             errcode, errmsg = rpclib.reportError(e.headers)
             raise_with_tb(
                 rhnFault(
                     1000,
+                    # pylint: disable-next=consider-using-f-string
                     "SpacewalkProxy error (xmlrpclib.ProtocolError): "
                     "errode=%s; errmsg=%s" % (errcode, errmsg),
                 ),
@@ -274,6 +305,7 @@ class Repository(rhnRepository.Repository):
             )
 
         # Hash the list
+        # pylint: disable-next=invalid-name
         _hash = {}
         for package in packageList:
             arch = package[4]
@@ -284,6 +316,7 @@ class Repository(rhnRepository.Repository):
             if isDebianArch(arch):
                 extension = "deb"
 
+            # pylint: disable-next=consider-using-f-string
             filename = "%s-%s-%s.%s.%s" % (
                 package[0],
                 package[1],
@@ -293,16 +326,19 @@ class Repository(rhnRepository.Repository):
             )
             # if the package contains checksum info
             if len(package) > 6:
+                # pylint: disable-next=invalid-name
                 filePaths = computePackagePaths(
                     package, source=0, prepend=PREFIX, checksum=package[7]
                 )
             else:
+                # pylint: disable-next=invalid-name
                 filePaths = computePackagePaths(package, source=0, prepend=PREFIX)
             _hash[filename] = filePaths
 
         if CFG.DEBUG > 4:
             log_debug(
                 5,
+                # pylint: disable-next=consider-using-f-string
                 "Mapping: %s[...snip snip...]%s" % (str(_hash)[:40], str(_hash)[-40:]),
             )
         return _hash
@@ -330,8 +366,10 @@ class KickstartRepository(Repository):
     ):
         log_debug(3, kickstart)
 
+        # pylint: disable-next=invalid-name
         self.systemId = systemId
         self.kickstart = kickstart
+        # pylint: disable-next=invalid-name
         self.ks_orgId = orgId
         self.ks_child = child
         self.ks_session = session
@@ -339,6 +377,7 @@ class KickstartRepository(Repository):
         # have to look up channel name and version for this kickstart
         # we have no equievanet to the channel version for kickstarts,
         # expire the cache after an hour
+        # pylint: disable-next=invalid-name,consider-using-f-string
         fileName = "kickstart_mapping:%s-%s-%s-%s:" % (
             str(kickstart),
             str(orgId),
@@ -367,22 +406,32 @@ class KickstartRepository(Repository):
             caChain,
         )
 
+    # pylint: disable-next=invalid-name
     def _lookupKickstart(
         self,
+        # pylint: disable-next=invalid-name
         fileName,
+        # pylint: disable-next=invalid-name
         rhnParentXMLRPC,
+        # pylint: disable-next=invalid-name
         httpProxy,
+        # pylint: disable-next=invalid-name
         httpProxyUsername,
+        # pylint: disable-next=invalid-name
         httpProxyPassword,
+        # pylint: disable-next=invalid-name
         caChain,
     ):
+        # pylint: disable-next=invalid-name
         fileDir = self._getPkgListDir()
+        # pylint: disable-next=invalid-name,consider-using-f-string
         filePath = "%s/%s-1" % (fileDir, fileName)
         mapping = None
         if os.access(filePath, os.R_OK):
             try:
                 # Slurp the file
                 try:
+                    # pylint: disable-next=unspecified-encoding
                     with open(filePath, "r") as f:
                         mapping = cPickle.loads(f.read())
                 except (UnicodeDecodeError, TypeError):
@@ -414,6 +463,7 @@ class KickstartRepository(Repository):
             except Exception:
                 # something went wrong. Punt, we just won't serve this request
                 # locally
+                # pylint: disable-next=raise-missing-from
                 raise NotLocalError
 
             # Cache the thing
@@ -445,6 +495,7 @@ class KickstartRepository(Repository):
         # version in filename.
         return server.proxy.listAllPackagesKickstart(self.channelName, self.systemId)
 
+    # pylint: disable-next=invalid-name
     def _getMapping(self, server):
         """Generate a hash that tells us what channel this
         kickstart is looking at. We have no equivalent to channel version,
@@ -493,6 +544,7 @@ class TinyUrlRepository(KickstartRepository):
         # have to look up channel name and version for this kickstart
         # we have no equievanet to the channel version for kickstarts,
         # expire the cache after an hour
+        # pylint: disable-next=invalid-name,consider-using-f-string
         fileName = "tinyurl_mapping:%s:" % (str(tinyurl))
 
         mapping = self._lookupKickstart(
@@ -520,6 +572,7 @@ class TinyUrlRepository(KickstartRepository):
         return server.proxy.getTinyUrlChannel(self.tinyurl, self.systemId)
 
 
+# pylint: disable-next=invalid-name
 def isSolarisArch(arch):
     """
     Returns true if the given arch string represents a solaris architecture.
@@ -527,6 +580,7 @@ def isSolarisArch(arch):
     return arch.find("solaris") != -1
 
 
+# pylint: disable-next=invalid-name
 def isDebianArch(arch):
     """
     Returns true if the given arch string represents a Debian architecture..
@@ -534,6 +588,7 @@ def isDebianArch(arch):
     return arch[-4:] == "-deb"
 
 
+# pylint: disable-next=invalid-name
 def computePackagePaths(nvrea, source=0, prepend="", checksum=None):
     """Finds the appropriate paths, prepending something if necessary"""
     paths = []
@@ -590,14 +645,17 @@ def computePackagePaths(nvrea, source=0, prepend="", checksum=None):
     return paths
 
 
+# pylint: disable-next=invalid-name
 def cache(stringObject, directory, filename, version):
     """Caches stringObject into a file and removes older files"""
 
     # The directory should be readable, writable, seekable
     if not os.access(directory, os.R_OK | os.W_OK | os.X_OK):
         os.makedirs(directory)
+    # pylint: disable-next=invalid-name,consider-using-f-string
     filePath = "%s/%s-%s" % (directory, filename, version)
     # Create a temp file based on the filename, version and stuff
+    # pylint: disable-next=consider-using-f-string
     tempfile = "%s-%.20f" % (filePath, time.time())
     # Try to create the temp file
     tries = 10
@@ -609,6 +667,7 @@ def cache(stringObject, directory, filename, version):
             if e.errno == 17:
                 # File exists; give it another try
                 tries = tries - 1
+                # pylint: disable-next=consider-using-f-string
                 tempfile = tempfile + "%.20f" % time.time()
                 continue
             # Another error
@@ -618,6 +677,7 @@ def cache(stringObject, directory, filename, version):
             break
     else:
         # Could not create the file
+        # pylint: disable-next=broad-exception-raised
         raise Exception("Could not create the file")
     # Write the object into the cache
     os.write(fd, stringObject)
@@ -625,7 +685,9 @@ def cache(stringObject, directory, filename, version):
     # Now rename the temp file
     os.rename(tempfile, filePath)
     # Expire the cached copies
+    # pylint: disable-next=invalid-name,consider-using-f-string
     _list = glob.glob("%s/%s-*" % (directory, filename))
+    # pylint: disable-next=invalid-name
     for _file in _list:
         if _file < filePath:
             # Older than this

@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -45,6 +46,7 @@ def help_custominfo_createkey(self):
 def do_custominfo_createkey(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=invalid-name,unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if args:
@@ -82,6 +84,7 @@ def complete_custominfo_deletekey(self, text, line, beg, end):
 def do_custominfo_deletekey(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=invalid-name,unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -90,6 +93,7 @@ def do_custominfo_deletekey(self, args):
 
     # allow globbing of custominfo key names
     keys = filter_results(self.do_custominfo_listkeys("", True), args)
+    # pylint: disable-next=consider-using-f-string
     logging.debug("customkey_deletekey called with args %s, keys=%s" % (args, keys))
 
     if not keys:
@@ -143,6 +147,7 @@ def complete_custominfo_details(self, text, line, beg, end):
 def do_custominfo_details(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=invalid-name,unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -152,6 +157,7 @@ def do_custominfo_details(self, args):
     # allow globbing of custominfo key names
     keys = filter_results(self.do_custominfo_listkeys("", True), args)
     logging.debug(
+        # pylint: disable-next=consider-using-f-string
         "customkey_details called with args: '{}', keys: '{}'.".format(
             ", ".join(args), ", ".join(keys)
         )
@@ -194,6 +200,7 @@ def help_custominfo_updatekey(self):
 def do_custominfo_updatekey(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=invalid-name,unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if args:

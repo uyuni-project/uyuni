@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -155,6 +156,7 @@ def complete_user_delete(self, text, line, beg, end):
 def do_user_delete(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1:
@@ -185,6 +187,7 @@ def complete_user_disable(self, text, line, beg, end):
 def do_user_disable(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1:
@@ -213,6 +216,7 @@ def complete_user_enable(self, text, line, beg, end):
 def do_user_enable(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1:
@@ -289,6 +293,7 @@ def complete_user_addrole(self, text, line, beg, end):
 def do_user_addrole(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
@@ -327,6 +332,7 @@ def complete_user_removerole(self, text, line, beg, end):
 def do_user_removerole(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
@@ -356,6 +362,7 @@ def complete_user_details(self, text, line, beg, end):
 def do_user_details(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -378,6 +385,7 @@ def do_user_details(self, args):
         except xmlrpclib.Fault as exc:
             logging.warning(_N("%s is not a valid user") % user)
             logging.debug(
+                # pylint: disable-next=consider-using-f-string
                 "Error '{}' while getting data about user '{}': {}".format(
                     exc.faultCode, user, exc.faultString
                 )
@@ -446,6 +454,7 @@ def complete_user_addgroup(self, text, line, beg, end):
 def do_user_addgroup(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -484,6 +493,7 @@ def complete_user_adddefaultgroup(self, text, line, beg, end):
 def do_user_adddefaultgroup(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -524,6 +534,7 @@ def complete_user_removegroup(self, text, line, beg, end):
 def do_user_removegroup(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -566,6 +577,7 @@ def complete_user_removedefaultgroup(self, text, line, beg, end):
 def do_user_removedefaultgroup(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -602,6 +614,7 @@ def complete_user_setfirstname(self, text, line, beg, end):
 def do_user_setfirstname(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
@@ -638,6 +651,7 @@ def complete_user_setlastname(self, text, line, beg, end):
 def do_user_setlastname(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
@@ -674,6 +688,7 @@ def complete_user_setemail(self, text, line, beg, end):
 def do_user_setemail(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
@@ -751,6 +766,7 @@ def complete_user_setpassword(self, text, line, beg, end):
 def do_user_setpassword(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:

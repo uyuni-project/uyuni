@@ -1,5 +1,7 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring,invalid-name
 
+# pylint: disable-next=unused-import
 import settestpath
 
 from up2date_client import up2dateUtils
@@ -13,6 +15,7 @@ test_up2date = "../etc-conf/up2date.config"
 class ReturnsString(TestCase):
     def testReturnsString(self):
         "Verify that function returns string"
+        # pylint: disable-next=unidiomatic-typecheck
         assert type(self.function()) == type("")
 
     def testNonZoreLength(self):
@@ -20,8 +23,10 @@ class ReturnsString(TestCase):
         assert len(self.function()) > 0
 
 
+# pylint: disable-next=missing-class-docstring
 class TestGetVersion(ReturnsString):
     def setUp(self):
+        # pylint: disable-next=import-outside-toplevel
         from up2date_client import config
 
         self.cfg = config.initUp2dateConfig(test_up2date)
@@ -60,6 +65,7 @@ class TestVersion(ReturnsString):
 
 
 def suite():
+    # pylint: disable-next=redefined-outer-name
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestGetVersion))
     suite.addTest(unittest.makeSuite(TestGetOSRelease))

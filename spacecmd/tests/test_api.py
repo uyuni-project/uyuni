@@ -2,6 +2,7 @@
 """
 Test suite for spacecmd.api
 """
+# pylint: disable-next=unused-import
 from mock import MagicMock, patch, mock_open
 from spacecmd import api
 import helpers
@@ -33,6 +34,7 @@ class TestSCAPI:
 
         log = MagicMock()
         out = helpers.FileHandleMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.api.open", out, create=True) as mop, patch(
             "spacecmd.api.logging", log
         ) as mlog:
@@ -40,8 +42,10 @@ class TestSCAPI:
 
         assert not mlog.warning.called
         assert out.get_content() == '[\n  "one",\n  "two",\n  "three"\n]'
+        # pylint: disable-next=use-implicit-booleaness-not-comparison
         assert out.get_init_kwargs() == {}
         assert out.get_init_args() == ("/tmp/spacecmd.log", "w")
+        # pylint: disable-next=protected-access
         assert out._closed
 
     def test_args_format(self):
@@ -55,6 +59,7 @@ class TestSCAPI:
 
         log = MagicMock()
         out = helpers.FileHandleMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.api.open", out, create=True) as mop, patch(
             "spacecmd.api.logging", log
         ) as mlog:
@@ -62,8 +67,10 @@ class TestSCAPI:
 
         assert not mlog.warning.called
         assert out.get_content() == ">>> one\n>>> two\n>>> three\n"
+        # pylint: disable-next=use-implicit-booleaness-not-comparison
         assert out.get_init_kwargs() == {}
         assert out.get_init_args() == ("/tmp/spacecmd.log", "w")
+        # pylint: disable-next=protected-access
         assert out._closed
 
     def test_args_args(self):
@@ -78,8 +85,11 @@ class TestSCAPI:
 
         log = MagicMock()
         out = helpers.FileHandleMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.api.open", out, create=True) as mop, patch(
-            "spacecmd.api.logging", log
+            "spacecmd.api.logging",
+            log,
+            # pylint: disable-next=unused-variable
         ) as mlog:
             api.do_api(shell, "call -A first,second,123 -o /tmp/spacecmd.log")
         assert shell.client.call.called
@@ -89,6 +99,7 @@ class TestSCAPI:
             "second",
             123,
         )
+        # pylint: disable-next=protected-access
         assert out._closed
 
     def test_args_datetime(self):
@@ -103,8 +114,11 @@ class TestSCAPI:
 
         log = MagicMock()
         out = helpers.FileHandleMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.api.open", out, create=True) as mop, patch(
-            "spacecmd.api.logging", log
+            "spacecmd.api.logging",
+            log,
+            # pylint: disable-next=unused-variable
         ) as mlog:
             api.do_api(shell, "call -A first,second,2022-05-05 -o /tmp/spacecmd.log")
         assert shell.client.call.called
@@ -114,6 +128,7 @@ class TestSCAPI:
             "second",
             datetime.datetime(2022, 5, 5, 0, 0),
         )
+        # pylint: disable-next=protected-access
         assert out._closed
 
     def test_args_json(self):
@@ -128,8 +143,11 @@ class TestSCAPI:
 
         log = MagicMock()
         out = helpers.FileHandleMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.api.open", out, create=True) as mop, patch(
-            "spacecmd.api.logging", log
+            "spacecmd.api.logging",
+            log,
+            # pylint: disable-next=unused-variable
         ) as mlog:
             api.do_api(
                 shell,
@@ -143,4 +161,5 @@ class TestSCAPI:
             datetime.datetime(2022, 5, 5, 0, 0),
             4,
         )
+        # pylint: disable-next=protected-access
         assert out._closed

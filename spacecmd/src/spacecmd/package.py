@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -58,6 +59,7 @@ def complete_package_details(self, text, line, beg, end):
 def do_package_details(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
 
     if not args:
@@ -94,22 +96,32 @@ def do_package_details(self, args):
                 self.session, package_id
             )
 
+            # pylint: disable-next=consider-using-f-string
             print(_("Name:      %s" % details.get("name")))
+            # pylint: disable-next=consider-using-f-string
             print(_("Version:   %s" % details.get("version")))
+            # pylint: disable-next=consider-using-f-string
             print(_("Release:   %s" % details.get("release")))
+            # pylint: disable-next=consider-using-f-string
             print(_("Epoch:     %s" % details.get("epoch")))
+            # pylint: disable-next=consider-using-f-string
             print(_("Arch:      %s" % details.get("arch_label")))
             print("")
+            # pylint: disable-next=consider-using-f-string
             print(_("File:      %s" % details.get("file")))
+            # pylint: disable-next=consider-using-f-string
             print(_("Path:      %s" % details.get("path")))
+            # pylint: disable-next=consider-using-f-string
             print(_("Size:      %s" % details.get("size")))
             print(
                 _(
+                    # pylint: disable-next=consider-using-f-string
                     "Retracted: %s"
                     % (_("Yes") if details.get("part_of_retracted_patch") else _("No"))
                 )
             )
             print(
+                # pylint: disable-next=consider-using-f-string
                 "%s%s"
                 % (
                     (details.get("checksum_type").upper() + ":").ljust(11),
@@ -139,9 +151,12 @@ def help_package_search(
     command="package_search",
     description="Find packages that meet the given criteria",
 ):
+    # pylint: disable-next=consider-using-f-string
     print("%s: %s" % (command, description))
+    # pylint: disable-next=consider-using-f-string
     print(_("usage: %s NAME|QUERY" % command))
     print("")
+    # pylint: disable-next=consider-using-f-string
     print(_("Example: %s kernel" % command))
     print("")
     print(_("Advanced Search:"))
@@ -156,6 +171,7 @@ def do_package_search(self, args, doreturn=False):
         self.help_package_search()
         return None
 
+    # pylint: disable-next=unused-variable
     _args, _options = parse_command_arguments(args, get_argument_parser())
 
     fields = (
@@ -216,6 +232,7 @@ def complete_package_remove(self, text, line, beg, end):
 def do_package_remove(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
 
     if not args:
@@ -321,6 +338,7 @@ def complete_package_listinstalledsystems(self, text, line, beg, end):
 def do_package_listinstalledsystems(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
 
     if not args:
@@ -352,6 +370,7 @@ def do_package_listinstalledsystems(self, args):
         if systems:
             print(
                 "\n".join(
+                    # pylint: disable-next=consider-using-f-string
                     sorted(["%s : %s" % (s.get("name"), s.get("id")) for s in systems])
                 )
             )
@@ -375,6 +394,7 @@ def complete_package_listerrata(self, text, line, beg, end):
 def do_package_listerrata(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
 
     if not args:
@@ -418,6 +438,7 @@ def help_package_listdependencies(self):
 def do_package_listdependencies(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
 
     if not args:

@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 import os
 import re
 
@@ -6,6 +7,7 @@ __grains__ = {}
 SAP_REGEX = re.compile(r"/usr/sap/([A-Z][A-Z0-9]{2})/([A-Z]+)(\d{2})\b")
 
 
+# pylint: disable-next=invalid-name
 def __virtual__():
     """
     Only load the module if the operating system is SLES.
@@ -27,6 +29,7 @@ def get_workloads():
     if not os.path.exists(base_path):
         return []
 
+    # pylint: disable-next=unused-variable
     for root, dirs, files in os.walk(base_path):
         for dir_name in dirs:
             dir_path = os.path.join(root, dir_name)
