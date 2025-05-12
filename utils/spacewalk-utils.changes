@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon May 12 23:04:22 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.5-0
+  * Remove rhn-ssl-tool --gen-server RPM feature and options
+    (bsc#1235696)
+
+-------------------------------------------------------------------
 Fri Apr 11 17:05:09 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.4-0
