@@ -977,16 +977,15 @@ public class SaltUtils {
                 var actionPath = MinionActionUtils.getActionPath(minionServer, actionId);
                 var user = SaltSSHService.getSSHUser();
                 var port = Optional.ofNullable(minionServer.getSSHPushPort()).orElse(SaltSSHService.SSH_PUSH_PORT);
+                String method = minionServer.getContactMethod().getLabel();
                 List<String> proxyPath = SaltSSHService.proxyPathToHostnames(minionServer.getServerPaths(),
                         Optional.empty());
-                Optional<List<String>> proxyCommand = SaltSSHService.sshProxyCommandOption(proxyPath,
-                        minionServer.getContactMethod().getLabel(),
-                        minionServer.getMinionId(), port);
+                List<String> proxyCommand = SaltSSHService.sshProxyCommandOption(proxyPath, method, hostname, port)
+                        .orElse(List.of());
+                String sshOptions = "-o ConnectTimeout=2 " + proxyCommand.stream()
+                        .map("-o %s"::formatted)
+                        .collect(Collectors.joining(" "));
 
-                String sshOptions = "-o ConnectTimeout=2 " + String.join(" ",
-                        proxyCommand
-                                .map(l -> l.stream().map("-o %s"::formatted).collect(Collectors.toList()))
-                                .orElse(new ArrayList<>()));
                 var rsync = "rsync -p --chown salt:susemanager --chmod=660 -e \"ssh %s -p %d -i %s\" %s@%s:%s/* %s/."
                         .formatted(sshOptions, port, SaltSSHService.SSH_KEY_PATH, user, hostname,
                                 supportDataDir, actionPath);
