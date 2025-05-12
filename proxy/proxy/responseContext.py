@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -32,31 +33,38 @@ class ResponseContext:
     # Constructors and Destructors ############################################
 
     def __init__(self):
+        # pylint: disable-next=invalid-name
         self._contextStack = []
         self.add()
 
     # Public Interface ########################################################
 
+    # pylint: disable-next=invalid-name
     def getHeaders(self):
         """Get the current response headers."""
         return self._getCurrentContext()[CXT_RESP_HEADERS]
 
+    # pylint: disable-next=invalid-name,invalid-name
     def setHeaders(self, responseHeaders):
         """Set the current response headers."""
         self._getCurrentContext()[CXT_RESP_HEADERS] = responseHeaders
 
+    # pylint: disable-next=invalid-name
     def getBodyFd(self):
         """Get the current response body file descriptor."""
         return self._getCurrentContext()[CXT_RESP_BODYFD]
 
+    # pylint: disable-next=invalid-name,invalid-name
     def setBodyFd(self, responseBodyFd):
         """Set the current response body file descriptor."""
         self._getCurrentContext()[CXT_RESP_BODYFD] = responseBodyFd
 
+    # pylint: disable-next=invalid-name
     def getConnection(self):
         """Get the current connection object."""
         return self._getCurrentContext()[CXT_CONNECTION]
 
+    # pylint: disable-next=invalid-name
     def setConnection(self, connection):
         """Set the current connection object."""
         self._getCurrentContext()[CXT_CONNECTION] = connection
@@ -89,10 +97,12 @@ class ResponseContext:
 
     # Helper Methods ##########################################################
 
+    # pylint: disable-next=invalid-name
     def _isEmpty(self):
         return len(self._contextStack) <= 0
 
     @staticmethod
+    # pylint: disable-next=invalid-name
     def _closeContext(context):
         if context:
             if context[CXT_RESP_BODYFD]:
@@ -100,10 +110,12 @@ class ResponseContext:
             if context[CXT_CONNECTION]:
                 context[CXT_CONNECTION].close()
 
+    # pylint: disable-next=invalid-name
     def _getCurrentContext(self):
         return self._contextStack[-1]
 
     @staticmethod
+    # pylint: disable-next=invalid-name,invalid-name,invalid-name
     def _createContext(responseHeaders=None, responseBodyFd=None, connection=None):
         return {
             CXT_RESP_HEADERS: responseHeaders,

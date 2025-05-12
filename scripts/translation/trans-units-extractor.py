@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# pylint: disable=missing-module-docstring,invalid-name
 import xml.etree.ElementTree as ET
 import os
 import logging
@@ -12,6 +13,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 class CommentedTreeBuilder(ET.TreeBuilder):
+    # pylint: disable-next=arguments-renamed
     def comment(self, data):
         self.start(ET.Comment, {})
         self.data(data)
@@ -23,6 +25,7 @@ def get_groups(xml_tree):
     file_tag = root_node.find("d:file", ns)
     body_element = file_tag.find("d:body", ns)
     groups = list(body_element.findall("d:group", ns))
+    # pylint: disable-next=logging-format-interpolation,consider-using-f-string
     logging.info("'{0}' <group> elements are found".format(len(groups)))
     return body_element, groups
 
@@ -57,5 +60,6 @@ logging.debug(files)
 
 for file in files:
     if file.startswith("StringResource_") and file.endswith(".xml"):
+        # pylint: disable-next=logging-not-lazy
         logging.info("processing " + str(file))
         extract_trans_units(file)

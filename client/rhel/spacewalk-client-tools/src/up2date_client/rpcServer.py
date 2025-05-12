@@ -1,8 +1,13 @@
+# pylint: disable=missing-module-docstring,invalid-name
 #
 
 import os
 import sys
+
+# pylint: disable-next=unused-import
 import socket
+
+# pylint: disable-next=unused-import
 import time
 
 from up2date_client import config
@@ -10,17 +15,22 @@ from up2date_client import up2dateLog
 from up2date_client import up2dateErrors
 from up2date_client import up2dateUtils
 
+# pylint: disable-next=unused-import
 from rhn import SSL
 from rhn import rpclib
 from rhn.tb import raise_with_tb
 
 try:  # python2
     import httplib
+
+    # pylint: disable-next=unused-import
     import urllib2
     import urlparse
     import xmlrpclib
 except ImportError:  # python3
     import http.client as httplib
+
+    # pylint: disable-next=unused-import
     import urllib.request as urllib2
     import urllib.parse as urlparse
     import xmlrpc.client as xmlrpclib
@@ -34,12 +44,16 @@ if not hasattr(t, "ugettext"):
 _ = t.ugettext
 
 
+# pylint: disable-next=invalid-name
 def stdoutMsgCallback(msg):
     print(msg)
 
 
+# pylint: disable-next=missing-class-docstring
 class RetryServer(rpclib.Server):
+    # pylint: disable-next=invalid-name,invalid-name
     def addServerList(self, serverList):
+        # pylint: disable-next=invalid-name
         self.serverList = serverList
 
     def _request1(self, methodname, params):
@@ -55,8 +69,10 @@ class RetryServer(rpclib.Server):
                 self.log.log_me("Error: Server Unavailable. Please try later.")
                 stdoutMsgCallback(_("Error: Server Unavailable. Please try later."))
                 sys.exit(-1)
+            # pylint: disable-next=bare-except
             except:
                 server = self.serverList.next()
+                # pylint: disable-next=singleton-comparison
                 if server == None:
                     # since just because we failed, the server list could
                     # change (aka, firstboot, they get an option to reset the
@@ -64,8 +80,11 @@ class RetryServer(rpclib.Server):
                     self.serverList.resetServerIndex()
                     raise
 
+                # pylint: disable-next=consider-using-f-string
                 msg = "An error occurred talking to %s:\n" % self._host
+                # pylint: disable-next=consider-using-f-string
                 msg = msg + "%s\n%s\n" % (sys.exc_info()[0], sys.exc_info()[1])
+                # pylint: disable-next=consider-using-f-string
                 msg = msg + "Trying the next serverURL: %s\n" % self.serverList.server()
                 self.log.log_me(msg)
                 # try a different url
@@ -79,7 +98,9 @@ class RetryServer(rpclib.Server):
                 if typ not in ("http", "https"):
                     raise_with_tb(
                         rpclib.InvalidRedirectionError(
-                            "Redirected to unsupported protocol %s" % typ
+                            # pylint: disable-next=consider-using-f-string
+                            "Redirected to unsupported protocol %s"
+                            % typ
                         )
                     )
                 self._orig_handler = self._handler
@@ -99,8 +120,11 @@ class RetryServer(rpclib.Server):
 
 
 # uh, yeah, this could be an iterator, but we need it to work on 1.5 as well
+# pylint: disable-next=missing-class-docstring
 class ServerList:
+    # pylint: disable-next=dangerous-default-value
     def __init__(self, serverlist=[]):
+        # pylint: disable-next=invalid-name
         self.serverList = serverlist
         self.index = 0
 
@@ -114,10 +138,12 @@ class ServerList:
             return None
         return self.server()
 
+    # pylint: disable-next=invalid-name
     def resetServerIndex(self):
         self.index = 0
 
 
+# pylint: disable-next=invalid-name,invalid-name,invalid-name,invalid-name
 def getServer(refreshCallback=None, serverOverride=None, timeout=None, caChain=None):
     log = up2dateLog.initLog()
     cfg = config.initUp2dateConfig()
@@ -134,20 +160,29 @@ def getServer(refreshCallback=None, serverOverride=None, timeout=None, caChain=N
 
     rhns_ca_certs = ca or ["/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT"]
     if cfg["enableProxy"]:
+        # pylint: disable-next=invalid-name
         proxyHost = config.getProxySetting()
     else:
+        # pylint: disable-next=invalid-name
         proxyHost = None
 
     if not serverOverride:
+        # pylint: disable-next=invalid-name
         serverUrls = config.getServerlURL()
     else:
+        # pylint: disable-next=invalid-name
         serverUrls = serverOverride
+    # pylint: disable-next=invalid-name
     serverList = ServerList(serverUrls)
 
+    # pylint: disable-next=invalid-name
     proxyUser = None
+    # pylint: disable-next=invalid-name
     proxyPassword = None
     if cfg["enableProxyAuth"]:
+        # pylint: disable-next=invalid-name
         proxyUser = cfg["proxyUser"] or None
+        # pylint: disable-next=invalid-name
         proxyPassword = cfg["proxyPassword"] or None
 
     lang = None
@@ -182,7 +217,9 @@ def getServer(refreshCallback=None, serverOverride=None, timeout=None, caChain=N
     if need_ca:
         for rhns_ca_cert in rhns_ca_certs:
             if not os.access(rhns_ca_cert, os.R_OK):
+                # pylint: disable-next=consider-using-f-string
                 msg = "%s: %s" % (_("ERROR: can not find server CA file"), rhns_ca_cert)
+                # pylint: disable-next=consider-using-f-string
                 log.log_me("%s" % msg)
                 raise up2dateErrors.SSLCertificateFileNotFound(msg)
 

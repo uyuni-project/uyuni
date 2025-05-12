@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 #
 # Clonse channels by a particular date
 #
@@ -71,11 +72,14 @@ def validate(channel_labels):
         path = repodata(label)
         tmp = tempfile.mkdtemp()
         tmp_dirs[label] = tmp
+        # pylint: disable-next=consider-using-f-string
         shutil.copytree(path, "%s/repodata/" % tmp)
 
     cmd = ["repoclosure"]
     for label, path in list(tmp_dirs.items()):
+        # pylint: disable-next=consider-using-f-string
         cmd.append("--repofrompath=%s,%s" % (label, path))
+        # pylint: disable-next=consider-using-f-string
         cmd.append("--repoid=%s" % (label))
     subprocess.call(cmd)
 
@@ -84,6 +88,7 @@ def validate(channel_labels):
 
 
 def repodata(label):
+    # pylint: disable-next=consider-using-f-string
     return "%s/rhn/repodata/%s" % (CFG.REPOMD_CACHE_MOUNT_POINT, label)
 
 
@@ -137,6 +142,7 @@ def main(options):
         options.use_update_date = "update_date"
     else:
         options.use_update_date = "issue_date"
+    # pylint: disable-next=consider-using-f-string
     print("Using %s." % options.use_update_date)
 
     cloners = []
@@ -151,9 +157,11 @@ def main(options):
             if len(options.parents) == 1:
                 src_parent = xmlrpc.get_original(options.parents[0])
                 if not src_parent:
+                    # pylint: disable-next=consider-using-f-string
                     print(("Channel %s is not a cloned channel." % options.parents[0]))
                     sys.exit(1)
                 print(
+                    # pylint: disable-next=consider-using-f-string
                     "Looking up the original channel for %s, %s found"
                     % (options.parents[0], src_parent)
                 )
@@ -175,7 +183,9 @@ def main(options):
             if isinstance(dest_channel, dict):
                 if "label" not in dest_channel:
                     raise UserError(
-                        "You must specify a label for the clone of %s" % src_channel
+                        # pylint: disable-next=consider-using-f-string
+                        "You must specify a label for the clone of %s"
+                        % src_channel
                     )
                 label = dest_channel["label"]
                 if "name" in dest_channel:
@@ -228,6 +238,7 @@ def main(options):
                     )
                     print(
                         (
+                            # pylint: disable-next=consider-using-f-string
                             "Channel %s does not contain these errata: %s"
                             % (channel, errata - channel_errata)
                         )
@@ -255,6 +266,7 @@ def main(options):
     if options.validate:
         if needed_channels:
             raise UserError(
+                # pylint: disable-next=consider-using-f-string
                 "Cannot validate channels that do not exist %s"
                 % ", ".join(map(str, needed_channels))
             )
@@ -281,6 +293,7 @@ def main(options):
             for ch in d_errata:
                 log_file = ch + "_" + now.strftime("%Y-%m-%d-%H:%M")
                 print("# Log file: " + log_file)
+                # pylint: disable-next=unspecified-encoding
                 fh = open(log_file, "w")
                 for errata in d_errata[ch]:
                     line = ""
@@ -435,6 +448,7 @@ class ChannelTreeCloner:
 
         # dep solve all added packages with the parent channel
         if not skip_depsolve:
+            # pylint: disable-next=superfluous-parens
             self.dep_solve(nvreas, labels=(list(to_create.keys()) + [self.src_parent]))
 
     def validate_source_channels(self):
@@ -519,6 +533,7 @@ class ChannelTreeCloner:
             log_clean(0, "")
             log_clean(
                 0,
+                # pylint: disable-next=consider-using-f-string
                 "%i packages were added to %s as a result of clone:"
                 % (len(pkg_diff), cloner.dest_label()),
             )
@@ -540,6 +555,7 @@ class ChannelTreeCloner:
         temp_repo_links = []
         repo = None
         for repo in repos:
+            # pylint: disable-next=consider-using-f-string
             repodata_path = "%s/repodata" % (repo["relative_path"])
             create_repodata_link(repo["relative_path"], repodata_path)
             temp_repo_links.append(repodata_path)
@@ -549,6 +565,7 @@ class ChannelTreeCloner:
                 self.__dep_solve(nvrea_list)
                 self.report_depsolve_results()
             except Exception as e:
+                # pylint: disable-next=raise-missing-from
                 raise UserRepoError(repo["id"], e)
         finally:
             # clean up temporary symlinks
@@ -561,6 +578,7 @@ class ChannelTreeCloner:
         self.process_deps(dep_results)
 
     def process_deps(self, deps):
+        # pylint: disable-next=unnecessary-lambda-assignment
         list_to_set = lambda x: set(
             [tuple(y) for y in x]
         )  # pylint: disable=consider-using-set-comprehension
@@ -633,6 +651,7 @@ class ChannelTreeCloner:
             if cloner.total_added_nevras > 0:
                 reported = 1
                 print(
+                    # pylint: disable-next=consider-using-f-string
                     "%s RPM(s) added to %s to resolve dependencies."
                     % (cloner.total_added_nevras, cloner.dest_label())
                 )
@@ -640,15 +659,18 @@ class ChannelTreeCloner:
             if cloner.total_added_errata > 0:
                 reported = 1
                 print(
+                    # pylint: disable-next=consider-using-f-string
                     "%s errata added to %s to resolve dependencies."
                     % (cloner.total_added_errata, cloner.dest_label())
                 )
                 cloner.total_added_errata = 0
 
         if reported:
+            # pylint: disable-next=consider-using-f-string
             print("Please see %s for details." % LOG_LOCATION)
 
 
+# pylint: disable-next=missing-class-docstring
 class ChannelCloner:
     # pylint: disable=R0902
 
@@ -728,6 +750,7 @@ class ChannelCloner:
 
     def pre_summary(self):
         print(
+            # pylint: disable-next=consider-using-f-string
             "  %s -> %s  (%i/%i Errata)"
             % (
                 self.from_label,
@@ -774,6 +797,7 @@ class ChannelCloner:
             log_clean(0, "")
             log_clean(
                 0,
+                # pylint: disable-next=consider-using-f-string
                 "Adding %i RPM(s) needed for dependencies to %s"
                 % (len(needed_name_set), self.to_label),
             )
@@ -786,6 +810,7 @@ class ChannelCloner:
             log_clean(0, "")
             log_clean(
                 0,
+                # pylint: disable-next=consider-using-f-string
                 "Cloning %i errata for dependencies to %s :"
                 % (len(needed_errata), self.to_label),
             )
@@ -794,6 +819,7 @@ class ChannelCloner:
                 errata_set = needed_errata_list[: self.bunch_size]
                 del needed_errata_list[: self.bunch_size]
                 for e in errata_set:
+                    # pylint: disable-next=consider-using-f-string
                     log_clean(0, "%s - %s" % e)
                     if not self.skip_errata_depsolve:
                         e_pkgs = self.remote_api.get_erratum_packages(e[0])
@@ -802,6 +828,7 @@ class ChannelCloner:
 
                     for pkg in e_pkgs:
                         if self.from_label in pkg["providing_channels"]:
+                            # pylint: disable-next=consider-using-f-string
                             pkg["nvrea"] = "%s-%s-%s.%s" % (
                                 pkg["name"],
                                 pkg["version"],
@@ -830,6 +857,7 @@ class ChannelCloner:
         """Given a list of packages in [N, EVR, A] format, do any of them
         exist in the pkg_hash with key of N-V-R.A  format"""
         for i in needed_list:
+            # pylint: disable-next=consider-using-f-string
             key = "%s-%s-.%s" % (i[0], i[1], i[2])
             if key in pkg_list:
                 return pkg_list[key]
@@ -840,11 +868,13 @@ class ChannelCloner:
         if not errata_ids:
             return
 
+        # pylint: disable-next=consider-using-f-string
         msg = "Cloning Errata into %s (%i):" % (self.to_label, len(errata_ids))
         print(msg)
         log_clean(0, "")
         log_clean(0, msg)
         for e in sorted(self.errata_to_clone, key=lambda x: x["advisory_name"]):
+            # pylint: disable-next=consider-using-f-string
             log_clean(0, "%s - %s" % (e["advisory_name"], e["synopsis"]))
 
         pb = ProgressBar(
@@ -874,6 +904,7 @@ class ChannelCloner:
 
         if not self.no_errata_sync:
             log_clean(0, "")
+            # pylint: disable-next=consider-using-f-string
             log_clean(0, "Synchronizing Errata in %s with originals" % self.to_label)
             self.remote_api.sync_errata(self.to_label)
 
@@ -933,12 +964,14 @@ class ChannelCloner:
         log_clean(0, "")
         log_clean(
             0,
+            # pylint: disable-next=consider-using-f-string
             "%s: Removing %i packages from %s." % (name, len(found_ids), self.to_label),
         )
         log_clean(0, "\n".join(found_names))
 
         if found_ids:
             print(
+                # pylint: disable-next=consider-using-f-string
                 "%s: Removing %i packages from %s"
                 % (name, len(found_ids), self.to_label)
             )
@@ -968,6 +1001,7 @@ class RemoteApi:
             self.password = password
             self.__login()
         except xmlrpclib.Fault as e:
+            # pylint: disable-next=raise-missing-from
             raise UserError(e.faultString)
 
     def auth_check(self):
@@ -1012,6 +1046,7 @@ class RemoteApi:
         pkg_list = self.client.channel.software.listAllPackages(self.auth_token, label)
         # name-ver-rel.arch,
         for pkg in pkg_list:
+            # pylint: disable-next=consider-using-f-string
             pkg["nvrea"] = "%s-%s-%s.%s" % (
                 pkg["name"],
                 pkg["version"],
@@ -1038,6 +1073,7 @@ class RemoteApi:
         try:
             return self.client.channel.software.getDetails(self.auth_token, label)
         except xmlrpclib.Fault as e:
+            # pylint: disable-next=raise-missing-from
             raise UserError(e.faultString + ": " + label)
 
     def add_packages(self, label, package_ids):
@@ -1066,6 +1102,7 @@ class RemoteApi:
         if parent and parent != "":
             details["parent_label"] = parent
 
+        # pylint: disable-next=consider-using-f-string
         msg = "Cloning %s to %s with original package set." % (
             original_label,
             details["label"],
@@ -1146,14 +1183,17 @@ class UserError(Exception):
         return self.msg
 
 
+# pylint: disable-next=missing-class-docstring
 class UserRepoError(UserError):
 
     def __init__(self, label, error=None):
         msg = (
             "Unable to read repository information.\n"
             + "Please verify repodata has been generated in "
+            # pylint: disable-next=consider-using-f-string
             + "/var/cache/rhn/repodata/%s." % label
         )
         if error:
+            # pylint: disable-next=consider-using-f-string
             msg += "\nError: %s" % error
         UserError.__init__(self, msg)

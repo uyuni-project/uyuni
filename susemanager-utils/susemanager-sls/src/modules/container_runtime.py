@@ -97,6 +97,7 @@ def _read_file(file_path):
     try:
         with fopen(file_path, "r") as f:
             return f.read().strip()
+    # pylint: disable-next=broad-exception-caught
     except Exception:
         return ""
 

@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# pylint: disable=invalid-name
 """
 saltbroker: A ZeroMQ Proxy (broker) for Salt Minions
 
@@ -102,12 +103,14 @@ class AbstractChannelProxy(multiprocessing.Process):
         self.backend_connected = False
         if "master" not in self.opts:
             raise self.ChannelException(
+                # pylint: disable-next=consider-using-f-string
                 '[{}] No "master" opts is provided'.format(self.__class__.__name__)
             )
         try:
             self.opts["master_ip"] = socket.gethostbyname(self.opts["master"])
         except socket.gaierror as exc:
             raise self.ChannelException(
+                # pylint: disable-next=consider-using-f-string
                 "[{}] Error trying to resolve '{}': {}".format(
                     self.__class__.__name__, self.opts["master"], exc
                 )
@@ -119,6 +122,7 @@ class AbstractChannelProxy(multiprocessing.Process):
             context = zmq.Context()
 
             log.debug(
+                # pylint: disable-next=logging-format-interpolation,consider-using-f-string
                 "Setting up a {} sock on {}".format(
                     self.backend_type, self._backend_uri
                 )
@@ -152,6 +156,7 @@ class AbstractChannelProxy(multiprocessing.Process):
                     time.sleep(0.5)
 
             log.debug(
+                # pylint: disable-next=logging-format-interpolation,consider-using-f-string
                 "Setting up a {} sock on {}".format(
                     self.frontend_type, self._frontend_uri
                 )
@@ -175,6 +180,7 @@ class AbstractChannelProxy(multiprocessing.Process):
             )
             try:
                 zmq.proxy(self.frontend, self.backend)
+            # pylint: disable-next=broad-exception-caught,unused-variable
             except Exception as e:
                 log.error(
                     "Error while processing proxy with %s and %s sockets. Terminating...",
@@ -187,16 +193,20 @@ class AbstractChannelProxy(multiprocessing.Process):
             if self.reconnect_retries == 0:
                 # Do not raise error if drop_after_retries was used
                 return
+            # pylint: disable-next=consider-using-f-string
             msg = "ZMQ Error: {}".format(zmq_error)
             log.error(msg)
             raise self.ChannelException(msg)
 
+        # pylint: disable-next=broad-exception-caught
         except Exception as exc:
             log.error("Exception: %s", exc)
             log.debug("Traceback: %s", traceback.format_exc())
 
+    # pylint: disable-next=redefined-outer-name
     def set_sockopts(self, socket, sockopts, sock_type, addr=None):
 
+        # pylint: disable-next=invalid-name
         def __set_sock_opt(opt, val, opt_name, sock_type):
             log.debug("Setting socket opt %s to %s on %s", opt_name, val, sock_type)
             socket.setsockopt(opt, val)
@@ -227,15 +237,18 @@ class AbstractChannelProxy(multiprocessing.Process):
             mon_evt = recv_monitor_message(monitor_socket)
             if self.reconnect_retries != -1:
                 if mon_evt["event"] == zmq.EVENT_DISCONNECTED:
+                    # pylint: disable-next=logging-format-interpolation,consider-using-f-string
                     log.warning("{} socket disconnected".format(self.backend_type))
                     self.backend_connected = False
                 elif mon_evt["event"] == zmq.EVENT_CONNECTED:
+                    # pylint: disable-next=logging-format-interpolation,consider-using-f-string
                     log.info("{} socket connected".format(self.backend_type))
                     self.backend_connected = True
                     self.reconnect_retries = self.opts["drop_after_retries"]
                 elif mon_evt["event"] == zmq.EVENT_CONNECT_RETRIED:
                     if self.reconnect_retries == 0:
                         log.warning(
+                            # pylint: disable-next=logging-format-interpolation,consider-using-f-string
                             "Closing {} socket due to retry attempts reached!".format(
                                 self.backend_type
                             )
@@ -281,10 +294,12 @@ class PubChannelProxy(AbstractChannelProxy):
         self.backend_type = "XSUB"
         self.frontend_type = "XPUB"
 
+        # pylint: disable-next=consider-using-f-string
         self._backend_uri = "tcp://{}:{}".format(
             ip_bracket(self.opts["master_ip"]),
             self.opts["publish_port"],
         )
+        # pylint: disable-next=consider-using-f-string
         self._frontend_uri = "tcp://{}:{}".format(
             ip_bracket(self.opts["interface"]),
             self.opts["publish_port"],
@@ -310,10 +325,12 @@ class RetChannelProxy(AbstractChannelProxy):
         self.backend_type = "DEALER"
         self.frontend_type = "ROUTER"
 
+        # pylint: disable-next=consider-using-f-string
         self._backend_uri = "tcp://{}:{}".format(
             ip_bracket(self.opts["master_ip"]),
             self.opts["ret_port"],
         )
+        # pylint: disable-next=consider-using-f-string
         self._frontend_uri = "tcp://{}:{}".format(
             ip_bracket(self.opts["interface"]),
             self.opts["ret_port"],
@@ -372,6 +389,7 @@ class SaltBroker(object):
 
         return ret_proxy
 
+    # pylint: disable-next=unused-argument
     def sigterm_clean(self, signum, frame):
         """
         Custom SIGTERM handler
@@ -428,6 +446,7 @@ if __name__ == "__main__":
 
     # Check for the config file
     if not os.path.isfile(SALT_BROKER_CONF_FILE):
+        # pylint: disable-next=consider-using-f-string
         sys.exit("Config file not found: {0}".format(SALT_BROKER_CONF_FILE))
 
     # default config
@@ -450,10 +469,12 @@ if __name__ == "__main__":
     }
 
     try:
+        # pylint: disable-next=unspecified-encoding
         config = yaml.load(open(SALT_BROKER_CONF_FILE), Loader=yaml.SafeLoader)
         if not config:
             config = {}
         if not isinstance(config, dict):
+            # pylint: disable-next=consider-using-f-string
             sys.exit("Bad format in config file: {0}".format(SALT_BROKER_CONF_FILE))
 
         saltbroker_opts = _DEFAULT_OPTS.copy()
@@ -492,4 +513,5 @@ if __name__ == "__main__":
         proxy.start()
 
     except yaml.scanner.ScannerError as exc:
+        # pylint: disable-next=consider-using-f-string
         sys.exit("Error reading YAML config file: {0}".format(exc))

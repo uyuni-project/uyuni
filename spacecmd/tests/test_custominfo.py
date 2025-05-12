@@ -2,8 +2,11 @@
 """
 Test suite for custominfo source
 """
+# pylint: disable-next=unused-import
 from mock import MagicMock, patch, mock_open
 from spacecmd import custominfo
+
+# pylint: disable-next=unused-import
 from helpers import shell, exc2str
 import pytest
 
@@ -13,6 +16,7 @@ class TestSCCusomInfo:
     Test for custominfo API.
     """
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_createkey_no_keyname(self, shell):
         """
         Test do_custominfo_createkey do not break on no key name provided, falling back to interactive mode.
@@ -26,6 +30,7 @@ class TestSCCusomInfo:
 
         assert "Empty key" in exc2str(exc)
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_createkey_no_descr(self, shell):
         """
         Test do_custominfo_createkey description gets the name of the key, if not provided.
@@ -43,6 +48,7 @@ class TestSCCusomInfo:
         assert shell.session == session
         assert keyname == descr
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_createkey_descr_interactive(self, shell):
         """
         Test do_custominfo_createkey description gets the name of the key from interactive prompt.
@@ -62,11 +68,13 @@ class TestSCCusomInfo:
         assert keyname == "keyname"
         assert descr == "keydescr"
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_createkey_descr_args(self, shell):
         """
         Test do_custominfo_createkey description gets the name of the key from the args.
         """
         shell.client.system.custominfo.createKey = MagicMock()
+        # pylint: disable-next=unused-variable
         prompter = MagicMock(side_effect=Exception("Kaboom"))
 
         custominfo.do_custominfo_createkey(shell, "keyname keydescr")
@@ -80,6 +88,7 @@ class TestSCCusomInfo:
         assert keyname == "keyname"
         assert descr == "keydescr"
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_deletekey_noargs(self, shell):
         """
         Test do_custominfo_deletekey shows help on no args.
@@ -98,6 +107,7 @@ class TestSCCusomInfo:
         assert errmsg in exc2str(exc)
 
     @patch("spacecmd.custominfo.print", MagicMock())
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_deletekey_args(self, shell):
         """
         Test do_custominfo_deletekey calls deleteKey API function.
@@ -121,6 +131,7 @@ class TestSCCusomInfo:
         assert len(keylist) == 1
         assert "this_key_stays" in keylist
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_listkeys_stdout(self, shell):
         """
         Test do_custominfo_listkeys calls lists all keys calling listAllKeys API function to STDOUT.
@@ -138,6 +149,7 @@ class TestSCCusomInfo:
         assert ret is None
         assert mprint.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_listkeys_as_data(self, shell):
         """
         Test do_custominfo_listkeys calls lists all keys calling listAllKeys API function as data.
@@ -157,6 +169,7 @@ class TestSCCusomInfo:
         for key in keylist:
             assert key["label"] in ret
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_details_noarg(self, shell):
         """
         Test do_custominfo_details shows help when no arguments has been passed.
@@ -176,6 +189,7 @@ class TestSCCusomInfo:
         assert not logger.error.called
         assert not shell.client.system.custominfo.listAllKeys.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_details_no_key(self, shell):
         """
         Test do_custominfo_details shows error to the log if key name doesn't match.
@@ -199,6 +213,7 @@ class TestSCCusomInfo:
             == "No keys matched argument 'keyname'."
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_details_keydetails_notfound(self, shell):
         """
         Test do_custominfo_details nothing happens if keydetails missing.
@@ -215,6 +230,7 @@ class TestSCCusomInfo:
         assert shell.client.system.custominfo.listAllKeys.called
         assert not mprint.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_details_keydetails_na(self, shell):
         """
         Test do_custominfo_details prints key details not available in format.
@@ -251,6 +267,7 @@ class TestSCCusomInfo:
         for idx, call in enumerate(mprint.call_args_list):
             assert call[0][0] == expectations[idx]
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_details_keydetails(self, shell):
         """
         Test do_custominfo_details prints key details not available in format.
@@ -297,6 +314,7 @@ class TestSCCusomInfo:
         for idx, call in enumerate(mprint.call_args_list):
             assert call[0][0] == expectations[idx]
 
+    # pylint: disable-next=redefined-outer-name
     def test_custominfo_updatekey_noarg_name(self, shell):
         """
         Test do_custominfo_updatekey with no arguments falls to the interactive prompt.
@@ -309,6 +327,7 @@ class TestSCCusomInfo:
 
         assert "interactive mode" in exc2str(exc)
 
+    # pylint: disable-next=redefined-outer-name
     def test_custominfo_updatekey_noarg_descr(self, shell):
         """
         Test do_custominfo_updatekey with no arguments falls to the interactive prompt.
@@ -323,6 +342,7 @@ class TestSCCusomInfo:
 
         assert "interactive mode for descr" in exc2str(exc)
 
+    # pylint: disable-next=redefined-outer-name
     def test_custominfo_updatekey_keyonly_arg(self, shell):
         """
         Test do_custominfo_updatekey description is taken interactively.
@@ -335,6 +355,7 @@ class TestSCCusomInfo:
 
         assert "interactive mode for descr" in exc2str(exc)
 
+    # pylint: disable-next=redefined-outer-name
     def test_custominfo_updatekey_all_args(self, shell):
         """
         Test do_custominfo_updatekey description is taken by arguments, interactive mode is not initiated.

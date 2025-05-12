@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -17,6 +18,7 @@ import unittest
 import utils
 
 
+# pylint: disable-next=missing-class-docstring
 class TestObj1:
 
     def __init__(self):
@@ -35,6 +37,7 @@ class TestObj1:
         print("This is public and belongs to TestObj1")
 
 
+# pylint: disable-next=missing-class-docstring
 class TestObj2:
 
     def __init__(self):
@@ -54,6 +57,7 @@ class TestObj2:
         print("This is public and belongs to TestObj2")
 
 
+# pylint: disable-next=missing-class-docstring
 class UtilsTestCase(unittest.TestCase):
 
     def setUp(self):

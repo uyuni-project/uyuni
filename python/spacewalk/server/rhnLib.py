@@ -248,7 +248,9 @@ def make_evr(nvre, source=False):
     """
     if ":" in nvre:
         nvr, epoch = nvre.rsplit(":", 1)
+    # pylint: disable-next=used-before-assignment
     if "-" in epoch:
+        # pylint: disable-next=used-before-assignment
         nvr, epoch = epoch, nvr
     else:
         nvr, epoch = nvre, ""

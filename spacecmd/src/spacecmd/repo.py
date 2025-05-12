@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -78,6 +79,7 @@ def complete_repo_details(self, text, line, beg, end):
 def do_repo_details(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -132,6 +134,7 @@ def complete_repo_listfilters(self, text, line, beg, end):
 def do_repo_listfilters(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -141,6 +144,7 @@ def do_repo_listfilters(self, args):
     filters = self.client.channel.software.listRepoFilters(self.session, args[0])
     if filters:
         for flt in filters:
+            # pylint: disable-next=consider-using-f-string
             print("%s%s" % (flt.get("flag"), flt.get("filter")))
     else:
         print(_("No filters found"))
@@ -317,6 +321,7 @@ def complete_repo_delete(self, text, line, beg, end):
 def do_repo_delete(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -422,6 +427,7 @@ def complete_repo_rename(self, text, line, beg, end):
 def do_repo_rename(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
@@ -460,6 +466,7 @@ def complete_repo_updateurl(self, text, line, beg, end):
 def do_repo_updateurl(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:

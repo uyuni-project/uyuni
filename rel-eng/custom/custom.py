@@ -11,6 +11,8 @@ Code for building packages in SUSE that need generated code not tracked in git.
 """
 import os
 import shutil
+
+# pylint: disable-next=unused-import
 import tarfile
 import subprocess
 
@@ -18,6 +20,7 @@ from tito.builder import Builder
 from tito.common import run_command, debug, info_out
 
 
+# pylint: disable-next=missing-class-docstring
 class SuseGitExtraGenerationBuilder(Builder):
 
     def _setup_sources(self):
@@ -28,11 +31,15 @@ class SuseGitExtraGenerationBuilder(Builder):
         setup_file_path = os.path.join(setup_file_dir, setup_execution_file_name)
         if os.path.exists(setup_file_path):
             output = run_command(
-                "[[ -x %s ]] && %s" % (setup_file_path, setup_file_path), True
+                # pylint: disable-next=consider-using-f-string
+                "[[ -x %s ]] && %s" % (setup_file_path, setup_file_path),
+                True,
             )
             filename = output.split("\n")[-1]
+        # pylint: disable-next=possibly-used-before-assignment
         if filename and os.path.exists(os.path.join(setup_file_dir, filename)):
             run_command(
+                # pylint: disable-next=consider-using-f-string
                 "cp %s %s/"
                 % (os.path.join(setup_file_dir, filename), self.rpmbuild_sourcedir)
             )
@@ -134,6 +141,7 @@ class ContainerBuilder(Builder):
 
         self.spec_file_name = f"{self.project_name}.spec"
         self.spec_file = os.path.join(self.rpmbuild_sourcedir, self.spec_file_name)
+        # pylint: disable-next=unspecified-encoding
         with open(self.spec_file, "w") as fd:
             fd.write(spec_content)
 

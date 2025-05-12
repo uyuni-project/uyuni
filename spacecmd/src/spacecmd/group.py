@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -73,6 +74,7 @@ def complete_group_addsystems(self, text, line, beg, end):
 def do_group_addsystems(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -129,6 +131,7 @@ def complete_group_removesystems(self, text, line, beg, end):
 def do_group_removesystems(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -180,6 +183,7 @@ def help_group_create(self):
 def do_group_create(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if args:
@@ -212,6 +216,7 @@ def complete_group_delete(self, text, line, beg, end):
 def do_group_delete(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -256,6 +261,7 @@ def complete_group_backup(self, text, line, beg, end):
 def do_group_backup(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -348,6 +354,7 @@ def do_group_restore(self, args):
         return 1
 
     inputdir = os.path.abspath(inputdir)
+    # pylint: disable-next=consider-using-f-string
     logging.debug("Input Directory: %s" % (inputdir))
 
     # make a list of file items in the input dir
@@ -355,6 +362,7 @@ def do_group_restore(self, args):
         d_content = os.listdir(inputdir)
         for d_item in d_content:
             if os.path.isfile(inputdir + "/" + d_item):
+                # pylint: disable-next=consider-using-f-string
                 logging.debug("Found file %s" % inputdir + "/" + d_item)
                 files[d_item] = inputdir + "/" + d_item
     else:
@@ -392,11 +400,13 @@ def do_group_restore(self, args):
             "formulas": formula_data,
         }
 
+    # pylint: disable-next=consider-using-dict-items
     for groupname in files:
         backup = json_read_from_file(files[groupname])
         if backup is None:
             # assume old backup, not in json format. Read complete file as string
             logging.info(_("Assuming group to be in old plain text format"))
+            # pylint: disable-next=unspecified-encoding
             with open(files[groupname], "r") as fh:
                 details = fh.read()
             backup = {"description": details.rstrip("\n"), "formulas": {}}
@@ -407,12 +417,14 @@ def do_group_restore(self, args):
             if current[groupname] == backup:
                 logging.error(_N("Group %s already restored") % groupname)
             else:
+                # pylint: disable-next=consider-using-f-string
                 logging.debug("Already have %s but the data have changed" % groupname)
 
                 if is_interactive(options):
                     if current[groupname]["description"] != backup["description"]:
                         print(_("Changing description from:"))
                         print(
+                            # pylint: disable-next=consider-using-f-string
                             '\n"%s"\nto\n"%s"\n'
                             % (current[groupname]["description"], backup["description"])
                         )
@@ -503,6 +515,7 @@ def complete_group_listsystems(self, text, line, beg, end):
 def do_group_listsystems(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1:
@@ -541,6 +554,7 @@ def complete_group_details(self, text, line, beg, end):
 def do_group_details(self, args, short=False):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -601,6 +615,7 @@ def do_group_listconfigchannels(self, args):
 
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:

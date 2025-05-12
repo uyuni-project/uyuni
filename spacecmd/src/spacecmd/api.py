@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -82,6 +83,7 @@ def do_api(self, args):
 
     if options.output:
         try:
+            # pylint: disable-next=unspecified-encoding
             output = open(options.output, "w")
         except IOError:
             logging.warning(_N("Could not open to write: %s"), options.output)

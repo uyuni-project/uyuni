@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -49,6 +50,7 @@ def help_report_inactivesystems(self):
 def do_report_inactivesystems(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     # allow the user to set a limit on the number of days
@@ -69,11 +71,13 @@ def do_report_inactivesystems(self, args):
     if systems:
         max_size = max_length([s.get("name") for s in systems])
 
+        # pylint: disable-next=consider-using-f-string
         print("%s  %s  %s" % ("System ID ", "System".ljust(max_size), "Last Checkin"))
         print(("----------  " + "-" * max_size) + "  ------------")
 
         for s in sorted(systems, key=itemgetter("name")):
             print(
+                # pylint: disable-next=consider-using-f-string
                 "%s  %s  %s"
                 % (s.get("id"), s.get("name").ljust(max_size), s.get("last_checkin"))
             )
@@ -100,12 +104,15 @@ def do_report_outofdatesystems(self, args):
         report[system.get("name")] = system.get("outdated_pkg_count")
 
     if report:
+        # pylint: disable-next=consider-using-f-string
         print("%s  %s" % ("System".ljust(max_size), "Packages"))
         print(("-" * max_size) + "  --------")
 
         for system in sorted(report):
             print(
-                "%s       %s" % (system.ljust(max_size), str(report[system]).rjust(3))
+                # pylint: disable-next=consider-using-f-string
+                "%s       %s"
+                % (system.ljust(max_size), str(report[system]).rjust(3))
             )
         return 0
     else:
@@ -146,6 +153,7 @@ def do_report_errata(self, args):
     partial_errata = True
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (_args, _options) = parse_command_arguments(args, arg_parser)
 
     if not _args:
@@ -158,6 +166,7 @@ def do_report_errata(self, args):
 
     report = {}
     for erratum in errata_list:
+        # pylint: disable-next=consider-using-f-string
         logging.debug("Getting affected systems for %s" % erratum)
 
         affected = self.client.errata.listAffectedSystems(self.session, erratum)
@@ -175,9 +184,11 @@ def do_report_errata(self, args):
 
     if report:
         print(_("%s  # Systems") % _(("Errata").ljust(max_size)))
+        # pylint: disable-next=consider-using-f-string
         print("%s  ---------" % ("------".ljust(max_size)))
         for erratum in sorted(report):
             print(
+                # pylint: disable-next=consider-using-f-string
                 "%s        %s"
                 % (erratum.ljust(max_size), str(report[erratum]).rjust(3))
             )
@@ -202,6 +213,7 @@ def help_report_ipaddresses(self):
 def do_report_ipaddresses(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if args:
@@ -231,6 +243,7 @@ def do_report_ipaddresses(self, args):
             system_max_size = size
 
     hostname_max_size = 0
+    # pylint: disable-next=consider-using-dict-items
     for h in [report[h]["hostname"] for h in report]:
         size = len(h)
         if size > hostname_max_size:
@@ -238,17 +251,20 @@ def do_report_ipaddresses(self, args):
 
     if report:
         print(
+            # pylint: disable-next=consider-using-f-string
             "%s  %s  IP"
             % ("System".ljust(system_max_size), "Hostname".ljust(hostname_max_size))
         )
 
         print(
+            # pylint: disable-next=consider-using-f-string
             "%s  %s  --"
             % ("------".ljust(system_max_size), "--------".ljust(hostname_max_size))
         )
 
         for system in sorted(report):
             print(
+                # pylint: disable-next=consider-using-f-string
                 "%s  %s  %s"
                 % (
                     system.ljust(system_max_size),
@@ -274,6 +290,7 @@ def help_report_kernels(self):
 def do_report_kernels(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if args:
@@ -305,9 +322,11 @@ def do_report_kernels(self, args):
     if report:
         print(_("%s  Kernel") % (_("System").ljust(system_max_size)))
 
+        # pylint: disable-next=consider-using-f-string
         print("%s  ------" % ("------".ljust(system_max_size)))
 
         for system in sorted(report):
+            # pylint: disable-next=consider-using-f-string
             print("%s  %s" % (system.ljust(system_max_size), report[system]))
         return 0
     else:
@@ -335,15 +354,18 @@ def do_report_duplicates(self, args):
         add_separator = True
 
         for item in dupes_by_profile:
+            # pylint: disable-next=consider-using-f-string
             print("%s:" % item)
 
             # get some details for each duplicate
+            # pylint: disable-next=consider-using-f-string
             systems = self.client.system.searchByName(self.session, "^%s$" % item)
 
             print(_("System ID   Last Checkin"))
             print("----------  -----------------")
 
             for dupe in systems:
+                # pylint: disable-next=consider-using-f-string
                 print("%i  %s" % (dupe.get("id"), dupe.get("last_checkin")))
 
             if len(dupes_by_profile) > 1:
@@ -360,12 +382,14 @@ def do_report_duplicates(self, args):
             add_separator = True
 
             for item in dupes_by_ip:
+                # pylint: disable-next=consider-using-f-string
                 print("%s:" % item.get("ip"))
 
                 print(_("System ID   Last Checkin"))
                 print("----------  -----------------")
 
                 for dupe in item.get("systems"):
+                    # pylint: disable-next=consider-using-f-string
                     print("%i  %s" % (dupe.get("systemId"), dupe.get("last_checkin")))
 
                 if len(dupes_by_ip) > 1:
@@ -377,12 +401,14 @@ def do_report_duplicates(self, args):
             add_separator = True
 
             for item in dupes_by_mac:
+                # pylint: disable-next=consider-using-f-string
                 print("%s:" % item.get("mac").upper())
 
                 print(_("System ID   Last Checkin"))
                 print("----------  -----------------")
 
                 for dupe in item.get("systems"):
+                    # pylint: disable-next=consider-using-f-string
                     print("%i  %s" % (dupe.get("systemId"), dupe.get("last_checkin")))
 
                 if len(dupes_by_mac) > 1:
@@ -394,12 +420,14 @@ def do_report_duplicates(self, args):
             add_separator = True
 
             for item in dupes_by_hostname:
+                # pylint: disable-next=consider-using-f-string
                 print("%s:" % item.get("hostname"))
 
                 print(_("System ID   Last Checkin"))
                 print("----------  -----------------")
 
                 for dupe in item.get("systems"):
+                    # pylint: disable-next=consider-using-f-string
                     print("%i  %s" % (dupe.get("systemId"), dupe.get("last_checkin")))
 
                 if len(dupes_by_hostname) > 1:

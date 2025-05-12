@@ -1,13 +1,18 @@
+# pylint: disable=missing-module-docstring
 import pytest
+
+# pylint: disable-next=unused-import
 from unittest.mock import patch
 
 from ..states import appstreams
 
 
+# pylint: disable-next=redefined-outer-name
 def mock_enable(appstreams):
     return True, "AppStreams enabled.", {"enabled": appstreams}
 
 
+# pylint: disable-next=redefined-outer-name
 def mock_disable(appstreams):
     return True, "AppStreams disabled.", {"disabled": appstreams}
 

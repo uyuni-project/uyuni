@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -33,6 +34,7 @@ else:
 # That dictionary is then used to add instance variables to the object dynamically.
 
 
+# pylint: disable-next=missing-class-docstring,invalid-name
 class rhnpushConfigParser:
     # pylint: disable=W0201
     _instance = None
@@ -103,6 +105,7 @@ class rhnpushConfigParser:
         except IOError:
             e = sys.exc_info()[1]
             print(
+                # pylint: disable-next=consider-using-f-string
                 ("Config File Error: line %s, file %s: %s" % (e.lineno, e.filename, e))
             )
             sys.exit(1)
@@ -113,6 +116,7 @@ class rhnpushConfigParser:
         except IOError:
             e = sys.exc_info()[1]
             print(
+                # pylint: disable-next=consider-using-f-string
                 ("Config File Error: line %s, file %s: %s" % (e.lineno, e.filename, e))
             )
             sys.exit(1)
@@ -126,7 +130,9 @@ class rhnpushConfigParser:
         except (ConfigParser.NoOptionError, ConfigParser.NoSectionError):
             e = sys.exc_info()[1]
             print(
-                "Option/Section Error: line %s, file %s: %s" % (e.lineno, e.filename, e)
+                # pylint: disable-next=consider-using-f-string
+                "Option/Section Error: line %s, file %s: %s"
+                % (e.lineno, e.filename, e)
             )
             sys.exit(1)
 
@@ -161,6 +167,7 @@ class rhnpushConfigParser:
 
         # ensuring consistency only checks for missing configuration option.
         if ensure_consistency:
+            # pylint: disable-next=consider-using-dict-items
             for thiskey in self.options_defaults:
                 if thiskey not in self.__dict__:
                     self.__dict__[thiskey] = self.options_defaults[thiskey]
