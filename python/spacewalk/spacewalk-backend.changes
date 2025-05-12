@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon May 12 23:20:56 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.8-0
+  * Remove bootloader linux and initrd files from spacewalk-debug
+
+-------------------------------------------------------------------
 Fri Apr 11 17:16:14 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.7-0
