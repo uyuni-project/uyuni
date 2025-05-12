@@ -315,6 +315,12 @@ class RemoteNode
     $stdout.puts "Node #{hostname} is online."
   end
 
+  # Get the node's hostname
+  def get_hostname
+    hostname, _code = run_local('hostname')
+    hostname.delete("\n")
+  end
+
   private
 
   # Obtain the Public IP for a node

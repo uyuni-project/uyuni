@@ -26,7 +26,9 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
   # The build host has same version as the terminal
   Scenario: Prepare the autoinstallation files on the server
     When I install packages "tftpboot-installation-SLE-15-SP4-x86_64 expect" on this "build_host"
-    And I copy the tftpboot installation files from the build host to the server
+    And I perform a key exchange to allow machine:"build_host" authenticate to machine:"server"
+    And I transfer file:"/usr/share/tftpboot-installation" from:"build_host" to:"server" via scp
+    And I delete the keys previously exchanged
     And I copy the distribution inside the container on the server
 
   Scenario: Create auto installation distribution

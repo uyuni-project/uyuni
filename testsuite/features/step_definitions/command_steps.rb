@@ -8,6 +8,7 @@ require 'nokogiri'
 require 'pg'
 require 'set'
 require 'date'
+require 'openssl'
 
 # Sanity checks
 
@@ -1039,16 +1040,45 @@ When(/^I install package tftpboot-installation on the server$/) do
   end
 end
 
-When(/I copy the tftpboot installation files from the build host to the server$/) do
-  node = get_target('build_host')
-  file = 'copy-tftpboot-files.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
-  dest = "/tmp/#{file}"
-  success = file_inject(node, source, dest)
-  raise ScriptError, 'File injection failed' unless success
+When(/I perform a key exchange to allow machine:"([^"]*)" authenticate to machine:"([^"]*)"$/) do |origin, dest|
+  $node_origin = get_target(origin)
+  $node_dest = get_target(dest)
+  private_key = OpenSSL::PKey::RSA.new(2048)
+  $public_key = "#{private_key.ssh_type} #{[private_key.to_blob].pack('m0')}"
+  private_key_pem = private_key.to_pem
+  $ssh_root_folder = '/root/.ssh'
+  $private_key_name = 'id_rsa'
+  $public_key_name = 'id_rsa.pub'
+  $node_origin.run("mkdir -p #{$ssh_root_folder}") unless $node_origin.folder_exists($ssh_root_folder)
+  _command_output, return_code = $node_origin.run("echo \"#{private_key_pem}\" > #{$ssh_root_folder}/id_rsa && chmod 600 #{$ssh_root_folder}/#{$private_key_name}", runs_in_container: false)
+  raise StandardError, "Private key could not be copied in the #{origin}" unless return_code.zero?
 
-  hostname = get_target('server').full_hostname
-  node.run("expect -f #{dest} #{hostname}")
+  _command_output, return_code = $node_origin.run("echo \"#{$public_key}\" > #{$ssh_root_folder}/#{$public_key_name}", runs_in_container: false)
+  raise StandardError, "Public key could not be copied in the #{origin}" unless return_code.zero?
+
+  $authorized_keys_file = "#{$ssh_root_folder}/authorized_keys"
+  _command_output, return_code = $node_dest.run("mkdir -p /root/.ssh && chmod 700 /root/.ssh && echo \"#{$public_key}\" >> #{$authorized_keys_file}", runs_in_container: false)
+  raise StandardError, "Public key could not be copied in #{dest} authorized keys" unless return_code.zero?
+
+  dest_hostname = $node_dest.get_hostname
+  # Ensure that the ssh connection can be established
+  _command_output, return_code = $node_origin.run("ssh  -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@#{dest_hostname} hostname", runs_in_container: false)
+  raise StandardError, "Communication between #{origin} and #{dest} could not be established" unless return_code.zero? && dest_hostname in _command_output
+end
+
+When(/I delete the keys previously exchanged$/) do
+  public_key_deletable = $public_key.gsub('/', '\\/')
+  $node_origin.run("rm #{$ssh_root_folder}/#{$public_key_name}", runs_in_container: false)
+  $node_origin.run("rm #{$ssh_root_folder}/#{$private_key_name}", runs_in_container: false)
+  $node_dest.run("sed -i '/^#{public_key_deletable}$/d' #{$authorized_keys_file}", runs_in_container: false)
+end
+
+When(/I transfer file:"([^"]*)" from:"([^"]*)" to:"([^"]*)" via scp$/) do |file, origin, dest|
+  node_origin = get_target(origin)
+  node_dest = get_target(dest)
+  server = node_dest.get_hostname
+  _command_output, return_code = node_origin.run("/usr/bin/scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r #{file} root@#{server}:/tmp")
+  raise StandardError, "File could not be sent from #{origin} to #{dest}" unless return_code.zero?
 end
 
 When(/I copy the distribution inside the container on the server$/) do
