@@ -1,0 +1,14 @@
+include ./minion-header.jade
+
+#support-data
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('minion/details/support-data')
+        .then(function(module) { module.renderer('support-data', {
+            serverId: #{server.id},
+            availableRegions: !{availableRegions},
+            programName: !{programName} })
+        });
