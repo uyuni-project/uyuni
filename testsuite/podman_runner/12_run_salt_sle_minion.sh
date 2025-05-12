@@ -17,3 +17,4 @@ sudo -i podman exec -d sleminion bash -c "exporter_exporter -config.file /etc/ex
 sudo -i podman exec sleminion bash -c "sed -e 's/http:\/\/download.opensuse.org/http:\/\/server\/pub\/mirror\/download.opensuse.org/g' -i /etc/zypp/repos.d/*"
 sudo -i podman exec sleminion bash -c "sed -e 's/https:\/\/download.opensuse.org/http:\/\/server\/pub\/mirror\/download.opensuse.org/g' -i /etc/zypp/repos.d/*"
 sudo -i podman exec sleminion bash -c "echo 'root:linux' | chpasswd"
+sudo -i podman exec sleminion bash -c "mkdir -p /srv/www/htdocs/pub/bootstrap && cd /srv/www/htdocs/pub/bootstrap && curl http://server/pub/bootstrap/bootstrap.sh > bootstrap.sh"
