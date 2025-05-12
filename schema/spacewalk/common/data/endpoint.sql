@@ -129,6 +129,12 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/systems/details/support', 'GET', 'W', True)
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/systems/:sid/details/uploadSupportData', 'POST', 'W', True)
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/manager/systems/details/proxy-config', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
