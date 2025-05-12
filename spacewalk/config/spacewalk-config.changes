@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 13 00:25:11 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.6-0
+  * Disable directory listing (bsc#1241094)
+
+-------------------------------------------------------------------
 Fri Apr 11 17:09:46 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.5-0
