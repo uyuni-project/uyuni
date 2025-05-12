@@ -9881,6 +9881,18 @@ For a detailed analysis, please refer to the log files.
       <trans-unit id="system.audit.coco.configNotUpdated">
         <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
       </trans-unit>
+      <trans-unit id="system.details.support.invalid_case_number">
+        <source>The case number {0} is not valid.</source>
+      </trans-unit>
+      <trans-unit id="system.details.support.invalid_region">
+        <source>The region {0] is not valid.</source>
+      </trans-unit>
+      <trans-unit id="system.details.support.unable_to_schedule">
+        <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
+      </trans-unit>
+      <trans-unit id="system.details.support.unable_to_upload">
+        <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
