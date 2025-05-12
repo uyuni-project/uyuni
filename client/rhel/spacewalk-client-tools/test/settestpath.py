@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #   rhn-client-tools - RHN support tools and libraries
 #
 # Copyright (C) 2006--2012 Red Hat, Inc.

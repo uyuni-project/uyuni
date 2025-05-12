@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -241,6 +242,7 @@ def complete_kickstart_delete(self, text, line, beg, end):
 def do_kickstart_delete(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 1:
@@ -250,6 +252,7 @@ def do_kickstart_delete(self, args):
     # allow globbing of kickstart labels
     all_labels = self.do_kickstart_list("", True)
     labels = filter_results(all_labels, args)
+    # pylint: disable-next=consider-using-f-string
     logging.debug("Got labels to delete of %s" % labels)
 
     if not labels:
@@ -402,6 +405,7 @@ def complete_kickstart_details(self, text, line, beg, end):
 def do_kickstart_details(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1:
@@ -486,6 +490,7 @@ def do_kickstart_details(self, args):
     result.append(base_channel.get("label"))
 
     for channel in sorted(child_channels):
+        # pylint: disable-next=consider-using-f-string
         result.append("  |-- %s" % channel)
 
     if advanced_options:
@@ -494,6 +499,7 @@ def do_kickstart_details(self, args):
         result.append("----------------")
         for o in sorted(advanced_options, key=itemgetter("name")):
             if o.get("arguments"):
+                # pylint: disable-next=consider-using-f-string
                 result.append("%s %s" % (o.get("name"), o.get("arguments")))
 
     if custom_options:
@@ -535,6 +541,7 @@ def do_kickstart_details(self, args):
         for fp in sorted(file_preservations, key=itemgetter("name")):
             result.append(fp.get("name"))
             for profile_name in sorted(fp.get("file_names")):
+                # pylint: disable-next=consider-using-f-string
                 result.append("    |-- %s" % profile_name)
 
     if variables:
@@ -542,6 +549,7 @@ def do_kickstart_details(self, args):
         result.append(_("Variables"))
         result.append("---------")
         for k in sorted(variables.keys()):
+            # pylint: disable-next=consider-using-f-string
             result.append("%s = %s" % (k, str(variables[k])))
 
     if scripts:
@@ -582,9 +590,11 @@ def kickstart_getcontents(self, profile):
     else:
         # old versions of th API don't return a rendered Kickstart,
         # so grab it in a hacky way
+        # pylint: disable-next=consider-using-f-string
         url = "http://%s/ks/cfg/label/%s" % (self.server, profile)
 
         try:
+            # pylint: disable-next=consider-using-f-string
             logging.debug("Retrieving %s" % url)
             response = urlopen(url)
             kickstart = response.read()
@@ -607,6 +617,7 @@ def complete_kickstart_getcontents(self, text, line, beg, end):
 def do_kickstart_getcontents(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -646,6 +657,7 @@ def complete_kickstart_rename(self, text, line, beg, end):
 def do_kickstart_rename(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
@@ -685,6 +697,7 @@ def complete_kickstart_listcryptokeys(self, text, line, beg, end):
 def do_kickstart_listcryptokeys(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -725,6 +738,7 @@ def complete_kickstart_addcryptokeys(self, text, line, beg, end):
 
 
 def do_kickstart_addcryptokeys(self, args):
+    # pylint: disable-next=unused-variable
     args, _options = parse_command_arguments(args, get_argument_parser())
     if len(args) > 1:
         profile, keys = args[0], args[1:]
@@ -768,6 +782,7 @@ def complete_kickstart_removecryptokeys(self, text, line, beg, end):
 def do_kickstart_removecryptokeys(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -805,6 +820,7 @@ def complete_kickstart_listactivationkeys(self, text, line, beg, end):
 
 
 def do_kickstart_listactivationkeys(self, args, doreturn=False):
+    # pylint: disable-next=unused-variable
     args, _options = parse_command_arguments(args, get_argument_parser())
 
     if not args:
@@ -857,6 +873,7 @@ def complete_kickstart_addactivationkeys(self, text, line, beg, end):
 
 
 def do_kickstart_addactivationkeys(self, args):
+    # pylint: disable-next=unused-variable
     args, _options = parse_command_arguments(args, get_argument_parser())
 
     if len(args) > 1:
@@ -902,6 +919,7 @@ def complete_kickstart_removeactivationkeys(self, text, line, beg, end):
 
 
 def do_kickstart_removeactivationkeys(self, args):
+    # pylint: disable-next=unused-variable
     args, _options = parse_command_arguments(args, get_argument_parser())
 
     if len(args) > 1:
@@ -945,6 +963,7 @@ def complete_kickstart_enableconfigmanagement(self, text, line, beg, end):
 def do_kickstart_enableconfigmanagement(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -983,6 +1002,7 @@ def complete_kickstart_disableconfigmanagement(self, text, line, beg, end):
 def do_kickstart_disableconfigmanagement(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1021,6 +1041,7 @@ def complete_kickstart_enableremotecommands(self, text, line, beg, end):
 def do_kickstart_enableremotecommands(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1059,6 +1080,7 @@ def complete_kickstart_disableremotecommands(self, text, line, beg, end):
 def do_kickstart_disableremotecommands(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1094,6 +1116,7 @@ def complete_kickstart_setlocale(self, text, line, beg, end):
 def do_kickstart_setlocale(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
@@ -1134,6 +1157,7 @@ def complete_kickstart_setselinux(self, text, line, beg, end):
 def do_kickstart_setselinux(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
@@ -1173,6 +1197,7 @@ def complete_kickstart_setpartitions(self, text, line, beg, end):
 def do_kickstart_setpartitions(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1191,6 +1216,7 @@ def do_kickstart_setpartitions(self, args):
     except xmlrpclib.Fault:
         template = ""
 
+    # pylint: disable-next=unused-variable
     (partitions, _ignore) = editor(template=template, delete=True)
 
     print(partitions)
@@ -1233,6 +1259,7 @@ def complete_kickstart_setdistribution(self, text, line, beg, end):
 def do_kickstart_setdistribution(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
@@ -1267,6 +1294,7 @@ def complete_kickstart_enablelogging(self, text, line, beg, end):
 def do_kickstart_enablelogging(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1300,6 +1328,7 @@ def complete_kickstart_addvariable(self, text, line, beg, end):
 def do_kickstart_addvariable(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 3:
@@ -1349,6 +1378,7 @@ def complete_kickstart_updatevariable(self, text, line, beg, end):
 def do_kickstart_updatevariable(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 3:
@@ -1390,6 +1420,7 @@ def complete_kickstart_removevariables(self, text, line, beg, end):
 def do_kickstart_removevariables(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -1430,6 +1461,7 @@ def complete_kickstart_listvariables(self, text, line, beg, end):
 def do_kickstart_listvariables(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1441,6 +1473,7 @@ def do_kickstart_listvariables(self, args):
     variables = self.client.kickstart.profile.getVariables(self.session, profile)
 
     for v in variables:
+        # pylint: disable-next=consider-using-f-string
         print("%s = %s" % (v, variables[v]))
 
     return 0
@@ -1468,6 +1501,7 @@ def complete_kickstart_addoption(self, text, line, beg, end):
 def do_kickstart_addoption(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -1536,6 +1570,7 @@ def complete_kickstart_removeoptions(self, text, line, beg, end):
 def do_kickstart_removeoptions(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -1590,6 +1625,7 @@ def do_kickstart_listoptions(self, args):
 
     for o in sorted(options, key=itemgetter("name")):
         if o.get("arguments"):
+            # pylint: disable-next=consider-using-f-string
             print("%s %s" % (o.get("name"), o.get("arguments")))
 
     return 0
@@ -1678,6 +1714,7 @@ def do_kickstart_setcustomoptions(self, args):
     old_options = "\n".join(old_options)
 
     # let the user edit the custom options
+    # pylint: disable-next=unused-variable
     (new_options, _ignore) = editor(template=old_options, delete=True)
 
     new_options = new_options.split("\n")
@@ -1729,6 +1766,7 @@ def complete_kickstart_addchildchannels(self, text, line, beg, end):
 def do_kickstart_addchildchannels(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -1774,6 +1812,7 @@ def complete_kickstart_removechildchannels(self, text, line, beg, end):
 def do_kickstart_removechildchannels(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -1819,6 +1858,7 @@ def complete_kickstart_listchildchannels(self, text, line, beg, end):
 def do_kickstart_listchildchannels(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1864,6 +1904,7 @@ def complete_kickstart_addfilepreservations(self, text, line, beg, end):
 def do_kickstart_addfilepreservations(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1918,6 +1959,7 @@ def complete_kickstart_removefilepreservations(self, text, line, beg, end):
 def do_kickstart_removefilepreservations(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -1949,6 +1991,7 @@ def complete_kickstart_listpackages(self, text, line, beg, end):
 def do_kickstart_listpackages(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1991,6 +2034,7 @@ def complete_kickstart_addpackages(self, text, line, beg, end):
 def do_kickstart_addpackages(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
@@ -2029,6 +2073,7 @@ def complete_kickstart_removepackages(self, text, line, beg, end):
 def do_kickstart_removepackages(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
@@ -2067,6 +2112,7 @@ def complete_kickstart_listscripts(self, text, line, beg, end):
 def do_kickstart_listscripts(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -2152,6 +2198,7 @@ def do_kickstart_addscript(self, args):
         ):
             options.file = prompt_user(_("File:"))
         else:
+            # pylint: disable-next=unused-variable
             (options.contents, _ignore) = editor(delete=True)
 
         # check user input
@@ -2242,6 +2289,7 @@ def complete_kickstart_removescript(self, text, line, beg, end):
 def do_kickstart_removescript(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -2368,12 +2416,14 @@ def export_kickstart_getdetails(self, profile, kickstarts):
 
     # Get the initial ks details struct from the kickstarts list-of-struct,
     # which is returned from kickstart.listKickstarts()
+    # pylint: disable-next=consider-using-f-string
     logging.debug("Getting kickstart profile details for %s" % profile)
     details = None
     for k in kickstarts:
         if k.get("label") == profile:
             details = k
             break
+    # pylint: disable-next=consider-using-f-string
     logging.debug("Got basic details for %s : %s" % (profile, details))
 
     # Now use the various other API functions to build up a more complete
@@ -2397,12 +2447,15 @@ def export_kickstart_getdetails(self, profile, kickstarts):
     details["ip_ranges"] = self.client.kickstart.profile.listIpRanges(
         self.session, profile
     )
+    # pylint: disable-next=consider-using-f-string
     logging.debug("About to get variable_list for %s" % profile)
     details["variable_list"] = self.client.kickstart.profile.getVariables(
         self.session, profile
     )
     logging.debug(
-        "done variable_list for %s = %s" % (profile, details["variable_list"])
+        # pylint: disable-next=consider-using-f-string
+        "done variable_list for %s = %s"
+        % (profile, details["variable_list"])
     )
     # just export the key names, then look for one with the same name on import
     details["activation_keys"] = [
@@ -2465,6 +2518,7 @@ def export_kickstart_getdetails(self, profile, kickstarts):
         post_kopts = kscontents.split("`/sbin/grubby --default-kernel` --args=")[
             1
         ].split('"')[1]
+        # pylint: disable-next=consider-using-f-string
         logging.debug("Post kernel options %s detected" % post_kopts)
         details["post_kopts"] = post_kopts
 
@@ -2490,6 +2544,7 @@ def do_kickstart_export(self, args):
 
     filename = ""
     if options.file is not None:
+        # pylint: disable-next=consider-using-f-string
         logging.debug("Passed filename do_kickstart_export %s" % options.file)
         filename = options.file
 
@@ -2504,7 +2559,9 @@ def do_kickstart_export(self, args):
         # allow globbing of kickstart kickstart names
         profiles = filter_results(self.do_kickstart_list("", True), args)
         logging.debug(
-            "kickstart_export called with args %s, profiles=%s" % (args, profiles)
+            # pylint: disable-next=consider-using-f-string
+            "kickstart_export called with args %s, profiles=%s"
+            % (args, profiles)
         )
         if not profiles:
             logging.error(
@@ -2519,6 +2576,7 @@ def do_kickstart_export(self, args):
             # If we are exporting exactly one ks, we default to ksname.json
             # otherwise, generic ks_profiles.json name
             if len(profiles) == 1:
+                # pylint: disable-next=consider-using-f-string
                 filename = "%s.json" % profiles[0]
             else:
                 filename = "ks_profiles.json"
@@ -2535,7 +2593,9 @@ def do_kickstart_export(self, args):
         ksdetails_list.append(self.export_kickstart_getdetails(p, kickstarts))
 
     logging.debug(
-        "About to dump %d ks profiles to %s" % (len(ksdetails_list), filename)
+        # pylint: disable-next=consider-using-f-string
+        "About to dump %d ks profiles to %s"
+        % (len(ksdetails_list), filename)
     )
     # Check if filepath exists, if an existing file we prompt for confirmation
     if os.path.isfile(filename):
@@ -2561,6 +2621,7 @@ def help_kickstart_importjson(self):
 def do_kickstart_importjson(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -2569,6 +2630,7 @@ def do_kickstart_importjson(self, args):
         return 1
 
     for filename in args:
+        # pylint: disable-next=consider-using-f-string
         logging.debug("Passed filename do_kickstart_import %s" % filename)
         ksdetails_list = json_read_from_file(filename)
         if not ksdetails_list:
@@ -2677,6 +2739,7 @@ def import_kickstart_fromdetails(self, ksdetails):
                 script["chroot"],
             )
         if ret:
+            # pylint: disable-next=consider-using-f-string
             logging.debug("Added %s script to profile" % script["script_type"])
         else:
             logging.error(_N("Error adding %s script") % script["script_type"])
@@ -2685,6 +2748,7 @@ def import_kickstart_fromdetails(self, ksdetails):
         if self.client.kickstart.profile.addIpRange(
             self.session, ksdetails["label"], iprange["min"], iprange["max"]
         ):
+            # pylint: disable-next=consider-using-f-string
             logging.debug("added ip range %s-%s" % iprange["min"], iprange["max"])
         else:
             logging.warning(
@@ -2705,6 +2769,7 @@ def import_kickstart_fromdetails(self, ksdetails):
                 if self.client.kickstart.profile.system.addFilePreservations(
                     self.session, ksdetails["label"], [fp]
                 ):
+                    # pylint: disable-next=consider-using-f-string
                     logging.debug("added file preservation '%s'" % fp)
                 else:
                     logging.warning(
@@ -2721,6 +2786,7 @@ def import_kickstart_fromdetails(self, ksdetails):
     ]
     for akey in ksdetails["activation_keys"]:
         if akey in existing_act_keys:
+            # pylint: disable-next=consider-using-f-string
             logging.debug("Adding activation key %s to profile" % akey)
             self.client.kickstart.profile.keys.addActivationKey(
                 self.session, ksdetails["label"], akey
@@ -2737,6 +2803,7 @@ def import_kickstart_fromdetails(self, ksdetails):
     ]
     for key in ksdetails["gpg_ssl_keys"]:
         if key in existing_gpg_ssl_keys:
+            # pylint: disable-next=consider-using-f-string
             logging.debug("Adding GPG/SSL key %s to profile" % key)
             self.client.kickstart.profile.system.addKeys(
                 self.session, ksdetails["label"], [key]
@@ -2835,6 +2902,7 @@ def complete_kickstart_diff(self, text, line, beg, end):
 def do_kickstart_diff(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1 and len(args) != 2:
@@ -2885,6 +2953,7 @@ def complete_kickstart_getupdatetype(self, text, line, beg, end):
 def do_kickstart_getupdatetype(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 1:
@@ -2894,6 +2963,7 @@ def do_kickstart_getupdatetype(self, args):
     # allow globbing of kickstart labels
     all_labels = self.do_kickstart_list("", True)
     labels = filter_results(all_labels, args)
+    # pylint: disable-next=consider-using-f-string
     logging.debug("Got labels to list the update type %s" % labels)
 
     if not labels:
@@ -2955,6 +3025,7 @@ def do_kickstart_setupdatetype(self, args):
     # allow globbing of kickstart labels
     all_labels = self.do_kickstart_list("", True)
     labels = filter_results(all_labels, args)
+    # pylint: disable-next=consider-using-f-string
     logging.debug("Got labels to set the update type %s" % labels)
 
     if not labels:
@@ -2993,6 +3064,7 @@ def complete_kickstart_getsoftwaredetails(self, text, line, beg, end):
 def do_kickstart_getsoftwaredetails(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 1:
@@ -3002,6 +3074,7 @@ def do_kickstart_getsoftwaredetails(self, args):
     # allow globbing of kickstart labels
     all_labels = self.do_kickstart_list("", True)
     labels = filter_results(all_labels, args)
+    # pylint: disable-next=consider-using-f-string
     logging.debug("Got labels to set the update type %s" % labels)
 
     if not labels:
@@ -3069,6 +3142,7 @@ def complete_kickstart_setsoftwaredetails(self, text, line, beg, end):
 def do_kickstart_setsoftwaredetails(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
     length = len(args)
     kspkginfo = ["noBase", "ignoreMissing"]

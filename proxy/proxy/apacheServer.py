@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 # apacheServer.py      - Apache XML-RPC server for mod_python (Spacewalk).
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
@@ -24,6 +25,7 @@ from spacewalk.common import apache
 class HandlerWrap:
     """Wrapper handlers to catch unwanted exceptions"""
 
+    # pylint: disable-next=invalid-name
     svrHandlers = None
 
     def __init__(self, name, init=0):
@@ -38,14 +40,17 @@ class HandlerWrap:
         #       req object.
 
         if self.__init:
+            # pylint: disable-next=import-outside-toplevel
             from .apacheHandler import getComponentType
 
             # We cannot trust the config files to tell us if we are in the
             # broker or in the redirect because we try to always pass
             # upstream all requests
+            # pylint: disable-next=invalid-name
             componentType = getComponentType(req)
             initCFG(componentType)
             initLOG(CFG.LOG_FILE, CFG.DEBUG, f"wsgi_{componentType}")
+            # pylint: disable-next=consider-using-f-string
             log_debug(2, "New request, component %s" % (componentType,))
 
         # Instantiate the handlers
@@ -62,6 +67,7 @@ class HandlerWrap:
                 f = getattr(HandlerWrap.svrHandlers, self.__name)
                 ret = f(req)
             else:
+                # pylint: disable-next=broad-exception-raised,consider-using-f-string
                 raise Exception("Class has no attribute %s" % self.__name)
         # pylint: disable=W0702
         except:
@@ -73,8 +79,10 @@ class HandlerWrap:
             return ret
 
     @staticmethod
+    # pylint: disable-next=invalid-name
     def get_handler_factory(_req):
         """Handler factory. Redefine in your subclasses if so choose"""
+        # pylint: disable-next=import-outside-toplevel
         from .apacheHandler import apacheHandler
 
         return apacheHandler

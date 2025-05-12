@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 # Shared (Spacewalk Proxy/Redirect) handler code called by rhnApache.
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
@@ -64,21 +65,28 @@ class SharedHandler:
         # turn wsgi.input object into a SmartIO instance so it can be read
         # more than once
         if "wsgi.input" in self.req.headers_in:
+            # pylint: disable-next=invalid-name
             smartFd = SmartIO(max_mem_size=CFG.MAX_MEM_FILE_SIZE)
             smartFd.write(self.req.headers_in["wsgi.input"].read())
             self.req.headers_in["wsgi.input"] = smartFd
 
+        # pylint: disable-next=invalid-name
         self.responseContext = ResponseContext()
         self.uri = None  # ''
 
         # Common settings for both the proxy and the redirect
         # broker and redirect immediately alter these for their own purposes
+        # pylint: disable-next=invalid-name
         self.caChain = CFG.CA_CHAIN
+        # pylint: disable-next=invalid-name
         self.httpProxy = CFG.HTTP_PROXY
+        # pylint: disable-next=invalid-name
         self.httpProxyUsername = CFG.HTTP_PROXY_USERNAME
+        # pylint: disable-next=invalid-name
         self.httpProxyPassword = CFG.HTTP_PROXY_PASSWORD
         if not self.httpProxyUsername:
             self.httpProxyPassword = ""
+        # pylint: disable-next=invalid-name
         self.rhnParent = CFG.RHN_PARENT or ""
         self.rhnParent = rhnLib.parseUrl(self.rhnParent)[1].split(":")[0]
         CFG.set("RHN_PARENT", self.rhnParent)
@@ -96,6 +104,7 @@ class SharedHandler:
 
     # --- HANDLER SPECIFIC CODE ---
 
+    # pylint: disable-next=invalid-name
     def _prepHandler(self):
         """Handler part 0"""
 
@@ -114,6 +123,7 @@ class SharedHandler:
 
         return apache.OK
 
+    # pylint: disable-next=invalid-name
     def _connectToParent(self):
         """Handler part 1
         Should not return an error code -- simply connects.
@@ -132,8 +142,10 @@ class SharedHandler:
         # hairpin problem.
         if self.httpProxy not in ["127.0.0.1:8080", "localhost:8080"]:
             if "X-Suse-Auth-Token" in self.req.headers_in:
+                # pylint: disable-next=consider-using-f-string
                 self.uri += "?%s" % self.req.headers_in["X-Suse-Auth-Token"]
             elif query:
+                # pylint: disable-next=consider-using-f-string
                 self.uri += "?%s" % query
         else:
             host = "localhost"
@@ -164,23 +176,28 @@ class SharedHandler:
             )
 
         # At this point the server should be okay
+        # pylint: disable-next=consider-using-f-string
         log_debug(3, "Connected to parent: %s " % self.rhnParent)
         if self.httpProxy:
             if self.httpProxyUsername:
                 log_debug(
                     3,
+                    # pylint: disable-next=consider-using-f-string
                     "HTTP proxy info: %s %s/<password>"
                     % (self.httpProxy, self.httpProxyUsername),
                 )
             else:
+                # pylint: disable-next=consider-using-f-string
                 log_debug(3, "HTTP proxy info: %s" % self.httpProxy)
         else:
             log_debug(3, "HTTP proxy info: not using an HTTP proxy")
         peer = self.responseContext.getConnection().sock.getpeername()
+        # pylint: disable-next=consider-using-f-string
         log_debug(4, "Other connection info: %s:%s%s" % (peer[0], peer[1], self.uri))
 
     def _create_connection(self):
         """Returns a Connection object"""
+        # pylint: disable-next=invalid-name,invalid-name,unused-variable,unused-variable
         scheme, host, port, _uri, _query = self._parse_url(self.rhnParent)
         # Build the list of params
         params = {
@@ -222,12 +239,14 @@ class SharedHandler:
     @staticmethod
     def _parse_url(url):
         """Returns scheme, host, port, path, query."""
+        # pylint: disable-next=invalid-name,invalid-name,unused-variable,unused-variable
         scheme, netloc, path, _params, query, _frag = rhnLib.parseUrl(url)
         host, port = urllib.splitnport(netloc)
         if port <= 0:
             port = None
         return scheme, host, port, path, query
 
+    # pylint: disable-next=invalid-name
     def _serverCommo(self):
         """Handler part 2
 
@@ -244,6 +263,7 @@ class SharedHandler:
 
         # Send the headers, the body and expect a response
         try:
+            # pylint: disable-next=invalid-name
             status, headers, bodyFd = self._proxy2server()
             self.responseContext.setHeaders(headers)
             self.responseContext.setBodyFd(bodyFd)
@@ -274,6 +294,7 @@ class SharedHandler:
                 sys.exc_info()[2],
             )
 
+        # pylint: disable-next=consider-using-f-string
         log_debug(2, "HTTP status code (200 means all is well): %s" % status)
 
         # Now we need to decide how to deal with the server's response.  We'll
@@ -282,6 +303,7 @@ class SharedHandler:
 
         return self._handleServerResponse(status)
 
+    # pylint: disable-next=invalid-name
     def _handleServerResponse(self, status):
         """This method can be overridden by subclasses who want to handle server
         responses in their own way.  By default, we will wrap all the headers up
@@ -290,6 +312,7 @@ class SharedHandler:
         """
         if status not in (apache.HTTP_OK, apache.HTTP_PARTIAL_CONTENT):
             # Non 200 response; have to treat it differently
+            # pylint: disable-next=consider-using-f-string
             log_debug(2, "Forwarding status %s" % status)
             # Copy the incoming headers to headers_out
             headers = self.responseContext.getHeaders()
@@ -307,6 +330,7 @@ class SharedHandler:
         # apache.HTTP_OK becomes apache.OK.
         return apache.OK
 
+    # pylint: disable-next=invalid-name
     def _get_header(self, k, headerObj=None):
         if headerObj is None:
             headerObj = self.responseContext.getHeaders()
@@ -316,6 +340,7 @@ class SharedHandler:
 
         return headerObj.get_all(k)
 
+    # pylint: disable-next=invalid-name
     def _clientCommo(self, status=apache.OK):
         """Handler part 3
         Forward server's response to the client.
@@ -338,6 +363,7 @@ class SharedHandler:
     # --- PROTECTED METHODS ---
 
     @staticmethod
+    # pylint: disable-next=invalid-name
     def _getHeaders(req):
         """Copy the incoming headers."""
 
@@ -348,6 +374,7 @@ class SharedHandler:
             hdrs[k] = req.headers_in[k]
         return hdrs
 
+    # pylint: disable-next=invalid-name
     def _forwardServer2Client(self):
         """Forward headers, and bodyfd from server to the calling client.
         For most XMLRPC code, this function is called.
@@ -358,6 +385,7 @@ class SharedHandler:
         # Okay, nothing interesting from the server;
         # we'll just forward what we got
 
+        # pylint: disable-next=invalid-name
         bodyFd = self.responseContext.getBodyFd()
 
         self._forwardHTTPHeaders(bodyFd, self.req)
@@ -469,9 +497,11 @@ class SharedHandler:
         status = response.status
         # Get the body of the request too - well, just a fd actually
         # in this case, the response object itself.
+        # pylint: disable-next=invalid-name
         bodyFd = response
         return status, headers, bodyFd
 
+    # pylint: disable-next=invalid-name
     def _getEffectiveURI(self):
         if rhnConstants.HEADER_EFFECTIVE_URI in self.req.headers_in:
             return self.req.headers_in[rhnConstants.HEADER_EFFECTIVE_URI]
@@ -479,6 +509,7 @@ class SharedHandler:
         return self.req.uri
 
     @staticmethod
+    # pylint: disable-next=invalid-name
     def _determineHTTPBodySize(headers):
         """This routine attempts to determine the size of an HTTP body by searching
         the headers for a "Content-Length" field.  The size is returned, if
@@ -497,6 +528,7 @@ class SharedHandler:
 
         return size
 
+    # pylint: disable-next=invalid-name,invalid-name,invalid-name
     def _forwardHTTPHeaders(self, fromResponse, toRequest):
         """This routine will transfer the header contents of an HTTP response to
         the output headers of an HTTP request for reply to the original
@@ -522,6 +554,7 @@ class SharedHandler:
 
             rhnLib.setHeaderValue(toRequest.headers_out, k, v)
 
+    # pylint: disable-next=invalid-name,invalid-name,invalid-name
     def _forwardHTTPBody(self, fromResponse, toRequest):
         """This routine will transfer the body of an HTTP response to the output
         area of an HTTP request for response to the original requesting client.

@@ -1,4 +1,5 @@
 #!/usr/bin/python -u
+# pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -36,6 +37,7 @@ except KeyboardInterrupt:
     sys.stderr.write("\nUser interrupted process.\n")
     sys.exit(0)
 except ImportError as e:
+    # pylint: disable-next=consider-using-f-string
     sys.stderr.write("Unable to load module %s\n" % mod_name)
     sys.stderr.write(str(e) + "\n")
     sys.exit(1)

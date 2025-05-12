@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# pylint: disable=missing-module-docstring,invalid-name
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2014 SUSE
@@ -26,12 +27,14 @@ options = get_options()
 try:
     sys.exit(MgrSync().run(options))
 except socket.error as ex:
+    # pylint: disable-next=consider-using-f-string
     sys.stderr.write("Network error: {0}\n".format(ex))
     if options.verbose:
         raise
     else:
         sys.exit(1)
 except SyntaxError as ex:
+    # pylint: disable-next=consider-using-f-string
     sys.stderr.write("Syntax error: {0}\n".format(ex))
     if options.verbose:
         raise
@@ -39,7 +42,9 @@ except SyntaxError as ex:
         sys.exit(1)
 except KeyboardInterrupt as ex:
     sys.stdout.write("\n")
+# pylint: disable-next=broad-exception-caught
 except Exception as ex:
+    # pylint: disable-next=consider-using-f-string
     sys.stderr.write("General error: {0}\n".format(ex))
     if options.verbose:
         raise

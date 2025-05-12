@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -67,6 +68,7 @@ def complete_activationkey_addpackages(self, text, line, beg, end):
 def do_activationkey_addpackages(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
@@ -107,6 +109,7 @@ def complete_activationkey_removepackages(self, text, line, beg, end):
 def do_activationkey_removepackages(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
@@ -145,6 +148,7 @@ def complete_activationkey_addgroups(self, text, line, beg, end):
 def do_activationkey_addgroups(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
@@ -193,6 +197,7 @@ def complete_activationkey_removegroups(self, text, line, beg, end):
 def do_activationkey_removegroups(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
@@ -235,6 +240,7 @@ def complete_activationkey_addentitlements(self, text, line, beg, end):
 def do_activationkey_addentitlements(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
@@ -278,6 +284,7 @@ def complete_activationkey_removeentitlements(self, text, line, beg, end):
 def do_activationkey_removeentitlements(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
@@ -334,6 +341,7 @@ def complete_activationkey_addchildchannels(self, text, line, beg, end):
 def do_activationkey_addchildchannels(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
@@ -376,6 +384,7 @@ def complete_activationkey_removechildchannels(self, text, line, beg, end):
 def do_activationkey_removechildchannels(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
@@ -410,6 +419,7 @@ def complete_activationkey_listchildchannels(self, text, line, beg, end):
 def do_activationkey_listchildchannels(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -446,6 +456,7 @@ def complete_activationkey_listbasechannel(self, text, line, beg, end):
 def do_activationkey_listbasechannel(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -476,6 +487,7 @@ def complete_activationkey_listgroups(self, text, line, beg, end):
 def do_activationkey_listgroups(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -513,6 +525,7 @@ def complete_activationkey_listentitlements(self, text, line, beg, end):
 def do_activationkey_listentitlements(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -544,6 +557,7 @@ def complete_activationkey_listpackages(self, text, line, beg, end):
 def do_activationkey_listpackages(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -558,6 +572,7 @@ def do_activationkey_listpackages(self, args):
         details.get("packages"), key=lambda x: (x["name"]), reverse=True
     ):
         if "arch" in package:
+            # pylint: disable-next=consider-using-f-string
             print("%s.%s" % (package["name"], package["arch"]))
         else:
             print(package["name"])
@@ -585,6 +600,7 @@ def complete_activationkey_listconfigchannels(self, text, line, beg, end):
 def do_activationkey_listconfigchannels(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -700,6 +716,7 @@ def complete_activationkey_removeconfigchannels(self, text, line, beg, end):
 def do_activationkey_removeconfigchannels(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
@@ -734,6 +751,7 @@ def complete_activationkey_setconfigchannelorder(self, text, line, beg, end):
 def do_activationkey_setconfigchannelorder(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1:
@@ -754,6 +772,7 @@ def do_activationkey_setconfigchannelorder(self, args):
     print("")
     print(_("New Configuration Channels:"))
     for i, new_channel in enumerate(new_channels, 1):
+        # pylint: disable-next=consider-using-f-string
         print("[%i] %s" % (i, new_channel))
 
     self.client.activationkey.setConfigChannels(self.session, [key], new_channels)
@@ -861,6 +880,7 @@ def complete_activationkey_delete(self, text, line, beg, end):
 def do_activationkey_delete(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -869,6 +889,7 @@ def do_activationkey_delete(self, args):
 
     # allow globbing of activationkey names
     keys = filter_results(self.do_activationkey_list("", True), args)
+    # pylint: disable-next=consider-using-f-string
     logging.debug("activationkey_delete called with args %s, keys=%s" % (args, keys))
 
     if not keys:
@@ -882,6 +903,7 @@ def do_activationkey_delete(self, args):
         return 1
 
     for key in keys:
+        # pylint: disable-next=consider-using-f-string
         logging.debug("Deleting key %s" % key)
         self.client.activationkey.delete(self.session, key)
 
@@ -929,6 +951,7 @@ def complete_activationkey_listsystems(self, text, line, beg, end):
 def do_activationkey_listsystems(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -966,6 +989,7 @@ def complete_activationkey_details(self, text, line, beg, end):
 def do_activationkey_details(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1019,6 +1043,7 @@ def do_activationkey_details(self, args):
         result.append(details.get("base_channel_label"))
 
         for channel in sorted(details.get("child_channel_labels")):
+            # pylint: disable-next=consider-using-f-string
             result.append(" |-- %s" % channel)
 
         result.append("")
@@ -1046,6 +1071,7 @@ def do_activationkey_details(self, args):
             name = package.get("name")
 
             if package.get("arch"):
+                # pylint: disable-next=consider-using-f-string
                 name += ".%s" % package.get("arch")
 
             result.append(name)
@@ -1072,6 +1098,7 @@ def complete_activationkey_enableconfigdeployment(self, text, line, beg, end):
 def do_activationkey_enableconfigdeployment(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1079,6 +1106,7 @@ def do_activationkey_enableconfigdeployment(self, args):
         return 1
 
     for key in args:
+        # pylint: disable-next=consider-using-f-string
         logging.debug("Enabling config file deployment for %s" % key)
         self.client.activationkey.enableConfigDeployment(self.session, key)
 
@@ -1105,6 +1133,7 @@ def complete_activationkey_disableconfigdeployment(self, text, line, beg, end):
 def do_activationkey_disableconfigdeployment(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1112,6 +1141,7 @@ def do_activationkey_disableconfigdeployment(self, args):
         return 1
 
     for key in args:
+        # pylint: disable-next=consider-using-f-string
         logging.debug("Disabling config file deployment for %s" % key)
         self.client.activationkey.disableConfigDeployment(self.session, key)
 
@@ -1145,6 +1175,7 @@ def complete_activationkey_setbasechannel(self, text, line, beg, end):
 def do_activationkey_setbasechannel(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
@@ -1202,6 +1233,7 @@ def complete_activationkey_setusagelimit(self, text, line, beg, end):
 def do_activationkey_setusagelimit(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
@@ -1211,10 +1243,12 @@ def do_activationkey_setusagelimit(self, args):
     key = args.pop(0)
     usage_limit = -1
     if args[0] == "unlimited":
+        # pylint: disable-next=consider-using-f-string
         logging.debug("Setting usage for key %s unlimited" % key)
     else:
         try:
             usage_limit = int(args[0])
+            # pylint: disable-next=consider-using-f-string
             logging.debug("Setting usage for key %s to %d" % (key, usage_limit))
         except ValueError:
             logging.error(_N("Couldn't convert argument %s to an integer") % args[0])
@@ -1254,6 +1288,7 @@ def complete_activationkey_setuniversaldefault(self, text, line, beg, end):
 def do_activationkey_setuniversaldefault(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1307,10 +1342,12 @@ def complete_activationkey_export(self, text, line, beg, end):
 
 def export_activationkey_getdetails(self, key):
     # Get the key details
+    # pylint: disable-next=consider-using-f-string
     logging.info(_N("Getting activation key details for %s" % key))
     details = self.client.activationkey.getDetails(self.session, key)
 
     # Get the key config-channel data, add it to the existing details
+    # pylint: disable-next=consider-using-f-string
     logging.debug("activationkey.listConfigChannels %s" % key)
     ccdlist = []
     try:
@@ -1321,9 +1358,11 @@ def export_activationkey_getdetails(self, key):
         )
 
     cclist = [c["label"] for c in ccdlist]
+    # pylint: disable-next=consider-using-f-string
     logging.debug("Got config channel label list of %s" % cclist)
     details["config_channels"] = cclist
 
+    # pylint: disable-next=consider-using-f-string
     logging.debug("activationkey.checkConfigDeployment %s" % key)
     details["config_deploy"] = self.client.activationkey.checkConfigDeployment(
         self.session, key
@@ -1354,6 +1393,7 @@ def do_activationkey_export(self, args):
 
     filename = ""
     if options.file is not None:
+        # pylint: disable-next=consider-using-f-string
         logging.debug("Passed filename do_activationkey_export %s" % options.file)
         filename = options.file
 
@@ -1368,7 +1408,9 @@ def do_activationkey_export(self, args):
         # allow globbing of activationkey names
         keys = filter_results(self.do_activationkey_list("", True), args)
         logging.debug(
-            "activationkey_export called with args %s, keys=%s" % (args, keys)
+            # pylint: disable-next=consider-using-f-string
+            "activationkey_export called with args %s, keys=%s"
+            % (args, keys)
         )
 
         if not keys:
@@ -1380,6 +1422,7 @@ def do_activationkey_export(self, args):
             # If we are exporting exactly one key, we default to keyname.json
             # otherwise, generic akeys.json name
             if len(keys) == 1:
+                # pylint: disable-next=consider-using-f-string
                 filename = "%s.json" % keys[0]
             else:
                 filename = "akeys.json"
@@ -1390,6 +1433,7 @@ def do_activationkey_export(self, args):
         logging.info(_N("Exporting key %s to %s") % (k, filename))
         keydetails_list.append(self.export_activationkey_getdetails(k))
 
+    # pylint: disable-next=consider-using-f-string
     logging.debug("About to dump %d keys to %s" % (len(keydetails_list), filename))
 
     # Check if filepath exists, if it is an existing file
@@ -1418,6 +1462,7 @@ def help_activationkey_import(self):
 def do_activationkey_import(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -1426,6 +1471,7 @@ def do_activationkey_import(self, args):
         return 1
 
     for filename in args:
+        # pylint: disable-next=consider-using-f-string
         logging.debug("Passed filename do_activationkey_import %s" % filename)
         keydetails_list = json_read_from_file(filename)
 
@@ -1454,6 +1500,7 @@ def import_activationkey_fromdetails(self, keydetails):
     else:
         # create the key, we need to drop the org prefix from the key name
         keyname = re.sub("^[0-9]-", "", keydetails["key"])
+        # pylint: disable-next=consider-using-f-string
         logging.debug("Found key %s, importing as %s" % (keydetails["key"], keyname))
 
         # Channel label must be an empty-string for "Red Hat Satellite Default"
@@ -1511,6 +1558,7 @@ def import_activationkey_fromdetails(self, keydetails):
             gids.append(grpdetails.get("id"))
 
         if gids:
+            # pylint: disable-next=consider-using-f-string
             logging.debug("Adding groups %s to key %s" % (gids, newkey))
             self.client.activationkey.addServerGroups(self.session, newkey, gids)
 
@@ -1588,12 +1636,16 @@ def do_activationkey_clone(self, args):
         self.help_activationkey_clone()
         return 1
 
+    # pylint: disable-next=consider-using-f-string
     logging.debug("Got args=%s %d" % (args, len(args)))
     # allow globbing of configchannel channel names
     akeys = filter_results(allkeys, args)
+    # pylint: disable-next=consider-using-f-string
     logging.debug("Filtered akeys %s" % akeys)
+    # pylint: disable-next=consider-using-f-string
     logging.debug("all akeys %s" % allkeys)
     for ak in akeys:
+        # pylint: disable-next=consider-using-f-string
         logging.debug("Cloning %s" % ak)
         # Replace the key-name with the clonename specified by the user
         keydetails = self.export_activationkey_getdetails(ak)
@@ -1606,6 +1658,7 @@ def do_activationkey_clone(self, args):
             findstr = options.regex.split("/")[1]
             replacestr = options.regex.split("/")[2]
             logging.debug(
+                # pylint: disable-next=consider-using-f-string
                 "Regex option with %s, replacing %s with %s"
                 % (options.regex, findstr, replacestr)
             )
@@ -1635,8 +1688,10 @@ def do_activationkey_clone(self, args):
                     newc = re.sub(findstr, replacestr, c)
                     if newc in all_childch:
                         logging.debug(
+                            # pylint: disable-next=consider-using-f-string
                             "Found child channel %s for key %s, "
                             % (c, keydetails["key"])
+                            # pylint: disable-next=consider-using-f-string
                             + "replacing with %s" % newc
                         )
 
@@ -1650,6 +1705,7 @@ def do_activationkey_clone(self, args):
 
                 logging.debug(
                     "Processed all child channels, "
+                    # pylint: disable-next=consider-using-f-string
                     + "new_child_channel_labels=%s" % new_child_channel_labels
                 )
 
@@ -1671,7 +1727,9 @@ def do_activationkey_clone(self, args):
 
                 if newcc in allccs:
                     logging.debug(
+                        # pylint: disable-next=consider-using-f-string
                         "Found config channel %s for key %s, " % (cc, keydetails["key"])
+                        # pylint: disable-next=consider-using-f-string
                         + "replacing with %s" % newcc
                     )
 
@@ -1685,6 +1743,7 @@ def do_activationkey_clone(self, args):
 
             logging.debug(
                 "Processed all config channels, "
+                # pylint: disable-next=consider-using-f-string
                 + "new_config_channels = %s" % new_config_channels
             )
 
@@ -1766,6 +1825,7 @@ def complete_activationkey_diff(self, text, line, beg, end):
 def do_activationkey_diff(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) not in [1, 2]:
@@ -1817,6 +1877,7 @@ def complete_activationkey_disable(self, text, line, beg, end):
 def do_activationkey_disable(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 1:
@@ -1854,6 +1915,7 @@ def complete_activationkey_enable(self, text, line, beg, end):
 def do_activationkey_enable(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 1:
@@ -1891,6 +1953,7 @@ def complete_activationkey_setdescription(self, text, line, beg, end):
 def do_activationkey_setdescription(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
@@ -1933,6 +1996,7 @@ def complete_activationkey_setcontactmethod(self, text, line, beg, end):
 def do_activationkey_setcontactmethod(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) == 2:

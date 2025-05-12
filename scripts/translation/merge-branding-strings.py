@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring,invalid-name
 
 import sys
 import os
@@ -15,6 +16,7 @@ def getid(line):
     try:
         return idpattern.search(line).group(1)
     except AttributeError as e:
+        # pylint: disable-next=consider-using-f-string
         print("Error in line '{0}': {1}".format(line, e))
         sys.exit(1)
 
@@ -26,7 +28,9 @@ def align(orig, translation):
     source = ""
     insource = False
     currentid = None
+    # pylint: disable-next=unspecified-encoding
     with open(orig) as o:
+        # pylint: disable-next=consider-using-f-string
         print("Orig: {0}".format(orig))
         for oline in o:
             if not currentid and "trans-unit" in oline:
@@ -41,7 +45,9 @@ def align(orig, translation):
                 node += oline
             else:
                 newfile.append(oline)
+    # pylint: disable-next=unspecified-encoding
     with open(translation) as t:
+        # pylint: disable-next=consider-using-f-string
         print("translation: {0}".format(translation))
         for tline in t:
             if not currentid and "trans-unit" in tline:
@@ -55,12 +61,14 @@ def align(orig, translation):
                 source += tline
                 insource = False
             elif currentid and "trans-unit" in tline:
+                # pylint: disable-next=unused-variable
                 found = False
                 for n, item in enumerate(newfile):
                     if isinstance(item, tuple) and item[0] == currentid:
                         nd = sourcepattern.sub(source, item[1])
                         newfile[n] = (item[0], nd)
                         found = True
+                        # pylint: disable-next=consider-using-f-string
                         print("Node found: {0}".format(currentid))
                         break
                 source = ""
@@ -77,6 +85,7 @@ def align(orig, translation):
     newname = orig
     if SAVE:
         newname += ".new"
+    # pylint: disable-next=unspecified-encoding
     with open(newname, "w") as new:
         for line in newfile:
             if isinstance(line, tuple):

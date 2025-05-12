@@ -1,3 +1,4 @@
+# pylint: disable=invalid-name
 # Client code for Update Agent
 # Copyright (c) 1999--2017 Red Hat, Inc.  Distributed under GPLv2.
 #
@@ -23,6 +24,7 @@ _ = t.ugettext
 if getPlatform() == "deb":
     import lsb_release
 
+    # pylint: disable-next=invalid-name
     def _getOSVersionAndRelease():
         dist_info = lsb_release.get_distro_information()
         os_name = dist_info["ID"]
@@ -33,13 +35,18 @@ if getPlatform() == "deb":
         return os_name, os_version, os_release
 
 else:
+    # pylint: disable-next=ungrouped-imports
     from up2date_client import transaction
 
+    # pylint: disable-next=invalid-name
     def _getOSVersionAndRelease():
+        # pylint: disable-next=invalid-name
         osVersionRelease = None
         ts = transaction.initReadOnlyTransaction()
         for h in ts.dbMatch("Providename", "oraclelinux-release"):
+            # pylint: disable-next=invalid-name
             SYSRELVER = "system-release(releasever)"
+            # pylint: disable-next=redefined-outer-name
             version = sstr(h["version"])
             release = sstr(h["release"])
             if SYSRELVER in (sstr(provide) for provide in h["providename"]):
@@ -47,12 +54,15 @@ else:
                     (sstr(n), sstr(v))
                     for n, v in zip(h["providename"], h["provideversion"])
                 )
+                # pylint: disable-next=consider-using-f-string
                 release = "%s-%s" % (version, release)
                 version = provides[SYSRELVER]
+            # pylint: disable-next=invalid-name
             osVersionRelease = (sstr(h["name"]), version, release)
             return osVersionRelease
         else:
             for h in ts.dbMatch("Providename", "redhat-release"):
+                # pylint: disable-next=invalid-name
                 SYSRELVER = "system-release(releasever)"
                 version = sstr(h["version"])
                 release = sstr(h["release"])
@@ -61,8 +71,10 @@ else:
                         (sstr(n), sstr(v))
                         for n, v in zip(h["providename"], h["provideversion"])
                     )
+                    # pylint: disable-next=consider-using-f-string
                     release = "%s-%s" % (version, release)
                     version = provides[SYSRELVER]
+                # pylint: disable-next=invalid-name
                 osVersionRelease = (sstr(h["name"]), version, release)
                 return osVersionRelease
             else:
@@ -79,6 +91,7 @@ else:
                     )
                     for h in ts.dbMatch("Providename", "product()"):
                         if bstr(bp) in h["filenames"]:
+                            # pylint: disable-next=invalid-name
                             osVersionRelease = (
                                 sstr(h["name"]),
                                 sstr(h["version"]),
@@ -92,6 +105,7 @@ else:
                     # for older SUSE versions we need to search for distribution-release
                     # package which also has /etc/SuSE-release file
                     for h in ts.dbMatch("Providename", "distribution-release"):
+                        # pylint: disable-next=invalid-name
                         osVersionRelease = (
                             sstr(h["name"]),
                             sstr(h["version"]),
@@ -115,6 +129,7 @@ else:
                 )
 
 
+# pylint: disable-next=invalid-name
 def getVersion():
     """
     Returns the version of redhat-release rpm
@@ -122,28 +137,35 @@ def getVersion():
     cfg = config.initUp2dateConfig()
     if cfg["versionOverride"]:
         return str(cfg["versionOverride"])
+    # pylint: disable-next=redefined-outer-name,unused-variable,unused-variable
     os_release, version, release = _getOSVersionAndRelease()
     return version
 
 
+# pylint: disable-next=invalid-name
 def getOSRelease():
     """
     Returns the name of the redhat-release rpm
     """
+    # pylint: disable-next=redefined-outer-name,unused-variable,unused-variable
     os_release, version, release = _getOSVersionAndRelease()
     return os_release
 
 
+# pylint: disable-next=invalid-name
 def getRelease():
     """
     Returns the release of the redhat-release rpm
     """
+    # pylint: disable-next=redefined-outer-name,unused-variable,unused-variable
     os_release, version, release = _getOSVersionAndRelease()
     return release
 
 
+# pylint: disable-next=invalid-name
 def getArch():
     if os.access("/etc/rpm/platform", os.R_OK):
+        # pylint: disable-next=unspecified-encoding
         fd = open("/etc/rpm/platform", "r")
         platform = fd.read().strip()
 
@@ -164,6 +186,7 @@ def getArch():
     return arch
 
 
+# pylint: disable-next=invalid-name
 def getMachineId():
     """
     Returns the SystemD or DBus machine-id
@@ -171,12 +194,15 @@ def getMachineId():
 
     def _file_to_string(path):
         if os.path.isfile(path) and os.access(path, os.R_OK):
+            # pylint: disable-next=unspecified-encoding
             return open(path, "r").read().strip()
 
     # try first /etc/machine-id
+    # pylint: disable-next=invalid-name
     machineId = _file_to_string("/etc/machine-id")
     if not machineId:
         # fallback to dbus
+        # pylint: disable-next=invalid-name
         machineId = _file_to_string("/var/lib/dbus/machine-id")
     return machineId
 
@@ -187,7 +213,11 @@ def version():
 
 
 if __name__ == "__main__":
+    # pylint: disable-next=consider-using-f-string
     print("Version: %s" % getVersion())
+    # pylint: disable-next=consider-using-f-string
     print("OSRelease: %s" % getOSRelease())
+    # pylint: disable-next=consider-using-f-string
     print("Release: %s" % getRelease())
+    # pylint: disable-next=consider-using-f-string
     print("Arch: %s" % getArch())

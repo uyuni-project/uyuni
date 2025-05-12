@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -77,11 +78,13 @@ def tupleify_urlparse(urlparse_object):
 if __name__ == "__main__":
     # This is just for testing purposes.
     # pylint: disable=R0903
+    # pylint: disable-next=invalid-name
     class class1:
 
         def __init__(self):
             self.a = "aaaa"
 
+    # pylint: disable-next=invalid-name
     class class2:
 
         def __init__(self):

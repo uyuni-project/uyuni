@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -207,6 +208,7 @@ def complete_distribution_delete(self, text, line, beg, end):
 def do_distribution_delete(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -215,6 +217,7 @@ def do_distribution_delete(self, args):
 
     # allow globbing of distribution names
     dists = filter_results(self.do_distribution_list("", True), args)
+    # pylint: disable-next=consider-using-f-string
     logging.debug("distribution_delete called with args %s, dists=%s" % (args, dists))
 
     if not dists:
@@ -246,6 +249,7 @@ def complete_distribution_details(self, text, line, beg, end):
 def do_distribution_details(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -254,6 +258,7 @@ def do_distribution_details(self, args):
 
     # allow globbing of distribution names
     dists = filter_results(self.do_distribution_list("", True), args)
+    # pylint: disable-next=consider-using-f-string
     logging.debug("distribution_details called with args %s, dists=%s" % (args, dists))
 
     if not dists:
@@ -298,6 +303,7 @@ def complete_distribution_rename(self, text, line, beg, end):
 def do_distribution_rename(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:

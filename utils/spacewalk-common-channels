@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2010--2015 Red Hat, Inc.
 #
@@ -99,6 +100,7 @@ SPLIT_PATTERN = "[ ,]+"
 class ExtOptionParser(OptionParser):
     """extend OptionParser to print examples"""
 
+    # pylint: disable-next=redefined-outer-name
     def __init__(self, examples=None, **kwargs):
         self.examples = examples
         OptionParser.__init__(self, **kwargs)
@@ -109,23 +111,31 @@ class ExtOptionParser(OptionParser):
 
 
 def connect(user, password, server):
+    # pylint: disable-next=consider-using-f-string
     server_url = "https://%s/rpc/api" % server
     if server in ["localhost", "127.0.0.1"]:
+        # pylint: disable-next=consider-using-f-string
         server_url = "http://%s/rpc/api" % server
 
+    # pylint: disable-next=possibly-used-before-assignment
     if options.verbose and options.verbose > 2:
         client_verbose = options.verbose - 2
     else:
         client_verbose = 0
     if options.verbose:
+        # pylint: disable-next=consider-using-f-string
         sys.stdout.write("Connecting to %s\n" % server_url)
+    # pylint: disable-next=redefined-outer-name
     client = xmlrpclib.Server(server_url, verbose=client_verbose)
     options.user, password = getUsernamePassword(user, password)
+    # pylint: disable-next=redefined-outer-name
     key = xmlrpc_login(client, options.user, password)
     return client, key
 
 
+# pylint: disable-next=redefined-outer-name,redefined-outer-name,redefined-outer-name,redefined-outer-name
 def add_channels(channels, section, arch, client):
+    # pylint: disable-next=redefined-outer-name
     base_channels = [""]
     optional = [
         "activationkey",
@@ -140,6 +150,7 @@ def add_channels(channels, section, arch, client):
     ]
     mandatory = ["label", "name", "summary", "checksum", "arch", "section"]
 
+    # pylint: disable-next=possibly-used-before-assignment
     config.set(section, "arch", arch)
     config.set(section, "section", section)
     if config.has_option(section, "base_channels"):
@@ -147,6 +158,7 @@ def add_channels(channels, section, arch, client):
 
     for base_channel in base_channels:
         config.set(section, "base_channel", base_channel)
+        # pylint: disable-next=redefined-outer-name
         channel = {"base_channel": config.get(section, "base_channel")}
 
         if base_channel:
@@ -186,34 +198,42 @@ def add_channels(channels, section, arch, client):
         channels[channel["label"]] = channel
 
 
+# pylint: disable-next=redefined-outer-name
 def channel_exists(client, channel_label):
     # check whether channel exists
     try:
+        # pylint: disable-next=redefined-outer-name,possibly-used-before-assignment
         base_info = client.channel.software.isExisting(key, channel_label)
         return base_info
     # We should improve this as a connection failure would be the same
     # as not finding the channel
+    # pylint: disable-next=unused-variable
     except xmlrpclib.Fault as e:
         return None
 
 
+# pylint: disable-next=redefined-outer-name
 def channel_get_details(client, channel_label):
     # get details for a channel
     try:
+        # pylint: disable-next=redefined-outer-name
         base_info = client.channel.software.getDetails(key, channel_label)
         return base_info
     # We should improve this as a connection failure would be the same
     # as not finding the channel
+    # pylint: disable-next=unused-variable
     except xmlrpclib.Fault as e:
         return None
 
 
+# pylint: disable-next=redefined-outer-name
 def get_existing_repos(client):
     result = {}
     try:
         user_repos = client.channel.software.listUserRepos(key)
         for repo in user_repos:
             result[repo["sourceUrl"]] = repo["label"]
+    # pylint: disable-next=unused-variable
     except xmlrpclib.Fault as e:
         return None
     return result
@@ -222,6 +242,7 @@ def get_existing_repos(client):
 if __name__ == "__main__":
     # options parsing
     usage = "usage: %prog [options] <channel1 glob> [<channel2 glob> ... ]"
+    # pylint: disable-next=consider-using-f-string
     examples = """Examples:
 
 Create Fedora 12 channel, its child channels and activation key limited to 10 servers:
@@ -300,6 +321,7 @@ Create everything as well as unlimited activation key for every channel:
         if channel_list:
             for channel in sorted(channel_list):
                 channel_archs = config.get(channel, "archs")
+                # pylint: disable-next=consider-using-f-string
                 print(" %-20s %s" % (channel + ":", channel_archs))
         else:
             print(" [no channel available]")
@@ -381,10 +403,12 @@ Create everything as well as unlimited activation key for every channel:
             )
             if options.verbose:
                 sys.stdout.write(
+                    # pylint: disable-next=consider-using-f-string
                     "Base channel '%s' - creating...\n" % base_info["name"]
                 )
             if options.verbose and options.verbose > 1:
                 sys.stdout.write(
+                    # pylint: disable-next=consider-using-f-string
                     "* label=%s, summary=%s, arch=%s, repo_type=%s, checksum=%s\n"
                     % (
                         base_info["label"],
@@ -434,9 +458,11 @@ Create everything as well as unlimited activation key for every channel:
                         client.channel.software.syncRepo(key, base_info["label"])
                 except xmlrpclib.Fault as e:
                     if e.faultCode == 1200:  # ignore if channel exists
+                        # pylint: disable-next=consider-using-f-string
                         sys.stdout.write("INFO: %s exists\n" % base_info["label"])
                     else:
                         sys.stderr.write(
+                            # pylint: disable-next=consider-using-f-string
                             "ERROR: %s: %s\n" % (base_info["label"], e.faultString)
                         )
                         sys.exit(2)
@@ -444,6 +470,7 @@ Create everything as well as unlimited activation key for every channel:
             if options.key_limit is not None:
                 if options.verbose:
                     sys.stdout.write(
+                        # pylint: disable-next=consider-using-f-string
                         "* Activation key '%s' - creating...\n" % (base_info["label"])
                     )
                 if not options.dry_run:
@@ -472,15 +499,18 @@ Create everything as well as unlimited activation key for every channel:
                     except xmlrpclib.Fault as e:
                         if e.faultCode != 1091:  # ignore if ak exists
                             sys.stderr.write(
+                                # pylint: disable-next=consider-using-f-string
                                 "ERROR: %s: %s\n" % (base_info["label"], e.faultString)
                             )
         else:
             # check whether channel exists
             if channel_exists(client, base_channel_label):
                 base_info = channel_get_details(client, base_channel_label)
+                # pylint: disable-next=consider-using-f-string
                 sys.stdout.write("Base channel '%s' - exists\n" % base_info["name"])
             else:
                 sys.stderr.write(
+                    # pylint: disable-next=consider-using-f-string
                     "ERROR: %s could not be found at the server\n" % base_channel_label
                 )
 
@@ -496,6 +526,7 @@ Create everything as well as unlimited activation key for every channel:
 
             except xmlrpclib.Fault as e:
                 sys.stderr.write(
+                    # pylint: disable-next=consider-using-f-string
                     "ERROR: %s: %s\n" % (base_info["label"], e.faultString)
                 )
 
@@ -506,10 +537,12 @@ Create everything as well as unlimited activation key for every channel:
             )
             if options.verbose:
                 sys.stdout.write(
+                    # pylint: disable-next=consider-using-f-string
                     "* Child channel '%s' - creating...\n" % child_info["name"]
                 )
             if options.verbose and options.verbose > 1:
                 sys.stdout.write(
+                    # pylint: disable-next=consider-using-f-string
                     "** label=%s, summary=%s, arch=%s, parent=%s, repo_type=%s, checksum=%s\n"
                     % (
                         child_info["label"],
@@ -560,10 +593,12 @@ Create everything as well as unlimited activation key for every channel:
                 except xmlrpclib.Fault as e:
                     if e.faultCode == 1200:  # ignore if channel exists
                         sys.stderr.write(
+                            # pylint: disable-next=consider-using-f-string
                             "WARNING: %s: %s\n" % (child_info["label"], e.faultString)
                         )
                     else:
                         sys.stderr.write(
+                            # pylint: disable-next=consider-using-f-string
                             "ERROR: %s: %s\n" % (child_info["label"], e.faultString)
                         )
                         sys.exit(2)
@@ -573,12 +608,14 @@ Create everything as well as unlimited activation key for every channel:
                     "base_channel_activationkey" in child_info
                     and child_info["base_channel_activationkey"]
                 ):
+                    # pylint: disable-next=consider-using-f-string
                     activationkey = "%s-%s" % (
                         org_id,
                         child_info["base_channel_activationkey"],
                     )
                     if options.verbose:
                         sys.stdout.write(
+                            # pylint: disable-next=consider-using-f-string
                             "** Activation key '%s' - adding child channel...\n"
                             % (activationkey)
                         )
@@ -589,6 +626,7 @@ Create everything as well as unlimited activation key for every channel:
                             )
                         except xmlrpclib.Fault as e:
                             sys.stderr.write(
+                                # pylint: disable-next=consider-using-f-string
                                 "ERROR: %s: %s\n" % (child_info["label"], e.faultString)
                             )
 

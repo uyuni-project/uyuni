@@ -6,6 +6,8 @@ Test suite for group module of spacecmd
 import datetime
 import os
 from unittest.mock import MagicMock, patch, mock_open, call, ANY
+
+# pylint: disable-next=unused-import
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.group
 from xmlrpc import client as xmlrpclib
@@ -16,6 +18,7 @@ class TestSCGroup:
     Test suite for "group" module.
     """
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_addsystems_noargs(self, shell):
         """
         Test do_group_addsystems without arguments.
@@ -31,8 +34,11 @@ class TestSCGroup:
         shell.ssm.keys = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.group.do_group_addsystems(shell, "")
 
@@ -44,6 +50,7 @@ class TestSCGroup:
         assert not logger.error.called
         assert shell.help_group_addsystems.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_addsystems_ssm_no_systems(self, shell):
         """
         Test do_group_addsystems with SSM argument, without systems.
@@ -58,8 +65,11 @@ class TestSCGroup:
         shell.ssm.keys = MagicMock(return_value=[])
         mprint = MagicMock()
         logger = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.group.do_group_addsystems(shell, "groupname ssm")
 
@@ -71,6 +81,7 @@ class TestSCGroup:
         assert not shell.help_group_addsystems.called
         assert shell.ssm.keys.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_addsystems_expand_no_systems(self, shell):
         """
         Test do_group_addsystems with API call to find systems, without success getting one.
@@ -85,8 +96,11 @@ class TestSCGroup:
         shell.ssm.keys = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.group.do_group_addsystems(shell, "groupname something*")
 
@@ -98,6 +112,7 @@ class TestSCGroup:
         assert not shell.ssm.keys.called
         assert shell.expand_systems.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_addsystems(self, shell):
         """
         Test do_group_addsystems with API call to find systems.
@@ -112,8 +127,11 @@ class TestSCGroup:
         shell.ssm.keys = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.group.do_group_addsystems(shell, "groupname something*")
 
@@ -130,6 +148,7 @@ class TestSCGroup:
             [((shell.session, "groupname", ["1000010000", "1000010001"], True), {})],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_removesystems_noargs(self, shell):
         """
         Test do_group_removesystems without arguments.
@@ -146,8 +165,11 @@ class TestSCGroup:
         shell.user_confirm = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.group.do_group_removesystems(shell, "")
 
@@ -160,6 +182,7 @@ class TestSCGroup:
         assert not logger.error.called
         assert shell.help_group_removesystems.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_removesystems_ssm_nosys(self, shell):
         """
         Test do_group_removesystems with SSM and without found systems.
@@ -176,8 +199,11 @@ class TestSCGroup:
         shell.user_confirm = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.group.do_group_removesystems(shell, "somegroup ssm")
 
@@ -192,6 +218,7 @@ class TestSCGroup:
 
         assert_expect(mprint.call_args_list, "No systems found")
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_removesystems_nossm_nosys(self, shell):
         """
         Test do_group_removesystems with filters and without found systems.
@@ -208,8 +235,11 @@ class TestSCGroup:
         shell.user_confirm = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.group.do_group_removesystems(shell, "somegroup somesystem")
 
@@ -224,6 +254,7 @@ class TestSCGroup:
 
         assert_expect(mprint.call_args_list, "No systems found")
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_removesystems_nossm_sys(self, shell):
         """
         Test do_group_removesystems with filters and found systems.
@@ -240,8 +271,11 @@ class TestSCGroup:
         shell.user_confirm = MagicMock(return_value=True)
         mprint = MagicMock()
         logger = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.group.do_group_removesystems(shell, "somegroup somesystem")
 
@@ -262,6 +296,7 @@ class TestSCGroup:
             mprint.call_args_list, ["Systems", "-------", "one\ntwo"]
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_create_noarg(self, shell):
         """
         Test do_group_create without no arguments (fall-back to the interactive mode).
@@ -284,6 +319,7 @@ class TestSCGroup:
             [((shell.session, "Jeff", msg), {})],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_create_name_only(self, shell):
         """
         Test do_group_create with name argument (half-fall back to interactive).
@@ -306,6 +342,7 @@ class TestSCGroup:
             [((shell.session, "Jeff", msg), {})],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_create_descr_only(self, shell):
         """
         Test do_group_create with all arguments.
@@ -318,6 +355,7 @@ class TestSCGroup:
         prompter = MagicMock(return_value=msg)
 
         with patch("spacecmd.group.prompt_user", prompter):
+            # pylint: disable-next=consider-using-f-string
             spacecmd.group.do_group_create(shell, "Jeff {}".format(msg))
 
         assert not prompter.called
@@ -328,6 +366,7 @@ class TestSCGroup:
             [((shell.session, "Jeff", msg), {})],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_delete_noarg(self, shell):
         """
         Test do_group_delete without no arguments
@@ -345,6 +384,7 @@ class TestSCGroup:
         assert not shell.user_confirm.called
         assert shell.help_group_delete.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_delete_no_confirm(self, shell):
         """
         Test do_group_delete no confirmation
@@ -362,6 +402,7 @@ class TestSCGroup:
         assert not shell.help_group_delete.called
         assert shell.user_confirm.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_delete(self, shell):
         """
         Test do_group_delete with confirmation
@@ -384,6 +425,7 @@ class TestSCGroup:
             [((shell.session, "grouptwo"), {})],
             [((shell.session, "groupthree"), {})],
         ]
+        # pylint: disable-next=redefined-outer-name
         for call in shell.client.systemgroup.delete.call_args_list:
             assert_args_expect([call], next(iter(groups)))
             groups.pop(0)
@@ -391,6 +433,7 @@ class TestSCGroup:
 
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
     @patch("spacecmd.group.os.makedirs", MagicMock())
+    # pylint: disable-next=redefined-outer-name
     def test_group_backup_noarg(self, shell):
         """
         Test do_group_backup without no arguments
@@ -403,8 +446,11 @@ class TestSCGroup:
         shell.client.systemgroup.getDetails = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.group.do_group_backup(shell, "")
 
@@ -416,6 +462,7 @@ class TestSCGroup:
 
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
     @patch("spacecmd.group.os.makedirs", MagicMock())
+    # pylint: disable-next=redefined-outer-name
     def test_group_backup_all_group_list(self, shell):
         """
         Test do_group_backup with all groups lookup
@@ -456,15 +503,23 @@ class TestSCGroup:
         logger = MagicMock()
         dumper = MagicMock()
 
+        # pylint: disable-next=invalid-name
         _datetime = MagicMock()
         _datetime.now = MagicMock(return_value=datetime.datetime(2019, 1, 1))
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable,unused-variable
         ) as lgr, patch("spacecmd.group.os.path.expanduser", exp_user) as exu, patch(
-            "spacecmd.group.json_dump_to_file", dumper
+            "spacecmd.group.json_dump_to_file",
+            dumper,
+            # pylint: disable-next=unused-variable
         ) as opr, patch(
-            "spacecmd.group.datetime", _datetime
+            "spacecmd.group.datetime",
+            _datetime,
+            # pylint: disable-next=unused-variable
         ) as dtm:
             spacecmd.group.do_group_backup(shell, "ALL")
 
@@ -510,6 +565,7 @@ class TestSCGroup:
 
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=False))
     @patch("spacecmd.group.os.makedirs", MagicMock(side_effect=OSError))
+    # pylint: disable-next=redefined-outer-name
     def test_group_backup_all_group_list_makedirs_failure_handling(self, shell):
         """
         Test do_group_backup with all groups lookup, making directories failure handling.
@@ -538,17 +594,26 @@ class TestSCGroup:
         mprint = MagicMock()
         logger = MagicMock()
         opener = MagicMock()
+        # pylint: disable-next=invalid-name
         _open = MagicMock(return_value=opener)
 
+        # pylint: disable-next=invalid-name
         _datetime = MagicMock()
         _datetime.now = MagicMock(return_value=datetime.datetime(2019, 1, 1))
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable,unused-variable
         ) as lgr, patch("spacecmd.group.os.path.expanduser", exp_user) as exu, patch(
-            "spacecmd.group.open", _open
+            "spacecmd.group.open",
+            _open,
+            # pylint: disable-next=unused-variable
         ) as opr, patch(
-            "spacecmd.group.datetime", _datetime
+            "spacecmd.group.datetime",
+            _datetime,
+            # pylint: disable-next=unused-variable
         ) as dtm:
             spacecmd.group.do_group_backup(shell, "ALL")
 
@@ -575,6 +640,7 @@ class TestSCGroup:
 
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=False))
     @patch("spacecmd.group.os.makedirs", MagicMock(side_effect=OSError))
+    # pylint: disable-next=redefined-outer-name
     def test_group_backup_all_group_list_custom_destination(self, shell):
         """
         Test do_group_backup with all groups lookup, custom destination, handling error.
@@ -603,17 +669,26 @@ class TestSCGroup:
         mprint = MagicMock()
         logger = MagicMock()
         opener = MagicMock()
+        # pylint: disable-next=invalid-name
         _open = MagicMock(return_value=opener)
 
+        # pylint: disable-next=invalid-name
         _datetime = MagicMock()
         _datetime.now = MagicMock(return_value=datetime.datetime(2019, 1, 1, 15, 0, 0))
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable,unused-variable
         ) as lgr, patch("spacecmd.group.os.path.expanduser", exp_user) as exu, patch(
-            "spacecmd.group.open", _open
+            "spacecmd.group.open",
+            _open,
+            # pylint: disable-next=unused-variable
         ) as opr, patch(
-            "spacecmd.group.datetime", _datetime
+            "spacecmd.group.datetime",
+            _datetime,
+            # pylint: disable-next=unused-variable
         ) as dtm:
             spacecmd.group.do_group_backup(shell, "ALL /dev/null/%Y-%m-%T")
 
@@ -641,6 +716,7 @@ class TestSCGroup:
     @patch("spacecmd.group.os.path.abspath", MagicMock(return_value="/opt/backup"))
     @patch("spacecmd.group.os.listdir", MagicMock(return_value=[]))
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=False))
+    # pylint: disable-next=redefined-outer-name
     def test_group_restore_noargs(self, shell):
         """
         test do_group_restore with no arguments.
@@ -656,8 +732,11 @@ class TestSCGroup:
         logger = MagicMock()
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.group.do_group_restore(shell, "")
 
@@ -674,6 +753,7 @@ class TestSCGroup:
     @patch("spacecmd.group.os.listdir", MagicMock(return_value=[]))
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=False))
     @patch("spacecmd.group.os.path.exists", MagicMock(return_value=False))
+    # pylint: disable-next=redefined-outer-name
     def test_group_restore_catch_not_existing_path(self, shell):
         """
         test do_group_restore catch path that does not exists
@@ -699,8 +779,11 @@ class TestSCGroup:
         logger = MagicMock()
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable,unused-variable
         ) as lgr, patch("spacecmd.group.os.path.abspath", _abspath) as abp:
             spacecmd.group.do_group_restore(shell, "ALL")
 
@@ -723,6 +806,7 @@ class TestSCGroup:
     @patch("spacecmd.group.os.listdir", MagicMock(return_value=[]))
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.exists", MagicMock(return_value=True))
+    # pylint: disable-next=redefined-outer-name
     def test_group_restore_catch_empty_directory(self, shell):
         """
         test do_group_restore catch empty directory.
@@ -748,8 +832,11 @@ class TestSCGroup:
         logger = MagicMock()
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable,unused-variable
         ) as lgr, patch("spacecmd.group.os.path.abspath", _abspath) as abp:
             spacecmd.group.do_group_restore(shell, "ALL")
 
@@ -773,6 +860,7 @@ class TestSCGroup:
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.isfile", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.exists", MagicMock(return_value=True))
+    # pylint: disable-next=redefined-outer-name
     def test_group_restore_catch_missing_groups(self, shell):
         """
         test do_group_restore catch missing groups
@@ -798,12 +886,18 @@ class TestSCGroup:
         logger = MagicMock()
         mprint = MagicMock()
         opener = MagicMock()
+        # pylint: disable-next=invalid-name
         _open = MagicMock(return_value=opener)
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable,unused-variable
         ) as lgr, patch("spacecmd.group.open", _open) as opn, patch(
-            "spacecmd.group.os.path.abspath", _abspath
+            "spacecmd.group.os.path.abspath",
+            _abspath,
+            # pylint: disable-next=unused-variable
         ) as abp:
             spacecmd.group.do_group_restore(shell, "/opt/backup group-a group-b")
 
@@ -829,6 +923,7 @@ class TestSCGroup:
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.isfile", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.exists", MagicMock(return_value=True))
+    # pylint: disable-next=redefined-outer-name
     def test_group_restore_catch_indempotent_recovery(self, shell):
         """
         Test do_group_restore indempotent recovery
@@ -887,10 +982,15 @@ class TestSCGroup:
             }
         )
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable,unused-variable
         ) as lgr, patch("spacecmd.group.json_read_from_file", json) as opr, patch(
-            "spacecmd.group.os.path.abspath", _abspath
+            "spacecmd.group.os.path.abspath",
+            _abspath,
+            # pylint: disable-next=unused-variable
         ) as abp:
             spacecmd.group.do_group_restore(shell, "/opt/backup group-a")
 
@@ -912,6 +1012,7 @@ class TestSCGroup:
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.isfile", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.exists", MagicMock(return_value=True))
+    # pylint: disable-next=redefined-outer-name
     def test_group_restore_catch_existing_group_description_changed(self, shell):
         """
         Test do_group_restore indempotent recovery
@@ -946,10 +1047,15 @@ class TestSCGroup:
             return_value={"description": "Group A description", "formulas": {}}
         )
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable,unused-variable
         ) as lgr, patch("spacecmd.group.json_read_from_file", json) as opr, patch(
-            "spacecmd.group.os.path.abspath", _abspath
+            "spacecmd.group.os.path.abspath",
+            _abspath,
+            # pylint: disable-next=unused-variable
         ) as abp:
             spacecmd.group.do_group_restore(shell, "/opt/backup group-a")
 
@@ -971,6 +1077,7 @@ class TestSCGroup:
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.isfile", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.exists", MagicMock(return_value=True))
+    # pylint: disable-next=redefined-outer-name
     def test_group_restore_catch_existing_formulas_changed(self, shell):
         """
         Test do_group_restore indempotent recovery
@@ -1030,10 +1137,15 @@ class TestSCGroup:
             }
         )
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable,unused-variable
         ) as lgr, patch("spacecmd.group.json_read_from_file", json) as opr, patch(
-            "spacecmd.group.os.path.abspath", _abspath
+            "spacecmd.group.os.path.abspath",
+            _abspath,
+            # pylint: disable-next=unused-variable
         ) as abp:
             spacecmd.group.do_group_restore(shell, "/opt/backup group-a")
 
@@ -1068,6 +1180,7 @@ class TestSCGroup:
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.isfile", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.exists", MagicMock(return_value=True))
+    # pylint: disable-next=redefined-outer-name
     def test_group_restore_accept_old_format_description_changed(self, shell):
         """
         Test do_group_restore indempotent recovery
@@ -1101,12 +1214,19 @@ class TestSCGroup:
         json = MagicMock(return_value=None)
         opener = mock_open(read_data="Group A description newer")
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prn, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable,unused-variable
         ) as lgr, patch("spacecmd.group.json_read_from_file", json) as opr, patch(
-            "spacecmd.group.open", opener
+            "spacecmd.group.open",
+            opener,
+            # pylint: disable-next=unused-variable
         ) as opn, patch(
-            "spacecmd.group.os.path.abspath", _abspath
+            "spacecmd.group.os.path.abspath",
+            _abspath,
+            # pylint: disable-next=unused-variable
         ) as abp:
             spacecmd.group.do_group_restore(shell, "/opt/backup group-a")
 
@@ -1128,6 +1248,7 @@ class TestSCGroup:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_list_data(self, shell):
         """
         Test do_group_list with data return.
@@ -1147,6 +1268,7 @@ class TestSCGroup:
         assert len(out) == 2
         assert out == ["group-a", "group-b"]
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_list_no_data(self, shell):
         """
         Test do_group_list with no data return.
@@ -1167,6 +1289,7 @@ class TestSCGroup:
 
         assert_expect(mprint.call_args_list, "group-a\ngroup-b")
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_listsystems_noargs(self, shell):
         """
         Test do_group_listsystems with no arguments passed.
@@ -1179,8 +1302,11 @@ class TestSCGroup:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prt, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             out = spacecmd.group.do_group_listsystems(shell, "", doreturn=True)
 
@@ -1190,6 +1316,7 @@ class TestSCGroup:
         assert out is None
         assert shell.help_group_listsystems.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_listsystems_with_data(self, shell):
         """
         Test do_group_listsystems with data return.
@@ -1209,8 +1336,11 @@ class TestSCGroup:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prt, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             out = spacecmd.group.do_group_listsystems(shell, "group-a", doreturn=True)
 
@@ -1221,6 +1351,7 @@ class TestSCGroup:
         assert out is not None
         assert out == ["system-d", "system-c", "system-b", "system-a"]
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_listsystems_nodata(self, shell):
         """
         Test do_group_listsystems without data return, but STDOUT.
@@ -1240,8 +1371,11 @@ class TestSCGroup:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prt, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             out = spacecmd.group.do_group_listsystems(shell, "group-a", doreturn=False)
 
@@ -1252,6 +1386,7 @@ class TestSCGroup:
         assert mprint.called
         assert_expect(mprint.call_args_list, "system-a\nsystem-b\nsystem-c\nsystem-d")
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_listsystems_too_much_parameters(self, shell):
         """
         Test do_group_listsystems with too much groups specified.
@@ -1264,8 +1399,11 @@ class TestSCGroup:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prt, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             out = spacecmd.group.do_group_listsystems(
                 shell, "group-a group-b", doreturn=True
@@ -1277,6 +1415,7 @@ class TestSCGroup:
         assert not mprint.called
         assert shell.help_group_listsystems.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_details_noargs(self, shell):
         """
         Test do_group_details with no arguments.
@@ -1290,8 +1429,11 @@ class TestSCGroup:
 
         mprint = MagicMock()
         logger = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prt, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.group.do_group_details(shell, "")
 
@@ -1301,6 +1443,7 @@ class TestSCGroup:
         assert not mprint.called
         assert shell.help_group_details.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_details_no_valid_group(self, shell):
         """
         Test do_group_details with no arguments.
@@ -1316,8 +1459,11 @@ class TestSCGroup:
 
         mprint = MagicMock()
         logger = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prt, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.group.do_group_details(shell, "cucumber-group")
 
@@ -1331,6 +1477,7 @@ class TestSCGroup:
             logger.warning.call_args_list, 'The group "cucumber-group" is invalid'
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_details_short_report(self, shell):
         """
         Test do_group_details short report.
@@ -1371,8 +1518,11 @@ class TestSCGroup:
 
         mprint = MagicMock()
         logger = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prt, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.group.do_group_details(
                 shell, "group-a group-b group-c", short=True
@@ -1404,6 +1554,7 @@ class TestSCGroup:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_group_details_long_report(self, shell):
         """
         Test do_group_details long report.
@@ -1444,8 +1595,11 @@ class TestSCGroup:
 
         mprint = MagicMock()
         logger = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.group.print", mprint) as prt, patch(
-            "spacecmd.group.logging", logger
+            "spacecmd.group.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.group.do_group_details(shell, "group-a group-b group-c")
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# pylint: disable=missing-module-docstring
 
 import argparse
 import base64
@@ -53,6 +54,7 @@ def find_next_path(resp):
             return match.group(1)
 
 
+# pylint: disable-next=redefined-outer-name,redefined-outer-name
 def get_paginated(connection, headers, path):
     result = []
     current_path = path
@@ -63,6 +65,7 @@ def get_paginated(connection, headers, path):
 
         if resp.status != 200:
             print(
+                # pylint: disable-next=consider-using-f-string
                 "Unexpected HTTP status received on %s: %d"
                 % (current_path, resp.status)
             )
@@ -74,6 +77,7 @@ def get_paginated(connection, headers, path):
 
 
 def save_json(content, path):
+    # pylint: disable-next=unspecified-encoding
     with open(path, "w") as out_file:
         json.dump(content, out_file, sort_keys=True, indent=2, separators=(",", ": "))
 
@@ -84,6 +88,7 @@ connection = httplib.HTTPSConnection("scc.suse.com")
 token = base64.b64encode(b"{0}:{1}".format(args.username, args.password)).decode(
     "ascii"
 )
+# pylint: disable-next=consider-using-f-string
 headers = {"Authorization": "Basic %s" % token}
 
 products = get_paginated(

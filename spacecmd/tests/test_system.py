@@ -4,6 +4,8 @@ Test suite for spacecmd.system module.
 """
 from datetime import datetime
 from unittest.mock import MagicMock, patch, mock_open
+
+# pylint: disable-next=unused-import
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.system
 
@@ -13,6 +15,7 @@ class TestSystem:
     Test suite for "system" module.
     """
 
+    # pylint: disable-next=redefined-outer-name
     def test_help_system_listevents_new_version_api_deprecation(self, shell):
         """
         test help_system_listevents to ensure the deprecation warning is shown for recent API version
@@ -33,6 +36,7 @@ class TestSystem:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_help_system_listevents_old_version_api_no_deprecation(self, shell):
         """
         test help_system_listevents to ensure the deprecation warning is shown for recent API version
@@ -46,6 +50,7 @@ class TestSystem:
 
         assert not m_logger.warning.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_listevents_new_version_api_deprecation(self, shell):
         """
         test do_system_listevents to ensure the deprecation warning is shown for recent API version
@@ -72,6 +77,7 @@ class TestSystem:
 
         assert shell.client.system.getEventHistory.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_listeventhistory_noargs(self, shell):
         """
         Test do_system_listeventhistory without arguments
@@ -85,6 +91,7 @@ class TestSystem:
         assert shell.help_system_listeventhistory.called
         assert not shell.client.system.getEventHistory.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_listeventhistory_old_version(self, shell):
         """
         Test do_system_listeventhistory with an old API version
@@ -109,6 +116,7 @@ class TestSystem:
         assert not shell.help_system_listeventhistory.called
         assert not shell.client.system.getEventHistory.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_listeventhistory_only_server(self, shell):
         """
         Test do_system_listeventhistory with only the server parameter
@@ -131,6 +139,7 @@ class TestSystem:
 
         assert not shell.help_system_listeventhistory.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_listeventhistory_server_and_start_time(self, shell):
         """
         Test do_system_listeventhistory with server and start time
@@ -153,6 +162,7 @@ class TestSystem:
 
         assert not shell.help_system_listeventhistory.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_listeventhistory_server_and_start_time_and_limit(self, shell):
         """
         Test do_system_listeventhistory with server, start time and limit
@@ -176,7 +186,10 @@ class TestSystem:
         assert not shell.help_system_listeventhistory.called
 
     def test_do_system_listeventhistory_server_and_start_time_and_limit_and_offset(
-        self, shell
+        # pylint: disable-next=redefined-outer-name
+        self,
+        # pylint: disable-next=redefined-outer-name
+        shell,
     ):
         """
         Test do_system_listeventhistory with server, start time, limit and offset
@@ -201,6 +214,7 @@ class TestSystem:
 
         assert not shell.help_system_listeventhistory.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_listeventhistory_invalid_start_time(self, shell):
         """
         Test do_system_listeventhistory with an invalid start time parameter
@@ -226,6 +240,7 @@ class TestSystem:
         assert not shell.client.system.getEventHistory.called
         assert not shell.help_system_listeventhistory.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_listeventhistory_invalid_limit(self, shell):
         """
         Test do_system_listeventhistory with an invalid limit parameter
@@ -249,6 +264,7 @@ class TestSystem:
         assert not shell.client.system.getEventHistory.called
         assert not shell.help_system_listeventhistory.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_listeventhistory_invalid_offset(self, shell):
         """
         Test do_system_listeventhistory with an invalid offset parameter
@@ -275,7 +291,10 @@ class TestSystem:
         assert not shell.help_system_listeventhistory.called
 
     def test_do_system_listeventhistory_offset_ignore_when_limit_not_provided(
-        self, shell
+        # pylint: disable-next=redefined-outer-name
+        self,
+        # pylint: disable-next=redefined-outer-name
+        shell,
     ):
         """
         Test do_system_listeventhistory to make sure the offset is ignored if the limit is not specified as well
@@ -298,6 +317,7 @@ class TestSystem:
 
         assert not shell.help_system_listeventhistory.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_listeventhistory_output(self, shell):
         """
         Test do_system_listeventhistory output format
@@ -355,6 +375,7 @@ class TestSystem:
             expected.pop(0)
         assert not expected
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_event_details_noargs(self, shell):
         """
         Test do_system_event_details with no arguments.
@@ -368,6 +389,7 @@ class TestSystem:
         assert shell.help_system_eventdetails.called
         assert not shell.client.system.getEventDetails.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_event_details_noevent(self, shell):
         """
         Test do_system_event_details with no event
@@ -387,6 +409,7 @@ class TestSystem:
         assert not shell.help_system_eventdetails.called
         assert not shell.client.system.getEventDetails.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_event_details_old_version(self, shell):
         """
         Test do_system_event_details when using an old version of the API
@@ -410,6 +433,7 @@ class TestSystem:
         assert not shell.help_system_eventdetails.called
         assert not shell.client.system.getEventDetails.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_event_details_history_output(self, shell):
         """
         Test do_system_event_details output format with an event of type history
@@ -459,6 +483,7 @@ class TestSystem:
             expected.pop(0)
         assert not expected
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_event_details_action_output(self, shell):
         """
         Test do_system_event_details output format with an event of type action
@@ -547,6 +572,7 @@ class TestSystem:
             expected.pop(0)
         assert not expected
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_bootstrap(self, shell):
         """
         Test do_system_bootstrap
@@ -580,6 +606,7 @@ class TestSystem:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_bootstrap_with_activation_key(self, shell):
         """
         Test do_system_bootstrap
@@ -613,6 +640,7 @@ class TestSystem:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_bootstrap_with_reactivation(self, shell):
         """
         Test do_system_bootstrap
@@ -647,6 +675,7 @@ class TestSystem:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_bootstrap_saltssh(self, shell):
         """
         Test do_system_bootstrap
@@ -680,6 +709,7 @@ class TestSystem:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_bootstrap_proxy(self, shell):
         """
         Test do_system_bootstrap
@@ -714,6 +744,7 @@ class TestSystem:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_bootstrap_all(self, shell):
         """
         Test do_system_bootstrap
@@ -750,6 +781,7 @@ class TestSystem:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_bootstrap_sshprivkey(self, shell):
         """
         Test do_system_bootstrap
@@ -760,7 +792,10 @@ class TestSystem:
         shell.client.system.bootstrapWithPrivateSshKey = MagicMock()
 
         with patch(
-            "spacecmd.system.open", new_callable=mock_open, read_data="private_ssh_key"
+            "spacecmd.system.open",
+            new_callable=mock_open,
+            read_data="private_ssh_key",
+            # pylint: disable-next=unused-variable
         ) as opn:
             spacecmd.system.do_system_bootstrap(
                 shell, "-H uyuni.example.com -u admin -k /tmp/ssh_priv_key"
@@ -787,6 +822,7 @@ class TestSystem:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_bootstrap_sshprivkey_password(self, shell):
         """
         Test do_system_bootstrap
@@ -797,7 +833,10 @@ class TestSystem:
         shell.client.system.bootstrapWithPrivateSshKey = MagicMock()
 
         with patch(
-            "spacecmd.system.open", new_callable=mock_open, read_data="private_ssh_key"
+            "spacecmd.system.open",
+            new_callable=mock_open,
+            read_data="private_ssh_key",
+            # pylint: disable-next=unused-variable
         ) as opn:
             spacecmd.system.do_system_bootstrap(
                 shell,
@@ -825,6 +864,7 @@ class TestSystem:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_bootstrap_sshprivkey_activationkey(self, shell):
         """
         Test do_system_bootstrap
@@ -835,7 +875,10 @@ class TestSystem:
         shell.client.system.bootstrapWithPrivateSshKey = MagicMock()
 
         with patch(
-            "spacecmd.system.open", new_callable=mock_open, read_data="private_ssh_key"
+            "spacecmd.system.open",
+            new_callable=mock_open,
+            read_data="private_ssh_key",
+            # pylint: disable-next=unused-variable
         ) as opn:
             spacecmd.system.do_system_bootstrap(
                 shell, "-H uyuni.example.com -u admin -k /tmp/ssh_priv_key -a 1-akey"
@@ -862,6 +905,7 @@ class TestSystem:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_bootstrap_sshprivkey_reactivationkey(self, shell):
         """
         Test do_system_bootstrap
@@ -872,7 +916,10 @@ class TestSystem:
         shell.client.system.bootstrapWithPrivateSshKey = MagicMock()
 
         with patch(
-            "spacecmd.system.open", new_callable=mock_open, read_data="private_ssh_key"
+            "spacecmd.system.open",
+            new_callable=mock_open,
+            read_data="private_ssh_key",
+            # pylint: disable-next=unused-variable
         ) as opn:
             spacecmd.system.do_system_bootstrap(
                 shell, "-H uyuni.example.com -u admin -k /tmp/ssh_priv_key -r 1-re-key"
@@ -900,6 +947,7 @@ class TestSystem:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_system_bootstrap_sshprivkey_all(self, shell):
         """
         Test do_system_bootstrap
@@ -910,7 +958,10 @@ class TestSystem:
         shell.client.system.bootstrapWithPrivateSshKey = MagicMock()
 
         with patch(
-            "spacecmd.system.open", new_callable=mock_open, read_data="private_ssh_key"
+            "spacecmd.system.open",
+            new_callable=mock_open,
+            read_data="private_ssh_key",
+            # pylint: disable-next=unused-variable
         ) as opn:
             spacecmd.system.do_system_bootstrap(
                 shell,

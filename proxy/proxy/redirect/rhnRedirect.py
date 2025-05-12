@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 # Spacewalk Proxy Server SSL Redirect handler code.
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
@@ -55,24 +56,31 @@ class RedirectHandler(SharedHandler):
 
     def __init__(self, req):
         SharedHandler.__init__(self, req)
+        # pylint: disable-next=invalid-name
         self.componentType = "proxy.redirect"
         self._initConnectionVariables(req)
+        # pylint: disable-next=invalid-name
         self.rhnParentXMLRPC = None
 
+    # pylint: disable-next=invalid-name,invalid-name
     def _initConnectionVariables(self, _req):
         """set connection variables
         NOTE: self.{caChain,rhnParent,httpProxy*} are initialized
               in SharedHandler
         """
 
+        # pylint: disable-next=invalid-name
         effectiveURI = self._getEffectiveURI()
+        # pylint: disable-next=invalid-name
         effectiveURI_parts = urlparse(effectiveURI)
         self.rhnParentXMLRPC = urlunparse(
             ("https", self.rhnParent, "/XMLRPC", "", "", "")
         )
         self.rhnParent = urlunparse(("https", self.rhnParent) + effectiveURI_parts[2:])
 
+        # pylint: disable-next=consider-using-f-string
         log_debug(3, "remapped self.rhnParent:       %s" % self.rhnParent)
+        # pylint: disable-next=consider-using-f-string
         log_debug(3, "remapped self.rhnParentXMLRPC: %s" % self.rhnParentXMLRPC)
 
     def handler(self):
@@ -85,6 +93,7 @@ class RedirectHandler(SharedHandler):
         # path of the request.  We must do this because squid is unable to
         # determine the "real" client, and will make each entry in the chain
         # 127.0.0.1.
+        # pylint: disable-next=invalid-name
         _oto = rhnFlags.get("outputTransportOptions")
         _oto["X-Forwarded-For"] = _oto["X-RHN-IP-Path"]
 
@@ -96,6 +105,7 @@ class RedirectHandler(SharedHandler):
         log_debug(4, "Initiating communication with server...")
         status = self._serverCommo()  # part 2
         if status not in (apache.OK, apache.HTTP_PARTIAL_CONTENT):
+            # pylint: disable-next=consider-using-f-string
             log_debug(3, "Leaving handler with status code %s" % status)
             return status
 
@@ -121,6 +131,7 @@ class RedirectHandler(SharedHandler):
             # if we redirected to ssl version of login page, send redirect directly to user
             headers = self.responseContext.getHeaders()
             if headers is not None:
+                # pylint: disable-next=invalid-name
                 for headerKey in list(headers.keys()):
                     if headerKey == "location":
                         location = self._get_header(headerKey)
@@ -135,10 +146,12 @@ class RedirectHandler(SharedHandler):
                             rhnLib.setHeaderValue(
                                 self.req.headers_out,
                                 "Location",
+                                # pylint: disable-next=consider-using-f-string
                                 "https://%s%s" % (server_name, m.group(1)),
                             )
                             return apache.HTTP_MOVED_PERMANENTLY
 
+            # pylint: disable-next=invalid-name
             redirectStatus = self.__redirectToNextLocation()
 
             # At this point, we've either:
@@ -159,6 +172,7 @@ class RedirectHandler(SharedHandler):
                 # won't be redirected again.
 
                 log_debug(1, "Redirected again!  Code=", redirectStatus)
+                # pylint: disable-next=invalid-name
                 redirectStatus = self.__redirectToNextLocation(True)
 
             if redirectStatus not in (apache.HTTP_OK, apache.HTTP_PARTIAL_CONTENT):
@@ -171,6 +185,7 @@ class RedirectHandler(SharedHandler):
                     "Redirection failed; retries exhausted.  " "Failing over.  Code=",
                     redirectStatus,
                 )
+                # pylint: disable-next=invalid-name
                 redirectStatus = self.__redirectFailover()
 
             return SharedHandler._handleServerResponse(self, redirectStatus)
@@ -179,6 +194,7 @@ class RedirectHandler(SharedHandler):
             # Otherwise, revert to default behavior.
             return SharedHandler._handleServerResponse(self, status)
 
+    # pylint: disable-next=invalid-name,invalid-name
     def __redirectToNextLocation(self, loopProtection=False):
         """This function will perform a redirection to the next location, as
         specified in the last response's "Location" header. This function will
@@ -207,6 +223,7 @@ class RedirectHandler(SharedHandler):
         This function may return any valid HTTP_* response code.  See
         __redirectToNextLocationNoRetry for more info.
         """
+        # pylint: disable-next=invalid-name
         retriesLeft = CFG.NETWORK_RETRIES
 
         # We'll now try to redirect to the 3rd party.  We will keep
@@ -217,6 +234,7 @@ class RedirectHandler(SharedHandler):
         #     HTTP_MOVED_PERMANENTLY
         #     HTTP_MOVED_TEMPORARILY
 
+        # pylint: disable-next=invalid-name
         redirectStatus = self.__redirectToNextLocationNoRetry(loopProtection)
         while (
             redirectStatus != apache.HTTP_OK
@@ -226,6 +244,7 @@ class RedirectHandler(SharedHandler):
             and retriesLeft > 0
         ):
 
+            # pylint: disable-next=invalid-name
             retriesLeft = retriesLeft - 1
             log_debug(
                 1,
@@ -241,10 +260,12 @@ class RedirectHandler(SharedHandler):
             self.responseContext.remove()
 
             # XXX: Possibly sleep here for a second?
+            # pylint: disable-next=invalid-name
             redirectStatus = self.__redirectToNextLocationNoRetry(loopProtection)
 
         return redirectStatus
 
+    # pylint: disable-next=invalid-name,invalid-name
     def __redirectToNextLocationNoRetry(self, loopProtection=False):
         """This function will perform a redirection to the next location, as
         specified in the last response's "Location" header. This function will
@@ -271,6 +292,7 @@ class RedirectHandler(SharedHandler):
         # response context.  It's contained in the Location header of the
         # previous response.
 
+        # pylint: disable-next=invalid-name
         redirectLocation = self._get_header(rhnConstants.HEADER_LOCATION)
 
         # We are about to redirect to a new location so now we'll push a new
@@ -288,12 +310,14 @@ class RedirectHandler(SharedHandler):
         # The _get_header function returns the value as a list.  There should
         # always be exactly one location specified.
 
+        # pylint: disable-next=invalid-name
         redirectLocation = redirectLocation[0]
         log_debug(1, "  Redirecting to: ", redirectLocation)
 
         # Tear apart the redirect URL.  We need the scheme, the host, the
         # port (if not the default), and the URI.
 
+        # pylint: disable-next=invalid-name,unused-variable
         _scheme, host, port, uri, query = self._parse_url(redirectLocation)
 
         # Add back the query string
@@ -391,6 +415,7 @@ class RedirectHandler(SharedHandler):
 
         return response.status
 
+    # pylint: disable-next=invalid-name
     def __redirectFailover(self):
         """This routine resends the original request back to the satellite/hosted
         system if a redirect to a 3rd party failed.  To prevent redirection loops

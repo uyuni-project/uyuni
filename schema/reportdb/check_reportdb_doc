@@ -1,8 +1,10 @@
 #!/usr/bin/python3
+# pylint: disable=missing-module-docstring
 
 # TODO CHECK FOR VIEWS
 import sys
 import os
+# pylint: disable-next=unused-import
 import json
 
 
@@ -11,17 +13,21 @@ def dict_equal(a, b):
     type_b = type(b)
 
     if type_a != type_b:
+        # pylint: disable-next=consider-using-f-string
         sys.stderr.write("Type_a '{}' != Type_b '{}'\n".format(type_a, type_b))
         return False
 
     if isinstance(a, dict):
         if len(a) != len(b):
             sys.stderr.write("dicts have different number of values\n")
+            # pylint: disable-next=consider-using-f-string
             sys.stderr.write("{}\n".format(a))
+            # pylint: disable-next=consider-using-f-string
             sys.stderr.write("{}\n".format(b))
             return False
         for key in a:
             if key not in b:
+                # pylint: disable-next=consider-using-f-string
                 sys.stderr.write("Key '{}' exists in a, but not in b\n".format(key))
                 return False
             if not dict_equal(a[key], b[key]):
@@ -31,7 +37,9 @@ def dict_equal(a, b):
     elif isinstance(a, list):
         if len(a) != len(b):
             sys.stderr.write("lists have a different number of values\n")
+            # pylint: disable-next=consider-using-f-string
             sys.stderr.write("{}\n".format(a))
+            # pylint: disable-next=consider-using-f-string
             sys.stderr.write("{}\n".format(b))
             return False
         while len(a):
@@ -69,10 +77,12 @@ if not os.path.exists(DOCUMENTATION_SQL_PATH):
 columns = []
 val = []
 column = ""
+# pylint: disable-next=invalid-name
 currentTableKey = ""
 tablesFromDoc = {}
 
 # read main.sql and create a dict with table name has key and columns has value
+# pylint: disable-next=unspecified-encoding
 f = open(MAIN_SQL_PATH)
 for line in f.readlines():
     line = line.strip()
@@ -92,6 +102,7 @@ for line in f.readlines():
     ):
         if currentTableKey:
             tables[currentTableKey] = columns
+            # pylint: disable-next=invalid-name
             currentTableKey = ""
             columns = []
             continue
@@ -103,17 +114,23 @@ for line in f.readlines():
 columns = []
 val = []
 column = ""
+# pylint: disable-next=invalid-name
 currentTableKey = ""
+# pylint: disable-next=invalid-name
 currentViewKey = ""
 tablesFromDoc = {}
 viewFromDoc = {}  # TODO NOT EVALUATED BUT FILLED PROPERLY
 dropTables = []
+# pylint: disable-next=invalid-name
 commentColumn = False
+# pylint: disable-next=invalid-name
 commentTable = False
+# pylint: disable-next=invalid-name
 commentIs = False
 
 # read documentation.sql and create a dict with table name has key and columns has value
 # we also check if documentation.sql is formatted properly
+# pylint: disable-next=unspecified-encoding
 f = open(DOCUMENTATION_SQL_PATH)
 for line in f.readlines():
     line = line.strip()
@@ -126,8 +143,11 @@ for line in f.readlines():
             sys.exit(1)
         currentTableKey = vals[3]
         tablesFromDoc[currentTableKey] = []
+        # pylint: disable-next=invalid-name
         commentTable = True
+        # pylint: disable-next=invalid-name
         commentColumn = False
+        # pylint: disable-next=invalid-name
         commentIs = False
     if line.startswith("COMMENT ON VIEW "):
         if not commentIs:
@@ -135,13 +155,17 @@ for line in f.readlines():
             sys.exit(1)
         currentViewKey = vals[3]
         viewFromDoc[currentViewKey] = []
+        # pylint: disable-next=invalid-name
         commentColumn = True
+        # pylint: disable-next=invalid-name
         commentTable = False
+        # pylint: disable-next=invalid-name
         commentIs = False
     if line.startswith("COMMENT ON COLUMN "):
         if not commentIs:
             sys.stderr.write(("Line: " + line + ", should be preceded by a IS line\n"))
             sys.exit(1)
+        # pylint: disable-next=invalid-name
         currentKey = ""
         if currentTableKey:
             currentKey = currentTableKey
@@ -150,8 +174,11 @@ for line in f.readlines():
         column = vals[3]
         column = column.replace(currentKey + ".", "")
         columns.append(column)
+        # pylint: disable-next=invalid-name
         commentColumn = True
+        # pylint: disable-next=invalid-name
         commentTable = False
+        # pylint: disable-next=invalid-name
         commentIs = False
     if line.startswith("IS "):
         if not commentColumn and not commentTable:
@@ -159,8 +186,11 @@ for line in f.readlines():
                 ("Line: " + line + ", should be preceded by a COMMENT line\n")
             )
             sys.exit(1)
+        # pylint: disable-next=invalid-name
         commentColumn = False
+        # pylint: disable-next=invalid-name
         commentTable = False
+        # pylint: disable-next=invalid-name
         commentIs = True
     if (
         line.startswith(");")
@@ -169,10 +199,12 @@ for line in f.readlines():
     ):
         if currentTableKey:
             tablesFromDoc[currentTableKey] = columns
+            # pylint: disable-next=invalid-name
             currentTableKey = ""
             columns = []
         if currentViewKey:
             viewFromDoc[currentViewKey] = columns
+            # pylint: disable-next=invalid-name
             currentViewKey = ""
             columns = []
 

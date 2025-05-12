@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -230,6 +231,7 @@ def help_history(self):
 
 def do_history(self, args):
     for i in range(1, readline.get_current_history_length()):
+        # pylint: disable-next=consider-using-f-string
         print("%s  %s" % (str(i).rjust(4), readline.get_history_item(i)))
     return 0
 
@@ -261,6 +263,7 @@ def help_login(self):
 def do_login(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     # logout before logging in again
@@ -301,6 +304,7 @@ def do_login(self, args):
     else:
         proto = "https"
 
+    # pylint: disable-next=consider-using-f-string
     server_url = "%s://%s/rpc/api" % (proto, server)
 
     # this will enable spewing out all client/server traffic
@@ -351,6 +355,7 @@ def do_login(self, args):
     # retrieve a cached session
     if os.path.isfile(session_file) and not self.options.password:
         try:
+            # pylint: disable-next=unspecified-encoding
             sessionfile = open(session_file, "r")
 
             # read the session (format = username:session)
@@ -415,9 +420,11 @@ def do_login(self, args):
                 os.mkdir(conf_dir, int("0700", 8))
 
             # add the new cache to the file
+            # pylint: disable-next=consider-using-f-string
             line = "%s:%s\n" % (username, self.session)
 
             # write the new cache file out
+            # pylint: disable-next=unspecified-encoding
             sessionfile = open(session_file, "w")
             sessionfile.write(line)
             sessionfile.close()
@@ -519,16 +526,19 @@ def tab_complete_errata(self, text):
 def tab_complete_systems(self, text):
     if re.match("group:", text):
         # prepend 'group' to each item for tab completion
+        # pylint: disable-next=consider-using-f-string
         groups = ["group:%s" % g for g in self.do_group_list("", True)]
 
         return tab_completer(groups, text)
     if re.match("channel:", text):
         # prepend 'channel' to each item for tab completion
+        # pylint: disable-next=consider-using-f-string
         channels = ["channel:%s" % s for s in self.do_softwarechannel_list("", True)]
 
         return tab_completer(channels, text)
     if re.match("search:", text):
         # prepend 'search' to each item for tab completion
+        # pylint: disable-next=consider-using-f-string
         fields = ["search:%s:" % f for f in self.SYSTEM_SEARCH_FIELDS]
         return tab_completer(fields, text)
 
@@ -659,6 +669,7 @@ def generate_package_cache(self, force=False):
             # Alert in case of non-unique ID is detected.
             if i in self.all_packages_by_id:
                 logging.debug(  # pylint: disable=logging-not-lazy
+                    # pylint: disable-next=consider-using-f-string
                     'Non-unique package id "%s" is detected. Taking "%s" '
                     'instead of "%s"' % (i, k, self.all_packages_by_id[i])
                 )
@@ -786,6 +797,7 @@ def load_caches(self, server, username):
     self.packages_short_cache_file = os.path.join(conf_dir, "packages_short")
 
     # load self.ssm from disk
+    # pylint: disable-next=unused-variable
     (self.ssm, _ignore) = load_cache(self.ssm_cache_file)
 
     # update the prompt now that we loaded the SSM
@@ -825,6 +837,7 @@ def get_system_names_ids(self):
 
 # check for duplicate system names and return the system ID
 def get_system_id(self, name):
+    # pylint: disable-next=consider-using-f-string
     name = "%s" % name
     self.generate_system_cache()
     systems = []
@@ -855,9 +868,11 @@ def get_system_id(self, name):
         logging.warning(_N("Please reference systems by ID or resolve the"))
         logging.warning(_N("underlying issue with 'system_delete' or 'system_rename'"))
 
+        # pylint: disable-next=consider-using-f-string
         id_list = "%s = " % name
 
         for system_id in sorted(systems):
+            # pylint: disable-next=consider-using-f-string
             id_list = id_list + "%i, " % system_id
 
         logging.warning("")
@@ -916,6 +931,7 @@ def expand_systems(self, args):
             systems.extend(self.ssm)
         elif re.match("group:", item):
             item = re.sub("group:", "", item)
+            # pylint: disable-next=consider-using-f-string
             members = self.do_group_listsystems("'%s'" % item, True)
 
             if members:
@@ -947,6 +963,7 @@ def expand_systems(self, args):
 
     matches = filter_results(self.get_system_names(), systems)
 
+    # pylint: disable-next=consider-using-f-string
     return ["%s" % x for x in list(set(matches + system_ids))]
 
 
@@ -1002,8 +1019,10 @@ def user_confirm(
         return True
 
     if nospacer:
+        # pylint: disable-next=consider-using-f-string
         answer = prompt_user("%s" % prompt)
     else:
+        # pylint: disable-next=consider-using-f-string
         answer = prompt_user("\n%s" % prompt)
 
     if re.match("y", answer, re.I):
@@ -1050,8 +1069,10 @@ def replace_line_buffer(self, msg=None):
 
     # don't print(a prompt if there wasn't one to begin with)
     if readline.get_line_buffer():
+        # pylint: disable-next=consider-using-f-string
         new_line = "%s%s" % (self.prompt, msg)
     else:
+        # pylint: disable-next=consider-using-f-string
         new_line = "%s" % msg
 
     # clear the current line
@@ -1059,6 +1080,7 @@ def replace_line_buffer(self, msg=None):
     self.stdout.flush()
 
     # write the new line
+    # pylint: disable-next=consider-using-f-string
     self.stdout.write("\r%s" % new_line)
     self.stdout.flush()
 

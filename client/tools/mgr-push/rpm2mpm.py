@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -28,16 +29,20 @@ def main():
 
     for pkgfile in packages:
         # Try to open the package as a patch first
+        # pylint: disable-next=unspecified-encoding
         with open(pkgfile) as f:
             header = rhn_rpm.get_package_header(file_obj=f)
             p = rpm_to_mpm(header, f)
             dest_filename = _compute_filename(p.header)
+            # pylint: disable-next=consider-using-f-string
             print("Writing out the package to %s" % dest_filename)
+            # pylint: disable-next=unspecified-encoding
             with open(dest_filename, "w+") as dest_file:
                 p.write(dest_file)
 
 
 def _compute_filename(hdr):
+    # pylint: disable-next=consider-using-f-string
     return "%s-%s.%s.mpm" % (hdr["name"], hdr["version"], hdr["arch"])
 
 
@@ -209,6 +214,7 @@ def _extract_array_fields(header, tag_maps):
 
 def gmtime(timestamp):
     ttuple = time.gmtime(timestamp)
+    # pylint: disable-next=consider-using-f-string
     return "%d-%02d-%02d %02d:%02d:%02d" % ttuple[:6]
 
 

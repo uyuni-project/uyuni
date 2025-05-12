@@ -1,5 +1,7 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring,invalid-name
 
+# pylint: disable-next=unused-import
 import settestpath
 
 # lots of useful util methods for building/tearing down
@@ -14,6 +16,7 @@ import unittest
 test_up2date = "../etc-conf/up2date.config"
 
 
+# pylint: disable-next=missing-class-docstring
 class TestConfig(unittest.TestCase):
     def setUp(self):
         # in this stuff, we get weird stuff existing, so restore
@@ -21,6 +24,7 @@ class TestConfig(unittest.TestCase):
         testutils.restoreConfig()
         self.__setupData()
 
+    # pylint: disable-next=invalid-name
     def __setupData(self):
         pass
 
@@ -30,21 +34,25 @@ class TestConfig(unittest.TestCase):
 
     def testEmptyInit(self):
         "Verify that the class can be created with no arguments"
+        # pylint: disable-next=unused-variable
         cfg = config.initUp2dateConfig(test_up2date)
 
     def testConfigString(self):
         "Verify that Config loads a string as a string"
         cfg = config.initUp2dateConfig(test_up2date)
+        # pylint: disable-next=unidiomatic-typecheck
         assert type(cfg["systemIdPath"]) == type(ustr(""))
 
     def testConfigList(self):
         "Verify that Config loads a list as a list"
         cfg = config.initUp2dateConfig(test_up2date)
+        # pylint: disable-next=unidiomatic-typecheck
         assert type(cfg["disallowConfChanges"]) == type([])
 
     def testConfigBool(self):
         "Verify that Config loads a bool int as a bool"
         cfg = config.initUp2dateConfig(test_up2date)
+        # pylint: disable-next=unidiomatic-typecheck
         assert type(cfg["enableProxy"]) == type(1)
 
     def testConfigSave(self):
@@ -61,6 +69,7 @@ class TestConfig(unittest.TestCase):
     def testConfigInfo(self):
         "Verify that Config.into() runs without error"
         cfg = config.initUp2dateConfig(test_up2date)
+        # pylint: disable-next=unused-variable
         blargh = cfg.info("enableProxy")
 
     def testConfigRuntimeStore(self):
@@ -73,6 +82,7 @@ class TestConfig(unittest.TestCase):
 
         cfg2 = config.initUp2dateConfig(test_up2date)
         # if this returns a value, it means we saved the config file...
+        # pylint: disable-next=singleton-comparison
         assert cfg2["blippy12345"] == None
 
     def testConfigRuntimeStoreNoDir(self):
@@ -86,6 +96,7 @@ class TestConfig(unittest.TestCase):
         "Verify that Config.keys() returns a list"
         cfg = config.initUp2dateConfig(test_up2date)
         blip = cfg.keys()
+        # pylint: disable-next=unidiomatic-typecheck
         assert type(blip) == type([])
 
     def testConfigKeys(self):
@@ -114,12 +125,14 @@ class TestConfig(unittest.TestCase):
         "Verify that Config.values() runs without error"
         cfg = config.initUp2dateConfig(test_up2date)
         ret = cfg.values()
+        # pylint: disable-next=unidiomatic-typecheck
         assert type(ret) == type([])
 
     def testConfigItems(self):
         "Verify that Config.items() runs without error"
         cfg = config.initUp2dateConfig(test_up2date)
         ret = cfg.items()
+        # pylint: disable-next=unidiomatic-typecheck
         assert type(ret) == type([])
 
     def testConfigSet(self):
@@ -142,6 +155,7 @@ class TestConfig(unittest.TestCase):
         cfg.load("/etc/sysconfig/rhn/up2date")
 
 
+# pylint: disable-next=missing-class-docstring
 class TestGetProxySetting(unittest.TestCase):
     def setUp(self):
         self.cfg = config.initUp2dateConfig(test_up2date)
@@ -162,6 +176,7 @@ class TestGetProxySetting(unittest.TestCase):
 
 
 def suite():
+    # pylint: disable-next=redefined-outer-name
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestConfig))
     suite.addTest(unittest.makeSuite(TestGetProxySetting))

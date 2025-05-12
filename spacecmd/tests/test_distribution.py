@@ -4,7 +4,11 @@ Test distribution
 """
 
 from unittest.mock import MagicMock, patch
+
+# pylint: disable-next=unused-import
 from helpers import shell, assert_expect
+
+# pylint: disable-next=unused-import
 import pytest
 import spacecmd.distribution
 
@@ -14,6 +18,7 @@ class TestSCDistribution:
     Test suite for distribution commands of the spacecmd.
     """
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_create_no_args(self, shell):
         """
         Test do_distribution_create with no args.
@@ -34,8 +39,11 @@ class TestSCDistribution:
         prompt = MagicMock(side_effect=["name", "/path/tree", "base-channel", "image"])
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.distribution.print", mprint) as prn, patch(
-            "spacecmd.distribution.prompt_user", prompt
+            "spacecmd.distribution.prompt_user",
+            prompt,
+            # pylint: disable-next=unused-variable,unused-variable
         ) as prmt, patch("spacecmd.distribution.logging", logger) as lgr:
             spacecmd.distribution.do_distribution_create(shell, "")
 
@@ -78,6 +86,7 @@ class TestSCDistribution:
             shell.client.kickstart.tree.listInstallTypes.call_args_list, shell.session
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_create_no_args_update_mode(self, shell):
         """
         Test do_distribution_create with no args with update mode.
@@ -98,8 +107,11 @@ class TestSCDistribution:
         prompt = MagicMock(side_effect=["name", "/path/tree", "base-channel", "image"])
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.distribution.print", mprint) as prn, patch(
-            "spacecmd.distribution.prompt_user", prompt
+            "spacecmd.distribution.prompt_user",
+            prompt,
+            # pylint: disable-next=unused-variable,unused-variable
         ) as prmt, patch("spacecmd.distribution.logging", logger) as lgr:
             spacecmd.distribution.do_distribution_create(shell, "", update=True)
 
@@ -114,6 +126,7 @@ class TestSCDistribution:
             logger.error.call_args_list, "The name of the distribution is required"
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_create_args_ds_update_mode(self, shell):
         """
         Test do_distribution_create with distribution name in update mode.
@@ -156,8 +169,11 @@ class TestSCDistribution:
         prompt = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.distribution.print", mprint) as prn, patch(
-            "spacecmd.distribution.prompt_user", prompt
+            "spacecmd.distribution.prompt_user",
+            prompt,
+            # pylint: disable-next=unused-variable,unused-variable
         ) as prmt, patch("spacecmd.distribution.logging", logger) as lgr:
             spacecmd.distribution.do_distribution_create(
                 shell, "-n myname", update=True
@@ -180,6 +196,7 @@ class TestSCDistribution:
             )
             assert not kw
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_create_args_dspt_update_mode(self, shell):
         """
         Test do_distribution_create with distribution name and path in update mode.
@@ -222,8 +239,11 @@ class TestSCDistribution:
         prompt = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.distribution.print", mprint) as prn, patch(
-            "spacecmd.distribution.prompt_user", prompt
+            "spacecmd.distribution.prompt_user",
+            prompt,
+            # pylint: disable-next=unused-variable,unused-variable
         ) as prmt, patch("spacecmd.distribution.logging", logger) as lgr:
             spacecmd.distribution.do_distribution_create(
                 shell, "-n myname -p /path/tree", update=True
@@ -246,6 +266,7 @@ class TestSCDistribution:
             )
             assert not kw
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_create_args_dsptbc_update_mode(self, shell):
         """
         Test do_distribution_create with distribution name, path and base channel
@@ -289,8 +310,11 @@ class TestSCDistribution:
         prompt = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.distribution.print", mprint) as prn, patch(
-            "spacecmd.distribution.prompt_user", prompt
+            "spacecmd.distribution.prompt_user",
+            prompt,
+            # pylint: disable-next=unused-variable,unused-variable
         ) as prmt, patch("spacecmd.distribution.logging", logger) as lgr:
             spacecmd.distribution.do_distribution_create(
                 shell, "-n myname -p /path/tree -b base-channel", update=True
@@ -313,6 +337,7 @@ class TestSCDistribution:
             )
             assert not kw
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_create_args_dsptbcit_update_mode(self, shell):
         """
         Test do_distribution_create with distribution name, path, base channel
@@ -356,8 +381,11 @@ class TestSCDistribution:
         prompt = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.distribution.print", mprint) as prn, patch(
-            "spacecmd.distribution.prompt_user", prompt
+            "spacecmd.distribution.prompt_user",
+            prompt,
+            # pylint: disable-next=unused-variable,unused-variable
         ) as prmt, patch("spacecmd.distribution.logging", logger) as lgr:
             spacecmd.distribution.do_distribution_create(
                 shell, "-n myname -p /path/tree -b base-channel -t image", update=True
@@ -381,6 +409,7 @@ class TestSCDistribution:
             )
             assert not kw
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_list_noarg_noret(self, shell):
         """
         Test do_distribution_list without argumnets, no return option.
@@ -400,6 +429,7 @@ class TestSCDistribution:
             ]
         )
         mprint = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.distribution.print", mprint) as prn:
             out = spacecmd.distribution.do_distribution_list(shell, "")
 
@@ -407,6 +437,7 @@ class TestSCDistribution:
         assert mprint.called
         assert_expect(mprint.call_args_list, "some-channel\nsome-other-channel")
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_list_noarg_ret(self, shell):
         """
         Test do_distribution_list without argumnets, return data mode.
@@ -426,14 +457,17 @@ class TestSCDistribution:
             ]
         )
         mprint = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.distribution.print", mprint) as prn:
             out = spacecmd.distribution.do_distribution_list(shell, "", doreturn=True)
 
         assert out is not None
+        # pylint: disable-next=unidiomatic-typecheck
         assert type(out) == list
         assert not mprint.called
         assert out == ["some-channel", "some-other-channel"]
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_delete_noargs(self, shell):
         """
         Test do_distribution_delete with no arguments.
@@ -448,8 +482,11 @@ class TestSCDistribution:
         logger = MagicMock()
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.distribution.print", mprint) as prn, patch(
-            "spacecmd.distribution.logging", logger
+            "spacecmd.distribution.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.distribution.do_distribution_delete(shell, "")
 
@@ -461,6 +498,7 @@ class TestSCDistribution:
         assert not shell.user_confirm.called
         assert shell.help_distribution_delete.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_delete_args_no_match(self, shell):
         """
         Test do_distribution_delete with wrong arguments.
@@ -475,8 +513,11 @@ class TestSCDistribution:
         logger = MagicMock()
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.distribution.print", mprint) as prn, patch(
-            "spacecmd.distribution.logging", logger
+            "spacecmd.distribution.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.distribution.do_distribution_delete(shell, "foo*")
 
@@ -495,6 +536,7 @@ class TestSCDistribution:
             logger.error.call_args_list, "No distributions matched argument ['foo.*']"
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_delete_args_match_no_confirm(self, shell):
         """
         Test do_distribution_delete with correct arguments, not confirmed to delete.
@@ -509,8 +551,11 @@ class TestSCDistribution:
         logger = MagicMock()
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.distribution.print", mprint) as prn, patch(
-            "spacecmd.distribution.logging", logger
+            "spacecmd.distribution.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.distribution.do_distribution_delete(shell, "b*")
 
@@ -530,6 +575,7 @@ class TestSCDistribution:
         )
         assert_expect(mprint.call_args_list, "bar")
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_delete_args_match_confirm(self, shell):
         """
         Test do_distribution_delete with correct arguments, confirmed to delete.
@@ -544,8 +590,11 @@ class TestSCDistribution:
         logger = MagicMock()
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.distribution.print", mprint) as prn, patch(
-            "spacecmd.distribution.logging", logger
+            "spacecmd.distribution.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.distribution.do_distribution_delete(shell, "b*")
 
@@ -566,12 +615,14 @@ class TestSCDistribution:
         assert_expect(mprint.call_args_list, "bar")
 
         for call in shell.client.kickstart.tree.delete.call_args_list:
+            # pylint: disable-next=unused-variable
             args, kw = call
             assert args == (
                 shell.session,
                 "bar",
             )
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_details_noargs(self, shell):
         """
         Test do_distribution_details with no arguments.
@@ -586,8 +637,11 @@ class TestSCDistribution:
         logger = MagicMock()
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.distribution.print", mprint) as prn, patch(
-            "spacecmd.distribution.logging", logger
+            "spacecmd.distribution.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.distribution.do_distribution_details(shell, "")
 
@@ -598,6 +652,7 @@ class TestSCDistribution:
         assert not shell.do_distribution_list.called
         assert shell.help_distribution_details.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_details_no_dists(self, shell):
         """
         Test do_distribution_details with no distributions found.
@@ -612,8 +667,11 @@ class TestSCDistribution:
         logger = MagicMock()
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.distribution.print", mprint) as prn, patch(
-            "spacecmd.distribution.logging", logger
+            "spacecmd.distribution.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.distribution.do_distribution_details(shell, "test*")
 
@@ -633,6 +691,7 @@ class TestSCDistribution:
             logger.error.call_args_list, "No distributions matched argument ['test.*']"
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_details_list(self, shell):
         """
         Test do_distribution_details lister.
@@ -658,8 +717,11 @@ class TestSCDistribution:
         logger = MagicMock()
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.distribution.print", mprint) as prn, patch(
-            "spacecmd.distribution.logging", logger
+            "spacecmd.distribution.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.distribution.do_distribution_details(shell, "dist*")
 
@@ -685,6 +747,7 @@ class TestSCDistribution:
             exp.pop(0)
         assert not exp
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_rename_noargs(self, shell):
         """
         Test do_distribution_rename without arguments.
@@ -692,6 +755,7 @@ class TestSCDistribution:
         :param shell:
         :return:
         """
+        # pylint: disable-next=unused-variable
         for args in ["", "foo"]:
             shell.help_distribution_rename = MagicMock()
             shell.client.kickstart.tree.rename = MagicMock()
@@ -701,6 +765,7 @@ class TestSCDistribution:
             assert not shell.client.kickstart.tree.rename.called
             assert shell.help_distribution_rename.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_rename(self, shell):
         """
         Test do_distribution_rename.
@@ -717,9 +782,11 @@ class TestSCDistribution:
         assert shell.client.kickstart.tree.rename.called
 
         for call in shell.client.kickstart.tree.rename.call_args_list:
+            # pylint: disable-next=unused-variable
             args, kw = call
             assert args == (shell.session, "source", "destination")
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_update_noargs(self, shell):
         """
         Test do_distribution_update without arguments.
@@ -736,6 +803,7 @@ class TestSCDistribution:
         assert shell.do_distribution_create.called
         assert not shell.help_distribution_update.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_update(self, shell):
         """
         Test do_distribution_update.
@@ -757,6 +825,7 @@ class TestSCDistribution:
             assert args == ("my-distro",)
             assert kw == {"update": True}
 
+    # pylint: disable-next=redefined-outer-name
     def test_distribution_update_with_options(self, shell):
         """
         Test do_distribution_update with options.

@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -19,7 +20,11 @@
 
 import getpass
 import gettext
+
+# pylint: disable-next=unused-import
 import logging
+
+# pylint: disable-next=wildcard-import,unused-wildcard-import
 from spacecmd.utils import *
 
 translation = gettext.translation("spacecmd", fallback=True)
@@ -29,6 +34,7 @@ except AttributeError:
     _ = translation.gettext
 
 
+# pylint: disable-next=unused-argument
 def help_proxy_container_config(self):
     print(
         _(
@@ -101,6 +107,7 @@ def do_proxy_container_config(self, args):
     print(options.output)
 
 
+# pylint: disable-next=unused-argument
 def help_proxy_container_config_generate_cert(self):
     print(
         _(
@@ -198,6 +205,7 @@ def do_proxy_container_config_generate_cert(self, args):
     print(options.output)
 
 
+# pylint: disable-next=function-redefined
 def read_file(path):
     """
     utility function reading a file and returning its content.
@@ -205,5 +213,6 @@ def read_file(path):
     if not path:
         return None
 
+    # pylint: disable-next=unspecified-encoding
     with open(path, "r") as fd:
         return fd.read()

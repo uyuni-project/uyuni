@@ -25,6 +25,7 @@ import tarfile
 import sys
 
 if not hasattr(zipfile, "ZIP64_LIMIT"):
+    # pylint: disable-next=consider-using-f-string
     sys.stderr.write("%s requires zipfile with ZIP64 support.\n" % sys.argv[0])
     sys.exit(3)
 
@@ -112,11 +113,15 @@ class ArchiveParser(object):
                 return
 
             raise InvalidArchiveError(
-                "Archive did not expand to %s" % self._archive_dir
+                # pylint: disable-next=consider-using-f-string
+                "Archive did not expand to %s"
+                % self._archive_dir
             )
 
         raise InvalidArchiveError(
-            "Could not find command to open archive: %s" % self._archive
+            # pylint: disable-next=consider-using-f-string
+            "Could not find command to open archive: %s"
+            % self._archive
         )
 
     # private helper methods ---------------------------------------------
@@ -202,6 +207,7 @@ class ArchiveParser(object):
 
         if os.path.isfile(f) and os.access(f, os.R_OK):
             try:
+                # pylint: disable-next=unspecified-encoding
                 fd = open(f)
                 contents = fd.read()
                 fd.close()
@@ -220,8 +226,10 @@ class ArchiveParser(object):
         cwd = os.getcwd()
         os.chdir(parent_dir)
 
+        # pylint: disable-next=consider-using-f-string
         zip_file = os.path.join(self._parent_dir, "%s.zip" % zip_dir)
         fd = zipfile.ZipFile(zip_file, "w", zipfile.ZIP_DEFLATED)
+        # pylint: disable-next=invalid-name,unused-variable
         for base, _dirs, files in os.walk(zip_dir):
             fd.write(base)
             for f in files:
@@ -237,8 +245,10 @@ class ArchiveParser(object):
     def cpio(self, prefix):
         """Create a cpio archive of a (sub-)directory of the archive"""
 
+        # pylint: disable-next=consider-using-f-string
         cpio_file = os.path.join(self._temp_dir, "%s.pkg" % prefix)
 
+        # pylint: disable-next=consider-using-f-string
         cmd = "pkgtrans -s %s %s %s" % (self._archive_dir, cpio_file, prefix)
         _my_popen(cmd)
 
@@ -251,6 +261,7 @@ class ArchiveParser(object):
 # parser for zip archives ------------------------------------------------
 
 
+# pylint: disable-next=missing-class-docstring
 class ZipParser(ArchiveParser):
 
     def __init__(self, archive, tempdir="/tmp/"):
@@ -270,8 +281,11 @@ class ZipParser(ArchiveParser):
             self.zip_file.extractall(self._temp_dir)
         except Exception:
             e = sys.exc_info()[1]
+            # pylint: disable-next=raise-missing-from
             raise InvalidArchiveError(
-                "Archive did not expand to %s: %s" % (self._archive_dir, str(e))
+                # pylint: disable-next=consider-using-f-string
+                "Archive did not expand to %s: %s"
+                % (self._archive_dir, str(e))
             )
         return
 
@@ -282,6 +296,7 @@ class ZipParser(ArchiveParser):
 # parser for tar archives ------------------------------------------------
 
 
+# pylint: disable-next=missing-class-docstring
 class TarParser(ArchiveParser):
 
     def __init__(self, archive, tempdir="/tmp/"):
@@ -299,8 +314,11 @@ class TarParser(ArchiveParser):
             self.tar_file.extractall(path=self._temp_dir)
         except Exception:
             e = sys.exc_info()[1]
+            # pylint: disable-next=raise-missing-from
             raise InvalidArchiveError(
-                "Archive did not expand to %s: %s" % (self._archive_dir, str(e))
+                # pylint: disable-next=consider-using-f-string
+                "Archive did not expand to %s: %s"
+                % (self._archive_dir, str(e))
             )
         return
 
@@ -311,6 +329,7 @@ class TarParser(ArchiveParser):
 # parser for cpio archives -----------------------------------------------
 
 
+# pylint: disable-next=missing-class-docstring
 class CpioParser(ArchiveParser):
 
     def _get_archive_dir(self):
@@ -323,9 +342,12 @@ class CpioParser(ArchiveParser):
 
         if not _has_executable("pkgtrans"):
             raise ArchiveException(
-                "cannot open %s, 'pkgtrans' not found" % self._archive
+                # pylint: disable-next=consider-using-f-string
+                "cannot open %s, 'pkgtrans' not found"
+                % self._archive
             )
 
+        # pylint: disable-next=consider-using-f-string
         return "cd %s; mkdir %s; pkgtrans %s %s all" % (
             self._temp_dir,
             self._archive_dir,
@@ -371,6 +393,7 @@ def _my_popen(cmd):
 
     txt = ""
     while 1:
+        # pylint: disable-next=invalid-name,unused-variable
         rd, _wr, ex = select.select(
             [popen.stdout, popen.stderr], [], [popen.stdout, popen.stderr], 5
         )
@@ -384,6 +407,7 @@ def _my_popen(cmd):
 
     status = popen.wait()
     if status != 0:
+        # pylint: disable-next=broad-exception-raised,consider-using-f-string
         raise Exception("%s exited with status %s and error\n%s" % (cmd, status, txt))
 
     return
@@ -401,6 +425,7 @@ def _decompress(archive):
     sfx_list = None
 
     # determine which type of compression we're dealing with, if any
+    # pylint: disable-next=unspecified-encoding
     fd = open(archive, "r")
     magic = fd.read(2)
     fd.close()
@@ -422,11 +447,14 @@ def _decompress(archive):
 
         if not _has_executable(cmd):
             raise ArchiveException(
-                "Cannot decompress %s, '%s' not found" % (archive, cmd)
+                # pylint: disable-next=consider-using-f-string
+                "Cannot decompress %s, '%s' not found"
+                % (archive, cmd)
             )
 
         print("Decompressing archive")
 
+        # pylint: disable-next=consider-using-f-string
         _my_popen("%s %s" % (cmd, archive))
 
         # remove the now invalid suffix from the archive name
@@ -446,7 +474,9 @@ def get_archive_parser(archive, tempdir="/tmp/"):
 
     # decompress the archive
     archive = _decompress(archive)
+    # pylint: disable-next=invalid-name
     parserClass = None
+    # pylint: disable-next=unspecified-encoding
     fd = open(archive, "r")
 
     magic = fd.read(4)
@@ -470,6 +500,7 @@ def get_archive_parser(archive, tempdir="/tmp/"):
     fd.close()
 
     if parserClass is None:
+        # pylint: disable-next=consider-using-f-string
         raise UnknownArchiveError("Wasn't able to identify: '%s'" % archive)
 
     return parserClass(archive, tempdir)

@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2023 SUSE LLC
 #
@@ -17,8 +18,12 @@ import json
 import platform
 import re
 import subprocess
+
+# pylint: disable-next=unused-import
 import os
 import sys
+
+# pylint: disable-next=unused-import
 import traceback
 import urllib.request
 import urllib.parse as urlparse
@@ -57,6 +62,7 @@ def _read_aws_metadata(url, token):
         with opener.open(req) as response:
             return response.read()
     except urllib.error.URLError as e:
+        # pylint: disable-next=consider-using-f-string
         system_exit(3, ["Unable to get aws metadata ({})".format(e)])
 
 
@@ -124,7 +130,9 @@ def get_rhui_url(url):
 
 
 def _parse_repositories():
+    # pylint: disable-next=global-variable-undefined
     global is_rhui
+    # pylint: disable-next=global-variable-undefined
     global repo_dict
     is_rhui = False
     repo_dict = {}
@@ -137,7 +145,10 @@ def _parse_repositories():
         )
     except subprocess.CalledProcessError as e:
         system_exit(
-            2, ["Got error when getting repo processed URL(error {}):".format(e)]
+            # pylint: disable-next=consider-using-f-string
+            2,
+            # pylint: disable-next=consider-using-f-string
+            ["Got error when getting repo processed URL(error {}):".format(e)],
         )
     repo_id = ""
     repo_url = ""
@@ -150,6 +161,7 @@ def _parse_repositories():
         elif line.startswith("Repo-mirrors"):
             repo_url = get_rhui_url(line.split(":", 1)[1])
         elif repo_url == "" and line.startswith("Repo-baseurl"):
+            # pylint: disable-next=anomalous-backslash-in-string
             repo_url = get_rhui_url(re.split("\s+", line)[2])
         elif line.strip() == "":
             if repo_id != "" and repo_url != "":
@@ -161,6 +173,7 @@ def _parse_repositories():
 
     # parse the repositories to get the matching certificates
     for repofile in glob.glob("/etc/yum.repos.d/*.repo"):
+        # pylint: disable-next=unspecified-encoding
         with open(repofile, "r") as r:
             ident = ""
             state = 0
@@ -200,6 +213,7 @@ def _get_rhui_info():
             id_sig_header = base64.urlsafe_b64encode(id_sig).decode()
 
         return {ID_DOC_HEADER: id_doc_header, ID_SIG_HEADER: id_sig_header}
+    # pylint: disable-next=unused-variable
     except urllib.error.URLError as e:
         # not AWS cloud ?
         return {}
@@ -210,6 +224,7 @@ def _get_certificate_info():
     Return a dict with all RHUI certificates and keys using
     the path as key
     """
+    # pylint: disable-next=invalid-name
     usedCrts = set()
     for d in repo_dict.values():
         for k, v in d.items():
@@ -221,6 +236,7 @@ def _get_certificate_info():
         if crt not in usedCrts:
             # get only the certificates we really need
             continue
+        # pylint: disable-next=unspecified-encoding
         with open(crt, "r") as c:
             certs[crt] = c.read()
 
@@ -228,10 +244,12 @@ def _get_certificate_info():
         if crt not in usedCrts:
             # get only the certificates we really need
             continue
+        # pylint: disable-next=unspecified-encoding
         with open(crt, "r") as c:
             certs[crt] = c.read()
 
     if "Bundle" in usedCrts:
+        # pylint: disable-next=unspecified-encoding
         with open("/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem", "r") as c:
             certs["Bundle"] = c.read()
     return certs
@@ -266,8 +284,10 @@ if __name__ == "__main__":
         system_exit(9, ["User interrupted process."])
     except SystemExit as e:
         sys.exit(e.code)
+    # pylint: disable-next=broad-exception-caught
     except Exception as e:
         # traceback.print_exc()
+        # pylint: disable-next=consider-using-f-string
         system_exit(9, ["ERROR: {}".format(e)])
 
 # Error codes

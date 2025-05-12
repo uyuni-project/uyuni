@@ -167,7 +167,9 @@ def test_arch_specs_unknown():
 
 
 def test_arch_specs_ppc64():
+    # pylint: disable-next=protected-access
     cpuinfo._get_architecture = MagicMock(return_value="ppc64")
+    # pylint: disable-next=protected-access
     cpuinfo._read_file = MagicMock(
         side_effect=lambda path: (
             "shared_processor_mode = 1"
@@ -182,7 +184,9 @@ def test_arch_specs_ppc64():
 
 
 def test_arch_specs_arm64():
+    # pylint: disable-next=protected-access
     cpuinfo._get_architecture = MagicMock(return_value="arm64")
+    # pylint: disable-next=protected-access
     cpuinfo._read_file = MagicMock(return_value="")
 
     with patch.dict(cpuinfo.__salt__, {"cmd.run_all": MagicMock()}), patch.object(
@@ -237,17 +241,21 @@ def test_add_z_systems_extras(output, expected_specs):
             "retcode": 0,
             "stdout": output,
         }
+        # pylint: disable-next=protected-access
         cpuinfo._add_z_systems_extras(specs)
     assert specs == expected_specs
 
 
 def test_exact_string_match():
     text = "Family: test_family\nManufacturer: test_manufacturer\nSignature: test_signature"
+    # pylint: disable-next=protected-access
     result = cpuinfo._exact_string_match("Family", text)
     assert result == "test_family"
 
 
 def test_read_file_failure():
+    # pylint: disable-next=protected-access
     cpuinfo._read_file = MagicMock(return_value="")
+    # pylint: disable-next=protected-access
     result = cpuinfo._read_file("/path/to/nonexistent/file")
     assert result == ""

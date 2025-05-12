@@ -23,6 +23,7 @@ def enabled(name, appstreams):
         A list of appstreams to enable in the format module_name:stream
 
     """
+    # pylint: disable-next=undefined-variable
     if __opts__["test"]:
         return _test_mode(name, appstreams, "enable")
 
@@ -34,6 +35,7 @@ def enabled(name, appstreams):
             "comment": "No AppStreams to enable provided",
         }
 
+    # pylint: disable-next=undefined-variable
     result, comment, changes = __salt__["appstreams.enable"](appstreams)
     return {"name": name, "changes": changes, "result": result, "comment": comment}
 
@@ -49,6 +51,7 @@ def disabled(name, appstreams):
         A list of appstreams to disable
 
     """
+    # pylint: disable-next=undefined-variable
     if __opts__["test"]:
         return _test_mode(name, appstreams, "disable")
 
@@ -60,6 +63,7 @@ def disabled(name, appstreams):
             "comment": "No AppStreams to disable provided",
         }
 
+    # pylint: disable-next=undefined-variable
     result, comment, changes = __salt__["appstreams.disable"](appstreams)
     return {"name": name, "changes": changes, "result": result, "comment": comment}
 

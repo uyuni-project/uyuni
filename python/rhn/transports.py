@@ -52,7 +52,9 @@ class Transport(xmlrpclib.Transport):
         self,
         transfer=0,
         encoding=0,
+        # pylint: disable-next=invalid-name
         refreshCallback=None,
+        # pylint: disable-next=invalid-name
         progressCallback=None,
         use_datetime=None,
         timeout=None,

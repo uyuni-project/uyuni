@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Client code for Update Agent
 # Copyright (c) 1999--2016 Red Hat, Inc.  Distributed under GPLv2.
@@ -26,6 +27,7 @@ ts = None
 #
 
 
+# pylint: disable-next=missing-class-docstring
 class TransactionData:
     # simple data structure designed to transport info
     # about rpm transactions around
@@ -48,6 +50,7 @@ class TransactionData:
         installed = []
         updated = []
         misc = []
+        # pylint: disable-next=invalid-name
         for pkgInfo, mode in self.data["packages"]:
             if mode == "u":
                 updated.append(pkgInfo)
@@ -57,28 +60,36 @@ class TransactionData:
                 removed.append(pkgInfo)
             else:
                 misc.append(pkgInfo)
+        # pylint: disable-next=invalid-name
         for pkgInfo in removed:
+            # pylint: disable-next=consider-using-f-string
             out = out + "\t\t[e] %s-%s-%s:%s\n" % (
                 pkgInfo[0],
                 pkgInfo[1],
                 pkgInfo[2],
                 pkgInfo[3],
             )
+        # pylint: disable-next=invalid-name
         for pkgInfo in installed:
+            # pylint: disable-next=consider-using-f-string
             out = out + "\t\t[i] %s-%s-%s:%s\n" % (
                 pkgInfo[0],
                 pkgInfo[1],
                 pkgInfo[2],
                 pkgInfo[3],
             )
+        # pylint: disable-next=invalid-name
         for pkgInfo in updated:
+            # pylint: disable-next=consider-using-f-string
             out = out + "\t\t[u] %s-%s-%s:%s\n" % (
                 pkgInfo[0],
                 pkgInfo[1],
                 pkgInfo[2],
                 pkgInfo[3],
             )
+        # pylint: disable-next=invalid-name
         for pkgInfo in misc:
+            # pylint: disable-next=consider-using-f-string
             out = out + "\t\t[%s] %s-%s-%s:%s\n" % (
                 pkgInfo[5],
                 pkgInfo[0],
@@ -91,6 +102,7 @@ class TransactionData:
 
 # wrapper/proxy class for rpm.Transaction so we can
 # instrument it, etc easily
+# pylint: disable-next=missing-class-docstring
 class Up2dateTransaction:
     def __init__(self):
         self.ts = rpm.TransactionSet()
@@ -120,6 +132,7 @@ class Up2dateTransaction:
         else:
             raise AttributeError(attr)
 
+    # pylint: disable-next=invalid-name
     def getMethod(self, method):
         # in theory, we can override this with
         # profile/etc info
@@ -128,17 +141,21 @@ class Up2dateTransaction:
     # push/pop methods so we dont lose the previous
     # set value, and we can potentiall debug a bit
     # easier
+    # pylint: disable-next=invalid-name
     def pushVSFlags(self, flags):
         self.tsflags.append(flags)
         self.ts.setVSFlags(self.tsflags[-1])
 
+    # pylint: disable-next=invalid-name
     def popVSFlags(self):
         del self.tsflags[-1]
         self.ts.setVSFlags(self.tsflags[-1])
 
 
+# pylint: disable-next=invalid-name
 def initReadOnlyTransaction():
     global read_ts
+    # pylint: disable-next=singleton-comparison
     if read_ts == None:
         read_ts = Up2dateTransaction()
         # FIXME: replace with macro defination

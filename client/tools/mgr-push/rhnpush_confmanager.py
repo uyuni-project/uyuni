@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -19,6 +20,7 @@ from rhnpush import rhnpush_config
 from rhnpush import utils
 
 
+# pylint: disable-next=missing-class-docstring
 class ConfManager:
 
     def __init__(self, optionparser, store_true_list):
@@ -30,6 +32,7 @@ class ConfManager:
         regfile = os.path.join(homedir, regular)
         cwdfile = os.path.join(os.getcwd(), regular)
 
+        # pylint: disable-next=invalid-name
         self.cfgFileList = [deffile, regfile, cwdfile]
         self.defaultconfig = rhnpush_config.rhnpushConfigParser(ensure_consistency=True)
 
@@ -60,6 +63,7 @@ class ConfManager:
         for f in self.cfgFileList:
             if os.access(f, os.F_OK):
                 if not os.access(f, os.R_OK):
+                    # pylint: disable-next=consider-using-f-string
                     print(("rhnpush does not have read permission on %s" % f))
                     sys.exit(1)
                 config2 = rhnpush_config.rhnpushConfigParser(f)

@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# pylint: disable=missing-module-docstring,invalid-name
 
 # Copyright (c) 2021 SUSE LLC
 #
@@ -53,6 +54,7 @@ def backup_file(file_path: str):
     :param file_path: The full path to the file which should be backed up.
     :raises FileNotFoundError: In case the path specified was not existing.
     """
+    # pylint: disable-next=consider-using-f-string
     copyfile(file_path, "%s.backup" % file_path)
 
 
@@ -86,6 +88,7 @@ def manipulate_cobbler_settings(config_dir: str, settings_yaml: str, fqdn: str):
 
     if not filecontent["next_server_v4"] and not filecontent["next_server_v6"]:
         print(
+            # pylint: disable-next=consider-using-f-string
             "ERROR: Neither IPv4 nor IPv6 addresses can be resolved for configured FQDN: {}. Please check your DNS and hostname configuration.".format(
                 filecontent["server"]
             )
@@ -97,6 +100,7 @@ def manipulate_cobbler_settings(config_dir: str, settings_yaml: str, fqdn: str):
     filecontent["client_use_localhost"] = True
     filecontent["uyuni_authentication_endpoint"] = "http://localhost"
     yaml_dump = yaml.safe_dump(filecontent)
+    # pylint: disable-next=unspecified-encoding
     with open(full_path, "w") as settings_file:
         settings_file.write(yaml_dump)
 
@@ -116,6 +120,7 @@ def manipulate_cobbler_modules(config_dir: str, modules_ini: str):
     # Modify Authentication to Spacewalk module
     cp["authentication"]["module"] = "authentication.spacewalk"
     # Write Ini File
+    # pylint: disable-next=unspecified-encoding
     with open(full_path, "w") as modules_conf:
         cp.write(modules_conf)
 
@@ -129,11 +134,13 @@ def remove_virtual_host(conf_directory: str, conf_file: str):
     """
     full_path = os.path.join(conf_directory, conf_file)
     backup_file(full_path)
+    # pylint: disable-next=unspecified-encoding
     with open(full_path, "r") as http_config:
         http_lines = http_config.readlines()
         for i in range(0, len(http_lines)):
             if "VirtualHost" in http_lines[i]:
                 http_lines[i] = ""
+    # pylint: disable-next=unspecified-encoding
     with open(full_path, "w") as http_config_update:
         http_config_update.writelines(http_lines)
 

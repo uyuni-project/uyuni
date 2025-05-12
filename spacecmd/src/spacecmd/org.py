@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -164,6 +165,7 @@ def help_org_create(self):
     print(_("org_create: Create an organization"))
     print(
         _(
+            # pylint: disable-next=consider-using-f-string
             """usage: org_create [options])
 
 options:
@@ -213,6 +215,7 @@ def complete_org_delete(self, text, line, beg, end):
 def do_org_delete(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1:
@@ -247,6 +250,7 @@ def complete_org_rename(self, text, line, beg, end):
 def do_org_rename(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
@@ -280,6 +284,7 @@ def complete_org_addtrust(self, text, line, beg, end):
 def do_org_addtrust(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
@@ -318,6 +323,7 @@ def complete_org_removetrust(self, text, line, beg, end):
 def do_org_removetrust(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
@@ -366,6 +372,7 @@ def complete_org_trustdetails(self, text, line, beg, end):
 def do_org_trustdetails(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -440,6 +447,7 @@ def complete_org_listtrusts(self, text, line, beg, end):
 def do_org_listtrusts(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -476,6 +484,7 @@ def complete_org_listusers(self, text, line, beg, end):
 def do_org_listusers(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -508,6 +517,7 @@ def complete_org_details(self, text, line, beg, end):
 def do_org_details(self, args):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:

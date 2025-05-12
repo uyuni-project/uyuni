@@ -87,6 +87,7 @@ class PackagePush(basePackageUpload.BasePackageUpload):
             encoded_auth_token = self.field_data["Auth"]
 
         if not use_session:
+            # pylint: disable-next=possibly-used-before-assignment
             auth_token = self.get_auth_token(encoded_auth_token)
 
             if len(auth_token) < 2:
@@ -101,7 +102,10 @@ class PackagePush(basePackageUpload.BasePackageUpload):
 
         if use_session:
             self.org_id, self.force = rhnPackageUpload.authenticate_session(
-                session_token, force=force, null_org=self.null_org
+                # pylint: disable-next=possibly-used-before-assignment
+                session_token,
+                force=force,
+                null_org=self.null_org,
             )
         else:
             # We don't push to any channels

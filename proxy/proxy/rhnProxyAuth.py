@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 # Spacewalk Proxy Server authentication manager.
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
@@ -50,6 +51,7 @@ else:
     from ssl import socket_error
 
 # To avoid doing unnecessary work, keep ProxyAuth object global
+# pylint: disable-next=invalid-name
 __PROXY_AUTH = None
 UP2DATE_CONFIG = config.Config("/etc/sysconfig/rhn/up2date")
 PRODUCT_NAME = "SUSE Multi-Linux Manager"
@@ -64,13 +66,19 @@ def get_proxy_auth(hostname=None):
     return __PROXY_AUTH
 
 
+# pylint: disable-next=missing-class-docstring
 class ProxyAuth:
 
+    # pylint: disable-next=invalid-name
     __serverid = None
+    # pylint: disable-next=invalid-name
     __systemid = None
+    # pylint: disable-next=invalid-name
     __systemid_mtime = None
+    # pylint: disable-next=invalid-name
     __systemid_filename = UP2DATE_CONFIG["systemIdPath"]
 
+    # pylint: disable-next=invalid-name
     __nRetries = 3  # number of login retries
 
     hostname = None
@@ -80,6 +88,7 @@ class ProxyAuth:
         ProxyAuth.hostname = hostname
         self.__processSystemid()
 
+    # pylint: disable-next=invalid-name
     def __processSystemid(self):
         """update the systemid/serverid but only if they stat differently.
         returns 0=no updates made; or 1=updates were made
@@ -100,6 +109,7 @@ class ProxyAuth:
                     sys.exc_info()[2],
                 )
 
+        # pylint: disable-next=unused-variable
         except FileNotFoundError as e:
             raise_with_tb(
                 rhnFault(
@@ -113,7 +123,9 @@ class ProxyAuth:
             )
         except IOError as e:
             log_error(
-                "unable to stat %s: %s" % (ProxyAuth.__systemid_filename, repr(e))
+                # pylint: disable-next=consider-using-f-string
+                "unable to stat %s: %s"
+                % (ProxyAuth.__systemid_filename, repr(e))
             )
             raise_with_tb(
                 rhnFault(
@@ -127,6 +139,7 @@ class ProxyAuth:
             )
 
         if not os.access(ProxyAuth.__systemid_filename, os.R_OK):
+            # pylint: disable-next=consider-using-f-string
             log_error("unable to access %s" % ProxyAuth.__systemid_filename)
             raise rhnFault(
                 1000,
@@ -145,8 +158,10 @@ class ProxyAuth:
 
         # get systemid
         try:
+            # pylint: disable-next=unspecified-encoding
             ProxyAuth.__systemid = open(ProxyAuth.__systemid_filename, "r").read()
         except IOError as e:
+            # pylint: disable-next=consider-using-f-string
             log_error("unable to read %s" % ProxyAuth.__systemid_filename)
             raise_with_tb(
                 rhnFault(
@@ -160,14 +175,18 @@ class ProxyAuth:
             )
 
         # get serverid
+        # pylint: disable-next=invalid-name,unused-variable
         sysid, _cruft = xmlrpclib.loads(ProxyAuth.__systemid)
         ProxyAuth.__serverid = sysid[0]["system_id"][3:]
 
         log_debug(
             7,
+            # pylint: disable-next=consider-using-f-string
             'SystemId: "%s[...snip  snip...]%s"'
+            # pylint: disable-next=unsubscriptable-object,unsubscriptable-object
             % (ProxyAuth.__systemid[:20], ProxyAuth.__systemid[-20:]),
         )  # pylint: disable=unsubscriptable-object
+        # pylint: disable-next=consider-using-f-string
         log_debug(7, "ServerId: %s" % ProxyAuth.__serverid)
 
         # ids were updated
@@ -178,9 +197,11 @@ class ProxyAuth:
         self.__processSystemid()
         return self.__systemid
 
+    # pylint: disable-next=invalid-name
     def check_cached_token(self, forceRefresh=0):
         """check cache, login if need be, and cache."""
         log_debug(3)
+        # pylint: disable-next=invalid-name
         oldToken = self.get_cached_token()
         token = oldToken
         if not token or forceRefresh or self.__processSystemid():
@@ -246,6 +267,7 @@ problems, isn't running, or the token is somehow corrupt.
             pass
 
     def login(self):
+        # pylint: disable-next=pointless-statement
         f""" Login and fetch new token (proxy token).
 
             How it works in a nutshell.
@@ -306,6 +328,7 @@ problems, isn't running, or the token is somehow corrupt.
         # update the systemid/serverid if need be.
         self.__processSystemid()
         # Makes three attempts to login
+        # pylint: disable-next=invalid-name,unused-variable
         for _i in range(self.__nRetries):
             try:
                 token = server.proxy.login(self.__systemid)
@@ -313,20 +336,27 @@ problems, isn't running, or the token is somehow corrupt.
                 if CFG.HTTP_PROXY:
                     # socket error, check to see if your HTTP proxy is running...
                     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    # pylint: disable-next=invalid-name,invalid-name
                     httpProxy, httpProxyPort = CFG.HTTP_PROXY.split(":")
                     try:
                         s.connect((httpProxy, int(httpProxyPort)))
+                    # pylint: disable-next=redefined-outer-name
                     except socket.error as e:
                         error = [
                             "socket.error",
+                            # pylint: disable-next=consider-using-f-string
                             "HTTP Proxy not running? " "(%s) %s" % (CFG.HTTP_PROXY, e),
                         ]
                         # rather big problem: http proxy not running.
+                        # pylint: disable-next=consider-using-f-string
                         log_error("*** ERROR ***: %s" % error[1])
                         Traceback(mail=0)
+                    # pylint: disable-next=redefined-outer-name
                     except socket_error as e:  # pylint: disable=duplicate-except
+                        # pylint: disable-next=consider-using-f-string
                         error = ["socket.sslerror", "(%s) %s" % (CFG.HTTP_PROXY, e)]
                         # rather big problem: http proxy not running.
+                        # pylint: disable-next=consider-using-f-string
                         log_error("*** ERROR ***: %s" % error[1])
                         Traceback(mail=0)
                     else:
@@ -359,6 +389,7 @@ problems, isn't running, or the token is somehow corrupt.
                 # the method object itself
                 # This should trick it, since the originator of the exception
                 # is this function, instead of a deep call into xmlrpclib
+                # pylint: disable-next=consider-using-f-string
                 log_error("%s" % e)
                 if e.faultCode == 10000:
                     # reraise it for the users (outage or "important message"
@@ -412,10 +443,12 @@ problems, isn't running, or the token is somehow corrupt.
                         )
                         % error[0],
                     )
+                # pylint: disable-next=consider-using-f-string
                 raise rhnFault(1002, err_text="%s" % e)
             raise rhnFault(1001)
         if self.hostname:
             token = token + ":" + self.hostname
+        # pylint: disable-next=consider-using-f-string
         log_debug(6, "New proxy token: %s" % token)
         return token
 
@@ -436,7 +469,9 @@ problems, isn't running, or the token is somehow corrupt.
         # different one? Ask upstream if token is valid. If it is,
         # upate cache.
         # copy to simple dict for transmission. :-/
+        # pylint: disable-next=invalid-name
         dumbToken = {}
+        # pylint: disable-next=invalid-name
         satInfo = None
         for key in (
             "X-RHN-Server-Id",
@@ -449,6 +484,7 @@ problems, isn't running, or the token is somehow corrupt.
                 dumbToken[key] = token[key]
         try:
             s = self.__getXmlrpcServer()
+            # pylint: disable-next=invalid-name
             satInfo = s.proxy.checkTokenValidity(dumbToken, self.get_system_id())
         except Exception:  # pylint: disable=E0012, W0703
             pass  # Satellite is not updated enough, keep old behavior
@@ -459,6 +495,7 @@ problems, isn't running, or the token is somehow corrupt.
         # (which the client does not pass up in headers and which we
         # wouldn't trust even if it did).
         if satInfo:
+            # pylint: disable-next=invalid-name
             clockSkew = time.time() - float(satInfo["X-RHN-Auth-Server-Time"])
             dumbToken["X-RHN-Auth-Proxy-Clock-Skew"] = clockSkew
             dumbToken["X-RHN-Auth-Channels"] = satInfo["X-RHN-Auth-Channels"]
@@ -470,6 +507,7 @@ problems, isn't running, or the token is somehow corrupt.
     # __private methods__
 
     @staticmethod
+    # pylint: disable-next=invalid-name
     def __getXmlrpcServer():
         """get an xmlrpc server object"""
         log_debug(3)
@@ -478,9 +516,11 @@ problems, isn't running, or the token is somehow corrupt.
         url = CFG.RHN_PARENT or ""
         url = parseUrl(url)[1].split(":")[0]
         url = "https://" + url + "/XMLRPC"
+        # pylint: disable-next=consider-using-f-string
         log_debug(3, "server url: %s" % url)
 
         if CFG.HTTP_PROXY:
+            # pylint: disable-next=invalid-name
             serverObj = rpclib.Server(
                 url,
                 proxy=CFG.HTTP_PROXY,
@@ -488,11 +528,14 @@ problems, isn't running, or the token is somehow corrupt.
                 password=CFG.HTTP_PROXY_PASSWORD,
             )
         else:
+            # pylint: disable-next=invalid-name
             serverObj = rpclib.Server(url)
         if CFG.CA_CHAIN:
             if not os.access(CFG.CA_CHAIN, os.R_OK):
                 log_error(
-                    "ERROR: missing or cannot access (for ca_chain): %s" % CFG.CA_CHAIN
+                    # pylint: disable-next=consider-using-f-string
+                    "ERROR: missing or cannot access (for ca_chain): %s"
+                    % CFG.CA_CHAIN
                 )
                 raise rhnFault(
                     1000,
@@ -509,6 +552,7 @@ problems, isn't running, or the token is somehow corrupt.
     def __cache_proxy_key(self):
         return "p" + str(self.__serverid) + sha256(self.hostname.encode()).hexdigest()
 
+    # pylint: disable-next=invalid-name
     def getProxyServerId(self):
         return self.__serverid
 
@@ -521,6 +565,7 @@ def get_auth_shelf():
     return rhnAuthCacheClient.Shelf((server, port))
 
 
+# pylint: disable-next=missing-class-docstring
 class AuthLocalBackend:
     _cache_prefix = "proxy-auth"
 

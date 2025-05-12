@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring
 
 import sys
 import os
@@ -15,10 +16,12 @@ def getid(line):
     try:
         return idpattern.search(line).group(1)
     except AttributeError as e:
+        # pylint: disable-next=consider-using-f-string
         print("Error in line '{0}': {1}".format(line, e))
         sys.exit(1)
 
 
+# pylint: disable-next=redefined-outer-name
 def align(orig, translation):
     # import pdb; pdb.set_trace()yy
     newfile = []
@@ -26,11 +29,14 @@ def align(orig, translation):
     source = ""
     insource = False
     currentid = None
+    # pylint: disable-next=unspecified-encoding
     with open(orig) as o:
+        # pylint: disable-next=consider-using-f-string
         print("Orig: {0}".format(orig))
         for oline in o:
             if not currentid and "trans-unit" in oline:
                 currentid = getid(oline)
+                # pylint: disable-next=consider-using-f-string
                 print("id: {0}".format(currentid))
                 node += oline
             elif currentid and "<source>" in oline and "</source>" in oline:
@@ -56,12 +62,15 @@ def align(orig, translation):
                     source += oline
             else:
                 newfile.append(oline)
+    # pylint: disable-next=unspecified-encoding
     with open(translation) as t:
+        # pylint: disable-next=consider-using-f-string
         print("translation: {0}".format(translation))
         for tline in t:
             if not currentid and "trans-unit" in tline:
                 # import pdb; pdb.set_trace()
                 currentid = getid(tline)
+                # pylint: disable-next=consider-using-f-string
                 print("id: {0}".format(currentid))
                 node += tline
             elif currentid and "trans-unit" in tline:
@@ -74,6 +83,7 @@ def align(orig, translation):
                         found = True
                         break
                 if not found:
+                    # pylint: disable-next=consider-using-f-string
                     print("Node not found: {0}".format(node))
                 node = ""
                 currentid = None
@@ -86,6 +96,7 @@ def align(orig, translation):
 
     if SAVE:
         translation += ".new"
+    # pylint: disable-next=unspecified-encoding
     with open(translation, "w") as new:
         for line in newfile:
             if isinstance(line, tuple):

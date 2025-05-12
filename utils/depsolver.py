@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # -*- coding: utf-8 -*-
 #
@@ -40,6 +41,7 @@ CACHE_DIR = "/tmp/cache/yum"
 PERSIST_DIR = "/var/lib/yum"
 
 
+# pylint: disable-next=missing-class-docstring
 class DepSolver:
 
     def __init__(self, repos, pkgs_in=None, quiet=True):
@@ -50,6 +52,7 @@ class DepSolver:
         self.pool = solv.Pool()
         self.setup()
 
+    # pylint: disable-next=invalid-name
     def setPackages(self, pkgs_in):
         self.pkgs = pkgs_in
 
@@ -63,12 +66,15 @@ class DepSolver:
             if not os.path.isfile(solv_path) or not solv_repo.add_solv(
                 solv.xfopen(str(solv_path)), 0
             ):
+                # pylint: disable-next=broad-exception-raised
                 raise Exception(
+                    # pylint: disable-next=consider-using-f-string
                     "Repository solv file cannot be found at: {}".format(solv_path)
                 )
         self.pool.addfileprovides()
         self.pool.createwhatprovides()
 
+    # pylint: disable-next=invalid-name
     def getDependencylist(self):
         """
         Get dependency list and suggested packages for package names provided.
@@ -92,6 +98,7 @@ class DepSolver:
             pkgselection.select(pkg, flags)
         return self.__locateDeps(pkgselection.solvables())
 
+    # pylint: disable-next=invalid-name
     def getRecursiveDepList(self):
         """
         Get dependency list and suggested packages for package names provided.
@@ -113,6 +120,7 @@ class DepSolver:
             found = self.processResults(results)[0]
             solved += to_solve
             to_solve = []
+            # pylint: disable-next=invalid-name,unused-variable
             for _dep, pkgs in list(found.items()):
                 for pkg in pkgs:
                     solved = list(set(solved))
@@ -121,10 +129,12 @@ class DepSolver:
             self.pkgs = to_solve
         return all_results
 
+    # pylint: disable-next=invalid-name
     def __locateDeps(self, pkgs):
         results = {}
 
         if not self.quiet:
+            # pylint: disable-next=consider-using-f-string
             print(("Solving Dependencies (%i): " % len(pkgs)))
             pb = ProgressBar(
                 prompt="",
@@ -149,6 +159,7 @@ class DepSolver:
         return results
 
     @staticmethod
+    # pylint: disable-next=invalid-name
     def processResults(results):
         reqlist = {}
         notfound = {}
@@ -179,6 +190,7 @@ class DepSolver:
                 continue
             for req in results[pkg]:
                 rlist = results[pkg][req]
+                # pylint: disable-next=consider-using-f-string
                 print_doc_str += "\n dependency: %s \n" % req
                 if not rlist:
                     # Unsatisfied dependency
@@ -186,6 +198,7 @@ class DepSolver:
                     continue
 
                 for po in rlist:
+                    # pylint: disable-next=consider-using-f-string
                     print_doc_str += "   provider: %s\n" % str(po)
         return print_doc_str
 
@@ -222,6 +235,7 @@ if __name__ == "__main__":
         #   - apache2-utils
         #
         try:
+            # pylint: disable-next=unspecified-encoding
             repo_cfg = yaml.load(open(options.input_file))
             for repository in repo_cfg["repositories"]:
                 arg_repo.append(
@@ -232,6 +246,7 @@ if __name__ == "__main__":
                 )
             arg_pkgs = repo_cfg["packages"]
         except Exception as exc:  # pylint: disable=broad-except
+            # pylint: disable-next=consider-using-f-string
             parser.error("Error reading input file: {}".format(exc))
             sys.exit(1)
     elif len(_args) >= 3:
@@ -248,6 +263,7 @@ if __name__ == "__main__":
 
     if options.output_yaml:
         output = {"packages": [], "dependencies": {}}
+        # pylint: disable-next=consider-using-dict-items
         for package in deplist:
             pkg_tag = str(package)
             output["packages"].append(pkg_tag)
@@ -261,5 +277,7 @@ if __name__ == "__main__":
         result_set = dsolve.processResults(deplist)
         print(result_set)
         print(
-            "Printable dependency Results: \n\n %s" % dsolve.printable_result(deplist)
+            # pylint: disable-next=consider-using-f-string
+            "Printable dependency Results: \n\n %s"
+            % dsolve.printable_result(deplist)
         )

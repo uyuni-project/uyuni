@@ -4,6 +4,8 @@ Test suite for the errata module.
 """
 
 from unittest.mock import MagicMock, patch
+
+# pylint: disable-next=unused-import
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.errata
 from xmlrpc import client as xmlrpclib
@@ -15,6 +17,7 @@ class TestSCErrata:
     Test suite for "errata" module.
     """
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_list_nodata(self, shell):
         """
         Test do_errata_list return no data
@@ -26,6 +29,7 @@ class TestSCErrata:
         shell.all_errata = {"one": None, "two": None}
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt:
             out = spacecmd.errata.do_errata_list(shell, "")
 
@@ -33,6 +37,7 @@ class TestSCErrata:
         assert shell.generate_errata_cache.called
         assert_expect(mprint.call_args_list, "one\ntwo")
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_list_with_data(self, shell):
         """
         Test do_errata_list return data for further processing
@@ -44,6 +49,7 @@ class TestSCErrata:
         shell.all_errata = {"one": None, "two": None}
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt:
             out = spacecmd.errata.do_errata_list(shell, "", doreturn=True)
 
@@ -52,6 +58,7 @@ class TestSCErrata:
         assert sorted(out) == ["one", "two"]
         assert shell.generate_errata_cache.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_listaffectedsystems_noargs(self, shell):
         """
         Test do_errata_listaffectedsystems without an arguments.
@@ -65,6 +72,7 @@ class TestSCErrata:
         shell.client.errata.listAffectedSystems = MagicMock()
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt:
             spacecmd.errata.do_errata_listaffectedsystems(shell, "")
 
@@ -73,6 +81,7 @@ class TestSCErrata:
         assert not mprint.called
         assert shell.help_errata_listaffectedsystems.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_listaffectedsystems_by_errata_name(self, shell):
         """
         Test do_errata_listaffectedsystems with errata name.
@@ -99,6 +108,7 @@ class TestSCErrata:
         )
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt:
             spacecmd.errata.do_errata_listaffectedsystems(shell, "foo")
 
@@ -118,6 +128,7 @@ class TestSCErrata:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_listcves_noargs(self, shell):
         """
         Test do_errata_listcves without arguments.
@@ -130,6 +141,7 @@ class TestSCErrata:
         shell.expand_errata = MagicMock()
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt:
             spacecmd.errata.do_errata_listcves(shell, "")
 
@@ -138,6 +150,7 @@ class TestSCErrata:
         assert not mprint.called
         assert shell.help_errata_listcves.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_listcves_not_found(self, shell):
         """
         Test do_errata_listcves not found.
@@ -150,6 +163,7 @@ class TestSCErrata:
         shell.expand_errata = MagicMock(return_value=[])
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt:
             spacecmd.errata.do_errata_listcves(shell, "invalid")
 
@@ -159,6 +173,7 @@ class TestSCErrata:
         assert mprint.called
         assert_expect(mprint.call_args_list, "No errata has been found")
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_listcves_expanded(self, shell):
         """
         Test do_errata_listcves data print check.
@@ -176,6 +191,7 @@ class TestSCErrata:
         shell.expand_errata = MagicMock(return_value=["one", "two"])
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt:
             spacecmd.errata.do_errata_listcves(shell, "CVE*")
 
@@ -195,6 +211,7 @@ class TestSCErrata:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_findbycve_noargs(self, shell):
         """
         Test do_errata_findbycve without arguments.
@@ -206,6 +223,7 @@ class TestSCErrata:
         shell.client.errata.findByCve = MagicMock()
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt:
             spacecmd.errata.do_errata_findbycve(shell, "")
 
@@ -213,6 +231,7 @@ class TestSCErrata:
         assert not mprint.called
         assert shell.help_errata_findbycve.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_findbycve_cvelist(self, shell):
         """
         Test do_errata_findbycve with CVE list.
@@ -234,6 +253,7 @@ class TestSCErrata:
         )
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt:
             spacecmd.errata.do_errata_findbycve(shell, "123 234 345")
 
@@ -258,6 +278,7 @@ class TestSCErrata:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_details_noargs(self, shell):
         """
         Test do_errata_details without arguments.
@@ -274,6 +295,7 @@ class TestSCErrata:
         shell.expand_errata = MagicMock()
         mprint = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt:
             spacecmd.errata.do_errata_details(shell, "")
 
@@ -286,6 +308,7 @@ class TestSCErrata:
         assert not mprint.called
         assert shell.help_errata_details.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_details_erratum_failure(self, shell):
         """
         Test do_errata_details erratum failure.
@@ -305,8 +328,11 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt, patch(
-            "spacecmd.errata.logging", logger
+            "spacecmd.errata.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.errata.do_errata_details(shell, "cve*")
 
@@ -327,6 +353,7 @@ class TestSCErrata:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_details_erratum_data(self, shell):
         """
         Test do_errata_details erratum data.
@@ -439,8 +466,11 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt, patch(
-            "spacecmd.errata.logging", logger
+            "spacecmd.errata.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.errata.do_errata_details(shell, "cve*")
 
@@ -578,6 +608,7 @@ class TestSCErrata:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_details_erratum_none_data(self, shell):
         """
         Test do_errata_details erratum none data.
@@ -608,8 +639,11 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt, patch(
-            "spacecmd.errata.logging", logger
+            "spacecmd.errata.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.errata.do_errata_details(shell, "cve*")
 
@@ -711,6 +745,7 @@ class TestSCErrata:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_delete_noargs(self, shell):
         """
         Test do_errata_delete without arguments.
@@ -727,8 +762,11 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt, patch(
-            "spacecmd.errata.logging", logger
+            "spacecmd.errata.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.errata.do_errata_delete(shell, "")
 
@@ -742,6 +780,7 @@ class TestSCErrata:
         assert not logger.warning.called
         assert shell.help_errata_delete.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_delete_no_errata(self, shell):
         """
         Test do_errata_delete without errata.
@@ -758,8 +797,11 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt, patch(
-            "spacecmd.errata.logging", logger
+            "spacecmd.errata.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.errata.do_errata_delete(shell, "CVE-X")
 
@@ -775,6 +817,7 @@ class TestSCErrata:
 
         assert_expect(logger.warning.call_args_list, "No patches to delete")
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_delete_no_errata_non_interactive(self, shell):
         """
         Test do_errata_delete without errata (non-interactive mode).
@@ -797,8 +840,11 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt, patch(
-            "spacecmd.errata.logging", logger
+            "spacecmd.errata.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.errata.do_errata_delete(shell, "CVE-X")
 
@@ -842,6 +888,7 @@ class TestSCErrata:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_publish_noargs(self, shell):
         """
         Test do_errata_publish without arguments.
@@ -856,8 +903,11 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt, patch(
-            "spacecmd.errata.logging", logger
+            "spacecmd.errata.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.errata.do_errata_publish(shell, "")
 
@@ -868,6 +918,7 @@ class TestSCErrata:
         assert not logger.warning.called
         assert shell.help_errata_publish.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_publish_no_errata(self, shell):
         """
         Test do_errata_publish no errata found.
@@ -882,8 +933,11 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt, patch(
-            "spacecmd.errata.logging", logger
+            "spacecmd.errata.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.errata.do_errata_publish(shell, "CVE-1 base_channel")
 
@@ -897,6 +951,7 @@ class TestSCErrata:
             logger.warning.call_args_list, ["No patches to publish"]
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_publish_no_interactive(self, shell):
         """
         Test do_errata_publish publish to channel without interactive mode
@@ -912,8 +967,11 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt, patch(
-            "spacecmd.errata.logging", logger
+            "spacecmd.errata.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.errata.do_errata_publish(shell, "CVE-1 base_channel")
 
@@ -933,6 +991,7 @@ class TestSCErrata:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_search_noargs(self, shell):
         """
         Test do_errata_search without arguments.
@@ -948,8 +1007,11 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt, patch(
-            "spacecmd.errata.logging", logger
+            "spacecmd.errata.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.errata.do_errata_search(shell, "")
 
@@ -960,6 +1022,7 @@ class TestSCErrata:
         assert not logger.warning.called
         assert shell.help_errata_search.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_search_by_cve_no_data(self, shell):
         """
         Test do_errata_search without arguments.
@@ -995,8 +1058,11 @@ class TestSCErrata:
             """
             mp_out.append(erratum)
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt, patch(
-            "spacecmd.errata.print_errata_summary", prn_err_summary
+            "spacecmd.errata.print_errata_summary",
+            prn_err_summary,
+            # pylint: disable-next=unused-variable,unused-variable
         ) as pes, patch("spacecmd.errata.logging", logger) as lgr:
             out = spacecmd.errata.do_errata_search(shell, "CVE-123-23456")
 
@@ -1007,6 +1073,7 @@ class TestSCErrata:
         assert not shell.help_errata_search.called
         assert out is None
         assert shell.client.errata.findByCve.called
+        # pylint: disable-next=unidiomatic-typecheck
         assert type(mp_out) == list
         assert len(mp_out) == 1
         for key, value in {
@@ -1018,6 +1085,7 @@ class TestSCErrata:
             assert key in mp_out[0]
             assert mp_out[0][key] == value
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_search_by_cve_with_data(self, shell):
         """
         Test do_errata_search with data return
@@ -1043,8 +1111,11 @@ class TestSCErrata:
         logger = MagicMock()
         prn_err_summary = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt, patch(
-            "spacecmd.errata.print_errata_summary", prn_err_summary
+            "spacecmd.errata.print_errata_summary",
+            prn_err_summary,
+            # pylint: disable-next=unused-variable,unused-variable
         ) as pes, patch("spacecmd.errata.logging", logger) as lgr:
             out = spacecmd.errata.do_errata_search(
                 shell, "CVE-123-23456", doreturn=True
@@ -1060,6 +1131,7 @@ class TestSCErrata:
         assert shell.client.errata.findByCve.called
         assert out == ["CVE-123"]
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_apply_noargs(self, shell):
         """
         Test do_errata_apply without arguments.
@@ -1079,8 +1151,11 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt, patch(
-            "spacecmd.errata.logging", logger
+            "spacecmd.errata.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.errata.do_errata_apply(shell, "")
 
@@ -1095,6 +1170,7 @@ class TestSCErrata:
         assert not logger.warning.called
         assert shell.help_errata_apply.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_apply_non_interactive_no_errata(self, shell):
         """
         Test do_errata_apply non-interactive, no patches to apply.
@@ -1116,8 +1192,11 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt, patch(
-            "spacecmd.errata.logging", logger
+            "spacecmd.errata.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.errata.do_errata_apply(shell, "foo -s 201901011030")
 
@@ -1133,6 +1212,7 @@ class TestSCErrata:
 
         assert_expect(logger.warning.call_args_list, "No patches to apply")
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_apply_non_interactive_affects_no_system(self, shell):
         """
         Test do_errata_apply non-interactive, no systems affected.
@@ -1156,8 +1236,11 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt, patch(
-            "spacecmd.errata.logging", logger
+            "spacecmd.errata.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.errata.do_errata_apply(shell, "cve* -s 201901011030")
 
@@ -1183,6 +1266,7 @@ class TestSCErrata:
         )
         assert_expect(logger.warning.call_args_list, "No patches to apply")
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_apply_non_interactive_api_10_11(self, shell):
         """
         Test do_errata_apply non-interactive, API 10.11 version.
@@ -1196,6 +1280,7 @@ class TestSCErrata:
         shell.get_system_id = (
             lambda data: zlib.adler32(data.encode("utf-8")) & 0xFFFFFFFF
         )
+        # pylint: disable-next=unnecessary-lambda,consider-using-f-string
         shell.get_erratum_name = lambda data: "CVE-{}-name".format(data)
         shell.expand_errata = MagicMock(return_value=["CVE-1", "CVE-2"])
         shell.client.errata.listAffectedSystems = MagicMock(
@@ -1230,8 +1315,11 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt, patch(
-            "spacecmd.errata.logging", logger
+            "spacecmd.errata.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.errata.do_errata_apply(shell, "cve* -s 201901011030")
 
@@ -1274,6 +1362,7 @@ class TestSCErrata:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_errata_apply_non_interactive_api_non1011_version(self, shell):
         """
         Test do_errata_apply non-interactive, API non-10.11 version.
@@ -1287,6 +1376,7 @@ class TestSCErrata:
         shell.get_system_id = (
             lambda data: zlib.adler32(data.encode("utf-8")) & 0xFFFFFFFF
         )
+        # pylint: disable-next=unnecessary-lambda,consider-using-f-string
         shell.get_erratum_name = lambda data: "CVE-{}-name".format(data)
         shell.expand_errata = MagicMock(return_value=["CVE-1", "CVE-2"])
         shell.client.errata.listAffectedSystems = MagicMock(
@@ -1321,8 +1411,11 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.errata.print", mprint) as prt, patch(
-            "spacecmd.errata.logging", logger
+            "spacecmd.errata.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.errata.do_errata_apply(shell, "cve* -s 201901011030")
 

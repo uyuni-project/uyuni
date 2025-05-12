@@ -1,20 +1,26 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring
 
 import xmlrpclib
 import unittest
 from datetime import datetime, timedelta
 
+# pylint: disable-next=wildcard-import
 from config import *
 
 
+# pylint: disable-next=missing-class-docstring,undefined-variable
 class SystemTests(RhnTestCase):
 
     def test_get_running_kernel(self):
+        # pylint: disable-next=undefined-variable,undefined-variable
         kernel = client.system.getRunningKernel(self.session_key, SERVER_ID)
+        # pylint: disable-next=singleton-comparison
         self.assertTrue(kernel != None)
         self.assertTrue(len(kernel) > 0)
 
     def test_compare_profiles(self):
+        # pylint: disable-next=undefined-variable,undefined-variable,undefined-variable
         result = client.system.comparePackages(self.session_key, SERVER_ID, SERVER_ID_2)
         for row in result:
             self.assertTrue(row.has_key("package_name"))
@@ -23,6 +29,7 @@ class SystemTests(RhnTestCase):
             self.assertTrue(row.has_key("comparison"))
 
     def test_unscheduled_errata(self):
+        # pylint: disable-next=undefined-variable,undefined-variable
         errata = client.system.getUnscheduledErrata(self.session_key, SERVER_ID_2)
         self.assertTrue(len(errata) > 0)
 
@@ -48,26 +55,38 @@ class SystemTests(RhnTestCase):
     #    client.system.scheduleApplyErrata(self.session_key, SERVER_ID, errata_ids)
 
     def test_schedule_package_install(self):
+        # pylint: disable-next=undefined-variable
         installable = client.system.listLatestInstallablePackages(
-            self.session_key, SERVER_ID
+            # pylint: disable-next=undefined-variable
+            self.session_key,
+            # pylint: disable-next=undefined-variable
+            SERVER_ID,
         )
         install_these = []
         for pkg in installable[0:3]:
             install_these.append(pkg["package_id"])
         earliest = datetime.now() + timedelta(3)  # 3 days from now
         dt = xmlrpclib.DateTime(earliest.timetuple())
+        # pylint: disable-next=undefined-variable
         client.system.schedulePackageInstall(
-            self.session_key, SERVER_ID, install_these, dt
+            # pylint: disable-next=undefined-variable
+            self.session_key,
+            # pylint: disable-next=undefined-variable
+            SERVER_ID,
+            install_these,
+            dt,
         )
 
     def test_schedule_hardware_refresh(self):
         earliest = datetime.now() + timedelta(3)  # 3 days from now
         dt = xmlrpclib.DateTime(earliest.timetuple())
+        # pylint: disable-next=undefined-variable,undefined-variable
         client.system.scheduleHardwareRefresh(self.session_key, SERVER_ID, dt)
 
     def test_schedule_package_refresh(self):
         earliest = datetime.now() + timedelta(3)  # 3 days from now
         dt = xmlrpclib.DateTime(earliest.timetuple())
+        # pylint: disable-next=undefined-variable,undefined-variable
         result = client.system.schedulePackageRefresh(self.session_key, SERVER_ID, dt)
         self.assertEquals(result, 1)
 
@@ -79,11 +98,21 @@ cat /proc/cpuinfo
         earliest = datetime.now() + timedelta(3)  # 3 days
         dt = xmlrpclib.DateTime(earliest.timetuple())
 
+        # pylint: disable-next=undefined-variable,unused-variable
         script_id = client.system.scheduleScriptRun(
-            self.session_key, SERVER_ID, "root", "root", 600, script, dt
+            # pylint: disable-next=undefined-variable
+            self.session_key,
+            # pylint: disable-next=undefined-variable
+            SERVER_ID,
+            "root",
+            "root",
+            600,
+            script,
+            dt,
         )
 
     def test_get_script_output(self):
+        # pylint: disable-next=undefined-variable,undefined-variable
         results = client.system.getScriptResults(self.session_key, SCRIPT_ACTION_ID)
         self.assertEquals(1, len(results))
         for r in results:
@@ -93,6 +122,7 @@ cat /proc/cpuinfo
             self.assertTrue(r.has_key("output"))
 
     def test_search_by_name(self):
+        # pylint: disable-next=undefined-variable,undefined-variable
         results = client.system.searchByName(self.session_key, SERVER_NAME)
         self.assertTrue(len(results) > 0)
         for r in results:
@@ -115,27 +145,35 @@ cat /proc/cpuinfo
         details["room"] = "1401"
         details["rack"] = "I wish..."
 
+        # pylint: disable-next=undefined-variable,undefined-variable
         client.system.setDetails(self.session_key, SERVER_ID, details)
 
     def test_add_remove_entitlements(self):
         ents = ["enterprise_entitled"]
+        # pylint: disable-next=undefined-variable,undefined-variable
         client.system.removeEntitlements(self.session_key, SERVER_ID, ents)
+        # pylint: disable-next=undefined-variable,undefined-variable
         details = client.system.getDetails(self.session_key, SERVER_ID)
         lookup_ents = details["addon_entitlements"]
         self.assertFalse(ents[0] in lookup_ents)
 
+        # pylint: disable-next=undefined-variable,undefined-variable
         client.system.addEntitlements(self.session_key, SERVER_ID, ents)
+        # pylint: disable-next=undefined-variable,undefined-variable
         details = client.system.getDetails(self.session_key, SERVER_ID)
         lookup_ents = details["addon_entitlements"]
         self.assertTrue(ents[0] in lookup_ents)
 
+        # pylint: disable-next=undefined-variable,undefined-variable
         client.system.removeEntitlements(self.session_key, SERVER_ID, ents)
+        # pylint: disable-next=undefined-variable,undefined-variable
         details = client.system.getDetails(self.session_key, SERVER_ID)
         lookup_ents = details["addon_entitlements"]
         self.assertFalse(ents[0] in lookup_ents)
 
     def test_sync_to_system(self):
         packages_to_sync = [232, 260]
+        # pylint: disable-next=undefined-variable,undefined-variable,undefined-variable
         diff = client.system.comparePackages(self.session_key, SERVER_ID_2, SERVER_ID)
         for pnid in packages_to_sync:
             found = False
@@ -147,11 +185,20 @@ cat /proc/cpuinfo
 
         earliest = datetime.now() + timedelta(3)  # 3 days from now
         dt = xmlrpclib.DateTime(earliest.timetuple())
+        # pylint: disable-next=undefined-variable
         client.system.scheduleSyncPackagesWithSystem(
-            self.session_key, SERVER_ID_2, SERVER_ID, packages_to_sync, dt
+            # pylint: disable-next=undefined-variable,undefined-variable
+            self.session_key,
+            # pylint: disable-next=undefined-variable
+            SERVER_ID_2,
+            # pylint: disable-next=undefined-variable
+            SERVER_ID,
+            packages_to_sync,
+            dt,
         )
 
     def test_get_unscheduled_errata(self):
+        # pylint: disable-next=undefined-variable,undefined-variable
         results = client.system.getUnscheduledErrata(self.session_key, SERVER_ID)
         for r in results:
             self.assertTrue(r.has_key("id"))

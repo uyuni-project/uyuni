@@ -4,10 +4,16 @@ Test activation key methods.
 """
 from mock import MagicMock, patch
 import pytest
+
+# pylint: disable-next=unused-import
 import time
+
+# pylint: disable-next=unused-import
 import hashlib
 import spacecmd.activationkey
 from xmlrpc import client as xmlrpclib
+
+# pylint: disable-next=unused-import
 from helpers import shell, exc2str, assert_list_args_expect
 
 
@@ -16,6 +22,7 @@ class TestSCActivationKey:
     Test activation key.
     """
 
+    # pylint: disable-next=redefined-outer-name
     def test_completer_ak_addpackages(self, shell):
         """
         Test tab completer activation keys on addpackages.
@@ -37,6 +44,7 @@ class TestSCActivationKeyMethods:
     Test actuvation key methods.
     """
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addpackages_noargs(self, shell):
         """
         Test add packages method call shows help on no args.
@@ -47,6 +55,7 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_addpackages(shell, "")
         assert shell.help_activationkey_addpackages.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addpackages_help_args(self, shell):
         """
         Test add packages method call shows help on help args passed.
@@ -57,6 +66,7 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_addpackages(shell, "help")
         assert shell.help_activationkey_addpackages.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addpackages_args(self, shell):
         """
         Test add packages method call shows help on args passed.
@@ -77,6 +87,7 @@ class TestSCActivationKeyMethods:
         for arg in args:
             assert arg["name"] in ["something", "here"]
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_removepackages_noargs(self, shell):
         """
         Test remove packages method call shows help on no args.
@@ -88,6 +99,7 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_removepackages(shell, "")
         assert not shell.help_activationkey_removePackages.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_removepackages_help_args(self, shell):
         """
         Test remove packages method call shows help if only one argument is passed.
@@ -98,6 +110,7 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_removepackages(shell, "key")
         assert shell.help_activationkey_removepackages.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_removepackages_args(self, shell):
         """
         Test remove packages method calls "removePackages" API call.
@@ -118,6 +131,7 @@ class TestSCActivationKeyMethods:
         assert "name" in args[0]
         assert args[0]["name"] == "package"
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addgroups_noargs(self, shell):
         """
         Test addgroup without args calls help.
@@ -128,6 +142,7 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_addgroups(shell, "")
         assert shell.help_activationkey_addgroups.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addgroups_help_args(self, shell):
         """
         Test add groups method call shows help if only one argument is passed.
@@ -138,6 +153,7 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_addgroups(shell, "key")
         assert shell.help_activationkey_addgroups.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addgroups_args(self, shell):
         """
         Test "addgroups" method calls "addServerGroups" API call.
@@ -158,6 +174,7 @@ class TestSCActivationKeyMethods:
         assert len(args) == 1
         assert args == [42]
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_removegroups_noargs(self, shell):
         """
         Test removegroup without args calls help.
@@ -168,6 +185,7 @@ class TestSCActivationKeyMethods:
         spacecmd.activationkey.do_activationkey_removegroups(shell, "")
         assert shell.help_activationkey_removegroups.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_removegroups_help_args(self, shell):
         """
         Test remove groups method call shows help if only one argument is passed.
@@ -179,6 +197,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_removegroups.called
         assert not shell.client.activationkey.removeServerGroups.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_removegroups_args(self, shell):
         """
         Test "removegroups" method calls "removeServerGroups" API call.
@@ -199,6 +218,7 @@ class TestSCActivationKeyMethods:
         assert len(args) == 1
         assert args == [42]
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addentitlements_noargs(self, shell):
         """
         Test addentitlements without args calls help.
@@ -210,6 +230,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_addentitlements.called
         assert not shell.client.activationkey.addEntitlements.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addentitlements_help_args(self, shell):
         """
         Test addentitlements method call shows help if only one argument is passed.
@@ -221,6 +242,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_addentitlements.called
         assert not shell.client.activationkey.addEntitlements.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addentitlements_args(self, shell):
         """
         Test "addentitlements" method calls "addEntitlements" API call.
@@ -242,6 +264,7 @@ class TestSCActivationKeyMethods:
         assert len(args) == 1
         assert args == ["entitlement"]
 
+    # pylint: disable-next=function-redefined,redefined-outer-name
     def test_do_activationkey_addentitlements_noargs(self, shell):
         """
         Test addentitlements without args calls help.
@@ -253,6 +276,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_addentitlements.called
         assert not shell.client.activationkey.addEntitlements.called
 
+    # pylint: disable-next=function-redefined,redefined-outer-name
     def test_do_activationkey_addentitlements_help_args(self, shell):
         """
         Test addentitlements method call shows help if only one argument is passed.
@@ -264,6 +288,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_addentitlements.called
         assert not shell.client.activationkey.addEntitlements.called
 
+    # pylint: disable-next=function-redefined,redefined-outer-name
     def test_do_activationkey_addentitlements_args(self, shell):
         """
         Test "addentitlements" method calls "addEntitlements" API call.
@@ -285,6 +310,7 @@ class TestSCActivationKeyMethods:
         assert len(args) == 1
         assert args == ["entitlement"]
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_removeentitlements_noargs(self, shell):
         """
         Test removeentitlements without args calls help.
@@ -296,6 +322,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_removeentitlements.called
         assert not shell.client.activationkey.removeEntitlements.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_removeentitlements_help_args(self, shell):
         """
         Test removeentitlements method call shows help if only one argument is passed.
@@ -307,6 +334,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_removeentitlements.called
         assert not shell.client.activationkey.removeEntitlements.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_removeentitlements_args(self, shell):
         """
         Test "removeentitlements" method calls "removeEntitlements" API call.
@@ -328,6 +356,7 @@ class TestSCActivationKeyMethods:
         assert len(args) == 1
         assert args == ["entitlement"]
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addchildchannels_noargs(self, shell):
         """
         Test addchildchannels without args calls help.
@@ -339,6 +368,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_addchildchannels.called
         assert not shell.client.activationkey.addChildChannels.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addchildchannels_help_args(self, shell):
         """
         Test addchildchannels method call shows help if only one argument is passed.
@@ -350,6 +380,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_addchildchannels.called
         assert not shell.client.activationkey.addChildChannels.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addchildchannels_args(self, shell):
         """
         Test "addchildchannels" method calls "addChildChannels" API call.
@@ -371,6 +402,7 @@ class TestSCActivationKeyMethods:
         assert len(args) == 1
         assert args == ["some_channel"]
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_removechildchannels_noargs(self, shell):
         """
         Test removechildchannels without args calls help.
@@ -382,6 +414,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_removechildchannels.called
         assert not shell.client.activationkey.removeChildChannels.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_removechildchannels_help_args(self, shell):
         """
         Test removechildchannels method call shows help if only one argument is passed.
@@ -393,6 +426,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_removechildchannels.called
         assert not shell.client.activationkey.removeChildChannels.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_removechildchannels_args(self, shell):
         """
         Test "removechildchannels" method calls "removeChildChannels" API call.
@@ -414,6 +448,7 @@ class TestSCActivationKeyMethods:
         assert len(args) == 1
         assert args == ["some_channel"]
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_listchildchannels_noargs(self, shell):
         """
         Test listchildchannels command triggers help on no args
@@ -427,6 +462,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_listchildchannels.called
         assert not shell.client.activationkey.getDetails.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_listchildchannels_args(self, shell):
         """
         Test listchildchannels command prints child channels by the activation key passed.
@@ -441,6 +477,7 @@ class TestSCActivationKeyMethods:
             spacecmd.activationkey.do_activationkey_listchildchannels(shell, "key")
         assert mprint.call_args_list[0][0][0] == "one\nthree\ntwo"  # Sorted
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_listbasechannel_noargs(self, shell):
         """
         Test listbasechannels command triggers help on no args
@@ -454,6 +491,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_listbasechannel.called
         assert not shell.client.activationkey.getDetails.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_listbasechannel_args(self, shell):
         """
         Test listbasechannels command prints base channel by the activation key passed.
@@ -470,6 +508,7 @@ class TestSCActivationKeyMethods:
             spacecmd.activationkey.do_activationkey_listbasechannel(shell, "key")
         assert mprint.call_args_list[0][0][0] == "Darth Vader"
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_listgroups_noargs(self, shell):
         """
         Test listgroups command triggers help on no args
@@ -484,6 +523,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_listgroups.called
         assert not shell.client.activationkey.getDetails.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_listgroups_args(self, shell):
         """
         Test listgroups command prints groups by the activation key passed.
@@ -503,6 +543,7 @@ class TestSCActivationKeyMethods:
         assert mprint.call_args_list[0][0][0] == "RD-2D"
         assert mprint.call_args_list[1][0][0] == "C-3PO"
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_listentitlements_noargs(self, shell):
         """
         Test listentitlements command triggers help on no args
@@ -514,6 +555,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_listentitlements.called
         assert not shell.client.activationkey.getDetails.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_listentitlements_args(self, shell):
         """
         Test listentitlements command prints entitlements by the activation key passed.
@@ -528,6 +570,7 @@ class TestSCActivationKeyMethods:
             spacecmd.activationkey.do_activationkey_listentitlements(shell, "key")
         assert mprint.call_args_list[0][0][0] == "one\ntwo\nthree"
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_listpackages_noargs(self, shell):
         """
         Test listpackages command triggers help on no args
@@ -539,6 +582,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_listpackages.called
         assert not shell.client.activationkey.getDetails.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_listpackages_args_arch(self, shell):
         """
         Test listpackages command prints packages by the activation key passed with the arch included.
@@ -562,6 +606,7 @@ class TestSCActivationKeyMethods:
         assert mprint.call_args_list[0][0][0] == "libzypp.ZX80"
         assert mprint.call_args_list[1][0][0] == "java-17-openjdk-devel.CBM64"
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_listpackages_args_noarch(self, shell):
         """
         Test listpackages command prints packages by the activation key passed without architecture included.
@@ -585,6 +630,7 @@ class TestSCActivationKeyMethods:
         assert mprint.call_args_list[0][0][0] == "libzypp"
         assert mprint.call_args_list[1][0][0] == "java-17-openjdk-devel"
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_listconfigchannels_noargs(self, shell):
         """
         Test listconfigchannels command triggers help on no args
@@ -596,6 +642,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_listconfigchannels.called
         assert not shell.client.activationkey.listConfigChannels.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_listconfigchannels_args(self, shell):
         """
         Test listconfigchannels command prints entitlements by the activation key passed.
@@ -617,6 +664,7 @@ class TestSCActivationKeyMethods:
             == "commodore64\nlightsaber_patches\npascal_for_msdos"
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addconfigchannels_noargs(self, shell):
         """
         Test addconfigchannels command triggers help on no args.
@@ -628,6 +676,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_addconfigchannels.called
         assert not shell.client.activationkey.addConfigChannels.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addconfigchannels_unknown_noargs(self, shell):
         """
         Test addconfigchannels command raises an Exception on unknown passed args.
@@ -645,6 +694,7 @@ class TestSCActivationKeyMethods:
         assert not shell.client.activationkey.addConfigChannels.called
 
     @patch("spacecmd.activationkey.is_interactive", MagicMock(return_value=False))
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addconfigchannels_check_args_noninteractive(self, shell):
         """
         Test addconfigchannels command calls addConfigChannels API function on params added.
@@ -697,6 +747,7 @@ class TestSCActivationKeyMethods:
         assert bool == type(order)
         assert order
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_removeconfigchannels_noargs(self, shell):
         """
         Test removeconfigchannels command triggers help on no args.
@@ -708,6 +759,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_removeconfigchannels.called
         assert not shell.client.activationkey.removeConfigChannels.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_removeconfigchannels_insuff_args(self, shell):
         """
         Test removeconfigchannels command triggers help on insufficient args.
@@ -719,6 +771,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_removeconfigchannels.called
         assert not shell.client.activationkey.removeConfigChannels.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_removeconfigchannels_args(self, shell):
         """
         Test removeconfigchannels command is calling removeConfigChannels API by the activation key passed.
@@ -726,6 +779,7 @@ class TestSCActivationKeyMethods:
         shell.help_activationkey_removeconfigchannels = MagicMock()
         shell.client.activationkey.removeConfigChannels = MagicMock()
 
+        # pylint: disable-next=unused-variable
         mprint = MagicMock()
         spacecmd.activationkey.do_activationkey_removeconfigchannels(
             shell, "key some_patches"
@@ -745,6 +799,7 @@ class TestSCActivationKeyMethods:
         "spacecmd.activationkey.config_channel_order",
         MagicMock(return_value=["lightsaber_patches", "rd2d_upgrade"]),
     )
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_setconfigchannelorder_noargs(self, shell):
         """
         Test setconfigchannelorder command triggers help on no args.
@@ -763,6 +818,7 @@ class TestSCActivationKeyMethods:
         "spacecmd.activationkey.config_channel_order",
         MagicMock(return_value=["lightsaber_patches", "rd2d_upgrade"]),
     )
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_setconfigchannelorder_args(self, shell):
         """
         Test setconfigchannelorder command triggers setConfigChannels API call with proper function
@@ -782,6 +838,7 @@ class TestSCActivationKeyMethods:
         assert mprint.call_args_list[3][0][0] == "[2] rd2d_upgrade"
 
     @patch("spacecmd.activationkey.is_interactive", MagicMock(return_value=False))
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_create_nointeract_argstest(self, shell):
         """
         Test call activation key API "create".
@@ -837,6 +894,7 @@ class TestSCActivationKeyMethods:
         assert entl == ["expanded", "universe"]
         assert universal
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_activationkey_delete_insuff_args(self, shell):
         """
         Test activationkey_delete command triggers help on insufficient args.
@@ -852,6 +910,7 @@ class TestSCActivationKeyMethods:
         "spacecmd.activationkey.filter_results",
         MagicMock(return_value=["some_patches", "some_stuff"]),
     )
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_activationkey_delete_args(self, shell):
         """
         Test activationkey_delete command is calling "delete" (key) API.
@@ -861,8 +920,11 @@ class TestSCActivationKeyMethods:
 
         mprint = MagicMock()
         logger = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.activationkey.print", mprint) as mpr, patch(
-            "spacecmd.activationkey.logging", logger
+            "spacecmd.activationkey.logging",
+            logger,
+            # pylint: disable-next=unused-variable
         ) as lgr:
             spacecmd.activationkey.do_activationkey_delete(shell, "key some*")
             assert not shell.help_activationkey_delete.called
@@ -889,6 +951,7 @@ class TestSCActivationKeyMethods:
         "spacecmd.activationkey.filter_results",
         MagicMock(return_value=["some_patches", "some_stuff"]),
     )
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_activationkey_list_args(self, shell):
         """
         Test activationkey_list command is calling listActivationKeys API.
@@ -905,6 +968,7 @@ class TestSCActivationKeyMethods:
         )
 
         mprint = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.activationkey.print", mprint) as mpr:
             ret = sorted(
                 spacecmd.activationkey.do_activationkey_list(
@@ -914,6 +978,7 @@ class TestSCActivationKeyMethods:
         assert len(ret) == 2
         assert ret == ["some_patches", "some_stuff"]
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_listsystems_noargs(self, shell):
         """
         Test activationkey_listsystems command is invoking help message on insufficient arguments.
@@ -925,6 +990,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_listsystems.called
         assert not shell.client.activationkey.listActivatedSystems.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_listsystems_args(self, shell):
         """
         Test activationkey_listsystems command is calling listActivatedSystems API function.
@@ -938,6 +1004,7 @@ class TestSCActivationKeyMethods:
         )
 
         mprint = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.activationkey.print", mprint) as mpr:
             spacecmd.activationkey.do_activationkey_listsystems(shell, "key")
         assert not shell.help_activationkey_listsystems.called
@@ -945,6 +1012,7 @@ class TestSCActivationKeyMethods:
         assert mprint.called
         assert mprint.call_args_list[0][0][0] == "chair.lan\nhouseshoe.lan"
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_details_noargs(self, shell):
         """
         Test activationkey_details shows a help screen if no sufficient arguments has been passed.
@@ -962,6 +1030,7 @@ class TestSCActivationKeyMethods:
         assert not shell.client.activationkey.listConfigChannels.called
         assert not shell.client.activationkey.checkConfigDeployment.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_details_args(self, shell):
         """
         Test activationkey_details returns key details if proper arguments passed.
@@ -998,6 +1067,7 @@ class TestSCActivationKeyMethods:
         )
 
         mprint = MagicMock()
+        # pylint: disable-next=unused-variable
         with patch("spacecmd.activationkey.print", mprint) as mpr:
             out = spacecmd.activationkey.do_activationkey_details(shell, "somekey")
         assert mprint.called
@@ -1037,6 +1107,7 @@ class TestSCActivationKeyMethods:
         for idx, line in enumerate(out):
             assert line == expectation[idx]
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_enableconfigdeployment_noargs(self, shell):
         """
         Test activationkey_enableconfigdeployment command is invoking help message on insufficient arguments.
@@ -1048,6 +1119,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_enableconfigdeployment.called
         assert not shell.client.activationkey.enableConfigDeployment.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_enableconfigdeployment_args(self, shell):
         """
         Test activationkey_enableconfigdeployment command is invoking enableConfigDeployment API call.
@@ -1082,8 +1154,10 @@ class TestSCActivationKeyMethods:
             assert shell.session == session
             assert keyname in keynames
             keynames.pop(keynames.index(keyname))
+        # pylint: disable-next=use-implicit-booleaness-not-comparison
         assert keynames == []
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_disableconfigdeployment_noargs(self, shell):
         """
         Test activationkey_disableconfigdeployment command is invoking help message on insufficient arguments.
@@ -1095,6 +1169,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_disableconfigdeployment.called
         assert not shell.client.activationkey.disableConfigDeployment.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_disableconfigdeployment_args(self, shell):
         """
         Test activationkey_disableconfigdeployment command is invoking disableConfigDeployment API call.
@@ -1129,8 +1204,10 @@ class TestSCActivationKeyMethods:
             assert shell.session == session
             assert keyname in keynames
             keynames.pop(keynames.index(keyname))
+        # pylint: disable-next=use-implicit-booleaness-not-comparison
         assert keynames == []
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addconfigchannels_setbasechannel_noargs(self, shell):
         """
         Test do_activationkey_addconfigchannels_setbasechannel involes help message on issuficient arguments.
@@ -1149,6 +1226,7 @@ class TestSCActivationKeyMethods:
         assert not shell.client.activationkey.setDetails.called
         assert not shell.client.activationkey.getDetails.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addconfigchannels_setbasechannel_args(self, shell):
         """
         Test do_activationkey_addconfigchannels_setbasechannel calls setDetails API call on proper args.
@@ -1177,6 +1255,7 @@ class TestSCActivationKeyMethods:
             assert key_details[dkey] == details[dkey]
         assert details["base_channel_label"] == "death_star_patches_channel"
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addconfigchannels_setbasechannel_usage_limit(self, shell):
         """
         Test do_activationkey_addconfigchannels_setbasechannel resets usage limit from 0 to -1.
@@ -1206,6 +1285,7 @@ class TestSCActivationKeyMethods:
         assert details["base_channel_label"] == "death_star_patches_channel"
         assert details["usage_limit"] == -1
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addconfigchannels_setusagelimit_noargs(self, shell):
         """
         Test do_activationkey_addconfigchannels_setusagelimit involes help message on issuficient arguments.
@@ -1224,6 +1304,7 @@ class TestSCActivationKeyMethods:
         assert not shell.client.activationkey.setDetails.called
         assert not shell.client.activationkey.getDetails.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addconfigchannels_setusagelimit_args(self, shell):
         """
         Test do_activationkey_addconfigchannels_setbasechannel resets usage limit from 0 to -1.
@@ -1248,9 +1329,11 @@ class TestSCActivationKeyMethods:
         for dkey in ["description", "universal_default", "base_channel_label"]:
             assert dkey in details
             assert key_details[dkey] == details[dkey]
+        # pylint: disable-next=unidiomatic-typecheck
         assert type(details["usage_limit"]) == int
         assert details["usage_limit"] == 42
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addconfigchannels_setuniversaldefault_noargs(self, shell):
         """
         Test do_activationkey_addconfigchannels_setuniversaldefault involes help message on issuficient arguments.
@@ -1264,6 +1347,7 @@ class TestSCActivationKeyMethods:
         assert not shell.client.activationkey.setDetails.called
         assert not shell.client.activationkey.getDetails.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_addconfigchannels_setuniversaldefault_args(self, shell):
         """
         Test do_activationkey_addconfigchannels_setuniversaldefault calls API to set the key settings.
@@ -1288,9 +1372,11 @@ class TestSCActivationKeyMethods:
         for dkey in ["description", "usage_limit", "base_channel_label"]:
             assert dkey in details
             assert key_details[dkey] == details[dkey]
+        # pylint: disable-next=unidiomatic-typecheck
         assert type(details["universal_default"]) == bool
         assert details["universal_default"]
 
+    # pylint: disable-next=redefined-outer-name
     def test_export_activationkey_getdetails_exception_handling(self, shell):
         """
         Test export_activationkey_getdetails XMLRPC failure.
@@ -1314,6 +1400,7 @@ class TestSCActivationKeyMethods:
             "setting config_channels=False"
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_export_activationkey_getdetails(self, shell):
         """
         Test export_activationkey_getdetails.
@@ -1344,6 +1431,7 @@ class TestSCActivationKeyMethods:
                 shell, "red_key"
             )
 
+        # pylint: disable-next=pointless-statement
         {
             "server_group_ids": [1, 2, 3],
             "config_channels": ["rd2d_patches_channel", "k_2so_firmware_channel"],
@@ -1365,6 +1453,7 @@ class TestSCActivationKeyMethods:
 
     @patch("spacecmd.activationkey.json_dump_to_file", MagicMock())
     @patch("spacecmd.activationkey.os.path.isfile", MagicMock(return_value=False))
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_export_noarg(self, shell):
         """
         Test do_activationkey_export exports to 'akey_all.json' if not specified otherwise.
@@ -1401,6 +1490,7 @@ class TestSCActivationKeyMethods:
 
     @patch("spacecmd.activationkey.json_dump_to_file", MagicMock())
     @patch("spacecmd.activationkey.os.path.isfile", MagicMock(return_value=False))
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_export_filename_arg(self, shell):
         """
         Test do_activationkey_export exports to 'akey_all.json' if not specified otherwise.
@@ -1435,6 +1525,7 @@ class TestSCActivationKeyMethods:
         for idx, call in enumerate(logger.info.call_args_list):
             assert call[0][0] == expectation[idx]
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_import_noargs(self, shell):
         """
         Test activationkey_import command is invoking help message on insufficient arguments.
@@ -1451,6 +1542,7 @@ class TestSCActivationKeyMethods:
         assert logger.error.called
         assert logger.error.call_args_list[0][0][0] == "No filename passed"
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_fromdetails_existingkey(self, shell):
         """
         Test import_activationkey_fromdetails does not import anything if key already exist.
@@ -1484,9 +1576,11 @@ class TestSCActivationKeyMethods:
             logger.warning.call_args_list[0][0][0]
             == "somekey already exists! Skipping!"
         )
+        # pylint: disable-next=unidiomatic-typecheck
         assert type(ret) == bool
         assert not ret
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_fromdetails_newkey_no_usage_limit(self, shell):
         """
         Test import_activationkey_fromdetails no usage limit.
@@ -1502,6 +1596,7 @@ class TestSCActivationKeyMethods:
 
         logger = MagicMock()
         with patch("spacecmd.activationkey.logging", logger):
+            # pylint: disable-next=unused-variable
             ret = spacecmd.activationkey.import_activationkey_fromdetails(
                 shell,
                 {
@@ -1538,6 +1633,7 @@ class TestSCActivationKeyMethods:
         assert entl == ["one", "two", "three"]
         assert udef
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_fromdetails_newkey_fixed_usage_limit(self, shell):
         """
         Test import_activationkey_fromdetails usage limit given.
@@ -1553,6 +1649,7 @@ class TestSCActivationKeyMethods:
 
         logger = MagicMock()
         with patch("spacecmd.activationkey.logging", logger):
+            # pylint: disable-next=unused-variable
             ret = spacecmd.activationkey.import_activationkey_fromdetails(
                 shell,
                 {
@@ -1579,6 +1676,7 @@ class TestSCActivationKeyMethods:
         # This is expected: see mock return on API call "create".
         assert logger.error.call_args_list[0][0][0] == "Failed to import key somekey"
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_fromdetails_no_cfgdeploy(self, shell):
         """
         Test import_activationkey_fromdetails no configuration deployment.
@@ -1602,6 +1700,7 @@ class TestSCActivationKeyMethods:
 
         logger = MagicMock()
         with patch("spacecmd.activationkey.logging", logger):
+            # pylint: disable-next=unused-variable
             ret = spacecmd.activationkey.import_activationkey_fromdetails(
                 shell,
                 {
@@ -1626,6 +1725,7 @@ class TestSCActivationKeyMethods:
         assert shell.session == session
         assert keydata == shell.client.activationkey.create()
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_fromdetails_cfgdeploy(self, shell):
         """
         Test import_activationkey_fromdetails configuration deployment was set.
@@ -1649,6 +1749,7 @@ class TestSCActivationKeyMethods:
 
         logger = MagicMock()
         with patch("spacecmd.activationkey.logging", logger):
+            # pylint: disable-next=unused-variable
             ret = spacecmd.activationkey.import_activationkey_fromdetails(
                 shell,
                 {
@@ -1673,6 +1774,7 @@ class TestSCActivationKeyMethods:
         assert shell.session == session
         assert keydata == shell.client.activationkey.create()
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_fromdetails_groups_pkgs(self, shell):
         """
         Test import_activationkey_fromdetails groups and packages processed.
@@ -1696,6 +1798,7 @@ class TestSCActivationKeyMethods:
 
         logger = MagicMock()
         with patch("spacecmd.activationkey.logging", logger):
+            # pylint: disable-next=unused-variable
             ret = spacecmd.activationkey.import_activationkey_fromdetails(
                 shell,
                 {
@@ -1729,6 +1832,7 @@ class TestSCActivationKeyMethods:
         "spacecmd.activationkey.prompt_user",
         MagicMock(side_effect=["original_key", "cloned_key"]),
     )
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_clone_noargs(self, shell):
         """
         Test do_activationkey_clone no arguments requires some.
@@ -1764,6 +1868,7 @@ class TestSCActivationKeyMethods:
         "spacecmd.activationkey.prompt_user",
         MagicMock(side_effect=["original_key", "cloned_key"]),
     )
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_clone_wrongargs(self, shell):
         """
         Test do_activationkey_clone wrong arguments prompts for correction.
@@ -1786,6 +1891,7 @@ class TestSCActivationKeyMethods:
         "spacecmd.activationkey.prompt_user",
         MagicMock(side_effect=["original_key", "cloned_key"]),
     )
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_clone_existing_clone_arg(self, shell):
         """
         Test do_activationkey_clone existing clone name passed to the arguments.
@@ -1822,6 +1928,7 @@ class TestSCActivationKeyMethods:
         "spacecmd.activationkey.prompt_user",
         MagicMock(side_effect=["original_key", "cloned_key"]),
     )
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_clone_noargs_to_clone(self, shell):
         """
         Test do_activationkey_clone no arguments to a clone name passed to the arguments.
@@ -1859,6 +1966,7 @@ class TestSCActivationKeyMethods:
         "spacecmd.activationkey.prompt_user",
         MagicMock(side_effect=["original_key", "cloned_key"]),
     )
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_clone_keyargs_to_clone_filtered(self, shell):
         """
         Test do_activationkey_clone filtered out keys.
@@ -1873,6 +1981,7 @@ class TestSCActivationKeyMethods:
 
         logger = MagicMock()
         with patch("spacecmd.activationkey.logging", logger):
+            # pylint: disable-next=unused-variable
             ret = spacecmd.activationkey.do_activationkey_clone(
                 shell, "orig_key -c key_clone_name"
             )
@@ -1899,6 +2008,7 @@ class TestSCActivationKeyMethods:
         "spacecmd.activationkey.prompt_user",
         MagicMock(side_effect=["original_key", "cloned_key"]),
     )
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_clone_keyargs_unfiltered(self, shell):
         """
         Test do_activationkey_clone not filtered out keys.
@@ -1913,6 +2023,7 @@ class TestSCActivationKeyMethods:
 
         logger = MagicMock()
         with patch("spacecmd.activationkey.logging", logger):
+            # pylint: disable-next=unused-variable
             ret = spacecmd.activationkey.do_activationkey_clone(
                 shell, "key_some* -c key_clone_name"
             )
@@ -1925,6 +2036,7 @@ class TestSCActivationKeyMethods:
         for idx, call in enumerate(logger.debug.call_args_list):
             assert call[0][0] == expectations[idx]
 
+    # pylint: disable-next=redefined-outer-name
     def test_check_activationkey_nokey(self, shell):
         """
         Test check activation key helper returns False on no key.
@@ -1936,6 +2048,7 @@ class TestSCActivationKeyMethods:
         assert logger.error.called
         assert logger.error.call_args_list[0][0][0] == "no activationkey label given"
 
+    # pylint: disable-next=redefined-outer-name
     def test_check_activationkey_not_a_key(self, shell):
         """
         Test check activation key helper returns False on not a key.
@@ -1952,6 +2065,7 @@ class TestSCActivationKeyMethods:
             == "invalid activationkey label some_not_a_key"
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_check_activationkey_correct_key(self, shell):
         """
         Test check activation key helper returns True if a key is correct.
@@ -1962,16 +2076,19 @@ class TestSCActivationKeyMethods:
             assert spacecmd.activationkey.check_activationkey(shell, "some_not_a_key")
         assert not logger.error.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_activationkey_diff_noarg(self, shell):
         """
         Test dump activation key helper invokes help message on insufficient arguments.
         """
+        # pylint: disable-next=unused-variable
         for args in ["", "one two three", "some more args here"]:
             shell.help_activationkey_diff = MagicMock()
             shell.dump_activationkey = MagicMock()
             shell.check_activationkey = MagicMock()
             shell.do_activationkey_getcorresponding = MagicMock()
 
+            # pylint: disable-next=invalid-name
             _diff = MagicMock()
             with patch("spacecmd.activationkey.diff", _diff):
                 spacecmd.activationkey.do_activationkey_diff(shell, "")
@@ -1982,6 +2099,7 @@ class TestSCActivationKeyMethods:
             assert not shell.do_activationkey_getcorresponding.called
             assert not _diff.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_activationkey_diff_arg(self, shell):
         """
         Test dump activation key helper invokes expected sequence of function calls.
@@ -1991,6 +2109,7 @@ class TestSCActivationKeyMethods:
         shell.check_activationkey = MagicMock()
         shell.do_activationkey_getcorresponding = MagicMock()
 
+        # pylint: disable-next=invalid-name
         _diff = MagicMock()
         with patch("spacecmd.activationkey.diff", _diff):
             spacecmd.activationkey.do_activationkey_diff(shell, "some_key")
@@ -2001,6 +2120,7 @@ class TestSCActivationKeyMethods:
         assert shell.do_activationkey_getcorresponding.called
         assert _diff.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_activationkey_diff(self, shell):
         """
         Test dump activation key helper returns key diffs.
@@ -2034,6 +2154,7 @@ class TestSCActivationKeyMethods:
             ],
         )
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_diable_noargs(self, shell):
         """
         Test do_activationkey_disable command triggers help on no args.
@@ -2045,6 +2166,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_disable.called
         assert not shell.client.activationkey.setDetails.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_diable_args(self, shell):
         """
         Test do_activationkey_disable command triggers activationkey.setDetails API call.
@@ -2065,6 +2187,7 @@ class TestSCActivationKeyMethods:
             assert "disabled" in arg
             assert arg["disabled"]
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_enable_noargs(self, shell):
         """
         Test do_activationkey_enable command triggers help on no args.
@@ -2076,6 +2199,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_enable.called
         assert not shell.client.activationkey.setDetails.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_enable_args(self, shell):
         """
         Test do_activationkey_enable command triggers activationkey.setDetails API call.
@@ -2096,6 +2220,7 @@ class TestSCActivationKeyMethods:
             assert "disabled" in arg
             assert not arg["disabled"]
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_setdescription_noargs(self, shell):
         """
         Test do_activationkey_setdescription command triggers help on no args.
@@ -2107,6 +2232,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_setdescription.called
         assert not shell.client.activationkey.setDetails.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_setdescription_args(self, shell):
         """
         Test do_activationkey_setdescription command triggers activationkey.setDetails API call.
@@ -2121,11 +2247,13 @@ class TestSCActivationKeyMethods:
         assert shell.client.activationkey.setDetails.called
 
         for call in shell.client.activationkey.setDetails.call_args_list:
+            # pylint: disable-next=unused-variable
             session, key, arg = call[0]
             assert shell.session == session
             assert "description" in arg
             assert arg["description"] == "some description of it here"
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_setcontactmethod_noargs(self, shell):
         """
         Test do_activationkey_setcontactmethod command triggers help on no args.
@@ -2137,6 +2265,7 @@ class TestSCActivationKeyMethods:
         assert shell.help_activationkey_setcontactmethod.called
         assert not shell.client.activationkey.setDetails.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_activationkey_setcontactmethod_args(self, shell):
         """
         Test do_activationkey_setdescription command triggers activationkey.setDetails API call.
@@ -2149,6 +2278,7 @@ class TestSCActivationKeyMethods:
         assert shell.client.activationkey.setDetails.called
 
         for call in shell.client.activationkey.setDetails.call_args_list:
+            # pylint: disable-next=unused-variable
             session, key, arg = call[0]
             assert shell.session == session
             assert "contact_method" in arg

@@ -21,6 +21,7 @@ def __virtual__():
     """
     Only works on RH-like systems having 'dnf' available
     """
+    # pylint: disable-next=superfluous-parens
     if not (_which("dnf")):
         return (False, "dnf is not available on the system")
     return True
@@ -29,6 +30,7 @@ def __virtual__():
 def _get_enabled_module_names():
     # Run the DNF command to list enabled modules
     command = ["dnf", "module", "list", "--enabled", "--quiet"]
+    # pylint: disable-next=subprocess-run-check
     result = subprocess.run(command, capture_output=True, text=True)
 
     # Check if the command was successful
@@ -69,9 +71,11 @@ def _get_enabled_module_names():
                 log.error("Error: Unable to find module information in the output.")
 
         except (IndexError, ValueError) as e:
+            # pylint: disable-next=logging-fstring-interpolation
             log.error(f"Error parsing output: {e}")
 
     else:
+        # pylint: disable-next=logging-fstring-interpolation
         log.error(f"Error running DNF command: {result.stderr}")
 
 
@@ -101,9 +105,11 @@ def _get_module_info(module_names):
     # Run the DNF command to get module info for all active modules
     # Parse all modules if no active ones are present
     command = ["dnf", "module", "info", "--quiet"] + module_names
+    # pylint: disable-next=subprocess-run-check
     result = subprocess.run(command, capture_output=True, text=True)
 
     if result.returncode != 0:
+        # pylint: disable-next=logging-fstring-interpolation
         log.error(f"Error running DNF command: {result.stderr}")
         return []
 
