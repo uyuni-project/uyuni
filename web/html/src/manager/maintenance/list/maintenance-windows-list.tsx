@@ -37,7 +37,6 @@ const MaintenanceWindowsList = (props: Props) => {
       <LinkButton
         className="btn-primary"
         disabled={!props.isAdmin}
-        icon="fa-plus"
         text={t("Create")}
         title={t("Create a new maintenance schedule")}
         href={`/rhn/manager/schedule/maintenance/${props.type === "calendar" ? "calendars" : "schedules"}/create`}
@@ -46,19 +45,25 @@ const MaintenanceWindowsList = (props: Props) => {
   ];
 
   return (
-    <TopPanel
-      title={props.type === "schedule" ? t("Maintenance Schedules") : t("Maintenance Calendars")}
-      icon="header-schedule"
-      helpUrl="reference/schedule/maintenance-windows.html"
-      button={buttons}
-    >
-      <p>
-        {props.type === "schedule"
-          ? t("Below is a list of Maintenance Schedules available to the current user.")
-          : t("Below is a list of Maintenance Calendars available to the current user.")}
-      </p>
-      {props.type === "schedule" ? <MaintenanceScheduleList data={items} /> : <MaintenanceCalendarList data={items} />}
-    </TopPanel>
+    <div id="maintenance-windows">
+      <TopPanel
+        title={props.type === "schedule" ? t("Maintenance Schedules") : t("Maintenance Calendars")}
+        icon="header-schedule"
+        helpUrl="reference/schedule/maintenance-windows.html"
+        button={buttons}
+      >
+        <p>
+          {props.type === "schedule"
+            ? t("Below is a list of Maintenance Schedules available to the current user.")
+            : t("Below is a list of Maintenance Calendars available to the current user.")}
+        </p>
+        {props.type === "schedule" ? (
+          <MaintenanceScheduleList data={items} />
+        ) : (
+          <MaintenanceCalendarList data={items} />
+        )}
+      </TopPanel>
+    </div>
   );
 };
 
