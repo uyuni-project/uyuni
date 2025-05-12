@@ -225,7 +225,6 @@ public class MinionsAPI {
     public String listKeys(Request request, Response response, User user) {
         Key.Fingerprints fingerprints = saltApi.getFingerprints();
 
-        Map<String, Object> data = new TreeMap<>();
         boolean isOrgAdmin = user.hasRole(RoleFactory.ORG_ADMIN);
 
         Set<String> minionIds = Stream.of(
@@ -375,7 +374,7 @@ public class MinionsAPI {
              Map<String, Object> data = new TreeMap<>();
              List<Long> actions = ActionManager.changeProxy(user, rq.getIds(), rq.getProxy());
              if (actions.isEmpty()) {
-                 throw new RuntimeException("No action in schedule result");
+                 throw new IllegalStateException("No action in schedule result");
              }
              data.put("actions", actions);
              return json(GSON, res, ResultJson.success(data), new TypeToken<>() { });
@@ -700,13 +699,11 @@ public class MinionsAPI {
 
                 return cfg;
             })
-            .orElseGet(() -> {
-                return attestationManager.createConfig(user, server,
-                    jsonConfig.getEnvironmentType(),
-                    jsonConfig.isEnabled(),
-                    jsonConfig.isAttestOnBoot()
-                );
-            });
+            .orElseGet(() -> attestationManager.createConfig(user, server,
+                jsonConfig.getEnvironmentType(),
+                jsonConfig.isEnabled(),
+                jsonConfig.isAttestOnBoot()
+            ));
     }
 
     private String scheduleAllCoCoAttestation(Request request, Response response, User user) {
