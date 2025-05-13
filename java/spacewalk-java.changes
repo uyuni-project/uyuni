@@ -1,4 +1,44 @@
 -------------------------------------------------------------------
+Tue May 13 14:55:24 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.13-0
+  * Fix: failures to deregister peripheral servers (bsc#1240396)
+  * Fix: Correctly register and deregister hubs and peripherals
+    with multiple roles
+  * Fix typo in the ACLs in system details header (bsc#1241697)
+  * Fix saltboot endpoint access (bsc#1242069)
+  * Remove unneeded debug message
+  * Remove rhn-ssl-tool --gen-server RPM feature and options
+    (bsc#1235696)
+  * Better handling of system list filtering (bsc#1242004)
+  * CVE-2025-23392: URL encode the user input in the page to avoid
+    string escape
+  * CVE-2025-23393: quote and filter the filter and sort columns
+    in the paged query builder
+  * Automatically expand channels when searching (bsc#1230282)
+  * Ensure browser cache is busted when newer assets are available
+    (bsc#1240984)
+  * Fix WrongClassException at registration (bsc#1241907)
+  * Improve performance when changing channels on multiple system
+    through SSM (bsc#1239154)
+  * Replace server hostname in chained proxy config (bsc#1236166)
+  * Fix ISSv3 channel sync API bug: a custom channel cannot be
+    re-assigned to a different peripheral organization
+  * Set channel family and channel permissions when creating a
+    custom channel on the peripheral server (bsc#1242324)
+  * Fix removal of custom channel URLs on the peripheral server
+    (bsc#1242324)
+  * Fix custom channel sync from a peripheral server (bsc#1242889)
+  * Generate tokens for custom channels which include the correct
+    organization id
+  * Fix filtering of notification messages (bsc#1242141)
+  * Call product refresh after the channel sync call to finish the
+    setup on the peripheral server
+  * Fix: refactored usage of js fetch with internal utility and
+    more robust update-only behavior when saving/resetting
+    policy (bsc#1240960)
+
+-------------------------------------------------------------------
 Wed Apr 16 16:20:28 CEST 2025 - rosuna@suse.com
 
 - version 5.1.12-0
