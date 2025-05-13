@@ -11,8 +11,6 @@
 
 package com.suse.manager.model.hub;
 
-import com.redhat.rhn.domain.channel.Channel;
-
 import com.suse.scc.model.SCCRepositoryJson;
 
 import java.util.Date;
@@ -42,7 +40,6 @@ public class ChannelInfoDetailsJson {
 
     private String channelProductProduct;
     private String channelProductVersion;
-    private String channelAccess;
     private String maintainerName;
     private String maintainerEmail;
     private String maintainerPhone;
@@ -61,7 +58,6 @@ public class ChannelInfoDetailsJson {
         label = labelIn;
 
         gpgCheck = true;
-        channelAccess = Channel.PRIVATE;
         installerUpdates = false;
         originalChannelLabel = null;
     }
@@ -330,20 +326,6 @@ public class ChannelInfoDetailsJson {
     }
 
     /**
-     * @param acc public, protected, or private
-     */
-    public void setChannelAccess(String acc) {
-        channelAccess = acc;
-    }
-
-    /**
-     * @return public, protected, or private
-     */
-    public String getChannelAccess() {
-        return channelAccess;
-    }
-
-    /**
      * @return maintainer's name
      */
     public String getMaintainerName() {
@@ -465,7 +447,6 @@ public class ChannelInfoDetailsJson {
                 Objects.equals(getEndOfLifeDate(), that.getEndOfLifeDate()) &&
                 Objects.equals(getChannelProductProduct(), that.getChannelProductProduct()) &&
                 Objects.equals(getChannelProductVersion(), that.getChannelProductVersion()) &&
-                Objects.equals(getChannelAccess(), that.getChannelAccess()) &&
                 Objects.equals(getMaintainerName(), that.getMaintainerName()) &&
                 Objects.equals(getMaintainerEmail(), that.getMaintainerEmail()) &&
                 Objects.equals(getMaintainerPhone(), that.getMaintainerPhone()) &&
@@ -481,7 +462,7 @@ public class ChannelInfoDetailsJson {
                 getChannelArchLabel(), getChecksumTypeLabel(), getBaseDir(), getName(),
                 getSummary(), getDescription(), getProductNameLabel(), isGpgCheck(), getGpgKeyUrl(), getGpgKeyId(),
                 getGpgKeyFp(), getEndOfLifeDate(), getChannelProductProduct(), getChannelProductVersion(),
-                getChannelAccess(), getMaintainerName(), getMaintainerEmail(), getMaintainerPhone(),
+                getMaintainerName(), getMaintainerEmail(), getMaintainerPhone(),
                 getSupportPolicy(), getUpdateTag(), isInstallerUpdates(), getRepositoryInfo());
     }
 
