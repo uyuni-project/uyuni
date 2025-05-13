@@ -1837,6 +1837,15 @@ public class ChannelFactory extends HibernateFactory {
                 }
                 orgSet.add(orgId);
             }
+
+            Channel channel = ChannelFactory.lookupByLabel(channelInfo.getLabel());
+            if ((null != channel) && (channel.isCustom())) {
+                if (!orgId.equals(channel.getOrg().getId())) {
+                    throw new IllegalArgumentException("Unable to modify org from [" + channel.getOrg().getId() +
+                            "] to [" + orgId +
+                            "] for channel [" + channelInfo.getLabel() + "]");
+                }
+            }
         }
     }
 
@@ -1861,12 +1870,16 @@ public class ChannelFactory extends HibernateFactory {
                     modifyChannelInfo.getLabel() + "]");
         }
 
-        Org org = null;
         if (null != modifyChannelInfo.getPeripheralOrgId()) {
-            org = OrgFactory.lookupById(modifyChannelInfo.getPeripheralOrgId());
-            if ((null != modifyChannelInfo.getPeripheralOrgId()) && (null == org)) {
+            Org org = OrgFactory.lookupById(modifyChannelInfo.getPeripheralOrgId());
+            if (null == org) {
                 throw new IllegalArgumentException("No org id to modify [" +
                         modifyChannelInfo.getPeripheralOrgId() +
+                        "] for channel [" + modifyChannelInfo.getLabel() + "]");
+            }
+            if (!org.equals(channel.getOrg())) {
+                throw new IllegalArgumentException("Unable to modify org from [" + channel.getOrg().getName() +
+                        "] to [" + org.getName() +
                         "] for channel [" + modifyChannelInfo.getLabel() + "]");
             }
         }
@@ -1887,11 +1900,6 @@ public class ChannelFactory extends HibernateFactory {
             }
 
             channel.asCloned().get().setOriginal(originalChannel);
-        }
-
-        //null field = do not modify
-        if (null != modifyChannelInfo.getPeripheralOrgId()) {
-            channel.setOrg(org);
         }
 
         setValueIfNotNull(channel, modifyChannelInfo.getBaseDir(), Channel::setBaseDir);
