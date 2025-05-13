@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 13 14:52:45 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.11-0
+  * Fix NPM dependency license aggregation bug
+
+-------------------------------------------------------------------
 Mon May 12 23:05:21 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.10-0
