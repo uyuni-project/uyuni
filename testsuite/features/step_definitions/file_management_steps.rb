@@ -52,7 +52,7 @@ When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)
   target = get_target('proxy')
   if target_type.include?('server') || get_target('proxy').nil?
     log 'WARN: Bootstrapping to server, because proxy is not defined.' unless target_type.include? 'server'
-    target = get_target('server')
+    target = 'server.test.lan'
   end
 
   # Prepare bootstrap script for different types of clients
