@@ -7,6 +7,6 @@
 ## Secondary features BEGIN ##
 
 # IDEMPOTENT
-- features/secondary/min_bootstrap_activation_key.feature
+- features/secondary/min_bootstrap_script.feature
 
 ## Secondary features END ##
