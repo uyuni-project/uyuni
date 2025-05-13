@@ -660,6 +660,8 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
     @Test
     public void testForwardVirtualHostsFromPeripheralToHub() throws Exception {
+        // Cleanup all systems which might exist from previous tests
+        ServerFactory.list().forEach(ServerFactory::delete);
         systemSize = 0;
         setupTest();
         setupAsPeripheral();
