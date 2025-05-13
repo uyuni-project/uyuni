@@ -1,0 +1,2 @@
+- Use a persisted folder for custom modules to import in
+  mgr-create-bootstrap-repo (bsc#1242135)
