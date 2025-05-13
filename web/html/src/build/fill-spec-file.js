@@ -3,22 +3,14 @@ const path = require("path");
 
 function fillSpecFile() {
   delete require.cache[require.resolve("../vendors/npm.licenses.structured")];
-  const { npmLicensesArray } = require("../vendors/npm.licenses.structured");
+  const npmLicensesArray = require("../vendors/npm.licenses.structured");
 
   // Keep the original base license
   npmLicensesArray.push("GPL-2.0-only");
   // Files under `web/html/javascript` are MIT licensed but won't be inferred from the automatic list
   npmLicensesArray.push("MIT");
 
-  // See https://github.com/metal/metal.js/issues/411
-  const processedLicenses = npmLicensesArray.map((item) => {
-    if (item === "BSD") {
-      return "0BSD";
-    }
-    return item;
-  });
-  const mappedProcessedLicenses = Array.from(new Set(processedLicenses)).sort().filter(Boolean).join(" AND ");
-
+  const licenseList = Array.from(new Set(npmLicensesArray)).sort().filter(Boolean).join(" AND ");
   const specFileLocation = path.resolve(__dirname, "../../../spacewalk-web.spec");
 
   return new Promise(function (resolve, reject) {
@@ -29,7 +21,7 @@ function fillSpecFile() {
       }
       const editedSpecFile = specFile.replace(
         /(?<=%package -n spacewalk-html[\s\S]*?)License:.*/m,
-        `License:        ${mappedProcessedLicenses}`
+        `License:        ${licenseList}`
       );
 
       if (editedSpecFile === specFile) {
@@ -47,7 +39,7 @@ function fillSpecFile() {
         console.log(
           `${path.basename(
             specFileLocation
-          )} was updated successfully with the following licenses for spacewalk-html: ${mappedProcessedLicenses}`
+          )} was updated successfully with the following licenses for spacewalk-html: ${licenseList}`
         );
         resolve();
       });
