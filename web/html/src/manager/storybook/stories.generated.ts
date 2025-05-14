@@ -413,3 +413,15 @@ export const components_utils_loading_text_example_tsx = {
   component: components_utils_loading_text_example_tsx_component,
   raw: components_utils_loading_text_example_tsx_raw,
 };
+
+// @ts-ignore
+import core_intl_index_example_tsx_component from "core/intl/index.example.tsx";
+import core_intl_index_example_tsx_raw from "core/intl/index.example.tsx?raw";
+
+export const core_intl_index_example_tsx = {
+  path: "core/intl/index.example.tsx",
+  title: "index.example.tsx",
+  groupName: "intl",
+  component: core_intl_index_example_tsx_component,
+  raw: core_intl_index_example_tsx_raw,
+};

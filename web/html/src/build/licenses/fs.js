@@ -1,17 +1,22 @@
 const fs = require("fs").promises;
-const { constants, createReadStream } = require("fs");
+const { createReadStream } = require("fs");
 const { createHash } = require("crypto");
 
-const fileExists = async (path) => {
+/**
+ * Check if a given license file exists and does not have Git conflicts
+ */
+const isValidLicenseFile = async (path) => {
   try {
-    await fs.access(path, constants.F_OK);
-    return true;
+    const content = await fs.readFile(path, "utf8");
+    // This is a shortcut to keep build times low, if this ever causes a bug, add a check for the "=======" and ">>>>>>>" markers too
+    const hasConflict = content.includes("<<<<<<<");
+    return !hasConflict;
   } catch {
     return false;
   }
 };
 
-async function getFileHash(path) {
+const getFileHash = async (path) => {
   return new Promise((resolve, reject) => {
     const hash = createHash("sha1");
     const stream = createReadStream(path);
@@ -20,9 +25,9 @@ async function getFileHash(path) {
     stream.on("end", () => resolve(hash.digest("hex")));
     stream.on("error", reject);
   });
-}
+};
 
 module.exports = {
-  fileExists,
+  isValidLicenseFile,
   getFileHash,
 };
