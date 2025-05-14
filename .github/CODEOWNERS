@@ -116,6 +116,17 @@ java/code/src/com/suse/manager/webui/utils/gson/NotificationMessageJson.java @uy
 # Websockets
 java/code/src/com/suse/manager/webui/websocket/ @uyuni-project/naica
 
+# RBAC
+java/code/src/com/redhat/rhn/manager/access/ @uyuni-project/naica
+java/code/src/com/redhat/rhn/domain/access/ @uyuni-project/naica
+java/code/src/com/redhat/rhn/frontend/xmlrpc/access/ @uyuni-project/naica
+java/code/src/com/redhat/rhn/frontend/servlets/AuthorizationFilter.java @uyuni-project/naica
+schema/spacewalk/common/data/accessGroup.sql @uyuni-project/naica
+schema/spacewalk/common/data/accessGroupNamespace.sql @uyuni-project/naica
+schema/spacewalk/common/data/endpoint.sql @uyuni-project/naica
+schema/spacewalk/common/data/endpointNamespace.sql @uyuni-project/naica
+schema/spacewalk/common/data/namespace.sql @uyuni-project/naica
+
 # Ignore translations, in the CODEOWNERS the last matching wins
 **/*.po
 **/*.pot
