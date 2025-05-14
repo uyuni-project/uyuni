@@ -58,7 +58,7 @@ Feature: Install a patch on the Red Hat-like minion via Salt through the UI
     When I follow "Software" in the content area
     And I follow "Install"
     And I check "andromeda-dummy" in the list
-    And I click on "Install Selected Packages"
+    And I click on "Install Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     And I wait until event "Package Install/Upgrade scheduled" is completed
