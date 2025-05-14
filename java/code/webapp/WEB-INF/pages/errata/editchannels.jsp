@@ -21,6 +21,13 @@
   <p><bean:message key="errata.edit.channels.instructions"/></p>
 <c:set var="pageList" value="${requestScope.pageList}" />
 <form method="POST" name="rhn_list" action="/rhn/errata/manage/ChannelsSubmit.do">
+<div class="spacewalk-section-toolbar">
+  <div class="action-button-wrapper">
+    <html:submit styleClass="btn btn-default" property="dispatch">
+      <bean:message key="errata.channels.updatechannels"/>
+    </html:submit>
+  </div>
+</div>
 <rhn:csrf />
 <rhn:list pageList="${requestScope.pageList}" noDataText="errata.publish.nochannels">
   <rhn:listdisplay set="${requestScope.set}" hiddenvars="${requestScope.newset}">
@@ -41,14 +48,8 @@
 
   </rhn:listdisplay>
 </rhn:list>
-<hr />
 <rhn:hidden name="eid" value="${param.eid}" />
 <rhn:hidden name="returnvisit" value="${param.returnvisit}"/>
-<div class="text-right">
-  <html:submit styleClass="btn btn-default" property="dispatch">
-    <bean:message key="errata.channels.updatechannels"/>
-  </html:submit>
-</div>
 </form>
 </body>
 </html>

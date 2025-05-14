@@ -20,6 +20,20 @@
 <html:form action="/configuration/ChannelFilesSubmit.do?ccid=${ccid}">
     <rhn:csrf />
         <rhn:submitted/>
+        <c:if test="${not empty requestScope.pageList}">
+            <div class="spacewalk-section-toolbar">
+                <div class="action-button-wrapper">
+                    <rhn:require acl="config_channel_editable(channel.id)"
+                                mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
+                    <html:submit styleClass="btn btn-default" property="dispatch"><bean:message key="channelfiles.jsp.removeselected" /></html:submit>
+                    </rhn:require>
+                    <html:submit styleClass="btn btn-default" property="dispatch"><bean:message key="channelfiles.jsp.copy2systems" /></html:submit>
+                        <rhn:require acl="user_role(config_admin)">
+                    <html:submit styleClass="btn btn-default" property="dispatch"><bean:message key="channelfiles.jsp.copy2channels" /></html:submit>
+                    </rhn:require>
+                </div>
+            </div>
+        </c:if>
         <rhn:list
           pageList="${requestScope.pageList}"
           noDataText="channelfiles.jsp.noFiles">
