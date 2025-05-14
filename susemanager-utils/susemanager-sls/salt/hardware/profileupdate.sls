@@ -188,6 +188,10 @@ uname:
 container_runtime:
   mgrcompat.module_run:
     - name: container_runtime.get_container_runtime
+
+cpu_arch_specs:
+  mgrcompat.module_run:
+    - name: cpuinfo.arch_specs
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_modules
