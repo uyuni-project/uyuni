@@ -30,10 +30,13 @@
     box-shadow: none;
   }
 
+   &:focus {
+    border-color: $eos-bc-blue-500;
+  }
+
   // Branding hover effect
   // It has to be ::after Pseudo-element. ::before is used to set icons in pagination button.
   &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
-    // background: #686565;
     border: 2px solid transparent;
     bottom: -2px;
     box-sizing: content-box;
@@ -74,7 +77,6 @@
   gap: 0.3em;
  
   &:active,
-  &:focus,
   &:hover:not(:disabled):not(.disabled) {
     text-decoration: underline;
     text-underline-offset: .3rem;
@@ -100,7 +102,6 @@
 .btn-default {
   &,
   &:active,
-  &:focus,
   &:disabled,
   &.disabled {
     &,
@@ -119,7 +120,6 @@
 .btn-default-inverse {
   &,
   &:active,
-  &:focus,
   &:disabled,
   &.disabled {
     &,
@@ -132,6 +132,10 @@
         background: $eos-bc-white;
       }
     }
+  }
+
+  &:focus {
+    border-color: $eos-bc-blue-500;
   }
 }
 
@@ -152,6 +156,10 @@
         background: $eos-bc-gray-900;
       }
     }
+  }
+
+  &:focus {
+    border-color: $eos-bc-blue-500;
   }
 }
 
@@ -177,6 +185,10 @@
         background: $eos-bc-gray-900;
       }
     }
+  }
+
+  &:focus {
+    border-color: $eos-bc-blue-500;
   }
 }
 
