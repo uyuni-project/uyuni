@@ -8,6 +8,7 @@ const { createHash } = require("crypto");
 const isValidLicenseFile = async (path) => {
   try {
     const content = await fs.readFile(path, "utf8");
+    // This is a shortcut to keep build times low, if this ever causes a bug, add a check for the "=======" and ">>>>>>>" markers too
     const hasConflict = content.includes("<<<<<<<");
     return !hasConflict;
   } catch {
