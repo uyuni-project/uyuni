@@ -32,14 +32,19 @@ import javax.persistence.Transient;
  */
 @Entity
 @DiscriminatorValue("package")
-public class PackageFilter extends ContentFilter<Package> {
+public class PackageFilter extends ContentFilter {
 
     public static final String BUILD_DATE = "build_date";
 
     private Pattern pattern;
 
     @Override
-    public boolean test(Package pack) {
+    public boolean test(Object o) {
+        if (!(o instanceof Package)) {
+            return false;
+        }
+
+        Package pack = (Package) o;
         FilterCriteria.Matcher matcher = getCriteria().getMatcher();
         String field = getCriteria().getField();
         String value = getCriteria().getValue();
