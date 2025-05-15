@@ -45,7 +45,8 @@ public class AccessGroup {
     private Org org;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "access.accessGroupNamespace",
+            name = "accessGroupNamespace",
+            schema = "access",
             joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "namespace_id")
     )

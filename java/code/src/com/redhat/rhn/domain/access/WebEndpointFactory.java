@@ -24,6 +24,7 @@ import org.hibernate.query.NativeQuery;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class WebEndpointFactory extends HibernateFactory {
 
@@ -104,5 +105,13 @@ public class WebEndpointFactory extends HibernateFactory {
         // TODO: Cache
         NativeQuery<String> query = getSession().getNamedNativeQuery("WebEndpoint_get_unauthorized_api");
         return query.getResultStream().collect(Collectors.toUnmodifiableSet());
+    }
+
+    /**
+     * Get a {@code Stream} of all RBAC endpoints
+     * @return the {@code Stream} of all endpoints
+     */
+    public static Stream<WebEndpoint> getAllEndpoints() {
+        return WebEndpointFactory.getSession().createQuery("from WebEndpoint", WebEndpoint.class).stream();
     }
 }
