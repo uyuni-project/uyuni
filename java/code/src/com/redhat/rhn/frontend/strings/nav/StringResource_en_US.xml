@@ -803,6 +803,12 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="Support" xml:space="preserve">
+        <source>Support</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Configuration" xml:space="preserve">
         <source>Configuration</source>
         <context-group name="ctx">
