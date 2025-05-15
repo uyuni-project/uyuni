@@ -60,7 +60,7 @@ When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)
 
   node = get_target(host)
   gpg_keys = get_gpg_keys(node, target)
-  cmd = "mgr-bootstrap #{force_bundle} --hostname 'server.test.lan' &&
+  cmd = "mgr-bootstrap #{force_bundle} --hostname server.test.lan &&
   sed -i s\'/^exit 1//\' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   chmod 644 /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT &&
