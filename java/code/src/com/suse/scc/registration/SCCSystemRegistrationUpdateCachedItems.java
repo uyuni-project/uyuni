@@ -46,7 +46,7 @@ public class SCCSystemRegistrationUpdateCachedItems implements SCCSystemRegistra
         context.getItems().forEach(cacheItem -> cacheItem.getOptServer().ifPresent(ServerFactory::save));
     }
 
-    private void updateSuccessfullyRegisteredItems(SCCSystemRegistrationContext context) {
+    protected void updateSuccessfullyRegisteredItems(SCCSystemRegistrationContext context) {
         for (SCCSystemCredentialsJson systemCredentials : context.getRegisteredSystems()) {
 
             SCCRegCacheItem cacheItem = context.getItemsByLogin().get(systemCredentials.getLogin());
@@ -63,7 +63,7 @@ public class SCCSystemRegistrationUpdateCachedItems implements SCCSystemRegistra
         }
     }
 
-    private void updateFailedRegisteredItems(SCCSystemRegistrationContext context) {
+    protected void updateFailedRegisteredItems(SCCSystemRegistrationContext context) {
         for (Map.Entry<String, SCCRegisterSystemJson> entry :
                 context.getPendingRegistrationSystemsByLogin().entrySet()) {
             SCCRegCacheItem cacheItem = context.getItemsByLogin().get(entry.getKey());
@@ -74,7 +74,7 @@ public class SCCSystemRegistrationUpdateCachedItems implements SCCSystemRegistra
         }
     }
 
-    private void updatePaygSystems(SCCSystemRegistrationContext context) {
+    protected void updatePaygSystems(SCCSystemRegistrationContext context) {
         context.getPaygSystems().forEach(cacheItem -> context.setItemAsNonRegistrationRequiredItem(cacheItem));
     }
 

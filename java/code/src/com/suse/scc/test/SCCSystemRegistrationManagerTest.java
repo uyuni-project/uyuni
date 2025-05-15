@@ -51,6 +51,7 @@ import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.model.SCCUpdateSystemJson;
 import com.suse.scc.model.SCCVirtualizationHostJson;
 import com.suse.scc.model.SCCVirtualizationHostPropertiesJson;
+import com.suse.scc.proxy.SCCProxyFactory;
 
 import org.junit.jupiter.api.Test;
 
@@ -66,6 +67,7 @@ import java.util.stream.Collectors;
  * Tests for {@link SCCClient} methods.
  */
 public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
+    private SCCProxyFactory sccProxyFactory = new SCCProxyFactory();
 
     @Test
     public void testSCCSystemRegistrationLifecycle() throws Exception {
@@ -110,7 +112,8 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         SCCCachingFactory.initNewSystemsToForward();
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         List<SCCRegCacheItem> testSystems = allUnregistered.stream()
@@ -172,7 +175,8 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                 .createSCCConfig();
         SCCWebClient sccWebClient = new SCCWebClient(sccConfig);
 
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         SCCCachingFactory.initNewSystemsToForward();
 
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
@@ -238,7 +242,8 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         SCCCachingFactory.initNewSystemsToForward();
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         List<SCCRegCacheItem> testSystems = allUnregistered.stream()
@@ -312,7 +317,8 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         SCCCachingFactory.initNewSystemsToForward();
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         List<SCCRegCacheItem> testSystems = allUnregistered.stream()
@@ -403,7 +409,8 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         credentials.setUrl("https://scc.suse.com");
         CredentialsFactory.storeCredentials(credentials);
 
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         SCCCachingFactory.initNewSystemsToForward();
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         List<SCCVirtualizationHostJson> virtHostsJson = SCCCachingFactory.listVirtualizationHosts();
@@ -489,7 +496,8 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         credentials.setUrl("https://scc.suse.com");
         CredentialsFactory.storeCredentials(credentials);
 
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         SCCCachingFactory.initNewSystemsToForward();
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         List<SCCVirtualizationHostJson> virtHostsJson = SCCCachingFactory.listVirtualizationHosts();
@@ -590,7 +598,8 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         credentials.setUrl("https://scc.suse.com");
         CredentialsFactory.storeCredentials(credentials);
 
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         SCCCachingFactory.initNewSystemsToForward();
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         List<SCCVirtualizationHostJson> virtHostsJson = SCCCachingFactory.listVirtualizationHosts();

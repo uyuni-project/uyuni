@@ -20,12 +20,24 @@ import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
+import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
+import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.model.SCCUpdateSystemJson;
 import com.suse.scc.model.SCCVirtualizationHostJson;
+import com.suse.scc.proxy.SCCProxyFactory;
+import com.suse.scc.proxy.SCCProxyRecord;
+import com.suse.scc.proxy.SccProxyStatus;
 import com.suse.scc.registration.SCCSystemRegistration;
+import com.suse.utils.Json;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -40,14 +53,44 @@ public class SCCSystemRegistrationManager {
 
     private static final Logger LOG = LogManager.getLogger(SCCSystemRegistrationManager.class);
     private final SCCClient sccClient;
+    private final SCCProxyFactory sccProxyFactory;
+    private final SCCSystemRegistration sccSystemRegistration;
+
+    private final Gson gson = new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+            .create();
 
     /**
      * Constructor
      *
      * @param sccClientIn the scc client
+     * @param sccProxyFactoryIn the scc proxy factory
      */
-    public SCCSystemRegistrationManager(SCCClient sccClientIn) {
+    public SCCSystemRegistrationManager(SCCClient sccClientIn, SCCProxyFactory sccProxyFactoryIn) {
+        this(sccClientIn, sccProxyFactoryIn, new SCCSystemRegistration());
+    }
+
+    /**
+     * Constructor
+     *
+     * @param sccClientIn             the scc client
+     * @param sccProxyFactoryIn       the scc proxy factory
+     * @param sccSystemRegistrationIn the scc system registration
+     */
+    public SCCSystemRegistrationManager(SCCClient sccClientIn,
+                                        SCCProxyFactory sccProxyFactoryIn,
+                                        SCCSystemRegistration sccSystemRegistrationIn) {
         this.sccClient = sccClientIn;
+        this.sccProxyFactory = sccProxyFactoryIn;
+        this.sccSystemRegistration = sccSystemRegistrationIn;
+    }
+
+    /**
+     * @return the scc proxy factory
+     */
+    public SCCProxyFactory getSccProxyFactory() {
+        return sccProxyFactory;
     }
 
     /**
@@ -98,16 +141,7 @@ public class SCCSystemRegistrationManager {
                         SCCCachingFactory.deleteRegCacheItem(cacheItem);
                     }
                     catch (SCCClientException e) {
-                        if (e.getHttpStatusCode() == 404) {
-                            LOG.info("System {} not found in SCC", cacheItem.getId());
-                        }
-                        else {
-                            LOG.error("SCC error while deregistering system {}", cacheItem.getId(), e);
-                        }
-                        if (forceDBDeletion || e.getHttpStatusCode() == 404) {
-                            SCCCachingFactory.deleteRegCacheItem(cacheItem);
-                        }
-                        cacheItem.setRegistrationErrorTime(new Date());
+                        handleErrorDeregister(cacheItem, e, forceDBDeletion);
                     }
                     catch (Exception e) {
                         LOG.error("Error deregistering system {}", cacheItem.getId(), e);
@@ -121,6 +155,68 @@ public class SCCSystemRegistrationManager {
         ));
     }
 
+    private void handleErrorDeregister(SCCRegCacheItem cacheItem, SCCClientException e, boolean forceDBDeletion) {
+        if (e.getHttpStatusCode() == 404) {
+            LOG.info("System {} not found in SCC", cacheItem.getId());
+        }
+        else {
+            LOG.error("SCC error while deregistering system {}", cacheItem.getId(), e);
+        }
+        if (forceDBDeletion || e.getHttpStatusCode() == 404) {
+            SCCCachingFactory.deleteRegCacheItem(cacheItem);
+        }
+        cacheItem.setRegistrationErrorTime(new Date());
+    }
+
+    /**
+     * De-register a system from SCC as a proxy
+     *
+     * @param proxyRecords the proxy records identifying the system to de-register
+     * @param forceDBDeletion force delete the proxy record when set to true
+     */
+    public void proxyDeregister(List<SCCProxyRecord> proxyRecords, boolean forceDBDeletion) {
+        proxyRecords.forEach(proxyRecord -> proxyRecord.getOptSccId().ifPresentOrElse(
+                sccId -> {
+                    try {
+                        LOG.debug("de-register system {}", proxyRecord);
+                        sccClient.deleteSystem(sccId, proxyRecord.getSccLogin(), proxyRecord.getSccPasswd());
+                        sccProxyFactory.remove(proxyRecord);
+                    }
+                    catch (SCCClientException e) {
+                        handleErrorProxyDeregister(proxyRecord, e, forceDBDeletion);
+                    }
+                    catch (Exception e) {
+                        handleErrorProxyDeregister(proxyRecord, e);
+                    }
+                },
+                () -> {
+                    LOG.debug("delete not registered cache item {}", proxyRecord);
+                    sccProxyFactory.remove(proxyRecord);
+                }
+        ));
+    }
+
+    private void handleErrorProxyDeregister(SCCProxyRecord proxyRecord, SCCClientException e, boolean forceDBDeletion) {
+        boolean doRemove = forceDBDeletion;
+        if (e.getHttpStatusCode() == HttpStatus.SC_NOT_FOUND) {
+            LOG.info("System {} not found in SCC", proxyRecord.getSccId());
+            doRemove = true;
+        }
+        else {
+            handleErrorProxyDeregister(proxyRecord, e);
+        }
+
+        if (doRemove) {
+            sccProxyFactory.remove(proxyRecord);
+        }
+    }
+
+    private void handleErrorProxyDeregister(SCCProxyRecord proxyRecord, Exception e) {
+        LOG.error("Error while deregistering system {}", proxyRecord.getSccId(), e);
+        proxyRecord.setSccRegistrationErrorTime(new Date());
+        sccProxyFactory.save(proxyRecord);
+    }
+
     /**
      * Register systems in SCC
      *
@@ -128,7 +224,65 @@ public class SCCSystemRegistrationManager {
      * @param primaryCredential the current primary organization credential
      */
     public void register(List<SCCRegCacheItem> items, SCCCredentials primaryCredential) {
-        new SCCSystemRegistration().register(sccClient, items, primaryCredential);
+        sccSystemRegistration.register(sccClient, items, primaryCredential);
+    }
+
+    /**
+     * Register systems in SCC as a proxy
+     *
+     * @param proxyRecords the proxy records identifying the system to register
+     * @param primaryCredential the current primary organization credential
+     */
+    public void proxyRegister(List<SCCProxyRecord> proxyRecords, SCCCredentials primaryCredential) {
+        ArrayList<List<SCCProxyRecord>> batches = new ArrayList<>(
+                IntStream.range(0, proxyRecords.size()).boxed().collect(
+                        Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
+                                Collectors.mapping(proxyRecords::get, Collectors.toList())
+                        )).values());
+
+        for (List<SCCProxyRecord> recordBatch: batches) {
+            try {
+                List<SCCRegisterSystemJson> batchCreationJson = recordBatch.stream()
+                        .map(r -> Json.GSON.fromJson(r.getSccCreationJson(), SCCRegisterSystemJson.class))
+                        .toList();
+
+                SCCOrganizationSystemsUpdateResponse response = sccClient.createUpdateSystems(
+                        batchCreationJson,
+                        primaryCredential.getUsername(),
+                        primaryCredential.getPassword());
+
+                for (SCCProxyRecord proxyRecord : recordBatch) {
+                    Optional<SCCSystemCredentialsJson> maybeSystemCredential = response.getSystems().stream()
+                        .filter(e -> e.getLogin().equals(proxyRecord.getSccLogin()))
+                        .findAny();
+
+                    if (maybeSystemCredential.isPresent()) {
+                        SCCSystemCredentialsJson systemCredential = maybeSystemCredential.get();
+
+                        proxyRecord.setSccId(systemCredential.getId());
+                        proxyRecord.setSccRegistrationErrorTime(null);
+                        proxyRecord.setStatus(SccProxyStatus.SCC_CREATED);
+                    }
+                    else {
+                        if (LOG.isErrorEnabled()) {
+                            LOG.error("Error registering system {}", proxyRecord);
+                        }
+
+                        proxyRecord.setSccId(null);
+                        proxyRecord.setSccRegistrationErrorTime(new Date());
+                        proxyRecord.setStatus(SccProxyStatus.SCC_CREATION_PENDING);
+                    }
+                    sccProxyFactory.save(proxyRecord);
+                }
+            }
+            catch (SCCClientException e) {
+                LOG.error("SCC error while updating virtualization hosts", e);
+                recordBatch.forEach(r -> r.setSccRegistrationErrorTime(new Date()));
+            }
+            catch (Exception e) {
+                LOG.error("Error updating virtualization hosts", e);
+            }
+        }
     }
 
     /**
@@ -140,7 +294,7 @@ public class SCCSystemRegistrationManager {
         ArrayList<List<SCCVirtualizationHostJson>> batches = new ArrayList<>(
                 IntStream.range(0, virtHosts.size()).boxed().collect(
                         Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
-                                Collectors.mapping(e -> virtHosts.get(e), Collectors.toList())
+                                Collectors.mapping(virtHosts::get, Collectors.toList())
                         )).values());
         for (List<SCCVirtualizationHostJson> batch: batches) {
             try {
@@ -149,6 +303,37 @@ public class SCCSystemRegistrationManager {
             }
             catch (SCCClientException e) {
                 LOG.error("SCC error while updating virtualization hosts", e);
+            }
+            catch (Exception e) {
+                LOG.error("Error updating virtualization hosts", e);
+            }
+        }
+    }
+
+    /**
+     * Insert or Update virtualization host data at SCC
+     * @param proxyVirtHosts the virtual host data
+     * @param sccPrimaryOrProxyCredentialsIn primary credential
+     */
+    public void proxyVirtualInfo(List<SCCProxyRecord> proxyVirtHosts, SCCCredentials sccPrimaryOrProxyCredentialsIn) {
+        ArrayList<List<SCCProxyRecord>> batches = new ArrayList<>(
+                IntStream.range(0, proxyVirtHosts.size()).boxed().collect(
+                        Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
+                                Collectors.mapping(proxyVirtHosts::get, Collectors.toList())
+                        )).values());
+
+        for (List<SCCProxyRecord> recordBatch: batches) {
+            try {
+                List<SCCVirtualizationHostJson> batch = recordBatch.stream()
+                        .map(r -> gson.fromJson(r.getSccCreationJson(), SCCVirtualizationHostJson.class))
+                        .toList();
+                sccClient.setVirtualizationHost(batch, sccPrimaryOrProxyCredentialsIn.getUsername(),
+                        sccPrimaryOrProxyCredentialsIn.getPassword());
+                recordBatch.forEach(sccProxyFactory::remove);
+            }
+            catch (SCCClientException e) {
+                LOG.error("SCC error while updating virtualization hosts", e);
+                recordBatch.forEach(r -> r.setSccRegistrationErrorTime(new Date()));
             }
             catch (Exception e) {
                 LOG.error("Error updating virtualization hosts", e);

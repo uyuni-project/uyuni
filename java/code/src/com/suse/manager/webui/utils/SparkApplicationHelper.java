@@ -802,6 +802,19 @@ public class SparkApplicationHelper {
 
     /**
      * Serialize the result and set the response content type to JSON
+     * and the http status code to bad request.
+     * @param response the http response
+     * @param messages messages
+     * @return a JSON string
+     */
+    public static String unprocessableEntity(Response response, String... messages) {
+        response.type("application/json");
+        response.status(HttpStatus.SC_UNPROCESSABLE_ENTITY);
+        return GSON.toJson(ResultJson.error(messages).toSccResult());
+    }
+
+    /**
+     * Serialize the result and set the response content type to JSON
      * and the http status code to internal server error.
      * @param response the http response
      * @param messages messages
