@@ -119,8 +119,18 @@ public final class SSOController {
                                     request.raw(), response.raw(), user.getId());
                             if (relayState != null && !relayState.isEmpty() &&
                                     !relayState.equals(ServletUtils.getSelfRoutedURLNoQuery(request.raw()))) {
-                                response.redirect(request.raw().getParameter("RelayState"));
-                                return response;
+                                // If the execution is at this point of the code, it means that the request successfully
+                                // passed Auth.processResponse(), meaning that it containes a "SAMLResponse" parameter
+                                // as an encoded64 XML file. This XML file has been in turn validated (signature)
+                                // and it has a correct timestamp, so has not been forged by an attacker.
+                                // The other parameter sent with the http request is named "RelayState", which usually
+                                // has always a value of "/rhn/YourRhn.do" (sent by SSO, pointing to the main web page).
+                                // As a precautionary measure, we can allow redirection only if RelayState parameter
+                                // points to "/rhn/" pages, hence validating against redirection to external urls
+                                if (relayState.startsWith("/rhn/")) {
+                                    response.redirect(relayState);
+                                    return response;
+                                }
                             }
                         }
                     }
