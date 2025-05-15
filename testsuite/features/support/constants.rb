@@ -1655,6 +1655,13 @@ TIMEOUT_BY_CHANNEL_NAME = {
 }.freeze
 
 EMPTY_CHANNELS = %w[
+  sle-product-sles15-sp7-updates-x86_64
+  sle-module-basesystem15-sp7-updates-x86_64
+  managertools-sle15-updates-x86_64-sp7
+  sle-module-python3-15-sp7-updates-x86_64
+  sle-module-server-applications15-sp7-updates-x86_64
+  sle-module-desktop-applications15-sp7-updates-x86_64
+  sle-module-devtools15-sp7-updates-x86_64
   suse-manager-proxy-5.0-updates-x86_64
   suse-manager-retail-branch-server-5.0-updates-x86_64
   sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
