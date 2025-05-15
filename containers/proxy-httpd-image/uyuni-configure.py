@@ -221,6 +221,10 @@ ProxyPassReverse /cobbler https://{config['server']}/cobbler
     ) as file:
         file.write("WSGIScriptAlias /pub /usr/share/rhn/wsgi/xmlrpc.py")
 
+    # redirect API calls to the server
+    with open("/etc/apache2/conf.d/smlm-api.conf", "w", encoding="utf-8") as file:
+        file.write("WSGIScriptAlias /rhn/manager/api /usr/share/rhn/wsgi/xmlrpc.py")
+
     with open("/etc/apache2/vhosts.d/ssl.conf", "w", encoding="utf-8") as file:
         file.write(
             f"""
