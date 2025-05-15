@@ -409,7 +409,7 @@ def generate_random_string(length=20):
         return ""
     random_bytes = 16
     length = int(length)
-    s = hashlib.new("sha1")
+    s = hashlib.new("sha256")
     # pylint: disable-next=consider-using-f-string
     s.update(bstr("%.8f" % time.time()))
     s.update(bstr(str(os.getpid())))
