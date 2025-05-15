@@ -942,10 +942,12 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
     'sl-micro-6.0' =>
       %w[
         sl-micro-6.0-pool-x86_64
+        managertools-sl-micro-6.0-x86_64
       ],
     'sl-micro-6.1' =>
       %w[
         sl-micro-6.1-pool-x86_64
+        managertools-sl-micro-6.1-x86_64
       ],
     'ubuntu-2004' => # CHECKED
       %w[
@@ -1582,8 +1584,10 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sll-cb-9-updates-x86_64' => 4320,
   'sl-micro-6.0-devel-uyuni-client-x86_64' => 120,
   'sl-micro-6.0-pool-x86_64' => 120,
+  'managertools-sl-micro-6.0-x86_64' => 60,
   'sl-micro-6.1-devel-uyuni-client-x86_64' => 120,
   'sl-micro-6.1-pool-x86_64' => 120,
+  'managertools-sl-micro-6.1-x86_64' => 60,
   'suse-manager-proxy-5.0-pool-x86_64' => 60,
   'suse-manager-proxy-5.0-pool-x86_64-sp6' => 60,
   'suse-manager-proxy-5.0-updates-x86_64' => 60,
