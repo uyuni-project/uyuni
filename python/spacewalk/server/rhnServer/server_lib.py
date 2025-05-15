@@ -1,6 +1,7 @@
 #  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
+# Copyright (c) 2025 SUSE LLC
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -19,10 +20,8 @@
 import os
 import hashlib
 import time
-import sys
 
-if sys.version_info[0] == 3:
-    from functools import reduce
+from functools import reduce
 
 # pylint: disable-next=wrong-import-position
 from spacewalk.common.rhnLog import log_debug, log_error
