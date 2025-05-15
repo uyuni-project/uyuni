@@ -14,7 +14,7 @@ sudo -i podman exec -d sleminion prometheus-apache_exporter
 sudo -i podman exec -d -e DATA_SOURCE_NAME="postgresql://user:passwd@localhost:5432/database?sslmode=disable" sleminion prometheus-postgres_exporter
 sudo -i podman exec -d sleminion bash -c "exporter_exporter -config.file /etc/exporter_exporter.yaml -config.dirs /etc/exporter_exporter.d"
 
-sudo -i podman exec sleminion bash -c "sed -e 's/http:\/\/download.opensuse.org/http:\/\/server\/pub\/mirror\/download.opensuse.org/g' -i /etc/zypp/repos.d/*"
-sudo -i podman exec sleminion bash -c "sed -e 's/https:\/\/download.opensuse.org/http:\/\/server\/pub\/mirror\/download.opensuse.org/g' -i /etc/zypp/repos.d/*"
+sudo -i podman exec sleminion bash -c "sed -e 's/http:\/\/download.opensuse.org/http:\/\/server.test.lan\/pub\/mirror\/download.opensuse.org/g' -i /etc/zypp/repos.d/*"
+sudo -i podman exec sleminion bash -c "sed -e 's/https:\/\/download.opensuse.org/http:\/\/server.test.lan\/pub\/mirror\/download.opensuse.org/g' -i /etc/zypp/repos.d/*"
 sudo -i podman exec sleminion bash -c "echo 'root:linux' | chpasswd"
-sudo -i podman exec sleminion bash -c "mkdir -p /srv/www/htdocs/pub/bootstrap && cd /srv/www/htdocs/pub/bootstrap && curl http://server/pub/bootstrap/bootstrap.sh > bootstrap.sh"
+sudo -i podman exec sleminion bash -c "mkdir -p /srv/www/htdocs/pub/bootstrap && cd /srv/www/htdocs/pub/bootstrap && curl http://server.test.lan/pub/bootstrap/bootstrap.sh > bootstrap.sh"
