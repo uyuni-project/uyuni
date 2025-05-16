@@ -22,8 +22,8 @@ type MultipleValue<V> = {
 type Value<V> = V extends any[] ? MultipleValue<V> : SingleValue<V>;
 
 type CommonSelectProps<T extends SelectOption, V> = Value<V> & {
-  getOptionValue: (option: T) => V;
-  getOptionLabel: (option: T) => V;
+  getOptionValue?: (option: T) => V;
+  getOptionLabel?: (option: T) => V;
 
   /** Formats option labels in the menu and control as React components */
   formatOptionLabel?: (option: any, meta: any) => React.ReactNode;
@@ -35,10 +35,10 @@ type CommonSelectProps<T extends SelectOption, V> = Value<V> & {
   isLoading?: boolean;
 
   /** text to display when there are no options to list */
-  emptyText: string | null;
+  emptyText?: string;
 
   /** Set to true to allow removing the selected value */
-  isClearable: boolean;
+  isClearable?: boolean;
 
   inputClass?: string;
 
@@ -50,11 +50,13 @@ type CommonSelectProps<T extends SelectOption, V> = Value<V> & {
   name?: string;
 
   disabled?: boolean;
+
+  /** Select options */
+  options?: T[];
 };
 
 type SimpleSelectProps<T extends SelectOption, V> = CommonSelectProps<T, V> & {
-  /** Select options */
-  options: T[];
+  // Intentionally left blank
 };
 
 type AsyncSelectProps<T extends SelectOption, V> = CommonSelectProps<T, V> & {

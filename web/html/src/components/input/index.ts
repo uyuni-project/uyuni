@@ -10,3 +10,4 @@ export * from "./range/Range";
 export * from "./select/DEPRECATED_Select";
 export * from "./text/Text";
 export * from "./text-area/TextArea";
+export * from "./select/Select";

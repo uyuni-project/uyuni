@@ -10,13 +10,19 @@ import withTestAttributes from "./select-test-attributes";
 import { SelectOption, SelectProps } from "./types";
 
 const loadingMessage = () => t("Loading...");
+const noOptionsMessage = () => t("No options");
+const defaultGetOptionValue = (option: any) => option?.value ?? undefined;
+const defaultGetOptionLabel = (option: any) => option?.label ?? undefined;
 
 export function Select<T extends SelectOption, V>(props: SelectProps<T, V>) {
+  const getOptionValue = props.getOptionValue ?? defaultGetOptionValue;
+  const getOptionLabel = props.getOptionLabel ?? defaultGetOptionLabel;
+
   // Make the component controlled. We actually only need this for the async cases, but it's simpler to keep it shared.
   const [value, setValue] = useState(() => {
     // For async, use the default preselected value if available
     if ("defaultValueOption" in props && props.defaultValueOption) {
-      if (props.value !== props.getOptionValue(props.defaultValueOption)) {
+      if (props.value !== getOptionValue(props.defaultValueOption)) {
         throw new RangeError("Select props `value` and `defaultValueOption` don't match");
       }
 
@@ -24,11 +30,7 @@ export function Select<T extends SelectOption, V>(props: SelectProps<T, V>) {
     }
 
     // Otherwise find the right option from the given list
-    if ("options" in props) {
-      return props.options.find((item) => props.getOptionValue(item) === props.value);
-    }
-
-    return undefined;
+    return props.options?.find((item) => getOptionValue(item) === props.value) ?? undefined;
   });
 
   useEffect(() => {
@@ -79,22 +81,23 @@ export function Select<T extends SelectOption, V>(props: SelectProps<T, V>) {
         // console.log(newValue);
         setValue(newValue != null ? newValue : undefined);
         if (props.isMulti) {
-          props.onChange?.(newValue?.map((item) => props.getOptionValue(item)));
+          props.onChange?.(newValue?.map((item) => getOptionValue(item)));
         } else {
-          props.onChange?.(props.getOptionValue(newValue) ?? undefined);
+          props.onChange?.(getOptionValue(newValue) ?? undefined);
         }
       },
       formatOptionLabel: props.formatOptionLabel,
       placeholder: props.placeholder,
       isLoading: props.isLoading,
       loadingMessage,
-      noOptionsMessage: () => props.emptyText,
+      noOptionsMessage,
       isClearable: props.isClearable,
       styles: bootstrapStyles,
       isMulti: props.isMulti,
       menuPortalTarget: document.getElementById("menu-portal-target"),
-      getOptionLabel: (option) => (option != null ? props.getOptionLabel(option) : undefined),
-      getOptionValue: (option) => (option != null ? props.getOptionValue(option) : undefined),
+      // Filter out null values so consumers don't have to worry about this edge case
+      getOptionLabel: (option) => (option != null ? getOptionLabel(option) : undefined),
+      getOptionValue: (option) => (option != null ? getOptionValue(option) : undefined),
     },
     withTestAttributes(props["data-testid"], props.name)
   );
@@ -135,16 +138,3 @@ export function Select<T extends SelectOption, V>(props: SelectProps<T, V>) {
     <ReactSelect options={props.options} value={value} defaultValue={value} aria-label={props.label} {...commonProps} />
   );
 }
-
-Select.defaultProps = {
-  getOptionValue: (option: any) => option?.value ?? undefined,
-  getOptionLabel: (option: any) => option?.label ?? undefined,
-  isClearable: false,
-  isLoading: false,
-  emptyText: t("No options"),
-  inputClass: undefined,
-  label: undefined,
-  disabled: false,
-  isMulti: false,
-  cacheOptions: false,
-};
