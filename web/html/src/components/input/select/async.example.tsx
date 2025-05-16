@@ -1,7 +1,11 @@
+import { useState } from "react";
+
 import { Form } from "../form/Form";
 import { DEPRECATED_Select } from "./DEPRECATED_Select";
+import { Select } from "./Select";
 
 export default () => {
+  const [value, setValue] = useState(2);
   const model = {
     level: 2,
   };
@@ -19,7 +23,7 @@ export default () => {
             label: "Level 2",
           },
         ]);
-      }, 100);
+      }, 1000);
     });
   };
 
@@ -29,6 +33,19 @@ export default () => {
         Async example. To show a prefilled value for async data, use the `defaultValueOption` option with a value that
         matches the expected schema.
       </p>
+      <p>
+        <code>{value ? JSON.stringify(value) : typeof value}</code>
+      </p>
+
+      <Select
+        loadOptions={loadOptions}
+        value={value}
+        onChange={(e) => {
+          console.log(e);
+          setValue(e);
+        }}
+      />
+
       <Form
         model={model}
         onChange={(newModel) => {

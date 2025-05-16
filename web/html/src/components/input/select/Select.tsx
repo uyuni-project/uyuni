@@ -1,30 +1,39 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 
+import _isEqual from "lodash/isEqual";
 import ReactSelect from "react-select";
 import AsyncSelect from "react-select/async";
 import { AsyncPaginate as AsyncPaginateSelect } from "react-select-async-paginate";
 
 import withTestAttributes from "./select-test-attributes";
 
-type SingleMode = {
-  value?: string;
+type Unwrap<T> = T extends readonly (infer U)[] ? U : T;
+export type Option<T> = Record<string, T | unknown>;
 
-  onChange?: (newValue: string | undefined) => void;
+type SingleMode<T> = {
+  value?: T;
+
+  onChange?: (newValue: T | undefined) => void;
 
   /** Set to true to allow multiple selected values */
-  isMulti?: false;
+  isMulti?: never;
 };
 
-type MultiMode = {
-  value?: string[];
+type MultiMode<T extends any[]> = {
+  value?: T;
 
-  onChange?: (newValue: string[]) => void;
+  onChange?: (newValue: T | undefined) => void;
 
   /** Set to true to allow multiple selected values */
   isMulti: true;
 };
 
-type CommonSelectProps = (SingleMode | MultiMode) & {
+type CommonSelectProps<T> = (SingleMode<T> | MultiMode<T extends any[] ? T : never>) & {
+  // TODO: Add commentary
+  getOptionValue: (option: Option<T>) => T;
+  getOptionLabel: (option: Option<T>) => T;
+
   /** Formats option labels in the menu and control as React components */
   formatOptionLabel?: (option: any, meta: any) => React.ReactNode;
 
@@ -52,27 +61,22 @@ type CommonSelectProps = (SingleMode | MultiMode) & {
   disabled?: boolean;
 };
 
-type SelectProps = CommonSelectProps & {
+type SimpleSelectProps<T> = CommonSelectProps<T> & {
   /** Select options */
-  options: { value: string; label: string }[];
+  options: Option<T>[];
 };
 
-type AsyncSelectProps = Omit<CommonSelectProps, "value"> & {
-  // 'value' is currently not supported with the async Select
-  // because string => Object value conversion is not possible with dynamic options
-
-  /** Default value object if no value is set. This has to be an object corresponding to the rest of the schema. */
-  defaultValueOption?: Object;
-
+type AsyncSelectProps<T> = CommonSelectProps<T> & {
   paginate?: boolean;
 
   /**
    * Function that returns a promise, which is the set of options to be used once the promise resolves.
    */
-  loadOptions: (searchString: string, callback: (options: Array<Object>) => undefined) => Promise<any> | undefined;
+  loadOptions: (searchString: string, callback: (options: T[]) => undefined) => Promise<any> | undefined;
   cacheOptions?: boolean;
 };
-type AsyncPaginateSelectProps = Omit<CommonSelectProps, "value"> & {
+
+type AsyncPaginateSelectProps<T> = CommonSelectProps<T> & {
   /** Default value object if no value is set. This has to be an object corresponding to the rest of the schema. */
   defaultValueOption?: Object;
 
@@ -85,16 +89,12 @@ type AsyncPaginateSelectProps = Omit<CommonSelectProps, "value"> & {
     searchString: string,
     previouslyLoaded: any[],
     additional?: any
-  ) => Promise<{ options: any[]; hasMore: boolean; additional?: any }>;
+  ) => Promise<{ options: Option<T>[]; hasMore: boolean; additional?: any }>;
 };
 
-type Props = SelectProps | AsyncSelectProps | AsyncPaginateSelectProps;
+type Props<T> = SimpleSelectProps<T> | AsyncSelectProps<T> | AsyncPaginateSelectProps<T>;
 
-export function Select(props: Props) {
-  const isAsync = (props: Props): props is AsyncSelectProps | AsyncPaginateSelectProps => {
-    return (props as AsyncSelectProps).loadOptions !== undefined;
-  };
-
+export function Select<T>(props: Props<T>) {
   const bootstrapStyles = {
     control: (styles: {}) => ({
       ...styles,
@@ -123,11 +123,6 @@ export function Select(props: Props) {
     }),
   };
 
-  let defaultValueOption;
-  if (isAsync(props)) {
-    defaultValueOption = props.defaultValueOption;
-  }
-
   // Common props to pass to both 'react-select' and 'react-select/async'
   const commonProps = Object.assign(
     {
@@ -138,10 +133,11 @@ export function Select(props: Props) {
       // TODO: Fix
       // onBlur: props.onBlur,
       onChange: (newValue) => {
+        console.log(newValue);
         if (props.isMulti) {
-          props.onChange?.(newValue?.map((item) => item.value) ?? undefined);
+          props.onChange?.(newValue?.map((item) => props.getOptionValue(item)));
         } else {
-          props.onChange?.(newValue?.value ?? undefined);
+          props.onChange?.(props.getOptionValue(newValue) ?? undefined);
         }
       },
       formatOptionLabel: props.formatOptionLabel,
@@ -152,18 +148,21 @@ export function Select(props: Props) {
       styles: bootstrapStyles,
       isMulti: props.isMulti,
       menuPortalTarget: document.getElementById("menu-portal-target"),
+      getOptionLabel: (option) => (option != null ? props.getOptionLabel(option) : undefined),
+      getOptionValue: (option) => (option != null ? props.getOptionValue(option) : undefined),
     },
     withTestAttributes(props["data-testid"], props.name)
   );
 
-  if (isAsync(props)) {
+  if ("loadOptions" in props) {
     if (props.paginate) {
       return (
         <AsyncPaginateSelect
           loadOptions={props.loadOptions}
           defaultOptions
+          value={props.value}
+          defaultValue={props.value}
           aria-label={props.label}
-          defaultValue={defaultValueOption}
           shouldLoadMore={(scrollHeight, clientHeight, scrollTop) => {
             // Load more items before we hit the complete bottom of the dropdown
             const threshold = 200; //px
@@ -178,8 +177,9 @@ export function Select(props: Props) {
         loadOptions={props.loadOptions}
         cacheOptions={props.cacheOptions}
         defaultOptions
+        value={props.value}
+        defaultValue={props.value}
         aria-label={props.label}
-        defaultValue={defaultValueOption}
         {...commonProps}
       />
     );
@@ -199,6 +199,8 @@ export function Select(props: Props) {
 
 // TODO: Review all of these and remove what we no longer use
 Select.defaultProps = {
+  getOptionValue: (option: any) => option?.value ?? undefined,
+  getOptionLabel: (option: any) => option?.label ?? undefined,
   isClearable: false,
   isLoading: false,
   emptyText: t("No options"),

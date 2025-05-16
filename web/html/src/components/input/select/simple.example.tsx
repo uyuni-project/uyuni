@@ -25,7 +25,7 @@ export default () => {
         Simple dropdown: <code>{value ? JSON.stringify(value) : typeof value}</code>
       </p>
 
-      <Select value={value} onChange={setValue} options={options} isClearable />
+      <Select value={value} onChange={(newValue) => setValue(newValue)} options={options} isClearable />
     </>
   );
 };
