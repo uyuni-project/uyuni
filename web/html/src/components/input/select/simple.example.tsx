@@ -21,8 +21,9 @@ export default () => {
 
   return (
     <>
+      <p>Simple dropdown</p>
       <p>
-        Simple dropdown: <code>{value ? JSON.stringify(value) : typeof value}</code>
+        Value: <code>{value ? JSON.stringify(value) : typeof value}</code>
       </p>
 
       <Select value={value} onChange={(newValue) => setValue(newValue)} options={options} isClearable />

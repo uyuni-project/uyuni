@@ -29,7 +29,7 @@ export default () => {
         expected schema.
       </p>
       <p>
-        <code>{value ? JSON.stringify(value) : typeof value}</code>
+        Value: <code>{value ? JSON.stringify(value) : typeof value}</code>
       </p>
 
       <Select loadOptions={loadOptions} value={value} onChange={(newValue) => setValue(newValue)} />

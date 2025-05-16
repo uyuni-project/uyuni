@@ -9,6 +9,8 @@ import { AsyncPaginate as AsyncPaginateSelect } from "react-select-async-paginat
 import withTestAttributes from "./select-test-attributes";
 import { SelectOption, SelectProps } from "./types";
 
+const loadingMessage = () => t("Loading...");
+
 export function Select<T extends SelectOption, V>(props: SelectProps<T, V>) {
   // Make the component controlled. We actually only need this for the async cases, but it's simpler to keep it shared.
   const [value, setValue] = useState(() => {
@@ -20,10 +22,12 @@ export function Select<T extends SelectOption, V>(props: SelectProps<T, V>) {
 
       return props.defaultValueOption;
     }
+
     // Otherwise find the right option from the given list
     if ("options" in props) {
       return props.options.find((item) => props.getOptionValue(item) === props.value);
     }
+
     return undefined;
   });
 
@@ -83,6 +87,7 @@ export function Select<T extends SelectOption, V>(props: SelectProps<T, V>) {
       formatOptionLabel: props.formatOptionLabel,
       placeholder: props.placeholder,
       isLoading: props.isLoading,
+      loadingMessage,
       noOptionsMessage: () => props.emptyText,
       isClearable: props.isClearable,
       styles: bootstrapStyles,
