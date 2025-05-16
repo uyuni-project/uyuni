@@ -406,7 +406,9 @@ public class SaltServerActionService {
         var full = partitioned.get(false);
         var onlyUpload = partitioned.get(true);
         if (!full.isEmpty()) {
-            ret.put(State.apply(List.of("supportdata"), pillar), full);
+            // supportdata should be taken always in direct mode - also on transactional systems
+            var apply = State.apply(List.of("supportdata"), pillar);
+            ret.put(new LocalCallWithExecutors<>(apply, List.of("direct_call"), Collections.emptyMap()), full);
         }
         if (!onlyUpload.isEmpty()) {
             ret.put(Test.echo("supportdata"), onlyUpload);
