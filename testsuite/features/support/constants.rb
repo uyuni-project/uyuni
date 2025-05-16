@@ -845,6 +845,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-basesystem15-sp7-updates-x86_64
         managertools-sle15-pool-x86_64-sp7
         managertools-sle15-updates-x86_64-sp7
+        sle-module-python3-15-sp7-pool-x86_64
+        sle-module-python3-15-sp7-updates-x86_64
         sle-module-server-applications15-sp7-pool-x86_64
         sle-module-server-applications15-sp7-updates-x86_64
         sle-module-desktop-applications15-sp7-pool-x86_64
@@ -942,10 +944,12 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
     'sl-micro-6.0' =>
       %w[
         sl-micro-6.0-pool-x86_64
+        managertools-sl-micro-6.0-x86_64
       ],
     'sl-micro-6.1' =>
       %w[
         sl-micro-6.1-pool-x86_64
+        managertools-sl-micro-6.1-x86_64
       ],
     'ubuntu-2004' => # CHECKED
       %w[
@@ -1497,7 +1501,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-basesystem15-sp5-updates-x86_64' => 540,
   'sle-module-basesystem15-sp6-pool-x86_64' => 300,
   'sle-module-basesystem15-sp6-updates-x86_64' => 400,
-  'sle-module-basesystem15-sp7-pool-x86_64' => 60,
+  'sle-module-basesystem15-sp7-pool-x86_64' => 300,
   'sle-module-basesystem15-sp7-updates-x86_64' => 60,
   'sle-module-containers15-sp4-pool-x86_64' => 60,
   'sle-module-containers15-sp4-pool-x86_64-proxy-4.3' => 60,
@@ -1513,7 +1517,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-desktop-applications15-sp5-updates-x86_64' => 60,
   'sle-module-desktop-applications15-sp6-pool-x86_64' => 240,
   'sle-module-desktop-applications15-sp6-updates-x86_64' => 60,
-  'sle-module-desktop-applications15-sp7-pool-x86_64' => 60,
+  'sle-module-desktop-applications15-sp7-pool-x86i_64' => 120,
   'sle-module-desktop-applications15-sp7-updates-x86_64' => 60,
   'sle-module-devtools15-sp3-pool-x86_64' => 120,
   'sle-module-devtools15-sp3-updates-x86_64' => 600,
@@ -1581,9 +1585,11 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sll-as-9-updates-x86_64' => 1620,
   'sll-cb-9-updates-x86_64' => 4320,
   'sl-micro-6.0-devel-uyuni-client-x86_64' => 120,
-  'sl-micro-6.0-pool-x86_64' => 120,
+  'sl-micro-6.0-pool-x86_64' => 360,
+  'managertools-sl-micro-6.0-x86_64' => 60,
   'sl-micro-6.1-devel-uyuni-client-x86_64' => 120,
-  'sl-micro-6.1-pool-x86_64' => 120,
+  'sl-micro-6.1-pool-x86_64' => 180,
+  'managertools-sl-micro-6.1-x86_64' => 60,
   'suse-manager-proxy-5.0-pool-x86_64' => 60,
   'suse-manager-proxy-5.0-pool-x86_64-sp6' => 60,
   'suse-manager-proxy-5.0-updates-x86_64' => 60,
@@ -1649,6 +1655,13 @@ TIMEOUT_BY_CHANNEL_NAME = {
 }.freeze
 
 EMPTY_CHANNELS = %w[
+  sle-product-sles15-sp7-updates-x86_64
+  sle-module-basesystem15-sp7-updates-x86_64
+  managertools-sle15-updates-x86_64-sp7
+  sle-module-python3-15-sp7-updates-x86_64
+  sle-module-server-applications15-sp7-updates-x86_64
+  sle-module-desktop-applications15-sp7-updates-x86_64
+  sle-module-devtools15-sp7-updates-x86_64
   suse-manager-proxy-5.0-updates-x86_64
   suse-manager-retail-branch-server-5.0-updates-x86_64
   sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64

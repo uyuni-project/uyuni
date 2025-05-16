@@ -300,6 +300,20 @@ def transactional_system?(name, runs_in_container: true)
   slemicro_host?(name, runs_in_container: runs_in_container) || leapmicro_host?(name, runs_in_container: runs_in_container)
 end
 
+# Checks if the 'proxy' host is a transactional system
+#
+# @return [Boolean] Returns true if the proxy is transactional
+def suse_proxy_transactional?
+  ENV.key?(ENV_VAR_BY_HOST['proxy']) && transactional_system?('proxy', runs_in_container: false)
+end
+
+# Checks if the 'proxy' host is a is non-transactional
+#
+# @return [Boolean] Returns true if the proxy is is non-transactional
+def suse_proxy_non_transactional?
+  ENV.key?(ENV_VAR_BY_HOST['proxy']) && !transactional_system?('proxy', runs_in_container: false)
+end
+
 # Determines if a given host name belongs to a Red Hat-like distribution.
 #
 # @param name [String] the host name to check
