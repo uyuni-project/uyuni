@@ -863,10 +863,18 @@ end
 
 When(/^I (enable|disable) Debian-like "([^"]*)" repository on "([^"]*)"$/) do |action, repo, host|
   node = get_target(host)
-  raise ScriptError, "#{node.hostname} is not a Debian-like host." unless deb_host?(host)
 
-  source_repo = "deb http://archive.ubuntu.com/ubuntu/ $(lsb_release -sc) #{repo}"
-  node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} \"#{source_repo}\"")
+  # add-apt-repository does not work with new deb822 format
+  file = 'edit-deb822.awk'
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
+  success = file_inject(node, source, dest)
+  raise ScriptError, 'File injection failed' unless success
+
+  # edit ubuntu.sources with downloaded utility
+  sources = '/etc/apt/sources.list.d/ubuntu.sources'
+  tmp = '/tmp//ubuntu.sources'
+  node.run("awk -f #{dest} -v action=#{action} -v distro=$(lsb_release -sc) -v repo=#{repo} #{sources} > #{tmp} && mv #{tmp} #{sources}")
 end
 
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
