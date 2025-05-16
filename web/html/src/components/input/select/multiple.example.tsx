@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Select } from "./Select";
 
 export default () => {
-  const [value, setValue] = useState<string[] | undefined>();
+  const [value, setValue] = useState<string[]>([]);
   const options = [
     {
       label: t("Beginner"),
