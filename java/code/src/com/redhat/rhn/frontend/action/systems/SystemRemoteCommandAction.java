@@ -82,21 +82,21 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
             FormData.SCRIPT,
         };
 
-        private String uid;
-        private String gid;
-        private String scriptBody;
-        private String label;
-        private Long timeout;
+        private String uidPrivate;
+        private String gidPrivate;
+        private String scriptBodyPrivate;
+        private String labelPrivate;
+        private Long timeoutPrivate;
 
         /**
          * Default constructor.
          */
         public FormData() {
-            this.uid = "root";
-            this.gid = "root";
-            this.timeout = FormData.DEFAULT_TIMEOUT;
-            this.label = "";
-            this.scriptBody = "#!/bin/sh\n# Add your shell script below\n";
+            this.uidPrivate = "root";
+            this.gidPrivate = "root";
+            this.timeoutPrivate = FormData.DEFAULT_TIMEOUT;
+            this.labelPrivate = "";
+            this.scriptBodyPrivate = "#!/bin/sh\n# Add your shell script below\n";
         }
 
         /**
@@ -104,7 +104,7 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
          * @return the uid
          */
         public String getUid() {
-            return uid;
+            return uidPrivate;
         }
 
         /**
@@ -113,7 +113,7 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
          * @return Form data object.
          */
         public FormData setUid(String userid) {
-            this.uid = userid;
+            this.uidPrivate = userid;
             return this;
         }
 
@@ -122,7 +122,7 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
          * @return the gid
          */
         public String getGid() {
-            return gid;
+            return gidPrivate;
         }
 
         /**
@@ -131,7 +131,7 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
          * @return Form data object.
          */
         public FormData setGid(String groupid) {
-            this.gid = groupid;
+            this.gidPrivate = groupid;
             return this;
         }
 
@@ -140,7 +140,7 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
          * @return the scriptBody
          */
         public String getScriptBody() {
-            return scriptBody;
+            return scriptBodyPrivate;
         }
 
         /**
@@ -149,7 +149,7 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
          * @return Form data object.
          */
         public FormData setScriptBody(String script) {
-            this.scriptBody = script;
+            this.scriptBodyPrivate = script;
             return this;
         }
 
@@ -158,7 +158,7 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
          * @return the label
          */
         public String getLabel() {
-            return label;
+            return labelPrivate;
         }
 
         /**
@@ -167,7 +167,7 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
          * @return Form data object.
          */
         public FormData setLabel(String commandLabel) {
-            this.label = commandLabel;
+            this.labelPrivate = commandLabel;
             return this;
         }
 
@@ -176,7 +176,7 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
          * @return the timeout
          */
         public Long getTimeout() {
-            return timeout;
+            return timeoutPrivate;
         }
 
         /**
@@ -185,7 +185,7 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
          * @return Form data object.
          */
         public FormData setTimeout(Long commandTimeout) {
-            this.timeout = commandTimeout;
+            this.timeoutPrivate = commandTimeout;
             return this;
         }
     }
