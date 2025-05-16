@@ -31,7 +31,7 @@
     </rl:column>
   </rl:list>
   <rhn:hidden name="sid" value="${param.sid}" />
-  <input type="submit" name="dispatch" class="btn btn-danger pull-right"
+  <button type="submit" name="dispatch" class="btn btn-danger pull-right"
     value='<bean:message key="confirm.jsp.confirm"/>'/>
   <rhn:submitted />
 </rl:listset>

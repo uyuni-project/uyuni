@@ -22,7 +22,7 @@
     <rhn:csrf />
     <div class="spacewalk-section-toolbar">
         <div class="action-button-wrapper">
-             <input type="submit"
+             <button type="submit"
                name="dispatch"
                class="btn btn-primary"
                value='<bean:message key="actions.jsp.confirmcancelactions"/>'/>

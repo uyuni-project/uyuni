@@ -22,7 +22,7 @@
       <hr />
       <rhn:submitted/>
       <rhn:hidden name="name" value="${requestScope.name}"/>
-      <div class="pull-right"><input type="submit" class="btn btn-danger" name="dispatch"
+      <div class="pull-right"><button type="submit" class="btn btn-danger" name="dispatch"
        value="${rhn:localize('snippetdelete.jsp.deletesnippet')}"/></div>
 
     </form>
