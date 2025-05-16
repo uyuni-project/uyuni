@@ -11,6 +11,133 @@
 
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/admin/hub/hub-details' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/admin/hub/peripherals' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/admin/hub/peripherals/register' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/admin/hub/peripherals/migrate-from-v1' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/admin/hub/peripherals/migrate-from-v2' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/admin/hub/peripherals/:id' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/admin/hub/peripherals/:id/sync-channels' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/admin/hub/access-tokens' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/admin/hub/peripherals' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/admin/hub/peripherals/:id/sync-channels' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/admin/hub/access-tokens' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/admin/hub/peripherals' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/admin/hub/peripherals/:id' AND ep.http_method = 'DELETE'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/admin/hub/peripherals/:id/root-ca' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/admin/hub/peripherals/:id/root-ca' AND ep.http_method = 'DELETE'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/admin/hub/peripherals/:id/credentials' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/admin/hub/peripherals/:id/sync-channels' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/admin/hub/:id' AND ep.http_method = 'DELETE'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/admin/hub/:id/root-ca' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/admin/hub/:id/root-ca' AND ep.http_method = 'DELETE'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/admin/hub/migrate/v1' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/admin/hub/migrate/v2' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/admin/hub/access-tokens' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/admin/hub/access-tokens/:id/validity' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.hub' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/admin/hub/access-tokens/:id' AND ep.http_method = 'DELETE'
+    ON CONFLICT DO NOTHING;
+
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'audit.cve' AND ns.access_mode = 'R'
     AND ep.endpoint = '/manager/audit/cve' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
@@ -5134,6 +5261,65 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     WHERE ns.namespace = 'users.group_config' AND ns.access_mode = 'W'
     AND ep.endpoint = '/users/ExtAuthSgDetails.do' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
+
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.sync.hub.get_all_peripheral_channels' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/sync/hub/getAllPeripheralChannels' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.sync.hub.get_manager_info' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/sync/hub/getManagerInfo' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.sync.hub.is_iss_peripheral' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/sync/hub/isISSPeripheral' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.sync.hub.get_all_peripheral_orgs' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/sync/hub/getAllPeripheralOrgs' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.sync.hub.list_peripheral_channels_to_sync' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/sync/hub/listPeripheralChannelsToSync' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+
+
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.sync.hub.migrate_from_iss_v1' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/sync/hub/migrateFromISSv1' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.sync.hub.sync_peripheral_channels' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/sync/hub/syncPeripheralChannels' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.sync.hub.migrate_from_iss_v2' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/sync/hub/migrateFromISSv2' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.sync.hub.remove_peripheral_channels_to_sync' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/sync/hub/removePeripheralChannelsToSync' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.sync.hub.add_peripheral_channels_to_sync' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/sync/hub/addPeripheralChannelsToSync' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.sync.hub.regenerate_scc_credentials' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/sync/hub/regenerateSCCCredentials' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.access.create_role' AND ns.access_mode = 'W'

@@ -646,6 +646,7 @@ public class HubHandler extends BaseHandler {
      * #prop_desc("string", "label", "Label of a peripheral channel to sync")
      * #array_end()
      */
+    @ReadOnly
     public List<String> listPeripheralChannelsToSync(User loggedInUser, String fqdn) {
         ensureSatAdmin(loggedInUser);
         try {
@@ -817,6 +818,7 @@ public class HubHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.returntype #param_desc("boolean", "peripheral", "True if this is an ISS peripheral, false otherwise")
      */
+    @ReadOnly
     public boolean isISSPeripheral(User loggedInUser) {
         ensureSatAdmin(loggedInUser);
         HubFactory hubFactory = new HubFactory();
