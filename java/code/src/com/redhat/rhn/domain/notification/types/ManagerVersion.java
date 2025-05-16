@@ -16,17 +16,23 @@ package com.redhat.rhn.domain.notification.types;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Represents the manager version, which can be in one of two formats:
  * - Semantic versioning (X.Y.Z): where X is the major version, Y is the minor version, and Z is the patch version.
+ * Build metadata is ignored.
  * - Date-based versioning (X.Y): where X represents the year and Y represents the month.
  * Both formats are compared left to right, with each component having hierarchical significance.
  * Only versions of the same format can be compared to each other.
  */
 public class ManagerVersion implements Comparable<ManagerVersion>, Serializable {
+    private static final Logger LOG = LogManager.getLogger(ManagerVersion.class);
+
     private final boolean isUyuni;
     private final int major;
     private final int minor;
@@ -73,13 +79,12 @@ public class ManagerVersion implements Comparable<ManagerVersion>, Serializable 
         }
         else {
             if (parts.length != 3) {
-                throw new IllegalArgumentException(
-                        String.format("Invalid %s version format", ConfigDefaults.get().getProductName())
-                );
+                LOG.debug("Version string '{}' has more than 3 components; extra parts will be ignored.",
+                        versionStringIn);
             }
             this.major = Integer.parseInt(parts[0]);
             this.minor = Integer.parseInt(parts[1]);
-            this.patch = Integer.parseInt(parts[2]);
+            this.patch = Integer.parseInt(parts[2].replaceAll("^(\\d+).*$", "$1"));
         }
     }
 
