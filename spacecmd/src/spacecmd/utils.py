@@ -94,7 +94,7 @@ def parse_command_arguments(command_args, argument_parser, glob=True):
 
         # allow simple globbing
         if glob:
-            parts = [re.sub(r"\*", ".*", a) for a in parts]
+            parts = [part.replace("*", ".*") for part in parts]
 
         argument_parser.add_argument("leftovers", nargs="*", help=argparse.SUPPRESS)
         opts = argument_parser.parse_args(args=parts)
