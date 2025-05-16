@@ -118,7 +118,7 @@
 
         <div class="text-right">
             <rhn:submitted/>
-            <input type="submit"
+            <button type="submit"
                    name="dispatch"
                    class="btn btn-default"
                    value='<bean:message key="cloneerrata.jsp.cloneerrata"/>'/>
