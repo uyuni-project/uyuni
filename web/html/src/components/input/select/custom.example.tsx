@@ -1,5 +1,5 @@
 import { Form } from "../form/Form";
-import { Select } from "./Select";
+import { DEPRECATED_Select } from "./DEPRECATED_Select";
 
 export default () => {
   const model = {
@@ -27,7 +27,7 @@ export default () => {
             divClass="col-md-12"
             formDirection="form-horizontal"
           >
-            <Select
+            <DEPRECATED_Select
               name="flavor"
               label={t("Flavor")}
               options={options}

@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { AsyncButton } from "components/buttons";
 import { ActionConfirm } from "components/dialog/ActionConfirm";
 import { IconTag } from "components/icontag";
-import { Form, Radio, Select } from "components/input";
+import { DEPRECATED_Select, Form, Radio } from "components/input";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table, TableRef } from "components/table/Table";
@@ -97,7 +97,7 @@ export function PackageList(props: Props) {
       </h1>
 
       <Form model={formModel} onChange={(model: object) => setFormModel({ ...model })}>
-        <Select
+        <DEPRECATED_Select
           name="channel"
           label={t("Channel")}
           required

@@ -3,7 +3,7 @@ import * as React from "react";
 import { clearFirst, getFieldValuesByName, openMenu, render, screen, select, type } from "utils/test-utils";
 
 import { Form } from "../form/Form";
-import { Select } from "./Select";
+import { DEPRECATED_Select } from "./DEPRECATED_Select";
 
 describe("Select", () => {
   // Use these to test model changes in tests
@@ -25,7 +25,7 @@ describe("Select", () => {
 
   test("renders with minimal props", () => {
     expect(() => {
-      renderWithForm(<Select name="level" label="Level" options={["beginner", "normal", "expert"]} />);
+      renderWithForm(<DEPRECATED_Select name="level" label="Level" options={["beginner", "normal", "expert"]} />);
     }).not.toThrow();
     openMenu(screen.getByLabelText("Level"));
     expect(screen.getByText("beginner")).toBeDefined();
@@ -33,7 +33,7 @@ describe("Select", () => {
 
   test("renders with labelled options", async () => {
     renderWithForm(
-      <Select
+      <DEPRECATED_Select
         name="level"
         label="Level"
         options={[
@@ -52,7 +52,7 @@ describe("Select", () => {
   test("fancy multiple select test", async () => {
     model = { flavor: ["vanilla", "strawberry"] };
     renderWithForm(
-      <Select
+      <DEPRECATED_Select
         name="flavor"
         label="Flavor"
         placeholder={t("Start typing...")}
@@ -84,7 +84,7 @@ describe("Select", () => {
   test("default value is shown to the user", () => {
     model = {};
     renderWithForm(
-      <Select
+      <DEPRECATED_Select
         name="foo"
         options={[
           { value: "value 1", label: "label 1" },

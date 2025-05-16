@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
-import { DateTime, Form, Radio, Select, Text } from "components/input";
+import { DateTime, DEPRECATED_Select, Form, Radio, Text } from "components/input";
 
 import { localizedMoment } from "utils";
 import produce from "utils/produce";
@@ -114,7 +114,7 @@ const FilterForm = (props: Props) => {
 
         {filterBy === FilterBy.Type ? (
           <React.Fragment>
-            <Select
+            <DEPRECATED_Select
               name="type"
               label={t("Filter Type")}
               labelClass="col-md-3"
@@ -127,7 +127,7 @@ const FilterForm = (props: Props) => {
             />
 
             {selectedFilterMatchers?.length ? (
-              <Select
+              <DEPRECATED_Select
                 name="matcher"
                 label={t("Matcher")}
                 labelClass="col-md-3"
