@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Select } from "./Select";
 
 export default () => {
-  const [value, setValue] = useState<string | undefined>();
+  const [value, setValue] = useState<string[] | undefined>();
   const options = [
     {
       label: t("Beginner"),
@@ -22,10 +22,10 @@ export default () => {
   return (
     <>
       <p>
-        Simple dropdown: <code>{value ? JSON.stringify(value) : typeof value}</code>
+        Multiple values: <code>{value ? JSON.stringify(value) : typeof value}</code>
       </p>
 
-      <Select value={value} onChange={setValue} options={options} isClearable />
+      <Select isMulti value={value} onChange={setValue} options={options} isClearable />
     </>
   );
 };

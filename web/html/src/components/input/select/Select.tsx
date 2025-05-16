@@ -9,7 +9,7 @@ import withTestAttributes from "./select-test-attributes";
 type SingleMode = {
   value?: string;
 
-  onChange?: (newValue: string) => void;
+  onChange?: (newValue: string | undefined) => void;
 
   /** Set to true to allow multiple selected values */
   isMulti?: false;
@@ -22,9 +22,6 @@ type MultiMode = {
 
   /** Set to true to allow multiple selected values */
   isMulti: true;
-
-  /** Resolves option data to a string to compare options and specify value attributes */
-  getOptionValue: (option: any) => string | string[];
 };
 
 type CommonSelectProps = (SingleMode | MultiMode) & {
@@ -43,7 +40,6 @@ type CommonSelectProps = (SingleMode | MultiMode) & {
   /** Set to true to allow removing the selected value */
   isClearable: boolean;
 
-  /** Value placeholder to display when no value is entered */
   inputClass?: string;
 
   /** Id for testing purposes */
@@ -148,9 +144,6 @@ export function Select(props: Props) {
           props.onChange?.(newValue?.value ?? undefined);
         }
       },
-      // TODO: Do we need this?
-      // getOptionLabel: (option) => (option != null ? props.getOptionLabel(option) : ""),
-      // getOptionValue: (option) => (option != null ? props.getOptionValue(option) : ""),
       formatOptionLabel: props.formatOptionLabel,
       placeholder: props.placeholder,
       isLoading: props.isLoading,
