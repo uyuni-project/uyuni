@@ -155,7 +155,7 @@ class SpacewalkShell(Cmd):
         # pylint: disable=R0911
 
         # remove leading/trailing whitespace
-        line = re.sub(r"^\s+|\s+$", "", line)
+        line = line.strip()
 
         # don't do anything on empty lines
         if line == "":
@@ -265,7 +265,7 @@ class SpacewalkShell(Cmd):
     # pylint: disable-next=arguments-renamed,arguments-renamed
     def postcmd(self, cmdresult, cmd):
         logging.debug("command=%s, return_value=%s", cmd, repr(cmdresult))
-        self.prompt = re.sub("##", str(len(self.ssm)), self.prompt_template)
+        self.prompt = self.prompt_template.replace("##", str(len(self.ssm)))
 
     def default(self, line):
         Cmd.default(self, line)

@@ -507,7 +507,7 @@ def do_kickstart_details(self, args):
         result.append(_("Custom Options"))
         result.append("--------------")
         for o in sorted(custom_options, key=itemgetter("arguments")):
-            result.append(re.sub("\n", "", o.get("arguments")))
+            result.append(o.get("arguments", "").strip("\n"))
 
     if partitions:
         result.append("")
