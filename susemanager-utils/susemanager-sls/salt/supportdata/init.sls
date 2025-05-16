@@ -1,3 +1,4 @@
+{% if not grains.get('transactional', False) %}
 install-supportdata-command:
   pkg.latest:
 {%- if grains['os_family'] == 'Suse' %}
@@ -5,11 +6,10 @@ install-supportdata-command:
 {%- else %}
     - name: sos
 {%- endif %}
+{% endif %}
 
 
 gather-supportdata:
   mgrcompat.module_run:
     - name: supportdata.get
     - cmd_args: "{{ pillar.get('arguments', '') }}"
-    - require:
-      - install-supportdata-command
