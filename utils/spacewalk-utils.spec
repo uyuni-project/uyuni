@@ -38,9 +38,7 @@ Requires:       bash
 # Required by spacewalk-hostname-rename
 Requires:       cobbler
 # Required by spacewalk-hostname-rename
-Requires:       iproute
-# Required by spacewalk-hostname-rename
-Requires:       perl-Satcon
+Requires:       postfix
 # Required by depsolver.py
 Requires:       python3-solv
 # Required by depsolver.py, cloneByDate.py, spacewalk-common-channels
@@ -53,7 +51,7 @@ Requires:       spacewalk-admin
 Requires:       spacewalk-backend
 # Required by cloneByDate.py
 Requires:       spacewalk-backend-sql
-# Required by cloneByDate.py, depsolver.py
+# Required by cloneByDate.py, depsolver.py, spacewalk-hostname-rename
 Requires:       spacewalk-backend-tools >= 2.2.27
 # Required by spacewalk-hostname-rename
 Requires:       spacewalk-certs-tools
@@ -62,7 +60,7 @@ Requires:       spacewalk-config
 # Required by spacewalk-hostname-rename
 Requires:       spacewalk-setup
 # Required by spacewalk-hostname-rename (provides /usr/bin/spacewalk-sql)
-Requires:       susemanager-schema
+Requires:       susemanager-schema-utility
 # Required by cloneByDate.py, depsolver.py,spacewalk-clone-by-date
 Requires(pre):  uyuni-base-common
 # Required by taskotop
@@ -119,7 +117,6 @@ popd
 %{python3_sitelib}/utils/__pycache__/cloneByDate.*
 %{python3_sitelib}/utils/__pycache__/depsolver.*
 %{_mandir}/man8/spacewalk-clone-by-date.8%{?ext_man}
-%{_mandir}/man8/spacewalk-hostname-rename.8%{?ext_man}
 %{_mandir}/man8/taskotop.8%{?ext_man}
 
 
