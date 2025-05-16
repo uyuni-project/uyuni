@@ -1,5 +1,7 @@
 import { hot } from "react-hot-loader/root";
 
+import { useState } from "react";
+
 import { AsyncButton } from "components/buttons";
 import withPageWrapper from "components/general/with-page-wrapper";
 import { Check, Form, Text } from "components/input";
@@ -10,7 +12,6 @@ import { MessagesContainer, showErrorToastr, showSuccessToastr } from "component
 import Network from "utils/network";
 
 import { PasswordPolicyData, PasswordPolicyProps } from "./password_policy_type";
-import {useState} from "react";
 
 const PasswordPolicy = (prop: PasswordPolicyProps) => {
   const policy_endpoint = "/rhn/manager/api/admin/config/password-policy";
