@@ -32,7 +32,7 @@
 
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <input type="submit"
+                <button type="submit"
                        class="btn btn-primary"
                        name="dispatch"
                        value='<bean:message key="errata.edit.packages.confirm.confirm"/>'/>

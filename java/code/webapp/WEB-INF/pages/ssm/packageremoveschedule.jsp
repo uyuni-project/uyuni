@@ -23,7 +23,7 @@
 
     <div class="spacewalk-section-toolbar">
         <div class="action-button-wrapper">
-            <input type="submit" name="dispatch" class="btn btn-danger"
+            <button type="submit" name="dispatch" class="btn btn-danger"
                    value='<bean:message key="installconfirm.jsp.confirm"/>'/>
         </div>
     </div>

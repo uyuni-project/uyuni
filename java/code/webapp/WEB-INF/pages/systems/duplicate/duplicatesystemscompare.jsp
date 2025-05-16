@@ -97,7 +97,7 @@
                                 <div id="div_delbtn${current.value}">
                                 </div>
                                 <div style="display:none" id='div_confirm${current.value}'>
-                                   <%-- <input type="submit" class="btn btn-danger" name="btn${current.value}" value="${rhn:localize('ssm.delete.systems.confirmbutton')}"/> --%>
+                                   <%-- <button type="submit" class="btn btn-danger" name="btn${current.value}" value="${rhn:localize('ssm.delete.systems.confirmbutton')}"/> --%>
                                 </div>
                                 <div id='div_del${current.value}'>
                                 <input class="btn btn-danger" name="delbtn${current.value}" value="${rhn:localize('Delete System Profile')}"

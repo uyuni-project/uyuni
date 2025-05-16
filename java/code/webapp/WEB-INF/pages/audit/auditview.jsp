@@ -279,7 +279,7 @@
                 <input type="checkbox" name="reviewed" />
                 <span>I, <c:out value="${user.firstNames}" />, certify I have reviewed these audit logs.</span>
                 <br />
-                <input type="submit" value="Mark reviewed" class="btn btn-default" />
+                <button type="submit" value="Mark reviewed" class="btn btn-default" />
             </div>
         </form>
     </c:otherwise>
