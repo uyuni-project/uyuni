@@ -1,1 +1,2 @@
+- Replace regex functions with more efficient string functions
 - Allow existing pylint failures
