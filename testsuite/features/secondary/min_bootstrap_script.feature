@@ -8,8 +8,10 @@
 # TODO: This feature is not working within a proxy containerized environment
 #       due to the fact that the mgr-bootstrap command is not available in the proxy
 #       container. Reported Bug: https://bugzilla.suse.com/show_bug.cgi?id=1220864
+# Skip if github validation because expect is not installed in the server
 
 @skip_if_containerized_server
+@skip_if_github_validation
 @sle_minion
 @scope_onboarding
 Feature: Register a Salt minion with a bootstrap script
