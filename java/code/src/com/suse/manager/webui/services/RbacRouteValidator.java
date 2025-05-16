@@ -137,20 +137,24 @@ public class RbacRouteValidator {
                     }
                 });
 
-        // Collect namespaces that no group has access to (except for Sat Admin)
-        List<Namespace> noAccessNamespaces = NamespaceFactory.list().stream()
-                .filter(ns -> ns.getAccessGroups().isEmpty())
-                .toList();
-
         if (missingRoutes.isEmpty() && noNamespaceEndpts.isEmpty()) {
             LOG.info("RBAC data validation successful.");
-            return;
         }
         else {
             LOG.error("RBAC data validation failed.");
-        }
 
-        // Report invalid items
+            // Collect namespaces that no group has access to (except for Sat Admin)
+            List<Namespace> noAccessNamespaces = NamespaceFactory.list().stream()
+                    .filter(ns -> ns.getAccessGroups().isEmpty())
+                    .toList();
+
+            logIssues(missingRoutes, noNamespaceEndpts, noAccessNamespaces);
+            LOG.warn("Please note an invalid configuration will terminate execution in later releases.");
+        }
+    }
+
+    private static void logIssues(List<RouteInfo> missingRoutes, List<WebEndpoint> noNamespaceEndpts,
+            List<Namespace> noAccessNamespaces) {
         if (!missingRoutes.isEmpty()) {
             StringBuilder sb = new StringBuilder("Found " + missingRoutes.size() +
                     " endpoints missing RBAC mappings:");
@@ -158,7 +162,7 @@ public class RbacRouteValidator {
                 sb.append("\n\t").append(route.getUri())
                         .append(" [").append(route.getHttpMethod()).append("]");
             }
-            LOG.error(sb.toString());
+            LOG.error(sb::toString);
         }
 
         if (!noNamespaceEndpts.isEmpty()) {
@@ -168,20 +172,17 @@ public class RbacRouteValidator {
                 sb.append("\n\t").append(endpoint.getEndpoint())
                         .append(" [").append(endpoint.getHttpMethod()).append("]");
             }
-            LOG.error(sb.toString());
+            LOG.error(sb::toString);
         }
 
         if (!noAccessNamespaces.isEmpty()) {
             StringBuilder sb = new StringBuilder("The following " + noAccessNamespaces.size() +
-                    " namespaces cannot be accessed by any role:");
+                    " namespaces can only be accessed by the satellite admin:");
             for (Namespace ns : noAccessNamespaces) {
                 sb.append("\n\t").append(ns.getNamespace())
                         .append(" [").append(ns.getAccessMode().getLabel()).append("]");
             }
-            LOG.warn(sb.toString());
+            LOG.warn(sb::toString);
         }
-
-        LOG.warn("Please note an invalid configuration will terminate execution in later releases.");
-        // TODO: Halt execution on invalid config
     }
 }

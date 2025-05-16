@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.domain.access;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -31,7 +32,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "namespace", schema = "access")
-public class Namespace {
+public class Namespace implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

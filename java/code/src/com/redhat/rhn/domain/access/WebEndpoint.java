@@ -165,11 +165,11 @@ public class WebEndpoint extends BaseDomainHelper {
         return namespaces;
     }
 
-    public Boolean isAuthRequired() {
+    public boolean isAuthRequired() {
         return authRequired;
     }
 
-    public void setAuthRequired(Boolean authRequiredIn) {
+    public void setAuthRequired(boolean authRequiredIn) {
         authRequired = authRequiredIn;
     }
 

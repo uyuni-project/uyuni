@@ -112,6 +112,6 @@ public class WebEndpointFactory extends HibernateFactory {
      * @return the {@code Stream} of all endpoints
      */
     public static Stream<WebEndpoint> getAllEndpoints() {
-        return WebEndpointFactory.getSession().createQuery("from WebEndpoint", WebEndpoint.class).stream();
+        return getSession().createQuery("from WebEndpoint", WebEndpoint.class).stream();
     }
 }
