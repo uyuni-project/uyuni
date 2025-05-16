@@ -32,7 +32,7 @@
                     </c:if>
             </select>
             <span class="input-group-btn">
-                <input type="submit" name="view" class="btn btn-default" value="<bean:message key='channel.jsp.package.viewpackages'/>">
+                <button type="submit" name="view" class="btn btn-default" value="<bean:message key='channel.jsp.package.viewpackages'/>">
             </span>
         </div>
     </div>

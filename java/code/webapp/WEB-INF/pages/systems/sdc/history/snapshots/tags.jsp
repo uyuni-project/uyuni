@@ -20,7 +20,7 @@
   <rhn:csrf />
   <div class="spacewalk-section-toolbar">
     <div class="action-button-wrapper">
-      <input type="submit" name="dispatch" class="btn btn-default pull-right"
+      <button type="submit" name="dispatch" class="btn btn-default pull-right"
         value='<bean:message key="system.history.snapshot.tagRemove"/>'/>
     </div>
   </div>
