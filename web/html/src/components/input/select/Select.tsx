@@ -8,30 +8,32 @@ import { AsyncPaginate as AsyncPaginateSelect } from "react-select-async-paginat
 
 import withTestAttributes from "./select-test-attributes";
 
-export type Option<T> = Record<string, T | unknown>;
+/** Usually options have the shape `{ value: string; label:string }`, but the consumer can define any shape */
+export type Option = { value: string; label: string } | Record<string, unknown>;
 
-type SingleMode<T> = {
-  value?: T;
+type SingleValue<V> = {
+  value?: V;
 
-  onChange?: (newValue: T | undefined) => void;
+  onChange?: (newValue: V | undefined) => void;
 
   /** Set to true to allow multiple selected values */
   isMulti?: never;
 };
 
-type MultiMode<T extends any[]> = {
-  value?: T;
+type ValueArray<V> = {
+  value?: V;
 
-  onChange?: (newValue: T | undefined) => void;
+  onChange?: (newValue: V) => void;
 
   /** Set to true to allow multiple selected values */
   isMulti: true;
 };
 
-type CommonSelectProps<T> = (SingleMode<T> | MultiMode<T extends any[] ? T : never>) & {
-  // TODO: Add commentary
-  getOptionValue: (option: Option<T>) => T;
-  getOptionLabel: (option: Option<T>) => T;
+type Value<V> = SingleValue<V> | ValueArray<V>;
+
+type CommonSelectProps<T extends Option, V> = {
+  getOptionValue: (option: T) => V;
+  getOptionLabel: (option: T) => V;
 
   /** Formats option labels in the menu and control as React components */
   formatOptionLabel?: (option: any, meta: any) => React.ReactNode;
@@ -60,14 +62,14 @@ type CommonSelectProps<T> = (SingleMode<T> | MultiMode<T extends any[] ? T : nev
   disabled?: boolean;
 };
 
-type SimpleSelectProps<T> = CommonSelectProps<T> & {
+type SimpleSelectProps<T extends Option, V> = CommonSelectProps<T, V> & {
   /** Select options */
-  options: Option<T>[];
+  options: T[];
 };
 
-type AsyncSelectProps<T> = CommonSelectProps<T> & {
+type AsyncSelectProps<T extends Option, V> = CommonSelectProps<T, V> & {
   /** Default value object if no value is set. This has to be an object corresponding to the rest of the schema. */
-  defaultValueOption?: Option<T>;
+  defaultValueOption?: T;
 
   paginate?: boolean;
 
@@ -78,9 +80,9 @@ type AsyncSelectProps<T> = CommonSelectProps<T> & {
   cacheOptions?: boolean;
 };
 
-type AsyncPaginateSelectProps<T> = CommonSelectProps<T> & {
+type AsyncPaginateSelectProps<T extends Option, V> = CommonSelectProps<T, V> & {
   /** Default value object if no value is set. This has to be an object corresponding to the rest of the schema. */
-  defaultValueOption?: Option<T>;
+  defaultValueOption?: T;
 
   paginate: true;
   /**
@@ -91,12 +93,13 @@ type AsyncPaginateSelectProps<T> = CommonSelectProps<T> & {
     searchString: string,
     previouslyLoaded: any[],
     additional?: any
-  ) => Promise<{ options: Option<T>[]; hasMore: boolean; additional?: any }>;
+  ) => Promise<{ options: T[]; hasMore: boolean; additional?: any }>;
 };
 
-type Props<T> = SimpleSelectProps<T> | AsyncSelectProps<T> | AsyncPaginateSelectProps<T>;
+type Props<T extends Option, V> = Value<V> &
+  (SimpleSelectProps<T, V> | AsyncSelectProps<T, V> | AsyncPaginateSelectProps<T, V>);
 
-export function Select<T>(props: Props<T>) {
+export function Select<T extends Option, V>(props: Props<T, V>) {
   // Make the component controlled. We actually only need this for the async cases, but it's simpler to keep it shared.
   const [value, setValue] = useState(() => {
     // For async, use the default preselected value if available
