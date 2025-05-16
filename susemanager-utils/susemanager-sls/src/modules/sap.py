@@ -1,9 +1,11 @@
+import glob
 import os
 import re
 
 __virtualname__ = "sap"
-__grains__ = {}
+SAP_BASE_PATH = "/usr/sap"
 SAP_REGEX = re.compile(r"/usr/sap/([A-Z][A-Z0-9]{2})/([A-Z]+)(\d{2})\b")
+
 
 def __virtual__():
     """
@@ -13,6 +15,7 @@ def __virtual__():
         return True
     return (False, "This module is only available on SLES systems.")
 
+
 def get_workloads():
     """
     Detect SAP workloads based on filesystem structure.
@@ -21,17 +24,18 @@ def get_workloads():
         list: List of detected SAP systems with their system ID and instance types, or an empty list if none are found.
     """
     sap_systems = []
-    base_path = "/usr/sap"
-    if not os.path.exists(base_path):
+    if not os.path.exists(SAP_BASE_PATH):
         return []
 
-    for root, dirs, files in os.walk(base_path):
-        for dir_name in dirs:
-            dir_path = os.path.join(root, dir_name)
-            match = SAP_REGEX.match(dir_path)
-            if match:
-                system_id = match.group(1)
-                instance_type = match.group(2)
-                sap_systems.append({"system_id": system_id, "instance_type": instance_type})
+    for dir_path in glob.iglob(
+        f"{SAP_BASE_PATH}/[A-Z][A-Z0-9][A-Z0-9]/[A-Z0-9]*[0-9][0-9]/"
+    ):
+        match = SAP_REGEX.match(dir_path)
+        if match:
+            system_id = match.group(1)
+            instance_type = match.group(2)
+            sap_systems.append({"system_id": system_id, "instance_type": instance_type})
+
+    sap_systems.sort(key=lambda x: (x["system_id"], x["instance_type"]))
 
     return sap_systems
