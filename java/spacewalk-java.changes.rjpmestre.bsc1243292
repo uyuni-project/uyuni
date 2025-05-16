@@ -1,0 +1,2 @@
+- Fix semantic version validation to allow optional suffixes
+  (bsc#1243292)
