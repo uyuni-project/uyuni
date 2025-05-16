@@ -167,7 +167,9 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
              /usr/bin/spacewalk-schema-upgrade -y && \
              /testsuite/podman_runner/run_db_migrations.sh susemanager-schema && \
              /testsuite/podman_runner/run_db_migrations.sh uyuni-reportdb-schema && \
-             /testsuite/podman_runner/setup_missing_folders.sh" 
+             /testsuite/podman_runner/setup_missing_folders.sh && \
+	     cp /testsuite/features/upload_files/uyuni.key /srv/www/htdocs/pub/opensuse-leap-uyuni.key && \
+	     rhn-bootstrap --activation-keys=1-DEFAULT --hostname server.test.lan"
 
 ${src_dir}/testsuite/podman_runner/setup-nginx-proxy-for-docker-registries.sh
 
