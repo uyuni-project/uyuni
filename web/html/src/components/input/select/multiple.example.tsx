@@ -25,7 +25,7 @@ export default () => {
         Multiple values: <code>{value ? JSON.stringify(value) : typeof value}</code>
       </p>
 
-      <Select isMulti value={value} onChange={(newValue) => setValue(newValue)} options={options} isClearable />
+      <Select value={value} onChange={(newValue) => setValue(newValue)} options={options} isClearable />
     </>
   );
 };
