@@ -93,7 +93,8 @@ type AsyncPaginateSelectProps = Omit<CommonSelectProps, "value" | "defaultValue"
 type Props = SelectProps | AsyncSelectProps | AsyncPaginateSelectProps;
 
 /**
- * @deprecated If you need a dropdown in a Formik form, use `<Field as={Field.Select} ... />` instead. If you need a standalone dropdown, use `TODO` instead.
+ * @deprecated If you need a dropdown in a Formik form, use `<Field as={Field.Select} ... />`.
+ * If you need a standalone dropdown, use `import { Select } from "components/input";` instead.
  */
 export function DEPRECATED_Select(props: Props) {
   const {

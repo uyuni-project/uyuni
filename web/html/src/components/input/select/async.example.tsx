@@ -6,18 +6,19 @@ export default () => {
   const [value, setValue] = useState<number | undefined>();
 
   const loadOptions = () => {
-    return new Promise((resolve) => {
+    const result = [
+      {
+        value: 1,
+        label: "Level 1",
+      },
+      {
+        value: 2,
+        label: "Level 2",
+      },
+    ];
+    return new Promise<typeof result>((resolve) => {
       setTimeout(() => {
-        resolve([
-          {
-            value: 1,
-            label: "Level 1",
-          },
-          {
-            value: 2,
-            label: "Level 2",
-          },
-        ]);
+        resolve(result);
       }, 1000);
     });
   };

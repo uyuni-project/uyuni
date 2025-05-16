@@ -11,7 +11,7 @@ export const AsSelect = (props: React.ComponentProps<typeof Select> & { name: st
   return (
     <Select
       {...props}
-      inputClass={styles.container}
+      className={styles.container}
       value={field.value}
       // Formik expects `onChange` to fire an event that's the same shape as a browser native change event, so we can't pass `onChange` through directly
       onChange={(newValue) => helper.setValue(newValue)}

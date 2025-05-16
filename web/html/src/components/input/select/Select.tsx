@@ -7,14 +7,14 @@ import AsyncSelect from "react-select/async";
 import { AsyncPaginate as AsyncPaginateSelect } from "react-select-async-paginate";
 
 import withTestAttributes from "./select-test-attributes";
-import { SelectOption, SelectProps } from "./types";
+import { OptionType, SelectProps } from "./types";
 
 const loadingMessage = () => t("Loading...");
 const noOptionsMessage = () => t("No options");
 const defaultGetOptionValue = (option: any) => option?.value ?? undefined;
 const defaultGetOptionLabel = (option: any) => option?.label ?? undefined;
 
-export function Select<T extends SelectOption, V>(props: SelectProps<T, V>) {
+export function Select<O extends OptionType, V>(props: SelectProps<O, V>) {
   const getOptionValue = props.getOptionValue ?? defaultGetOptionValue;
   const getOptionLabel = props.getOptionLabel ?? defaultGetOptionLabel;
 
@@ -71,7 +71,7 @@ export function Select<T extends SelectOption, V>(props: SelectProps<T, V>) {
   // Common props to pass to both 'react-select' and 'react-select/async'
   const commonProps = Object.assign(
     {
-      className: `form-control--react-select ${props.inputClass ?? ""}`,
+      className: `form-control--react-select ${props.className ?? ""}`,
       name: props.name,
       inputId: props.name,
       isDisabled: props.disabled,
