@@ -8,7 +8,6 @@ import { AsyncPaginate as AsyncPaginateSelect } from "react-select-async-paginat
 
 import withTestAttributes from "./select-test-attributes";
 
-type Unwrap<T> = T extends readonly (infer U)[] ? U : T;
 export type Option<T> = Record<string, T | unknown>;
 
 type SingleMode<T> = {
@@ -67,6 +66,9 @@ type SimpleSelectProps<T> = CommonSelectProps<T> & {
 };
 
 type AsyncSelectProps<T> = CommonSelectProps<T> & {
+  /** Default value object if no value is set. This has to be an object corresponding to the rest of the schema. */
+  defaultValueOption?: Option<T>;
+
   paginate?: boolean;
 
   /**
@@ -78,7 +80,7 @@ type AsyncSelectProps<T> = CommonSelectProps<T> & {
 
 type AsyncPaginateSelectProps<T> = CommonSelectProps<T> & {
   /** Default value object if no value is set. This has to be an object corresponding to the rest of the schema. */
-  defaultValueOption?: Object;
+  defaultValueOption?: Option<T>;
 
   paginate: true;
   /**
@@ -95,6 +97,30 @@ type AsyncPaginateSelectProps<T> = CommonSelectProps<T> & {
 type Props<T> = SimpleSelectProps<T> | AsyncSelectProps<T> | AsyncPaginateSelectProps<T>;
 
 export function Select<T>(props: Props<T>) {
+  // Make the component controlled. We actually only need this for the async cases, but it's simpler to keep it shared.
+  const [value, setValue] = useState(() => {
+    // For async, use the default preselected value if available
+    if ("defaultValueOption" in props && props.defaultValueOption) {
+      if (props.value !== props.getOptionValue(props.defaultValueOption)) {
+        throw new RangeError("Select props `value` and `defaultValueOption` don't match");
+      }
+
+      return props.defaultValueOption;
+    }
+    // Otherwise find the right option from the given list
+    if ("options" in props) {
+      return props.options.find((item) => props.getOptionValue(item) === props.value);
+    }
+    return undefined;
+  });
+
+  useEffect(() => {
+    if (_isEqual(value, props.value)) {
+      return;
+    }
+    setValue(value);
+  }, [props.value]);
+
   const bootstrapStyles = {
     control: (styles: {}) => ({
       ...styles,
@@ -130,10 +156,11 @@ export function Select<T>(props: Props<T>) {
       name: props.name,
       inputId: props.name,
       isDisabled: props.disabled,
-      // TODO: Fix
+      // TODO: Do we need this?
       // onBlur: props.onBlur,
       onChange: (newValue) => {
-        console.log(newValue);
+        // console.log(newValue);
+        setValue(newValue != null ? newValue : undefined);
         if (props.isMulti) {
           props.onChange?.(newValue?.map((item) => props.getOptionValue(item)));
         } else {
@@ -160,8 +187,8 @@ export function Select<T>(props: Props<T>) {
         <AsyncPaginateSelect
           loadOptions={props.loadOptions}
           defaultOptions
-          value={props.value}
-          defaultValue={props.value}
+          value={value}
+          defaultValue={value}
           aria-label={props.label}
           shouldLoadMore={(scrollHeight, clientHeight, scrollTop) => {
             // Load more items before we hit the complete bottom of the dropdown
@@ -172,22 +199,12 @@ export function Select<T>(props: Props<T>) {
         />
       );
     }
+
     return (
       <AsyncSelect
         loadOptions={props.loadOptions}
         cacheOptions={props.cacheOptions}
         defaultOptions
-        value={props.value}
-        defaultValue={props.value}
-        aria-label={props.label}
-        {...commonProps}
-      />
-    );
-  } else {
-    const value = props.options.find((item) => item.value === props.value);
-    return (
-      <ReactSelect
-        options={props.options}
         value={value}
         defaultValue={value}
         aria-label={props.label}
@@ -195,9 +212,12 @@ export function Select<T>(props: Props<T>) {
       />
     );
   }
+
+  return (
+    <ReactSelect options={props.options} value={value} defaultValue={value} aria-label={props.label} {...commonProps} />
+  );
 }
 
-// TODO: Review all of these and remove what we no longer use
 Select.defaultProps = {
   getOptionValue: (option: any) => option?.value ?? undefined,
   getOptionLabel: (option: any) => option?.label ?? undefined,
@@ -206,8 +226,6 @@ Select.defaultProps = {
   emptyText: t("No options"),
   inputClass: undefined,
   label: undefined,
-  hint: undefined,
-  labelClass: undefined,
   disabled: false,
   isMulti: false,
   cacheOptions: false,
