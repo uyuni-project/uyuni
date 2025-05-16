@@ -83,40 +83,10 @@ export class MigrateSlavesForm extends React.Component<Props, State> {
         {/* Modal dialog to show the problems happened during migration */}
         {this.state.migrationResult && this.renderMigrationResultDialog()}
 
-        <Table data={this.state.tableModel} identifier={(row: MigrationEntry) => row.id}>
-          <Column
-            columnKey="selected"
-            header={t("Migrate?")}
-            cell={(row: MigrationEntry) => this.renderSelection(row)}
-          />
-          <Column columnKey="fqdn" header={t("Server FQDN")} cell={(row: MigrationEntry) => row.fqdn} />
-          <Column
-            columnKey="accessToken"
-            header={t("Access Token")}
-            cell={(row: MigrationEntry) => this.renderToken(row)}
-          />
-          <Column
-            columnKey="rootCA"
-            header={t("Root Certificate Authority")}
-            cell={(row: MigrationEntry) => this.renderRootCA(row)}
-          />
-        </Table>
-        <div className="btn-group pull-right">
-          <AsyncButton
-            id="submit-btn"
-            className="btn-primary"
-            text={t("Submit")}
-            disabled={this.state.loading || !this.state.tableModelValid}
-            action={() => this.onSubmit()}
-          />
-          <Button
-            id="cancel-btn"
-            className="btn-default"
-            text={t("Cancel")}
-            disabled={this.state.loading}
-            handler={() => window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/hub/peripherals`)}
-          />
-        </div>
+        {/* When we are migrating from ISSv1 it is possible that we don't have any server to migrate. In this case
+         * show an error message instead of the server table. This cannot happen for ISSv2 because the user must always
+         * insert the server information manually. */}
+        {this.noServerToMigrate() ? this.renderNothingToMigrateMessage() : this.renderServerTable()}
       </TopPanel>
     );
   }
@@ -212,6 +182,79 @@ export class MigrateSlavesForm extends React.Component<Props, State> {
           </div>
         }
       />
+    );
+  }
+
+  private noServerToMigrate(): boolean {
+    if (this.props.migrateFrom === MigrationVersion.v2) {
+      return false;
+    }
+
+    return this.state.tableModel.length === 0;
+  }
+
+  private renderNothingToMigrateMessage(): React.ReactNode {
+    return (
+      <>
+        <Messages
+          items={[
+            {
+              severity: "info",
+              text: <p>{t("There are no ISSv1 slaves to migrate.")}</p>,
+            },
+          ]}
+        />
+        <div className="btn-group pull-right">
+          <Button
+            id="cancel-btn"
+            className="btn-default"
+            text={t("Back")}
+            disabled={this.state.loading}
+            handler={() => window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/hub/peripherals`)}
+          />
+        </div>
+      </>
+    );
+  }
+
+  private renderServerTable(): React.ReactNode {
+    return (
+      <>
+        <Table data={this.state.tableModel} identifier={(row: MigrationEntry) => row.id}>
+          <Column
+            columnKey="selected"
+            header={t("Migrate?")}
+            cell={(row: MigrationEntry) => this.renderSelection(row)}
+          />
+          <Column columnKey="fqdn" header={t("Server FQDN")} cell={(row: MigrationEntry) => row.fqdn} />
+          <Column
+            columnKey="accessToken"
+            header={t("Access Token")}
+            cell={(row: MigrationEntry) => this.renderToken(row)}
+          />
+          <Column
+            columnKey="rootCA"
+            header={t("Root Certificate Authority")}
+            cell={(row: MigrationEntry) => this.renderRootCA(row)}
+          />
+        </Table>
+        <div className="btn-group pull-right">
+          <AsyncButton
+            id="submit-btn"
+            className="btn-primary"
+            text={t("Submit")}
+            disabled={this.state.loading || !this.state.tableModelValid}
+            action={() => this.onSubmit()}
+          />
+          <Button
+            id="cancel-btn"
+            className="btn-default"
+            text={t("Cancel")}
+            disabled={this.state.loading}
+            handler={() => window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/hub/peripherals`)}
+          />
+        </div>
+      </>
     );
   }
 
