@@ -126,7 +126,6 @@ class StreamConnection(_Server):
 
 
 class GETServer(rpclib.GETServer):
-
     """class rpclib.GETServer with overriden default transports classes"""
 
     _transport_class = Transport
@@ -169,7 +168,6 @@ class GETServer(rpclib.GETServer):
 
 
 class CompressedStream:
-
     """
     GzipStream will not close the connection by itself, so we have to keep the
     underlying stream around
