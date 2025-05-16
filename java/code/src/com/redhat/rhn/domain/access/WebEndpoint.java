@@ -17,7 +17,9 @@ package com.redhat.rhn.domain.access;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,6 +28,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 
@@ -61,9 +66,19 @@ public class WebEndpoint extends BaseDomainHelper {
     @Column(name = "class_method")
     private String className;
     private String endpoint;
+    @Column(name = "http_method")
     private String httpMethod;
+    @ManyToMany
+    @JoinTable(
+            name = "endpointNamespace",
+            schema = "access",
+            joinColumns = @JoinColumn(name = "endpoint_id"),
+            inverseJoinColumns = @JoinColumn(name = "namespace_id")
+    )
+    private Set<Namespace> namespaces = new HashSet<>();
     @Enumerated(EnumType.STRING)
     private Scope scope;
+    @Column(name = "auth_required")
     private Boolean authRequired;
 
     public enum Scope {
@@ -146,11 +161,15 @@ public class WebEndpoint extends BaseDomainHelper {
         httpMethod = httpMethodIn;
     }
 
-    public Boolean isAuthRequired() {
+    public Set<Namespace> getNamespaces() {
+        return namespaces;
+    }
+
+    public boolean isAuthRequired() {
         return authRequired;
     }
 
-    public void setAuthRequired(Boolean authRequiredIn) {
+    public void setAuthRequired(boolean authRequiredIn) {
         authRequired = authRequiredIn;
     }
 

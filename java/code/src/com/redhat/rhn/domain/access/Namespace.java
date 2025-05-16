@@ -15,7 +15,10 @@
 
 package com.redhat.rhn.domain.access;
 
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,18 +27,23 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "namespace", schema = "access")
-public class Namespace {
+public class Namespace implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String namespace;
+    @ManyToMany(mappedBy = "namespaces")
+    private Set<WebEndpoint> endpoints = new HashSet<>();
     @Enumerated(EnumType.STRING)
     @Column(name = "access_mode")
     private AccessMode accessMode;
+    @ManyToMany(mappedBy = "namespaces")
+    private Set<AccessGroup> accessGroups = new HashSet<>();
     private String description;
 
     public enum AccessMode {
@@ -89,12 +97,20 @@ public class Namespace {
         namespace = namespaceIn;
     }
 
+    public Set<WebEndpoint> getEndpoints() {
+        return endpoints;
+    }
+
     public AccessMode getAccessMode() {
         return accessMode;
     }
 
     public void setAccessMode(AccessMode accessModeIn) {
         accessMode = accessModeIn;
+    }
+
+    public Set<AccessGroup> getAccessGroups() {
+        return accessGroups;
     }
 
     public String getDescription() {
