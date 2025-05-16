@@ -8,7 +8,7 @@ import { AsyncButton, Button } from "components/buttons";
 import { CustomDiv } from "components/custom-objects";
 import { DangerDialog } from "components/dialog/DangerDialog";
 import { Dialog } from "components/dialog/Dialog";
-import { Form, Select } from "components/input";
+import { DEPRECATED_Select, Form } from "components/input";
 import { ChannelLink } from "components/links";
 import { Messages, MessageType } from "components/messages/messages";
 import { Utils as MessagesUtils } from "components/messages/messages";
@@ -482,7 +482,7 @@ class Products extends React.Component<ProductsProps> {
       <div className="multiple-select-wrapper table-input-search">
         {/* TODO: Remove this <Form> wrapper once https://github.com/SUSE/spacewalk/issues/14250 is implemented */}
         <Form>
-          <Select
+          <DEPRECATED_Select
             name="product-arch-filter"
             placeholder={t("Filter by architecture")}
             options={this.getDistinctArchsFromData(this.props.data)}
