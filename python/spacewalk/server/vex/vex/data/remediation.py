@@ -7,7 +7,7 @@ class Remediation:
     def __init__(self):
         self.category = "category"
         self.details = "no_detais"
-        self.products = []
+        self.fix_versions_by_product = {}
 
     def _set_category(self, category):
         self.category = category
@@ -15,26 +15,26 @@ class Remediation:
     def _set_details(self, details):
         self.details = details
 
-    def _set_products(self, products):
-        self.products = products
-
-    def _add_product(self, product):
-        self.products.append(product)
-
     def _get_category(self):
         return self.category
     
     def _get_details(self):
         return self.details
     
-    def _get_products(self):
-        return self.products
+    def add_fixed_package(self, platform, fixversion):
+        if platform not in self.fix_versions_by_product:
+            self.fix_versions_by_product[platform] = set()
+        self.fix_versions_by_product[platform].add(fixversion)
     
-    def _applied_product(self, product_id):
-        """
-        Checks if this remediations applies for an specifica product.
+    def get_fixed_packages(self):
+        return self.fixed_packages
 
-        Return:
-            bool: True if the remediations apply for the specified product id
-        """
-        return product_id in self.products
+    def get_fix_versions(self, product_id):
+        return list(self.fix_versions_by_product.get(product_id, []))
+    
+    def show_fixversions(self):
+        print("Fix_versions:")
+        for product, versions in self.fix_versions_by_product.items():
+            print(f"- {product}:")
+            for version in versions:
+                print(f"    - {version}")

@@ -43,7 +43,7 @@ def main():
                 vuln.show_vulnerability()
 
         if args.persist:
-            parser.persist_data("no")
+            parser.persist_data()
 
     if args.downloader:
         downloader = Downloader(CSAFParser())
@@ -51,4 +51,5 @@ def main():
         downloader.download()
 
 if __name__ == "__main__":
+
     main()
