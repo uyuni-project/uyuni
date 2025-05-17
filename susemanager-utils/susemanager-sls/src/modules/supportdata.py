@@ -104,7 +104,7 @@ def get(cmd_args: str = "", **kwargs) -> Dict[str, Any]:
         os.makedirs(output_dir, exist_ok=True)
         cmd.extend(extra_args)
         log.debug("executing: %s", cmd)
-        ret = __salt__["cmd.run_all"](cmd, python_shell=False)
+        ret = __salt__["cmd.run_all"](cmd, runas="root")
 
         log.debug("return: %s", ret)
         returncode = ret["retcode"]
