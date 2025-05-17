@@ -84,9 +84,7 @@ class CSAFParser(VEX_Parser):
                             # pkg_ver = pkg_ver_arch.rsplit(".", 1)[0]
                             # now pkg_ver is "squid-3.5.20-17.el7_9.4"
 
-                            if platform not in rem.fix_versions_by_product:
-                                rem.fix_versions_by_product[platform] = set()
-                            rem.fix_versions_by_product[platform].add(fixversion)
+                            rem.add_fixed_package(platform, fixversion)
 
                     vuln.add_remediation(rem)
 
