@@ -39,14 +39,19 @@ class VEX_Parser:
         return self.products[p_name]
     
     def get_product_id_name(self, p_name):
-        if self.products[p_name]["cpe"]:
-            id = self.products[p_name]["cpe"]
-        elif self.products[p_name]["purl"]:
-            id = self.products[p_name]["purl"]
-        return id
+        try:
+            if self.products[p_name]["cpe"]:
+                id = self.products[p_name]["cpe"]
+            elif self.products[p_name]["purl"]:
+                id = self.products[p_name]["purl"]
+            return id
+        
+        except:
+            logging.debug(f"No CPE found for {p_name}")
+            return "no"
 
     def get_vulnerabilities(self):
         return self.vulns
 
-    def persist_data(self, file_hash, hash_type='SHA256'):
-        self._persist_data(file_hash, hash_type)
+    def persist_data(self):
+        self._persist_data()
