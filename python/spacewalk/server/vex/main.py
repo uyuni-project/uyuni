@@ -43,7 +43,7 @@ def main():
                 vuln.show_vulnerability()
 
         if args.persist:
-            parser.persist_data("no")
+            parser.persist_data()
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -60,4 +60,5 @@ def main():
 >>>>>>> cb9d091203b (Dowloading module finished)
 
 if __name__ == "__main__":
+
     main()

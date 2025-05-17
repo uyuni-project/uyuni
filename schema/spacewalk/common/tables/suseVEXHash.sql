@@ -24,11 +24,9 @@ CREATE TABLE suseVEXHash (
     hash TEXT NOT NULL,
     created TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     last_updated TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT suse_cve_hash_unique UNIQUE (cve, hash_type, hash)
+    cve_status NUMERIC DEFAULT 0,
+    CONSTRAINT suse_cve_hash_unique UNIQUE (cve, hash),
+    CONSTRAINT suse_vex_hash_cve_unique UNIQUE (cve)
 );
 
 CREATE SEQUENCE suse_cve_hash_id_seq;
-
--- Índices para mejorar el rendimiento de búsqueda
-CREATE INDEX suse_cve_hash_cve_idx ON suseVEXHash (cve);
-CREATE INDEX suse_cve_hash_hash_idx ON suseVEXHash (hash);

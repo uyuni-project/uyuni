@@ -16,12 +16,13 @@
 
 CREATE TABLE suseVEXAnnotations
 (
-    platform_id          NUMERIC NOT NULL
-                            REFERENCES suseOVALPlatform (id),
     cve_id               NUMERIC NOT NULL
                             REFERENCES rhnCve (id),
+    platform_id          NUMERIC NOT NULL
+                            REFERENCES suseOVALPlatform (id),
     vulnerable_pkg_id    NUMERIC NOT NULL
                             REFERENCES suseOVALVulnerablePackage (id),
+    fix_version          NUMERIC,
     vex_status          VARCHAR(32) NOT NULL
                             CHECK (vex_status IN (
                                 'AFFECTED_PATCH_INAPPLICABLE',

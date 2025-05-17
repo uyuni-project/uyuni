@@ -8,7 +8,7 @@ import json
 from .vex_parser import *
 from vex.data.vulnerability import Vulnerability
 from vex.data.remediation import Remediation
-from vex.data.justification import Justification
+# from vex.data.justification import Justification
 from vex.data.statuses_enum import Status
 from vex.persistence.vex_persistence import VEXDatabaseManager
 from packageurl import PackageURL
@@ -17,6 +17,7 @@ class CSAFParser(VEX_Parser):
 
     def __init__(self):
         super().__init__()
+        # self.fixversions = {}
 
     def _extract_vulns(self):
 
@@ -50,7 +51,7 @@ class CSAFParser(VEX_Parser):
             if "product_status" in vulnerability:
                 # Extract lists with products for each status
                 statuses = vulnerability.get("product_status", {})
-                
+
                 for status, products in statuses.items():
                     
                     product_list = []
@@ -60,52 +61,62 @@ class CSAFParser(VEX_Parser):
                         product_list.append(product)
 
                     vuln.set_status(status, products)
+                
+            if "remediations" in vulnerability:  
+                for remediation in vulnerability["remediations"]:
 
-                 # Specific status fields - TODO
+                    if remediation.get("category") != "vendor_fix":
+                        continue
 
-                if Status.AFFECTED in vuln.get_statuses():
-                    # additional product specific information SHALL be provided in
-                    # /vulnerabilities[]/remediations as an action statement.
-                    if "remediations" in vulnerability:
-                        
-                        for remediation in vulnerability["remediations"]:
-                            rem = Remediation()
-                            if "category" in remediation:
-                                rem._set_category(remediation["category"])
-                            if "details" in remediation:
-                                rem._set_details(remediation["details"])
-                            #logging.info(remediation)
-                            #rem._set_products(remediation["product_ids"])
-                            vuln.add_remediation(rem)
+                    rem = Remediation()
+                    if "category" in remediation:
+                        rem._set_category(remediation["category"])
+                    if "details" in remediation:
+                        rem._set_details(remediation["details"])
 
-                    # TODO - Optional, additional information MAY also be provide through
-                    # /vulnerabilities[]/notes and /vulnerabilities[]/threats.
-                    pass
+                    for pid in remediation.get("product_ids", []):
+                        # pid looks like "SUSE Liberty Linux 7:squid-3.5.20-17.el7_9.4.x86_64"
+                        split = pid.split(":", 1)
+                        if len(split) > 1:
+                            platform, fixversion = split
 
-                if Status.NOT_AFFECTED in vuln.get_statuses():
-                    # TODO - Human readable justification in /vulnerabilities[]/threats. For the latter one, the category 
-                    # value for such a statement MUST be impact and the details field SHALL contain a a description why
-                    # the vulnerability cannot be exploited.
-                    if "threats" in vulnerability:
-                        for threat in vulnerability["threats"]:
-                            if threat["category"] == "impact":
-                                justification = Justification()
-                                if "category" in threat:
-                                    justification._set_category(threat["category"])
-                                if "details" in threat:
-                                    justification._set_details(threat["details"])
-                                if "product_ids" in threat:
-                                    justification._set_products(threat["product_ids"])
-                                vuln.add_justification(justification)
+                            # OPTIONAL - drop the trailing ".<arch>"
+                            # pkg_ver = pkg_ver_arch.rsplit(".", 1)[0]
+                            # now pkg_ver is "squid-3.5.20-17.el7_9.4"
 
-                    # TODO - An impact statement SHALL exist as machine readable flag in /vulnerabilities[]/flags
-                    if "flags" in vulnerability:
-                        for flag in vulnerability["flags"]:
-                            for product in flag["product_ids"]:
-                                justification = vuln.get_justification_product(product)
-                                if justification != None:
-                                    if "label" in flag:
-                                        justification._set_type(flag["label"])
+                            if platform not in rem.fix_versions_by_product:
+                                rem.fix_versions_by_product[platform] = set()
+                            rem.fix_versions_by_product[platform].add(fixversion)
+
+                    vuln.add_remediation(rem)
+
+            # Optional, additional information MAY also be provide through
+            # /vulnerabilities[]/notes and /vulnerabilities[]/threats.
+
+            # # Human readable justification in /vulnerabilities[]/threats. For the latter one, the category 
+            # # value for such a statement MUST be impact and the details field SHALL contain a a description why
+            # # the vulnerability cannot be exploited.
+            # if "threats" in vulnerability:
+            #     for threat in vulnerability["threats"]:
+            #         if threat["category"] == "impact":
+            #             justification = Justification()
+            #             if "category" in threat:
+            #                 justification._set_category(threat["category"])
+            #             if "details" in threat:
+            #                 justification._set_details(threat["details"])
+            #             if "product_ids" in threat:
+            #                 justification._set_products(threat["product_ids"])
+            #             vuln.add_justification(justification)
+
+            # # TODO - An impact statement SHALL exist as machine readable flag in /vulnerabilities[]/flags
+            # if "flags" in vulnerability:
+            #     for flag in vulnerability["flags"]:
+            #         for product in flag["product_ids"]:
+            #             justification = vuln.get_justification_product(product)
+            #             if justification != None:
+            #                 if "label" in flag:
+            #                     justification._set_type(flag["label"])
+                
                             
             self.vulns.append(vuln)
 
@@ -214,10 +225,10 @@ class CSAFParser(VEX_Parser):
                             cpe_info = pid["cpe"]
                             item["cpe"] = cpe_info
                             cpe_items = cpe_info.split(":")
-                            if cpe_items[1] == "/a":
+                            if cpe_items[1] == "/a" and len(cpe_items) > 4:
                                 # Example is cpe:/a:redhat:rhel_eus:8.2::realtime
                                 element["product_version"] = cpe_items[4]
-                            elif cpe_items[1] == "2.3":
+                            elif cpe_items[1] == "2.3" and len(cpe_items) > 5:
                                 # Example is cpe:2.3:a:redhat:rhel_eus:8.2::realtime
                                 element["product_version"] = cpe_items[5]
                         elif "purl" in pid:
@@ -237,7 +248,7 @@ class CSAFParser(VEX_Parser):
         return element
     
 
-    def _persist_data(self, file_hash, hash_type='SHA256'):
+    def _persist_data(self):
         vulns =  self.get_vulnerabilities()
 
         db_manager = VEXDatabaseManager()
@@ -248,7 +259,7 @@ class CSAFParser(VEX_Parser):
                 db_manager.connect()
                 
                 cve_id = vuln.get_id()
-                vuln_id = db_manager.insert_cve(cve_id) # Insert CVE id if necessary
+                vuln_id = db_manager.insert_cve(cve_id) # Insert CVE if necessary
 
                 # TODO: Change status management
 
@@ -279,6 +290,7 @@ class CSAFParser(VEX_Parser):
                         # logging.info(f"Package -> {package}") # DEBUG
                         db_manager.insert_oval_platform(self.get_product_id_name(platform))
                         db_manager.insert_vulnerable_package(package)
+                        db_manager.insert_vex_annotation(platform_id, vuln_id, package_id, Status.AFFECTED.value)
 
                     # TODO: MANAGE JUSTIFICATIONS
 
@@ -291,6 +303,7 @@ class CSAFParser(VEX_Parser):
                         # logging.info(f"Package -> {package}") # DEBUG
                         db_manager.insert_oval_platform(self.get_product_id_name(platform))
                         db_manager.insert_vulnerable_package(package)
+                        db_manager.insert_vex_annotation(platform_id, vuln_id, package_id, Status.AFFECTED.value)
 
                 if Status.UNDER_INVESTIGATION in vuln.get_statuses():
                     logging.debug("Persisting under_investigation")
@@ -301,10 +314,10 @@ class CSAFParser(VEX_Parser):
                         # logging.info(f"Package -> {package}") # DEBUG
                         db_manager.insert_oval_platform(self.get_product_id_name(platform))
                         db_manager.insert_vulnerable_package(package)
+                        db_manager.insert_vex_annotation(platform_id, vuln_id, package_id, Status.AFFECTED.value)
 
-                
-                logging.info(f"Inserting hash: {file_hash} for {cve_id}")
-                db_manager.insert_vex_hash(cve_id, file_hash, hash_type)
+            except Exception as e:
+                logging.warning(f"File not valid: {cve_id}: {str(e)}")
 
             finally:
                 db_manager.close()
