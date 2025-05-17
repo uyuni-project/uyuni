@@ -47,7 +47,7 @@ def test_supportdata_suse():
 
         supportdata.__salt__["cmd.run_all"].assert_called_once_with(
             ["/sbin/supportconfig", "-R", "/var/log/supportdata"],
-            python_shell=False,
+            runas="root",
         )
 
 
@@ -76,7 +76,7 @@ def test_supportdata_suse_extra_args():
                 "-l",
                 "10000",
             ],
-            python_shell=False,
+            runas="root",
         )
 
 
@@ -103,7 +103,7 @@ def test_supportdata_mlm_proxy():
                 "--output",
                 "/var/log/supportdata",
             ],
-            python_shell=False,
+            runas="root",
         )
 
 
@@ -130,7 +130,7 @@ def test_supportdata_mlm_server():
                 "--output",
                 "/var/log/supportdata",
             ],
-            python_shell=False,
+            runas="root",
         )
 
 
@@ -156,7 +156,7 @@ def test_supportdata_redhat():
                 "--tmp-dir",
                 "/var/log/supportdata",
             ],
-            python_shell=False,
+            runas="root",
         )
 
 
@@ -183,7 +183,7 @@ def test_supportdata_debian():
                 "--tmp-dir",
                 "/var/log/supportdata",
             ],
-            python_shell=False,
+            runas="root",
         )
 
 
