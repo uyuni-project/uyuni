@@ -1006,13 +1006,15 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       ],
     'suse-multi-linux-manager-proxy-51-sp7' =>
       %w[
-        suse-manager-proxy-5.1-pool-x86_64-sp7
-        suse-manager-proxy-5.1-updates-x86_64-sp7
+        sle-module-containers15-sp7-pool-x86_64
+        sle-module-containers15-sp7-updates-x86_64
+        suse-multi-linux-manager-proxy-sle-5.1-pool-x86_64-sp7
+        suse-multi-linux-manager-proxy-sle-5.1-updates-x86_64-sp7
       ],
     'suse-multi-linux-manager-retail-branch-server-51-sp7' =>
       %w[
-        suse-manager-retail-branch-server-5.1-pool-x86_64-sp7
-        suse-manager-retail-branch-server-5.1-updates-x86_64-sp7
+        suse-multi-linux-manager-retail-branch-server-sle-5.1-pool-x86_64-sp7
+        suse-multi-linux-manager-retail-branch-server-sle-5.1-updates-x86_64-sp7
       ]
   },
   'Uyuni' => {
@@ -1506,9 +1508,11 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-containers15-sp4-pool-x86_64' => 60,
   'sle-module-containers15-sp4-pool-x86_64-proxy-4.3' => 60,
   'sle-module-containers15-sp4-pool-x86_64-smrbs-4.3' => 60,
+  'sle-module-containers15-sp7-pool-x86_64' => 60,
   'sle-module-containers15-sp4-updates-x86_64' => 120,
   'sle-module-containers15-sp4-updates-x86_64-proxy-4.3' => 60,
   'sle-module-containers15-sp4-updates-x86_64-smrbs-4.3' => 60,
+  'sle-module-containers15-sp7-updates-x86_64' => 60,
   'sle-module-desktop-applications15-sp3-pool-x86_64' => 120,
   'sle-module-desktop-applications15-sp3-updates-x86_64' => 60,
   'sle-module-desktop-applications15-sp4-pool-x86_64' => 300,
@@ -1592,28 +1596,24 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-sl-micro-6.1-x86_64' => 60,
   'suse-manager-proxy-5.0-pool-x86_64' => 60,
   'suse-manager-proxy-5.0-pool-x86_64-sp6' => 60,
+  'suse-multi-linux-manager-proxy-5.1-x86_64' => 60, # for slmicro6.1
+  'suse-multi-linux-manager-proxy-sle-5.1-pool-x86_64-sp7' => 60, # for sles15sp7
   'suse-manager-proxy-5.0-updates-x86_64' => 60,
   'suse-manager-proxy-5.0-updates-x86_64-sp6' => 60,
-  'suse-manager-proxy-5.1-pool-x86_64' => 60,
-  'suse-manager-proxy-5.1-pool-x86_64-sp7' => 60,
-  'suse-manager-proxy-5.1-updates-x86_64' => 60,
-  'suse-manager-proxy-5.1-updates-x86_64-sp7' => 60,
+  'suse-multi-linux-manager-proxy-sle-5.1-updates-x86_64-sp7' => 60, # for sles15sp7
   'suse-manager-retail-branch-server-5.0-pool-x86_64' => 60,
   'suse-manager-retail-branch-server-5.0-pool-x86_64-sp6' => 60,
+  'suse-multi-linux-manager-retail-branch-server-5.1-x86_64' => 60, # for slmicro6.1
+  'suse-multi-linux-manager-retail-branch-server-sle-5.1-pool-x86_64-sp7' => 60, # for sles15sp7
   'suse-manager-retail-branch-server-5.0-updates-x86_64' => 60,
   'suse-manager-retail-branch-server-5.0-updates-x86_64-sp6' => 60,
-  'suse-manager-retail-branch-server-5.1-pool-x86_64' => 60,
-  'suse-manager-retail-branch-server-5.1-pool-x86_64-sp7' => 60,
-  'suse-manager-retail-branch-server-5.1-updates-x86_64' => 60,
-  'suse-manager-retail-branch-server-5.1-updates-x86_64-sp7' => 60,
+  'suse-multi-linux-manager-retail-branch-server-sle-5.1-updates-x86_64-sp7' => 60, # for sles15sp7
   'suse-microos-5.1-devel-uyuni-client-x86_64' => 120,
   'suse-microos-5.1-pool-x86_64' => 60,
   'suse-microos-5.1-updates-x86_64' => 300,
   'suse-microos-5.2-devel-uyuni-client-x86_64' => 120,
   'suse-microos-5.2-pool-x86_64' => 60,
   'suse-microos-5.2-updates-x86_64' => 60,
-  'suse-multi-linux-manager-proxy-5.1-x86_64' => 60,
-  'suse-multi-linux-manager-retail-branch-server-5.1-x86_64' => 60,
   'test-child-channel-x86_64' => 360,
   'ubuntu-2004-amd64-main-amd64' => 480,
   'ubuntu-2004-amd64-main-security-amd64' => 3480,
