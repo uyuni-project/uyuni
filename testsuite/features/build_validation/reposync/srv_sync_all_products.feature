@@ -829,13 +829,16 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" as the filtered product description
+    And I enter "SUSE Multi-Linux Manager Proxy Extension for SLE 5.1 x86_64" as the filtered product description
     When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
-    And I select "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" as a product
-    Then I should see the "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" selected
+    And I open the sub-list of the product "Basesystem Module 15 SP7 x86_64"
+    And I select "Containers Module 15 SP7 x86_64" as a product
+    Then I should see the "Containers Module 15 SP7 x86_64" selected
+    When I open the sub-list of the product "Containers Module 15 SP7 x86_64"
+    And I select "SUSE Multi-Linux Manager Proxy Extension for SLE 5.1 x86_64" as a product
+    Then I should see the "SUSE Multi-Linux Manager Proxy Extension for SLE 5.1 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" product has been added
     And I wait until all synchronized channels for "suse-multi-linux-manager-proxy-51-sp7" have finished
 
 @susemanager
@@ -864,13 +867,14 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64" as the filtered product description
+    And I enter "SUSE Multi-Linux Manager Proxy Extension for SLE 5.1 x86_64" as the filtered product description
     When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
-    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64" as a product
-    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64" selected
+    And I open the sub-list of the product "Basesystem Module 15 SP7 x86_64"
+    And I open the sub-list of the product "Containers Module 15 SP7 x86_64"
+    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension for SLE 5.1 x86_64 " as a product
+    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension for SLE 5.1 x86_64 " selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64" product has been added
     And I wait until all synchronized channels for "suse-multi-linux-manager-retail-branch-server-51-sp7" have finished
 
 # There are no channels for Retail under Uyuni
