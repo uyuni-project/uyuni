@@ -340,6 +340,7 @@ def generate_repository_name(repo_url)
   repo_name.sub!(%r{http://(download.suse.de|download.opensuse.org|minima-mirror-ci-bv.mgr.*|.*compute.internal)/SUSE:/}, '')
   repo_name.sub!(%r{http://(download.suse.de|download.opensuse.org|minima-mirror-ci-bv.mgr.*|.*compute.internal)/ibs/Devel:/Galaxy:/Manager:/}, '')
   repo_name.sub!(%r{http://(download.suse.de|download.opensuse.org|minima-mirror-ci-bv.mgr.*|.*compute.internal)/SUSE:/Maintenance:/}, '')
+  repo_name.sub!(%r{http://(download.suse.de|download.opensuse.org|minima-mirror-ci-bv.mgr.*|.*compute.internal)/ibs/SUSE:/}, '')
   repo_name.gsub!('/', '_')
   repo_name.gsub!(':', '_')
   repo_name[0...64] # HACK: Due to the 64 characters size limit of a repository label
