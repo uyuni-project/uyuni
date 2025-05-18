@@ -15,11 +15,27 @@ from packageurl import PackageURL
 
 class CSAFParser(VEX_Parser):
 
+    """
+    Parser class to handle CSAF-formatted VEX files.
+
+    Inherits from VEX_Parser and overrides methods to extract CSAF-specific metadata, products, and vulnerabilities.
+    """
+
     def __init__(self):
+        """
+        Initializes the CSAF parser by calling the base class constructor.
+        """
+
         super().__init__()
         # self.fixversions = {}
 
     def _extract_vulns(self):
+
+        """
+        Extracts vulnerabilities from the CSAF VEX data and populates the vulnerabilities list.
+
+        Parses the vulnerabilities section of the CSAF document, mapping fields such as CVE IDs, descriptions, product statuses, and remediations into Vulnerability objects.
+        """
 
         if len(self.vex_data) == 0:
             return None
@@ -119,6 +135,13 @@ class CSAFParser(VEX_Parser):
             self.vulns.append(vuln)
 
     def _extract_metadata(self):
+        """
+        Extracts metadata from the CSAF document header.
+
+        Populates metadata fields such as version, title, category, dates, publisher info,
+        references, and distribution info from the CSAF JSON structure.
+        """
+
         if len(self.vex_data) == 0:
             return
         
@@ -190,6 +213,13 @@ class CSAFParser(VEX_Parser):
             self.metadata["distribution"] = distribution_info
 
     def _extract_products(self):
+        """
+        Extracts product information from the CSAF product_tree section.
+
+        Processes product branches recursively to build a product dictionary with
+        product IDs and related details such as vendor, product name, and version.
+        """
+
         #logging.info("Extracting products") #debug
         if len(self.vex_data) == 0:
             return
@@ -202,6 +232,17 @@ class CSAFParser(VEX_Parser):
         #logging.info(self.product) #debug
 
     def _process_branch_element(self, branch_element, element):
+        """
+        Processes a single branch element in the CSAF product tree to extract category and name.
+
+        Args:
+            branch_element (dict): A branch element from the CSAF product_tree.
+            element (dict): A dictionary accumulating extracted information.
+
+        Returns:
+            dict: Updated element dictionary with extracted category-name pair.
+        """
+
         category = branch_element.get("category", None)
         name = branch_element.get("name", None)
         if category is not None:
@@ -209,6 +250,16 @@ class CSAFParser(VEX_Parser):
         return element
 
     def _process_branch(self, branch_element, element):
+        """
+        Recursively processes branches of the CSAF product tree to extract product details.
+
+        Args:
+            branch_element (dict): Current branch element.
+            element (dict): Dictionary accumulating product info.
+
+        Returns:
+            dict: Updated element with product information.
+        """
 
         element = self._process_branch_element(branch_element, element)
         if "branches" in branch_element:
@@ -247,6 +298,13 @@ class CSAFParser(VEX_Parser):
     
 
     def _persist_data(self):
+        """
+        Persists the extracted vulnerabilities and related product annotations into a database.
+
+        Uses VEXDatabaseManager to insert CVEs, products, and status annotations such as affected,
+        patched, not affected, and under investigation.
+        """
+
         vulns =  self.get_vulnerabilities()
 
         db_manager = VEXDatabaseManager()
