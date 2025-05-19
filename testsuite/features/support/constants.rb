@@ -1657,6 +1657,9 @@ TIMEOUT_BY_CHANNEL_NAME = {
 EMPTY_CHANNELS = %w[
   sle-product-sles15-sp7-updates-x86_64
   sle-module-basesystem15-sp7-updates-x86_64
+  sle-module-containers15-sp7-updates-x86_64
+  suse-multi-linux-manager-proxy-sle-5.1-updates-x86_64-sp7
+  suse-multi-linux-manager-retail-branch-server-sle-5.1-updates-x86_64-sp7
   managertools-sle15-updates-x86_64-sp7
   sle-module-python3-15-sp7-updates-x86_64
   sle-module-server-applications15-sp7-updates-x86_64
