@@ -12,6 +12,7 @@
 @scope_salt_ssh
 @scope_onboarding
 @ssh_minion
+@skip_if_github_validation
 Feature: Register a salt-ssh system via API
 
   Scenario: Log in as org admin user
