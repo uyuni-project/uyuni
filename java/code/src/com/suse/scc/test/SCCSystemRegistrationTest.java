@@ -34,7 +34,7 @@ import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
-import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCRegisterSystemItem;
 import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.proxy.SCCProxyFactory;
 
@@ -185,7 +185,7 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
         TestSCCWebClient sccWebClient = new TestSCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-                    List<SCCRegisterSystemJson> systems, String username, String password
+                    List<SCCRegisterSystemItem> systems, String username, String password
             ) throws SCCClientException {
                 callCnt += 1;
                 throw new SCCClientException(400, "Bad Request");
@@ -237,7 +237,7 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
         TestSCCWebClient sccWebClient = new TestSCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-                    List<SCCRegisterSystemJson> systems, String username, String password
+                    List<SCCRegisterSystemItem> systems, String username, String password
             ) throws SCCClientException {
                 callCnt += 1;
                 // allow first call to fail
@@ -362,7 +362,7 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
         return new TestSCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-                    List<SCCRegisterSystemJson> systems, String username, String password
+                    List<SCCRegisterSystemItem> systems, String username, String password
             ) {
                 callCnt += 1;
                 return new SCCOrganizationSystemsUpdateResponse(
