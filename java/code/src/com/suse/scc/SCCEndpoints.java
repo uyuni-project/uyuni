@@ -39,7 +39,7 @@ import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCFileClient;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
-import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCRegisterSystemItem;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.model.SCCVirtualizationHostJson;
@@ -160,7 +160,7 @@ public class SCCEndpoints {
         get("/hub/scc/connect/organizations/subscriptions", asJson(withSCCAuth(this::subscriptions)));
         get("/hub/scc/connect/organizations/orders", asJson(withSCCAuth(this::orders)));
         get("/hub/scc/suma/product_tree.json", asJson(this::productTree));
-        put("/hub/scc/connect/organizations/systems", asJson(withSCCAuth(this::createSystems)));
+        put("/hub/scc/connect/organizations/systems", asJson(withSCCAuth(this::createOrUpdateSystems)));
         delete("/hub/scc/connect/organizations/systems/:id", asJson(withSCCAuth(this::deleteSystem)));
         put("/hub/scc/connect/organizations/virtualization_hosts", asJson(withSCCAuth(this::setVirtualizationHosts)));
     }
@@ -349,17 +349,17 @@ public class SCCEndpoints {
      * @param credentials
      * @return a {@Link SCCOrganizationSystemsUpdateResponse} json object
      */
-    public String createSystems(Request request, Response response, HubSCCCredentials credentials) {
+    public String createOrUpdateSystems(Request request, Response response, HubSCCCredentials credentials) {
         try {
-            TypeToken<Map<String, List<SCCRegisterSystemJson>>> typeToken = new TypeToken<>() { };
-            Map<String, List<SCCRegisterSystemJson>> payload = gson.fromJson(request.body(), typeToken.getType());
+            TypeToken<Map<String, List<SCCRegisterSystemItem>>> typeToken = new TypeToken<>() { };
+            Map<String, List<SCCRegisterSystemItem>> payload = gson.fromJson(request.body(), typeToken.getType());
             if (!payload.containsKey("systems")) {
                 return badRequest(response, "wrong json input: missing systems key");
             }
 
-            List<SCCRegisterSystemJson> systemsList = payload.get("systems");
+            List<SCCRegisterSystemItem> systemsList = payload.get("systems");
 
-            List<SCCSystemCredentialsJson> systemsResponse = sccProxyManager.createSystems(systemsList,
+            List<SCCSystemCredentialsJson> systemsResponse = sccProxyManager.createOrUpdateSystems(systemsList,
                             credentials.getPeripheralUrl())
                     .stream()
                     .map(r -> new SCCSystemCredentialsJson(
