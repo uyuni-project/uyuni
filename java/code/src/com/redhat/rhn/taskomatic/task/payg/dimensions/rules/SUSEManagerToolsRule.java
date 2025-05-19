@@ -15,12 +15,16 @@
 
 package com.redhat.rhn.taskomatic.task.payg.dimensions.rules;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.DimensionRule;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.RuleType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -31,6 +35,15 @@ public class SUSEManagerToolsRule implements DimensionRule {
 
     public static final String VERSION_12_REGEX = "12(\\.[1-9]*)?";
     public static final String SLE_PRODUCT_FAMILY = "sle";
+
+    private static final List<String> TOOLS_CHANNEL_FAMILIES = new ArrayList<>();
+    static {
+        TOOLS_CHANNEL_FAMILIES.add(ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL);
+        if (Config.get().getString(ConfigDefaults.PRODUCT_TREE_TAG, "").equals("Beta")) {
+            String betaClass = ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL + "-BETA";
+            TOOLS_CHANNEL_FAMILIES.add(betaClass);
+        }
+    }
 
     @Override
     public boolean test(Server server) {
@@ -47,7 +60,7 @@ public class SUSEManagerToolsRule implements DimensionRule {
                          server.getChannels().stream().flatMap(ch -> ch.getChannelFamilies().stream())
                      )
                      .filter(Objects::nonNull)
-                     .anyMatch(family -> ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL.equals(family.getLabel()));
+                     .anyMatch(family -> TOOLS_CHANNEL_FAMILIES.contains(family.getLabel()));
     }
 
     @Override

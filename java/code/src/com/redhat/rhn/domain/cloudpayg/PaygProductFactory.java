@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.cloudpayg;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -173,6 +175,12 @@ public class PaygProductFactory extends HibernateFactory {
     private static boolean isSupportedToolsProduct(SUSEProduct product) {
         ChannelFamily family = product.getChannelFamily();
 
+        if (Config.get().getString(ConfigDefaults.PRODUCT_TREE_TAG, "").equals("Beta")) {
+            String betaClass = ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL + "-BETA";
+            if (betaClass.equals(family.getLabel())) {
+                return true;
+            }
+        }
         return ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL.equals(family.getLabel());
     }
 
