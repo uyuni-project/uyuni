@@ -20,7 +20,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
-import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCRegisterSystemItem;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,13 +41,13 @@ public class SCCSystemRegistrationCreateUpdateSystems implements SCCSystemRegist
     @Override
     public void handle(SCCSystemRegistrationContext context) {
         final int batchSize = Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 50);
-        final List<SCCRegisterSystemJson> pendingRegistrationSystems =
+        final List<SCCRegisterSystemItem> pendingRegistrationSystems =
                 new ArrayList<>(context.getPendingRegistrationSystemsByLogin().values());
 
         // split items into batches
-        List<List<SCCRegisterSystemJson>> systemsBatches = splitListIntoBatches(pendingRegistrationSystems, batchSize);
+        List<List<SCCRegisterSystemItem>> systemsBatches = splitListIntoBatches(pendingRegistrationSystems, batchSize);
 
-        for (List<SCCRegisterSystemJson> batch : systemsBatches) {
+        for (List<SCCRegisterSystemItem> batch : systemsBatches) {
             try {
                 SCCOrganizationSystemsUpdateResponse response = context.getSccClient().createUpdateSystems(
                         batch,
@@ -65,7 +65,7 @@ public class SCCSystemRegistrationCreateUpdateSystems implements SCCSystemRegist
         }
     }
 
-    private List<List<SCCRegisterSystemJson>> splitListIntoBatches(List<SCCRegisterSystemJson> list, int batchSize) {
+    private List<List<SCCRegisterSystemItem>> splitListIntoBatches(List<SCCRegisterSystemItem> list, int batchSize) {
         return IntStream.range(0, (list.size() + batchSize - 1) / batchSize)
                 .mapToObj(i -> list.subList(i * batchSize, Math.min((i + 1) * batchSize, list.size())))
                 .collect(Collectors.toList());

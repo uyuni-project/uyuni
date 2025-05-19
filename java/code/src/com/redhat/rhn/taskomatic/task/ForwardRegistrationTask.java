@@ -31,6 +31,7 @@ import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
+import com.suse.scc.model.SCCUpdateSystemItem;
 import com.suse.scc.model.SCCVirtualizationHostJson;
 import com.suse.scc.proxy.SCCProxyFactory;
 import com.suse.scc.proxy.SCCProxyRecord;
@@ -47,11 +48,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
-
 public class ForwardRegistrationTask extends RhnJavaJob {
 
     // initialize first run between 30 minutes and 3 hours from now
-    private static LocalDateTime nextLastSeenUpdateRun = LocalDateTime.now().plusMinutes(
+    protected static LocalDateTime nextLastSeenUpdateRun = LocalDateTime.now().plusMinutes(
             ThreadLocalRandom.current().nextInt(30, 3 * 60));
 
     //task setup
@@ -154,7 +154,6 @@ public class ForwardRegistrationTask extends RhnJavaJob {
         return optHubCredential;
     }
 
-
     // Do SCC related tasks like insert, update and delete system in SCC
     protected void executeSCCTasks(SCCCredentials credentialsIn) {
         String uuid = ContentSyncManager.getUUID();
@@ -192,7 +191,9 @@ public class ForwardRegistrationTask extends RhnJavaJob {
         sccRegManager.register(forwardRegistration, sccPrimaryOrProxyCredentials);
         sccRegManager.virtualInfo(virtHosts, sccPrimaryOrProxyCredentials);
         if (LocalDateTime.now().isAfter(nextLastSeenUpdateRun)) {
-            sccRegManager.updateLastSeen(sccPrimaryOrProxyCredentials);
+            List<SCCUpdateSystemItem> updateLastSeenItems =
+                    SCCCachingFactory.listUpdateLastSeenItems(sccPrimaryOrProxyCredentials);
+            sccRegManager.updateLastSeen(updateLastSeenItems, sccPrimaryOrProxyCredentials);
             // next run in 22 - 26 hours
             synchronized (this) {
                 nextLastSeenUpdateRun = nextLastSeenUpdateRun.plusMinutes(
@@ -218,5 +219,10 @@ public class ForwardRegistrationTask extends RhnJavaJob {
         sccRegManager.proxyDeregister(proxyDeregister, false);
         sccRegManager.proxyRegister(proxyForwardRegistration, sccPrimaryOrProxyCredentials);
         sccRegManager.proxyVirtualInfo(proxyVirtHosts, sccPrimaryOrProxyCredentials);
+
+        //the updates are sent by the peripherals, we don't want to hold the information here
+        List<SCCProxyRecord> proxyUpdateLastSeen = sccProxyFactory.listUpdateLastSeenItems();
+        log.debug("{} Proxy systems to update last seen", proxyUpdateLastSeen.size());
+        sccRegManager.proxyUpdateLastSeen(proxyUpdateLastSeen, sccPrimaryOrProxyCredentials);
     }
 }
