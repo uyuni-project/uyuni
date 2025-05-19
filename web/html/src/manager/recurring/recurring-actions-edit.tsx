@@ -6,7 +6,7 @@ import { RecurringPlaybookPicker } from "manager/recurring/recurring-playbook-pi
 
 import { Button } from "components/buttons";
 import { AsyncButton } from "components/buttons";
-import { Form, Select } from "components/input";
+import { DEPRECATED_Select, Form } from "components/input";
 import { Utils as MessagesUtils } from "components/messages/messages";
 import { InnerPanel } from "components/panels/InnerPanel";
 import { RecurringEventPicker } from "components/picker/recurring-event-picker";
@@ -253,7 +253,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
         buttons={buttons}
       >
         <Form onChange={this.onActionTypeChanged} model={{ actionTypeDescription: this.state.actionTypeDescription }}>
-          <Select
+          <DEPRECATED_Select
             required
             name="actionTypeDescription"
             label={t("Action Type")}

@@ -1,0 +1,13 @@
+:global(.old-theme),
+:global(.new-theme) {
+  .button {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .icon {
+      margin: 0;
+    }
+  }
+}

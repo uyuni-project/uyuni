@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useContext } from "react";
 
-import { FormContext, Select } from "components/input";
+import { DEPRECATED_Select, FormContext } from "components/input";
 
 type ModuleSelectorProps = {
   modules: {
@@ -23,7 +23,7 @@ export default function ModuleSelector(props: ModuleSelectorProps) {
 
   return (
     <>
-      <Select
+      <DEPRECATED_Select
         name="moduleName"
         label={t("Module")}
         isLoading={props.isLoading}
@@ -37,7 +37,7 @@ export default function ModuleSelector(props: ModuleSelectorProps) {
         }}
         required
       />
-      <Select
+      <DEPRECATED_Select
         name="moduleStream"
         label={t("Stream")}
         options={getStreamOptions(formContext)}

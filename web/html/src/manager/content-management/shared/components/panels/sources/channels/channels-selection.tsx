@@ -8,7 +8,7 @@ import { ProjectSoftwareSourceType } from "manager/content-management/shared/typ
 
 import { BaseChannelType, ChannelTreeType, ChildChannelType, isBaseChannel } from "core/channels/type/channels.type";
 
-import { Select } from "components/input";
+import { DEPRECATED_Select } from "components/input";
 import { Loading } from "components/utils/loading/Loading";
 import { VirtualList } from "components/virtual-list";
 
@@ -169,7 +169,7 @@ const ChannelsSelection = (props: PropsType) => {
   return (
     <React.Fragment>
       <div className="row">
-        <Select
+        <DEPRECATED_Select
           data-testid="selectedBaseChannel"
           loadOptions={loadSelectOptions}
           defaultValueOption={defaultValueOption}
