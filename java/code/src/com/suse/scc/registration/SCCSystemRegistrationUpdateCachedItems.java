@@ -20,7 +20,7 @@ import static com.suse.utils.Predicates.isAbsent;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.server.ServerFactory;
 
-import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCRegisterSystemItem;
 import com.suse.scc.model.SCCSystemCredentialsJson;
 
 import org.apache.logging.log4j.LogManager;
@@ -64,7 +64,7 @@ public class SCCSystemRegistrationUpdateCachedItems implements SCCSystemRegistra
     }
 
     protected void updateFailedRegisteredItems(SCCSystemRegistrationContext context) {
-        for (Map.Entry<String, SCCRegisterSystemJson> entry :
+        for (Map.Entry<String, SCCRegisterSystemItem> entry :
                 context.getPendingRegistrationSystemsByLogin().entrySet()) {
             SCCRegCacheItem cacheItem = context.getItemsByLogin().get(entry.getKey());
             if (LOG.isErrorEnabled()) {

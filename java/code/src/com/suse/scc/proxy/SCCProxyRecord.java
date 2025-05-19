@@ -39,6 +39,7 @@ public class SCCProxyRecord extends BaseDomainHelper {
     private String sccCreationJson;
     private Long sccId;
     private Date sccRegistrationErrorTime;
+    private Date lastSeenAt;
     private SccProxyStatus status;
 
     /**
@@ -46,6 +47,17 @@ public class SCCProxyRecord extends BaseDomainHelper {
      */
     public SCCProxyRecord() {
         this(null, null, null, null);
+    }
+
+    /**
+     * Constructor with status SCC_CREATION_PENDING
+     *
+     * @param peripheralFqdnIn peripheral from which the request comes from
+     * @param sccLoginIn login of the system to register in SCC
+     * @param sccPasswdIn password of the system to register in SCC
+     */
+    public SCCProxyRecord(String peripheralFqdnIn, String sccLoginIn, String sccPasswdIn) {
+        this(peripheralFqdnIn, sccLoginIn, sccPasswdIn, null, SccProxyStatus.SCC_CREATION_PENDING);
     }
 
     /**
@@ -142,6 +154,9 @@ public class SCCProxyRecord extends BaseDomainHelper {
         return ofNullable(sccId);
     }
 
+    /**
+     * @return the time when the last registration failed
+     */
     @Column(name = "scc_regerror_timestamp")
     public Date getSccRegistrationErrorTime() {
         return sccRegistrationErrorTime;
@@ -151,13 +166,28 @@ public class SCCProxyRecord extends BaseDomainHelper {
         sccRegistrationErrorTime = sccRegistrationErrorTimeIn;
     }
 
-    /**
-     * @return the time when the last registration failed
-     */
     @Transient
     public Optional<Date> getOptSccRegistrationErrorTime() {
         return ofNullable(sccRegistrationErrorTime);
     }
+
+    /**
+     * @return the time when the system has been seen
+     */
+    @Column(name = "last_seen_at")
+    public Date getLastSeenAt() {
+        return lastSeenAt;
+    }
+
+    public void setLastSeenAt(Date lastSeenAtIn) {
+        lastSeenAt = lastSeenAtIn;
+    }
+
+    @Transient
+    public Optional<Date> getOptLastSeenAt() {
+        return ofNullable(lastSeenAt);
+    }
+
 
     @Type(type = "com.suse.scc.proxy.SccProxyStatusEnumType")
     public SccProxyStatus getStatus() {
@@ -201,6 +231,7 @@ public class SCCProxyRecord extends BaseDomainHelper {
         sb.append(", sccCreationJson='").append(sccCreationJson).append('\'');
         sb.append(", sccId=").append(sccId);
         sb.append(", sccRegistrationErrorTime=").append(sccRegistrationErrorTime);
+        sb.append(", lastSeenAt=").append(lastSeenAt);
         sb.append(", status=").append(status);
         sb.append('}');
         return sb.toString();

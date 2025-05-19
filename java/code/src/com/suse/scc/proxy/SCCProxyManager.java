@@ -10,7 +10,7 @@
  */
 package com.suse.scc.proxy;
 
-import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCRegisterSystemItem;
 import com.suse.scc.model.SCCVirtualizationHostJson;
 import com.suse.utils.Json;
 
@@ -44,20 +44,32 @@ public class SCCProxyManager {
     /**
      * Creates systems from the lists and stores data to be later registered to SCC
      *
-     * @param systemsList a list of {@link SCCRegisterSystemJson} to be created
+     * @param systemsList a list of {@link SCCRegisterSystemItem} to be created
      * @param peripheralFqdnIn the fqdn of the peripheral
      * @return list of corresponding generated records
      */
-    public List<SCCProxyRecord> createSystems(List<SCCRegisterSystemJson> systemsList, String peripheralFqdnIn) {
+    public List<SCCProxyRecord> createOrUpdateSystems(List<SCCRegisterSystemItem> systemsList,
+                                                      String peripheralFqdnIn) {
 
         List<SCCProxyRecord> systemsRecords = new ArrayList<>();
 
-        for (SCCRegisterSystemJson system : systemsList) {
+        for (SCCRegisterSystemItem system : systemsList) {
             String sccLogin = system.getLogin();
             String sccPasswd = system.getPassword();
-            String sccCreationJson = Json.GSON.toJson(system);
 
-            SCCProxyRecord sccProxyRecord = new SCCProxyRecord(peripheralFqdnIn, sccLogin, sccPasswd, sccCreationJson);
+            SCCProxyRecord sccProxyRecord = sccProxyFactory
+                    .lookupBySccLoginAndPassword(sccLogin, sccPasswd)
+                    .orElse(new SCCProxyRecord(peripheralFqdnIn, sccLogin, sccPasswd));
+            if (system.isOnlyLastSeenAt()) {
+                //update last seen at
+                sccProxyRecord.setLastSeenAt(system.getLastSeenAt());
+            }
+            else {
+                //full creation or update
+                String sccCreationJson = Json.GSON.toJson(system);
+                sccProxyRecord.setSccCreationJson(sccCreationJson);
+                sccProxyRecord.setStatus(SccProxyStatus.SCC_CREATION_PENDING);
+            }
             sccProxyFactory.save(sccProxyRecord);
             systemsRecords.add(sccProxyRecord);
         }
@@ -95,9 +107,9 @@ public class SCCProxyManager {
             String sccLogin = host.getIdentifier();
             String sccCreationJson = Json.GSON.toJson(host);
 
-            Optional<SCCProxyRecord> proxyRecord = sccProxyFactory.lookupBySccLoginAndStatus(
+            Optional<SCCProxyRecord> optProxyRecord = sccProxyFactory.lookupBySccLoginAndStatus(
                     sccLogin, SccProxyStatus.SCC_VIRTHOST_PENDING);
-            SCCProxyRecord record = proxyRecord
+            SCCProxyRecord proxyRecord = optProxyRecord
                     .map(r -> {
                         r.setPeripheralFqdn(peripheralFqdn);
                         r.setSccCreationJson(sccCreationJson);
@@ -106,7 +118,7 @@ public class SCCProxyManager {
                     })
                     .orElse(new SCCProxyRecord(peripheralFqdn, sccLogin, null, sccCreationJson,
                             SccProxyStatus.SCC_VIRTHOST_PENDING));
-            sccProxyFactory.save(record);
+            sccProxyFactory.save(proxyRecord);
         }
     }
 }
