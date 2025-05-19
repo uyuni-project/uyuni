@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Select } from "components/input";
+import { DEPRECATED_Select } from "components/input";
 
 const ALL_OPTION = { value: "ALL", label: t("All") };
 
@@ -22,7 +22,7 @@ export const SelectSearchField = ({ label, criteria, options, onSearch }) => {
   }, [searchValue, allOptions, onSearch]);
 
   return (
-    <Select
+    <DEPRECATED_Select
       name="selectSearchField"
       placeholder={label}
       defaultValue={searchValue}

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
-import { FormContext, Select } from "components/input";
+import { DEPRECATED_Select, FormContext } from "components/input";
 
 import { usePrevious } from "utils/hooks";
 import Network, { JsonResult } from "utils/network";
@@ -38,7 +38,7 @@ export default (props: FilterFormProps & { template: Template }) => {
   }, [template]);
 
   return (
-    <Select
+    <DEPRECATED_Select
       name="channelId"
       label={t("Channel")}
       labelClass="col-md-3"

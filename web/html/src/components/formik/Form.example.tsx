@@ -17,6 +17,7 @@ export default () => {
     range_start: "1000",
     range_end: "1100",
     radio: "one",
+    select: "foo",
   };
 
   const onSubmit: OnSubmit<typeof initialValues> = async (values, helpers) => {
@@ -57,6 +58,22 @@ export default () => {
                 { label: t("Three"), value: "three" },
               ]}
               as={Field.Radio}
+            />
+
+            <Field
+              name="select"
+              label={t("Select")}
+              options={[
+                {
+                  label: t("Foo"),
+                  value: "foo",
+                },
+                {
+                  label: t("Bar"),
+                  value: "bar",
+                },
+              ]}
+              as={Field.Select}
             />
 
             <SubmitButton className="btn-primary" text={t("Submit")} disabled={isSubmitting} />

@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { AsyncButton } from "components/buttons";
 import { ModalButton } from "components/dialog/ModalButton";
-import { Select } from "components/input";
+import { DEPRECATED_Select } from "components/input";
 import { Check } from "components/input/check/Check";
 import { Form, FormContext } from "components/input/form/Form";
 import { Utils as MessagesUtils } from "components/messages/messages";
@@ -123,7 +123,7 @@ export function SchedulePicker(props: { schedules: ScheduleType[] }) {
   const options: SchedulesType[] = [{ value: "0", label: t("None - clear schedule") }];
   return (
     <>
-      <Select
+      <DEPRECATED_Select
         name="scheduleId"
         label={t("Schedule")}
         labelClass="col-md-3"

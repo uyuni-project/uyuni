@@ -2,7 +2,7 @@ import * as React from "react";
 
 import Creatable from "react-select/creatable";
 
-import withTestAttributes from "./input/select/select-test-attributes";
+import withCustomComponents from "./input/select/withCustomComponents";
 
 type ReactSelectItem = {
   value: string | null | undefined;
@@ -82,7 +82,7 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
       label: item.text,
     }));
 
-    const testAttributes = withTestAttributes(this.props["data-testid"], this.props.name);
+    const testAttributes = withCustomComponents(this.props["data-testid"], this.props.name);
     return (
       <Creatable
         id={this.props.id}

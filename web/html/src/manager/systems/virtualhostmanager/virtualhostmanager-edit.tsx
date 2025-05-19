@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Button, SubmitButton } from "components/buttons";
-import { Select } from "components/input";
+import { DEPRECATED_Select } from "components/input";
 import { Form } from "components/input/form/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Label } from "components/input/Label";
@@ -298,7 +298,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     var contextSelect;
     if (this.state.model.contexts) {
       contextSelect = (
-        <Select
+        <DEPRECATED_Select
           name="module_context"
           label={t("Current Context")}
           required
