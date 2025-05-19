@@ -25,6 +25,7 @@ CREATE TABLE suseSccProxy
     scc_id              NUMERIC,
     status              scc_proxy_status_t NOT NULL,
     scc_regerror_timestamp TIMESTAMPTZ,
+    last_seen_at TIMESTAMPTZ,
 
     created        TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL,
