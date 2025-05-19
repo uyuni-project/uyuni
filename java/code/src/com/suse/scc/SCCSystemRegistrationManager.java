@@ -24,9 +24,9 @@ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
-import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCRegisterSystemItem;
 import com.suse.scc.model.SCCSystemCredentialsJson;
-import com.suse.scc.model.SCCUpdateSystemJson;
+import com.suse.scc.model.SCCUpdateSystemItem;
 import com.suse.scc.model.SCCVirtualizationHostJson;
 import com.suse.scc.proxy.SCCProxyFactory;
 import com.suse.scc.proxy.SCCProxyRecord;
@@ -44,7 +44,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -96,25 +95,51 @@ public class SCCSystemRegistrationManager {
     /**
      * Update last_seen field in SCC for all registered clients
      * @param primaryCredential the primary scc credential
+     * @param updateLastSeenItems the list of  {@link SCCUpdateSystemItem} systems to update last_seen field
      */
-    public void updateLastSeen(SCCCredentials primaryCredential) {
-        List<Map<String, Object>> candidates = SCCCachingFactory.listUpdateLastSeenCandidates(primaryCredential);
+    public void updateLastSeen(List<SCCUpdateSystemItem> updateLastSeenItems, SCCCredentials primaryCredential) {
 
-        List<SCCUpdateSystemJson> sysList = candidates.stream()
-                .map(c -> new SCCUpdateSystemJson(
-                        c.get("scc_login").toString(),
-                        c.get("scc_passwd").toString(),
-                        (Date) c.get("checkin")))
-                .toList();
-
-        ArrayList<List<SCCUpdateSystemJson>> batches = new ArrayList<>(
-                IntStream.range(0, sysList.size()).boxed().collect(
+        ArrayList<List<SCCUpdateSystemItem>> batches = new ArrayList<>(
+                IntStream.range(0, updateLastSeenItems.size()).boxed().collect(
                         Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
-                                Collectors.mapping(e->sysList.get(e), Collectors.toList())
+                                Collectors.mapping(updateLastSeenItems::get, Collectors.toList())
                                 )).values());
-        for (List<SCCUpdateSystemJson> batch: batches) {
+        for (List<SCCUpdateSystemItem> batch: batches) {
             try {
                 sccClient.updateBulkLastSeen(batch, primaryCredential.getUsername(), primaryCredential.getPassword());
+            }
+            catch (SCCClientException e) {
+                LOG.error("SCC error while updating systems", e);
+            }
+            catch (Exception e) {
+                LOG.error("Error updating systems", e);
+            }
+        }
+    }
+
+    /**
+     * Update last_seen field in SCC for all registered clients
+     * @param primaryCredential the primary scc credential
+     * @param proxyUpdateLastSeen the list of  {@link SCCProxyRecord} systems to update last_seen field
+     */
+    public void proxyUpdateLastSeen(List<SCCProxyRecord> proxyUpdateLastSeen, SCCCredentials primaryCredential) {
+        ArrayList<List<SCCProxyRecord>> batches = new ArrayList<>(
+                IntStream.range(0, proxyUpdateLastSeen.size()).boxed().collect(
+                        Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
+                                Collectors.mapping(proxyUpdateLastSeen::get, Collectors.toList())
+                        )).values());
+        for (List<SCCProxyRecord> proxyRecordBatch: batches) {
+            try {
+                List<SCCUpdateSystemItem> batch = proxyRecordBatch.stream()
+                        .map(r -> new SCCUpdateSystemItem(r.getSccLogin(), r.getSccPasswd(), r.getLastSeenAt()))
+                        .toList();
+
+                sccClient.updateBulkLastSeen(batch, primaryCredential.getUsername(), primaryCredential.getPassword());
+
+                proxyRecordBatch.forEach(r -> {
+                    r.setLastSeenAt(null);
+                    sccProxyFactory.save(r);
+                });
             }
             catch (SCCClientException e) {
                 LOG.error("SCC error while updating systems", e);
@@ -242,8 +267,8 @@ public class SCCSystemRegistrationManager {
 
         for (List<SCCProxyRecord> recordBatch: batches) {
             try {
-                List<SCCRegisterSystemJson> batchCreationJson = recordBatch.stream()
-                        .map(r -> Json.GSON.fromJson(r.getSccCreationJson(), SCCRegisterSystemJson.class))
+                List<SCCRegisterSystemItem> batchCreationJson = recordBatch.stream()
+                        .map(r -> Json.GSON.fromJson(r.getSccCreationJson(), SCCRegisterSystemItem.class))
                         .toList();
 
                 SCCOrganizationSystemsUpdateResponse response = sccClient.createUpdateSystems(

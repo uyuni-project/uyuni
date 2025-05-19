@@ -46,9 +46,9 @@ import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
-import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCRegisterSystemItem;
 import com.suse.scc.model.SCCSystemCredentialsJson;
-import com.suse.scc.model.SCCUpdateSystemJson;
+import com.suse.scc.model.SCCUpdateSystemItem;
 import com.suse.scc.model.SCCVirtualizationHostJson;
 import com.suse.scc.model.SCCVirtualizationHostPropertiesJson;
 import com.suse.scc.proxy.SCCProxyFactory;
@@ -89,7 +89,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         SCCWebClient sccWebClient = new SCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-                    List<SCCRegisterSystemJson> systems, String username, String password) {
+                    List<SCCRegisterSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
                 assertNotEmpty(systems);
@@ -212,7 +212,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         SCCWebClient sccWebClient = new SCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-                    List<SCCRegisterSystemJson> systems, String username, String password) {
+                    List<SCCRegisterSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
                 assertNotEmpty(systems);
@@ -235,7 +235,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
 
             @Override
-            public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password) {
+            public void updateBulkLastSeen(List<SCCUpdateSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
                 assertEquals(new Date(0), systems.get(0).getLastSeenAt());
@@ -254,7 +254,8 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         CredentialsFactory.storeCredentials(credentials);
         sccSystemRegistrationManager.register(testSystems, credentials);
 
-        sccSystemRegistrationManager.updateLastSeen(credentials);
+        sccSystemRegistrationManager.updateLastSeen(SCCCachingFactory.listUpdateLastSeenItems(credentials),
+                credentials);
     }
 
     @Test
@@ -294,7 +295,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         TestSCCWebClient sccWebClient = new TestSCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-                    List<SCCRegisterSystemJson> systems, String username, String password) {
+                    List<SCCRegisterSystemItem> systems, String username, String password) {
                 return new SCCOrganizationSystemsUpdateResponse(
                         systems.stream()
                                 .map(system ->
@@ -305,7 +306,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
 
             @Override
-            public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password) {
+            public void updateBulkLastSeen(List<SCCUpdateSystemItem> systems, String username, String password) {
                 callCnt += 1;
                 assertTrue(callCnt <= 4, "more requests then expected");
                 if (callCnt < 4) {
@@ -329,7 +330,8 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         CredentialsFactory.storeCredentials(credentials);
         sccSystemRegistrationManager.register(testSystems, credentials);
 
-        sccSystemRegistrationManager.updateLastSeen(credentials);
+        sccSystemRegistrationManager.updateLastSeen(SCCCachingFactory.listUpdateLastSeenItems(credentials),
+                credentials);
     }
 
     @Test
@@ -361,7 +363,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
 
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-                    List<SCCRegisterSystemJson> systems, String username, String password) {
+                    List<SCCRegisterSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
 
@@ -383,7 +385,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
 
             @Override
-            public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password) {
+            public void updateBulkLastSeen(List<SCCUpdateSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
             }
@@ -449,7 +451,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
 
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-                    List<SCCRegisterSystemJson> systems, String username, String password) {
+                    List<SCCRegisterSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
                 return new SCCOrganizationSystemsUpdateResponse(
@@ -470,7 +472,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
 
             @Override
-            public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password) {
+            public void updateBulkLastSeen(List<SCCUpdateSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
             }
@@ -551,7 +553,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
 
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-                    List<SCCRegisterSystemJson> systems, String username, String password) {
+                    List<SCCRegisterSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
                 return new SCCOrganizationSystemsUpdateResponse(
@@ -572,7 +574,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
 
             @Override
-            public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password) {
+            public void updateBulkLastSeen(List<SCCUpdateSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
             }

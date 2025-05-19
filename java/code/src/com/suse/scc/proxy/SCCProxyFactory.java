@@ -80,6 +80,22 @@ public class SCCProxyFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup {@link SCCProxyRecord} object by sccLogin and sccPasswd
+     *
+     * @param sccLoginIn the scc login
+     * @param sccPasswdIn the scc password
+     * @return return {@link SCCProxyRecord} or empty
+     */
+    public Optional<SCCProxyRecord> lookupBySccLoginAndPassword(String sccLoginIn, String sccPasswdIn) {
+        return getSession()
+                .createQuery("FROM SCCProxyRecord WHERE sccLogin = :sccLogin AND sccPasswd = :sccPasswd",
+                        SCCProxyRecord.class)
+                .setParameter("sccLogin", sccLoginIn)
+                .setParameter("sccPasswd", sccPasswdIn)
+                .uniqueResultOptional();
+    }
+
+    /**
      * Lookup {@link SCCProxyRecord} list of objects with given status
      *
      * @param statusIn the status
@@ -140,5 +156,20 @@ public class SCCProxyFactory extends HibernateFactory {
      */
     public List<SCCProxyRecord> findVirtualizationHosts() {
         return lookupByStatusAndRetry(SccProxyStatus.SCC_VIRTHOST_PENDING);
+    }
+
+    /**
+     * Return list of data for last seen SCC update call
+     *
+     * @return list of {@link SCCProxyRecord}
+     */
+    public List<SCCProxyRecord> listUpdateLastSeenItems() {
+        return getSession()
+                .createQuery("""
+                            FROM SCCProxyRecord
+                            WHERE sccRegistrationErrorTime IS NULL AND status = :status AND lastSeenAt IS NOT NULL
+                            """, SCCProxyRecord.class)
+                .setParameter("status", SccProxyStatus.SCC_CREATED)
+                .list();
     }
 }

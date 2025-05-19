@@ -18,6 +18,7 @@ package com.redhat.rhn.taskomatic.task.test;
 import static org.apache.http.entity.ContentType.APPLICATION_JSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -60,9 +61,9 @@ import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
-import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCRegisterSystemItem;
 import com.suse.scc.model.SCCSystemCredentialsJson;
-import com.suse.scc.model.SCCUpdateSystemJson;
+import com.suse.scc.model.SCCUpdateSystemItem;
 import com.suse.scc.model.SCCVirtualizationHostJson;
 import com.suse.scc.proxy.SCCProxyFactory;
 import com.suse.scc.proxy.SCCProxyManager;
@@ -93,6 +94,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -113,7 +115,6 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
     private SystemEntitlementManager systemEntitlementManager;
 
     private MockHttpClientAdapter testHttpClientAdapter;
-    private MockSCCWebClient testSCCWebClient;
     private MockForwardRegistrationTask testForwardRegistrationTask;
     private static SCCProxyFactory testSccProxyFactory;
     private MockSCCSystemRegistrationManager testSCCSystemRegistrationManager;
@@ -137,12 +138,6 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
     static class MockSCCWebClient extends SCCWebClient {
         MockSCCWebClient(SCCConfig configIn, HttpClientAdapter httpClientIn) {
             super(configIn, httpClientIn);
-        }
-
-        @Override
-        public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password)
-                throws SCCClientException {
-            //do nothing
         }
     }
 
@@ -169,7 +164,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         }
 
         @Override
-        public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password)
+        public void updateBulkLastSeen(List<SCCUpdateSystemItem> systems, String username, String password)
                 throws SCCClientException {
             //do nothing
         }
@@ -182,7 +177,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         }
 
         @Override
-        public SCCOrganizationSystemsUpdateResponse createUpdateSystems(List<SCCRegisterSystemJson> systems,
+        public SCCOrganizationSystemsUpdateResponse createUpdateSystems(List<SCCRegisterSystemItem> systems,
                                                                         String username, String password) {
             callCnt += 1;
             if (allowFirstCallToFail) {
@@ -209,14 +204,13 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         MockSCCSystemRegistrationManager(SCCClient sccClientIn, SCCProxyFactory sccProxyFactoryIn) {
             super(sccClientIn, sccProxyFactoryIn);
         }
-
-        @Override
-        public void updateLastSeen(SCCCredentials primaryCredential) {
-            //do nothing
-        }
     }
 
     static class MockForwardRegistrationTask extends ForwardRegistrationTask {
+        MockForwardRegistrationTask() {
+            enableUpdateLastSeenUpdate(false);
+        }
+
         @Override
         public void executeSCCTasksAsServer(SCCSystemRegistrationManager sccRegManager,
                                             SCCCredentials sccPrimaryOrProxyCredentials) {
@@ -232,6 +226,15 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         public Optional<SCCCredentials> setupTaskGetSccCredentials() {
             setupTaskConfiguration();
             return taskConfigSccCredentials;
+        }
+
+        public static void enableUpdateLastSeenUpdate(boolean enable) {
+            if (enable) {
+                nextLastSeenUpdateRun = LocalDateTime.now().minusMinutes(30);
+            }
+            else {
+                nextLastSeenUpdateRun = LocalDateTime.now().plusDays(1);
+            }
         }
     }
 
@@ -313,7 +316,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
                         simulateProxyRequestDeleteSystems(request, response);
                     }
                     else {
-                        simulateSccRequestDeleteSystems(request, response);
+                        simulateSccRequestDeleteSystems(response);
                     }
                 }
 
@@ -387,17 +390,16 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
             assertContains(request.getURI().getPath(), "connect/organizations/systems");
 
-            TypeToken<Map<String, List<SCCRegisterSystemJson>>> typeToken = new TypeToken<>() {
-            };
-            Map<String, List<SCCRegisterSystemJson>> payload = gson.fromJson(requestBody, typeToken.getType());
+            TypeToken<Map<String, List<SCCRegisterSystemItem>>> typeToken = new TypeToken<>() { };
+            Map<String, List<SCCRegisterSystemItem>> payload = gson.fromJson(requestBody, typeToken.getType());
 
             if (!payload.containsKey("systems")) {
                 fail("wrong json input: missing systems key");
             }
-            List<SCCRegisterSystemJson> systemsList = payload.get("systems");
+            List<SCCRegisterSystemItem> systemsList = payload.get("systems");
 
             List<SCCSystemCredentialsJson> systemsResponse = new ArrayList<>();
-            for (SCCRegisterSystemJson sj : systemsList) {
+            for (SCCRegisterSystemItem sj : systemsList) {
                 sccid++;
                 systemsResponse.add(new SCCSystemCredentialsJson(
                         sj.getLogin(),
@@ -411,7 +413,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
                     gson.toJson(new SCCOrganizationSystemsUpdateResponse(systemsResponse)), APPLICATION_JSON));
         }
 
-        public void simulateSccRequestDeleteSystems(HttpRequestBase request, HttpResponse response) {
+        public void simulateSccRequestDeleteSystems(HttpResponse response) {
             deletedcnt++;
             response.setEntity(new StringEntity("", APPLICATION_JSON));
             response.setStatusCode(HttpServletResponse.SC_NO_CONTENT);
@@ -422,11 +424,13 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        systemSize = 15;
-        batchSize = 3;
-        allowFirstCallToFail = false;
-        allowAllCallsToFail = false;
-        virtualHostsSize = 0;
+        synchronized (this) {
+            systemSize = 15;
+            batchSize = 3;
+            allowFirstCallToFail = false;
+            allowAllCallsToFail = false;
+            virtualHostsSize = 0;
+        }
 
         SaltApi saltApi = new TestSaltApi();
         systemEntitlementManager = new SystemEntitlementManager(
@@ -446,12 +450,15 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         CredentialsFactory.storeCredentials(primaryCredentials);
     }
 
-    private void setupCreateTestObjects() throws URISyntaxException {
+    private void setupCreateTestObjects() {
         testHttpClientAdapter = new MockHttpClientAdapter();
         testHttpClientAdapter.setSimulateProxy();
-        testSCCWebClient = new MockSCCWebClient(new SCCConfigBuilder().createSCCConfig(), testHttpClientAdapter);
+        MockSCCWebClient testSCCWebClient =
+                new MockSCCWebClient(new SCCConfigBuilder().createSCCConfig(), testHttpClientAdapter);
         testForwardRegistrationTask = new MockForwardRegistrationTask();
-        testSccProxyFactory = new SCCProxyFactory();
+        synchronized (this) {
+            testSccProxyFactory = new SCCProxyFactory();
+        }
         testSCCSystemRegistrationManager = new MockSCCSystemRegistrationManager(testSCCWebClient, testSccProxyFactory);
 
         mockWebClientWithCount = new MockSCCWebClientWithCount();
@@ -480,29 +487,37 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
         SCCCachingFactory.initNewSystemsToForward();
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
-        testSystems = allUnregistered.stream()
-                .filter(i -> i.getOptServer().get().getServerInfo().getCheckin().equals(new Date(0)))
-                .collect(Collectors.toList());
+        synchronized (this) {
+            testSystems = allUnregistered.stream()
+                    .filter(i -> i.getOptServer().get().getServerInfo().getCheckin().equals(new Date(0)))
+                    .collect(Collectors.toList());
+        }
     }
 
     private void setupVirtualHostWithGuest() throws Exception {
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
         host.getServerInfo().setCheckin(new Date(0));
         servers.add(host);
-        systemSize += 1;
-        virtualHostsSize += 1;
+        synchronized (this) {
+            systemSize += 1;
+            virtualHostsSize += 1;
+        }
         host.getVirtualGuests().stream().map(VirtualInstance::getGuestSystem).forEach(guest -> {
             guest.getServerInfo().setCheckin(new Date(0));
             servers.add(guest);
-            systemSize += 1;
+            synchronized (this) {
+                systemSize += 1;
+            }
         });
         HibernateFactory.getSession().flush();
 
         SCCCachingFactory.initNewSystemsToForward();
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
-        testSystems = allUnregistered.stream()
-                .filter(i -> i.getOptServer().get().getServerInfo().getCheckin().equals(new Date(0)))
-                .collect(Collectors.toList());
+        synchronized (this) {
+            testSystems = allUnregistered.stream()
+                    .filter(i -> i.getOptServer().get().getServerInfo().getCheckin().equals(new Date(0)))
+                    .collect(Collectors.toList());
+        }
     }
 
     private void setupAsPeripheral() {
@@ -562,12 +577,17 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
                     testSccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_VIRTHOST_PENDING).size());
             return this;
         }
+        public Verifier verifyProxyUpdateLastSeenPending(int expected) {
+            assertEquals(expected, testSccProxyFactory.listUpdateLastSeenItems().size());
+            return this;
+        }
 
         public Verifier verifySystemsToRegister(int expected) {
             assertEquals(expected, SCCCachingFactory.findSystemsToForwardRegistration().size());
             return this;
         }
         public Verifier verifySystemsByCredentials(int expected, Optional<SCCCredentials> optCred) {
+            assertTrue(optCred.isPresent());
             assertEquals(expected, SCCCachingFactory.listRegItemsByCredentials(optCred.get()).size());
             return this;
         }
@@ -621,7 +641,9 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
     @Test
     public void testSuccessSystemRegistrationWhenNoSystemsProvided() throws Exception {
-        systemSize = 0;
+        synchronized (this) {
+            systemSize = 0;
+        }
         setupTest();
 
         testVerifier.assertPreConditions();
@@ -662,7 +684,9 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
     @Test
     public void testSuccessSystemRegistrationWhenAllSccRequestsFail() throws Exception {
-        allowAllCallsToFail = true;
+        synchronized (this) {
+            allowAllCallsToFail = true;
+        }
         setupTest();
 
         testVerifier.assertPreConditions();
@@ -685,9 +709,11 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
     // - 21 systems (the successfully registered systems + payg ones) will have credentials.
     @Test
     public void testSuccessSystemRegistration() throws Exception {
-        systemSize = 30;
-        batchSize = 9;
-        allowFirstCallToFail = true;
+        synchronized (this) {
+            systemSize = 30;
+            batchSize = 9;
+            allowFirstCallToFail = true;
+        }
         final int skipRegister = 5;
         setupTest();
 
@@ -706,7 +732,9 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
     @Test
     public void testSuccessVirtHost() throws Exception {
-        systemSize = 0;
+        synchronized (this) {
+            systemSize = 0;
+        }
         setupTest();
         setupVirtualHostWithGuest();
 
@@ -724,7 +752,9 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
     public void testForwardVirtualHostsFromPeripheralToHub() throws Exception {
         // Cleanup all systems which might exist from previous tests
         ServerFactory.list().forEach(ServerFactory::delete);
-        systemSize = 0;
+        synchronized (this) {
+            systemSize = 0;
+        }
         setupTest();
         setupAsPeripheral();
         setupAsHub();
@@ -818,7 +848,9 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
     public void testWithHub() throws Exception {
         // Cleanup all systems which might exist from previous tests
         ServerFactory.list().forEach(ServerFactory::delete);
-        systemSize = 5;
+        synchronized (this) {
+            systemSize = 5;
+        }
         setupTest();
         setupAsPeripheral();
         setupAsHub();
@@ -848,7 +880,8 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
                 .verifyProxyCreationPending(0)
                 .verifyProxyCreated(0)
                 .verifyProxyRemovalPending(0)
-                .verifyProxyVirtHostPending(0);
+                .verifyProxyVirtHostPending(0)
+                .verifyProxyUpdateLastSeenPending(0);
 
         testForwardRegistrationTask.executeSCCTasksAsServer(testSCCSystemRegistrationManager, optCred.get());
 
@@ -871,7 +904,8 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
                 .verifyProxyCreationPending(systemSize)
                 .verifyProxyCreated(0)
                 .verifyProxyRemovalPending(0)
-                .verifyProxyVirtHostPending(0);
+                .verifyProxyVirtHostPending(0)
+                .verifyProxyUpdateLastSeenPending(0);
 
 
         List<SCCProxyRecord> proxyRecords =
@@ -881,10 +915,12 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
             assertEquals(PERIPHERAL_FQDN, proxyRecord.getPeripheralFqdn());
             assertFalse(proxyRecord.getSccLogin().isEmpty());
             assertFalse(proxyRecord.getSccPasswd().isEmpty());
+            assertNull(proxyRecord.getSccRegistrationErrorTime());
+            assertNull(proxyRecord.getLastSeenAt());
 
             assertFalse(proxyRecord.getSccCreationJson().isEmpty());
-            SCCRegisterSystemJson creationJson =
-                    Json.GSON.fromJson(proxyRecord.getSccCreationJson(), SCCRegisterSystemJson.class);
+            SCCRegisterSystemItem creationJson =
+                    Json.GSON.fromJson(proxyRecord.getSccCreationJson(), SCCRegisterSystemItem.class);
             assertEquals(creationJson.getLogin(), proxyRecord.getSccLogin());
             assertEquals(creationJson.getPassword(), proxyRecord.getSccPasswd());
 
@@ -906,7 +942,9 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
                 .verifyProxyCreationPending(newSystemSize)
                 .verifyProxyCreated(0)
                 .verifyProxyRemovalPending(2)
-                .verifyProxyVirtHostPending(0);
+                .verifyProxyVirtHostPending(0)
+                .verifyProxyUpdateLastSeenPending(0);
+
 
         // delete systems to perform later a clean data forwarding against SCC
         testSystems.stream()
@@ -934,6 +972,86 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
                 .verifyProxyCreationPending(0)
                 .verifyProxyCreated(newSystemSize)
                 .verifyProxyRemovalPending(0)
-                .verifyProxyVirtHostPending(0);
+                .verifyProxyVirtHostPending(0)
+                .verifyProxyUpdateLastSeenPending(0);
+    }
+
+    @Test
+    public void testWithHubUpdateLastSeen() throws Exception {
+        // Cleanup all systems which might exist from previous tests
+        ServerFactory.list().forEach(ServerFactory::delete);
+        synchronized (this) {
+            systemSize = 5;
+        }
+        setupTest();
+        setupAsPeripheral();
+        setupAsHub();
+        setupEndpoint();
+
+        testVerifier.assertPreConditions();
+
+        Optional<SCCCredentials> optCred = testForwardRegistrationTask.setupTaskGetSccCredentials();
+        if (optCred.isEmpty()) {
+            throw new IllegalStateException("optCred should have a value");
+        }
+
+        assertEquals(systemSize, testSystems.size());
+        assertEquals(systemSize, servers.size());
+
+        //create systems
+        testHttpClientAdapter.setSimulateProxy();
+        testForwardRegistrationTask.executeSCCTasksAsServer(testSCCSystemRegistrationManager, optCred.get());
+        testHttpClientAdapter.setSimulateScc();
+        testForwardRegistrationTask.executeSCCTasksAsProxy(testSCCSystemRegistrationManager, optCred.get());
+
+        // verify on the Hub:
+        // - systemSize proxy systems registered against SCC
+        testVerifier
+                .verifyProxyCreationPending(0)
+                .verifyProxyCreated(systemSize)
+                .verifyProxyRemovalPending(0)
+                .verifyProxyVirtHostPending(0)
+                .verifyProxyUpdateLastSeenPending(0);
+
+        //simulate receiving updateLastSeen data
+        MockForwardRegistrationTask.enableUpdateLastSeenUpdate(true);
+        testHttpClientAdapter.setSimulateProxy();
+        testForwardRegistrationTask.executeSCCTasksAsServer(testSCCSystemRegistrationManager, optCred.get());
+
+        testVerifier
+                .verifyProxyCreationPending(0)
+                .verifyProxyCreated(systemSize)
+                .verifyProxyRemovalPending(0)
+                .verifyProxyVirtHostPending(0)
+                .verifyProxyUpdateLastSeenPending(systemSize);
+
+        List<SCCProxyRecord> proxyRecords = testSccProxyFactory.listUpdateLastSeenItems();
+        assertEquals(systemSize, proxyRecords.size());
+        for (SCCProxyRecord proxyRecord : proxyRecords) {
+            assertTrue(proxyRecord.getProxyId() > 0);
+            assertEquals(SccProxyStatus.SCC_CREATED, proxyRecord.getStatus());
+            assertTrue(proxyRecord.getOptSccId().isPresent());
+            assertNull(proxyRecord.getSccRegistrationErrorTime());
+
+            assertNotNull(proxyRecord.getLastSeenAt());
+        }
+
+        //simulate forwarding updateLastSeen data to the SCC
+        testHttpClientAdapter.setSimulateScc();
+        testForwardRegistrationTask.executeSCCTasksAsProxy(testSCCSystemRegistrationManager, optCred.get());
+
+        testVerifier
+                .verifyProxyCreationPending(0)
+                .verifyProxyCreated(systemSize)
+                .verifyProxyRemovalPending(0)
+                .verifyProxyVirtHostPending(0)
+                .verifyProxyUpdateLastSeenPending(0);
+
+        assertEquals(0, testSccProxyFactory.listUpdateLastSeenItems().size());
+        List<SCCProxyRecord> proxyRecordsAfterUpdateLastSeen =
+                testSccProxyFactory.lookupByStatusAndRetry(SccProxyStatus.SCC_CREATED);
+        for (SCCProxyRecord proxyRecord : proxyRecordsAfterUpdateLastSeen) {
+            assertNull(proxyRecord.getLastSeenAt());
+        }
     }
 }

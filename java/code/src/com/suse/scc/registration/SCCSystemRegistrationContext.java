@@ -19,7 +19,7 @@ import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 
 import com.suse.scc.client.SCCClient;
-import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCRegisterSystemItem;
 import com.suse.scc.model.SCCSystemCredentialsJson;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class SCCSystemRegistrationContext {
     private final SCCCredentials primaryCredential;
 
     private final Map<String, SCCRegCacheItem> itemsByLogin;
-    private final Map<String, SCCRegisterSystemJson> pendingRegistrationSystemsByLogin;
+    private final Map<String, SCCRegisterSystemItem> pendingRegistrationSystemsByLogin;
 
     private final List<SCCRegCacheItem> paygSystems;
 
@@ -77,7 +77,7 @@ public class SCCSystemRegistrationContext {
         return itemsByLogin;
     }
 
-    public Map<String, SCCRegisterSystemJson> getPendingRegistrationSystemsByLogin() {
+    public Map<String, SCCRegisterSystemItem> getPendingRegistrationSystemsByLogin() {
         return pendingRegistrationSystemsByLogin;
     }
 
