@@ -63,8 +63,9 @@
                     <div class="spacewalk-section-toolbar">
                         <div class="action-button-wrapper">
                             <button type="submit" class="btn btn-primary"
-                                name="schedule_remote_command"
-                                value="<bean:message key='ssm.operations.provisioning.remotecommand.form.submit'/>">
+                                name="schedule_remote_command">
+                                    <bean:message key='ssm.operations.provisioning.remotecommand.form.submit'/>
+                            </button>
                         </div>
                     </div>
                     <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>

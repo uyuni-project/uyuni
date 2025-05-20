@@ -55,9 +55,13 @@
      <input type="button" class="btn btn-default"
                 value="${rhn:localize('org.trust.cancel')}"
                 onClick="location.href='${parentUrl}'" />
-     <button type="submit" name ="deny" value="${rhn:localize('button.denyaccess.confirm')}" class="btn btn-danger" />
-     <button type="submit" name ="grant" value="${rhn:localize('button.grantaccess.confirm')}" class="btn btn-primary" />
-   </div>
+     <button type="submit" name ="deny" class="btn btn-danger">
+         ${rhn:localize('button.denyaccess.confirm')}
+     </button>
+     <button type="submit" name ="grant" class="btn btn-primary">
+         ${rhn:localize('button.grantaccess.confirm')}
+     </button>
+     </div>
 
    <!-- need to pass along the form -->
    <rhn:hidden name="name" value="${name}" />

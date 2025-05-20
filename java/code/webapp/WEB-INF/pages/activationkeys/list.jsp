@@ -110,8 +110,9 @@
         <rhn:submitted/>
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <button type="submit" name ="dispatch" class="btn btn-default"
-                        value="${rhn:localize('kickstart.activationkeys.jsp.submit')}"/>
+                <button type="submit" name ="dispatch" class="btn btn-default">
+                    ${rhn:localize('kickstart.activationkeys.jsp.submit')}
+                </button>
             </div>
         </div>
     </c:if>

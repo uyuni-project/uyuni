@@ -30,8 +30,9 @@
             <button type="submit" name="delete" class="btn"
                value='<bean:message key="sdc.details.activation.deletekey"/>'/>
           </c:if>
-          <button type="submit" name="generate" class="btn btn-default"
-             value='<bean:message key="sdc.details.activation.generatekey"/>'/>
+          <button type="submit" name="generate" class="btn btn-default">
+            <bean:message key="sdc.details.activation.generatekey"/>
+          </button>
         </div>
     </html:form>
 

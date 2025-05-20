@@ -147,8 +147,9 @@
     </div>
     <div class="form-group">
         <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
-            <button type="submit" class="btn btn-primary"
-                   value="<bean:message key='kickstart.systemdetails.edit.submit.jsp.label'/>" />
+            <button type="submit" class="btn btn-primary">
+                <bean:message key='kickstart.systemdetails.edit.submit.jsp.label'/>
+            </button>
         </div>
     </div>
 </html:form>

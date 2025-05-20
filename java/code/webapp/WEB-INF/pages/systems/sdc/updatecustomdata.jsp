@@ -56,7 +56,9 @@
     <div class="text-right">
       <hr />
 
-      <button type="submit" class="btn btn-primary" name="UpdateKey" value="Update Key" />
+      <button type="submit" class="btn btn-primary" name="UpdateKey">
+        ${rhn:localize('system.jsp.customkey.updatebutton')}
+      </button>
 
       <rhn:submitted/>
     </div>

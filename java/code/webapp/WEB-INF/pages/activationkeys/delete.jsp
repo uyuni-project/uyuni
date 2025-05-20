@@ -39,7 +39,9 @@
                     <rhn:hidden name="tid" value="${param.tid}"/>
                     <rhn:csrf />
                     <button type="submit" name="dispatch" class="btn btn-danger"
-                           value="${rhn:localize('activation-key.jsp.delete-key')}" align="top" />
+                        align="top" >
+                           ${rhn:localize('activation-key.jsp.delete-key')}
+                    </button>
                     <rhn:submitted/>
                 </div>
             </div>

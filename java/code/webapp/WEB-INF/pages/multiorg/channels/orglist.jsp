@@ -57,8 +57,9 @@
 <div class="text-right">
    <rhn:submitted/>
     <button type="submit" class="btn btn-primary"
-                name ="dispatch"
-        value="${rhn:localize('orgchannel.jsp.submit')}"/>
+                name ="dispatch">
+        ${rhn:localize('orgchannel.jsp.submit')}
+    </button>
 </div>
 </c:if>
 </rl:listset>

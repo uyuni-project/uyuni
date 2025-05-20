@@ -23,8 +23,9 @@
 
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <button type="submit" name="confirm" class="btn btn-danger"
-                       value="<bean:message key='channel.jsp.package.confirmbutton'/>"/>
+                <button type="submit" name="confirm" class="btn btn-danger">
+                    <bean:message key='channel.jsp.package.confirmbutton'/>
+                </button>
             </div>
         </div>
 

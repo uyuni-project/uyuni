@@ -24,8 +24,9 @@
         <div class="action-button-wrapper">
              <button type="submit"
                name="dispatch"
-               class="btn btn-danger"
-               value='<bean:message key="actions.jsp.confirmcancelactions"/>'/>
+               class="btn btn-danger">
+                        <bean:message key="actions.jsp.confirmcancelactions"/>
+               </button>
          </div>
      </div>
                 <rl:list emptykey="pendingactions.jsp.nogroups" styleclass="list">

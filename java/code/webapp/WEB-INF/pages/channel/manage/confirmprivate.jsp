@@ -55,7 +55,9 @@
      <input type="button" class="btn btn-default"
                 value="${rhn:localize('org.trust.cancel')}"
                 onClick="location.href='${parentUrl}'" />
-     <button type="submit" name ="dispatch" value="${rhn:localize('confirm')}" class="btn btn-primary" />
+     <button type="submit" name ="dispatch" class="btn btn-primary">
+         ${rhn:localize('confirm')}
+     </button>
    </div>
 
    <!-- need to pass along the form -->

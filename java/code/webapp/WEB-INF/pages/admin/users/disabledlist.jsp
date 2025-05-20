@@ -59,7 +59,9 @@
         </rl:list>
         <div class="row">
                 <div class="col-6 col-xs-6 text-left">
-                        <button type="submit" class="btn btn-default" name="dispatch" value="<bean:message key='disabledlist.jsp.reactivate'/>" />
+                        <button type="submit" class="btn btn-default" name="dispatch">
+                                <bean:message key='disabledlist.jsp.reactivate'/>
+                        </button>
                 </div>
                 <div class="col-6 col-xs-6 text-right">
                         <rl:csv dataset="pageList"
