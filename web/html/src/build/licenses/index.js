@@ -2,7 +2,7 @@ const fs = require("fs").promises;
 const path = require("path");
 
 const { getDependencyMap } = require("./package");
-const { fileExists, getFileHash } = require("./fs");
+const { isValidLicenseFile, getFileHash } = require("./fs");
 const { fileTemplate, itemTemplate } = require("./template");
 
 const dirname = path.dirname(__filename);
@@ -14,8 +14,8 @@ const licenseListFile = path.resolve(vendors, "npm.licenses.structured.js");
 const hashFile = path.resolve(vendors, "npm.licenses.hash.txt");
 
 async function aggregateLicenses() {
-  const licenseTextExists = await fileExists(licenseTextFile);
-  const licenseListExists = await fileExists(licenseListFile);
+  const licenseTextExists = await isValidLicenseFile(licenseTextFile);
+  const licenseListExists = await isValidLicenseFile(licenseListFile);
   let previousHash;
   try {
     previousHash = await fs.readFile(hashFile, "utf8");
