@@ -20,10 +20,10 @@
     <rhn:csrf />
     <rhn:submitted />
     <div class="text-right">
-        <input type="submit" class="btn btn-default"
-            name="dispatch"
-            value="${rhn:localize('copy2systems.jsp.doCopy')}"
-            />
+        <button type="submit" class="btn btn-default" name="dispatch"
+            value="${rhn:localize('copy2systems.jsp.doCopy')}">
+            ${rhn:localize('copy2systems.jsp.doCopy')}
+        </button>
     </div>
         <!-- Start of Systems list -->
         <rl:list dataset="pageList"

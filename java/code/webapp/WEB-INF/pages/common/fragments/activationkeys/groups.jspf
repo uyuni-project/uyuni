@@ -31,7 +31,9 @@
             <div class="action-button-wrapper">
                 <rhn:submitted/>
                 <button type="submit" name="dispatch" class="btn btn-default"
-                        value='<bean:message key="${param.action_key}"/>'/>
+                        value='<bean:message key="${param.action_key}"/>'>
+                        <bean:message key="${param.action_key}"/>
+                </button>
             </div>
         </div>
         <rl:list dataset="pageList"

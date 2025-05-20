@@ -27,7 +27,9 @@
     <div class="spacewalk-section-toolbar">
         <div class="action-button-wrapper">
             <button type="submit" class="btn btn-danger" name="dispatch"
-                value='<bean:message key="confirm"/>' />
+              value='<bean:message key="confirm"/>'>
+              <bean:message key="confirm"/>
+            </button>
         </div>
     </div>
   </c:if>

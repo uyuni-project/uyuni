@@ -58,10 +58,10 @@
            <rhn:submitted/>
            <hr/>
 
-           <button type="submit"
-                  class="btn btn-default"
-                  name="dispatch"
-                  value='<bean:message key="sdc.configlist.jsp.unsubscribe"/>'/>
+           <button type="submit" class="btn btn-default" name="dispatch"
+                value='<bean:message key="sdc.configlist.jsp.unsubscribe"/>'>
+                <bean:message key="sdc.configlist.jsp.unsubscribe"/>
+           </button>
         </div>
         </c:if>
         </c:when>

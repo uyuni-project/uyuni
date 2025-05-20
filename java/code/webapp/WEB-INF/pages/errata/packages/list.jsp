@@ -33,7 +33,9 @@
             <div class="action-button-wrapper">
                 <c:if test="${not empty packages}">
                     <button type="submit" class="btn btn-danger" name="dispatch"
-                           value='<bean:message key="errata.edit.packages.list.removepackages"/>'/>
+                        value='<bean:message key="errata.edit.packages.list.removepackages"/>'>
+                        <bean:message key="errata.edit.packages.list.removepackages"/>
+                    </button>
                 </c:if>
             </div>
         </div>

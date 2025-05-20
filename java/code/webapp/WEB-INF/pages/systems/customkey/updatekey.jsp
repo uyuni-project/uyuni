@@ -58,7 +58,9 @@
                 <div class="form-group">
                     <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                         <button type="submit" name="dispatch" class="btn btn-primary"
-                               value="${rhn:localize('system.jsp.customkey.updatebutton')}" />
+                            value="${rhn:localize('system.jsp.customkey.updatebutton')}">
+                            ${rhn:localize('system.jsp.customkey.updatebutton')}
+                        </button>
                         <rhn:hidden name="cikid" value="${param.cikid}" />
                     </div>
                 </div>

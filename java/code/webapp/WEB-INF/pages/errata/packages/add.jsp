@@ -44,8 +44,9 @@
                             </c:forEach>
                         </select>
                         <span class="input-group-btn">
-                            <input class="btn btn-default" type="submit" name="view_clicked" value="View Packages"/>
-                        </span>
+                            <button class="btn btn-default" type="submit" name="view_clicked">
+                                <bean:message key="channel.jsp.package.viewpackages"/>:
+                            </button>
                     </div>
                 </div>
             </div>

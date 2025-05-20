@@ -22,8 +22,9 @@
             <div class="form-group">
                 <div class="col-sm-6 text-right">
                     <rhn:submitted/>
-                    <input class="btn btn-primary" type="submit"
-                           name ="dispatch" value='<bean:message key="activation-key.jsp.edit-key"/>'/>
+                    <button class="btn btn-primary" type="submit" name ="dispatch">
+                        <bean:message key="activation-key.jsp.edit-key"/>
+                    </button>
                 </div>
             </div>
             <html:hidden property="submitted" value="true" />

@@ -48,10 +48,10 @@
     <div class="text-right">
         <rhn:submitted/>
         <hr/>
-        <button type="submit"
-               class="btn btn-primary"
-               name="dispatch"
-               value='<bean:message key="installpkgs.jsp.installpackages"/>'/>
+        <button type="submit" class="btn btn-primary" name="dispatch"
+            value='<bean:message key="installpkgs.jsp.installpackages"/>'>
+            <bean:message key="installpkgs.jsp.installpackages"/>
+        </button>
     </div>
 
 </rl:listset>

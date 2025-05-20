@@ -65,10 +65,10 @@
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
                 <rhn:submitted/>
-                <input type="submit"
-                    name="dispatch"
-                    class="btn btn-default"
-                    value='<bean:message key="cloneerrata.jsp.cloneerrata"/>'/>
+                <button type="submit" name="dispatch" class="btn btn-default"
+                    value='<bean:message key="cloneerrata.jsp.cloneerrata"/>'>
+                    <bean:message key="cloneerrata.jsp.cloneerrata"/>
+                </button>
             </div>
         </div>
         <rl:list emptykey="cloneerrata.jsp.noerrata">

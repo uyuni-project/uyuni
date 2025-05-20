@@ -179,8 +179,9 @@
                         <rhn:csrf/>
                         <rhn:submitted/>
                         <button type="submit" name="dispatch" class="btn btn-danger" id="delete-action-chain"
-                            value='<bean:message key="actionchain.jsp.delete"/>'
-                        />
+                            value='<bean:message key="actionchain.jsp.delete"/>'>
+                            <bean:message key="actionchain.jsp.delete"/>
+                        </button>
                     </form>
                 </div>
             </div>
