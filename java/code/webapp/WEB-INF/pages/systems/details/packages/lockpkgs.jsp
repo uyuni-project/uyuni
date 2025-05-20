@@ -84,7 +84,7 @@
                     <rhn:submitted />
                     <button type="submit" class="btn btn-default" name="dispatch">
                         <bean:message key="pkg.lock.requestlock"/>
-                    <button>    
+                    </button>  
                     <button type="submit" class="btn btn-default" name="dispatch">
                         <bean:message key="pkg.lock.requestunlock"/>
                     </button>
