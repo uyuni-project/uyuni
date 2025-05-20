@@ -7,6 +7,7 @@ export * from "./Label";
 export * from "./password/Password";
 export * from "./radio/Radio";
 export * from "./range/Range";
-export * from "./select/Select";
+export * from "./select/DEPRECATED_Select";
 export * from "./text/Text";
 export * from "./text-area/TextArea";
+export * from "./select/Select";

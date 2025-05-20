@@ -1,114 +1,73 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
+import _isEqual from "lodash/isEqual";
 import ReactSelect from "react-select";
 import AsyncSelect from "react-select/async";
 import { AsyncPaginate as AsyncPaginateSelect } from "react-select-async-paginate";
 
-import { FormContext } from "../form/Form";
-import { InputBase, InputBaseProps } from "../InputBase";
-import withTestAttributes from "./select-test-attributes";
+import { OptionType, SelectProps } from "./types";
+import withCustomComponents from "./withCustomComponents";
 
-type SingleMode = InputBaseProps<string> & {
-  /** Set to true to allow multiple selected values */
-  isMulti?: false;
+const loadingMessage = () => t("Loading...");
+const noOptionsMessage = () => t("No options");
 
-  /** Resolves option data to a string to compare options and specify value attributes */
-  getOptionValue: (option: any) => string;
-};
-
-type MultiMode = InputBaseProps<string | string[]> & {
-  /** Set to true to allow multiple selected values */
-  isMulti: true;
-
-  /** Resolves option data to a string to compare options and specify value attributes */
-  getOptionValue: (option: any) => string | string[];
-};
-
-type CommonSelectProps = (SingleMode | MultiMode) & {
-  /** Resolves option data to a string to be displayed as the label by components */
-  getOptionLabel: (option: any) => string;
-
-  /** Formats option labels in the menu and control as React components */
-  formatOptionLabel?: (option: any, meta: any) => React.ReactNode;
-
-  /** Placeholder for the select value */
-  placeholder?: React.ReactNode;
-
-  /** whether the component's data is loading or not (async) */
-  isLoading?: boolean;
-
-  /** text to display when there are no options to list */
-  emptyText: string | null;
-
-  /** Set to true to allow removing the selected value */
-  isClearable: boolean;
-
-  /** Value placeholder to display when no value is entered */
-  inputClass?: string;
-
-  /** name of the field to map in the form model */
-  name?: string;
-
-  /** Id for testing purposes */
-  "data-testid"?: string;
-};
-
-type SelectProps = CommonSelectProps & {
-  /** Select options */
-  options: Array<Object | string>;
-};
-
-type AsyncSelectProps = Omit<CommonSelectProps, "value" | "defaultValue"> & {
-  // 'value' and 'defaultValue' are not currently supported with the async Select
-  // because string => Object value conversion is not possible with dynamic options
-
-  /** Default value object if no value is set. This has to be an object corresponding to the rest of the schema. */
-  defaultValueOption?: Object;
-
-  paginate?: boolean;
-
-  /**
-   * Function that returns a promise, which is the set of options to be used once the promise resolves.
-   */
-  loadOptions: (searchString: string, callback: (options: Array<Object>) => undefined) => Promise<any> | undefined;
-  cacheOptions?: boolean;
-};
-type AsyncPaginateSelectProps = Omit<CommonSelectProps, "value" | "defaultValue"> & {
-  /** Default value object if no value is set. This has to be an object corresponding to the rest of the schema. */
-  defaultValueOption?: Object;
-
-  paginate: true;
-  /**
-   * Function that returns a promise with pagination data and a set of options matching the search string
-   * See: https://github.com/vtaits/react-select-async-paginate/tree/master/packages/react-select-async-paginate#loadoptions
-   */
-  loadOptions: (
-    searchString: string,
-    previouslyLoaded: any[],
-    additional?: any
-  ) => Promise<{ options: any[]; hasMore: boolean; additional?: any }>;
-};
-
-type Props = SelectProps | AsyncSelectProps | AsyncPaginateSelectProps;
-
-export function Select(props: Props) {
-  const {
-    inputClass,
-    getOptionLabel,
-    getOptionValue,
-    formatOptionLabel,
-    placeholder,
-    isLoading,
-    emptyText,
-    isClearable,
-    ...propsToPass
-  } = props;
-
-  const formContext = React.useContext(FormContext);
-  const isAsync = (props: Props): props is AsyncSelectProps | AsyncPaginateSelectProps => {
-    return (props as AsyncSelectProps).loadOptions !== undefined;
+export function Select<O extends OptionType, V>(props: SelectProps<O, V>) {
+  const getOptionValue = (option) => {
+    // Filter out null values so consumers don't have to worry about this edge case
+    if (option == null) {
+      // This cast is safe because it can only ever happen when `isClearable` is true and `undefined` is an expected value
+      return undefined as V;
+    }
+    if (props.getOptionValue) {
+      return props.getOptionValue(option);
+    }
+    return option?.value as V;
   };
+
+  const getOptionLabel = (option: O) => {
+    if (option == null) {
+      return undefined;
+    }
+    if (props.getOptionLabel) {
+      return props.getOptionLabel(option);
+    }
+    return option?.label;
+  };
+
+  // Make the component controlled. We actually only need this for the async cases, but it's simpler to keep it shared.
+  const [value, setValue] = useState(() => {
+    // For async, use the default preselected value if available
+    if ("defaultValueOption" in props && props.defaultValueOption) {
+      if (props.value !== getOptionValue(props.defaultValueOption)) {
+        throw new RangeError("Select props `value` and `defaultValueOption` don't match");
+      }
+
+      return props.defaultValueOption;
+    }
+
+    if (props.isMulti) {
+      return props.options?.filter((item) => (props.value as V[])?.includes(getOptionValue(item)));
+    }
+    // Otherwise find the right option from the given list
+    return props.options?.find((item) => getOptionValue(item) === props.value) ?? undefined;
+  });
+
+  useEffect(() => {
+    if (props.isMulti) {
+      const newValue = props.options?.filter((item) => (props.value as V[])?.includes(getOptionValue(item))) ?? [];
+
+      if (!_isEqual(value, newValue)) {
+        setValue(newValue);
+      }
+    } else {
+      const newValue = props.options?.find((item) => getOptionValue(item) === props.value) ?? undefined;
+
+      if (!_isEqual(value, newValue)) {
+        setValue(newValue);
+      }
+    }
+  }, [props.value, props.options]);
 
   const bootstrapStyles = {
     control: (styles: {}) => ({
@@ -138,131 +97,72 @@ export function Select(props: Props) {
     }),
   };
 
-  let defaultValueOption;
-  if (isAsync(props)) {
-    defaultValueOption = props.defaultValueOption;
-  }
-  useEffect(() => {
-    // Since defaultValueOption is not bound to the model, ensure sanity, but only if there is a model binding to begin with
-    if (!props.name) {
-      return;
-    }
-    const value = (formContext.model || {})[props.name || ""];
-    if (
-      props.name &&
-      isAsync(props) &&
-      typeof defaultValueOption !== "undefined" &&
-      getOptionValue(defaultValueOption) !== value
-    ) {
-      Loggerhead.error(
-        `Mismatched defaultValueOption for async select for form field "${props.name}": expected ${getOptionValue(
-          defaultValueOption
-        )}, got ${value}`
+  // Common props to pass to both 'react-select' and 'react-select/async'
+  const commonProps = Object.assign(
+    {
+      className: `form-control--react-select ${props.className ?? ""}`,
+      name: props.name,
+      inputId: props.name,
+      isDisabled: props.disabled,
+      onBlur: props.onBlur,
+      onChange: (newValue) => {
+        if (props.isMulti) {
+          setValue(newValue != null ? newValue : []);
+          props.onChange?.(newValue?.map((item) => getOptionValue(item)));
+        } else {
+          setValue(newValue != null ? newValue : undefined);
+          props.onChange?.(getOptionValue(newValue));
+        }
+      },
+      clearValue: () => undefined,
+      formatOptionLabel: props.formatOptionLabel,
+      placeholder: props.placeholder,
+      isLoading: props.isLoading,
+      loadingMessage,
+      noOptionsMessage,
+      isClearable: props.isClearable,
+      styles: bootstrapStyles,
+      isMulti: props.isMulti,
+      menuPortalTarget: document.getElementById("menu-portal-target"),
+      getOptionLabel,
+      getOptionValue,
+    },
+    withCustomComponents(props["data-testid"], props.name)
+  );
+
+  if ("loadOptions" in props) {
+    if (props.paginate) {
+      return (
+        <AsyncPaginateSelect
+          loadOptions={props.loadOptions}
+          defaultOptions
+          value={value}
+          defaultValue={value}
+          aria-label={props.label}
+          shouldLoadMore={(scrollHeight, clientHeight, scrollTop) => {
+            // Load more items before we hit the complete bottom of the dropdown
+            const threshold = 200; //px
+            return scrollHeight - clientHeight - scrollTop < threshold;
+          }}
+          {...commonProps}
+        />
       );
     }
-  }, []);
 
-  // TODO: This `any` should be inferred based on the props instead, currently the props expose the right interfaces but we don't have strict checks here
+    return (
+      <AsyncSelect
+        loadOptions={props.loadOptions}
+        cacheOptions={props.cacheOptions}
+        defaultOptions
+        value={value}
+        defaultValue={value}
+        aria-label={props.label}
+        {...commonProps}
+      />
+    );
+  }
+
   return (
-    <InputBase<any> {...propsToPass}>
-      {({ setValue, onBlur }) => {
-        const onChange = (newValue) => {
-          const value = Array.isArray(newValue)
-            ? newValue.map((item) => getOptionValue(item))
-            : getOptionValue(newValue);
-          setValue(props.name, value);
-        };
-        const value = (formContext.model || {})[props.name || ""];
-
-        // Common props to pass to both 'react-select' and 'react-select/async'
-        const commonProps = Object.assign(
-          {
-            className: `form-control--react-select ${inputClass ?? ""}`,
-            name: props.name,
-            inputId: props.name,
-            isDisabled: props.disabled,
-            onBlur: onBlur,
-            onChange: onChange,
-            getOptionLabel: (option) => (option != null ? getOptionLabel(option) : ""),
-            getOptionValue: (option) => (option != null ? getOptionValue(option) : ""),
-            formatOptionLabel: formatOptionLabel,
-            placeholder: placeholder,
-            isLoading: isLoading,
-            noOptionsMessage: () => emptyText,
-            isClearable: isClearable,
-            styles: bootstrapStyles,
-            isMulti: props.isMulti,
-            menuPortalTarget: document.getElementById("menu-portal-target"),
-          },
-          withTestAttributes(props["data-testid"], props.name)
-        );
-
-        if (isAsync(props)) {
-          if (props.paginate) {
-            return (
-              <AsyncPaginateSelect
-                loadOptions={props.loadOptions}
-                defaultOptions
-                aria-label={props.title}
-                defaultValue={defaultValueOption}
-                shouldLoadMore={(scrollHeight, clientHeight, scrollTop) => {
-                  // Load more items before we hit the complete bottom of the dropdown
-                  const threshold = 200; //px
-                  return scrollHeight - clientHeight - scrollTop < threshold;
-                }}
-                {...commonProps}
-              />
-            );
-          }
-          return (
-            <AsyncSelect
-              loadOptions={props.loadOptions}
-              cacheOptions={props.cacheOptions}
-              defaultOptions
-              aria-label={props.title}
-              defaultValue={defaultValueOption}
-              {...commonProps}
-            />
-          );
-        } else {
-          const convertedOptions = (props.options || []).map((item) =>
-            typeof item === "string" ? { label: item, value: item } : item
-          );
-          const defaultValue = convertedOptions.find((item) => getOptionValue(item) === props.defaultValue);
-          const optionFinder = (needle) => convertedOptions.find((option) => getOptionValue(option) === needle);
-          const valueOption = Array.isArray(value) ? value.map((item) => optionFinder(item)) : optionFinder(value);
-
-          return (
-            <ReactSelect
-              options={convertedOptions}
-              value={valueOption ?? defaultValue ?? null}
-              defaultValue={defaultValue}
-              aria-label={props.title}
-              {...commonProps}
-            />
-          );
-        }
-      }}
-    </InputBase>
+    <ReactSelect options={props.options} value={value} defaultValue={value} aria-label={props.label} {...commonProps} />
   );
 }
-
-Select.defaultProps = {
-  isClearable: false,
-  getOptionValue: (option) => (option instanceof Object ? option.value : option),
-  getOptionLabel: (option) => (option instanceof Object ? option.label : option),
-  isLoading: false,
-  emptyText: t("No options"),
-  inputClass: undefined,
-  defaultValue: undefined,
-  label: undefined,
-  hint: undefined,
-  labelClass: undefined,
-  divClass: undefined,
-  required: false,
-  disabled: false,
-  invalidHint: undefined,
-  onChange: undefined,
-  isMulti: false,
-  cacheOptions: false,
-};

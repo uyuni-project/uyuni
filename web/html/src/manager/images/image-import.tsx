@@ -3,7 +3,7 @@ import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { Button, SubmitButton } from "components/buttons";
-import { Select } from "components/input";
+import { DEPRECATED_Select } from "components/input";
 import { Form } from "components/input/form/Form";
 import { Text } from "components/input/text/Text";
 import { Messages } from "components/messages/messages";
@@ -226,7 +226,7 @@ class ImageImport extends React.Component {
       ));
 
     return (
-      <Select
+      <DEPRECATED_Select
         name="activationKey"
         label={t("Activation Key")}
         hint={hint}
@@ -251,7 +251,7 @@ class ImageImport extends React.Component {
           onSubmit={this.onImport}
           onValidate={this.onValidate}
         >
-          <Select
+          <DEPRECATED_Select
             name="storeId"
             label={t("Image Store")}
             required
@@ -285,7 +285,7 @@ class ImageImport extends React.Component {
             divClass="col-md-6"
           />
 
-          <Select
+          <DEPRECATED_Select
             name="buildHostId"
             required
             label={t("Build Host")}

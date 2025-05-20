@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { isUyuni } from "core/user-preferences";
 
 import { AsyncButton, SubmitButton } from "components/buttons";
-import { Select } from "components/input";
+import { DEPRECATED_Select } from "components/input";
 import { Form } from "components/input/form/Form";
 import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput";
 import { unflattenModel } from "components/input/form-utils";
@@ -193,7 +193,7 @@ export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage 
           title={t("Convert Minion to Proxy")}
           errors={errors}
         >
-          <Select
+          <DEPRECATED_Select
             name="parentFQDN"
             label={t("Parent FQDN")}
             hint={t("The FQDN of the parent (server or proxy) to connect to.")}
@@ -364,7 +364,7 @@ export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage 
                     labelClass="col-md-3"
                     divClass="col-md-6"
                   />
-                  <Select
+                  <DEPRECATED_Select
                     name="registryBaseTag"
                     label={t("Containers Tag")}
                     required
@@ -391,7 +391,7 @@ export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage 
                     labelClass="col-md-3"
                     divClass="col-md-6"
                   />
-                  <Select
+                  <DEPRECATED_Select
                     name="registryHttpdTag"
                     label={t("HTTPD Tag")}
                     required
@@ -415,7 +415,7 @@ export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage 
                     labelClass="col-md-3"
                     divClass="col-md-6"
                   />
-                  <Select
+                  <DEPRECATED_Select
                     name="registrySaltbrokerTag"
                     label={t("Salt Broker Tag")}
                     required
@@ -439,7 +439,7 @@ export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage 
                     labelClass="col-md-3"
                     divClass="col-md-6"
                   />
-                  <Select
+                  <DEPRECATED_Select
                     name="registrySquidTag"
                     label={t("Squid Tag")}
                     required
@@ -463,7 +463,7 @@ export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage 
                     labelClass="col-md-3"
                     divClass="col-md-6"
                   />
-                  <Select
+                  <DEPRECATED_Select
                     name="registrySshTag"
                     label={t("SSH Tag")}
                     required
@@ -487,7 +487,7 @@ export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage 
                     labelClass="col-md-3"
                     divClass="col-md-6"
                   />
-                  <Select
+                  <DEPRECATED_Select
                     name="registryTftpdTag"
                     label={t("TFTPD Tag")}
                     required

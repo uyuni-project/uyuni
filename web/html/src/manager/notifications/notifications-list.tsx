@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { AsyncButton, LinkButton } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
-import { Form, Select } from "components/input";
+import { DEPRECATED_Select, Form } from "components/input";
 import { Messages as MessageContainer, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
@@ -154,7 +154,7 @@ export class NotificationList extends React.Component<Props, State> {
       <div key="typeFilter" className="multiple-select-wrapper table-input-search">
         {/* TODO: Remove this <Form> wrapper once https://github.com/SUSE/spacewalk/issues/14250 is implemented */}
         <Form>
-          <Select
+          <DEPRECATED_Select
             name="type-criteria"
             placeholder={t("Filter by type")}
             options={this.props.notificationTypes}

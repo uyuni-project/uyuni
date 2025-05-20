@@ -3,7 +3,7 @@ import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { Button, SubmitButton } from "components/buttons";
-import { Select } from "components/input";
+import { DEPRECATED_Select } from "components/input";
 import { Check } from "components/input/check/Check";
 import { Form } from "components/input/form/Form";
 import { Password } from "components/input/password/Password";
@@ -245,7 +245,7 @@ class CreateImageStore extends React.Component<Props, State> {
           onSubmit={(e) => (this.isEdit() ? this.onUpdate(e) : this.onCreate(e))}
           onValidate={this.onValidate}
         >
-          <Select
+          <DEPRECATED_Select
             labelClass="col-md-3"
             divClass="col-md-6"
             label={t("Store Type")}

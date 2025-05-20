@@ -1,100 +1,345 @@
 import * as React from "react";
+import { useState } from "react";
 
-import { clearFirst, getFieldValuesByName, openMenu, render, screen, select, type } from "utils/test-utils";
+import { SubmitButton } from "components/buttons";
+import { Field, Form } from "components/formik";
 
-import { Form } from "../form/Form";
+import { click, render, screen, timeout } from "utils/test-utils";
+
 import { Select } from "./Select";
 
 describe("Select", () => {
-  // Use these to test model changes in tests
-  let model: object;
-  let onChange: (model: any) => void;
-
-  beforeEach(() => {
-    model = {};
-    onChange = () => {};
-  });
-
-  function renderWithForm(content: React.ReactNode) {
-    return render(
-      <Form model={model} onChange={onChange} title="test form">
-        {React.Children.toArray(content)}
-      </Form>
-    );
-  }
-
-  test("renders with minimal props", () => {
+  test("renders with minimal props", async () => {
     expect(() => {
-      renderWithForm(<Select name="level" label="Level" options={["beginner", "normal", "expert"]} />);
+      render(
+        <Select
+          label="Level"
+          options={[
+            { value: "beginner", label: "Beginner label" },
+            { value: "normal", label: "Normal label" },
+            { value: "expert", label: "Expert label" },
+          ]}
+        />
+      );
     }).not.toThrow();
-    openMenu(screen.getByLabelText("Level"));
-    expect(screen.getByText("beginner")).toBeDefined();
+
+    await click(screen.getByLabelText("Level"));
+    expect(screen.getByText("Expert label")).toBeDefined();
   });
 
-  test("renders with labelled options", async () => {
-    renderWithForm(
-      <Select
-        name="level"
-        label="Level"
-        options={[
-          { value: "beginner", label: "Beginner" },
-          { value: "normal", label: "Normal" },
-          { value: "expert", label: "Expert" },
-        ]}
-      />
-    );
-    await select(screen.getByLabelText("Level"), "Expert");
-    expect(getFieldValuesByName("test form", "level")).toStrictEqual(["expert"]);
-    openMenu(screen.getByLabelText("Level"));
-    expect(screen.getByText("Beginner")).toBeDefined();
+  test("initial value is kept", () => {
+    const Setup = () => {
+      const [value, setValue] = useState("expert");
+      return (
+        <Select
+          label="Level"
+          value={value}
+          onChange={(newValue) => setValue(newValue)}
+          options={[
+            { value: "beginner", label: "Beginner label" },
+            { value: "normal", label: "Normal label" },
+            { value: "expert", label: "Expert label" },
+          ]}
+        />
+      );
+    };
+    render(<Setup />);
+
+    expect(screen.getByText("Expert label")).toBeDefined();
   });
 
-  test("fancy multiple select test", async () => {
-    model = { flavor: ["vanilla", "strawberry"] };
-    renderWithForm(
-      <Select
-        name="flavor"
-        label="Flavor"
-        placeholder={t("Start typing...")}
-        emptyText={t("No flavor")}
-        options={[
-          { value: "chocolate", label: "Chocolate", color: "#7B3F00" },
-          { value: "strawberry", label: "Strawberry", color: "#DF0000" },
-          { value: "vanilla", label: "Vanilla", color: "#F3E5AB" },
-        ]}
-        isMulti
-        formatOptionLabel={(object) => <div style={{ color: object.color }}>{object.label}</div>}
-      />
-    );
-    expect(getFieldValuesByName("test form", "flavor")).toStrictEqual(["vanilla", "strawberry"]);
-    await clearFirst(screen.getByLabelText("Flavor"));
-    expect(getFieldValuesByName("test form", "flavor")).toStrictEqual(["strawberry"]);
-    await select(screen.getByLabelText("Flavor"), "Chocolate");
-    expect(screen.getByText("Chocolate").style.color).toEqual("rgb(123, 63, 0)");
-    expect(getFieldValuesByName("test form", "flavor")).toStrictEqual(["strawberry", "chocolate"]);
-    await clearFirst(screen.getByLabelText("Flavor"));
-    await clearFirst(screen.getByLabelText("Flavor"));
-    expect(getFieldValuesByName("test form", "flavor")).toStrictEqual([""]);
-    expect(screen.getByText("Start typing...")).toBeDefined();
-    await type(screen.getByLabelText("Flavor"), "Mint");
-    expect(screen.getByText("No flavor")).toBeDefined();
+  test("custom value field is used", async () => {
+    const onSetValue = jest.fn();
+
+    const Setup = () => {
+      const [value, _setValue] = useState<string | undefined>();
+      const setValue = (newValue: typeof value) => {
+        _setValue(newValue);
+        onSetValue(newValue);
+      };
+
+      return (
+        <Select
+          label="Level"
+          value={value}
+          onChange={(newValue) => setValue(newValue)}
+          options={[
+            { customValue: "beginner", label: "Beginner label" },
+            { customValue: "normal", label: "Normal label" },
+            { customValue: "expert", label: "Expert label" },
+          ]}
+          getOptionValue={(option) => option.customValue}
+          isClearable
+        />
+      );
+    };
+    render(<Setup />);
+
+    await click(screen.getByLabelText("Level"));
+    await click(screen.getByText("Expert label"));
+    expect(onSetValue).toBeCalledWith("expert");
   });
 
-  // Previously the value was set but it was not correctly reflected in the UI
-  test("default value is shown to the user", () => {
-    model = {};
-    renderWithForm(
-      <Select
-        name="foo"
-        options={[
-          { value: "value 1", label: "label 1" },
-          { value: "value 2", label: "label 2" },
-          { value: "value 3", label: "label 3" },
-        ]}
-        defaultValue="value 2"
-      />
-    );
-    expect(model).toStrictEqual({ foo: "value 2" });
-    expect(screen.getByText("label 2")).toBeDefined();
+  test("custom value field can be cleared", async () => {
+    const onSetValue = jest.fn();
+
+    const Setup = () => {
+      const [value, _setValue] = useState<string | undefined>("normal");
+      const setValue = (newValue: typeof value) => {
+        _setValue(newValue);
+        onSetValue(newValue);
+      };
+
+      return (
+        <Select
+          label="Level"
+          value={value}
+          onChange={(newValue) => setValue(newValue)}
+          options={[
+            { customValue: "beginner", label: "Beginner label" },
+            { customValue: "normal", label: "Normal label" },
+            { customValue: "expert", label: "Expert label" },
+          ]}
+          getOptionValue={(option) => option.customValue}
+          isClearable
+        />
+      );
+    };
+    render(<Setup />);
+
+    await click(screen.getByLabelText("Clear"));
+    expect(onSetValue).toBeCalledWith(undefined);
+  });
+
+  test("custom label field is used", async () => {
+    const Setup = () => {
+      return (
+        <Select
+          label="Level"
+          options={[
+            { value: "beginner", customLabel: "Beginner label" },
+            { value: "normal", customLabel: "Normal label" },
+            { value: "expert", customLabel: "Expert label" },
+          ]}
+          getOptionLabel={(option) => option.customLabel}
+        />
+      );
+    };
+    render(<Setup />);
+
+    await click(screen.getByLabelText("Level"));
+    expect(screen.getByText("Beginner label")).toBeDefined();
+    expect(screen.getByText("Normal label")).toBeDefined();
+    expect(screen.getByText("Expert label")).toBeDefined();
+  });
+
+  test("async values are fetched", async () => {
+    let loadOptions = () => {
+      return new Promise((resolve) => {
+        window.setTimeout(() => {
+          resolve([
+            { value: "beginner", label: "Beginner label" },
+            { value: "normal", label: "Normal label" },
+            { value: "expert", label: "Expert label" },
+          ]);
+        }, 200);
+      });
+    };
+
+    const Setup = () => {
+      return <Select label="Level" loadOptions={loadOptions} />;
+    };
+    render(<Setup />);
+
+    await timeout(400);
+    await click(screen.getByLabelText("Level"));
+    expect(screen.getByText("Beginner label")).toBeDefined();
+    expect(screen.getByText("Normal label")).toBeDefined();
+    expect(screen.getByText("Expert label")).toBeDefined();
+  });
+
+  test("default value option is used", async () => {
+    const onLoadOptions = jest.fn();
+    let resolveLoadOptions;
+    let loadOptions = () => {
+      onLoadOptions();
+      return new Promise((r) => (resolveLoadOptions = r));
+    };
+
+    const Setup = () => {
+      const [value, setValue] = useState("expert");
+      return (
+        <Select
+          label="Level"
+          value={value}
+          onChange={(newValue) => setValue(newValue)}
+          defaultValueOption={{ value: "expert", label: "Expert label" }}
+          loadOptions={loadOptions}
+        />
+      );
+    };
+    render(<Setup />);
+
+    expect(screen.getByText("Expert label")).toBeDefined();
+    resolveLoadOptions([]);
+  });
+
+  test("data-testid is present in the DOM", () => {
+    render(<Select data-testid="level-testid" />);
+    expect(screen.getByTestId("level-testid")).toBeDefined();
+  });
+
+  test("single values can be picked", async () => {
+    const onSetValue = jest.fn();
+    const Setup = () => {
+      const [value, _setValue] = useState<string | undefined>();
+      const setValue = (newValue: typeof value) => {
+        _setValue(newValue);
+        onSetValue(newValue);
+      };
+
+      return (
+        <Select
+          label="Level"
+          value={value}
+          onChange={(newValue) => setValue(newValue)}
+          options={[
+            { value: "beginner", label: "Beginner label" },
+            { value: "normal", label: "Normal label" },
+            { value: "expert", label: "Expert label" },
+          ]}
+        />
+      );
+    };
+    render(<Setup />);
+
+    await click(screen.getByLabelText("Level"));
+    await click(screen.getByText("Normal label"));
+    expect(onSetValue).toBeCalledWith("normal");
+  });
+
+  test("single values can be cleared", async () => {
+    const onSetValue = jest.fn();
+    const Setup = () => {
+      const [value, _setValue] = useState<string | undefined>("expert");
+      const setValue = (newValue: typeof value) => {
+        _setValue(newValue);
+        onSetValue(newValue);
+      };
+
+      return (
+        <Select
+          label="Level"
+          value={value}
+          onChange={(newValue) => setValue(newValue)}
+          options={[
+            { value: "beginner", label: "Beginner label" },
+            { value: "normal", label: "Normal label" },
+            { value: "expert", label: "Expert label" },
+          ]}
+          isClearable
+        />
+      );
+    };
+    render(<Setup />);
+
+    await click(screen.getByLabelText("Clear"));
+    expect(onSetValue).toBeCalledWith(undefined);
+  });
+
+  test("multiple values can be picked", async () => {
+    const onSetValue = jest.fn();
+    const Setup = () => {
+      const [value, _setValue] = useState<string[]>();
+      const setValue = (newValue: typeof value) => {
+        _setValue(newValue);
+        onSetValue(newValue);
+      };
+
+      return (
+        <Select
+          label="Level"
+          value={value}
+          onChange={(newValue) => setValue(newValue)}
+          options={[
+            { value: "beginner", label: "Beginner label" },
+            { value: "normal", label: "Normal label" },
+            { value: "expert", label: "Expert label" },
+          ]}
+          isMulti
+        />
+      );
+    };
+    render(<Setup />);
+
+    await click(screen.getByLabelText("Level"));
+    await click(screen.getByText("Normal label"));
+    expect(onSetValue).toBeCalledWith(["normal"]);
+
+    await click(screen.getByLabelText("Level"));
+    await click(screen.getByText("Expert label"));
+    expect(onSetValue).toBeCalledWith(["normal", "expert"]);
+  });
+
+  test("multiple values can be cleared", async () => {
+    const onSetValue = jest.fn();
+    const Setup = () => {
+      const [value, _setValue] = useState<string[]>(["normal", "expert"]);
+      const setValue = (newValue: typeof value) => {
+        _setValue(newValue);
+        onSetValue(newValue);
+      };
+
+      return (
+        <Select
+          label="Level"
+          value={value}
+          onChange={(newValue) => setValue(newValue)}
+          options={[
+            { value: "beginner", label: "Beginner label" },
+            { value: "normal", label: "Normal label" },
+            { value: "expert", label: "Expert label" },
+          ]}
+          isMulti
+          isClearable
+        />
+      );
+    };
+    render(<Setup />);
+
+    await click(screen.getByLabelText("Clear"));
+    expect(onSetValue).toBeCalledWith([]);
+  });
+
+  test("binds to Formik data", async () => {
+    const onSubmit = jest.fn();
+
+    const Setup = () => {
+      const initialValues = {
+        level: "expert",
+      };
+      return (
+        <Form initialValues={initialValues} onSubmit={(newValues) => onSubmit(newValues)}>
+          <Field
+            name="level"
+            label="Level"
+            as={Field.Select}
+            options={[
+              { value: "beginner", label: "Beginner label" },
+              { value: "normal", label: "Normal label" },
+              { value: "expert", label: "Expert label" },
+            ]}
+          />
+          <SubmitButton>Submit</SubmitButton>
+        </Form>
+      );
+    };
+    render(<Setup />);
+
+    expect(screen.getByText("Expert label")).toBeDefined();
+    await click(screen.getByLabelText("Level"));
+    await click(screen.getByText("Normal label"));
+    await click(screen.getByText("Submit"));
+    expect(onSubmit).toBeCalledWith({ level: "normal" });
   });
 });
