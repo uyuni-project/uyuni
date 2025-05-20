@@ -60,8 +60,9 @@
 
            <button type="submit"
                   class="btn btn-default"
-                  name="dispatch"
-                  value='<bean:message key="sdc.configlist.jsp.unsubscribe"/>'/>
+                  name="dispatch">
+                  <bean:message key="sdc.configlist.jsp.unsubscribe"/>
+           </button>
         </div>
         </c:if>
         </c:when>

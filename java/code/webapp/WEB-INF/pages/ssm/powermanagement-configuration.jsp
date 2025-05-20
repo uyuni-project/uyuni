@@ -32,8 +32,9 @@
             <div class="form-group">
                 <div class="col-md-offset-3 offset-md-3 col-md-6">
                     <button type="submit" name="dispatch"
-                        value="<bean:message key="ssm.provisioning.powermanagement.configuration.update" />"
-                        class="btn btn-primary" />
+                        class="btn btn-primary">
+                        <bean:message key="ssm.provisioning.powermanagement.configuration.update" />
+                    </button>
                 </div>
             </div>
         </html:form>

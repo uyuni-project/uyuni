@@ -44,8 +44,9 @@
                     <button type="submit" name="dispatcher"
                            role="button"
                            class="btn btn-primary"
-                           value="${rhn:localize('sdc.config.rank.jsp.update')}"
-                           onclick="handle_ranking_dispatch('ranksWidget','rankedValues','channelRanksForm');"/>
+                           onclick="handle_ranking_dispatch('ranksWidget','rankedValues','channelRanksForm');">
+                           ${rhn:localize('sdc.config.rank.jsp.update')}
+                    </button>
                 </div>
             </div>
         </html:form>

@@ -34,8 +34,9 @@
             <div class="action-button-wrapper">
                 <button type="submit"
                        class="btn btn-primary"
-                       name="dispatch"
-                       value='<bean:message key="errata.edit.packages.confirm.confirm"/>'/>
+                       name="dispatch">
+                    <bean:message key="errata.edit.packages.confirm.confirm"/>
+                </button>
             </div>
         </div>
 
