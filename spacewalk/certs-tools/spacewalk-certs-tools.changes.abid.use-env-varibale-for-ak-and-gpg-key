@@ -1,0 +1,2 @@
+- Add the possibility to use env variables for ACTIVATION_KEYS
+  and ORG_GPG_KEY
