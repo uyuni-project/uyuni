@@ -48,13 +48,18 @@
             <tr>
               <td align="right">
               <c:if test="${not empty regularKS}">
-                <input type="button" class="btn btn-default"
-                        value="<bean:message key='kickstart.schedule.button0.jsp'/>"
-                        onclick="setStep('fourth');this.form.submit();" />
+                <button type="button" class="btn btn-default"
+                        onclick="setStep('fourth');this.form.submit();">
+                        <bean:message key='kickstart.schedule.button0.jsp'/>
+                </button>
                           </c:if>
                 <rhn:require acl="system_has_management_entitlement() or system_has_salt_entitlement()">
-                <input type="button" class="btn btn-default" value="<bean:message key='kickstart.schedule.button1.jsp'/>" onclick="setStep('second');this.form.submit();" />
-                <input type="button" class="btn btn-default" value="<bean:message key='kickstart.schedule.button2.jsp'/>" onclick="setStep('third');this.form.submit();" />
+                <button type="button" class="btn btn-default" onclick="setStep('second');this.form.submit();">
+                  <bean:message key='kickstart.schedule.button1.jsp'/>
+                </button>
+                <button type="button" class="btn btn-default" onclick="setStep('third');this.form.submit();">
+                  <bean:message key='kickstart.schedule.button2.jsp'/>
+                </button>
                 </rhn:require>
               </td>
             </tr>

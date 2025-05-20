@@ -130,7 +130,9 @@
         </div>
         <div class="form-group">
             <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
-                <input type="submit" class="btn btn-primary" value="<bean:message key='kickstartoptions.jsp.updatekickstart'/>" />
+                <button type="submit" class="btn btn-primary">
+                    <bean:message key='kickstartoptions.jsp.updatekickstart'/>
+                </button>
             </div>
         </div>
         <rhn:hidden name="ksid" value="${ksdata.id}" />

@@ -42,7 +42,9 @@
 <%--
     <div class="text-right">
       <hr />
-      <input type="submit" name="dispatch" value="${rhn:localize('ssm.hw.systems.confirmbutton')}"/>
+      <button type="submit" name="dispatch">
+        ${rhn:localize('ssm.hw.systems.confirmbutton')}
+      </button>
     </div>
 --%>
 
