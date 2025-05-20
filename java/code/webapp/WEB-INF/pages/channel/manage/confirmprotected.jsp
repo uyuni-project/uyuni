@@ -52,9 +52,10 @@
    <hr/>
    <div class="text-right">
      <rhn:submitted/>
-     <input type="button" class="btn btn-default"
-                value="${rhn:localize('org.trust.cancel')}"
-                onClick="location.href='${parentUrl}'" />
+     <button type="button" class="btn btn-default"
+         onClick="location.href='${parentUrl}'">
+         ${rhn:localize('org.trust.cancel')}
+      </button>      
      <button type="submit" name ="deny" class="btn btn-danger">
          ${rhn:localize('button.denyaccess.confirm')}
      </button>

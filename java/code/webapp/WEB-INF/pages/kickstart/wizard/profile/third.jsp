@@ -65,7 +65,9 @@
         </div>
       </div>
       <div class="panel-footer text-center">
-        <input type="button" value="<bean:message key='wizard.jsp.previous.step'/>" onclick="movePrevious();" class="btn btn-default" />
+        <button type="button" onclick="movePrevious();" class="btn btn-default">
+          <bean:message key='wizard.jsp.previous.step'/>
+        </button>
         &nbsp;&nbsp;
         <button type="submit" onclick="moveNext();" class="btn btn-primary">
           <bean:message key='wizard.jsp.finish.step'/>
