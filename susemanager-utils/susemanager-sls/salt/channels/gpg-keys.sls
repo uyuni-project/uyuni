@@ -39,6 +39,18 @@ mgr_deploy_suse_addon_key:
 
 {%- if grains['os_family'] == 'RedHat' %}
 {# deploy all keys to the clients. If they get imported dependes on the used channels #}
+mgr_deploy_slfo_gpg_key:
+  file.managed:
+    - name: /etc/pki/rpm-gpg/build-alp-09d9ea69.key
+    - source: salt://gpg/build-alp-09d9ea69.key
+    - makedirs: True
+    - mode: 644
+
+{%- endif %}
+
+
+{%- if grains['os_family'] == 'RedHat' %}
+{# deploy all keys to the clients. If they get imported dependes on the used channels #}
 
 mgr_deploy_res_gpg_key:
   file.managed:

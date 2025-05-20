@@ -1,0 +1,2 @@
+- Deploy SLFO gpg key to SUSE instances to allow defining the key
+  in the channels for migration case (bsc#1243373)
