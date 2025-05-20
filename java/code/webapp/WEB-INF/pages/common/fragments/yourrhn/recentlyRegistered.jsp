@@ -73,7 +73,7 @@
       ${paginationMessage}
     </div>
     <div class="col-md-6 text-right">
-      <a class="js-spa" href="/rhn/manager/systems/list/all?qc=created_days">
+      <a class="js-spa" href="/rhn/manager/systems/list/all?qc=created_days&q=<31">
         <bean:message key="yourrhn.jsp.recentlyregistered.all" />
       </a>
     </div>

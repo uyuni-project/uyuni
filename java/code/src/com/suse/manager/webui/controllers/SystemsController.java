@@ -245,7 +245,8 @@ public class SystemsController {
                         Matcher matcher = Pattern.compile("^([<>!=]*) *(\\d+)$").matcher(control.getFilterData());
                         if (matcher.matches()) {
                             long value = Long.parseLong(matcher.group(2));
-                            control.setFilterData(matcher.group(1) +
+                            control.setFilterData(matcher.group(1)
+                                    .replace("<", "-").replace(">", "<").replace("-", ">") +
                                     DateTimeFormatter.ISO_LOCAL_DATE.format(
                                             LocalDateTime.now().minusDays(value).toLocalDate()));
                         }

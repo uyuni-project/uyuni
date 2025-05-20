@@ -178,7 +178,7 @@ public class MenuTree {
                         .addChild(new MenuItem("Inactive")
                                 .withPrimaryUrl("/rhn/manager/systems/list/all?qc=status_type&q=awol"))
                         .addChild(new MenuItem("Recently Registered")
-                                .withPrimaryUrl("/rhn/manager/systems/list/all?qc=created_days&q=>6"))
+                                .withPrimaryUrl("/rhn/manager/systems/list/all?qc=created_days&q=<31"))
                         .addChild(new MenuItem("Proxy")
                                 .withPrimaryUrl("/rhn/manager/systems/list/all?qc=system_kind&q=proxy")
                                 .withVisibility(checkAcl(user, "org_channel_family(SMP) or not is_suma()") &&

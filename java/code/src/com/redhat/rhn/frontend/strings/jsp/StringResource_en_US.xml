@@ -11405,7 +11405,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.recentlyregistered.none" xml:space="preserve">
-        <source>&lt;strong&gt;No recently registered systems.&lt;/strong&gt;&lt;p&gt;You have no systems that were registered within the past 30 days. You may view a list of all registered systems at &lt;a href="/rhn/systems/Registered.do"&gt;&lt;strong&gt;Systems &gt; Recently Registered&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;</source>
+        <source>&lt;strong&gt;No recently registered systems.&lt;/strong&gt;&lt;p&gt;You have no systems that were registered within the past 30 days. You may view a list of all registered systems at &lt;a href="/rhn/manager/systems/list/all?qc=created_days&amp;q=&lt;31"&gt;&lt;strong&gt;Systems &gt; Recently Registered&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>

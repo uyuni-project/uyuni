@@ -1,0 +1,2 @@
+- Fix recently registered systems list filter not
+  working correctly (bsc#1243183)
