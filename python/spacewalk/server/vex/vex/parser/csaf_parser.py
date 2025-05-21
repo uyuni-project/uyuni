@@ -317,60 +317,38 @@ class CSAFParser(VEX_Parser):
                 cve_id = vuln.get_id()
                 vuln_id = db_manager.insert_cve(cve_id) # Insert CVE if necessary
 
-                # TODO: Change status management
-
-                # Different statuses are managed separatedly so managing justification/remediations
-                # or other particularities are treated easily
-
                 if Status.AFFECTED in vuln.get_statuses():
                     logging.debug("Persisting known_affected")
                     #logging.info(f"Products -> {vuln.get_value('known_affected')}") # DEBUG
-                    for product in vuln.get_products_status(Status.AFFECTED):
-                        platform = product.split(':')[0]
-                        package = product.split(':')[1]
-                        #logging.info(f"Product -> {product}") # DEBUG
-                        #logging.info(f"Platform -> {platform}") # DEBUG
-                        #logging.info(f"Package -> {package}") # DEBUG
+                    for platform, packages in vuln.get_products_status(Status.AFFECTED).items():
                         platform_id = db_manager.insert_oval_platform(self.get_product_id_name(platform))
-                        package_id = db_manager.insert_vulnerable_package(package)
-                        db_manager.insert_vex_annotation(platform_id, vuln_id, package_id, Status.AFFECTED.value)
-
-                    # TODO: MANAGE REMEDIATIONS
+                        for package in packages:
+                            package_id = db_manager.insert_vulnerable_package(package)
+                            db_manager.insert_vex_annotation(platform_id, vuln_id, package_id, Status.AFFECTED.value)
 
                 if Status.NOT_AFFECTED in vuln.get_statuses():
                     logging.debug("Persisting known_not_affected")
-                    for product in vuln.get_products_status(Status.NOT_AFFECTED):
-                        platform = product.split(':')[0]
-                        package = product.split(':')[1]
-                        # logging.info(f"Platform -> {platform}") # DEBUG
-                        # logging.info(f"Package -> {package}") # DEBUG
-                        db_manager.insert_oval_platform(self.get_product_id_name(platform))
-                        db_manager.insert_vulnerable_package(package)
-                        db_manager.insert_vex_annotation(platform_id, vuln_id, package_id, Status.AFFECTED.value)
-
-                    # TODO: MANAGE JUSTIFICATIONS
+                    for platform, packages in vuln.get_products_status(Status.NOT_AFFECTED).items():
+                        platform_id = db_manager.insert_oval_platform(self.get_product_id_name(platform))
+                        for package in packages:
+                            package_id = db_manager.insert_vulnerable_package(package)
+                            db_manager.insert_vex_annotation(platform_id, vuln_id, package_id, Status.NOT_AFFECTED.value)
 
                 if Status.PATCHED in vuln.get_statuses():
                     logging.debug("Persisting fixed")
-                    for product in vuln.get_products_status(Status.PATCHED):
-                        platform = product.split(':')[0]
-                        package = product.split(':')[1]
-                        # logging.info(f"Platform -> {platform}") # DEBUG
-                        # logging.info(f"Package -> {package}") # DEBUG
-                        db_manager.insert_oval_platform(self.get_product_id_name(platform))
-                        db_manager.insert_vulnerable_package(package)
-                        db_manager.insert_vex_annotation(platform_id, vuln_id, package_id, Status.AFFECTED.value)
+                    for platform, packages in vuln.get_products_status(Status.PATCHED).items():
+                        platform_id = db_manager.insert_oval_platform(self.get_product_id_name(platform))
+                        for package in packages:
+                            package_id = db_manager.insert_vulnerable_package(package)
+                            db_manager.insert_vex_annotation(platform_id, vuln_id, package_id, Status.PATCHED.value)
 
                 if Status.UNDER_INVESTIGATION in vuln.get_statuses():
                     logging.debug("Persisting under_investigation")
-                    for product in vuln.get_product_status(Status.UNDER_INVESTIGATION):
-                        platform = product.split(':')[0]
-                        package = product.split(':')[1]
-                        # logging.info(f"Platform -> {platform}") # DEBUG
-                        # logging.info(f"Package -> {package}") # DEBUG
-                        db_manager.insert_oval_platform(self.get_product_id_name(platform))
-                        db_manager.insert_vulnerable_package(package)
-                        db_manager.insert_vex_annotation(platform_id, vuln_id, package_id, Status.AFFECTED.value)
+                    for platform, packages in vuln.get_products_status(Status.UNDER_INVESTIGATION).items():
+                        platform_id = db_manager.insert_oval_platform(self.get_product_id_name(platform))
+                        for package in packages:
+                            package_id = db_manager.insert_vulnerable_package(package)
+                            db_manager.insert_vex_annotation(platform_id, vuln_id, package_id, Status.UNDER_INVESTIGATION.value)
 
             except Exception as e:
                 logging.warning(f"File not valid: {cve_id}: {str(e)}")
