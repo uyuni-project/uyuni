@@ -57,7 +57,7 @@ const Panel = (props: Props) => {
               {props.collapseId ? (
                 <div
                   data-bs-toggle="collapse"
-                  data-bs-target={`#${props.collapseId}-panel-closable`}
+                  data-target={`#${props.collapseId}-panel-closable`}
                   className="accordion-toggle"
                 >
                   <i
@@ -82,7 +82,7 @@ const Panel = (props: Props) => {
       )}
 
       {props.collapseId ? (
-        <div id={`${props.collapseId}-panel-closable`} className="panel-collapse collapse show">
+        <div id={`${props.collapseId}-panel-closable`} className="panel-collapse collapse in">
           {bodyContent}
         </div>
       ) : (
