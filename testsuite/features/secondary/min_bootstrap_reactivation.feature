@@ -47,7 +47,7 @@ Feature: Bootstrapping with reactivation key
     And I enter the hostname of "sle_minion" as "hostname"
     And I enter "linux" as "password"
     And I enter the reactivation key of "sle_minion"
-    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
+    And I select "1-SUSE-SSH-KEY-x86_64" from "activationKeys"
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
     And I follow the left menu "Systems > System List > All"
