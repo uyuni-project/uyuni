@@ -31,12 +31,17 @@ import com.suse.scc.model.SCCHwInfoJson;
 import com.suse.scc.model.SCCMinProductJson;
 import com.suse.scc.model.SCCRegisterSystemJson;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -97,6 +102,20 @@ public class SCCSystemRegistrationSystemDataAcquisitor implements SCCSystemRegis
             Optional<CPU> cpu = ofNullable(srv.getCpu());
             cpu.flatMap(c -> ofNullable(c.getNrCPU())).ifPresent(c -> hwInfo.setCpus(c.intValue()));
             cpu.flatMap(c -> ofNullable(c.getNrsocket())).ifPresent(c -> hwInfo.setSockets(c.intValue()));
+            cpu.ifPresent(
+                c -> {
+                    try {
+                        var archSpecs = new ObjectMapper()
+                                .readValue(c.getArchSpecs(), new TypeReference<Map<String, Object>>() { });
+                        hwInfo.setArchSpecs(archSpecs);
+                    }
+                    catch (JsonProcessingException e) {
+                        LOG.warn("Failed to parse archSpecs from CPU entity. Field will be ignored.", e);
+                        LOG.debug("Raw archSpecs JSON stored in the database: {}", c.getArchSpecs());
+                    }
+                }
+            );
+
             hwInfo.setArch(srv.getServerArch().getLabel().split("-")[0]);
             if (srv.isVirtualGuest()) {
                 VirtualInstance virtualInstance = srv.getVirtualInstance();
