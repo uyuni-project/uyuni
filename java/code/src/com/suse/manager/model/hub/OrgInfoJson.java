@@ -11,6 +11,7 @@
 
 package com.suse.manager.model.hub;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -20,6 +21,8 @@ public class OrgInfoJson {
 
     private final String orgName;
 
+    private final List<String> orgChannelLabels;
+
     /**
      * Constructor
      *
@@ -27,8 +30,20 @@ public class OrgInfoJson {
      * @param orgNameIn the org name
      */
     public OrgInfoJson(long orgIdIn, String orgNameIn) {
+        this(orgIdIn, orgNameIn, List.of());
+    }
+
+    /**
+     * Constructor
+     *
+     * @param orgIdIn   the org id
+     * @param orgNameIn the org name
+     * @param orgChannelLabelsIn the list of channel labels belonging to the org
+     */
+    public OrgInfoJson(long orgIdIn, String orgNameIn, List<String> orgChannelLabelsIn) {
         orgId = orgIdIn;
         orgName = orgNameIn;
+        orgChannelLabels = orgChannelLabelsIn;
     }
 
     /**
@@ -43,6 +58,13 @@ public class OrgInfoJson {
      */
     public String getOrgName() {
         return orgName;
+    }
+
+    /**
+     * @return return the list of channel labels belonging to the org
+     */
+    public List<String> getOrgChannelLabels() {
+        return orgChannelLabels;
     }
 
     @Override
@@ -67,6 +89,7 @@ public class OrgInfoJson {
         return new StringJoiner(", ", OrgInfoJson.class.getSimpleName() + "[", "]")
                 .add("orgId='" + getOrgId() + "'")
                 .add("orgName='" + getOrgName() + "'")
+                .add("orgChannelLabels='" + getOrgChannelLabels() + "'")
                 .toString();
     }
 }
