@@ -237,9 +237,7 @@ public class StrutsDelegate {
      * @param result the validator result object..
      */
     public void saveMessages(HttpServletRequest request, ValidatorResult result) {
-        if (null != result) {
-            saveMessages(request, result.getErrors(), result.getWarnings());
-        }
+        saveMessages(request, result.getErrors(), result.getWarnings());
     }
 
     /**

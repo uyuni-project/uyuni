@@ -125,13 +125,12 @@ public class DataSetManipulator {
         }
 
         String sortDir = getActiveSortDirection();
-        //warning: dataset can be immutable
         try {
-            dataset = dataset.stream().sorted(new DynamicComparator<>(sortAttr, sortDir)).toList();
+            dataset.sort(new DynamicComparator<>(sortAttr, sortDir));
         }
         catch (IllegalArgumentException iae) {
             log.warn("Unable to sort dataset according to: {}", sortAttr);
-            dataset = dataset.stream().sorted(new DynamicComparator<>(defaultSortAttribute, sortDir)).toList();
+            dataset.sort(new DynamicComparator<>(defaultSortAttribute, sortDir));
         }
     }
 
