@@ -69,6 +69,9 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     sssd-krb5 \
     sssd-tools
 
+RUN set -euo pipefail; zypper -n rr -a; \
+    rm -rf /var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
+
 RUN mkdir -p /usr/lib/postfix/systemd
 COPY config_postfix /usr/lib/postfix/systemd/
 RUN chmod a+x /usr/lib/postfix/systemd/config_postfix
