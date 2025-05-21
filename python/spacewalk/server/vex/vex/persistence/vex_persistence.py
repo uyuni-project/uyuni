@@ -57,81 +57,6 @@ class VEXDatabaseManager:
         if self.conn and not self.conn.closed:
             self.conn.close()
 
-    # NOT NECESARY
-    def get_cve_id(self, cve_name):
-        """Get ID of an existing CVE from rhnCve
-        Returns:
-            int: CVE ID if found, -1 if not found
-        """
-        with self.conn.cursor() as cursor:
-            cursor.execute(
-                sql.SQL("SELECT id FROM rhnCve WHERE name = %s"), [cve_name]
-            )
-            result = cursor.fetchone()
-            if result:
-                logging.debug(f"Found CVE {cve_name}: ID {result[0]}")  # DEBUG
-                return result[0]
-            logging.warning(f"CVE {cve_name} not found in rhnCve")  # DEBUG
-            return -1
-
-    # NOT NECESARY
-    def get_platform_id(self, cpe):
-        """Get ID of an existing platform from suseOVALPlatform
-        Returns:
-            int: Platform ID if found, -1 if not found
-        """
-        with self.conn.cursor() as cursor:
-            cursor.execute(
-                sql.SQL("SELECT id FROM suseOVALPlatform WHERE cpe = %s"), [cpe]
-            )
-            result = cursor.fetchone()
-            if result:
-                logging.debug(f"Found platform {cpe}: ID {result[0]}")  # DEBUG
-                return result[0]
-            logging.warning(f"Platform {cpe} not found in suseOVALPlatform")  # DEBUG
-            return -1
-
-    # NOT NECESARY
-    def get_package_id(self, name):
-        """Get ID of an existing vulnerable package
-        Args:
-            name: Package name (e.g., "openssl")
-            fix_version: Optional fix version (e.g., "1.1.1k-94.1")
-        Returns:
-            int: Package ID if found, -1 if not found
-        """
-        with self.conn.cursor() as cursor:
-            cursor.execute(
-                sql.SQL("SELECT id FROM suseOVALVulnerablePackage WHERE name = %s"), [name]
-            )
-            result = cursor.fetchone()
-            if result:
-                logging.debug(f"Found package {name}: ID {result[0]}")  # DEBUG
-                return result[0]
-            logging.warning(f"Package {name} not found in suseOVALVulnerablePackage")  # DEBUG
-            return -1
-
-    # NOT NECESARY
-    def get_annotation(self, platform, cve, package):
-        """Get ID of an existing vulnerable package
-        Args:
-            name: Package name (e.g., "openssl")
-            fix_version: Optional fix version (e.g., "1.1.1k-94.1")
-        Returns:
-            int: Package ID if found, -1 if not found
-        """
-        with self.conn.cursor() as cursor:
-            cursor.execute(
-                sql.SQL(f"SELECT vex_status FROM suseVEXAnnotations WHERE  platform_id = {platform} AND cve_id = {cve} AND vulnerable_pkg_id= {package}")
-            )
-            result = cursor.fetchone()
-            if result:
-                logging.debug(f"Found status {result}: {cve}, Platform={platform}, Package{package}")  # DEBUG
-                return result[0]
-            logging.warning(f"{cve} for Platform={platform}, Package{package} not found in suseVEXAnnotations")  # DEBUG
-            return -1
-
-
     def insert_cve(self, cve_name):
         """Insert a CVE and return its ID
         Returns:
@@ -223,7 +148,7 @@ class VEXDatabaseManager:
             logging.error(f"Failed to insert package {name}: {e}")
             return -1
 
-    def insert_vex_annotation(self, platform_id, cve_id, vulnerable_pkg_id, status, fix_version=-1):
+    def insert_vex_annotation(self, platform_id, cve_id, package_name, status, fix_version=None):
         """Insert or update a VEX annotation with fix version.
 
         Returns:
@@ -234,15 +159,15 @@ class VEXDatabaseManager:
                 cursor.execute(
                     """
                     INSERT INTO suseVEXAnnotations 
-                        (platform_id, cve_id, vulnerable_pkg_id, vex_status, fix_version)
+                        (platform_id, cve_id, package_name, vex_status, fix_version)
                     VALUES (%s, %s, %s, %s, %s)
-                    ON CONFLICT (platform_id, cve_id, vulnerable_pkg_id)
+                    ON CONFLICT (platform_id, cve_id, package_name)
                     DO UPDATE SET 
                         vex_status = EXCLUDED.vex_status,
                         fix_version = EXCLUDED.fix_version
                     RETURNING vex_status;
                     """,
-                    [platform_id, cve_id, vulnerable_pkg_id, status, fix_version]
+                    [platform_id, cve_id, package_name, status, fix_version]
                 )
                 result = cursor.fetchone()
                 self.conn.commit()
@@ -251,7 +176,7 @@ class VEXDatabaseManager:
 
         except Exception as e:
             self.conn.rollback()
-            logging.error(f"Failed to insert/update annotation for CVE {cve_id}, platform {platform_id}, pkg {vulnerable_pkg_id}: {e}")
+            logging.error(f"Failed to insert/update annotation for CVE {cve_id}, platform {platform_id}, pkg {package_name}: {e}")
             return None
 
 
