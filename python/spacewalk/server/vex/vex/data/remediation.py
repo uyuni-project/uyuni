@@ -38,3 +38,11 @@ class Remediation:
             print(f"- {product}:")
             for version in versions:
                 print(f"    - {version}")
+
+    def show_fixversions_product(self, product):
+        
+        for prod, versions in self.fix_versions_by_product.items():
+            if prod == product:
+                print(f"Fix_versions for {product}:")
+                for version in versions:
+                    print(f"    - {version}")
