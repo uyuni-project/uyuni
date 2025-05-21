@@ -25,6 +25,9 @@ ssh root@$SERVER "mgrctl exec 'python3 -m venv /tmp/vex-processor/venv --system-
 
 ssh root@$SERVER "mgrctl exec  '/tmp/vex-processor/venv/bin/pip install pytest packageurl-python psycopg2'"
 
+# Apply migrations
+scp ../uyuni-VEX/schema/spacewalk/upgrade/susemanager-schema-5.1.3-to-susemanager-schema-5.1.4/* root@$SERVER:/tmp/migrations
+
 #ssh root@uyuni.test "sudo psql -U spacewalk -d susemanager -f suseVEXAnnotations.sql"
 #ssh root@uyuni.test "sudo psql -U spacewalk -d susemanager -f suseVEXHash.sql"
 
