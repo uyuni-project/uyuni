@@ -20,23 +20,23 @@ CREATE TABLE suseVEXAnnotations
                             REFERENCES rhnCve (id),
     platform_id          NUMERIC NOT NULL
                             REFERENCES suseOVALPlatform (id),
-    vulnerable_pkg_id    NUMERIC NOT NULL
-                            REFERENCES suseOVALVulnerablePackage (id),
-    fix_version          NUMERIC,
+    package_name    NUMERIC NOT NULL
+                            REFERENCES rhnPackageName (id),
+    fix_version          evr_t,
     vex_status          VARCHAR(32) NOT NULL
                             CHECK (vex_status IN (
-                                'AFFECTED_PATCH_INAPPLICABLE',
-                                'AFFECTED_PATCH_APPLICABLE',
                                 'AFFECTED',
                                 'NOT_AFFECTED',
                                 'PATCHED',
-                                'AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT',
-                                'AFFECTED_PATCH_UNAVAILABLE',
-                                'AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI',
-                                'AFFECTED_PARTIAL_PATCH_APPLICABLE',
                                 'UNDER_INVESTIGATION'
+                                --'AFFECTED_PATCH_INAPPLICABLE',
+                                --'AFFECTED_PATCH_APPLICABLE',
+                                --'AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT',
+                                --'AFFECTED_PATCH_UNAVAILABLE',
+                                --'AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI',
+                                --'AFFECTED_PARTIAL_PATCH_APPLICABLE'
                             )),
     
     
-    CONSTRAINT suse_vex_annotations_id_pk PRIMARY KEY (platform_id, cve_id, vulnerable_pkg_id)
+    CONSTRAINT suse_vex_annotations_id_pk PRIMARY KEY (platform_id, cve_id, package_name)
 );
