@@ -76,6 +76,9 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
     mv "/etc/krb5.conf.d" "/etc/rhn/krb5.conf.d" && \
     ln -s "/etc/rhn/krb5.conf.d" "/etc/krb5.conf.d"
 
+RUN set -euo pipefail; zypper -n rr -a; \
+    rm -rf /var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
+
 ADD --chown=root:root root.tar.gz /
 
 # Initialize environments to sync configuration and package files to persistent volumes
