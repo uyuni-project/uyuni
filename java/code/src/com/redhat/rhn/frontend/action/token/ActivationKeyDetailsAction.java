@@ -127,12 +127,7 @@ public class ActivationKeyDetailsAction extends RhnAction {
                         mapping.findForward("success"), params);
             }
             catch (ValidatorException ve) {
-                if (null == ve.getResult()) {
-                    getStrutsDelegate().saveMessage(ve.getMessage(), request);
-                }
-                else {
-                    getStrutsDelegate().saveMessages(request, ve.getResult());
-                }
+                getStrutsDelegate().saveMessages(request, ve.getResult());
                 return handleFailure(mapping, context);
             }
         }
