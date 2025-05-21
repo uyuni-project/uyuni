@@ -1511,7 +1511,26 @@ public class UserImpl extends BaseDomainHelper implements User {
     /** {@inheritDoc} */
     @Override
     public boolean isMemberOf(AccessGroup accessGroupIn) {
-        return getAccessGroups() != null && getAccessGroups().contains(accessGroupIn);
+        Set<AccessGroup> userGroups = getAccessGroups();
+        if (userGroups != null && userGroups.contains(accessGroupIn)) {
+            return true;
+        }
+
+        // Satellite admin has access to everything.
+        if (hasRole(RoleFactory.SAT_ADMIN)) {
+            return true;
+        }
+
+        if (hasRole(RoleFactory.ORG_ADMIN)) {
+            // Org admin implicitly has default RBAC roles (when org is null)
+            if (accessGroupIn.getOrg() == null) {
+                return UserFactory.IMPLIEDROLES.stream()
+                        .anyMatch(role -> role.getLabel().equals(accessGroupIn.getLabel()));
+            }
+            // Org admin has access to any group within their org
+            return accessGroupIn.getOrg().getId().equals(getOrg().getId());
+        }
+        return false;
     }
 
     /** {@inheritDoc} */
