@@ -14,7 +14,7 @@ const BuildVersion = ({ id, text, collapsed }: Props) => {
       <dd className="collapsible-content">
         <div
           data-bs-toggle="collapse"
-          data-target={`#historyentry_${id}`}
+          data-bs-target={`#historyentry_${id}`}
           className={`${styles.version_collapse_line} pointer accordion-toggle collapsed`}
         >
           <i className="fa fa-chevron-down show-on-collapsed fa-small" />

@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed May 21 15:52:24 CEST 2025 - rosuna@suse.com
+
+- version 5.0.25-0
+  * Fix: Internal server error when accessing groups in
+    activation keys bsc#1237581
+  * Fix UI accordions (bsc#1239795)
+
+-------------------------------------------------------------------
 Fri Apr 11 08:59:33 CEST 2025 - rosuna@suse.com
 
 - version 5.0.24-0

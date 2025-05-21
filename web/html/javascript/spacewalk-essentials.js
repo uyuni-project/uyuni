@@ -115,13 +115,9 @@ function handleSst() {
   sstScrollBehaviorSetup(sst);
 }
 
-jQuery(document).on('click', '.navbar-toggle', function() {
-  jQuery('aside').toggleClass('in collapse');
-});
-
 function navbarToggleMobile() {
   if (window.matchMedia("(max-width: 768px)").matches) {
-    jQuery('aside').addClass('in collapse');
+    jQuery('#spacewalk-aside').removeClass('show');
   }
 };
 
