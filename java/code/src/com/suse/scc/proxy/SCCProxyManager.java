@@ -57,21 +57,28 @@ public class SCCProxyManager {
             String sccLogin = system.getLogin();
             String sccPasswd = system.getPassword();
 
-            SCCProxyRecord sccProxyRecord = sccProxyFactory
-                    .lookupBySccLoginAndPassword(sccLogin, sccPasswd)
-                    .orElse(new SCCProxyRecord(peripheralFqdnIn, sccLogin, sccPasswd));
             if (system.isOnlyLastSeenAt()) {
-                //update last seen at
-                sccProxyRecord.setLastSeenAt(system.getLastSeenAt());
+                //update last seen at: record MUST be present
+                Optional<SCCProxyRecord> maybeSccProxyRecord = sccProxyFactory
+                        .lookupBySccLoginAndPassword(sccLogin, sccPasswd);
+
+                maybeSccProxyRecord.ifPresent(sccProxyRecord -> {
+                    sccProxyRecord.setLastSeenAt(system.getLastSeenAt());
+                    sccProxyFactory.save(sccProxyRecord);
+                    systemsRecords.add(sccProxyRecord);
+                });
             }
             else {
                 //full creation or update
+                SCCProxyRecord sccProxyRecord = sccProxyFactory
+                        .lookupBySccLoginAndPassword(sccLogin, sccPasswd)
+                        .orElse(new SCCProxyRecord(peripheralFqdnIn, sccLogin, sccPasswd));
                 String sccCreationJson = Json.GSON.toJson(system);
                 sccProxyRecord.setSccCreationJson(sccCreationJson);
                 sccProxyRecord.setStatus(SccProxyStatus.SCC_CREATION_PENDING);
+                sccProxyFactory.save(sccProxyRecord);
+                systemsRecords.add(sccProxyRecord);
             }
-            sccProxyFactory.save(sccProxyRecord);
-            systemsRecords.add(sccProxyRecord);
         }
 
         return systemsRecords;
