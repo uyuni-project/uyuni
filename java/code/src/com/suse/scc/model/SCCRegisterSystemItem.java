@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * This is a System Item send to SCC for registration.
  */
-public class SCCRegisterSystemJson {
+public class SCCRegisterSystemItem {
 
     private String login;
     private String password;
@@ -43,8 +43,8 @@ public class SCCRegisterSystemJson {
      * @param productsIn the products
      * @param lastSeenIn the last seen date
      */
-    public SCCRegisterSystemJson(String loginIn, String passwdIn, String hostnameIn,
-            SCCHwInfoJson hwinfoIn, List<SCCMinProductJson> productsIn, Date lastSeenIn) {
+    public SCCRegisterSystemItem(String loginIn, String passwdIn, String hostnameIn,
+                                 SCCHwInfoJson hwinfoIn, List<SCCMinProductJson> productsIn, Date lastSeenIn) {
         login = loginIn;
         password = passwdIn;
         hostname = hostnameIn;
@@ -99,5 +99,13 @@ public class SCCRegisterSystemJson {
      */
     public Date getLastSeenAt() {
         return lastSeenAt;
+    }
+
+    /**
+     * @return Returns true if it contains only the last seen info
+     */
+    public boolean isOnlyLastSeenAt() {
+        return (null != login) && (null != password) && (null != lastSeenAt) &&
+                (null == hostname) && (null == hwinfo) && (null == products) && (null == regcodes);
     }
 }

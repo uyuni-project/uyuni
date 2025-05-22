@@ -35,6 +35,7 @@ import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCSubscriptionJson;
+import com.suse.scc.proxy.SCCProxyFactory;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
@@ -217,7 +218,8 @@ public class MirrorCredentialsManager {
                     .setUuid(uuid)
                     .createSCCConfig();
             SCCClient sccClient = new SCCWebClient(sccConfig);
-            SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(sccClient);
+            SCCProxyFactory sccProxyFactory = new SCCProxyFactory();
+            SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(sccClient, sccProxyFactory);
             sccRegManager.deregister(itemList, true);
         }
         catch (URISyntaxException e) {

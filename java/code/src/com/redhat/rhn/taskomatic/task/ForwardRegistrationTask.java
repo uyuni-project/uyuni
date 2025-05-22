@@ -24,30 +24,40 @@ import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
+import com.suse.manager.model.hub.HubFactory;
+import com.suse.manager.model.hub.IssHub;
 import com.suse.scc.SCCSystemRegistrationManager;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
+import com.suse.scc.model.SCCUpdateSystemItem;
 import com.suse.scc.model.SCCVirtualizationHostJson;
+import com.suse.scc.proxy.SCCProxyFactory;
+import com.suse.scc.proxy.SCCProxyRecord;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.quartz.JobExecutionContext;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
-
 public class ForwardRegistrationTask extends RhnJavaJob {
 
     // initialize first run between 30 minutes and 3 hours from now
-    private static LocalDateTime nextLastSeenUpdateRun = LocalDateTime.now().plusMinutes(
+    protected static LocalDateTime nextLastSeenUpdateRun = LocalDateTime.now().plusMinutes(
             ThreadLocalRandom.current().nextInt(30, 3 * 60));
+
+    //task setup
+    protected Optional<SCCCredentials> taskConfigSccCredentials = Optional.empty();
+    protected URI taskConfigSccUrl = null;
+    protected boolean taskConfigIsSccProxy = false;
 
     @Override
     public String getConfigNamespace() {
@@ -77,70 +87,142 @@ public class ForwardRegistrationTask extends RhnJavaJob {
             }
         }
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) == null) {
+            setupTaskConfiguration();
 
-            List<SCCCredentials> credentials = CredentialsFactory.listSCCCredentials();
-            Optional<SCCCredentials> optPrimCred = credentials.stream()
-                    .filter(c -> c.isPrimary())
-                    .findFirst();
-            if (optPrimCred.isEmpty()) {
-                // We cannot update SCC without credentials
-                // Standard Uyuni case
-                log.debug("No SCC Credentials - skipping forwarding registration");
-                return;
-            }
-            int waitTime = ThreadLocalRandom.current().nextInt(0, 15 * 60);
-            if (log.isDebugEnabled()) {
-                // no waiting when debug is on
-                waitTime = 1;
-            }
-            try {
-                Thread.sleep(waitTime * 1000);
-            }
-            catch (InterruptedException e) {
-                log.debug("Sleep interrupted", e);
-            }
-            optPrimCred.ifPresent(primaryCredentials -> executeSCCTasks(primaryCredentials));
+            taskConfigSccCredentials.ifPresent(credentials -> {
+                waitRandomTimeWithinMinutes(15);
+                executeSCCTasks(credentials);
+            });
         }
     }
 
-    /*
-     * Do SCC related tasks like insert, update and delete system in SCC
-     */
-    private void executeSCCTasks(SCCCredentials primaryCredentials) {
+    protected void setupTaskConfiguration() {
+        HubFactory hubFactory = new HubFactory();
+        Optional<IssHub> optHub = hubFactory.lookupIssHub();
+        taskConfigSccCredentials = optHub.flatMap(this::getSCCCredentialsWhenPeripheral).or(this::getSCCCredentials);
+
         try {
-            URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
-            String uuid = ContentSyncManager.getUUID();
-            SCCCachingFactory.initNewSystemsToForward();
-            SCCConfig sccConfig = new SCCConfigBuilder()
-                    .setUrl(url)
-                    .setUsername("")
-                    .setPassword("")
-                    .setUuid(uuid)
-                    .createSCCConfig();
-            SCCClient sccClient = new SCCWebClient(sccConfig);
+            taskConfigSccUrl = new URI(optHub.map(h -> "https://%s/rhn/hub/scc".formatted(h.getFqdn()))
+                    .orElse(Config.get().getString(ConfigDefaults.SCC_URL)));
+        }
+        catch (URISyntaxException e) {
+            log.error("Unable to define a valid URI for the SCC url", e);
+        }
 
-            SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(sccClient);
-            List<SCCRegCacheItem> forwardRegistration = SCCCachingFactory.findSystemsToForwardRegistration();
-            log.debug("{} RegCacheItems found to forward", forwardRegistration.size());
+        taskConfigIsSccProxy = optHub.isPresent();
+    }
 
-            List<SCCRegCacheItem> deregister = SCCCachingFactory.listDeregisterItems();
-            log.debug("{} RegCacheItems found to delete", deregister.size());
+    private void waitRandomTimeWithinMinutes(int minutes) {
+        int waitTimeSec = ThreadLocalRandom.current().nextInt(0, minutes * 60);
+        if (log.isDebugEnabled()) {
+            // no waiting when debug is on
+            waitTimeSec = 1;
+        }
+        try {
+            Thread.sleep(Duration.ofSeconds(waitTimeSec).toMillis());
+        }
+        catch (InterruptedException e) {
+            log.debug("Sleep interrupted", e);
+            Thread.currentThread().interrupt();
+        }
+    }
 
-            List<SCCVirtualizationHostJson> virtHosts = SCCCachingFactory.listVirtualizationHosts();
-            log.debug("{} VirtHosts found to send", virtHosts.size());
+    protected Optional<SCCCredentials> getSCCCredentials() {
+        List<SCCCredentials> credentials = CredentialsFactory.listSCCCredentials();
+        Optional<SCCCredentials> optPrimCred = credentials.stream()
+                .filter(SCCCredentials::isPrimary)
+                .findFirst();
+        if (log.isDebugEnabled() && optPrimCred.isEmpty()) {
+            // We cannot update SCC without credentials
+            // Standard Uyuni case
+            log.debug("No SCC Credentials - skipping forwarding registration");
+        }
 
-            sccRegManager.deregister(deregister, false);
-            sccRegManager.register(forwardRegistration, primaryCredentials);
-            sccRegManager.virtualInfo(virtHosts, primaryCredentials);
-            if (LocalDateTime.now().isAfter(nextLastSeenUpdateRun)) {
-                sccRegManager.updateLastSeen(primaryCredentials);
-                // next run in 22 - 26 hours
+        return optPrimCred;
+    }
+
+    protected Optional<SCCCredentials> getSCCCredentialsWhenPeripheral(IssHub hub) {
+        List<SCCCredentials> credentials = CredentialsFactory.listSCCCredentials();
+        Optional<SCCCredentials> optHubCredential = credentials.stream()
+                .filter(c -> hub.getFqdn().equals(c.getUrl()))
+                .findFirst();
+
+        if (optHubCredential.isEmpty()) {
+            log.warn("No Hub SCC Credentials for {} - skipping forwarding registration", hub.getFqdn());
+        }
+
+        return optHubCredential;
+    }
+
+    // Do SCC related tasks like insert, update and delete system in SCC
+    protected void executeSCCTasks(SCCCredentials credentialsIn) {
+        String uuid = ContentSyncManager.getUUID();
+        SCCCachingFactory.initNewSystemsToForward();
+        SCCConfig sccConfig = new SCCConfigBuilder()
+                .setUrl(taskConfigSccUrl)
+                .setUsername("")
+                .setPassword("")
+                .setUuid(uuid)
+                .createSCCConfig();
+        SCCClient sccClient = new SCCWebClient(sccConfig);
+        SCCProxyFactory sccProxyFactory = new SCCProxyFactory();
+
+        SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(sccClient, sccProxyFactory);
+
+        executeSCCTasksAsServer(sccRegManager, credentialsIn);
+        if (taskConfigIsSccProxy) {
+            executeSCCTasksAsProxy(sccRegManager, credentialsIn);
+        }
+    }
+
+    // normal server tasks: direct to SCC
+    protected void executeSCCTasksAsServer(SCCSystemRegistrationManager sccRegManager,
+                                       SCCCredentials sccPrimaryOrProxyCredentials) {
+        List<SCCRegCacheItem> forwardRegistration = SCCCachingFactory.findSystemsToForwardRegistration();
+        log.debug("{} RegCacheItems found to forward", forwardRegistration.size());
+
+        List<SCCRegCacheItem> deregister = SCCCachingFactory.listDeregisterItems();
+        log.debug("{} RegCacheItems found to delete", deregister.size());
+
+        List<SCCVirtualizationHostJson> virtHosts = SCCCachingFactory.listVirtualizationHosts();
+        log.debug("{} VirtHosts found to send", virtHosts.size());
+
+        sccRegManager.deregister(deregister, false);
+        sccRegManager.register(forwardRegistration, sccPrimaryOrProxyCredentials);
+        sccRegManager.virtualInfo(virtHosts, sccPrimaryOrProxyCredentials);
+        if (LocalDateTime.now().isAfter(nextLastSeenUpdateRun)) {
+            List<SCCUpdateSystemItem> updateLastSeenItems =
+                    SCCCachingFactory.listUpdateLastSeenItems(sccPrimaryOrProxyCredentials);
+            sccRegManager.updateLastSeen(updateLastSeenItems, sccPrimaryOrProxyCredentials);
+            // next run in 22 - 26 hours
+            synchronized (this) {
                 nextLastSeenUpdateRun = nextLastSeenUpdateRun.plusMinutes(
                         ThreadLocalRandom.current().nextInt(22 * 60, 26 * 60));
             }
         }
-        catch (URISyntaxException e) {
-            log.error(e.getMessage(), e);
-        }
+    }
+
+    // tasks acting as proxy for peripherals
+    protected void executeSCCTasksAsProxy(SCCSystemRegistrationManager sccRegManager,
+            SCCCredentials sccPrimaryOrProxyCredentials) {
+        SCCProxyFactory sccProxyFactory = sccRegManager.getSccProxyFactory();
+
+        List<SCCProxyRecord> proxyForwardRegistration = sccProxyFactory.findSystemsToForwardRegistration();
+        log.debug("{} ProxyRecords found to forward", proxyForwardRegistration.size());
+
+        List<SCCProxyRecord> proxyDeregister = sccProxyFactory.listDeregisterItems();
+        log.debug("{} ProxyRecords found to delete", proxyDeregister.size());
+
+        List<SCCProxyRecord> proxyVirtHosts = sccProxyFactory.findVirtualizationHosts();
+        log.debug("{} VirtHosts ProxyRecords found to send", proxyVirtHosts.size());
+
+        sccRegManager.proxyDeregister(proxyDeregister, false);
+        sccRegManager.proxyRegister(proxyForwardRegistration, sccPrimaryOrProxyCredentials);
+        sccRegManager.proxyVirtualInfo(proxyVirtHosts, sccPrimaryOrProxyCredentials);
+
+        //the updates are sent by the peripherals, we don't want to hold the information here
+        List<SCCProxyRecord> proxyUpdateLastSeen = sccProxyFactory.listUpdateLastSeenItems();
+        log.debug("{} Proxy systems to update last seen", proxyUpdateLastSeen.size());
+        sccRegManager.proxyUpdateLastSeen(proxyUpdateLastSeen, sccPrimaryOrProxyCredentials);
     }
 }
