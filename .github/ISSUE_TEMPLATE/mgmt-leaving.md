@@ -49,7 +49,6 @@ General template for leavers of the SUSE Multi-Linux team.
   - [ ] [galaxy-infra](https://mailman.suse.de/mailman/admin/galaxy-infra/members/remove)
   - [ ] [galaxy-noise](https://mailman.suse.de/mailman/admin/galaxy-noise/members/remove)
   - [ ] [galaxy-releng](https://mailman.suse.de/mailman/admin/galaxy-releng/members/remove)
-  - [ ] [galaxy-team](https://mailman.suse.de/mailman/admin/galaxy-team/members/remove)
   - [ ] [salt](https://mailman.suse.de/mailman/admin/salt/members/remove)
   - [ ] [salt-maintainers](https://mailman.suse.de/mailman/admin/salt-maintainers/members/remove)
   - [ ] [multi-linux-manager](https://mailman.suse.de/mailman/admindb/multi-linux-manager/)
