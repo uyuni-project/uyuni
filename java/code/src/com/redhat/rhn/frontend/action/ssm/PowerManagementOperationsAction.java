@@ -88,15 +88,15 @@ public class PowerManagementOperationsAction extends RhnAction implements
             Operation operation = null;
             if (context.wasDispatched(
                 "kickstart.powermanagement.jsp.power_on")) {
-                operation = Operation.PowerOn;
+                operation = Operation.POWER_ON;
             }
             if (context.wasDispatched(
                 "kickstart.powermanagement.jsp.power_off")) {
-                operation = Operation.PowerOff;
+                operation = Operation.POWER_OFF;
             }
             if (context.wasDispatched(
                 "kickstart.powermanagement.jsp.reboot")) {
-                operation = Operation.Reboot;
+                operation = Operation.REBOOT;
             }
 
             if (operation != null) {
