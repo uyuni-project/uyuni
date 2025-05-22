@@ -20,7 +20,7 @@ package com.redhat.rhn.domain.contentmgmt.modulemd;
  */
 public class ModulemdApiResponse {
     static final int OK = 0;
-    static final int EXCEPTION = 1;
+    static final int EXCEPTION_THROWN = 1;
     static final int MODULE_NOT_FOUND = 201;
     static final int DEPENDENCY_RESOLUTION_ERROR = 202;
     static final int CONFLICTING_STREAMS = 203;
