@@ -166,6 +166,8 @@ public class ContentSyncManager {
     private final boolean isPeripheral;
     private final boolean hubHasSignedMetadata;
 
+    private final List<String> toolsChannelFamilies;
+
     private final Path tmpLoggingDir;
 
     /**
@@ -186,6 +188,12 @@ public class ContentSyncManager {
         Optional<IssHub> issHub = hubFactory.lookupIssHub();
         isPeripheral = issHub.isPresent();
         hubHasSignedMetadata = StringUtils.isNotBlank(issHub.map(IssHub::getGpgKey).orElse(""));
+        toolsChannelFamilies = new ArrayList<>();
+        toolsChannelFamilies.add(ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL);
+        if (Config.get().getString(ConfigDefaults.PRODUCT_TREE_TAG, "").equals("Beta")) {
+            String betaClass = ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL + "-BETA";
+            toolsChannelFamilies.add(betaClass);
+        }
     }
 
     /**
@@ -2720,7 +2728,7 @@ public class ContentSyncManager {
                 .map(SCCSubscription::getProducts)
                 .flatMap(Set::stream)
                 .filter(p -> p.getChannelFamily() != null)
-                .anyMatch(p -> p.getChannelFamily().getLabel().equals(ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL));
+                .anyMatch(p -> toolsChannelFamilies.contains(p.getChannelFamily().getLabel()));
     }
 
     /**
@@ -2736,6 +2744,6 @@ public class ContentSyncManager {
                 .flatMap(r -> r.getChannelTemplates().stream())
                 .map(ChannelTemplate::getProduct)
                 .filter(p -> p.getChannelFamily() != null)
-                .anyMatch(p -> p.getChannelFamily().getLabel().equals(ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL));
+                .anyMatch(p -> toolsChannelFamilies.contains(p.getChannelFamily().getLabel()));
     }
 }
