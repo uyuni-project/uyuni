@@ -94,10 +94,10 @@ public class SCCSystemRegistrationManager {
 
     /**
      * Update last_seen field in SCC for all registered clients
-     * @param primaryCredential the primary scc credential
+     * @param sccPrimaryCredentials the primary scc credential
      * @param updateLastSeenItems the list of  {@link SCCUpdateSystemItem} systems to update last_seen field
      */
-    public void updateLastSeen(List<SCCUpdateSystemItem> updateLastSeenItems, SCCCredentials primaryCredential) {
+    public void updateLastSeen(List<SCCUpdateSystemItem> updateLastSeenItems, SCCCredentials sccPrimaryCredentials) {
 
         ArrayList<List<SCCUpdateSystemItem>> batches = new ArrayList<>(
                 IntStream.range(0, updateLastSeenItems.size()).boxed().collect(
@@ -106,7 +106,9 @@ public class SCCSystemRegistrationManager {
                                 )).values());
         for (List<SCCUpdateSystemItem> batch: batches) {
             try {
-                sccClient.updateBulkLastSeen(batch, primaryCredential.getUsername(), primaryCredential.getPassword());
+                sccClient.updateBulkLastSeen(batch,
+                        sccPrimaryCredentials.getUsername(),
+                        sccPrimaryCredentials.getPassword());
             }
             catch (SCCClientException e) {
                 LOG.error("SCC error while updating systems", e);
@@ -119,10 +121,10 @@ public class SCCSystemRegistrationManager {
 
     /**
      * Update last_seen field in SCC for all registered clients
-     * @param primaryCredential the primary scc credential
+     * @param sccPrimaryCredentials the primary scc credential
      * @param proxyUpdateLastSeen the list of  {@link SCCProxyRecord} systems to update last_seen field
      */
-    public void proxyUpdateLastSeen(List<SCCProxyRecord> proxyUpdateLastSeen, SCCCredentials primaryCredential) {
+    public void proxyUpdateLastSeen(List<SCCProxyRecord> proxyUpdateLastSeen, SCCCredentials sccPrimaryCredentials) {
         ArrayList<List<SCCProxyRecord>> batches = new ArrayList<>(
                 IntStream.range(0, proxyUpdateLastSeen.size()).boxed().collect(
                         Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
@@ -134,7 +136,9 @@ public class SCCSystemRegistrationManager {
                         .map(r -> new SCCUpdateSystemItem(r.getSccLogin(), r.getSccPasswd(), r.getLastSeenAt()))
                         .toList();
 
-                sccClient.updateBulkLastSeen(batch, primaryCredential.getUsername(), primaryCredential.getPassword());
+                sccClient.updateBulkLastSeen(batch,
+                        sccPrimaryCredentials.getUsername(),
+                        sccPrimaryCredentials.getPassword());
 
                 proxyRecordBatch.forEach(r -> {
                     r.setLastSeenAt(null);
@@ -197,14 +201,18 @@ public class SCCSystemRegistrationManager {
      * De-register a system from SCC as a proxy
      *
      * @param proxyRecords the proxy records identifying the system to de-register
+     * @param sccPrimaryCredentials the current primary organization credential
      * @param forceDBDeletion force delete the proxy record when set to true
      */
-    public void proxyDeregister(List<SCCProxyRecord> proxyRecords, boolean forceDBDeletion) {
+    public void proxyDeregister(List<SCCProxyRecord> proxyRecords, SCCCredentials sccPrimaryCredentials,
+                                boolean forceDBDeletion) {
         proxyRecords.forEach(proxyRecord -> proxyRecord.getOptSccId().ifPresentOrElse(
                 sccId -> {
                     try {
                         LOG.debug("de-register system {}", proxyRecord);
-                        sccClient.deleteSystem(sccId, proxyRecord.getSccLogin(), proxyRecord.getSccPasswd());
+                        sccClient.deleteSystem(sccId,
+                                sccPrimaryCredentials.getUsername(),
+                                sccPrimaryCredentials.getPassword());
                         sccProxyFactory.remove(proxyRecord);
                     }
                     catch (SCCClientException e) {
@@ -243,22 +251,52 @@ public class SCCSystemRegistrationManager {
     }
 
     /**
+     * Force de-register a system from SCC as a proxy
+     *
+     * @param proxyRecords          the proxy records identifying the system to de-register
+     * @param sccPrimaryCredentials the current primary organization credential
+     */
+    public void proxyForceDeregister(List<SCCProxyRecord> proxyRecords, SCCCredentials sccPrimaryCredentials) {
+        proxyRecords.forEach(proxyRecord -> proxyRecord.getOptSccId().ifPresent(
+                sccId -> {
+                    try {
+                        LOG.debug("force de-register system {}", proxyRecord);
+                        sccClient.deleteSystem(sccId,
+                                sccPrimaryCredentials.getUsername(),
+                                sccPrimaryCredentials.getPassword());
+                    }
+                    catch (SCCClientException e) {
+                        if (e.getHttpStatusCode() == HttpStatus.SC_NOT_FOUND) {
+                            LOG.info("System {} not found in SCC", proxyRecord.getSccId());
+                        }
+                        else {
+                            LOG.error("Error while force deregistering system {}", proxyRecord.getSccId(), e);
+                        }
+                    }
+                    catch (Exception e) {
+                        LOG.error("Error while force deregistering system {}", proxyRecord.getSccId(), e);
+                    }
+                }
+        ));
+    }
+
+    /**
      * Register systems in SCC
      *
      * @param items the items to register
-     * @param primaryCredential the current primary organization credential
+     * @param sccPrimaryCredentials the current primary organization credential
      */
-    public void register(List<SCCRegCacheItem> items, SCCCredentials primaryCredential) {
-        sccSystemRegistration.register(sccClient, items, primaryCredential);
+    public void register(List<SCCRegCacheItem> items, SCCCredentials sccPrimaryCredentials) {
+        sccSystemRegistration.register(sccClient, items, sccPrimaryCredentials);
     }
 
     /**
      * Register systems in SCC as a proxy
      *
      * @param proxyRecords the proxy records identifying the system to register
-     * @param primaryCredential the current primary organization credential
+     * @param sccPrimaryCredentials the current primary organization credential
      */
-    public void proxyRegister(List<SCCProxyRecord> proxyRecords, SCCCredentials primaryCredential) {
+    public void proxyRegister(List<SCCProxyRecord> proxyRecords, SCCCredentials sccPrimaryCredentials) {
         ArrayList<List<SCCProxyRecord>> batches = new ArrayList<>(
                 IntStream.range(0, proxyRecords.size()).boxed().collect(
                         Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
@@ -273,8 +311,8 @@ public class SCCSystemRegistrationManager {
 
                 SCCOrganizationSystemsUpdateResponse response = sccClient.createUpdateSystems(
                         batchCreationJson,
-                        primaryCredential.getUsername(),
-                        primaryCredential.getPassword());
+                        sccPrimaryCredentials.getUsername(),
+                        sccPrimaryCredentials.getPassword());
 
                 for (SCCProxyRecord proxyRecord : recordBatch) {
                     Optional<SCCSystemCredentialsJson> maybeSystemCredential = response.getSystems().stream()
@@ -313,9 +351,9 @@ public class SCCSystemRegistrationManager {
     /**
      * Insert or Update virtualization host data at SCC
      * @param virtHosts the virtual host data
-     * @param primaryCredential primary credential
+     * @param sccPrimaryCredentials primary credential
      */
-    public void virtualInfo(List<SCCVirtualizationHostJson> virtHosts, SCCCredentials primaryCredential) {
+    public void virtualInfo(List<SCCVirtualizationHostJson> virtHosts, SCCCredentials sccPrimaryCredentials) {
         ArrayList<List<SCCVirtualizationHostJson>> batches = new ArrayList<>(
                 IntStream.range(0, virtHosts.size()).boxed().collect(
                         Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
@@ -323,8 +361,9 @@ public class SCCSystemRegistrationManager {
                         )).values());
         for (List<SCCVirtualizationHostJson> batch: batches) {
             try {
-                sccClient.setVirtualizationHost(batch, primaryCredential.getUsername(),
-                        primaryCredential.getPassword());
+                sccClient.setVirtualizationHost(batch,
+                        sccPrimaryCredentials.getUsername(),
+                        sccPrimaryCredentials.getPassword());
             }
             catch (SCCClientException e) {
                 LOG.error("SCC error while updating virtualization hosts", e);
@@ -338,9 +377,9 @@ public class SCCSystemRegistrationManager {
     /**
      * Insert or Update virtualization host data at SCC
      * @param proxyVirtHosts the virtual host data
-     * @param sccPrimaryOrProxyCredentialsIn primary credential
+     * @param sccPrimaryCredentials primary credential
      */
-    public void proxyVirtualInfo(List<SCCProxyRecord> proxyVirtHosts, SCCCredentials sccPrimaryOrProxyCredentialsIn) {
+    public void proxyVirtualInfo(List<SCCProxyRecord> proxyVirtHosts, SCCCredentials sccPrimaryCredentials) {
         ArrayList<List<SCCProxyRecord>> batches = new ArrayList<>(
                 IntStream.range(0, proxyVirtHosts.size()).boxed().collect(
                         Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
@@ -352,8 +391,9 @@ public class SCCSystemRegistrationManager {
                 List<SCCVirtualizationHostJson> batch = recordBatch.stream()
                         .map(r -> gson.fromJson(r.getSccCreationJson(), SCCVirtualizationHostJson.class))
                         .toList();
-                sccClient.setVirtualizationHost(batch, sccPrimaryOrProxyCredentialsIn.getUsername(),
-                        sccPrimaryOrProxyCredentialsIn.getPassword());
+                sccClient.setVirtualizationHost(batch,
+                        sccPrimaryCredentials.getUsername(),
+                        sccPrimaryCredentials.getPassword());
                 recordBatch.forEach(sccProxyFactory::remove);
             }
             catch (SCCClientException e) {
