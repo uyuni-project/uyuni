@@ -22,11 +22,13 @@ import java.util.Objects;
 /**
  * Represents the manager version, which can be in one of two formats:
  * - Semantic versioning (X.Y.Z): where X is the major version, Y is the minor version, and Z is the patch version.
+ * Build metadata is ignored.
  * - Date-based versioning (X.Y): where X represents the year and Y represents the month.
  * Both formats are compared left to right, with each component having hierarchical significance.
  * Only versions of the same format can be compared to each other.
  */
 public class ManagerVersion implements Comparable<ManagerVersion>, Serializable {
+
     private final boolean isUyuni;
     private final int major;
     private final int minor;
@@ -72,15 +74,32 @@ public class ManagerVersion implements Comparable<ManagerVersion>, Serializable 
             this.patch = -1;  // neutral value for comparing this format
         }
         else {
-            if (parts.length != 3) {
+            if (parts.length < 3) {
                 throw new IllegalArgumentException(
                         String.format("Invalid %s version format", ConfigDefaults.get().getProductName())
                 );
             }
             this.major = Integer.parseInt(parts[0]);
             this.minor = Integer.parseInt(parts[1]);
-            this.patch = Integer.parseInt(parts[2]);
+            this.patch = parsePatch(parts[2]);
         }
+    }
+
+    /**
+     * Parses the patch version from the given string.
+     *
+     * @param patchPart the patch part of the version string
+     * @return the parsed patch version
+     */
+    private int parsePatch(String patchPart) {
+        String digitPrefix = patchPart.replaceFirst("\\D.*", "");
+        if (digitPrefix.isEmpty()) {
+            throw new IllegalArgumentException(
+                    String.format("Invalid %s version format: patch is not numeric",
+                            ConfigDefaults.get().getProductName())
+            );
+        }
+        return Integer.parseInt(digitPrefix);
     }
 
 
