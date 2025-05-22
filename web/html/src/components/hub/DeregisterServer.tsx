@@ -37,7 +37,7 @@ export class DeregisterServer extends React.Component<Props, State> {
           handler={() => this.setState({ confirmDeregistration: true })}
           text={t("Deregister")}
           title={t("Deregister from the hub")}
-          icon="fa-minus"
+          icon="fa-trash"
         />
         <DangerDialog
           id="confirm-deregister-modal"
@@ -45,7 +45,7 @@ export class DeregisterServer extends React.Component<Props, State> {
           content={<span>{this.getConfirmationMessage()}</span>}
           isOpen={this.state.confirmDeregistration}
           submitText={t("Deregister")}
-          submitIcon="fa-minus"
+          submitIcon="fa-trash"
           onConfirm={() => this.onConfirmDeregistration()}
           onClose={() => this.setState({ confirmDeregistration: false })}
         />
