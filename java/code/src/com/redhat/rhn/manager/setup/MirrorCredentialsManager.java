@@ -23,26 +23,18 @@ import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
-import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.frontend.xmlrpc.sync.content.SCCContentSyncSource;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
 import com.suse.cloud.CloudPaygManager;
-import com.suse.scc.SCCSystemRegistrationManager;
-import com.suse.scc.client.SCCClient;
-import com.suse.scc.client.SCCConfig;
-import com.suse.scc.client.SCCConfigBuilder;
-import com.suse.scc.client.SCCWebClient;
+import com.suse.scc.SCCTaskManager;
 import com.suse.scc.model.SCCSubscriptionJson;
-import com.suse.scc.proxy.SCCProxyFactory;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -206,24 +198,12 @@ public class MirrorCredentialsManager {
         }
 
         // Check for systems registered under this credentials and start delete requests
-        List<SCCRegCacheItem> itemList = SCCCachingFactory.listRegItemsByCredentials(dbCreds);
-        log.debug("{} RegCacheItems found to force delete", itemList.size());
-        try {
-            URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
-            String uuid = ContentSyncManager.getUUID();
-            SCCConfig sccConfig = new SCCConfigBuilder()
-                    .setUrl(url)
-                    .setUsername("")
-                    .setPassword("")
-                    .setUuid(uuid)
-                    .createSCCConfig();
-            SCCClient sccClient = new SCCWebClient(sccConfig);
-            SCCProxyFactory sccProxyFactory = new SCCProxyFactory();
-            SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(sccClient, sccProxyFactory);
-            sccRegManager.deregister(itemList, true);
-        }
-        catch (URISyntaxException e) {
-            log.error("Invalid SCC URL configured.", e);
+        SCCTaskManager sccTaskManager = new SCCTaskManager();
+        sccTaskManager.cleanupSccWhenDeletingPrimaryCredentials(dbCreds);
+
+        //deregister all proxy items if primary credentials
+        if (credentials.isPrimary()) {
+            sccTaskManager.cleanupSccProxyWhenDeletingPrimaryCredentials();
         }
 
         // Clear Repository Authentications
