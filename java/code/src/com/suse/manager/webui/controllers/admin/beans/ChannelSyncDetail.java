@@ -18,6 +18,7 @@ public record ChannelSyncDetail(
     String channelLabel,
     String channelArch,
     ChannelOrg channelOrg,
+    ChannelOrg selectedPeripheralOrg,
     String parentChannelLabel,
     String originalChannelLabel,
     List<ChannelSyncDetail> children,

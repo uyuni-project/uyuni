@@ -1216,29 +1216,44 @@ public class HubManager {
         List<OrgInfoJson> peripheralOrgs = getPeripheralOrgs(user, peripheralId);
 
         IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
-        Set<Long> syncedChannelSet = issPeripheral.getPeripheralChannels().stream()
-            .map(IssPeripheralChannels::getChannel)
-            .map(Channel::getId)
-            .collect(Collectors.toSet());
+        Map<Long, IssPeripheralChannels> syncedChannelToIssChannelMap = issPeripheral.getPeripheralChannels().stream()
+            .collect(Collectors.toMap(pc -> pc.getChannel().getId(), pc -> pc));
 
         List<ChannelSyncDetail> channelDetails = ChannelFactory.listAllBaseChannels(user).stream()
-            .map(channel -> buildChannelSyncDetail(channel, user, syncedChannelSet))
+            .map(channel -> buildChannelSyncDetail(channel, user, syncedChannelToIssChannelMap, peripheralOrgs))
             .toList();
 
         return new ChannelSyncModel(peripheralOrgs, channelDetails);
     }
 
-    private ChannelSyncDetail buildChannelSyncDetail(Channel channel, User user, Set<Long> syncedChannelSet) {
+    private ChannelSyncDetail buildChannelSyncDetail(Channel channel, User user,
+                                                     Map<Long, IssPeripheralChannels> syncedChannelToIssChannelMap,
+                                                     List<OrgInfoJson> peripheralOrgs) {
         List<ChannelSyncDetail> children = ChannelFactory.getAccessibleChildChannels(channel, user).stream()
-            .map(child -> buildChannelSyncDetail(child, user, syncedChannelSet))
+            .map(child -> buildChannelSyncDetail(child, user, syncedChannelToIssChannelMap, peripheralOrgs))
             .toList();
 
         List<ChannelSyncDetail> clones = Optional.ofNullable(channel.getClonedChannels()).stream()
                 .flatMap(Collection::stream)
-                .map(clone -> buildChannelSyncDetail(clone, user, syncedChannelSet))
+                .map(clone -> buildChannelSyncDetail(clone, user, syncedChannelToIssChannelMap, peripheralOrgs))
                 .toList();
 
         Channel originalChannel = ChannelFactory.lookupOriginalChannel(channel);
+
+        ChannelOrg selectedChannelOrg = null;
+        if (channel.getOrg() != null) {
+            // Custom Channel
+            IssPeripheralChannels peripheralChannel = syncedChannelToIssChannelMap.get(channel.getId());
+            selectedChannelOrg = peripheralOrgs.stream().filter(po ->
+                        //channel is synced
+                        (peripheralChannel != null &&
+                                Objects.equals(peripheralChannel.getPeripheralOrgId(), po.getOrgId())) ||
+                        // or channel exists on the peripheral side
+                        po.getOrgChannelLabels().contains(channel.getLabel()))
+                    .map(po -> new ChannelOrg(po.getOrgId(), po.getOrgName()))
+                    .findFirst()
+                    .orElse(null);
+        }
 
         return new ChannelSyncDetail(
             channel.getId(),
@@ -1246,11 +1261,12 @@ public class HubManager {
             channel.getLabel(),
             channel.getChannelArch().getName(),
             Optional.ofNullable(channel.getOrg()).map(ChannelOrg::new).orElse(null),
+            selectedChannelOrg,
             Optional.ofNullable(channel.getParentChannel()).map(Channel::getLabel).orElse(null),
             Optional.ofNullable(originalChannel).map(Channel::getLabel).orElse(null),
             children,
             clones,
-            syncedChannelSet.contains(channel.getId())
+            syncedChannelToIssChannelMap.containsKey(channel.getId())
         );
     }
 
