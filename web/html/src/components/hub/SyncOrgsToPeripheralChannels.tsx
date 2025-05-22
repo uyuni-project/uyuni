@@ -30,7 +30,6 @@ type State = {
   channelsToAdd: number[];
   channelsToRemove: number[];
   loading: boolean;
-  channelOrgMapping: Record<number, number>;
 };
 
 /**
@@ -55,8 +54,10 @@ function flattenChannels(channels: Channel[]): FlatChannel[] {
       channelLabel: channel.channelLabel,
       channelArch: channel.channelArch,
       channelOrg: channel.channelOrg,
+      selectedPeripheralOrg: channel.selectedPeripheralOrg,
       parentChannelLabel: channel.parentChannelLabel,
       childrenLabels: childrenLabels,
+      strictOrg: channel.strictOrg,
       synced: channel.synced,
     };
     flatChannels.push(flatChannel);
@@ -72,6 +73,13 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
   constructor(props: SyncPeripheralsProps) {
     super(props);
 
+    props.channels.forEach((channel) => {
+      if (!channel) return;
+      if (channel.selectedPeripheralOrg !== null) {
+        channel.strictOrg = true;
+      }
+    });
+
     this.state = {
       peripheralId: props.peripheralId,
       peripheralFqdn: props.peripheralFqdn,
@@ -81,7 +89,6 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       channelsToAdd: [],
       channelsToRemove: [],
       loading: false,
-      channelOrgMapping: {},
     };
   }
 
@@ -150,21 +157,19 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     }
   };
 
-  handleOrgSelect = (channelId: number, orgId?: number) => {
-    const { channelOrgMapping } = this.state;
-    const updatedMapping = { ...channelOrgMapping };
-    if (orgId !== undefined) {
-      updatedMapping[channelId] = orgId;
+  handleOrgSelect = (channelId: number, org?: Org) => {
+    const { channels } = this.state;
+    const channel = channels.find((c) => c.channelId === channelId);
+    if (!channel) return;
+    if (org !== undefined && org !== null) {
+      channel.selectedPeripheralOrg = org;
     } else {
-      if (channelId in updatedMapping) {
-        delete updatedMapping[channelId];
-      }
+      channel.selectedPeripheralOrg = null;
     }
-    this.setState({ channelOrgMapping: updatedMapping });
   };
 
   onChannelSyncConfirm = () => {
-    const { peripheralId, channelsToAdd, channelsToRemove, channelOrgMapping, channels } = this.state;
+    const { peripheralId, channelsToAdd, channelsToRemove, channels } = this.state;
     // Check if there's anything to do
     if (channelsToAdd.length === 0 && channelsToRemove.length === 0) {
       showWarningToastr(t("No changes to apply"));
@@ -177,7 +182,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       const channel = channels.find((c) => c.channelId === id);
       if (!channel) return;
       // For vendor channels, use null as orgId
-      const orgId = channel.channelOrg ? channelOrgMapping[id] || null : null;
+      const orgId = channel.selectedPeripheralOrg ? channel.selectedPeripheralOrg.orgId : null;
       const key = orgId === null ? "null" : orgId.toString();
       if (!orgGroups[key]) {
         orgGroups[key] = [];
@@ -218,6 +223,12 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       })
       .then((response) => {
         const channelSync: ChannelSyncProps = JSON.parse(response);
+        channelSync.channels.forEach((channel) => {
+          if (channel.selectedPeripheralOrg !== null) {
+            channel.strictOrg = true;
+          }
+        });
+
         const newProps = {
           peripheralId: this.props.peripheralId,
           peripheralFqdn: this.props.peripheralFqdn,
@@ -267,21 +278,16 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     const renderChannelLabel = (channel: Channel): JSX.Element => <span>{channel.channelLabel}</span>;
     const renderChannelArch = (channel: Channel): JSX.Element => <span>{channel.channelArch}</span>;
     const renderChannelHubOrg = (channel: Channel): JSX.Element => (
-      <span>{channel.channelOrg ? channel.channelOrg.orgName : "SUSE"}</span>
+      <span>{channel.channelOrg ? channel.channelOrg.orgName : "Vendor"}</span>
     );
 
     const renderChannelSyncOrg = (channel: Channel): JSX.Element => {
-      const { channelOrgMapping, availableOrgs } = this.state;
-      // For vendor channels (no channelOrg), always show "SUSE"
-      if (!channel.channelOrg) {
-        return <span>SUSE</span>;
+      // For vendor channels (peripheralOrgs empty), always show "Vendor"
+      if (channel.channelOrg === null) {
+        return <span>Vendor</span>;
       }
-      // Get the mapped org ID for this channel, if any
-      const selectedOrgId = channelOrgMapping[channel.channelId];
-      if (selectedOrgId !== undefined || selectedOrgId !== null) {
-        // Find the org name from the available orgs
-        const selectedOrg = availableOrgs.find((org) => org.orgId === selectedOrgId);
-        return <span>{selectedOrg ? selectedOrg.orgName : "Unknown"}</span>;
+      if (channel.selectedPeripheralOrg !== undefined || channel.selectedPeripheralOrg !== null) {
+        return <span>{channel.selectedPeripheralOrg ? channel.selectedPeripheralOrg.orgName : "Unknown"}</span>;
       } else {
         // If no org is explicitly selected for syncing, show "Not set"
         return <span className="text-warning">Not set</span>;
@@ -309,8 +315,8 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
             {/* Display a warning if any non-vendor channel doesn't have an org mapping */}
             {channelsToAddData.some(
               (channel) =>
-                (channel.channelOrg && this.state.channelOrgMapping[channel.channelId] === undefined) ||
-                (channel.channelOrg && this.state.channelOrgMapping[channel.channelId] === null)
+                (channel.channelOrg && channel.selectedPeripheralOrg === undefined) ||
+                (channel.channelOrg && channel.selectedPeripheralOrg === null)
             ) && (
               <div className="alert alert-warning">
                 <span className="fa fa-exclamation-triangle"></span>{" "}

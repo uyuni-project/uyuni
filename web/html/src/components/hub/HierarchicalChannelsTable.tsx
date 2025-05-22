@@ -18,7 +18,7 @@ type ChannelWithHierarchy = FlatChannel &
 type ChannelTableProps = {
   channels: FlatChannel[];
   onChannelSelect: (channelId: number, checked: boolean) => void;
-  onOrgSelect?: (channelId: number, orgId?: number) => void;
+  onOrgSelect?: (channelId: number, org?: Org) => void;
   loading?: boolean;
   availableOrgs: Org[];
 };
@@ -111,7 +111,7 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
   }, []);
 
   const renderHubOrgCell = useCallback((row: ChannelWithHierarchy) => {
-    return row.channelOrg ? row.channelOrg.orgName : "SUSE";
+    return row.channelOrg ? row.channelOrg.orgName : "Vendor";
   }, []);
 
   const orgMapping = availableOrgs.map((org) => ({
@@ -121,8 +121,11 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
 
   const renderSyncOrgCell = useCallback(
     (row: ChannelWithHierarchy) => {
-      if (!row.channelOrg) {
-        return <span>SUSE</span>; // Vendor channels can't sync orgs
+      if (row.channelOrg === null) {
+        return <span>Vendor</span>; // Vendor channels can't sync orgs
+      } else if (row.strictOrg && row.selectedPeripheralOrg !== null) {
+        // Only 1 option, no choice
+        return <span>{row.selectedPeripheralOrg.orgName}</span>;
       }
       return (
         <Form>
@@ -133,7 +136,10 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
             options={orgMapping}
             onChange={(_, orgId) => {
               if (onOrgSelect) {
-                onOrgSelect(row.channelId, orgId);
+                onOrgSelect(
+                  row.channelId,
+                  availableOrgs.find((org) => org.orgId === orgId)
+                );
               }
             }}
           />
