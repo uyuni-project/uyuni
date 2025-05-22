@@ -26,7 +26,7 @@ sql:
 		join rhnServerInfo on rhnServer.id=rhnServerInfo.server_id,
 		(
 			select cast(coalesce(value, default_value) as integer) as thresh from rhnConfiguration
-			where key = 'system_checkin_threshold'
+			where key = 'SYSTEM_CHECKIN_THRESHOLD'
 		) C
 	where rhnServerInfo.checkin >= current_timestamp - numtodsinterval(
 	C.thresh * 86400, 'second') and

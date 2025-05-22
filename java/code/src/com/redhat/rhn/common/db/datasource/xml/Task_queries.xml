@@ -92,7 +92,7 @@ SELECT DISTINCT S.id, S.name, SI.checkin
        rhnServerInfo SI,
        rhnUserServerPerms USP,
        (SELECT coalesce(value, default_value)::int AS threshold
-          FROM rhnConfiguration WHERE key = 'system_checkin_threshold') C
+          FROM rhnConfiguration WHERE key = 'SYSTEM_CHECKIN_THRESHOLD') C
  WHERE USP.user_id = :user_id
    AND USP.server_id = SI.server_id
    AND date_diff_in_days(SI.checkin, current_timestamp) BETWEEN 1 AND (1 + C.threshold)
@@ -352,7 +352,7 @@ SELECT id, channel_label, client, reason, force, bypass_filters, next_action
 select distinct sg.org_id as id
   from rhnServerGroup sg, rhnServerGroupType sgt,
        (SELECT coalesce(value, default_value)::int AS threshold
-       FROM rhnConfiguration WHERE key = 'system_checkin_threshold') C
+       FROM rhnConfiguration WHERE key = 'SYSTEM_CHECKIN_THRESHOLD') C
  where SGT.label = 'enterprise_entitled'
    AND SGT.id = SG.group_type
    and sg.org_id in (

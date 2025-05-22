@@ -524,7 +524,7 @@ select * from (
           S.last_boot AS LAST_BOOT
     FROM  rhnServer S, rhnUserServerPerms USP, rhnServerInfo INFO,
           (SELECT coalesce(value, default_value)::int AS threshold
-             FROM rhnConfiguration WHERE key = 'system_checkin_threshold') C
+             FROM rhnConfiguration WHERE key = 'SYSTEM_CHECKIN_THRESHOLD') C
    WHERE  USP.user_id = :user_id
      AND  S.id = USP.server_id
      AND  S.id = INFO.server_id
@@ -812,7 +812,7 @@ SELECT S.id, S.NAME,
   FROM rhnServerInfo SI,
        rhnServer S,
        (SELECT coalesce(value, default_value)::int AS threshold
-          FROM rhnConfiguration WHERE key = 'system_checkin_threshold') C
+          FROM rhnConfiguration WHERE key = 'SYSTEM_CHECKIN_THRESHOLD') C
  WHERE S.org_id = :org_id
    AND EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
    AND SI.server_id = S.id
