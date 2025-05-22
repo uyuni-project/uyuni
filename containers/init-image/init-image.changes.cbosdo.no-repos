@@ -1,0 +1,2 @@
+- Don't get repositories from SCC in the server container
+  (bsc#1242916)
