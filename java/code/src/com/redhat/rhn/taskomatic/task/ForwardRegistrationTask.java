@@ -132,11 +132,13 @@ public class ForwardRegistrationTask extends RhnJavaJob {
             sccRegManager.deregister(deregister, false);
             sccRegManager.register(forwardRegistration, primaryCredentials);
             sccRegManager.virtualInfo(virtHosts, primaryCredentials);
-            if (LocalDateTime.now().isAfter(nextLastSeenUpdateRun)) {
-                sccRegManager.updateLastSeen(primaryCredentials);
-                // next run in 22 - 26 hours
-                nextLastSeenUpdateRun = nextLastSeenUpdateRun.plusMinutes(
-                        ThreadLocalRandom.current().nextInt(22 * 60, 26 * 60));
+            synchronized (this) {
+                if (LocalDateTime.now().isAfter(nextLastSeenUpdateRun)) {
+                    sccRegManager.updateLastSeen(primaryCredentials);
+                    // next run in 22 - 26 hours
+                    nextLastSeenUpdateRun = nextLastSeenUpdateRun.plusMinutes(
+                            ThreadLocalRandom.current().nextInt(22 * 60, 26 * 60));
+                }
             }
         }
         catch (URISyntaxException e) {
