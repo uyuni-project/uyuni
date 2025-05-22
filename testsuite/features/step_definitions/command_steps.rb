@@ -8,6 +8,7 @@ require 'nokogiri'
 require 'pg'
 require 'set'
 require 'date'
+require 'openssl'
 
 # Sanity checks
 
@@ -1047,16 +1048,12 @@ When(/^I install package tftpboot-installation on the server$/) do
   end
 end
 
-When(/I copy the tftpboot installation files from the build host to the server$/) do
-  node = get_target('build_host')
-  file = 'copy-tftpboot-files.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
-  dest = "/tmp/#{file}"
-  success = file_inject(node, source, dest)
-  raise ScriptError, 'File injection failed' unless success
-
-  hostname = get_target('server').full_hostname
-  node.run("expect -f #{dest} #{hostname}")
+When(/I copy "([^"]*)" from "([^"]*)" to "([^"]*)" via scp in the path "([^"]*)"$/) do |file, origin, dest, dest_folder|
+  node_origin = get_target(origin)
+  node_dest = get_target(dest)
+  dest_hostname = node_dest.hostname
+  _command_output, return_code = node_origin.run("/usr/bin/scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r #{file} root@#{dest_hostname}:#{dest_folder}")
+  raise StandardError, "File could not be sent from #{origin} to #{dest}" unless return_code.zero?
 end
 
 When(/I copy the distribution inside the container on the server$/) do
