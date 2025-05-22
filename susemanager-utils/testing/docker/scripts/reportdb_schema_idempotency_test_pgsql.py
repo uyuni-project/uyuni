@@ -149,6 +149,7 @@ def create_fake_migration_path(schema_path, new_version, pr_file=None, version=N
     print("Creating: " + fake_path)
     os.mkdir(fake_path)
     num = 0
+    # pylint: disable-next=possibly-used-before-assignment
     for migration_file in files:
         pcom = migration_file.split("/")
         f = pcom.pop()
@@ -284,6 +285,7 @@ def diff_dumps(initial_dump, migrated_dump):
                 if line.endswith("FROM stdin;"):
                     in_table = True
             else:
+                # pylint: disable-next=anomalous-backslash-in-string
                 if line == "\.":
                     res += sorted(table)
                     res.append(line)

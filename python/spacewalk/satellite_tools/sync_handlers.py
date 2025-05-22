@@ -501,7 +501,6 @@ def _to_timestamp(t):
 
 
 class ContainerHandler:
-
     """generate and set container XML handlers"""
 
     def __init__(self, master_label, create_orgs=False):
