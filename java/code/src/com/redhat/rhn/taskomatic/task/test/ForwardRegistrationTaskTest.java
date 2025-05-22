@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -41,7 +40,6 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
-import com.redhat.rhn.taskomatic.task.ForwardRegistrationTask;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 
@@ -55,6 +53,7 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.scc.SCCEndpoints;
 import com.suse.scc.SCCSystemRegistrationManager;
+import com.suse.scc.SCCTaskManager;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
@@ -115,7 +114,6 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
     private SystemEntitlementManager systemEntitlementManager;
 
     private MockHttpClientAdapter testHttpClientAdapter;
-    private MockForwardRegistrationTask testForwardRegistrationTask;
     private static SCCProxyFactory testSccProxyFactory;
     private MockSCCSystemRegistrationManager testSCCSystemRegistrationManager;
 
@@ -206,26 +204,36 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         }
     }
 
-    static class MockForwardRegistrationTask extends ForwardRegistrationTask {
-        MockForwardRegistrationTask() {
+    static class MockCredentialsSCCTaskManager extends SCCTaskManager {
+        public static Optional<SCCCredentials> getStandardSCCCredentials() {
+            MockCredentialsSCCTaskManager dummySCCTaskManager = new MockCredentialsSCCTaskManager();
+            return dummySCCTaskManager.getSCCCredentials();
+        }
+        @Override
+        public Optional<SCCCredentials> getSCCCredentials() {
+            return super.getSCCCredentials();
+        }
+    }
+
+    static class MockSCCTaskManager extends SCCTaskManager {
+        protected static LocalDateTime nextLastSeenUpdateRun = LocalDateTime.now();
+
+        private SCCSystemRegistrationManager sccRegManager;
+        private SCCCredentials sccCredentials;
+
+        MockSCCTaskManager(SCCSystemRegistrationManager sccRegManagerIn, SCCCredentials sccCredentialsIn) {
+            sccRegManager = sccRegManagerIn;
+            sccCredentials = sccCredentialsIn;
             enableUpdateLastSeenUpdate(false);
         }
 
-        @Override
-        public void executeSCCTasksAsServer(SCCSystemRegistrationManager sccRegManager,
-                                            SCCCredentials sccPrimaryOrProxyCredentials) {
-            super.executeSCCTasksAsServer(sccRegManager, sccPrimaryOrProxyCredentials);
+        public void executeSCCTasksAsServer() {
+            super.executeSCCTasksAsServer(nextLastSeenUpdateRun);
         }
 
         @Override
-        public void executeSCCTasksAsProxy(SCCSystemRegistrationManager sccRegManager,
-                                           SCCCredentials sccPrimaryOrProxyCredentials) {
-            super.executeSCCTasksAsProxy(sccRegManager, sccPrimaryOrProxyCredentials);
-        }
-
-        public Optional<SCCCredentials> setupTaskGetSccCredentials() {
-            setupTaskConfiguration();
-            return taskConfigSccCredentials;
+        public void executeSCCTasksAsProxy() {
+            super.executeSCCTasksAsProxy();
         }
 
         public static void enableUpdateLastSeenUpdate(boolean enable) {
@@ -235,6 +243,16 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
             else {
                 nextLastSeenUpdateRun = LocalDateTime.now().plusDays(1);
             }
+        }
+
+        @Override
+        protected SCCSystemRegistrationManager getSCCSystemRegistrationManager() {
+            return sccRegManager;
+        }
+
+        @Override
+        public Optional<SCCCredentials> getSCCCredentials() {
+            return Optional.ofNullable(sccCredentials);
         }
     }
 
@@ -455,7 +473,6 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         testHttpClientAdapter.setSimulateProxy();
         MockSCCWebClient testSCCWebClient =
                 new MockSCCWebClient(new SCCConfigBuilder().createSCCConfig(), testHttpClientAdapter);
-        testForwardRegistrationTask = new MockForwardRegistrationTask();
         synchronized (this) {
             testSccProxyFactory = new SCCProxyFactory();
         }
@@ -647,8 +664,12 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         setupTest();
 
         testVerifier.assertPreConditions();
-        testForwardRegistrationTask.executeSCCTasksAsServer(mockSystemRegistrationManagerWithCount, primaryCredentials);
-        testForwardRegistrationTask.executeSCCTasksAsProxy(mockSystemRegistrationManagerWithCount, primaryCredentials);
+
+        MockSCCTaskManager mockSccTaskManager =
+                new MockSCCTaskManager(mockSystemRegistrationManagerWithCount, primaryCredentials);
+        mockSccTaskManager.executeSCCTasksAsServer();
+        mockSccTaskManager.executeSCCTasksAsProxy();
+
         testVerifier
                 .assertPostConditionsRegisteredCount(0)
                 .assertPostConditionsFailedCount(0)
@@ -661,8 +682,12 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         servers.stream().forEach(i -> i.setPayg(true));
 
         testVerifier.assertPreConditions();
-        testForwardRegistrationTask.executeSCCTasksAsServer(mockSystemRegistrationManagerWithCount, primaryCredentials);
-        testForwardRegistrationTask.executeSCCTasksAsProxy(mockSystemRegistrationManagerWithCount, primaryCredentials);
+
+        MockSCCTaskManager mockSccTaskManager =
+                new MockSCCTaskManager(mockSystemRegistrationManagerWithCount, primaryCredentials);
+        mockSccTaskManager.executeSCCTasksAsServer();
+        mockSccTaskManager.executeSCCTasksAsProxy();
+
         testVerifier
                 .assertPostConditionsRegisteredCount(0)
                 .assertPostConditionsFailedCount(0)
@@ -674,8 +699,12 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         setupTest();
 
         testVerifier.assertPreConditions();
-        testForwardRegistrationTask.executeSCCTasksAsServer(mockSystemRegistrationManagerWithCount, primaryCredentials);
-        testForwardRegistrationTask.executeSCCTasksAsProxy(mockSystemRegistrationManagerWithCount, primaryCredentials);
+
+        MockSCCTaskManager mockSccTaskManager =
+                new MockSCCTaskManager(mockSystemRegistrationManagerWithCount, primaryCredentials);
+        mockSccTaskManager.executeSCCTasksAsServer();
+        mockSccTaskManager.executeSCCTasksAsProxy();
+
         testVerifier
                 .assertPostConditionsRegisteredCount(15)
                 .assertPostConditionsFailedCount(0)
@@ -690,8 +719,12 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         setupTest();
 
         testVerifier.assertPreConditions();
-        testForwardRegistrationTask.executeSCCTasksAsServer(mockSystemRegistrationManagerWithCount, primaryCredentials);
-        testForwardRegistrationTask.executeSCCTasksAsProxy(mockSystemRegistrationManagerWithCount, primaryCredentials);
+
+        MockSCCTaskManager mockSccTaskManager =
+                new MockSCCTaskManager(mockSystemRegistrationManagerWithCount, primaryCredentials);
+        mockSccTaskManager.executeSCCTasksAsServer();
+        mockSccTaskManager.executeSCCTasksAsProxy();
+
         testVerifier
                 .assertPostConditionsRegisteredCount(0)
                 .assertPostConditionsFailedCount(15)
@@ -722,8 +755,12 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         }
 
         testVerifier.assertPreConditions();
-        testForwardRegistrationTask.executeSCCTasksAsServer(mockSystemRegistrationManagerWithCount, primaryCredentials);
-        testForwardRegistrationTask.executeSCCTasksAsProxy(mockSystemRegistrationManagerWithCount, primaryCredentials);
+
+        MockSCCTaskManager mockSccTaskManager =
+                new MockSCCTaskManager(mockSystemRegistrationManagerWithCount, primaryCredentials);
+        mockSccTaskManager.executeSCCTasksAsServer();
+        mockSccTaskManager.executeSCCTasksAsProxy();
+
         testVerifier
                 .assertPostConditionsRegisteredCount(16)
                 .assertPostConditionsFailedCount(9)
@@ -739,8 +776,12 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         setupVirtualHostWithGuest();
 
         testVerifier.assertPreConditions();
-        testForwardRegistrationTask.executeSCCTasksAsServer(mockSystemRegistrationManagerWithCount, primaryCredentials);
-        testForwardRegistrationTask.executeSCCTasksAsProxy(mockSystemRegistrationManagerWithCount, primaryCredentials);
+
+        MockSCCTaskManager mockSccTaskManager =
+                new MockSCCTaskManager(mockSystemRegistrationManagerWithCount, primaryCredentials);
+        mockSccTaskManager.executeSCCTasksAsServer();
+        mockSccTaskManager.executeSCCTasksAsProxy();
+
         testVerifier
                 .assertPostConditionsRegisteredCount(2)
                 .assertPostConditionsFailedCount(0)
@@ -763,7 +804,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
         testVerifier.assertPreConditions();
 
-        Optional<SCCCredentials> optCred = testForwardRegistrationTask.setupTaskGetSccCredentials();
+        Optional<SCCCredentials> optCred = MockCredentialsSCCTaskManager.getStandardSCCCredentials();
         if (optCred.isEmpty()) {
             throw new IllegalStateException("optCred should have a value");
         }
@@ -789,7 +830,8 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
                 .verifyProxyRemovalPending(0)
                 .verifyProxyVirtHostPending(0);
 
-        testForwardRegistrationTask.executeSCCTasksAsServer(testSCCSystemRegistrationManager, optCred.get());
+        MockSCCTaskManager mockSccTaskManager = new MockSCCTaskManager(testSCCSystemRegistrationManager, optCred.get());
+        mockSccTaskManager.executeSCCTasksAsServer();
 
         testVerifier
                 .assertPostConditionsRegisteredCount(systemSize)
@@ -831,7 +873,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         SCCCachingFactory.listDeregisterItems().forEach(SCCCachingFactory::deleteRegCacheItem);
 
         testHttpClientAdapter.setSimulateScc();
-        testForwardRegistrationTask.executeSCCTasksAsProxy(testSCCSystemRegistrationManager, optCred.get());
+        mockSccTaskManager.executeSCCTasksAsProxy();
 
         // verify on the Hub:
         // - 2 proxy systems registered against SCC
@@ -858,7 +900,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
         testVerifier.assertPreConditions();
 
-        Optional<SCCCredentials> optCred = testForwardRegistrationTask.setupTaskGetSccCredentials();
+        Optional<SCCCredentials> optCred = MockCredentialsSCCTaskManager.getStandardSCCCredentials();
         if (optCred.isEmpty()) {
             throw new IllegalStateException("optCred should have a value");
         }
@@ -883,7 +925,8 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
                 .verifyProxyVirtHostPending(0)
                 .verifyProxyUpdateLastSeenPending(0);
 
-        testForwardRegistrationTask.executeSCCTasksAsServer(testSCCSystemRegistrationManager, optCred.get());
+        MockSCCTaskManager mockSccTaskManager = new MockSCCTaskManager(testSCCSystemRegistrationManager, optCred.get());
+        mockSccTaskManager.executeSCCTasksAsServer();
 
         testVerifier
                 .assertPostConditionsRegisteredCount(systemSize)
@@ -934,7 +977,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         ServerFactory.delete(servers.get(1));
         int newSystemSize = systemSize - 2;
 
-        testForwardRegistrationTask.executeSCCTasksAsServer(testSCCSystemRegistrationManager, optCred.get());
+        mockSccTaskManager.executeSCCTasksAsServer();
 
         // verify on the Hub:
         // - two less systems pending to be registered against SCC
@@ -963,7 +1006,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         SCCCachingFactory.listDeregisterItems().forEach(SCCCachingFactory::deleteRegCacheItem);
 
         testHttpClientAdapter.setSimulateScc();
-        testForwardRegistrationTask.executeSCCTasksAsProxy(testSCCSystemRegistrationManager, optCred.get());
+        mockSccTaskManager.executeSCCTasksAsProxy();
 
         // verify on the Hub:
         // - newSystemSize proxy systems registered against SCC
@@ -990,7 +1033,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
         testVerifier.assertPreConditions();
 
-        Optional<SCCCredentials> optCred = testForwardRegistrationTask.setupTaskGetSccCredentials();
+        Optional<SCCCredentials> optCred = MockCredentialsSCCTaskManager.getStandardSCCCredentials();
         if (optCred.isEmpty()) {
             throw new IllegalStateException("optCred should have a value");
         }
@@ -1000,9 +1043,10 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
         //create systems
         testHttpClientAdapter.setSimulateProxy();
-        testForwardRegistrationTask.executeSCCTasksAsServer(testSCCSystemRegistrationManager, optCred.get());
+        MockSCCTaskManager mockSccTaskManager = new MockSCCTaskManager(testSCCSystemRegistrationManager, optCred.get());
+        mockSccTaskManager.executeSCCTasksAsServer();
         testHttpClientAdapter.setSimulateScc();
-        testForwardRegistrationTask.executeSCCTasksAsProxy(testSCCSystemRegistrationManager, optCred.get());
+        mockSccTaskManager.executeSCCTasksAsProxy();
 
         // verify on the Hub:
         // - systemSize proxy systems registered against SCC
@@ -1014,9 +1058,9 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
                 .verifyProxyUpdateLastSeenPending(0);
 
         //simulate receiving updateLastSeen data
-        MockForwardRegistrationTask.enableUpdateLastSeenUpdate(true);
+        MockSCCTaskManager.enableUpdateLastSeenUpdate(true);
         testHttpClientAdapter.setSimulateProxy();
-        testForwardRegistrationTask.executeSCCTasksAsServer(testSCCSystemRegistrationManager, optCred.get());
+        mockSccTaskManager.executeSCCTasksAsServer();
 
         testVerifier
                 .verifyProxyCreationPending(0)
@@ -1038,7 +1082,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
 
         //simulate forwarding updateLastSeen data to the SCC
         testHttpClientAdapter.setSimulateScc();
-        testForwardRegistrationTask.executeSCCTasksAsProxy(testSCCSystemRegistrationManager, optCred.get());
+        mockSccTaskManager.executeSCCTasksAsProxy();
 
         testVerifier
                 .verifyProxyCreationPending(0)
