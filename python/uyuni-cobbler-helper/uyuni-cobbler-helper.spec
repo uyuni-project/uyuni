@@ -15,18 +15,8 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-
 ## The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
 %{!?productprettyname: %global productprettyname Uyuni}
-
-# Keep in sync with salt/salt.spec
-%if 0%{?suse_version} == 1500 && 0%{?sle_version} >= 150700
-%global use_python python311
-%else
-%global use_python python3
-%endif
-
 
 Name:           uyuni-cobbler-helper
 Version:        5.1.0
@@ -38,10 +28,12 @@ URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-
-Requires:       python3
-Requires:       %{use_python}-psycopg2 >= 2.8.4
-BuildRequires:  python3-rpm-macros
+BuildRequires:  python-rpm-macros
+BuildRequires:  %{python_module base}
+Requires:       python
+Requires:       python-psycopg2 >= 2.8.4
+Provides:       uyuni-cobbler-helper
+%python_subpackages
 
 %description
 This package provides utility functions to expose %{productprettyname} data to Cobbler snippets.
@@ -52,10 +44,13 @@ This package provides utility functions to expose %{productprettyname} data to C
 %build
 
 %install
-install -d %{buildroot}%{python3_sitelib}
-install -m 644 uyuni_cobbler_helper.py %{buildroot}%{python3_sitelib}/uyuni_cobbler_helper.py
+%{python_expand # expanded-body:
+  install -d %{buildroot}%{$python_sitelib}
+  install -m 644 uyuni_cobbler_helper.py %{buildroot}%{$python_sitelib}/uyuni_cobbler_helper.py
+}
 
-%files
-%{python3_sitelib}/uyuni_cobbler_helper.py
+
+%files %{python_files}
+%{python_sitelib}/uyuni_cobbler_helper.py
 
 %changelog
