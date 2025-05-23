@@ -21,13 +21,12 @@ function update_po() {
     pushd $PO_DIR
     make update-po
     make clean
-    for change in `git diff --numstat | awk '{print $1}'`; do
-        if [ $change -gt 1 ]; then
-            git add -u
-            git commit -m "update strings for translations in $CODE_DIR"
-            popd
-            return 2
-        fi
+    # we ignore changes in location (#: ) and the POT-Creation-Date change
+    for change in `git diff --ignore-matching-lines="#: " --ignore-matching-lines="POT-Creation-Date" --numstat | awk '{print $1}'`; do
+        git add -u
+        git commit -m "update strings for translations in $CODE_DIR"
+        popd
+        return 2
     done
     git reset --hard
     popd
