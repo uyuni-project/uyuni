@@ -110,10 +110,6 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
     return row.channelArch;
   }, []);
 
-  const renderHubOrgCell = useCallback((row: ChannelWithHierarchy) => {
-    return row.channelOrg ? row.channelOrg.orgName : "Vendor";
-  }, []);
-
   const orgMapping = availableOrgs.map((org) => ({
     value: org.orgId,
     label: org.orgName,
@@ -194,7 +190,6 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
         <Column columnKey="synced" header={t("Sync")} cell={renderSyncCell} width="60px" />
         <Column columnKey="channelLabel" header={t("Channel Label")} cell={renderChannelLabelCell} />
         <Column columnKey="channelArch" header={t("Architecture")} cell={renderArchCell} />
-        <Column columnKey="channelOrg" header={t("Hub Org")} cell={renderHubOrgCell} />
         <Column columnKey="channelOrg" header={t("Sync Org")} cell={renderSyncOrgCell} />
       </HierarchicalTable>
     </div>

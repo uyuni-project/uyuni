@@ -277,9 +277,6 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     const renderChannelName = (channel: Channel): JSX.Element => <span>{channel.channelName}</span>;
     const renderChannelLabel = (channel: Channel): JSX.Element => <span>{channel.channelLabel}</span>;
     const renderChannelArch = (channel: Channel): JSX.Element => <span>{channel.channelArch}</span>;
-    const renderChannelHubOrg = (channel: Channel): JSX.Element => (
-      <span>{channel.channelOrg ? channel.channelOrg.orgName : "Vendor"}</span>
-    );
 
     const renderChannelSyncOrg = (channel: Channel): JSX.Element => {
       // For vendor channels (peripheralOrgs empty), always show "Vendor"
@@ -309,7 +306,6 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
               <Column columnKey="channelName" header={t("Name")} cell={renderChannelName} />
               <Column columnKey="channelLabel" header={t("Label")} cell={renderChannelLabel} />
               <Column columnKey="channelArch" header={t("Arch")} cell={renderChannelArch} />
-              <Column columnKey="orgName" header={t("Hub Org")} cell={renderChannelHubOrg} />
               <Column columnKey="orgName" header={t("Sync Org")} cell={renderChannelSyncOrg} />
             </Table>
             {/* Display a warning if any non-vendor channel doesn't have an org mapping */}
@@ -346,7 +342,6 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
             <Column columnKey="channelName" header={t("Name")} cell={renderChannelName} />
             <Column columnKey="channelLabel" header={t("Label")} cell={renderChannelLabel} />
             <Column columnKey="channelArch" header={t("Arch")} cell={renderChannelArch} />
-            <Column columnKey="orgName" header={t("Hub Org")} cell={renderChannelHubOrg} />
             <Column columnKey="orgName" header={t("Sync Org")} cell={renderChannelSyncOrg} />
           </Table>
         ) : (
