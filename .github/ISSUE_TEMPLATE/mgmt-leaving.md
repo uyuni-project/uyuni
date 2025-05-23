@@ -41,6 +41,7 @@ General template for leavers of the SUSE Multi-Linux team.
 - [ ] Confluence
   - [ ] Remove from the [team overview page](https://confluence.suse.com/display/SUSEMANAGER/)
   - [ ] Remove from the [squads page](https://confluence.suse.com/display/SUSEMANAGER/Squads%2C+People+and+Topics), cleaning ownerships if needed
+  - [ ] Depending the role, remove the user from the groups [https://gitlab.suse.de/jira/ldap-server/-/blob/master/teams/user/multi-linux-teamleads.def](multi-linux-teamleads) and [https://gitlab.suse.de/jira/ldap-server/-/blob/master/teams/user/multi-linux-lt.def](multi-linux-lt) with a GitLab MR
 - [ ] Mailing lists
   - [ ] [galaxy-alerts](https://mailman.suse.de/mailman/admin/galaxy-alerts/members/remove)
   - [ ] [galaxy-bugs](https://mailman.suse.de/mailman/admin/galaxy-bugs/members/remove)
@@ -49,7 +50,6 @@ General template for leavers of the SUSE Multi-Linux team.
   - [ ] [galaxy-infra](https://mailman.suse.de/mailman/admin/galaxy-infra/members/remove)
   - [ ] [galaxy-noise](https://mailman.suse.de/mailman/admin/galaxy-noise/members/remove)
   - [ ] [galaxy-releng](https://mailman.suse.de/mailman/admin/galaxy-releng/members/remove)
-  - [ ] [galaxy-team](https://mailman.suse.de/mailman/admin/galaxy-team/members/remove)
   - [ ] [salt](https://mailman.suse.de/mailman/admin/salt/members/remove)
   - [ ] [salt-maintainers](https://mailman.suse.de/mailman/admin/salt-maintainers/members/remove)
   - [ ] [multi-linux-manager](https://mailman.suse.de/mailman/admindb/multi-linux-manager/)
