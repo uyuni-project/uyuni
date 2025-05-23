@@ -11,8 +11,7 @@ msgstr ""
 "POT-Creation-Date: 2025-05-23 10:52+0200\n"
 "PO-Revision-Date: 2025-05-19 16:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
-"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/"
-"spacecmd-5-0/ca/>\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/spacecmd-5-0/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,8 +29,7 @@ msgstr "ús: clau d'activacióaddpackages <PACKAGE ...>"
 
 #: ../src/spacecmd/activationkey.py:86
 msgid "activationkey_removepackages: Remove packages from an activation key"
-msgstr ""
-"activationkeyremovepackages: Elimina els paquets d'una clau d'activació"
+msgstr "activationkeyremovepackages: Elimina els paquets d'una clau d'activació"
 
 #: ../src/spacecmd/activationkey.py:88
 msgid "usage: activationkey_removepackages KEY <PACKAGE ...>"
@@ -62,10 +60,8 @@ msgid "usage: activationkey_addentitlements KEY <ENTITLEMENT ...>"
 msgstr "ús: clau d'activationkeyaddentitlements <ENTITLEMENT ...>"
 
 #: ../src/spacecmd/activationkey.py:255
-msgid ""
-"activationkey_removeentitlements: Remove entitlements from an activation key"
-msgstr ""
-"activationkeyremoveentitlements: Elimina els drets d'una clau d'activació"
+msgid "activationkey_removeentitlements: Remove entitlements from an activation key"
+msgstr "activationkeyremoveentitlements: Elimina els drets d'una clau d'activació"
 
 #: ../src/spacecmd/activationkey.py:257
 msgid "usage: activationkey_removeentitlements KEY <ENTITLEMENT ...>"
@@ -73,43 +69,31 @@ msgstr "ús: clau activationkeyremoveentitlements <ENTITLEMENT ...>"
 
 #: ../src/spacecmd/activationkey.py:296
 msgid "activationkey_addchildchannels: Add child channels to an activation key"
-msgstr ""
-"activationkeyaddchildchannels: afegeix canals fills a una clau d'activació"
+msgstr "activationkeyaddchildchannels: afegeix canals fills a una clau d'activació"
 
 #: ../src/spacecmd/activationkey.py:298
 msgid "usage: activationkey_addchildchannels KEY <CHANNEL ...>"
 msgstr "ús: clau d'activacióaddchildchannels <CHANNEL ...>"
 
 #: ../src/spacecmd/activationkey.py:350
-msgid ""
-"activationkey_removechildchannels: Remove child channels from an activation "
-"key"
-msgstr ""
-"activationkeyremovechildchannels: Elimina els canals fills d'una clau "
-"d'activació"
+msgid "activationkey_removechildchannels: Remove child channels from an activation key"
+msgstr "activationkeyremovechildchannels: Elimina els canals fills d'una clau d'activació"
 
 #: ../src/spacecmd/activationkey.py:352
 msgid "usage: activationkey_removechildchannels KEY <CHANNEL ...>"
 msgstr "ús: clau activationkeyremovechildchannels <CHANNEL ...>"
 
 #: ../src/spacecmd/activationkey.py:390
-msgid ""
-"activationkey_listchildchannels: List the child channels for an activation "
-"key"
-msgstr ""
-"activationkeylistchildchannels: Llista els canals fills per a una clau "
-"d'activació"
+msgid "activationkey_listchildchannels: List the child channels for an activation key"
+msgstr "activationkeylistchildchannels: Llista els canals fills per a una clau d'activació"
 
 #: ../src/spacecmd/activationkey.py:392
 msgid "usage: activationkey_listchildchannels KEY"
 msgstr "ús: clau d'activaciókeylistchildchannels"
 
 #: ../src/spacecmd/activationkey.py:421
-msgid ""
-"activationkey_listbasechannel: List the base channels for an activation key"
-msgstr ""
-"activationkeylistbasechannel: Llista els canals base per a una clau "
-"d'activació"
+msgid "activationkey_listbasechannel: List the base channels for an activation key"
+msgstr "activationkeylistbasechannel: Llista els canals base per a una clau d'activació"
 
 #: ../src/spacecmd/activationkey.py:423
 msgid "usage: activationkey_listbasechannel KEY"
@@ -124,8 +108,7 @@ msgid "usage: activationkey_listgroups KEY"
 msgstr "ús: clau d'activationkeylistgroups"
 
 #: ../src/spacecmd/activationkey.py:484
-msgid ""
-"activationkey_listentitlements: List the entitlements for an activation key"
+msgid "activationkey_listentitlements: List the entitlements for an activation key"
 msgstr "activationkeylistentitlements: Llista els drets d'una clau d'activació"
 
 #: ../src/spacecmd/activationkey.py:486
@@ -134,31 +117,23 @@ msgstr "ús: clau d'activaciókeylistentitlements"
 
 #: ../src/spacecmd/activationkey.py:515
 msgid "activationkey_listpackages: List the packages for an activation key"
-msgstr ""
-"activationkeylistpackages: Llista els paquets per a una clau d'activació"
+msgstr "activationkeylistpackages: Llista els paquets per a una clau d'activació"
 
 #: ../src/spacecmd/activationkey.py:517
 msgid "usage: activationkey_listpackages KEY"
 msgstr "ús: clau d'activaciókeylistpackages"
 
 #: ../src/spacecmd/activationkey.py:549
-msgid ""
-"activationkey_listconfigchannels: List the configuration channels for an "
-"activation key"
-msgstr ""
-"activationkeylistconfigchannels: Llista els canals de configuració per a una "
-"clau d'activació"
+msgid "activationkey_listconfigchannels: List the configuration channels for an activation key"
+msgstr "activationkeylistconfigchannels: Llista els canals de configuració per a una clau d'activació"
 
 #: ../src/spacecmd/activationkey.py:551
 msgid "usage: activationkey_listconfigchannels KEY"
 msgstr "ús: clau d'activaciókeylistconfigchannels"
 
 #: ../src/spacecmd/activationkey.py:584
-msgid ""
-"activationkey_addconfigchannels: Add config channels to an activation key"
-msgstr ""
-"activationkeyaddconfigchannels: afegeix els canals de configuració a una "
-"clau d'activació"
+msgid "activationkey_addconfigchannels: Add config channels to an activation key"
+msgstr "activationkeyaddconfigchannels: afegeix els canals de configuració a una clau d'activació"
 
 #: ../src/spacecmd/activationkey.py:586
 msgid ""
@@ -175,24 +150,16 @@ msgstr ""
 "  -b afegeix canals a la part inferior de la llista"
 
 #: ../src/spacecmd/activationkey.py:641
-msgid ""
-"activationkey_removeconfigchannels: Remove config channels from an "
-"activation key"
-msgstr ""
-"activationkeyremoveconfigchannels: Elimina els canals de configuració d'una "
-"clau d'activació"
+msgid "activationkey_removeconfigchannels: Remove config channels from an activation key"
+msgstr "activationkeyremoveconfigchannels: Elimina els canals de configuració d'una clau d'activació"
 
 #: ../src/spacecmd/activationkey.py:643
 msgid "usage: activationkey_removeconfigchannels KEY <CHANNEL ...>"
 msgstr "ús: clau d'activaciókeyremoveconfigchannels <CHANNEL ...>"
 
 #: ../src/spacecmd/activationkey.py:684
-msgid ""
-"activationkey_setconfigchannelorder: Set the ranked order of configuration "
-"channels"
-msgstr ""
-"activationkeysetconfigchannelorder: estableix l'ordre dels canals de "
-"configuració"
+msgid "activationkey_setconfigchannelorder: Set the ranked order of configuration channels"
+msgstr "activationkeysetconfigchannelorder: estableix l'ordre dels canals de configuració"
 
 #: ../src/spacecmd/activationkey.py:686
 msgid "usage: activationkey_setconfigchannelorder KEY"
@@ -362,20 +329,15 @@ msgstr "Paquets"
 
 #: ../src/spacecmd/activationkey.py:1012
 msgid "activationkey_enableconfigdeployment: Enable config channel deployment"
-msgstr ""
-"activationkeyenableconfigdeployment: Habilita el desplegament del canal de "
-"configuració"
+msgstr "activationkeyenableconfigdeployment: Habilita el desplegament del canal de configuració"
 
 #: ../src/spacecmd/activationkey.py:1014
 msgid "usage: activationkey_enableconfigdeployment KEY"
 msgstr "ús: clau d'activaciókeyenableconfigdeployment"
 
 #: ../src/spacecmd/activationkey.py:1041
-msgid ""
-"activationkey_disableconfigdeployment: Disable config channel deployment"
-msgstr ""
-"activationkeydisableconfigdeployment: Desactiva el desplegament del canal de "
-"configuració"
+msgid "activationkey_disableconfigdeployment: Disable config channel deployment"
+msgstr "activationkeydisableconfigdeployment: Desactiva el desplegament del canal de configuració"
 
 #: ../src/spacecmd/activationkey.py:1043
 msgid "usage: activationkey_disableconfigdeployment KEY"
@@ -383,20 +345,15 @@ msgstr "ús: clau d'activaciódisableconfigdeployment"
 
 #: ../src/spacecmd/activationkey.py:1070
 msgid "activationkey_setbasechannel: Set the base channel of an activation key"
-msgstr ""
-"activationkeysetbasechannel: estableix el canal base d'una clau d'activació"
+msgstr "activationkeysetbasechannel: estableix el canal base d'una clau d'activació"
 
 #: ../src/spacecmd/activationkey.py:1072
 msgid "usage: activationkey_setbasechannel KEY CHANNEL"
 msgstr "ús: activationkeysetbasechannel KEY CHANNEL"
 
 #: ../src/spacecmd/activationkey.py:1121
-msgid ""
-"activationkey_setusagelimit: Set the usage limit of an activation key, can "
-"be a number or \"unlimited\""
-msgstr ""
-"activationkeysetusagelimit: estableix el límit d'ús d'una clau d'activació, "
-"pot ser un nombre o \"il·limitat\""
+msgid "activationkey_setusagelimit: Set the usage limit of an activation key, can be a number or \"unlimited\""
+msgstr "activationkeysetusagelimit: estableix el límit d'ús d'una clau d'activació, pot ser un nombre o \"il·limitat\""
 
 #: ../src/spacecmd/activationkey.py:1123
 msgid "usage: activationkey_setusagelimit KEY <usage limit>"
@@ -412,11 +369,8 @@ msgid "Couldn't convert argument %s to an integer"
 msgstr "No s'ha pogut convertir l'argument %s a un enter"
 
 #: ../src/spacecmd/activationkey.py:1178
-msgid ""
-"activationkey_setuniversaldefault: Set this key as the universal default"
-msgstr ""
-"activationkeysetuniversaldefault: estableix aquesta clau com a "
-"predeterminada universal"
+msgid "activationkey_setuniversaldefault: Set this key as the universal default"
+msgstr "activationkeysetuniversaldefault: estableix aquesta clau com a predeterminada universal"
 
 #: ../src/spacecmd/activationkey.py:1180
 msgid "usage: activationkey_setuniversaldefault KEY"
@@ -424,8 +378,7 @@ msgstr "ús: clau activationkeysetuniversaldefault"
 
 #: ../src/spacecmd/activationkey.py:1221
 msgid "activationkey_export: Export activation key(s) to JSON format file"
-msgstr ""
-"activationkeyexport: exporta les claus d'activació al fitxer de format JSON"
+msgstr "activationkeyexport: exporta les claus d'activació al fitxer de format JSON"
 
 #: ../src/spacecmd/activationkey.py:1222
 msgid ""
@@ -433,8 +386,7 @@ msgid ""
 "\n"
 "options:\n"
 "    -f outfile.json : specify an output filename, defaults to <KEY>.json\n"
-"                      if exporting a single key, akeys.json for multiple "
-"keys,\n"
+"                      if exporting a single key, akeys.json for multiple keys,\n"
 "                      or akey_all.json if no KEY specified (export ALL)\n"
 "\n"
 "Note : KEY list is optional, default is to export ALL keys "
@@ -442,15 +394,11 @@ msgstr ""
 "ús: activationkeyexport [opcions] [<KEY> ...])\n"
 "\n"
 "opcions:\n"
-"    -f outfile.json: especifica un nom de fitxer de sortida, per defecte és "
-"<KEY>.json\n"
-"                      si s'exporta una única clau, akeys.json per a "
-"múltiples claus,\n"
-"                      o akeyall.json si no s'ha especificat cap CLAU "
-"(exportA ALL)\n"
+"    -f outfile.json: especifica un nom de fitxer de sortida, per defecte és <KEY>.json\n"
+"                      si s'exporta una única clau, akeys.json per a múltiples claus,\n"
+"                      o akeyall.json si no s'ha especificat cap CLAU (exportA ALL)\n"
 "\n"
-"Nota: la llista de CLAUS és opcional, per defecte és exportar TOTES les "
-"claus "
+"Nota: la llista de CLAUS és opcional, per defecte és exportar TOTES les claus "
 
 #. Get the key details
 #: ../src/spacecmd/activationkey.py:1238
@@ -483,8 +431,7 @@ msgstr "No s'han pogut desar les claus exportades al fitxer: {}"
 
 #: ../src/spacecmd/activationkey.py:1339
 msgid "activationkey_import: import activation key(s) from JSON file(s)"
-msgstr ""
-"activationkeyimport: importa les claus d'activació des d'un fitxer JSON"
+msgstr "activationkeyimport: importa les claus d'activació des d'un fitxer JSON"
 
 #: ../src/spacecmd/activationkey.py:1340
 msgid "usage: activationkey_import <JSONFILE ...>"
@@ -527,11 +474,9 @@ msgid ""
 "                 activationkey_clone foo_key1 foo_key2 -x \"s/foo/bar\"\n"
 "\n"
 "options:\n"
-"  -c CLONE_NAME  : Name of the resulting key, treated as a prefix for "
-"multiple\n"
+"  -c CLONE_NAME  : Name of the resulting key, treated as a prefix for multiple\n"
 "                   keys\n"
-"  -x \"s/foo/bar\" : Optional regex replacement, replaces foo with bar in "
-"the\n"
+"  -x \"s/foo/bar\" : Optional regex replacement, replaces foo with bar in the\n"
 "                   clone description, base-channel label, child-channel\n"
 "                   labels, config-channel names "
 msgstr ""
@@ -542,11 +487,9 @@ msgstr ""
 "                 activationkeyclone fookey1 fookey2 -x \"s/foo/bar\"\n"
 "\n"
 "opcions:\n"
-"  -c CLONENAME : Nom de la clau resultant, tractada com un prefix per a "
-"múltiples\n"
+"  -c CLONENAME : Nom de la clau resultant, tractada com un prefix per a múltiples\n"
 "                   claus\n"
-"  -x \"s/foo/bar\" : Substitució opcional de l'expressió regular, "
-"substitueix foo per la barra\n"
+"  -x \"s/foo/bar\" : Substitució opcional de l'expressió regular, substitueix foo per la barra\n"
 "                   descripció del clon, etiqueta del canal base, canal fill\n"
 "                   etiquetes, noms del canal de configuració "
 
@@ -648,20 +591,15 @@ msgstr "ús: clau d'activaciókeyenable [CLAU ...]"
 
 #: ../src/spacecmd/activationkey.py:1771
 msgid "activationkey_setdescription: Set the activation key description"
-msgstr ""
-"activationkeysetdescription: estableix la descripció de la clau d'activació"
+msgstr "activationkeysetdescription: estableix la descripció de la clau d'activació"
 
 #: ../src/spacecmd/activationkey.py:1773
 msgid "usage: activationkey_setdescription KEY DESCRIPTION"
 msgstr "ús: ACTIVATIONkeysetdescription KEY DESCRIPTION"
 
 #: ../src/spacecmd/activationkey.py:1807
-msgid ""
-"activationkey_setcontactmethod: Set the contact method to use for systems "
-"registered with this key."
-msgstr ""
-"activationkeysetcontactmethod: estableix el mètode de contacte a utilitzar "
-"per als sistemes registrats amb aquesta clau."
+msgid "activationkey_setcontactmethod: Set the contact method to use for systems registered with this key."
+msgstr "activationkeysetcontactmethod: estableix el mètode de contacte a utilitzar per als sistemes registrats amb aquesta clau."
 
 #: ../src/spacecmd/activationkey.py:1809 ../src/spacecmd/system.py:4241
 msgid "Available contact methods: "
@@ -681,8 +619,7 @@ msgid ""
 "usage: api [options] API_STRING)\n"
 "\n"
 "options:\n"
-"  -A, --args  Arguments for the API other than session id in comma "
-"separated\n"
+"  -A, --args  Arguments for the API other than session id in comma separated\n"
 "              strings or JSON expression\n"
 "  -F, --format   Output format\n"
 "  -o, --output   Output file\n"
@@ -696,8 +633,7 @@ msgstr ""
 "ús: api [opcions] APISTRING)\n"
 "\n"
 "opcions:\n"
-"  -A, --args Arguments per a l'API que no sigui l'ID de sessió separat per "
-"comes\n"
+"  -A, --args Arguments per a l'API que no sigui l'ID de sessió separat per comes\n"
 "              cadenes o expressió JSON\n"
 "  -F, --format Format de sortida\n"
 "  -o, --output Fitxer de sortida\n"
@@ -896,8 +832,7 @@ msgstr "Continguts"
 
 #: ../src/spacecmd/configchannel.py:314
 msgid "configchannel_backup: backup a config channel"
-msgstr ""
-"configchannelbackup: fes una còpia de seguretat d'un canal de configuració"
+msgstr "configchannelbackup: fes una còpia de seguretat d'un canal de configuració"
 
 #: ../src/spacecmd/configchannel.py:315
 msgid ""
@@ -1017,8 +952,7 @@ msgstr "Es requereix un nom"
 
 #: ../src/spacecmd/configchannel.py:503
 msgid "Only [normal/state] values are acceptable for --type parameter"
-msgstr ""
-"Només els valors [normal/state] són acceptables per al paràmetre --type"
+msgstr "Només els valors [normal/state] són acceptables per al paràmetre --type"
 
 #: ../src/spacecmd/configchannel.py:518
 msgid "configchannel_delete: Delete a configuration channel"
@@ -1124,15 +1058,12 @@ msgid "Contents not displayed (base64 encoded)"
 msgstr "Continguts no mostrats (codificats en base64)"
 
 #: ../src/spacecmd/configchannel.py:749
-msgid ""
-"configchannel_addfile/configchannel_updatefile: Create a configuration file"
-msgstr ""
-"configchanneladdfile/configchannelupdatefile: Crea un fitxer de configuració"
+msgid "configchannel_addfile/configchannel_updatefile: Create a configuration file"
+msgstr "configchanneladdfile/configchannelupdatefile: Crea un fitxer de configuració"
 
 #: ../src/spacecmd/configchannel.py:750
 msgid ""
-"usage: configchannel_addfile/configchannel_updatefile -c CHANNEL - p PATH -f "
-"LOCAL_FILE_PATH [OPTIONS])\n"
+"usage: configchannel_addfile/configchannel_updatefile -c CHANNEL - p PATH -f LOCAL_FILE_PATH [OPTIONS])\n"
 "\n"
 "options:\n"
 "  -c CHANNEL\n"
@@ -1150,14 +1081,11 @@ msgid ""
 "  -y automatically proceed with file contents\n"
 "\n"
 "  Note re binary/base64: Some text files, notably those containing trailing\n"
-"  newlines, those containing ASCII escape characters (or other charaters "
-"not\n"
-"  allowed in XML) need to be sent as binary (-b).  Some effort is made to "
-"auto-\n"
+"  newlines, those containing ASCII escape characters (or other charaters not\n"
+"  allowed in XML) need to be sent as binary (-b).  Some effort is made to auto-\n"
 "  detect files which require this, but you may need to explicitly specify.\n"
 msgstr ""
-"ús: configchanneladdfile/configchannelupdatefile -c CHANNEL - p PATH -f "
-"LOCALFILEPATH [OPCIONS])\n"
+"ús: configchanneladdfile/configchannelupdatefile -c CHANNEL - p PATH -f LOCALFILEPATH [OPCIONS])\n"
 "\n"
 "opcions:\n"
 "  -c CANAL\n"
@@ -1174,14 +1102,10 @@ msgstr ""
 "  -f camí local al contingut del fitxer\n"
 "  -y continua automàticament amb el contingut del fitxer\n"
 "\n"
-"  Nota re binari/base64: Alguns fitxers de text, en particular els que "
-"contenen el final\n"
-"  newlines, aquells que contenen caràcters d'escapament ASCII (o altres "
-"txaraters no\n"
-"  permès en XML) cal enviar-lo com a binari (-b).  S'ha fet un esforç per a "
-"auto-\n"
-"  detecteu fitxers que ho requereixin, però potser haureu d'especificar-ho "
-"explícitament.\n"
+"  Nota re binari/base64: Alguns fitxers de text, en particular els que contenen el final\n"
+"  newlines, aquells que contenen caràcters d'escapament ASCII (o altres txaraters no\n"
+"  permès en XML) cal enviar-lo com a binari (-b).  S'ha fet un esforç per a auto-\n"
+"  detecteu fitxers que ho requereixin, però potser haureu d'especificar-ho explícitament.\n"
 
 #: ../src/spacecmd/configchannel.py:812 ../src/spacecmd/softwarechannel.py:795
 #: ../src/spacecmd/softwarechannel.py:916
@@ -1276,16 +1200,13 @@ msgstr "ID d'acció: %i"
 
 #: ../src/spacecmd/configchannel.py:1117
 msgid "configchannel_export: export config channel(s) to json format file"
-msgstr ""
-"configchannelexport: exporta els canals de configuració al fitxer de format "
-"json"
+msgstr "configchannelexport: exporta els canals de configuració al fitxer de format json"
 
 #: ../src/spacecmd/configchannel.py:1118
 msgid ""
 "usage: configchannel_export <CHANNEL>... [options])\n"
 "options:\n"
-"    -f outfile.json : specify an output filename, defaults to <CHANNEL>."
-"json\n"
+"    -f outfile.json : specify an output filename, defaults to <CHANNEL>.json\n"
 "                      if exporting a single channel, ccs.json for multiple\n"
 "                      channels, or cc_all.json if no CHANNEL specified\n"
 "                      e.g (export ALL)\n"
@@ -1294,8 +1215,7 @@ msgid ""
 msgstr ""
 "ús: configchannelexport <CHANNEL>... [opcions])\n"
 "opcions:\n"
-"    -f outfile.json: especifica un nom de fitxer de sortida, per defecte és "
-"<CHANNEL>.json\n"
+"    -f outfile.json: especifica un nom de fitxer de sortida, per defecte és <CHANNEL>.json\n"
 "                      si s'exporta un sol canal, ccs.json per a múltiples\n"
 "                      canals, o ccall.json si no s'ha especificat cap canal\n"
 "                      p. ex. (exportA-HO TOT)\n"
@@ -1337,12 +1257,8 @@ msgid "Exporting ALL config channels to %s"
 msgstr "S'estan exportant tots els canals de configuració a %s"
 
 #: ../src/spacecmd/configchannel.py:1242
-msgid ""
-"Error, no valid config channel passed, check name is  correct with spacecmd "
-"configchannel_list"
-msgstr ""
-"Error, no s'ha passat cap canal de configuració vàlid, el nom de la "
-"comprovació és correcte amb spacecmd configchannellist"
+msgid "Error, no valid config channel passed, check name is  correct with spacecmd configchannel_list"
+msgstr "Error, no s'ha passat cap canal de configuració vàlid, el nom de la comprovació és correcte amb spacecmd configchannellist"
 
 #: ../src/spacecmd/configchannel.py:1257
 #, python-format
@@ -1351,20 +1267,16 @@ msgstr "S'està exportant el cc %s a %s"
 
 #: ../src/spacecmd/configchannel.py:1264
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
-msgstr ""
-"El fitxer «{}» existeix, confirmeu la sobreescriptura del fitxer? (s/n)"
+msgstr "El fitxer «{}» existeix, confirmeu la sobreescriptura del fitxer? (s/n)"
 
 #: ../src/spacecmd/configchannel.py:1268
 #, python-format
 msgid "Error saving exported config channels to file: %s"
-msgstr ""
-"S'ha produït un error en desar els canals de configuració exportats al "
-"fitxer: %s"
+msgstr "S'ha produït un error en desar els canals de configuració exportats al fitxer: %s"
 
 #: ../src/spacecmd/configchannel.py:1277
 msgid "configchannel_import: import config channel(s) from json file"
-msgstr ""
-"configchannelimport: importa els canals de configuració des del fitxer json"
+msgstr "configchannelimport: importa els canals de configuració des del fitxer json"
 
 #: ../src/spacecmd/configchannel.py:1278
 msgid "usage: configchannel_import <JSONFILES...>"
@@ -1430,8 +1342,7 @@ msgid ""
 "  -c CLONE_LABEL : name/label of the resulting cc (note does not update\n"
 "                   description, see -x option), treated as a prefix if\n"
 "                   multiple keys are passed\n"
-"  -x \"s/foo/bar\" : Optional regex replacement, replaces foo with bar in "
-"the\n"
+"  -x \"s/foo/bar\" : Optional regex replacement, replaces foo with bar in the\n"
 "                   clone name, label and description\n"
 "  Note : If no -c or -x option is specified, interactive is assumed"
 msgstr ""
@@ -1445,8 +1356,7 @@ msgstr ""
 "  -c CLONELABEL : nom/etiqueta del cc resultant (la nota no s'actualitza\n"
 "                   descripció, vegeu l'opció -x), tractada com a prefix si\n"
 "                   s'han passat múltiples claus\n"
-"  -x \"s/foo/bar\" : Substitució opcional de l'expressió regular, "
-"substitueix foo per la barra\n"
+"  -x \"s/foo/bar\" : Substitució opcional de l'expressió regular, substitueix foo per la barra\n"
 "                   clona el nom, l'etiqueta i la descripció\n"
 "  Nota: Si no s'especifica cap opció -c o -x, s'assumeix que és interactiva"
 
@@ -1501,8 +1411,7 @@ msgstr "configchannelsync:"
 
 #: ../src/spacecmd/configchannel.py:1591
 msgid "sync config files between two config channels"
-msgstr ""
-"sincronitza els fitxers de configuració entre dos canals de configuració"
+msgstr "sincronitza els fitxers de configuració entre dos canals de configuració"
 
 #: ../src/spacecmd/configchannel.py:1593
 msgid "usage: configchannel_sync SOURCE_CHANNEL TARGET_CHANNEL"
@@ -1525,11 +1434,8 @@ msgid "files only in target "
 msgstr "només fitxers a l'objectiu "
 
 #: ../src/spacecmd/configchannel.py:1655
-msgid ""
-"files that are in both channels will be overwritten in the target channel"
-msgstr ""
-"els fitxers que estiguin en els dos canals se sobreescriuran al canal de "
-"destinació"
+msgid "files that are in both channels will be overwritten in the target channel"
+msgstr "els fitxers que estiguin en els dos canals se sobreescriuran al canal de destinació"
 
 #: ../src/spacecmd/configchannel.py:1657
 msgid "files only in the source channel will be added to the target channel"
@@ -1724,8 +1630,7 @@ msgid ""
 "  -n NAME\n"
 "  -p path to tree\n"
 "  -b base channel to associate with\n"
-"  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
-"generic_rpm|...]"
+"  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|generic_rpm|...]"
 msgstr ""
 "ús: distributioncreate [opcions]\n"
 "\n"
@@ -1733,8 +1638,7 @@ msgstr ""
 "  -n NOM\n"
 "  -p camí a l'arbre\n"
 "  -b canal base per associar-se\n"
-"  -t instal·la el tipus [fedora18]rhel6/7/8]sles12generic|"
-"sles15generic]suse...genericrpm......]"
+"  -t instal·la el tipus [fedora18]rhel6/7/8]sles12generic|sles15generic]suse...genericrpm......]"
 
 #: ../src/spacecmd/distribution.py:67
 msgid "The name of the distribution is required"
@@ -1778,9 +1682,7 @@ msgstr "Es requereix un tipus d'instal·lació"
 
 #: ../src/spacecmd/distribution.py:161
 msgid "distribution_list: List the available autoinstall trees"
-msgstr ""
-"llista de distribució: Llista els arbres d'instal·lació automàtica "
-"disponibles"
+msgstr "llista de distribució: Llista els arbres d'instal·lació automàtica disponibles"
 
 #: ../src/spacecmd/distribution.py:162
 msgid "usage: distribution_list"
@@ -1845,16 +1747,14 @@ msgid ""
 "options:\n"
 "  -p path to tree\n"
 "  -b base channel to associate with\n"
-"  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
-"generic_rpm|...]"
+"  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|generic_rpm|...]"
 msgstr ""
 "ús: distributionupdate NAME [opcions]\n"
 "\n"
 "opcions:\n"
 "  -p camí a l'arbre\n"
 "  -b canal base per associar-se\n"
-"  -t instal·la el tipus [fedora18]rhel6/7/8]sles12generic|"
-"sles15generic]suse...genericrpm......]"
+"  -t instal·la el tipus [fedora18]rhel6/7/8]sles12generic|sles15generic]suse...genericrpm......]"
 
 #: ../src/spacecmd/errata.py:49
 msgid "errata_list: List all patches"
@@ -2251,8 +2151,7 @@ msgstr ""
 "       grouprestore .\n"
 "\n"
 "Especificar només INPUTDIR serà predeterminat per a TOTS els grups.\n"
-"Establir punt (.) en lloc de fitxer INPUTDIR complet implicarà el directori "
-"actual.\n"
+"Establir punt (.) en lloc de fitxer INPUTDIR complet implicarà el directori actual.\n"
 "    "
 
 #: ../src/spacecmd/group.py:349
@@ -2300,9 +2199,7 @@ msgstr "S'està actualitzant la descripció del grup: %s"
 
 #: ../src/spacecmd/group.py:409
 msgid "Update formula data from backup? [y/N]:"
-msgstr ""
-"Voleu actualitzar les dades de la fórmula des de la còpia de seguretat? [s/"
-"N]:"
+msgstr "Voleu actualitzar les dades de la fórmula des de la còpia de seguretat? [s/N]:"
 
 #: ../src/spacecmd/group.py:416
 #, python-format
@@ -2373,12 +2270,8 @@ msgid "Members"
 msgstr "Membres"
 
 #: ../src/spacecmd/group.py:539
-msgid ""
-"group_listconfigchannels: List configuration channels assigned to a system "
-"group"
-msgstr ""
-"grouplistconfigchannels: Llista els canals de configuració assignats a un "
-"grup de sistemes"
+msgid "group_listconfigchannels: List configuration channels assigned to a system group"
+msgstr "grouplistconfigchannels: Llista els canals de configuració assignats a un grup de sistemes"
 
 #: ../src/spacecmd/group.py:540
 msgid "usage: group_listconfigchannels GROUP"
@@ -2394,8 +2287,7 @@ msgstr "ús: groupaddconfigchannels <GROUP> <CHANNEL ...>"
 
 #: ../src/spacecmd/group.py:620
 msgid "group_removeconfigchannels: Remove config channels from a group"
-msgstr ""
-"groupremoveconfigchannels: Elimina els canals de configuració d'un grup"
+msgstr "groupremoveconfigchannels: Elimina els canals de configuració d'un grup"
 
 #: ../src/spacecmd/group.py:621
 msgid "usage: group_removeconfigchannels <GROUP> <CHANNEL ...>"
@@ -2532,11 +2424,8 @@ msgid "A filename is required"
 msgstr "Es requereix un nom de fitxer"
 
 #: ../src/spacecmd/kickstart.py:307
-msgid ""
-"kickstart_import_raw: Import a raw Kickstart or autoyast profile from a file"
-msgstr ""
-"kickstartimportraw: Importa un perfil «Kickstart» o «autoyast» en brut des "
-"d'un fitxer"
+msgid "kickstart_import_raw: Import a raw Kickstart or autoyast profile from a file"
+msgstr "kickstartimportraw: Importa un perfil «Kickstart» o «autoyast» en brut des d'un fitxer"
 
 #: ../src/spacecmd/kickstart.py:308
 msgid ""
@@ -2665,12 +2554,8 @@ msgid "usage: kickstart_rename OLDNAME NEWNAME"
 msgstr "ús: kickstartrename OLDNAME NEWNAME"
 
 #: ../src/spacecmd/kickstart.py:605
-msgid ""
-"kickstart_listcryptokeys: List the crypto keys associated with a Kickstart "
-"profile"
-msgstr ""
-"kickstartlistcryptokeys: Llista les claus de criptografia associades amb un "
-"perfil de Kickstart"
+msgid "kickstart_listcryptokeys: List the crypto keys associated with a Kickstart profile"
+msgstr "kickstartlistcryptokeys: Llista les claus de criptografia associades amb un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:607
 msgid "usage: kickstart_listcryptokeys PROFILE"
@@ -2682,9 +2567,7 @@ msgstr "No s'ha trobat cap clau criptogràfica"
 
 #: ../src/spacecmd/kickstart.py:645
 msgid "kickstart_addcryptokeys: Add crypto keys to a Kickstart profile"
-msgstr ""
-"kickstartaddcryptokeys: afegeix claus de criptografia a un perfil de "
-"Kickstart"
+msgstr "kickstartaddcryptokeys: afegeix claus de criptografia a un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:646
 msgid "usage: kickstart_addcryptokeys PROFILE <KEY ...>"
@@ -2692,21 +2575,15 @@ msgstr "ús: perfil de kickstartaddcryptokeys <KEY ...>"
 
 #: ../src/spacecmd/kickstart.py:674
 msgid "kickstart_removecryptokeys: Remove crypto keys from a Kickstart profile"
-msgstr ""
-"kickstartremovecryptokeys: Elimina les claus de criptografia d'un perfil de "
-"Kickstart"
+msgstr "kickstartremovecryptokeys: Elimina les claus de criptografia d'un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:676
 msgid "usage: kickstart_removecryptokeys PROFILE <KEY ...>"
 msgstr "ús: kickstartremovecryptokeys PROFILE <KEY ...>"
 
 #: ../src/spacecmd/kickstart.py:718
-msgid ""
-"kickstart_listactivationkeys: List the activation keys associated with a "
-"Kickstart profile"
-msgstr ""
-"kickstartlistactivationkeys: Llista les claus d'activació associades amb un "
-"perfil de Kickstart"
+msgid "kickstart_listactivationkeys: List the activation keys associated with a Kickstart profile"
+msgstr "kickstartlistactivationkeys: Llista les claus d'activació associades amb un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:720
 msgid "usage: kickstart_listactivationkeys PROFILE"
@@ -2714,21 +2591,15 @@ msgstr "ús: kickstartlistactivationkeys PERFIL"
 
 #: ../src/spacecmd/kickstart.py:754
 msgid "kickstart_addactivationkeys: Add activation keys to a Kickstart profile"
-msgstr ""
-"kickstartaddactivationkeys: afegeix les claus d'activació a un perfil de "
-"Kickstart"
+msgstr "kickstartaddactivationkeys: afegeix les claus d'activació a un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:756
 msgid "usage: kickstart_addactivationkeys PROFILE <KEY ...>"
 msgstr "ús: kickstartaddactivationkeys PROFILE <KEY ...>"
 
 #: ../src/spacecmd/kickstart.py:787
-msgid ""
-"kickstart_removeactivationkeys: Remove activation keys from a Kickstart "
-"profile"
-msgstr ""
-"kickstartremoveactivationkeys: Elimina les claus d'activació d'un perfil de "
-"Kickstart"
+msgid "kickstart_removeactivationkeys: Remove activation keys from a Kickstart profile"
+msgstr "kickstartremoveactivationkeys: Elimina les claus d'activació d'un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:789
 msgid "usage: kickstart_removeactivationkeys PROFILE <KEY ...>"
@@ -2739,47 +2610,32 @@ msgid "Remove these keys [y/N]:"
 msgstr "Elimina aquestes claus [y/N]:"
 
 #: ../src/spacecmd/kickstart.py:830
-msgid ""
-"kickstart_enableconfigmanagement: Enable configuration management on a "
-"Kickstart profile"
-msgstr ""
-"kickstartenableconfigmanagement: Habilita la gestió de la configuració en un "
-"perfil del Kickstart"
+msgid "kickstart_enableconfigmanagement: Enable configuration management on a Kickstart profile"
+msgstr "kickstartenableconfigmanagement: Habilita la gestió de la configuració en un perfil del Kickstart"
 
 #: ../src/spacecmd/kickstart.py:832
 msgid "usage: kickstart_enableconfigmanagement PROFILE"
 msgstr "ús: kickstartenableconfigmanagement PROFILE"
 
 #: ../src/spacecmd/kickstart.py:865
-msgid ""
-"kickstart_disableconfigmanagement: Disable configuration management on a "
-"Kickstart profile"
-msgstr ""
-"kickstartdisableconfigmanagement: Desactiva la gestió de configuració en un "
-"perfil de Kickstart"
+msgid "kickstart_disableconfigmanagement: Disable configuration management on a Kickstart profile"
+msgstr "kickstartdisableconfigmanagement: Desactiva la gestió de configuració en un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:867
 msgid "usage: kickstart_disableconfigmanagement PROFILE"
 msgstr "ús: kickstartdisableconfigmanagement PROFILE"
 
 #: ../src/spacecmd/kickstart.py:900
-msgid ""
-"kickstart_enableremotecommands: Enable remote commands on a Kickstart profile"
-msgstr ""
-"kickstartenableremotecommands: Habilita les ordres remotes en un perfil de "
-"Kickstart"
+msgid "kickstart_enableremotecommands: Enable remote commands on a Kickstart profile"
+msgstr "kickstartenableremotecommands: Habilita les ordres remotes en un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:902
 msgid "usage: kickstart_enableremotecommands PROFILE"
 msgstr "ús: kickstartenableremotecommands PROFILE"
 
 #: ../src/spacecmd/kickstart.py:935
-msgid ""
-"kickstart_disableremotecommands: Disable remote commands on a Kickstart "
-"profile"
-msgstr ""
-"kickstartdisableremotecommands: Desactiva les ordres remotes en un perfil de "
-"Kickstart"
+msgid "kickstart_disableremotecommands: Disable remote commands on a Kickstart profile"
+msgstr "kickstartdisableremotecommands: Desactiva les ordres remotes en un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:937
 msgid "usage: kickstart_disableremotecommands PROFILE"
@@ -2787,9 +2643,7 @@ msgstr "ús: kickstartdisableremotecommands PROFILE"
 
 #: ../src/spacecmd/kickstart.py:969
 msgid "kickstart_setlocale: Set the locale for a Kickstart profile"
-msgstr ""
-"kickstartsetlocale: estableix la configuració regional per a un perfil de "
-"Kickstart"
+msgstr "kickstartsetlocale: estableix la configuració regional per a un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:970
 msgid "usage: kickstart_setlocale PROFILE LOCALE"
@@ -2797,19 +2651,15 @@ msgstr "ús: kickstartsetlocale PROFILE LOCALE"
 
 #: ../src/spacecmd/kickstart.py:1010
 msgid "kickstart_setselinux: Set the SELinux mode for a Kickstart profile"
-msgstr ""
-"kickstartsetselinux: estableix el mode SELinux per a un perfil Kickstart"
+msgstr "kickstartsetselinux: estableix el mode SELinux per a un perfil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1012
 msgid "usage: kickstart_setselinux PROFILE MODE"
 msgstr "ús: MODE DE PERFIL kickstartsetselinux"
 
 #: ../src/spacecmd/kickstart.py:1049
-msgid ""
-"kickstart_setpartitions: Set the partitioning scheme for a Kickstart profile"
-msgstr ""
-"kickstartsetpartitions: estableix l'esquema de partició per a un perfil "
-"Kickstart"
+msgid "kickstart_setpartitions: Set the partitioning scheme for a Kickstart profile"
+msgstr "kickstartsetpartitions: estableix l'esquema de partició per a un perfil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1051
 msgid "usage: kickstart_setpartitions PROFILE"
@@ -2817,9 +2667,7 @@ msgstr "ús: PERFIL de kickstartsetpartitions"
 
 #: ../src/spacecmd/kickstart.py:1102
 msgid "kickstart_setdistribution: Set the distribution for a Kickstart profile"
-msgstr ""
-"kickstartsetdistribution: estableix la distribució per a un perfil de "
-"Kickstart"
+msgstr "kickstartsetdistribution: estableix la distribució per a un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1104
 msgid "usage: kickstart_setdistribution PROFILE DISTRIBUTION"
@@ -2827,8 +2675,7 @@ msgstr "ús: distribució del perfil de kickstartsetdistribution"
 
 #: ../src/spacecmd/kickstart.py:1140
 msgid "kickstart_enablelogging: Enable logging for a Kickstart profile"
-msgstr ""
-"kickstartenablelogging: Habilita el registre per a un perfil de Kickstart"
+msgstr "kickstartenablelogging: Habilita el registre per a un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1141
 msgid "usage: kickstart_enablelogging PROFILE"
@@ -2844,8 +2691,7 @@ msgstr "ús: kickstartaddvariable PROFILE KEY VALUE"
 
 #: ../src/spacecmd/kickstart.py:1216
 msgid "kickstart_updatevariable: Update a variable in a Kickstart profile"
-msgstr ""
-"kickstartupdatevariable: Actualitza una variable en un perfil de Kickstart"
+msgstr "kickstartupdatevariable: Actualitza una variable en un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1218
 msgid "usage: kickstart_updatevariable PROFILE KEY VALUE"
@@ -2853,8 +2699,7 @@ msgstr "ús: kickstartupdateVALOR CLAU de perfil variable"
 
 #: ../src/spacecmd/kickstart.py:1255
 msgid "kickstart_removevariables: Remove variables from a Kickstart profile"
-msgstr ""
-"kickstartremovevariables: Elimina les variables d'un perfil de Kickstart"
+msgstr "kickstartremovevariables: Elimina les variables d'un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1257
 msgid "usage: kickstart_removevariables PROFILE <KEY ...>"
@@ -2898,11 +2743,8 @@ msgid "usage: kickstart_listoptions PROFILE"
 msgstr "ús: perfil de kickstartlistoptions"
 
 #: ../src/spacecmd/kickstart.py:1496
-msgid ""
-"kickstart_listcustomoptions: List the custom options of a Kickstart profile"
-msgstr ""
-"kickstartlistcustomoptions: Llista les opcions personalitzades d'un perfil "
-"de Kickstart"
+msgid "kickstart_listcustomoptions: List the custom options of a Kickstart profile"
+msgstr "kickstartlistcustomoptions: Llista les opcions personalitzades d'un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1498
 msgid "usage: kickstart_listcustomoptions PROFILE"
@@ -2910,9 +2752,7 @@ msgstr "ús: perfil kickstartlistcustomoptions"
 
 #: ../src/spacecmd/kickstart.py:1534
 msgid "kickstart_setcustomoptions: Set custom options for a Kickstart profile"
-msgstr ""
-"kickstartsetcustomoptions: estableix opcions personalitzades per a un perfil "
-"de Kickstart"
+msgstr "kickstartsetcustomoptions: estableix opcions personalitzades per a un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1536
 msgid "usage: kickstart_setcustomoptions PROFILE"
@@ -2920,52 +2760,39 @@ msgstr "ús: perfil de kickstartsetcustomoptions"
 
 #: ../src/spacecmd/kickstart.py:1586
 msgid "kickstart_addchildchannels: Add a child channels to a Kickstart profile"
-msgstr ""
-"kickstartaddchildchannels: afegeix un canal fill a un perfil de Kickstart"
+msgstr "kickstartaddchildchannels: afegeix un canal fill a un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1588
 msgid "usage: kickstart_addchildchannels PROFILE <CHANNEL ...>"
 msgstr "ús: kickstartaddchildchannels PERFIL <CHANNEL ...>"
 
 #: ../src/spacecmd/kickstart.py:1648
-msgid ""
-"kickstart_removechildchannels: Remove child channels from a Kickstart profile"
-msgstr ""
-"kickstartremovechildchannels: elimina els canals fills d'un perfil de "
-"Kickstart"
+msgid "kickstart_removechildchannels: Remove child channels from a Kickstart profile"
+msgstr "kickstartremovechildchannels: elimina els canals fills d'un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1650
 msgid "usage: kickstart_removechildchannels PROFILE <CHANNEL ...>"
 msgstr "ús: kickstartremovechildchannels PERFIL <CHANNEL ...>"
 
 #: ../src/spacecmd/kickstart.py:1695
-msgid ""
-"kickstart_listchildchannels: List the child channels of a Kickstart profile"
-msgstr ""
-"kickstartlistchildchannels: Llista els canals fills d'un perfil de Kickstart"
+msgid "kickstart_listchildchannels: List the child channels of a Kickstart profile"
+msgstr "kickstartlistchildchannels: Llista els canals fills d'un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1697
 msgid "usage: kickstart_listchildchannels PROFILE"
 msgstr "ús: kickstartlistchildchannels PERFIL"
 
 #: ../src/spacecmd/kickstart.py:1734
-msgid ""
-"kickstart_addfilepreservations: Add file preservations to a Kickstart profile"
-msgstr ""
-"kickstartaddfilepreservations: Afegeix les preservacions de fitxers a un "
-"perfil del Kickstart"
+msgid "kickstart_addfilepreservations: Add file preservations to a Kickstart profile"
+msgstr "kickstartaddfilepreservations: Afegeix les preservacions de fitxers a un perfil del Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1736
 msgid "usage: kickstart_addfilepreservations PROFILE <FILELIST ...>"
 msgstr "ús: kickstartaddfilepreservations PROFILE <FILELIST ...>"
 
 #: ../src/spacecmd/kickstart.py:1773
-msgid ""
-"kickstart_removefilepreservations: Remove file preservations from a "
-"Kickstart profile"
-msgstr ""
-"kickstartremovefilepreservations: Elimina la preservació de fitxers d'un "
-"perfil de Kickstart"
+msgid "kickstart_removefilepreservations: Remove file preservations from a Kickstart profile"
+msgstr "kickstartremovefilepreservations: Elimina la preservació de fitxers d'un perfil de Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1775
 msgid "usage: kickstart_removefilepreservations PROFILE <FILE ...>"
@@ -3148,17 +2975,14 @@ msgstr "No s'ha trobat el perfil Kickstart que heu introduït"
 
 #: ../src/spacecmd/kickstart.py:2219
 msgid "kickstart_export: export kickstart profile(s) to json format file"
-msgstr ""
-"kickstartexport: exporta el/s perfil/s de kickstart al fitxer de format json"
+msgstr "kickstartexport: exporta el/s perfil/s de kickstart al fitxer de format json"
 
 #: ../src/spacecmd/kickstart.py:2220
 msgid ""
 "usage: kickstart_export <KSPROFILE>... [options])\n"
 "options:\n"
-"    -f outfile.json : specify an output filename, defaults to <KSPROFILE>."
-"json\n"
-"                      if exporting a single kickstart, profiles.json for "
-"multiple\n"
+"    -f outfile.json : specify an output filename, defaults to <KSPROFILE>.json\n"
+"                      if exporting a single kickstart, profiles.json for multiple\n"
 "                      kickstarts, or ks_all.json if no KSPROFILE specified\n"
 "                      e.g (export ALL)\n"
 "\n"
@@ -3166,12 +2990,9 @@ msgid ""
 msgstr ""
 "ús: kickstartexport <KSPROFILE>... [opcions])\n"
 "opcions:\n"
-"    -f outfile.json: especifica un nom de fitxer de sortida, per defecte és "
-"<KSPROFILE>.json\n"
-"                      si s'exporta un únic kickstart, profiles.json per a "
-"múltiples\n"
-"                      kickstarts, o ksall.json si no s'ha especificat el "
-"KSPROFILE\n"
+"    -f outfile.json: especifica un nom de fitxer de sortida, per defecte és <KSPROFILE>.json\n"
+"                      si s'exporta un únic kickstart, profiles.json per a múltiples\n"
+"                      kickstarts, o ksall.json si no s'ha especificat el KSPROFILE\n"
 "                      p. ex. (exportA-HO TOT)\n"
 "\n"
 "Nota: la llista del KSPROFILE és opcional, per defecte és exportar-LA"
@@ -3182,12 +3003,8 @@ msgid "Exporting ALL kickstart profiles to %s"
 msgstr "S'estan exportant tots els perfils kickstart a %s"
 
 #: ../src/spacecmd/kickstart.py:2360
-msgid ""
-"Error, no valid kickstart profile passed, check name is  correct with "
-"spacecmd kickstart_list"
-msgstr ""
-"Error, no s'ha passat cap perfil de kickstart vàlid, el nom de la "
-"comprovació és correcte amb spacecmd kickstartlist"
+msgid "Error, no valid kickstart profile passed, check name is  correct with spacecmd kickstart_list"
+msgstr "Error, no s'ha passat cap perfil de kickstart vàlid, el nom de la comprovació és correcte amb spacecmd kickstartlist"
 
 #: ../src/spacecmd/kickstart.py:2380
 #, python-format
@@ -3205,8 +3022,7 @@ msgstr "Voleu confirmar la sobreescriptura? (s/n)"
 
 #: ../src/spacecmd/kickstart.py:2391
 msgid "Error saving exported kickstart profiles to file"
-msgstr ""
-"S'ha produït un error en desar els perfils kickstart exportats al fitxer"
+msgstr "S'ha produït un error en desar els perfils kickstart exportats al fitxer"
 
 #: ../src/spacecmd/kickstart.py:2401
 msgid "kickstart_import: import kickstart profile(s) from json file"
@@ -3266,12 +3082,8 @@ msgstr "La clau GPG/SSL %s no existeix al servidor Spacewalk, s'omet"
 #. export/import some settings, so we post a warning that some manual
 #. fixup may be required
 #: ../src/spacecmd/kickstart.py:2551
-msgid ""
-"Due to API ommissions, there are some settings which cannot be imported, "
-"please check and fixup manually if necessary"
-msgstr ""
-"A causa dels ommissions de l'API, hi ha alguns paràmetres que no es poden "
-"importar, si us plau, comproveu i corregiu manualment si cal"
+msgid "Due to API ommissions, there are some settings which cannot be imported, please check and fixup manually if necessary"
+msgstr "A causa dels ommissions de l'API, hi ha alguns paràmetres que no es poden importar, si us plau, comproveu i corregiu manualment si cal"
 
 #: ../src/spacecmd/kickstart.py:2553
 msgid " * Details->Preserve ks.cfg"
@@ -3313,9 +3125,7 @@ msgstr "ús: kickstartdiff SOURCECHANNEL TARGETCHANNEL"
 
 #: ../src/spacecmd/kickstart.py:2652
 msgid "kickstart_getupdatetype: Get the update type for a kickstart profile(s)"
-msgstr ""
-"kickstartgetupdatetype: Obtenir el tipus d'actualització per a un perfil de "
-"kickstart"
+msgstr "kickstartgetupdatetype: Obtenir el tipus d'actualització per a un perfil de kickstart"
 
 #: ../src/spacecmd/kickstart.py:2653
 msgid "usage: kickstart_getupdatetype PROFILE"
@@ -3337,9 +3147,7 @@ msgstr "l'etiqueta de kickstart %s no existeix!"
 
 #: ../src/spacecmd/kickstart.py:2702
 msgid "kickstart_setupdatetype: Set the update type for a kickstart profile(s)"
-msgstr ""
-"kickstartsetupdatetype: estableix el tipus d'actualització per a un perfil "
-"de kickstart"
+msgstr "kickstartsetupdatetype: estableix el tipus d'actualització per a un perfil de kickstart"
 
 #: ../src/spacecmd/kickstart.py:2703
 msgid ""
@@ -3363,9 +3171,7 @@ msgstr "Actualitza el tipus [none]:"
 
 #: ../src/spacecmd/kickstart.py:2753
 msgid "kickstart_getsoftwaredetails: Gets kickstart profile software details"
-msgstr ""
-"kickstartgetsoftwaredetails: aconsegueix els detalls del programari del "
-"perfil kickstart"
+msgstr "kickstartgetsoftwaredetails: aconsegueix els detalls del programari del perfil kickstart"
 
 #: ../src/spacecmd/kickstart.py:2754
 msgid "usage: kickstart_getsoftwaredetails KS_LABEL"
@@ -3402,19 +3208,14 @@ msgstr "ignoreMissing: %s"
 
 #: ../src/spacecmd/kickstart.py:2806
 msgid "kickstart_setsoftwaredetails: Sets kickstart profile software details."
-msgstr ""
-"kickstartsetsoftwaredetails: estableix els detalls del programari del perfil "
-"kickstart."
+msgstr "kickstartsetsoftwaredetails: estableix els detalls del programari del perfil kickstart."
 
 #: ../src/spacecmd/kickstart.py:2807
-msgid ""
-"usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
+msgid "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
 msgstr "ús: kickstartsetsoftwaredetails PERFIL KICKSTARTPACKAGESINFO VALOR"
 
 #: ../src/spacecmd/kickstart.py:2808
-msgid ""
-"usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE "
-"KICKSTART_PACKAGES_INFO VALUE"
+msgid "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE KICKSTART_PACKAGES_INFO VALUE"
 msgstr "ús: PERFIL KICKSTARTPACKAGESINFO VALOR KICKSTARTPACKAGESINFO VALOR"
 
 #: ../src/spacecmd/kickstart.py:2844
@@ -3464,8 +3265,7 @@ msgid ""
 msgstr ""
 "Les dates poden ser les següents:\n"
 "Data límit:\n"
-"Les dates es poden expressar com a cadenes de data explícites a "
-"YYYYMMDD[HHMMSS]\n"
+"Les dates es poden expressar com a cadenes de data explícites a YYYYMMDD[HHMMSS]\n"
 "format.  Es requereix l'any, el mes i el dia, mentre que les hores i\n"
 "els minuts no ho són; les hores i els minuts per defecte seran 0000 si no\n"
 "Es proporcionen valors.\n"
@@ -3491,9 +3291,7 @@ msgstr "ús: clar"
 
 #: ../src/spacecmd/misc.py:133
 msgid "clear_caches: Clear the internal caches kept for systems and packages"
-msgstr ""
-"clearcaches: Neteja les memòries cau internes guardades per a sistemes i "
-"paquets"
+msgstr "clearcaches: Neteja les memòries cau internes guardades per a sistemes i paquets"
 
 #: ../src/spacecmd/misc.py:134
 msgid "usage: clear_caches"
@@ -3517,9 +3315,7 @@ msgstr "ús: getserverversion"
 
 #: ../src/spacecmd/misc.py:172
 msgid "list_proxies: List the proxies within the user's organization "
-msgstr ""
-"listproxies: Llista els servidors intermediaris dins de l'organització de "
-"l'usuari "
+msgstr "listproxies: Llista els servidors intermediaris dins de l'organització de l'usuari "
 
 #: ../src/spacecmd/misc.py:173
 msgid "usage: list_proxies"
@@ -3555,8 +3351,7 @@ msgstr "ús: historial"
 
 #: ../src/spacecmd/misc.py:221
 msgid "toggle_confirmations: Toggle confirmation messages on/off"
-msgstr ""
-"toggleconfirmations: Commuta els missatges de confirmació activat/desactivat"
+msgstr "toggleconfirmations: Commuta els missatges de confirmació activat/desactivat"
 
 #: ../src/spacecmd/misc.py:222
 msgid "usage: toggle_confirmations"
@@ -3788,9 +3583,7 @@ msgstr "Miss"
 
 #: ../src/spacecmd/org.py:128
 msgid "org_createfirst: Create first organization and user after server setup"
-msgstr ""
-"orgcreatefirst: Crea la primera organització i l'usuari després de la "
-"configuració del servidor"
+msgstr "orgcreatefirst: Crea la primera organització i l'usuari després de la configuració del servidor"
 
 #: ../src/spacecmd/org.py:129
 msgid ""
@@ -4123,10 +3916,8 @@ msgid "Advanced Search:"
 msgstr "Cerca avançada:"
 
 #: ../src/spacecmd/package.py:131
-msgid ""
-"Available Fields: name, epoch, version, release, arch, description, summary"
-msgstr ""
-"Camps disponibles: nom, època, versió, llançament, arc, descripció, resum"
+msgid "Available Fields: name, epoch, version, release, arch, description, summary"
+msgstr "Camps disponibles: nom, època, versió, llançament, arc, descripció, resum"
 
 #: ../src/spacecmd/package.py:132
 msgid "Example: name:kernel AND version:2.6.18 AND -description:devel"
@@ -4209,169 +4000,112 @@ msgid "Dependency: %s Type: %s Modifier: %s"
 msgstr "Dependència: %s Tipus: %s Modificador: %s"
 
 #: ../src/spacecmd/proxy.py:32
-msgid ""
-"proxy_container_config: create a proxy system and return its configuration "
-"file"
-msgstr ""
-"proxycontainerconfig: crea un sistema proxy i retorna el seu fitxer de "
-"configuració"
+msgid "proxy_container_config: create a proxy system and return its configuration file"
+msgstr "proxycontainerconfig: crea un sistema proxy i retorna el seu fitxer de configuració"
 
 #: ../src/spacecmd/proxy.py:33
 #, python-format
 msgid ""
-"usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE "
-"EMAIL ROOT_CA CRT KEY\n"
+"usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
 "parameters:\n"
 "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
-"  SERVER_FQDN the fully qualified domain name of the server to connect to "
-"proxy to.\n"
-"  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good "
-"value.\n"
+"  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
+"  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
 "  EMAIL       the email of the proxy administrator\n"
-"  CA          path to the root CA used to sign the proxy certificate in PEM "
-"format\n"
+"  CA          path to the root CA used to sign the proxy certificate in PEM format\n"
 "  CRT         path to the proxy certificate in PEM format\n"
 "  KEY         path to the proxy certificate private key in PEM format\n"
 "\n"
 "options:\n"
-"  -o, --output Path where to create the generated configuration. Default: "
-"'config.tar.gz'\n"
+"  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
 "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
 "  -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy\n"
 "            certicate in PEM format. May be provided multiple times.\n"
 "\n"
 "examples:\n"
-"  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme."
-"org root_ca.crt proxy.crt proxy.key\n"
+"  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
 msgstr ""
-"ús: proxy_container_config [opcions] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL "
-"ROOT_CA CRT KEY\n"
+"ús: proxy_container_config [opcions] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
 "paràmetres:\n"
-"  PROXY_FQDN l'FQDN únic i resoluble per DNS d'aquest servidor "
-"intermediari.\n"
-"  SERVER_FQDN el nom de domini complet del servidor al qual es connecta al "
-"servidor intermediari.\n"
-"  MAX_CACHE la mida màxima de la memòria cau en MB. El 60 % de "
-"l'emmagatzematge és un bon valor.\n"
-"  ENVIAR UN EMAIL el correu electrònic de l'administrador del servidor "
-"intermediari\n"
-"  Camí de la CA a la CA arrel utilitzada per signar el certificat de proxy "
-"en format PEM\n"
+"  PROXY_FQDN l'FQDN únic i resoluble per DNS d'aquest servidor intermediari.\n"
+"  SERVER_FQDN el nom de domini complet del servidor al qual es connecta al servidor intermediari.\n"
+"  MAX_CACHE la mida màxima de la memòria cau en MB. El 60 % de l'emmagatzematge és un bon valor.\n"
+"  ENVIAR UN EMAIL el correu electrònic de l'administrador del servidor intermediari\n"
+"  Camí de la CA a la CA arrel utilitzada per signar el certificat de proxy en format PEM\n"
 "  Camí CRT al certificat de proxy en format PEM\n"
-"  Camí de la CLAU a la clau privada del certificat intermediari en format "
-"PEM\n"
+"  Camí de la CLAU a la clau privada del certificat intermediari en format PEM\n"
 "\n"
 "opcions:\n"
-"  -o, --output Camí on crear la configuració generada. Per defecte: 'config."
-"tar.gz'\n"
+"  -o, --output Camí on crear la configuració generada. Per defecte: 'config.tar.gz'\n"
 "  -p, --ssh-port Port SSH el proxy escolta un. Per defecte: 8022\n"
-"  -i, --intermediate-ca Camí a una CA intermèdia utilitzada per signar el "
-"proxy\n"
+"  -i, --intermediate-ca Camí a una CA intermèdia utilitzada per signar el proxy\n"
 "            certificat en format PEM. Es pot proporcionar diverses vegades.\n"
 "\n"
 "exemples:\n"
-"  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme."
-"org root_ca.crt proxy.crt proxy.key\n"
+"  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
 
 #: ../src/spacecmd/proxy.py:89
-msgid ""
-"proxy_container_config_generate_cert: create a proxy system and return its "
-"configuration file"
-msgstr ""
-"proxycontainerconfiggeneratecert: crea un sistema proxy i retorna el seu "
-"fitxer de configuració"
+msgid "proxy_container_config_generate_cert: create a proxy system and return its configuration file"
+msgstr "proxycontainerconfiggeneratecert: crea un sistema proxy i retorna el seu fitxer de configuració"
 
 #: ../src/spacecmd/proxy.py:90
 #, python-format
 msgid ""
-"usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE "
-"EMAIL\n"
+"usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
 "parameters:\n"
 "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
-"  SERVER_FQDN the fully qualified domain name of the server to connect to "
-"proxy to.\n"
-"  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good "
-"value.\n"
+"  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
+"  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
 "  EMAIL       the email of the proxy administrator\n"
 "\n"
 "options:\n"
-"  -o, --output Path where to create the generated configuration. Default: "
-"'config.tar.gz'\n"
+"  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
 "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
-"  --ca-crt path to the certificate of the CA to use to generate a new proxy "
-"certificate.\n"
+"  --ca-crt path to the certificate of the CA to use to generate a new proxy certificate.\n"
 "           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
-"  --ca-key path to the private key of the CA to use to generate a new proxy "
-"certificate.\n"
+"  --ca-key path to the private key of the CA to use to generate a new proxy certificate.\n"
 "           Using /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY by default.\n"
-"  --ca-pass path to a file containing the password of the CA private key, "
-"will be prompted if not passed.\n"
-"  --ssl-cname alternate name of the proxy to set in the certificate. Can be "
-"provided multiple times\n"
-"  --ssl-country country code to set in the certificate. If omitted, default "
-"values from mgr-ssl-tool will be used.\n"
-"  --ssl-state state name to set in the certificate. If omitted, default "
-"values from mgr-ssl-tool will be used.\n"
-"  --ssl-city the city name to set in the certificate. If omitted, default "
-"values from mgr-ssl-tool will be used.\n"
-"  --ssl-org the organization name to set in the certificate. If omitted, "
-"default values from mgr-ssl-tool will be used.\n"
-"  --ssl-org-unit the organization unit name to set in the certificate. If "
-"omitted, default values from mgr-ssl-tool will be used.\n"
-"  --ssl-email the email to set in the certificate. If omitted, default "
-"values from mgr-ssl-tool will be used.\n"
+"  --ca-pass path to a file containing the password of the CA private key, will be prompted if not passed.\n"
+"  --ssl-cname alternate name of the proxy to set in the certificate. Can be provided multiple times\n"
+"  --ssl-country country code to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+"  --ssl-state state name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+"  --ssl-city the city name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+"  --ssl-org the organization name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+"  --ssl-org-unit the organization unit name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+"  --ssl-email the email to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
 "\n"
 "examples:\n"
-"  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org --ca-pass "
-"password-file\n"
+"  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org --ca-pass password-file\n"
 msgstr ""
 "ús: proxycontainerconfiggeneratecert PROXYFQDN SERVERFQDN MAXCACHE EMAIL\n"
 "\n"
 "paràmetres:\n"
-"  PROXYFQDN és l'únic FQDN que es pot resoldre amb DNS d'aquest servidor "
-"intermediari.\n"
-"  SERVERFQDN és el nom de domini totalment qualificat del servidor al qual "
-"connectar-se al servidor intermediari.\n"
-"  MAXCACHE la mida màxima de la memòria cau en MB. El 60% de "
-"l'emmagatzematge és un bon valor.\n"
+"  PROXYFQDN és l'únic FQDN que es pot resoldre amb DNS d'aquest servidor intermediari.\n"
+"  SERVERFQDN és el nom de domini totalment qualificat del servidor al qual connectar-se al servidor intermediari.\n"
+"  MAXCACHE la mida màxima de la memòria cau en MB. El 60% de l'emmagatzematge és un bon valor.\n"
 "  E-MAIL el correu de l'administrador del servidor intermediari\n"
 "\n"
 "opcions:\n"
-"  -o, --output Path on crear la configuració generada. Per defecte: 'config."
-"tar.gz'\n"
-"  -p, --ssh-port SSH port el servidor intermediari n'escolta un. Per "
-"defecte: 8022\n"
-"  --ca-crt camí al certificat de la CA a utilitzar per a generar un "
-"certificat intermediari nou.\n"
+"  -o, --output Path on crear la configuració generada. Per defecte: 'config.tar.gz'\n"
+"  -p, --ssh-port SSH port el servidor intermediari n'escolta un. Per defecte: 8022\n"
+"  --ca-crt camí al certificat de la CA a utilitzar per a generar un certificat intermediari nou.\n"
 "           Utilitzant /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT per defecte.\n"
-"  --ca-key camí a la clau privada de la CA a usar per a generar un "
-"certificat intermediari nou.\n"
-"           Utilitzant /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY de manera "
-"predeterminada.\n"
-"  --ca-pass camí a un fitxer que conté la contrasenya de la clau privada de "
-"la CA, es preguntarà si no es passa.\n"
-"  --ssl-cname nom alternatiu del servidor intermediari a establir en el "
-"certificat. Es pot proporcionar diverses vegades\n"
-"  --ssl-country country code a establir en el certificat. Si s'omet, "
-"s'utilitzaran els valors per defecte de mgr-ssl-tool.\n"
-"  --ssl-state nom d'estat a establir al certificat. Si s'omet, s'utilitzaran "
-"els valors per defecte de mgr-ssl-tool.\n"
-"  --ssl-city el nom de la ciutat a establir al certificat. Si s'omet, "
-"s'utilitzaran els valors per defecte de mgr-ssl-tool.\n"
-"  --ssl-org el nom de l'organització a establir al certificat. Si s'omet, "
-"s'utilitzaran els valors per defecte de mgr-ssl-tool.\n"
-"  --ssl-org-unit el nom de la unitat d'organització a establir al "
-"certificat. Si s'omet, s'utilitzaran els valors per defecte de mgr-ssl-"
-"tool.\n"
-"  --ssl-email el correu electrònic a establir en el certificat. Si s'omet, "
-"s'utilitzaran els valors per defecte de mgr-ssl-tool.\n"
+"  --ca-key camí a la clau privada de la CA a usar per a generar un certificat intermediari nou.\n"
+"           Utilitzant /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY de manera predeterminada.\n"
+"  --ca-pass camí a un fitxer que conté la contrasenya de la clau privada de la CA, es preguntarà si no es passa.\n"
+"  --ssl-cname nom alternatiu del servidor intermediari a establir en el certificat. Es pot proporcionar diverses vegades\n"
+"  --ssl-country country code a establir en el certificat. Si s'omet, s'utilitzaran els valors per defecte de mgr-ssl-tool.\n"
+"  --ssl-state nom d'estat a establir al certificat. Si s'omet, s'utilitzaran els valors per defecte de mgr-ssl-tool.\n"
+"  --ssl-city el nom de la ciutat a establir al certificat. Si s'omet, s'utilitzaran els valors per defecte de mgr-ssl-tool.\n"
+"  --ssl-org el nom de l'organització a establir al certificat. Si s'omet, s'utilitzaran els valors per defecte de mgr-ssl-tool.\n"
+"  --ssl-org-unit el nom de la unitat d'organització a establir al certificat. Si s'omet, s'utilitzaran els valors per defecte de mgr-ssl-tool.\n"
+"  --ssl-email el correu electrònic a establir en el certificat. Si s'omet, s'utilitzaran els valors per defecte de mgr-ssl-tool.\n"
 "\n"
 "exemples:\n"
-"  proxycontainerconfig proxy.lab server.lab 1024 proxy.acme.org --ca-pass "
-"password-file\n"
+"  proxycontainerconfig proxy.lab server.lab 1024 proxy.acme.org --ca-pass password-file\n"
 
 #: ../src/spacecmd/repo.py:48
 msgid "repo_list: List all available user repos"
@@ -4632,9 +4366,7 @@ msgstr "ús: reporterrata [ERRATA:cerca:XXX ...]"
 
 #: ../src/spacecmd/report.py:144
 msgid "All errata requested - this may take a few minutes, please be patient!"
-msgstr ""
-"Tots els errata sol·licitats - això pot trigar uns minuts, si us plau, "
-"tingueu paciència!"
+msgstr "Tots els errata sol·licitats - això pot trigar uns minuts, si us plau, tingueu paciència!"
 
 #: ../src/spacecmd/report.py:167
 #, python-format
@@ -4647,8 +4379,7 @@ msgstr "No s'ha trobat cap errata per a «{}»"
 
 #: ../src/spacecmd/report.py:183
 msgid "report_ipaddresses: List the hostname and IP of each system"
-msgstr ""
-"reportipaddresses: Llista el nom de l'ordinador i la IP de cada sistema"
+msgstr "reportipaddresses: Llista el nom de l'ordinador i la IP de cada sistema"
 
 #: ../src/spacecmd/report.py:184
 msgid "usage: report_ipaddresses [<SYSTEMS>]"
@@ -4712,12 +4443,8 @@ msgid "System ID   Last Checkin"
 msgstr "ID del sistema últim checkin"
 
 #: ../src/spacecmd/scap.py:44
-msgid ""
-"scap_listxccdfscans: Return a list of finished OpenSCAP scans for given "
-"systems"
-msgstr ""
-"scaplistxccdfscans: retorna una llista d'escaneigs OpenSCAP finalitzats per "
-"a sistemes donats"
+msgid "scap_listxccdfscans: Return a list of finished OpenSCAP scans for given systems"
+msgstr "scaplistxccdfscans: retorna una llista d'escaneigs OpenSCAP finalitzats per a sistemes donats"
 
 #: ../src/spacecmd/scap.py:45
 msgid "usage: scap_listxccdfscans <SYSTEMS>"
@@ -4741,12 +4468,8 @@ msgid "XID: %d Profile: %s Path: (%s) Completed: %s"
 msgstr "XID: %d Perfil: %s Camí: (%s) Completat: %s"
 
 #: ../src/spacecmd/scap.py:98
-msgid ""
-"scap_getxccdfscanruleresults: Return a full list of RuleResults for given "
-"OpenSCAP XCCDF scan"
-msgstr ""
-"scapgetxccdfscanruleresults: retorna una llista completa dels resultats de "
-"la regla per a l'escaneig XCCDF donat"
+msgid "scap_getxccdfscanruleresults: Return a full list of RuleResults for given OpenSCAP XCCDF scan"
+msgstr "scapgetxccdfscanruleresults: retorna una llista completa dels resultats de la regla per a l'escaneig XCCDF donat"
 
 #: ../src/spacecmd/scap.py:99
 msgid "usage: scap_getxccdfscanruleresults <XID>"
@@ -4764,9 +4487,7 @@ msgstr "IDref: %s Resultat: %s Idents: (%s)"
 
 #: ../src/spacecmd/scap.py:134
 msgid "scap_getxccdfscandetails: Get details of given OpenSCAP XCCDF scan"
-msgstr ""
-"scapgetxccdfscandetails: Obteniu detalls de l'escaneig XCCDF donat de "
-"l'OpenSCAP"
+msgstr "scapgetxccdfscandetails: Obteniu detalls de l'escaneig XCCDF donat de l'OpenSCAP"
 
 #: ../src/spacecmd/scap.py:135
 msgid "usage: scap_getxccdfscandetails <XID>"
@@ -5055,11 +4776,8 @@ msgid "usage: schedule_list [BEGINDATE] [ENDDATE]"
 msgstr "ús: schedulelist [BEGINDATE] [ENDDATE]"
 
 #: ../src/spacecmd/schedule.py:459
-msgid ""
-"schedule_deletearchived: Delete all archived actions older than given date."
-msgstr ""
-"scheduledeletearchived: Suprimeix totes les accions arxivades més antigues "
-"que la data indicada."
+msgid "schedule_deletearchived: Delete all archived actions older than given date."
+msgstr "scheduledeletearchived: Suprimeix totes les accions arxivades més antigues que la data indicada."
 
 #: ../src/spacecmd/schedule.py:460
 msgid "usage: schedule_deletearchived [yyyymmdd] [options]"
@@ -5077,8 +4795,7 @@ msgstr ""
 
 #: ../src/spacecmd/schedule.py:465
 msgid "If no date is provided it will delete all archived actions"
-msgstr ""
-"Si no es proporciona cap data, es suprimiran totes les accions arxivades"
+msgstr "Si no es proporciona cap data, es suprimiran totes les accions arxivades"
 
 #: ../src/spacecmd/schedule.py:492
 msgid "Do you want to delete ({}) archived actions? [y/N]"
@@ -5089,12 +4806,8 @@ msgid "No archived actions found."
 msgstr "No s'ha trobat cap acció arxivada."
 
 #: ../src/spacecmd/schedule.py:518
-msgid ""
-"schedule_archivecompleted: Archive all completed actions older than given "
-"date."
-msgstr ""
-"schedulearchivecompleted: arxiva totes les accions completades més antigues "
-"de la data indicada."
+msgid "schedule_archivecompleted: Archive all completed actions older than given date."
+msgstr "schedulearchivecompleted: arxiva totes les accions completades més antigues de la data indicada."
 
 #: ../src/spacecmd/schedule.py:519
 msgid "usage: schedule_archivecompleted [yyyymmdd] [options]"
@@ -5102,8 +4815,7 @@ msgstr "ús: schedulearchivecompleted [yyyymmdd] [opcions]"
 
 #: ../src/spacecmd/schedule.py:524
 msgid "If no date is provided it will archive all completed actions"
-msgstr ""
-"Si no es proporciona cap data, s'arxivaran totes les accions completades"
+msgstr "Si no es proporciona cap data, s'arxivaran totes les accions completades"
 
 #: ../src/spacecmd/schedule.py:551
 msgid "Do you want to archive ({}) completed actions? [y/N]"
@@ -5232,13 +4944,11 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:112
 msgid "softwarechannel_listmanageablechannels: List all software channels"
-msgstr ""
-"softwarechannellistmanageablechannels: Llista tots els canals de programari"
+msgstr "softwarechannellistmanageablechannels: Llista tots els canals de programari"
 
 #: ../src/spacecmd/softwarechannel.py:113
 msgid "                                        manageable by current user"
-msgstr ""
-"                                        gestionable per l'usuari actual"
+msgstr "                                        gestionable per l'usuari actual"
 
 #: ../src/spacecmd/softwarechannel.py:114
 msgid ""
@@ -5252,8 +4962,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:148
 msgid "softwarechannel_listbasechannels: List all base software channels"
-msgstr ""
-"softwarechannellistbasechannels: Llista tots els canals de programari base"
+msgstr "softwarechannellistbasechannels: Llista tots els canals de programari base"
 
 #: ../src/spacecmd/softwarechannel.py:149
 msgid ""
@@ -5283,12 +4992,8 @@ msgid "softwarechannel_listchildchannels : List all child channels"
 msgstr "softwarechannellistchildchannels: Llista tots els canals fills"
 
 #: ../src/spacecmd/softwarechannel.py:181
-msgid ""
-"softwarechannel_listchildchannels CHANNEL : List children for aspecific base "
-"channel"
-msgstr ""
-"softwarechannellistchildchannels CHANNEL: Llista els fills per a un canal "
-"base específic"
+msgid "softwarechannel_listchildchannels CHANNEL : List children for aspecific base channel"
+msgstr "softwarechannellistchildchannels CHANNEL: Llista els fills per a un canal base específic"
 
 #: ../src/spacecmd/softwarechannel.py:183
 msgid ""
@@ -5331,12 +5036,8 @@ msgid "usage: softwarechannel_listallpackages CHANNEL"
 msgstr "ús: softwarechannellistallpackages CHANNEL"
 
 #: ../src/spacecmd/softwarechannel.py:323
-msgid ""
-"softwarechannel_listlatestpackages: List the newest version of all packages "
-"in a channel"
-msgstr ""
-"softwarechannellistlatestpackages: Llista la versió més nova de tots els "
-"paquets en un canal"
+msgid "softwarechannel_listlatestpackages: List the newest version of all packages in a channel"
+msgstr "softwarechannellistlatestpackages: Llista la versió més nova de tots els paquets en un canal"
 
 #: ../src/spacecmd/softwarechannel.py:324
 msgid "usage: softwarechannel_listlatestpackages CHANNEL"
@@ -5344,8 +5045,7 @@ msgstr "ús: softwarechannellistlatestpackages CHANNEL"
 
 #: ../src/spacecmd/softwarechannel.py:356
 msgid "softwarechannel_setdetails: Modify details of a software channel"
-msgstr ""
-"softwarechannelsetdetails: modifica els detalls d'un canal de programari"
+msgstr "softwarechannelsetdetails: modifica els detalls d'un canal de programari"
 
 #: ../src/spacecmd/softwarechannel.py:357
 #, python-format
@@ -5548,10 +5248,8 @@ msgid "                            software channel"
 msgstr "                            canal de programari"
 
 #: ../src/spacecmd/softwarechannel.py:599
-msgid ""
-"usage: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd [to=yyyymmdd]]"
-msgstr ""
-"ús: softwarechannellisterrata <CHANNEL ...> [from:yyyymmdd [to:yyyymmdd]]"
+msgid "usage: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd [to=yyyymmdd]]"
+msgstr "ús: softwarechannellisterrata <CHANNEL ...> [from:yyyymmdd [to:yyyymmdd]]"
 
 #: ../src/spacecmd/softwarechannel.py:657
 msgid "softwarechannel_listarches: lists the potential software"
@@ -5640,8 +5338,7 @@ msgstr "Descripció nova (en blanc per mantenir-la sense canvis)"
 
 #: ../src/spacecmd/softwarechannel.py:791
 msgid "New Checksum type (blank to keep unchanged)"
-msgstr ""
-"Tipus nou de suma de verificació (en blanc per a mantenir-lo sense canvis)"
+msgstr "Tipus nou de suma de verificació (en blanc per a mantenir-lo sense canvis)"
 
 #: ../src/spacecmd/softwarechannel.py:798
 msgid "New GPG URL (blank to keep unchanged)"
@@ -5864,18 +5561,14 @@ msgid "Only [yes/no] values are acceptable for --disable-gpg-check"
 msgstr "Només els valors [yes/no] són acceptables per a --disable-gpg-check"
 
 #: ../src/spacecmd/softwarechannel.py:1130
-msgid ""
-"softwarechannel_clonetree: Clone a software channel and its child channels"
-msgstr ""
-"softwarechannelclonetree: Clona un canal de programari i els seus canals "
-"fills"
+msgid "softwarechannel_clonetree: Clone a software channel and its child channels"
+msgstr "softwarechannelclonetree: Clona un canal de programari i els seus canals fills"
 
 #: ../src/spacecmd/softwarechannel.py:1131
 msgid ""
 "usage: softwarechannel_clonetree [options])\n"
 "             e.g    softwarechannel_clonetree foobasechannel -p \"my_\"\n"
-"                    softwarechannel_clonetree foobasechannel -x \"s/foo/"
-"bar\"\n"
+"                    softwarechannel_clonetree foobasechannel -x \"s/foo/bar\"\n"
 "                    softwarechannel_clonetree foobasechannel -x \"s/^/my_\"\n"
 "\n"
 "options:\n"
@@ -5892,8 +5585,7 @@ msgid ""
 msgstr ""
 "ús: softwarechannelclonetree [opcions])\n"
 "             e.g softwarechannelclonetree foobasechannel -p \"my\"\n"
-"                    softwarechannelclonetree foobasechannel -x \"s/foo/"
-"bar\"\n"
+"                    softwarechannelclonetree foobasechannel -x \"s/foo/bar\"\n"
 "                    softwarechannelclonetree foobasechannel -x \"s/\"/my\"\n"
 "\n"
 "opcions:\n"
@@ -5949,12 +5641,8 @@ msgid "Add these packages [y/N]:"
 msgstr "Afegeix aquests paquets [y/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:1384
-msgid ""
-"softwarechannel_mergepackages: Merge packages from one software channel into "
-"another"
-msgstr ""
-"softwarechannelmergepackages: Fusiona els paquets d'un canal de programari a "
-"un altre"
+msgid "softwarechannel_mergepackages: Merge packages from one software channel into another"
+msgstr "softwarechannelmergepackages: Fusiona els paquets d'un canal de programari a un altre"
 
 #: ../src/spacecmd/softwarechannel.py:1385
 msgid "usage: softwarechannel_mergepackages SOURCE_CHANNEL TARGET_CHANNEL"
@@ -5962,8 +5650,7 @@ msgstr "ús: softwarechannelmergepackages SOURCECHANNEL TARGETCHANNEL"
 
 #: ../src/spacecmd/softwarechannel.py:1411
 msgid "softwarechannel_removeerrata: Remove patches from a software channel"
-msgstr ""
-"softwarechannelremoveerrata: Elimina els pedaços d'un canal de programari"
+msgstr "softwarechannelremoveerrata: Elimina els pedaços d'un canal de programari"
 
 #: ../src/spacecmd/softwarechannel.py:1413
 msgid "usage: softwarechannel_removeerrata CHANNEL <ERRATA:search:XXX ...>"
@@ -5991,8 +5678,7 @@ msgstr "Elimina aquests pedaços [y/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:1497
 msgid "softwarechannel_removepackages: Remove packages from a software channel"
-msgstr ""
-"softwarechannelremovepackages: Elimina els paquets d'un canal de programari"
+msgstr "softwarechannelremovepackages: Elimina els paquets d'un canal de programari"
 
 #: ../src/spacecmd/softwarechannel.py:1499
 msgid "usage: softwarechannel_removepackages CHANNEL <PACKAGE ...>"
@@ -6003,19 +5689,12 @@ msgid "No packages to remove"
 msgstr "No hi ha cap paquet a eliminar"
 
 #: ../src/spacecmd/softwarechannel.py:1575
-msgid ""
-"softwarechannel_adderratabydate: Add errata from one channel into another "
-"channel based on a date range"
-msgstr ""
-"softwarechanneladderratabydate: Afegeix errata d'un canal a un altre canal "
-"basat en un interval de dates"
+msgid "softwarechannel_adderratabydate: Add errata from one channel into another channel based on a date range"
+msgstr "softwarechanneladderratabydate: Afegeix errata d'un canal a un altre canal basat en un interval de dates"
 
 #: ../src/spacecmd/softwarechannel.py:1577
-msgid ""
-"usage: softwarechannel_adderratabydate [options] SOURCE DEST BEGINDATE "
-"ENDDATE"
-msgstr ""
-"ús: softwarechanneladderratabydate [opcions] SOURCE DEST BEGINDATE ENDDATE"
+msgid "usage: softwarechannel_adderratabydate [options] SOURCE DEST BEGINDATE ENDDATE"
+msgstr "ús: softwarechanneladderratabydate [opcions] SOURCE DEST BEGINDATE ENDDATE"
 
 #: ../src/spacecmd/softwarechannel.py:1578
 #: ../src/spacecmd/softwarechannel.py:1655
@@ -6052,12 +5731,8 @@ msgid "Publishing errata %s to %s"
 msgstr "S'està publicant l'errata %s a %s"
 
 #: ../src/spacecmd/softwarechannel.py:1652
-msgid ""
-"softwarechannel_listerratabydate: list errata from channelbased on a date "
-"range"
-msgstr ""
-"softwarechannellisterratabydate: llista els errata des del canal basat en un "
-"interval de dates"
+msgid "softwarechannel_listerratabydate: list errata from channelbased on a date range"
+msgstr "softwarechannellisterratabydate: llista els errata des del canal basat en un interval de dates"
 
 #: ../src/spacecmd/softwarechannel.py:1654
 msgid "usage: softwarechannel_listerratabydate CHANNEL BEGINDATE ENDDATE"
@@ -6068,8 +5743,7 @@ msgid "No errata found between the given dates"
 msgstr "No s'ha trobat cap errata entre les dates donades"
 
 #: ../src/spacecmd/softwarechannel.py:1711
-msgid ""
-"softwarechannel_adderrata: Add patches from one channel into another channel"
+msgid "softwarechannel_adderrata: Add patches from one channel into another channel"
 msgstr "softwarechanneladderrata: afegeix pedaços d'un canal a un altre canal"
 
 #: ../src/spacecmd/softwarechannel.py:1713
@@ -6107,43 +5781,32 @@ msgid "Using the old errata.clone function"
 msgstr "Utilitzant la funció errata.clone antiga"
 
 #: ../src/spacecmd/softwarechannel.py:1836
-msgid ""
-"If you have base channels for multiple OS versions, check no unexpected "
-"packages have been added"
-msgstr ""
-"Si teniu canals base per a diverses versions del SO, comproveu que no s'han "
-"afegit paquets inesperats"
+msgid "If you have base channels for multiple OS versions, check no unexpected packages have been added"
+msgstr "Si teniu canals base per a diverses versions del SO, comproveu que no s'han afegit paquets inesperats"
 
 #: ../src/spacecmd/softwarechannel.py:1849
-msgid ""
-"softwarechannel_getorgaccess: Get the org-access for the software channel"
-msgstr ""
-"softwarechannelgetorgaccess: Obteniu l'accés org per al canal de programari"
+msgid "softwarechannel_getorgaccess: Get the org-access for the software channel"
+msgstr "softwarechannelgetorgaccess: Obteniu l'accés org per al canal de programari"
 
 #: ../src/spacecmd/softwarechannel.py:1850
 msgid "usage: softwarechannel_getorgaccess [CHANNEL ...]"
 msgstr "ús: softwarechannelgetorgaccess [CANAL ...]"
 
 #: ../src/spacecmd/softwarechannel.py:1888
-msgid ""
-"softwarechannel_setorgaccess: Set the org-access for the software channel"
-msgstr ""
-"softwarechannelsetorgaccess: estableix l'accés org per al canal de programari"
+msgid "softwarechannel_setorgaccess: Set the org-access for the software channel"
+msgstr "softwarechannelsetorgaccess: estableix l'accés org per al canal de programari"
 
 #: ../src/spacecmd/softwarechannel.py:1889
 msgid ""
 "usage : softwarechannel_setorgaccess <CHANNEL> [options])\n"
 "-d,--disable : disable org access (private, no org sharing)\n"
 "-e,--enable : enable org access (public access to all trusted orgs)\n"
-"-p,--protected ORG : protected org access for ORG only (multiple instances "
-"of -p ORG are allowed)"
+"-p,--protected ORG : protected org access for ORG only (multiple instances of -p ORG are allowed)"
 msgstr ""
 "ús: softwarechannelsetorgaccess <CHANNEL> [opcions])\n"
 "-d,--disable : inhabilita l'accés org (privat, sense compartició org)\n"
-"-e,--enable : activa l'accés org (accés públic a totes les orgues de "
-"confiança)\n"
-"-p,--protected ORG : accés protegit org només per ORG (es permeten múltiples "
-"instàncies de -p ORG)"
+"-e,--enable : activa l'accés org (accés públic a totes les orgues de confiança)\n"
+"-p,--protected ORG : accés protegit org només per ORG (es permeten múltiples instàncies de -p ORG)"
 
 #: ../src/spacecmd/softwarechannel.py:1929
 #, python-format
@@ -6171,39 +5834,28 @@ msgid "Disabling %s access for channel : %s "
 msgstr "S'està inhabilitant l'accés %s per al canal : %s "
 
 #: ../src/spacecmd/softwarechannel.py:1963
-msgid ""
-"softwarechannel_getorgaccesstree: Get the org-access for a software base "
-"channel and its children"
-msgstr ""
-"softwarechannelgetorgaccesstree: Aconsegueix l'accés org per a un canal base "
-"de programari i els seus fills"
+msgid "softwarechannel_getorgaccesstree: Get the org-access for a software base channel and its children"
+msgstr "softwarechannelgetorgaccesstree: Aconsegueix l'accés org per a un canal base de programari i els seus fills"
 
 #: ../src/spacecmd/softwarechannel.py:1964
 msgid "usage: softwarechannel_getorgaccesstree [CHANNEL]"
 msgstr "ús: softwarechannelgetorgaccesstree [CANAL]"
 
 #: ../src/spacecmd/softwarechannel.py:1997
-msgid ""
-"softwarechannel_setorgaccesstree: set the org-access for a software base "
-"channel and its children"
-msgstr ""
-"softwarechannelsetorgaccesstree: estableix l'accés org per a un canal base "
-"de programari i els seus fills"
+msgid "softwarechannel_setorgaccesstree: set the org-access for a software base channel and its children"
+msgstr "softwarechannelsetorgaccesstree: estableix l'accés org per a un canal base de programari i els seus fills"
 
 #: ../src/spacecmd/softwarechannel.py:1998
 msgid ""
 "usage: softwarechannel_setorgaccesstree <CHANNEL> [options])\n"
 "-d,--disable : disable org access (private, no org sharing)\n"
 "-e,--enable : enable org access (public access to all trusted orgs)\n"
-"-p,--protected ORG : protected org access for ORG only (multiple instances "
-"of -p ORG are allowed)"
+"-p,--protected ORG : protected org access for ORG only (multiple instances of -p ORG are allowed)"
 msgstr ""
 "ús: softwarechannelsetorgaccesstree <CHANNEL> [opcions])\n"
 "-d,--disable : inhabilita l'accés org (privat, sense compartició org)\n"
-"-e,--enable : activa l'accés org (accés públic a totes les orgues de "
-"confiança)\n"
-"-p,--protected ORG : accés protegit org només per ORG (es permeten múltiples "
-"instàncies de -p ORG)"
+"-e,--enable : activa l'accés org (accés públic a totes les orgues de confiança)\n"
+"-p,--protected ORG : accés protegit org només per ORG (es permeten múltiples instàncies de -p ORG)"
 
 #: ../src/spacecmd/softwarechannel.py:2037
 msgid "softwarechannel_regenerateneededcache: "
@@ -6211,9 +5863,7 @@ msgstr "softwarechannelregenerateneededcache: "
 
 #: ../src/spacecmd/softwarechannel.py:2038
 msgid "Regenerate the needed errata and package cache for all systems"
-msgstr ""
-"Regenera l'errata i la memòria cau de paquets necessaris per a tots els "
-"sistemes"
+msgstr "Regenera l'errata i la memòria cau de paquets necessaris per a tots els sistemes"
 
 #: ../src/spacecmd/softwarechannel.py:2040
 msgid "usage: softwarechannel_regenerateneededcache"
@@ -6276,12 +5926,10 @@ msgstr "sincronitza els paquets de dos canals de programari"
 #: ../src/spacecmd/softwarechannel.py:2240
 msgid ""
 "usage: softwarechannel_sync SOURCE_CHANNEL TARGET_CHANNEL [options])\n"
-"    -q,--quiet : quiet mode (omits the output of common packages in both "
-"channels)"
+"    -q,--quiet : quiet mode (omits the output of common packages in both channels)"
 msgstr ""
 "ús: softwarechannelsync SOURCECHANNEL TARGETCHANNEL [opcions])\n"
-"    -q,--quiet : mode silenciós (omet la sortida de paquets comuns en ambdós "
-"canals)"
+"    -q,--quiet : mode silenciós (omet la sortida de paquets comuns en ambdós canals)"
 
 #: ../src/spacecmd/softwarechannel.py:2282
 #, python-format
@@ -6404,26 +6052,16 @@ msgid "merge errata of one software channel into another"
 msgstr "fusiona errades d'un canal de programari en un altre"
 
 #: ../src/spacecmd/softwarechannel.py:2492
-msgid ""
-"usage:   softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL "
-"[FROM_DATE] [TO_DATE]"
-msgstr ""
-"ús: softwarechannelerratamerge SOURCECHANNEL TARGETCHANNEL [FROMDATE] "
-"[TODATE]"
+msgid "usage:   softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL [FROM_DATE] [TO_DATE]"
+msgstr "ús: softwarechannelerratamerge SOURCECHANNEL TARGETCHANNEL [FROMDATE] [TODATE]"
 
 #: ../src/spacecmd/softwarechannel.py:2493
-msgid ""
-"example: softwarechannel_errata_merge OldSoftChannel NewSoftChannel "
-"2018-01-01"
-msgstr ""
-"exemple: softwarechannelerratamerge OldSoftChannel NewSoftChannel 2018-01-01"
+msgid "example: softwarechannel_errata_merge OldSoftChannel NewSoftChannel 2018-01-01"
+msgstr "exemple: softwarechannelerratamerge OldSoftChannel NewSoftChannel 2018-01-01"
 
 #: ../src/spacecmd/softwarechannel.py:2494
-msgid ""
-"note:    Providing only FROM_DATE will merge all errata since that date."
-msgstr ""
-"Nota: Si es proporciona només FROMDATE es fusionaran tots els errata des "
-"d'aquesta data."
+msgid "note:    Providing only FROM_DATE will merge all errata since that date."
+msgstr "Nota: Si es proporciona només FROMDATE es fusionaran tots els errata des d'aquesta data."
 
 #: ../src/spacecmd/softwarechannel.py:2495
 msgid "note:    When no date is provided, all errata will be merged."
@@ -6495,9 +6133,7 @@ msgstr "    -k/--sync-kickstart: Crea un arbre kickstartable"
 #: ../src/spacecmd/softwarechannel.py:2613
 #: ../src/spacecmd/softwarechannel.py:2656
 msgid "    -l/--latest : Only download latest package versions when repo syncs"
-msgstr ""
-"    -l/--latest : Només baixa les versions més recents del paquet quan es "
-"sincronitzi el repositori"
+msgstr "    -l/--latest : Només baixa les versions més recents del paquet quan es sincronitzi el repositori"
 
 #: ../src/spacecmd/softwarechannel.py:2648
 msgid "softwarechannel_setsyncschedule: "
@@ -6505,29 +6141,19 @@ msgstr "programarichannelsetsyncschedule: "
 
 #: ../src/spacecmd/softwarechannel.py:2649
 msgid "Sets the repo sync schedule for a software channel"
-msgstr ""
-"Estableix la planificació de sincronització del dipòsit per a un canal de "
-"programari"
+msgstr "Estableix la planificació de sincronització del dipòsit per a un canal de programari"
 
 #: ../src/spacecmd/softwarechannel.py:2651
 msgid "usage: softwarechannel_setsyncschedule <CHANNEL> <SCHEDULE>"
 msgstr "ús: softwarechannelsetsyncschedule <CHANNEL> <SCHEDULE>"
 
 #: ../src/spacecmd/softwarechannel.py:2658
-msgid ""
-"The schedule is specified in Quartz CronTrigger format without enclosing "
-"quotes."
-msgstr ""
-"La planificació s'especifica en el format Quartz CronTrigger sense cometes "
-"adjuntes."
+msgid "The schedule is specified in Quartz CronTrigger format without enclosing quotes."
+msgstr "La planificació s'especifica en el format Quartz CronTrigger sense cometes adjuntes."
 
 #: ../src/spacecmd/softwarechannel.py:2659
-msgid ""
-"For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 "
-"1 * * ?"
-msgstr ""
-"Per exemple, per establir un horari de tots els dies a la 1am, <SCHEDULE> "
-"seria 0 0 1 * * ?"
+msgid "For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 1 * * ?"
+msgstr "Per exemple, per establir un horari de tots els dies a la 1am, <SCHEDULE> seria 0 0 1 * * ?"
 
 #: ../src/spacecmd/softwarechannel.py:2660
 msgid "If <SCHEDULE> is left empty, it will be disabled."
@@ -6539,21 +6165,15 @@ msgstr "softwarechannelremovesyncschedule: "
 
 #: ../src/spacecmd/softwarechannel.py:2696
 msgid "Removes the repo sync schedule for a software channel"
-msgstr ""
-"Elimina la planificació de sincronització del dipòsit per a un canal de "
-"programari"
+msgstr "Elimina la planificació de sincronització del dipòsit per a un canal de programari"
 
 #: ../src/spacecmd/softwarechannel.py:2698
 msgid "usage: softwarechannel_removesyncschedule <CHANNEL>"
 msgstr "ús: softwarechannelremovesyncschedule <CHANNEL>"
 
 #: ../src/spacecmd/softwarechannel.py:2723
-msgid ""
-"softwarechannel_listsyncschedule: List sync schedules for all software "
-"channels"
-msgstr ""
-"softwarechannellistsyncschedule: Llista les planificacions de sincronització "
-"per a tots els canals de programari"
+msgid "softwarechannel_listsyncschedule: List sync schedules for all software channels"
+msgstr "softwarechannellistsyncschedule: Llista les planificacions de sincronització per a tots els canals de programari"
 
 #: ../src/spacecmd/softwarechannel.py:2725
 msgid "softwarechannel_listsyncschedule : List all channels"
@@ -6589,8 +6209,7 @@ msgstr "ús: softwarechannelremoverepo CHANNEL REPO"
 
 #: ../src/spacecmd/softwarechannel.py:2839
 msgid "softwarechannel_listrepos: List the repos for a software channel"
-msgstr ""
-"softwarechannellistrepos: Llista els repositoris d'un canal de programari"
+msgstr "softwarechannellistrepos: Llista els repositoris d'un canal de programari"
 
 #: ../src/spacecmd/softwarechannel.py:2840
 msgid "usage: softwarechannel_listrepos CHANNEL"
@@ -6623,8 +6242,7 @@ msgstr "S'està recuperant el paquet"
 #: ../src/spacecmd/softwarechannel.py:2911
 #, python-format
 msgid "Received package %s from channel %s is broken. Content is too short"
-msgstr ""
-"El paquet rebut %s del canal %s està trencat. El contingut és massa curt"
+msgstr "El paquet rebut %s del canal %s està trencat. El contingut és massa curt"
 
 #: ../src/spacecmd/softwarechannel.py:2915
 #, python-format
@@ -6783,8 +6401,7 @@ msgstr "Reinicia aquests sistemes [y/N]:"
 
 #: ../src/spacecmd/system.py:257
 msgid "system_search: List systems that match the given criteria"
-msgstr ""
-"systemsearch: Llista els sistemes que coincideixen amb els criteris indicats"
+msgstr "systemsearch: Llista els sistemes que coincideixen amb els criteris indicats"
 
 #: ../src/spacecmd/system.py:258
 msgid "usage: system_search QUERY"
@@ -7160,8 +6777,7 @@ msgstr "Actualitza aquests sistemes/paquets [y/N]:"
 
 #: ../src/spacecmd/system.py:1142
 msgid "system_listupgrades: List the available upgrades for a system"
-msgstr ""
-"systemlistupgrades: Llista les actualitzacions disponibles per a un sistema"
+msgstr "systemlistupgrades: Llista les actualitzacions disponibles per a un sistema"
 
 #: ../src/spacecmd/system.py:1143
 msgid "usage: system_listupgrades <SYSTEMS>"
@@ -7181,8 +6797,7 @@ msgstr "ús: systemlistinstalledpackages <SYSTEMS>"
 
 #: ../src/spacecmd/system.py:1267
 msgid "system_listconfigchannels: List the config channels of a system"
-msgstr ""
-"systemlistconfigchannels: Llista els canals de configuració d'un sistema"
+msgstr "systemlistconfigchannels: Llista els canals de configuració d'un sistema"
 
 #: ../src/spacecmd/system.py:1268
 msgid "usage: system_listconfigchannels <SYSTEMS>"
@@ -7195,9 +6810,7 @@ msgstr "%s no admet canals de configuració"
 
 #: ../src/spacecmd/system.py:1351
 msgid "system_listconfigfiles: List the managed config files of a system"
-msgstr ""
-"systemlistconfigfiles: Llista els fitxers de configuració gestionats d'un "
-"sistema"
+msgstr "systemlistconfigfiles: Llista els fitxers de configuració gestionats d'un sistema"
 
 #: ../src/spacecmd/system.py:1352
 msgid ""
@@ -7226,15 +6839,11 @@ msgstr "systemaddconfigfile: Crea un fitxer de configuració"
 
 #: ../src/spacecmd/system.py:1453
 msgid "Note this is only for system sandbox or locally-managed files"
-msgstr ""
-"Tingueu en compte que això només és per als fitxers de l'entorn de proves "
-"del sistema o gestionats localment"
+msgstr "Tingueu en compte que això només és per als fitxers de l'entorn de proves del sistema o gestionats localment"
 
 #: ../src/spacecmd/system.py:1454
 msgid "Centrally managed files should be created via configchannel_addfile"
-msgstr ""
-"Els fitxers gestionats centralment s'han de crear a través de "
-"configchanneladdfile"
+msgstr "Els fitxers gestionats centralment s'han de crear a través de configchanneladdfile"
 
 #: ../src/spacecmd/system.py:1455
 msgid ""
@@ -7256,10 +6865,8 @@ msgid ""
 "  -f local path to file contents\n"
 "\n"
 "  Note re binary/base64: Some text files, notably those containing trailing\n"
-"  newlines, those containing ASCII escape characters (or other charaters "
-"not\n"
-"  allowed in XML) need to be sent as binary (-b).  Some effort is made to "
-"auto-\n"
+"  newlines, those containing ASCII escape characters (or other charaters not\n"
+"  allowed in XML) need to be sent as binary (-b).  Some effort is made to auto-\n"
 "  detect files which require this, but you may need to explicitly specify.\n"
 msgstr ""
 "ús: systemaddconfigfile [SYSTEM] [opcions]\n"
@@ -7279,14 +6886,10 @@ msgstr ""
 "  -t SYMLINKTARGET\n"
 "  -f camí local al contingut del fitxer\n"
 "\n"
-"  Nota re binari/base64: Alguns fitxers de text, en particular els que "
-"contenen el final\n"
-"  newlines, aquells que contenen caràcters d'escapament ASCII (o altres "
-"txaraters no\n"
-"  permès en XML) cal enviar-lo com a binari (-b).  S'ha fet un esforç per a "
-"auto-\n"
-"  detecteu fitxers que ho requereixin, però potser haureu d'especificar-ho "
-"explícitament.\n"
+"  Nota re binari/base64: Alguns fitxers de text, en particular els que contenen el final\n"
+"  newlines, aquells que contenen caràcters d'escapament ASCII (o altres txaraters no\n"
+"  permès en XML) cal enviar-lo com a binari (-b).  S'ha fet un esforç per a auto-\n"
+"  detecteu fitxers que ho requereixin, però potser haureu d'especificar-ho explícitament.\n"
 
 #: ../src/spacecmd/system.py:1522
 #, python-format
@@ -7329,19 +6932,15 @@ msgstr "Voleu afegir a la part superior o inferior? [T/b]:"
 
 #: ../src/spacecmd/system.py:1656
 msgid "system_removeconfigchannels: Remove config channels from a system"
-msgstr ""
-"systemremoveconfigchannels: Elimina els canals de configuració d'un sistema"
+msgstr "systemremoveconfigchannels: Elimina els canals de configuració d'un sistema"
 
 #: ../src/spacecmd/system.py:1657
 msgid "usage: system_removeconfigchannels <SYSTEMS> <CHANNEL ...>"
 msgstr "ús: systemremoveconfigchannels <SYSTEMS> <CHANNEL ...>"
 
 #: ../src/spacecmd/system.py:1707
-msgid ""
-"system_setconfigchannelorder: Set the ranked order of configuration channels"
-msgstr ""
-"systemsetconfigchannelorder: estableix l'ordre de classificació dels canals "
-"de configuració"
+msgid "system_setconfigchannelorder: Set the ranked order of configuration channels"
+msgstr "systemsetconfigchannelorder: estableix l'ordre de classificació dels canals de configuració"
 
 #: ../src/spacecmd/system.py:1708
 msgid "usage: system_setconfigchannelorder <SYSTEMS>"
@@ -7353,9 +6952,7 @@ msgstr "Canals de configuració nous"
 
 #: ../src/spacecmd/system.py:1769
 msgid "system_deployconfigfiles: Deploy all configuration files for a system"
-msgstr ""
-"systemdeployconfigfiles: Desplega tots els fitxers de configuració per a un "
-"sistema"
+msgstr "systemdeployconfigfiles: Desplega tots els fitxers de configuració per a un sistema"
 
 #: ../src/spacecmd/system.py:1770
 msgid ""
@@ -7390,8 +6987,7 @@ msgid ""
 "          -c TYPE - Possible values:\n"
 "             *  'FAIL_ON_CLEANUP_ERR' - fail in case of cleanup error,\n"
 "             *  'NO_CLEANUP' - do not cleanup, just delete,\n"
-"             *  'FORCE_DELETE' - Try cleanup first but delete server anyway "
-"in case of error\n"
+"             *  'FORCE_DELETE' - Try cleanup first but delete server anyway in case of error\n"
 "    "
 msgstr ""
 "ús: systemdelete [opcions] <SYSTEMS>\n"
@@ -7400,8 +6996,7 @@ msgstr ""
 "          -c TIPUS - Valors possibles:\n"
 "             * 'FAILONCLEANUPERR' - falla en cas d'error de neteja,\n"
 "             * 'NOCLEANUP' - no netejar, només esborrar,\n"
-"             * 'FORCEDELETE' - Intenteu netejar primer però suprimiu el "
-"servidor de totes maneres en cas d'error\n"
+"             * 'FORCEDELETE' - Intenteu netejar primer però suprimiu el servidor de totes maneres en cas d'error\n"
 "    "
 
 #: ../src/spacecmd/system.py:1887
@@ -7452,8 +7047,7 @@ msgstr "ús: systemrename OLDNAME NEWNAME"
 
 #: ../src/spacecmd/system.py:2061
 msgid "system_listcustomvalues: List the custom values for a system"
-msgstr ""
-"systemlistcustomvalues: Llista els valors personalitzats per a un sistema"
+msgstr "systemlistcustomvalues: Llista els valors personalitzats per a un sistema"
 
 #: ../src/spacecmd/system.py:2062
 msgid "usage: system_listcustomvalues <SYSTEMS>"
@@ -7461,8 +7055,7 @@ msgstr "ús: systemlistcustomvalues <SYSTEMS>"
 
 #: ../src/spacecmd/system.py:2117
 msgid "system_addcustomvalue: Set a custom value for a system"
-msgstr ""
-"systemaddcustomvalue: estableix un valor personalitzat per a un sistema"
+msgstr "systemaddcustomvalue: estableix un valor personalitzat per a un sistema"
 
 #: ../src/spacecmd/system.py:2118
 msgid "usage: system_addcustomvalue KEY VALUE <SYSTEMS>"
@@ -7470,8 +7063,7 @@ msgstr "ús: systemaddcustomvalue VALOR CLAU <SYSTEMS>"
 
 #: ../src/spacecmd/system.py:2173
 msgid "system_updatecustomvalue: Update a custom value for a system"
-msgstr ""
-"systemupdatecustomvalue: Actualitza un valor personalitzat per a un sistema"
+msgstr "systemupdatecustomvalue: Actualitza un valor personalitzat per a un sistema"
 
 #: ../src/spacecmd/system.py:2174
 msgid "usage: system_updatecustomvalue KEY VALUE <SYSTEMS>"
@@ -7479,8 +7071,7 @@ msgstr "ús: systemupdatecustomvalue VALOR CLAU <SYSTEMS>"
 
 #: ../src/spacecmd/system.py:2206
 msgid "system_removecustomvalues: Remove a custom value for a system"
-msgstr ""
-"systemremovecustomvalues: Elimina un valor personalitzat per a un sistema"
+msgstr "systemremovecustomvalues: Elimina un valor personalitzat per a un sistema"
 
 #: ../src/spacecmd/system.py:2207
 msgid "usage: system_removecustomvalues <SYSTEMS> <KEY ...>"
@@ -7559,8 +7150,7 @@ msgstr "ús: systemlistfqdns <SYSTEM>"
 
 #: ../src/spacecmd/system.py:2498
 msgid "system_setbasechannel: Set a system's base software channel"
-msgstr ""
-"systemsetbasechannel: estableix el canal de programari base d'un sistema"
+msgstr "systemsetbasechannel: estableix el canal de programari base d'un sistema"
 
 #: ../src/spacecmd/system.py:2499
 msgid "usage: system_setbasechannel <SYSTEMS> CHANNEL"
@@ -7582,11 +7172,8 @@ msgid "New Base Channel: %s"
 msgstr "Canal base nou: %s"
 
 #: ../src/spacecmd/system.py:2569
-msgid ""
-"system_schedulechangechannels: Schedule changing a system's software channels"
-msgstr ""
-"systemschedulechangechannels: Planificació canviant els canals de programari "
-"d'un sistema"
+msgid "system_schedulechangechannels: Schedule changing a system's software channels"
+msgstr "systemschedulechangechannels: Planificació canviant els canals de programari d'un sistema"
 
 #: ../src/spacecmd/system.py:2570
 msgid ""
@@ -7746,12 +7333,8 @@ msgstr ""
 "  -s HORA D'INICI"
 
 #: ../src/spacecmd/system.py:3092 ../src/spacecmd/system.py:3115
-msgid ""
-"This method is deprecated and will be removed in a future API version. "
-"Please use system_listeventhistory instead.\n"
-msgstr ""
-"Aquest mètode està obsolet i s'eliminarà en una futura versió de l'API. Si "
-"us plau, utilitzeu systemlisteventhistory.\n"
+msgid "This method is deprecated and will be removed in a future API version. Please use system_listeventhistory instead.\n"
+msgstr "Aquest mètode està obsolet i s'eliminarà en una futura versió de l'API. Si us plau, utilitzeu systemlisteventhistory.\n"
 
 #: ../src/spacecmd/system.py:3095
 msgid "system_listevents: List the event history for a system"
@@ -7773,30 +7356,23 @@ msgstr "Detalls: %s"
 
 #: ../src/spacecmd/system.py:3156
 msgid "system_listeventhistory: List the event history for a system"
-msgstr ""
-"systemlisteventhistory: Llista l'historial d'esdeveniments per a un sistema"
+msgstr "systemlisteventhistory: Llista l'historial d'esdeveniments per a un sistema"
 
 #: ../src/spacecmd/system.py:3157
 msgid ""
 "usage: system_listeventhistory <SYSTEMS> [options]\n"
 "\n"
 "options:\n"
-"  -s START_TIME list only the events happened after the specified time. "
-"[Default: returns all events]\n"
-"  -o OFFSET skip the first events. Ignored if -l is not specified as well. "
-"[Default: 0]\n"
-"  -l LIMIT limit the results to the specified number of events. [Default: no "
-"limit]"
+"  -s START_TIME list only the events happened after the specified time. [Default: returns all events]\n"
+"  -o OFFSET skip the first events. Ignored if -l is not specified as well. [Default: 0]\n"
+"  -l LIMIT limit the results to the specified number of events. [Default: no limit]"
 msgstr ""
 "ús: systemlisteventhistory <SYSTEMS> [opcions]\n"
 "\n"
 "opcions:\n"
-"  -s llista STARTTIME només els esdeveniments van passar després de l'hora "
-"especificada. [Per defecte: retorna tots els esdeveniments]\n"
-"  -o OFFSET omet els primers esdeveniments. S'ignora si -l no s'especifica "
-"també. [Per defecte: 0]\n"
-"  -l LÍMIT limita els resultats al nombre d'esdeveniments especificat. [Per "
-"defecte: sense límit]"
+"  -s llista STARTTIME només els esdeveniments van passar després de l'hora especificada. [Per defecte: retorna tots els esdeveniments]\n"
+"  -o OFFSET omet els primers esdeveniments. S'ignora si -l no s'especifica també. [Per defecte: 0]\n"
+"  -l LÍMIT limita els resultats al nombre d'esdeveniments especificat. [Per defecte: sense límit]"
 
 #: ../src/spacecmd/system.py:3210
 msgid "Invalid offset"
@@ -7833,8 +7409,7 @@ msgstr "Completat: %s"
 
 #: ../src/spacecmd/system.py:3254
 msgid "system_eventdetails: Retrieve the details of an event for a system"
-msgstr ""
-"systemeventdetails: Recupera els detalls d'un esdeveniment per a un sistema"
+msgstr "systemeventdetails: Recupera els detalls d'un esdeveniment per a un sistema"
 
 #: ../src/spacecmd/system.py:3255
 msgid "usage: system_eventdetails <SYSTEM> <EVENT>"
@@ -8002,10 +7577,8 @@ msgid "Created package profile '%s'"
 msgstr "S'ha creat el perfil del paquet «%s»"
 
 #: ../src/spacecmd/system.py:3651
-msgid ""
-"system_comparepackageprofile: Compare a system against a package profile"
-msgstr ""
-"systemcomparepackageprofile: Compara un sistema amb un perfil de paquet"
+msgid "system_comparepackageprofile: Compare a system against a package profile"
+msgstr "systemcomparepackageprofile: Compara un sistema amb un perfil de paquet"
 
 #: ../src/spacecmd/system.py:3652
 msgid "usage: system_comparepackageprofile <SYSTEMS> PROFILE"
@@ -8123,11 +7696,8 @@ msgstr ""
 "Sistema: %s"
 
 #: ../src/spacecmd/system.py:4062
-msgid ""
-"system_schedulehardwarerefresh: Schedule a hardware refresh for a system"
-msgstr ""
-"systemschedulehardwarerefresh: programa una actualització de maquinari per a "
-"un sistema"
+msgid "system_schedulehardwarerefresh: Schedule a hardware refresh for a system"
+msgstr "systemschedulehardwarerefresh: programa una actualització de maquinari per a un sistema"
 
 #: ../src/spacecmd/system.py:4063
 msgid ""
@@ -8142,12 +7712,8 @@ msgstr ""
 "  -s HORA D'INICI"
 
 #: ../src/spacecmd/system.py:4125
-msgid ""
-"system_schedulepackagerefresh: Schedule a software package refresh for a "
-"system"
-msgstr ""
-"systemschedulepackagerefresh: programa un refresc de paquet de programari "
-"per a un sistema"
+msgid "system_schedulepackagerefresh: Schedule a software package refresh for a system"
+msgstr "systemschedulepackagerefresh: programa un refresc de paquet de programari per a un sistema"
 
 #: ../src/spacecmd/system.py:4126
 msgid ""
@@ -8162,12 +7728,8 @@ msgstr ""
 "  -s HORA D'INICI"
 
 #: ../src/spacecmd/system.py:4187
-msgid ""
-"system_show_packageversion: Shows version of installed package on given "
-"system(s)"
-msgstr ""
-"systemshowpackageversion: Mostra la versió del paquet instal·lat en el(s) "
-"sistema(s) donat(s)"
+msgid "system_show_packageversion: Shows version of installed package on given system(s)"
+msgstr "systemshowpackageversion: Mostra la versió del paquet instal·lat en el(s) sistema(s) donat(s)"
 
 #: ../src/spacecmd/system.py:4188
 msgid "usage: system_show_packageversion <SYSTEM> <PACKAGE>"
@@ -8179,21 +7741,15 @@ msgstr "Versió del paquet Versió del sistema d'arquitectura Epoch"
 
 #: ../src/spacecmd/system.py:4240
 msgid "system_setcontactmethod: Set the contact method for given system(s)."
-msgstr ""
-"systemsetcontactmethod: estableix el mètode de contacte per als sistemes "
-"indicats."
+msgstr "systemsetcontactmethod: estableix el mètode de contacte per als sistemes indicats."
 
 #: ../src/spacecmd/system.py:4242
 msgid "usage: system_setcontactmethod <SYSTEMS> <CONTACT_METHOD>"
 msgstr "ús: systemsetcontactmethod <SYSTEMS> <CONTACTMETHOD>"
 
 #: ../src/spacecmd/system.py:4291
-msgid ""
-"system_scheduleapplyconfigchannels: Schedule applying the assigned config "
-"channels to the System (Minion only)"
-msgstr ""
-"systemscheduleapplyconfigchannels: Programa aplicant els canals de "
-"configuració assignats al sistema (només milions)"
+msgid "system_scheduleapplyconfigchannels: Schedule applying the assigned config channels to the System (Minion only)"
+msgstr "systemscheduleapplyconfigchannels: Programa aplicant els canals de configuració assignats al sistema (només milions)"
 
 #: ../src/spacecmd/system.py:4293
 msgid ""
@@ -8209,16 +7765,11 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:4344
 msgid "Schedule applying config channels to these systems [y/N]:"
-msgstr ""
-"Planifica l'aplicació dels canals de configuració a aquests sistemes [y/N]:"
+msgstr "Planifica l'aplicació dels canals de configuració a aquests sistemes [y/N]:"
 
 #: ../src/spacecmd/system.py:4361
-msgid ""
-"system_listmigrationtargets: List possible migration targets for given "
-"systems."
-msgstr ""
-"systemlistmigrationtargets: Llista els possibles objectius de migració per "
-"als sistemes donats."
+msgid "system_listmigrationtargets: List possible migration targets for given systems."
+msgstr "systemlistmigrationtargets: Llista els possibles objectius de migració per als sistemes donats."
 
 #: ../src/spacecmd/system.py:4362
 msgid "usage: system_listmigrationtargets <SYSTEMS>"
@@ -8249,86 +7800,60 @@ msgid "    Friendly names: "
 msgstr "    Noms amistosos: "
 
 #: ../src/spacecmd/system.py:4408 ../src/spacecmd/system.py:4424
-msgid ""
-"This method is deprecated and will be removed in a future API version. "
-"Please use system_scheduleproductmigration instead."
-msgstr ""
-"Aquest mètode està obsolet i s'eliminarà en una futura versió de l'API. "
-"Utilitzeu systemscheduleproductmigration en el seu lloc."
+msgid "This method is deprecated and will be removed in a future API version. Please use system_scheduleproductmigration instead."
+msgstr "Aquest mètode està obsolet i s'eliminarà en una futura versió de l'API. Utilitzeu systemscheduleproductmigration en el seu lloc."
 
 #: ../src/spacecmd/system.py:4410 ../src/spacecmd/system.py:4426
 msgid "This method is deprecated and will be removed in a future API version"
 msgstr "Aquest mètode està obsolet i s'eliminarà en una versió futura de l'API"
 
 #: ../src/spacecmd/system.py:4411
-msgid ""
-"system_schedulespmigration: Schedule a Service Pack migration for systems."
-msgstr ""
-"systemschedulespmigration: Programa una migració de Service Pack per a "
-"sistemes."
+msgid "system_schedulespmigration: Schedule a Service Pack migration for systems."
+msgstr "systemschedulespmigration: Programa una migració de Service Pack per a sistemes."
 
 #: ../src/spacecmd/system.py:4412
 msgid ""
-"usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
-"<MIGRATION_TARGET> [options] \n"
+"usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> <MIGRATION_TARGET> [options] \n"
 "    For MIGRATION_TARGET parameter see system_listmigrationtargets. \n"
-"    The MIGRATION_TARGET parameter must be passed in the following format: "
-"[3143,3146,3147,3145,3144,3148,3062]. \n"
+"    The MIGRATION_TARGET parameter must be passed in the following format: [3143,3146,3147,3145,3144,3148,3062]. \n"
 "    Options: \n"
 "        -s START_TIME \n"
 "        -d pass this flag, if you want to do a dry run \n"
-"        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
-"spaces))"
+"        -c CHILD_CHANNELS (comma-separated child channels labels (with no spaces))"
 msgstr ""
-"ús: systemschedulespmigration <SYSTEM> <BASECHANNELLABEL> <MIGRATIONTARGET> "
-"[opcions] \n"
+"ús: systemschedulespmigration <SYSTEM> <BASECHANNELLABEL> <MIGRATIONTARGET> [opcions] \n"
 "    Per al paràmetre MIGRATIONTARGET vegeu systemlistmigrationtargets. \n"
-"    El paràmetre MIGRATIONTARGET s'ha de passar en el següent format: "
-"[3143,3146,3147,3145,3144,3148,3062]. \n"
+"    El paràmetre MIGRATIONTARGET s'ha de passar en el següent format: [3143,3146,3147,3145,3144,3148,3062]. \n"
 "    Opcions: \n"
 "        -s HORA D'INICI \n"
 "        -d passa aquesta bandera, si vols fer una cursa seca \n"
-"        -c CHILDCHANNELS (etiquetes de canals infantils separades per comes "
-"(sense espais))"
+"        -c CHILDCHANNELS (etiquetes de canals infantils separades per comes (sense espais))"
 
 #: ../src/spacecmd/system.py:4433
-msgid ""
-"system_scheduleproductmigration: Schedule a Product migration for systems."
-msgstr ""
-"systemscheduleproductmigration: Programar una migració de productes per a "
-"sistemes."
+msgid "system_scheduleproductmigration: Schedule a Product migration for systems."
+msgstr "systemscheduleproductmigration: Programar una migració de productes per a sistemes."
 
 #: ../src/spacecmd/system.py:4434
 msgid ""
-"usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
-"<MIGRATION_TARGET> [options] \n"
+"usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> <MIGRATION_TARGET> [options] \n"
 "    For MIGRATION_TARGET parameter see system_listmigrationtargets. \n"
-"    The MIGRATION_TARGET parameter must be passed in the following format: "
-"[3143,3146,3147,3145,3144,3148,3062]. \n"
+"    The MIGRATION_TARGET parameter must be passed in the following format: [3143,3146,3147,3145,3144,3148,3062]. \n"
 "    Options: \n"
 "        -s START_TIME \n"
 "        -d pass this flag, if you want to do a dry run \n"
-"        --allow-vendor-change pass this flag if you want to allow vendor "
-"change \n"
-"        -r pass this flag if you want to remove remove products which have "
-"no successors \n"
-"        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
-"spaces))"
+"        --allow-vendor-change pass this flag if you want to allow vendor change \n"
+"        -r pass this flag if you want to remove remove products which have no successors \n"
+"        -c CHILD_CHANNELS (comma-separated child channels labels (with no spaces))"
 msgstr ""
-"ús: systemscheduleproductmigration <SYSTEM> <BASECHANNELLABEL> "
-"<MIGRATIONTARGET> [opcions] \n"
+"ús: systemscheduleproductmigration <SYSTEM> <BASECHANNELLABEL> <MIGRATIONTARGET> [opcions] \n"
 "    Per al paràmetre MIGRATIONTARGET vegeu systemlistmigrationtargets. \n"
-"    El paràmetre MIGRATIONTARGET s'ha de passar en el següent format: "
-"[3143,3146,3147,3145,3144,3148,3062]. \n"
+"    El paràmetre MIGRATIONTARGET s'ha de passar en el següent format: [3143,3146,3147,3145,3144,3148,3062]. \n"
 "    Opcions: \n"
 "        -s HORA D'INICI \n"
 "        -d passa aquesta bandera, si vols fer una cursa seca \n"
-"        --allow-vendor-change passa aquesta bandera si voleu permetre el "
-"canvi del proveïdor \n"
-"        -r passa aquesta bandera si voleu eliminar productes que no tenen "
-"successors \n"
-"        -c CHILDCHANNELS (etiquetes de canals infantils separades per comes "
-"(sense espais))"
+"        --allow-vendor-change passa aquesta bandera si voleu permetre el canvi del proveïdor \n"
+"        -r passa aquesta bandera si voleu eliminar productes que no tenen successors \n"
+"        -c CHILDCHANNELS (etiquetes de canals infantils separades per comes (sense espais))"
 
 #: ../src/spacecmd/system.py:4488
 msgid "Cannot find system "
@@ -8351,12 +7876,8 @@ msgid "Scheduled action ID: "
 msgstr "ID d'acció programada: "
 
 #: ../src/spacecmd/system.py:4508
-msgid ""
-"system_bootstrap: Bootstrap a system for management via either Salt or Salt "
-"SSH."
-msgstr ""
-"systembootstrap: Bootstrap un sistema per a la gestió a través de Salt o "
-"Salt SSH."
+msgid "system_bootstrap: Bootstrap a system for management via either Salt or Salt SSH."
+msgstr "systembootstrap: Bootstrap un sistema per a la gestió a través de Salt o Salt SSH."
 
 #: ../src/spacecmd/system.py:4509
 msgid ""
@@ -8451,12 +7972,8 @@ msgid "Bootstrapping '{}'. This may take a while."
 msgstr "S'està arrencant «{}». Això pot trigar una estona."
 
 #: ../src/spacecmd/system.py:4605
-msgid ""
-"Initial phase successfully finished. Check event history for actions still "
-"running"
-msgstr ""
-"La fase inicial ha finalitzat amb èxit. Comprova l'historial d'esdeveniments "
-"per a les accions que encara s'estan executant"
+msgid "Initial phase successfully finished. Check event history for actions still running"
+msgstr "La fase inicial ha finalitzat amb èxit. Comprova l'historial d'esdeveniments per a les accions que encara s'estan executant"
 
 #: ../src/spacecmd/user.py:50
 msgid "user_create: Create an user"
@@ -8522,8 +8039,7 @@ msgstr "ús: llista d'usuaris"
 
 #: ../src/spacecmd/user.py:241
 msgid "user_listavailableroles: List all available roles for users"
-msgstr ""
-"userlistavailableroles: Llista tots els rols disponibles per als usuaris"
+msgstr "userlistavailableroles: Llista tots els rols disponibles per als usuaris"
 
 #: ../src/spacecmd/user.py:242
 msgid "usage: user_listavailableroles"
@@ -8624,8 +8140,7 @@ msgstr "ús: useraddgroup USER <GROUP ...>"
 
 #: ../src/spacecmd/user.py:451
 msgid "user_adddefaultgroup: Add a default group to an user account"
-msgstr ""
-"useradddefaultgroup: Afegeix un grup predeterminat a un compte d'usuari"
+msgstr "useradddefaultgroup: Afegeix un grup predeterminat a un compte d'usuari"
 
 #: ../src/spacecmd/user.py:452
 msgid "usage: user_adddefaultgroup USER <GROUP ...>"
@@ -8641,8 +8156,7 @@ msgstr "ús: userremovegroup USER <GROUP ...>"
 
 #: ../src/spacecmd/user.py:533
 msgid "user_removedefaultgroup: Remove a default group from an user account"
-msgstr ""
-"userremovedefaultgroup: Elimina un grup predeterminat d'un compte d'usuari"
+msgstr "userremovedefaultgroup: Elimina un grup predeterminat d'un compte d'usuari"
 
 #: ../src/spacecmd/user.py:535
 msgid "usage: user_removedefaultgroup USER <GROUP ...>"
@@ -8666,8 +8180,7 @@ msgstr "ús: usersetlastname USUARI COGNOM"
 
 #: ../src/spacecmd/user.py:646
 msgid "user_setemail: Set an user accounts email field"
-msgstr ""
-"usersetemail: estableix un camp de correu electrònic de comptes d'usuari"
+msgstr "usersetemail: estableix un camp de correu electrònic de comptes d'usuari"
 
 #: ../src/spacecmd/user.py:647
 msgid "usage: user_setemail USER EMAIL"
@@ -8702,9 +8215,7 @@ msgstr "Ha fallat la càrrega del fitxer de memòria cau %s"
 #: ../src/spacecmd/utils.py:143
 #, python-format
 msgid "Cache generation was probably interrupted,removing corrupt %s"
-msgstr ""
-"La generació de memòria cau probablement s'ha interromput, eliminant %s "
-"corrupte"
+msgstr "La generació de memòria cau probablement s'ha interromput, eliminant %s corrupte"
 
 #: ../src/spacecmd/utils.py:148
 #, python-format
