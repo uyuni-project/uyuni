@@ -21,9 +21,8 @@ Feature: Bootstrapping with reactivation key
   Scenario: Bootstrap should fail when minion already exists
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
-    When I enter the hostname of "sle_minion" as "hostname"
-    And I enter "22" as "port"
-    And I enter "root" as "user"
+    When I check "manageWithSSH"
+    And I enter the hostname of "sle_minion" as "hostname"
     And I enter "linux" as "password"
     And I click on "Bootstrap"
     And I wait until I see "A salt key for this host" text
@@ -34,9 +33,8 @@ Feature: Bootstrapping with reactivation key
     Given I delete "sle_minion" key in the Salt master
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
-    When I enter the hostname of "sle_minion" as "hostname"
-    And I enter "22" as "port"
-    And I enter "root" as "user"
+    When I check "manageWithSSH"
+    And I enter the hostname of "sle_minion" as "hostname"
     And I enter "linux" as "password"
     And I click on "Bootstrap"
     And I wait until I see "seems to already exist, please check!" text
@@ -46,12 +44,11 @@ Feature: Bootstrapping with reactivation key
   Scenario: Bootstrap a SLES minion with reactivation key
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
-    When I enter the hostname of "sle_minion" as "hostname"
-    And I enter "22" as "port"
-    And I enter "root" as "user"
+    When I check "manageWithSSH"
+    And I enter the hostname of "sle_minion" as "hostname"
     And I enter "linux" as "password"
     And I enter the reactivation key of "sle_minion"
-    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
+    And I select "1-SUSE-SSH-KEY-x86_64" from "activationKeys"
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
     And I follow the left menu "Systems > System List > All"
@@ -77,9 +74,8 @@ Feature: Bootstrapping with reactivation key
   Scenario: Cleanup: bootstrap a SLES minion after reactivation tests
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
-    When I enter the hostname of "sle_minion" as "hostname"
-    And I enter "22" as "port"
-    And I enter "root" as "user"
+    When I check "manageWithSSH"
+    And I enter the hostname of "sle_minion" as "hostname"
     And I enter "linux" as "password"
     And I select "1-SUSE-KEY-x86_64" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
