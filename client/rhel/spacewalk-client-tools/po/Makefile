@@ -34,7 +34,7 @@ INSTALL_DATA = ${INSTALL} -m 644
 
 GMSGFMT = /usr/bin/msgfmt
 MSGFMT = /usr/bin/msgfmt
-MSGMERGE = /usr/bin/msgmerge --previous
+MSGMERGE = /usr/bin/msgmerge --previous --no-wrap
 
 INCLUDES = -I.. -I$(top_srcdir)/intl
 

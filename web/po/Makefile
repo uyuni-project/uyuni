@@ -43,7 +43,7 @@ endif
 
 GMSGFMT = ${BIN}/msgfmt
 MSGFMT = ${BIN}/msgfmt
-MSGMERGE = ${BIN}/msgmerge --previous --no-wrap --no-location --update
+MSGMERGE = ${BIN}/msgmerge --previous --no-wrap --update
 
 INCLUDES = -I.. -I$(top_srcdir)/intl
 
