@@ -1,7 +1,12 @@
 import * as React from "react";
 
+import { Button } from "components/buttons";
+import { DangerDialog } from "components/dialog/DangerDialog";
 import { DeregisterServer, HubDetailData, IssRole, ServerDetailsForm } from "components/hub";
 import { TopPanel } from "components/panels";
+import { showInfoToastr } from "components/toastr";
+
+import Network from "utils/network";
 
 export type Props = {
   hub: HubDetailData | null;
@@ -9,13 +14,41 @@ export type Props = {
 
 type State = {
   hub: HubDetailData | null;
+  confirmSyncBunch: boolean;
 };
 
 export class HubDetails extends React.Component<Props, State> {
   public constructor(props: Props) {
     super(props);
 
-    this.state = { hub: props.hub !== null ? { ...props.hub } : null };
+    this.state = {
+      hub: props.hub !== null ? { ...props.hub } : null,
+      confirmSyncBunch: false,
+    };
+  }
+
+  private renderSyncBunch(): React.ReactNode {
+    return (
+      <>
+        <Button
+          className="btn-default btn-secondary"
+          handler={() => this.setState({ confirmSyncBunch: true })}
+          text={t("Sync Channels")}
+          title={t("Schedule Sync Channels task")}
+          icon="fa-minus"
+        />
+        <DangerDialog
+          id="confirm-sync-bunch-modal"
+          title={t("Confirm Synch Channels task")}
+          content={<span>{t("Do you want to schedule a Sync Channels task from the Hub?")}</span>}
+          isOpen={this.state.confirmSyncBunch}
+          submitText={t("Schedule")}
+          submitIcon="fa-minus"
+          onConfirm={() => this.onConfirmSyncBunch()}
+          onClose={() => this.setState({ confirmSyncBunch: false })}
+        />
+      </>
+    );
   }
 
   public render(): React.ReactNode {
@@ -27,12 +60,15 @@ export class HubDetails extends React.Component<Props, State> {
         button={
           <div className="btn-group pull-right">
             {this.state.hub !== null && (
-              <DeregisterServer
-                role={IssRole.Hub}
-                id={this.state.hub.id}
-                fqdn={this.state.hub.fqdn}
-                onDeregistered={() => this.setState({ hub: null })}
-              />
+              <>
+                <DeregisterServer
+                  role={IssRole.Hub}
+                  id={this.state.hub.id}
+                  fqdn={this.state.hub.fqdn}
+                  onDeregistered={() => this.setState({ hub: null })}
+                />
+                {this.renderSyncBunch()}
+              </>
             )}
           </div>
         }
@@ -62,5 +98,17 @@ export class HubDetails extends React.Component<Props, State> {
         )}
       </TopPanel>
     );
+  }
+
+  private onConfirmSyncBunch(): void {
+    const resource = `/manager/api/admin/hub/sync-bunch`;
+    Network.post(resource)
+      .then(
+        (_response) => {
+          showInfoToastr(t("Successfully scheduled a Sync Channel task."));
+        },
+        (xhr) => Network.showResponseErrorToastr(xhr)
+      )
+      .finally(() => this.setState({ confirmSyncBunch: false }));
   }
 }
