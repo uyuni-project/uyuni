@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -32,6 +32,20 @@ import java.util.stream.Stream;
 
 public class ManagerVersionTest {
 
+    public static final String DATA_DRIVEN_VERSION_2023_12 = "2023.12";
+    public static final String DATA_DRIVEN_VERSION_2024_01 = "2024.01";
+    public static final String DATA_DRIVEN_VERSION_2024_07 = "2024.07";
+    public static final String DATA_DRIVEN_VERSION_2024_08 = "2024.08";
+    public static final String SEMANTIC_VERSION_3_0_0 = "3.0.0";
+    public static final String SEMANTIC_VERSION_4_0_0 = "4.0.0";
+    public static final String SEMANTIC_VERSION_4_0_1 = "4.0.1";
+    public static final String SEMANTIC_VERSION_4_1_0 = "4.1.0";
+    public static final String SEMANTIC_VERSION_4_3_12 = "4.3.12";
+    public static final String SEMANTIC_VERSION_4_3_13 = "4.3.13";
+    public static final String SEMANTIC_VERSION_5_1_0_RC = "5.1.0 RC";
+    public static final String SEMANTIC_VERSION_5_1_0_ALPHA = "5.1.0-alpha+001";
+    public static final String SEMANTIC_VERSION_5_1_0_BUILD = "5.1.0+20130313144700";
+
     @Test
     public void testVersionValidating() {
         assertThrows(IllegalArgumentException.class, () -> new ManagerVersion("", true));
@@ -41,7 +55,7 @@ public class ManagerVersionTest {
 
     @Test
     public void testVersionParsing() {
-        final String semanticVersion = "4.3.13";
+        final String semanticVersion = SEMANTIC_VERSION_4_3_13;
         ManagerVersion v1 = new ManagerVersion(semanticVersion, false);
         assertEquals(4, v1.getMajor());
         assertEquals(3, v1.getMinor());
@@ -49,13 +63,34 @@ public class ManagerVersionTest {
         assertEquals(semanticVersion, v1.toString());
         assertFalse(v1.isUyuni());
 
-        final String dataDrivenVersion = "2024.07";
+        final String dataDrivenVersion = DATA_DRIVEN_VERSION_2024_07;
         ManagerVersion v2 = new ManagerVersion(dataDrivenVersion, true);
         assertEquals(2024, v2.getMajor());
         assertEquals(7, v2.getMinor());
         assertEquals(-1, v2.getPatch());
         assertEquals(dataDrivenVersion, v2.toString());
         assertTrue(v2.isUyuni());
+
+        ManagerVersion rc = new ManagerVersion(SEMANTIC_VERSION_5_1_0_RC, false);
+        assertEquals(5, rc.getMajor());
+        assertEquals(1, rc.getMinor());
+        assertEquals(0, rc.getPatch());
+        assertEquals(SEMANTIC_VERSION_5_1_0_RC, rc.toString() + " RC");
+        assertFalse(rc.isUyuni());
+
+        ManagerVersion rc1 = new ManagerVersion(SEMANTIC_VERSION_5_1_0_ALPHA, false);
+        assertEquals(5, rc1.getMajor());
+        assertEquals(1, rc1.getMinor());
+        assertEquals(0, rc1.getPatch());
+        assertEquals(SEMANTIC_VERSION_5_1_0_ALPHA, rc1.toString() + "-alpha+001");
+        assertFalse(rc1.isUyuni());
+
+        ManagerVersion rc2 = new ManagerVersion(SEMANTIC_VERSION_5_1_0_BUILD, false);
+        assertEquals(5, rc2.getMajor());
+        assertEquals(1, rc2.getMinor());
+        assertEquals(0, rc2.getPatch());
+        assertEquals(SEMANTIC_VERSION_5_1_0_BUILD, rc2.toString() + "+20130313144700");
+        assertFalse(rc2.isUyuni());
     }
 
     @ParameterizedTest
@@ -94,32 +129,32 @@ public class ManagerVersionTest {
     static Stream<Arguments> dataDrivenVersionComparisonData() {
         return Stream.of(
                 // same year
-                Arguments.of("2024.08", "2024.08", 0, false, true),
-                Arguments.of("2024.08", "2024.07", 1, true, false),
-                Arguments.of("2024.07", "2024.08", -1, false, false),
+                Arguments.of(DATA_DRIVEN_VERSION_2024_08, DATA_DRIVEN_VERSION_2024_08, 0, false, true),
+                Arguments.of(DATA_DRIVEN_VERSION_2024_08, DATA_DRIVEN_VERSION_2024_07, 1, true, false),
+                Arguments.of(DATA_DRIVEN_VERSION_2024_07, DATA_DRIVEN_VERSION_2024_08, -1, false, false),
 
                 // testing different years
-                Arguments.of("2023.12", "2024.01", -1, false, false),
-                Arguments.of("2024.01", "2023.12", 1, true, false)
+                Arguments.of(DATA_DRIVEN_VERSION_2023_12, DATA_DRIVEN_VERSION_2024_01, -1, false, false),
+                Arguments.of(DATA_DRIVEN_VERSION_2024_01, DATA_DRIVEN_VERSION_2023_12, 1, true, false)
         );
     }
 
     static Stream<Arguments> semanticVersionComparisonData() {
         return Stream.of(
                 // same major and minor version
-                Arguments.of("4.3.12", "4.3.13", -1, false, false),
-                Arguments.of("4.3.13", "4.3.12", 1, true, false),
-                Arguments.of("4.3.12", "4.3.12", 0, false, true),
+                Arguments.of(SEMANTIC_VERSION_4_3_12, SEMANTIC_VERSION_4_3_13, -1, false, false),
+                Arguments.of(SEMANTIC_VERSION_4_3_13, SEMANTIC_VERSION_4_3_12, 1, true, false),
+                Arguments.of(SEMANTIC_VERSION_4_3_12, SEMANTIC_VERSION_4_3_12, 0, false, true),
 
                 // testing minor and patch version changes
-                Arguments.of("4.0.0", "4.1.0", -1, false, false),
-                Arguments.of("4.0.0", "4.0.1", -1, false, false),
-                Arguments.of("4.1.0", "4.0.0", 1, true, false),
-                Arguments.of("4.0.1", "4.0.0", 1, true, false),
+                Arguments.of(SEMANTIC_VERSION_4_0_0, SEMANTIC_VERSION_4_1_0, -1, false, false),
+                Arguments.of(SEMANTIC_VERSION_4_0_0, SEMANTIC_VERSION_4_0_1, -1, false, false),
+                Arguments.of(SEMANTIC_VERSION_4_1_0, SEMANTIC_VERSION_4_0_0, 1, true, false),
+                Arguments.of(SEMANTIC_VERSION_4_0_1, SEMANTIC_VERSION_4_0_0, 1, true, false),
 
                 // testing major version changes
-                Arguments.of("3.0.0", "4.0.0", -1, false, false),
-                Arguments.of("3.0.0", "2.0.0", 1, true, false)
+                Arguments.of(SEMANTIC_VERSION_3_0_0, SEMANTIC_VERSION_4_0_0, -1, false, false),
+                Arguments.of(SEMANTIC_VERSION_3_0_0, "2.0.0", 1, true, false)
         );
     }
 
@@ -131,24 +166,24 @@ public class ManagerVersionTest {
 
     static Stream<Arguments> invalidVersionData() {
         return Stream.of(
-                Arguments.of("2024.08.01", true),  // Invalid data driven format
-                Arguments.of("2024-08", true),     // Invalid separator
+                Arguments.of("2024.08.01", true),   // Invalid data driven format
+                Arguments.of("2024-08", true),      // Invalid separator
 
-                Arguments.of("1.2", false),        // Incomplete semantic version
-                Arguments.of("4.3.12.4", false),    // Extra version part
-                Arguments.of("abc.def.ghi", false) // Non-numeric semantic version
+                Arguments.of("1.2", false),         // Incomplete semantic version
+                Arguments.of("abc.def.ghi", false), // Non-numeric semantic version
+                Arguments.of("1.2.X", false)        // Non-numeric semantic version
         );
     }
 
     @Test
     public void testEqualityAndEquivalence() {
-        ManagerVersion semanticVersion = new ManagerVersion("4.3.13", false);
-        ManagerVersion dataDrivenVersion = new ManagerVersion("2024.08", true);
+        ManagerVersion semanticVersion = new ManagerVersion(SEMANTIC_VERSION_4_3_13, false);
+        ManagerVersion dataDrivenVersion = new ManagerVersion(DATA_DRIVEN_VERSION_2024_08, true);
 
         assertNotEquals(semanticVersion, dataDrivenVersion,
                 "Versions should not be equals as they belong to different products");
-        assertEquals(semanticVersion, new ManagerVersion("4.3.13", false));
-        assertEquals(dataDrivenVersion, new ManagerVersion("2024.08", true));
+        assertEquals(semanticVersion, new ManagerVersion(SEMANTIC_VERSION_4_3_13, false));
+        assertEquals(dataDrivenVersion, new ManagerVersion(DATA_DRIVEN_VERSION_2024_08, true));
     }
 }
 
