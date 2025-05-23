@@ -661,7 +661,18 @@ def _get_proxy_from_rhn_conf():
         # CFG.http_proxy format is <hostname>[:<port>] in 1.7
         # pylint: disable-next=consider-using-f-string
         url = "http://%s" % CFG.http_proxy
-        result = (url, CFG.http_proxy_username, CFG.http_proxy_password)
+        # CFG.http_proxy_password can be a list in case of legitimate
+        # commas "," are part of the password. If so, we need to
+        # rebuilt the original password.
+        result = (
+            url,
+            CFG.http_proxy_username,
+            (
+                CFG.http_proxy_password
+                if not isinstance(CFG.http_proxy_password, list)
+                else ",".join(CFG.http_proxy_password)
+            ),
+        )
     initCFG(comp)
     log_debug(2, "Could not read proxy URL from rhn config.")
     return result
