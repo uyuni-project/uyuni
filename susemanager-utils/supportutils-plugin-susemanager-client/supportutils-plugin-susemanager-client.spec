@@ -1,7 +1,7 @@
 #
 # spec file for package supportutils-plugin-susemanager-client
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -25,6 +25,7 @@ License:        GPL-2.0-only
 Group:          Documentation/SuSE
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
+BuildRequires:  supportutils
 Requires:       supportutils
 Supplements:    packageand(spacewalk-check:supportutils)
 Supplements:    packageand(salt-minion:supportutils)
@@ -45,7 +46,15 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/usr/lib/supportconfig/plugins
 install -d $RPM_BUILD_ROOT/usr/share/man/man8
 install -d $RPM_BUILD_ROOT/sbin
-install -m 0544 susemanagerclient $RPM_BUILD_ROOT/usr/lib/supportconfig/plugins
+
+# if the new style rc file is available install the new version, otherwise the old one
+# Only SLE15 and newer support the new style rc file.
+# SLE12 and older only the old variant
+if [ -e /usr/lib/supportconfig/resources/supportconfig.rc ]; then
+    install -m 0544 susemanagerclient $RPM_BUILD_ROOT/usr/lib/supportconfig/plugins/susemanagerclient
+else
+    install -m 0544 susemanagerclient-scplugin $RPM_BUILD_ROOT/usr/lib/supportconfig/plugins/susemanagerclient
+fi
 install -m 0644 susemanagerclient-plugin.8.gz $RPM_BUILD_ROOT/usr/share/man/man8/susemanagerclient-plugin.8.gz
 
 %files
