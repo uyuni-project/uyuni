@@ -99,7 +99,7 @@ Feature: Bootstrap a SSH-managed Debian-like minion and do some basic operations
     Then "deblike_minion" should not be registered
 
   Scenario: Cleanup: bootstrap a Debian-like minion
- When I follow the left menu "Systems > Bootstrapping"
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "deblike_minion" as "hostname"
     And I enter "22" as "port"
