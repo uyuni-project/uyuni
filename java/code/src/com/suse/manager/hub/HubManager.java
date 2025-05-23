@@ -1240,14 +1240,14 @@ public class HubManager {
 
         Channel originalChannel = ChannelFactory.lookupOriginalChannel(channel);
 
-        List<ChannelOrg> syncToPeripheralOrgs = new ArrayList<>();
         ChannelOrg selectedChannelOrg = null;
         if (channel.getOrg() != null) {
             // Custom Channel
             IssPeripheralChannels peripheralChannel = syncedChannelToIssChannelMap.get(channel.getId());
             selectedChannelOrg = peripheralOrgs.stream().filter(po ->
                         //channel is synced
-                        (peripheralChannel != null && peripheralChannel.getPeripheralOrgId().equals(po.getOrgId())) ||
+                        (peripheralChannel != null &&
+                                Objects.equals(peripheralChannel.getPeripheralOrgId(), po.getOrgId())) ||
                         // or channel exists on the peripheral side
                         po.getOrgChannelLabels().contains(channel.getLabel()))
                     .map(po -> new ChannelOrg(po.getOrgId(), po.getOrgName()))
