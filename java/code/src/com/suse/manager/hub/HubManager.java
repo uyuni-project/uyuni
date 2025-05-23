@@ -1219,7 +1219,7 @@ public class HubManager {
         Map<Long, IssPeripheralChannels> syncedChannelToIssChannelMap = issPeripheral.getPeripheralChannels().stream()
             .collect(Collectors.toMap(pc -> pc.getChannel().getId(), pc -> pc));
 
-        List<ChannelSyncDetail> channelDetails = ChannelFactory.listAllBaseChannels(user).stream()
+        List<ChannelSyncDetail> channelDetails = ChannelFactory.listAllBaseChannels().stream()
             .map(channel -> buildChannelSyncDetail(channel, user, syncedChannelToIssChannelMap, peripheralOrgs))
             .toList();
 
@@ -1229,7 +1229,7 @@ public class HubManager {
     private ChannelSyncDetail buildChannelSyncDetail(Channel channel, User user,
                                                      Map<Long, IssPeripheralChannels> syncedChannelToIssChannelMap,
                                                      List<OrgInfoJson> peripheralOrgs) {
-        List<ChannelSyncDetail> children = ChannelFactory.getAccessibleChildChannels(channel, user).stream()
+        List<ChannelSyncDetail> children = ChannelFactory.listAllChildrenForChannel(channel).stream()
             .map(child -> buildChannelSyncDetail(child, user, syncedChannelToIssChannelMap, peripheralOrgs))
             .toList();
 
