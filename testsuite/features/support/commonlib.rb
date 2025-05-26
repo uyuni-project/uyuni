@@ -267,8 +267,7 @@ end
 # @return [Boolean] Returns true if the host is a SUSE host, false otherwise.
 def suse_host?(name, runs_in_container: true)
   node = get_target(name)
-  os_family = runs_in_container ? node.os_family : node.local_os_family
-  %w[sles opensuse opensuse-leap sle-micro suse-microos opensuse-leap-micro].include? os_family
+  (runs_in_container ? node.container : node.host).is_suse?
 end
 
 # Determines if the given host name is a SLE/SL Micro host.
@@ -277,8 +276,7 @@ end
 # @return [Boolean] Returns true if the system is a SLE/SL Micro one
 def slemicro_host?(name, runs_in_container: true)
   node = get_target(name)
-  os_family = runs_in_container ? node.os_family : node.local_os_family
-  (name.include? 'slemicro') || (name.include? 'micro') || os_family.include?('sle-micro') || os_family.include?('suse-microos') || os_family.include?('sl-micro')
+  (runs_in_container ? node.container : node.host).is_slemicro?
 end
 
 # Determines if the given host name is a openSUSE Leap Micro host.
@@ -287,8 +285,7 @@ end
 # @return [Boolean] Returns true if the system is a openSUSE Leap Micro one.
 def leapmicro_host?(name, runs_in_container: true)
   node = get_target(name)
-  os_family = runs_in_container ? node.os_family : node.local_os_family
-  os_family.include?('opensuse-leap-micro')
+  (runs_in_container ? node.container : node.host).is_leapmicro?
 end
 
 # Determines if the given host name is a transactional system
@@ -297,7 +294,8 @@ end
 # @param name [String] The host name to check.
 # @return [Boolean] Returns true if the system is a transactional system
 def transactional_system?(name, runs_in_container: true)
-  slemicro_host?(name, runs_in_container: runs_in_container) || leapmicro_host?(name, runs_in_container: runs_in_container)
+  node = get_target(name)
+  (runs_in_container ? node.container : node.host).is_transactional?
 end
 
 # Checks if the 'proxy' host is a transactional system
