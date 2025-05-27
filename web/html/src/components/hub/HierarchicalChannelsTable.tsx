@@ -98,8 +98,8 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
     [onChannelSelect]
   );
 
-  const renderChannelLabelCell = useCallback((row: ChannelWithHierarchy) => {
-    return row.channelLabel;
+  const renderChannelNameCell = useCallback((row: ChannelWithHierarchy) => {
+    return row.channelName;
   }, []);
 
   const renderArchCell = useCallback((row: ChannelWithHierarchy) => {
@@ -161,17 +161,17 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
     [channels, selectedArchs, getDistinctArchsFromData, handleArchFilterChange]
   );
 
-  const filterByChannelLabel = useCallback((datum: ChannelWithHierarchy, criteria: string | undefined) => {
+  const filterByChannelName = useCallback((datum: ChannelWithHierarchy, criteria: string | undefined) => {
     if (criteria) {
-      return datum.channelLabel.includes(criteria);
+      return datum.channelName.includes(criteria);
     }
 
     return true;
   }, []);
 
   const searchField = useMemo(
-    () => <SearchField placeholder={t("Search channels...")} filter={filterByChannelLabel} />,
-    [filterByChannelLabel]
+    () => <SearchField placeholder={t("Search channels...")} filter={filterByChannelName} />,
+    [filterByChannelName]
   );
 
   return (
@@ -179,14 +179,14 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
       <HierarchicalTable
         data={filteredData}
         identifier={identifier}
-        expandColumnKey="channelLabel"
+        expandColumnKey="channelName"
         initiallyExpanded={true}
         cssClassFunction={rowClass}
         searchField={searchField}
         additionalFilters={[archFilter]}
       >
         <Column columnKey="synced" header={t("Sync")} cell={renderSyncCell} width="60px" />
-        <Column columnKey="channelLabel" header={t("Channel Label")} cell={renderChannelLabelCell} />
+        <Column columnKey="channelName" header={t("Channel Name")} cell={renderChannelNameCell} />
         <Column columnKey="channelArch" header={t("Architecture")} cell={renderArchCell} />
         <Column columnKey="channelOrg" header={t("Sync Org")} cell={renderSyncOrgCell} />
       </HierarchicalTable>
