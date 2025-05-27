@@ -91,7 +91,18 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
 
       return (
         <div className="d-flex align-items-center">
-          <input type="checkbox" checked={isChecked} onChange={() => onChannelSelect(channelId, !isChecked)} />
+          <input
+            type="checkbox"
+            checked={isChecked}
+            onChange={() => {
+              // If the current row allows choosing an organization, update the selected organization
+              if (row.channelOrg !== null && !row.strictOrg) {
+                onOrgSelect?.(channelId, !isChecked ? availableOrgs[0] : undefined);
+              }
+
+              onChannelSelect(channelId, !isChecked);
+            }}
+          />
         </div>
       );
     },
@@ -109,20 +120,28 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
   const renderSyncOrgCell = useCallback(
     (row: ChannelWithHierarchy) => {
       if (row.channelOrg === null) {
-        return <span>Vendor</span>; // Vendor channels can't sync orgs
-      } else if (row.strictOrg && row.selectedPeripheralOrg !== null) {
+        // Vendor channels can't sync orgs
+        return <span>Vendor</span>;
+      }
+
+      if (row.strictOrg && row.selectedPeripheralOrg !== null) {
         // Only 1 option, no choice
         return <span>{row.selectedPeripheralOrg.orgName}</span>;
       }
+
+      if (!row.isChecked) {
+        // The row is not selected, do not show anything
+        return <span>{"-"}</span>;
+      }
+
       return (
         <Form>
           <Select
             name={`org-select-${row.channelId}`}
             placeholder={t("Select Organization")}
-            isClearable={true}
             options={availableOrgs}
-            getOptionValue={(org: Org | null) => org?.orgId.toString() ?? ""}
-            getOptionLabel={(org: Org | null) => org?.orgName ?? ""}
+            getOptionValue={(org: Org) => org.orgId.toString()}
+            getOptionLabel={(org: Org) => org.orgName}
             defaultValue={row.selectedPeripheralOrg?.orgId.toString()}
             onChange={(_: string | undefined, orgId: string) => {
               onOrgSelect?.(
