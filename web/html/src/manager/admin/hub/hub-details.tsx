@@ -35,15 +35,15 @@ export class HubDetails extends React.Component<Props, State> {
           handler={() => this.setState({ confirmSyncBunch: true })}
           text={t("Sync Channels")}
           title={t("Schedule Sync Channels task")}
-          icon="fa-minus"
+          icon="fa-refresh"
         />
         <DangerDialog
           id="confirm-sync-bunch-modal"
-          title={t("Confirm Synch Channels task")}
-          content={<span>{t("Do you want to schedule a Sync Channels task from the Hub?")}</span>}
+          title={t("Confirm channels synchronization")}
+          content={<span>{t("Do you want to schedule a channels synchronization from the hub?")}</span>}
           isOpen={this.state.confirmSyncBunch}
           submitText={t("Schedule")}
-          submitIcon="fa-minus"
+          submitIcon="fa-refresh"
           onConfirm={() => this.onConfirmSyncBunch()}
           onClose={() => this.setState({ confirmSyncBunch: false })}
         />
@@ -105,7 +105,7 @@ export class HubDetails extends React.Component<Props, State> {
     Network.post(resource)
       .then(
         (_response) => {
-          showInfoToastr(t("Successfully scheduled a Sync Channel task."));
+          showInfoToastr(t("Successfully scheduled a channels synchronization."));
         },
         (xhr) => Network.showResponseErrorToastr(xhr)
       )
