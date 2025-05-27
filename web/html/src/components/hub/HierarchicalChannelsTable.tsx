@@ -30,7 +30,6 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
   onOrgSelect,
 }) => {
   const [selectedArchs, setSelectedArchs] = useState<string[]>([]);
-  const [searchCriteria, setSearchCriteria] = useState<string>("");
 
   const hierarchicalData = useMemo(() => {
     // Build lookup map by channel label
@@ -59,26 +58,23 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
       if (selectedArchs.length > 0 && !selectedArchs.includes(channel.channelArch)) {
         return false;
       }
-      // Apply search criteria
-      if (searchCriteria) {
-        const searchTerm = searchCriteria.toLowerCase();
-        return channel.channelLabel.toLowerCase().includes(searchTerm);
-      }
+
       return true;
     });
-  }, [hierarchicalData, searchCriteria, selectedArchs]);
-
-  const handleSearchChange = useCallback((criteria: string) => {
-    setSearchCriteria(criteria);
-  }, []);
+  }, [hierarchicalData, selectedArchs]);
 
   const identifier = useCallback((row: HierarchicalRow): string | number => {
     return row.id;
   }, []);
 
-  const handleArchFilterChange = useCallback((_, selectedOptions: any) => {
-    const selectedValues = Array.isArray(selectedOptions) ? selectedOptions.map((option) => option.value) : [];
-    setSelectedArchs(selectedValues);
+  const handleArchFilterChange = useCallback((_: string | undefined, selectedOptions: string | string[]) => {
+    if (Array.isArray(selectedOptions)) {
+      setSelectedArchs(selectedOptions);
+    } else if (typeof selectedOptions === "string") {
+      setSelectedArchs([selectedOptions]);
+    } else {
+      setSelectedArchs([]);
+    }
   }, []);
 
   const rowClass = useCallback((row: ChannelWithHierarchy) => {
@@ -144,10 +140,7 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
   const getDistinctArchsFromData = useCallback((channels: FlatChannel[]) => {
     const archSet = new Set<string>();
     channels.forEach((channel) => archSet.add(channel.channelArch));
-    return Array.from(archSet).map((arch) => ({
-      value: arch,
-      label: arch,
-    }));
+    return Array.from(archSet).map((arch) => ({ value: arch, label: arch }));
   }, []);
 
   const archFilter = useMemo(
@@ -159,17 +152,26 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
             placeholder={t("Filter by architecture")}
             options={getDistinctArchsFromData(channels)}
             isMulti={true}
+            defaultValue={selectedArchs}
             onChange={handleArchFilterChange}
           />
         </Form>
       </div>
     ),
-    [channels, getDistinctArchsFromData, handleArchFilterChange]
+    [channels, selectedArchs, getDistinctArchsFromData, handleArchFilterChange]
   );
 
+  const filterByChannelLabel = useCallback((datum: ChannelWithHierarchy, criteria: string | undefined) => {
+    if (criteria) {
+      return datum.channelLabel.includes(criteria);
+    }
+
+    return true;
+  }, []);
+
   const searchField = useMemo(
-    () => <SearchField placeholder={t("Search channels...")} onSearch={handleSearchChange} />,
-    []
+    () => <SearchField placeholder={t("Search channels...")} filter={filterByChannelLabel} />,
+    [filterByChannelLabel]
   );
 
   return (

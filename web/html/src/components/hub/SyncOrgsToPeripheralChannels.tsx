@@ -270,7 +270,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     const channelsToRemoveData = channels.filter((channel) => channelsToRemove.includes(channel.channelId));
 
     const searchData = (row, criteria) => {
-      const keysToSearch = ["channelLabel"];
+      const keysToSearch = ["channelName"];
       if (criteria) {
         const needle = criteria.toLocaleLowerCase();
         return keysToSearch.map((key) => row[key]).some((item) => item.toLocaleLowerCase().includes(needle));
