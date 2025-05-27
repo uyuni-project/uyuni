@@ -90,7 +90,7 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
       const isChecked = row.isChecked;
 
       return (
-        <div className="d-flex align-items-center">
+        <div className="text-center">
           <input
             type="checkbox"
             checked={isChecked}
@@ -137,6 +137,7 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
       return (
         <Form>
           <Select
+            className="mb-0"
             name={`org-select-${row.channelId}`}
             placeholder={t("Select Organization")}
             options={availableOrgs}
@@ -194,22 +195,21 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
   );
 
   return (
-    <div className="channel-hierarchy-container">
-      <HierarchicalTable
-        data={filteredData}
-        identifier={identifier}
-        expandColumnKey="channelName"
-        initiallyExpanded={true}
-        cssClassFunction={rowClass}
-        searchField={searchField}
-        additionalFilters={[archFilter]}
-      >
-        <Column columnKey="synced" header={t("Sync")} cell={renderSyncCell} width="60px" />
-        <Column columnKey="channelName" header={t("Channel Name")} cell={renderChannelNameCell} />
-        <Column columnKey="channelArch" header={t("Architecture")} cell={renderArchCell} />
-        <Column columnKey="channelOrg" header={t("Sync Org")} cell={renderSyncOrgCell} />
-      </HierarchicalTable>
-    </div>
+    <HierarchicalTable
+      className="channel-hierarchy"
+      data={filteredData}
+      identifier={identifier}
+      expandColumnKey="channelName"
+      initiallyExpanded={true}
+      cssClassFunction={rowClass}
+      searchField={searchField}
+      additionalFilters={[archFilter]}
+    >
+      <Column headerClass="text-center" columnKey="synced" header={t("Sync")} cell={renderSyncCell} width="60px" />
+      <Column columnClass="col" columnKey="channelName" header={t("Channel Name")} cell={renderChannelNameCell} />
+      <Column columnClass="col col-md-2" columnKey="channelArch" header={t("Architecture")} cell={renderArchCell} />
+      <Column columnClass="col col-md-3" columnKey="channelOrg" header={t("Sync Org")} cell={renderSyncOrgCell} />
+    </HierarchicalTable>
   );
 };
 
