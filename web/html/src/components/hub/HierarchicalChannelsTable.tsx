@@ -110,11 +110,6 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
     return row.channelArch;
   }, []);
 
-  const orgMapping = availableOrgs.map((org) => ({
-    value: org.orgId,
-    label: org.orgName,
-  }));
-
   const renderSyncOrgCell = useCallback(
     (row: ChannelWithHierarchy) => {
       if (row.channelOrg === null) {
@@ -129,14 +124,15 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
             name={`org-select-${row.channelId}`}
             placeholder={t("Select Organization")}
             isClearable={true}
-            options={orgMapping}
-            onChange={(_, orgId) => {
-              if (onOrgSelect) {
-                onOrgSelect(
-                  row.channelId,
-                  availableOrgs.find((org) => org.orgId === orgId)
-                );
-              }
+            options={availableOrgs}
+            getOptionValue={(org: Org | null) => org?.orgId.toString() ?? ""}
+            getOptionLabel={(org: Org | null) => org?.orgName ?? ""}
+            defaultValue={row.selectedPeripheralOrg?.orgId.toString()}
+            onChange={(_: string | undefined, orgId: string) => {
+              onOrgSelect?.(
+                row.channelId,
+                availableOrgs.find((org) => org.orgId === Number(orgId))
+              );
             }}
           />
         </Form>

@@ -158,14 +158,18 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
   };
 
   handleOrgSelect = (channelId: number, org?: Org) => {
-    const { channels } = this.state;
-    const channel = channels.find((c) => c.channelId === channelId);
-    if (!channel) return;
-    if (org !== undefined && org !== null) {
-      channel.selectedPeripheralOrg = org;
-    } else {
-      channel.selectedPeripheralOrg = null;
-    }
+    this.setState((prevState) => ({
+      channels: prevState.channels.map((channel) => {
+        if (channel.channelId !== channelId) {
+          return channel;
+        }
+
+        return {
+          ...channel,
+          selectedPeripheralOrg: org ?? null,
+        };
+      }),
+    }));
   };
 
   onChannelSyncConfirm = () => {
