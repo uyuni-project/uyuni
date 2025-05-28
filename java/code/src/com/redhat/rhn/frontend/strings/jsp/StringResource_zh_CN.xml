@@ -13816,9 +13816,9 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="activation-key.jsp.edit-basechannel-tooltip" xml:space="preserve">
+      <trans-unit id="activation-key.jsp.edit-basechannel-tooltip" xml:space="preserve" approved="yes">
         <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default @@PRODUCT_NAME@@ provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its @@PRODUCT_NAME@@ Default channel.</source>
-        <target state="needs-adaptation">选择 "&lt;strong&gt;{0}&lt;/strong&gt;" 将允许系统注册到 SUSE Manager 默认提供的通道（与所安装的 SUSE Linux 的版本对应）。除了默认通道，您还可以选择 SUSE 提供的某个特定通道或自定义基础通道，但如果使用此密钥的系统与选择的通道不匹配，它将会回退到 SUSE Manager 默认通道。</target>
+        <target state="final">选择 "&lt;strong&gt;{0}&lt;/strong&gt;" 将允许系统注册到 @@PRODUCT_NAME@@ 默认提供的通道（与所安装的 SUSE Linux 版本对应）。除了默认通道，您还可以选择 SUSE 提供的某个特定通道或自定义基础通道，但如果使用此密钥的系统与选择的通道不兼容，它将会回退到 @@PRODUCT_NAME@@ 默认通道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -13959,9 +13959,9 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
           <context context-type="sourcefile">/rhn/activationkeys/childchannels/* pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="activation-key.childchannels.jsp.note" xml:space="preserve">
+      <trans-unit id="activation-key.childchannels.jsp.note" xml:space="preserve" approved="yes">
         <source>NOTE: Selected child channels of the "@@PRODUCT_NAME@@ default" Base channel will be subscribed.</source>
-        <target state="needs-adaptation">注意：将订阅 "SUSE Manager default" 基础通道的选定子通道。</target>
+        <target state="final">注意：将订阅 "@@PRODUCT_NAME@@ default" 基础通道的选定子通道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/childchannels/* pages</context>
         </context-group>
@@ -24820,12 +24820,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target state="translated">登录错误</target>
       </trans-unit>
-      <trans-unit id="login.jsp.error.message" xml:space="preserve">
+      <trans-unit id="login.jsp.error.message" xml:space="preserve" approved="yes">
         <source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your @@PRODUCT_NAME@@ administrator if the problem persists.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">loginerror.jsp</context>
         </context-group>
-        <target state="needs-adaptation">导致此错误的原因可能是注销被中断或者登录是从另一个浏览器选项卡进行的。如果问题一直存在，请联系您的 SUSE Manager 管理员。</target>
+        <target state="final">导致此错误的原因可能是注销被中断或者用户是从另一个浏览器选项卡登录的。如果问题一直存在，请联系您的 @@PRODUCT_NAME@@ 管理员。</target>
       </trans-unit>
       <trans-unit id="login.jsp.error.currentlyLoggedInAs" xml:space="preserve">
         <source>Currently logged in as: {0}</source>
@@ -27312,12 +27312,12 @@ given channel.</source>
         </context-group>
         <target state="translated">您可在此处设置所选组的日程安排。</target>
       </trans-unit>
-      <trans-unit id="schedule.delete.jsp.introparagraph" xml:space="preserve">
+      <trans-unit id="schedule.delete.jsp.introparagraph" xml:space="preserve" approved="yes">
         <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target state="needs-adaptation">您确定要删除该日程安排吗？这样将无法再安排关联的组，会对 SUSE Manager 功能产生很大影响。请仅在您完全清楚自己所执行的操作时继续。</target>
+        <target state="final">您确定要删除该日程安排吗？这样将无法再安排关联的组，会对 @@PRODUCT_NAME@@ 功能产生很大影响。请仅在确知操作内容时继续。</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.schedulenameinuse" xml:space="preserve">
         <source>Schedule name {0} is already in use. Please choose another one.</source>
@@ -28904,9 +28904,9 @@ given channel.</source>
         <source>Copyright (c) 2011 - 2025 SUSE LLC.</source>
         <target state="final">版权所有 (c) 2011 - 2025 SUSE LLC。</target>
       </trans-unit>
-      <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
+      <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve" approved="yes">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;@@PRODUCT_NAME@@ License Agreement&lt;/a&gt;</source>
-        <target state="needs-adaptation">&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER 许可协议&lt;/a&gt;</target>
+        <target state="final">&lt;a href="/rhn/help/Eula.do"&gt;@@PRODUCT_NAME@@ 许可协议&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.body.uyuni" xml:space="preserve">
         <source>
@@ -28965,17 +28965,17 @@ given channel.</source>
         <source>Channel Label</source>
         <target>通道标签</target>
       </trans-unit>
-      <trans-unit id="delete_confirm.jsp.summary.sshpush" xml:space="preserve">
+      <trans-unit id="delete_confirm.jsp.summary.sshpush" xml:space="preserve" approved="yes">
         <source>For Salt minions @@PRODUCT_NAME@@ will also cleanup any specific configuration installed on the minion.
               This might take a few extra seconds.</source>
-        <target state="needs-adaptation">对于 Salt 受控端，SUSE Manager 还会清理受控端上安装的任何特定配置。
+        <target state="final">对于 Salt 受控端，@@PRODUCT_NAME@@ 还会清理受控端上安装的任何特定配置。
               这可能需要额外花费几秒钟时间。</target>
       </trans-unit>
-      <trans-unit id="ssm.delete.systems.salt.cleanup" xml:space="preserve">
+      <trans-unit id="ssm.delete.systems.salt.cleanup" xml:space="preserve" approved="yes">
         <source>The selected profiles include Salt systems. @@PRODUCT_NAME@@ can try to remove the specific configuration from the Salt systems.
             In order for this to work the systems must be up and running and reachable. If a system is not reachable it will result in an error.</source>
-        <target state="needs-adaptation">选定的配置文件包含 Salt 系统。SUSE Manager 可以尝试从 Salt 系统中去除特定的配置。
-            要成功完成此操作，系统必须已正常运行且可访问。如果系统不可访问，则会导致出错。</target>
+        <target state="final">选定的配置文件包含 Salt 系统。@@PRODUCT_NAME@@ 可能会尝试从 Salt 系统中去除特定的配置。
+            要成功完成此操作，系统必须已正常运行且可访问。如果系统不可访问，此操作会导致出错。</target>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup.type" xml:space="preserve">
         <source>Please chose how to handle Salt minions cleanup and delete:</source>
@@ -29672,7 +29672,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="needs-adaptation">收集 SUSE Manager PAYG 受管客户端的数据</target>
+        <target state="final">收集 @@PRODUCT_NAME@@ PAYG 受管客户端的数据</target>
       </trans-unit>
       <trans-unit approved="yes" id="task.status.payg-dimension-computation" xml:space="preserve">
         <source>PAYG Computation</source>
@@ -29782,21 +29782,21 @@ given channel.</source>
         </context-group>
         <target state="final">创建发行套件</target>
       </trans-unit>
-    <trans-unit id="system.event.inventory" xml:space="preserve">
-          <source>Inventory:</source>
+      <trans-unit id="system.event.inventory" xml:space="preserve" approved="yes">
+        <source>Inventory:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
-        <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ansible_managed" xml:space="preserve">
+        <target state="final">库存：</target>
+      </trans-unit>
+      <trans-unit id="ansible_managed" xml:space="preserve" approved="yes">
         <source>Ansible Managed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="proxy_entitled" xml:space="preserve">
+        <target state="final">Ansible 托管</target>
+      </trans-unit>
+      <trans-unit id="proxy_entitled" xml:space="preserve" approved="yes">
         <source>Proxy</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">代理</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
