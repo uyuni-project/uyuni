@@ -7885,7 +7885,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target state="translated">@@PRODUCT_NAME@@ 配置 - 监视</target>
+        <target state="translated">@@PRODUCT_NAME@@ 配置 - 监控</target>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.header2" xml:space="preserve">
         <source>General Monitoring Config</source>
@@ -9559,7 +9559,7 @@ organization management tools if you choose to remove this role from your login.
           <context context-type="sourcefile">Any page that uses the Download to CSV function.  Shows
               up as a Column header in the CSV export.</context>
         </context-group>
-        <target state="translated">度量</target>
+        <target state="translated">指标</target>
       </trans-unit>
       <trans-unit id="time" xml:space="preserve">
         <source>Time</source>
@@ -9796,7 +9796,7 @@ administrator privileges.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
-        <target state="translated">启用监视侦察</target>
+        <target state="translated">启用监控侦察</target>
       </trans-unit>
       <trans-unit id="config.update" xml:space="preserve">
         <source>Update</source>
