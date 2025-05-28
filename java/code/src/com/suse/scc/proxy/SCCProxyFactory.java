@@ -172,4 +172,46 @@ public class SCCProxyFactory extends HibernateFactory {
                 .setParameter("status", SccProxyStatus.SCC_CREATED)
                 .list();
     }
+
+    /**
+     * set all proxy entries of a given peripheral to be deregistered
+     *
+     * @param peripheralFqdn the given peripheral fqn
+     */
+    public void deregisterProxyEntriesForPeripheral(String peripheralFqdn) {
+        getSession().createQuery("""
+                        UPDATE SCCProxyRecord p
+                        SET p.status = :removalPending
+                        WHERE p.peripheralFqdn = :fqdn
+                        """)
+                .setParameter("removalPending", SccProxyStatus.SCC_REMOVAL_PENDING)
+                .setParameter("fqdn", peripheralFqdn)
+                .executeUpdate();
+    }
+
+    /**
+     * set all proxy entries as if they have to be registered again
+     */
+    public void setReregisterProxyEntries() {
+        getSession().createQuery("""
+                        UPDATE SCCProxyRecord p
+                        SET p.sccId = NULL, p.status = :creationPending
+                        WHERE p.status = :created
+                        """)
+                .setParameter("creationPending", SccProxyStatus.SCC_CREATION_PENDING)
+                .setParameter("created", SccProxyStatus.SCC_CREATED)
+                .executeUpdate();
+    }
+
+    /**
+     * remove all proxy entries with status "removal pending"
+     */
+    public void removeRemovalPendingProxyEntries() {
+        getSession().createQuery("""
+                        DELETE SCCProxyRecord p
+                        WHERE p.status = :removalPending
+                        """)
+                .setParameter("removalPending", SccProxyStatus.SCC_REMOVAL_PENDING)
+                .executeUpdate();
+    }
 }
