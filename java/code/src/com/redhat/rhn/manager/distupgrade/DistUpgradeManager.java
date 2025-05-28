@@ -380,7 +380,8 @@ public class DistUpgradeManager extends BaseManager {
             result.add(new SUSEProductSet(base, Collections.emptyList()));
         }
         else {
-            List<SUSEProduct> addonProducts = combination.subList(1, combination.size());
+            List<SUSEProduct> addonProducts = ensureRecommendedAddons(base,
+                    combination.subList(1, combination.size()));
             addLibertyLinuxAddonIfMissing(base, addonProducts);
             // No Product Channels means, no subscription to access the channels
             if (addonProducts.stream().anyMatch(ap -> !mgr.isProductAvailable(ap, base))) {
