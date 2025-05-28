@@ -11278,11 +11278,11 @@ For a detailed analysis, please refer to the log files.
       </trans-unit>
       <trans-unit approved="yes" id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
         <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
-        <target state="needs-adaptation">在 SUSE Manager 服务器上注册 "{0}" 的请求已被拒绝。\n要管理数据中心客户端，您必须在 "管理" =&gt; "安装向导" =&gt; "组织身份凭证" 中配置 SCC 身份凭证。</target>
+        <target state="final">在 @@PRODUCT_NAME@@ 服务器上注册 '{0}' 的请求已被拒绝。\n要管理数据中心客户端，您必须在 "管理" =&gt; "安装向导" =&gt; "组织身份凭证" 中配置 SCC 身份凭证。</target>
       </trans-unit>
       <trans-unit approved="yes" id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
         <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
-        <target state="needs-adaptation">在 SUSE Manager 服务器上注册 "{0}" 的请求已被拒绝。\n要管理 BYOS（自带订阅）客户端，您必须在 "管理" =&gt; "安装向导" =&gt; "组织身份凭证" 中配置 SCC 身份凭证。\n\n如果初始配置的实例为 PAYG，请确保已安装 `python-instance-billing-flavor-check` 软件包，然后重试。</target>
+        <target state="final">在 @@PRODUCT_NAME@@ 服务器上注册 '{0}' 的请求已被拒绝。\n要管理 BYOS（自带订阅）客户端，您必须在 "管理" =&gt; "安装向导" =&gt; "组织身份凭证" 中配置 SCC 身份凭证。\n\n如果初始配置的实例为 PAYG，请确保已安装 `python-instance-billing-flavor-check` 软件包，然后重试。</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.updateavailable.summary" xml:space="preserve">
         <source>Updates are available.</source>
@@ -11684,179 +11684,179 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Unable to deregister: an unexpected error is occurred while contacting the remote server. Please check the server logs.</source>
         <target state="final">无法取消注册：联系远程服务器时发生意外错误。请查看服务器日志。</target>
       </trans-unit>
-    <trans-unit id="toolbar.convert.proxy" xml:space="preserve">
+      <trans-unit id="toolbar.convert.proxy" xml:space="preserve" approved="yes">
         <source>Convert to Proxy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Convert to Proxy</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="system.entitle.added.proxy_entitled" xml:space="preserve">
+        <target state="final">转换为代理</target>
+      </trans-unit>
+      <trans-unit id="system.entitle.added.proxy_entitled" xml:space="preserve" approved="yes">
         <source>&lt;strong&gt;Proxy&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="ansible.inventory" xml:space="preserve">
+        <target state="final">已应用&lt;strong&gt;代理&lt;/strong&gt;类型。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;此操作将&lt;em&gt;不会&lt;/em&gt;导致应用状态。要应用该状态，请使用&lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;状态页&lt;/a&gt;，或者在命令行中运行 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;。</target>
+      </trans-unit>
+      <trans-unit id="ansible.inventory" xml:space="preserve" approved="yes">
         <source>Refresh Ansible inventories</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="recurring_action.empty_playbook_path" xml:space="preserve">
+        <target state="final">刷新 Ansible 库存</target>
+      </trans-unit>
+      <trans-unit id="recurring_action.empty_playbook_path" xml:space="preserve" approved="yes">
         <source>No Playbook selected</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.cannot_refresh_certificate" xml:space="preserve">
+        <target state="final">未选择剧本</target>
+      </trans-unit>
+      <trans-unit id="hub.cannot_refresh_certificate" xml:space="preserve" approved="yes">
         <source>An error occurred while attempting to refresh the root certificate authorities. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.migration_success" xml:space="preserve">
+        <target state="final">尝试刷新根证书颁发机构时发生错误。请查看服务器日志。</target>
+      </trans-unit>
+      <trans-unit id="hub.migration_success" xml:space="preserve" approved="yes">
         <source>The migration from ISSv{0} was completed successfully.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.unexpected_error_migrating" xml:space="preserve">
+        <target state="final">已成功完成从 ISSv{0} 的迁移。</target>
+      </trans-unit>
+      <trans-unit id="hub.unexpected_error_migrating" xml:space="preserve" approved="yes">
         <source>An expected error happened during the migration process: {0}. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.migration.no_slaves" xml:space="preserve">
+        <target state="final">迁移期间发生意外错误：{0}。请查看服务器日志。</target>
+      </trans-unit>
+      <trans-unit id="hub.migration.no_slaves" xml:space="preserve" approved="yes">
         <source>This server does not have any ISSv1 slave</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.migration.slave_not_exit" xml:space="preserve">
+        <target state="final">此服务器没有 ISSv1 从属设备</target>
+      </trans-unit>
+      <trans-unit id="hub.migration.slave_not_exit" xml:space="preserve" approved="yes">
         <source>Slave {0} does not exist</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.migration.no_migration_data" xml:space="preserve">
+        <target state="final">从属设备 {0} 不存在</target>
+      </trans-unit>
+      <trans-unit id="hub.migration.no_migration_data" xml:space="preserve" approved="yes">
         <source>Slave {0} has no migration data and will not be migrated</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.migration.slave_disabled" xml:space="preserve">
+        <target state="final">从属设备 {0} 没有迁移数据，将不会迁移</target>
+      </trans-unit>
+      <trans-unit id="hub.migration.slave_disabled" xml:space="preserve" approved="yes">
         <source>Slave {0} is currently disabled and will not be migrated</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.migration.unable_to_migrate" xml:space="preserve">
+        <target state="final">从属设备 {0} 目前已禁用，将不会迁移</target>
+      </trans-unit>
+      <trans-unit id="hub.migration.unable_to_migrate" xml:space="preserve" approved="yes">
         <source>Unable to migrate server {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.migration.fail_channel_config" xml:space="preserve">
+        <target state="final">无法迁移服务器 {0}：{1}</target>
+      </trans-unit>
+      <trans-unit id="hub.migration.fail_channel_config" xml:space="preserve" approved="yes">
         <source>Unable to configure channels for peripheral {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.migration.removal_slave" xml:space="preserve">
+        <target state="final">无法为外设 {0} 配置通道：{1}</target>
+      </trans-unit>
+      <trans-unit id="hub.migration.removal_slave" xml:space="preserve" approved="yes">
         <source>Unable remove ISSv1 data for slave {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.migration.removal_peripheral" xml:space="preserve">
+        <target state="final">无法去除从属设备 {0} 的 ISSv1 数据：{1}</target>
+      </trans-unit>
+      <trans-unit id="hub.migration.removal_peripheral" xml:space="preserve" approved="yes">
         <source>Unable to remove partially migrated peripheral {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.invalid_id" xml:space="preserve">
+        <target state="final">无法去除部分迁移的外设 {0}：{1}</target>
+      </trans-unit>
+      <trans-unit id="hub.invalid_id" xml:space="preserve" approved="yes">
         <source>The specified peripheral id is invalid.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="onboardingfailed" xml:space="preserve">
+        <target state="final">指定的外设 ID 无效。</target>
+      </trans-unit>
+      <trans-unit id="onboardingfailed" xml:space="preserve" approved="yes">
         <source>Onboarding failed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="channelsyncfailed" xml:space="preserve">
+        <target state="final">初始配置失败</target>
+      </trans-unit>
+      <trans-unit id="channelsyncfailed" xml:space="preserve" approved="yes">
         <source>Channel sync failed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="channelsyncfinished" xml:space="preserve">
+        <target state="final">通道同步失败</target>
+      </trans-unit>
+      <trans-unit id="channelsyncfinished" xml:space="preserve" approved="yes">
         <source>Channel sync finished</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="createbootstraprepofailed" xml:space="preserve">
+        <target state="final">通道同步已完成</target>
+      </trans-unit>
+      <trans-unit id="createbootstraprepofailed" xml:space="preserve" approved="yes">
         <source>Creating Bootstrap Repository failed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="stateapplyfailed" xml:space="preserve">
+        <target state="final">创建引导储存库失败</target>
+      </trans-unit>
+      <trans-unit id="stateapplyfailed" xml:space="preserve" approved="yes">
         <source>State apply failed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="paygauthenticationupdatefailed" xml:space="preserve">
+        <target state="final">状态应用失败</target>
+      </trans-unit>
+      <trans-unit id="paygauthenticationupdatefailed" xml:space="preserve" approved="yes">
         <source>PAYG refresh failed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="endoflifeperiod" xml:space="preserve">
+        <target state="final">PAYG 刷新失败</target>
+      </trans-unit>
+      <trans-unit id="endoflifeperiod" xml:space="preserve" approved="yes">
         <source>End of Life Period</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="subscriptionwarning" xml:space="preserve">
+        <target state="final">生命周期结束期限</target>
+      </trans-unit>
+      <trans-unit id="subscriptionwarning" xml:space="preserve" approved="yes">
         <source>Subscription Warning</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="updateavailable" xml:space="preserve">
+        <target state="final">订阅警告</target>
+      </trans-unit>
+      <trans-unit id="updateavailable" xml:space="preserve" approved="yes">
         <source>Updates are Available</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="paygnotcompliantwarning" xml:space="preserve">
+        <target state="final">有可用更新</target>
+      </trans-unit>
+      <trans-unit id="paygnotcompliantwarning" xml:space="preserve" approved="yes">
         <source>PAYG instance is not compliant</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="sccoptoutwarning" xml:space="preserve">
+        <target state="final">PAYG 实例不合规</target>
+      </trans-unit>
+      <trans-unit id="sccoptoutwarning" xml:space="preserve" approved="yes">
         <source>SCC Data Sync Disabled</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hubregistrationchanged" xml:space="preserve">
+        <target state="final">SCC 数据同步功能已禁用</target>
+      </trans-unit>
+      <trans-unit id="hubregistrationchanged" xml:space="preserve" approved="yes">
         <source>Hub Registration Changed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.not_found" xml:space="preserve">
+        <target state="final">Hub 注册已更改</target>
+      </trans-unit>
+      <trans-unit id="notification.not_found" xml:space="preserve" approved="yes">
         <source>Cannot retry: a notification with id '{0}' does not exist.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.type_not_actionable" xml:space="preserve">
+        <target state="final">无法重试：ID 为 '{0}' 的通知不存在。</target>
+      </trans-unit>
+      <trans-unit id="notification.type_not_actionable" xml:space="preserve" approved="yes">
         <source>Cannot retry: the notification type '{0}' is not actionable.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.channelsyncfailed.action.not_found" xml:space="preserve">
+        <target state="final">无法重试：通知类型 '{0}' 不支持操作。</target>
+      </trans-unit>
+      <trans-unit id="notification.channelsyncfailed.action.not_found" xml:space="preserve" approved="yes">
         <source>Failed to restart reposync. A channel with id {0} does not exist.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.channelsyncfailed.action.failed" xml:space="preserve">
+        <target state="final">无法重启动储存库同步。ID 为 {0} 的通道不存在。</target>
+      </trans-unit>
+      <trans-unit id="notification.channelsyncfailed.action.failed" xml:space="preserve" approved="yes">
         <source>Failed to restart reposync for the channel '{0}': {1}.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.channelsyncfailed.action.success" xml:space="preserve">
+        <target state="final">无法为通道 '{0}' 重启动储存库同步：{1}。</target>
+      </trans-unit>
+      <trans-unit id="notification.channelsyncfailed.action.success" xml:space="preserve" approved="yes">
         <source>Reposync restarted for the channel '{0}'</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.onboardingfailed.action.success" xml:space="preserve">
+        <target state="final">已为通道 '{0}' 重启动储存库同步</target>
+      </trans-unit>
+      <trans-unit id="notification.onboardingfailed.action.success" xml:space="preserve" approved="yes">
         <source>Onboarding restarted for the minion with id '{0}'</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.hub.registered.summary" xml:space="preserve">
+        <target state="final">已为 ID 为 '{0}' 的受控端重启动初始配置</target>
+      </trans-unit>
+      <trans-unit id="notification.hub.registered.summary" xml:space="preserve" approved="yes">
         <source>This server is now a peripheral of {0}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.hub.registered.details" xml:space="preserve">
+        <target state="final">此服务器现在是 {0} 的外设</target>
+      </trans-unit>
+      <trans-unit id="notification.hub.registered.details" xml:space="preserve" approved="yes">
         <source>&lt;p&gt;This server has been registered as a peripheral of hub {0} and will start to receive data from it.&lt;/p&gt; &lt;p&gt;Check the &lt;a href="/rhn/manager/admin/hub/hub-details"&gt;Hub details page&lt;/a&gt; for more information.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.hub.hub_deregistered.summary" xml:space="preserve">
+        <target state="final">&lt;p&gt;此服务器已注册为 Hub {0} 的外设，将开始接收来自该 Hub 的数据。&lt;/p&gt; &lt;p&gt;有关详细信息，请参见 &lt;a href="/rhn/manager/admin/hub/hub-details"&gt;Hub 详细信息页面&lt;/a&gt;。&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="notification.hub.hub_deregistered.summary" xml:space="preserve" approved="yes">
         <source>This server is no longer a peripheral of {0}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.hub.hub_deregistered.details" xml:space="preserve">
+        <target state="final">此服务器不再是 {0} 的外设</target>
+      </trans-unit>
+      <trans-unit id="notification.hub.hub_deregistered.details" xml:space="preserve" approved="yes">
         <source>&lt;p&gt;The hub {0} has de-registered this server, which means it is no longer acting as its peripheral.&lt;/p&gt; &lt;p&gt;Review your configuration, as all the channels that were previously synced from the hub will no loger be updated.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.hub.peripheral_deregistered.summary" xml:space="preserve">
+        <target state="final">&lt;p&gt;Hub {0} 已将此服务器取消注册，也就是说，此服务器不再是其外设。&lt;/p&gt; &lt;p&gt;请检查您的配置，因为之前与该 Hub 同步的所有通道都将不再更新。&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="notification.hub.peripheral_deregistered.summary" xml:space="preserve" approved="yes">
         <source>Server {0} is no longer a peripheral.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.hub.peripheral_deregistered.details" xml:space="preserve">
+        <target state="final">服务器 {0} 不再是外设。</target>
+      </trans-unit>
+      <trans-unit id="notification.hub.peripheral_deregistered.details" xml:space="preserve" approved="yes">
         <source>&lt;p&gt;The peripheral {0} has de-registered from this hub, and it is no longer manageable as a peripheral..&lt;/p&gt; &lt;p&gt;Any existing synchronization configuration has been removed.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.error_peripheral_not_registrable" xml:space="preserve">
+        <target state="final">&lt;p&gt;外设 {0} 已从此 Hub 取消注册，不再可作为外设进行管理。&lt;/p&gt; &lt;p&gt;系统已去除所有现有的同步配置。&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="hub.error_peripheral_not_registrable" xml:space="preserve" approved="yes">
         <source>The server {0} cannot be registered as a peripheral of this hub</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">服务器 {0} 无法注册为此 Hub 的外设</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
