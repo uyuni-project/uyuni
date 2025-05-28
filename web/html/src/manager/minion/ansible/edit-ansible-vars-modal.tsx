@@ -12,6 +12,7 @@ import AnsibleVarYamlEditor from "./ansible-var-yaml-editor";
 
 type Props = {
   id: string;
+  className?: string;
   title?: string;
   creatingText?: string;
   onSave?: Function;
@@ -39,7 +40,7 @@ const EditAnsibleVarsModal = (props: Props) => {
       if (extraVars) {
         const parsedExtraVars = yaml.load(extraVars);
         if (typeof parsedExtraVars !== "object" || parsedExtraVars === null) {
-          showErrorToastr("Additonal Variables must be a valid YAML object.", { autoHide: false });
+          showErrorToastr("Additonal Variables must be a valid YAML object.", { autoHide: false, containerId: "extra-var" });
           setOpen(true);
           return;
         }
@@ -47,7 +48,7 @@ const EditAnsibleVarsModal = (props: Props) => {
       props.updatePlaybookContent?.(updatedVars, extraVars);
       setOpen(false);
     } catch (err) {
-      showErrorToastr(`YAML Error: ${err.message}`, { autoHide: false });
+      showErrorToastr(`YAML Error: ${err.message}`, { autoHide: false, containerId: "extra-var" });
       setOpen(true);
     }
   };
@@ -66,7 +67,7 @@ const EditAnsibleVarsModal = (props: Props) => {
         id={props.id}
         isOpen={open}
         title="Edit Variables"
-        className="modal-lg"
+        className={`modal-lg ${props.className}`}
         content={
           <AnsibleVarYamlEditor data={varsObject} onDataChange={setUpdatedVars} onExtraVarChange={setExtraVars} />
         }

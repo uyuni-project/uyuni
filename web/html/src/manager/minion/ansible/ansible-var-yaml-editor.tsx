@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 
-import { useFormikContext } from "formik";
+import { useFormikContext, useField, FieldProps } from "formik";
 import yaml from "js-yaml";
 import get from "lodash/get";
 
@@ -15,6 +15,9 @@ import DictionaryEditor from "./variables/dictionary-editor";
 import ExtraVariabl from "./variables/extra-var";
 import ListEditor from "./variables/list-editor";
 import StringEditor from "./variables/string-editor";
+import { PlainObjectEditor } from "./variables/AnsibleTreeEditor";
+import styles from "./Ansible.module.scss";
+
 
 const isDictionary = (obj) => {
   if (typeof obj !== "object" || obj === null || Array.isArray(obj)) return false;
@@ -64,8 +67,7 @@ const AnsibleVarYamlEditor = (props: Props) => {
     return paths;
   };
 
-  const YamlPreview = () => {
-    const { values } = useFormikContext<Record<string, any>>();
+  const YamlPreview = ({ values }: { values: Record<string, any> }) => {
     const [yamlOutput, setYamlOutput] = useState("");
 
     useEffect(() => {
@@ -82,140 +84,115 @@ const AnsibleVarYamlEditor = (props: Props) => {
   }, []);
 
   const renderVariableDiv = useCallback(
-    (path, setFieldValue) => {
+    (path) => {
       if (varType === "String" && visibleInputPath === path) {
-        return <StringEditor path={path} setFieldValue={setFieldValue} onClose={() => setVarType(null)} />;
+        return <Field name={path} as={StringEditor} onClose={() => setVarType(null)} className="row p-0"/>;
       }
       if (varType === "List" && visibleInputPath === path) {
-        return <ListEditor path={path} setFieldValue={setFieldValue} onClose={() => setVarType(null)} />;
+        return <Field name={path} as={ListEditor} onClose={() => setVarType(null)} className="row p-0"/>;
       }
       if (varType === "Dictionary" && visibleInputPath === path) {
-        return <DictionaryEditor path={path} setFieldValue={setFieldValue} onClose={() => setVarType(null)} />;
+        return <Field name={path} as={DictionaryEditor} onClose={() => setVarType(null)} className="row p-0"/>;
       }
       if (varType === "Boolean" && visibleInputPath === path) {
-        return <BooleanEditor path={path} setFieldValue={setFieldValue} />;
+        return <Field name={path} as={BooleanEditor} onClose={() => setVarType(null)} className="row p-0"/>;
       }
     },
     [varType, visibleInputPath]
   );
 
-  // Retrieve the value at the specified path within the YAML structure
-  const renderEditor = (path, values, setFieldValue) => {
-    // console.log('renderEditor')
-    const value = get(values, path);
+  const RenderVariableField = ({ field, form }: FieldProps<any>) => {
+    const { name, value } = field;
 
-    const removeItem = (targetPath) => {
-      setFieldValue(targetPath, undefined);
+    const removeItem = () => {
+      form.setFieldValue(name, undefined);
     };
-
+  
     if (typeof value === "string" || typeof value === "number") {
       return (
-        <div className="row">
+        <div className="row w-100">
           <div className="col-md-4"></div>
           <div className="col-md-8">
-            <Field
-              name={path}
-              children={
-                <Button
-                  className="btn-default btn-sm"
-                  handler={() => removeItem(path)}
-                  title={t("Remove item")}
-                  icon="fa-minus"
-                />
-              }
+           <Field
+              name={name}
             />
           </div>
         </div>
       );
-    }
-
-    if (Array.isArray(value)) {
+    } else if (Array.isArray(value)) {
       return (
-        <div className="row mt-2">
+        <div className="row mt-2 w-100">
           <div className="col-md-4"></div>
           <div className="col-md-8">
-            <MultiField name={path} defaultNewItemValue="" />
+            <MultiField name={name} defaultNewItemValue="" />
           </div>
         </div>
       );
-    }
-
-    // Dictionary variable — Add new key and value
-    if (isDictionary(value)) {
-      return (
-        <>
-          {Object.entries(value).map(([k]) => (
-            <div key={k} className="row mt-2">
-              <div className="col-md-4 control-label">
-                <label>{k}</label>
+    } else if (isDictionary(value)) {
+        return (
+          <div className="d-block w-100">
+            {Object.entries(value).map(([k]) => (
+              <div key={k} className="row mt-2">
+                <div className="col-md-4 control-label">
+                  <label>{k}</label>
+                </div>
+                <div className="col-md-8">
+                  <Field
+                    name={`${name}.${k}`}
+                    children={
+                      <Button
+                        className="btn-default btn-sm"
+                        handler={() => removeItem(`${name}.${k}`)}
+                        title={t("Remove item")}
+                        icon="fa-minus"
+                      />
+                    }
+                  />
+                </div>
               </div>
-              <div className="col-md-8">
-                <Field
-                  name={`${path}.${k}`}
-                  children={
-                    <Button
-                      className="btn-default btn-sm"
-                      handler={() => removeItem(`${path}.${k}`)}
-                      title={t("Remove item")}
-                      icon="fa-minus"
-                    />
-                  }
-                />
-              </div>
+            ))}
+            <Field name={name} className="m-0" as={DictionaryEditor} edit={true} />
+          </div>
+        );
+      } else if (typeof value === "object" && value !== null) {
+        return (
+          <div className="row pb-3">
+            <div className="col-md-4">
+              Click the Add Variable button and select a variable type from the list to add new variable to{" "}
+              <strong>{name}</strong> object.
             </div>
-          ))}
-          <DictionaryEditor
-            path={path}
-            setFieldValue={setFieldValue}
-            onClose={() => setVarType(null)}
-            value={value}
-            edit={true}
-          />
-        </>
-      );
-    }
-
-    if (typeof value === "object" && value !== null) {
-      return (
-        <div className="row pb-3">
-          <div className="col-md-4">
-            Click the Add Variable button and select a variable type from the list to add new variable to{" "}
-            <strong>{path.split(".").pop()}</strong> object.
+            <div className="col-md-8">
+              <DropdownButton
+                text={t("Add Variable")}
+                icon="fa-plus"
+                title={t("Add a Variable")}
+                className="btn-default"
+                items={variablesList.map((varType) => (
+                  // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                  <a key={varType} data-senna-off href="#" onClick={() => handleVariable(name, varType)}>
+                    {varType.toLocaleLowerCase()}
+                  </a>
+                ))}
+              />
+            </div>
+            {renderVariableDiv(name)}
           </div>
-          <div className="col-md-8">
-            <DropdownButton
-              text={t("Add Variable")}
-              icon="fa-plus"
-              title={t("Add a Variable")}
-              className="btn-default"
-              items={variablesList.map((name) => (
-                // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                <a key={name} data-senna-off href="#" onClick={() => handleVariable(path, name)}>
-                  {name.toLocaleLowerCase()}
-                </a>
-              ))}
-            />
+        );
+      } else if (typeof value == "boolean") {
+        return (
+          <div className="row w-100">
+            <div className="col-md-4"></div>
+            <div className="col-md-8">
+              <label className="radio col-md-4">
+                <input type="radio" checked={value === true} onChange={() => setFieldValue(path, true)} /> {t("True")}
+              </label>
+              <label className="radio col-md-4">
+                <input type="radio" checked={value === false} onChange={() => setFieldValue(path, false)} /> {t("False")}
+              </label>
+            </div>
           </div>
-          {renderVariableDiv(path, setFieldValue)}
-        </div>
-      );
-    }
-
-    if (typeof value == "boolean") {
-      return (
-        <div className="row">
-          <div className="col-md-4"></div>
-          <div className="col-md-8">
-            <label className="radio col-md-4">
-              <input type="radio" checked={value === true} onChange={() => setFieldValue(path, true)} /> {t("True")}
-            </label>
-            <label className="radio col-md-4">
-              <input type="radio" checked={value === false} onChange={() => setFieldValue(path, false)} /> {t("False")}
-            </label>
-          </div>
-        </div>
-      );
-    }
+        );
+      }
     return null;
   };
 
@@ -239,11 +216,11 @@ const AnsibleVarYamlEditor = (props: Props) => {
           <h4 className="m-0">Yaml Preview</h4>
         </div>
       </div>
-      <div className="variable-content border-top">
+      <div className={styles.variableContent}>
         <Form initialValues={data} onSubmit={() => {}} enableReinitialize className="d-flex w-100">
-          {({ values, setFieldValue }) => (
+          {({ values }) => (
             <>
-              <div className="yaml-editor col-md-7">
+              <div className={`${styles.yamlEditor} col-md-7`}>
                 {levelOneTitles(values).map((path) => (
                   <Panel
                     key={generateId(path)}
@@ -253,7 +230,7 @@ const AnsibleVarYamlEditor = (props: Props) => {
                     className="panel-trasnparent"
                     collapsClose={expandAllClicked ? !expandAllState : false}
                   >
-                    {renderEditor(path, values, setFieldValue)}
+                    <Field name={path} component={RenderVariableField} />
                     {nestedLevelTitles(path, values).map((p) => (
                       <Panel
                         key={generateId(p)}
@@ -263,18 +240,18 @@ const AnsibleVarYamlEditor = (props: Props) => {
                         className="panel-trasnparent"
                         collapsClose={expandAllClicked ? !expandAllState : true}
                       >
-                        {renderEditor(p, values, setFieldValue)}
+                        <Field name={p} component={RenderVariableField} />
                       </Panel>
                     ))}
                   </Panel>
                 ))}
                 <div>
-                  <MessagesContainer />
+                  <MessagesContainer containerId="extra-var" />
                   <ExtraVariabl setExtraVars={onExtraVarChange} />
                 </div>
               </div>
-              <div className="yaml-preview col-md-4">
-                <YamlPreview />
+              <div className={`${styles.yamlPreview} col-md-4`}>
+                <YamlPreview values={values}   />
               </div>
             </>
           )}

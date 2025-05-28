@@ -1279,34 +1279,3 @@ tr.changed > td {
     font-size: 0.4em;
   }
 }
-
-#anisble-var {
-  max-width: 75%;
-
-  .modal-body {
-    overflow: hidden;
-
-    .variable-content {
-      display: flex;
-      max-height: inherit;
-
-      .yaml-editor {
-        overflow: auto;
-        width: 60%;
-        margin-bottom: 75px;
-      }
-    }
-  }
-}
-.yaml-preview {
-  width: 40%;
-  border: 0;
-  background-color: $eos-bc-yellow-100;
-  overflow: auto;
-  margin-bottom: 75px;
-
-  pre {
-    background-color: transparent;
-    border: 0;
-  }
-}

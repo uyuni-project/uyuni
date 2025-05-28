@@ -1,19 +1,21 @@
 import React, { useState } from "react";
-
+import { FieldInputProps, useField } from "formik";
 import { Button } from "components/buttons";
 
-const ListEditor = ({ path, setFieldValue, onClose }) => {
+type PlainObject = Record<string, any>;
+const ListEditor = (props: FieldInputProps<PlainObject> & { onClose?: () => void }) => {
+  const [field, , helper] = useField<PlainObject>(props.name);
+  const { onClose } = props;
   const [pendingListKey, setPendingListKey] = useState("");
   const [pendingListItems, setPendingListItems] = useState([""]);
 
   const handleAddList = () => {
     if (pendingListKey) {
-      setFieldValue(`${path}.${pendingListKey}`, pendingListItems);
+      const newTree = { ...field.value, [pendingListKey]: pendingListItems };
+      helper.setValue(newTree);
       setPendingListKey("");
       setPendingListItems([""]);
-      // setVisibleInputPath(null);
     }
-    onClose();
   };
 
   const handleDeleteEntry = (index) => {
@@ -22,7 +24,7 @@ const ListEditor = ({ path, setFieldValue, onClose }) => {
   };
 
   return (
-    <div className="border-top mt-4 mb-4 p-0">
+    <div className="border-top mt-4 mb-4 p-0 w-100">
       <div className="d-flex justify-content-between">
         <h5>Add List</h5>
         <Button icon="fa-times" handler={onClose} />
@@ -62,14 +64,14 @@ const ListEditor = ({ path, setFieldValue, onClose }) => {
                 <Button
                   className="btn-sm btn-default"
                   icon="fa-plus"
-                  title={t("Add Item")}
+                  title={t("Add List Item")}
                   handler={() => setPendingListItems([...pendingListItems, ""])}
                 />
               ) : (
                 <Button
                   className="btn-default btn-sm"
                   icon="fa-minus"
-                  title={t("Delete Item")}
+                  title={t("Delete List Item")}
                   handler={() => handleDeleteEntry(idx)}
                 />
               )}

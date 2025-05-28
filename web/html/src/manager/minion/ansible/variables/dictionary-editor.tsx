@@ -1,17 +1,13 @@
 import React, { useState } from "react";
-
+import { FieldInputProps, useField } from "formik";
 import { Button } from "components/buttons";
+import { showErrorToastr, MessagesContainer } from "components/toastr/toastr";
 
-type Props = {
-  path: string;
-  setFieldValue: (key: string, value: any) => void;
-  edit?: boolean;
-  onClose: () => void;
-  value?: any;
-};
+type PlainObject = Record<string, any>;
 
-const DictionaryEditor = (props: Props) => {
-  const { path, setFieldValue, edit = false, onClose, value } = props;
+const DictionaryEditor = (props: FieldInputProps<PlainObject> & { edit?: boolean, onClose?: () => void }) => {
+  const [field, , helper] = useField<PlainObject>(props.name);
+  const { edit = false, onClose } = props;
 
   const [dictionaryName, setDictionaryName] = useState("");
   const [entries, setEntries] = useState([{ key: "", value: "" }]);
@@ -32,27 +28,50 @@ const DictionaryEditor = (props: Props) => {
   };
 
   const handleSubmitDictionary = () => {
-    if (!dictionaryName && !edit) return;
+  if (!dictionaryName && !edit) return;
 
-    const newDict = {};
-    entries.forEach(({ key, value }) => {
-      if (key) newDict[key] = value;
-    });
-    const updatedDict = { ...value, ...newDict };
-    setEntries([{ key: "", value: "" }]);
-    !edit ? setFieldValue(`${path}.${dictionaryName}`, newDict) : setFieldValue(`${path}`, updatedDict);
-    onClose();
-  };
+  const newDict = {};
+  const existingKeys = edit ? Object.keys(field.value || {}) : [];
+
+  let hasDuplicate = false;
+
+  entries.forEach(({ key, value }) => {
+    if (!key) return;
+
+    if (!edit && existingKeys.includes(dictionaryName)) {
+      hasDuplicate = true;
+    } else if (edit && existingKeys.includes(key)) {
+      hasDuplicate = true;
+    }
+    newDict[key] = value;
+  });
+
+  if (hasDuplicate) {
+    showErrorToastr("Key already exist", { autoHide: false, containerId: "show-duplicate-key" });
+    return;
+  }
+
+  const newTree = edit
+    ? { ...field.value, ...newDict }
+    : { ...field.value, [dictionaryName]: newDict };
+
+  setEntries([{ key: "", value: "" }]);
+  helper.setValue(newTree);
+};
 
   return (
-    <div className="border-top mt-4 mb-4 p-0">
+    <div className="border-top mt-4 mb-4 pt-3 w-100">
       {!edit && (
         <>
           <div className="d-flex justify-content-between">
             <h5>Add Dictionary</h5>
-            <Button icon="fa-times" handler={() => onClose()} />
+            <Button icon="fa-times" handler={onClose} />
           </div>
+          
           <div className="row">
+            <div className="col-md-8 offset-md-4 mb-3 ps-0">
+              <MessagesContainer containerId="show-duplicate-key" className="mb-3" />
+            </div>
             <div className="col-md-4 control-label">
               <label>{t("Name")}</label>
             </div>
@@ -68,6 +87,9 @@ const DictionaryEditor = (props: Props) => {
         </>
       )}
       <div className="row">
+        <div className="col-md-8 offset-md-4 mb-3 ps-0">
+          <MessagesContainer containerId="show-duplicate-key" className="mb-3" />
+        </div>
         <div className="col-md-4 control-label">
           <label>{t("Key-Value Pairs")}</label>
         </div>
@@ -107,12 +129,12 @@ const DictionaryEditor = (props: Props) => {
       <div className="d-flex offset-md-4">
         <Button
           className={edit ? `btn-default btn-sm` : `btn-primary btn-sm`}
-          text={t("Add Dictionary")}
+          text={edit ? t("Add Key-Value Pair") : t("Add Dictionary")}
           handler={handleSubmitDictionary}
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default DictionaryEditor;
