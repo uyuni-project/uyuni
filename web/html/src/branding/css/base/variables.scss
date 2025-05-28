@@ -119,11 +119,6 @@ $input-height: 35px;
 $input-placeholder: $gray;
 :root {
   --input-selected: $eos-bc-green-500;
-
-  /* Bootstrap border variables */
-  --bs-border-width: 1px;
-  --bs-border-style: solid;
-  --bs-border-color: #{$eos-bc-gray-100};
 }
 $input-border-color: $eos-bc-gray-700;
 

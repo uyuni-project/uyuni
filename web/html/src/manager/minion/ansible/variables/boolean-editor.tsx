@@ -1,21 +1,18 @@
 import React, { useState } from "react";
-
+import { FieldInputProps, useField } from "formik";
 import { Button } from "components/buttons";
 
-type Props = {
-  path: string;
-  setFieldValue: (key: string, value: any) => void;
-  onClose?: () => void;
-};
+type PlainObject = Record<string, any>;
 
-const BooleanEditor = (props: Props) => {
-  const { path, setFieldValue, onClose } = props;
-
+const BooleanEditor = (props: FieldInputProps<PlainObject> & { onClose?: () => void }) => {
+  const [field, , helper] = useField<PlainObject>(props.name);
+  const { onClose } = props;
   const [newKey, setNewKey] = useState("");
   const [newValue, setNewValue] = useState<boolean>(false);
   const handleAddBoolean = () => {
     if (!newKey.trim()) return;
-    setFieldValue(`${path}.${newKey}`, newValue);
+    const newTree = { ...field.value, [newKey]: newValue };
+    helper.setValue(newTree);
     setNewKey("");
     setNewValue(false);
   };
@@ -23,10 +20,10 @@ const BooleanEditor = (props: Props) => {
   return (
     <>
       {
-        <div className="border-top mt-4 mb-4 p-0">
+        <div className="border-top mt-4 mb-4 p-0 w-100">
           <div className="d-block">
             <h5 className="pull-left">{t("Add Boolean")}</h5>
-            <Button className="pull-right" icon="fa-times" handler={() => onClose?.()} />
+            <Button className="pull-right" icon="fa-times" handler={onClose} />
           </div>
           <div className="row">
             <div className="col-md-4 control-label">

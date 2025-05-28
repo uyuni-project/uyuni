@@ -1,0 +1,37 @@
+@import "../../../branding/css/variables.scss";
+
+:global(.old-theme),
+:global(.new-theme) {
+  .anisbleVar {
+    max-width: 75%;
+    :global(.modal-body) {
+      overflow: hidden;
+      margin-bottom: 0;
+
+      .variableContent {
+        display: flex;
+        max-height: inherit;
+        border-top: 1px solid $eos-bc-gray-100;
+
+        .yamlEditor {
+          overflow: auto;
+          width: 60%;
+          margin-bottom: 75px;
+        }
+      }
+    }
+  }
+
+  .yamlPreview {
+    width: 40%;
+    border: 0;
+    background-color: $eos-bc-yellow-100;
+    overflow: auto;
+    margin-bottom: 75px;
+
+    pre {
+      background-color: transparent;
+      border: 0;
+    }
+  }
+}
