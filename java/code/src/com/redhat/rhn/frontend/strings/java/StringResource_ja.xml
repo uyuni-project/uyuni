@@ -11274,11 +11274,11 @@ For a detailed analysis, please refer to the log files.
       </trans-unit>
       <trans-unit approved="yes" id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
         <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
-        <target state="needs-adaptation">SUSE Manager Serverでの「{0}」の登録が拒否されました。 \nデータセンタークライアントを管理するには、［管理］=&gt;［セットアップウィザード］=&gt;［組織の資格情報］でSCC資格情報を設定する必要があります。</target>
+        <target state="final">@@PRODUCT_NAME@@サーバでの「{0}」の登録が拒否されました。 \nデータセンタークライアントを管理するには、［管理］=&gt;［セットアップウィザード］=&gt;［組織の資格情報］でSCC資格情報を設定する必要があります。</target>
       </trans-unit>
       <trans-unit approved="yes" id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
         <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
-        <target state="needs-adaptation">SUSE Manager Serverでの「{0}」の登録が拒否されました。 \nBYOS (Bring-your-own-Subscription)クライアントを管理するには、［管理］=&gt;［セットアップウィザード］=&gt;［組織の資格情報］でSCC資格情報を設定する必要があります。\n\nオンボードされているインスタンスがPAYGの場合は、`python-instance-billing-flavor-check`パッケージがインストールされていることを確認して、再試行してください。</target>
+        <target state="final">@@PRODUCT_NAME@@サーバでの「{0}」の登録が拒否されました。 \nBYOS (Bring-your-own-Subscription)クライアントを管理するには、［管理］=&gt;［セットアップウィザード］=&gt;［組織の資格情報］でSCC資格情報を設定する必要があります。\n\nオンボードされているインスタンスがPAYGの場合は、`python-instance-billing-flavor-check`パッケージがインストールされていることを確認して、再試行してください。</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.updateavailable.summary" xml:space="preserve">
         <source>Updates are available.</source>
@@ -11680,179 +11680,179 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Unable to deregister: an unexpected error is occurred while contacting the remote server. Please check the server logs.</source>
         <target state="final">登録解除できません: リモートサーバに接続中に予期しないエラーが発生しました。サーバログを確認してください。</target>
       </trans-unit>
-    <trans-unit id="toolbar.convert.proxy" xml:space="preserve">
+      <trans-unit id="toolbar.convert.proxy" xml:space="preserve" approved="yes">
         <source>Convert to Proxy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Convert to Proxy</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="system.entitle.added.proxy_entitled" xml:space="preserve">
+        <target state="final">プロキシへの変換</target>
+      </trans-unit>
+      <trans-unit id="system.entitle.added.proxy_entitled" xml:space="preserve" approved="yes">
         <source>&lt;strong&gt;Proxy&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="ansible.inventory" xml:space="preserve">
+        <target state="final">&lt;strong&gt;プロキシ&lt;/strong&gt;タイプが適用されました。&lt;br/&gt;&lt;strong&gt;メモ:&lt;/strong&gt; このアクションでは状態は適用 &lt;em&gt;されません&lt;/em&gt; 。状態を適用するには、&lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;状態ページ&lt;/a&gt;を使用するか、コマンドラインから &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;を実行してください。</target>
+      </trans-unit>
+      <trans-unit id="ansible.inventory" xml:space="preserve" approved="yes">
         <source>Refresh Ansible inventories</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="recurring_action.empty_playbook_path" xml:space="preserve">
+        <target state="final">Ansibleインベントリを更新する</target>
+      </trans-unit>
+      <trans-unit id="recurring_action.empty_playbook_path" xml:space="preserve" approved="yes">
         <source>No Playbook selected</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.cannot_refresh_certificate" xml:space="preserve">
+        <target state="final">Playbookが選択されていません</target>
+      </trans-unit>
+      <trans-unit id="hub.cannot_refresh_certificate" xml:space="preserve" approved="yes">
         <source>An error occurred while attempting to refresh the root certificate authorities. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.migration_success" xml:space="preserve">
+        <target state="final">ルート認証局を更新しようとしているときにエラーが発生しました。サーバログを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="hub.migration_success" xml:space="preserve" approved="yes">
         <source>The migration from ISSv{0} was completed successfully.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.unexpected_error_migrating" xml:space="preserve">
+        <target state="final">ISSv{0}からの移行が正常に完了しました。</target>
+      </trans-unit>
+      <trans-unit id="hub.unexpected_error_migrating" xml:space="preserve" approved="yes">
         <source>An expected error happened during the migration process: {0}. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.migration.no_slaves" xml:space="preserve">
+        <target state="final">移行プロセス中に予期されたエラーが発生しました: {0}。サーバログを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="hub.migration.no_slaves" xml:space="preserve" approved="yes">
         <source>This server does not have any ISSv1 slave</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.migration.slave_not_exit" xml:space="preserve">
+        <target state="final">このサーバにはISSv1スレーブがありません</target>
+      </trans-unit>
+      <trans-unit id="hub.migration.slave_not_exit" xml:space="preserve" approved="yes">
         <source>Slave {0} does not exist</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.migration.no_migration_data" xml:space="preserve">
+        <target state="final">スレーブ {0} は存在しません</target>
+      </trans-unit>
+      <trans-unit id="hub.migration.no_migration_data" xml:space="preserve" approved="yes">
         <source>Slave {0} has no migration data and will not be migrated</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.migration.slave_disabled" xml:space="preserve">
+        <target state="final">スレーブ {0} には移行データがないため、移行されません</target>
+      </trans-unit>
+      <trans-unit id="hub.migration.slave_disabled" xml:space="preserve" approved="yes">
         <source>Slave {0} is currently disabled and will not be migrated</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.migration.unable_to_migrate" xml:space="preserve">
+        <target state="final">スレーブ {0} は現在無効になっており、移行されません</target>
+      </trans-unit>
+      <trans-unit id="hub.migration.unable_to_migrate" xml:space="preserve" approved="yes">
         <source>Unable to migrate server {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.migration.fail_channel_config" xml:space="preserve">
+        <target state="final">サーバ {0} を移行できません: {1}</target>
+      </trans-unit>
+      <trans-unit id="hub.migration.fail_channel_config" xml:space="preserve" approved="yes">
         <source>Unable to configure channels for peripheral {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.migration.removal_slave" xml:space="preserve">
+        <target state="final">周辺機器 {0} のチャネルを設定できません: {1}</target>
+      </trans-unit>
+      <trans-unit id="hub.migration.removal_slave" xml:space="preserve" approved="yes">
         <source>Unable remove ISSv1 data for slave {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.migration.removal_peripheral" xml:space="preserve">
+        <target state="final">スレーブ {0} のISSv1データを削除できません: {1}</target>
+      </trans-unit>
+      <trans-unit id="hub.migration.removal_peripheral" xml:space="preserve" approved="yes">
         <source>Unable to remove partially migrated peripheral {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.invalid_id" xml:space="preserve">
+        <target state="final">部分的に移行された周辺機器 {0} を削除できません: {1}</target>
+      </trans-unit>
+      <trans-unit id="hub.invalid_id" xml:space="preserve" approved="yes">
         <source>The specified peripheral id is invalid.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="onboardingfailed" xml:space="preserve">
+        <target state="final">指定された周辺機器IDが無効です。</target>
+      </trans-unit>
+      <trans-unit id="onboardingfailed" xml:space="preserve" approved="yes">
         <source>Onboarding failed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="channelsyncfailed" xml:space="preserve">
+        <target state="final">オンボーディングに失敗しました</target>
+      </trans-unit>
+      <trans-unit id="channelsyncfailed" xml:space="preserve" approved="yes">
         <source>Channel sync failed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="channelsyncfinished" xml:space="preserve">
+        <target state="final">チャネル同期に失敗しました</target>
+      </trans-unit>
+      <trans-unit id="channelsyncfinished" xml:space="preserve" approved="yes">
         <source>Channel sync finished</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="createbootstraprepofailed" xml:space="preserve">
+        <target state="final">チャネル同期が完了しました</target>
+      </trans-unit>
+      <trans-unit id="createbootstraprepofailed" xml:space="preserve" approved="yes">
         <source>Creating Bootstrap Repository failed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="stateapplyfailed" xml:space="preserve">
+        <target state="final">ブートストラップリポジトリーの作成に失敗しました</target>
+      </trans-unit>
+      <trans-unit id="stateapplyfailed" xml:space="preserve" approved="yes">
         <source>State apply failed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="paygauthenticationupdatefailed" xml:space="preserve">
+        <target state="final">状態の適用に失敗しました</target>
+      </trans-unit>
+      <trans-unit id="paygauthenticationupdatefailed" xml:space="preserve" approved="yes">
         <source>PAYG refresh failed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="endoflifeperiod" xml:space="preserve">
+        <target state="final">PAYGの更新に失敗しました</target>
+      </trans-unit>
+      <trans-unit id="endoflifeperiod" xml:space="preserve" approved="yes">
         <source>End of Life Period</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="subscriptionwarning" xml:space="preserve">
+        <target state="final">耐用年数の終了</target>
+      </trans-unit>
+      <trans-unit id="subscriptionwarning" xml:space="preserve" approved="yes">
         <source>Subscription Warning</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="updateavailable" xml:space="preserve">
+        <target state="final">サブスクリプションに関する警告</target>
+      </trans-unit>
+      <trans-unit id="updateavailable" xml:space="preserve" approved="yes">
         <source>Updates are Available</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="paygnotcompliantwarning" xml:space="preserve">
+        <target state="final">アップデートが利用可能です</target>
+      </trans-unit>
+      <trans-unit id="paygnotcompliantwarning" xml:space="preserve" approved="yes">
         <source>PAYG instance is not compliant</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="sccoptoutwarning" xml:space="preserve">
+        <target state="final">PAYGインスタンスは準拠していません</target>
+      </trans-unit>
+      <trans-unit id="sccoptoutwarning" xml:space="preserve" approved="yes">
         <source>SCC Data Sync Disabled</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hubregistrationchanged" xml:space="preserve">
+        <target state="final">SCCデータ同期が無効</target>
+      </trans-unit>
+      <trans-unit id="hubregistrationchanged" xml:space="preserve" approved="yes">
         <source>Hub Registration Changed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.not_found" xml:space="preserve">
+        <target state="final">ハブ登録が変更されました</target>
+      </trans-unit>
+      <trans-unit id="notification.not_found" xml:space="preserve" approved="yes">
         <source>Cannot retry: a notification with id '{0}' does not exist.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.type_not_actionable" xml:space="preserve">
+        <target state="final">再試行できません: ID「{0}」の通知が存在しません。</target>
+      </trans-unit>
+      <trans-unit id="notification.type_not_actionable" xml:space="preserve" approved="yes">
         <source>Cannot retry: the notification type '{0}' is not actionable.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.channelsyncfailed.action.not_found" xml:space="preserve">
+        <target state="final">再試行できません: 通知タイプ「{0}」はアクション可能ではありません。</target>
+      </trans-unit>
+      <trans-unit id="notification.channelsyncfailed.action.not_found" xml:space="preserve" approved="yes">
         <source>Failed to restart reposync. A channel with id {0} does not exist.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.channelsyncfailed.action.failed" xml:space="preserve">
+        <target state="final">reposyncの再起動に失敗しました。ID {0} のチャネルが存在しません。</target>
+      </trans-unit>
+      <trans-unit id="notification.channelsyncfailed.action.failed" xml:space="preserve" approved="yes">
         <source>Failed to restart reposync for the channel '{0}': {1}.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.channelsyncfailed.action.success" xml:space="preserve">
+        <target state="final">チャネル「{0}」のreposyncの再起動に失敗しました: {1}。</target>
+      </trans-unit>
+      <trans-unit id="notification.channelsyncfailed.action.success" xml:space="preserve" approved="yes">
         <source>Reposync restarted for the channel '{0}'</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.onboardingfailed.action.success" xml:space="preserve">
+        <target state="final">チャネル「{0}」のreposyncが再起動されました</target>
+      </trans-unit>
+      <trans-unit id="notification.onboardingfailed.action.success" xml:space="preserve" approved="yes">
         <source>Onboarding restarted for the minion with id '{0}'</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.hub.registered.summary" xml:space="preserve">
+        <target state="final">ID「{0}」のminionのオンボーディングが再開されました</target>
+      </trans-unit>
+      <trans-unit id="notification.hub.registered.summary" xml:space="preserve" approved="yes">
         <source>This server is now a peripheral of {0}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.hub.registered.details" xml:space="preserve">
+        <target state="final">このサーバは現在 {0} の周辺機器です</target>
+      </trans-unit>
+      <trans-unit id="notification.hub.registered.details" xml:space="preserve" approved="yes">
         <source>&lt;p&gt;This server has been registered as a peripheral of hub {0} and will start to receive data from it.&lt;/p&gt; &lt;p&gt;Check the &lt;a href="/rhn/manager/admin/hub/hub-details"&gt;Hub details page&lt;/a&gt; for more information.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.hub.hub_deregistered.summary" xml:space="preserve">
+        <target state="final">&lt;p&gt;このサーバはハブ {0} の周辺機器として登録されており、ハブからのデータの受信を開始します。&lt;/p&gt; &lt;p&gt;詳細については、&lt;a href="/rhn/manager/admin/hub/hub-details"&gt;ハブの詳細ページ&lt;/a&gt;を確認してください。&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="notification.hub.hub_deregistered.summary" xml:space="preserve" approved="yes">
         <source>This server is no longer a peripheral of {0}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.hub.hub_deregistered.details" xml:space="preserve">
+        <target state="final">このサーバは {0} の周辺機器ではなくなりました</target>
+      </trans-unit>
+      <trans-unit id="notification.hub.hub_deregistered.details" xml:space="preserve" approved="yes">
         <source>&lt;p&gt;The hub {0} has de-registered this server, which means it is no longer acting as its peripheral.&lt;/p&gt; &lt;p&gt;Review your configuration, as all the channels that were previously synced from the hub will no loger be updated.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.hub.peripheral_deregistered.summary" xml:space="preserve">
+        <target state="final">&lt;p&gt;ハブ {0} はこのサーバの登録を解除しました。つまり、このサーバは周辺機器として機能しなくなりました。&lt;/p&gt; &lt;p&gt;ハブから以前に同期されたすべてのチャネルは更新されなくなるため、設定を確認してください。&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="notification.hub.peripheral_deregistered.summary" xml:space="preserve" approved="yes">
         <source>Server {0} is no longer a peripheral.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.hub.peripheral_deregistered.details" xml:space="preserve">
+        <target state="final">サーバ {0} は周辺機器ではなくなりました。</target>
+      </trans-unit>
+      <trans-unit id="notification.hub.peripheral_deregistered.details" xml:space="preserve" approved="yes">
         <source>&lt;p&gt;The peripheral {0} has de-registered from this hub, and it is no longer manageable as a peripheral..&lt;/p&gt; &lt;p&gt;Any existing synchronization configuration has been removed.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.error_peripheral_not_registrable" xml:space="preserve">
+        <target state="final">&lt;p&gt;周辺機器 {0} はこのハブから登録解除されており、周辺機器として管理できなくなりました。&lt;/p&gt; &lt;p&gt;既存の同期設定はすべて削除されました。&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="hub.error_peripheral_not_registrable" xml:space="preserve" approved="yes">
         <source>The server {0} cannot be registered as a peripheral of this hub</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">サーバ {0} は、このハブの周辺機器として登録できません</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
