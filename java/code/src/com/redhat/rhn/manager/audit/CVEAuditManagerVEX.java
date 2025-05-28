@@ -16,6 +16,7 @@
 package com.redhat.rhn.manager.audit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
@@ -63,9 +64,14 @@ public class CVEAuditManagerVEX {
             throw new UnknownCVEIdentifierException();
         }
 
-        List<CVEAuditServer> result = new ArrayList<>();
+        // If patchStatuses is null, it doesnt apply any filter
+        if (patchStatuses == null) {
+            patchStatuses = EnumSet.allOf(PatchStatus.class);
+        }
 
+        List<CVEAuditServer> result = new ArrayList<>();
         Set<Server> clients = user.getServers();
+
         for (Server clientServer : clients) {
             if (!VEXCachingFactory.checkVEXAvailability(clientServer.getCpe())) {
                 continue;
@@ -87,7 +93,6 @@ public class CVEAuditManagerVEX {
 
         return result;
     }
-
 
     /**
      * Audits a system for a given CVE using VEX data.
