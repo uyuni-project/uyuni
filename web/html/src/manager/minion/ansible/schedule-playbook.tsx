@@ -20,6 +20,7 @@ import Network, { JsonResult } from "utils/network";
 import { PlaybookDetails } from "./accordion-path-content";
 import { AnsiblePath } from "./ansible-path-type";
 import EditAnsibleVarsModal from "./edit-ansible-vars-modal";
+import styles from "./Ansible.module.scss";
 
 interface SchedulePlaybookProps {
   playbook: PlaybookDetails;
@@ -231,6 +232,7 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
             <h3>{t("Playbook Content")}</h3>
             <EditAnsibleVarsModal
               id="anisble-var"
+              className={styles.anisbleVar}
               renderContent={playbookContent}
               updatePlaybookContent={updatePlaybookContent}
             />
