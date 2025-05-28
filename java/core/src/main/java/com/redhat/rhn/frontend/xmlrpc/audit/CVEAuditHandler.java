@@ -53,7 +53,7 @@ public class CVEAuditHandler extends BaseHandler {
      *
      * @apidoc.doc List visible systems with their patch status regarding a given CVE
      * identifier. Please note that the query code relies on data that is pre-generated
-     * by the 'cve-server-channels' taskomatic job.
+     * by the python VEX processor module.
      * @apidoc.param #session_key()
      * @apidoc.param #param("string", "cveIdentifier")
      * @apidoc.returntype #return_array_begin() $CVEAuditServerSerializer #array_end()
