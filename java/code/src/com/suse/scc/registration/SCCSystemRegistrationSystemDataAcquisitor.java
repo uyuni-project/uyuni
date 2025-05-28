@@ -29,7 +29,7 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.suse.scc.model.SAPJson;
 import com.suse.scc.model.SCCHwInfoJson;
 import com.suse.scc.model.SCCMinProductJson;
-import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCRegisterSystemItem;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -78,7 +78,7 @@ public class SCCSystemRegistrationSystemDataAcquisitor implements SCCSystemRegis
                 cacheItem.getOptServer().filter(Server::isPayg).isEmpty();
     }
 
-    private Optional<SCCRegisterSystemJson> getPayload(SCCRegCacheItem rci) {
+    private Optional<SCCRegisterSystemItem> getPayload(SCCRegCacheItem rci) {
         return rci.getOptServer().map(srv -> {
             List<SCCMinProductJson> products = srv.getInstalledProductSet().stream()
                     .flatMap(product -> {
@@ -146,7 +146,7 @@ public class SCCSystemRegistrationSystemDataAcquisitor implements SCCSystemRegis
                 return pw;
             });
 
-            return new SCCRegisterSystemJson(login, passwd, srv.getHostname(), hwInfo, products,
+            return new SCCRegisterSystemItem(login, passwd, srv.getHostname(), hwInfo, products,
                     srv.getServerInfo().getCheckin());
         });
     }
