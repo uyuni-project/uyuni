@@ -13,6 +13,8 @@
 import os
 import sys
 import time
+from defusedxml import xmlrpc as defused_xmlrpc
+
 from rhn import connections
 from rhn.stringutils import sstr, bstr
 from rhn.SmartIO import SmartIO
@@ -224,6 +226,21 @@ class Transport(xmlrpclib.Transport):
     # Give back the new URL if redirected
     def redirected(self):
         return self._redirected
+
+    def getparser(self):
+        """
+        Overrides xmlrpclib.getparser to ensure we use defusedxml
+        to protect against vulnerabilities
+        """
+        unmarshaller = xmlrpclib.Unmarshaller()
+
+        if self._use_builtin_types:
+            unmarshaller.use_builtin_types = 1
+        if self._use_datetime:
+            unmarshaller.use_datetime = 1
+
+        parser = defused_xmlrpc.DefusedExpatParser(target=unmarshaller)
+        return parser, unmarshaller
 
     # Rewrite parse_response to provide refresh callbacks
     def parse_response(self, f):
