@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-25 09:41+0200\n"
-"PO-Revision-Date: 2025-05-29 03:59+0000\n"
+"PO-Revision-Date: 2025-05-29 09:24+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/>\n"
 "Language: ko\n"
@@ -78,8 +78,7 @@ msgstr ""
 "                   조직 관리자에게 문의하여 추가적인 지원을 요청하십시오."
 
 #: ../server/handlers/xmlrpc/proxy.py:71
-#, fuzzy, python-format
-#| msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+#, python-format
 msgid ""
 "SUSE Multi-Linux Manager Proxy service not enabled for server profile: \"%s\""
 msgstr "SUSE Multi-Linux Manager Proxy 서비스가 다음 서버 프로파일에 대해 활성화되지 않음: \"%s\""
@@ -434,15 +433,7 @@ msgid "Invalid value for entry."
 msgstr "값이 항목에 유효하지 않습니다."
 
 #: ../common/rhnException.py:88
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "     This system does not have a valid entitlement for SUSE Manager.\n"
-#| "     Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
-#| "     or login at https://%(hostname)s, and from the \"Overview\" tab,\n"
-#| "     select \"Subscription Management\" to enable the service for this "
-#| "system.\n"
-#| "     "
+#, python-format
 msgid ""
 "\n"
 "     This system does not have a valid entitlement for SUSE Multi-Linux "
@@ -600,12 +591,6 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:154
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "     The --force mgrpush option is disabled on this server.\n"
-#| "     Please contact your SUSE Manager administrator for more help.\n"
-#| "     "
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
@@ -673,8 +658,6 @@ msgid "You can not unsubscribe from base channel."
 msgstr "기본 채널의 구독을 취소할 수 없습니다."
 
 #: ../common/rhnException.py:183
-#, fuzzy
-#| msgid "SUSE Manager or Proxy channel can not be subscribed."
 msgid "SUSE Multi-Linux Manager or Proxy channel can not be subscribed."
 msgstr "SUSE Multi-Linux Manager 또는 프록시 채널을 구독할 수 없습니다."
 
@@ -741,25 +724,14 @@ msgstr "시스템 이름은 1자 미만이 아니어야 합니다."
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
 #: ../common/rhnException.py:206
-#, fuzzy
-#| msgid "SUSE Manager Proxy error."
 msgid "SUSE Multi-Linux Manager Proxy error."
 msgstr "SUSE Multi-Linux Manager Proxy 오류입니다."
 
 #: ../common/rhnException.py:207
-#, fuzzy
-#| msgid "SUSE Manager Proxy unable to login."
 msgid "SUSE Multi-Linux Manager Proxy unable to login."
 msgstr "SUSE Multi-Linux Manager Proxy에 로그인할 수 없습니다."
 
 #: ../common/rhnException.py:210
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "     SUSE Manager Proxy system ID does not match a Spacewalk Proxy "
-#| "Server\n"
-#| "     in the database.\n"
-#| "     "
 msgid ""
 "\n"
 "     SUSE Multi-Linux Manager Proxy system ID does not match a Spacewalk "
@@ -773,14 +745,10 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:215
-#, fuzzy
-#| msgid "SUSE Manager Proxy session token is invalid."
 msgid "SUSE Multi-Linux Manager Proxy session token is invalid."
 msgstr "SUSE Multi-Linux Manager Proxy 세션 토큰이 잘못되었습니다."
 
 #: ../common/rhnException.py:216
-#, fuzzy
-#| msgid "SUSE Manager Proxy session token has expired."
 msgid "SUSE Multi-Linux Manager Proxy session token has expired."
 msgstr "SUSE Multi-Linux Manager Proxy 세션 토큰이 만료되었습니다."
 
@@ -797,12 +765,6 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:226
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "     This SUSE Manager server is not allowed to use Inter Server Sync on "
-#| "this server\n"
-#| "     "
 msgid ""
 "\n"
 "     This SUSE Multi-Linux Manager server is not allowed to use Inter Server "
@@ -814,11 +776,6 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:231
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "     Inter Server Sync is disabled on this SUSE Manager Server.\n"
-#| "     "
 msgid ""
 "\n"
 "     Inter Server Sync is disabled on this SUSE Multi-Linux Manager Server.\n"
@@ -1094,12 +1051,7 @@ msgstr ""
 "       %s\n"
 
 #: ../satellite_tools/messages.py:71
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "ERROR: you are not entitled to sync a channel in this set of channels.\n"
-#| "Please contact your SUSE Manager contact\n"
-#| "%s"
+#, python-format
 msgid ""
 "\n"
 "ERROR: you are not entitled to sync a channel in this set of channels.\n"
