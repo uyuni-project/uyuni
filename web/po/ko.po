@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 11:50+0200\n"
-"PO-Revision-Date: 2025-03-28 04:56+0000\n"
+"PO-Revision-Date: 2025-05-29 06:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-5-0/ko/>\n"
 "Language: ko\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.3\n"
+"X-Generator: Weblate 5.11.4\n"
 
 msgid "remaining"
 msgstr "남음"
@@ -665,12 +665,12 @@ msgstr "Tomcat Prometheus 내보내기가 중지되었지만 JMX 구성이 활�
 #, fuzzy
 #| msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
 msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
-msgstr "Tomcat Prometheus 내보내기가 작동 중이지만 JMX 구성이 비활성화되었습니다. 활성화 버튼을 클릭하여 JMX 구성을 활성화하거나 비활성화를 클릭하여 Prometheu 내보내기를 중지하십시오."
+msgstr "Taskomatic Prometheus 내보내기가 작동 중이지만 JMX 구성이 비활성화되었습니다. 활성화 버튼을 클릭하여 JMX 구성을 활성화하거나 비활성화를 클릭하여 Prometheu 내보내기를 중지하십시오."
 
 #, fuzzy
 #| msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
 msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
-msgstr "Tomcat Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. 비활성화 버튼을 클릭하여 JMX 구성을 비활성화하거나 활성화를 클릭하여 Prometheus 내보내기를 시작하십시오."
+msgstr "Taskomatic Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. 비활성화 버튼을 클릭하여 JMX 구성을 비활성화하거나 활성화를 클릭하여 Prometheus 내보내기를 시작하십시오."
 
 msgid "Monitoring status hasn't changed."
 msgstr "모니터링 상태가 변경되지 않았습니다."
@@ -837,7 +837,7 @@ msgstr "암호 정책 변경됨"
 #, fuzzy
 #| msgid "Password Policy reset to defaults"
 msgid "Password Policy Reset to Default"
-msgstr "암호 정책 기본값으로 재설정"
+msgstr "비밀번호 정책 기본값으로 재설정"
 
 msgid "Request interrupted or invalid response received from the server. Please try again."
 msgstr "요청이 중단되거나 서버로부터 유효하지 않은 응답이 수신되었습니다. 다시 시도하십시오."
