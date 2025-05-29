@@ -1283,26 +1283,26 @@
         </context-group>
         <target state="final">액세스 토큰</target>
       </trans-unit>
-      <trans-unit id="Clients" xml:space="preserve">
+      <trans-unit id="Clients" xml:space="preserve" approved="yes">
         <source>Clients</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="needs-translation">클라이언트</target>
+        <target state="final">클라이언트</target>
       </trans-unit>
-      <trans-unit id="nav.sdc.config.list_channels" xml:space="preserve">
+      <trans-unit id="nav.sdc.config.list_channels" xml:space="preserve" approved="yes">
         <source>List Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        <target state="needs-translation">채널 나열</target>
+        <target state="final">채널 나열</target>
       </trans-unit>
-      <trans-unit id="nav.sdc.config.rank_channels_view" xml:space="preserve">
+      <trans-unit id="nav.sdc.config.rank_channels_view" xml:space="preserve" approved="yes">
         <source>View Rankings</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        <target state="needs-translation">순위 보기</target>
+        <target state="final">순위 보기</target>
       </trans-unit>
     </body>
   </file>
