@@ -17,9 +17,9 @@ import { localizedMoment } from "utils";
 import Network, { JsonResult } from "utils/network";
 
 import { PlaybookDetails } from "./accordion-path-content";
+import styles from "./Ansible.module.scss";
 import { AnsiblePath } from "./ansible-path-type";
 import EditAnsibleVarsModal from "./edit-ansible-vars-modal";
-import styles from "./Ansible.module.scss";
 
 type SchedulePlaybookProps = {
   playbook: PlaybookDetails;
