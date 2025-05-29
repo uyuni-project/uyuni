@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { FieldInputProps, useField } from "formik";
-import { Button } from "components/buttons";
-import { Field, MultiField } from "components/formik/field";
 
-type PlainObject = Record<any>;
+import { FieldInputProps, useField } from "formik";
+
+import { Button } from "components/buttons";
+import { MessagesContainer, showErrorToastr } from "components/toastr/toastr";
+
+type PlainObject = Record<string, any>;
 
 const StringEditor = (props: FieldInputProps<PlainObject> & { onClose?: () => void }) => {
   const [field, , helper] = useField<PlainObject>(props.name);
@@ -13,12 +15,15 @@ const StringEditor = (props: FieldInputProps<PlainObject> & { onClose?: () => vo
   const [newValue, setNewValue] = useState("");
 
   const handleAddString = () => {
-    if (!newKey.trim()) return;
+    if (!newKey.trim() || newKey in field.value) {
+      showErrorToastr("Key already exist", { autoHide: false, containerId: "show-duplicate-key-string" });
+      return;
+    }
     const newTree = { ...field.value, [newKey]: newValue };
     helper.setValue(newTree);
     setNewKey("");
     setNewValue("");
-  }
+  };
 
   return (
     <div className="border-top w-100 mt-4 mb-4 p-0">
@@ -31,6 +36,7 @@ const StringEditor = (props: FieldInputProps<PlainObject> & { onClose?: () => vo
           <label>{t("Name and value")}</label>
         </div>
         <div className="col-md-8 form-group">
+          <MessagesContainer containerId="show-duplicate-key-string" />
           <div className="d-flex p-0 m-0 mb-3">
             <div className="w-50 me-2">
               <input
