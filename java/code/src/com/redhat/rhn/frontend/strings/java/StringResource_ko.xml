@@ -5986,7 +5986,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="needs-adaptation">@@PRODUCT_NAME@@ 서비스를 사용할 첫번째 사용자를 생성했습니다.&lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;이곳을 클릭하여&lt;/strong&gt;&lt;/a&gt; 나머지 추가 설정을 완료하십시오.</target>
+        <target state="final">@@PRODUCT_NAME@@을(를) 사용할 첫번째 사용자를 생성했습니다. 설치를 완료하려면 &lt;a href="/rhn/manager/admin/setup/proxy"&gt;설정 마법사&lt;/a&gt;를 사용하십시오.</target>
       </trans-unit>
       <trans-unit id="message.kerbuserlogged" xml:space="preserve">
         <source>You've logged as externally authenticated &lt;strong&gt;{0}&lt;/strong&gt; user. To be able to login using this account with login and password, please set your password on &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} user page&lt;/strong&gt;&lt;/a&gt;.</source>
