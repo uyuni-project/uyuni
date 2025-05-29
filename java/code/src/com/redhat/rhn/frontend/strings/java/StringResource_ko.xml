@@ -11274,13 +11274,13 @@ For a detailed analysis, please refer to the log files.
         <source>Systems with conflicting minion ID and machine ID were found ({0}, {1}). Onboarding aborted. Please remove conflicting systems first ({2}, {3})</source>
         <target state="final">미니언 ID와 시스템 ID가 충돌하는 시스템이 발견되었습니다({0}, {1}). 온보딩이 중단되었습니다. 충돌하는 시스템을 먼저 제거하십시오({2}, {3}).</target>
       </trans-unit>
-      <trans-unit approved="yes" id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
+      <trans-unit approved="no" id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
         <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
-        <target state="needs-adaptation">SUSE Manager 서버에서 '{0}' 등록이 거부되었습니다. \n데이터 센터 클라이언트를 관리하려면 관리자 =&gt; 설정 마법사 =&gt; 조직 자격 증명에서 SCC 자격 증명을 구성해야 합니다.</target>
+        <target state="needs-translation">@@PRODUCT_NAME@@ Server에서 '{0}' 등록이 거부되었습니다. \n데이터 센터 클라이언트를 관리하려면 관리자 =&gt; 설정 마법사 =&gt; 조직 자격 증명에서 SCC 자격 증명을 구성해야 합니다.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
+      <trans-unit approved="no" id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
         <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
-        <target state="needs-adaptation">SUSE Manager 서버에서 '{0}' 등록이 거부되었습니다. \nBYOS(Bring-your-own-Subscription) 클라이언트를 관리하려면 관리자 =&gt; 설치 마법사 =&gt; 조직 자격 증명에서 SCC 자격 증명을 구성해야 합니다. \n\n온보딩 중인 인스턴스가 PAYG인 경우 'python-instance-billing-flavor-check' 패키지가 설치되어 있는지 확인하고 다시 시도하십시오.</target>
+        <target state="needs-translation">@@PRODUCT_NAME@@ Server에서 '{0}' 등록이 거부되었습니다. \nBYOS(Bring-your-own-Subscription) 클라이언트를 관리하려면 관리자 =&gt; 설치 마법사 =&gt; 조직 자격 증명에서 SCC 자격 증명을 구성해야 합니다. \n\n온보딩 중인 인스턴스가 PAYG인 경우 'python-instance-billing-flavor-check' 패키지가 설치되어 있는지 확인하고 다시 시도하십시오.</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.updateavailable.summary" xml:space="preserve">
         <source>Updates are available.</source>
@@ -11682,179 +11682,179 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Unable to deregister: an unexpected error is occurred while contacting the remote server. Please check the server logs.</source>
         <target state="final">등록을 취소할 수 없음: 원격 서버에 연결하는 동안 예기치 않은 오류가 발생했습니다. 서버 로그를 확인하십시오.</target>
       </trans-unit>
-    <trans-unit id="toolbar.convert.proxy" xml:space="preserve">
+      <trans-unit id="toolbar.convert.proxy" xml:space="preserve">
         <source>Convert to Proxy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Convert to Proxy</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">Proxy로 전환</target>
+      </trans-unit>
       <trans-unit id="system.entitle.added.proxy_entitled" xml:space="preserve">
         <source>&lt;strong&gt;Proxy&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">&lt;strong&gt;Proxy&lt;/strong&gt; 유형이 적용되었습니다.&lt;br/&gt;&lt;strong&gt;참고:&lt;/strong&gt; 이 작업은 &lt;em&gt;not&lt;/em&gt; 상태 적용에 영향을 미치지 않습니다. 상태를 적용하려면 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;상태 페이지&lt;/a&gt;를 사용하거나 명령줄에서 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;를 실행하십시오.</target>
+      </trans-unit>
       <trans-unit id="ansible.inventory" xml:space="preserve">
         <source>Refresh Ansible inventories</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">Ansible 인벤토리 새로 고침</target>
+      </trans-unit>
       <trans-unit id="recurring_action.empty_playbook_path" xml:space="preserve">
         <source>No Playbook selected</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">Playbook을 선택하지 않음</target>
+      </trans-unit>
       <trans-unit id="hub.cannot_refresh_certificate" xml:space="preserve">
         <source>An error occurred while attempting to refresh the root certificate authorities. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">루트 인증 기관 새로 고침을 시도하는 동안 오류가 발생했습니다. 서버 로그를 확인하십시오.</target>
+      </trans-unit>
       <trans-unit id="hub.migration_success" xml:space="preserve">
         <source>The migration from ISSv{0} was completed successfully.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">ISSv{0}에서 마이그레이션이 완료되었습니다.</target>
+      </trans-unit>
       <trans-unit id="hub.unexpected_error_migrating" xml:space="preserve">
         <source>An expected error happened during the migration process: {0}. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">마이그레이션 프로세스 중 예상된 오류 발생: {0}. 서버 로그를 확인하십시오.</target>
+      </trans-unit>
       <trans-unit id="hub.migration.no_slaves" xml:space="preserve">
         <source>This server does not have any ISSv1 slave</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">이 서버에는 ISSv1 슬레이브가 없습니다.</target>
+      </trans-unit>
       <trans-unit id="hub.migration.slave_not_exit" xml:space="preserve">
         <source>Slave {0} does not exist</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">{0} 슬레이브 없음</target>
+      </trans-unit>
       <trans-unit id="hub.migration.no_migration_data" xml:space="preserve">
         <source>Slave {0} has no migration data and will not be migrated</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">슬레이브 {0}에 마이그레이션 데이터가 없으므로 마이그레이션되지 않습니다.</target>
+      </trans-unit>
       <trans-unit id="hub.migration.slave_disabled" xml:space="preserve">
         <source>Slave {0} is currently disabled and will not be migrated</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">슬레이브 {0}은(는) 현재 사용하지 않도록 설정되어 있으며 마이그레이션되지 않습니다.</target>
+      </trans-unit>
       <trans-unit id="hub.migration.unable_to_migrate" xml:space="preserve">
         <source>Unable to migrate server {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">{0} 서버를 마이그레이션할 수 없음: {1}</target>
+      </trans-unit>
       <trans-unit id="hub.migration.fail_channel_config" xml:space="preserve">
         <source>Unable to configure channels for peripheral {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">주변 장치 {0}에 대한 채널을 구성할 수 없음: {1}</target>
+      </trans-unit>
       <trans-unit id="hub.migration.removal_slave" xml:space="preserve">
         <source>Unable remove ISSv1 data for slave {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">슬레이브 {0}에 대한 ISSv1 데이터를 제거할 수 없음: {1}</target>
+      </trans-unit>
       <trans-unit id="hub.migration.removal_peripheral" xml:space="preserve">
         <source>Unable to remove partially migrated peripheral {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">부분적으로 마이그레이션된 주변 장치 {0}을(를) 제거할 수 없음: {1}</target>
+      </trans-unit>
       <trans-unit id="hub.invalid_id" xml:space="preserve">
         <source>The specified peripheral id is invalid.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">지정한 주변 장치 ID가 잘못되었습니다.</target>
+      </trans-unit>
       <trans-unit id="onboardingfailed" xml:space="preserve">
         <source>Onboarding failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">온보딩 실패</target>
+      </trans-unit>
       <trans-unit id="channelsyncfailed" xml:space="preserve">
         <source>Channel sync failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">채널 동기화 실패</target>
+      </trans-unit>
       <trans-unit id="channelsyncfinished" xml:space="preserve">
         <source>Channel sync finished</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">채널 동기화 완료</target>
+      </trans-unit>
       <trans-unit id="createbootstraprepofailed" xml:space="preserve">
         <source>Creating Bootstrap Repository failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">부트스트랩 리포지토리 생성 실패</target>
+      </trans-unit>
       <trans-unit id="stateapplyfailed" xml:space="preserve">
         <source>State apply failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">상태 적용 실패</target>
+      </trans-unit>
       <trans-unit id="paygauthenticationupdatefailed" xml:space="preserve">
         <source>PAYG refresh failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">PAYG 새로 고침 실패</target>
+      </trans-unit>
       <trans-unit id="endoflifeperiod" xml:space="preserve">
         <source>End of Life Period</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">수명 종료 기간</target>
+      </trans-unit>
       <trans-unit id="subscriptionwarning" xml:space="preserve">
         <source>Subscription Warning</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">구독 경고</target>
+      </trans-unit>
       <trans-unit id="updateavailable" xml:space="preserve">
         <source>Updates are Available</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">업데이트 가능</target>
+      </trans-unit>
       <trans-unit id="paygnotcompliantwarning" xml:space="preserve">
         <source>PAYG instance is not compliant</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">PAYG 인스턴스가 호환되지 않음</target>
+      </trans-unit>
       <trans-unit id="sccoptoutwarning" xml:space="preserve">
         <source>SCC Data Sync Disabled</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">SCC 데이터 동기화 비활성화됨</target>
+      </trans-unit>
       <trans-unit id="hubregistrationchanged" xml:space="preserve">
         <source>Hub Registration Changed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">허브 등록 변경됨</target>
+      </trans-unit>
       <trans-unit id="notification.not_found" xml:space="preserve">
         <source>Cannot retry: a notification with id '{0}' does not exist.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">재시도 불가: ID가 '{0}'인 알림이 없습니다.</target>
+      </trans-unit>
       <trans-unit id="notification.type_not_actionable" xml:space="preserve">
         <source>Cannot retry: the notification type '{0}' is not actionable.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">재시도 불가: 알림 유형 '{0}'을(를) 실행할 수 없습니다.</target>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfailed.action.not_found" xml:space="preserve">
         <source>Failed to restart reposync. A channel with id {0} does not exist.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">reposync를 다시 시작하지 못했습니다. ID가 {0}인 채널이 없습니다.</target>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfailed.action.failed" xml:space="preserve">
         <source>Failed to restart reposync for the channel '{0}': {1}.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">채널 '{0}'의 reposync 재시작 실패: {1}.</target>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfailed.action.success" xml:space="preserve">
         <source>Reposync restarted for the channel '{0}'</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">'{0}' 채널에 대한 reposync 다시 시작됨</target>
+      </trans-unit>
       <trans-unit id="notification.onboardingfailed.action.success" xml:space="preserve">
         <source>Onboarding restarted for the minion with id '{0}'</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">ID가 '{0}'인 미니언에 대한 온보딩 다시 시작됨</target>
+      </trans-unit>
       <trans-unit id="notification.hub.registered.summary" xml:space="preserve">
         <source>This server is now a peripheral of {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">이 서버는 이제 {0}의 주변 장치입니다.</target>
+      </trans-unit>
       <trans-unit id="notification.hub.registered.details" xml:space="preserve">
         <source>&lt;p&gt;This server has been registered as a peripheral of hub {0} and will start to receive data from it.&lt;/p&gt; &lt;p&gt;Check the &lt;a href="/rhn/manager/admin/hub/hub-details"&gt;Hub details page&lt;/a&gt; for more information.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">&lt;p&gt;이 서버가 허브 {0}의 주변 장치로 등록되었으며 이 서버로부터 데이터를 수신하기 시작합니다. 자세한 내용은 &lt;/p&gt; &lt;p&gt;&lt;a href="/rhn/manager/admin/hub/hub-details"&gt;허브 세부 정보 페이지&lt;/a&gt; 에서 확인할 수 있습니다.&lt;/p&gt;</target>
+      </trans-unit>
       <trans-unit id="notification.hub.hub_deregistered.summary" xml:space="preserve">
         <source>This server is no longer a peripheral of {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">이 서버는 더 이상 {0}의 주변 장치가 아닙니다.</target>
+      </trans-unit>
       <trans-unit id="notification.hub.hub_deregistered.details" xml:space="preserve">
         <source>&lt;p&gt;The hub {0} has de-registered this server, which means it is no longer acting as its peripheral.&lt;/p&gt; &lt;p&gt;Review your configuration, as all the channels that were previously synced from the hub will no loger be updated.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">&lt;p&gt;{0} 허브가 이 서버를 등록 취소했으므로 더 이상 주변 장치로 작동하지 않습니다.&lt;/p&gt; &lt;p&gt;이전에 허브에서 동기화된 모든 채널은 더 이상 업데이트되지 않으므로 구성을 검토하십시오.&lt;/p&gt;</target>
+      </trans-unit>
       <trans-unit id="notification.hub.peripheral_deregistered.summary" xml:space="preserve">
         <source>Server {0} is no longer a peripheral.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">{0} 서버는 더 이상 주변 장치가 아닙니다.</target>
+      </trans-unit>
       <trans-unit id="notification.hub.peripheral_deregistered.details" xml:space="preserve">
         <source>&lt;p&gt;The peripheral {0} has de-registered from this hub, and it is no longer manageable as a peripheral..&lt;/p&gt; &lt;p&gt;Any existing synchronization configuration has been removed.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">&lt;p&gt;{0} 주변 장치는 이 허브에서 등록 취소되었으므로 더 이상 주변 장치로 관리할 수 없습니다.&lt;/p&gt; &lt;p&gt;모든 기존 동기화 구성이 제거되었습니다.&lt;/p&gt;</target>
+      </trans-unit>
       <trans-unit id="hub.error_peripheral_not_registrable" xml:space="preserve">
         <source>The server {0} cannot be registered as a peripheral of this hub</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="needs-translation">{0} 서버를 이 허브의 주변 장치로 등록할 수 없습니다.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
