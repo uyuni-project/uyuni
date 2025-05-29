@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 11:50+0200\n"
-"PO-Revision-Date: 2025-03-09 04:56+0000\n"
+"PO-Revision-Date: 2025-05-29 06:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-5-0/ja/>\n"
 "Language: ja\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 msgid "remaining"
 msgstr "残り"
@@ -279,10 +279,8 @@ msgstr "名前"
 msgid "Password"
 msgstr "パスワード"
 
-#, fuzzy
-#| msgid "Minimum 4 characters"
 msgid "Must be at least 4 characters"
-msgstr "最低 4 文字"
+msgstr "4文字以上である必要があります"
 
 msgid "Level"
 msgstr "レベル"
@@ -662,15 +660,11 @@ msgstr "Tomcat Prometheus エクスポータが動作していますが、 JMX �
 msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
 msgstr "Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。無効化ボタンを押して JMX 設定を無効化するか、もしくは有効化ボタンを押して Prometheus エクスポータを開始してください。"
 
-#, fuzzy
-#| msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
 msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
-msgstr "Tomcat Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。有効化ボタンを押して JMX 設定を有効化するか、もしくは無効化ボタンを押して Prometheus エクスポータを停止してください。"
+msgstr "Taskomatic Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。有効化ボタンを押して JMX 設定を有効化するか、もしくは無効化ボタンを押して Prometheus エクスポータを停止してください。"
 
-#, fuzzy
-#| msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
 msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
-msgstr "Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。無効化ボタンを押して JMX 設定を無効化するか、もしくは有効化ボタンを押して Prometheus エクスポータを開始してください。"
+msgstr "Taskomatic Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。無効化ボタンを押して JMX 設定を無効化するか、もしくは有効化ボタンを押して Prometheus エクスポータを開始してください。"
 
 msgid "Monitoring status hasn't changed."
 msgstr "モニタリング状態は変更されていません。"
@@ -834,8 +828,6 @@ msgstr "パスワードポリシーの保存"
 msgid "Password Policy Changed"
 msgstr "パスワードポリシーが変更されました"
 
-#, fuzzy
-#| msgid "Password Policy reset to defaults"
 msgid "Password Policy Reset to Default"
 msgstr "パスワードポリシーがデフォルトにリセットされました"
 
@@ -1048,7 +1040,7 @@ msgid "HTTP Proxy Password"
 msgstr ""
 
 msgid "Illustration of a proxy server"
-msgstr ""
+msgstr "プロキシサーバの図"
 
 #, fuzzy
 #| msgid "Proxy"
