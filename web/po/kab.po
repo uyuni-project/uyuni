@@ -14,13 +14,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 11:31+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2025-05-29 11:59+0000\n"
+"Last-Translator: Athmane MOKRAOUI <butterflyoffire+opensuse@protonmail.com>\n"
+"Language-Team: Kabyle <https://l10n.opensuse.org/projects/uyuni/web/kab/>\n"
 "Language: kab\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -107,7 +109,7 @@ msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:340
 msgid "Unnamed"
-msgstr ""
+msgstr "War isem"
 
 #: ../html/src/components/FormulaForm.tsx:349
 msgid "Search by formula's group name"
@@ -170,7 +172,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:775
 msgid "System"
-msgstr ""
+msgstr "Anagraw"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:75
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:59
@@ -199,7 +201,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:785
 #: ../html/src/manager/systems/virtual-list.tsx:82
 msgid "Status"
-msgstr ""
+msgstr "Addad"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:104
 msgid "Attestation time"
@@ -217,7 +219,7 @@ msgstr ""
 #: ../html/src/manager/salt/keys/key-management.tsx:195
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
 msgid "Actions"
-msgstr ""
+msgstr "Tigawin"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:115
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:54
@@ -235,7 +237,7 @@ msgstr ""
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:41
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:35
 msgid "Status:"
-msgstr ""
+msgstr "Addad:"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:67
 msgid "Created on"
@@ -248,7 +250,7 @@ msgstr ""
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:84
 #: ../html/src/manager/notifications/notifications-list.tsx:129
 msgid "Action"
-msgstr ""
+msgstr "Tigawt"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:89
 msgid "{actionName} scheduled by {actionScheduledBy}"
@@ -270,7 +272,7 @@ msgstr ""
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:27
 msgid "Description:"
-msgstr ""
+msgstr "Aglam:"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:44
 msgid "Attested on:"
@@ -291,7 +293,7 @@ msgstr ""
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:35
 #: ../html/src/manager/minion/packages/package-states.tsx:194
 msgid "Save"
-msgstr ""
+msgstr "Sekles"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:87
 msgid "Reset Changes"
@@ -382,7 +384,7 @@ msgstr ""
 #: ../html/src/manager/systems/delete-system.tsx:80
 #: ../html/src/manager/systems/delete-system.tsx:81
 msgid "Cancel"
-msgstr ""
+msgstr "Semmet"
 
 #. both the peripheral and the hub are null means the token is not used and we can delete it
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
@@ -420,7 +422,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
 msgid "Delete"
-msgstr ""
+msgstr "Kkes"
 
 #: ../html/src/components/dialog/delete.example.tsx:14
 msgid "Delete project"
@@ -465,7 +467,7 @@ msgstr ""
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:416
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:539
 msgid "Password"
-msgstr ""
+msgstr "Awal n uɛeddi"
 
 #: ../html/src/components/formik/Form.example.tsx:43
 msgid "Datetime"
@@ -489,15 +491,15 @@ msgstr ""
 
 #: ../html/src/components/formik/Form.example.tsx:55
 msgid "One"
-msgstr ""
+msgstr "Yiwen"
 
 #: ../html/src/components/formik/Form.example.tsx:56
 msgid "Two"
-msgstr ""
+msgstr "Sin"
 
 #: ../html/src/components/formik/Form.example.tsx:57
 msgid "Three"
-msgstr ""
+msgstr "Krad"
 
 #: ../html/src/components/formik/Form.example.tsx:62
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:108
@@ -648,14 +650,14 @@ msgstr ""
 
 #: ../html/src/components/hub/AddTokenButton.tsx:200
 msgid "Copy"
-msgstr ""
+msgstr "Nɣel"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:220
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:208
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:94
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:95
 msgid "Close"
-msgstr ""
+msgstr "Mdel"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:252
 msgid "Access token copied to the clipboard"
@@ -726,7 +728,7 @@ msgstr ""
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:188
 msgid "Sync"
-msgstr ""
+msgstr "Mtawi"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:189
 #: ../html/src/components/states-picker.tsx:452
@@ -740,7 +742,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
 msgid "Architecture"
-msgstr ""
+msgstr "Tasegda"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:191
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:306
@@ -831,7 +833,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
 msgid "Edit"
-msgstr ""
+msgstr "Ẓreg"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:252
 msgid "Set access token for {fqdn}"
@@ -958,7 +960,7 @@ msgstr ""
 #: ../html/src/manager/login/susemanager/login.tsx:88
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
 msgid "Username"
-msgstr ""
+msgstr "Isem n useqdac"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:197
 msgid "The username of {productName} Administrator of the remote server."
@@ -1170,7 +1172,7 @@ msgstr ""
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:84
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
 msgid "Name"
-msgstr ""
+msgstr "Isem"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:304
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:341
@@ -1186,7 +1188,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:315
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
 msgid "Label"
-msgstr ""
+msgstr "Tabzimt"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:305
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:342
@@ -1231,7 +1233,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1135
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:677
 msgid "Confirm"
-msgstr ""
+msgstr "Sentem"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:397
 msgid "{peripheralFqdn} - Peripheral Sync Channels"
@@ -1265,7 +1267,7 @@ msgstr ""
 
 #: ../html/src/components/hub/TokenTable.tsx:68
 msgid "Server"
-msgstr ""
+msgstr "Aqeddac"
 
 #: ../html/src/components/hub/TokenTable.tsx:75
 msgid "Valid"
@@ -1276,14 +1278,14 @@ msgstr ""
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:38
 msgid "Yes"
-msgstr ""
+msgstr "Ih"
 
 #: ../html/src/components/hub/TokenTable.tsx:76
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:39
 msgid "No"
-msgstr ""
+msgstr "Uhu"
 
 #: ../html/src/components/hub/TokenTable.tsx:82
 msgid "Expired"
@@ -1394,13 +1396,13 @@ msgstr ""
 
 #: ../html/src/components/input/form-multi-input/FormMultiInput.tsx:158
 msgid "Remove"
-msgstr ""
+msgstr "Kkes"
 
 #: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:24
 #: ../html/src/components/input/form-multi-input/single-field.example.tsx:24
 #: ../html/src/components/input/form-multi-input/table-fields.example.tsx:32
 msgid "Users"
-msgstr ""
+msgstr "Iseqdacen"
 
 #: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:47
 #: ../html/src/components/input/text/Text.example.tsx:23
@@ -1427,7 +1429,7 @@ msgstr ""
 #: ../html/src/components/input/select/async.example.tsx:44
 #: ../html/src/components/input/select/simple.example.tsx:26
 msgid "Level"
-msgstr ""
+msgstr "Aswir"
 
 #: ../html/src/components/input/radio/horizontal-open.example.tsx:32
 #: ../html/src/components/input/radio/horizontal.example.tsx:31
@@ -1489,11 +1491,11 @@ msgstr ""
 
 #: ../html/src/components/large-text-attachment.tsx:99
 msgid "Download"
-msgstr ""
+msgstr "Zdem"
 
 #: ../html/src/components/large-text-attachment.tsx:110
 msgid "Add"
-msgstr ""
+msgstr "Rnu"
 
 #: ../html/src/components/large-text-attachment.tsx:135
 #: ../html/src/components/large-text-attachment.tsx:136
@@ -1510,7 +1512,7 @@ msgstr ""
 
 #: ../html/src/components/large-text-attachment.tsx:151
 msgid "File"
-msgstr ""
+msgstr "Afaylu"
 
 #: ../html/src/components/large-text-attachment.tsx:161
 msgid "New value"
@@ -1549,7 +1551,7 @@ msgstr ""
 
 #: ../html/src/components/pagination.tsx:23
 msgid "First"
-msgstr ""
+msgstr "Amezwaru"
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1101
@@ -1579,31 +1581,31 @@ msgstr ""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:58
 msgid "Sunday"
-msgstr ""
+msgstr "Acer"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:59
 msgid "Monday"
-msgstr ""
+msgstr "Arim"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:60
 msgid "Tuesday"
-msgstr ""
+msgstr "Aram"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:61
 msgid "Wednesday"
-msgstr ""
+msgstr "Ahad"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:62
 msgid "Thursday"
-msgstr ""
+msgstr "Amhad"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:63
 msgid "Friday"
-msgstr ""
+msgstr "Sem"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:64
 msgid "Saturday"
-msgstr ""
+msgstr "Sed"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:333
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:96
@@ -1724,7 +1726,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:179
 msgid "Back"
-msgstr ""
+msgstr "Uɣal"
 
 #: ../html/src/components/states-picker.tsx:377
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:185
@@ -1750,7 +1752,7 @@ msgstr ""
 #: ../html/src/manager/minion/packages/package-states.tsx:214
 #: ../html/src/manager/minion/packages/package-states.tsx:247
 msgid "Search"
-msgstr ""
+msgstr "Nadi"
 
 #: ../html/src/components/states-picker.tsx:434
 msgid "Edit State Ranks"
@@ -1800,7 +1802,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:52
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:299
 msgid "Description"
-msgstr ""
+msgstr "Aglam"
 
 #: ../html/src/components/states-picker.tsx:454
 msgid "Assign"
@@ -1853,7 +1855,7 @@ msgstr ""
 #: ../html/src/manager/systems/list-filter.tsx:6
 #: ../html/src/manager/systems/list-filter.tsx:22
 msgid "Proxy"
-msgstr ""
+msgstr "Apṛuksi"
 
 #: ../html/src/components/systems.tsx:45
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:77
@@ -1920,7 +1922,7 @@ msgstr ""
 #: ../html/src/components/table/SearchPanel.tsx:66
 #: ../html/src/manager/admin/setup/products/products.tsx:329
 msgid "Clear"
-msgstr ""
+msgstr "Sfeḍ"
 
 #: ../html/src/components/table/SearchPanel.tsx:73
 msgid "Select All"
@@ -1929,7 +1931,7 @@ msgstr ""
 #: ../html/src/components/table/SelectSearchField.tsx:5
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
 msgid "All"
-msgstr ""
+msgstr "Akk"
 
 #: ../html/src/components/table/TableDataHandler.tsx:407
 msgid "items per page"
@@ -1957,7 +1959,7 @@ msgstr ""
 
 #: ../html/src/components/utils/HelpLink.tsx:23
 msgid "Help"
-msgstr ""
+msgstr "Tallalt"
 
 #: ../html/src/components/utils/loading/Loading.tsx:20
 #: ../html/src/manager/appstreams/appstream-packages.tsx:32
@@ -2157,7 +2159,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:347
 msgid "General"
-msgstr ""
+msgstr "Amatu"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:352
 msgid "Bootstrap Script"
@@ -2217,7 +2219,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:207
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
 msgid "Create"
-msgstr ""
+msgstr "Snulfu-d"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:70
 msgid "PAYG connection Description"
@@ -2410,7 +2412,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:52
 msgid "Edit "
-msgstr ""
+msgstr "Ẓreg "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:71
 msgid "Editing ssh connection data.."
@@ -2431,7 +2433,7 @@ msgstr ""
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:23
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:504
 msgid "User"
-msgstr ""
+msgstr "Aseqdac"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:33
