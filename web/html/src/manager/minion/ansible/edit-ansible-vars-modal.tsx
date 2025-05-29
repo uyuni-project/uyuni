@@ -40,16 +40,23 @@ const EditAnsibleVarsModal = (props: Props) => {
       if (extraVars) {
         const parsedExtraVars = yaml.load(extraVars);
         if (typeof parsedExtraVars !== "object" || parsedExtraVars === null) {
-          showErrorToastr("Additonal Variables must be a valid YAML object.", { autoHide: false, containerId: "extra-var" });
+          showErrorToastr("Additonal Variables must be a valid YAML object.", {
+            autoHide: false,
+            containerId: "extra-var",
+          });
           setOpen(true);
           return;
         }
       }
       props.updatePlaybookContent?.(updatedVars, extraVars);
       setOpen(false);
-    } catch (err) {
-      showErrorToastr(`YAML Error: ${err.message}`, { autoHide: false, containerId: "extra-var" });
-      setOpen(true);
+    } catch (error) {
+      if (error instanceof Error) {
+        showErrorToastr(`YAML Error: ${error.message}`, {
+          autoHide: false,
+          containerId: "extra-var",
+        });
+      }
     }
   };
   return (
