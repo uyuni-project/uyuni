@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 11:31+0200\n"
-"PO-Revision-Date: 2025-05-29 03:59+0000\n"
+"PO-Revision-Date: 2025-05-29 06:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -687,7 +687,7 @@ msgstr "同期解除の確認"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:55
 msgid "Desync channels?"
-msgstr "チャネルの同期を解除しますか。"
+msgstr "チャネルの同期を解除しますか?"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:64
 msgid "The channels have been successfully desynced."
@@ -708,7 +708,7 @@ msgstr "チャネルを検索..."
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:188
 msgid "Sync"
-msgstr ""
+msgstr "同期"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:189
 #: ../html/src/components/states-picker.tsx:452
@@ -728,35 +728,27 @@ msgstr "アーキテクチャ"
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:306
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:343
 msgid "Hub Org"
-msgstr ""
+msgstr "ハブ組織"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:192
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:307
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:344
-#, fuzzy
-#| msgid "N. of Sync Orgs"
 msgid "Sync Org"
-msgstr "同期組織の数"
+msgstr "同期組織"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:67
-#, fuzzy
-#| msgid "Audit Servers"
 msgid "Add Server"
-msgstr "監査サーバ"
+msgstr "サーバの追加"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:69
 msgid "Set the FQDN of the remote server"
-msgstr ""
+msgstr "リモートサーバのFQDNを設定する"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:89
-#, fuzzy
-#| msgid "Migrate"
 msgid "Migrate?"
-msgstr "移行"
+msgstr "移行しますか。"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:95
-#, fuzzy
-#| msgid "Access Tokens"
 msgid "Access Token"
 msgstr "アクセストークン"
 
@@ -767,42 +759,36 @@ msgid "Root Certificate Authority"
 msgstr "ルート認証局"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:166
-#, fuzzy
-#| msgid "Peripheral registration in progress: waiting for a response..."
 msgid "Peripheral migration in progress: waiting for a response..."
-msgstr "周辺機器の登録が進行中です: 応答を待機しています..."
+msgstr "周辺機器の移行が進行中です: 応答を待機しています..."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:184
 msgid "Migration partially succeeded"
-msgstr ""
+msgstr "移行は部分的に成功しました"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:185
-#, fuzzy
-#| msgid " failed"
 msgid "Migration failed"
-msgstr " 失敗"
+msgstr "移行に失敗しました"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:193
 msgid "Some of the servers where migrated successfully, but some errors happened during the process."
-msgstr ""
+msgstr "一部のサーバは正常に移行されましたが、プロセス中にエラーが発生しました。"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:194
 msgid "The migration process was not successfull and reported the following errors"
-msgstr ""
+msgstr "移行プロセスは成功せず、次のエラーが報告されました"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:226
 msgid "This slave is currently disabled and cannot be selected for migration"
-msgstr ""
+msgstr "このスレーブは現在無効になっており、移行対象として選択できません"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:227
 msgid "Check to migrate this server to a peripheral"
-msgstr ""
+msgstr "このサーバを周辺機器に移行するにはチェックを入れてください"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:246
-#, fuzzy
-#| msgid "undefined"
 msgid "Not defined"
-msgstr "未定義"
+msgstr "定義されていません"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:251
 #: ../html/src/components/large-text-attachment.tsx:69
@@ -828,19 +814,15 @@ msgstr "編集"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:252
 msgid "Set access token for {fqdn}"
-msgstr ""
+msgstr "{fqdn} のアクセストークンを設定する"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:253
-#, fuzzy
-#| msgid "Access Tokens"
 msgid "Access token"
 msgstr "アクセストークン"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:282
-#, fuzzy
-#| msgid "No tokens available"
 msgid "Root CA available"
-msgstr "利用可能なトークンがありません"
+msgstr "ルートCAが利用可能"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:282
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
@@ -849,23 +831,19 @@ msgstr "不要"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:292
 msgid "The root CA is the same of the hub."
-msgstr ""
+msgstr "ルートCAはハブと同じです。"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:293
 msgid "This server has a different root CA."
-msgstr ""
+msgstr "このサーバには別のルートCAがあります。"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:296
-#, fuzzy
-#| msgid "Ensure the certificate you are providing is correct before proceeding. A wrong value will break the connection with the hub."
 msgid "Ensure the certificate you are providing for {fqdn} is correct before proceeding. A wrong value will prevent the connection with the hub."
-msgstr "提供している証明書が正しいことを確認してから続行してください。値が間違っていると、ハブとの接続が切断されます。"
+msgstr "{fqdn} に提供している証明書が正しいことを確認してから続行してください。値が間違っていると、ハブに接続できません。"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:301
-#, fuzzy
-#| msgid "Are you sure you want to delete the current Root Certificate Authority? This change may break the connection with the hub."
 msgid "Are you sure you want to remove the current Root Certificate Authority for {fqdn}?"
-msgstr "現在のルート認証局を削除してもよろしいですか? この変更により、ハブとの接続が切断される可能性があります。"
+msgstr "{fqdn} の現在のルート認証局を削除してもよろしいですか?"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:321
 #: ../html/src/manager/notifications/notifications-list.tsx:339
@@ -894,14 +872,10 @@ msgid "Peripheral FQDN"
 msgstr "周辺機器FQDN"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:41
-#, fuzzy
-#| msgid "N. of Sync Channels"
 msgid "N. of synced channels"
-msgstr "同期チャンネルの数"
+msgstr "同期チャネルの数"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:46
-#, fuzzy
-#| msgid "N. of Sync Orgs"
 msgid "N. of synced organizations"
 msgstr "同期組織の数"
 
@@ -911,7 +885,7 @@ msgstr "ルートCAのダウンロード"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:66
 msgid "View details of peripheral {fqdn}"
-msgstr ""
+msgstr "周辺機器 {fqdn} の詳細を表示"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:136
 msgid "Register a new peripheral server"
@@ -1020,40 +994,32 @@ msgid "A customized Root Certificate Authority is currently configured for this 
 msgstr "このハブには現在、カスタマイズされたルート認証局が設定されています。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:17
-#, fuzzy
-#| msgid "A customized Root Certificate Authority is currently configured for this hub."
 msgid "A customized Root Certificate Authority is currently configured for this peripheral."
-msgstr "このハブには現在、カスタマイズされたルート認証局が設定されています。"
+msgstr "この周辺機器には現在、カスタマイズされたルート認証局が設定されています。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:20
 msgid "This hub is currently using the default Root Certificate Authority."
 msgstr "このハブは現在、デフォルトのルート認証局を使用しています。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:21
-#, fuzzy
-#| msgid "This hub is currently using the default Root Certificate Authority."
 msgid "This peripheral is currently using the default Root Certificate Authority."
-msgstr "このハブは現在、デフォルトのルート認証局を使用しています。"
+msgstr "この周辺機器は現在、デフォルトのルート認証局を使用しています。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:25
 msgid "Ensure the certificate you are providing is correct before proceeding. A wrong value will break the connection with the hub."
 msgstr "提供している証明書が正しいことを確認してから続行してください。値が間違っていると、ハブとの接続が切断されます。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:28
-#, fuzzy
-#| msgid "Ensure the certificate you are providing is correct before proceeding. A wrong value will break the connection with the hub."
 msgid "Ensure the certificate you are providing is correct before proceeding. A wrong value will break the connection with the peripheral."
-msgstr "提供している証明書が正しいことを確認してから続行してください。値が間違っていると、ハブとの接続が切断されます。"
+msgstr "提供している証明書が正しいことを確認してから続行してください。値が間違っていると、周辺機器との接続が切断されます。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:33
 msgid "Are you sure you want to delete the current Root Certificate Authority? This change may break the connection with the hub."
 msgstr "現在のルート認証局を削除してもよろしいですか? この変更により、ハブとの接続が切断される可能性があります。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:36
-#, fuzzy
-#| msgid "Are you sure you want to delete the current Root Certificate Authority? This change may break the connection with the hub."
 msgid "Are you sure you want to delete the current Root Certificate Authority? This change may break the connection with the peripheral."
-msgstr "現在のルート認証局を削除してもよろしいですか? この変更により、ハブとの接続が切断される可能性があります。"
+msgstr "現在のルート認証局を削除してもよろしいですか? この変更により、周辺機器との接続が切断される可能性があります。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:67
 msgid "Server FQDN:"
@@ -1088,36 +1054,28 @@ msgid "Mirror credentials:"
 msgstr "ミラー資格情報:"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:142
-#, fuzzy
-#| msgid "Use credentials"
 msgid "Regenerate credentials"
-msgstr "資格情報の使用"
+msgstr "資格情報の再生成"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:155
-#, fuzzy
-#| msgid "no child channels"
 msgid "Synchronized channels:"
-msgstr "子チャンネル無し"
+msgstr "同期チャネル:"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:163
-#, fuzzy
-#| msgid "Edit Channel Ranks"
 msgid "Edit channels"
-msgstr "チャンネルランクの編集"
+msgstr "チャネルの編集"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:185
-#, fuzzy
-#| msgid "has unsynchronized patches"
 msgid "One syncronized channel"
-msgstr "同期されていないパッチがあります"
+msgstr "1つの同期チャネル"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:189
 msgid "{nSyncedChannels} syncronized channels, from one organization"
-msgstr ""
+msgstr "1つの組織からの、{nSyncedChannels} 個の同期チャネル"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:192
 msgid "{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different organizations"
-msgstr ""
+msgstr "{nSyncedOrgs} 個の異なる組織からの、{nSyncedChannels} 個の同期チャネル"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:198
 msgid "Root Certificate Authority successfully modified."
@@ -1128,35 +1086,27 @@ msgid "Root Certificate Authority successfully updated."
 msgstr "ルート認証局が正常に更新されました。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:227
-#, fuzzy
-#| msgid "Schedule successfully created."
 msgid "Mirror credentials successfully regenerated."
-msgstr "スケジュールが正常に作成されました。"
+msgstr "ミラーの資格情報が正常に再生成されました。"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:170
-#, fuzzy
-#| msgid "No change"
 msgid "No changes to apply"
-msgstr "変更無し"
+msgstr "適用する変更はありません"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:215
 msgid "Channels synced correctly to peripheral!"
-msgstr ""
+msgstr "チャネルが周辺機器に正しく同期されました。"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:243
 msgid "Please select at least one channel to add or remove from sync"
-msgstr ""
+msgstr "同期に追加または削除するチャネルを少なくとも1つ選択してください"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:293
-#, fuzzy
-#| msgid "Channels"
 msgid "Channels to Add"
-msgstr "チャンネル"
+msgstr "追加するチャネル"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:301
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:338
-#, fuzzy
-#| msgid "Filter by name"
 msgid "Filter by Name"
 msgstr "名前でフィルタ"
 
@@ -1202,37 +1152,27 @@ msgstr "Arch"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:318
 msgid "Some custom channels do not have a sync organization selected. Please select organizations before confirming."
-msgstr ""
+msgstr "一部のカスタムチャネルでは同期組織が選択されていません。確認する前に組織を選択してください。"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:324
-#, fuzzy
-#| msgid " channels synced"
 msgid "No channels selected to add"
-msgstr " チャンネルを同期しました"
+msgstr "追加するチャネルが選択されていません"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:331
-#, fuzzy
-#| msgid "Channel Name"
 msgid "Channels to Remove"
-msgstr "チャンネル名"
+msgstr "削除するチャネル"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:347
-#, fuzzy
-#| msgid " channels synced"
 msgid "No channels selected to remove"
-msgstr " チャンネルを同期しました"
+msgstr "削除するチャネルが選択されていません"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:354
-#, fuzzy
-#| msgid "Channel sync failed"
 msgid "Channel Sync Changes"
-msgstr "チャンネル同期に失敗しました"
+msgstr "チャネル同期の変更"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:355
-#, fuzzy
-#| msgid "Can not contain the following characters: /\\"
 msgid "You are about to make the following changes:"
-msgstr "下記の文字を含めることはできません: /\\"
+msgstr "次の変更を加えようとしています:"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:374
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
@@ -1249,13 +1189,11 @@ msgstr "確認"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:397
 msgid "{peripheralFqdn} - Peripheral Sync Channels"
-msgstr ""
+msgstr "{peripheralFqdn} - 周辺機器同期チャネル"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:407
-#, fuzzy
-#| msgid "Back to list"
 msgid "Back to details"
-msgstr "一覧に戻る"
+msgstr "詳細に戻る"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:420
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:421
@@ -1265,13 +1203,11 @@ msgstr "変更の適用"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:429
 msgid "Sync Channels from Hub to Peripheral"
-msgstr ""
+msgstr "ハブから周辺機器へのチャネルの同期"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:439
-#, fuzzy
-#| msgid "Confirm Software Channel Change"
 msgid "Confirm Channel Synchronization Changes"
-msgstr "ソフトウェアチャンネルの変更確認"
+msgstr "チャネル同期の変更確認"
 
 #: ../html/src/components/hub/TokenTable.tsx:54
 msgid "No tokens available"
@@ -1428,10 +1364,8 @@ msgid "Login"
 msgstr "ログイン"
 
 #: ../html/src/components/input/password/Password.example.tsx:25
-#, fuzzy
-#| msgid "Minimum 4 characters"
 msgid "Must be at least 4 characters"
-msgstr "最低 4 文字"
+msgstr "4文字以上である必要があります"
 
 #: ../html/src/components/input/radio/horizontal-open.example.tsx:26
 #: ../html/src/components/input/radio/horizontal.example.tsx:26
@@ -2068,16 +2002,12 @@ msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabl
 msgstr "Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。無効化ボタンを押して JMX 設定を無効化するか、もしくは有効化ボタンを押して Prometheus エクスポータを開始してください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:44
-#, fuzzy
-#| msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
 msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
-msgstr "Tomcat Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。有効化ボタンを押して JMX 設定を有効化するか、もしくは無効化ボタンを押して Prometheus エクスポータを停止してください。"
+msgstr "Taskomatic Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。有効化ボタンを押して JMX 設定を有効化するか、もしくは無効化ボタンを押して Prometheus エクスポータを停止してください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:47
-#, fuzzy
-#| msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
 msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
-msgstr "Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。無効化ボタンを押して JMX 設定を無効化するか、もしくは有効化ボタンを押して Prometheus エクスポータを開始してください。"
+msgstr "Taskomatic Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。無効化ボタンを押して JMX 設定を無効化するか、もしくは有効化ボタンを押して Prometheus エクスポータを開始してください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:52
 msgid "Monitoring status hasn't changed."
@@ -2119,16 +2049,12 @@ msgid "Server Monitoring"
 msgstr "サーバ監視"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:150
-#, fuzzy
-#| msgid " exporters to expose metrics about your environment."
 msgid "The server uses <link>Prometheus</link> exporters to expose metrics about your environment."
-msgstr " エクスポータを利用して、お使いの環境に関するメトリックを開示します。"
+msgstr "サーバは、<link>Prometheus</link>エクスポータを使用して、お使いの環境に関するメトリックを開示します。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:159
-#, fuzzy
-#| msgid " to learn how to consume these metrics."
 msgid "Refer to the <link>documentation</link> to learn how to consume these metrics."
-msgstr " をお読みください。メトリックの消費方法が書かれています。"
+msgstr "これらのメトリックの使用方法については、<link>ドキュメント</link> を参照してください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:250
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:270
@@ -2145,14 +2071,12 @@ msgid "Disable"
 msgstr "無効"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:334
-#, fuzzy
-#| msgid "SUSE Manager Configuration - Monitoring"
 msgid "{productName} Configuration - Monitoring"
-msgstr "SUSE Manager 設定 - モニタリング"
+msgstr "{productName} 設定 - モニタリング"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:341
 msgid "Set up monitoring for your {productName} server."
-msgstr ""
+msgstr "{productName} サーバのモニタリングを設定します。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:347
 msgid "General"
@@ -2246,21 +2170,19 @@ msgstr "アクセストークン"
 
 #: ../html/src/manager/admin/hub/migrate-from-v1.renderer.tsx:14
 msgid "Migrate from ISSv1 Slaves"
-msgstr ""
+msgstr "ISSv1スレーブからの移行"
 
 #: ../html/src/manager/admin/hub/migrate-from-v2.renderer.tsx:13
 msgid "Migrate from ISSv2"
-msgstr ""
+msgstr "ISSv2からの移行"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:20
 msgid "{fqdn} - Peripheral Details"
-msgstr ""
+msgstr "{fqdn} - 周辺機器の詳細"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
-msgstr "このサーバは現在、ハブ {fqdn} の周辺機器として登録されています。 "
+msgstr "サーバ {fqdn} は現在、このハブの周辺機器として登録されています。 "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:26
 msgid "Peripherals Configuration"
@@ -2276,15 +2198,15 @@ msgstr "移行"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:41
 msgid "Migrate an existing configuration of a previous version of ISS"
-msgstr ""
+msgstr "以前のバージョンのISSの既存の設定を移行する"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:48
 msgid "Migrate ISS v1..."
-msgstr ""
+msgstr "ISS v1を移行..."
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:57
 msgid "Migrate ISS v2..."
-msgstr ""
+msgstr "ISS v2を移行..."
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:57
 msgid "This server is configured as a Peripheral server in a Hub configuration. Managing PAYG Connections is disabled."
@@ -2376,8 +2298,6 @@ msgid "Password Policy Changed"
 msgstr "パスワードポリシーが変更されました"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:139
-#, fuzzy
-#| msgid "Password Policy reset to defaults"
 msgid "Password Policy Reset to Default"
 msgstr "パスワードポリシーがデフォルトにリセットされました"
 
@@ -2484,10 +2404,8 @@ msgid "Operation not successful: Empty reply from the server"
 msgstr "操作は成功しませんでした: サーバからの応答が空です"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:132
-#, fuzzy
-#| msgid "No SUSE Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
 msgid "No SUSE Multi-Linux Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
-msgstr "利用可能な SUSE Manager サーバサブスクリプションがありません。 Client Tools Channel を必要とする製品は表示されなくなります。"
+msgstr "利用可能な SUSE Multi-Linux Manager サーバサブスクリプションがありません。 Client Tools Channel を必要とする製品は表示されなくなります。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:179
 msgid "The product catalog refresh is running..."
@@ -3008,10 +2926,8 @@ msgid "Match data status"
 msgstr "マッチングデータの状態"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:88
-#, fuzzy
-#| msgid "Could not start a matching run. Please contact your SUSE Manager administrator to make sure the task scheduler is running."
 msgid "Could not start a matching run. Please contact your administrator to make sure the task scheduler is running."
-msgstr "マッチング処理を開始できません。 SUSE Manager の管理者に連絡して、タスクスケジューラが動作しているかどうかをご確認ください。"
+msgstr "マッチング処理を開始できません。管理者に連絡して、タスクスケジューラが動作しているかどうかをご確認ください。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:97
 msgid "No match data is currently available."
@@ -4488,10 +4404,8 @@ msgstr "クラスタ概要の表示"
 #: ../html/src/manager/images/image-view-overview.tsx:247
 #: ../html/src/manager/images/image-view-overview.tsx:249
 #: ../html/src/manager/images/image-view.tsx:528
-#, fuzzy
-#| msgid "All instances are consistent with SUSE Manager"
 msgid "All instances are consistent with {productName}"
-msgstr "全てのインスタンスが SUSE Manager と同期できています"
+msgstr "全てのインスタンスが {productName} と同期できています"
 
 #: ../html/src/manager/images/image-view-overview.tsx:262
 #: ../html/src/manager/images/image-view-overview.tsx:263
@@ -4651,20 +4565,16 @@ msgid "Loading runtime information..."
 msgstr "ランタイム情報を読み込んでいます..."
 
 #: ../html/src/manager/images/image-view-runtime.tsx:70
-#, fuzzy
-#| msgid "Instance is consistent with SUSE Manager"
 msgid "Instance is consistent with {productName}"
-msgstr "インスタンスは SUSE Manager と同期されています"
+msgstr "インスタンスは {productName} と同期されています"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:76
 msgid "Instance is outdated"
 msgstr "インスタンスは古くなっています"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:110
-#, fuzzy
-#| msgid "Cluster is consistent with SUSE Manager"
 msgid "Cluster is consistent with {productName"
-msgstr "クラスタは SUSE Manager と同期されています"
+msgstr "クラスタは {productName} と同期されています"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:116
 msgid "Cluster is outdated"
@@ -4759,10 +4669,8 @@ msgid "The available disk space on the server is critically low. Please contact 
 msgstr "サーバで使用可能なディスク容量が非常に少なくなっています。ディスク容量を追加するには、システム管理者に連絡してください。"
 
 #: ../html/src/manager/login/messages.tsx:53
-#, fuzzy
-#| msgid "SUSE Manager PAYG instances must forward registration data to SCC when credentials are provided. Data will be sent independently of the configuration setting. To hide this warning please set 'forward_registration = 1' in rhn.conf."
 msgid "SUSE Multi-Linux Manager PAYG instances must forward registration data to SCC when credentials are provided. Data will be sent independently of the configuration setting. To hide this warning please set 'forward_registration = 1' in rhn.conf."
-msgstr "SUSE Manager PAYGインスタンスは、資格情報が提供されたときに登録データをSCCに転送する必要があります。データは設定とは関係なく送信されます。この警告を非表示にするには、rhn.conf で'forward_registration = 1'を設定してください。"
+msgstr "SUSE Multi-Linux Manager PAYGインスタンスは、資格情報が提供されたときに登録データをSCCに転送する必要があります。データは設定とは関係なく送信されます。この警告を非表示にするには、rhn.conf で'forward_registration = 1'を設定してください。"
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
@@ -5179,7 +5087,7 @@ msgstr "playbook の実行のスケジュール"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:128
 msgid "Select the current Playbook"
-msgstr ""
+msgstr "現在のplaybookを選択"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Schedule Playbook Execution"
@@ -5290,16 +5198,12 @@ msgid "Applying the packages states has been "
 msgstr "パッケージ状態の適用を "
 
 #: ../html/src/manager/minion/proxy/proxy-config-messages.tsx:13
-#, fuzzy
-#| msgid "The image import has been scheduled."
 msgid "Proxy configuration action has been scheduled."
-msgstr "イメージの取り込みをスケジュールしました。"
+msgstr "プロキシ設定アクションをスケジュールしました。"
 
 #: ../html/src/manager/minion/proxy/proxy-config-messages.tsx:25
-#, fuzzy
-#| msgid "Search in configuration channels"
 msgid "Scheduling proxy configuration action..."
-msgstr "設定チャンネル内での検索"
+msgstr "プロキシ設定アクションをスケジュールしています..."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:114
 #: ../html/src/manager/proxy/container-config.tsx:142
@@ -5307,18 +5211,16 @@ msgid "Request interrupted or invalid response received from the server."
 msgstr "要求に対して割り込みが発生したか、サーバから不正な応答を受け取りました。"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:179
-#, fuzzy
-#| msgid "Configuration"
 msgid "Proxy Configuration"
-msgstr "設定"
+msgstr "プロキシ設定"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:183
 msgid "Convert an already onboarded minion to a proxy or update the configuration of an existing proxy."
-msgstr ""
+msgstr "すでにオンボードされているminionをプロキシに変換するか、既存のプロキシの設定を更新します。"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:193
 msgid "Convert Minion to Proxy"
-msgstr ""
+msgstr "minionをプロキシに変換する"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:198
 #: ../html/src/manager/proxy/container-config.tsx:210
@@ -5352,16 +5254,12 @@ msgid "Max Squid cache size"
 msgstr "Squidの最大キャッシュサイズ"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:220
-#, fuzzy
-#| msgid "The maximum value of the Squid cache in Megabytes"
 msgid "The maximum value of the Squid cache in Gigabytes"
-msgstr "Squidキャッシュの最大値(メガバイト単位)"
+msgstr "Squidキャッシュの最大値(ギガバイト単位)"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:223
-#, fuzzy
-#| msgid "e.g., 2048"
 msgid "e.g., 100"
-msgstr "例: 2048"
+msgstr "例: 100"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:230
 #: ../html/src/manager/proxy/container-config.tsx:242
@@ -5380,26 +5278,22 @@ msgstr "例: proxy.admin@mycompany.com"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:241
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:242
-#, fuzzy
-#| msgid "CA certificate"
 msgid "Certificates"
-msgstr "CA 証明書"
+msgstr "証明書"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:250
 msgid "Keep"
-msgstr ""
+msgstr "維持"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:251
 msgid "Replace"
-msgstr ""
+msgstr "置換"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:262
 msgid "Keeping the current certificates means no changes will be made to the Root CA, Intermediate CAs, Proxy certificate, or Proxy SSL private key."
-msgstr ""
+msgstr "現在の証明書を維持するということは、ルートCA、中間CA、プロキシ証明書、プロキシSSL機密鍵に変更が加えられないことを意味します。"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:273
-#, fuzzy
-#| msgid "The root CA"
 msgid "Root CA"
 msgstr "ルートCA"
 
@@ -5443,35 +5337,29 @@ msgid "Source"
 msgstr "ソース"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:335
-#, fuzzy
-#| msgid "Register"
 msgid "Registry"
-msgstr "登録"
+msgstr "レジストリ"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:336
 msgid "RPM"
-msgstr ""
+msgstr "RPM"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:344
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:345
-#, fuzzy
-#| msgid "Registration mode"
 msgid "Registry Source"
-msgstr "登録モード"
+msgstr "レジストリソース"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:352
 msgid "Simple"
-msgstr ""
+msgstr "単純"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:353
 msgid "Advanced"
-msgstr ""
+msgstr "詳細"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:361
-#, fuzzy
-#| msgid "Register"
 msgid "Registry URL"
-msgstr "登録"
+msgstr "レジストリURL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:362
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:389
@@ -5479,16 +5367,12 @@ msgstr "登録"
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:437
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:461
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:485
-#, fuzzy
-#| msgid "e.g., 2048"
 msgid "e.g., "
-msgstr "例: 2048"
+msgstr "例: "
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:369
-#, fuzzy
-#| msgid "Contains Package"
 msgid "Containers Tag"
-msgstr "パッケージを含むもの"
+msgstr "コンテナタグ"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:371
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:398
@@ -5496,50 +5380,48 @@ msgstr "パッケージを含むもの"
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:446
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:470
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:494
-#, fuzzy
-#| msgid "latest"
 msgid "e.g., latest"
-msgstr "最新"
+msgstr "例: 最新"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:388
 msgid "HTTPD URL"
-msgstr ""
+msgstr "HTTPD URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:396
 msgid "HTTPD Tag"
-msgstr ""
+msgstr "HTTPDタグ"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:412
 msgid "Salt Broker URL"
-msgstr ""
+msgstr "Salt Broker URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:420
 msgid "Salt Broker Tag"
-msgstr ""
+msgstr "Salt Brokerタグ"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:436
 msgid "Squid URL"
-msgstr ""
+msgstr "Squid URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:444
 msgid "Squid Tag"
-msgstr ""
+msgstr "Squidタグ"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:460
 msgid "SSH URL"
-msgstr ""
+msgstr "SSH URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:468
 msgid "SSH Tag"
-msgstr ""
+msgstr "SSHタグ"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:484
 msgid "TFTPD URL"
-msgstr ""
+msgstr "TFTPD URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:492
 msgid "TFTPD Tag"
-msgstr ""
+msgstr "TFTPDタグ"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:510
 msgid "Apply"
@@ -5669,28 +5551,20 @@ msgid "Delete Notification"
 msgstr "通知の削除"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:307
-#, fuzzy
-#| msgid "Environment updated successfully"
 msgid "{number} messages status updated successfully"
-msgstr "環境を更新しました"
+msgstr "{number} 件のメッセージのステータスが正常に更新されました"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:308
-#, fuzzy
-#| msgid "Cluster properties updated successfully"
 msgid "Message read status updated successfully"
-msgstr "クラスタのプロパティを更新しました"
+msgstr "メッセージの読み込みステータスが正常に更新されました"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:325
-#, fuzzy
-#| msgid "Filter deleted successfully"
 msgid "{number} messages deleted successfully"
-msgstr "フィルタを削除しました"
+msgstr "{number} 件のメッセージが正常に削除されました"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:326
-#, fuzzy
-#| msgid "Filter deleted successfully"
 msgid "Message deleted successfully"
-msgstr "フィルタを削除しました"
+msgstr "メッセージは正常に削除されました"
 
 #: ../html/src/manager/notifications/notifications.tsx:42
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:339
@@ -5900,38 +5774,30 @@ msgstr "クォーツ書式文字列"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:206
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:74
-#, fuzzy
-#| msgid "Playbook Directories"
 msgid "Playbook details"
-msgstr "playbook ディレクトリ"
+msgstr "playbookの詳細"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:211
-#, fuzzy
-#| msgid "Playbook Content"
 msgid "Playbook path"
-msgstr "playbook の内容"
+msgstr "playbookパス"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:215
-#, fuzzy
-#| msgid "Inventory Path"
 msgid "Inventory path"
 msgstr "インベントリパス"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:219
-#, fuzzy
-#| msgid "Flush Ansible fact cache"
 msgid "Flush fact cache"
-msgstr "Ansibleファクトキャッシュをフラッシュする"
+msgstr "ファクトキャッシュをフラッシュする"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:220
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:93
 msgid "true"
-msgstr ""
+msgstr "true"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:220
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:93
 msgid "false"
-msgstr ""
+msgstr "false"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:264
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:235
@@ -6030,34 +5896,24 @@ msgid "The below times are displayed in the server time zone {timeZone}. The sch
 msgstr "サーバのタイムゾーン{timeZone}には、以下の時間が表示されます。スケジュールされた時間はサーバ時間になります。"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:54
-#, fuzzy
-#| msgid "Change Proxy"
 msgid "Change Playbook"
-msgstr "プロキシの変更"
+msgstr "playbookの変更"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:61
-#, fuzzy
-#| msgid "Select a filter"
 msgid "Select a Playbook"
-msgstr "フィルタの選択"
+msgstr "playbookの選択"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:79
-#, fuzzy
-#| msgid "Playbook Content"
 msgid "Playbook path:"
-msgstr "playbook の内容"
+msgstr "playbookパス:"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:85
-#, fuzzy
-#| msgid "Inventory Path"
 msgid "Inventory path:"
-msgstr "インベントリパス"
+msgstr "インベントリパス:"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:91
-#, fuzzy
-#| msgid "Flush Ansible fact cache"
 msgid "Flush fact cache:"
-msgstr "Ansibleファクトキャッシュをフラッシュする"
+msgstr "ファクトキャッシュをフラッシュする:"
 
 #. Value options for filtering by Action Type in recurring actions list
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
@@ -6226,10 +6082,8 @@ msgid "Uyuni homepage"
 msgstr "Uyuni ホームページ"
 
 #: ../html/src/manager/shared/menu/menu.tsx:259
-#, fuzzy
-#| msgid "SUSE Manager homepage"
 msgid "SUSE Multi-Linux Manager homepage"
-msgstr "SUSE Manager ホームページ"
+msgstr "SUSE Multi-Linux Manager ホームページ"
 
 #: ../html/src/manager/state/display-highstate.tsx:9
 msgid "State Summary for {name}"
@@ -6248,10 +6102,8 @@ msgid "Config channel"
 msgstr "設定チャンネル"
 
 #: ../html/src/manager/state/highstate-summary.tsx:27
-#, fuzzy
-#| msgid "{productName} release {versionNumber}"
 msgid "{productName} internal"
-msgstr "{productName}リリース{versionNumber}"
+msgstr "{productName} 内部"
 
 #: ../html/src/manager/state/highstate-summary.tsx:37
 msgid "Internal states"
@@ -6299,7 +6151,7 @@ msgstr "これは開発者が使用する隠しページです。偶然見つけ
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:35
 msgid "{productName} Default"
-msgstr ""
+msgstr "{productName} デフォルト"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:65
 msgid "Loading child channels.."
@@ -6547,7 +6399,7 @@ msgstr "Ansible制御ノード"
 
 #: ../html/src/manager/systems/list-filter.tsx:13
 msgid "Ansible Managed"
-msgstr ""
+msgstr "Ansibleマネージド"
 
 #: ../html/src/manager/systems/list-filter.tsx:15
 msgid "Container Build Host"
