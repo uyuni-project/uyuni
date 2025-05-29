@@ -72,8 +72,10 @@ Group:          Development/Libraries
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires:  python2-devel
 Requires:       python2-pyOpenSSL
+Requires:       python2-defusedxml
 %else
 BuildRequires:  python-devel
+Requires:       python-defusedxml
 %if 0%{?suse_version}
 %if 0%{?suse_version} > 1200
 Requires:       python-pyOpenSSL
@@ -93,6 +95,7 @@ BuildRequires:  rpm
 Requires(preun):python-minimal
 Requires(post): python-minimal
 Requires:       python-openssl
+Requires:       python-defusedxml
 Obsoletes:      python-rhn
 Conflicts:      python-rhn
 %endif
@@ -125,6 +128,7 @@ BuildRequires:  python-rpm-macros
 %endif
 %endif
 Requires:       python3-pyOpenSSL
+Requires:       python3-defusedxml
 
 %if "%{_vendor}" == "debbuild"
 BuildRequires:  python3-dev
