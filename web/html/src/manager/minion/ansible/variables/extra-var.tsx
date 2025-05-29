@@ -21,12 +21,13 @@ const ExtraVariabl = (props: Props) => {
           <div className="d-grid">
             <h4 className="pull-left">{t("Additonal variables")}</h4>
             <p>
-              Use this free-form text field to define any additional variables that are not included in the<br /> main vars
-              section.
+              Use this free-form text field to define any additional variables that are not included in the
+              <br /> main vars section.
             </p>
             <small className="mb-4">
               <strong>Note:</strong> If any variable defined in the Additonal variables already exists in the main
-              playbook variables,<br /> the value from Additonal variables will overwrite the existing one.
+              playbook variables,
+              <br /> the value from Additonal variables will overwrite the existing one.
             </small>
           </div>
           <div className="row">
