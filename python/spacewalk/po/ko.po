@@ -12,16 +12,15 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-25 09:41+0200\n"
-"PO-Revision-Date: 2021-03-31 12:58+0000\n"
+"PO-Revision-Date: 2025-05-29 03:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/"
-">\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: ../server/apacheAuth.py:72
 #, python-format
@@ -83,8 +82,7 @@ msgstr ""
 #| msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
 msgid ""
 "SUSE Multi-Linux Manager Proxy service not enabled for server profile: \"%s\""
-msgstr ""
-"SUSE Manager Proxy 서비스가 다음 서버 프로파일에 대해 활성화되지 않음: \"%s\""
+msgstr "SUSE Multi-Linux Manager Proxy 서비스가 다음 서버 프로파일에 대해 활성화되지 않음: \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:94
 msgid "Invalid session key"
@@ -456,9 +454,8 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     이 시스템에는 SUSE Manager에 유효한 자격 유형이 없습니다.\n"
-"     이 시스템에 대해 서비스를 사용하려면 https://%(hostname)s/rhn/systems/"
-"SystemEntitlements.do로 이동하거나\n"
+"     이 시스템에는 SUSE Multi-Linux Manager에 유효한 자격 유형이 없습니다.\n"
+"     이 시스템에 대해 서비스를 사용하려면 https://%(hostname)s/rhn/systems/SystemEntitlements.do로 이동하거나\n"
 "     https://%(hostname)s에 로그인한 후, \"개요\" 탭에서\n"
 "     \"구독 관리\"를 선택하십시오.\n"
 "     "
@@ -618,7 +615,7 @@ msgid ""
 msgstr ""
 "\n"
 "     --force mgrpush 옵션이 이 서버에서 사용할 수 없도록 설정되었습니다.\n"
-"     SUSE Manager 관리자에게 문의하여 지원을 요청하십시오.\n"
+"     SUSE Multi-Linux Manager 관리자에게 문의하여 지원을 요청하십시오.\n"
 "     "
 
 #: ../common/rhnException.py:161
@@ -679,7 +676,7 @@ msgstr "기본 채널의 구독을 취소할 수 없습니다."
 #, fuzzy
 #| msgid "SUSE Manager or Proxy channel can not be subscribed."
 msgid "SUSE Multi-Linux Manager or Proxy channel can not be subscribed."
-msgstr "SUSE Manager 또는 프록시 채널을 구독할 수 없습니다."
+msgstr "SUSE Multi-Linux Manager 또는 프록시 채널을 구독할 수 없습니다."
 
 #. 80-90: server group errors
 #: ../common/rhnException.py:185
@@ -747,13 +744,13 @@ msgstr "시스템 이름은 1자 미만이 아니어야 합니다."
 #, fuzzy
 #| msgid "SUSE Manager Proxy error."
 msgid "SUSE Multi-Linux Manager Proxy error."
-msgstr "SUSE Manager 프록시 오류입니다."
+msgstr "SUSE Multi-Linux Manager Proxy 오류입니다."
 
 #: ../common/rhnException.py:207
 #, fuzzy
 #| msgid "SUSE Manager Proxy unable to login."
 msgid "SUSE Multi-Linux Manager Proxy unable to login."
-msgstr "SUSE Manager 프록시에 로그인할 수 없습니다."
+msgstr "SUSE Multi-Linux Manager Proxy에 로그인할 수 없습니다."
 
 #: ../common/rhnException.py:210
 #, fuzzy
@@ -771,7 +768,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     SUSE Manager 프록시 시스템 ID가 데이터베이스의 Spacewalk 프록시 서버와\n"
+"     SUSE Multi-Linux Manager Proxy 시스템 ID가 데이터베이스의 Spacewalk 프록시 서버와\n"
 "     일치하지 않습니다.\n"
 "     "
 
@@ -779,13 +776,13 @@ msgstr ""
 #, fuzzy
 #| msgid "SUSE Manager Proxy session token is invalid."
 msgid "SUSE Multi-Linux Manager Proxy session token is invalid."
-msgstr "SUSE Manager 프록시 세션 토큰이 잘못되었습니다."
+msgstr "SUSE Multi-Linux Manager Proxy 세션 토큰이 잘못되었습니다."
 
 #: ../common/rhnException.py:216
 #, fuzzy
 #| msgid "SUSE Manager Proxy session token has expired."
 msgid "SUSE Multi-Linux Manager Proxy session token has expired."
-msgstr "SUSE Manager 프록시 세션 토큰이 만료되었습니다."
+msgstr "SUSE Multi-Linux Manager Proxy 세션 토큰이 만료되었습니다."
 
 #: ../common/rhnException.py:220
 msgid ""
@@ -813,8 +810,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     이 SUSE Manager 서버는 이 서버에서 서버 간 동기화를 사용하도록 허용되지 "
-"않습니다.\n"
+"     이 SUSE Multi-Linux Manager 서버는 이 서버에서 서버 간 동기화를 사용하도록 허용되지 않습니다.\n"
 "     "
 
 #: ../common/rhnException.py:231
@@ -829,7 +825,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     이 SUSE Manager 서버에서 서버 간 동기화가 비활성화되었습니다.\n"
+"     이 SUSE Multi-Linux Manager 서버에서 서버 간 동기화가 비활성화되었습니다.\n"
 "     "
 
 #. 3000-3999: XML dumper errors:
@@ -1112,7 +1108,7 @@ msgid ""
 msgstr ""
 "\n"
 "오류: 이 채널 집합의 채널을 동기화할 권한이 없습니다.\n"
-"SUSE Manager 담당자에게 문의하십시오.\n"
+"SUSE Multi-Linux Manager 담당자에게 문의하십시오.\n"
 "%s"
 
 #: ../satellite_tools/messages.py:77
