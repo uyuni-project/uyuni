@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 11:31+0200\n"
-"PO-Revision-Date: 2025-03-09 11:56+0000\n"
+"PO-Revision-Date: 2025-05-29 03:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -423,7 +423,7 @@ msgstr "下記のプロジェクトを削除してよろしいですか "
 
 #: ../html/src/components/formik/Form.example.tsx:34
 msgid "Field"
-msgstr ""
+msgstr "フィールド"
 
 #: ../html/src/components/formik/Form.example.tsx:36
 #: ../html/src/components/input/InputBase.test.tsx:43
@@ -442,7 +442,7 @@ msgstr "最低 2 文字"
 
 #: ../html/src/components/formik/Form.example.tsx:39
 msgid "Checkbox"
-msgstr ""
+msgstr "チェックボックス"
 
 #: ../html/src/components/formik/Form.example.tsx:41
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
@@ -459,42 +459,36 @@ msgid "Password"
 msgstr "パスワード"
 
 #: ../html/src/components/formik/Form.example.tsx:43
-#, fuzzy
-#| msgid "fa-times"
 msgid "Datetime"
-msgstr "fa-times"
+msgstr "日時"
 
 #: ../html/src/components/formik/Form.example.tsx:45
 msgid "Multiple values"
-msgstr ""
+msgstr "複数の値"
 
 #: ../html/src/components/formik/Form.example.tsx:47
-#, fuzzy
-#| msgid "Loading text"
 msgid "Long text"
-msgstr "テキストを読み込んでいます"
+msgstr "長いテキスト"
 
 #: ../html/src/components/formik/Form.example.tsx:49
-#, fuzzy
-#| msgid "Changes"
 msgid "Range"
-msgstr "変更"
+msgstr "範囲"
 
 #: ../html/src/components/formik/Form.example.tsx:53
 msgid "Radio"
-msgstr ""
+msgstr "ラジオ"
 
 #: ../html/src/components/formik/Form.example.tsx:55
 msgid "One"
-msgstr ""
+msgstr "1"
 
 #: ../html/src/components/formik/Form.example.tsx:56
 msgid "Two"
-msgstr ""
+msgstr "2"
 
 #: ../html/src/components/formik/Form.example.tsx:57
 msgid "Three"
-msgstr ""
+msgstr "3"
 
 #: ../html/src/components/formik/Form.example.tsx:62
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:108
@@ -516,18 +510,16 @@ msgid "Submit"
 msgstr "送信"
 
 #: ../html/src/components/formik/field/AsRadio.tsx:41
-#, fuzzy
-#| msgid "Custom State"
 msgid "Custom value"
-msgstr "カスタム状態"
+msgstr "カスタム値"
 
 #: ../html/src/components/formik/field/AsRange.tsx:15
 msgid "{rangeInputName} start"
-msgstr ""
+msgstr "{rangeInputName} 開始"
 
 #: ../html/src/components/formik/field/AsRange.tsx:24
 msgid "{rangeInputName} end"
-msgstr ""
+msgstr "{rangeInputName} 終了"
 
 #: ../html/src/components/formik/field/FieldBase.tsx:30
 #: ../html/src/components/input/InputBase.tsx:279
@@ -535,17 +527,13 @@ msgid "required"
 msgstr "必要"
 
 #: ../html/src/components/formik/field/MultiField.tsx:37
-#, fuzzy
-#| msgid "Remove file"
 msgid "Remove item"
-msgstr "ファイルの削除"
+msgstr "項目の削除"
 
 #: ../html/src/components/formik/field/MultiField.tsx:58
 #: ../html/src/components/formik/field/MultiField.tsx:62
-#, fuzzy
-#| msgid "Add system"
 msgid "Add item"
-msgstr "システムの追加"
+msgstr "項目の追加"
 
 #: ../html/src/components/formula-selection.tsx:135
 msgid " No group"
@@ -677,10 +665,8 @@ msgid "Are you sure you want to deregister from hub {fqdn}? If you do, you will 
 msgstr "ハブ {fqdn} から登録解除してよろしいですか? 登録解除すると、それ以降ハブからデータが受信されなくなります。"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:70
-#, fuzzy
-#| msgid "Are you sure you want to derigester peripheral {fqdn}? All the current configuration will be lost."
 msgid "Are you sure you want to deregister peripheral {fqdn}? All the current configuration will be lost."
-msgstr "周辺機器 {fqdn} を削除してもよろしいですか? 現在のすべての設定が失われます。"
+msgstr "周辺機器 {fqdn} の登録を解除してもよろしいですか? 現在のすべての設定が失われます。"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:86
 msgid "The server {fqdn} has been successfully deregistered."
@@ -688,40 +674,28 @@ msgstr "サーバ {fqdn} が正常に登録解除されました。"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:36
 #: ../html/src/components/hub/DesyncChannel.tsx:45
-#, fuzzy
-#| msgid "synced"
 msgid "Desync"
-msgstr "同期済み"
+msgstr "同期解除"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:37
-#, fuzzy
-#| msgid "Base Channel"
 msgid "Desync Channel"
-msgstr "ベースチャンネル"
+msgstr "チャネルの同期解除"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:42
-#, fuzzy
-#| msgid "Confirm Deletion"
 msgid "Confirm Desync"
-msgstr "削除の確認"
+msgstr "同期解除の確認"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:55
-#, fuzzy
-#| msgid "no child channels"
 msgid "Desync channels?"
-msgstr "子チャンネル無し"
+msgstr "チャネルの同期を解除しますか。"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:64
-#, fuzzy
-#| msgid "The server {fqdn} has been successfully deregistered."
 msgid "The channels have been successfully desynced."
-msgstr "サーバ {fqdn} が正常に登録解除されました。"
+msgstr "チャネルが正常に同期解除されました。"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:131
-#, fuzzy
-#| msgid "Organization"
 msgid "Select Organization"
-msgstr "組織"
+msgstr "組織の選択"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:161
 #: ../html/src/manager/admin/setup/products/products.tsx:487
@@ -729,10 +703,8 @@ msgid "Filter by architecture"
 msgstr "アーキテクチャでフィルタ"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:173
-#, fuzzy
-#| msgid "Loading child channels.."
 msgid "Search channels..."
-msgstr "子チャンネルを読み込んでいます.."
+msgstr "チャネルを検索..."
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:188
 msgid "Sync"
