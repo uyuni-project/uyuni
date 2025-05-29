@@ -120,6 +120,7 @@ Requires:       %{name}-sql = %{version}-%{release}
 Requires:       spacewalk-config
 Requires:       (apache2-mod_wsgi or python3-mod_wsgi)
 Requires:       (python3-pam or python3-python-pam)
+Requires:       python3-defusedxml
 
 # cobbler-web is known to break our configuration
 Conflicts:      cobbler-web
