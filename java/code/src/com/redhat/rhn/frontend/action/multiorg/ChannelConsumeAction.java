@@ -42,9 +42,7 @@ public class ChannelConsumeAction extends BaseChannelTreeAction {
         Long oid = requestContext.getParamAsLong(RequestContext.ORG_ID);
         //grab the trusted org id passed in
         Org trustOrg = OrgFactory.lookupById(oid);
-        //User user = requestContext.getCurrentUser();
         User user = UserFactory.findRandomOrgAdmin(trustOrg);
-        //Org org = user.getOrg();
         Org org = requestContext.getCurrentUser().getOrg();
 
         return ChannelManager.trustChannelConsume(org, trustOrg, user, lc);
