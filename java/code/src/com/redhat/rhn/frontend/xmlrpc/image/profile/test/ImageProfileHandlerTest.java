@@ -207,6 +207,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             fail("Invalid store provided.");
         }
         catch (NoSuchImageStoreException ignore) {
+            //should be here
         }
 
         try {
