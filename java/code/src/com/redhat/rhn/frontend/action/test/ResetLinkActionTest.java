@@ -20,10 +20,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.db.ResetPasswordFactory;
 import com.redhat.rhn.domain.common.ResetPassword;
-import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.user.ResetLinkAction;
-import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
@@ -51,7 +49,7 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
     @Test
     public void testPerformNoToken() {
         try {
-            ActionForward rc = action.execute(mapping, form, request, response);
+            action.execute(mapping, form, request, response);
         }
         catch (BadParameterException bpe) {
             assertTrue(true, "Caught BPE");
@@ -95,14 +93,11 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
         request = new RhnMockHttpServletRequest();
         response = new RhnMockHttpServletResponse();
 
-        RequestContext requestContext = new RequestContext(request);
-
         MockHttpSession mockSession = new MockHttpSession();
         mockSession.setupGetAttribute("token", null);
         mockSession.setupGetAttribute("request_method", "GET");
         request.setSession(mockSession);
         request.setupServerName("mymachine.rhndev.redhat.com");
-        WebSession s = requestContext.getWebSession();
 
         mapping.addForwardConfig(valid);
         mapping.addForwardConfig(invalid);

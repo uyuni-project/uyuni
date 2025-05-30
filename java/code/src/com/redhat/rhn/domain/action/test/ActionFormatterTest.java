@@ -83,7 +83,7 @@ public class ActionFormatterTest extends RhnBaseTestCase {
                 ">1 system</a></strong> failed to complete this action.<br/><br/>"));
 
         sa.setStatus(ActionFactory.STATUS_COMPLETED);
-        sa = (ServerAction) TestUtils.saveAndReload(sa);
+        TestUtils.saveAndReload(sa);
         assertTrue(af.getNotes().startsWith(
                 "<a href=\"/rhn/schedule/CompletedSystems.do?aid="));
         assertTrue(af.getNotes().endsWith(
