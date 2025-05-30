@@ -340,7 +340,7 @@
       </trans-unit>
       <trans-unit id="Fill in this address" xml:space="preserve">
         <source>Fill in this address</source>
-        <target>Escriviu aquesta adreça.</target>
+        <target state="translated">Escriviu l'adreça.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
@@ -364,7 +364,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Tots</target>
+        <target state="translated">Tot</target>
       </trans-unit>
       <trans-unit id="url" xml:space="preserve">
         <source>url</source>
@@ -2638,7 +2638,7 @@ lt;/divgt;
       </trans-unit>
       <trans-unit id="errata.schedule" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; patch update has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
-        <target state="translated">lt;stronggt;{0}lt;/stronggt; l'actualització del pedaç ha estat lt;a href."/rhn/systems/details/history/Pending.do?sid{2}{2}"gt;scheduledlt;/agt; per a lt;a href."/rhn/systems/details/Overview.do?sid.{2}"gt;{1}lt;/agt;.</target>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; s'ha &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;programat&lt;/a&gt; per a &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">1 errata update has been scheduled for workstation.</context>
@@ -2646,7 +2646,7 @@ lt;/divgt;
       </trans-unit>
       <trans-unit id="errata.schedule.plural" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; patch updates have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
-        <target state="translated">lt;stronggt;{0}lt;/stronggt; les actualitzacions del pedaç han estat lt;a href."/rhn/systems/details/history/Pending.do?sid{2}{2}"gt;scheduledlt;/agt; per a lt;a href."/rhn/systems/details/Overview.do?sid.{2}"gt;{1}lt;/agt;.</target>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; s'han &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;programat&lt;/a&gt; per a &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">43 errata updates have been scheduled for workstation.</context>
@@ -2768,7 +2768,7 @@ lt;/divgt;
       </trans-unit>
       <trans-unit id="coma_publisher" xml:space="preserve">
         <source>Coma CMS Publisher</source>
-        <target state="translated">Coma CMS Publisher</target>
+        <target state="translated">Editor Coma CMS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -4043,7 +4043,7 @@ usuari abans d'intentar desactivar el seu compte.</target>
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/</context>
           <context context-type="paramnotes">sid, actionid, servername, profilename</context>
         </context-group>
-        <target state="translated">lt;stronggt;NOTE:lt;/stronggt; El .PRODUCTNAME. té lt;stronggt;lt;a href."/rhn/systems/details/history/Event.do?sid.{0}amp;aid{1}{1}"gt;scheduledlt;/agt;lt;/stronggt; una actualització de maquinari per a lt;stronggt;{2}lt;/stronggt; per a executar-se abans de la sincronització del perfil del paquet.  Això és necessari per a verificar que el sistema té la capacitat de comparar paquets.</target>
+        <target state="translated">&lt;strong&gt;NOTA:&lt;/strong&gt; @@PRODUCT_NAME@@ té &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;programat&lt;/a&gt;&lt;/strong&gt; una actualització del maquinari per a &lt;strong&gt;{2}&lt;/strong&gt; que s'executarà abans de la sincronització del perfil del paquet. Això és necessari per verificar que el sistema té la capacitat de comparar paquets.</target>
       </trans-unit>
       <trans-unit id="filterCreate.success" xml:space="preserve">
         <source>The filter {0} was successfully created</source>
