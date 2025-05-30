@@ -68,7 +68,7 @@ public class DeleteUserActionTest extends RhnBaseTestCase {
 
         //Not an org admin
         try {
-            forward = action.execute(mapping, form, request, response);
+            action.execute(mapping, form, request, response);
             fail();
         }
         catch (PermissionException e) {
@@ -81,7 +81,7 @@ public class DeleteUserActionTest extends RhnBaseTestCase {
         requestContext.getCurrentUser().addPermanentRole(
                 RoleFactory.lookupByLabel("org_admin"));
         try {
-            forward = action.execute(mapping, form, request, response);
+            action.execute(mapping, form, request, response);
             fail();
         }
         catch (BadParameterException e) {
@@ -98,7 +98,7 @@ public class DeleteUserActionTest extends RhnBaseTestCase {
         //try to delete non-existing user
         request.setupAddParameter("uid", "-9999");
         try {
-            forward = action.execute(mapping, form, request, response);
+            action.execute(mapping, form, request, response);
             fail();
         }
         catch (LookupException e) {
