@@ -188,21 +188,21 @@ public class SessionManagerTest extends RhnBaseTestCase {
 
         String invalidKey = s.getId() + "xfoobaredkeyhash";
         try {
-            s2 = SessionManager.lookupByKey(invalidKey);
+            SessionManager.lookupByKey(invalidKey);
         }
         catch (InvalidSessionIdException e) {
             //success
         }
 
         try {
-            s2 = SessionManager.lookupByKey(null);
+            SessionManager.lookupByKey(null);
         }
         catch (InvalidSessionIdException e) {
             //success
         }
 
         try {
-            s2 = SessionManager.lookupByKey(s.getId() + "foobaredkeyhash");
+            SessionManager.lookupByKey(s.getId() + "foobaredkeyhash");
         }
         catch (InvalidSessionIdException e) {
             //success

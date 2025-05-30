@@ -76,7 +76,7 @@ public class TaskTest extends RhnBaseTestCase {
         Org org = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         String testname = "task_object_unit_test_" + TestUtils.randomString();
         Long testdata = 42L;
-        Task t = TaskFactory.createTask(org, testname, testdata);
+        TaskFactory.createTask(org, testname, testdata);
 
         List lookedup = TaskFactory.getTaskListByNameLike("task_object_unit_test_");
         assertNotNull(lookedup);
