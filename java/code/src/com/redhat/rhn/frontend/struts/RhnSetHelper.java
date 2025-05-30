@@ -142,7 +142,6 @@ public class RhnSetHelper {
     public void selectAllData(List result, User user) {
         // Get an "unelaborated" DataResult containing all of the
         // user's visible systems
-        // DataResult dr = getDataResult(user, request);
 
         this.setDecl.clear(user);
         RhnSet rs = this.setDecl.create(user);

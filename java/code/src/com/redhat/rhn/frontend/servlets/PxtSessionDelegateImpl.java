@@ -230,7 +230,6 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
     public void invalidatePxtSession(HttpServletRequest request,
                                      HttpServletResponse response) {
 
-        //updateWebUserId(request, response, null);
         WebSession pxtSession = getPxtSession(request);
         pxtSession.setWebUserId(null);
 

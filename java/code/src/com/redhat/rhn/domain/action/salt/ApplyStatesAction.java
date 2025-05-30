@@ -59,7 +59,6 @@ public class ApplyStatesAction extends Action {
 
     @Override
     public String getHistoryDetails(Server server, User currentUser) {
-        // LocalizationService ls = LocalizationService.getInstance();
         StringBuilder retval = new StringBuilder();
         retval.append("</br>");
         for (ApplyStatesActionResult result : getDetails().getResults()) {

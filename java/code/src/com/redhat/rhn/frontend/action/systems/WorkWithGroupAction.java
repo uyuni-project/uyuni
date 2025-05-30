@@ -59,7 +59,6 @@ public class WorkWithGroupAction extends RhnAction {
 
         RhnSetManager.store(systemSet);
 
-        //response.sendRedirect("/rhn/systems/ssm/ListSystems.do");
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 }
