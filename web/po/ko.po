@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 11:50+0200\n"
-"PO-Revision-Date: 2025-05-29 06:59+0000\n"
+"PO-Revision-Date: 2025-05-30 08:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-5-0/ko/>\n"
 "Language: ko\n"
@@ -279,8 +279,6 @@ msgstr "이름"
 msgid "Password"
 msgstr "비밀번호"
 
-#, fuzzy
-#| msgid "Minimum 4 characters"
 msgid "Must be at least 4 characters"
 msgstr "4자 이상"
 
@@ -662,13 +660,9 @@ msgstr "Tomcat Prometheus 내보내기가 작동 중이지만 JMX 구성이 비�
 msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
 msgstr "Tomcat Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. 비활성화 버튼을 클릭하여 JMX 구성을 비활성화하거나 활성화를 클릭하여 Prometheus 내보내기를 시작하십시오."
 
-#, fuzzy
-#| msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
 msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
 msgstr "Taskomatic Prometheus 내보내기가 작동 중이지만 JMX 구성이 비활성화되었습니다. 활성화 버튼을 클릭하여 JMX 구성을 활성화하거나 비활성화를 클릭하여 Prometheu 내보내기를 중지하십시오."
 
-#, fuzzy
-#| msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
 msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
 msgstr "Taskomatic Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. 비활성화 버튼을 클릭하여 JMX 구성을 비활성화하거나 활성화를 클릭하여 Prometheus 내보내기를 시작하십시오."
 
@@ -834,8 +828,6 @@ msgstr "암호 정책 저장"
 msgid "Password Policy Changed"
 msgstr "암호 정책 변경됨"
 
-#, fuzzy
-#| msgid "Password Policy reset to defaults"
 msgid "Password Policy Reset to Default"
 msgstr "비밀번호 정책 기본값으로 재설정"
 
@@ -1048,7 +1040,7 @@ msgid "HTTP Proxy Password"
 msgstr ""
 
 msgid "Illustration of a proxy server"
-msgstr ""
+msgstr "프록시 서버 그림"
 
 #, fuzzy
 #| msgid "Proxy"
@@ -1234,10 +1226,8 @@ msgstr ""
 msgid "Error, see console"
 msgstr ""
 
-#, fuzzy
-#| msgid "Unknown Hostnames"
 msgid "Unknown patch status"
-msgstr "알 수 없는 호스트 이름"
+msgstr "알 수 없는 패치 상태"
 
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
 msgstr "OVAL 데이터가 동기화되지 않음. 잠재적 누락된 취약점"
