@@ -48,6 +48,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 public class ListTagUtil {
     private static final String HIDDEN_TEXT = "<input type=\"hidden\" " +
                                                 "name=\"%s\" value=\"%s\"/>";
+    private static final String LIST_PREFIX = "list_";
     private ListTagUtil() {
 
     }
@@ -243,7 +244,7 @@ public class ListTagUtil {
      * @return the url key for sort direction
      */
     public static String makeSortDirLabel(String listName) {
-        return "list_" + listName + "_sortdir";
+        return LIST_PREFIX + listName + "_sortdir";
     }
 
     /**
@@ -252,7 +253,7 @@ public class ListTagUtil {
      * @return the url key for sort label
      */
     public static String makeSortByLabel(String listName) {
-        return "list_" + listName + "_sortby";
+        return LIST_PREFIX + listName + "_sortby";
     }
 
     /**
@@ -261,7 +262,7 @@ public class ListTagUtil {
      * @return the url key for sort direction
      */
     public static String makeSortDirId(String listName) {
-        return "list_" + listName + "_sortdir_id";
+        return LIST_PREFIX + listName + "_sortdir_id";
     }
 
     /**
@@ -270,7 +271,7 @@ public class ListTagUtil {
      * @return the url key for sort label
      */
     public static String makeSortById(String listName) {
-        return "list_" + listName + "_sortby_id";
+        return LIST_PREFIX + listName + "_sortby_id";
     }
 
     /**
@@ -279,7 +280,7 @@ public class ListTagUtil {
      * @return the url key for filter label
      */
     public static String makeFilterByLabel(String listName) {
-        return "list_" + listName + "_filterby";
+        return LIST_PREFIX + listName + "_filterby";
     }
 
     /**
@@ -288,7 +289,7 @@ public class ListTagUtil {
      * @return the url key for filter value label
      */
     public static String makeFilterValueByLabel(String listName) {
-        return "list_" + listName + "_filterval";
+        return LIST_PREFIX + listName + "_filterval";
     }
 
     /**
@@ -297,7 +298,7 @@ public class ListTagUtil {
      * @return the url key for filter value label
      */
     public static String makeFilterAttributeByLabel(String listName) {
-        return "list_" + listName + "_filterattr";
+        return LIST_PREFIX + listName + "_filterattr";
     }
 
 
@@ -307,7 +308,7 @@ public class ListTagUtil {
      * @return the url key for filter value label
      */
     public static String makeImageNameByLabel(String listName) {
-        return "list_" + listName + "_filterattr";
+        return LIST_PREFIX + listName + "_filterattr";
     }
 
 
@@ -317,7 +318,7 @@ public class ListTagUtil {
      * @return the key for filter name label
      */
     public static String makeFilterNameByLabel(String listName) {
-        return "list_" + listName + "_filtername";
+        return LIST_PREFIX + listName + "_filtername";
     }
 
     /**
@@ -326,7 +327,7 @@ public class ListTagUtil {
      * @return the url key for filter value label
      */
     public static String makeOldFilterValueByLabel(String listName) {
-        return "list_" + listName + "_oldfilterval";
+        return LIST_PREFIX + listName + "_oldfilterval";
     }
 
     /**
@@ -335,7 +336,7 @@ public class ListTagUtil {
      * @return the filter class label
      */
     public static String makeFilterClassLabel(String listName) {
-        return "list_" + listName + "_filterclass";
+        return LIST_PREFIX + listName + "_filterclass";
     }
 
     /**
@@ -346,7 +347,7 @@ public class ListTagUtil {
      * @return the label of the select action
      */
     public static String makeSelectActionName(String listName) {
-        return "list_" + listName + "_selectAction";
+        return LIST_PREFIX + listName + "_selectAction";
     }
 
     /**
@@ -355,7 +356,7 @@ public class ListTagUtil {
      * @return the label of the select action
      */
     public static String makeExtraButtonName(String listName) {
-        return "list_" + listName + "_" + ExtraButtonDecorator.EXTRA_BUTTON;
+        return LIST_PREFIX + listName + "_" + ExtraButtonDecorator.EXTRA_BUTTON;
     }
 
 
@@ -366,7 +367,7 @@ public class ListTagUtil {
      * @return the label of the select amount attribute
      */
     public static String makeSelectedAmountName(String listName) {
-        return "list_" + listName + "_selected_amt";
+        return LIST_PREFIX + listName + "_selected_amt";
     }
 
     /**
@@ -375,7 +376,7 @@ public class ListTagUtil {
      * @return the name of selected items
      */
     public static String makeSelectedItemsName(String listName) {
-        return "list_" + listName + "_sel";
+        return LIST_PREFIX + listName + "_sel";
     }
 
     /**
@@ -384,7 +385,7 @@ public class ListTagUtil {
      * @return the name of attribute holding all the row items in the page
      */
     public static String makePageItemsName(String listName) {
-        return "list_" + listName + "_items";
+        return LIST_PREFIX + listName + "_items";
     }
 
     /**
@@ -393,7 +394,7 @@ public class ListTagUtil {
      * @return the  name of the attribute that holds the current page number.
      */
     public static String makePageNumberName(String listName) {
-        return "list_" + listName + "_page";
+        return LIST_PREFIX + listName + "_page";
     }
     /**
      * Make first page link
@@ -577,7 +578,7 @@ public class ListTagUtil {
      * @return the label of the parent is an element attribute
      */
     public static String makeParentIsAnElementLabel(String listName) {
-        return "list_" + listName + "_parent_is_an_element";
+        return LIST_PREFIX + listName + "_parent_is_an_element";
     }
 
     /**
@@ -692,7 +693,7 @@ public class ListTagUtil {
         else {
             url += "&";
         }
-        url += "list_" + listName;
+        url += LIST_PREFIX + listName;
         url += "_page=" + page;
         return url;
 
