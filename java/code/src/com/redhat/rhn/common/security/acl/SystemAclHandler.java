@@ -147,10 +147,10 @@ public class SystemAclHandler extends BaseHandler {
             return false;
         }
         try {
-            SystemRecord record = SystemRecord.lookupById(
+            SystemRecord systemRecord = SystemRecord.lookupById(
                                     CobblerXMLRPCHelper.getConnection(user),
                                                     server.getCobblerId());
-            return record != null;
+            return systemRecord != null;
         }
         catch (Exception e) {
             log.error("Cobbler connection errored out for Id{}", server.getCobblerId(), e);
