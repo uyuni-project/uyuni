@@ -83,8 +83,6 @@ public class ListControlTest extends RhnBaseTestCase {
         //cs2.put('F', 2);
         //cs2.put('Z', 4);
 
-        //Ensure that cs1 and cs2 are equal
-        //assertTrue(cs1.equals(cs2));
         assertNotNull(cs1);
 
     }

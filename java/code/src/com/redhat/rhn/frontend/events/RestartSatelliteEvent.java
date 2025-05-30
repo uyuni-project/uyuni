@@ -24,8 +24,6 @@ import com.redhat.rhn.domain.user.User;
  */
 public class RestartSatelliteEvent extends BaseEvent implements EventMessage {
 
-    //private User user;
-
     /**
      * default constructor
      * @param currentUser who is creating this event.
