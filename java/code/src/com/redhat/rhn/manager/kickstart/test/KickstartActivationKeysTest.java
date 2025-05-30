@@ -78,8 +78,6 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
 
         KickstartFactory.saveKickstartData(ksdata);
 
-        Long ksid = ksdata.getId();
-
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         String note = TestUtils.randomString() +

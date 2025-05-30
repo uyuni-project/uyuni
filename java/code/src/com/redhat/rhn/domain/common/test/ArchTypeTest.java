@@ -40,8 +40,6 @@ public class ArchTypeTest extends RhnBaseTestCase {
 
         ArchType at2 = (ArchType) TestUtils.lookupFromCacheById(at1.getId(), query);
         assertEquals(at1.getLabel(), at2.getLabel());
-
-        ArchType at3 = (ArchType) TestUtils.lookupFromCacheById(at1.getId(), query);
     }
 
 }

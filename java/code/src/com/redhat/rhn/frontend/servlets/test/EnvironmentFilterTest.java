@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.frontend.servlets.EnvironmentFilter;
 
 import org.apache.struts.Globals;
@@ -72,7 +71,6 @@ public class EnvironmentFilterTest extends BaseFilterTst {
 
     @Test
     public void testAddAMessage() throws Exception {
-        Config c = Config.get();
         EnvironmentFilter filter = new EnvironmentFilter();
         filter.init(null);
         this.request.setupIsSecure(true);

@@ -72,8 +72,6 @@ public class RequireTagTest extends RhnBaseTestCase {
 
     @Test
     public void testNullAcl() {
-        boolean flag = false;
-
         try {
 
             // set test condition
@@ -81,10 +79,10 @@ public class RequireTagTest extends RhnBaseTestCase {
 
             // we don't expect this to work
             tth.assertDoStartTag(-1);
-            flag = true;
+            fail(); //shouldn't be here
         }
         catch (JspException e) {
-            assertFalse(flag);
+            //should be here
         }
         catch (Exception e1) {
             fail(e1.toString());
@@ -93,8 +91,6 @@ public class RequireTagTest extends RhnBaseTestCase {
 
     @Test
     public void testEmptyAcl() {
-        boolean flag = false;
-
         try {
 
             // set test condition
@@ -102,10 +98,10 @@ public class RequireTagTest extends RhnBaseTestCase {
 
             // we don't expect this to work
             tth.assertDoStartTag(-1);
-            flag = true;
+            fail(); //shouldn't be here
         }
         catch (JspException e) {
-            assertFalse(flag);
+            //should be here
         }
         catch (Exception e1) {
             fail(e1.toString());
@@ -114,18 +110,16 @@ public class RequireTagTest extends RhnBaseTestCase {
 
     @Test
     public void testMixin() {
-
-        boolean flag = false;
         try {
             rt.setAcl("true_test()");
             rt.setMixins("throws.class.not.found.exception," +
                          BooleanAclHandler.class.getName());
 
             tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE);
-            flag = true;
+            fail(); //shouldn't be here
         }
         catch (JspException je) {
-            assertFalse(flag);
+            //should be here
         }
         catch (Exception e) {
             fail(e.toString());
