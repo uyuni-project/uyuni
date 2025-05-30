@@ -395,6 +395,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             fail();
         }
         catch (ServerNotInGroupException e) {
+            //should be here
         }
 
         assertFalse(serverGroup.getServers().contains(testServer1));
