@@ -733,18 +733,18 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         unknownPkg.put("name", "unknown");
         unknownPkg.put("arch", "i386");
         packages.add(unknownPkg);
-        int result = keyHandler.removePackages(admin, newKey, packages);
+        keyHandler.removePackages(admin, newKey, packages);
         assertEquals(3, activationKey.getPackages().size());
 
         packages.clear();
         packages.add(pkg2);
-        result = keyHandler.removePackages(admin, newKey, packages);
+        keyHandler.removePackages(admin, newKey, packages);
         assertEquals(2, activationKey.getPackages().size());
 
         packages.clear();
         packages.add(pkg1);
         packages.add(pkg3);
-        result = keyHandler.removePackages(admin, newKey, packages);
+        keyHandler.removePackages(admin, newKey, packages);
         assertEquals(0, activationKey.getPackages().size());
     }
 
@@ -989,7 +989,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         assertFalse(activationKey.getDeployConfigs());
 
         try {
-            status = keyHandler.checkConfigDeployment(admin, "invalidkey");
+            keyHandler.checkConfigDeployment(admin, "invalidkey");
         }
         catch (Exception e) {
             // great!.. Exception received on error...

@@ -534,7 +534,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         test = PackageManager.listOrphanPackages(user.getOrg().getId(), false);
 
         assertTrue(test.isEmpty());
-        Package pack2 = PackageTest.createTestPackage(user.getOrg());
+        PackageTest.createTestPackage(user.getOrg());
         test = PackageManager.listOrphanPackages(user.getOrg().getId(), false);
 
         assertEquals(1, test.size());
@@ -644,7 +644,6 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         DataResult dr = PackageManager.getRepoData(p.getId());
         PackageDto dto = (PackageDto) dr.get(0);
         String prim = dto.getPrimaryXml();
-        String other = dto.getOtherXml();
         assertEquals(prim, test);
     }
 

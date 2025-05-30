@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
@@ -122,25 +122,15 @@ public class ToolbarTagMiscTest extends BaseTestToolbarTag {
 
     @Test
     public void testCreateAclValidAclInvalidMixin() {
-        boolean flag = false;
-        try {
-            String output = "<div class=\"toolbar-h1\"><div class=\"" +
-            "toolbar\"></div></div>";
+        String output = "<div class=\"toolbar-h1\"><div class=\"" +
+                "toolbar\"></div></div>";
 
-            setupMiscTag("h1", "misc-url",
-                    "true_test()", "alt", "text", "foo.gif");
+        setupMiscTag("h1", "misc-url",
+                "true_test()", "alt", "text", "foo.gif");
 
-            tt.setAclMixins("throws.class.not.found.exception");
+        tt.setAclMixins("throws.class.not.found.exception");
 
-            verifyTag(output);
-            flag = true;
-        }
-        catch (JspException je) {
-            assertFalse(flag);
-        }
-        catch (Exception e) {
-            fail(e.toString());
-        }
+        assertThrows(JspException.class, () -> verifyTag(output));
     }
 
     @Test

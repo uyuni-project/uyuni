@@ -872,7 +872,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         SERVER_GROUP_MANAGER.associateAdmins(group, admins, admin);
         assertTrue(SERVER_GROUP_MANAGER.canAccess(regular, group));
         ServerGroupFactory.save(group);
-        group = reload(group);
+        reload(group);
         UserFactory.save(admin);
         admin = reload(admin);
         UserFactory.save(regular);
@@ -1047,7 +1047,6 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ServerSnapshot snap = generateSnapshot(server2);
         TestUtils.saveAndFlush(snap);
         ServerFactory.deleteSnapshot(snap);
-        boolean lost = false;
         ServerSnapshot snap2 = ServerFactory.lookupSnapshotById(
             snap.getId().intValue());
         assertNull(snap2);

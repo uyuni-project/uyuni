@@ -505,7 +505,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() { {
             allowing(taskomaticMock).deleteScheduledActions(with(equal(actionMap)));
         } });
-        Optional<ServerAction> traditionalServerAction = parent.getServerActions().stream()
+        parent.getServerActions().stream()
                 .filter(s -> !s.getServer().asMinionServer().isPresent())
                 .findFirst();
 

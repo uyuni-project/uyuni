@@ -68,7 +68,7 @@ public class ProfileStaticTest {
                 .setInitrd("initrd")
                 .setArch("arch")
                 .build(connectionMock);
-        Profile testProfile = Profile.create(connectionMock, profileName, testDistro);
+        Profile.create(connectionMock, profileName, testDistro);
 
         // Act
         Profile result = Profile.lookupByName(connectionMock, profileName);

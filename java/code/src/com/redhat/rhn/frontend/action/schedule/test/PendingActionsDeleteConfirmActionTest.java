@@ -50,7 +50,6 @@ public class PendingActionsDeleteConfirmActionTest extends RhnMockStrutsTestCase
         set.addElement(b.getId());
         RhnSetManager.store(set);
 
-        set = RhnSetDecl.ACTIONS_PENDING.get(user);
         addDispatchCall("actions.jsp.confirmcancelactions");
         setRequestPathInfo("/schedule/PendingActionsDeleteConfirm");
         actionPerform();
