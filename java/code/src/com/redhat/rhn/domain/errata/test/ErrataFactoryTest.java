@@ -328,7 +328,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         Org org = OrgFactory.lookupById(orgId);
         Errata testErrata = createTestErrata(orgId);
 
-        Long ceid = ErrataHelper.cloneErrataFaster(testErrata.getId(), org);
+        ErrataHelper.cloneErrataFaster(testErrata.getId(), org);
 
         List list = ErrataFactory.lookupByOriginal(org, testErrata);
 

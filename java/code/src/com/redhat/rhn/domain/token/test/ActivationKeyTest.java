@@ -96,7 +96,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
 
 
         try {
-            k3 = ActivationKeyManager.getInstance().
+            ActivationKeyManager.getInstance().
                 findByServer(null, user).iterator().next();
             String msg = "Permission check failed :(.." +
                             " Activation key should not have existed" +
@@ -111,7 +111,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         User user1 = UserTestUtils.findNewUser("testuser", "testorg");
         Server server2 = ServerFactoryTest.createTestServer(user1);
         try {
-            k3 = ActivationKeyManager.getInstance().
+            ActivationKeyManager.getInstance().
                 findByServer(server2, user1).iterator().next();
             String msg = "Permission check failed :(.." +
                             " Activation key should not have existed" +
@@ -161,7 +161,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         KickstartFactory.saveKickstartSession(sess);
         k.setKickstartSession(sess);
         ActivationKeyFactory.save(k);
-        k = (ActivationKey) reload(k);
+        reload(k);
 
         ActivationKey lookedUp = ActivationKeyFactory.lookupByKickstartSession(sess);
         assertNotNull(lookedUp);

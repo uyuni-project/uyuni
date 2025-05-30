@@ -46,7 +46,6 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -108,7 +107,6 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         Map<String, Object> info =
                 ErrataCacheManagerTest.createServerNeededCache(user,
                         ErrataFactory.ERRATA_TYPE_BUG);
-        List<Integer> upgradePackages = new ArrayList<>();
         Server s = (Server) info.get("server");
         Errata e = (Errata) info.get("errata");
 

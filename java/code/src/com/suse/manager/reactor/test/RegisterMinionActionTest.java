@@ -1707,7 +1707,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         oldMinion.addChannel(assignedChildChannel);
         ServerFactory.save(oldMinion);
 
-        ChannelFamily channelFamily = createTestChannelFamily();
+        createTestChannelFamily();
         HibernateFactory.getSession().flush();
         executeTest(
                 (key) -> new Expectations() {{

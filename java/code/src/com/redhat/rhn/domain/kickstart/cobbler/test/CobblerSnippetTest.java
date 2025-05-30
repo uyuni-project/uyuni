@@ -113,9 +113,9 @@ public class CobblerSnippetTest extends BaseTestCaseWithUser {
         }
 
         name = TestUtils.randomString();
-        CobblerSnippet snip = CobblerSnippet.createOrUpdate(true, name,
+        CobblerSnippet.createOrUpdate(true, name,
                         contents, user.getOrg());
-        snip  = CobblerSnippet.loadEditable(name, user.getOrg());
+        CobblerSnippet snip  = CobblerSnippet.loadEditable(name, user.getOrg());
         assertNotNull(snip);
         assertTrue(snip.getPath().exists());
         assertEquals(contents, snip.getContents());
