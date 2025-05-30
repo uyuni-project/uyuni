@@ -220,7 +220,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
     public void testGetContainersUsageInactiveContainers() throws Exception {
         expectGetAllContainers("local-context", "get_all_containers.inactive_containers.json");
 
-        VirtualHostManager cluster1 = createVirtHostManager();
+        createVirtHostManager();
 
         ImageInfo imgInfo = createImageWithRepoDigest("jocatalin/kubernetes-bootcamp", "v1", 1,
             "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af");

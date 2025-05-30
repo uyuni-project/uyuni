@@ -53,7 +53,6 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerFQDN;
@@ -86,7 +85,6 @@ import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
-import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Openscap;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.datatypes.Event;
@@ -1868,8 +1866,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                         images.get("POS_Image_JeOS6").get("6.0.0-1").get("hash"));
         });
 
-        String category = "Image" + image.getId();
-
         HibernateFactory.getSession().flush();
 
         ImageInfoFactory.delete(image, saltServiceMock);
@@ -2139,7 +2135,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
         action.addServerAction(sa);
 
-        Map<LocalCall<?>, List<MinionSummary>> calls = saltServerActionService.callsForAction(action);
+        saltServerActionService.callsForAction(action);
         HibernateFactory.getSession().flush();
 
         // artifically expire tokens
