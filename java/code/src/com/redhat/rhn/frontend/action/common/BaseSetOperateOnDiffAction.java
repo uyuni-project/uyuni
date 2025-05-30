@@ -81,7 +81,6 @@ public abstract class BaseSetOperateOnDiffAction extends RhnSetAction {
         log.debug("operateOnDiff called");
 
         User user = new RequestContext(request).getCurrentUser();
-        // RhnSet originalSet = getSetDecl().get(user);
 
         RhnSet currentset = updateSet(request);
         RhnSetManager.store(currentset);

@@ -312,7 +312,7 @@ public class SystemHandler extends BaseHandler {
 
         // if there are any existing reactivation keys, remove them before
         // creating a new one... there should only be 1; however, earlier
-        // versions of the API did not remove the existing reactivation keys;
+        // versions of the API did not remove the existing reactivation keys
         // therefore, it is possible that multiple will be returned...
         ActivationKeyFactory.removeKeysForServer(server.getId());
 
@@ -1232,7 +1232,7 @@ public class SystemHandler extends BaseHandler {
 
             //Check epoch
             String pkgEpoch = StringUtils.trim((String) pkg.get("epoch"));
-            // If epoch is null, we arrived here from the isNvreInstalled(...n,v,r) method;
+            // If epoch is null, we arrived here from the isNvreInstalled(...n,v,r) method
             // therefore, just skip the comparison
             if ((epoch != null) && !pkgEpoch.equals(StringUtils.trim(epoch))) {
                 continue;
