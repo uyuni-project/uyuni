@@ -848,7 +848,7 @@ public class ContentManager {
         // fix the original-clone relation
         ChannelManager.forceBecomingCloneOf(tgt, newSource);
 
-        // handle the module data: if there are modules filters present, we strip them, even if the source is modular;
+        // handle the module data: if there are modules filters present, we strip them, even if the source is modular
         // otherwise we set them according to the source channel modules
         if (stripModuleData) {
             stripModuleMetadata(tgt);
