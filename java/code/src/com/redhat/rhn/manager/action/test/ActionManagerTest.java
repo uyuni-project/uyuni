@@ -1005,8 +1005,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 createPackageListItem("kernel-2.4.24-EL-mmccune", 500341));
         profileList.add(ProfileManagerTest.
                 createPackageListItem("kernel-2.4.25-EL-mmccune", 500341));
-        //profileList.add(ProfileManagerTest.
-        //        createPackageListItem("other-2.1.0-EL-mmccune", 500400));
 
         List<PackageListItem> systemList = new ArrayList<>();
         systemList.add(ProfileManagerTest.
@@ -1201,29 +1199,11 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             log.warn("pm [{}] compare [{}] release [{}]", pm.toString(), pm.getComparison(),
                     pm.getSystem() != null ? pm.getSystem().getRelease() : pm.getOther().getRelease());
         }
-//        assertEquals(1, diff.size());
-//        PackageMetadata pm = (PackageMetadata) diff.get(0);
-//        assertNotNull(pm);
-//        assertEquals(PackageMetadata.KEY_OTHER_NEWER, pm.getComparisonAsInt());
-//        assertEquals("kernel-2.4.22-27.EL-bretm", pm.getProfileEvr());
-//        assertEquals("kernel-2.4.21-27.EL", pm.getSystemEvr());
 
         Action action = ActionManager.schedulePackageRunTransaction(user, srvr, pkgs,
                 new Date());
         System.out.println("Action is an [" + action.getClass().getName() + "]");
-        //1005385254&set_label=packages_for_system_sync&prid=6110jjj
-        /*
-         * INSERT INTO rhnPackageDeltaElement
-  (package_delta_id, transaction_package_id)
-VALUES
-  (:delta_id,
-   lookup_transaction_package(:operation, :n, :e, :v, :r, :a))
-
-         */
     }
-
-    //schedulePackageDelta
-
 
     private TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {
         if (taskomaticApi == null) {

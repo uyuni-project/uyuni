@@ -125,12 +125,6 @@ public class ListControl {
             String value = (String)MethodUtil.callMethod(inputRow,
                                                 StringUtil.beanify("get " + filterColumn),
                                                 new Object[0]);
-            /* Filter the data if necessary
-            if (filterValue != null && value != null) {
-                if (value.indexOf(filterValue) < 0) {
-                    di.remove();
-                }
-            }*/
             // Make sure that the alpha inputs are converted
             // to uppercase
             if (value != null) {
