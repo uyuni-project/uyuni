@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-11 13:33+0200\n"
-"PO-Revision-Date: 2025-05-29 06:59+0000\n"
+"PO-Revision-Date: 2025-05-30 08:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacewalk-client-tools-4-3/ko/>\n"
 "Language: ko\n"
@@ -2136,7 +2136,6 @@ msgstr ""
 "다."
 
 #: ../data/rh_register.glade.h:94
-#, fuzzy
 msgid "Proxy Configuration"
 msgstr "프록시 구성"
 
