@@ -143,6 +143,7 @@ public class SchedulerKernel {
                     this.shutdownLock.wait();
                 }
                 catch (InterruptedException ignored) {
+                    //ignored
                 }
             }
         }

@@ -459,7 +459,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
         }
         catch (InvalidOperationException e) {
-
+            //should be here
         }
         //Symlinks are not allowed for state channel
         try {
