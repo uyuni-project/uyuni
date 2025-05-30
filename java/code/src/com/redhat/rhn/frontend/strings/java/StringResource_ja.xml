@@ -2,375 +2,375 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
   <file datatype="plaintext" original="" source-language="en" target-language="ja">
     <body>
-      <trans-unit id="0" xml:space="preserve">
+      <trans-unit id="0" xml:space="preserve" approved="yes">
         <source>0</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation menu</context>
         </context-group>
-        <target>0</target>
+        <target state="final">0</target>
       </trans-unit>
-      <trans-unit id="1" xml:space="preserve">
+      <trans-unit id="1" xml:space="preserve" approved="yes">
         <source>1</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>1</target>
+        <target state="final">1</target>
       </trans-unit>
-      <trans-unit id="2.0.0" xml:space="preserve">
+      <trans-unit id="2.0.0" xml:space="preserve" approved="yes">
         <source>2.0.0</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>2.0.0</target>
+        <target state="final">2.0.0</target>
       </trans-unit>
-      <trans-unit id="2.0.1" xml:space="preserve">
+      <trans-unit id="2.0.1" xml:space="preserve" approved="yes">
         <source>2.0.1</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>2.0.1</target>
+        <target state="final">2.0.1</target>
       </trans-unit>
-      <trans-unit id="2" xml:space="preserve">
+      <trans-unit id="2" xml:space="preserve" approved="yes">
         <source>2</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>2</target>
+        <target state="final">2</target>
       </trans-unit>
-      <trans-unit id="2.4.0" xml:space="preserve">
+      <trans-unit id="2.4.0" xml:space="preserve" approved="yes">
         <source>2.4.0</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>2.4.0</target>
+        <target state="final">2.4.0</target>
       </trans-unit>
-      <trans-unit id="2.5.0" xml:space="preserve">
+      <trans-unit id="2.5.0" xml:space="preserve" approved="yes">
         <source>2.5.0</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>2.5.0</target>
+        <target state="final">2.5.0</target>
       </trans-unit>
-      <trans-unit id="2.6.0" xml:space="preserve">
+      <trans-unit id="2.6.0" xml:space="preserve" approved="yes">
         <source>2.6.0</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>2.6.0</target>
+        <target state="final">2.6.0</target>
       </trans-unit>
-      <trans-unit id="2.7.0" xml:space="preserve">
+      <trans-unit id="2.7.0" xml:space="preserve" approved="yes">
         <source>2.7.0</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>2.7.0</target>
+        <target state="final">2.7.0</target>
       </trans-unit>
-      <trans-unit id="2.8.0" xml:space="preserve">
+      <trans-unit id="2.8.0" xml:space="preserve" approved="yes">
         <source>2.8.0</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>2.8.0</target>
+        <target state="final">2.8.0</target>
       </trans-unit>
-      <trans-unit id="2.9.0" xml:space="preserve">
+      <trans-unit id="2.9.0" xml:space="preserve" approved="yes">
         <source>2.9.0</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>2.9.0</target>
+        <target state="final">2.9.0</target>
       </trans-unit>
-      <trans-unit id="3.0.0" xml:space="preserve">
+      <trans-unit id="3.0.0" xml:space="preserve" approved="yes">
         <source>3.0.0</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>3.0.0</target>
+        <target state="final">3.0.0</target>
       </trans-unit>
-      <trans-unit id="3.1.0" xml:space="preserve">
+      <trans-unit id="3.1.0" xml:space="preserve" approved="yes">
         <source>3.1.0</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>3.1.0</target>
+        <target state="final">3.1.0</target>
       </trans-unit>
-      <trans-unit id="3.1.5" xml:space="preserve">
+      <trans-unit id="3.1.5" xml:space="preserve" approved="yes">
         <source>3.1.5</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>3.1.5</target>
+        <target state="final">3.1.5</target>
       </trans-unit>
-      <trans-unit id="3.2.0" xml:space="preserve">
+      <trans-unit id="3.2.0" xml:space="preserve" approved="yes">
         <source>3.2.0</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>3.2.0</target>
+        <target state="final">3.2.0</target>
       </trans-unit>
-      <trans-unit id="3.3.0" xml:space="preserve">
+      <trans-unit id="3.3.0" xml:space="preserve" approved="yes">
         <source>3.3.0</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>3.3.0</target>
+        <target state="final">3.3.0</target>
       </trans-unit>
-      <trans-unit id="3" xml:space="preserve">
+      <trans-unit id="3" xml:space="preserve" approved="yes">
         <source>3</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>3</target>
+        <target state="final">3</target>
       </trans-unit>
-      <trans-unit id="3.4.0" xml:space="preserve">
+      <trans-unit id="3.4.0" xml:space="preserve" approved="yes">
         <source>3.4.0</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>3.4.0</target>
+        <target state="final">3.4.0</target>
       </trans-unit>
-      <trans-unit id="3.5.0" xml:space="preserve">
+      <trans-unit id="3.5.0" xml:space="preserve" approved="yes">
         <source>3.5.0</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>3.5.0</target>
+        <target state="final">3.5.0</target>
       </trans-unit>
-      <trans-unit id="3.6.0" xml:space="preserve">
+      <trans-unit id="3.6.0" xml:space="preserve" approved="yes">
         <source>3.6.0</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>3.6.0</target>
+        <target state="final">3.6.0</target>
       </trans-unit>
-      <trans-unit id="3.6.5" xml:space="preserve">
+      <trans-unit id="3.6.5" xml:space="preserve" approved="yes">
         <source>3.6.5</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>3.6.5</target>
+        <target state="final">3.6.5</target>
       </trans-unit>
-      <trans-unit id="3.7.0" xml:space="preserve">
+      <trans-unit id="3.7.0" xml:space="preserve" approved="yes">
         <source>3.7.0</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>3.7.0</target>
+        <target state="final">3.7.0</target>
       </trans-unit>
-      <trans-unit id="4" xml:space="preserve">
+      <trans-unit id="4" xml:space="preserve" approved="yes">
         <source>4</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>4</target>
+        <target state="final">4</target>
       </trans-unit>
-      <trans-unit id="4.0.0" xml:space="preserve">
+      <trans-unit id="4.0.0" xml:space="preserve" approved="yes">
         <source>4.0.0</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>4.0.0</target>
+        <target state="final">4.0.0</target>
       </trans-unit>
-      <trans-unit id="5" xml:space="preserve">
+      <trans-unit id="5" xml:space="preserve" approved="yes">
         <source>5</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>5</target>
+        <target state="final">5</target>
       </trans-unit>
-      <trans-unit id="6" xml:space="preserve">
+      <trans-unit id="6" xml:space="preserve" approved="yes">
         <source>6</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>6</target>
+        <target state="final">6</target>
       </trans-unit>
-      <trans-unit id="7" xml:space="preserve">
+      <trans-unit id="7" xml:space="preserve" approved="yes">
         <source>7</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>7</target>
+        <target state="final">7</target>
       </trans-unit>
-      <trans-unit id="8" xml:space="preserve">
+      <trans-unit id="8" xml:space="preserve" approved="yes">
         <source>8</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>8</target>
+        <target state="final">8</target>
       </trans-unit>
-      <trans-unit id="9" xml:space="preserve">
+      <trans-unit id="9" xml:space="preserve" approved="yes">
         <source>9</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>9</target>
+        <target state="final">9</target>
       </trans-unit>
-      <trans-unit id="yes" xml:space="preserve">
+      <trans-unit id="yes" xml:space="preserve" approved="yes">
         <source>Yes</source>
-        <target>はい</target>
+        <target state="final">はい</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="no" xml:space="preserve">
+      <trans-unit id="no" xml:space="preserve" approved="yes">
         <source>No</source>
-        <target>いいえ</target>
+        <target state="final">いいえ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Enabled" xml:space="preserve">
+      <trans-unit id="Enabled" xml:space="preserve" approved="yes">
         <source>Enabled</source>
-        <target>有効</target>
+        <target state="final">有効</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Disabled" xml:space="preserve">
+      <trans-unit id="Disabled" xml:space="preserve" approved="yes">
         <source>Disabled</source>
-        <target>無効</target>
+        <target state="final">無効</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Tip" xml:space="preserve">
+      <trans-unit id="Tip" xml:space="preserve" approved="yes">
         <source>Tip</source>
-        <target>ヒント</target>
+        <target state="final">ヒント</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Note" xml:space="preserve">
+      <trans-unit id="Note" xml:space="preserve" approved="yes">
         <source>Note</source>
-        <target>注記</target>
+        <target state="final">注記</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Warning" xml:space="preserve">
+      <trans-unit id="Warning" xml:space="preserve" approved="yes">
         <source>Warning</source>
-        <target>警告</target>
+        <target state="final">警告</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Custom" xml:space="preserve">
+      <trans-unit id="Custom" xml:space="preserve" approved="yes">
         <source>Custom</source>
-        <target>カスタム</target>
+        <target state="final">カスタム</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Examples" xml:space="preserve">
+      <trans-unit id="Examples" xml:space="preserve" approved="yes">
         <source>Examples</source>
-        <target>例</target>
+        <target state="final">例</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="none specified" xml:space="preserve">
+      <trans-unit id="none specified" xml:space="preserve" approved="yes">
         <source>none specified</source>
-        <target>未指定</target>
+        <target state="final">未指定</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="About Spacewalk" xml:space="preserve">
+      <trans-unit id="About Spacewalk" xml:space="preserve" approved="yes">
         <source>About</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>情報</target>
+        <target state="final">情報</target>
       </trans-unit>
-      <trans-unit id="Account" xml:space="preserve">
+      <trans-unit id="Account" xml:space="preserve" approved="yes">
         <source>Account</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>アカウント</target>
+        <target state="final">アカウント</target>
       </trans-unit>
-      <trans-unit id="Account Deactivation" xml:space="preserve">
+      <trans-unit id="Account Deactivation" xml:space="preserve" approved="yes">
         <source>Account Deactivation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>アカウントの停止</target>
+        <target state="final">アカウントの停止</target>
       </trans-unit>
-      <trans-unit id="Activation Keys" xml:space="preserve">
+      <trans-unit id="Activation Keys" xml:space="preserve" approved="yes">
         <source>Activation Keys</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>アクティベーションキー</target>
+        <target state="final">アクティベーションキー</target>
       </trans-unit>
-      <trans-unit id="Addresses" xml:space="preserve">
+      <trans-unit id="Addresses" xml:space="preserve" approved="yes">
         <source>Addresses</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>アドレス</target>
+        <target state="final">アドレス</target>
       </trans-unit>
-      <trans-unit id="address type B" xml:space="preserve">
+      <trans-unit id="address type B" xml:space="preserve" approved="yes">
         <source>Billing Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-        <target>請求書の送付先</target>
+        <target state="final">請求書の送付先</target>
       </trans-unit>
-      <trans-unit id="address type M" xml:space="preserve">
+      <trans-unit id="address type M" xml:space="preserve" approved="yes">
         <source>Mailing Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-        <target>住所 (郵送先)</target>
+        <target state="final">住所 (郵送先)</target>
       </trans-unit>
-      <trans-unit id="address type S" xml:space="preserve">
+      <trans-unit id="address type S" xml:space="preserve" approved="yes">
         <source>Shipping Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-        <target>配送先</target>
+        <target state="final">配送先</target>
       </trans-unit>
-      <trans-unit id="address not filled in" xml:space="preserve">
+      <trans-unit id="address not filled in" xml:space="preserve" approved="yes">
         <source>Address not filled in</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-        <target>アドレスが記入されていません</target>
+        <target state="final">アドレスが記入されていません</target>
       </trans-unit>
-      <trans-unit id="Fill in this address" xml:space="preserve">
+      <trans-unit id="Fill in this address" xml:space="preserve" approved="yes">
         <source>Fill in this address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-        <target>このアドレスを入力します</target>
+        <target state="final">このアドレスを入力します</target>
       </trans-unit>
-      <trans-unit id="Advanced Search" xml:space="preserve">
+      <trans-unit id="Advanced Search" xml:space="preserve" approved="yes">
         <source>Advanced Search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>高度な検索</target>
+        <target state="final">高度な検索</target>
       </trans-unit>
-      <trans-unit id="Affected Systems" xml:space="preserve">
+      <trans-unit id="Affected Systems" xml:space="preserve" approved="yes">
         <source>Affected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata Details Navigation Tabs</context>
         </context-group>
-        <target>影響を受けるシステム</target>
+        <target state="final">影響を受けるシステム</target>
       </trans-unit>
-      <trans-unit id="All" xml:space="preserve">
+      <trans-unit id="All" xml:space="preserve" approved="yes">
         <source>All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>すべて</target>
+        <target state="final">すべて</target>
       </trans-unit>
-      <trans-unit id="url" xml:space="preserve">
+      <trans-unit id="url" xml:space="preserve" approved="yes">
         <source>url</source>
-        <target>URL</target>
+        <target state="final">URL</target>
       </trans-unit>
-      <trans-unit id="alphabet" xml:space="preserve">
+      <trans-unit id="alphabet" xml:space="preserve" approved="yes">
         <source>A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</source>
         <context-group name="ctx">
           <context context-type="sourcefile">On List pages with an alpha filter bar.
@@ -378,77 +378,77 @@
                                         the alphabet.
           </context>
         </context-group>
-        <target>A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</target>
+        <target state="final">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</target>
       </trans-unit>
-      <trans-unit id="API" xml:space="preserve">
+      <trans-unit id="API" xml:space="preserve" approved="yes">
         <source>API</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>API</target>
+        <target state="final">API</target>
       </trans-unit>
-      <trans-unit id="FAQs" xml:space="preserve">
+      <trans-unit id="FAQs" xml:space="preserve" approved="yes">
         <source>FAQs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>よくある質問とその答え (FAQ)</target>
+        <target state="final">よくある質問とその答え (FAQ)</target>
       </trans-unit>
-      <trans-unit id="Sample Scripts" xml:space="preserve">
+      <trans-unit id="Sample Scripts" xml:space="preserve" approved="yes">
         <source>Sample Scripts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>サンプルスクリプト</target>
+        <target state="final">サンプルスクリプト</target>
       </trans-unit>
-      <trans-unit id="Archived Actions" xml:space="preserve">
+      <trans-unit id="Archived Actions" xml:space="preserve" approved="yes">
         <source>Archived Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>アーカイブされた動作</target>
+        <target state="final">アーカイブされた動作</target>
       </trans-unit>
-      <trans-unit id="Action Chains" xml:space="preserve">
+      <trans-unit id="Action Chains" xml:space="preserve" approved="yes">
         <source>Action Chains</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>動作チェーン</target>
+        <target state="final">動作チェーン</target>
       </trans-unit>
-      <trans-unit id="cant have spaces" xml:space="preserve">
+      <trans-unit id="cant have spaces" xml:space="preserve" approved="yes">
         <source>do spaces work?</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Test message - ignore</context>
         </context-group>
-        <target>スペースは有効?</target>
+        <target state="final">スペースは有効?</target>
       </trans-unit>
-      <trans-unit id="list delimiter" xml:space="preserve">
+      <trans-unit id="list delimiter" xml:space="preserve" approved="yes">
         <source>, </source>
         <context-group name="ctx">
           <context context-type="sourcefile">Anywhere a list of words is delimited</context>
         </context-group>
-        <target state="translated">, </target>
+        <target state="final">, </target>
       </trans-unit>
-      <trans-unit id="Change Email" xml:space="preserve">
+      <trans-unit id="Change Email" xml:space="preserve" approved="yes">
         <source>Change Email</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Email の変更</target>
+        <target state="final">Email の変更</target>
       </trans-unit>
-      <trans-unit id="frontend.actions.channels.manager.create" xml:space="preserve">
+      <trans-unit id="frontend.actions.channels.manager.create" xml:space="preserve" approved="yes">
         <source>Create Software Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>ソフトウェアチャンネルの作成</target>
+        <target state="final">ソフトウェアチャンネルの作成</target>
       </trans-unit>
-      <trans-unit id="Audit" xml:space="preserve">
+      <trans-unit id="Audit" xml:space="preserve" approved="yes">
         <source>Audit</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>監査</target>
+        <target state="final">監査</target>
       </trans-unit>
       <trans-unit approved="yes" id="OpenSCAP" xml:space="preserve">
         <source>OpenSCAP</source>
@@ -457,695 +457,695 @@
         </context-group>
         <target>OpenSCAP</target>
       </trans-unit>
-      <trans-unit id="All Scans" xml:space="preserve">
+      <trans-unit id="All Scans" xml:space="preserve" approved="yes">
         <source>All Scans</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>全スキャン</target>
+        <target state="final">全スキャン</target>
       </trans-unit>
-      <trans-unit id="XCCDF Diff" xml:space="preserve">
+      <trans-unit id="XCCDF Diff" xml:space="preserve" approved="yes">
         <source>XCCDF Diff</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>XCCDF 差分</target>
+        <target state="final">XCCDF 差分</target>
       </trans-unit>
-      <trans-unit id="audit.nav.logreview" xml:space="preserve">
+      <trans-unit id="audit.nav.logreview" xml:space="preserve" approved="yes">
         <source>Log Review</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>ログレビュー</target>
+        <target state="final">ログレビュー</target>
       </trans-unit>
-      <trans-unit id="Channel Management" xml:space="preserve">
+      <trans-unit id="Channel Management" xml:space="preserve" approved="yes">
         <source>Channel Management</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>チャンネル管理</target>
+        <target state="final">チャンネル管理</target>
       </trans-unit>
-      <trans-unit id="Channel Permissions" xml:space="preserve">
+      <trans-unit id="Channel Permissions" xml:space="preserve" approved="yes">
         <source>Channel Permissions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>チャンネルの権限</target>
+        <target state="final">チャンネルの権限</target>
       </trans-unit>
-      <trans-unit id="Channels" xml:space="preserve">
+      <trans-unit id="Channels" xml:space="preserve" approved="yes">
         <source>Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>チャンネル</target>
+        <target state="final">チャンネル</target>
       </trans-unit>
-      <trans-unit id="Channel List" xml:space="preserve">
+      <trans-unit id="Channel List" xml:space="preserve" approved="yes">
         <source>Channel List</source>
-        <target>チャンネル一覧</target>
+        <target state="final">チャンネル一覧</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Client Configuration" xml:space="preserve">
+      <trans-unit id="Client Configuration" xml:space="preserve" approved="yes">
         <source>Client Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>クライアント設定</target>
+        <target state="final">クライアント設定</target>
       </trans-unit>
-      <trans-unit id="User Guide" xml:space="preserve">
+      <trans-unit id="User Guide" xml:space="preserve" approved="yes">
         <source>User Guide</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>ユーザーガイド</target>
+        <target state="final">ユーザーガイド</target>
       </trans-unit>
-      <trans-unit id="Getting Started Guide" xml:space="preserve">
+      <trans-unit id="Getting Started Guide" xml:space="preserve" approved="yes">
         <source>Getting Started Guide</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>スタートガイド</target>
+        <target state="final">スタートガイド</target>
       </trans-unit>
-      <trans-unit id="Clone Errata" xml:space="preserve">
+      <trans-unit id="Clone Errata" xml:space="preserve" approved="yes">
         <source>Clone Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>パッチの複製</target>
+        <target state="final">パッチの複製</target>
       </trans-unit>
-      <trans-unit id="Completed Actions" xml:space="preserve">
+      <trans-unit id="Completed Actions" xml:space="preserve" approved="yes">
         <source>Completed Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>完了した動作</target>
+        <target state="final">完了した動作</target>
       </trans-unit>
-      <trans-unit id="Config Channels" xml:space="preserve">
+      <trans-unit id="Config Channels" xml:space="preserve" approved="yes">
         <source>Config Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>設定チャンネル</target>
+        <target state="final">設定チャンネル</target>
       </trans-unit>
-      <trans-unit id="Create Account" xml:space="preserve">
+      <trans-unit id="Create Account" xml:space="preserve" approved="yes">
         <source>Create Account</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>アカウントの作成</target>
+        <target state="final">アカウントの作成</target>
       </trans-unit>
-      <trans-unit id="Custom System Info" xml:space="preserve">
+      <trans-unit id="Custom System Info" xml:space="preserve" approved="yes">
         <source>Custom System Info</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>カスタムシステム情報</target>
+        <target state="final">カスタムシステム情報</target>
       </trans-unit>
-      <trans-unit id="date" xml:space="preserve">
+      <trans-unit id="date" xml:space="preserve" approved="yes">
         <source>Date</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Emails</context>
         </context-group>
-        <target>日付</target>
+        <target state="final">日付</target>
       </trans-unit>
-      <trans-unit id="Details" xml:space="preserve">
+      <trans-unit id="Details" xml:space="preserve" approved="yes">
         <source>Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>詳細</target>
+        <target state="final">詳細</target>
       </trans-unit>
-      <trans-unit id="Guests" xml:space="preserve">
+      <trans-unit id="Guests" xml:space="preserve" approved="yes">
         <source>Guests</source>
-        <target>ゲスト</target>
+        <target state="final">ゲスト</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Storage" xml:space="preserve">
+      <trans-unit id="Storage" xml:space="preserve" approved="yes">
         <source>Storage</source>
-        <target>ストレージ</target>
+        <target state="final">ストレージ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="digits" xml:space="preserve">
+      <trans-unit id="digits" xml:space="preserve" approved="yes">
         <source>0 1 2 3 4 5 6 7 8 9</source>
         <context-group name="ctx">
           <context context-type="sourcefile">On List pages with an alpha filter bar.
                                         Used to generate the list of links based on
                                         the set of digits.</context>
         </context-group>
-        <target>0 1 2 3 4 5 6 7 8 9</target>
+        <target state="final">0 1 2 3 4 5 6 7 8 9</target>
       </trans-unit>
-      <trans-unit id="Distributions" xml:space="preserve">
+      <trans-unit id="Distributions" xml:space="preserve" approved="yes">
         <source>Distributions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>ディストリビューション</target>
+        <target state="final">ディストリビューション</target>
       </trans-unit>
-      <trans-unit id="Edit this address" xml:space="preserve">
+      <trans-unit id="Edit this address" xml:space="preserve" approved="yes">
         <source>Edit this address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-        <target>このアドレスを編集</target>
+        <target state="final">このアドレスを編集</target>
       </trans-unit>
-      <trans-unit id="Errata" xml:space="preserve">
+      <trans-unit id="Errata" xml:space="preserve" approved="yes">
         <source>Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>パッチ</target>
+        <target state="final">パッチ</target>
       </trans-unit>
-      <trans-unit id="exception" xml:space="preserve">
+      <trans-unit id="exception" xml:space="preserve" approved="yes">
         <source>Exception</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target>例外</target>
+        <target state="final">例外</target>
       </trans-unit>
-      <trans-unit id="Failed Actions" xml:space="preserve">
+      <trans-unit id="Failed Actions" xml:space="preserve" approved="yes">
         <source>Failed Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>失敗した動作</target>
+        <target state="final">失敗した動作</target>
       </trans-unit>
-      <trans-unit id="FAQ" xml:space="preserve">
+      <trans-unit id="FAQ" xml:space="preserve" approved="yes">
         <source>FAQ</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>よくある質問とその答え (FAQ)</target>
+        <target state="final">よくある質問とその答え (FAQ)</target>
       </trans-unit>
-      <trans-unit id="fax" xml:space="preserve">
+      <trans-unit id="fax" xml:space="preserve" approved="yes">
         <source>Fax</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>FAX</target>
+        <target state="final">FAX</target>
       </trans-unit>
-      <trans-unit id="File Preservation" xml:space="preserve">
+      <trans-unit id="File Preservation" xml:space="preserve" approved="yes">
         <source>File Preservation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>ファイル保持</target>
+        <target state="final">ファイル保持</target>
       </trans-unit>
-      <trans-unit id="Go" xml:space="preserve">
+      <trans-unit id="Go" xml:space="preserve" approved="yes">
         <source>Go</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Used in filters as the "do it" button</context>
         </context-group>
-        <target>Go</target>
+        <target state="final">Go</target>
       </trans-unit>
-      <trans-unit id="GPG and SSL Keys" xml:space="preserve">
+      <trans-unit id="GPG and SSL Keys" xml:space="preserve" approved="yes">
         <source>GPG and SSL Keys</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>GPG キーと SSL キー</target>
+        <target state="final">GPG キーと SSL キー</target>
       </trans-unit>
-      <trans-unit id="Help" xml:space="preserve">
+      <trans-unit id="Help" xml:space="preserve" approved="yes">
         <source>Help</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>ヘルプ</target>
+        <target state="final">ヘルプ</target>
       </trans-unit>
-      <trans-unit id="Documentation_version" xml:space="preserve">
+      <trans-unit id="Documentation_version" xml:space="preserve" approved="yes">
         <source>Documentation {0}</source>
-        <target>ドキュメンテーション {0}</target>
+        <target state="final">ドキュメンテーション {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Inactive" xml:space="preserve">
+      <trans-unit id="Inactive" xml:space="preserve" approved="yes">
         <source>Inactive</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>無効</target>
+        <target state="final">無効</target>
       </trans-unit>
-      <trans-unit id="Active" xml:space="preserve">
+      <trans-unit id="Active" xml:space="preserve" approved="yes">
         <source>Active</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>有効</target>
+        <target state="final">有効</target>
       </trans-unit>
-      <trans-unit id="IP Ranges" xml:space="preserve">
+      <trans-unit id="IP Ranges" xml:space="preserve" approved="yes">
         <source>IP Ranges</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>IP 範囲</target>
+        <target state="final">IP 範囲</target>
       </trans-unit>
-      <trans-unit id="Kickstart" xml:space="preserve">
+      <trans-unit id="Kickstart" xml:space="preserve" approved="yes">
         <source>Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>自動インストール</target>
+        <target state="final">自動インストール</target>
       </trans-unit>
-      <trans-unit id="Power Management" xml:space="preserve">
+      <trans-unit id="Power Management" xml:space="preserve" approved="yes">
         <source>Power Management</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>電力管理</target>
+        <target state="final">電力管理</target>
       </trans-unit>
-      <trans-unit id="Lookup Login/Password" xml:space="preserve">
+      <trans-unit id="Lookup Login/Password" xml:space="preserve" approved="yes">
         <source>Lookup Login/Password</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>ログイン/パスワードの検索</target>
+        <target state="final">ログイン/パスワードの検索</target>
       </trans-unit>
-      <trans-unit id="Manage Errata" xml:space="preserve">
+      <trans-unit id="Manage Errata" xml:space="preserve" approved="yes">
         <source>Manage Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>パッチの管理</target>
+        <target state="final">パッチの管理</target>
       </trans-unit>
-      <trans-unit id="Management" xml:space="preserve">
+      <trans-unit id="Management" xml:space="preserve" approved="yes">
         <source>Management</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>管理</target>
+        <target state="final">管理</target>
       </trans-unit>
-      <trans-unit id="Manage" xml:space="preserve">
+      <trans-unit id="Manage" xml:space="preserve" approved="yes">
         <source>Manage</source>
-        <target>管理</target>
+        <target state="final">管理</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Manage Repositories" xml:space="preserve">
+      <trans-unit id="Manage Repositories" xml:space="preserve" approved="yes">
         <source>Manage Repositories</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>リポジトリの管理</target>
+        <target state="final">リポジトリの管理</target>
       </trans-unit>
-      <trans-unit id="Distribution Channel Mapping" xml:space="preserve">
+      <trans-unit id="Distribution Channel Mapping" xml:space="preserve" approved="yes">
         <source>Distribution Channel Mapping</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>ディストリビューションチャンネルマッピング</target>
+        <target state="final">ディストリビューションチャンネルマッピング</target>
       </trans-unit>
-      <trans-unit id="Monitoring" xml:space="preserve">
+      <trans-unit id="Monitoring" xml:space="preserve" approved="yes">
         <source>Monitoring</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>モニタリング</target>
+        <target state="final">モニタリング</target>
       </trans-unit>
-      <trans-unit id="name" xml:space="preserve">
+      <trans-unit id="name" xml:space="preserve" approved="yes">
         <source>name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target>名前</target>
+        <target state="final">名前</target>
       </trans-unit>
-      <trans-unit id="arch" xml:space="preserve">
+      <trans-unit id="arch" xml:space="preserve" approved="yes">
         <source>architecture</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target>アーキテクチャー</target>
+        <target state="final">アーキテクチャー</target>
       </trans-unit>
-      <trans-unit id="system.evr" xml:space="preserve">
+      <trans-unit id="system.evr" xml:space="preserve" approved="yes">
         <source>this system</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target>このシステム</target>
+        <target state="final">このシステム</target>
       </trans-unit>
-      <trans-unit id="other.evr" xml:space="preserve">
+      <trans-unit id="other.evr" xml:space="preserve" approved="yes">
         <source>profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target>プロファイル</target>
+        <target state="final">プロファイル</target>
       </trans-unit>
-      <trans-unit id="comparison" xml:space="preserve">
+      <trans-unit id="comparison" xml:space="preserve" approved="yes">
         <source>difference</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target>相違点</target>
+        <target state="final">相違点</target>
       </trans-unit>
-      <trans-unit id="Notification Methods" xml:space="preserve">
+      <trans-unit id="Notification Methods" xml:space="preserve" approved="yes">
         <source>Notification Methods</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>通知メソッド</target>
+        <target state="final">通知メソッド</target>
       </trans-unit>
-      <trans-unit id="Notification" xml:space="preserve">
+      <trans-unit id="Notification" xml:space="preserve" approved="yes">
         <source>Notification</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>通知</target>
+        <target state="final">通知</target>
       </trans-unit>
-      <trans-unit id="Out of Date" xml:space="preserve">
+      <trans-unit id="Out of Date" xml:space="preserve" approved="yes">
         <source>Out of Date</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>期限切れ</target>
+        <target state="final">期限切れ</target>
       </trans-unit>
-      <trans-unit id="Overview" xml:space="preserve">
+      <trans-unit id="Overview" xml:space="preserve" approved="yes">
         <source>Overview</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>概要</target>
+        <target state="final">概要</target>
       </trans-unit>
-      <trans-unit id="Packages" xml:space="preserve">
+      <trans-unit id="Packages" xml:space="preserve" approved="yes">
         <source>Packages</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata Details Navigation Tabs</context>
         </context-group>
-        <target>パッケージ</target>
+        <target state="final">パッケージ</target>
       </trans-unit>
-      <trans-unit id="Package Search" xml:space="preserve">
+      <trans-unit id="Package Search" xml:space="preserve" approved="yes">
         <source>Package Search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>パッケージ検索</target>
+        <target state="final">パッケージ検索</target>
       </trans-unit>
-      <trans-unit id="Pending Actions" xml:space="preserve">
+      <trans-unit id="Pending Actions" xml:space="preserve" approved="yes">
         <source>Pending Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>待機中の動作</target>
+        <target state="final">待機中の動作</target>
       </trans-unit>
-      <trans-unit id="Preferences" xml:space="preserve">
+      <trans-unit id="Preferences" xml:space="preserve" approved="yes">
         <source>Preferences</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>設定</target>
+        <target state="final">設定</target>
       </trans-unit>
-      <trans-unit id="Locale Preferences" xml:space="preserve">
+      <trans-unit id="Locale Preferences" xml:space="preserve" approved="yes">
         <source>Locale Preferences</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>言語設定</target>
+        <target state="final">言語設定</target>
       </trans-unit>
-      <trans-unit id="Profiles" xml:space="preserve">
+      <trans-unit id="Profiles" xml:space="preserve" approved="yes">
         <source>Profiles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>プロファイル</target>
+        <target state="final">プロファイル</target>
       </trans-unit>
-      <trans-unit id="Proxy Guide" xml:space="preserve">
+      <trans-unit id="Proxy Guide" xml:space="preserve" approved="yes">
         <source>Proxy Quick Start</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Proxy ガイド</target>
+        <target state="final">Proxy ガイド</target>
       </trans-unit>
-      <trans-unit id="Proxy" xml:space="preserve">
+      <trans-unit id="Proxy" xml:space="preserve" approved="yes">
         <source>Proxy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>プロキシ</target>
+        <target state="final">プロキシ</target>
       </trans-unit>
-      <trans-unit id="product_proxy" xml:space="preserve">
+      <trans-unit id="product_proxy" xml:space="preserve" approved="yes">
         <source>@@PRODUCT_NAME@@ Proxy</source>
-        <target>@@PRODUCT_NAME@@ プロキシ</target>
+        <target state="final">@@PRODUCT_NAME@@ プロキシ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="product_server" xml:space="preserve">
+      <trans-unit id="product_server" xml:space="preserve" approved="yes">
         <source>@@PRODUCT_NAME@@ Server</source>
-        <target>@@PRODUCT_NAME@@ サーバ</target>
+        <target state="final">@@PRODUCT_NAME@@ サーバ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Published" xml:space="preserve">
+      <trans-unit id="Published" xml:space="preserve" approved="yes">
         <source>Published</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>発行済み</target>
+        <target state="final">発行済み</target>
       </trans-unit>
-      <trans-unit id="Subscription Management" xml:space="preserve">
+      <trans-unit id="Subscription Management" xml:space="preserve" approved="yes">
         <source>Subscription Management</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>サブスクリプションの管理</target>
+        <target state="final">サブスクリプションの管理</target>
       </trans-unit>
-      <trans-unit id="Organization Trusts" xml:space="preserve">
+      <trans-unit id="Organization Trusts" xml:space="preserve" approved="yes">
         <source>Organization Trusts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>組織の信頼　</target>
+        <target state="final">組織の信頼</target>
       </trans-unit>
-      <trans-unit id="Quota" xml:space="preserve">
+      <trans-unit id="Quota" xml:space="preserve" approved="yes">
         <source>Quota</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>制限</target>
+        <target state="final">制限</target>
       </trans-unit>
-      <trans-unit id="Reference Guide" xml:space="preserve">
+      <trans-unit id="Reference Guide" xml:space="preserve" approved="yes">
         <source>Reference Guide</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>リファレンスガイド</target>
+        <target state="final">リファレンスガイド</target>
       </trans-unit>
-      <trans-unit id="Release Notes" xml:space="preserve">
+      <trans-unit id="Release Notes" xml:space="preserve" approved="yes">
         <source>Release Notes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>リリースノート</target>
+        <target state="final">リリースノート</target>
       </trans-unit>
-      <trans-unit id="Relevant" xml:space="preserve">
+      <trans-unit id="Relevant" xml:space="preserve" approved="yes">
         <source>Relevant</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>関連</target>
+        <target state="final">関連</target>
       </trans-unit>
-      <trans-unit id="Reviews" xml:space="preserve">
+      <trans-unit id="Reviews" xml:space="preserve" approved="yes">
         <source>Reviews</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>レビュー</target>
+        <target state="final">レビュー</target>
       </trans-unit>
-      <trans-unit id="request" xml:space="preserve">
+      <trans-unit id="request" xml:space="preserve" approved="yes">
         <source>Request</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
-        <target>要求</target>
+        <target state="final">要求</target>
       </trans-unit>
-      <trans-unit id="Schedule" xml:space="preserve">
+      <trans-unit id="Schedule" xml:space="preserve" approved="yes">
         <source>Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>スケジュール</target>
+        <target state="final">スケジュール</target>
       </trans-unit>
-      <trans-unit id="Scout Config Push" xml:space="preserve">
+      <trans-unit id="Scout Config Push" xml:space="preserve" approved="yes">
         <source>Scout Config Push</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>スカウト設定のプッシュ</target>
+        <target state="final">スカウト設定のプッシュ</target>
       </trans-unit>
-      <trans-unit id="Search" xml:space="preserve">
+      <trans-unit id="Search" xml:space="preserve" approved="yes">
         <source>Search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>検索</target>
+        <target state="final">検索</target>
       </trans-unit>
-      <trans-unit id="Sessions" xml:space="preserve">
+      <trans-unit id="Sessions" xml:space="preserve" approved="yes">
         <source>Sessions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>セッション</target>
+        <target state="final">セッション</target>
       </trans-unit>
-      <trans-unit id="Sign In" xml:space="preserve">
+      <trans-unit id="Sign In" xml:space="preserve" approved="yes">
         <source>Sign In</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>サインイン</target>
+        <target state="final">サインイン</target>
       </trans-unit>
-      <trans-unit id="Create First User" xml:space="preserve">
+      <trans-unit id="Create First User" xml:space="preserve" approved="yes">
         <source>Create First User</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>最初のユーザーの作成</target>
+        <target state="final">最初のユーザーの作成</target>
       </trans-unit>
-      <trans-unit id="Software Channels" xml:space="preserve">
+      <trans-unit id="Software Channels" xml:space="preserve" approved="yes">
         <source>Software Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>ソフトウェアチャンネル</target>
+        <target state="final">ソフトウェアチャンネル</target>
       </trans-unit>
-      <trans-unit id="Status" xml:space="preserve">
+      <trans-unit id="Status" xml:space="preserve" approved="yes">
         <source>Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>状態</target>
+        <target state="final">状態</target>
       </trans-unit>
-      <trans-unit id="Stored Profiles" xml:space="preserve">
+      <trans-unit id="Stored Profiles" xml:space="preserve" approved="yes">
         <source>Stored Profiles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>保存済みプロファイル</target>
+        <target state="final">保存済みプロファイル</target>
       </trans-unit>
-      <trans-unit id="Subscription" xml:space="preserve">
+      <trans-unit id="Subscription" xml:space="preserve" approved="yes">
         <source>Subscription</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>サブスクリプション</target>
+        <target state="final">サブスクリプション</target>
       </trans-unit>
-      <trans-unit id="System Entitlements" xml:space="preserve">
+      <trans-unit id="System Entitlements" xml:space="preserve" approved="yes">
         <source>System Types</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>システムのタイプ</target>
+        <target state="final">システムのタイプ</target>
       </trans-unit>
-      <trans-unit id="System Groups" xml:space="preserve">
+      <trans-unit id="System Groups" xml:space="preserve" approved="yes">
         <source>System Groups</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>システムグループ</target>
+        <target state="final">システムグループ</target>
       </trans-unit>
-      <trans-unit id="System Set Manager" xml:space="preserve">
+      <trans-unit id="System Set Manager" xml:space="preserve" approved="yes">
         <source>System Set Manager</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>システムセットマネージャ</target>
+        <target state="final">システムセットマネージャ</target>
       </trans-unit>
-      <trans-unit id="Systems" xml:space="preserve">
+      <trans-unit id="Systems" xml:space="preserve" approved="yes">
         <source>Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>システム</target>
+        <target state="final">システム</target>
       </trans-unit>
-      <trans-unit id="System List" xml:space="preserve">
+      <trans-unit id="System List" xml:space="preserve" approved="yes">
         <source>System List</source>
-        <target>システム一覧</target>
+        <target state="final">システム一覧</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Task Schedules" xml:space="preserve">
+      <trans-unit id="Task Schedules" xml:space="preserve" approved="yes">
         <source>Task Schedules</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>タスクスケジュール</target>
+        <target state="final">タスクスケジュール</target>
       </trans-unit>
-      <trans-unit id="Task Engine Status" xml:space="preserve">
+      <trans-unit id="Task Engine Status" xml:space="preserve" approved="yes">
         <source>Task Engine Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>タスクエンジンの状態</target>
+        <target state="final">タスクエンジンの状態</target>
       </trans-unit>
-      <trans-unit id="Last Execution Times" xml:space="preserve">
+      <trans-unit id="Last Execution Times" xml:space="preserve" approved="yes">
         <source>Last Execution Times</source>
-        <target>直近の実行時間</target>
+        <target state="final">直近の実行時間</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Runtime Status" xml:space="preserve">
+      <trans-unit id="Runtime Status" xml:space="preserve" approved="yes">
         <source>Runtime Status</source>
-        <target>実行時の状態</target>
+        <target state="final">実行時の状態</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Show Tomcat Logs" xml:space="preserve">
+      <trans-unit id="Show Tomcat Logs" xml:space="preserve" approved="yes">
         <source>Show Tomcat Logs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Tomcat ログの表示</target>
+        <target state="final">Tomcat ログの表示</target>
       </trans-unit>
-      <trans-unit id="testMessage" xml:space="preserve">
+      <trans-unit id="testMessage" xml:space="preserve" approved="yes">
         <source>this is a test of the emergency broadcast</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Test Message - ignore</context>
         </context-group>
-        <target>これは緊急ブロードキャストのテストです</target>
+        <target state="final">これは緊急ブロードキャストのテストです</target>
       </trans-unit>
-      <trans-unit id="testMessage.oneparam" xml:space="preserve">
+      <trans-unit id="testMessage.oneparam" xml:space="preserve" approved="yes">
         <source>this is a test of the {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Test Message - ignore</context>
         </context-group>
-        <target>これは {0} のテストです</target>
+        <target state="final">これは {0} のテストです</target>
       </trans-unit>
-      <trans-unit id="testMessage.html" xml:space="preserve">
+      <trans-unit id="testMessage.html" xml:space="preserve" approved="yes">
         <source>&lt;p&gt;You do not have enough entitlements for &lt;strong&gt; &lt;a href="http://www.redhat.com"&gt;{0} systems&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Test Message - ignore</context>
         </context-group>
-        <target>&lt;p&gt; &lt;strong&gt; &lt;a href="http://www.redhat.com"&gt;{0} システムに対して十分なエンタイトルメントがありません&lt;/a&gt;&lt;/strong&gt;。&lt;/p&gt;</target>
+        <target state="final">&lt;p&gt; &lt;strong&gt; &lt;a href="http://www.redhat.com"&gt;{0} システムに対して十分なエンタイトルメントがありません&lt;/a&gt;&lt;/strong&gt;。&lt;/p&gt;</target>
       </trans-unit>
-      <trans-unit id="traceback message header" xml:space="preserve">
+      <trans-unit id="traceback message header" xml:space="preserve" approved="yes">
         <source>The following exception occurred while executing this request:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
-        <target>この要求を実行している間に次の例外エラーが発生しました:</target>
+        <target state="final">この要求を実行している間に次の例外エラーが発生しました:</target>
       </trans-unit>
-      <trans-unit id="Ungrouped" xml:space="preserve">
+      <trans-unit id="Ungrouped" xml:space="preserve" approved="yes">
         <source>Ungrouped</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>グループ化されていないシステム</target>
+        <target state="final">グループ化されていないシステム</target>
       </trans-unit>
-      <trans-unit id="Unix Release Notes" xml:space="preserve">
+      <trans-unit id="Unix Release Notes" xml:space="preserve" approved="yes">
         <source>Unix Release Notes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Unix リリースノート</target>
+        <target state="final">Unix リリースノート</target>
       </trans-unit>
-      <trans-unit id="Unentitled" xml:space="preserve">
+      <trans-unit id="Unentitled" xml:space="preserve" approved="yes">
         <source>Without System Type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/systems/SystemList</context>
@@ -1154,28 +1154,28 @@
             system has no entitlements.
           </context>
         </context-group>
-        <target>システムの種類無し</target>
+        <target state="final">システムの種類無し</target>
       </trans-unit>
-      <trans-unit id="User List" xml:space="preserve">
+      <trans-unit id="User List" xml:space="preserve" approved="yes">
         <source>User List</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>ユーザーの一覧</target>
+        <target state="final">ユーザーの一覧</target>
       </trans-unit>
-      <trans-unit id="user prefix Dr." xml:space="preserve">
+      <trans-unit id="user prefix Dr." xml:space="preserve" approved="yes">
         <source>Dr.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target>Dr.</target>
+        <target state="final">Dr.</target>
       </trans-unit>
-      <trans-unit id="user prefix Hr." xml:space="preserve">
+      <trans-unit id="user prefix Hr." xml:space="preserve" approved="yes">
         <source>Hr.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target>Hr.</target>
+        <target state="final">Hr.</target>
       </trans-unit>
       <trans-unit approved="yes" id="user prefix Miss" xml:space="preserve">
         <source>Miss</source>
@@ -1184,12 +1184,12 @@
         </context-group>
         <target>Miss</target>
       </trans-unit>
-      <trans-unit id="user prefix Mr." xml:space="preserve">
+      <trans-unit id="user prefix Mr." xml:space="preserve" approved="yes">
         <source>Mr.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target>Mr.</target>
+        <target state="final">Mr.</target>
       </trans-unit>
       <trans-unit approved="yes" id="user prefix Mrs." xml:space="preserve">
         <source>Mrs.</source>
@@ -1198,457 +1198,457 @@
         </context-group>
         <target>Mrs.</target>
       </trans-unit>
-      <trans-unit id="user prefix Ms." xml:space="preserve">
+      <trans-unit id="user prefix Ms." xml:space="preserve" approved="yes">
         <source>Ms.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target>Ms.</target>
+        <target state="final">Ms.</target>
       </trans-unit>
-      <trans-unit id="user prefix Sr." xml:space="preserve">
+      <trans-unit id="user prefix Sr." xml:space="preserve" approved="yes">
         <source>Sr.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target>Sr.</target>
+        <target state="final">Sr.</target>
       </trans-unit>
-      <trans-unit id="user prefix  " xml:space="preserve">
+      <trans-unit id="user prefix  " xml:space="preserve" approved="yes">
         <source> </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target state="translated"> </target>
+        <target state="final"> </target>
       </trans-unit>
-      <trans-unit id="user.delete" xml:space="preserve">
+      <trans-unit id="user.delete" xml:space="preserve" approved="yes">
         <source>Deleted user &lt;strong&gt;{0}&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
           <context context-type="paramnotes">Deleted user ssprocket.</context>
         </context-group>
-        <target>ユーザー &lt;strong&gt;{0}&lt;/strong&gt; を削除しました。</target>
+        <target state="final">ユーザー &lt;strong&gt;{0}&lt;/strong&gt; を削除しました。</target>
       </trans-unit>
-      <trans-unit id="user.disable" xml:space="preserve">
+      <trans-unit id="user.disable" xml:space="preserve" approved="yes">
         <source>Deactivated user &lt;strong&gt;{0}&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
           <context context-type="paramnotes">Deactivated user ssprocket.</context>
         </context-group>
-        <target>ユーザー &lt;strong&gt;{0}&lt;/strong&gt; のアカウントを停止しました。</target>
+        <target state="final">ユーザー &lt;strong&gt;{0}&lt;/strong&gt; のアカウントを停止しました。</target>
       </trans-unit>
-      <trans-unit id="account.disabled" xml:space="preserve">
+      <trans-unit id="account.disabled" xml:space="preserve" approved="yes">
         <source>Your account has been deactivated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Login or Logout</context>
         </context-group>
-        <target>ご使用のアカウントは停止されています。</target>
+        <target state="final">ご使用のアカウントは停止されています。</target>
       </trans-unit>
-      <trans-unit id="account.user.disabled" xml:space="preserve">
+      <trans-unit id="account.user.disabled" xml:space="preserve" approved="yes">
         <source>Account {0} has been deactivated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Login or Logout</context>
         </context-group>
-        <target>アカウント {0} は停止されています。</target>
+        <target state="final">アカウント {0} は停止されています。</target>
       </trans-unit>
-      <trans-unit id="user.enable" xml:space="preserve">
+      <trans-unit id="user.enable" xml:space="preserve" approved="yes">
         <source>Reactivated user &lt;strong&gt;{0}&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
           <context context-type="paramnotes">Deactivated user ssprocket.</context>
         </context-group>
-        <target>再度アクティベートされたユーザー &lt;strong&gt;{0}&lt;/strong&gt; 。</target>
+        <target state="final">再度アクティベートされたユーザー &lt;strong&gt;{0}&lt;/strong&gt; 。</target>
       </trans-unit>
-      <trans-unit id="user.deleteself" xml:space="preserve">
+      <trans-unit id="user.deleteself" xml:space="preserve" approved="yes">
         <source>You may not delete yourself.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target>自分自身は削除できません。</target>
+        <target state="final">自分自身は削除できません。</target>
       </trans-unit>
-      <trans-unit id="user.satadmin.remove" xml:space="preserve">
+      <trans-unit id="user.satadmin.remove" xml:space="preserve" approved="yes">
         <source>Removed @@PRODUCT_NAME@@ Administrator role from {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target state="translated">{0} から @@PRODUCT_NAME@@ 管理者ロールを削除しました</target>
+        <target state="final">{0} から @@PRODUCT_NAME@@ 管理者ロールを削除しました</target>
       </trans-unit>
-      <trans-unit id="user.satadmin.add" xml:space="preserve">
+      <trans-unit id="user.satadmin.add" xml:space="preserve" approved="yes">
         <source>Added @@PRODUCT_NAME@@ Administrator role to {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target state="translated">{0} に @@PRODUCT_NAME@@ 管理者ロールを追加しました</target>
+        <target state="final">{0} に @@PRODUCT_NAME@@ 管理者ロールを追加しました</target>
       </trans-unit>
-      <trans-unit id="user.deleteadmin" xml:space="preserve">
+      <trans-unit id="user.deleteadmin" xml:space="preserve" approved="yes">
         <source>You cannot delete another organization administrator. Please remove the 'Organization Administrator' role from this user before attempting to delete their account</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target>別の組織の管理者を削除することはできません。まず、このユーザーから '組織の管理者' のロールを外し、次にアカウントの削除を行なうようにしてください</target>
+        <target state="final">別の組織の管理者を削除することはできません。まず、このユーザーから '組織の管理者' のロールを外し、次にアカウントの削除を行なうようにしてください</target>
       </trans-unit>
-      <trans-unit id="user.cannot.delete.last.sat.admin" xml:space="preserve">
+      <trans-unit id="user.cannot.delete.last.sat.admin" xml:space="preserve" approved="yes">
         <source>Cannot delete the last remaining @@PRODUCT_NAME@@ administrator.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
-        <target state="translated">最後に残っている @@PRODUCT_NAME@@ 管理者は削除できません。</target>
+        <target state="final">最後に残っている @@PRODUCT_NAME@@ 管理者は削除できません。</target>
       </trans-unit>
-      <trans-unit id="Users" xml:space="preserve">
+      <trans-unit id="Users" xml:space="preserve" approved="yes">
         <source>Users</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>ユーザー</target>
+        <target state="final">ユーザー</target>
       </trans-unit>
-      <trans-unit id="user info" xml:space="preserve">
+      <trans-unit id="user info" xml:space="preserve" approved="yes">
         <source>User Information</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
-        <target>ユーザー情報</target>
+        <target state="final">ユーザー情報</target>
       </trans-unit>
-      <trans-unit id="user" xml:space="preserve">
+      <trans-unit id="user" xml:space="preserve" approved="yes">
         <source>User</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>ユーザー</target>
+        <target state="final">ユーザー</target>
       </trans-unit>
-      <trans-unit id="value" xml:space="preserve">
+      <trans-unit id="value" xml:space="preserve" approved="yes">
         <source>value</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target>値</target>
+        <target state="final">値</target>
       </trans-unit>
-      <trans-unit id="web traceback subject" xml:space="preserve">
+      <trans-unit id="web traceback subject" xml:space="preserve" approved="yes">
         <source>WEB TRACEBACK from </source>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
-        <target state="translated">WEB TRACEBACK 元 </target>
+        <target state="final">WEB TRACEBACK 元 </target>
       </trans-unit>
-      <trans-unit id="taskomatic notif subject" xml:space="preserve">
+      <trans-unit id="taskomatic notif subject" xml:space="preserve" approved="yes">
         <source>@@PRODUCT_NAME@@ TASKOMATIC NOTIFICATION</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
-        <target state="translated">@@PRODUCT_NAME@@ TASKOMATIC 通知</target>
+        <target state="final">@@PRODUCT_NAME@@ TASKOMATIC 通知</target>
       </trans-unit>
-      <trans-unit id="Notification Messages" xml:space="preserve">
+      <trans-unit id="Notification Messages" xml:space="preserve" approved="yes">
         <source>Notification Messages</source>
-        <target>通知メッセージ</target>
+        <target state="final">通知メッセージ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="User Account" xml:space="preserve">
+      <trans-unit id="User Account" xml:space="preserve" approved="yes">
         <source>User Account</source>
-        <target>ユーザアカウント</target>
+        <target state="final">ユーザアカウント</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="My Account" xml:space="preserve">
+      <trans-unit id="My Account" xml:space="preserve" approved="yes">
         <source>My Account</source>
-        <target>マイアカウント</target>
+        <target state="final">マイアカウント</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="My Preferences" xml:space="preserve">
+      <trans-unit id="My Preferences" xml:space="preserve" approved="yes">
         <source>My Preferences</source>
-        <target>設定</target>
+        <target state="final">設定</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="My Organization" xml:space="preserve">
+      <trans-unit id="My Organization" xml:space="preserve" approved="yes">
         <source>My Organization</source>
-        <target>組織</target>
+        <target state="final">組織</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Organization Applicants" xml:space="preserve">
+      <trans-unit id="Organization Applicants" xml:space="preserve" approved="yes">
         <source>Organization Applicants</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>組織/企業の申請者</target>
+        <target state="final">組織/企業の申請者</target>
       </trans-unit>
-      <trans-unit id="Activation Key Administrators" xml:space="preserve">
+      <trans-unit id="Activation Key Administrators" xml:space="preserve" approved="yes">
         <source>Activation Key Administrators</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>アクティベーションキーの管理者</target>
+        <target state="final">アクティベーションキーの管理者</target>
       </trans-unit>
-      <trans-unit id="Channel Administrators" xml:space="preserve">
+      <trans-unit id="Channel Administrators" xml:space="preserve" approved="yes">
         <source>Channel Administrators</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>チャンネル管理者</target>
+        <target state="final">チャンネル管理者</target>
       </trans-unit>
-      <trans-unit id="Organization Administrators" xml:space="preserve">
+      <trans-unit id="Organization Administrators" xml:space="preserve" approved="yes">
         <source>Organization Administrators</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>組織の管理者</target>
+        <target state="final">組織の管理者</target>
       </trans-unit>
-      <trans-unit id="Satellite Administrators" xml:space="preserve">
+      <trans-unit id="Satellite Administrators" xml:space="preserve" approved="yes">
         <source>@@PRODUCT_NAME@@ Administrators</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 管理者　</target>
+        <target state="final">@@PRODUCT_NAME@@ 管理者</target>
       </trans-unit>
-      <trans-unit id="System Group Administrators" xml:space="preserve">
+      <trans-unit id="System Group Administrators" xml:space="preserve" approved="yes">
         <source>System Group Administrators</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>システムグループ管理者　</target>
+        <target state="final">システムグループ管理者</target>
       </trans-unit>
-      <trans-unit id="for Org" xml:space="preserve">
+      <trans-unit id="for Org" xml:space="preserve" approved="yes">
         <source> for Org </source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target state="translated"> 組織用 </target>
+        <target state="final"> 組織用 </target>
       </trans-unit>
-      <trans-unit id="username" xml:space="preserve">
+      <trans-unit id="username" xml:space="preserve" approved="yes">
         <source>Username</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target>ユーザ名</target>
+        <target state="final">ユーザ名</target>
       </trans-unit>
-      <trans-unit id="password" xml:space="preserve">
+      <trans-unit id="password" xml:space="preserve" approved="yes">
         <source>Password</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target>パスワード</target>
+        <target state="final">パスワード</target>
       </trans-unit>
-      <trans-unit id="desiredlogin" xml:space="preserve">
+      <trans-unit id="desiredlogin" xml:space="preserve" approved="yes">
         <source>Desired Login</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target>希望のログイン</target>
+        <target state="final">希望のログイン</target>
       </trans-unit>
-      <trans-unit id="desiredpass" xml:space="preserve">
+      <trans-unit id="desiredpass" xml:space="preserve" approved="yes">
         <source>Desired Password</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target>希望のパスワード</target>
+        <target state="final">希望のパスワード</target>
       </trans-unit>
-      <trans-unit id="confirmpass" xml:space="preserve">
+      <trans-unit id="confirmpass" xml:space="preserve" approved="yes">
         <source>Confirm Password</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target>パスワードの確認</target>
+        <target state="final">パスワードの確認</target>
       </trans-unit>
-      <trans-unit id="error.invalid_login" xml:space="preserve">
+      <trans-unit id="error.invalid_login" xml:space="preserve" approved="yes">
         <source>Either the password or username is incorrect.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login</context>
         </context-group>
-        <target>パスワードまたはユーザー名が正しくありません。</target>
+        <target state="final">パスワードまたはユーザー名が正しくありません。</target>
       </trans-unit>
-      <trans-unit id="error.user_readonly" xml:space="preserve">
+      <trans-unit id="error.user_readonly" xml:space="preserve" approved="yes">
         <source>This user has read only API access. WebUI login is denied.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login</context>
         </context-group>
-        <target>このユーザーには読み取り専用の API アクセスしか提供されていません。 WebUI ログインが拒否されました。</target>
+        <target state="final">このユーザーには読み取り専用の API アクセスしか提供されていません。 WebUI ログインが拒否されました。</target>
       </trans-unit>
-      <trans-unit id="error.org_already_taken" xml:space="preserve">
+      <trans-unit id="error.org_already_taken" xml:space="preserve" approved="yes">
         <source>That organization name is already taken; please choose another.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/admin/multiorg/OrgCreate</context>
         </context-group>
-        <target>この組織名はすでに使用されています。別の名前を選択してください。</target>
+        <target state="final">この組織名はすでに使用されています。別の名前を選択してください。</target>
       </trans-unit>
-      <trans-unit id="error.login_already_taken" xml:space="preserve">
+      <trans-unit id="error.login_already_taken" xml:space="preserve" approved="yes">
         <source>That username is already taken; please choose another.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/users/CreateUser</context>
         </context-group>
-        <target>このユーザー名はすでに使用されています。別のユーザー名を選択してください。</target>
+        <target state="final">このユーザー名はすでに使用されています。別のユーザー名を選択してください。</target>
       </trans-unit>
-      <trans-unit id="error.same_email" xml:space="preserve">
+      <trans-unit id="error.same_email" xml:space="preserve" approved="yes">
         <source>You must specify a different email</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChangeEmail</context>
         </context-group>
-        <target>別の Email を指定する必要があります</target>
+        <target state="final">別の Email を指定する必要があります</target>
       </trans-unit>
-      <trans-unit id="error.maxemail" xml:space="preserve">
+      <trans-unit id="error.maxemail" xml:space="preserve" approved="yes">
         <source>The email address is too long. Please enter a shorter email address and try again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target>電子メールアドレスが長すぎます。短い電子メールアドレスを入力してもう一度試してください。</target>
+        <target state="final">電子メールアドレスが長すぎます。短い電子メールアドレスを入力してもう一度試してください。</target>
       </trans-unit>
-      <trans-unit id="error.addr_invalid" xml:space="preserve">
+      <trans-unit id="error.addr_invalid" xml:space="preserve" approved="yes">
         <source>Entered email address is not valid</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChangeEmail</context>
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig</context>
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.monitoring.notification.AbstractFilterEditAction</context>
         </context-group>
-        <target>入力された Email アドレスは有効ではありません</target>
+        <target state="final">入力された Email アドレスは有効ではありません</target>
       </trans-unit>
-      <trans-unit id="error.proxy_invalid" xml:space="preserve">
+      <trans-unit id="error.proxy_invalid" xml:space="preserve" approved="yes">
         <source>HTTP proxy needs to be specified as host:port.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig</context>
         </context-group>
-        <target>HTTP プロキシーは host:port として指定する必要があります。</target>
+        <target state="final">HTTP プロキシーは host:port として指定する必要があります。</target>
       </trans-unit>
-      <trans-unit id="/rhn/" xml:space="preserve">
+      <trans-unit id="/rhn/" xml:space="preserve" approved="yes">
         <source>That username is already taken; please choose another.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/newlogin/CreatePersonal</context>
           <context context-type="sourcefile">/newlogin/CreateCorporate</context>
         </context-group>
-        <target>このユーザー名はすでに使用されています。別のユーザー名を選択してください。</target>
+        <target state="final">このユーザー名はすでに使用されています。別のユーザー名を選択してください。</target>
       </trans-unit>
-      <trans-unit id="error.minlogin" xml:space="preserve">
+      <trans-unit id="error.minlogin" xml:space="preserve" approved="yes">
         <source>Logins must be no shorter than {0} characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
           <context context-type="paramnotes">Logins must be no shorter than 5 characters.</context>
         </context-group>
-        <target>ログインは {0} 文字以上にしてください。</target>
+        <target state="final">ログインは {0} 文字以上にしてください。</target>
       </trans-unit>
-      <trans-unit id="error.maxlogin" xml:space="preserve">
+      <trans-unit id="error.maxlogin" xml:space="preserve" approved="yes">
         <source>The desired login you requested is too long. Please enter a shorter desired login and try again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target>リクエストされた希望のログインは長すぎます。希望のログインを短くしてからやり直してください。</target>
+        <target state="final">リクエストされた希望のログインは長すぎます。希望のログインを短くしてからやり直してください。</target>
       </trans-unit>
-      <trans-unit id="error.minpassword" xml:space="preserve">
+      <trans-unit id="error.minpassword" xml:space="preserve" approved="yes">
         <source>Passwords must be at least {0} characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
           <context context-type="paramnotes">Passwords must be no shorter than 5 characters.</context>
         </context-group>
-        <target>パスワードは {0} 文字以上でなければなりません。</target>
+        <target state="final">パスワードは {0} 文字以上でなければなりません。</target>
       </trans-unit>
-      <trans-unit id="error.maxpassword" xml:space="preserve">
+      <trans-unit id="error.maxpassword" xml:space="preserve" approved="yes">
         <source>Passwords cannot be more than {0} characters.</source>
-        <target>パスワードを {0} 文字以上にすることはできません。</target>
+        <target state="final">パスワードを {0} 文字以上にすることはできません。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="error.password_mismatch" xml:space="preserve">
+      <trans-unit id="error.password_mismatch" xml:space="preserve" approved="yes">
         <source>Passwords do not match.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig</context>
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
           <context context-type="sourcefile">/rhn/users/UserDetailsSubmit</context>
         </context-group>
-        <target>パスワードが合致しません。</target>
+        <target state="final">パスワードが合致しません。</target>
       </trans-unit>
-      <trans-unit id="error.user_invalid_prefix" xml:space="preserve">
+      <trans-unit id="error.user_invalid_prefix" xml:space="preserve" approved="yes">
         <source>Invalid prefix [{0}]. Must be one of {1}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target>[{0}] は無効なプレフィックスです。{1} のいずれかにしてください。</target>
+        <target state="final">[{0}] は無効なプレフィックスです。{1} のいずれかにしてください。</target>
       </trans-unit>
-      <trans-unit id="error.readonly_org_admin" xml:space="preserve">
+      <trans-unit id="error.readonly_org_admin" xml:space="preserve" approved="yes">
         <source>At least one Organization Administrator with regular access must remain in {0} organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetailsSubmit</context>
         </context-group>
-        <target>少なくとも 1 人以上の正規のアクセスを持つ組織管理者が {0} 組織に残っている必要があります。</target>
+        <target state="final">少なくとも 1 人以上の正規のアクセスを持つ組織管理者が {0} 組織に残っている必要があります。</target>
       </trans-unit>
-      <trans-unit id="error.readonly_sat_admin" xml:space="preserve">
+      <trans-unit id="error.readonly_sat_admin" xml:space="preserve" approved="yes">
         <source>At least one @@PRODUCT_NAME@@ Administrator must remain with regular access.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetailsSubmit</context>
         </context-group>
-        <target>少なくとも 1 人以上の @@PRODUCT_NAME@@ 管理者が正規のアクセスを持った状態で残っている必要があります。</target>
+        <target state="final">少なくとも 1 人以上の @@PRODUCT_NAME@@ 管理者が正規のアクセスを持った状態で残っている必要があります。</target>
       </trans-unit>
-      <trans-unit id="login" xml:space="preserve">
+      <trans-unit id="login" xml:space="preserve" approved="yes">
         <source>Desired Login</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
-        <target>希望のログイン</target>
+        <target state="final">希望のログイン</target>
       </trans-unit>
-      <trans-unit id="desiredPassword" xml:space="preserve">
+      <trans-unit id="desiredPassword" xml:space="preserve" approved="yes">
         <source>Desired Password</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target>希望のパスワード</target>
+        <target state="final">希望のパスワード</target>
       </trans-unit>
-      <trans-unit id="passwordConfirm" xml:space="preserve">
+      <trans-unit id="passwordConfirm" xml:space="preserve" approved="yes">
         <source>Confirm Password</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
-        <target>パスワードの確認</target>
+        <target state="final">パスワードの確認</target>
       </trans-unit>
-      <trans-unit id="confirm" xml:space="preserve">
+      <trans-unit id="confirm" xml:space="preserve" approved="yes">
         <source>Confirm</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target>確認</target>
+        <target state="final">確認</target>
       </trans-unit>
-      <trans-unit id="firstNames" xml:space="preserve">
+      <trans-unit id="firstNames" xml:space="preserve" approved="yes">
         <source>First Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
-        <target>ファーストネーム(名)</target>
+        <target state="final">ファーストネーム(名)</target>
       </trans-unit>
-      <trans-unit id="lastName" xml:space="preserve">
+      <trans-unit id="lastName" xml:space="preserve" approved="yes">
         <source>Last Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
-        <target>ラストネーム(姓)</target>
+        <target state="final">ラストネーム(姓)</target>
       </trans-unit>
-      <trans-unit id="email" xml:space="preserve">
+      <trans-unit id="email" xml:space="preserve" approved="yes">
         <source>Email</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
-        <target>Email</target>
+        <target state="final">Email</target>
       </trans-unit>
-      <trans-unit id="company" xml:space="preserve">
+      <trans-unit id="company" xml:space="preserve" approved="yes">
         <source>Company</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
-        <target>会社</target>
+        <target state="final">会社</target>
       </trans-unit>
-      <trans-unit id="desiredpassword" xml:space="preserve">
+      <trans-unit id="desiredpassword" xml:space="preserve" approved="yes">
         <source>Desired Password</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
-        <target>希望のパスワード</target>
+        <target state="final">希望のパスワード</target>
       </trans-unit>
-      <trans-unit id="desiredpasswordConfirm" xml:space="preserve">
+      <trans-unit id="desiredpasswordConfirm" xml:space="preserve" approved="yes">
         <source>Confirm Password</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
-        <target>パスワードの確認</target>
+        <target state="final">パスワードの確認</target>
       </trans-unit>
       <trans-unit id="address1" xml:space="preserve">
         <source>Street Address</source>
@@ -11535,13 +11535,13 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
         <target state="final">フィールド {0} はフィールド {1} 以上にできません。</target>
       </trans-unit>
-      <trans-unit id="error.illegal_max_occurrences" xml:space="preserve">
+      <trans-unit id="error.illegal_max_occurrences" xml:space="preserve" approved="yes">
         <source>Password maximum allowed character occurrences can't be less or equal than 0.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Passwords maximum allowed character occurrences can't be less or equal than 0.</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">パスワードに許容される最大文字数は、0以下にできません。</target>
       </trans-unit>
       <trans-unit approved="yes" id="error.spacesinpassword" xml:space="preserve">
         <source>Password contains tab or newline characters.</source>
