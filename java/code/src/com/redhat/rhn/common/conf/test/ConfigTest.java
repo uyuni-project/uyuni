@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -253,13 +254,12 @@ public class ConfigTest extends RhnBaseTestCase {
         assertEquals(0, c.getInt("prefix.int_zero"));
         assertEquals(100, c.getInt("prefix.int_100"));
 
-        boolean flag = false;
         try {
             c.getInt("prefix.int_y");
-            flag = true;
+            fail(); //should not be here
         }
         catch (NumberFormatException nfe) {
-            assertFalse(flag);
+            //
         }
     }
 
@@ -272,13 +272,12 @@ public class ConfigTest extends RhnBaseTestCase {
         assertEquals(c.getInt("prefix.int_100"),
                 c.getInteger("prefix.int_100").intValue());
 
-        boolean flag = false;
         try {
             c.getInteger("prefix.int_y");
-            flag = true;
+            fail(); //should not be here
         }
         catch (NumberFormatException nfe) {
-            assertFalse(flag);
+            //
         }
     }
 

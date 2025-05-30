@@ -94,7 +94,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertEquals(admin.getOrg(), cc.getOrg());
 
         try {
-            cc = handler.create(admin, LABEL + "/", NAME, DESCRIPTION);
+            handler.create(admin, LABEL + "/", NAME, DESCRIPTION);
             String msg = "Invalid character / not detected:(";
             fail(msg);
         }
@@ -119,7 +119,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testUpdate() {
-        ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
+        handler.create(admin, LABEL, NAME, DESCRIPTION);
         String newName = NAME + TestUtils.randomString();
         String desc = DESCRIPTION + TestUtils.randomString();
         try {
@@ -130,7 +130,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         catch (Exception e) {
             //Cool perm error!
         }
-        cc = handler.update(admin, LABEL, newName, desc);
+        ConfigChannel cc = handler.update(admin, LABEL, newName, desc);
         assertEquals(LABEL, cc.getLabel());
         assertEquals(newName, cc.getName());
         assertEquals(desc, cc.getDescription());
@@ -138,7 +138,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         try {
             String name = RandomStringUtils.randomAlphanumeric(
                     ConfigChannelCreationHelper.MAX_NAME_LENGTH + 1);
-            cc = handler.update(admin, LABEL, name, DESCRIPTION);
+            handler.update(admin, LABEL, name, DESCRIPTION);
             String msg = "Max length reached for name- not detected :(";
             fail(msg);
         }
@@ -552,7 +552,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         // create a config file
         String path = "/tmp/foo/path" + TestUtils.randomString();
         String contents = "HAHAHAHA";
-        ConfigRevision rev = createRevision(path, contents,
+        createRevision(path, contents,
                                     "group" + TestUtils.randomString(),
                                     "owner" + TestUtils.randomString(),
                                     "777",

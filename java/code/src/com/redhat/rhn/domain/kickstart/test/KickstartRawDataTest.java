@@ -96,8 +96,7 @@ public class KickstartRawDataTest extends BaseTestCaseWithUser {
         KickstartCloneCommand ccmd = new KickstartCloneCommand(ksdata.getId(),
                 user, TestUtils.randomString());
         ccmd.store();
-        KickstartRawData clone = (KickstartRawData) ccmd.getClonedKickstart();
-        clone = (KickstartRawData) ksdata.deepCopy(user, TestUtils.randomString());
+        KickstartRawData clone = (KickstartRawData) ksdata.deepCopy(user, TestUtils.randomString());
         assertNotNull(clone);
         assertEquals(clone.getData(), ksdata.getData());
     }
