@@ -2634,7 +2634,6 @@ public class SystemManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
         params.put("pid", id);
-        //toReturn.elaborate();
         return m.execute(params);
     }
 

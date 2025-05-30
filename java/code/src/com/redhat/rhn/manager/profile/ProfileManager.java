@@ -245,7 +245,7 @@ public class ProfileManager extends BaseManager {
 
                             if (skipPkg.contains(profpkgitem.getNevra())) {
                                 // this package was evaluated on a previous pass through
-                                // the plist and identified as a match on the syslist;
+                                // the plist and identified as a match on the syslist
                                 // therefore, it may be skipped
                                 continue;
                             }

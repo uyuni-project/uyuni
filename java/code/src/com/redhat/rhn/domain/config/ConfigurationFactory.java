@@ -818,7 +818,7 @@ public class ConfigurationFactory extends HibernateFactory {
         //TODO: put the following line back. It is not here now because Server.findLocal
         //      does this task for us. It belongs here, but this would currently cause
         //      an infinite loop based on how setSandboxOverride works.
-        //server.setSandboxOverride(retval);
+        //server.setSandboxOverride(retval)
         commit(retval);
 
         return retval;

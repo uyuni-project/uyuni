@@ -98,7 +98,6 @@ public class ConfigurationValidation {
             if (parts.matches()) {
                 String name = parts.group(1);
                 String args = parts.group(3);
-                // String deflt = parts.group(5);
 
                 // Can't find a function-name
                 if (name == null || name.trim().isEmpty()) {
