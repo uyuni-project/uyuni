@@ -18,7 +18,7 @@ package com.suse.oval.vulnerablepkgextractor;
 import com.suse.oval.OsFamily;
 import com.suse.oval.cpe.Cpe;
 import com.suse.oval.cpe.CpeBuilder;
-import com.suse.oval.manager.OVALLookupHelper;
+import com.suse.oval.manager.OVALResourcesCache;
 import com.suse.oval.ovaltypes.BaseCriteria;
 import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.ovaltypes.CriterionType;
@@ -42,20 +42,20 @@ import java.util.regex.Pattern;
 public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
     private static final Pattern RELEASE_PACKAGE_REGEX = Pattern.compile(
             "^\\s*(?<releasePackage>[-a-zA-Z_0-9]+) is\\s*(==|>=)\\s*(?<releasePackageVersion>[0-9.]+)\\s*$");
-    private final OVALLookupHelper ovalLookupHelper;
+    private final OVALResourcesCache ovalResourcesCache;
 
     /**
      * Standard constructor
      *
      * @param vulnerabilityDefinitionIn the vulnerability definition to extract vulnerable packages from
-     * @param ovalLookupHelperIn        the oval lookup helper
-     */
+     * @param ovalResourcesCacheIn      the oval lookup helper
+     * */
     public SUSEVulnerablePackageExtractor(DefinitionType vulnerabilityDefinitionIn,
-                                          OVALLookupHelper ovalLookupHelperIn) {
+                                          OVALResourcesCache ovalResourcesCacheIn) {
         super(vulnerabilityDefinitionIn);
-        Objects.requireNonNull(ovalLookupHelperIn);
+        Objects.requireNonNull(ovalResourcesCacheIn);
 
-        this.ovalLookupHelper = ovalLookupHelperIn;
+        this.ovalResourcesCache = ovalResourcesCacheIn;
     }
 
     @Override
@@ -80,17 +80,17 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
             String comment = packageCriterion.getComment();
             String testId = packageCriterion.getTestRef();
 
-            TestType packageTest = ovalLookupHelper.lookupTestById(testId)
+            TestType packageTest = ovalResourcesCache.lookupTestById(testId)
                     .orElseThrow(() -> new IllegalStateException("Referenced package test is not found: " + testId));
 
             String objectId = packageTest.getObjectRef();
             String stateId = packageTest.getStateRef()
                     .orElseThrow(() -> new IllegalStateException("Unexpected empty package state in SUSE OVAL"));
 
-            ObjectType packageObject = ovalLookupHelper.lookupObjectById(objectId)
+            ObjectType packageObject = ovalResourcesCache.lookupObjectById(objectId)
                     .orElseThrow(() -> new IllegalStateException("Referenced package object not found: " + objectId));
 
-            StateType packageState = ovalLookupHelper.lookupStateById(stateId)
+            StateType packageState = ovalResourcesCache.lookupStateById(stateId)
                     .orElseThrow(() -> new IllegalStateException("Referenced package state not found: " + stateId));
 
             String packageName = packageObject.getPackageName();
@@ -121,7 +121,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
         for (CriterionType productCriterion : productCriterions) {
             String comment = productCriterion.getComment();
             String productUserFriendlyName = comment.replace(" is installed", "");
-            TestType productTest = ovalLookupHelper.lookupTestById(productCriterion.getTestRef()).orElseThrow();
+            TestType productTest = ovalResourcesCache.lookupTestById(productCriterion.getTestRef()).orElseThrow();
 
             ProductVulnerablePackages vulnerableProduct = new ProductVulnerablePackages();
             vulnerableProduct.setSingleCve(definition.getSingleCve().orElseThrow());
