@@ -1,8 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
 
-import { Button } from "components/buttons";
-
 import { SearchField } from "./SearchField";
 import { Table, TableRef } from "./Table";
 
@@ -16,6 +14,9 @@ export type HierarchicalRow = {
 };
 
 type HierarchicalTableProps = {
+  /** Optional class to add to the table container */
+  className?: string;
+
   /**
    * Array of data items where each element has a unique id and optional parentId
    */
@@ -63,6 +64,7 @@ type HierarchicalTableProps = {
 
 export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTableProps>((props, ref) => {
   const {
+    className,
     data,
     identifier,
     expandColumnKey,
@@ -158,7 +160,7 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
     // Apply special styling for non-leaf or indented nodes
     const level = row.level || 0;
     if (!row.isLeaf || level > 0) {
-      return <span style={{ marginLeft: row.isLeaf ? `${level * indentSize}px` : "0" }}>{cellContent}</span>;
+      return <span style={{ paddingLeft: row.isLeaf ? `${level * indentSize}px` : "0" }}>{cellContent}</span>;
     }
     // Return plain content for root-level leaf nodes
     return cellContent;
@@ -179,15 +181,16 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
         const indent = level * indentSize;
 
         return (
-          <div className="d-flex align-items-center">
-            <div style={{ width: `${indent}px` }}></div>
-            {!row.isLeaf && (
-              <Button
-                className={`fa ${isExpanded ? "fa-caret-down" : "fa-caret-right"}`}
-                handler={() => toggleRowExpanded(rowId)}
-              />
-            )}
-            {renderCellContent(row, child)}
+          <div className="expandable-entry">
+            <div style={{ paddingLeft: `${indent}px` }}>
+              {!row.isLeaf && (
+                <i
+                  className={`fa ${isExpanded ? "fa-angle-down" : "fa-angle-right"} fa-1-5x pointer product-hover`}
+                  onClick={() => toggleRowExpanded(rowId)}
+                />
+              )}
+              {renderCellContent(row, child)}
+            </div>
           </div>
         );
       };
@@ -212,15 +215,17 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
   };
 
   return (
-    <Table
-      ref={ref}
-      data={visibleRows}
-      identifier={identifier}
-      cssClassFunction={enhancedCssClassFunction}
-      {...tableProps}
-    >
-      {enhancedChildren}
-    </Table>
+    <div className={`hierarchical-table${className ? " " + className : ""}`}>
+      <Table
+        ref={ref}
+        data={visibleRows}
+        identifier={identifier}
+        cssClassFunction={enhancedCssClassFunction}
+        {...tableProps}
+      >
+        {enhancedChildren}
+      </Table>
+    </div>
   );
 });
 
