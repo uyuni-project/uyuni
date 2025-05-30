@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -22,14 +23,17 @@ import base64
 from rhnpush import connection
 
 
+# pylint: disable-next=missing-class-docstring
 class PackageUpload(connection.PackageUpload):
     user_agent = "rhnpush"
 
     def set_auth(self, username, password):
         auth_vals = self.encode_values([username, password])
+        # pylint: disable-next=consider-using-f-string
         self.headers["%s-%s" % (self.header_prefix, "Auth")] = auth_vals
 
     def set_session(self, session_string):
+        # pylint: disable-next=consider-using-f-string
         self.headers["%s-%s" % (self.header_prefix, "Auth-Session")] = session_string
 
     def set_force(self, force):
@@ -37,10 +41,12 @@ class PackageUpload(connection.PackageUpload):
             force = 1
         else:
             force = 0
+        # pylint: disable-next=consider-using-f-string
         self.headers["%s-%s" % (self.header_prefix, "Force")] = str(force)
 
     def set_null_org(self, null_org):
         if null_org:
+            # pylint: disable-next=consider-using-f-string
             self.headers["%s-%s" % (self.header_prefix, "Null-Org")] = "1"
 
     def set_timeout(self, timeout):
@@ -49,9 +55,9 @@ class PackageUpload(connection.PackageUpload):
     # Encodes an array of variables into Base64 (column-separated)
     @staticmethod
     def encode_values(arr):
-        val = ':'.join([x.strip() for x in map(base64.encodestring, arr)])
+        val = ":".join([x.strip() for x in map(base64.encodestring, arr)])
         # Get rid of the newlines
-        val = val.replace('\n', '')
+        val = val.replace("\n", "")
         # And split the result into lines of fixed size
         line_len = 80
         result = []
@@ -59,7 +65,7 @@ class PackageUpload(connection.PackageUpload):
         while 1:
             if start >= len(val):
                 break
-            result.append(val[start:start + line_len])
+            result.append(val[start : start + line_len])
             start = start + line_len
         return result
 

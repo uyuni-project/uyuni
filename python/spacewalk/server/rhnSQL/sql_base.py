@@ -88,7 +88,6 @@ class ModifiedRowError(SQLError):
 
 
 class Cursor:
-
     """A class to implement generic SQL Cursor operations."""
 
     # The cursor cache is a hash of:
@@ -240,7 +239,6 @@ class Cursor:
 
 
 class Procedure:
-
     """
     Class for calling out to stored procedures.
 
@@ -261,7 +259,6 @@ class Procedure:
 
 
 class Database:
-
     """
     Base class for handling database operations.
 

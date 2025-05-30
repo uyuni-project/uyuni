@@ -16,92 +16,94 @@ import locale
 from rhn.connections import idn_ascii_to_puny, idn_puny_to_unicode
 from rhn.stringutils import ustr, sstr
 
-try: # python2
+try:  # python2
     from urlparse import urlsplit, urlunsplit
-except ImportError: # python3
+except ImportError:  # python3
     from urllib.parse import urlsplit, urlunsplit
 
 import gettext
-t = gettext.translation('rhn-client-tools', fallback=True)
+
+t = gettext.translation("rhn-client-tools", fallback=True)
 # Python 3 translations don't have a ugettext method
-if not hasattr(t, 'ugettext'):
+if not hasattr(t, "ugettext"):
     t.ugettext = t.gettext
 _ = t.ugettext
 
 # XXX: This could be moved in a more "static" location if it is too
 # much of an eye sore
 Defaults = {
-    'enableProxy'       : ("Use a HTTP Proxy",
-                           0),
-    'serverURL'         : ("Remote server URL",
-                           "https://your.server.url.here/XMLRPC"),
-    'debug'             : ("Whether or not debugging is enabled",
-                           0),
-    'systemIdPath'      : ("Location of system id",
-                           "/etc/sysconfig/rhn/systemid"),
-    'versionOverride'   : ("Override the automatically determined "\
-                           "system version",
-                           ""),
-    'httpProxy'         : ("HTTP proxy in host:port format, e.g. "\
-                           "squid.example.com:3128",
-                           ""),
-    'proxyUser'         : ("The username for an authenticated proxy",
-                           ""),
-    'proxyPassword'     : ("The password to use for an authenticated proxy",
-                           ""),
-    'enableProxyAuth'   : ("To use an authenticated proxy or not",
-                           0),
-    'networkRetries'    : ("Number of attempts to make at network "\
-                           "connections before giving up",
-                           1),
-    'sslCACert'         : ("The CA cert used to verify the ssl server",
-                           "/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT"),
-    'noReboot'          : ("Disable the reboot action",
-                           0),
-    'disallowConfChanges': ("Config options that can not be overwritten by a config update action",
-                            ['sslCACert','serverURL','disallowConfChanges',
-                             'noReboot']),
+    "enableProxy": ("Use a HTTP Proxy", 0),
+    "serverURL": ("Remote server URL", "https://your.server.url.here/XMLRPC"),
+    "debug": ("Whether or not debugging is enabled", 0),
+    "systemIdPath": ("Location of system id", "/etc/sysconfig/rhn/systemid"),
+    "versionOverride": ("Override the automatically determined " "system version", ""),
+    "httpProxy": ("HTTP proxy in host:port format, e.g. " "squid.example.com:3128", ""),
+    "proxyUser": ("The username for an authenticated proxy", ""),
+    "proxyPassword": ("The password to use for an authenticated proxy", ""),
+    "enableProxyAuth": ("To use an authenticated proxy or not", 0),
+    "networkRetries": (
+        "Number of attempts to make at network " "connections before giving up",
+        1,
+    ),
+    "sslCACert": (
+        "The CA cert used to verify the ssl server",
+        "/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT",
+    ),
+    "noReboot": ("Disable the reboot action", 0),
+    "disallowConfChanges": (
+        "Config options that can not be overwritten by a config update action",
+        ["sslCACert", "serverURL", "disallowConfChanges", "noReboot"],
+    ),
 }
 
-FileOptions = ['systemIdPath', 'sslCACert', 'tmpDir', ]
+FileOptions = [
+    "systemIdPath",
+    "sslCACert",
+    "tmpDir",
+]
+
 
 # a peristent configuration storage class
 class ConfigFile:
     "class for handling persistent config options for the client"
-    def __init__(self, filename = None):
+
+    def __init__(self, filename=None):
         self.dict = {}
+        # pylint: disable-next=invalid-name
         self.fileName = filename
         if self.fileName:
             self.load()
 
-    def load(self, filename = None):
+    def load(self, filename=None):
         if filename:
             self.fileName = filename
+        # pylint: disable-next=singleton-comparison
         if self.fileName == None:
             return
         if not os.access(self.fileName, os.R_OK):
-#            print("warning: can't access %s" % self.fileName)
+            #            print("warning: can't access %s" % self.fileName)
             return
 
+        # pylint: disable-next=unspecified-encoding
         f = open(self.fileName, "r")
 
-        multiline = ''
+        multiline = ""
         for line in f.readlines():
             # strip comments
-            if line.find('#') == 0:
+            if line.find("#") == 0:
                 continue
             line = multiline + line.strip()
             if not line:
                 continue
 
             # if line ends in '\', append the next line before parsing
-            if line[-1] == '\\':
+            if line[-1] == "\\":
                 multiline = line[:-1].strip()
                 continue
             else:
-                multiline = ''
+                multiline = ""
 
-            split = line.split('=', 1)
+            split = line.split("=", 1)
             if len(split) != 2:
                 # not in 'a = b' format. we should log this
                 # or maybe error.
@@ -121,7 +123,7 @@ class ConfigFile:
             if value:
                 # possibly split value into a list
                 values = value.split(";")
-                if key in ['proxyUser', 'proxyPassword']:
+                if key in ["proxyUser", "proxyPassword"]:
                     value = sstr(value.encode(locale.getpreferredencoding()))
                 elif len(values) == 1:
                     try:
@@ -133,20 +135,21 @@ class ConfigFile:
                 else:
                     # there could be whitespace between the values on
                     # one line, let's strip it out
-                    value = [val.strip() for val in values if val.strip() ]
+                    value = [val.strip() for val in values if val.strip()]
 
             # now insert the (comment, value) in the dictionary
             newval = (comment, value)
-            if key in self.dict: # do we need to update
+            if key in self.dict:  # do we need to update
                 newval = self.dict[key]
-                if comment is not None: # override comment
+                if comment is not None:  # override comment
                     newval = (comment, newval[1])
-                if value is not None: # override value
+                if value is not None:  # override value
                     newval = (newval[0], value)
             self.dict[key] = newval
         f.close()
 
     def save(self):
+        # pylint: disable-next=singleton-comparison
         if self.fileName == None:
             return
 
@@ -159,27 +162,32 @@ class ConfigFile:
         # and fails (see #130391)
         if not os.access(self.fileName, os.R_OK):
             if not os.access(os.path.dirname(self.fileName), os.R_OK):
+                # pylint: disable-next=consider-using-f-string
                 print(_("%s was not found" % os.path.dirname(self.fileName)))
                 return
 
-        f = open(self.fileName+'.new', "w")
-        os.chmod(self.fileName+'.new', int('0644', 8))
+        # pylint: disable-next=unspecified-encoding
+        f = open(self.fileName + ".new", "w")
+        os.chmod(self.fileName + ".new", int("0644", 8))
 
-        f.write("# Automatically generated Update Agent "\
-                "config file, do not edit.\n")
+        f.write("# Automatically generated Update Agent " "config file, do not edit.\n")
         f.write("# Format: 1.0\n")
         f.write("")
+        # pylint: disable-next=consider-using-dict-items,consider-iterating-dictionary
         for key in self.dict.keys():
             (comment, value) = self.dict[key]
-            f.write(sstr(u"%s[comment]=%s\n" % (key, comment)))
+            # pylint: disable-next=consider-using-f-string
+            f.write(sstr("%s[comment]=%s\n" % (key, comment)))
+            # pylint: disable-next=unidiomatic-typecheck
             if type(value) != type([]):
-                value = [ value ]
+                value = [value]
             if key in FileOptions:
                 value = map(os.path.abspath, value)
-            f.write(sstr(u"%s=%s\n" % (key, ';'.join(map(str, value)))))
+            # pylint: disable-next=consider-using-f-string
+            f.write(sstr("%s=%s\n" % (key, ";".join(map(str, value)))))
             f.write("\n")
         f.close()
-        os.rename(self.fileName+'.new', self.fileName)
+        os.rename(self.fileName + ".new", self.fileName)
 
     # dictionary interface
     def __contains__(self, name):
@@ -195,6 +203,7 @@ class ConfigFile:
     def values(self):
         return [a[1] for a in self.dict.values()]
 
+    # pylint: disable-next=redefined-builtin
     def update(self, dict):
         self.dict.update(dict)
 
@@ -221,8 +230,9 @@ class ConfigFile:
 
 # a superclass for the ConfigFile that also handles runtime-only
 # config values
+# pylint: disable-next=missing-class-docstring
 class Config:
-    def __init__(self, filename = None):
+    def __init__(self, filename=None):
         self.stored = ConfigFile()
         self.stored.update(Defaults)
         if filename:
@@ -252,12 +262,14 @@ class Config:
     def values(self):
         ret = []
         for k in self.keys():
+            # pylint: disable-next=unnecessary-dunder-call
             ret.append(self.__getitem__(k))
         return ret
 
     def items(self):
         ret = []
         for k in self.keys():
+            # pylint: disable-next=unnecessary-dunder-call
             ret.append((k, self.__getitem__(k)))
         return ret
 
@@ -277,7 +289,7 @@ class Config:
 
     # These function expose access to the peristent storage for
     # updates and saves
-    def info(self, name): # retrieve comments
+    def info(self, name):  # retrieve comments
         return self.stored.info(name)
 
     def save(self):
@@ -300,65 +312,85 @@ class Config:
             del self.runtime[name]
 
 
+# pylint: disable-next=invalid-name
 def getProxySetting():
-    """ returns proxy string in format hostname:port
+    """returns proxy string in format hostname:port
     hostname is converted to Punycode (RFC3492) if needed
     """
+    # pylint: disable-next=redefined-outer-name
     cfg = initUp2dateConfig()
     proxy = None
+    # pylint: disable-next=invalid-name
     proxyHost = cfg["httpProxy"]
 
     if proxyHost:
         if proxyHost[:7] == "http://":
+            # pylint: disable-next=invalid-name
             proxyHost = proxyHost[7:]
-        parts = proxyHost.split(':')
+        parts = proxyHost.split(":")
         parts[0] = str(idn_ascii_to_puny(parts[0]))
-        proxy = ':'.join(parts)
+        proxy = ":".join(parts)
 
     return proxy
 
+
 def convert_url_to_puny(url):
-    """ returns url where hostname is converted to Punycode (RFC3492) """
+    """returns url where hostname is converted to Punycode (RFC3492)"""
     s = urlsplit(url)
     return sstr(urlunsplit((s[0], ustr(idn_ascii_to_puny(s[1])), s[2], s[3], s[4])))
 
+
 def convert_url_from_puny(url):
-    """ returns url where hostname is converted from Punycode (RFC3492). Returns unicode string. """
+    """returns url where hostname is converted from Punycode (RFC3492). Returns unicode string."""
     s = urlsplit(url)
     return ustr(urlunsplit((s[0], idn_puny_to_unicode(s[1]), s[2], s[3], s[4])))
 
+
+# pylint: disable-next=invalid-name
 def getServerlURL():
-    """ return list of serverURL from config
-        Note: in config may be one value or more values, but this
-        function always return list
+    """return list of serverURL from config
+    Note: in config may be one value or more values, but this
+    function always return list
     """
+    # pylint: disable-next=redefined-outer-name
     cfg = initUp2dateConfig()
     # serverURL may be a list in the config file, so by default, grab the
     # first element.
-    if type(cfg['serverURL']) == type([]):
-        return [convert_url_to_puny(i) for i in cfg['serverURL']]
+    # pylint: disable-next=unidiomatic-typecheck
+    if type(cfg["serverURL"]) == type([]):
+        return [convert_url_to_puny(i) for i in cfg["serverURL"]]
     else:
-        return [convert_url_to_puny(cfg['serverURL'])]
+        return [convert_url_to_puny(cfg["serverURL"])]
 
+
+# pylint: disable-next=invalid-name,invalid-name
 def setServerURL(serverURL):
-    """ Set serverURL in config """
+    """Set serverURL in config"""
+    # pylint: disable-next=redefined-outer-name
     cfg = initUp2dateConfig()
-    cfg.set('serverURL', serverURL)
+    cfg.set("serverURL", serverURL)
 
+
+# pylint: disable-next=invalid-name,invalid-name
 def setSSLCACert(sslCACert):
-    """ Set sslCACert in config """
+    """Set sslCACert in config"""
+    # pylint: disable-next=redefined-outer-name
     cfg = initUp2dateConfig()
-    cfg.set('sslCACert', sslCACert)
+    cfg.set("sslCACert", sslCACert)
 
 
-def initUp2dateConfig(cfg_file = "/etc/sysconfig/rhn/up2date"):
+# pylint: disable-next=invalid-name
+def initUp2dateConfig(cfg_file="/etc/sysconfig/rhn/up2date"):
     """This function is the right way to get at the up2date config."""
+    # pylint: disable-next=global-variable-undefined
     global cfg
     try:
+        # pylint: disable-next=possibly-used-before-assignment
         cfg
     except NameError:
         cfg = None
 
+    # pylint: disable-next=singleton-comparison
     if cfg == None:
         cfg = Config(cfg_file)
         cfg["isatty"] = False
