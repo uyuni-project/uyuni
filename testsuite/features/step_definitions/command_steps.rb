@@ -1814,6 +1814,16 @@ When(/^I wait until I see "([^"]*)" in file "([^"]*)" on "([^"]*)"$/) do |text, 
   end
 end
 
+When(/^I start the health check tool with supportconfig "([^"]*)" on "([^"]*)"$/) do |supportconfig, host|
+  node = get_target(host)
+  node.run("mgr-health-check -v -s #{supportconfig} start", check_errors: true, verbose: true)
+end
+
+When(/^I stop health check tool on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run("mgr-health-check stop", check_errors: true, verbose: true)
+end
+
 Then(/^the word "([^']*)" does not occur more than (\d+) times in "(.*)" on "([^"]*)"$/) do |word, threshold, path, host|
   count, _ret = get_target(host).run("grep -o -i \'#{word}\' #{path} | wc -l")
   occurences = count.to_i
@@ -1830,4 +1840,19 @@ Then(/^I upgrade "([^"]*)" with the last "([^"]*)" version$/) do |host, package|
     break if last_event['id'] > last_event_before_upgrade['id'] && (last_event['summary'].include? 'Package Install/Upgrade')
   end
   wait_action_complete(last_event['id'])
+end
+
+Then(/^I check that the health check tool exposes metrics on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run("curl -s localhost:9000/metrics.json | python3 -c 'import sys, json; print(json.load(sys.stdin).keys())'", check_errors: true, verbose: true)
+end
+
+Then(/^I check that the health check tool (is|is not) running on "([^"]*)"$/) do |action, host|
+  node = get_target(host)
+  node.run("test $(podman ps | grep health-check | wc -l) == #{action == 'is' ? '4' : '0'}", check_errors: true, verbose: true)
+end
+
+Then(/^I remove test supportconfig on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run("rm /root/server-supportconfig -rf")
 end

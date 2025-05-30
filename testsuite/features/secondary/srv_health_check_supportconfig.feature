@@ -12,22 +12,22 @@ Feature: Health Check tool based on a supportconfig
     Then I obtain and extract the supportconfig from the server
 
   Scenario: Execute health check tool with server supportconfig
-    When I run "mgr-health-check -v -s /root/server-supportconfig/uyuni-server-supportconfig/ start" on "localhost"
-    Then I run "test $(podman ps | grep health-check | wc -l) == 4" on "localhost"
+    When I start the health check tool with supportconfig "/root/server-supportconfig/uyuni-server-supportconfig/" on "localhost"
+    Then I check that the health check tool is running on "localhost"
 
   Scenario: I wait until health-check is ready
     When I run "curl localhost:3000/api/health -o /dev/null" on "localhost" with timeout at most 10 seconds
 
   Scenario: Health Check containers are healthy and running
-    When I run "curl -s localhost:9000 -o /dev/null" on "localhost"
-    Then I run "curl -s localhost:3100 -o /dev/null" on "localhost"
-    And I run "curl -s localhost:9081 -o /dev/null" on "localhost"
-    And I run "curl -s localhost:3000 -o /dev/null" on "localhost"
+    When I wait until port "9000" is listening on "localhost" host
+    Then I wait until port "3100" is listening on "localhost" host
+    And I wait until port "9081" is listening on "localhost" host
+    And I wait until port "3000" is listening on "localhost" host
 
   Scenario: Health Check containers are exposing metrics
-    When I run "curl -s localhost:9000/metrics.json | python3 -c 'import sys, json; print(json.load(sys.stdin).keys())'" on "localhost"
+    Then I check that the health check tool exposes metrics on "localhost"
 
   Scenario: Cleanup: Remove health check tool
-    When I run "mgr-health-check stop" on "localhost"
-    Then I run "test $(podman ps | grep health-check | wc -l) == 0" on "localhost"
-    And I run "rm /root/server-supportconfig -rf" on "localhost"
+    When I stop health check tool on "localhost"
+    Then I check that the health check tool is not running on "localhost"
+    And I remove test supportconfig on "localhost"
