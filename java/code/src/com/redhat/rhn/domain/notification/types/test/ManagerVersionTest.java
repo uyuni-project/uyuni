@@ -38,6 +38,9 @@ public class ManagerVersionTest {
     public static final String SEMANTIC_VERSION_4_1_0 = "4.1.0";
     public static final String SEMANTIC_VERSION_4_3_12 = "4.3.12";
     public static final String SEMANTIC_VERSION_4_3_13 = "4.3.13";
+    public static final String SEMANTIC_VERSION_5_1_0_RC = "5.1.0 RC";
+    public static final String SEMANTIC_VERSION_5_1_0_ALPHA = "5.1.0-alpha+001";
+    public static final String SEMANTIC_VERSION_5_1_0_BUILD = "5.1.0+20130313144700";
 
     @Test
     public void testVersionValidating() {
@@ -63,6 +66,28 @@ public class ManagerVersionTest {
         assertEquals(-1, v2.getPatch());
         assertEquals(dataDrivenVersion, v2.toString());
         assertTrue(v2.isUyuni());
+
+
+        ManagerVersion rc = new ManagerVersion(SEMANTIC_VERSION_5_1_0_RC, false);
+        assertEquals(5, rc.getMajor());
+        assertEquals(1, rc.getMinor());
+        assertEquals(0, rc.getPatch());
+        assertEquals(SEMANTIC_VERSION_5_1_0_RC, rc.toString() + " RC");
+        assertFalse(rc.isUyuni());
+
+        ManagerVersion rc1 = new ManagerVersion(SEMANTIC_VERSION_5_1_0_ALPHA, false);
+        assertEquals(5, rc1.getMajor());
+        assertEquals(1, rc1.getMinor());
+        assertEquals(0, rc1.getPatch());
+        assertEquals(SEMANTIC_VERSION_5_1_0_ALPHA, rc1.toString() + "-alpha+001");
+        assertFalse(rc1.isUyuni());
+
+        ManagerVersion rc2 = new ManagerVersion(SEMANTIC_VERSION_5_1_0_BUILD, false);
+        assertEquals(5, rc2.getMajor());
+        assertEquals(1, rc2.getMinor());
+        assertEquals(0, rc2.getPatch());
+        assertEquals(SEMANTIC_VERSION_5_1_0_BUILD, rc2.toString() + "+20130313144700");
+        assertFalse(rc2.isUyuni());
     }
 
     @ParameterizedTest
@@ -138,12 +163,12 @@ public class ManagerVersionTest {
 
     static Stream<Arguments> invalidVersionData() {
         return Stream.of(
-                Arguments.of("2024.08.01", true),  // Invalid data driven format
-                Arguments.of("2024-08", true),     // Invalid separator
+                Arguments.of("2024.08.01", true),   // Invalid data driven format
+                Arguments.of("2024-08", true),      // Invalid separator
 
-                Arguments.of("1.2", false),        // Incomplete semantic version
-                Arguments.of("4.3.12.4", false),   // Extra version part
-                Arguments.of("abc.def.ghi", false) // Non-numeric semantic version
+                Arguments.of("1.2", false),         // Incomplete semantic version
+                Arguments.of("abc.def.ghi", false), // Non-numeric semantic version
+                Arguments.of("1.2.X", false)        // Non-numeric semantic version
         );
     }
 
