@@ -1821,7 +1821,7 @@ end
 
 When(/^I stop health check tool on "([^"]*)"$/) do |host|
   node = get_target(host)
-  node.run("mgr-health-check stop", check_errors: true, verbose: true)
+  node.run('mgr-health-check stop', check_errors: true, verbose: true)
 end
 
 Then(/^the word "([^']*)" does not occur more than (\d+) times in "(.*)" on "([^"]*)"$/) do |word, threshold, path, host|
@@ -1854,5 +1854,5 @@ end
 
 Then(/^I remove test supportconfig on "([^"]*)"$/) do |host|
   node = get_target(host)
-  node.run("rm /root/server-supportconfig -rf")
+  node.run('rm /root/server-supportconfig -rf')
 end
