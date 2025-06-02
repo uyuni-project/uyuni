@@ -10,6 +10,13 @@
 --
 
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('admin.hub', 'R', 'Browse Hub Online Synchronization pages')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('admin.hub', 'W', 'Modify and delete hub and peripheral server')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('audit.cve', 'R', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
@@ -1452,6 +1459,41 @@ INSERT INTO access.namespace (namespace, access_mode, description)
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.sync.hub.store_access_token', 'W', 'Generate a new access token for ISS for accessing this system')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
+
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.sync.hub.get_all_peripheral_channels', 'R', 'List all peripheral channels')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.sync.hub.get_manager_info', 'R', 'Get Manager Server Details')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.sync.hub.is_iss_peripheral', 'R', 'Return if the server is a peripheral server')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.sync.hub.get_all_peripheral_orgs', 'R', 'List all Organiazations of the peripheral server')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.sync.hub.migrate_from_iss_v1', 'W', 'Migrate ISSv1 to Hub environment')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.sync.hub.sync_peripheral_channels', 'W', 'Sync channels with the peripheral server')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.sync.hub.migrate_from_iss_v2', 'W', 'Migrate ISSv2 to Hub environment')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.sync.hub.remove_peripheral_channels_to_sync', 'W', 'Remove channels from synchronization with a peripheral server')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.sync.hub.add_peripheral_channels_to_sync', 'W', 'Add channels to synchronize with a peripheral server')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.sync.hub.regenerate_scc_credentials', 'W', 'Regenerate SCC credentials for Hub Synchronization')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.sync.hub.list_peripheral_channels_to_sync', 'R', 'List channels which are configured to be synchronized with a peripheral server')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.image.add_image_file', 'W', 'Delete image file')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
