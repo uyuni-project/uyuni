@@ -23,7 +23,7 @@ import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_FIELD;
 import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_REGISTRY;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.domain.notification.types.Version;
+import com.redhat.rhn.domain.notification.types.ManagerVersion;
 
 import java.util.Map;
 
@@ -52,7 +52,7 @@ public class ProxyConfigGetFormDefaults implements ProxyConfigGetFormDataContext
         }
         else {
             String productVersion = ConfigDefaults.get().getProductVersion();
-            Version version = new Version(productVersion, isUyuni);
+            ManagerVersion version = new ManagerVersion(productVersion, isUyuni);
             String registryBaseUrl = String.format("registry.suse.com/suse/manager/%d.%d/%s",
                     version.getMajor(), version.getMinor(), context.getServer().getServerArch().getName());
 
