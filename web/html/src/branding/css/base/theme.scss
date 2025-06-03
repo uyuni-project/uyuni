@@ -1297,3 +1297,11 @@ tr.changed > td {
 #legend-box-wrapper {
   display: none !important;
 }
+
+.proxy-brand {
+  font-size: 1.6em;
+  color: $eos-bc-gray-900;
+  > i {
+    font-size: .4em;
+  }
+}
