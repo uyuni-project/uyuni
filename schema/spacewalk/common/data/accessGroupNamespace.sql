@@ -205,6 +205,7 @@ INSERT INTO access.accessGroupNamespace
     SELECT ag.id, ns.id
     FROM access.accessGroup ag, access.namespace ns
     WHERE ns.namespace IN (
+        'api.actionchain.add_apply_highstate',
         'api.actionchain.add_configuration_deployment',
         'api.actionchain.add_errata_update',
         'api.actionchain.add_package_install',
@@ -410,7 +411,12 @@ INSERT INTO access.accessGroupNamespace
         'api.channel.software.clone',
         'api.channel.software.merge_errata',
         'api.channel.software.regenerate_needed_cache',
-        'api.channel.software.regenerate_yum_cache'
+        'api.channel.software.regenerate_yum_cache',
+        'api.channel.software.list_vendor_repo_filters',
+        'api.channel.software.clear_vendor_repo_filters',
+        'api.channel.software.set_vendor_repo_filters',
+        'api.channel.software.remove_vendor_repo_filter',
+        'api.channel.software.add_vendor_repo_filter'
     )
     ON CONFLICT DO NOTHING;
 
@@ -826,6 +832,7 @@ INSERT INTO access.accessGroupNamespace
     FROM access.accessGroup ag, access.namespace ns
     WHERE ns.namespace IN (
         'api.proxy.activate_proxy',
+        'api.proxy.bootstrap_proxy',
         'api.proxy.container_config',
         'api.proxy.create_monitoring_scout',
         'api.proxy.deactivate_proxy',
@@ -852,7 +859,9 @@ INSERT INTO access.accessGroupNamespace
         'api.recurring.custom.list_available',
         'api.recurring.custom.update',
         'api.recurring.highstate.create',
-        'api.recurring.highstate.update'
+        'api.recurring.highstate.update',
+        'api.recurring.playbook.create',
+        'api.recurring.playbook.update'
     )
     ON CONFLICT DO NOTHING;
 
@@ -964,6 +973,7 @@ INSERT INTO access.accessGroupNamespace
         'api.system.get_unscheduled_errata',
         'api.system.get_uuid',
         'api.system.get_variables',
+        'api.system.has_traditional_systems',
         'api.system.is_nvre_installed',
         'api.system.list_activation_keys',
         'api.system.list_active_systems',

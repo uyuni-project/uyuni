@@ -7613,6 +7613,7 @@ public class SystemHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listMigrationTargets(User loggedInUser,
             Integer sid, boolean excludeTargetWhereMissingSuccessors) {
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
