@@ -29,16 +29,6 @@
           spaImportReactPage('notifications/notifications');
         </script>
       </li>
-      <c:if test="${requestScope.legends != null}">
-        <li class="legend" id="legend-box-wrapper">
-          <a href="#" class="toggle-box" data-bs-toggle="collapse" data-bs-target="#legend-box">
-            <i class="fa fa-eye" aria-hidden="true"></i>
-          </a>
-          <div id="legend-box" class="box-wrapper collapse">
-            <jsp:include page="/WEB-INF/includes/legends.jsp" />
-          </div>
-        </li>
-      </c:if>
       <li class="search" id="header-search">
         <script>
           spaImportReactPage('header/search');

@@ -68,7 +68,6 @@ public class YourRhnAction extends RhnAction {
             }
         }
         request.setAttribute(ANY_LISTS_SELECTED, anyListsSelected);
-        request.setAttribute("legends", "yourrhn");
 
         if (CLOUD_PAYG_MANAGER.isPaygInstance() && !CLOUD_PAYG_MANAGER.isCompliant()) {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
