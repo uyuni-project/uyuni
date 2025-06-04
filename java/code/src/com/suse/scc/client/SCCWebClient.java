@@ -122,8 +122,17 @@ public class SCCWebClient implements SCCClient {
      * @param configIn the configuration object
      */
     public SCCWebClient(SCCConfig configIn) {
+        this(configIn, new HttpClientAdapter(configIn.getAdditionalCerts(), false));
+    }
+
+    /**
+     * Constructor for testing purposes
+     * @param configIn the configuration object
+     * @param httpClientIn the HttpClientAdapter object
+     */
+    public SCCWebClient(SCCConfig configIn, HttpClientAdapter httpClientIn) {
         config = configIn;
-        httpClient = new HttpClientAdapter(configIn.getAdditionalCerts(), false);
+        httpClient = httpClientIn;
     }
 
     private <T> T writeCache(T value, String name) {
