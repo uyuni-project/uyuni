@@ -2543,6 +2543,16 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.software.patches' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/systems/ssm/ListErrataConfirm.do' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.software.patches' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/systems/ssm/ListErrataConfirm.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'systems.software.patches' AND ns.access_mode = 'R'
     AND ep.endpoint = '/systems/details/ErrataList.do' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
@@ -2605,6 +2615,16 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'systems.software.packages' AND ns.access_mode = 'W'
     AND ep.endpoint = '/ssm/PackageUpgrade.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.software.packages' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/ssm/PackageUpgradeSchedule.do' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.software.packages' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/ssm/PackageUpgradeSchedule.do' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
