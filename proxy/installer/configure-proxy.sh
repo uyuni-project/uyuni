@@ -547,7 +547,7 @@ $UPGRADE
 # * 60 / 100 is 60% of that space
 # / 1024 is to get value in MB
 SQUID_SIZE=$(df -P /var/cache/squid | awk '{a=$4} END {printf("%d", a * 60 / 100 / 1024)}')
-SQUID_REWRITE="s|cache_dir ufs /var/cache/squid 15000 16 256|cache_dir ufs /var/cache/squid $SQUID_SIZE 16 256|g;"
+SQUID_REWRITE="s|cache_dir a\?ufs /var/cache/squid 15000 16 256|cache_dir aufs /var/cache/squid $SQUID_SIZE 16 256|g;"
 SQUID_VER_MAJOR=$(squid -v | awk -F'[ .]' '/Version/ {print $4}')
 if [ $SQUID_VER_MAJOR -ge 3 ] ; then
     # squid 3.X has acl 'all' built-in
