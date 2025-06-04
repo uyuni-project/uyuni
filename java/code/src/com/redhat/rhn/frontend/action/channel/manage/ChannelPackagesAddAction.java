@@ -28,7 +28,6 @@ import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListSetHelper;
-import com.redhat.rhn.frontend.taglibs.list.AlphaBarHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
@@ -139,10 +138,7 @@ public class ChannelPackagesAddAction extends ChannelPackagesBaseAction {
 
         RhnListSetHelper helper = new RhnListSetHelper(request);
 
-
-        String alphaBarPressed = request.getParameter(
-                AlphaBarHelper.makeAlphaKey(TagHelper.generateUniqueName(LIST_NAME)));
-        if (!requestContext.isSubmitted() && alphaBarPressed == null) {
+        if (!requestContext.isSubmitted()) {
             set.clear();
             RhnSetManager.store(set);
         }
