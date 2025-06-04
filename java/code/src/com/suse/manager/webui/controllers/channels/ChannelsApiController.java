@@ -32,6 +32,8 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.lang3.BooleanUtils;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -72,7 +74,7 @@ public class ChannelsApiController {
         return doWithoutAutoFlushing(() -> {
             Boolean filterClm = Boolean.parseBoolean(req.queryParams("filterClm"));
             Set<Long> filterOutIds = new HashSet<>();
-            if (filterClm) {
+            if (BooleanUtils.isTrue(filterClm)) {
                 // filtering Content Lifecycle Management target channels
                 filterOutIds.addAll(ContentProjectFactory.listSoftwareEnvironmentTarget().stream()
                         .map(tgt -> tgt.getChannel().getId())
