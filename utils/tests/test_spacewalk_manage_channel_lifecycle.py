@@ -5,11 +5,15 @@ Tests for spacewalk-manager-channel-lifecycle script.
 import os
 import pytest
 import tempfile
+
+# pylint: disable-next=unused-import,unused-import
 from mock import MagicMock, patch
 from . import helpers
 
 helpers.symlink_source("spacewalk-manage-channel-lifecycle", "smcl")
+# pylint: disable-next=wrong-import-position
 from . import smcl
+
 helpers.unsymlink_source("smcl")
 
 
@@ -17,6 +21,7 @@ class TestSMCL:
     """
     Integration/unit tests fusion for spacewalk-manage-channel-lifecycle script.
     """
+
     def test_get_current_phase(self):
         """
         Get configuration credentials.
@@ -24,8 +29,9 @@ class TestSMCL:
         :return:
         """
         smcl.phases = ["dev", "test", "prod"]
+
         class DummyOptions:
-            delimiter = '-'
+            delimiter = "-"
 
         smcl.options = DummyOptions
         assert smcl.get_current_phase("develop") is None
@@ -56,7 +62,11 @@ class TestSMCL:
             smcl.setup_config(config)
 
             # Save
-            assert os.path.exists(os.path.join(tmpdir, ".spacewalk-manage-channel-lifecycle/settings.conf"))
+            assert os.path.exists(
+                os.path.join(
+                    tmpdir, ".spacewalk-manage-channel-lifecycle/settings.conf"
+                )
+            )
 
             r_cfg = smcl.Config(smcl.USER_CONF_FILE)
             smcl.setup_config(r_cfg)

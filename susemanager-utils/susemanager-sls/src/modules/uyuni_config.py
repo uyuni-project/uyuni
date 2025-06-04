@@ -679,9 +679,11 @@ class UyuniSystemgroup(UyuniRemoteObject):
         """
         return self._convert_datetime_list(
             self.client(
-                "systemgroup.listSystemsMinimal"
-                if minimal
-                else "systemgroup.listSystems",
+                (
+                    "systemgroup.listSystemsMinimal"
+                    if minimal
+                    else "systemgroup.listSystems"
+                ),
                 name,
             )
         )

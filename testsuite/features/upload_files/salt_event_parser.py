@@ -6,11 +6,11 @@ import json
 # open salt event log and create correct json from it
 errors = []
 item = []
-f = open('/var/log/rhn/salt-event.log', "r")
+f = open("/var/log/rhn/salt-event.log", "r")
 for line in f.readlines():
     item.append(line)
     if re.search(r"^\}", line):
-        if '\"result\": false' in "".join(item):
+        if '"result": false' in "".join(item):
             item[0] = "{"
             errors.append(item)
         item = []
@@ -29,8 +29,13 @@ for error in errors:
         for k, v in j["return"].items():
             if isinstance(v, dict) and not v.get("result", True):
                 failure_count += 1
-                print("\n# Failure", failure_count, ", _stamp:", j['_stamp'], json.dumps(v, sort_keys=True, indent=4))
+                print(
+                    "\n# Failure",
+                    failure_count,
+                    ", _stamp:",
+                    j["_stamp"],
+                    json.dumps(v, sort_keys=True, indent=4),
+                )
     except ValueError as e:
         print("JSON cannot be parsed due to {0}".format(e))
         continue
-

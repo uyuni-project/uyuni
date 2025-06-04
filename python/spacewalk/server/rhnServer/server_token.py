@@ -577,7 +577,6 @@ def _check_token_limits(server_id, token_rec):
 
 
 class ActivationTokens:
-
     """
     An aggregation of activation tokens, exposing important information
     like org_id, user_id etc in a unified manner.
@@ -727,7 +726,6 @@ class ActivationTokens:
 
 
 class ReRegistrationToken(ActivationTokens):
-
     """
     Subclass for re-registration keys.
 
@@ -738,7 +736,6 @@ class ReRegistrationToken(ActivationTokens):
 
 
 class ReRegistrationActivationToken(ReRegistrationToken):
-
     """
     Subclass for re-registration keys and activation keys used together.
     """
