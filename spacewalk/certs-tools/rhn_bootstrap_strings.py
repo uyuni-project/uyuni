@@ -948,6 +948,10 @@ if [ $VENV_ENABLED -eq 1 ]; then
     MINION_SERVICE="venv-salt-minion"
 fi
 
+if [ -n "$SNAPSHOT_ID" ]; then
+    test -d "$MINION_CONFIG_DIR" || mkdir -p "$MINION_CONFIG_DIR"
+fi
+
 if [ $REGISTER_THIS_BOX -eq 1 ]; then
     echo "* registering"
 
