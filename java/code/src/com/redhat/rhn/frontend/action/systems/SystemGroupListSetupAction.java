@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.systems;
 
-import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
@@ -188,8 +187,6 @@ public class SystemGroupListSetupAction extends RhnAction
     @Override
     public List<SystemGroupOverview> getResult(RequestContext context) {
         User user = context.getCurrentUser();
-        DataResult<SystemGroupOverview> dr =
-                        SystemManager.groupListWithServerCount(user, null);
-        return dr;
+        return SystemManager.groupListWithServerCount(user, null);
     }
 }
