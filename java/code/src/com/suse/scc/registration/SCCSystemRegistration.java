@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class SCCSystemRegistration {
 
-    private final List<SCCSystemRegistrationContextHandler> contextHandlerChain = new ArrayList<>();
+    protected final List<SCCSystemRegistrationContextHandler> contextHandlerChain = new ArrayList<>();
 
     /**
      * Constructor
