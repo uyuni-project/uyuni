@@ -15,7 +15,12 @@ INSERT INTO access.namespace (namespace, access_mode, description)
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('admin.hub', 'W', 'Modify and delete hub and peripheral server')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
-
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('admin.config', 'R', 'View configuration and setup parameters')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('admin.config', 'W', 'Modify configuration and setup parameters')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('audit.cve', 'R', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
@@ -192,6 +197,12 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('cm.build', 'W', NULL)
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('cm.runtime', 'R', 'View container runtime status')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('cm.runtime', 'W', 'Modify container runtime definitions')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('patches.list', 'R', NULL)
@@ -500,6 +511,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('systems.details.proxy', 'R', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('systems.details.proxy', 'W', 'Modify configuration of a proxy system')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('systems.details.peripheral', 'R', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
@@ -609,6 +623,12 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('systems.activation_keys.details', 'R', NULL)
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('systems.activation_keys.appstreams', 'R', NULL)
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('systems.activation_keys.appstreams', 'W', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('systems.activation_keys.packages', 'R', NULL)
@@ -768,6 +788,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.actionchain.schedule_chain', 'W', 'Schedule the Action Chain so that its actions will actually occur.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.actionchain.add_apply_highstate', 'W', 'Adds an action to apply highstate on the system')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.activationkey.add_app_streams', 'W', 'Add app streams to an activation key. If any of the provided app streams is not available in the')
@@ -969,6 +992,21 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.channel.software.clear_repo_filters', 'W', 'Removes the filters for a repo')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.channel.software.list_vendor_repo_filters', 'W', 'Lists the filters for a vendor repo')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.channel.software.clear_vendor_repo_filters', 'W', 'Clears the filters for a repo')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.channel.software.set_vendor_repo_filters', 'W', 'Replaces the existing set of filters for a given repo')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.channel.software.remove_vendor_repo_filter', 'W', 'Removes a filter from a given vendor repo')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.channel.software.add_vendor_repo_filter', 'W', 'Adds a filter to a given vendor repo')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.channel.software.clone', 'W', 'Clone a channel.  If arch_label is omitted, the arch label of the')
@@ -2035,6 +2073,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.proxy.activate_proxy', 'W', 'Activates the proxy identified by the given client')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.proxy.bootstrap_proxy', 'W', 'Deploy a proxy container on given Salt minion')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.proxy.container_config', 'W', 'Compute and download the configuration for proxy containers')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
@@ -2078,6 +2119,12 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.recurring.highstate.update', 'W', 'Update the properties of a recurring highstate action.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.recurring.playbook.create', 'W', 'Create a new recurring playbook action')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.recurring.playbook.update', 'W', 'Update a recurring Ansible playbook action')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.saltkey.accept', 'W', 'Accept a minion key')
@@ -2540,6 +2587,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.get_variables', 'R', 'Lists kickstart variables set  in the system record')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.system.has_traditional_systems', 'R', 'Returns whether there are traditional systems registered')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.is_nvre_installed', 'R', 'Check if the package with the given NVRE is installed on given system.')
