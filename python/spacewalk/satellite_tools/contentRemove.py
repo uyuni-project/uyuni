@@ -29,11 +29,9 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.satellite_tools.progress_bar import ProgressBar
 from spacewalk.server.rhnPackage import unlink_package_file
 from spacewalk.server import rhnSQL
-from socket import getfqdn
 
 
 class RemoteApi:
-
     """Class for connecting to the XMLRPC spacewalk interface"""
 
     cache = {}
@@ -83,7 +81,7 @@ class RemoteApi:
 
 
 def __applyChannelState(server_ids, username, password):
-    xmlrpc = RemoteApi("https://" + getfqdn() + "/rpc/api", username, password)
+    xmlrpc = RemoteApi("http://localhost/rpc/api", username, password)
     return xmlrpc.apply_channel_state(server_ids)
 
 
@@ -420,6 +418,7 @@ def __deleteRepoData(labels):
     directory = "/var/cache/" + CFG.repomd_path_prefix
     for label in labels:
         if os.path.isdir(directory + "/" + label):
+            # pylint: disable=W4903
             shutil.rmtree(directory + "/" + label, onerror=__rmtree_error)
 
 
@@ -663,6 +662,7 @@ def _delete_ks_files(channel_labels):
             # pylint: disable-next=consider-using-f-string
             log_debug(1, "Not removing %s: no such file" % path)
             continue
+        # pylint: disable=W4903
         shutil.rmtree(path, onerror=__rmtree_error)
 
 
