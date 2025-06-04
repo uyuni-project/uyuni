@@ -203,20 +203,15 @@ public class SystemSearchResult extends SystemOverview {
     /**
      * @return the cpuMHz
      */
-    public String getCpuMHz() {
+    // Please leave name exactly as "getCpuMhz" (will be used in StringUtil.beanify("get " + cpu_mhz))
+    public String getCpuMhz() {
         return cpuMHz;
     }
 
     /**
      * @param cpuMHzIn the cpuMHz to set
      */
-    public void setCpuMHz(String cpuMHzIn) {
-        this.cpuMHz = cpuMHzIn;
-    }
-
-    /**
-     * @param cpuMHzIn the cpuMHz to set
-     */
+    // Please leave name exactly as "setCpuMhz" (will be used in StringUtil.beanify("set " + cpu_mhz))
     public void setCpuMhz(String cpuMHzIn) {
         this.cpuMHz = cpuMHzIn;
     }
