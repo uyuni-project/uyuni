@@ -21,11 +21,13 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.Serializable;
+
 
 /**
  * @author paji
  */
-public class ProxyInfo {
+public class ProxyInfo implements Serializable {
     private Server server;
     private PackageEvr version;
     private Long id;

@@ -73,6 +73,7 @@ public class MatcherJsonIO {
 
     /** Architecture strings **/
     private static final String AMD64_ARCH_STR = "amd64";
+    private static final String ARM64_ARCH_STR = "arm64";
     private static final String S390_ARCH_STR = "s390";
     private static final String PPC64LE_ARCH_STR = "ppc64le";
 
@@ -149,6 +150,7 @@ public class MatcherJsonIO {
 
         monitoringProductByArch = Map.of(
             AMD64_ARCH_STR, 1201L,      // SUSE Manager Monitoring Single
+            ARM64_ARCH_STR, 1201L,      // SUSE Manager Monitoring Single
             S390_ARCH_STR, 1203L,       // SUSE Manager Monitoring Unlimited Virtual Z
             PPC64LE_ARCH_STR, 1201L     // SUSE Manager Monitoring Single
         );
@@ -206,7 +208,7 @@ public class MatcherJsonIO {
             });
 
         return Stream.concat(systems, jsonSystemForSelf(arch, includeSelf, selfMonitoringEnabled))
-            .toList();
+            .collect(Collectors.toList());
     }
 
     private static Set<Long> getVirtualGuests(Server system) {
@@ -228,7 +230,7 @@ public class MatcherJsonIO {
                         p.getChannelFamily() != null ? p.getChannelFamily().getLabel() : "",
                         p.isBase(),
                         p.getFree()))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**
@@ -257,7 +259,7 @@ public class MatcherJsonIO {
                                 .collect(Collectors.toSet())
                 );
             })
-            .toList();
+            .collect(Collectors.toList());
     }
 
     /**
@@ -269,7 +271,7 @@ public class MatcherJsonIO {
             .createQuery("SELECT ps FROM PinnedSubscription ps", PinnedSubscription.class)
             .stream()
             .map(p -> new MatchJson(p.getSystemId(), p.getSubscriptionId(), null, null))
-            .toList();
+            .collect(Collectors.toList());
     }
 
     /**
@@ -314,7 +316,7 @@ public class MatcherJsonIO {
                         vhm.getServers().stream()
                                 .flatMap(s -> getVirtualGuests(s).stream())
                                 .collect(Collectors.toSet())))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**

@@ -189,6 +189,7 @@
         <javac destdir="${build.dir}/java-branding"
                includeantruntime="no"
                nowarn="true"
+	       release="17"
                srcdir="${branding.src.dir}"/>
 
         <copy toDir="${build.dir}/java-branding">
@@ -213,6 +214,7 @@
                nowarn="${nowarn}"
                encoding="utf-8"
                fork="yes"
+	       release="17"
                memoryMaximumSize="512m"
                includeAntRuntime="false"
                classpathref="libjars"

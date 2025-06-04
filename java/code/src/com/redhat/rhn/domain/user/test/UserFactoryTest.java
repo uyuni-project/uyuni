@@ -35,6 +35,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.domain.user.UserServerPreference;
 import com.redhat.rhn.domain.user.UserServerPreferenceId;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestStatics;
@@ -386,7 +387,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
         Org o = user.getOrg();
 
-        List<User> orgAdmins = UserFactory.getInstance().findAllOrgAdmins(o);
+        List<UserImpl> orgAdmins = UserFactory.getInstance().findAllOrgAdmins(o);
         assertEquals(1, orgAdmins.size());
         assertTrue(orgAdmins.contains(user));
     }

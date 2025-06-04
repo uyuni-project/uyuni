@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.credentials.RemoteCredentials;
 
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
-import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCFileClient;
 
 import java.io.File;
@@ -54,7 +53,7 @@ public class LocalDirContentSyncSource implements ContentSyncSource {
     }
 
     @Override
-    public SCCClient getClient(String uuid, Optional<Path> loggingDir) throws SCCClientException {
+    public SCCClient getClient(String uuid, Path loggingDir) throws SCCClientException {
         File localFile = path.toFile();
         String localAbsolutePath = localFile.getAbsolutePath();
 
@@ -67,6 +66,6 @@ public class LocalDirContentSyncSource implements ContentSyncSource {
             throw new SCCClientException(String.format("Path \"%s\" must be a directory.", localAbsolutePath));
         }
 
-        return new SCCFileClient(new SCCConfig(localAbsolutePath));
+        return new SCCFileClient(path);
     }
 }

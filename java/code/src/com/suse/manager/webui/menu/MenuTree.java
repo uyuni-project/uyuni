@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.menu;
 
@@ -452,7 +448,20 @@ public class MenuTree {
                     .addChild(new MenuItem("Master Setup").withPrimaryUrl("/rhn/admin/iss/Master.do")
                             .withVisibility(adminRoles.get("satellite")))
                     .addChild(new MenuItem("Slave Setup").withPrimaryUrl("/rhn/admin/iss/Slave.do")
-                            .withVisibility(adminRoles.get("satellite"))))
+                            .withVisibility(adminRoles.get("satellite")))
+            )
+            .addChild(new MenuItem("Hub Configuration")
+                    .withVisibility(adminRoles.get("satellite"))
+                    .withPrimaryUrl("/rhn/manager/admin/hub/peripherals")
+                    .addChild(new MenuItem("Peripherals Configuration")
+                            .withPrimaryUrl("/rhn/manager/admin/hub/peripherals")
+                            .withVisibility(adminRoles.get("satellite")))
+                .addChild(new MenuItem("Hub Details").withPrimaryUrl("/rhn/manager/admin/hub/hub-details")
+                    .withVisibility(adminRoles.get("satellite")))
+                .addChild(new MenuItem("Access Tokens")
+                        .withPrimaryUrl("/rhn/manager/admin/hub/access-tokens")
+                        .withVisibility(adminRoles.get("satellite")))
+            )
             .addChild(new MenuItem("Task Schedules")
                     .withPrimaryUrl("/rhn/admin/SatSchedules.do")
                     .withAltUrl("/rhn/admin/BunchDetail.do")
@@ -553,6 +562,16 @@ public class MenuTree {
         return acl.evalAcl(aclContext, aclMixin);
     }
 
+    /**
+     * Evaluate acl conditions for the current {@link User}
+     *
+     * @param aclMixin acls to evaluate
+     * @return the acl evaluated result
+     */
+    public boolean checkAcl(String aclMixin) {
+        Acl acl = aclFactory.getAcl(Access.class.getName());
+        return acl.evalAcl(new HashMap<>(), aclMixin);
+    }
     /**
      * Decode which is the active {@link MenuItem} from the current URL
      * based on the list of urls of the link

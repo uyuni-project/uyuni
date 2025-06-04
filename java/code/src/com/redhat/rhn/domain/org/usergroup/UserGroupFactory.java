@@ -66,7 +66,7 @@ public class UserGroupFactory extends HibernateFactory {
         retval.setName(ls.getMessage(key));
         String desc = retval.getName() + ls.getMessage("for Org") + org.getName() + " (" + org.getId() + ")";
         retval.setDescription(desc);
-        retval.setOrgId(org.getId());
+        retval.setOrg(org);
         retval.setRole(role);
         return retval;
     }
@@ -166,7 +166,7 @@ public class UserGroupFactory extends HibernateFactory {
      */
     public static int deleteTemporaryRoles() {
         return HibernateFactory.getSession()
-        .getNamedQuery("UserGroupMembers.deleteTemporary")
+        .getNamedNativeQuery("UserGroupMembers.deleteTemporary")
         .executeUpdate();
     }
 

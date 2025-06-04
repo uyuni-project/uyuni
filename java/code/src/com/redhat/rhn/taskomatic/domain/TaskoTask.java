@@ -14,19 +14,16 @@
  */
 package com.redhat.rhn.taskomatic.domain;
 
-import java.util.Date;
-
+import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
  * TaskoTask
  */
-public class TaskoTask {
+public class TaskoTask extends BaseDomainHelper {
 
     private Long id;
     private String name;
     private String taskClass;
-    private Date created;
-    private Date modified;
 
     /**
      * @return Returns the id.
@@ -73,41 +70,5 @@ public class TaskoTask {
      */
     public void setTaskClass(String taskClassIn) {
         this.taskClass = taskClassIn;
-    }
-
-
-
-    /**
-     * @return Returns the created.
-     */
-    public Date getCreated() {
-        return created;
-    }
-
-
-
-    /**
-     * @param createdIn The created to set.
-     */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-
-
-    /**
-     * @return Returns the modified.
-     */
-    public Date getModified() {
-        return modified;
-    }
-
-
-
-    /**
-     * @param modifiedIn The modified to set.
-     */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
     }
 }

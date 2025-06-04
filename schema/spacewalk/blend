@@ -26,8 +26,8 @@ DEPENDENCY FILES (.deps)
 
 Terms:
   namespace - A root directory.
-              May be: (.|class|tables|views|procs|packages)
-              where (.) represents the current namesapce.
+              May be: (.|class|tables|views|procs|packages|schemas)
+              where (.) represents the current namespace.
 
   qname     - A qualified name.
               May be: [namespace/]basename[.ext].  When the namespace
@@ -52,14 +52,14 @@ Examples:
                           rhn_channel.pks
 
   Assuming the current namespace (or directory) is /views.
-  The table dependency "rhnChannel" is unqualifed and would be searched
+  The table dependency "rhnChannel" is unqualified and would be searched
   for in the following order:
     1st. views/rhnChannel
     2nd. tables/rhnChannel
     3rd. packages/rhnChannel
   However, lookup_functions dependency is qualified by namespace so the
   path will not be used.
-  The package header dependency "rhn_channel.pks" is unqualifed and but has
+  The package header dependency "rhn_channel.pks" is unqualified and but has
   an extension and would be searched for in the following order:
     1st. views/rhn_channel.pks
     2nd. tables/rhn_channel.pks

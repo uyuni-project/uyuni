@@ -116,9 +116,15 @@ function capitalize(str: string): string {
 }
 
 function generatePassword(): string {
-  const length = Math.floor(Math.random() * 10) + 15;
+  const length = 32;
+  // All printable ASCII chars except whitespace
+  const lowerCase = "abcdefghijklmnopqrstuvwxyz";
+  const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const numbers = "0123456789";
+  const otherPrintable = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+  const charset = lowerCase + upperCase + numbers + otherPrintable;
+
   // See https://stackoverflow.com/a/68617567/1470607
-  const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:-_";
   const array = new Uint32Array(charset.length);
   window.crypto.getRandomValues(array);
 
@@ -165,10 +171,6 @@ function deepCopy(e) {
   return e;
 }
 
-function getProductName(): string {
-  return window._IS_UYUNI ? "Uyuni" : "SUSE Manager";
-}
-
 const Utils = {
   cancelable,
   sortById,
@@ -180,7 +182,6 @@ const Utils = {
   capitalize,
   generatePassword,
   deepCopy,
-  getProductName,
 };
 
 const Formulas = {

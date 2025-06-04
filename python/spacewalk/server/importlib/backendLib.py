@@ -494,15 +494,7 @@ class TableInsert(TableUpdate):
 
 def sanitizeValue(value, datatype):
     if isinstance(datatype, DBstring):
-        if value is None or value == "":
-            return None  # we really want to preserve Nones
-            # and not depend on Oracle converting
-            # empty strings to NULLs -- PostgreSQL
-            # does not do this
-        if len(value) > datatype.limit:
-            value = value[: datatype.limit]
-            # ignore incomplete characters created after truncating
-        return value
+        return _sanitize_dbstring(value, datatype)
     if isinstance(datatype, DBblob):
         if value is None:
             value = ""
@@ -518,7 +510,36 @@ def sanitizeValue(value, datatype):
     if isinstance(datatype, DBdate):
         return str(value)[:10]
     if isinstance(datatype, DBint):
-        return int(value)
+        try:
+            value = _sanitize_number_string(value)
+            return int(float(value))
+        except ValueError as e:
+            raise ValueError(f"Cannot convert {value} to int") from e
+    return value
+
+
+def _sanitize_number_string(value):
+    """
+    Enable number-like strings to be converted by
+    int() or float()
+    """
+    if not isinstance(value, str):
+        return value
+
+    # Allow "1 234"
+    value = value.replace(" ", "")
+    return value
+
+
+def _sanitize_dbstring(value, datatype):
+    if value is None or value == "":
+        return None  # we really want to preserve Nones
+        # and not depend on Oracle converting
+        # empty strings to NULLs -- PostgreSQL
+        # does not do this
+    if len(value) > datatype.limit:
+        value = value[: datatype.limit]
+        # ignore incomplete characters created after truncating
     return value
 
 

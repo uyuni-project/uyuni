@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.server;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -28,7 +29,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "suseServerAppstream")
-public class ServerAppStream {
+public class ServerAppStream implements Serializable  {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appstreams_servermodule_seq")
     @SequenceGenerator(name = "appstreams_servermodule_seq", sequenceName = "suse_as_servermodule_seq",

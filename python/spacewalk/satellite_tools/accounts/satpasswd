@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #
 # Copyright (c) 2014--2015 Red Hat, Inc.
+# Copyright (c) 2025 SUSE LLC
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -16,7 +17,7 @@
 import getpass
 import sys
 
-from spacewalk.common.rhnConfig import initCFG, CFG
+from spacewalk.server import db_config
 from spacewalk.server import rhnSQL, rhnUser
 
 
@@ -30,18 +31,19 @@ def print_help():
 def read_passwd(stdin, msg):
     passwordIn = None
     if stdin:
-        passwordIn = sys.stdin.readline().rstrip('\n')
+        passwordIn = sys.stdin.readline().rstrip("\n")
     else:
         passwordIn = getpass.getpass(msg)
     return passwordIn
 
-if __name__ == '__main__':
-    if '-h' in sys.argv or '--help' in sys.argv:
+
+if __name__ == "__main__":
+    if "-h" in sys.argv or "--help" in sys.argv:
         print_help()
         sys.exit(0)
 
     stdin = False
-    for a in ('-s', '--stdin'):
+    for a in ("-s", "--stdin"):
         if a in sys.argv:
             stdin = True
             sys.argv.remove(a)
@@ -52,7 +54,6 @@ if __name__ == '__main__':
 
     userIn = sys.argv.pop()
 
-    initCFG('server.satellite')
     rhnSQL.initDB()
 
     user = rhnUser.search(userIn)
@@ -71,10 +72,11 @@ if __name__ == '__main__':
         print("Empty password is not permitted.")
         sys.exit(1)
 
-    if len(passwordIn) < CFG.MIN_PASSWD_LEN:
-        print(("User password should be at least %d characters long.") % CFG.MIN_PASSWD_LEN)
+    MIN_PASSWD_LEN = db_config.value("PSW_CHECK_LENGTH_MIN")
+    if len(passwordIn) < MIN_PASSWD_LEN:
+        print(("User password should be at least %d characters long.") % MIN_PASSWD_LEN)
         sys.exit(1)
 
-    user.contact['password'] = rhnUser.encrypt_password(passwordIn)
+    user.contact["password"] = rhnUser.encrypt_password(passwordIn)
     user.contact.save()
     rhnSQL.commit()

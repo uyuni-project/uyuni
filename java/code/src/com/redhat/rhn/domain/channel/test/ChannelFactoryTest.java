@@ -112,12 +112,12 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     }
 
     public static Channel createBaseChannel(User user,
-                                ChannelFamily fam) throws Exception {
+                                            ChannelFamily fam) throws Exception {
         Channel c = createTestChannel(null, fam);
         ProductName pn = lookupOrCreateProductName(ChannelManager.RHEL_PRODUCT_NAME);
         c.setProductName(pn);
         ChannelFactory.save(c);
-        return (Channel)TestUtils.saveAndReload(c);
+        return (Channel) TestUtils.saveAndReload(c);
     }
 
     public static Channel createTestChannel(User user) throws Exception {
@@ -137,15 +137,15 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
         ContentSourceType type = ChannelManager.findCompatibleContentSourceType(c.getChannelArch());
         contentSourceUrls.stream()
-                         .map(url -> {
-                             ContentSource cs = new ContentSource();
-                             cs.setLabel(c.getLabel() + "-CS-" + RandomStringUtils.randomAlphabetic(8));
-                             cs.setOrg(user.getOrg());
-                             cs.setType(type);
-                             cs.setSourceUrl(url);
-                             return TestUtils.saveAndReload(cs);
-                         })
-                         .forEach(c.getSources()::add);
+                .map(url -> {
+                    ContentSource cs = new ContentSource();
+                    cs.setLabel(c.getLabel() + "-CS-" + RandomStringUtils.randomAlphabetic(8));
+                    cs.setOrg(user.getOrg());
+                    cs.setType(type);
+                    cs.setSourceUrl(url);
+                    return TestUtils.saveAndReload(cs);
+                })
+                .forEach(c.getSources()::add);
 
         ChannelFactory.save(c);
         return c;
@@ -163,7 +163,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
     public static Channel createTestChannel(Org org) throws Exception {
         ChannelFamily cfam = org.getPrivateChannelFamily();
-        Channel c =  ChannelFactoryTest.createTestChannel(org, cfam);
+        Channel c = ChannelFactoryTest.createTestChannel(org, cfam);
         ChannelFactory.save(c);
         return c;
     }
@@ -177,7 +177,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     /**
      * Create a test channel setting the GPGCheck flag via a parameter.
      *
-     * @param user the user
+     * @param user       the user
      * @param gpgCheckIn the GPGCheck flag to set
      * @return the test channel
      * @throws Exception
@@ -236,6 +236,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
     /**
      * TODO: need to fix this test when we put errata management back in.
+     *
      * @throws Exception something bad happened
      */
     @Test
@@ -243,7 +244,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         ChannelManager.
-            getChannelsWithClonableErrata(user.getOrg());
+                getChannelsWithClonableErrata(user.getOrg());
 
         Channel original = ChannelFactoryTest.createTestChannel(user);
         Channel clone = ChannelFactoryTest.createTestClonedChannel(original, user);
@@ -252,7 +253,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
         List<ClonedChannel> channels =
                 ChannelFactory.getChannelsWithClonableErrata(
-                user.getOrg());
+                        user.getOrg());
 
         assertFalse(channels.isEmpty());
     }
@@ -378,7 +379,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         ChannelFactory.save(original);
         TestUtils.flushAndEvict(original);
 
-        original = (Channel)reload(original);
+        original = (Channel) reload(original);
         assertEquals(1, ChannelFactory.getPackageCount(original));
     }
 
@@ -386,8 +387,9 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
      * Create a test cloned channel. NOTE: This function does not copy its
      * original's package list like a real clone would. It is only useful for
      * testing purposes.
+     *
      * @param original Channel to be cloned
-     * @param user the user
+     * @param user     the user
      * @return a test cloned channel
      */
     public static Channel createTestClonedChannel(Channel original, User user) {
@@ -661,6 +663,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
     /**
      * Test "ChannelFactory.findAllByUserOrderByChild"
+     *
      * @throws Exception
      */
     @Test
@@ -702,6 +705,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertEquals("a_child1", channels.get(2).getLabel());
         assertEquals("b_parent3", channels.get(3).getLabel());
     }
+
     @Test
     public void testChannelSyncFlag() throws Exception {
 

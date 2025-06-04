@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 SUSE LLC
+# Copyright (c) 2023-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize extra products in the products page of the Setup Wizard
@@ -12,8 +12,8 @@ Feature: Synchronize extra products in the products page of the Setup Wizard
     And I should see a "Channels" text
 
 @uyuni
-  Scenario: Add openSUSE Leap 15.5 product, including Uyuni Client Tools
-    When I use spacewalk-common-channel to add all "leap15.5" channels with arch "x86_64"
+  Scenario: Add openSUSE Leap 15.6 product, including Uyuni Client Tools
+    When I use spacewalk-common-channel to add all "leap15.6" channels with arch "x86_64"
 
 @scc_credentials
 @susemanager
@@ -34,18 +34,18 @@ Feature: Synchronize extra products in the products page of the Setup Wizard
 
 @scc_credentials
 @susemanager
-  Scenario: Add Ubuntu 22.04 product with recommended sub-products
+  Scenario: Add Ubuntu 24.04 product with recommended sub-products
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "Ubuntu" as the filtered product description
     And I select "amd64-deb" from "product-arch-filter"
-    And I wait until I see "Ubuntu 22.04" text
-    And I select "Ubuntu 22.04" as a product
-    Then I should see the "Ubuntu 22.04" selected
+    And I wait until I see "Ubuntu 24.04" text
+    And I select "Ubuntu 24.04" as a product
+    Then I should see the "Ubuntu 24.04" selected
     When I click the Add Product button
-    And I wait until I see "Ubuntu 22.04" product has been added
+    And I wait until I see "Ubuntu 24.04" product has been added
 
 @uyuni
-  Scenario: Enable Ubuntu 22.04 Uyuni client tools for creating bootstrap repositories
-    When I use spacewalk-common-channel to add channel "ubuntu-2204-pool-amd64-uyuni ubuntu-2204-amd64-main-uyuni ubuntu-2204-amd64-main-updates-uyuni ubuntu-2204-amd64-main-security-uyuni ubuntu-2204-amd64-uyuni-client" with arch "amd64-deb"
+  Scenario: Enable Ubuntu 24.04 Uyuni client tools for creating bootstrap repositories
+    When I use spacewalk-common-channel to add channel "ubuntu-2404-pool-amd64-uyuni ubuntu-2404-amd64-main-uyuni ubuntu-2404-amd64-main-updates-uyuni ubuntu-2404-amd64-main-security-uyuni ubuntu-2404-amd64-uyuni-client" with arch "amd64-deb"

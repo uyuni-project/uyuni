@@ -20,11 +20,23 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+
 /**
  * A state revision that is assigned to a group.
  */
-public class OrgStateRevision extends StateRevision  {
+@Entity
+@Table(name = "suseOrgStateRevision")
+@PrimaryKeyJoinColumn(name = "state_revision_id")
+public class OrgStateRevision extends StateRevision {
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id", nullable = false)
     private Org org;
 
     /**

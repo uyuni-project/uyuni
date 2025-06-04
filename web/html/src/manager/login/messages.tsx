@@ -50,7 +50,7 @@ export const getGlobalMessages = (validationErrors, schemaUpgradeRequired, disks
 
   if (sccForwardWarning) {
     const sccForwardWarningMessage = t(
-      "SUSE Manager PAYG instances must forward registration data to SCC when credentials are provided. Data will be sent independently of the configuration setting. To hide this warning please set 'forward_registration = 1' in rhn.conf."
+      "SUSE Multi-Linux Manager PAYG instances must forward registration data to SCC when credentials are provided. Data will be sent independently of the configuration setting. To hide this warning please set 'forward_registration = 1' in rhn.conf."
     );
     messages = messages.concat({ severity: "warning", text: sccForwardWarningMessage });
   }

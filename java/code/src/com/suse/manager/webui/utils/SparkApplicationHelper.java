@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2015--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.utils;
 
@@ -55,6 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import de.neuland.jade4j.JadeConfiguration;
 import spark.ModelAndView;
@@ -238,7 +235,7 @@ public class SparkApplicationHelper {
             ModelAndView modelAndView = route.handle(request, response, user);
             List<String> roles = user.getRoles().stream()
                     .map(Role::getLabel)
-                    .toList();
+                    .collect(Collectors.toList());
             Object model = modelAndView.getModel();
             if (model instanceof Map mod) {
                 mod.put("roles", GSON.toJson(roles));
@@ -677,6 +674,26 @@ public class SparkApplicationHelper {
      */
     public static String message(Response response, String message) {
       return json(response, Collections.singletonMap("message", message), new TypeToken<>() { });
+    }
+
+    /**
+     * Serialize a success
+     * @param response the http response
+     * @return a JSON string
+     */
+    public static String success(Response response) {
+        return json(response, ResultJson.success(), new TypeToken<>() { });
+    }
+
+    /**
+     * Serialize a success
+     * @param response the http response
+     * @param data the data
+     * @return a JSON string
+     * @param <T> the type of data
+     */
+    public static <T> String success(Response response, T data) {
+        return json(response, data, new TypeToken<>() { });
     }
 
     /**

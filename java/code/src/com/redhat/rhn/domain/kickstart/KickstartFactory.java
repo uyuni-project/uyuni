@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -295,7 +296,7 @@ public class KickstartFactory extends HibernateFactory {
         // Filter out the unsupported Commands for the passed in profile
         return names.stream()
                 .filter(cn -> !cn.getName().equals("lilocheck") && !cn.getName().equals("langsupport"))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**

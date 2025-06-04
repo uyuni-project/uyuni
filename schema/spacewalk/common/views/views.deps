@@ -104,3 +104,6 @@ suseChannelPackageRetractedStatusView :: rhnChannelPackage rhnChannelErrata rhnE
 suseServerChannelsRetractedPackagesView :: rhnServerChannel rhnChannelErrata rhnErrataPackage
 susePackageExcludingPartOfPtf :: rhnPackageCapability rhnPackageProvides rhnPackage
 suseServerAppStreamHiddenPackagesView :: suseServerAppStreamPackageView
+endpointCatalog                  :: schemas/access endpointNamespace endpoint namespace
+userAccessTable                  :: schemas/access endpoint endpointNamespace userNamespace \
+                                    accessGroupNamespace userAccessGroup

@@ -45,7 +45,7 @@
 %global python2root %{python2_sitelib}/uyuni
 
 Name:           uyuni-common-libs
-Version:        5.1.1
+Version:        5.1.2
 Release:        0
 Summary:        Uyuni server and client libs
 License:        GPL-2.0-only

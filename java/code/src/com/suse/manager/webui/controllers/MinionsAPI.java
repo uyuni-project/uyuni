@@ -488,7 +488,7 @@ public class MinionsAPI {
     private static List<String> listAllSelectionKey(DataResult<PackageListItem> resultList) {
         return resultList.stream()
                          .map(PackageListItem::getSelectionKey)
-                         .toList();
+                         .collect(Collectors.toList());
     }
 
     private static Set<String> getSessionSet(Request request, Server server, String setLabel) {
@@ -547,7 +547,7 @@ public class MinionsAPI {
             attestationManager.listCoCoAttestationReportsForUserAndServer(user, server, pc)
             .stream()
             .map(CoCoAttestationReportJson::new)
-            .toList();
+            .collect(Collectors.toList());
 
         return json(GSON, response, new PagedDataResultJson<>(reportsJson, totalSize, Collections.emptySet()),
             new TypeToken<>() { });

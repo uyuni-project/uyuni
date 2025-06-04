@@ -1,0 +1,34 @@
+name: Additional Tests
+on:
+  workflow_call:
+    inputs:
+      skip_tests:
+        required: true
+        type: boolean
+  repository_dispatch:
+    types: [run-additional-tests]
+
+jobs:
+  additional-tests:
+    name: ${{ matrix.set }}
+    uses: ./.github/workflows/acceptance_tests_base.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        set: ['1', '2', '3', '4', '5']
+    with:
+      tests: "22_run_secondary_parallelizable_tests_subset.sh ${{ matrix.set }}"
+      server_id: "additional_${{ matrix.set }}"
+      skip_tests: ${{ inputs.skip_tests == true }}
+  scheduled-additional-tests:
+    name: Scheduled ${{ matrix.set }}
+    if: ${{ github.event_name == 'repository_dispatch' }}
+    uses: ./.github/workflows/acceptance_tests_base.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        set: ['1', '2', '3', '4', '5']
+    with:
+      tests: "22_run_secondary_parallelizable_tests_subset.sh ${{ matrix.set }}"
+      server_id: "additional_${{ matrix.set }}"
+      skip_tests: false

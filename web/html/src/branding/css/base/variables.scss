@@ -145,13 +145,8 @@ $border-radius-lg: 0;
 
 /* Lato variable: font variable to be applied in different text elements */
 $lato: "Lato", arial, helvetica, sans-serif;
-$lato-bold: "Lato Bold", arial, helvetica, sans-serif;
-
-/* WorkSans variable: font variable to be applied in different text elements */
-$worksans: "WorkSans", arial, helvetica, sans-serif;
-$worksans-bold: "WorkSans Bold", arial, helvetica, sans-serif;
-
 $helvetica: "Helvetica Neue", Helvetica, Arial, sans-serif;
+$suse: "SUSE", Helvetica, Arial, sans-serif;
 
 /* Manually map Bootstrap's fonts since our setup is a bit unorthodox */
 $icon-font-path: "../../bootstrap/fonts/";

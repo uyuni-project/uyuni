@@ -3,59 +3,6 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-  <class name="com.redhat.rhn.domain.product.SUSEProduct"
-         table="suseProducts">
-    <id name="id" type="long" column="id">
-      <meta attribute="scope-set">protected</meta>
-      <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
-        <param name="sequence_name">SUSE_PRODUCTS_ID_SEQ</param>
-        <param name="increment_size">1</param>
-      </generator>
-    </id>
-    <many-to-one name="arch"
-                 column="arch_type_id"
-                 class="com.redhat.rhn.domain.rhnpackage.PackageArch" />
-    <property name="name" column="name" type="string" />
-    <property name="version" column="version" type="string" />
-    <property name="friendlyName" column="friendly_name" type="string" />
-    <property name="description" column="description" type="string" />
-    <property name="release" column="release" type="string" />
-    <property name="productId" column="product_id" type="long" />
-    <property name="base" column="base" type="yes_no" not-null="true" />
-    <property name="free" column="free" type="yes_no" not-null="true" />
-    <property name="releaseStage" column="release_stage">
-      <type name="org.hibernate.type.EnumType">
-        <param name="enumClass">com.redhat.rhn.domain.product.ReleaseStage</param>
-        <param name="useNamed">true</param>
-      </type>
-    </property>
-    <many-to-one name="channelFamily"
-                 column="channel_family_id"
-                 class="com.redhat.rhn.domain.channel.ChannelFamily" />
-
-    <set name="upgrades" table="suseUpgradePath">
-      <key column="from_pdid"/>
-      <many-to-many column="to_pdid"
-                    class="com.redhat.rhn.domain.product.SUSEProduct"/>
-    </set>
-
-    <set name="downgrades" inverse="true" table="suseUpgradePath">
-      <key column="to_pdid"/>
-      <many-to-many column="from_pdid"
-                    class="com.redhat.rhn.domain.product.SUSEProduct"/>
-    </set>
-
-    <set name="suseProductChannels" table="suseProductChannel" inverse="true">
-      <key column="product_id"/>
-      <one-to-many class="com.redhat.rhn.domain.product.SUSEProductChannel"/>
-    </set>
-
-    <set name="channelTemplates" table="suseChannelTemplate" inverse="true">
-      <key column="product_id"/>
-      <one-to-many class="com.redhat.rhn.domain.product.ChannelTemplate"/>
-    </set>
-  </class>
-
   <query name="SUSEProduct.clear">
     <![CDATA[delete from com.redhat.rhn.domain.product.SUSEProduct]]>
   </query>

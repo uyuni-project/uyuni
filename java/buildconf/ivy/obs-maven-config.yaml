@@ -168,7 +168,7 @@ artifacts:
     package: log4j-slf4j
     repository: Leap
   - artifact: jsch
-    repository: Leap
+    repository: Leap_sle
   - artifact: mchange-commons-java
     package: mchange-commons
     repository: Leap
@@ -329,6 +329,12 @@ artifacts:
   - artifact: ical4j
     repository: Uyuni_Other
   - artifact: jetty-util
+    repository: Leap_sle
+  - artifact: jetty-server
+    repository: Leap_sle
+  - artifact: jetty-http
+    repository: Leap_sle
+  - artifact: jetty-io
     repository: Leap_sle
   - artifact: glassfish-jaxb-api
     repository: Leap

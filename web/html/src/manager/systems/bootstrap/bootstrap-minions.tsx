@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
+import { productName } from "core/user-preferences";
 
 import { AsyncButton, Button } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
@@ -407,8 +408,6 @@ class BootstrapMinions extends React.Component<Props, State> {
         action={this.clearFields}
       />,
     ];
-
-    const productName = window._IS_UYUNI ? "Uyuni" : "SUSE Manager";
 
     const authenticationData = (
       <>

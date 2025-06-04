@@ -3,77 +3,6 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-        <class name="com.redhat.rhn.domain.user.legacy.UserImpl"
-           table="WEB_CONTACT">
-        <id name="id" type="long" column="id">
-            <meta attribute="scope-set">protected</meta>
-            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
-                <param name="sequence_name">WEB_CONTACT_ID_SEQ</param>
-                <param name="increment_size">1</param>
-            </generator>
-        </id>
-        <property name="login" column="login" type="string" length="64" />
-        <property name="loginUc" column="login_uc" type="string" length="64" />
-        <!-- Make sure we set access=field on password, since the setPassword method of
-             UserImpl encodes the password every time -->
-        <property name="password" column="password" type="string" length="110" access="field" />
-
-        <property name="created" column="created" type="timestamp"
-                  insert="false" update="false"/>
-        <property name="modified" column="modified" type="timestamp"
-                  insert="false" update="false"/>
-        <property name="readOnly" column="read_only" type="yes_no" not-null="true"/>
-        <one-to-one name="personalInfo"
-                    class="com.redhat.rhn.domain.user.legacy.PersonalInfo"
-                    outer-join="true"
-                    cascade="all"
-                    constrained="true" />
-        <one-to-one name="userInfo"
-                    class="com.redhat.rhn.domain.user.legacy.UserInfo"
-                    outer-join="true"
-                    cascade="all"
-                    constrained="true" />
-        <many-to-one name="org"
-                     column="org_id"
-                     class="com.redhat.rhn.domain.org.Org"
-                     outer-join="true"
-                     not-null="true" />
-        <set name="addresses" cascade="all">
-            <key column="web_user_id"/>
-            <one-to-many class="com.redhat.rhn.domain.user.AddressImpl" />
-        </set>
-        <set name="groupMembers" lazy="true" inverse="true" cascade="delete">
-            <key column="user_id"/>
-            <one-to-many class="com.redhat.rhn.domain.org.usergroup.UserGroupMembers"/>
-        </set>
-        <set name="stateChanges" lazy="true"
-            cascade="save-update" sort="natural">
-            <key column="web_contact_id"/>
-            <one-to-many class="com.redhat.rhn.domain.user.StateChange" />
-        </set>
-        <set name = "hiddenPanes"
-                table="RHNUSERINFOPANE"
-                lazy="true"
-                cascade="all">
-                <key column="user_id"/>
-                <many-to-many class ="com.redhat.rhn.domain.user.Pane" column="pane_id"/>
-        </set>
-        <set name="associatedServerGroups" lazy="true" table="rhnUserServerGroupPerms"
-            cascade="save-update" inverse="true">
-            <key column="user_id"/>
-            <many-to-many
-                class="com.redhat.rhn.domain.server.ServerGroup"
-                column="server_group_id"
-                />
-        </set>
-
-        <set name="servers" lazy="true" table="rhnUserServerPerms" cascade="all">
-            <key column="user_id"/>
-            <many-to-many class="com.redhat.rhn.domain.server.Server" column="server_id"/>
-        </set>
-
-    </class>
-
     <query name="User.findByLogin">
         <![CDATA[from com.redhat.rhn.domain.user.legacy.UserImpl as u where u.loginUc = :loginUc]]>
     </query>
@@ -99,17 +28,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[from com.redhat.rhn.domain.user.legacy.UserImpl as u]]>
     </query>
 
-    <query name="User.findAllOrgAdmins">
-        <![CDATA[
-            select u
-            from com.redhat.rhn.domain.user.legacy.UserImpl as u
-            where exists (
-                from com.redhat.rhn.domain.org.usergroup.UserGroupMembers ugm
-                    where ugm.userGroup.orgId = :org_id and
-                        ugm.userGroup.role.label = 'org_admin' and
-                        ugm in elements(u.groupMembers))
-        ]]>
-    </query>
     <sql-query name="User.findRandomOrgAdmin">
         <return-scalar type="long" column="user_id"/>
         SELECT ugm.user_id as user_id

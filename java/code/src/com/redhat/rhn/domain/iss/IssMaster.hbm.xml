@@ -3,28 +3,6 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.domain.iss.IssMaster"
-        table="rhnissmaster" >
-        <id name="id" type="long" column="ID">
-            <meta attribute="scope-set">protected</meta>
-            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
-                <param name="sequence_name">rhn_issmaster_seq</param>
-                <param name="increment_size">1</param>
-            </generator>
-        </id>
-
-        <property name="label" column="LABEL"  type="string" length="256" />
-        <property name="isCurrentMaster" column="IS_CURRENT_MASTER"  type="string" length="1" />
-        <property name="caCert" column="CA_CERT"  type="string" length="1024" />
-
-        <set name="masterOrgs"
-            inverse="true"
-            cascade="all-delete-orphan">
-            <key column="master_id" not-null="true"/>
-            <one-to-many class="com.redhat.rhn.domain.iss.IssMasterOrg"/>
-        </set>
-
-    </class>
 
     <query name="IssMaster.findById">
         <![CDATA[from com.redhat.rhn.domain.iss.IssMaster as m where m.id = :id]]>

@@ -592,9 +592,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             minion.updateServerInfo();
 
-            // Check for Uyuni Server and create basic info
-            SystemManager.updateMgrServerInfo(minion, grains);
-
             mapHardwareGrains(minion, grains);
 
             if (isSaltSSH) {

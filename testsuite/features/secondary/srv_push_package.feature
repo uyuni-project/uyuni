@@ -3,6 +3,7 @@
 
 @sle_minion
 @scc_credentials
+@skip_if_github_validation
 Feature: Push a package with unset vendor
   In order to distribute software to the clients
   As an authorized user

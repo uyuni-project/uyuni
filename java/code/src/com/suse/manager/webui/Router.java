@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2015--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui;
 
@@ -24,7 +20,11 @@ import static spark.Spark.get;
 import static spark.Spark.notFound;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.RhnRuntimeException;
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -32,6 +32,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.api.HttpApiRegistry;
 import com.suse.manager.attestation.AttestationManager;
+import com.suse.manager.hub.HubController;
+import com.suse.manager.hub.HubManager;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.AnsibleController;
@@ -69,6 +71,7 @@ import com.suse.manager.webui.controllers.activationkeys.ActivationKeysViewsCont
 import com.suse.manager.webui.controllers.admin.AdminApiController;
 import com.suse.manager.webui.controllers.admin.AdminViewsController;
 import com.suse.manager.webui.controllers.admin.EnableSCCDataForwardingController;
+import com.suse.manager.webui.controllers.admin.handlers.HubApiController;
 import com.suse.manager.webui.controllers.appstreams.AppStreamsController;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
@@ -82,9 +85,12 @@ import com.suse.manager.webui.controllers.maintenance.MaintenanceScheduleControl
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.scc.SCCEndpoints;
 
 import org.apache.http.HttpStatus;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -135,6 +141,15 @@ public class Router implements SparkApplication {
         DownloadController downloadController = new DownloadController(paygManager);
         ConfidentialComputingController confidentialComputingController =
                 new ConfidentialComputingController(attestationManager);
+
+        try {
+            URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
+            SCCEndpoints sccEndpoints = new SCCEndpoints(ContentSyncManager.getUUID(), url);
+            sccEndpoints.initRoutes(jade);
+        }
+        catch (URISyntaxException e) {
+            throw new RhnRuntimeException();
+        }
 
         // Login
         LoginController.initRoutes(jade);
@@ -248,6 +263,9 @@ public class Router implements SparkApplication {
         // Storybook
         StorybookController.initRoutes(jade);
 
+        // ISSv3 Sync
+        initISSv3Routes();
+
         // if the calls above opened Hibernate session, close it now
         HibernateFactory.closeSession();
     }
@@ -275,10 +293,23 @@ public class Router implements SparkApplication {
         });
     }
 
-    private void initContentManagementRoutes(JadeTemplateEngine jade, KubernetesManager kubernetesManager) {
+
+    private static void initContentManagementRoutes(JadeTemplateEngine jade, KubernetesManager kubernetesManager) {
         ImageBuildController imageBuildController = new ImageBuildController(kubernetesManager);
         ImageStoreController.initRoutes(jade);
         ImageProfileController.initRoutes(jade);
         ImageBuildController.initRoutes(jade, imageBuildController);
+    }
+
+    private static void initISSv3Routes() {
+        HubManager hubManager = new HubManager();
+
+        // ISS v3 Internal APIs
+        HubController hubController = new HubController(hubManager, new TaskomaticApi());
+        hubController.initRoutes();
+
+        // API for the web interface
+        HubApiController hubApiController = new HubApiController(hubManager);
+        hubApiController.initRoutes();
     }
 }

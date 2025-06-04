@@ -100,7 +100,7 @@ public class ModulemdApi {
      * @throws RepositoryNotModularException if a source channel is not modular
      */
     private static List<String> getMetadataPaths(List<Channel> sources) throws RepositoryNotModularException {
-        return sources.stream().map(ModulemdApi::getMetadataPath).toList();
+        return sources.stream().map(ModulemdApi::getMetadataPath).collect(Collectors.toList());
     }
 
     /**

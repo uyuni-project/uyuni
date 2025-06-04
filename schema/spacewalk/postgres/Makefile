@@ -27,18 +27,21 @@ SQLUSER := spacewalk
 endif
 
 STYLE   := postgres
-DIRS    := class tables procs packages views triggers data synonyms quartz/tables quartz/data
+DIRS    := schemas class tables procs packages views triggers data synonyms quartz/tables quartz/data
 BLEND   := ../blend -as $(STYLE)
 REPLTBS := sed -re "s/\[\[[^]]+\]\]/$(TBS)/g"
 MKFILES := $(shell find . -mindepth 2 -maxdepth 2 -name Makefile)
 
 
-main : tables views data
+main : schemas tables views data
 	$(BLEND) $(DIRS)
 
 devel : main
 	$(BLEND) $(DIRS)
 	$(REPLTBS) main.sql > devel.sql
+
+schemas :
+	$(MAKE) -C $@
 
 tables :
 	$(MAKE) -C $@
@@ -56,4 +59,4 @@ clean :
 	@rm -f main.sql
 	@$(foreach m,$(MKFILES),$(MAKE) -C $(dir $(m)) $@;)
 
-.PHONY: clean tables data views
+.PHONY: clean schemas tables data views

@@ -14,10 +14,12 @@
  */
 package com.redhat.rhn.domain.audit;
 
+import java.io.Serializable;
+
 /**
  * XccdfBenchmark - Class representation of the table rhnXccdfBenchmark.
  */
-public class XccdfBenchmark {
+public class XccdfBenchmark implements Serializable {
 
     private Long id;
     private String identifier;

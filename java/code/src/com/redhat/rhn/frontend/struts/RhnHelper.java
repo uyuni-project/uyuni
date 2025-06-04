@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2024 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,6 +20,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -57,15 +60,14 @@ public class RhnHelper {
     /**
      * If the path doesn't require authentication, return false. Otherwise
      * return true. Checks that the passed in path doesn't startwith the params
-     * found in nosecurityPaths
-     * @param nosecurityPaths array of String paths, "/foo",
+     * found in noSecurityPaths
+     * @param noSecurityPaths list of String paths, "/foo",
      * "/bar/baz/test.jsp", "/somepath/foo.do"
      * @param path to check
      * @return boolean if it needs to be authorized or not
      */
-    public static boolean pathNeedsSecurity(String[] nosecurityPaths,
-            String path) {
-        for (String curr : nosecurityPaths) {
+    public static boolean pathNeedsSecurity(List<String> noSecurityPaths, String path) {
+        for (String curr : noSecurityPaths) {
             if (path.startsWith(curr)) {
                 return false;
             }

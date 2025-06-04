@@ -49,13 +49,15 @@
     <c:set var="userDateFormat" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getUserDateFormat(pageContext)}"/>
     <c:set var="userTimeFormat" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getUserTimeFormat(pageContext)}"/>
     <c:set var="userPageSize" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getUserPageSize(pageContext)}"/>
+    <c:set var="isUyuni" value='${ConfigDefaults.get().isUyuni()}' />
     <script>
-        window.serverTime='${serverTime}'
-        window.serverTimeZone='${serverTimeZone}'
-        window.userTimeZone='${userTimeZone}'
-        window.userDateFormat='${userDateFormat}'
-        window.userTimeFormat='${userTimeFormat}'
-        window.userPrefPageSize=${userPageSize}
+        window.serverTime='${serverTime}';
+        window.serverTimeZone='${serverTimeZone}';
+        window.userTimeZone='${userTimeZone}';
+        window.userDateFormat='${userDateFormat}';
+        window.userTimeFormat='${userTimeFormat}';
+        window.userPrefPageSize=${userPageSize};
+        window.isUyuni=${isUyuni};
     </script>
 
     <script src="/javascript/legacy/jquery.min.js?cb=${cb_version}"></script>

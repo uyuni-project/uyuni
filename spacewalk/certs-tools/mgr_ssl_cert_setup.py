@@ -111,6 +111,7 @@ def processCommandline():
     )
     parser.add_argument("--check-only", "-c", action="store_true")
     parser.add_argument("--verbose", "-v", action="count", default=0)
+    parser.add_argument("--skip-db", action="store_true")
 
     options = parser.parse_args()
     initLOG(LOGFILE, options.verbose or 1)
@@ -717,7 +718,8 @@ def _main():
     deployApache(apache_cert_content, files_content.server_key)
     deployPg(files_content.server_key)
     deployCAUyuni(certData)
-    deployCAInDB(certData)
+    if not options.skip_db:
+        deployCAInDB(certData)
 
 
 def main():

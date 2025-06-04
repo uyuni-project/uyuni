@@ -27,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * PackageHelper
@@ -52,7 +53,7 @@ public class PackageHelper {
 
         // deal with the providing channels first
         DataResult<Row> dr = PackageManager.providingChannels(user, pkg.getId());
-        List<String> channelLabels = dr.stream().map(r -> (String)r.get("label")).toList();
+        List<String> channelLabels = dr.stream().map(r -> (String)r.get("label")).collect(Collectors.toList());
         pkgMap.put("providing_channels", channelLabels);
 
         // now deal with the actual package object.

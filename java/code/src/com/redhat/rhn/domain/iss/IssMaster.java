@@ -21,9 +21,21 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * IssMaster - Class representation of the table rhnissmaster.
  */
+@Entity
+@Table(name = "rhnissmaster")
 public class IssMaster extends BaseDto {
 
     public static final String FIELD_ID = "id";
@@ -32,11 +44,23 @@ public class IssMaster extends BaseDto {
     public static final String FIELD_CA_CERT = "caCert";
     public static final long   NEW_MASTER_ID = -1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "iss_master_seq")
+    @SequenceGenerator(name = "iss_master_seq", sequenceName = "rhn_issmaster_seq", allocationSize = 1)
     private Long id;
+
+    @Column(name = "LABEL", length = 256)
     private String label;
+
+    @Column(name = "IS_CURRENT_MASTER", length = 1, nullable = false)
     private String isCurrentMaster = "N";
+
+    @Column(name = "CA_CERT", length = 1024)
     private String caCert;
+
+    @OneToMany(mappedBy = "master", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<IssMasterOrg> masterOrgs = new HashSet<>();
+
 
     /**
      * Getter for id

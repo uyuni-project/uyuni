@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Feb 28 11:38:18 CET 2025 - rosuna@suse.com
+
+- version 5.1.4
+  * Reduce the number of layers in the image
+
+-------------------------------------------------------------------
 Fri Jan 24 13:48:48 CET 2025 - marina.latini@suse.com
 
 - version 5.1.3

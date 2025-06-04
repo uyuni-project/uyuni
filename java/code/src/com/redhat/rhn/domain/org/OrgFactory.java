@@ -324,13 +324,29 @@ public class OrgFactory extends HibernateFactory {
 
     /**
      * Get the default organization.
-     *
-     * Currently looks up the org with ID 1.
+     * Currently, it searches for the org with the lowest org id which has a sat_admin
      *
      * @return Default organization
      */
     public static Org getSatelliteOrg() {
-        return lookupById(1L);
+        return findOrgsWithSatAdmin().stream().findFirst().orElse(lookupById(1L));
+    }
+
+    /**
+     * Find all Organizations which has a sat_admin (SUSE Manager Administrator) ordered by its ID.
+     * @return return an ordered list of {@link Org} which have a sat_admin
+     */
+    public static List<Org> findOrgsWithSatAdmin() {
+        return getSession().createNativeQuery("""
+            SELECT distinct org.*, null as reg_token_id
+              FROM web_contact wc
+              JOIN web_customer org ON wc.org_id = org.id
+              JOIN rhnUserGroupMembers ugm ON wc.id = ugm.user_id
+             WHERE ugm.user_group_id in (SELECT id
+                                           FROM rhnUserGroup
+                                          WHERE group_type = 1)
+          ORDER BY org.id;
+          """, Org.class).getResultList();
     }
 
     /**
@@ -340,7 +356,14 @@ public class OrgFactory extends HibernateFactory {
      * @return List of orgs.
      */
     public static List<Org> lookupOrgsUsingChannelFamily(ChannelFamily channelFamily) {
-        return singleton.listObjectsByNamedQuery("Org.findOrgsWithSystemsInChannelFamily", Map.of("cf", channelFamily));
+        return HibernateFactory.getSession().createNativeQuery("""
+                            SELECT DISTINCT o.* FROM WEB_CUSTOMER o WHERE EXISTS (
+                            SELECT 1 FROM rhnServer s WHERE s.org_id = o.id AND EXISTS (
+                            SELECT 1 FROM rhnChannel c JOIN rhnChannelFamilyMembers cfm ON c.id = cfm.channel_id
+                            WHERE c.id IN (SELECT channel_id FROM rhnServerChannel WHERE server_id = s.id)
+                            AND cfm.channel_family_id = :cf
+                            ))
+                """, Org.class).setParameter("cf", channelFamily.getId(), StandardBasicTypes.LONG).getResultList();
     }
 
     /**

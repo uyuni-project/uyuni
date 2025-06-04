@@ -35,6 +35,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.fortuna.ical4j.model.Calendar;
 
@@ -68,10 +69,10 @@ public class IcalUtilsTest  {
         ZonedDateTime tokyoStart = ZonedDateTime.parse("2020-06-09T21:00:00+09:00"); // Japan (same moment in time!)
 
         List<Pair<Instant, Instant>> listNewYork = icalUtils.calculateUpcomingPeriods(multiZonesCal, empty(),
-                newYorkStart.toInstant(), 5).toList();
+                newYorkStart.toInstant(), 5).collect(Collectors.toList());
 
         List<Pair<Instant, Instant>> listTokyo = icalUtils.calculateUpcomingPeriods(multiZonesCal, empty(),
-                tokyoStart.toInstant(), 5).toList();
+                tokyoStart.toInstant(), 5).collect(Collectors.toList());
 
         assertEquals(listNewYork, listTokyo);
     }
@@ -88,12 +89,12 @@ public class IcalUtilsTest  {
         ZonedDateTime newYorkStart = ZonedDateTime.parse("2020-06-08T02:00:00-04:00"); // NY
 
         List<Pair<Instant, Instant>> listNewYork = icalUtils.calculateUpcomingPeriods(multiZonesCal, empty(),
-                newYorkStart.toInstant(), 5).toList();
+                newYorkStart.toInstant(), 5).collect(Collectors.toList());
 
         // Sri Lanka is ahead of NYC, so at 11:00 in Sri Lanka, we still see maint. windows starting at 2:00 in NY
         ZonedDateTime sriLankaAlike = ZonedDateTime.parse("2020-06-08T11:00:00+05:30");
         List<Pair<Instant, Instant>> listSriLanka = icalUtils.calculateUpcomingPeriods(multiZonesCal, empty(),
-                sriLankaAlike.toInstant(), 5).toList();
+                sriLankaAlike.toInstant(), 5).collect(Collectors.toList());
         assertEquals(listNewYork, listSriLanka);
     }
 
@@ -116,9 +117,9 @@ public class IcalUtilsTest  {
         // is already over and we shouldn't see it
         ZonedDateTime tahitiLike = ZonedDateTime.parse("2020-06-08T08:00:00-10:00");
         List<Pair<Instant, Instant>> listTahiti = icalUtils.calculateUpcomingPeriods(multiZonesCal, empty(),
-                tahitiLike.toInstant(), 4).toList();
+                tahitiLike.toInstant(), 4).collect(Collectors.toList());
 
-        List<Pair<Instant, Instant>> newYorkButFirst = listNewYork.stream().skip(1).toList();
+        List<Pair<Instant, Instant>> newYorkButFirst = listNewYork.stream().skip(1).collect(Collectors.toList());
         // the Tahitian windows should match the NYC ones minus the first one
         assertEquals(newYorkButFirst, listTahiti);
     }
@@ -135,12 +136,12 @@ public class IcalUtilsTest  {
         List<Pair<String, String>> nycEvents = icalUtils.calculateUpcomingPeriods(
                 multiZonesCal, of("Maint. windows - NYC - weekdays"), datetime.toInstant(), 3)
                 .map(pair -> Pair.of(formatNY(pair.getLeft()), formatNY((pair.getRight()))))
-                .toList();
+                .collect(Collectors.toList());
 
         List<Pair<String, String>> sriLankaEvts = icalUtils.calculateUpcomingPeriods(
                 multiZonesCal, of("Maint. windows-Sri Lanka"), datetime.toInstant(), 3)
                 .map(pair -> Pair.of(formatSriLanka(pair.getLeft()), formatSriLanka((pair.getRight()))))
-                .toList();
+                .collect(Collectors.toList());
 
         List<Pair<Instant, Instant>> listNoEvts = icalUtils.calculateUpcomingPeriods(
                 multiZonesCal, of("There is no window, only zuul"), datetime.toInstant(), 5)

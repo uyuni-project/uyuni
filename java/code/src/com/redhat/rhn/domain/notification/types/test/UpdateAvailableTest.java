@@ -266,4 +266,20 @@ public class UpdateAvailableTest {
         );
     }
 
+    @Test
+    public void testReleaseNotesUrl() {
+        Config.get().setString(PRODUCT_NAME, UYUNI);
+        Config.get().setString(PRODUCT_VERSION_UYUNI, "2024.07");
+
+        UpdateAvailable updateAvailable = new UpdateAvailable();
+        assertEquals("https://www.uyuni-project.org/pages/stable-version.html",
+                updateAvailable.getReleaseNotesUrl());
+
+        Config.get().setString(PRODUCT_NAME, SUMA);
+        Config.get().setString(PRODUCT_VERSION_MGR, "5.1.1");
+
+        updateAvailable = new UpdateAvailable();
+        assertEquals("https://www.suse.com/releasenotes/x86_64/multi-linux-manager/5.1/index.html",
+                updateAvailable.getReleaseNotesUrl());
+    }
 }

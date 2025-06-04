@@ -109,7 +109,7 @@ public final class SSOController {
 
                     final Collection<String> keys = attributes.keySet();
 
-                    if (keys.contains((String) "uid") && attributes.get("uid").size() >= 1) {
+                    if (keys.contains((String) "uid") && !attributes.get("uid").isEmpty()) {
                         final Optional uidOpt = Optional.ofNullable(attributes.get("uid").get(0));
                         if (uidOpt.isPresent()) {
                             final User user = UserFactory.lookupByLogin(String.valueOf(uidOpt.get()));

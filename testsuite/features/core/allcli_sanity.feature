@@ -25,7 +25,6 @@ Feature: Sanity checks
     And socket "tftp" is active on "server"
     And service "tomcat" is enabled on "server"
     And service "tomcat" is active on "server"
-    And files on container volumes should all have the proper SELinux label
 
 @proxy
   Scenario: The proxy is healthy
@@ -41,7 +40,7 @@ Feature: Sanity checks
     And "sle_minion" should communicate with the server using public interface
     And the clock from "sle_minion" should be exact
 
-@buildhost
+@build_host
   Scenario: The build host is healthy
     Then "build_host" should have a FQDN
     And reverse resolution should work for "build_host"

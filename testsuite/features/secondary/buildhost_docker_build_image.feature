@@ -14,7 +14,7 @@
 # - features/secondary/min_salt_install_with_staging.feature
 # Due to the images listed in the CVE Audit images
 
-@buildhost
+@build_host
 @scope_building_container_images
 @no_auth_registry
 @skip_if_github_validation
@@ -169,7 +169,7 @@ Feature: Build container images
     Given I am authorized as "admin" with password "admin"
     When I delete the image "suse_simple" with version "latest" via API calls
     And I delete the image "suse_simple" with version "Latest_simple" via API calls
-	
+
 @scc_credentials
   Scenario: Cleanup: delete all profiles with key
     When I follow the left menu "Images > Profiles"

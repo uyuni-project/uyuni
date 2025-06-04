@@ -3716,24 +3716,24 @@
     },
     {
         "arch": "x86_64",
-        "cpe": "cpe:/o:opensuse:leap:15.5",
-        "description": "openSUSE Leap 15.5.",
+        "cpe": "cpe:/o:opensuse:leap:15.6",
+        "description": "openSUSE Leap 15.6.",
         "eula_url": "",
         "extensions": [],
         "former_identifier": "Leap",
         "free": false,
-        "friendly_name": "openSUSE Leap 15.5 x86_64",
-        "friendly_version": "15.5",
-        "id": 2588,
+        "friendly_name": "openSUSE Leap 15.6 x86_64",
+        "friendly_version": "15.6",
+        "id": 2734,
         "identifier": "Leap",
         "migration_extra": false,
         "name": "openSUSE Leap",
         "offline_predecessor_ids": [],
         "online_predecessor_ids": [
-            2409
+            2588
         ],
         "predecessor_ids": [
-            2409
+            2588
         ],
         "product_class": "OPENSUSE",
         "product_type": "base",
@@ -3743,67 +3743,67 @@
         "repositories": [
             {
                 "autorefresh": true,
-                "description": "openSUSE-Leap-15.5-Updates",
+                "description": "openSUSE-Leap-15.6-Updates",
                 "distro_target": null,
                 "enabled": true,
-                "id": 6189,
+                "id": 6860,
                 "installer_updates": false,
-                "name": "openSUSE-Leap-15.5-Updates",
-                "url": "http://download.opensuse.org/update/leap/15.5/oss/"
+                "name": "openSUSE-Leap-15.6-Updates",
+                "url": "http://download.opensuse.org/update/leap/15.6/oss/"
             },
             {
                 "autorefresh": true,
-                "description": "openSUSE-Leap-15.5-NonOss-Updates",
+                "description": "openSUSE-Leap-15.6-NonOss-Updates",
                 "distro_target": null,
                 "enabled": false,
-                "id": 6190,
+                "id": 6861,
                 "installer_updates": false,
-                "name": "openSUSE-Leap-15.5-NonOss-Updates",
-                "url": "http://download.opensuse.org/update/leap/15.5/non-oss/"
+                "name": "openSUSE-Leap-15.6-NonOss-Updates",
+                "url": "http://download.opensuse.org/update/leap/15.6/non-oss/"
             },
             {
                 "autorefresh": false,
-                "description": "openSUSE-Leap-15.5-Pool",
+                "description": "openSUSE-Leap-15.6-Pool",
                 "distro_target": null,
                 "enabled": true,
-                "id": 6193,
+                "id": 6864,
                 "installer_updates": false,
-                "name": "openSUSE-Leap-15.5-Pool",
-                "url": "http://download.opensuse.org/distribution/leap/15.5/repo/oss/"
+                "name": "openSUSE-Leap-15.6-Pool",
+                "url": "http://download.opensuse.org/distribution/leap/15.6/repo/oss/"
             },
             {
                 "autorefresh": false,
-                "description": "openSUSE-Leap-15.5-NonOss-Pool",
+                "description": "openSUSE-Leap-15.6-NonOss-Pool",
                 "distro_target": null,
                 "enabled": false,
-                "id": 6194,
+                "id": 6865,
                 "installer_updates": false,
-                "name": "openSUSE-Leap-15.5-NonOss-Pool",
-                "url": "http://download.opensuse.org/distribution/leap/15.5/repo/non-oss/"
+                "name": "openSUSE-Leap-15.6-NonOss-Pool",
+                "url": "http://download.opensuse.org/distribution/leap/15.6/repo/non-oss/"
             },
             {
                 "autorefresh": true,
-                "description": "openSUSE-SLE-15.5-Updates",
+                "description": "openSUSE-SLE-15.6-Updates",
                 "distro_target": null,
                 "enabled": true,
-                "id": 6197,
+                "id": 6863,
                 "installer_updates": false,
-                "name": "openSUSE-SLE-15.5-Updates",
-                "url": "http://download.opensuse.org/update/leap/15.5/sle/"
+                "name": "openSUSE-SLE-15.6-Updates",
+                "url": "http://download.opensuse.org/update/leap/15.6/sle/"
             },
             {
                 "autorefresh": true,
-                "description": "openSUSE-Backports-15.5-Updates",
+                "description": "openSUSE-Backports-15.6-Updates",
                 "distro_target": null,
                 "enabled": true,
-                "id": 6198,
+                "id": 6862,
                 "installer_updates": false,
-                "name": "openSUSE-Backports-15.5-Updates",
-                "url": "http://download.opensuse.org/update/leap/15.5/backports/"
+                "name": "openSUSE-Backports-15.6-Updates",
+                "url": "http://download.opensuse.org/update/leap/15.6/backports/"
             }
         ],
         "shortname": "openSUSE Leap",
-        "version": "15.5"
+        "version": "15.6"
     },
     {
         "arch": "x86_64",

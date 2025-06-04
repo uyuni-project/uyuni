@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Handler for AppStream operations on systems
@@ -188,7 +189,7 @@ public class SystemAppStreamHandler extends BaseHandler {
                             AppStreamsManager.listChannelAppStreams(channel.getId()),
                             server::hasAppStreamModuleEnabled
                     ))
-                    .toList();
+                    .collect(Collectors.toList());
         }
         catch (LookupException e) {
             throw new NoSuchSystemException();

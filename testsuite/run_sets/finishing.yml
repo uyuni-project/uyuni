@@ -9,6 +9,7 @@
 
 # IMMUTABLE ORDER
 # these features are needed for gathering log/debug info
+- features/finishing/srv_selinux.feature
 - features/finishing/srv_debug.feature
 - features/finishing/allcli_debug.feature
 - features/finishing/srv_count_scc_access.feature

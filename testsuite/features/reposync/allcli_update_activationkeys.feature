@@ -1,7 +1,6 @@
 # Copyright (c) 2022-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_github_validation
 Feature: Update activation keys
   In order to register systems to the spacewalk server
   As admin
@@ -43,7 +42,7 @@ Feature: Update activation keys
     And I wait until I do not see "Loading..." text
     And I select the parent channel for the "sle_minion" from "selectedBaseChannel"
     And I wait until I do not see "Loading..." text
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I wait until "Fake-RPM-SUSE-Channel" has been checked
     And I click on "Update Activation Key"
@@ -76,7 +75,7 @@ Feature: Update activation keys
     And I wait until I do not see "Loading..." text
     And I select the parent channel for the "sle_minion" from "selectedBaseChannel"
     And I wait until I do not see "Loading..." text
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I wait until "Fake-RPM-SUSE-Channel" has been checked
     And I click on "Update Activation Key"
@@ -109,7 +108,7 @@ Feature: Update activation keys
     And I wait until I do not see "Loading..." text
     And I select the parent channel for the "sle_minion" from "selectedBaseChannel"
     And I wait until I do not see "Loading..." text
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I wait until "Fake-RPM-SUSE-Channel" has been checked
     And I click on "Update Activation Key"
@@ -119,16 +118,36 @@ Feature: Update activation keys
 @susemanager
 @proxy
 @containerized_server
+@transactional_server
   Scenario: Update the SLE Micro proxy key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
     And I wait for child channels to appear
     And I select the parent channel for the "proxy_container" from "selectedBaseChannel"
     And I wait for child channels to appear
+    # TODO: WORKAROUND: When they are ready add them again
+    # And I include the recommended child channels
+    # And I wait until "SUSE Multi-Linux Manager Client Tools for SL Micro 6 x86_64" has been checked
+    And I check "SUSE-Multi-Linux-Manager-Proxy-5.1 for x86_64"
+    And I check "SUSE-Multi-Linux-Manager-Retail-Branch-Server-5.1 for x86_64"
+    And I click on "Update Activation Key"
+    Then I should see a "Activation key Proxy Key x86_64 has been modified" text
+
+@scc_credentials
+@susemanager
+@proxy
+@containerized_server
+@skip_if_transactional_server
+  Scenario: Update the SLES proxy key with synced base product
+    When I follow the left menu "Systems > Activation Keys"
+    And I follow "Proxy Key x86_64" in the content area
+    And I wait for child channels to appear
+    And I select the parent channel for the "proxy_nontransactional" from "selectedBaseChannel"
+    And I wait for child channels to appear
     And I include the recommended child channels
-    And I wait until "SLE-Manager-Tools-For-Micro5-Pool for x86_64 5.5" has been checked
-    And I check "SUSE-Manager-Proxy-5.0-Pool for x86_64"
-    And I check "SUSE-Manager-Proxy-5.0-Updates for x86_64"
+    And I wait until "SLE-Manager-Tools15-Pool for x86_64 SP7" has been checked
+    And I check "SUSE-Manager-Proxy-5.1-Pool for x86_64"
+    And I check "SUSE-Manager-Proxy-5.1-Updates for x86_64"
     And I click on "Update Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
 
@@ -141,14 +160,14 @@ Feature: Update activation keys
     And I wait for child channels to appear
     And I select the parent channel for the "proxy_traditional" from "selectedBaseChannel"
     And I wait for child channels to appear
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
-    And I check "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
+    And I check "Uyuni Proxy Devel for openSUSE Leap 15.6 (x86_64)"
     And I click on "Update Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
 
-@containerized_server
 @uyuni
 @proxy
+@containerized_server
 @skip_if_cloud
   Scenario: Update the openSUSE Leap Micro 5.5 Proxy Host key with synced base product
     When I follow the left menu "Systems > Activation Keys"
@@ -167,7 +186,7 @@ Feature: Update activation keys
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Build host Key x86_64" in the content area
     And I wait for child channels to appear
-    And I select the parent channel for the "buildhost" from "selectedBaseChannel"
+    And I select the parent channel for the "build_host" from "selectedBaseChannel"
     And I wait for child channels to appear
     And I include the recommended child channels
     And I wait until "SLE-Module-Basesystem15-SP4-Pool for x86_64" has been checked
@@ -187,16 +206,28 @@ Feature: Update activation keys
 
 @scc_credentials
 @uyuni
-  Scenario: Update build host key with Uyuni client tools and dev child channel
+  Scenario: Update build host key with Uyuni client tools
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Build host Key x86_64" in the content area
     And I wait for child channels to appear
-    And I select the parent channel for the "buildhost" from "selectedBaseChannel"
+    And I select the parent channel for the "build_host" from "selectedBaseChannel"
     And I wait for child channels to appear
     And I check "Uyuni Client Tools for SLES15 SP4 x86_64 (Development)"
     And I wait until "Uyuni Client Tools for SLES15 SP4 x86_64 (Development)" has been checked
-    And I check "Dev-Build-Host-Channel"
-    And I wait until "Dev-Build-Host-Channel" has been checked
+    And I click on "Update Activation Key"
+    Then I should see a "Activation key Build host Key x86_64 has been modified" text
+
+@skip_if_github_validation
+@scc_credentials
+@uyuni
+  Scenario: Update build host key with dev child channel
+    When I follow the left menu "Systems > Activation Keys"
+    And I follow "Build host Key x86_64" in the content area
+    And I wait for child channels to appear
+    And I select the parent channel for the "build_host" from "selectedBaseChannel"
+    And I wait for child channels to appear
+    And I check "Devel-Build-Host-Channel"
+    And I wait until "Devel-Build-Host-Channel" has been checked
     And I click on "Update Activation Key"
     Then I should see a "Activation key Build host Key x86_64 has been modified" text
 
@@ -244,29 +275,32 @@ Feature: Update activation keys
     And I click on "Update Activation Key"
     Then I should see a "Activation key Terminal Key x86_64 has been modified" text
 
+@skip_if_github_validation
 @sle_minion
   Scenario: Update SLE key with to include dev child channel
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key x86_64" in the content area
     And I wait for child channels to appear
-    And I check "Dev-SUSE-Channel"
+    And I check "Devel-SUSE-Channel"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been modified" text
 
+@skip_if_github_validation
 @deblike_minion
   Scenario: Update Debian-like key with to include dev child channel
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Debian-like Test Key" in the content area
     And I wait for child channels to appear
-    And I check "Dev-Debian-like-Channel"
+    And I check "Devel-Debian-like-Channel"
     And I click on "Update Activation Key"
     Then I should see a "Activation key Debian-like Test Key has been modified" text
 
+@skip_if_github_validation
 @rhlike_minion
   Scenario: Update RedHat-like key with to include dev child channel
     When I follow the left menu "Systems > Activation Keys"
     And I follow "RedHat like Test Key" in the content area
     And I wait for child channels to appear
-    And I check "Dev-RH-like-Channel"
+    And I check "Devel-RH-like-Channel"
     And I click on "Update Activation Key"
     Then I should see a "Activation key RedHat like Test Key has been modified" text
