@@ -92,6 +92,16 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/hub/scc/suma/product_tree.json', 'GET', 'W', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/hub/scc/connect/organizations/systems', 'PUT', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/hub/scc/connect/organizations/systems/:id', 'DELETE', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/hub/scc/connect/organizations/virtualization_hosts', 'PUT', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+
 
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/manager/admin/hub/hub-details', 'GET', 'W', True)
