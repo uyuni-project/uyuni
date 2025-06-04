@@ -26,7 +26,7 @@ except ImportError:
     #  python3
     import xmlrpc.client as xmlrpclib
 import sys
-# pylint: disable=E0611
+
 from hashlib import sha256
 
 #sys.path.append('/usr/share/rhn')
