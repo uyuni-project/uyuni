@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-25 09:41+0200\n"
-"PO-Revision-Date: 2025-05-19 16:59+0000\n"
+"PO-Revision-Date: 2025-06-05 09:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/spacecmd/ca/>\n"
 "Language: ca\n"
@@ -2166,7 +2166,7 @@ msgstr "ús: groupremovesystems GROUP <SYSTEMS>"
 #: ../src/spacecmd/system.py:1511 ../src/spacecmd/system.py:1820
 #: ../src/spacecmd/system.py:4379
 msgid "Systems"
-msgstr "Sistemes"
+msgstr "Tipus de sistema"
 
 #: ../src/spacecmd/group.py:155
 msgid "Remove these systems [y/N]:"
