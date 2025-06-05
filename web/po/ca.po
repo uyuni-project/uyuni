@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 11:50+0200\n"
-"PO-Revision-Date: 2025-05-19 16:59+0000\n"
+"PO-Revision-Date: 2025-06-05 09:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web-5-0/ca/>\n"
 "Language: ca\n"
@@ -2029,7 +2029,7 @@ msgid "Formula saved. Apply the <link>Highstate</link> for the changes to take e
 msgstr "Fórmula desada. Aplica el <link>Highstate</link> perquè els canvis tinguin efecte."
 
 msgid "Systems"
-msgstr "Sistemes"
+msgstr "Tipus de sistema"
 
 msgid "Packages"
 msgstr "Paquets"
