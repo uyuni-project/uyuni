@@ -5,7 +5,7 @@
 Feature: Change the schedule of a task
 
   Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+    Given I am authorized
 
   Scenario: Change the schedule of task sandbox-cleanup-default to weekly
     When I follow the left menu "Admin > Task Schedules"
