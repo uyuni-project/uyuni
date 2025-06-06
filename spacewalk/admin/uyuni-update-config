@@ -11,6 +11,7 @@
 #
 #  pylint: disable=missing-module-docstring,invalid-name
 
+import re
 import sys
 import os.path
 import uuid
@@ -186,6 +187,17 @@ def change_billing_data_service():
         sys.stdout.write("billing-data-service sysconfig: changed LISTEN address\n")
 
 
+def remove_product_name_overwrite():
+    pattern = re.compile(r"^product_name\s*=.*$")
+    with open("/etc/rhn/rhn.conf", "r+", encoding="utf8") as f:
+        new_f = f.readlines()
+        f.seek(0)
+        for line in new_f:
+            if not pattern.match(line.strip()):
+                f.write(line)
+        f.truncate()
+
+
 def main():
     run_uyuni_configfiles_sync()
     init_scc_login()
@@ -193,6 +205,7 @@ def main():
     copy_ca()
     move_config_to_db()
     change_billing_data_service()
+    remove_product_name_overwrite()
 
 
 if __name__ == "__main__":
