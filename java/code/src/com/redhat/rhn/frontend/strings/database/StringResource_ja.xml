@@ -2884,7 +2884,7 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="All" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="All" xml:space="preserve">
         <source>All</source>
         <target state="final">すべて</target>
         <context-group name="ctx">
@@ -3444,7 +3444,7 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Users" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Users" xml:space="preserve">
         <source>Users</source>
         <target state="final">ユーザー</target>
         <context-group name="ctx">
