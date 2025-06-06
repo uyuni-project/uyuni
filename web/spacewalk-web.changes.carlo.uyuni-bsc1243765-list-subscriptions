@@ -1,0 +1,2 @@
+- Fixes setup wizard organization credentials list subscriptions
+  not showing correctly the first time (bsc#1243765)
