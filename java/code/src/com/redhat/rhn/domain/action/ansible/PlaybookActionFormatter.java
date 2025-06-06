@@ -112,8 +112,10 @@ public class PlaybookActionFormatter extends ActionFormatter {
             Map<String, Object> result = entry.get().getValue();
             List<Map<String, List<Map<String, Map<String, Object>>>>> plays = getNestedValue(
                     result, "changes", "ret", "plays");
-            List<Map<String, Map<String, Object>>> tasks = plays.get(0).get("tasks");
-            tasks.forEach(t -> hosts.addAll(t.get("hosts").keySet()));
+            if (plays != null) {
+                List<Map<String, Map<String, Object>>> tasks = plays.get(0).get("tasks");
+                tasks.forEach(t -> hosts.addAll(t.get("hosts").keySet()));
+            }
         }
         return hosts;
     }
