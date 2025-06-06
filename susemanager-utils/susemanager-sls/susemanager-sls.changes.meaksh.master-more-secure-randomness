@@ -1,0 +1,1 @@
+- mgr-events: use sha256 instead of md5 to determine queue
