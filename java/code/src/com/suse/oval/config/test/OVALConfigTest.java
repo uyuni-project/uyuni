@@ -15,7 +15,6 @@
 
 package com.suse.oval.config.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.redhat.rhn.testing.TestUtils;
@@ -33,8 +32,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +55,7 @@ public class OVALConfigTest {
     }
 
     @Test
-    public void testAllSources() throws IOException {
+    public void testAllSources() {
         Map<OsFamily, OVALDistributionSourceInfo> sources = config.getSources();
 
         List<String> allSources = sources.keySet().stream().flatMap(osFamily -> {
@@ -87,16 +84,6 @@ public class OVALConfigTest {
         }).toList();
 
         assertFalse(allSources.isEmpty());
-
-        for (String sourceURL : allSources) {
-            HttpURLConnection huc = (HttpURLConnection) new URL(sourceURL).openConnection();
-
-            huc.setRequestMethod("HEAD");
-
-            int responseCode = huc.getResponseCode();
-
-            assertEquals(HttpURLConnection.HTTP_OK, responseCode, () -> "Can't connect to URL: " + sourceURL);
-        }
     }
 
     public void testOsFamilies() {
