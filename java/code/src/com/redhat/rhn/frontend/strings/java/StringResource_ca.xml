@@ -11857,6 +11857,10 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
         <source>The server {0} cannot be registered as a peripheral of this hub</source>
         <target state="translated">El servidor {0} no es pot registrar com a perifèric d'aquest concentrador.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="hub.sync_bunch_error" xml:space="preserve">
+        <source>Error when triggering the channels sync.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

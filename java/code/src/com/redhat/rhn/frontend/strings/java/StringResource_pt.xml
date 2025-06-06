@@ -11732,6 +11732,10 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>The server {0} cannot be registered as a peripheral of this hub</source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="hub.sync_bunch_error" xml:space="preserve">
+        <source>Error when triggering the channels sync.</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
