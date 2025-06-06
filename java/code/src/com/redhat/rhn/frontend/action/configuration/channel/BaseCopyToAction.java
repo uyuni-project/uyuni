@@ -131,7 +131,7 @@ public abstract class BaseCopyToAction extends RhnAction {
         // for each destination
         //   find the dest-channel
         //   for each file
-        //      cm.copyConfigFile(file.latest.revision, dest-chan, usr);
+        //      cm.copyConfigFile(file.latest.revision, dest-chan, usr)
         //
         for (Object oIn : destSet) {
             Long destid = ((RhnSetElement) oIn).getElement();

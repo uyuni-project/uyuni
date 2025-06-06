@@ -27,7 +27,7 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
  */
 public class UnsubscribeConfirmAction extends BaseListAction {
 
-    /*
+    /**
      * {@inheritDoc}
      */
     @Override
