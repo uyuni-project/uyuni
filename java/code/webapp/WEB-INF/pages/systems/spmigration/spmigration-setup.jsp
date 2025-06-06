@@ -112,11 +112,9 @@
                     <label class="col-sm-2 control-label">
                         <bean:message key="spmigration.jsp.allow.vendor.change" />
                     </label>
-                    <ul class="form-control-static products-list">
-                        <li>
-                            <input  name="allowVendorChange" type="checkbox" />
-                        </li>
-                    </ul>
+                    <div class="col-sm-10 form-control-static products-list">
+                        <input name="allowVendorChange" type="checkbox" />
+                    </div>
                 </div>
             </c:if>
             <div class="form-group">
