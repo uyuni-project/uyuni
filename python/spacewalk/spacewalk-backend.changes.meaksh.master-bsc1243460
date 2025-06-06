@@ -1,0 +1,2 @@
+- Make reposync to allow commas as part of HTTP Proxy password
+  (bsc#1243460)
