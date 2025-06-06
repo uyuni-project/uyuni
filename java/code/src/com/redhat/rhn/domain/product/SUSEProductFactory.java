@@ -711,7 +711,7 @@ public class SUSEProductFactory extends HibernateFactory {
         return HibernateFactory.getSession().createQuery(
                 "SELECT DISTINCT pkg.packageEvr " +
                 "FROM SUSEProductExtension x " +
-                "JOIN SUSEProduct ext ON x.extensionProduct = ext " +
+                "JOIN SUSEProduct ext ON x.baseProduct = ext " +
                 "JOIN SUSEProductChannel pc ON pc.product = ext " +
                 "JOIN pc.channel.packages pkg " +
                 "WHERE pkg.packageName.name = 'kernel-default' " +

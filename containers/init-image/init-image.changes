@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 05 11:42:32 CEST 2025 - rosuna@suse.com
+
+- version 5.0.12
+  * Image rebuilt to the newest version with updated dependencies
+
+-------------------------------------------------------------------
 Tue Mar 11 15:03:29 CET 2025 - rosuna@suse.com
 
 - version 5.0.11

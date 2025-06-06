@@ -22,7 +22,7 @@ Feature: Bootstrap a virtualization host minion and set it up for virtualization
     And I enter "20" as "usageLimit"
     And I select "Test-Base-Channel-x86_64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
-    Then I should see a "Activation key KVM testing has been created" text
+    Then I wait until I see "Activation key KVM testing has been created" text
 
   Scenario: Bootstrap KVM virtual host
     When I follow the left menu "Systems > Bootstrapping"

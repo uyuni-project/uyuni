@@ -60,7 +60,7 @@ public class ManagerVersion implements Comparable<ManagerVersion>, Serializable 
             throw new IllegalArgumentException("Version string cannot be null");
         }
 
-        String[] parts = versionStringIn.split("\\.");
+        String[] parts = versionStringIn.split("[. ]");
         if (isUyuni) {
             if (parts.length != 2) {
                 throw new IllegalArgumentException(
@@ -72,15 +72,32 @@ public class ManagerVersion implements Comparable<ManagerVersion>, Serializable 
             this.patch = -1;  // neutral value for comparing this format
         }
         else {
-            if (parts.length != 3) {
+            if (parts.length < 3) {
                 throw new IllegalArgumentException(
                         String.format("Invalid %s version format", ConfigDefaults.get().getProductName())
                 );
             }
             this.major = Integer.parseInt(parts[0]);
             this.minor = Integer.parseInt(parts[1]);
-            this.patch = Integer.parseInt(parts[2]);
+            this.patch = parsePatch(parts[2]);
         }
+        }
+
+    /**
+     * Parses the patch version from the given string.
+     *
+     * @param patchPart the patch part of the version string
+     * @return the parsed patch version
+     */
+    private int parsePatch(String patchPart) {
+        String digitPrefix = patchPart.replaceFirst("\\D.*", "");
+        if (digitPrefix.isEmpty()) {
+            throw new IllegalArgumentException(
+                    String.format("Invalid %s version format: patch is not numeric",
+                            ConfigDefaults.get().getProductName())
+            );
+        }
+        return Integer.parseInt(digitPrefix);
     }
 
 
