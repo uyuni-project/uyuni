@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-06 11:31+0200\n"
-"PO-Revision-Date: 2025-04-28 18:43+0000\n"
+"POT-Creation-Date: 2025-06-06 09:19+0200\n"
+"PO-Revision-Date: 2025-05-17 16:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.11.1\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -48,6 +48,7 @@ msgid "Confirm Attestation Execution"
 msgstr "Potvrdiť vykonanie atestácie"
 
 #: ../html/src/components/CoCoScansList.tsx:130
+#: ../html/src/manager/admin/hub/hub-details.tsx:45
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:128
@@ -278,7 +279,7 @@ msgstr "Výstup procesu"
 #: ../html/src/components/hub/ModalEditButton.tsx:94
 #: ../html/src/components/large-text-attachment.tsx:184
 #: ../html/src/components/panels/CreatorPanel.tsx:125
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:115
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:119
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:197
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:35
@@ -354,9 +355,9 @@ msgstr "Naozaj chcete {action} vybrané položky {name}? ({count} položiek {nam
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:54
 #: ../html/src/components/hub/AddTokenButton.tsx:154
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:115
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:252
 #: ../html/src/components/hub/ModalEditButton.tsx:87
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:367
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:372
 #: ../html/src/components/large-text-attachment.tsx:177
 #: ../html/src/components/panels/CreatorPanel.tsx:114
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:56
@@ -491,7 +492,7 @@ msgid "Three"
 msgstr "Tri"
 
 #: ../html/src/components/formik/Form.example.tsx:62
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:108
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:245
 #: ../html/src/components/input/check/Check.example.tsx:22
 #: ../html/src/components/input/datetime/DateTime.example.tsx:25
 #: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:66
@@ -554,8 +555,8 @@ msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr "Toto pole sa používa ako 'kľúčový' identifikátor vo výsledných pilierových údajoch."
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:157
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:130
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:131
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:134
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:135
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
 msgid "Reset"
 msgstr "Resetovať"
@@ -594,7 +595,7 @@ msgstr "Pridať nový prístupový token"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:128
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:70
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:92
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:229
 msgid "Server FQDN"
 msgstr "Server FQDN"
 
@@ -637,7 +638,7 @@ msgid "Copy"
 msgstr "Kopírovať"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:220
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:208
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:178
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:94
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:95
 msgid "Close"
@@ -693,29 +694,29 @@ msgstr "Zrušiť synchronizáciu kanálov?"
 msgid "The channels have been successfully desynced."
 msgstr "Kanálom bola úspešne zrušená synchronizácia."
 
-#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:131
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:142
 msgid "Select Organization"
 msgstr "Vybrať organizáciu"
 
-#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:161
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:172
 #: ../html/src/manager/admin/setup/products/products.tsx:487
 msgid "Filter by architecture"
 msgstr "Filtrovať podľa architektúry"
 
-#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:173
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:193
 msgid "Search channels..."
 msgstr "Hľadanie kanálov..."
 
-#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:188
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:208
 msgid "Sync"
 msgstr "Synchronizácia"
 
-#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:189
-#: ../html/src/components/states-picker.tsx:452
-msgid "Channel Label"
-msgstr "Označenie kanála"
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:209
+#: ../html/src/components/states-picker.tsx:451
+msgid "Channel Name"
+msgstr "Názov kanála"
 
-#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:190
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:210
 #: ../html/src/manager/admin/setup/products/products.tsx:587
 #: ../html/src/manager/admin/setup/products/products.tsx:968
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
@@ -724,15 +725,9 @@ msgstr "Označenie kanála"
 msgid "Architecture"
 msgstr "Architektúra"
 
-#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:191
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:306
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:343
-msgid "Hub Org"
-msgstr "Hub Org"
-
-#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:192
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:307
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:344
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:211
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:313
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:349
 msgid "Sync Org"
 msgstr "Synchronizovaná organizácia"
 
@@ -744,53 +739,77 @@ msgstr "Pridať server"
 msgid "Set the FQDN of the remote server"
 msgstr "Nastaviť FQDN vzdialeného servera"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:89
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:136
+msgid "Peripheral migration in progress: waiting for a response..."
+msgstr "Prebieha migrácia periférie: čaká sa na odpoveď..."
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:154
+msgid "Migration partially succeeded"
+msgstr "Migrácia čiastočne úspešná"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:155
+msgid "Migration failed"
+msgstr "Migrácia bola neúspešná"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:163
+msgid "Some of the servers where migrated successfully, but some errors happened during the process."
+msgstr "Niektoré servery boli úspešne migrované, ale počas procesu sa vyskytli niektoré chyby."
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:164
+msgid "The migration process was not successfull and reported the following errors"
+msgstr "Proces migrácie nebol úspešný a hlásil nasledujúce chyby"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:203
+#, fuzzy
+#| msgid "There are no states assigned."
+msgid "There are no ISSv1 slaves to migrate."
+msgstr "Nie sú priradené žiadne stavy."
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:211
+#: ../html/src/components/states-picker.tsx:367
+#: ../html/src/manager/images/image-view.tsx:818
+#: ../html/src/manager/images/image-view.tsx:820
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:103
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:121
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:233
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:235
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:111
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:179
+msgid "Back"
+msgstr "Späť"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:226
 msgid "Migrate?"
 msgstr "Migrovať?"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:95
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:232
 msgid "Access Token"
 msgstr "Prístupový token"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:100
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:294
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:237
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:337
 #: ../html/src/components/hub/ServerDetailsForm.tsx:103
 msgid "Root Certificate Authority"
 msgstr "Koreňová certifikačná autorita"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:166
-msgid "Peripheral migration in progress: waiting for a response..."
-msgstr "Prebieha migrácia periférie: čaká sa na odpoveď..."
-
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:184
-msgid "Migration partially succeeded"
-msgstr "Migrácia čiastočne úspešná"
-
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:185
-msgid "Migration failed"
-msgstr "Migrácia bola neúspešná"
-
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:193
-msgid "Some of the servers where migrated successfully, but some errors happened during the process."
-msgstr "Niektoré servery boli úspešne migrované, ale počas procesu sa vyskytli niektoré chyby."
-
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:194
-msgid "The migration process was not successfull and reported the following errors"
-msgstr "Proces migrácie nebol úspešný a hlásil nasledujúce chyby"
-
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:226
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:269
 msgid "This slave is currently disabled and cannot be selected for migration"
 msgstr "Tento podriadený je v súčasnosti zakázaný a nie je možné ho vybrať na migráciu"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:227
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:270
 msgid "Check to migrate this server to a peripheral"
 msgstr "Začiarknite migráciu tohto servera na perifériu"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:246
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:289
 msgid "Not defined"
 msgstr "Nedefinované"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:251
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:294
 #: ../html/src/components/large-text-attachment.tsx:69
 #: ../html/src/components/large-text-attachment.tsx:110
 #: ../html/src/components/salt-state-popup.tsx:60
@@ -812,52 +831,52 @@ msgstr "Nedefinované"
 msgid "Edit"
 msgstr "Upraviť"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:252
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:295
 msgid "Set access token for {fqdn}"
 msgstr "Nastaviť prístupový token pre {fqdn}"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:253
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:296
 msgid "Access token"
 msgstr "Prístupový token"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:282
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:325
 msgid "Root CA available"
 msgstr "K dispozícii je koreňová CA"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:282
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:325
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
 msgid "Not needed"
 msgstr "Nie je potrebné"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:292
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:335
 msgid "The root CA is the same of the hub."
 msgstr "Koreňová CA je rovnaká ako pre hub."
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:293
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:336
 msgid "This server has a different root CA."
 msgstr "Tento server má inú koreňovú CA."
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:296
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:339
 msgid "Ensure the certificate you are providing for {fqdn} is correct before proceeding. A wrong value will prevent the connection with the hub."
 msgstr "Pred pokračovaním sa uistite, že certifikát, ktorý poskytujete pre {fqdn}, je správny. Nesprávna hodnota zabráni spojeniu s hubom."
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:301
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:344
 msgid "Are you sure you want to remove the current Root Certificate Authority for {fqdn}?"
 msgstr "Ste si istí, že chcete odstrániť aktuálnu koreňovú certifikačnú autoritu pre {fqdn}?"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:321
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:364
 #: ../html/src/manager/notifications/notifications-list.tsx:339
 #: ../html/src/manager/notifications/notifications-list.tsx:340
 msgid "Info"
 msgstr "Informácie"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:326
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:369
 #: ../html/src/manager/notifications/notifications-list.tsx:346
 #: ../html/src/manager/notifications/notifications-list.tsx:347
 msgid "Warning"
 msgstr "Varovanie"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:331
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:374
 #: ../html/src/manager/notifications/notifications-list.tsx:353
 #: ../html/src/manager/notifications/notifications-list.tsx:354
 msgid "Error"
@@ -1089,30 +1108,30 @@ msgstr "Koreňová certifikačná autorita bola úspešne aktualizovaná."
 msgid "Mirror credentials successfully regenerated."
 msgstr "Zrkadlové prihlasovacie údaje boli úspešne znovu vygenerované."
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:170
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:179
 msgid "No changes to apply"
 msgstr "Žiadne zmeny, ktoré by sa mali uplatniť"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:215
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:224
 msgid "Channels synced correctly to peripheral!"
 msgstr "Kanály správne synchronizované k periférii!"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:243
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:258
 msgid "Please select at least one channel to add or remove from sync"
 msgstr "Vyberte aspoň jeden kanál, ktorý chcete pridať alebo odstrániť zo synchronizácie"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:293
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:300
 msgid "Channels to Add"
 msgstr "Kanály na pridanie"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:301
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:338
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:308
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:344
 msgid "Filter by Name"
 msgstr "Filtrovať podľa názvu"
 
 #. ref={nameInputRef}
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:303
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:340
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:310
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:346
 #: ../html/src/components/input/form/Form.example.tsx:23
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:389
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:171
@@ -1128,8 +1147,8 @@ msgstr "Filtrovať podľa názvu"
 msgid "Name"
 msgstr "Názov"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:304
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:341
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:311
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:347
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:29
@@ -1144,37 +1163,37 @@ msgstr "Názov"
 msgid "Label"
 msgstr "Označenie"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:305
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:342
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:312
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:348
 #: ../html/src/manager/admin/setup/products/products.tsx:589
 msgid "Arch"
 msgstr "Arch"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:318
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:324
 msgid "Some custom channels do not have a sync organization selected. Please select organizations before confirming."
 msgstr "Niektoré vlastné kanály nemajú vybranú synchronizovanú organizáciu. Prosím, vyberte organizácie pred potvrdením."
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:324
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:330
 msgid "No channels selected to add"
 msgstr "Nie sú vybrané žiadne kanály na pridanie"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:331
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:337
 msgid "Channels to Remove"
 msgstr "Kanály na odstránenie"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:347
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:352
 msgid "No channels selected to remove"
 msgstr "Nie sú vybrané žiadne kanály na odstránenie"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:354
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:359
 msgid "Channel Sync Changes"
 msgstr "Zmeny synchronizácie kanálov"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:355
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:360
 msgid "You are about to make the following changes:"
 msgstr "Chystáte sa vykonať nasledujúce zmeny:"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:374
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:379
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
 #: ../html/src/components/states-picker.tsx:369
 #: ../html/src/components/states-picker.tsx:559
@@ -1187,25 +1206,25 @@ msgstr "Chystáte sa vykonať nasledujúce zmeny:"
 msgid "Confirm"
 msgstr "Potvrdiť"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:397
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:402
 msgid "{peripheralFqdn} - Peripheral Sync Channels"
 msgstr "{peripheralFqdn} - Periférne synchronizované kanály"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:407
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:412
 msgid "Back to details"
 msgstr "Späť na podrobnosti"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:420
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:421
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:425
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:426
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:14
 msgid "Apply Changes"
 msgstr "Použiť zmeny"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:429
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:434
 msgid "Sync Channels from Hub to Peripheral"
 msgstr "Synchronizácia kanálov z hubu na perifériu"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:439
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:444
 msgid "Confirm Channel Synchronization Changes"
 msgstr "Potvrdiť zmeny synchronizácie kanálov"
 
@@ -1653,23 +1672,6 @@ msgstr "Pri ukladaní sa vyskytla chyba."
 msgid "No states assigned. Use search to find and assign states."
 msgstr "Neboli priradené žiadne stavy. Na nájdenie a priradenie stavov použite vyhľadávanie."
 
-#: ../html/src/components/states-picker.tsx:367
-#: ../html/src/manager/images/image-view.tsx:818
-#: ../html/src/manager/images/image-view.tsx:820
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:103
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:121
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:233
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:235
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:111
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:179
-msgid "Back"
-msgstr "Späť"
-
 #: ../html/src/components/states-picker.tsx:377
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:185
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:193
@@ -1721,14 +1723,14 @@ msgstr "Nie sú priradené žiadne stavy."
 msgid "State Name"
 msgstr "Názov stavu"
 
-#: ../html/src/components/states-picker.tsx:451
-msgid "Channel Name"
-msgstr "Názov kanála"
-
 #: ../html/src/components/states-picker.tsx:452
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:295
 msgid "State Label"
 msgstr "Označenie stavu"
+
+#: ../html/src/components/states-picker.tsx:452
+msgid "Channel Label"
+msgstr "Označenie kanála"
 
 #: ../html/src/components/states-picker.tsx:453
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
@@ -2002,16 +2004,12 @@ msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabl
 msgstr "Exportér Tomcat Prometheus nie je pripravený, ale konfigurácia JMX je povolená. Kliknutím na tlačidlo Zakázať sa zakáže konfigurácia JMX alebo kliknutím na Povoliť sa spustí exportér Prometheus."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:44
-#, fuzzy
-#| msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
 msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
-msgstr "Exportér Tomcat Prometheus je pripravený, ale konfigurácia JMX je zakázaná. Kliknutím na tlačidlo Povoliť sa povolí konfigurácia JMX alebo kliknutím na Zakázať sa zastaví exportér Prometheus."
+msgstr "Exportér Taskomatic Prometheus je pripravený, ale konfigurácia JMX je zakázaná. Kliknutím na tlačidlo Povoliť sa povolí konfigurácia JMX alebo kliknutím na Zakázať sa zastaví exportér Prometheus."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:47
-#, fuzzy
-#| msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
 msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
-msgstr "Exportér Tomcat Prometheus nie je pripravený, ale konfigurácia JMX je povolená. Kliknutím na tlačidlo Zakázať sa zakáže konfigurácia JMX alebo kliknutím na Povoliť sa spustí exportér Prometheus."
+msgstr "Exportér Taskomatic Prometheus nie je pripravený, ale konfigurácia JMX je povolená. Kliknutím na tlačidlo Zakázať sa zakáže konfigurácia JMX alebo kliknutím na Povoliť sa spustí exportér Prometheus."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:52
 msgid "Monitoring status hasn't changed."
@@ -2156,17 +2154,43 @@ msgstr "Dáta pripojenia inštancie SSH"
 msgid "Bastion SSH connection data"
 msgstr "Dáta pripojenia bašty SSH"
 
-#: ../html/src/manager/admin/hub/hub-details.tsx:24
+#: ../html/src/manager/admin/hub/hub-details.tsx:36
+#, fuzzy
+#| msgid "Desync Channel"
+msgid "Sync Channels"
+msgstr "Zrušiť synchronizáciu kanála"
+
+#: ../html/src/manager/admin/hub/hub-details.tsx:37
+#, fuzzy
+#| msgid "Schedule channels product resync"
+msgid "Schedule Sync Channels task"
+msgstr "Naplánovať opätovnú synchronizáciu produktov kanálov"
+
+#: ../html/src/manager/admin/hub/hub-details.tsx:42
+#, fuzzy
+#| msgid "Confirm Channel Synchronization Changes"
+msgid "Confirm channels synchronization"
+msgstr "Potvrdiť zmeny synchronizácie kanálov"
+
+#: ../html/src/manager/admin/hub/hub-details.tsx:43
+msgid "Do you want to schedule a channels synchronization from the hub?"
+msgstr ""
+
+#: ../html/src/manager/admin/hub/hub-details.tsx:57
 msgid "Hub Details"
 msgstr "Podrobnosti pre hub"
 
-#: ../html/src/manager/admin/hub/hub-details.tsx:44
+#: ../html/src/manager/admin/hub/hub-details.tsx:80
 msgid "No hub is currently configured for this server. "
 msgstr "Pre tento server nie je v súčasnosti nakonfigurovaný žiadny hub. "
 
-#: ../html/src/manager/admin/hub/hub-details.tsx:53
+#: ../html/src/manager/admin/hub/hub-details.tsx:89
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgstr "Tento server je v súčasnosti registrovaný ako periféria hubu {fqdn}. "
+
+#: ../html/src/manager/admin/hub/hub-details.tsx:108
+msgid "Successfully scheduled a channels synchronization."
+msgstr ""
 
 #: ../html/src/manager/admin/hub/list-tokens.tsx:20
 msgid "Access Tokens"
@@ -2241,71 +2265,69 @@ msgstr "nikdy"
 msgid "Add PAYG Connection"
 msgstr "Pridať pripojenie PAYG"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:18
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:22
 msgid "Server Configuration - Password Policy"
 msgstr "Konfigurácia servera - Pravidlá pre heslá"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:21
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:25
 msgid "Set up your server local users password policy."
 msgstr "Nastavte pravidlá pre heslá lokálnych používateľov servera."
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:24
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:28
 msgid "Password Policy Settings"
 msgstr "Nastavenia pravidiel pre heslá"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:29
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:33
 msgid "Min Password Length"
 msgstr "Min. dĺžka hesla"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:36
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:40
 msgid "Max Password Length"
 msgstr "Max. dĺžka hesla"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:43
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:47
 msgid "Require Digits"
 msgstr "Vyžadujú sa číslice"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:50
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:54
 msgid "Require Lowercase Characters"
 msgstr "Vyžadujú sa malé písmená"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:57
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:61
 msgid "Require Uppercase Characters"
 msgstr "Vyžadujú sa veľké písmená"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:64
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:68
 msgid "Restrict Consecutive Characters"
 msgstr "Obmedzenie po sebe idúcich znakov"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:71
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:75
 msgid "Require Special Characters"
 msgstr "Vyžadujú sa špeciálne znaky"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:78
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:82
 msgid "Allowed Special Characters"
 msgstr "Povolené špeciálne znaky"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:90
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:94
 msgid "Restrict Characters Occurrences"
 msgstr "Obmedzenie výskytu znakov"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:97
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:101
 msgid "Max Characters Occurrences"
 msgstr "Max. výskyt znakov"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:114
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:118
 msgid "Save Password Policy"
 msgstr "Uložiť pravidlá pre heslá"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:120
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:124
 msgid "Password Policy Changed"
 msgstr "Zmenené pravidlá pre heslá"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:139
-#, fuzzy
-#| msgid "Password Policy reset to defaults"
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:143
 msgid "Password Policy Reset to Default"
-msgstr "Obnoviť predvolené nastavenia pravidiel pre heslá"
+msgstr "Obnoviť predvolené nastavenie pravidiel pre heslá"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -6837,6 +6859,9 @@ msgstr "Zdroj sa nenašiel."
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
+
+#~ msgid "Hub Org"
+#~ msgstr "Hub Org"
 
 #~ msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
 #~ msgstr "Exportér Tomcat Prometheus je pripravený, ale konfigurácia JMX je zakázaná. "

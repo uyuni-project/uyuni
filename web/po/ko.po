@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-06 11:31+0200\n"
-"PO-Revision-Date: 2025-03-28 04:56+0000\n"
+"POT-Creation-Date: 2025-06-06 09:19+0200\n"
+"PO-Revision-Date: 2025-05-30 08:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.3\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -48,6 +48,7 @@ msgid "Confirm Attestation Execution"
 msgstr "증명 실행 확인"
 
 #: ../html/src/components/CoCoScansList.tsx:130
+#: ../html/src/manager/admin/hub/hub-details.tsx:45
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:128
@@ -278,7 +279,7 @@ msgstr "프로세스 출력"
 #: ../html/src/components/hub/ModalEditButton.tsx:94
 #: ../html/src/components/large-text-attachment.tsx:184
 #: ../html/src/components/panels/CreatorPanel.tsx:125
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:115
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:119
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:197
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:35
@@ -354,9 +355,9 @@ msgstr "선택한 {name}을(를) {action}하시겠습니까?({name} {count}개 �
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:54
 #: ../html/src/components/hub/AddTokenButton.tsx:154
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:115
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:252
 #: ../html/src/components/hub/ModalEditButton.tsx:87
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:367
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:372
 #: ../html/src/components/large-text-attachment.tsx:177
 #: ../html/src/components/panels/CreatorPanel.tsx:114
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:56
@@ -423,7 +424,7 @@ msgstr "프로젝트를 삭제하시겠습니까 "
 
 #: ../html/src/components/formik/Form.example.tsx:34
 msgid "Field"
-msgstr ""
+msgstr "필드"
 
 #: ../html/src/components/formik/Form.example.tsx:36
 #: ../html/src/components/input/InputBase.test.tsx:43
@@ -442,7 +443,7 @@ msgstr "2자 이상"
 
 #: ../html/src/components/formik/Form.example.tsx:39
 msgid "Checkbox"
-msgstr ""
+msgstr "확인란"
 
 #: ../html/src/components/formik/Form.example.tsx:41
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
@@ -459,45 +460,39 @@ msgid "Password"
 msgstr "비밀번호"
 
 #: ../html/src/components/formik/Form.example.tsx:43
-#, fuzzy
-#| msgid "fa-times"
 msgid "Datetime"
-msgstr "fa-times"
+msgstr "날짜/시간"
 
 #: ../html/src/components/formik/Form.example.tsx:45
 msgid "Multiple values"
-msgstr ""
+msgstr "다중 값"
 
 #: ../html/src/components/formik/Form.example.tsx:47
-#, fuzzy
-#| msgid "Loading text"
 msgid "Long text"
-msgstr "텍스트 로드 중"
+msgstr "긴 텍스트"
 
 #: ../html/src/components/formik/Form.example.tsx:49
-#, fuzzy
-#| msgid "Changes"
 msgid "Range"
-msgstr "변경 사항"
+msgstr "범위"
 
 #: ../html/src/components/formik/Form.example.tsx:53
 msgid "Radio"
-msgstr ""
+msgstr "라디오"
 
 #: ../html/src/components/formik/Form.example.tsx:55
 msgid "One"
-msgstr ""
+msgstr "1"
 
 #: ../html/src/components/formik/Form.example.tsx:56
 msgid "Two"
-msgstr ""
+msgstr "2"
 
 #: ../html/src/components/formik/Form.example.tsx:57
 msgid "Three"
-msgstr ""
+msgstr "3"
 
 #: ../html/src/components/formik/Form.example.tsx:62
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:108
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:245
 #: ../html/src/components/input/check/Check.example.tsx:22
 #: ../html/src/components/input/datetime/DateTime.example.tsx:25
 #: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:66
@@ -516,18 +511,16 @@ msgid "Submit"
 msgstr "제출"
 
 #: ../html/src/components/formik/field/AsRadio.tsx:41
-#, fuzzy
-#| msgid "Custom State"
 msgid "Custom value"
-msgstr "사용자 정의 상태"
+msgstr "사용자 정의 값"
 
 #: ../html/src/components/formik/field/AsRange.tsx:15
 msgid "{rangeInputName} start"
-msgstr ""
+msgstr "{rangeInputName} 시작"
 
 #: ../html/src/components/formik/field/AsRange.tsx:24
 msgid "{rangeInputName} end"
-msgstr ""
+msgstr "{rangeInputName} 끝"
 
 #: ../html/src/components/formik/field/FieldBase.tsx:30
 #: ../html/src/components/input/InputBase.tsx:279
@@ -535,17 +528,13 @@ msgid "required"
 msgstr "필수"
 
 #: ../html/src/components/formik/field/MultiField.tsx:37
-#, fuzzy
-#| msgid "Remove file"
 msgid "Remove item"
-msgstr "파일 제거"
+msgstr "항목 제거"
 
 #: ../html/src/components/formik/field/MultiField.tsx:58
 #: ../html/src/components/formik/field/MultiField.tsx:62
-#, fuzzy
-#| msgid "Add system"
 msgid "Add item"
-msgstr "시스템 추가"
+msgstr "항목 추가"
 
 #: ../html/src/components/formula-selection.tsx:135
 msgid " No group"
@@ -566,8 +555,8 @@ msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr "이 필드는 결과 열 데이터에서 '키' 식별자로 사용됩니다."
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:157
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:130
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:131
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:134
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:135
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
 msgid "Reset"
 msgstr "재설정"
@@ -606,7 +595,7 @@ msgstr "새 액세스 토큰 추가"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:128
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:70
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:92
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:229
 msgid "Server FQDN"
 msgstr "서버 FQDN"
 
@@ -649,7 +638,7 @@ msgid "Copy"
 msgstr "복사"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:220
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:208
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:178
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:94
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:95
 msgid "Close"
@@ -677,10 +666,8 @@ msgid "Are you sure you want to deregister from hub {fqdn}? If you do, you will 
 msgstr "허브 {fqdn}에서 등록을 취소하시겠습니까? 등록을 취소하면 더 이상 이 허브에서 데이터를 수신하지 않습니다."
 
 #: ../html/src/components/hub/DeregisterServer.tsx:70
-#, fuzzy
-#| msgid "Are you sure you want to derigester peripheral {fqdn}? All the current configuration will be lost."
 msgid "Are you sure you want to deregister peripheral {fqdn}? All the current configuration will be lost."
-msgstr "{fqdn} 주변기기를 등록 취소하시겠습니까? 모든 현재 설정이 사라집니다."
+msgstr "{fqdn} 주변 장치를 등록 취소하시겠습니까? 모든 현재 구성이 손실됩니다."
 
 #: ../html/src/components/hub/DeregisterServer.tsx:86
 msgid "The server {fqdn} has been successfully deregistered."
@@ -688,62 +675,48 @@ msgstr "{fqdn} 서버의 등록이 취소되었습니다."
 
 #: ../html/src/components/hub/DesyncChannel.tsx:36
 #: ../html/src/components/hub/DesyncChannel.tsx:45
-#, fuzzy
-#| msgid "synced"
 msgid "Desync"
-msgstr "동기화됨"
+msgstr "동기화 취소"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:37
-#, fuzzy
-#| msgid "Base Channel"
 msgid "Desync Channel"
-msgstr "기본 채널"
+msgstr "채널 동기화 취소"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:42
-#, fuzzy
-#| msgid "Confirm Deletion"
 msgid "Confirm Desync"
-msgstr "삭제 확인"
+msgstr "동기화 취소 확인"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:55
-#, fuzzy
-#| msgid "no child channels"
 msgid "Desync channels?"
-msgstr "하위 채널 없음"
+msgstr "채널의 동기화를 취소하시겠습니까?"
 
 #: ../html/src/components/hub/DesyncChannel.tsx:64
-#, fuzzy
-#| msgid "The server {fqdn} has been successfully deregistered."
 msgid "The channels have been successfully desynced."
-msgstr "{fqdn} 서버의 등록이 취소되었습니다."
+msgstr "채널의 동기화가 취소되었습니다."
 
-#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:131
-#, fuzzy
-#| msgid "Organization"
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:142
 msgid "Select Organization"
-msgstr "조직"
+msgstr "조직 선택"
 
-#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:161
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:172
 #: ../html/src/manager/admin/setup/products/products.tsx:487
 msgid "Filter by architecture"
 msgstr "아키텍처를 기준으로 필터링"
 
-#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:173
-#, fuzzy
-#| msgid "Loading child channels.."
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:193
 msgid "Search channels..."
-msgstr "하위 채널 로드 중.."
+msgstr "채널 검색..."
 
-#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:188
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:208
 msgid "Sync"
-msgstr ""
+msgstr "동기화"
 
-#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:189
-#: ../html/src/components/states-picker.tsx:452
-msgid "Channel Label"
-msgstr "채널 레이블"
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:209
+#: ../html/src/components/states-picker.tsx:451
+msgid "Channel Name"
+msgstr "채널 이름"
 
-#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:190
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:210
 #: ../html/src/manager/admin/setup/products/products.tsx:587
 #: ../html/src/manager/admin/setup/products/products.tsx:968
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
@@ -752,87 +725,91 @@ msgstr "채널 레이블"
 msgid "Architecture"
 msgstr "아키텍처"
 
-#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:191
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:306
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:343
-msgid "Hub Org"
-msgstr ""
-
-#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:192
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:307
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:344
-#, fuzzy
-#| msgid "N. of Sync Orgs"
+#: ../html/src/components/hub/HierarchicalChannelsTable.tsx:211
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:313
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:349
 msgid "Sync Org"
-msgstr "동기화 조직 수"
+msgstr "조직 동기화"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:67
-#, fuzzy
-#| msgid "Audit Servers"
 msgid "Add Server"
-msgstr "감사 서버"
+msgstr "서버 추가"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:69
 msgid "Set the FQDN of the remote server"
-msgstr ""
+msgstr "원격 서버의 FQDN 설정"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:89
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:136
+msgid "Peripheral migration in progress: waiting for a response..."
+msgstr "주변 장치 마이그레이션 진행 중: 응답을 기다리는 중..."
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:154
+msgid "Migration partially succeeded"
+msgstr "부분 마이그레이션 성공"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:155
+msgid "Migration failed"
+msgstr "마이그레이션 실패"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:163
+msgid "Some of the servers where migrated successfully, but some errors happened during the process."
+msgstr "일부 서버가 성공적으로 마이그레이션되었지만, 마이그레이션 프로세스 중에 일부 오류가 발생했습니다."
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:164
+msgid "The migration process was not successfull and reported the following errors"
+msgstr "마이그레이션 프로세스가 성공하지 못했으며 다음 오류가 보고되었습니다."
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:203
 #, fuzzy
-#| msgid "Migrate"
+#| msgid "There are no states assigned."
+msgid "There are no ISSv1 slaves to migrate."
+msgstr "상태가 지정되지 않았습니다."
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:211
+#: ../html/src/components/states-picker.tsx:367
+#: ../html/src/manager/images/image-view.tsx:818
+#: ../html/src/manager/images/image-view.tsx:820
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:103
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:121
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:233
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:235
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:111
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:179
+msgid "Back"
+msgstr "뒤로"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:226
 msgid "Migrate?"
-msgstr "마이그레이트"
+msgstr "마이그레이션하시겠습니까?"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:95
-#, fuzzy
-#| msgid "Access Tokens"
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:232
 msgid "Access Token"
 msgstr "액세스 토큰"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:100
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:294
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:237
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:337
 #: ../html/src/components/hub/ServerDetailsForm.tsx:103
 msgid "Root Certificate Authority"
 msgstr "루트 인증 기관"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:166
-#, fuzzy
-#| msgid "Peripheral registration in progress: waiting for a response..."
-msgid "Peripheral migration in progress: waiting for a response..."
-msgstr "주변기기 등록 진행 중: 응답을 기다리는 중..."
-
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:184
-msgid "Migration partially succeeded"
-msgstr ""
-
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:185
-#, fuzzy
-#| msgid " failed"
-msgid "Migration failed"
-msgstr " 실패"
-
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:193
-msgid "Some of the servers where migrated successfully, but some errors happened during the process."
-msgstr ""
-
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:194
-msgid "The migration process was not successfull and reported the following errors"
-msgstr ""
-
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:226
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:269
 msgid "This slave is currently disabled and cannot be selected for migration"
-msgstr ""
+msgstr "이 슬레이브는 현재 비활성화 상태이며 마이그레이션을 위해 선택할 수 없습니다."
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:227
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:270
 msgid "Check to migrate this server to a peripheral"
-msgstr ""
+msgstr "이 서버를 주변 장치로 마이그레이션하려면 확인"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:246
-#, fuzzy
-#| msgid "undefined"
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:289
 msgid "Not defined"
 msgstr "정의되지 않음"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:251
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:294
 #: ../html/src/components/large-text-attachment.tsx:69
 #: ../html/src/components/large-text-attachment.tsx:110
 #: ../html/src/components/salt-state-popup.tsx:60
@@ -854,60 +831,52 @@ msgstr "정의되지 않음"
 msgid "Edit"
 msgstr "편집"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:252
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:295
 msgid "Set access token for {fqdn}"
-msgstr ""
+msgstr "{fqdn}에 대한 액세스 토큰 설정"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:253
-#, fuzzy
-#| msgid "Access Tokens"
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:296
 msgid "Access token"
 msgstr "액세스 토큰"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:282
-#, fuzzy
-#| msgid "No tokens available"
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:325
 msgid "Root CA available"
-msgstr "사용할 수 있는 토큰 없음"
+msgstr "루트 CA 사용 가능"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:282
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:325
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
 msgid "Not needed"
 msgstr "필요하지 않음"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:292
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:335
 msgid "The root CA is the same of the hub."
-msgstr ""
+msgstr "루트 CA가 허브와 동일합니다."
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:293
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:336
 msgid "This server has a different root CA."
-msgstr ""
+msgstr "이 서버에는 다른 루트 CA가 있습니다."
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:296
-#, fuzzy
-#| msgid "Ensure the certificate you are providing is correct before proceeding. A wrong value will break the connection with the hub."
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:339
 msgid "Ensure the certificate you are providing for {fqdn} is correct before proceeding. A wrong value will prevent the connection with the hub."
-msgstr "계속 진행하기 전에 제공한 인증서가 올바른지 확인하십시오. 값이 잘못되면 허브와의 연결이 끊어집니다."
+msgstr "계속하기 전에 제공하는 {fqdn}의 인증서가 올바른지 확인하십시오. 값이 잘못되면 허브에 연결할 수 없습니다."
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:301
-#, fuzzy
-#| msgid "Are you sure you want to delete the current Root Certificate Authority? This change may break the connection with the hub."
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:344
 msgid "Are you sure you want to remove the current Root Certificate Authority for {fqdn}?"
-msgstr "현재 루트 인증 기관을 삭제하시겠습니까? 이 변경으로 인해 허브와의 연결이 끊어질 수 있습니다."
+msgstr "{fqdn}에 대한 현재 루트 인증 기관을 제거하시겠습니까?"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:321
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:364
 #: ../html/src/manager/notifications/notifications-list.tsx:339
 #: ../html/src/manager/notifications/notifications-list.tsx:340
 msgid "Info"
 msgstr "정보"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:326
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:369
 #: ../html/src/manager/notifications/notifications-list.tsx:346
 #: ../html/src/manager/notifications/notifications-list.tsx:347
 msgid "Warning"
 msgstr "경고"
 
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:331
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:374
 #: ../html/src/manager/notifications/notifications-list.tsx:353
 #: ../html/src/manager/notifications/notifications-list.tsx:354
 msgid "Error"
@@ -922,14 +891,10 @@ msgid "Peripheral FQDN"
 msgstr "주변기기 FQDN"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:41
-#, fuzzy
-#| msgid "N. of Sync Channels"
 msgid "N. of synced channels"
 msgstr "동기화 채널 수"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:46
-#, fuzzy
-#| msgid "N. of Sync Orgs"
 msgid "N. of synced organizations"
 msgstr "동기화 조직 수"
 
@@ -939,7 +904,7 @@ msgstr "루트 CA 다운로드"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:66
 msgid "View details of peripheral {fqdn}"
-msgstr ""
+msgstr "주변 장치 {fqdn}의 세부 정보 보기"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:136
 msgid "Register a new peripheral server"
@@ -1048,40 +1013,32 @@ msgid "A customized Root Certificate Authority is currently configured for this 
 msgstr "현재 이 허브에 사용자 정의 루트 인증 기관이 구성되어 있습니다."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:17
-#, fuzzy
-#| msgid "A customized Root Certificate Authority is currently configured for this hub."
 msgid "A customized Root Certificate Authority is currently configured for this peripheral."
-msgstr "현재 이 허브에 사용자 정의 루트 인증 기관이 구성되어 있습니다."
+msgstr "현재 이 주변 장치에 사용자 정의 루트 인증 기관이 구성되어 있습니다."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:20
 msgid "This hub is currently using the default Root Certificate Authority."
 msgstr "이 허브는 현재 기본 루트 인증 기관을 사용하고 있습니다."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:21
-#, fuzzy
-#| msgid "This hub is currently using the default Root Certificate Authority."
 msgid "This peripheral is currently using the default Root Certificate Authority."
-msgstr "이 허브는 현재 기본 루트 인증 기관을 사용하고 있습니다."
+msgstr "이 주변 장치는 현재 기본 루트 인증 기관을 사용하고 있습니다."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:25
 msgid "Ensure the certificate you are providing is correct before proceeding. A wrong value will break the connection with the hub."
 msgstr "계속 진행하기 전에 제공한 인증서가 올바른지 확인하십시오. 값이 잘못되면 허브와의 연결이 끊어집니다."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:28
-#, fuzzy
-#| msgid "Ensure the certificate you are providing is correct before proceeding. A wrong value will break the connection with the hub."
 msgid "Ensure the certificate you are providing is correct before proceeding. A wrong value will break the connection with the peripheral."
-msgstr "계속 진행하기 전에 제공한 인증서가 올바른지 확인하십시오. 값이 잘못되면 허브와의 연결이 끊어집니다."
+msgstr "계속 진행하기 전에 제공한 인증서가 올바른지 확인하십시오. 값이 잘못되면 주변 장치와의 연결이 끊어집니다."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:33
 msgid "Are you sure you want to delete the current Root Certificate Authority? This change may break the connection with the hub."
 msgstr "현재 루트 인증 기관을 삭제하시겠습니까? 이 변경으로 인해 허브와의 연결이 끊어질 수 있습니다."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:36
-#, fuzzy
-#| msgid "Are you sure you want to delete the current Root Certificate Authority? This change may break the connection with the hub."
 msgid "Are you sure you want to delete the current Root Certificate Authority? This change may break the connection with the peripheral."
-msgstr "현재 루트 인증 기관을 삭제하시겠습니까? 이 변경으로 인해 허브와의 연결이 끊어질 수 있습니다."
+msgstr "현재 루트 인증 기관을 삭제하시겠습니까? 이 변경으로 인해 주변 장치와의 연결이 끊어질 수 있습니다."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:67
 msgid "Server FQDN:"
@@ -1116,36 +1073,28 @@ msgid "Mirror credentials:"
 msgstr "미러 자격 증명:"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:142
-#, fuzzy
-#| msgid "Use credentials"
 msgid "Regenerate credentials"
-msgstr "자격 증명 사용"
+msgstr "자격 증명 재생성"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:155
-#, fuzzy
-#| msgid "no child channels"
 msgid "Synchronized channels:"
-msgstr "하위 채널 없음"
+msgstr "동기화된 채널:"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:163
-#, fuzzy
-#| msgid "Edit Channel Ranks"
 msgid "Edit channels"
-msgstr "채널 순위 편집"
+msgstr "채널 편집"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:185
-#, fuzzy
-#| msgid "has unsynchronized patches"
 msgid "One syncronized channel"
-msgstr "동기화되지 않은 패치 있음"
+msgstr "1개의 동기화된 채널"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:189
 msgid "{nSyncedChannels} syncronized channels, from one organization"
-msgstr ""
+msgstr "1개의 조직에서 {nSyncedChannels}개의 동기화된 채널"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:192
 msgid "{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different organizations"
-msgstr ""
+msgstr "{nSyncedOrgs}개의 다른 조직에서 {nSyncedChannels}개의 동기화된 채널"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:198
 msgid "Root Certificate Authority successfully modified."
@@ -1156,41 +1105,33 @@ msgid "Root Certificate Authority successfully updated."
 msgstr "루트 인증 기관을 업데이트했습니다."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:227
-#, fuzzy
-#| msgid "Schedule successfully created."
 msgid "Mirror credentials successfully regenerated."
-msgstr "일정을 생성했습니다."
+msgstr "미러 자격 증명이 다시 생성되었습니다."
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:170
-#, fuzzy
-#| msgid "No change"
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:179
 msgid "No changes to apply"
-msgstr "변경 사항 없음"
+msgstr "적용할 변경 사항 없음"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:215
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:224
 msgid "Channels synced correctly to peripheral!"
-msgstr ""
+msgstr "채널이 주변 장치에 올바르게 동기화되었습니다!"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:243
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:258
 msgid "Please select at least one channel to add or remove from sync"
-msgstr ""
+msgstr "동기화에서 추가하거나 제거할 채널을 1개 이상 선택하십시오."
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:293
-#, fuzzy
-#| msgid "Channels"
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:300
 msgid "Channels to Add"
-msgstr "채널"
+msgstr "추가할 채널"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:301
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:338
-#, fuzzy
-#| msgid "Filter by name"
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:308
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:344
 msgid "Filter by Name"
 msgstr "이름을 기준으로 필터링"
 
 #. ref={nameInputRef}
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:303
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:340
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:310
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:346
 #: ../html/src/components/input/form/Form.example.tsx:23
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:389
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:171
@@ -1206,8 +1147,8 @@ msgstr "이름을 기준으로 필터링"
 msgid "Name"
 msgstr "이름"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:304
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:341
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:311
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:347
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:29
@@ -1222,47 +1163,37 @@ msgstr "이름"
 msgid "Label"
 msgstr "레이블"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:305
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:342
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:312
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:348
 #: ../html/src/manager/admin/setup/products/products.tsx:589
 msgid "Arch"
 msgstr "아키텍처"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:318
-msgid "Some custom channels do not have a sync organization selected. Please select organizations before confirming."
-msgstr ""
-
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:324
-#, fuzzy
-#| msgid " channels synced"
+msgid "Some custom channels do not have a sync organization selected. Please select organizations before confirming."
+msgstr "일부 사용자 정의 채널에 동기화 조직이 선택되어 있지 않습니다. 확인하기 전 조직을 선택하십시오."
+
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:330
 msgid "No channels selected to add"
-msgstr " 채널 동기화됨"
+msgstr "추가할 채널이 선택되지 않음"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:331
-#, fuzzy
-#| msgid "Channel Name"
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:337
 msgid "Channels to Remove"
-msgstr "채널 이름"
+msgstr "제거할 채널"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:347
-#, fuzzy
-#| msgid " channels synced"
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:352
 msgid "No channels selected to remove"
-msgstr " 채널 동기화됨"
+msgstr "제거할 채널이 선택되지 않음"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:354
-#, fuzzy
-#| msgid "Channel sync failed"
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:359
 msgid "Channel Sync Changes"
-msgstr "채널 동기화 실패"
+msgstr "채널 동기화 변경 사항"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:355
-#, fuzzy
-#| msgid "Can not contain the following characters: /\\"
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:360
 msgid "You are about to make the following changes:"
-msgstr "다음 문자를 포함할 수 없음: /\\"
+msgstr "다음이 변경됨:"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:374
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:379
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
 #: ../html/src/components/states-picker.tsx:369
 #: ../html/src/components/states-picker.tsx:559
@@ -1275,31 +1206,27 @@ msgstr "다음 문자를 포함할 수 없음: /\\"
 msgid "Confirm"
 msgstr "확인"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:397
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:402
 msgid "{peripheralFqdn} - Peripheral Sync Channels"
-msgstr ""
+msgstr "{peripheralFqdn} - 주변 장치 동기화 채널"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:407
-#, fuzzy
-#| msgid "Back to list"
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:412
 msgid "Back to details"
-msgstr "목록으로 돌아가기"
+msgstr "세부 정보로 돌아가기"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:420
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:421
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:425
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:426
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:14
 msgid "Apply Changes"
 msgstr "변경 사항 적용"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:429
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:434
 msgid "Sync Channels from Hub to Peripheral"
-msgstr ""
+msgstr "허브에서 주변 장치로 채널 동기화"
 
-#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:439
-#, fuzzy
-#| msgid "Confirm Software Channel Change"
+#: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:444
 msgid "Confirm Channel Synchronization Changes"
-msgstr "소프트웨어 채널 변경 확인"
+msgstr "채널 동기화 변경 사항 확인"
 
 #: ../html/src/components/hub/TokenTable.tsx:54
 msgid "No tokens available"
@@ -1456,8 +1383,6 @@ msgid "Login"
 msgstr "로그인"
 
 #: ../html/src/components/input/password/Password.example.tsx:25
-#, fuzzy
-#| msgid "Minimum 4 characters"
 msgid "Must be at least 4 characters"
 msgstr "4자 이상"
 
@@ -1747,23 +1672,6 @@ msgstr "저장하는 동안 오류가 발생했습니다."
 msgid "No states assigned. Use search to find and assign states."
 msgstr "상태가 지정되지 않았습니다. 검색을 사용하여 상태를 찾아 지정하십시오."
 
-#: ../html/src/components/states-picker.tsx:367
-#: ../html/src/manager/images/image-view.tsx:818
-#: ../html/src/manager/images/image-view.tsx:820
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:103
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:121
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:233
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:235
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:111
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:179
-msgid "Back"
-msgstr "뒤로"
-
 #: ../html/src/components/states-picker.tsx:377
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:185
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:193
@@ -1815,14 +1723,14 @@ msgstr "상태가 지정되지 않았습니다."
 msgid "State Name"
 msgstr "상태 이름"
 
-#: ../html/src/components/states-picker.tsx:451
-msgid "Channel Name"
-msgstr "채널 이름"
-
 #: ../html/src/components/states-picker.tsx:452
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:295
 msgid "State Label"
 msgstr "상태 레이블"
+
+#: ../html/src/components/states-picker.tsx:452
+msgid "Channel Label"
+msgstr "채널 레이블"
 
 #: ../html/src/components/states-picker.tsx:453
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
@@ -2096,16 +2004,12 @@ msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabl
 msgstr "Tomcat Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. 비활성화 버튼을 클릭하여 JMX 구성을 비활성화하거나 활성화를 클릭하여 Prometheus 내보내기를 시작하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:44
-#, fuzzy
-#| msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
 msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
-msgstr "Tomcat Prometheus 내보내기가 작동 중이지만 JMX 구성이 비활성화되었습니다. 활성화 버튼을 클릭하여 JMX 구성을 활성화하거나 비활성화를 클릭하여 Prometheu 내보내기를 중지하십시오."
+msgstr "Taskomatic Prometheus 내보내기가 작동 중이지만 JMX 구성이 비활성화되었습니다. 활성화 버튼을 클릭하여 JMX 구성을 활성화하거나 비활성화를 클릭하여 Prometheu 내보내기를 중지하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:47
-#, fuzzy
-#| msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
 msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
-msgstr "Tomcat Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. 비활성화 버튼을 클릭하여 JMX 구성을 비활성화하거나 활성화를 클릭하여 Prometheus 내보내기를 시작하십시오."
+msgstr "Taskomatic Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. 비활성화 버튼을 클릭하여 JMX 구성을 비활성화하거나 활성화를 클릭하여 Prometheus 내보내기를 시작하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:52
 msgid "Monitoring status hasn't changed."
@@ -2147,16 +2051,12 @@ msgid "Server Monitoring"
 msgstr "서버 자체 모니터링"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:150
-#, fuzzy
-#| msgid " exporters to expose metrics about your environment."
 msgid "The server uses <link>Prometheus</link> exporters to expose metrics about your environment."
-msgstr " 내보내기를 통해 환경에 대한 메트릭을 노출합니다."
+msgstr "서버는 <link>Prometheus</link> 내보내기를 사용하여 사용자 환경에 대한 메트릭을 노출합니다."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:159
-#, fuzzy
-#| msgid " to learn how to consume these metrics."
 msgid "Refer to the <link>documentation</link> to learn how to consume these metrics."
-msgstr " 이러한 메트릭을 사용하는 방법을 알아보십시오."
+msgstr "이러한 메트릭을 사용하는 방법은 <link>설명서</link>를 참조하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:250
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:270
@@ -2173,14 +2073,12 @@ msgid "Disable"
 msgstr "비활성화"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:334
-#, fuzzy
-#| msgid "SUSE Manager Configuration - Monitoring"
 msgid "{productName} Configuration - Monitoring"
-msgstr "SUSE Manager 구성 - 모니터링"
+msgstr "{productName} 구성 - 모니터링"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:341
 msgid "Set up monitoring for your {productName} server."
-msgstr ""
+msgstr "{productname} 서버에 대한 모니터링을 설정하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:347
 msgid "General"
@@ -2256,17 +2154,43 @@ msgstr "인스턴스 SSH 연결 데이터"
 msgid "Bastion SSH connection data"
 msgstr "베스천 SSH 연결 데이터"
 
-#: ../html/src/manager/admin/hub/hub-details.tsx:24
+#: ../html/src/manager/admin/hub/hub-details.tsx:36
+#, fuzzy
+#| msgid "Desync Channel"
+msgid "Sync Channels"
+msgstr "채널 동기화 취소"
+
+#: ../html/src/manager/admin/hub/hub-details.tsx:37
+#, fuzzy
+#| msgid "Schedule channels product resync"
+msgid "Schedule Sync Channels task"
+msgstr "채널 제품 재동기화 예약"
+
+#: ../html/src/manager/admin/hub/hub-details.tsx:42
+#, fuzzy
+#| msgid "Confirm Channel Synchronization Changes"
+msgid "Confirm channels synchronization"
+msgstr "채널 동기화 변경 사항 확인"
+
+#: ../html/src/manager/admin/hub/hub-details.tsx:43
+msgid "Do you want to schedule a channels synchronization from the hub?"
+msgstr ""
+
+#: ../html/src/manager/admin/hub/hub-details.tsx:57
 msgid "Hub Details"
 msgstr "허브 상세 정보"
 
-#: ../html/src/manager/admin/hub/hub-details.tsx:44
+#: ../html/src/manager/admin/hub/hub-details.tsx:80
 msgid "No hub is currently configured for this server. "
 msgstr "현재 이 서버에 허브가 구성되어 있지 않습니다. "
 
-#: ../html/src/manager/admin/hub/hub-details.tsx:53
+#: ../html/src/manager/admin/hub/hub-details.tsx:89
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgstr "이 서버는 현재 허브 {fqdn}의 주변기기로 등록되어 있습니다. "
+
+#: ../html/src/manager/admin/hub/hub-details.tsx:108
+msgid "Successfully scheduled a channels synchronization."
+msgstr ""
 
 #: ../html/src/manager/admin/hub/list-tokens.tsx:20
 msgid "Access Tokens"
@@ -2274,21 +2198,19 @@ msgstr "액세스 토큰"
 
 #: ../html/src/manager/admin/hub/migrate-from-v1.renderer.tsx:14
 msgid "Migrate from ISSv1 Slaves"
-msgstr ""
+msgstr "ISSv1 슬레이브에서 마이그레이션"
 
 #: ../html/src/manager/admin/hub/migrate-from-v2.renderer.tsx:13
 msgid "Migrate from ISSv2"
-msgstr ""
+msgstr "ISSv2에서 마이그레이션"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:20
 msgid "{fqdn} - Peripheral Details"
-msgstr ""
+msgstr "{fqdn} - 주변 장치 세부 정보"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
-msgstr "이 서버는 현재 허브 {fqdn}의 주변기기로 등록되어 있습니다. "
+msgstr "이 서버 {fqdn}은 현재 이 허브의 주변 장치로 등록되어 있습니다. "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:26
 msgid "Peripherals Configuration"
@@ -2304,15 +2226,15 @@ msgstr "마이그레이트"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:41
 msgid "Migrate an existing configuration of a previous version of ISS"
-msgstr ""
+msgstr "이전 버전 ISS의 기존 구성 마이그레이션"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:48
 msgid "Migrate ISS v1..."
-msgstr ""
+msgstr "ISS v1 마이그레이션..."
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:57
 msgid "Migrate ISS v2..."
-msgstr ""
+msgstr "ISS v2 마이그레이션..."
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:57
 msgid "This server is configured as a Peripheral server in a Hub configuration. Managing PAYG Connections is disabled."
@@ -2343,71 +2265,69 @@ msgstr "안 함"
 msgid "Add PAYG Connection"
 msgstr "PAYG 연결 추가"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:18
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:22
 msgid "Server Configuration - Password Policy"
 msgstr "서버 구성 - 암호 정책"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:21
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:25
 msgid "Set up your server local users password policy."
 msgstr "서버의 로컬 사용자 암호 정책을 설정하십시오."
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:24
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:28
 msgid "Password Policy Settings"
 msgstr "암호 정책 설정"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:29
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:33
 msgid "Min Password Length"
 msgstr "최소 암호 길이"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:36
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:40
 msgid "Max Password Length"
 msgstr "최대 암호 길이"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:43
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:47
 msgid "Require Digits"
 msgstr "숫자 필요"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:50
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:54
 msgid "Require Lowercase Characters"
 msgstr "소문자 필요"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:57
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:61
 msgid "Require Uppercase Characters"
 msgstr "대문자 필요"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:64
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:68
 msgid "Restrict Consecutive Characters"
 msgstr "연속 문자 제한"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:71
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:75
 msgid "Require Special Characters"
 msgstr "특수 문자 필요"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:78
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:82
 msgid "Allowed Special Characters"
 msgstr "허용되는 특수 문자"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:90
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:94
 msgid "Restrict Characters Occurrences"
 msgstr "문자 발생 횟수 제한"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:97
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:101
 msgid "Max Characters Occurrences"
 msgstr "최대 문자 발생 횟수"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:114
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:118
 msgid "Save Password Policy"
 msgstr "암호 정책 저장"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:120
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:124
 msgid "Password Policy Changed"
 msgstr "암호 정책 변경됨"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:139
-#, fuzzy
-#| msgid "Password Policy reset to defaults"
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:143
 msgid "Password Policy Reset to Default"
-msgstr "암호 정책 기본값으로 재설정"
+msgstr "비밀번호 정책 기본값으로 재설정"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -2512,10 +2432,8 @@ msgid "Operation not successful: Empty reply from the server"
 msgstr "작업 실패: 서버에서 빈 회신"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:132
-#, fuzzy
-#| msgid "No SUSE Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
 msgid "No SUSE Multi-Linux Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
-msgstr "사용할 수 있는 SUSE Manager 서버 구독이 없습니다. 클라이언트 도구 채널이 필요한 제품이 표시되지 않습니다."
+msgstr "사용할 수 있는 SUSE Multi-Linux Manager Server 구독이 없습니다. 클라이언트 도구 채널이 필요한 제품이 표시되지 않습니다."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:179
 msgid "The product catalog refresh is running..."
@@ -3036,10 +2954,8 @@ msgid "Match data status"
 msgstr "데이터 상태 일치"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:88
-#, fuzzy
-#| msgid "Could not start a matching run. Please contact your SUSE Manager administrator to make sure the task scheduler is running."
 msgid "Could not start a matching run. Please contact your administrator to make sure the task scheduler is running."
-msgstr "일치하는 실행을 시작할 수 없습니다. SUSE Manager 관리자에게 문의하여 작업 스케줄러가 실행 중인지 확인하십시오."
+msgstr "일치하는 실행을 시작할 수 없습니다. 관리자에게 문의하여 작업 스케줄러가 실행 중인지 확인하십시오."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:97
 msgid "No match data is currently available."
@@ -4516,10 +4432,8 @@ msgstr "클러스터 요약 보기"
 #: ../html/src/manager/images/image-view-overview.tsx:247
 #: ../html/src/manager/images/image-view-overview.tsx:249
 #: ../html/src/manager/images/image-view.tsx:528
-#, fuzzy
-#| msgid "All instances are consistent with SUSE Manager"
 msgid "All instances are consistent with {productName}"
-msgstr "모든 인스턴스가 SUSE Manager와 일치"
+msgstr "모든 인스턴스가 {productName}과(와) 일치"
 
 #: ../html/src/manager/images/image-view-overview.tsx:262
 #: ../html/src/manager/images/image-view-overview.tsx:263
@@ -4679,20 +4593,16 @@ msgid "Loading runtime information..."
 msgstr "런타임 정보 로드 중..."
 
 #: ../html/src/manager/images/image-view-runtime.tsx:70
-#, fuzzy
-#| msgid "Instance is consistent with SUSE Manager"
 msgid "Instance is consistent with {productName}"
-msgstr "인스턴스가 SUSE Manager와 일치"
+msgstr "인스턴스가 {productName}과(와) 일치"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:76
 msgid "Instance is outdated"
 msgstr "인스턴스가 오래됨"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:110
-#, fuzzy
-#| msgid "Cluster is consistent with SUSE Manager"
 msgid "Cluster is consistent with {productName"
-msgstr "클러스터가 SUSE Manager와 일치"
+msgstr "클러스터가 {productName}과(와) 일치"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:116
 msgid "Cluster is outdated"
@@ -4787,10 +4697,8 @@ msgid "The available disk space on the server is critically low. Please contact 
 msgstr "서버에서 사용 가능한 디스크 공간이 매우 부족합니다. 디스크 공간을 추가하려면 시스템 관리자에게 문의하십시오."
 
 #: ../html/src/manager/login/messages.tsx:53
-#, fuzzy
-#| msgid "SUSE Manager PAYG instances must forward registration data to SCC when credentials are provided. Data will be sent independently of the configuration setting. To hide this warning please set 'forward_registration = 1' in rhn.conf."
 msgid "SUSE Multi-Linux Manager PAYG instances must forward registration data to SCC when credentials are provided. Data will be sent independently of the configuration setting. To hide this warning please set 'forward_registration = 1' in rhn.conf."
-msgstr "SUSE Manager PAYG 인스턴스는 자격 증명이 제공되면 등록 데이터를 SCC로 전달해야 합니다. 데이터는 구성 설정과 관계없이 전송됩니다. 이 경고를 숨기려면 rhn.conf에서 'forward_registration = 1'을 설정하십시오."
+msgstr "SUSE Multi-Linux Manager PAYG 인스턴스는 자격 증명이 제공되면 등록 데이터를 SCC로 전달해야 합니다. 데이터는 구성 설정과 관계없이 전송됩니다. 이 경고를 숨기려면 rhn.conf에서 'forward_registration = 1'을 설정하십시오."
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
@@ -5207,7 +5115,7 @@ msgstr "플레이북 실행 예약"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:128
 msgid "Select the current Playbook"
-msgstr ""
+msgstr "현재 플레이북 선택"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Schedule Playbook Execution"
@@ -5318,16 +5226,12 @@ msgid "Applying the packages states has been "
 msgstr "패키지 상태 적용이 "
 
 #: ../html/src/manager/minion/proxy/proxy-config-messages.tsx:13
-#, fuzzy
-#| msgid "The image import has been scheduled."
 msgid "Proxy configuration action has been scheduled."
-msgstr "이미지 가져오기가 예약되었습니다."
+msgstr "프록시 구성 작업이 예약되었습니다."
 
 #: ../html/src/manager/minion/proxy/proxy-config-messages.tsx:25
-#, fuzzy
-#| msgid "Search in configuration channels"
 msgid "Scheduling proxy configuration action..."
-msgstr "구성 채널에서 검색"
+msgstr "프록시 구성 작업 예약 중..."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:114
 #: ../html/src/manager/proxy/container-config.tsx:142
@@ -5335,18 +5239,16 @@ msgid "Request interrupted or invalid response received from the server."
 msgstr "요청이 중단되거나 서버로부터 유효하지 않은 응답이 수신되었습니다."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:179
-#, fuzzy
-#| msgid "Configuration"
 msgid "Proxy Configuration"
-msgstr "구성"
+msgstr "프록시 구성"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:183
 msgid "Convert an already onboarded minion to a proxy or update the configuration of an existing proxy."
-msgstr ""
+msgstr "이미 온보딩된 미니언을 프록시로 전환하거나 기존 프록시의 구성을 업데이트하십시오."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:193
 msgid "Convert Minion to Proxy"
-msgstr ""
+msgstr "미니언을 프록시로 전환"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:198
 #: ../html/src/manager/proxy/container-config.tsx:210
@@ -5380,16 +5282,12 @@ msgid "Max Squid cache size"
 msgstr "최대 Squid 캐시 크기"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:220
-#, fuzzy
-#| msgid "The maximum value of the Squid cache in Megabytes"
 msgid "The maximum value of the Squid cache in Gigabytes"
-msgstr "메가바이트 단위의 Squid 캐시 최대값"
+msgstr "기가바이트 단위의 Squid 캐시 최대값"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:223
-#, fuzzy
-#| msgid "e.g., 2048"
 msgid "e.g., 100"
-msgstr "예: 2048"
+msgstr "예: 100"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:230
 #: ../html/src/manager/proxy/container-config.tsx:242
@@ -5408,26 +5306,22 @@ msgstr "예: proxy.admin@mycompany.com"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:241
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:242
-#, fuzzy
-#| msgid "CA certificate"
 msgid "Certificates"
-msgstr "CA 인증서"
+msgstr "인증서"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:250
 msgid "Keep"
-msgstr ""
+msgstr "유지"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:251
 msgid "Replace"
-msgstr ""
+msgstr "바꾸기"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:262
 msgid "Keeping the current certificates means no changes will be made to the Root CA, Intermediate CAs, Proxy certificate, or Proxy SSL private key."
-msgstr ""
+msgstr "현재 인증서를 유지하면 루트 CA, 중간 CA, 프록시 인증서 또는 프록시 SSL 개인 키가 변경되지 않습니다."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:273
-#, fuzzy
-#| msgid "The root CA"
 msgid "Root CA"
 msgstr "루트 CA"
 
@@ -5471,35 +5365,29 @@ msgid "Source"
 msgstr "소스"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:335
-#, fuzzy
-#| msgid "Register"
 msgid "Registry"
 msgstr "등록"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:336
 msgid "RPM"
-msgstr ""
+msgstr "RPM"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:344
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:345
-#, fuzzy
-#| msgid "Registration mode"
 msgid "Registry Source"
-msgstr "등록 모드"
+msgstr "등록 소스"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:352
 msgid "Simple"
-msgstr ""
+msgstr "Simple"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:353
 msgid "Advanced"
-msgstr ""
+msgstr "고급"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:361
-#, fuzzy
-#| msgid "Register"
 msgid "Registry URL"
-msgstr "등록"
+msgstr "등록 URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:362
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:389
@@ -5507,16 +5395,12 @@ msgstr "등록"
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:437
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:461
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:485
-#, fuzzy
-#| msgid "e.g., 2048"
 msgid "e.g., "
-msgstr "예: 2048"
+msgstr "예: "
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:369
-#, fuzzy
-#| msgid "Contains Package"
 msgid "Containers Tag"
-msgstr "패키지 포함"
+msgstr "컨테이너 태그"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:371
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:398
@@ -5524,50 +5408,48 @@ msgstr "패키지 포함"
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:446
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:470
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:494
-#, fuzzy
-#| msgid "latest"
 msgid "e.g., latest"
-msgstr "최신"
+msgstr "예: 최신"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:388
 msgid "HTTPD URL"
-msgstr ""
+msgstr "HTTPD URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:396
 msgid "HTTPD Tag"
-msgstr ""
+msgstr "HTTPD 태그"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:412
 msgid "Salt Broker URL"
-msgstr ""
+msgstr "Salt 브로커 URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:420
 msgid "Salt Broker Tag"
-msgstr ""
+msgstr "Salt 브로커 태그"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:436
 msgid "Squid URL"
-msgstr ""
+msgstr "Squid URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:444
 msgid "Squid Tag"
-msgstr ""
+msgstr "Squid 태그"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:460
 msgid "SSH URL"
-msgstr ""
+msgstr "SSH URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:468
 msgid "SSH Tag"
-msgstr ""
+msgstr "SSH 태그"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:484
 msgid "TFTPD URL"
-msgstr ""
+msgstr "TFTPD URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:492
 msgid "TFTPD Tag"
-msgstr ""
+msgstr "TFTPD 태그"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:510
 msgid "Apply"
@@ -5697,28 +5579,20 @@ msgid "Delete Notification"
 msgstr "알림 삭제"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:307
-#, fuzzy
-#| msgid "Environment updated successfully"
 msgid "{number} messages status updated successfully"
-msgstr "환경 업데이트됨"
+msgstr "{number} 메시지 상태 업데이트됨"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:308
-#, fuzzy
-#| msgid "Cluster properties updated successfully"
 msgid "Message read status updated successfully"
-msgstr "클러스터 속성 업데이트됨"
+msgstr "메시지 읽기 상태 업데이트됨"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:325
-#, fuzzy
-#| msgid "Filter deleted successfully"
 msgid "{number} messages deleted successfully"
-msgstr "필터 삭제됨"
+msgstr "{number}개 메시지 삭제됨"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:326
-#, fuzzy
-#| msgid "Filter deleted successfully"
 msgid "Message deleted successfully"
-msgstr "필터 삭제됨"
+msgstr "메시지 삭제됨"
 
 #: ../html/src/manager/notifications/notifications.tsx:42
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:339
@@ -5928,38 +5802,30 @@ msgstr "Quartz 형식 문자열"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:206
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:74
-#, fuzzy
-#| msgid "Playbook Directories"
 msgid "Playbook details"
-msgstr "플레이북 디렉터리"
+msgstr "플레이북 세부 정보"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:211
-#, fuzzy
-#| msgid "Playbook Content"
 msgid "Playbook path"
-msgstr "플레이북 컨텐트"
+msgstr "플레이북 경로"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:215
-#, fuzzy
-#| msgid "Inventory Path"
 msgid "Inventory path"
 msgstr "인벤토리 경로"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:219
-#, fuzzy
-#| msgid "Flush Ansible fact cache"
 msgid "Flush fact cache"
-msgstr "Ansible 팩트 캐시 플러시"
+msgstr "팩트 캐시 플러시"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:220
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:93
 msgid "true"
-msgstr ""
+msgstr "true"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:220
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:93
 msgid "false"
-msgstr ""
+msgstr "false"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:264
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:235
@@ -6058,34 +5924,24 @@ msgid "The below times are displayed in the server time zone {timeZone}. The sch
 msgstr "아래 시간은 서버 시간대 {timeZone}에 표시됩니다. 예약된 시간은 서버 시간이 됩니다."
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:54
-#, fuzzy
-#| msgid "Change Proxy"
 msgid "Change Playbook"
-msgstr "프록시 변경"
+msgstr "플레이북 변경"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:61
-#, fuzzy
-#| msgid "Select a filter"
 msgid "Select a Playbook"
-msgstr "필터 선택"
+msgstr "플레이북 선택"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:79
-#, fuzzy
-#| msgid "Playbook Content"
 msgid "Playbook path:"
-msgstr "플레이북 컨텐트"
+msgstr "플레이북 경로:"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:85
-#, fuzzy
-#| msgid "Inventory Path"
 msgid "Inventory path:"
-msgstr "인벤토리 경로"
+msgstr "인벤토리 경로:"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:91
-#, fuzzy
-#| msgid "Flush Ansible fact cache"
 msgid "Flush fact cache:"
-msgstr "Ansible 팩트 캐시 플러시"
+msgstr "팩트 캐시 플러시:"
 
 #. Value options for filtering by Action Type in recurring actions list
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
@@ -6254,10 +6110,8 @@ msgid "Uyuni homepage"
 msgstr "Uyuni 홈페이지"
 
 #: ../html/src/manager/shared/menu/menu.tsx:259
-#, fuzzy
-#| msgid "SUSE Manager homepage"
 msgid "SUSE Multi-Linux Manager homepage"
-msgstr "SUSE Manager 홈페이지"
+msgstr "SUSE Multi-Linux Manager 홈페이지"
 
 #: ../html/src/manager/state/display-highstate.tsx:9
 msgid "State Summary for {name}"
@@ -6276,10 +6130,8 @@ msgid "Config channel"
 msgstr "채널 구성"
 
 #: ../html/src/manager/state/highstate-summary.tsx:27
-#, fuzzy
-#| msgid "{productName} release {versionNumber}"
 msgid "{productName} internal"
-msgstr "{productName} 릴리스 {versionNumber}"
+msgstr "{productName} 내부"
 
 #: ../html/src/manager/state/highstate-summary.tsx:37
 msgid "Internal states"
@@ -6327,7 +6179,7 @@ msgstr "개발자들이 사용하는 숨겨진 페이지입니다. 이 페이지
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:35
 msgid "{productName} Default"
-msgstr ""
+msgstr "{productName} 기본"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:65
 msgid "Loading child channels.."
@@ -6575,7 +6427,7 @@ msgstr "Ansible 제어 노드"
 
 #: ../html/src/manager/systems/list-filter.tsx:13
 msgid "Ansible Managed"
-msgstr ""
+msgstr "Ansible 관리형"
 
 #: ../html/src/manager/systems/list-filter.tsx:15
 msgid "Container Build Host"
@@ -7007,6 +6859,9 @@ msgstr "리소스를 찾을 수 없음"
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "HTTP 오류 코드 "
+
+#~ msgid "Hub Org"
+#~ msgstr "허브 조직"
 
 #~ msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
 #~ msgstr "Tomcat Prometheus 내보내기가 실행 중이지만 JMX 구성이 비활성화되었습니다. "
