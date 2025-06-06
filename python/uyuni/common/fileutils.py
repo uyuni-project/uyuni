@@ -328,6 +328,7 @@ def makedirs(path, mode=int("0755", 8), user=None, group=None):
 
 class GecosCache:
     "Cache getpwnam() and getgrnam() calls"
+
     # pylint: disable-next=invalid-name
     __shared_data = {}
 
@@ -534,6 +535,6 @@ def decompress_open(filename):
         ).stdout
     else:
         file_obj = codecs.open(filename, "r", encoding="utf8")
-    if filename.endswith((".gz", ".bz2", ".xz", ".zck")):
+    if filename.endswith((".gz", ".bz2", ".xz", ".zck", ".zst")):
         return io.TextIOWrapper(file_obj, encoding="utf8")
     return file_obj
