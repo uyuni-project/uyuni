@@ -26,49 +26,71 @@ assignees: ''
 - Jenkins pipeline:
 - Server URL:
 
+---
+
 ### Links
 
 - [Step-by-step guide](https://confluence.suse.com/display/SUSEMANAGER/QE+Build+Validation)
 - [Automated tests](https://confluence.suse.com/display/SUSEMANAGER/Automated+tests)
 - [Pipeline parameters](https://confluence.suse.com/display/SUSEMANAGER/The+new+BV+pipeline)
 
+---
+
+## Legend
+- Selected checkbox means, we tested it
+- :white_check_mark: : Test/verification was successful
+- :x: : Test/verification was not successful
+- :test_tube: : Test failed due to test suite issue but succeed manually
+- If multiple emotes: task was run several times
+  - Example: :x: :white_check_mark: = first run failed, second run passed (resubmission)
+
+---
+
 ## Manual tests and tasks
 
 - [ ] Clean up the old environment
-- [ ] Update the mirror/check if it is up to date
+- [ ] Update the mirror / check if it is up to date
 
-### Long running server
+---
 
-- [ ] Upgrade the long running [server](https://documentation.suse.com/external-tree/en-us/suma/4.3/en/suse-manager/installation-and-upgrade/upgrade-intro.html)
-- [ ] And the [proxy](https://documentation.suse.com/external-tree/en-us/suma/4.3/en/suse-manager/installation-and-upgrade/proxy-y-z.html#_update_the_proxy_z)
-- [ ] Then bootstrap a clean Salt Minion
-- [ ] And perform some basic tests on it
+## Automated tests and tasks
 
-### Release notes and new features
+### Preparation
+
+- [ ] JSON creation
+
+### Proxy and Monitoring
+
+- [ ] Bootstrap proxy setup
+- [ ] Monitoring server setup
+
+### Client Bootstrap and Smoke Tests
+
+- [ ] All supported systems were bootstrapped and passed smoke tests
+  - [ ] Client bootstrap stage
+  - [ ] Client smoke tests
+
+### Migration Tests
+
+- [ ] Product and Salt migration tests
+  - [ ] SLES15 SP3 minion → SP4
+  - [ ] SLES15 SP3 SSH minion → SP4
+  - [ ] SLE Micro 5.4 → 5.5
+  - [ ] salt → salt bundle
+
+### Retail
+
+- [ ] SLES12 SP5
+- [ ] SLES15 SP4
+
+---
+
+## Release notes and new features
 
 - [ ] Update and verify the release notes for server and proxy
 - [ ] ...
 
-### Verification of Bug fixes included in this MU
-
-These bugs were fixed during the development cycle and were delivered together with the submissions.
-We must verify them before approving the MU.
-
-- [ ] ...
-
-## Automated tests and tasks
-
-- [ ] JSON creation
-- [ ] All the supported systems were bootstrapped and passed smoke tests
-- [ ] Product and Salt migration tests
-- [ ] Containerized proxy passed using the [aggregate namespace](https://confluence.suse.com/display/SUSEMANAGER/MI+process+for+Containerized+components#MIprocessforContainerizedcomponents-WhathappenswhenwehaveanewMaintenanceUpdateinSUSEManager?).
-  - Edit `/etc/sysconfig/uyuni-proxy-systemd-services` inside the Proxy VM and assure the namespace is correct:
-    ```bash
-    NAMESPACE=registry.suse.de/devel/galaxy/manager/mutesting/4.3/containers/suse/manager/4.3
-    ```
-- [ ] Retail
-  - [ ] SLES12 SP5
-  - [ ] SLES15 SP4
+---
 
 ## Approval
 
@@ -88,4 +110,3 @@ We must verify them before approving the MU.
 ### Blocker
 
 - [ ] ...
-
