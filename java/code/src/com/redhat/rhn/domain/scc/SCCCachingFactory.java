@@ -30,6 +30,7 @@ import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncSource;
 
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
+import com.suse.scc.model.SCCUpdateSystemItem;
 import com.suse.scc.model.SCCVirtualizationHostJson;
 import com.suse.utils.Opt;
 
@@ -38,12 +39,10 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -591,27 +590,22 @@ import javax.persistence.NoResultException;
 
     /**
      * Return list of data for last seen SCC update call
-     * @param cred SCC Org Crednetials
-     * @return a list of maps with the keys scc_login, scc_passwd, checkin
+     * @param cred SCC Org Credentials
+     * @return a list {@link SCCUpdateSystemItem}
      */
     @SuppressWarnings("unchecked")
-    public static List<Map<String, Object>> listUpdateLastSeenCandidates(SCCCredentials cred) {
-        List<Map<String, Object>> result = new ArrayList<>();
+    public static List<SCCUpdateSystemItem> listUpdateLastSeenItems(SCCCredentials cred) {
         List<Object[]> rows = getSession().createNativeQuery("""
-            SELECT reg.scc_login, reg.scc_passwd, si.checkin FROM suseSCCRegCache reg
-            JOIN rhnServer s ON reg.server_id = s.id JOIN rhnServerInfo si ON s.id = si.server_id
-            WHERE reg.scc_regerror_timestamp IS NULL AND reg.creds_id = :cred AND reg.scc_id IS NOT NULL
-            """)
+                        SELECT reg.scc_login, reg.scc_passwd, si.checkin FROM suseSCCRegCache reg
+                        JOIN rhnServer s ON reg.server_id = s.id JOIN rhnServerInfo si ON s.id = si.server_id
+                        WHERE reg.scc_regerror_timestamp IS NULL AND reg.creds_id = :cred AND reg.scc_id IS NOT NULL
+                        """)
                 .setParameter("cred", cred.getId(), StandardBasicTypes.LONG)
                 .list();
-        for (Object[] row : rows) {
-            Map<String, Object> entry = new HashMap<>();
-            entry.put("scc_login", row[0].toString());
-            entry.put("scc_passwd", row[1].toString());
-            entry.put("checkin", row[2]);
-            result.add(entry);
-        }
-        return result;
+
+        return rows.stream()
+                .map(r -> new SCCUpdateSystemItem(r[0].toString(), r[1].toString(), (Date) r[2]))
+                .toList();
     }
 
     /**
