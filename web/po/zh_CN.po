@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 11:50+0200\n"
-"PO-Revision-Date: 2025-03-10 13:56+0000\n"
+"PO-Revision-Date: 2025-05-30 18:59+0000\n"
 "Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web-5-0/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 msgid "remaining"
 msgstr "剩余"
@@ -279,10 +279,8 @@ msgstr "名称"
 msgid "Password"
 msgstr "口令"
 
-#, fuzzy
-#| msgid "Minimum 4 characters"
 msgid "Must be at least 4 characters"
-msgstr "最少 4 个字符"
+msgstr "必须至少包含 4 个字符"
 
 msgid "Level"
 msgstr "级别"
@@ -662,15 +660,11 @@ msgstr "Tomcat 普罗米修斯导出器已启动，但 JMX 配置已禁用。请
 msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
 msgstr "Tomcat 普罗米修斯导出器已关闭，但 JMX 配置已启用。请单击 \"禁用\" 按钮以禁用 JMX 配置，或单击 \"启用\" 以启动普罗米修斯导出器。"
 
-#, fuzzy
-#| msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
 msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
-msgstr "Tomcat 普罗米修斯导出器已启动，但 JMX 配置已禁用。请单击 \"启用\" 按钮以启用 JMX 配置，或单击 \"禁用\" 以停止普罗米修斯导出器。"
+msgstr "Taskomatic Prometheus 导出器已启动，但 JMX 配置处于禁用状态。请单击 \"启用\" 按钮以启用 JMX 配置，或单击 \"禁用\" 以停止 Prometheus 导出器。"
 
-#, fuzzy
-#| msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
 msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
-msgstr "Tomcat 普罗米修斯导出器已关闭，但 JMX 配置已启用。请单击 \"禁用\" 按钮以禁用 JMX 配置，或单击 \"启用\" 以启动普罗米修斯导出器。"
+msgstr "Taskomatic Prometheus 导出器已关闭，但 JMX 配置处于启用状态。请单击 \"禁用\" 按钮以禁用 JMX 配置，或单击 \"启用\" 以启动 Prometheus 导出器。"
 
 msgid "Monitoring status hasn't changed."
 msgstr "监控状态未更改。"
@@ -842,10 +836,8 @@ msgstr ""
 msgid "Password Policy Changed"
 msgstr ""
 
-#, fuzzy
-#| msgid "Provider Settings"
 msgid "Password Policy Reset to Default"
-msgstr "提供程序设置"
+msgstr "口令策略已重置为默认值"
 
 msgid "Request interrupted or invalid response received from the server. Please try again."
 msgstr "请求已中断，或者从服务器收到了无效响应。请重试。"
@@ -1056,7 +1048,7 @@ msgid "HTTP Proxy Password"
 msgstr ""
 
 msgid "Illustration of a proxy server"
-msgstr ""
+msgstr "代理服务器图示"
 
 #, fuzzy
 #| msgid "Proxy"
@@ -1242,10 +1234,8 @@ msgstr ""
 msgid "Error, see console"
 msgstr ""
 
-#, fuzzy
-#| msgid "Unknown Hostnames"
 msgid "Unknown patch status"
-msgstr "未知主机名"
+msgstr "未知补丁状态"
 
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
 msgstr "OVAL 数据不同步。可能遗漏了某些漏洞"
