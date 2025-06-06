@@ -87,16 +87,29 @@
           <bean:message key="spmigration.jsp.confirm.back" />
         </html:submit>
       </div>
-      <div class="pull-right">
-        <c:if test="${!requestScope.completed and hasDryRunCapability}">
-          <html:submit styleClass="btn btn-default" property="dispatch">
-            <bean:message key="spmigration.jsp.confirm.submit.dry-run" />
-          </html:submit>
-        </c:if>
-        <html:submit styleClass="btn btn-primary" property="dispatch">
+      <c:set var="dryRunTooltip">
+        <bean:message key="spmigration.jsp.dryrun.disabled.tooltip" />
+      </c:set>
+      <div class="pull-right test">
+        <c:if test="${!requestScope.completed}">
+          <c:choose>
+            <c:when test="${hasDryRunCapability}">
+                <html:submit styleClass="btn btn-default" property="dispatch">
+                    <bean:message key="spmigration.jsp.confirm.submit.dry-run" />
+                </html:submit>
+            </c:when>
+          <c:otherwise>
+            <html:submit styleClass="btn btn-default" property="dispatch" disabled="true"
+                          title="${dryRunTooltip}">
+                <bean:message key="spmigration.jsp.confirm.submit.dry-run" />
+            </html:submit>
+          </c:otherwise>
+        </c:choose>
+      </c:if>
+      <html:submit styleClass="btn btn-primary" property="dispatch">
           <bean:message key="spmigration.jsp.confirm.submit" />
-        </html:submit>
-      </div>
+      </html:submit>
+    </div>
     </div>
     <html:hidden property="baseProduct" value="${baseProduct.id}" />
     <c:forEach items="${addonProducts}" var="current">
