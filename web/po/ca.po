@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:19+0200\n"
-"PO-Revision-Date: 2025-06-05 09:59+0000\n"
+"PO-Revision-Date: 2025-06-06 13:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
 "Language: ca\n"
@@ -760,10 +760,8 @@ msgid "The migration process was not successfull and reported the following erro
 msgstr "El procés de migració no ha tingut èxit i s'ha informat dels errors següents"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:203
-#, fuzzy
-#| msgid "There are no states assigned."
 msgid "There are no ISSv1 slaves to migrate."
-msgstr "No hi ha estats assignats."
+msgstr "No hi ha esclaus ISSv1 per migrar."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:211
 #: ../html/src/components/states-picker.tsx:367
@@ -2155,26 +2153,20 @@ msgid "Bastion SSH connection data"
 msgstr "Dades de connexió SSH de base"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:36
-#, fuzzy
-#| msgid "Desync Channel"
 msgid "Sync Channels"
-msgstr "Dessincronitza el canal"
+msgstr "Sincronitza els canals"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:37
-#, fuzzy
-#| msgid "Schedule channels product resync"
 msgid "Schedule Sync Channels task"
-msgstr "Planifica canals de reinici del producte"
+msgstr "Programa la tasca de sincronització de canals"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:42
-#, fuzzy
-#| msgid "Confirm Channel Synchronization Changes"
 msgid "Confirm channels synchronization"
-msgstr "Confirmeu els canvis de sincronització de canals"
+msgstr "Confirmeu la sincronització dels canals"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:43
 msgid "Do you want to schedule a channels synchronization from the hub?"
-msgstr ""
+msgstr "Voleu programar una sincronització de canals des del control central?"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:57
 msgid "Hub Details"
@@ -2190,7 +2182,7 @@ msgstr "Aquest servidor està actualment registrat com a perifèric del hub {fqd
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
 msgid "Successfully scheduled a channels synchronization."
-msgstr ""
+msgstr "S'ha programat correctament una sincronització de canals."
 
 #: ../html/src/manager/admin/hub/list-tokens.tsx:20
 msgid "Access Tokens"
