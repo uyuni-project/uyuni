@@ -121,6 +121,16 @@ class SuseLibTest(unittest.TestCase):
 
         self.assertEqual((HTTP_PROXY, "user", None), suseLib.get_proxy())
 
+    @mock.patch("spacewalk.common.suseLib.CFG")
+    def test_get_proxy_rhn_conf_password_with_commas(self, mocked_CFG):
+        mocked_CFG.http_proxy = PROXY_ADDR
+        mocked_CFG.http_proxy_username = PROXY_USER
+        mocked_CFG.http_proxy_password = ["password", "with", "commas"]
+
+        self.assertEqual(
+            (HTTP_PROXY, PROXY_USER, "password,with,commas"), suseLib.get_proxy()
+        )
+
     def test_URL_getURL_with_stipPw(self):
         self.assertEqual(
             suseLib.URL("https://example.org/path/to/repo").getURL(stripPw=True),
