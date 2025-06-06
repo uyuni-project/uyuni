@@ -69,6 +69,16 @@ if ($tmpfile =~ m!^/etc/rhn/!) {
   chown 0, $apache_group, $tmpfile;
 }
 
+foreach my $opt_name (keys %options) {
+  my $val = $options{$opt_name};
+  if ($val =~ /^[A-Z0-9_]+$/) {
+    my $envkey = "UYUNICFG_" . $val;
+    if (exists $ENV{$envkey} && defined $ENV{$envkey} && $ENV{$envkey} ne '') {
+      $options{$opt_name} = $ENV{$envkey};
+    }
+  }
+}
+
 while (my $line = <TARGET>) {
   my $removed = 0;
   if ($line =~ /\[prompt\]/ or $line =~ /^#/) {
