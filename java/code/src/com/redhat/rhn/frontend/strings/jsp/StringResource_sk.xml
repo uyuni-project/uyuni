@@ -992,8 +992,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="404.jsp.title" xml:space="preserve">
-        <source>Page Not Found</source>
-        <target>Stránka sa nenašla</target>
+        <source>404: Page Not Found</source>
+        <target state="needs-adaptation">Stránka sa nenašla</target>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
         </context-group>
@@ -29544,6 +29544,36 @@ given channel.</source>
         <source>Proxy</source>
         <target state="new"/>
       </trans-unit>
-    </body>
+    <trans-unit id="403.jsp.title" xml:space="preserve">
+        <source>403: Access Denied</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">403 error page</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="403.jsp.summary" xml:space="preserve">
+        <source>You do not have permission to access the page: {0}.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">403 error page</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="403.jsp.instruction" xml:space="preserve">
+        <source>You are signed in, but your account does not have permission to access this resource. If you believe you should have access, contact your organization administrator to review your access permissions.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">403 error page</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="403.jsp.actions" xml:space="preserve">
+        <source>
+          You can also &lt;a href="{0}"&gt;log out&lt;/a&gt; or &lt;a href="javascript:history.back()"&gt;go back&lt;/a&gt; to the previous page.
+        </source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">403 error page</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

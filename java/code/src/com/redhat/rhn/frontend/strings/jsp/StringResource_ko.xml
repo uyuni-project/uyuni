@@ -992,11 +992,11 @@
         <target>사이트에서 오류가 발견되었습니다.</target>
       </trans-unit>
       <trans-unit id="404.jsp.title" xml:space="preserve">
-        <source>Page Not Found</source>
+        <source>404: Page Not Found</source>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
         </context-group>
-        <target>페이지를 찾을 수 없음</target>
+        <target state="needs-adaptation">페이지를 찾을 수 없음</target>
       </trans-unit>
       <trans-unit id="404.jsp.summary" xml:space="preserve">
         <source>The page you requested, {0}, was not found.</source>
@@ -13814,7 +13814,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="activation-key.jsp.edit-basechannel-tooltip" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="activation-key.jsp.edit-basechannel-tooltip" xml:space="preserve">
         <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default @@PRODUCT_NAME@@ provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its @@PRODUCT_NAME@@ Default channel.</source>
         <target state="final">"&lt;strong&gt;{0}&lt;/strong&gt;"을(를) 선택하여 시스템을 SUSE Linux 설치 버전에 해당하는 기본 @@PRODUCT_NAME@@ 채널에 등록합니다. 특정 SUSE 채널 또는 사용자 정의 기본 채널을 선택할 수도 있지만, 시스템이 이 키를 사용할 경우 선택한 채널과는 호환되지 않고, @@PRODUCT_NAME@@ Default 채널로 되돌아갑니다.</target>
         <context-group name="ctx">
@@ -13957,7 +13957,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/activationkeys/childchannels/* pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="activation-key.childchannels.jsp.note" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="activation-key.childchannels.jsp.note" xml:space="preserve">
         <source>NOTE: Selected child channels of the "@@PRODUCT_NAME@@ default" Base channel will be subscribed.</source>
         <target state="final">참고: "@@PRODUCT_NAME@@ default" 기본 채널의 선택한 하위 채널이 가입됩니다.</target>
         <context-group name="ctx">
@@ -24817,7 +24817,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target>로그인 오류</target>
       </trans-unit>
-      <trans-unit id="login.jsp.error.message" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="login.jsp.error.message" xml:space="preserve">
         <source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your @@PRODUCT_NAME@@ administrator if the problem persists.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">loginerror.jsp</context>
@@ -27303,7 +27303,7 @@ given channel.</source>
         </context-group>
         <target>여기에서 선택한 묶음의 스케줄을 설정할 수 있습니다.</target>
       </trans-unit>
-      <trans-unit id="schedule.delete.jsp.introparagraph" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="schedule.delete.jsp.introparagraph" xml:space="preserve">
         <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
@@ -28893,7 +28893,7 @@ given channel.</source>
         <source>Copyright (c) 2011 - 2025 SUSE LLC.</source>
         <target state="final">Copyright (c) 2011 - 2025 SUSE LLC.</target>
       </trans-unit>
-      <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;@@PRODUCT_NAME@@ License Agreement&lt;/a&gt;</source>
         <target state="final">&lt;a href="/rhn/help/Eula.do"&gt;@@PRODUCT_NAME@@ 라이선스 계약&lt;/a&gt;</target>
       </trans-unit>
@@ -28954,7 +28954,7 @@ given channel.</source>
         <source>Channel Label</source>
         <target>채널 레이블</target>
       </trans-unit>
-      <trans-unit id="delete_confirm.jsp.summary.sshpush" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="delete_confirm.jsp.summary.sshpush" xml:space="preserve">
         <source>For Salt minions @@PRODUCT_NAME@@ will also cleanup any specific configuration installed on the minion.
               This might take a few extra seconds.</source>
         <target state="final">Salt minion의 경우 @@PRODUCT_NAME@@은(는) 미니언에 설치된 특정 구성도 정리합니다.
@@ -29770,21 +29770,51 @@ given channel.</source>
         </context-group>
         <target state="final">배포 만들기</target>
       </trans-unit>
-      <trans-unit id="system.event.inventory" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.event.inventory" xml:space="preserve">
         <source>Inventory:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="final">인벤토리:</target>
       </trans-unit>
-      <trans-unit id="ansible_managed" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ansible_managed" xml:space="preserve">
         <source>Ansible Managed</source>
         <target state="final">Ansible 관리형</target>
       </trans-unit>
-      <trans-unit id="proxy_entitled" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="proxy_entitled" xml:space="preserve">
         <source>Proxy</source>
         <target state="final">프록시</target>
       </trans-unit>
-    </body>
+    <trans-unit id="403.jsp.title" xml:space="preserve">
+        <source>403: Access Denied</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">403 error page</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="403.jsp.summary" xml:space="preserve">
+        <source>You do not have permission to access the page: {0}.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">403 error page</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="403.jsp.instruction" xml:space="preserve">
+        <source>You are signed in, but your account does not have permission to access this resource. If you believe you should have access, contact your organization administrator to review your access permissions.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">403 error page</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="403.jsp.actions" xml:space="preserve">
+        <source>
+          You can also &lt;a href="{0}"&gt;log out&lt;/a&gt; or &lt;a href="javascript:history.back()"&gt;go back&lt;/a&gt; to the previous page.
+        </source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">403 error page</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
