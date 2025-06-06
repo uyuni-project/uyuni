@@ -1,0 +1,1 @@
+- Remove product_name overwrite from rhn.conf (bsc#1244021)
