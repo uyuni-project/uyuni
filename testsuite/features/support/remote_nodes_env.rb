@@ -4,11 +4,14 @@
 require 'require_all'
 require_relative 'remote_node'
 
+# QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
+custom_repos_path = "#{File.dirname(__FILE__)}/../upload_files/custom_repositories.json"
+
 # Raise a warning if any of these environment variables is missing
 raise ArgumentError, 'Server IP address or domain name variable empty' if ENV['SERVER'].nil?
 
 warn 'Proxy IP address or domain name variable empty' if ENV['PROXY'].nil?
-unless $build_validation
+unless File.exist?(custom_repos_path)
   warn 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
   warn 'Buildhost IP address or domain name variable empty' if ENV['BUILD_HOST'].nil?
   warn 'Red Hat-like minion IP address or domain name variable empty' if ENV['RHLIKE_MINION'].nil?
