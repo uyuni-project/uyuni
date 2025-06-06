@@ -143,7 +143,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
             fail("Exception expected but didn't throw");
         }
         catch (InvalidFormulaException ex) {
-
+            //should be here
         }
     }
 
