@@ -78,8 +78,12 @@
         <bean:message key="kickstarts.jsp.diskwarning" />
     </p>
 
-    <input type="button" class="btn btn-default" value="<bean:message key='sdc.channels.confirmNewBase.cancel' />" onclick="setStep('first');this.form.submit();" />
-    <input type="button" class="btn btn-default" value="<bean:message key='errata.publish.packagepush.continue' />" onclick="setContinue();this.form.submit();" />
+    <button type="button" class="btn btn-default" onclick="setStep('first');this.form.submit();">
+        <bean:message key='sdc.channels.confirmNewBase.cancel' />
+    </button>
+    <button type="button" class="btn btn-default" onclick="setContinue();this.form.submit();">
+        <bean:message key='errata.publish.packagepush.continue' />
+    </button>
 </html:form>
 </body>
 </html>
