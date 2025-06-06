@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Tue May 13 14:53:37 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.4
+  * MANAGER_DB_NAME should be owned by MANAGER_USER (bsc#1242975)
+
+-------------------------------------------------------------------
+Tue May 13 00:18:25 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.3
+  * Image rebuilt to the newest version with updated dependencies
+
+-------------------------------------------------------------------
 Fri Apr 11 18:02:13 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.2

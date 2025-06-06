@@ -5,7 +5,7 @@
 #              about a SUSE Manager Client
 # License:     GPLv2
 # Author:      Michael Calmer <mc@suse.de>
-# Modified:    2024 February 03
+# Modified:    2025 May 06
 #############################################################
 
 SVER=5.0.0
@@ -102,7 +102,7 @@ SERVICES="
 "
 
 for SERVICE in $SERVICES; do
-    check_service $OF $SERVICE
+    log_cmd $OF "systemctl status $SERVICE"
 done
 
 CONTAINERS="

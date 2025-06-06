@@ -1,0 +1,2 @@
+- Include implied RBAC groups for ORG_ADMIN
+  and SAT_ADMIN users (bsc#1243145)

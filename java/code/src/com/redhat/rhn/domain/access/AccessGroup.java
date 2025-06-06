@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.access;
 
 import com.redhat.rhn.domain.org.Org;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -34,7 +35,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "accessGroup", schema = "access")
-public class AccessGroup {
+public class AccessGroup implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,7 +46,8 @@ public class AccessGroup {
     private Org org;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "access.accessGroupNamespace",
+            name = "accessGroupNamespace",
+            schema = "access",
             joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "namespace_id")
     )

@@ -69,6 +69,55 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/hub/sync/subscriptions', 'POST', 'W', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
+
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/hub/syncChannels', 'POST', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/hub/sync/migrate/v1/deleteMaster', 'POST', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/hub/scc/connect/organizations/products/unscoped', 'GET', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/hub/scc/connect/organizations/repositories', 'GET', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/hub/scc/connect/organizations/subscriptions', 'GET', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/hub/scc/connect/organizations/orders', 'GET', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/hub/scc/suma/product_tree.json', 'GET', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/hub/hub-details', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/hub/peripherals', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/hub/peripherals/register', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/hub/peripherals/migrate-from-v1', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/hub/peripherals/migrate-from-v2', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/hub/peripherals/:id', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/hub/peripherals/:id/sync-channels', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/hub/access-tokens', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/manager/systems/details/proxy-config', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
@@ -159,6 +208,63 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/manager/api/channels/owned', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
+
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/hub/peripherals', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/hub/peripherals', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/hub/peripherals/:id', 'DELETE', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/hub/peripherals/:id/root-ca', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/hub/peripherals/:id/root-ca', 'DELETE', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/hub/peripherals/:id/credentials', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/hub/peripherals/:id/sync-channels', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/hub/peripherals/:id/sync-channels', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/hub/:id', 'DELETE', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/hub/:id/root-ca', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/hub/:id/root-ca', 'DELETE', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/hub/migrate/v1', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/hub/migrate/v2', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/hub/access-tokens', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/hub/access-tokens', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/hub/access-tokens/:id/validity', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/hub/access-tokens/:id', 'DELETE', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/hub/sync-bunch', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+
+
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/manager/api/admin/mandatoryChannels', 'POST', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
@@ -589,6 +695,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('', '/manager/api/cm/build/:id', 'POST', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/cm/rebuild/:id', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/manager/api/cm/images/inspect/:id', 'POST', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -719,6 +828,18 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/manager/api/cm/build/:id', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/cm/clusters', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/cm/runtime/:clusterId', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/cm/runtime/:clusterId/:id', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/cm/runtime/details/:clusterId/:id', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/errata/RelevantErrata.do', 'GET', 'W', True)
@@ -1036,6 +1157,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('', '/manager/api/maintenance/schedule/:id/setsystems', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/maintenance/schedule/:id/assign', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/manager/api/maintenance/schedule/systems', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -1064,6 +1188,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/manager/api/maintenance/calendar/delete', 'DELETE', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/maintenance/calendar/refresh', 'POST', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/software/channels/All.do', 'GET', 'W', True)
@@ -1495,6 +1622,12 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('', '/systems/ssm/ListErrata.do', 'POST', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/systems/ssm/ListErrataConfirm.do', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/systems/ssm/ListErrataConfirm.do', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/systems/details/ErrataList.do', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -1532,6 +1665,12 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/ssm/PackageUpgrade.do', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/ssm/PackageUpgradeSchedule.do', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/ssm/PackageUpgradeSchedule.do', 'POST', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/ssm/PackageInstall.do', 'GET', 'W', True)
@@ -2656,6 +2795,12 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('', '/systems/details/history/Pending.do', 'POST', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/systems/details/history/PendingDelete.do', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/systems/details/history/PendingDelete.do', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/systems/details/history/Event.do', 'POST', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -2771,6 +2916,12 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/activationkeys/Delete.do', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/activationkeys/appstreams', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/activationkeys/appstreams/save', 'POST', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/profiles/List.do', 'GET', 'W', True)
@@ -3031,6 +3182,18 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('', '/manager/api/vhms/delete/:id', 'DELETE', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/vhms/kubeconfig/validate', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/vhms/kubeconfig/:id/contexts', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/vhms/create/kubernetes', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/vhms/update/kubernetes', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/users/ActiveList.do', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -3187,10 +3350,154 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('', '/manager/download/:channel/media.1/:file', 'HEAD', 'W', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/download/saltssh/pubkey', 'GET', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/saltboot/*', 'GET', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/storybook', 'GET', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/manager/login', 'GET', 'W', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/Logout.do', 'GET', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/taskomatic/invoke', 'POST', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/setup/proxy', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/ajax/save-proxy-settings', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/ajax/verify-proxy-settings', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/admin/setup/MirrorCredentials.do', 'GET/???', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/ajax/render-mirror-credentials', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/ajax/verify-mirror-credentials', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/ajax/save-mirror-credentials', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/ajax/delete-mirror-credentials', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/ajax/make-primary-mirror-credentials', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/ajax/list-mirror-subscriptions', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/setup/products', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/setup/products', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/products', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/products/metadata', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/setup/sync/products', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/setup/sync/channelfamilies', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/setup/sync/subscriptions', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/setup/sync/repositories', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/setup/channels/optional', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/setup/payg', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/setup/payg/create', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/config/payg', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/setup/payg/:id', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/config/payg/:id', 'DELETE', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/config/payg/:id', 'PUT', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/config/monitoring', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/config/password-policy', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/config/monitoring', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/config/monitoring', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/config/password-policy', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/config/password-policy/default', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/config/password-policy', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/config/password-policy/validate-password', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/enable-scc-data-forwarding', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/admin/runtime-status', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/admin/runtime-status/data', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/subscription-matching', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/subscription-matching/:filename', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/subscription-matching/data', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/subscription-matching/schedule-matcher-run', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/subscription-matching/pins', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/subscription-matching/pins/:id/delete', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/multiorg/details/custom', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/multiorg/recurring-actions', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.suse.manager.webui.controllers.login.LoginController', '/manager/api/login', 'POST', 'A', False)
@@ -3203,6 +3510,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.auth.AuthHandler.logout', '/manager/api/auth/logout', 'GET', 'A', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.auth.AuthHandler.logout', '/manager/api/auth/logout', 'POST', 'A', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.auth.AuthHandler.isSessionKeyValid', '/manager/api/auth/isSessionKeyValid', 'GET', 'A', False)
@@ -3250,6 +3560,18 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('', '/CSVDownloadAction.do', 'GET', 'W', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/sso/metadata', 'GET', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/sso/acs', 'POST', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/sso/logout', 'GET', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/sso/sls', 'GET', 'W', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.access.AccessHandler.createRole', '/manager/api/access/createRole', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -3269,6 +3591,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.access.AccessHandler.revokeAccess', '/manager/api/access/revokeAccess', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.chain.ActionChainHandler.addApplyHighstate', '/manager/api/actionchain/addApplyHighstate', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.chain.ActionChainHandler.addConfigurationDeployment', '/manager/api/actionchain/addConfigurationDeployment', 'POST', 'A', True)
@@ -3505,6 +3830,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler.addRepoFilter', '/manager/api/channel/software/addRepoFilter', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler.addVendorRepoFilter', '/manager/api/channel/software/addVendorRepoFilter', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler.alignMetadata', '/manager/api/channel/software/alignMetadata', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -3515,6 +3843,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler.clearRepoFilters', '/manager/api/channel/software/clearRepoFilters', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler.clearVendorRepoFilters', '/manager/api/channel/software/clearVendorRepoFilters', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler.clone', '/manager/api/channel/software/clone', 'POST', 'A', True)
@@ -3595,6 +3926,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler.listUserRepos', '/manager/api/channel/software/listUserRepos', 'GET', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler.listVendorRepoFilters', '/manager/api/channel/software/listVendorRepoFilters', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler.mergeErrata', '/manager/api/channel/software/mergeErrata', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -3619,6 +3953,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler.removeRepoFilter', '/manager/api/channel/software/removeRepoFilter', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler.removeVendorRepoFilter', '/manager/api/channel/software/removeVendorRepoFilter', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler.setContactDetails', '/manager/api/channel/software/setContactDetails', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -3635,6 +3972,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler.setUserSubscribable', '/manager/api/channel/software/setUserSubscribable', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler.setVendorRepoFilters', '/manager/api/channel/software/setVendorRepoFilters', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler.syncErrata', '/manager/api/channel/software/syncErrata', 'POST', 'A', True)
@@ -4005,6 +4345,42 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.storeAccessToken', '/manager/api/sync/hub/storeAccessToken', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
+
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.getAllPeripheralChannels', '/manager/api/sync/hub/getAllPeripheralChannels', 'GET', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.getManagerInfo', '/manager/api/sync/hub/getManagerInfo', 'GET', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.isISSPeripheral', '/manager/api/sync/hub/isISSPeripheral', 'GET', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.getAllPeripheralOrgs', '/manager/api/sync/hub/getAllPeripheralOrgs', 'GET', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.migrateFromISSv1', '/manager/api/sync/hub/migrateFromISSv1', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.syncPeripheralChannels', '/manager/api/sync/hub/syncPeripheralChannels', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.migrateFromISSv2', '/manager/api/sync/hub/migrateFromISSv2', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.removePeripheralChannelsToSync', '/manager/api/sync/hub/removePeripheralChannelsToSync', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.addPeripheralChannelsToSync', '/manager/api/sync/hub/addPeripheralChannelsToSync', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.regenerateSCCCredentials', '/manager/api/sync/hub/regenerateSCCCredentials', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.listPeripheralChannelsToSync', '/manager/api/sync/hub/listPeripheralChannelsToSync', 'GET', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+
+
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler.addImageFile', '/manager/api/image/addImageFile', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
@@ -4546,6 +4922,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler.activateProxy', '/manager/api/proxy/activateProxy', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler.bootstrapProxy', '/manager/api/proxy/bootstrapProxy', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler.containerConfig', '/manager/api/proxy/containerConfig', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -4589,6 +4968,12 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringHighstateHandler.update', '/manager/api/recurring/highstate/update', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringPlaybookHandler.create', '/manager/api/recurring/playbook/create', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringPlaybookHandler.update', '/manager/api/recurring/playbook/update', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.saltkey.SaltKeyHandler.accept', '/manager/api/saltkey/accept', 'POST', 'A', True)
@@ -5053,6 +5438,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.getVariables', '/manager/api/system/getVariables', 'GET', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.hasTraditionalSystems', '/manager/api/system/hasTraditionalSystems', 'GET', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.isNvreInstalled', '/manager/api/system/isNvreInstalled', 'GET', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -5302,10 +5690,16 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.setProfileName', '/manager/api/system/setProfileName', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.setupStaticNetwork', '/manager/api/system/setupStaticNetwork', 'POST', 'A', False)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.setVariables', '/manager/api/system/setVariables', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.tagLatestSnapshot', '/manager/api/system/tagLatestSnapshot', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.transitionDataForSystem', '/manager/api/system/transitionDataForSystem', 'POST', 'A', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.unentitle', '/manager/api/system/unentitle', 'POST', 'A', True)

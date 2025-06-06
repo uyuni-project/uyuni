@@ -1,11 +1,11 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2022-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 @skip_if_github_validation
 @scope_reportdb
-Feature: ReportDB
+Feature: Report database
   In order to use reporting tools
   As an authorized user
-  I want to be able to access and use the Report Database named "reportdb"
+  I want to access and use the report database named "ReportDB"
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
@@ -14,8 +14,8 @@ Feature: ReportDB
     When I schedule a task to update ReportDB
 
   Scenario: Connect to the ReportDB on the server with admin user
-    Given I can connect to the ReportDB on the Server
-    And I have a user allowed to create roles on the ReportDB
+    Then I should be able to connect to the ReportDB on the server
+    And there should be a user allowed to create roles on the ReportDB
 
   Scenario: Create read-only user
     When I create a read-only user for the ReportDB

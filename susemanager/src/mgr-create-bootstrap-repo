@@ -23,6 +23,7 @@ from uyuni.common import usix, rhnLib
 
 
 sys.path.append("/usr/share/susemanager")
+sys.path.append("/srv/susemanager")
 
 rhnSQL.initDB()
 

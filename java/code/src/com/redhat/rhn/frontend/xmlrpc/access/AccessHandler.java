@@ -87,7 +87,7 @@ public class AccessHandler extends BaseHandler {
      *
      * @apidoc.doc Create a new role.
      * @apidoc.param #session_key()
-     * @apidoc.param #param("string", "label", "the unique label of the new role")
+     * @apidoc.param #param_desc("string", "label", "the unique label of the new role")
      * @apidoc.param #param_desc("string", "description", "the description of the new role")
      * @apidoc.returntype $AccessGroupSerializer
      */
@@ -137,7 +137,7 @@ public class AccessHandler extends BaseHandler {
      *
      * @apidoc.doc Delete a role.
      * @apidoc.param #session_key()
-     * @apidoc.param #param("string", "label", "the unique label of the new role")
+     * @apidoc.param #param_desc("string", "label", "the unique label of the new role")
      * @apidoc.returntype #return_int_success()
      */
     public int deleteRole(User loggedInUser, String label) {
@@ -162,7 +162,7 @@ public class AccessHandler extends BaseHandler {
      *
      * @apidoc.doc List permissions granted by a role.
      * @apidoc.param #session_key()
-     * @apidoc.param #param("string", "label", "the unique label of the role")
+     * @apidoc.param #param_desc("string", "label", "the unique label of the role")
      * @apidoc.returntype
      * #return_array_begin()
      *     $NamespaceSerializer
@@ -184,9 +184,9 @@ public class AccessHandler extends BaseHandler {
      * @return 1 if successful
      *
      * @apidoc.doc Grant full access to the given namespace for the specified role.
-     * Return the expanded list of namespaces granted by the call.
+     * Returns the expanded list of namespaces granted by the call.
      * @apidoc.param #session_key()
-     * @apidoc.param #param("string", "label", "the unique label of the role")
+     * @apidoc.param #param_desc("string", "label", "the unique label of the role")
      * @apidoc.param #array_single_desc("string", "namespaces", "the list of namespaces to grant access to")
      * @apidoc.returntype #return_int_success()
      */
@@ -211,7 +211,7 @@ public class AccessHandler extends BaseHandler {
      * @apidoc.doc Grant access to the given namespace for the specified role.
      * Returns the expanded list of namespaces granted by the call.
      * @apidoc.param #session_key()
-     * @apidoc.param #param("string", "label", "the unique label of the role")
+     * @apidoc.param #param_desc("string", "label", "the unique label of the role")
      * @apidoc.param #array_single_desc("string", "namespaces", "the list of namespaces to grant access to")
      * @apidoc.param #array_single_desc("string", "modes", "the access modes (R for read/view, W for write/modify)")
      * @apidoc.returntype #return_int_success()
@@ -237,9 +237,9 @@ public class AccessHandler extends BaseHandler {
      * @return 1 if successful
      *
      * @apidoc.doc Revoke access to the given namespace for the specified role.
-     * Return the expanded list of namespaces revoked by the call.
+     * Returns the expanded list of namespaces revoked by the call.
      * @apidoc.param #session_key()
-     * @apidoc.param #param("string", "label", "the unique label of the role")
+     * @apidoc.param #param_desc("string", "label", "the unique label of the role")
      * @apidoc.param #array_single_desc("string", "namespaces", "the list of namespaces to revoke access to")
      * @apidoc.returntype #return_int_success()
      */
@@ -262,9 +262,9 @@ public class AccessHandler extends BaseHandler {
      * @return 1 if successful
      *
      * @apidoc.doc Revoke access to the given namespace for the specified role.
-     * Return the expanded list of namespaces revoked by the call.
+     * Returns the expanded list of namespaces revoked by the call.
      * @apidoc.param #session_key()
-     * @apidoc.param #param("string", "label", "the unique label of the role")
+     * @apidoc.param #param_desc("string", "label", "the unique label of the role")
      * @apidoc.param #array_single_desc("string", "namespaces", "the list of namespaces to revoke access to")
      * @apidoc.param #array_single_desc("string", "modes", "the access modes (R for read/view, W for write/modify)")
      * @apidoc.returntype #return_int_success()

@@ -267,7 +267,6 @@ public class ControllerTestUtils {
         info.setChecksumTypeLabel(checksumLabel);
         info.setChannelProductProduct("channelProductProduct");
         info.setChannelProductVersion("channelProductVersion");
-        info.setChannelAccess("chAccess"); // max 10
         info.setMaintainerName("maintainerName_" + channelLabel);
         info.setMaintainerEmail("maintainerEmail_" + channelLabel);
         info.setMaintainerPhone("maintainerPhone_" + channelLabel);
@@ -312,8 +311,6 @@ public class ControllerTestUtils {
         assertEquals(endOfLifeDate, ch.getEndOfLife());
         assertEquals(checksumLabel, ch.getChecksumType().getLabel());
         assertTrue(isNowUtil(ch.getLastModified()));
-
-        assertEquals("chAccess", ch.getAccess());
 
         assertEquals("maintainerName_" + channelLabel, ch.getMaintainerName());
         assertEquals("maintainerEmail_" + channelLabel, ch.getMaintainerEmail());
@@ -411,7 +408,7 @@ public class ControllerTestUtils {
         assertEquals(modifyInfo.getLabel(), ch.getLabel());
 
         if (null != modifyInfo.getPeripheralOrgId()) {
-            checkMethod.accept(modifyInfo.getPeripheralOrgId(), ch.getOrg().getId());
+            assertEquals(modifyInfo.getPeripheralOrgId(), ch.getOrg().getId());
         }
 
         checkMethod.accept(modifyInfo.getOriginalChannelLabel(), ch.getOriginal().getLabel());
@@ -429,7 +426,6 @@ public class ControllerTestUtils {
 
         checkMethod.accept(modifyInfo.getChannelProductProduct(), ch.getProduct().getProduct());
         checkMethod.accept(modifyInfo.getChannelProductVersion(), ch.getProduct().getVersion());
-        checkMethod.accept(modifyInfo.getChannelAccess(), ch.getAccess());
         checkMethod.accept(modifyInfo.getMaintainerName(), ch.getMaintainerName());
         checkMethod.accept(modifyInfo.getMaintainerEmail(), ch.getMaintainerEmail());
         checkMethod.accept(modifyInfo.getMaintainerPhone(), ch.getMaintainerPhone());
@@ -438,10 +434,10 @@ public class ControllerTestUtils {
         checkMethod.accept(modifyInfo.isInstallerUpdates(), ch.isInstallerUpdates());
     }
 
-    public void createTestChannel(ChannelInfoDetailsJson modifyInfo, User userIn) throws Exception {
+    public void createTestChannel(ChannelInfoDetailsJson modifyInfo, Org orgIn) throws Exception {
         ChannelFamily cfam = ChannelFamilyFactoryTest.createTestChannelFamily();
         String query = "ChannelArch.findById";
         ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheById(500L, query);
-        ChannelFactoryTest.createTestChannel(modifyInfo.getName(), modifyInfo.getLabel(), userIn.getOrg(), arch, cfam);
+        ChannelFactoryTest.createTestChannel(modifyInfo.getName(), modifyInfo.getLabel(), orgIn, arch, cfam);
     }
 }

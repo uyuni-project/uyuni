@@ -85,6 +85,7 @@ import com.suse.manager.webui.controllers.maintenance.MaintenanceCalendarControl
 import com.suse.manager.webui.controllers.maintenance.MaintenanceController;
 import com.suse.manager.webui.controllers.maintenance.MaintenanceScheduleController;
 import com.suse.manager.webui.errors.NotFoundException;
+import com.suse.manager.webui.services.RbacRouteValidator;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.scc.SCCEndpoints;
@@ -272,6 +273,9 @@ public class Router implements SparkApplication {
 
         // ISSv3 Sync
         initISSv3Routes();
+
+        // Validate RBAC endpoints
+        RbacRouteValidator.validateEndpoints();
 
         // if the calls above opened Hibernate session, close it now
         HibernateFactory.closeSession();

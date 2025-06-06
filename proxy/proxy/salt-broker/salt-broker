@@ -13,7 +13,7 @@
     :depends:   python-PyYAML
     :depends:   python-pyzmq
 
-    Copyright (c) 2016 SUSE LINUX Products GmbH, Nuernberg, Germany.
+    Copyright (c) 2016--2025 SUSE LLC
 
     All modifications and additions to the file contributed by third parties
     remain the property of their copyright owners, unless otherwise agreed
@@ -41,10 +41,14 @@ import time
 import traceback
 import yaml
 
+log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
+
 try:
     # Import RHN libs
     from spacewalk.common.rhnConfig import RHNOptions
 except ImportError:
+    log.info("RHNOptions is not available, running standalone")
     RHNOptions = None
 
 # Import pyzmq lib
@@ -52,14 +56,9 @@ import zmq
 
 from zmq.utils.monitor import recv_monitor_message
 
-
-RHN_CONF_FILE = "/etc/rhn/rhn.conf"
-SALT_BROKER_CONF_FILE = "/etc/salt/broker"
-SALT_BROKER_LOGFILE = "/var/log/salt/broker"
+SALT_BROKER_CONF_FILE = os.environ.get("SALT_BROKER_CONF_FILE", "/etc/salt/broker")
+SALT_BROKER_LOGFILE = os.environ.get("SALT_BROKER_LOGFILE", "/var/log/salt/broker")
 SUPERVISOR_TIMEOUT = 5
-
-log = logging.getLogger(__name__)
-log.setLevel(logging.DEBUG)
 
 
 def ip_bracket(addr, strip=False):

@@ -70,6 +70,7 @@ import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.salt.netapi.parser.JsonParser;
+import com.suse.scc.SCCEndpoints;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientUtils;
@@ -165,6 +166,8 @@ public class ContentSyncManager {
     private final boolean isPeripheral;
     private final boolean hubHasSignedMetadata;
 
+    private final List<String> toolsChannelFamilies;
+
     private final Path tmpLoggingDir;
 
     /**
@@ -185,6 +188,12 @@ public class ContentSyncManager {
         Optional<IssHub> issHub = hubFactory.lookupIssHub();
         isPeripheral = issHub.isPresent();
         hubHasSignedMetadata = StringUtils.isNotBlank(issHub.map(IssHub::getGpgKey).orElse(""));
+        toolsChannelFamilies = new ArrayList<>();
+        toolsChannelFamilies.add(ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL);
+        if (Config.get().getString(ConfigDefaults.PRODUCT_TREE_TAG, "").equals("Beta")) {
+            String betaClass = ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL + "-BETA";
+            toolsChannelFamilies.add(betaClass);
+        }
     }
 
     /**
@@ -911,8 +920,9 @@ public class ContentSyncManager {
         //REPO HANDLING
         List<SCCRepository> oesRepos = SCCCachingFactory.lookupRepositoriesByChannelFamily(OES_CHANNEL_FAMILY);
         List<SCCRepositoryJson> nonOESJRepos = repositories.stream()
-            .filter(jsonRepo -> oesRepos.stream().noneMatch(oes -> oes.getSccId().equals(jsonRepo.getSCCId())))
-            .toList();
+                .filter(jsonRepo -> oesRepos.stream().noneMatch(oes -> oes.getSccId().equals(jsonRepo.getSCCId())))
+                .filter(jsonRepo -> !jsonRepo.getSCCId().equals(SCCEndpoints.CUSTOM_REPO_FAKE_SCC_ID))
+                .toList();
 
         for (SCCRepositoryJson jsonRepo : nonOESJRepos) {
             SCCRepository repo = availableReposById.get(jsonRepo.getSCCId());
@@ -1009,14 +1019,24 @@ public class ContentSyncManager {
     }
 
     private void refreshCustomRepoAuthentication(List<SCCRepositoryJson> customReposIn, SCCCredentials creds) {
+        IssHub issHub = creds.getIssHub();
+        if (issHub == null) {
+            LOG.debug("Only Peripheral server manage custom channels via SCC API");
+            return;
+        }
+        Set<ContentSource> toDeleteCustomRepos = new HashSet<>(
+                ChannelFactory.findCustomContentSourcesForHubFqdn(issHub.getFqdn()));
+
         for (SCCRepositoryJson repo : customReposIn) {
             Channel customChannel = ChannelFactory.lookupByLabel(repo.getName());
             if (!isValidCustomChannel(repo, customChannel)) {
                 LOG.error("Invalid custom repo/channel {} - {}", repo, customChannel);
                 return;
             }
-            refreshOrCreateRepository(repo, customChannel, creds.getIssHub());
+            toDeleteCustomRepos.removeAll(customChannel.getSources());
+            refreshOrCreateRepository(repo, customChannel, issHub);
         }
+        toDeleteCustomRepos.forEach(ChannelFactory::remove);
     }
 
     /**
@@ -1613,8 +1633,11 @@ public class ContentSyncManager {
 
         PackageArch pArch = packageArchMap.computeIfAbsent(p.getArch(), PackageFactory::lookupPackageArchByLabel);
         if (pArch == null && p.getArch() != null) {
-            // unsupported architecture, skip the product
-            LOG.error("Unknown architecture '{}'. This may be caused by a missing database migration", p.getArch());
+            if (!p.getArch().equals("multi-arch")) {
+                // unsupported architecture, skip the product
+                LOG.error("Unknown architecture '{}'. This may be caused by a missing database migration", p.getArch());
+            }
+            // multi-arch is used by SCC - we do not handle these products, no need to write an error message
         }
         else {
             product.setArch(pArch);
@@ -1660,8 +1683,11 @@ public class ContentSyncManager {
 
         PackageArch pArch = packageArchMap.computeIfAbsent(p.getArch(), PackageFactory::lookupPackageArchByLabel);
         if (pArch == null && p.getArch() != null) {
-            // unsupported architecture, skip the product
-            LOG.error("Unknown architecture '{}'. This may be caused by a missing database migration", p.getArch());
+            if (!p.getArch().equals("multi-arch")) {
+                // unsupported architecture, skip the product
+                LOG.error("Unknown architecture '{}'. This may be caused by a missing database migration", p.getArch());
+            }
+            // multi-arch is used by SCC - we do not handle these products, no need to write an error message
         }
         else {
             product.setArch(pArch);
@@ -2702,7 +2728,7 @@ public class ContentSyncManager {
                 .map(SCCSubscription::getProducts)
                 .flatMap(Set::stream)
                 .filter(p -> p.getChannelFamily() != null)
-                .anyMatch(p -> p.getChannelFamily().getLabel().equals(ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL));
+                .anyMatch(p -> toolsChannelFamilies.contains(p.getChannelFamily().getLabel()));
     }
 
     /**
@@ -2718,6 +2744,6 @@ public class ContentSyncManager {
                 .flatMap(r -> r.getChannelTemplates().stream())
                 .map(ChannelTemplate::getProduct)
                 .filter(p -> p.getChannelFamily() != null)
-                .anyMatch(p -> p.getChannelFamily().getLabel().equals(ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL));
+                .anyMatch(p -> toolsChannelFamilies.contains(p.getChannelFamily().getLabel()));
     }
 }

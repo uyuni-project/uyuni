@@ -8,6 +8,7 @@ require 'nokogiri'
 require 'pg'
 require 'set'
 require 'date'
+require 'openssl'
 
 # Sanity checks
 
@@ -617,7 +618,7 @@ When(/^the controller starts mocking a Redfish host$/) do
     # On kubernetes, the server has no clue about certificates
     crt_path, key_path, _ca_path = generate_certificate('controller', hostname)
   else
-    get_target('server').run("mgr-ssl-tool --gen-server -d /root/ssl-build --no-rpm -p spacewalk --set-hostname #{hostname} --server-cert=controller.crt --server-key=controller.key")
+    get_target('server').run("mgr-ssl-tool --gen-server -d /root/ssl-build -p spacewalk --set-hostname #{hostname} --server-cert=controller.crt --server-key=controller.key")
     key_path, _err = get_target('server').run('ls /root/ssl-build/*/controller.key')
     crt_path, _err = get_target('server').run('ls /root/ssl-build/*/controller.crt')
   end
@@ -863,10 +864,18 @@ end
 
 When(/^I (enable|disable) Debian-like "([^"]*)" repository on "([^"]*)"$/) do |action, repo, host|
   node = get_target(host)
-  raise ScriptError, "#{node.hostname} is not a Debian-like host." unless deb_host?(host)
 
-  source_repo = "deb http://archive.ubuntu.com/ubuntu/ $(lsb_release -sc) #{repo}"
-  node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} \"#{source_repo}\"")
+  # add-apt-repository does not work with new deb822 format
+  file = 'edit-deb822.awk'
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
+  success = file_inject(node, source, dest)
+  raise ScriptError, 'File injection failed' unless success
+
+  # edit ubuntu.sources with downloaded utility
+  sources = '/etc/apt/sources.list.d/ubuntu.sources'
+  tmp = '/tmp//ubuntu.sources'
+  node.run("awk -f #{dest} -v action=#{action} -v distro=$(lsb_release -sc) -v repo=#{repo} #{sources} > #{tmp} && mv #{tmp} #{sources}")
 end
 
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
@@ -1039,21 +1048,34 @@ When(/^I install package tftpboot-installation on the server$/) do
   end
 end
 
-When(/I copy the tftpboot installation files from the build host to the server$/) do
-  node = get_target('build_host')
-  file = 'copy-tftpboot-files.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
-  dest = "/tmp/#{file}"
-  success = file_inject(node, source, dest)
-  raise ScriptError, 'File injection failed' unless success
-
-  hostname = get_target('server').full_hostname
-  node.run("expect -f #{dest} #{hostname}")
+When(/I copy "([^"]*)" from "([^"]*)" to "([^"]*)" via scp in the path "([^"]*)"$/) do |file, origin, dest, dest_folder|
+  node_origin = get_target(origin)
+  node_dest = get_target(dest)
+  dest_hostname = node_dest.hostname
+  _command_output, return_code = node_origin.run("/usr/bin/scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r #{file} root@#{dest_hostname}:#{dest_folder}")
+  raise StandardError, "File could not be sent from #{origin} to #{dest}" unless return_code.zero?
 end
 
 When(/I copy the distribution inside the container on the server$/) do
   node = get_target('server')
   node.run('mgradm distro copy /tmp/tftpboot-installation/SLE-15-SP4-x86_64 SLE-15-SP4-TFTP', runs_in_container: false)
+end
+
+When(/I generate a supportconfig for the server$/) do
+  node = get_target('server')
+  node.run('mgradm support config', runs_in_container: false)
+  node.run('mv /root/scc_*.tar.gz /root/server-supportconfig.tar.gz', runs_in_container: false)
+end
+
+When(/I obtain and extract the supportconfig from the server$/) do
+  supportconfig_path = '/root/server-supportconfig.tar.gz'
+  test_runner_file = '/root/server-supportconfig.tar.gz'
+  get_target('server').scp_download(supportconfig_path, test_runner_file)
+  `rm -rf /root/server-supportconfig`
+  `mkdir /root/server-supportconfig && tar xzvf /root/server-supportconfig.tar.gz -C /root/server-supportconfig`
+  `mv /root/server-supportconfig/scc_* /root/server-supportconfig/test-server`
+  `tar xJvf /root/server-supportconfig/test-server/*supportconfig.txz -C /root/server-supportconfig`
+  `mv /root/server-supportconfig/scc_suse_*/ /root/server-supportconfig/uyuni-server-supportconfig/`
 end
 
 When(/I remove the autoinstallation files from the server$/) do
@@ -1368,13 +1390,13 @@ end
 
 # ReportDB
 
-Given(/^I can connect to the ReportDB on the Server$/) do
+Then(/^I should be able to connect to the ReportDB on the server$/) do
   # connect and quit database
   _result, return_code = get_target('server').run(reportdb_server_query('\\q'))
   raise SystemCallError, 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
 end
 
-Given(/^I have a user allowed to create roles on the ReportDB$/) do
+Then(/^there should be a user allowed to create roles on the ReportDB $/) do
   users_and_permissions, return_code = get_target('server').run(reportdb_server_query('\\du'))
   raise SystemCallError, 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
 
@@ -1419,11 +1441,9 @@ end
 
 When(/^I connect to the ReportDB with read-only user from external machine$/) do
   node = get_target('server')
-  output, _code = node.run_local('dig +short reportdb A')
-  reportdb_ip = output.strip
 
   # connection from the controller to the reportdb in the server
-  $reportdb_ro_conn = PG.connect(host: reportdb_ip, port: 5432, dbname: 'reportdb', user: $reportdb_ro_user, password: 'linux')
+  $reportdb_ro_conn = PG.connect(host: node.public_ip, port: 5432, dbname: 'reportdb', user: $reportdb_ro_user, password: 'linux')
 end
 
 Then(/^I should be able to query the ReportDB$/) do
@@ -1462,21 +1482,17 @@ end
 
 Then(/^I should be able to connect to the ReportDB with the ReportDB admin user$/) do
   node = get_target('server')
-  output, _code = node.run_local('dig +short reportdb A')
-  reportdb_ip = output.strip
 
   # connection from the controller to the reportdb in the server
-  reportdb_admin_conn = PG.connect(host: reportdb_ip, port: 5432, dbname: 'reportdb', user: $reportdb_admin_user, password: $reportdb_admin_password)
+  reportdb_admin_conn = PG.connect(host: node.public_ip, port: 5432, dbname: 'reportdb', user: $reportdb_admin_user, password: $reportdb_admin_password)
   raise SystemCallError, 'Couldn\'t connect to ReportDB with admin from external machine' unless reportdb_admin_conn.status.zero?
 end
 
 Then(/^I should not be able to connect to product database with the ReportDB admin user$/) do
   node = get_target('server')
-  output, _code = node.run_local('dig +short db A')
-  db_ip = output.strip
 
   dbname = 'susemanager'
-  reportdb_admin_conn = PG.connect(host: db_ip, port: 5432, dbname: dbname, user: $reportdb_admin_user, password: $reportdb_admin_password)
+  reportdb_admin_conn = PG.connect(host: node.public_ip, port: 5432, dbname: dbname, user: $reportdb_admin_user, password: $reportdb_admin_password)
   assert_raises PG::InsufficientPrivilege do
     reportdb_admin_conn.exec('select * from rhnserver;')
   end
@@ -1787,6 +1803,16 @@ When(/^I wait until I see "([^"]*)" in file "([^"]*)" on "([^"]*)"$/) do |text, 
   end
 end
 
+When(/^I start the health check tool with supportconfig "([^"]*)" on "([^"]*)"$/) do |supportconfig, host|
+  node = get_target(host)
+  node.run("mgr-health-check -v -s #{supportconfig} start", check_errors: true, verbose: true)
+end
+
+When(/^I stop health check tool on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run('mgr-health-check stop', check_errors: true, verbose: true)
+end
+
 Then(/^the word "([^']*)" does not occur more than (\d+) times in "(.*)" on "([^"]*)"$/) do |word, threshold, path, host|
   count, _ret = get_target(host).run("grep -o -i \'#{word}\' #{path} | wc -l")
   occurences = count.to_i
@@ -1803,4 +1829,19 @@ Then(/^I upgrade "([^"]*)" with the last "([^"]*)" version$/) do |host, package|
     break if last_event['id'] > last_event_before_upgrade['id'] && (last_event['summary'].include? 'Package Install/Upgrade')
   end
   wait_action_complete(last_event['id'])
+end
+
+Then(/^I check that the health check tool exposes metrics on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run("curl -s localhost:9000/metrics.json | python3 -c 'import sys, json; print(json.load(sys.stdin).keys())'", check_errors: true, verbose: true)
+end
+
+Then(/^I check that the health check tool (is|is not) running on "([^"]*)"$/) do |action, host|
+  node = get_target(host)
+  node.run("test $(podman ps | grep health-check | wc -l) == #{action == 'is' ? '4' : '0'}", check_errors: true, verbose: true)
+end
+
+Then(/^I remove test supportconfig on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run('rm /root/server-supportconfig -rf')
 end

@@ -13,7 +13,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     uyuni-coco-attestation-core \
     uyuni-coco-attestation-module-secureboot \
     ${ARCH_SPECIFIC_MODULES} \
-    javassist apache-commons-ognl
+    javassist apache-commons-ognl procps
 
 ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
@@ -28,7 +28,7 @@ LABEL org.opencontainers.image.description="${PRODUCT} Confidential Computing at
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.1.5
+LABEL org.opencontainers.image.version=5.1.6
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-attestation:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

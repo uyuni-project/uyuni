@@ -29,6 +29,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.ConnectionManager;
 import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
 import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.HubRegistrationChanged;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -313,7 +314,10 @@ public class HubController {
     private String listAllPeripheralOrgs(Request request, Response response, IssAccessToken token) {
         List<OrgInfoJson> allOrgsInfo = hubManager.collectAllOrgs(token)
                 .stream()
-                .map(org -> new OrgInfoJson(org.getId(), org.getName()))
+                .map(org -> new OrgInfoJson(
+                        org.getId(),
+                        org.getName(),
+                        org.getOwnedChannels().stream().map(Channel::getLabel).toList()))
                 .toList();
 
         return success(response, allOrgsInfo);

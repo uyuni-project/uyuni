@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.iss.IssMaster;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -884,11 +885,9 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
 
         Date anotherEndOfLifeDate = testUtils.createDateUtil(2042, 4, 2);
-        User anotherPeripheralUser = UserTestUtils.findNewUser(
-                "another_peripheral_user_", "another_peripheral_org_", true);
 
         ChannelInfoDetailsJson modifyInfo = ChannelFactory.toChannelInfo(
-                cloneProdCh, anotherPeripheralUser.getOrg().getId(), Optional.of("cloneDevelCh"));
+                cloneProdCh, cloneProdChInfo.getPeripheralOrgId(), Optional.of("cloneDevelCh"));
 
         modifyInfo.setBaseDir("baseDir_diff");
         modifyInfo.setName("name_diff");
@@ -903,7 +902,6 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
         modifyInfo.setChannelProductProduct("channelProductProduct_diff");
         modifyInfo.setChannelProductVersion("channelProductVersion_diff");
-        modifyInfo.setChannelAccess("acc_diff"); //max 10
         modifyInfo.setMaintainerName("maintainerName__diff");
         modifyInfo.setMaintainerEmail("maintainerEmail_diff");
         modifyInfo.setMaintainerPhone("maintainerPhone_diff");
@@ -924,7 +922,8 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void ensureNotThrowingWhenModifyingDataIsValid() throws Exception {
         ChannelInfoDetailsJson modifyInfo = testUtils.createValidCustomChInfo("customCh");
-        testUtils.createTestChannel(modifyInfo, user);
+        Org org = OrgFactory.lookupById(modifyInfo.getPeripheralOrgId());
+        testUtils.createTestChannel(modifyInfo, org);
 
         testUtils.checkSyncChannelsApiNotThrowing(DUMMY_SERVER_FQDN, List.of(modifyInfo));
     }
@@ -932,7 +931,8 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void ensureThrowsWhenModifyingMissingPeriperhalOrg() throws Exception {
         ChannelInfoDetailsJson modifyInfo = testUtils.createValidCustomChInfo("customCh");
-        testUtils.createTestChannel(modifyInfo, user);
+        Org org = OrgFactory.lookupById(modifyInfo.getPeripheralOrgId());
+        testUtils.createTestChannel(modifyInfo, org);
 
         modifyInfo.setPeripheralOrgId(75842L);
 
@@ -942,7 +942,8 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void ensureThrowsWhenModifyingMissingOriginalChannelInClonedChannels() throws Exception {
         ChannelInfoDetailsJson modifyInfo = testUtils.createValidCustomChInfo("customCh");
-        testUtils.createTestChannel(modifyInfo, user);
+        Org org = OrgFactory.lookupById(modifyInfo.getPeripheralOrgId());
+        testUtils.createTestChannel(modifyInfo, org);
 
         modifyInfo.setOriginalChannelLabel(modifyInfo.getLabel() + "MISSING");
 

@@ -13,7 +13,7 @@ HOSTNAME="server"
 echo "Generating the self-signed SSL CA..."
 mkdir -p /root/ssl-build
 mkdir -p /ssl
-rhn-ssl-tool --gen-ca --no-rpm --force --dir /root/ssl-build \
+rhn-ssl-tool --gen-ca --force --dir /root/ssl-build \
     --password $CERT_PASS \
     --set-country $CERT_COUNTRY --set-state $CERT_STATE --set-city $CERT_CITY \
     --set-org $CERT_O --set-org-unit $CERT_OU \
@@ -26,7 +26,7 @@ for CERT_CNAME in $CERT_CNAMES; do
     cert_args="$cert_args --set-cname $CERT_CNAME"
 done
 
-rhn-ssl-tool --gen-server --no-rpm --cert-expiration 3650 \
+rhn-ssl-tool --gen-server --cert-expiration 3650 \
     --dir /root/ssl-build --password $CERT_PASS \
     --set-country $CERT_COUNTRY --set-state $CERT_STATE --set-city $CERT_CITY \
     --set-org $CERT_O --set-org-unit $CERT_OU \
@@ -41,7 +41,7 @@ cp /root/ssl-build/${NAME}/server.crt /tmp/server-nginx.crt
 echo "${CERT_PASS}" | openssl rsa -in /ssl/server.key -out "/tmp/server-nginx.key" -passin pass:"${CERT_PASS}"
 
 echo "Generating DB certificate..."
-rhn-ssl-tool --gen-server --no-rpm --cert-expiration 3650 \
+rhn-ssl-tool --gen-server --cert-expiration 3650 \
     --dir /root/ssl-build --password $CERT_PASS \
     --set-country $CERT_COUNTRY --set-state $CERT_STATE --set-city $CERT_CITY \
     --set-org $CERT_O --set-org-unit $CERT_OU \

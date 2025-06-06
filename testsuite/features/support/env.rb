@@ -292,6 +292,14 @@ Before('@proxy') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['proxy']
 end
 
+Before('@run_if_proxy_transactional_or_slmicro61_minion') do
+  skip_this_scenario unless suse_proxy_transactional? || ENV.key?(ENV_VAR_BY_HOST['slmicro61_minion'])
+end
+
+Before('@run_if_proxy_not_transactional_or_sles15sp7_minion') do
+  skip_this_scenario unless suse_proxy_non_transactional? || ENV.key?(ENV_VAR_BY_HOST['sle15sp7_minion'])
+end
+
 Before('@sle_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle_minion']
 end

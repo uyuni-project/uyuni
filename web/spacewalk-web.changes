@@ -1,4 +1,26 @@
 -------------------------------------------------------------------
+Tue May 13 14:52:45 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.11-0
+  * Fix NPM dependency license aggregation bug
+
+-------------------------------------------------------------------
+Mon May 12 23:05:21 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.10-0
+  * Better handling of system list filtering (bsc#1242004)
+  * CVE-2025-23392: URL encode the user input in the page to avoid
+    string escape
+  * CVE-2025-23393: quote and filter the filter and sort columns
+    in the paged query builder
+  * Fix layout issues in product page (bsc#1240131)
+  * Ensure browser cache is busted when newer assets are available
+    (bsc#1240984)
+  * Update web UI dependencies
+  * Fix: refactored usage of js fetch with internal utility
+    (bsc#1240960)
+
+-------------------------------------------------------------------
 Fri Apr 11 17:06:09 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.9-0

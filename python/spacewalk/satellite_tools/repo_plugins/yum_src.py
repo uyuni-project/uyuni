@@ -229,6 +229,7 @@ class ZyppoSync:
                     # We delete this key from the RPM database to allow importing the newer version.
                     args = [
                         "rpm",
+                        "-q",
                         "--dbpath",
                         REPOSYNC_ZYPPER_RPMDB_PATH,
                         "-e",
