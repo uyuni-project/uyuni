@@ -21,7 +21,9 @@ SELECT
 FROM suseAppstream m
 JOIN suseAppstreamPackage p ON p.module_id = m.id
 JOIN rhnchannel c ON m.channel_id = c.id
-LEFT JOIN suseServerAppstream s
+JOIN rhnServerChannel sc ON c.id = sc.channel_id
+JOIN suseServerAppstream s
     ON  m.name = s.name
+    AND s.server_id = sc.server_id
     AND m.stream = s.stream
     AND m.arch = s.arch;
