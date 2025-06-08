@@ -28,4 +28,10 @@ CREATE TABLE suseServerAppstream(
 CREATE INDEX suse_srvappstream_name_stream_arch_idx
   ON suseServerAppStream (name, stream, arch);
 
+CREATE INDEX suse_srvappstream_nsa_sid_idx
+  ON suseServerAppstream (name, stream, arch, server_id);
+
+CREATE INDEX suse_srvappstream_nsca_sid_idx
+  ON suseServerAppstream (name, stream, arch, context, server_id);
+
 CREATE SEQUENCE suse_as_servermodule_seq;
