@@ -503,7 +503,7 @@ end
 
 When(/^I check the "([^"]*)" client$/) do |host|
   system_name = get_system_name(host)
-  toggle_checkbox_in_package_list('check', system_name)
+  toggle_checkbox_in_list('check', system_name)
 end
 
 Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
@@ -620,11 +620,11 @@ Then(/^I should see an update in the list$/) do
 end
 
 When(/^I check test channel$/) do
-  toggle_checkbox_in_package_list('check', 'Fake-Base-Channel-SUSE-like')
+  toggle_checkbox_in_list('check', 'Fake-Base-Channel-SUSE-like')
 end
 
 When(/^I check "([^"]*)" patch$/) do |arg1|
-  toggle_checkbox_in_package_list('check', arg1)
+  toggle_checkbox_in_list('check', arg1)
 end
 
 Then(/^I should see "([^"]*)" systems selected for SSM$/) do |arg|
@@ -842,15 +842,15 @@ Then(/^I should only see success signs in the product list$/) do
 end
 
 Then(/^I select the "([^"]*)" repo$/) do |repo|
-  toggle_checkbox_in_package_list('check', repo)
+  toggle_checkbox_in_list('check', repo)
 end
 
 Then(/^I check the row with the "([^"]*)" link$/) do |text|
-  toggle_checkbox_in_package_list('check', text)
+  toggle_checkbox_in_list('check', text)
 end
 
 Then(/^I check the row with the "([^"]*)" text$/) do |text|
-  toggle_checkbox_in_package_list('check', text)
+  toggle_checkbox_in_list('check', text)
 end
 
 When(/^I check the first patch in the list, that does not require a reboot$/) do
