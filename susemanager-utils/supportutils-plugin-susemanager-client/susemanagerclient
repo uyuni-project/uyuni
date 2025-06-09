@@ -1,36 +1,36 @@
 #!/bin/bash
 #############################################################
-# Name:        Supportconfig Plugin for SUSE Manager Client
+# Name:        Supportconfig Plugin for SUSE Multi-Linux Manager Client
 # Description: Gathers important troubleshooting information
-#              about a SUSE Manager Client
+#              about a SUSE Multi-Linux Manager Client
 # License:     GPLv2
 # Author:      Michael Calmer <mc@suse.de>
-# Modified:    2025 May 06
+# Modified:    2025 June 06
 #############################################################
 
-SVER=5.0.0
+SVER=5.1.0
 RCFILE="/usr/lib/supportconfig/resources/supportconfig.rc"
 OF='plugin-susemanager-client.txt'
 
 [ -s $RCFILE ] && . $RCFILE || { echo "ERROR: Initializing resource file: $RCFILE"; exit 1; }
 
 log_write $OF
-log_entry $OF note "Supportconfig Plugin for SUSE Manager Client, v${SVER}"
+log_entry $OF note "Supportconfig Plugin for SUSE Multi-Linux Manager Client, v${SVER}"
 addHeaderFile $OF
 
 
 #############################################################
 RPMLIST="
-spacewalk-client-tools
+osad
+podman
+rhnlib
+salt
+salt-minion
 spacewalk-check
 spacewalk-client-setup
-rhnlib
-osad
-zypp-plugin-spacewalk
-salt-minion
-salt
-podman
+spacewalk-client-tools
 uyuni-proxy-systemd-services
+zypp-plugin-spacewalk
 "
 
 for THISRPM in $RPMLIST; do
@@ -41,7 +41,7 @@ log_cmd $OF "/bin/ls -l --time-style=long-iso /usr/local/lib"
 log_cmd $OF "/bin/ls -l --time-style=long-iso /usr/local/lib64"
 log_cmd $OF "/bin/ls -l --time-style=long-iso /etc/ssl/certs/"
 
-log_entry $OF note "SUSE Manager Client Config Files"
+log_entry $OF note "SUSE Multi-Linux Manager Client Config Files"
 
 conf_files $OF \
     /etc/sysconfig/rhn/up2date \
@@ -58,7 +58,7 @@ conf_files $OF \
     /etc/sysconfig/uyuni-proxy-systemd-services
 
 
-log_entry $OF note "SUSE Manager Client Log Files"
+log_entry $OF note "SUSE Multi-Linux Manager Client Log Files"
 
 log_files $OF 1000 /var/log/salt/minion
 
