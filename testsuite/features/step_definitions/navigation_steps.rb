@@ -900,9 +900,7 @@ When(/^I enter the hostname of "([^"]*)" as the filtered system name$/) do |host
 end
 
 When(/^I enter "([^"]*)" as the filtered package name$/) do |input|
-  raise ArgumentError, 'Package name is not set' if input.empty?
-
-  find('input[placeholder=\'Filter by Package Name: \']').set(input)
+  filter_by_package_name(input)
 end
 
 When(/^I enter "([^"]*)" as the filtered latest package$/) do |input|
@@ -936,11 +934,11 @@ When(/^I enter "([^"]*)" as the filtered formula name$/) do |input|
 end
 
 When(/^I enter the package for "([^"]*)" as the filtered package name$/) do |host|
-  step %(I enter "#{PACKAGE_BY_CLIENT[host]}" as the filtered package name)
+  filter_by_package_name(PACKAGE_BY_CLIENT[host])
 end
 
-When(/^I check the package for "([^"]*)" in the list$/) do |host|
-  step %(I check "#{PACKAGE_BY_CLIENT[host]}" in the list)
+When(/^I check the package(| last version) for "([^"]*)" in the list$/) do |version_flag,host|
+  toggle_checkbox_in_package_list('check',PACKAGE_BY_CLIENT[host], !version_flag.empty?)
 end
 
 When(/^I check row with "([^"]*)" and arch of "([^"]*)"$/) do |text, client|
@@ -983,12 +981,8 @@ When(/^I check the first row in the list$/) do
   end
 end
 
-When(/^I (check|uncheck) "([^"]*)" in the list$/) do |check_option, text|
-  top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]//input[@type='checkbox']"
-  row = find(:xpath, top_level_xpath_query, match: :first)
-  raise "xpath: #{top_level_xpath_query} not found" if row.nil?
-
-  row.set(check_option == 'check')
+When(/^I (check|uncheck) "([^"]*)"(| last version) in the list$/) do |check_option, text, version_flag|
+  toggle_checkbox_in_package_list(check_option,text, !version_flag.empty?)
 end
 
 When(/^I (check|uncheck) the "([^"]*)" CLM filter$/) do |check_option, text|

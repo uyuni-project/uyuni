@@ -20,6 +20,7 @@ require_relative 'code_coverage'
 require_relative 'quality_intelligence'
 require_relative 'remote_nodes_env'
 require_relative 'commonlib'
+require_relative 'navigation_step_helper'
 
 $stdout.puts("Using Ruby version: #{RUBY_VERSION}")
 

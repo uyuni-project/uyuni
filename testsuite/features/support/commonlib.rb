@@ -1,10 +1,11 @@
-# Copyright (c) 2013-2024 SUSE LLC.
+# Copyright (c) 2013-2025 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
 require 'yaml'
 require 'nokogiri'
 require 'timeout'
+require 'rubygems'
 require_relative 'constants'
 require_relative 'api_test'
 
@@ -817,4 +818,19 @@ end
 # @param package String The package name where it will trigger an upgrade
 def trigger_upgrade(hostname, package)
   get_target('server').run("spacecmd -u admin -p admin system_upgradepackage #{hostname} #{package} -y", check_errors: true)
+end
+
+# Function to select the latest package from a list based on version and release
+#
+# @param packages [Array<String>] A list of package strings in the format 'name-version-release'
+# @return [String] The package string with the highest version and release
+def latest_package(packages)
+  packages.max_by do |package|
+    if package =~ /^(.+)-(\d+\.\d+\.\d+)-(.+)$/
+      _name, version, release = $1, $2, $3
+      [Gem::Version.new(version), Gem::Version.new(release.gsub(/[^\d.]/, '.'))]
+    else
+      [Gem::Version.new('0.0.0'), Gem::Version.new('0')]
+    end
+  end
 end
