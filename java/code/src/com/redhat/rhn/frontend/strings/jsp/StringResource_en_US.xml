@@ -18409,7 +18409,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         </trans-unit>
         <trans-unit id="ssm.operations.provisioning.remotecommand.form.queue.succeed">
-          <source>Task "{0}" has been successfully added to Action Chain {1}.</source>
+          <source>Task "{0}" has been successfully added to Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
