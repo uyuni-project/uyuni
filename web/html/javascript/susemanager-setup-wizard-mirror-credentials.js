@@ -26,6 +26,8 @@ function initDelete(id, user) {
 function initSubscriptions(id) {
   console.log("initSubscriptions(): " + id);
   subscriptionsId = id;
+  showSpinner("modal-list-subscriptions-body");
+  ajax("list-mirror-subscriptions", { subscriptionsId }, makeRendererHandler("modal-list-subscriptions-body", false).callback)
 }
 
 // Hide any modal dialogs
@@ -120,11 +122,5 @@ jQuery(document).ready(function() {
   // Clear input fields whenever the edit modal is hidden
   jQuery('#modal-edit-credentials').on('hidden.bs.modal', function() {
     initEdit("", "");
-  });
-
-  // Load subscriptions when modal is shown
-  jQuery('#modal-list-subscriptions').on('show.bs.modal', function() {
-    showSpinner("modal-list-subscriptions-body");
-    ajax("list-mirror-subscriptions", { subscriptionsId }, makeRendererHandler("modal-list-subscriptions-body", false).callback)
   });
 });
