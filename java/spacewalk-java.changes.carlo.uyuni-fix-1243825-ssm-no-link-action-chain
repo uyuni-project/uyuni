@@ -1,0 +1,2 @@
+- Fix action chain scheduled within SSM creates no link
+  for the new action chain (bsc#1243825)
