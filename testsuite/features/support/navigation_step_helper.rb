@@ -6,7 +6,7 @@
 # @param action [String] Either 'check' or 'uncheck'
 # @param text [String] The text to match in the row
 # @param last_version [Boolean] Whether to select the row with the latest version
-def toggle_checkbox_in_package_list(action, text, last_version = false)
+def toggle_checkbox_in_package_list(action, text, last_version: false)
   if last_version
     link_elements = all(:xpath, "//div[@class='table-responsive']/table/tbody/tr/td[@class=' sortedCol']/a")
     packages_list = link_elements.map(&:text)

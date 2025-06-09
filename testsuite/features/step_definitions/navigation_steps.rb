@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2024 SUSE LLC.
+# Copyright (c) 2010-2025 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning navigation through the Web UI
@@ -937,8 +937,8 @@ When(/^I enter the package for "([^"]*)" as the filtered package name$/) do |hos
   filter_by_package_name(PACKAGE_BY_CLIENT[host])
 end
 
-When(/^I check the package(| last version) for "([^"]*)" in the list$/) do |version_flag,host|
-  toggle_checkbox_in_package_list('check',PACKAGE_BY_CLIENT[host], !version_flag.empty?)
+When(/^I check the package(| last version) for "([^"]*)" in the list$/) do |version_flag, host|
+  toggle_checkbox_in_package_list('check', PACKAGE_BY_CLIENT[host], !version_flag.empty?)
 end
 
 When(/^I check row with "([^"]*)" and arch of "([^"]*)"$/) do |text, client|
@@ -982,7 +982,7 @@ When(/^I check the first row in the list$/) do
 end
 
 When(/^I (check|uncheck) "([^"]*)"(| last version) in the list$/) do |check_option, text, version_flag|
-  toggle_checkbox_in_package_list(check_option,text, !version_flag.empty?)
+  toggle_checkbox_in_package_list(check_option, text, !version_flag.empty?)
 end
 
 When(/^I (check|uncheck) the "([^"]*)" CLM filter$/) do |check_option, text|

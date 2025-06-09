@@ -827,7 +827,8 @@ end
 def latest_package(packages)
   packages.max_by do |package|
     if package =~ /^(.+)-(\d+\.\d+\.\d+)-(.+)$/
-      _name, version, release = $1, $2, $3
+      version = Regexp.last_match(2)
+      release = Regexp.last_match(3)
       [Gem::Version.new(version), Gem::Version.new(release.gsub(/[^\d.]/, '.'))]
     else
       [Gem::Version.new('0.0.0'), Gem::Version.new('0')]
