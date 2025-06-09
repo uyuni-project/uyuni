@@ -56,13 +56,29 @@ mgr_copy_salt_minion_keys:
     - unless:
       - test -f /etc/venv-salt-minion/pki/minion/minion_master.pub
 
+{%- if grains['transactional']==True %}
+mgr_enable_venv_salt_minion:
+    cmd.run:
+    - name: systemctl enable venv-salt-minion
+    - require:
+      - cmd: mgr_copy_salt_minion_keys
+{%- else %}
 mgr_enable_venv_salt_minion:
   service.running:
     - name: venv-salt-minion
     - enable: True
     - require:
       - cmd: mgr_copy_salt_minion_keys
+{%- endif %}
 
+{%- if grains['transactional']==True %}
+mgr_disable_salt_minion:
+    cmd.run:
+    - name: systemctl disable salt-minion
+    - require:
+      - service: mgr_enable_venv_salt_minion
+      - sls: services.salt-minion
+{%- else %}
 mgr_disable_salt_minion:
   service.dead:
     - name: salt-minion
@@ -70,6 +86,7 @@ mgr_disable_salt_minion:
     - require:
       - service: mgr_enable_venv_salt_minion
       - sls: services.salt-minion
+{%- endif %}
 
 {%- if salt['pillar.get']('mgr_purge_non_venv_salt') %}
 mgr_purge_non_venv_salt_packages:
