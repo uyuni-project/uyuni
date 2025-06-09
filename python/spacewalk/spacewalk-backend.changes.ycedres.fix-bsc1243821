@@ -1,0 +1,1 @@
+- Fix zstd-compressed comps file reposync use case (bsc#1243821)
