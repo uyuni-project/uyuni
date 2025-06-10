@@ -107,7 +107,10 @@ REACTIVATION_KEY=${{REACTIVATION_KEY:-}}
 
 # can be edited, but probably correct:
 CLIENT_OVERRIDES={overrides}
-HOSTNAME={hostname}
+
+#If the environment variable MGR_SERVER_HOSTNAME is set, its value will be used.
+#Otherwise, or they will default to the templated value.
+HOSTNAME=${{MGR_SERVER_HOSTNAME:-{hostname}}}
 
 ORG_CA_CERT={orgCACert}
 
