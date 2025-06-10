@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2024 SUSE LLC.
+# Copyright (c) 2020-2025 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 @<client>
@@ -83,7 +83,7 @@ Feature: Smoke tests for <client>
     And I wait until I see "Installable Packages" text
     And I enter the package for "<client>" as the filtered package name
     And I click on the filter button
-    And I check the package for "<client>" in the list
+    And I check the package last version for "<client>" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
@@ -193,7 +193,7 @@ Feature: Smoke tests for <client>
     And I wait until I see "Installable Packages" text
     And I enter "spacecmd" as the filtered package name
     And I click on the filter button
-    And I check "spacecmd" in the list
+    And I check "spacecmd" last version in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
