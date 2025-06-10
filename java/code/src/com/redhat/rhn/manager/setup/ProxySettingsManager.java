@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 SUSE LLC
+ * Copyright (c) 2014--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,9 +15,10 @@
 package com.redhat.rhn.manager.setup;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.satellite.ConfigureSatelliteCommand;
+import com.redhat.rhn.manager.satellite.ProxySettingsConfigureSatelliteCommand;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,13 +26,6 @@ import javax.servlet.http.HttpServletRequest;
  * Domain logic for the Setup Wizard proxy settings page.
  */
 public final class ProxySettingsManager {
-
-    /** Configuration key for proxy hostname */
-    public static final String KEY_PROXY_HOSTNAME = "server.satellite.http_proxy";
-    /** Configuration key for proxy username */
-    public static final String KEY_PROXY_USERNAME = "server.satellite.http_proxy_username";
-    /** Configuration key for proxy password */
-    public static final String KEY_PROXY_PASSWORD = "server.satellite.http_proxy_password";
 
     private ProxySettingsManager() { }
 
@@ -41,8 +35,8 @@ public final class ProxySettingsManager {
      */
     public static ProxySettingsDto getProxySettings() {
         ProxySettingsDto settings = new ProxySettingsDto();
-        settings.setHostname(Config.get().getString(KEY_PROXY_HOSTNAME));
-        settings.setUsername(Config.get().getString(KEY_PROXY_USERNAME));
+        settings.setHostname(Config.get().getString(ConfigDefaults.HTTP_PROXY));
+        settings.setUsername(Config.get().getString(ConfigDefaults.HTTP_PROXY_USERNAME));
         return settings;
     }
 
@@ -55,10 +49,10 @@ public final class ProxySettingsManager {
      */
     public static ValidatorError[] storeProxySettings(ProxySettingsDto settings,
             User userIn, HttpServletRequest request) {
-        ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
-        configCommand.updateString(KEY_PROXY_HOSTNAME, settings.getHostname());
-        configCommand.updateString(KEY_PROXY_USERNAME, settings.getUsername());
-        configCommand.updateString(KEY_PROXY_PASSWORD, settings.getPassword());
+        ProxySettingsConfigureSatelliteCommand configCommand = new ProxySettingsConfigureSatelliteCommand(userIn);
+        configCommand.updateString(ConfigDefaults.HTTP_PROXY, settings.getHostname());
+        configCommand.updateString(ConfigDefaults.HTTP_PROXY_USERNAME, settings.getUsername());
+        configCommand.updateString(ConfigDefaults.HTTP_PROXY_PASSWORD, settings.getPassword());
         ValidatorError[] ret = configCommand.storeConfiguration();
         if (ret == null) {
             // Settings have changed, remove the cached subscriptions as proxy settings

@@ -1,0 +1,2 @@
+- Allow passing env variables to rhn-config-satellite
+  (bsc#1242148)

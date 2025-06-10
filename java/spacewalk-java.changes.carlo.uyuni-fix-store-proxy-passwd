@@ -1,0 +1,2 @@
+- Fix http_proxy_password stored as clear text in
+  /var/log/messages (bsc#1242148)
