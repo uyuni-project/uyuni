@@ -1238,10 +1238,10 @@ When(/^I enter "([^"]*)" hostname on the search field$/) do |host|
 end
 
 When(/^I enter "([^"]*)" hostname on grafana's host field$/) do |host|
-  step 'I click on "var-hostname"'
+  grafana_url = current_url
   system_name = get_system_name(host)
-  step %(I enter "#{system_name}" as "Enter variable value")
-  send_keys(:return)
+  updated_url = grafana_url.sub(/var-hostname=[^&]*/, "var-hostname=#{system_name}")
+  visit updated_url
 end
 
 Then(/^I should see "([^"]*)" hostname as first search result$/) do |host|
