@@ -26,8 +26,8 @@ except ImportError:
     #  python3
     import xmlrpc.client as xmlrpclib
 import sys
-# pylint: disable=E0611
-from hashlib import sha1
+
+from hashlib import sha256
 
 #sys.path.append('/usr/share/rhn')
 from rhn import rpclib
@@ -430,7 +430,7 @@ problems, isn't running, or the token is somehow corrupt.
         return serverObj
 
     def __cache_proxy_key(self):
-        return 'p' + str(self.__serverid) + sha1(self.hostname.encode()).hexdigest()
+        return 'p' + str(self.__serverid) + sha256(self.hostname.encode()).hexdigest()
 
     def getProxyServerId(self):
         return self.__serverid

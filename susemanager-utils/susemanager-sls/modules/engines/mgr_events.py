@@ -145,7 +145,7 @@ class Responder:
         ):
             queue = 0
             if "id" in data:
-                hash_sum = hashlib.md5(
+                hash_sum = hashlib.sha256(
                     data.get("id").encode(self.connection.encoding)
                 ).hexdigest()[0:8]
                 queue = (
