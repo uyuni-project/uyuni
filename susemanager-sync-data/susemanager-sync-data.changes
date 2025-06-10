@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 10 11:28:33 CEST 2025 - rosuna@suse.com
+
+- version 5.0.12-0
+  * Add SUSE Manager LTS Channel Families (jsc#MSC-956)
+
+-------------------------------------------------------------------
 Thu Mar 27 16:57:54 CET 2025 - rosuna@suse.com
 
 - version 5.0.11-0
