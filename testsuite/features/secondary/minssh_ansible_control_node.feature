@@ -13,26 +13,17 @@ Feature: Operate an Ansible control node in SSH minion
   Scenario: Pre-requisite: Deploy test playbooks and inventory file
     When I deploy testing playbooks and inventory files to "ssh_minion"
 
+@skip_if_github_validation
 @susemanager
   Scenario: Pre-requisite: Enable client tools repositories
     When I enable the repositories "tools_update_repo tools_pool_repo" on this "ssh_minion"
     And I refresh the metadata for "ssh_minion"
 
-@susemanager
-  Scenario: Pre-requisite: Add Python 3 Module 15 SP4 x86_64 and synchronize it
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 15 SP4 x86_64" as "product-description-filter"
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" text
-    Then I should see the "SUSE Linux Enterprise Server 15 SP4 x86_64" selected
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP4 x86_64"
-    And I open the sub-list of the product "Basesystem Module 15 SP4 x86_64"
-    And I select "Python 3 Module 15 SP4 x86_64" as a product
-    Then I should see the "Python 3 Module 15 SP4 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "Python 3 Module 15 SP4 x86_64" product has been added
-    And I wait until the channel "sle-module-python3-15-sp4-pool-x86_64" has been synced
+@skip_if_github_validation
+@uyuni
+  Scenario: Pre-requisite: Enable client tools repositories
+    When I enable the repositories "tools_pool_repo os_pool_repo" on this "sle_minion"
+    And I refresh the metadata for "sle_minion"
 
 @susemanager
   Scenario: Pre-requisite: Subscribe SUSE minions to SLE-Module-Python3-15-SP4-Pool for x86_64
@@ -121,7 +112,7 @@ Feature: Operate an Ansible control node in SSH minion
     And I remove package "orion-dummy" from this "ssh_minion" without error control
     And I remove "/tmp/file.txt" from "ssh_minion"
 
-  @susemanager
+@susemanager
   Scenario: Cleanup: Unsubscribe SUSE minions from SLE-Module-Python3-15-SP4-Pool for x86_64
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
@@ -135,12 +126,13 @@ Feature: Operate an Ansible control node in SSH minion
     And I wait until I see "1 system successfully completed this action" text, refreshing the page
 
 @skip_if_github_validation
-@uyuni
+@susemanager
   Scenario: Cleanup: Disable OS pool repository
     Given I am on the Systems overview page of this "ssh_minion"
     When I disable the repositories "tools_update_repo tools_pool_repo" on this "ssh_minion"
     And I refresh the metadata for "ssh_minion"
 
+@skip_if_github_validation
 @uyuni
   Scenario: Cleanup: Disable client tools repositories
     Given I am on the Systems overview page of this "ssh_minion"
