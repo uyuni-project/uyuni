@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -132,7 +131,7 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
     @Test
     public void testCompatibleActivationKeysAndReactivation() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server testServer = ServerFactoryTest.createTestServer(user);
+        ServerFactoryTest.createTestServer(user);
         ActivationKey key = ActivationKeyManager.getInstance().createNewActivationKey(user, "");
         ActivationKey reactkey = ActivationKeyTest.createTestActivationKey(user);
 

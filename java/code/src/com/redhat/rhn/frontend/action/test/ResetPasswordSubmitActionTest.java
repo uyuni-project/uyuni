@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.db.ResetPasswordFactory;
 import com.redhat.rhn.domain.common.ResetPassword;
-import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.user.ResetPasswordSubmitAction;
@@ -129,7 +128,7 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
         mockSession.setupGetAttribute("request_method", "GET");
         request.setSession(mockSession);
         request.setupServerName("mymachine.rhndev.redhat.com");
-        WebSession s = requestContext.getWebSession();
+        requestContext.getWebSession();
 
         mapping.addForwardConfig(mismatch);
         mapping.addForwardConfig(invalid);
