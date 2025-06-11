@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.appstreams.AppStreamsManager;
+import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.manager.ssm.SsmChannelDto;
@@ -1877,8 +1878,9 @@ public class ChannelFactory extends HibernateFactory {
                         modifyChannelInfo.getPeripheralOrgId() +
                         "] for channel [" + modifyChannelInfo.getLabel() + "]");
             }
+            String channelOrgName = (null == channel.getOrg()) ? "vendor" : channel.getOrg().getName();
             if (!org.equals(channel.getOrg())) {
-                throw new IllegalArgumentException("Unable to modify org from [" + channel.getOrg().getName() +
+                throw new IllegalArgumentException("Unable to modify org from [" + channelOrgName +
                         "] to [" + org.getName() +
                         "] for channel [" + modifyChannelInfo.getLabel() + "]");
             }
@@ -1894,12 +1896,7 @@ public class ChannelFactory extends HibernateFactory {
                         "] for channel [" + modifyChannelInfo.getLabel() + "]");
             }
 
-            if (channel.asCloned().isEmpty()) {
-                throw new IllegalArgumentException("Cannot set original channel " +
-                        "for not cloned channel [" + modifyChannelInfo.getLabel() + "]");
-            }
-
-            channel.asCloned().get().setOriginal(originalChannel);
+            ChannelManager.forceBecomingCloneOf(channel, originalChannel);
         }
 
         setValueIfNotNull(channel, modifyChannelInfo.getBaseDir(), Channel::setBaseDir);

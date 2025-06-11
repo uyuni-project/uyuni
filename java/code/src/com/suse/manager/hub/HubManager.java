@@ -1249,7 +1249,8 @@ public class HubManager {
                         (peripheralChannel != null &&
                                 Objects.equals(peripheralChannel.getPeripheralOrgId(), po.getOrgId())) ||
                         // or channel exists on the peripheral side
-                        po.getOrgChannelLabels().contains(channel.getLabel()))
+                                ((null != po.getOrgChannelLabels()) &&
+                                        (po.getOrgChannelLabels().contains(channel.getLabel()))))
                     .map(po -> new ChannelOrg(po.getOrgId(), po.getOrgName()))
                     .findFirst()
                     .orElse(null);
