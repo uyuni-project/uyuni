@@ -996,7 +996,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
         </context-group>
-        <target state="needs-adaptation">Pàgina no trobada</target>
+        <target state="translated">404: pàgina no trobada</target>
       </trans-unit>
       <trans-unit id="404.jsp.summary" xml:space="preserve">
         <source>The page you requested, {0}, was not found.</source>
@@ -29875,27 +29875,27 @@ lt;/pgt;
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
         <target state="translated">Amb això seleccionat, es mostren els pedaços que ja formen part del canal. Això és útil quan un pedaç forma part de diversos canals, s'ha inclòs des d'un i cal associar-ne els paquets a un altre.</target>
       </trans-unit>
-    <trans-unit id="403.jsp.title" xml:space="preserve">
+      <trans-unit id="403.jsp.title" xml:space="preserve">
         <source>403: Access Denied</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">403: accés denegat</target>
+      </trans-unit>
       <trans-unit id="403.jsp.summary" xml:space="preserve">
         <source>You do not have permission to access the page: {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No teniu permís per accedir a la pàgina: {0}.</target>
+      </trans-unit>
       <trans-unit id="403.jsp.instruction" xml:space="preserve">
         <source>You are signed in, but your account does not have permission to access this resource. If you believe you should have access, contact your organization administrator to review your access permissions.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Heu iniciat la sessió, però el compte no té permís per accedir a aquest recurs. Si creieu que hauríeu de tenir-hi accés, contacteu amb l'administrador de la vostra organització per revisar els permisos d'accés.</target>
+      </trans-unit>
       <trans-unit id="403.jsp.actions" xml:space="preserve">
         <source>
           You can also &lt;a href="{0}"&gt;log out&lt;/a&gt; or &lt;a href="javascript:history.back()"&gt;go back&lt;/a&gt; to the previous page.
@@ -29903,8 +29903,10 @@ lt;/pgt;
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">
+          També podeu &lt;a href="{0}"&gt;tancar la sessió&lt;/a&gt; o &lt;a href="javascript:history.back()"&gt;tornar&lt;/a&gt; a la pàgina anterior.
+        </target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
