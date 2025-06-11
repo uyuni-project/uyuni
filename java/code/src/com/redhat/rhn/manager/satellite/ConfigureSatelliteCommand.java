@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,7 +20,6 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * ConfigureSatelliteCommand
@@ -39,7 +40,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
      */
     private static Logger logger = LogManager.getLogger(ConfigureSatelliteCommand.class);
 
-    private final List<String> keysToBeUpdated;
+    protected final List<String> keysToBeUpdated;
 
     /**
      * Create a new ConfigureSatelliteCommand class with the
@@ -61,8 +62,13 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
      * @return String[] array of arguments.
      */
     public String[] getCommandArguments(String configFilePath,
-            Map<String, String> optionMap, List<String> removals) {
-        boolean anythingChanged = false;
+                                        Map<String, String> optionMap, List<String> removals) {
+        return getCommandArguments(false, configFilePath, optionMap, removals);
+    }
+
+    protected String[] getCommandArguments(boolean hasEnvironmentVariables, String configFilePath,
+                                           Map<String, String> optionMap, List<String> removals) {
+        boolean somethingChanged = false;
 
         if (logger.isDebugEnabled()) {
             logger.debug("getCommandArguments(String configFilePath={}, Iterator keyIterator={}) - start",
@@ -71,30 +77,21 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
 
         List<String> argList = new LinkedList<>();
         argList.add("/usr/bin/sudo");
+        if (hasEnvironmentVariables) {
+            argList.add("-E");
+        }
         argList.add("/usr/bin/rhn-config-satellite.pl");
         argList.add("--target=" + configFilePath);
-        for (String key : optionMap.keySet()) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("--option=");
-            sb.append(key);
-            sb.append("=");
-            String val = optionMap.get(key);
-            // We don't want to put the actual string 'null'
-            // in rhn.conf.  See bz: 189600
-            if (StringUtils.isEmpty(val)) {
-                sb.append("");
-            }
-            else {
-                sb.append(val);
-            }
-
-            argList.add(sb.toString());
-            anythingChanged = true;
+        for (Map.Entry<String, String> entry : optionMap.entrySet()) {
+            // We don't want to put the actual string 'null' in rhn.conf.  See bz: 189600
+            argList.add("--option=%s=%s".formatted(entry.getKey(),
+                    Optional.ofNullable(entry.getValue()).orElse("")));
+            somethingChanged = true;
         }
 
         for (String key : removals) {
             argList.add("--remove=" + key);
-            anythingChanged = true;
+            somethingChanged = true;
         }
 
         argList.add("2>&1");
@@ -102,9 +99,9 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
         argList.add("/dev/null");
         String[] returnStringArray = argList.toArray(new String[0]);
         if (logger.isDebugEnabled()) {
-            logger.debug("getCommandArguments(String, Iterator) - end - return value={}", (Object)returnStringArray);
+            logger.debug("getCommandArguments(String, Iterator) - end - return value={}", (Object) returnStringArray);
         }
-        return (anythingChanged ? returnStringArray : null);
+        return (somethingChanged ? returnStringArray : null);
     }
 
     /**
@@ -138,7 +135,6 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
             logger.debug("storeConfiguration() - start");
         }
 
-        Executor e = getExecutor();
         if (keysToBeUpdated.isEmpty()) {
             return null;
         }
@@ -159,8 +155,24 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
             }
         }
 
+        ValidatorError[] retVal = executeStore();
+        if (retVal != null) {
+            return retVal;
+        }
+
+        this.keysToBeUpdated.clear();
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("storeConfiguration() - end - return value=null");
+        }
+        return null;
+
+    }
+
+    protected ValidatorError[] executeStore() {
         String[] commandArguments = getCommandArguments();
         if (commandArguments != null) {
+            Executor e = getExecutor();
             int exitcode = e.execute(commandArguments);
             if (exitcode != 0) {
                 ValidatorError[] retval = new ValidatorError[1];
@@ -173,13 +185,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
                 return retval;
             }
         }
-        this.keysToBeUpdated.clear();
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("storeConfiguration() - end - return value=null");
-        }
         return null;
-
     }
 
     /**
@@ -218,8 +224,14 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
      * @param newValue to set
      */
     public void updateString(String configKey, String newValue) {
+        String newValueToLog = newValue;
+        if (configKey.equals(ConfigDefaults.HTTP_PROXY_PASSWORD)) {
+            newValueToLog = "*****";
+        }
+
         if (logger.isDebugEnabled()) {
-            logger.debug("updateString(String configKey={}, String newValue={}) - start", configKey, newValue);
+            logger.debug("updateString(String configKey={}, String newValue={}) - start",
+                    configKey, newValueToLog);
         }
 
         if (Config.get().getString(configKey) == null ||

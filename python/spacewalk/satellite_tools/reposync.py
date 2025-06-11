@@ -1045,7 +1045,7 @@ class RepoSync(object):
         absdir = os.path.join(mount_point, relativedir)
         if not os.path.exists(absdir):
             os.makedirs(absdir)
-        compressed_suffixes = [".gz", ".bz", ".xz", ".bz2"]
+        compressed_suffixes = [".gz", ".bz", ".xz", ".bz2", ".zst"]
         if comps_type == "comps" and not re.match(
             "comps.xml(" + "|".join(compressed_suffixes) + ")?$", basename
         ):
