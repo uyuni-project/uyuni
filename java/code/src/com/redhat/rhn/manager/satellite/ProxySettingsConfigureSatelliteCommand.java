@@ -65,8 +65,8 @@ public class ProxySettingsConfigureSatelliteCommand extends ConfigureSatelliteCo
             optionMap.put(ConfigDefaults.HTTP_PROXY_PASSWORD, PWD_PLACEHOLDER);
 
             environmentVars = new String[1];
-            environmentVars[0] = "%s=%s".formatted(passwordEnvVariable, passwordValue);
-            environmentVars = new String[]{"%s=%s".formatted(passwordEnvVariable, passwordValue)};
+            environmentVars[0] = String.format("%s=%s", passwordEnvVariable, passwordValue);
+            environmentVars = new String[]{String.format("%s=%s", passwordEnvVariable, passwordValue)};
 
             return getCommandArguments(true, configFilePath, optionMap, removals);
         }

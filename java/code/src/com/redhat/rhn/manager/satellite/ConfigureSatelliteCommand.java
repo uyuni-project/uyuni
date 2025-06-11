@@ -84,7 +84,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
         argList.add("--target=" + configFilePath);
         for (Map.Entry<String, String> entry : optionMap.entrySet()) {
             // We don't want to put the actual string 'null' in rhn.conf.  See bz: 189600
-            argList.add("--option=%s=%s".formatted(entry.getKey(),
+            argList.add(String.format("--option=%s=%s", entry.getKey(),
                     Optional.ofNullable(entry.getValue()).orElse("")));
             somethingChanged = true;
         }
