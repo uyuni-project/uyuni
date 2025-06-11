@@ -1270,3 +1270,66 @@ When(/^I visit the grafana dashboards of this "([^"]*)"$/) do |host|
   node = get_target(host)
   visit("http://#{node.public_ip}:3000/dashboards")
 end
+
+###################################
+## Password Policy navigation steps
+###################################
+
+And(/^I set the minimum password length to "([^"]*)"$/) do |min_length|
+  fill_in 'minLength', with: min_length
+end
+
+And(/^I set the maximum password length to "([^"]*)"$/) do |max_length|
+  fill_in 'maxLength', with: max_length
+end
+
+And(/^I set the special characters list to "([^"]*)"$/) do |characters_list|
+  fill_in 'specialChars', with: characters_list
+end
+
+And(/^I set the maximum allowed occurrence of any character to "([^"]*)"$/) do |max_occurence|
+  fill_in 'maxCharacterOccurrence', with: max_occurence
+end
+
+And(/^I (enable|disable) the following restrictions:$/) do |action, table|
+  restriction_map = {
+    'Require Digits' => 'digitFlag',
+    'Require Lowercase Characters' => 'lowerCharFlag',
+    'Require Uppercase Characters' => 'upperCharFlag',
+    'Require Special Characters' => 'specialCharFlag',
+    'Restrict Characters Occurrences' => 'restrictedOccurrenceFlag',
+    'Restrict Consecutive Characters' => 'consecutiveCharsFlag'
+  }
+
+  toggle = action == 'enable' ? 'check' : 'uncheck'
+
+  table.raw.flatten.each do |restriction|
+    checkbox_id = restriction_map[restriction]
+    raise "Unknown restriction: #{restriction}" unless checkbox_id
+
+    toggle_checkbox(toggle, checkbox_id)
+  end
+end
+
+Then(/^the following restrictions should be (enabled|disabled):$/) do |expected_state, table|
+  restriction_map = {
+    'Require Digits' => 'digitFlag',
+    'Require Lowercase Characters' => 'lowerCharFlag',
+    'Require Uppercase Characters' => 'upperCharFlag',
+    'Require Special Characters' => 'specialCharFlag',
+    'Restrict Characters Occurrences' => 'restrictedOccurrenceFlag',
+    'Restrict Consecutive Characters' => 'consecutiveCharsFlag'
+  }
+
+  expected_checkbox_state = expected_state == 'enabled' ? 'checked' : 'unchecked'
+
+  table.raw.flatten.each do |restriction|
+    checkbox_id = restriction_map[restriction]
+    raise "Unknown restriction: #{restriction}" unless checkbox_id
+
+    actual = checkbox_state(checkbox_id)
+    unless actual == expected_checkbox_state
+      raise "Expected '#{restriction}' to be #{expected_checkbox_state}, but was #{actual}"
+    end
+  end
+end
