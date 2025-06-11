@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:19+0200\n"
-"PO-Revision-Date: 2025-05-17 16:59+0000\n"
+"PO-Revision-Date: 2025-06-11 20:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -760,10 +760,8 @@ msgid "The migration process was not successfull and reported the following erro
 msgstr "Proces migrácie nebol úspešný a hlásil nasledujúce chyby"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:203
-#, fuzzy
-#| msgid "There are no states assigned."
 msgid "There are no ISSv1 slaves to migrate."
-msgstr "Nie sú priradené žiadne stavy."
+msgstr "Neexistujú žiadne podriadené ISSv1 na migráciu."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:211
 #: ../html/src/components/states-picker.tsx:367
@@ -2155,26 +2153,20 @@ msgid "Bastion SSH connection data"
 msgstr "Dáta pripojenia bašty SSH"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:36
-#, fuzzy
-#| msgid "Desync Channel"
 msgid "Sync Channels"
-msgstr "Zrušiť synchronizáciu kanála"
+msgstr "Synchronizácia kanálov"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:37
-#, fuzzy
-#| msgid "Schedule channels product resync"
 msgid "Schedule Sync Channels task"
-msgstr "Naplánovať opätovnú synchronizáciu produktov kanálov"
+msgstr "Naplánovať úlohu synchronizácie kanálov"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:42
-#, fuzzy
-#| msgid "Confirm Channel Synchronization Changes"
 msgid "Confirm channels synchronization"
-msgstr "Potvrdiť zmeny synchronizácie kanálov"
+msgstr "Potvrdiť synchronizáciu kanálov"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:43
 msgid "Do you want to schedule a channels synchronization from the hub?"
-msgstr ""
+msgstr "Chcete naplánovať synchronizáciu kanálov z hubu?"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:57
 msgid "Hub Details"
@@ -2190,7 +2182,7 @@ msgstr "Tento server je v súčasnosti registrovaný ako periféria hubu {fqdn}.
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
 msgid "Successfully scheduled a channels synchronization."
-msgstr ""
+msgstr "Úspešne naplánovaná synchronizácia kanálov."
 
 #: ../html/src/manager/admin/hub/list-tokens.tsx:20
 msgid "Access Tokens"
