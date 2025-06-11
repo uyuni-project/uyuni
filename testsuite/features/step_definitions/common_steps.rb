@@ -539,3 +539,16 @@ When(/^I schedule a task to update ReportDB$/) do
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
   '
 end
+
+Then(/^the user creation should fail with error containing "([^"]*)"$/) do |expected_text|
+  status = get_context('user_creation_status')
+  error_message = get_context('user_creation_error')
+
+  raise "Expected user creation to fail, but status was '#{status}'" unless status == 'error'
+  raise "Expected error message to include '#{expected_text}', but got '#{error_message}'" unless error_message.include?(expected_text)
+end
+
+Then(/^the user creation should succeed$/) do
+  status = get_context('user_creation_status')
+  raise "Expected user creation to succeed, but status was '#{status}'" unless status == 'success'
+end

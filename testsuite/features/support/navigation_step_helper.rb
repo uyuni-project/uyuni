@@ -44,3 +44,31 @@ def filter_by_package_name(package_name)
 
   find("input[placeholder='Filter by Package Name: ']").set(package_name)
 end
+
+# Toggles a checkbox based on the desired action.
+#
+# @param action [String] Either 'check' or 'uncheck'
+# @param id [String] The HTML id of the checkbox input element
+#
+# This function ensures the checkbox ends in the desired state by comparing
+# the current checked status with the intended one. It performs a click only
+# if necessary (e.g., when current and desired states differ).
+#
+# Example:
+#   toggle_checkbox('check', 'digitFlag')   # Ensures checkbox is checked
+#   toggle_checkbox('uncheck', 'digitFlag') # Ensures checkbox is unchecked
+def toggle_checkbox(action, id)
+  checkbox = find("##{id}", visible: :all)
+  desired_state = (action == 'check')
+
+  checkbox.click if checkbox.checked? != desired_state
+end
+
+# Returns the textual state of a checkbox (toggle) based on its HTML ID.
+#
+# @param id [String] The ID of the checkbox element.
+# @return [String] "checked" if the box is selected, "unchecked" otherwise.
+def checkbox_state(id)
+  checkbox = find("##{id}", visible: :all)
+  checkbox.checked? ? 'checked' : 'unchecked'
+end
