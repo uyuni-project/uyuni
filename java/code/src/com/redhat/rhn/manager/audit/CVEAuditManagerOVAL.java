@@ -183,7 +183,7 @@ public class CVEAuditManagerOVAL {
                                                       List<CVEAuditManager.CVEPatchStatus> results,
                                                       Server clientServer) {
         // It's possible to find more than one patch for a particular package in the available channels. It's NOT
-        // necessary to apply all of them because they will have the same outcome i.e. patch the package;
+        // necessary to apply all of them because they will have the same outcome i.e. patch the package
         // instead we need to choose only one. To choose the one, we rank patches based on the channel they come
         // from .e.g. assigned, successor product, etc. And for each vulnerable package we keep only the highest
         // ranking patch.

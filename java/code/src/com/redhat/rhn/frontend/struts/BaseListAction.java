@@ -35,8 +35,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class BaseListAction extends RhnListAction {
 
-    // public static final String PAGE_LIST = "pageList";
-
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping mapping,

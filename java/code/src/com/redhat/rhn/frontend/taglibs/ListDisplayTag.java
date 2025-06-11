@@ -794,7 +794,6 @@ public class ListDisplayTag extends ListDisplayTagBase {
             if (!getPageList().getIndex().isEmpty() &&
                     getPageList().size() < getPageList().getTotalSize()) {
 
-                //renderViewAllLink(alphaBarContent);
                 renderAlphabar(alphaBarContent);
             }
             pageContext.popBody();
