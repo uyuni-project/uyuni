@@ -7758,28 +7758,28 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemsearch.jsp.toolbar" xml:space="preserve">
         <source>Advanced Search</source>
-        <target/>
+        <target state="translated">Pokročilé vyhľadávanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.summary" xml:space="preserve">
         <source>Advanced Search will return results from all systems to which you have administrative access.</source>
-        <target/>
+        <target state="translated">Pokročilé vyhľadávanie vráti výsledky zo všetkých systémov, ku ktorým máte administrátorský prístup.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.fieldtosearch" xml:space="preserve">
         <source>Field to Search:</source>
-        <target/>
+        <target state="translated">Pole na vyhľadávanie:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.wheretosearch" xml:space="preserve">
         <source>Where to Search:</source>
-        <target/>
+        <target state="translated">Kde hľadať:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
