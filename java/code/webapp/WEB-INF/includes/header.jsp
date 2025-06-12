@@ -73,7 +73,7 @@
         </rhn:require>
       </li>
       <li>
-        <a href="/rhn/account/UserPreferences.do" role="button" title="<bean:message key="header.jsp.preferences" />"
+        <a href="/rhn/account/UserPreferences.do" role="button" data-bs-toggle="tooltip" title="<bean:message key="header.jsp.preferences" />"
             alt="<bean:message key="header.jsp.preferences" />">
           <rhn:icon type="header-preferences"/>
         </a>
@@ -81,11 +81,11 @@
       <li>
       <c:choose>
         <c:when test="${rhn:getConfig('java.sso')}">
-          <a data-senna-off href="/rhn/manager/sso/logout" role="button" title="<bean:message key="header.jsp.signout" />"
+          <a data-senna-off href="/rhn/manager/sso/logout" role="button" data-bs-toggle="tooltip" title="<bean:message key="header.jsp.signout" />"
             alt="<bean:message key="header.jsp.signout" />">
         </c:when>
         <c:otherwise>
-          <a data-senna-off href="/rhn/Logout.do" role="button" title="<bean:message key="header.jsp.signout" />"
+          <a data-senna-off href="/rhn/Logout.do" role="button" data-bs-toggle="tooltip" title="<bean:message key="header.jsp.signout" />"
             alt="<bean:message key="header.jsp.signout" />">
         </c:otherwise>
       </c:choose>
