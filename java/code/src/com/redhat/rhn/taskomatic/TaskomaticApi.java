@@ -345,6 +345,34 @@ public class TaskomaticApi {
     }
 
     /**
+     * Activate a disables Sat Bunch again
+     * @param user the user
+     * @param jobLabel the job label
+     * @param bunchName the bunch name
+     * @return the Date of the first schedule
+     * @throws TaskomaticApiException on Taskomatic error
+     */
+    public Date activateSatBunch(User user, String jobLabel, String bunchName) throws TaskomaticApiException {
+        ensureSatAdminRole(user);
+        return (Date) invoke("tasko.activateSatBunch", bunchName, jobLabel);
+    }
+
+    /**
+     * Update a Sat Bunch
+     * @param user the user
+     * @param jobLabel the job label
+     * @param bunchName the bunch name
+     * @param cron the cron expression
+     * @return the Date of the first schedule
+     * @throws TaskomaticApiException on Taskomatic error
+     */
+    public Date updateSatBunch(User user, String jobLabel, String bunchName, String cron)
+            throws TaskomaticApiException {
+        ensureSatAdminRole(user);
+        return (Date) invoke("tasko.updateSatBunch", bunchName, jobLabel, cron);
+    }
+
+    /**
      * Unschedule a recurring action
      *
      * @param action the {@link RecurringAction}
@@ -406,14 +434,14 @@ public class TaskomaticApi {
     }
 
     /**
-     * Return list of active schedules
+     * Return list of all Sat schedules
      * @param user shall be sat admin
      * @return list of schedules
      * @throws TaskomaticApiException if there was an error
      */
-    public List<Map<String, Object>> findActiveSchedules(User user) throws TaskomaticApiException {
-        List<Map<String, Object>> schedules = (List<Map<String, Object>>) invoke("tasko.listActiveSatSchedules");
-        return schedules;
+    public List<Map<String, Object>> findAllSatSchedules(User user) throws TaskomaticApiException {
+        ensureSatAdminRole(user);
+        return (List<Map<String, Object>>) invoke("tasko.listAllSatSchedules");
     }
 
     /**
