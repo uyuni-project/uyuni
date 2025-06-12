@@ -44,14 +44,24 @@
 
                 <rl:column bound="false"
                            headerkey="schedule.edit.jsp.frequency" >
+                    <c:if test="${current.active}">
                         <c:out value="${current.cron_expr}" />
+                    </c:if>
+                    <c:if test="${not current.active}">
+                        <c:out value="---" />
+                    </c:if>
                 </rl:column>
 
                 <rl:column sortable="true"
                            bound="false"
                            headerkey="schedule.edit.jsp.activefrom"
                            sortattr="active_from" >
+                    <c:if test="${current.active}">
                         <rhn:formatDate value="${current.active_from}" />
+                    </c:if>
+                    <c:if test="${not current.active}">
+                        <c:out value="---" />
+                    </c:if>
                 </rl:column>
 
                 <rl:column bound="false"
