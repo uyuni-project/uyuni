@@ -85,10 +85,13 @@ When(/^I (deselect|select) "([^"]*)" as a product$/) do |select, product|
   raise ScriptError, "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == 'select')
 end
 
-When(/^I select or deselect "([^"]*)" beta client tools$/) do |product|
-  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
-  product = find(:xpath, xpath)
-  product.set($beta_enabled) if product
+When(/^I select or deselect "([^"]*)" beta client tools$/) do |channel|
+  xpath = "//span[contains(text(), '#{channel}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
+  begin
+    find(:xpath, xpath, wait: 3).set($beta_enabled)
+  rescue Capybara::ElementNotFound
+    warn "#{channel} beta client tools checkbox not found"
+  end
 end
 
 When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" has no sub-list$/) do |timeout, item|
