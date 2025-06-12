@@ -62,7 +62,7 @@ Name:           susemanager
 Version:        5.2.1
 Release:        0
 Summary:        %{productprettyname} specific scripts
-License:        GPL-2.0-only
+License:        GPL-2.0-only AND Apache-2.0
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
