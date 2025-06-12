@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 """
-s390 utility for Suse Manager
+s390 utility for Uyuni and SUSE Multi-Linux Manager
 
 """
 from __future__ import absolute_import
