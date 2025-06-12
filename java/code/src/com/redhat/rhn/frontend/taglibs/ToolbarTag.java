@@ -768,7 +768,7 @@ public class ToolbarTag extends TagSupport {
         }
 
         if (assertNotEmpty(iconName)) {
-            IconTag i = new IconTag(iconName, alt);
+            IconTag i = new IconTag(iconName);
             a.addBody(i.render());
         }
 
