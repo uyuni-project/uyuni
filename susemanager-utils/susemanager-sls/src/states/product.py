@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2019-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Handles installation of SUSE products using zypper
 

@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+
+# SPDX-FileCopyrightText: 2018-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """
 mgr_events.py is a SaltStack engine that writes selected events to SUSE
 Manager's PostgreSQL database. Additionally, it sends notifications via the

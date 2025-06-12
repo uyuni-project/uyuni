@@ -1,4 +1,9 @@
 #  pylint: disable=missing-module-docstring
+
+# SPDX-FileCopyrightText: 2017-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 from salt.exceptions import SaltInvocationError
 import logging
 

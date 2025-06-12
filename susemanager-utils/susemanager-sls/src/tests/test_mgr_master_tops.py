@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+
+# SPDX-FileCopyrightText: 2016-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """
 :codeauthor:    Pablo Suárez Hernández <psuarezhernandez@suse.de>
 """
