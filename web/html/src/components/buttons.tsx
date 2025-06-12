@@ -30,6 +30,8 @@ type BaseProps = {
    * Any additional css classes for the button, `"btn"` is prepended automatically
    */
   className?: string;
+  /** Tooltip placement */
+  tooltipPlacement?: "top" | "right" | "bottom" | "left"; 
 };
 
 type BaseState = {};
@@ -135,9 +137,15 @@ export class AsyncButton extends _ButtonBase<AsyncProps, AsyncState> {
 
     const text = this.props.text ?? this.props.children;
     const margin = text ? "" : " no-margin";
+    const tooltipProps = this.props.title 
+    ? { 
+        'data-bs-toggle': "tooltip",
+        'data-bs-placement': this.props.tooltipPlacement
+      } : {};
     return (
       <button
         id={this.props.id}
+        {...tooltipProps}
         title={this.props.title}
         className={style}
         disabled={this.state.value === "waiting" || this.props.disabled}
@@ -166,9 +174,16 @@ export type ButtonProps = BaseProps & {
 export class Button extends _ButtonBase<ButtonProps> {
   render() {
     const text = this.props.text ?? this.props.children;
+    const tooltipProps = this.props.title 
+      ? { 
+          'data-bs-toggle': "tooltip",
+          'data-bs-placement': this.props.tooltipPlacement
+        } : {};
+
     return (
       <button
         id={this.props.id}
+        {...tooltipProps}
         type="button"
         title={this.props.title}
         className={"btn " + (this.props.className ?? "")}
@@ -202,6 +217,11 @@ type LinkProps = BaseProps & {
 export class LinkButton extends _ButtonBase<LinkProps> {
   render() {
     const text = this.props.text ?? this.props.children;
+    const tooltipProps = this.props.title 
+      ? { 
+          'data-bs-toggle': "tooltip",
+          'data-bs-placement': this.props.tooltipPlacement
+        } : {};
     const targetProps: Partial<React.HTMLProps<HTMLAnchorElement>> =
       this.props.target === "_blank"
         ? {
@@ -215,6 +235,7 @@ export class LinkButton extends _ButtonBase<LinkProps> {
       <a
         id={this.props.id}
         title={this.props.title}
+        {...tooltipProps}
         className={"btn " + this.props.className}
         href={this.props.href}
         onClick={this.props.handler}
@@ -234,8 +255,13 @@ export class LinkButton extends _ButtonBase<LinkProps> {
 export class SubmitButton extends _ButtonBase {
   render() {
     const text = this.props.text ?? this.props.children;
+    const tooltipProps = this.props.title 
+    ? { 
+        'data-bs-toggle': "tooltip",
+        'data-bs-placement': this.props.tooltipPlacement
+      } : {};
     return (
-      <button id={this.props.id} type="submit" className={"btn " + this.props.className} disabled={this.props.disabled}>
+      <button {...tooltipProps} id={this.props.id} type="submit" className={"btn " + this.props.className} disabled={this.props.disabled}>
         {this.renderIcon()}
         {text}
       </button>
@@ -264,6 +290,7 @@ export class DropdownButton extends _ButtonBase<DropdownProps> {
         <button
           id={this.props.id}
           type="button"
+          data-bs-toggle="tooltip"
           title={this.props.title}
           className={"dropdown-toggle btn " + this.props.className}
           onClick={this.props.handler}
