@@ -42,7 +42,7 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
         // setup mock objects
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
             "<div class=\"spacewalk-toolbar\"><a href=\"Clone-url\" class=\"btn btn-default\">" +
-            "<i class=\"fa fa-files-o\" title=\"Clone Autoinstallation\"></i>" +
+            "<i class=\"fa fa-files-o\"></i>" +
             "Clone Autoinstallation</a></div><h1></h1></div>";
 
 
@@ -66,7 +66,7 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
     public void testCreateAclMultipleMixinsMultipleAcls() throws Exception {
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
             "<div class=\"spacewalk-toolbar\"><a href=\"Clone-url\" class=\"btn btn-default\">" +
-            "<i class=\"fa fa-files-o\" title=\"Clone Autoinstallation\"></i>" +
+            "<i class=\"fa fa-files-o\"></i>" +
             "Clone Autoinstallation</a></div><h1></h1></div>";
 
         setupCloneTag("h1", "Clone-url",
@@ -83,7 +83,7 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
     public void testCreateAclMultipleAclsSingleMixin() throws Exception {
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
             "<div class=\"spacewalk-toolbar\"><a href=\"Clone-url\" class=\"btn btn-default\">" +
-            "<i class=\"fa fa-files-o\" title=\"Clone Autoinstallation\">" +
+            "<i class=\"fa fa-files-o\">" +
             "</i>Clone Autoinstallation</a></div><h1></h1></div>";
 
         setupCloneTag("h1", "Clone-url",
@@ -114,7 +114,7 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
         // setup mock objects
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
             "<div class=\"spacewalk-toolbar\"><a href=\"Clone-url\" class=\"btn btn-default\">" +
-            "<i class=\"fa fa-files-o\" title=\"Clone Autoinstallation\"></i>" +
+            "<i class=\"fa fa-files-o\"></i>" +
             "Clone Autoinstallation</a></div><h1></h1></div>";
 
         setupCloneTag("h1", "Clone-url", "true_test()", "kickstart");

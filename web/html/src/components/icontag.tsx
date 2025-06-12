@@ -4,7 +4,7 @@ type Props = {
   type: string;
   className?: string;
   title?: string;
-  tooltipPlacement?: "top" | "right" | "bottom" | "left"; 
+  tooltipPlacement?: "top" | "right" | "bottom" | "left";
 };
 
 // See https://fontawesome.com/v4/icons/
@@ -136,11 +136,12 @@ function IconTag(props: Props) {
     "system-warn": "fa fa-exclamation-triangle fa-1-5x text-warning",
     experimental: "fa fa-flask",
   };
-  const tooltipProps = props.title 
-  ? { 
-      'data-bs-toggle': "tooltip",
-      'data-bs-placement': props.tooltipPlacement,
-    } : {};
+  const tooltipProps = props.title
+    ? {
+        "data-bs-toggle": "tooltip",
+        "data-bs-placement": props.tooltipPlacement,
+      }
+    : {};
 
   return <i className={icons[props.type] + " " + (props.className ?? "")} {...tooltipProps} title={props.title}></i>;
 }
