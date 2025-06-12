@@ -550,6 +550,7 @@ public class ListTagUtil {
         for (String linkNameIn : linkNames) {
             String[] linkData = links.get(linkNameIn);
             ListTagUtil.write(pageContext, "<button ");
+            ListTagUtil.write(pageContext, "data-bs-toggle=\"tooltip\"");
             ListTagUtil.write(pageContext, "class=\"btn btn-default btn-xs ");
             ListTagUtil.write(pageContext, linkData[0]);
 
