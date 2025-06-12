@@ -64,5 +64,22 @@
         </c:if>
       </script>
     </div>
+    <script>
+   // Dispose all existing tooltips
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el) => {
+      const existingTooltip = bootstrap.Tooltip.getInstance(el);
+      if (existingTooltip) {
+        existingTooltip.dispose();
+      }
+    });
+
+    // Initialize tooltips with default trigger
+    const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    const tooltipList = tooltipTriggerList.map((el) => {
+      return new bootstrap.Tooltip(el, {
+        trigger: 'hover focus',
+      });
+    });
+    </script>
   </body>
 </html:html>
