@@ -58,7 +58,7 @@ public class ConfigureBootstrapCommandTest extends BaseTestCaseWithUser {
 
         @Override
         public int execute(String[] args) {
-            if (args.length != 9) {
+            if (args.length != 8) {
                 return -1;
             }
             if (!args[0].equals("/usr/bin/sudo")) {
@@ -73,20 +73,17 @@ public class ConfigureBootstrapCommandTest extends BaseTestCaseWithUser {
             else if (!args[3].startsWith("--hostname=localhost")) {
                 return -5;
             }
-            else if (!args[4].startsWith("--traditional")) {
+            else if (!args[4].startsWith("--ssl-cert=/tmp/somepath.cert")) {
                 return -6;
             }
-            else if (!args[5].startsWith("--ssl-cert=/tmp/somepath.cert")) {
+            else if (!args[5].startsWith("--http-proxy=proxy-host.redhat.com")) {
                 return -7;
             }
-            else if (!args[6].startsWith("--http-proxy=proxy-host.redhat.com")) {
+            else if (!args[6].startsWith("--http-proxy-username=username")) {
                 return -8;
             }
-            else if (!args[7].startsWith("--http-proxy-username=username")) {
+            else if (!args[7].startsWith("--http-proxy-password=password")) {
                 return -9;
-            }
-            else if (!args[8].startsWith("--http-proxy-password=password")) {
-                return -10;
             }
             else {
                 return 0;
