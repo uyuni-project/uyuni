@@ -9,16 +9,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-25 09:41+0200\n"
-"PO-Revision-Date: 2024-05-07 10:43+0000\n"
-"Last-Translator: Julio González Gil <jgonzalez@suse.com>\n"
-"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/spacecmd/es/"
-">\n"
+"PO-Revision-Date: 2025-06-14 00:59+0000\n"
+"Last-Translator: Fran Serrador <serrador@proton.me>\n"
+"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/spacecmd/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -6384,7 +6383,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:671
 msgid "Devices"
-msgstr ""
+msgstr "Dispositivos"
 
 #: ../src/spacecmd/system.py:681
 msgid "Description: None"
