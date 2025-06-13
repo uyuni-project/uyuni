@@ -15,10 +15,21 @@
 
 package com.suse.oval.exceptions;
 
+import com.suse.oval.parser.OvalParser;
+
 /**
- * A runtime exception thrown by {@link com.suse.oval.OvalParser} when it encounters errors while parsing an OVAL file.
+ * A runtime exception thrown by {@link OvalParser} when it encounters errors while parsing an OVAL file.
  * */
 public class OvalParserException extends RuntimeException {
+
+    /**
+     * Constructs a new parser exception with the specified cause.
+     *
+     * @param exception the cause (which is saved for later retrieval by the getCause() method).
+     * */
+    public OvalParserException(Exception exception) {
+        super(exception);
+    }
 
     /**
      * Constructs a new parser exception with the specified detail message.
