@@ -68,10 +68,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         </set>
 
         <list  name="configChannelsHibernate" lazy="true" table="rhnServerConfigChannel"
-             cascade="all" where="(position > 0)"
+             cascade="all"
          collection-type="com.redhat.rhn.common.hibernate.ForceRecreationListType">
              <key column="server_id"/>
-            <list-index column="position" base="1"/>
+            <list-index column="position" base="0"/>
             <many-to-many class="com.redhat.rhn.domain.config.ConfigChannel"
                 column="config_channel_id"/>
         </list>
