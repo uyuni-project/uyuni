@@ -1,4 +1,9 @@
 #  pylint: disable=missing-module-docstring
+
+# SPDX-FileCopyrightText: 2020-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 import logging
 
 # pylint: disable-next=unused-import
@@ -1717,7 +1722,7 @@ def org_present(
 def org_absent(name, admin_user=None, admin_password=None):
     """
     Ensure an Uyuni organization is not present
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
     :param name: organization name
     :param admin_user: uyuni admin user

@@ -51,7 +51,7 @@ logrotate_configuration:
         }
 {% endif %}
 
-{# ensure /etc/sysconfig/rhn/systemid is created to indicate minion is managed by SUSE Manager #}
+{# ensure /etc/sysconfig/rhn/systemid is created to indicate minion is managed by SUSE Multi-Linux Manager #}
 /etc/sysconfig/rhn/systemid:
   file.managed:
     - mode: 0640

@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+
+# SPDX-FileCopyrightText: 2016-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """
 :codeauthor:    Pablo Suárez Hernández <psuarezhernandez@suse.de>
 """
@@ -44,7 +49,7 @@ def test_virtual():
 
 def test_top_default_saltenv():
     """
-    Test if top function is returning the static SUSE Manager top state
+    Test if top function is returning the static Uyuni top state
     for base environment when no environment has been specified.
     """
     kwargs = {"opts": {"environment": None}}
@@ -53,7 +58,7 @@ def test_top_default_saltenv():
 
 def test_top_base_saltenv():
     """
-    Test if top function is returning the static SUSE Manager top state
+    Test if top function is returning the static Uyuni top state
     for base environment when environment is set to "base".
     """
     kwargs = {"opts": {"environment": "base"}}

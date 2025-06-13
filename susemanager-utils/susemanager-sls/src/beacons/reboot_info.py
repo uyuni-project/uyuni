@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+
+# SPDX-FileCopyrightText: 2022-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Watch system status and fire an event to SUSE Multi-Linux Manager indicating
 when a reboot is required.

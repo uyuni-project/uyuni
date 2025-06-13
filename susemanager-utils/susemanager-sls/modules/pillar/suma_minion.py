@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+
+# SPDX-FileCopyrightText: 2016-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Retrieve SUSE Multi-Linux Manager pillar data for a minion_id.
 - Adds generated SUSE Multi-Linux Manager pillar data.

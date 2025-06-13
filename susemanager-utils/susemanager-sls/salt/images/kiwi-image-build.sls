@@ -1,4 +1,4 @@
-# SUSE Manager for Retail build trigger
+# SUSE Multi-Linux Manager for Retail build trigger
 #
 
 {%- set source     = pillar.get('source') %}

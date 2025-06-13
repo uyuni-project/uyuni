@@ -1,6 +1,8 @@
 #  pylint: disable=missing-module-docstring,invalid-name
-# SUSE Manager
-# Copyright (c) 2018--2022 SUSE LLC
+
+# SPDX-FileCopyrightText: 2018-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
 
 # runner to collect image from build host
 
