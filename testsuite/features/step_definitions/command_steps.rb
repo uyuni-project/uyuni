@@ -1123,7 +1123,7 @@ When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without
 
   log 'Creating the bootstrap repository on the server:'
   log "  #{cmd}"
-  get_target('server').run(cmd)
+  get_target('server').run(cmd, exec_option: '-it')
 end
 
 When(/^I create the bootstrap repositories including custom channels$/) do
