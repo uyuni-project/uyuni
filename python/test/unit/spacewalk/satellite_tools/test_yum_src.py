@@ -432,14 +432,12 @@ class YumSrcTest(unittest.TestCase):
         self.repo.root = self.tmpdir
         cs.channel_arch = "arch1"
         grabber_mock = Mock()
-        mirror_request_mock = Mock()
-        mirror_request_mock.return_value.headers = {"Content-Type": "text/plain"}
-        nonmirror_request_mock = Mock()
-        nonmirror_request_mock.return_value.headers = {"Content-Type": "text/html"}
+        mirror_request_mock = Mock(return_value="text/plain")
+        nonmirror_request_mock = Mock(return_value="text/html")
 
         # If webpage is plaintext format, check list of mirrors is returned
         with patch(
-            "spacewalk.satellite_tools.repo_plugins.yum_src.requests.get",
+            "spacewalk.satellite_tools.repo_plugins.yum_src.get_content_type",
             mirror_request_mock,
         ):
             with patch(
@@ -468,7 +466,7 @@ class YumSrcTest(unittest.TestCase):
 
         # If webpage is html format, and so not mirrorlist, check list of 'mirrors' is blank
         with patch(
-            "spacewalk.satellite_tools.repo_plugins.yum_src.requests.get",
+            "spacewalk.satellite_tools.repo_plugins.yum_src.get_content_type",
             nonmirror_request_mock,
         ):
             with patch(
@@ -490,7 +488,7 @@ class YumSrcTest(unittest.TestCase):
 
         # If mirrorlist contains invalid repos, check they are discarded
         with patch(
-            "spacewalk.satellite_tools.repo_plugins.yum_src.requests.get",
+            "spacewalk.satellite_tools.repo_plugins.yum_src.get_content_type",
             mirror_request_mock,
         ):
             with patch(
@@ -570,11 +568,10 @@ class YumSrcTest(unittest.TestCase):
                 )
             )
         grabber_mock = Mock()
-        mirror_request_mock = Mock()
-        mirror_request_mock.return_value.headers = {"Content-Type": "text/plain"}
+        mirror_request_mock = Mock(return_value="text/plain")
 
         with patch(
-            "spacewalk.satellite_tools.repo_plugins.yum_src.requests.get",
+            "spacewalk.satellite_tools.repo_plugins.yum_src.get_content_type",
             mirror_request_mock,
         ):
             with patch(
