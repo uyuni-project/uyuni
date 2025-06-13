@@ -6070,7 +6070,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target state="final">ブートストラップスクリプトが正しく生成されました。 &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt; からアクセスできます。</target>
+        <target state="final">ブートストラップスクリプトが正常に生成されました。&lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt;からアクセスできます。</target>
       </trans-unit>
       <trans-unit id="restart.config.error" xml:space="preserve">
         <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
@@ -11486,7 +11486,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit approved="yes" id="task.status.oval-data-sync" xml:space="preserve">
         <source>Sync OVAL Data</source>
-        <target state="final">OVALデータを同期</target>
+        <target state="final">OVALデータの同期</target>
       </trans-unit>
       <trans-unit approved="yes" id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve">
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
@@ -11511,8 +11511,8 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;Help us improve our services by sharing your reason for opting out&lt;/a&gt;
         </source>
         <target state="final">
-          &lt;p&gt;SCCとのデータ同期を無効にすると、RMT、SMT、@@PRODUCT_NAME@@、およびSCCに直接登録されたクライアント間の管理対象クライアントの可視性が低下します。
-          データの同期により、登録されたすべてのクライアントの統一されたビューが確保されます。&lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;データ転送を有効にするには、ここをクリックしてください&lt;/a&gt;.&lt;/p&gt;
+          &lt;p&gt;SCCとのデータ同期を無効にすると、RMT、SMT、@@PRODUCT_NAME@@、およびSCCに直接登録されたクライアント間の管理対象クライアントの可視性が低下します。 
+          データの同期により、登録されたすべてのクライアントの統一されたビューが確保されます。&lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;データ転送を有効にするには、ここをクリックしてください&lt;/a&gt;.&lt;/p&gt; 
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;オプトアウトの理由を共有して、サービス向上にご協力ください&lt;/a&gt;
         </target>
       </trans-unit>
@@ -11853,10 +11853,10 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>The server {0} cannot be registered as a peripheral of this hub</source>
         <target state="final">サーバ {0} は、このハブの周辺機器として登録できません</target>
       </trans-unit>
-    <trans-unit id="hub.sync_bunch_error" xml:space="preserve">
+      <trans-unit id="hub.sync_bunch_error" xml:space="preserve">
         <source>Error when triggering the channels sync.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
