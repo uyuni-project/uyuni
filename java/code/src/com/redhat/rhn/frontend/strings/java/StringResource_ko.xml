@@ -364,7 +364,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>전체</target>
+        <target state="needs-translation">전체</target>
       </trans-unit>
       <trans-unit id="url" xml:space="preserve">
         <source>url</source>
@@ -1297,7 +1297,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>사용자</target>
+        <target state="needs-translation">사용자</target>
       </trans-unit>
       <trans-unit id="user info" xml:space="preserve">
         <source>User Information</source>
@@ -6066,12 +6066,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>처리할 수 없는 오류</target>
       </trans-unit>
-      <trans-unit approved="yes" id="bootstrap.config.success" xml:space="preserve">
+      <trans-unit approved="no" id="bootstrap.config.success" xml:space="preserve">
         <source>Bootstrap script successfully generated.  You can access it &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target state="final">부트스트랩 스크립트가 생성되었습니다. &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt;에서 액세스할 수 있습니다.</target>
+        <target state="needs-translation">부트스트랩 스크립트가 생성되었습니다. &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;에서 액세스할 수 있습니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="restart.config.error" xml:space="preserve">
         <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
@@ -10286,9 +10286,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target>시스템에 가상화 시스템 유형을 추가한 후에 시스템이 가상 게스트를 보다 효과적으로 관리할 수 있는지를 확인하기 위해 몇 가지 추가적인 단계를 실행했습니다. 보다 자세한 정보는 &lt;a href="{0}"&gt;여기&lt;/a&gt;를 참조하시기 바랍니다.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled" xml:space="preserve">
+      <trans-unit approved="no" id="system.entitle.added.monitoring_entitled" xml:space="preserve">
         <source>&lt;strong&gt;Monitor this Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
-        <target state="final">&lt;strong&gt;모니터링&lt;/strong&gt; 유형이 적용되었습니다.&lt;br/&gt;&lt;strong&gt;참고:&lt;/strong&gt; 모니터링 시스템 유형을 추가했기 때문에 Prometheus Exporters 공식을 시스템에 자동으로 할당했습니다. Prometheus Metric Exporter를 설치하고 활성화하려면 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;를 적용하십시오. 설치된 모든 내보내기에 대해 &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;필수 네트워크 포트&lt;/a&gt;를 열어야 합니다.</target>
+        <target state="needs-translation">&lt;strong&gt;이 호스트 모니터링&lt;/strong&gt; 유형이 적용되었습니다.&lt;br/&gt;&lt;strong&gt;참고:&lt;/strong&gt; 모니터링 시스템 유형을 추가했기 때문에 Prometheus Exporters 공식을 시스템에 자동으로 할당했습니다. Prometheus Metric Exporter를 설치하고 활성화하려면 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;를 적용하십시오.&lt;br/&gt;&lt;strong&gt;참고:&lt;/strong&gt; 설치된 모든 내보내기에 대해 &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;필수 네트워크 포트&lt;/a&gt;를 열어야 합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -11486,36 +11486,36 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Perform a reboot, only if required</source>
         <target state="final">필요한 경우에만 재부팅하십시오.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="task.status.oval-data-sync" xml:space="preserve">
+      <trans-unit approved="no" id="task.status.oval-data-sync" xml:space="preserve">
         <source>Sync OVAL Data</source>
-        <target state="final">OVAL 데이터 동기화</target>
+        <target state="needs-translation">OVAL 데이터 동기화</target>
       </trans-unit>
-      <trans-unit approved="yes" id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve">
+      <trans-unit approved="no" id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve">
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
-        <target state="final">CVE 감사 쿼리의 정확도를 향상하기 위해 필요한 OVAL 데이터 생성</target>
+        <target state="needs-translation">CVE 감사 쿼리의 정확도 향상에 필요한 OVAL 데이터 생성</target>
       </trans-unit>
-      <trans-unit approved="yes" id="scc-data-forwarding.enabled" xml:space="preserve">
+      <trans-unit approved="no" id="scc-data-forwarding.enabled" xml:space="preserve">
         <source>SCC Data Forwarding enabled successfully.</source>
-        <target state="final">SCC 데이터 전달이 활성화되었습니다.</target>
+        <target state="needs-translation">SCC 데이터 전달이 활성화되었습니다.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="scc-data-forwarding.not-changed" xml:space="preserve">
+      <trans-unit approved="no" id="scc-data-forwarding.not-changed" xml:space="preserve">
         <source>SCC Data Forwarding is already enabled.</source>
-        <target state="final">SCC 데이터 전달이 이미 활성화되어 있습니다.</target>
+        <target state="needs-translation">SCC 데이터 전달이 이미 활성화되었습니다.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="notification.sccoptoutwarning.summary" xml:space="preserve">
+      <trans-unit approved="no" id="notification.sccoptoutwarning.summary" xml:space="preserve">
         <source>Data is not being synchronized with SCC</source>
-        <target state="final">데이터가 SCC와 동기화되지 않고 있습니다</target>
+        <target state="needs-translation">데이터를 SCC와 동기화하는 중이 아닙니다.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="notification.sccoptoutwarning.detail" xml:space="preserve">
+      <trans-unit approved="no" id="notification.sccoptoutwarning.detail" xml:space="preserve">
         <source>
           &lt;p&gt;Disabling data synchronizing with SCC will lead to reduced visibility of your managed clients between RMT, SMT, @@PRODUCT_NAME@@ and SCC-directly registered clients.
           By synchronizing data, you ensure a uniform view of all registered clients. &lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;Click here to enable data forwarding&lt;/a&gt;.&lt;/p&gt;
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;Help us improve our services by sharing your reason for opting out&lt;/a&gt;
         </source>
-        <target state="final">
-          &lt;p&gt;SCC와 데이터 동기화를 비활성화하면 RMT, SMT, @@PRODUCT_NAME@@ 및 SCC에 직접 등록된 클라이언트 사이에서 관리되는 클라이언트의 가시성이 감소합니다.
-          데이터를 동기화하면 등록된 모든 고객을 일관되게 볼 수 있습니다. &lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;데이터 전달을 활성화하려면 클릭&lt;/a&gt;.&lt;/p&gt;
-          &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;옵트아웃 사유를 공유하여 서비스 개선에 도움을 주십시오.&lt;/a&gt;
+        <target state="needs-translation">
+          &lt;p&gt;SCC와 데이터 동기화를 비활성화하면 RMT, SMT, @@PRODUCT_NAME@@ 및 SCC에 직접 등록된 클라이언트 간에 관리되는 클라이언트의 가시성이 감소합니다.
+          데이터를 동기화하면 등록된 모든 클라이언트에 대한 일관적인 보기를 보장할 수 있습니다. &lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;데이터 전달을 활성화하려면 여기를 클릭하십시오.&lt;/a&gt;.&lt;/p&gt;
+          &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;수신 거부 사유를 공유하여 서비스 개선에 도움을 주십시오&lt;/a&gt;
         </target>
       </trans-unit>
       <trans-unit approved="yes" id="Password Policy" xml:space="preserve">
@@ -11855,10 +11855,10 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>The server {0} cannot be registered as a peripheral of this hub</source>
         <target state="final">{0} 서버를 이 허브의 주변 장치로 등록할 수 없습니다.</target>
       </trans-unit>
-    <trans-unit id="hub.sync_bunch_error" xml:space="preserve">
+      <trans-unit id="hub.sync_bunch_error" xml:space="preserve">
         <source>Error when triggering the channels sync.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
