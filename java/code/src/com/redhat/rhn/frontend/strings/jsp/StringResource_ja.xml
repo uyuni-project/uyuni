@@ -991,12 +991,12 @@
         </context-group>
         <target>サイトでエラーが発生しました。</target>
       </trans-unit>
-      <trans-unit id="404.jsp.title" xml:space="preserve">
+      <trans-unit id="404.jsp.title" xml:space="preserve" approved="yes">
         <source>404: Page Not Found</source>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
         </context-group>
-        <target state="needs-adaptation">ページが見つかりません</target>
+        <target state="final">404: ページが見つかりません</target>
       </trans-unit>
       <trans-unit id="404.jsp.summary" xml:space="preserve">
         <source>The page you requested, {0}, was not found.</source>
@@ -11338,7 +11338,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit approved="yes" id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
         <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/cobbler/templates instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
-        <target state="final"> 既存の自動インストールプロファイルを再利用したい場合は、ブラウザではなく/var/lib/cobbler/templatesからテンプレートをコピーアンドペーストしてください。  これによりテンプレート変数が保持され、自動インストール後に登録プロセスが適切に機能するようになります。</target>
+        <target state="final"> 既存の自動インストールプロファイルを再利用したい場合は、ブラウザではなく/var/lib/cobbler/templatesからテンプレートをコピーアンドペーストしてください。 これによりテンプレート変数が保持され、自動インストール後に登録プロセスが適切に機能するようになります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
@@ -29798,36 +29798,38 @@ given channel.</source>
         <source>Proxy</source>
         <target state="final">プロキシ</target>
       </trans-unit>
-    <trans-unit id="403.jsp.title" xml:space="preserve">
+      <trans-unit id="403.jsp.title" xml:space="preserve" approved="yes">
         <source>403: Access Denied</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="403.jsp.summary" xml:space="preserve">
+        <target state="final">403: アクセス拒否</target>
+      </trans-unit>
+      <trans-unit id="403.jsp.summary" xml:space="preserve" approved="yes">
         <source>You do not have permission to access the page: {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="403.jsp.instruction" xml:space="preserve">
+        <target state="final">ページ {0} へのアクセスが許可されていません。</target>
+      </trans-unit>
+      <trans-unit id="403.jsp.instruction" xml:space="preserve" approved="yes">
         <source>You are signed in, but your account does not have permission to access this resource. If you believe you should have access, contact your organization administrator to review your access permissions.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="403.jsp.actions" xml:space="preserve">
+        <target state="final">サインインしていますが、アカウントにはこのリソースにアクセスする許可がありません。アクセス許可があると思われる場合は、組織の管理者に連絡してアクセス許可を確認してください。</target>
+      </trans-unit>
+      <trans-unit id="403.jsp.actions" xml:space="preserve" approved="yes">
         <source>
           You can also &lt;a href="{0}"&gt;log out&lt;/a&gt; or &lt;a href="javascript:history.back()"&gt;go back&lt;/a&gt; to the previous page.
         </source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">
+          &lt;a href="{0}"&gt;ログアウト&lt;/a&gt;するか、前のページに &lt;a href="javascript:history.back()"&gt;戻る&lt;/a&gt;こともできます。
+        </target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
