@@ -139,7 +139,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public static final int TYPE_SERVER_NORMAL = 2; // bootstrap or foreign
     public static final int TYPE_SERVER_VIRTUAL = 3;
     public static final int TYPE_SERVER_MINION = 4;
-    public static final String RUNNING_KERNEL = "2.6.9-55.EL";
+    public static final String RUNNING_KERNEL = "3.12.48-52.27-default";
     public static final String HOSTNAME = "foo.bar.com";
 
     private static final SystemQuery SYSTEM_QUERY = new TestSystemQuery();
@@ -712,7 +712,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         s.setCreator(owner);
         s.setOrg(owner.getOrg());
         s.setDigitalServerId("ID-" + TestUtils.randomString());
-        s.setOs("SUSE Linux");
+        s.setOs("SLES");
         s.setRunningKernel(RUNNING_KERNEL);
         s.setName("serverfactorytest" + TestUtils.randomString() + ".example.com");
         s.setRelease("15");
