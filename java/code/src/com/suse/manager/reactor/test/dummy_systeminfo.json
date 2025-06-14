@@ -103,7 +103,7 @@
             ]
           },
           "shell": "/bin/bash",
-          "mem_total": 489,
+          "mem_total": 1024,
           "saltversioninfo": [
             2015,
             8,
@@ -113,7 +113,7 @@
           "SSDs": [],
           "server": "suma3pg.vagrant.local",
           "id": "clisles12-suma3pg.vagrant.local",
-          "osrelease": "12",
+          "osrelease": "15",
           "ps": "ps -efH",
           "server_id": 1617825398,
           "uuid": "75299898-533c-ff48-8b5c-be026df56f74",
@@ -233,7 +233,7 @@
           "fqdn_ip6": [],
           "nodename": "clisles12-suma3pg",
           "saltversion": "2015.8.2",
-          "lsb_distrib_release": "12",
+          "lsb_distrib_release": "15",
           "systemd": {
             "version": "210",
             "features": "+PAM +LIBWRAP +AUDIT +SELINUX -IMA +SYSVINIT +LIBCRYPTSETUP +GCRYPT +ACL +XZ +SECCOMP +APPARMOR"
@@ -241,7 +241,7 @@
           "saltpath": "/usr/lib/python2.7/site-packages/salt",
           "host": "clisles12-suma3pg",
           "os_family": "Suse",
-          "oscodename": "SUSE Linux Enterprise Server 12",
+          "oscodename": "SUSE Linux Enterprise Server 15",
           "gpus": [],
           "pythonversion": [
             2,
@@ -260,9 +260,9 @@
           "productname": "Standard PC (i440FX + PIIX, 1996)",
           "osarch": "x86_64",
           "cpuarch": "x86_64",
-          "lsb_distrib_codename": "SUSE Linux Enterprise Server 12",
+          "lsb_distrib_codename": "SUSE Linux Enterprise Server 15",
           "osrelease_info": [
-            12
+            15
           ],
           "locale_info": {
             "detectedencoding": "UTF-8",
