@@ -29803,14 +29803,14 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-        <target state="final">403: アクセス拒否</target>
+        <target state="final">403: アクセスが拒否されました</target>
       </trans-unit>
       <trans-unit id="403.jsp.summary" xml:space="preserve" approved="yes">
         <source>You do not have permission to access the page: {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-        <target state="final">ページ {0} へのアクセスが許可されていません。</target>
+        <target state="final">ページ {0} にアクセスする許可がありません。</target>
       </trans-unit>
       <trans-unit id="403.jsp.instruction" xml:space="preserve" approved="yes">
         <source>You are signed in, but your account does not have permission to access this resource. If you believe you should have access, contact your organization administrator to review your access permissions.</source>
@@ -29827,7 +29827,7 @@ given channel.</source>
           <context context-type="sourcefile">403 error page</context>
         </context-group>
         <target state="final">
-          &lt;a href="{0}"&gt;ログアウト&lt;/a&gt;するか、前のページに &lt;a href="javascript:history.back()"&gt;戻る&lt;/a&gt;こともできます。
+          &lt;a href="{0}"&gt;ログアウト&lt;/a&gt;することも、前のページに &lt;a href="javascript:history.back()"&gt;戻る&lt;/a&gt;こともできます。
         </target>
       </trans-unit>
     </body>
