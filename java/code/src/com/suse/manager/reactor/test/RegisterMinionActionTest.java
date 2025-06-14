@@ -386,7 +386,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testReRegisterTraditionalAsMinion() throws Exception {
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        Server server = ServerTestUtils.createTestSystem(user);
+        Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
         server.setMachineId(MACHINE_ID);
         ServerFactory.save(server);
         SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
