@@ -232,9 +232,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(machineId, minion.getMachineId());
         assertEquals("3.12.48-52.27-default", minion.getRunningKernel());
         assertEquals("SLES", minion.getOs());
-        assertEquals("12", minion.getRelease());
+        assertEquals("15", minion.getRelease());
         assertEquals("N", minion.getAutoUpdate());
-        assertEquals(489, minion.getRam());
+        assertEquals(1024, minion.getRam());
 
         assertEquals(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"),
                 minion.getServerArch());
@@ -251,7 +251,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             assertTrue(packageStates.isPresent());
             packageStates.ifPresent(states -> {
                 assertEquals(1, states.size());
-                states.stream().forEach(state -> {
+                states.forEach(state -> {
                     assertEquals(state.getName().getName(), "vim");
                     assertEquals(state.getPackageState(), PackageStates.INSTALLED);
                     assertEquals(state.getVersionConstraint(), VersionConstraints.ANY);
@@ -613,12 +613,15 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testChangeContactMethodRegisterMinion() throws Exception {
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        Server server = ServerTestUtils.createTestSystem(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setName(MINION_ID);
+        server.setDigitalServerId(MACHINE_ID);
         server.setMachineId(MACHINE_ID);
+        server.setMinionId(MINION_ID);
         ServerFactory.save(server);
         SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
-        executeTest(SLES_EXPECTATIONS, ACTIVATION_KEY_SUPPLIER, (optMinion, machineId, key) -> {
+        executeTest(SLES_EXPECTATIONS_ALREADY_REGISTERED, ACTIVATION_KEY_SUPPLIER, (optMinion, machineId, key) -> {
             SLES_ASSERTIONS.accept(optMinion, machineId, key);
             MinionServer minion = optMinion.get();
             assertEquals(server.getId(), minion.getId());
@@ -627,7 +630,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             history.addAll(minion.getHistory());
             history.sort(Comparator.comparing(ServerHistoryEvent::getCreated));
             assertEquals(history.get(history.size() - 1).getSummary(), "Server reactivated as Salt minion");
-        }, SSH_PUSH_CONTACT_METHOD);
+        }, null, SSH_PUSH_CONTACT_METHOD);
     }
 
     @Test
@@ -1668,7 +1671,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         TestUtils.saveAndFlush(assignedChildChannel);
 
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        Server server = ServerTestUtils.createTestSystem(user);
+        Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
         server.setMachineId(MACHINE_ID);
         server.getChannels().clear();
         server.addChannel(assignedChannel);
