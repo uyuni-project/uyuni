@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:19+0200\n"
-"PO-Revision-Date: 2025-06-11 20:59+0000\n"
+"PO-Revision-Date: 2025-06-15 15:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -2150,7 +2150,7 @@ msgstr "Dáta pripojenia inštancie SSH"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:82
 msgid "Bastion SSH connection data"
-msgstr "Dáta pripojenia bašty SSH"
+msgstr "Dáta pripojenia Bastion SSH"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:36
 msgid "Sync Channels"
