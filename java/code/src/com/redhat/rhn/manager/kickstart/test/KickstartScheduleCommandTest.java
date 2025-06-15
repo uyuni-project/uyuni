@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.channel.Channel;
@@ -56,6 +57,7 @@ import com.redhat.rhn.manager.kickstart.KickstartScheduleCommand;
 import com.redhat.rhn.manager.profile.ProfileManager;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -308,6 +310,12 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         KickstartScheduleCommand cmd = new
                 KickstartScheduleCommand(server.getId(), ksdata.getId(),
                         user, new Date(), "rhn.webdev.redhat.com");
+        TaskomaticApi testApi = new TaskomaticApi() {
+            @Override
+            public void scheduleActionExecution(Action action) {
+            }
+        };
+        cmd.setTaskomaticApi(testApi);
 
         PackageManagerTest.addPackageToSystemAndChannel(
                 ConfigDefaults.get().getKickstartPackageNames().get(0), server, c);

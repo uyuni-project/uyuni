@@ -143,6 +143,14 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         ActionChainEntry entry3 = ActionChainFactory.queueActionChainEntry(action3,
             actionChain3, server2);
 
+        TaskomaticApi taskomaticTestApi = new TaskomaticApi() {
+            @Override
+            public void scheduleActionChainExecution(ActionChain actionchain) {
+                // for testing only prevent contacting taskomatic API
+            }
+        };
+
+        ActionChainFactory.setTaskomaticApi(taskomaticTestApi);
         ActionChainFactory.schedule(actionChain1, new Date());
         ActionChainFactory.schedule(actionChain2, new Date());
         ActionChainFactory.schedule(actionChain3, new Date());
@@ -417,6 +425,14 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
             }
         }
 
+        TaskomaticApi taskomaticTestApi = new TaskomaticApi() {
+            @Override
+            public void scheduleActionChainExecution(ActionChain actionchain) {
+                // for testing only
+            }
+        };
+
+        ActionChainFactory.setTaskomaticApi(taskomaticTestApi);
         ActionChainFactory.schedule(actionChain, new Date());
 
         // check actions are scheduled in correct order
