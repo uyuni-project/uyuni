@@ -279,6 +279,7 @@ public class SystemHandler extends BaseHandler {
             this.cloudPaygManager = cloudPaygManagerIn;
         }
         this.attestationManager = attestationManagerIn;
+        ActionManager.setTaskomaticApi(this.taskomaticApi);
     }
 
     /**
@@ -3279,6 +3280,7 @@ public class SystemHandler extends BaseHandler {
                 sid.longValue(), ksdata.getId(), loggedInUser, new Date(),
                 ConfigDefaults.get().getCobblerHost());
 
+        cmd.setTaskomaticApi(taskomaticApi);
         cmd.setGuestName(guestName);
         cmd.setMemoryAllocation(Long.valueOf(memoryMb));
         cmd.setVirtualCpus(Long.valueOf(vcpus.toString()));
