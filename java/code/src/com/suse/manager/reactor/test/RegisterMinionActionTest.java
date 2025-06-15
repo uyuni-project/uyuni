@@ -56,7 +56,6 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
-import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.StateFactory;
