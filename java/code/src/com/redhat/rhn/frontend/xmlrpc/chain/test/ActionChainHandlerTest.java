@@ -21,6 +21,7 @@ package com.redhat.rhn.frontend.xmlrpc.chain.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -544,13 +545,11 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
             packages.add(packageListItem.getPackageId().intValue());
         }
 
-        assertTrue(this.ach.addPackageVerify(this.admin,
-                this.server.getId().intValue(),
-                packages,
-                CHAIN_LABEL) > 0);
-        assertEquals(1, actionChain.getEntries().size());
-        assertEquals(ActionFactory.TYPE_PACKAGES_VERIFY, actionChain.getEntries()
-                .iterator().next().getAction().getActionType());
+        assertThrows(InvalidParameterException.class,
+                () -> this.ach.addPackageVerify(this.admin,
+                        this.server.getId().intValue(),
+                        packages,
+                        CHAIN_LABEL));
     }
 
     /**
@@ -578,16 +577,11 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcPackageVerifyFailureOnUnknown() {
         List<Integer> packages = new ArrayList<>();
         packages.add(0);
-        try {
-            this.ach.addPackageVerify(this.admin,
-                                      this.server.getId().intValue(),
-                                      packages,
-                                      CHAIN_LABEL);
-            fail(EXPECTED_EXCEPTION + InvalidPackageException.class.getCanonicalName());
-        }
-        catch (InvalidPackageException ex) {
-            assertEquals(0, actionChain.getEntries().size());
-        }
+        assertThrows(InvalidParameterException.class,
+                () -> this.ach.addPackageVerify(this.admin,
+                        this.server.getId().intValue(),
+                        packages,
+                        CHAIN_LABEL));
     }
 
     /**
