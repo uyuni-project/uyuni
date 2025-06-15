@@ -108,7 +108,7 @@ import java.util.Set;
 public class KickstartScheduleCommand extends BaseSystemOperation {
 
     private static Logger log = LogManager.getLogger(KickstartScheduleCommand.class);
-    private static TaskomaticApi taskomaticApi = new TaskomaticApi();
+    protected static TaskomaticApi taskomaticApi = new TaskomaticApi();
     public  static final String DHCP_NETWORK_TYPE = "dhcp";
     public  static final String LINK_NETWORK_TYPE = "link";
 
