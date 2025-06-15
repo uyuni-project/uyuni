@@ -11066,15 +11066,15 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       </trans-unit>
       <trans-unit id="payg.bastion_host_to_long" xml:space="preserve">
         <source>Bastion host must not exceed 255 characters.</source>
-        <target state="translated">Baštový hostiteľ nesmie presiahnuť 255 znakov.</target>
+        <target state="translated">Hostiteľ Bastion nesmie presiahnuť 255 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.bastion_host_required" xml:space="preserve">
         <source>Bastion host is required if any other bastion property is set.</source>
-        <target state="translated">Baštový hostiteľ sa vyžaduje, ak je nastavená akákoľvek iná baštová vlastnosť.</target>
+        <target state="translated">Hostiteľ Bastion sa vyžaduje, ak je nastavená akákoľvek iná vlastnosť bastion.</target>
       </trans-unit>
       <trans-unit id="payg.bastion_port_invalid" xml:space="preserve">
         <source>Invalid value for the bastion port</source>
-        <target state="translated">Neplatná hodnota pre baštový port</target>
+        <target state="translated">Neplatná hodnota pre port bastion</target>
       </trans-unit>
       <trans-unit id="payg.bastion_username_required" xml:space="preserve">
         <source>Username is required.</source>
@@ -11090,7 +11090,7 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       </trans-unit>
       <trans-unit id="payg.bastion_key_password_to_long" xml:space="preserve">
         <source>Bastion SSH Private Key Passphrase must not exceed 32 characters.</source>
-        <target state="translated">Heslo súkromného kľúča SSH bašty nesmie presiahnuť 32 znakov.</target>
+        <target state="translated">Heslo súkromného kľúča bastion SSH nesmie presiahnuť 32 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.ssh_data_created" xml:space="preserve">
         <source>PAYG {0} created successfully</source>
