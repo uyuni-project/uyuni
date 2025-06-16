@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:23+0200\n"
-"PO-Revision-Date: 2025-06-13 11:59+0000\n"
+"PO-Revision-Date: 2025-06-16 07:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/>\n"
 "Language: ko\n"
@@ -3968,7 +3968,6 @@ msgid "PAYG instance is not compliant"
 msgstr "PAYG 인스턴스가 호환되지 않음"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:69
-#, fuzzy
 msgid "SCC Data Sync Disabled"
 msgstr "SCC 데이터 동기화 비활성화됨"
 
