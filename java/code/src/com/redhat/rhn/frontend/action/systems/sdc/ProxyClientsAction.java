@@ -61,7 +61,8 @@ public class ProxyClientsAction extends BaseSystemsAction {
             Optional<InstalledProduct> proxyProduct = server.getInstalledProducts().stream()
                     .filter(p -> p.getName().toLowerCase().contains("proxy"))
                     .findFirst();
-            if (proxyProduct.isPresent() || server.getProxyInfo().getVersion() != null) {
+            if (proxyProduct.isPresent() ||
+                    ((server.getProxyInfo() != null) && (server.getProxyInfo().getVersion() != null))) {
                 request.setAttribute("version", proxyProduct.isPresent() ?
                         proxyProduct.get().getVersion() :
                         server.getProxyInfo().getVersion().getVersion());
