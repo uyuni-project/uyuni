@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-25 09:41+0200\n"
-"PO-Revision-Date: 2025-05-29 09:24+0000\n"
+"PO-Revision-Date: 2025-06-16 04:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/>\n"
 "Language: ko\n"
@@ -128,9 +128,7 @@ msgstr ""
 msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
-msgstr ""
-"귀하의 계정은 (릴리스='%(release)s', 아키텍처='%(arch)s')%(www_activation)에 "
-"일치하는 채널에 액세스할 수 있는 권한이 없습니다."
+msgstr "귀하의 계정은 (릴리스='%(release)s', 아키텍처='%(arch)s')%(www_activation)s에 일치하는 채널에 액세스할 수 있는 권한이 없습니다."
 
 #: ../server/rhnChannel.py:2236
 #, python-format
@@ -214,12 +212,12 @@ msgstr "패키지를 찾을 수 없음"
 #: ../server/rhnServer/server_class.py:103
 #, python-format
 msgid "Architecture `%s' is not supported"
-msgstr "'%s' 아키텍처는 지원되지 않습니다."
+msgstr "`%s' 아키텍처는 지원되지 않습니다."
 
 #: ../server/rhnServer/server_token.py:86
 #, python-format
 msgid "Token `%s' has more than one base channel assigned"
-msgstr "'%s' 토큰에 기본 채널이 1개 이상 할당되었습니다."
+msgstr "`%s' 토큰에 기본 채널이 1개 이상 할당되었습니다."
 
 #: ../server/rhnServer/server_token.py:89
 msgid "Conflicting base channels"
