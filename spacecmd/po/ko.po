@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-25 09:41+0200\n"
-"PO-Revision-Date: 2025-06-13 08:59+0000\n"
+"PO-Revision-Date: 2025-06-16 07:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>\n"
 "Language: ko\n"
@@ -8241,7 +8241,6 @@ msgid "Manage with Salt SSH"
 msgstr "Salt SSH를 사용하여 관리"
 
 #: ../src/spacecmd/system.py:4607
-#, fuzzy
 msgid "Provided port must be numeric"
 msgstr "입력한 포트는 숫자여야 합니다."
 
