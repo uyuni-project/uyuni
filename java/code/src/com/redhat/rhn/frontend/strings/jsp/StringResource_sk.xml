@@ -7723,70 +7723,70 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemsearch.jsp.searchallsystems" xml:space="preserve">
         <source>Search all systems</source>
-        <target/>
+        <target state="translated">Hľadať vo všetkých systémoch</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.searchSSM" xml:space="preserve">
         <source>Search system set manager</source>
-        <target/>
+        <target state="translated">Hľadať v správcovi sád systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.invertlabel" xml:space="preserve">
         <source>Invert Result</source>
-        <target/>
+        <target state="translated">Invertovať výsledok</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.finegrainedlabel" xml:space="preserve">
         <source>Fine Grained Search:</source>
-        <target/>
+        <target state="translated">Jemné vyhľadávanie:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.systemname" xml:space="preserve">
         <source>System Name</source>
-        <target/>
+        <target state="translated">Názov systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.entitlement" xml:space="preserve">
         <source>System Type</source>
-        <target/>
+        <target state="translated">Typ systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.invertdescription" xml:space="preserve">
         <source>Invert search results</source>
-        <target/>
+        <target state="translated">Invertovať výsledky hľadania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.finegrained" xml:space="preserve">
         <source>Fine grained search results</source>
-        <target/>
+        <target state="translated">Výsledky jemného vyhľadávania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.noresults" xml:space="preserve">
         <source>No results found.</source>
-        <target/>
+        <target state="translated">Nenašli sa žiadne výsledky.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_name_and_description_column" xml:space="preserve">
         <source>Description</source>
-        <target/>
+        <target state="translated">Popis</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
