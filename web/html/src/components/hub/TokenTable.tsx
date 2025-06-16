@@ -210,7 +210,7 @@ export class TokenTable extends React.Component<Props, State> {
         row.valid = request.valid;
         row.expirationDate = response.data;
         this.tableRef.current?.refresh();
-        showInfoToastr("Access token validity successfully chande");
+        showInfoToastr("Access token validity successfully changed");
       });
   }
 
