@@ -58,9 +58,9 @@ namespace :parallel do
       include_profiles = profiles.nil? ? '--profile default' : "--profile #{profiles.gsub(',', ' --profile ')}"
       tags = ENV.fetch('TAGS', nil)
       include_tags = tags.nil? ? '' : "--tags #{tags}"
+      cucumber_opts = "#{include_profiles} #{include_tags} #{html_results} #{json_results} #{junit_results} -f CustomFormatter::PrettyFormatter -r features "
       # Publish the results in reports.cucumber.io if the environment variable PUBLISH_CUCUMBER_REPORT is set
       cucumber_opts << ' --publish' if ENV['PUBLISH_CUCUMBER_REPORT'] == 'true'
-      cucumber_opts = "#{include_profiles} #{include_tags} #{html_results} #{json_results} #{junit_results} -f CustomFormatter::PrettyFormatter -r features "
       sh "bundle exec parallel_cucumber -n 6 -o '#{cucumber_opts}' #{features}"
     end
   end
