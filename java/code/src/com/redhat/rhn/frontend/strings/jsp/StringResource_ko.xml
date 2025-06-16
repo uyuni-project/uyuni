@@ -11464,9 +11464,9 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
+      <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve" approved="yes">
         <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/cobbler/templates instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
-        <target state="needs-translation"> 기존 자동 설치 프로파일을 다시 사용하려면 브라우저에서가 아닌 /var/lib/rhn/kickstarts에서 템플릿을 복사하여 붙여넣는 것이 좋습니다. 이를 통해 템플릿 변수가 그대로 유지되어 자동 설치 후 등록 프로세스가 올바르게 작동할 수 있습니다.</target>
+        <target state="final"> 기존 자동 설치 프로파일을 다시 사용하려면 브라우저에서 복사하는 것보다 /var/lib/rhn/kickstarts에서 템플릿을 복사하여 붙여 넣는 것이 좋습니다.  이를 통해 템플릿 변수가 그대로 유지되어 자동 설치 후 등록 프로세스가 올바르게 작동할 수 있습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
@@ -29091,7 +29091,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="copyright.jsp.title" xml:space="preserve">
         <source>Copyright (c) 2011 - 2025 SUSE LLC.</source>
-        <target state="needs-adaptation">Copyright (c) 2011 - 2024 SUSE LLC.</target>
+        <target state="final">Copyright (c) 2011 - 2024 SUSE LLC.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
@@ -29152,9 +29152,9 @@ given channel.</source>
         <source>OS Image Build Host</source>
         <target>OD 이미지 빌드 호스트</target>
       </trans-unit>
-      <trans-unit id="monitoring_entitled" xml:space="preserve">
+      <trans-unit id="monitoring_entitled" xml:space="preserve" approved="yes">
         <source>Monitor this Host</source>
-        <target state="needs-translation">이 호스트 모니터링</target>
+        <target state="final">이 호스트 모니터링</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -29887,13 +29887,13 @@ given channel.</source>
         </context-group>
         <target state="final">페이고 서버입니다.</target>
       </trans-unit>
-      <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
+      <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve" approved="yes">
         <source>List Already Included Patches:</source>
-        <target state="needs-translation">이미 포함된 패치 목록:</target>
+        <target state="final">이미 포함된 패치 목록:</target>
       </trans-unit>
-      <trans-unit id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
+      <trans-unit id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve" approved="yes">
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
-        <target state="needs-translation">이 항목을 선택하면 이미 채널에 포함된 패치가 표시됩니다. 이 기능은 패치가 여러 채널의 일부이고 그 중 하나로부터 포함되었으며 다른 채널의 패키지를 연결해야 하는 경우에 유용합니다.</target>
+        <target state="final">이 항목을 선택하면 이미 채널에 포함된 패치가 표시됩니다. 이 기능은 패치가 여러 채널의 일부이고 그 중 하나로부터 포함되었으며 다른 채널의 패키지를 연결해야 하는 경우에 유용합니다.</target>
       </trans-unit>
     </body>
   </file>
