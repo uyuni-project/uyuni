@@ -213,6 +213,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             fail("Must throw LookupException.");
         }
         catch (LookupException ignored) {
+            //should be here
         }
     }
 
