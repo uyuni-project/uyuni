@@ -22,7 +22,7 @@ env:
   UYUNI_PROJECT: uyuni-project
   UYUNI_VERSION: master
   NO_AUTH_REGISTRY: "noauthregistry.lab"
-  CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
+  PUBLISH_CUCUMBER_REPORT: true
   AUTH_REGISTRY: "authregistry.lab"
   AUTH_REGISTRY_CREDENTIALS: "cucutest|cucutest"
 
