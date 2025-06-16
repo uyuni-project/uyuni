@@ -1,0 +1,9 @@
+#import uyuni_cobbler_helper
+#for $label, $channel in $uyuni_cobbler_helper.channels($distrotree).items()
+      <listentry>
+        <ask_on_error config:type="boolean">true</ask_on_error>
+        <media_url>https://$redhat_management_server/ks/dist/child/$label/$distrotree</media_url>
+        <name>$channel["name"]</name>
+        <product>$channel["product"]</product>
+     </listentry>
+#end for
