@@ -2287,7 +2287,7 @@ available for this kickstart profile to function properly.
 &lt;/div&gt;
 </target>
       </trans-unit>
-      <trans-unit approved="no" id="kickstart.invalidchannel.satmessage.appstream" xml:space="preserve">
+      <trans-unit approved="yes" id="kickstart.invalidchannel.satmessage.appstream" xml:space="preserve">
         <source>&lt;div style="text-align: left;"&gt;
 &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
 &lt;ul&gt;
@@ -2305,7 +2305,7 @@ and try again.
 &lt;/ul&gt;
 &lt;/div&gt;
 </source>
-        <target state="translated">&lt;div style="text-align: left;"&gt;
+        <target state="final">&lt;div style="text-align: left;"&gt;
 &lt;p&gt;この問題を解決するには下記の点を確認してください:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
