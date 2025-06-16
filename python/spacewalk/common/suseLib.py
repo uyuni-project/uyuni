@@ -829,7 +829,10 @@ def get_content_type(
         c.perform()
 
         # Get Content-Type from info
-        content_type = c.getinfo(pycurl.CONTENT_TYPE)
+        try:
+            content_type = c.getinfo(pycurl.CONTENT_TYPE)
+        except TypeError:
+            content_type = None
 
         if content_type:
             # PycURL content_type might be bytes, decode it
