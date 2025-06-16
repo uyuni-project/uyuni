@@ -3,33 +3,33 @@
   <file datatype="plaintext" original="" source-language="en" target-language="ko">
     <body>
       <!-- Action Statuses -->
-      <trans-unit id="Queued" xml:space="preserve">
+      <trans-unit id="Queued" xml:space="preserve" approved="yes">
         <source>Queued</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
-        <target state="needs-translation">대기열에 추가됨</target>
+        <target state="final">대기열에 추가됨</target>
       </trans-unit>
-      <trans-unit id="Picked Up" xml:space="preserve">
+      <trans-unit id="Picked Up" xml:space="preserve" approved="yes">
         <source>Picked Up</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
-        <target state="needs-translation">선택됨</target>
+        <target state="final">선택됨</target>
       </trans-unit>
-      <trans-unit id="Completed" xml:space="preserve">
+      <trans-unit id="Completed" xml:space="preserve" approved="yes">
         <source>Completed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
-        <target state="needs-translation">완료됨</target>
+        <target state="final">완료됨</target>
       </trans-unit>
-      <trans-unit id="Failed" xml:space="preserve">
+      <trans-unit id="Failed" xml:space="preserve" approved="yes">
         <source>Failed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
-        <target state="needs-translation">실패함</target>
+        <target state="final">실패함</target>
       </trans-unit>
       <!-- System Group Types -->
       <trans-unit approved="yes" id="Spacewalk Management Entitled Servers" xml:space="preserve">
@@ -54,9 +54,9 @@
         <target>모니터링</target>
       </trans-unit>
       <!--  Human Readable version of the entitlement labels -->
-      <trans-unit id="bootstrap_entitled" xml:space="preserve">
+      <trans-unit id="bootstrap_entitled" xml:space="preserve" approved="yes">
         <source>Bootstrap</source>
-        <target state="needs-translation">부트스트랩</target>
+        <target state="final">부트스트랩</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -72,36 +72,36 @@
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="unentitled" xml:space="preserve">
+      <trans-unit id="unentitled" xml:space="preserve" approved="yes">
         <source>&lt;em&gt;(none)&lt;/em&gt;</source>
-        <target state="needs-translation">&lt;em&gt;(없음)&lt;/em&gt;</target>
+        <target state="final">&lt;em&gt;(없음)&lt;/em&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="base" xml:space="preserve">
+      <trans-unit id="base" xml:space="preserve" approved="yes">
         <source>Base</source>
-        <target state="needs-translation">기본</target>
+        <target state="final">기본</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="add-on" xml:space="preserve">
+      <trans-unit id="add-on" xml:space="preserve" approved="yes">
         <source>Add-On</source>
-        <target state="needs-translation">추가 기능</target>
+        <target state="final">추가 기능</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="virtualization_host" xml:space="preserve">
+      <trans-unit id="virtualization_host" xml:space="preserve" approved="yes">
         <source>Virtualization Host</source>
-        <target state="needs-translation">가상화 호스트</target>
+        <target state="final">가상화 호스트</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -109,89 +109,89 @@
         </context-group>
       </trans-unit>
       <!-- TimeZones -->
-      <trans-unit id="Australia/Brisbane" xml:space="preserve">
+      <trans-unit id="Australia/Brisbane" xml:space="preserve" approved="yes">
         <source>(GMT+1000) Australia (Eastern Standard)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+1000) 호주(동부 표준시)</target>
+        <target state="final">(GMT+1000) 호주(동부 표준시)</target>
       </trans-unit>
-      <trans-unit id="Australia/Sydney" xml:space="preserve">
+      <trans-unit id="Australia/Sydney" xml:space="preserve" approved="yes">
         <source>(GMT+1000) Australia (Eastern Daylight)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+1000) 호주(동부 서머 타임)</target>
+        <target state="final">(GMT+1000) 호주(동부 서머 타임)</target>
       </trans-unit>
-      <trans-unit id="Asia/Tokyo" xml:space="preserve">
+      <trans-unit id="Asia/Tokyo" xml:space="preserve" approved="yes">
         <source>(GMT+0900) Japan</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0900) 일본</target>
+        <target state="final">(GMT+0900) 일본</target>
       </trans-unit>
-      <trans-unit id="Asia/Seoul" xml:space="preserve">
+      <trans-unit id="Asia/Seoul" xml:space="preserve" approved="yes">
         <source>(GMT+0900) Korea</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0900) 한국</target>
+        <target state="final">(GMT+0900) 한국</target>
       </trans-unit>
-      <trans-unit id="Australia/Perth" xml:space="preserve">
+      <trans-unit id="Australia/Perth" xml:space="preserve" approved="yes">
         <source>(GMT+0800) Australia (Western)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0800) 호주(서부)</target>
+        <target state="final">(GMT+0800) 호주(서부)</target>
       </trans-unit>
-      <trans-unit id="Europe/Moscow" xml:space="preserve">
+      <trans-unit id="Europe/Moscow" xml:space="preserve" approved="yes">
         <source>(GMT+0400) Russia (Moscow)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0400) 러시아(모스크바)</target>
+        <target state="final">(GMT+0400) 러시아(모스크바)</target>
       </trans-unit>
-      <trans-unit id="Africa/Johannesburg" xml:space="preserve">
+      <trans-unit id="Africa/Johannesburg" xml:space="preserve" approved="yes">
         <source>(GMT+0200) South Africa (Johannesburg)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0200) 남아프리카공화국(요하네스버그)</target>
+        <target state="final">(GMT+0200) 남아프리카공화국(요하네스버그)</target>
       </trans-unit>
-      <trans-unit id="Europe/Bucharest" xml:space="preserve">
+      <trans-unit id="Europe/Bucharest" xml:space="preserve" approved="yes">
         <source>(GMT+0200) Europe (Eastern)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0200) 유럽(동부)</target>
+        <target state="final">(GMT+0200) 유럽(동부)</target>
       </trans-unit>
-      <trans-unit id="Europe/Paris" xml:space="preserve">
+      <trans-unit id="Europe/Paris" xml:space="preserve" approved="yes">
         <source>(GMT+0100) Europe (Central)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0100) 유럽(중부)</target>
+        <target state="final">(GMT+0100) 유럽(중부)</target>
       </trans-unit>
-      <trans-unit id="GMT" xml:space="preserve">
+      <trans-unit id="GMT" xml:space="preserve" approved="yes">
         <source>(GMT+0000) Greenwich Mean Time</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0000) 그리니치 표준시</target>
+        <target state="final">(GMT+0000) 그리니치 표준시</target>
       </trans-unit>
-      <trans-unit id="America/St_Johns" xml:space="preserve">
+      <trans-unit id="America/St_Johns" xml:space="preserve" approved="yes">
         <source>(GMT-0330) Canada (Newfoundland)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT-0330) 캐나다(뉴파운드랜드)</target>
+        <target state="final">(GMT-0330) 캐나다(뉴펀들랜드)</target>
       </trans-unit>
-      <trans-unit id="America/Halifax" xml:space="preserve">
+      <trans-unit id="America/Halifax" xml:space="preserve" approved="yes">
         <source>(GMT-0400) Canada (Atlantic)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT-0400) 캐나다(대서양)</target>
+        <target state="final">(GMT-0400) 캐나다(대서양)</target>
       </trans-unit>
       <trans-unit id="America/New_York" xml:space="preserve">
         <source>(GMT-0500) United States (Eastern)</source>
@@ -200,215 +200,215 @@
         </context-group>
         <target>(GMT-0500) 미국 (동부)</target>
       </trans-unit>
-      <trans-unit id="America/Chicago" xml:space="preserve">
+      <trans-unit id="America/Chicago" xml:space="preserve" approved="yes">
         <source>(GMT-0600) United States (Central)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT-0600) 미국(중부)</target>
+        <target state="final">(GMT-0600) 미국(중부)</target>
       </trans-unit>
-      <trans-unit id="America/Regina" xml:space="preserve">
+      <trans-unit id="America/Regina" xml:space="preserve" approved="yes">
         <source>(GMT-0600) Canada (Regina)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT-0600) 캐나다(레지나)</target>
+        <target state="final">(GMT-0600) 캐나다(리자이나)</target>
       </trans-unit>
-      <trans-unit id="America/Denver" xml:space="preserve">
+      <trans-unit id="America/Denver" xml:space="preserve" approved="yes">
         <source>(GMT-0700) United States (Mountain)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT-0700) 미국(산악지대)</target>
+        <target state="final">(GMT-0700) 미국(산악지대)</target>
       </trans-unit>
-      <trans-unit id="America/Los_Angeles" xml:space="preserve">
+      <trans-unit id="America/Los_Angeles" xml:space="preserve" approved="yes">
         <source>(GMT-0800) United States (Pacific)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT-0800) 미국(태평양)</target>
+        <target state="final">(GMT-0800) 미국(태평양)</target>
       </trans-unit>
-      <trans-unit id="America/Anchorage" xml:space="preserve">
+      <trans-unit id="America/Anchorage" xml:space="preserve" approved="yes">
         <source>(GMT-0900) United States (Alaska)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT-0900) 미국(알래스카)</target>
+        <target state="final">(GMT-0900) 미국(알래스카)</target>
       </trans-unit>
-      <trans-unit id="Pacific/Easter" xml:space="preserve">
+      <trans-unit id="Pacific/Easter" xml:space="preserve" approved="yes">
         <source>(GMT-0500) Chile (Easter Island)</source>
-        <target state="needs-translation">(GMT-0500) 칠레(이스터 섬)</target>
+        <target state="final">(GMT-0500) 칠레(이스터 섬)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Pacific/Honolulu" xml:space="preserve">
+      <trans-unit id="Pacific/Honolulu" xml:space="preserve" approved="yes">
         <source>(GMT-1000) United States (Hawaii)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT-1000) 미국(하와이)</target>
+        <target state="final">(GMT-1000) 미국(하와이)</target>
       </trans-unit>
-      <trans-unit id="Pacific/Enderbury" xml:space="preserve">
+      <trans-unit id="Pacific/Enderbury" xml:space="preserve" approved="yes">
         <source>(GMT+1300) Tonga</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+1300) 통가</target>
+        <target state="final">(GMT+1300) 통가</target>
       </trans-unit>
-      <trans-unit id="Pacific/Wallis" xml:space="preserve">
+      <trans-unit id="Pacific/Wallis" xml:space="preserve" approved="yes">
         <source>(GMT+1200) New Zealand (Wallis)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+1200) 뉴질랜드(월리스)</target>
+        <target state="final">(GMT+1200) 뉴질랜드(월리스)</target>
       </trans-unit>
-      <trans-unit id="Pacific/Auckland" xml:space="preserve">
+      <trans-unit id="Pacific/Auckland" xml:space="preserve" approved="yes">
         <source>(GMT+1200) New Zealand (Auckland)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+1200) 뉴질랜드(오클랜드)</target>
+        <target state="final">(GMT+1200) 뉴질랜드(오클랜드)</target>
       </trans-unit>
-      <trans-unit id="Pacific/Norfolk" xml:space="preserve">
+      <trans-unit id="Pacific/Norfolk" xml:space="preserve" approved="yes">
         <source>(GMT+1130) Norfolk Island</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+1130) 노퍽 제도</target>
+        <target state="final">(GMT+1130) 노퍽섬</target>
       </trans-unit>
-      <trans-unit id="Pacific/Guadalcanal" xml:space="preserve">
+      <trans-unit id="Pacific/Guadalcanal" xml:space="preserve" approved="yes">
         <source>(GMT+1100) Micronesia</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+1100) 마이크로네시아</target>
+        <target state="final">(GMT+1100) 미크로네시아</target>
       </trans-unit>
-      <trans-unit id="Australia/Darwin" xml:space="preserve">
+      <trans-unit id="Australia/Darwin" xml:space="preserve" approved="yes">
         <source>(GMT+0930) Australia (Central/Darwin)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0930) 호주(중부/다윈)</target>
+        <target state="final">(GMT+0930) 호주(중부/다윈)</target>
       </trans-unit>
-      <trans-unit id="Australia/Adelaide" xml:space="preserve">
+      <trans-unit id="Australia/Adelaide" xml:space="preserve" approved="yes">
         <source>(GMT+0930) Australia Adelaide</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0930) 호주 애들레이드</target>
+        <target state="final">(GMT+0930) 호주 애들레이드</target>
       </trans-unit>
-      <trans-unit id="Asia/Jakarta" xml:space="preserve">
+      <trans-unit id="Asia/Jakarta" xml:space="preserve" approved="yes">
         <source>(GMT+0700) Thailand</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0700) 태국</target>
+        <target state="final">(GMT+0700) 태국</target>
       </trans-unit>
-      <trans-unit id="Indian/Cocos" xml:space="preserve">
+      <trans-unit id="Indian/Cocos" xml:space="preserve" approved="yes">
         <source>(GMT+0630) Burma</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0630) 버마</target>
+        <target state="final">(GMT+0630) 버마</target>
       </trans-unit>
-      <trans-unit id="Indian/Chagos" xml:space="preserve">
+      <trans-unit id="Indian/Chagos" xml:space="preserve" approved="yes">
         <source>(GMT+0600) Bangladesh</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0600) 방글라데시</target>
+        <target state="final">(GMT+0600) 방글라데시</target>
       </trans-unit>
-      <trans-unit id="Asia/Katmandu" xml:space="preserve">
+      <trans-unit id="Asia/Katmandu" xml:space="preserve" approved="yes">
         <source>(GMT+0545) Nepal</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0545) 네팔</target>
+        <target state="final">(GMT+0545) 네팔</target>
       </trans-unit>
-      <trans-unit id="Asia/Calcutta" xml:space="preserve">
+      <trans-unit id="Asia/Calcutta" xml:space="preserve" approved="yes">
         <source>(GMT+0530) India (Calcutta)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0530) 인도(캘커타)</target>
+        <target state="final">(GMT+0530) 인도(캘커타)</target>
       </trans-unit>
-      <trans-unit id="Indian/Maldives" xml:space="preserve">
+      <trans-unit id="Indian/Maldives" xml:space="preserve" approved="yes">
         <source>(GMT+0500) Pakistan</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0500) 파키스탄</target>
+        <target state="final">(GMT+0500) 파키스탄</target>
       </trans-unit>
-      <trans-unit id="Asia/Kabul" xml:space="preserve">
+      <trans-unit id="Asia/Kabul" xml:space="preserve" approved="yes">
         <source>(GMT+0430) Afghanistan</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0430) 아프가니스탄</target>
+        <target state="final">(GMT+0430) 아프가니스탄</target>
       </trans-unit>
-      <trans-unit id="Indian/Mauritius" xml:space="preserve">
+      <trans-unit id="Indian/Mauritius" xml:space="preserve" approved="yes">
         <source>(GMT+0400) Russia (Samara)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0400) 러시아(사마라)</target>
+        <target state="final">(GMT+0400) 러시아(사마라)</target>
       </trans-unit>
-      <trans-unit id="Atlantic/Azores" xml:space="preserve">
+      <trans-unit id="Atlantic/Azores" xml:space="preserve" approved="yes">
         <source>(GMT-0100) Azores</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT-0100) 아조레스</target>
+        <target state="final">(GMT-0100) 아조레스</target>
       </trans-unit>
-      <trans-unit id="Atlantic/South_Georgia" xml:space="preserve">
+      <trans-unit id="Atlantic/South_Georgia" xml:space="preserve" approved="yes">
         <source>(GMT-0200) Sandwich Islands</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT-0200) 샌드위치 제도</target>
+        <target state="final">(GMT-0200) 샌드위치 제도</target>
       </trans-unit>
-      <trans-unit id="Pacific/Midway" xml:space="preserve">
+      <trans-unit id="Pacific/Midway" xml:space="preserve" approved="yes">
         <source>(GMT-1100) Midway</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT-1100) 미드웨이</target>
+        <target state="final">(GMT-1100) 미드웨이</target>
       </trans-unit>
-      <trans-unit id="America/Santiago" xml:space="preserve">
+      <trans-unit id="America/Santiago" xml:space="preserve" approved="yes">
         <source>(GMT-0300) Chile (Continental)</source>
-        <target state="needs-translation">(GMT-0300) 칠레(대륙)</target>
+        <target state="final">(GMT-0300) 칠레(대륙)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="America/Sao_Paulo" xml:space="preserve">
+      <trans-unit id="America/Sao_Paulo" xml:space="preserve" approved="yes">
         <source>(GMT-0300) Brazil</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT-0300) 브라질</target>
+        <target state="final">(GMT-0300) 브라질</target>
       </trans-unit>
-      <trans-unit id="America/Indianapolis" xml:space="preserve">
+      <trans-unit id="America/Indianapolis" xml:space="preserve" approved="yes">
         <source>(GMT-0500) United States (Indiana)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT-0500) 미국(인디애나)</target>
+        <target state="final">(GMT-0500) 미국(인디애나)</target>
       </trans-unit>
-      <trans-unit id="America/Phoenix" xml:space="preserve">
+      <trans-unit id="America/Phoenix" xml:space="preserve" approved="yes">
         <source>(GMT-0700) United States (Arizona)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT-0700) 미국(아리조나)</target>
+        <target state="final">(GMT-0700) 미국(애리조나)</target>
       </trans-unit>
-      <trans-unit id="Asia/Riyadh" xml:space="preserve">
+      <trans-unit id="Asia/Riyadh" xml:space="preserve" approved="yes">
         <source>(GMT+0300) Saudi Arabia</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-translation">(GMT+0300) 사우디아라비아</target>
+        <target state="final">(GMT+0300) 사우디아라비아</target>
       </trans-unit>
       <trans-unit id="Asia/Tehran" xml:space="preserve">
         <source>(GMT+0330) Iran</source>
@@ -418,12 +418,12 @@
         <target state="needs-translation">(GMT+0330) 이란</target>
       </trans-unit>
       <!-- Monitoring "Config Macro" records - used to configure the monitoring sat -->
-      <trans-unit id="MAIL_MX" xml:space="preserve">
+      <trans-unit id="MAIL_MX" xml:space="preserve" approved="yes">
         <source>Local mail exchanger</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target state="needs-translation">로컬 메일 교환기</target>
+        <target state="final">로컬 메일 교환기</target>
       </trans-unit>
       <trans-unit approved="yes" id="MDOM" xml:space="preserve">
         <source>Mail domain (e.g. 'suse.com' for myemail@suse.com)</source>
@@ -432,41 +432,41 @@
         </context-group>
         <target>메일 도메인(예: myemail@suse.com의 경우 'suse.com')</target>
       </trans-unit>
-      <trans-unit id="RHN_ADMIN_EMAIL" xml:space="preserve">
+      <trans-unit id="RHN_ADMIN_EMAIL" xml:space="preserve" approved="yes">
         <source>@@PRODUCT_NAME@@ administrator email</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target state="needs-translation">@@PRODUCT_NAME@@ 관리자 전자 메일</target>
+        <target state="final">@@PRODUCT_NAME@@ 관리자 전자 메일</target>
       </trans-unit>
-      <trans-unit id="RHN_SAT_HOSTNAME" xml:space="preserve">
+      <trans-unit id="RHN_SAT_HOSTNAME" xml:space="preserve" approved="yes">
         <source>@@PRODUCT_NAME@@ hostname (FQDN)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target state="needs-translation">@@PRODUCT_NAME@@ 호스트 이름(FQDN)</target>
+        <target state="final">@@PRODUCT_NAME@@ 호스트 이름(FQDN)</target>
       </trans-unit>
-      <trans-unit id="RHN_SAT_WEB_PORT" xml:space="preserve">
+      <trans-unit id="RHN_SAT_WEB_PORT" xml:space="preserve" approved="yes">
         <source>@@PRODUCT_NAME@@ webserver port (80 for http, 443 for https)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target state="needs-translation">@@PRODUCT_NAME@@ 웹서버 포트(http의 경우 80, https의 경우 443)</target>
+        <target state="final">@@PRODUCT_NAME@@ 웹서버 포트(http의 경우 80, https의 경우 443)</target>
       </trans-unit>
-      <trans-unit id="XPROTO" xml:space="preserve">
+      <trans-unit id="XPROTO" xml:space="preserve" approved="yes">
         <source>External protocol ('http' or 'https')</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target state="needs-translation">외부 프로토콜('http' 또는 'https')</target>
+        <target state="final">외부 프로토콜('http' 또는 'https')</target>
       </trans-unit>
       <!-- Monitoring Probe Command Parameter descriptions -->
-      <trans-unit id="Application Protocol" xml:space="preserve">
+      <trans-unit id="Application Protocol" xml:space="preserve" approved="yes">
         <source>Application Protocol</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">응용 프로그램 프로토콜</target>
+        <target state="final">응용 프로그램 프로토콜</target>
       </trans-unit>
       <trans-unit approved="yes" id="Available Space Percent Used Critical if Above" xml:space="preserve">
         <source>Available Space Percent Used Critical if Above</source>
@@ -482,89 +482,89 @@
         </context-group>
         <target>사용 가능 공간 사용 비율, 다음 이상일 경우 경고</target>
       </trans-unit>
-      <trans-unit id="BEA Domain Admin Server" xml:space="preserve">
+      <trans-unit id="BEA Domain Admin Server" xml:space="preserve" approved="yes">
         <source>BEA Domain Admin Server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">BEA 도메인 관리 서버</target>
+        <target state="final">BEA 도메인 관리 서버</target>
       </trans-unit>
-      <trans-unit id="BEA Server Name" xml:space="preserve">
+      <trans-unit id="BEA Server Name" xml:space="preserve" approved="yes">
         <source>BEA Server Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">BEA 서버 이름</target>
+        <target state="final">BEA 서버 이름</target>
       </trans-unit>
-      <trans-unit id="Basic regular expression" xml:space="preserve">
+      <trans-unit id="Basic regular expression" xml:space="preserve" approved="yes">
         <source>Basic regular expression</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">기본 정규 표현식</target>
+        <target state="final">기본 정규식</target>
       </trans-unit>
-      <trans-unit id="Command" xml:space="preserve">
+      <trans-unit id="Command" xml:space="preserve" approved="yes">
         <source>Command</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">명령</target>
+        <target state="final">명령</target>
       </trans-unit>
-      <trans-unit id="Command name" xml:space="preserve">
+      <trans-unit id="Command name" xml:space="preserve" approved="yes">
         <source>Command name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">명령 이름</target>
+        <target state="final">명령 이름</target>
       </trans-unit>
-      <trans-unit id="Count process groups" xml:space="preserve">
+      <trans-unit id="Count process groups" xml:space="preserve" approved="yes">
         <source>Count process groups</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">프로세스 그룹 수</target>
+        <target state="final">프로세스 그룹 수</target>
       </trans-unit>
-      <trans-unit id="Critical 1 min" xml:space="preserve">
+      <trans-unit id="Critical 1 min" xml:space="preserve" approved="yes">
         <source>Critical 1 min</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">중요 1분</target>
+        <target state="final">중요 1분</target>
       </trans-unit>
-      <trans-unit id="Critical 15 min" xml:space="preserve">
+      <trans-unit id="Critical 15 min" xml:space="preserve" approved="yes">
         <source>Critical 15 min</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">중요 15분</target>
+        <target state="final">중요 15분</target>
       </trans-unit>
-      <trans-unit id="Critical 5 min" xml:space="preserve">
+      <trans-unit id="Critical 5 min" xml:space="preserve" approved="yes">
         <source>Critical 5 min</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">중요 5분</target>
+        <target state="final">중요 5분</target>
       </trans-unit>
-      <trans-unit id="Critical Accesses" xml:space="preserve">
+      <trans-unit id="Critical Accesses" xml:space="preserve" approved="yes">
         <source>Critical Accesses</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">중요 액세스</target>
+        <target state="final">중요 액세스</target>
       </trans-unit>
-      <trans-unit id="Critical Active Locks" xml:space="preserve">
+      <trans-unit id="Critical Active Locks" xml:space="preserve" approved="yes">
         <source>Critical Active Locks</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">중요 활성 잠금</target>
+        <target state="final">중요 활성 잠금</target>
       </trans-unit>
-      <trans-unit id="Critical Active Sessions" xml:space="preserve">
+      <trans-unit id="Critical Active Sessions" xml:space="preserve" approved="yes">
         <source>Critical Active Sessions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">중요 활성 세션</target>
+        <target state="final">중요 활성 세션</target>
       </trans-unit>
       <trans-unit approved="yes" id="Critical Avail Sessions Used Pct" xml:space="preserve">
         <source>Critical Avail Sessions Used Pct</source>
@@ -1105,33 +1105,33 @@
         </context-group>
         <target>중요 쓰기 속도</target>
       </trans-unit>
-      <trans-unit id="Database" xml:space="preserve">
+      <trans-unit id="Database" xml:space="preserve" approved="yes">
         <source>Database</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">데이터베이스</target>
+        <target state="final">데이터베이스</target>
       </trans-unit>
-      <trans-unit id="Device" xml:space="preserve">
+      <trans-unit id="Device" xml:space="preserve" approved="yes">
         <source>Device</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">장치</target>
+        <target state="final">장치</target>
       </trans-unit>
-      <trans-unit id="Disk number or disk name (from iostat)" xml:space="preserve">
+      <trans-unit id="Disk number or disk name (from iostat)" xml:space="preserve" approved="yes">
         <source>Disk number or disk name (from iostat)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">디스크 수 또는 디스크 이름(iostat의 결과)</target>
+        <target state="final">디스크 수 또는 디스크 이름(iostat의 결과)</target>
       </trans-unit>
       <trans-unit id="Expect" xml:space="preserve">
         <source>Expect</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">필요한 값</target>
+        <target state="needs-translation">예상 결과</target>
       </trans-unit>
       <trans-unit id="Expect Content" xml:space="preserve">
         <source>Expect Content</source>
@@ -1152,77 +1152,77 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">필요한 데이터베이스 이름(V$DATABASE.NAME)</target>
+        <target state="needs-translation">필요한 DB 이름(V$DATABASE.NAME)</target>
       </trans-unit>
-      <trans-unit id="FTP Port" xml:space="preserve">
+      <trans-unit id="FTP Port" xml:space="preserve" approved="yes">
         <source>FTP Port</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">FTP 포트</target>
+        <target state="final">FTP 포트</target>
       </trans-unit>
-      <trans-unit id="Filesystem" xml:space="preserve">
+      <trans-unit id="Filesystem" xml:space="preserve" approved="yes">
         <source>Filesystem</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">파일시스템</target>
+        <target state="final">파일시스템</target>
       </trans-unit>
-      <trans-unit id="HTTP Port" xml:space="preserve">
+      <trans-unit id="HTTP Port" xml:space="preserve" approved="yes">
         <source>HTTP Port</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">HTTP 포트</target>
+        <target state="final">HTTP 포트</target>
       </trans-unit>
-      <trans-unit id="HTTPS Port" xml:space="preserve">
+      <trans-unit id="HTTPS Port" xml:space="preserve" approved="yes">
         <source>HTTPS Port</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">HTTPS 포트</target>
+        <target state="final">HTTPS 포트</target>
       </trans-unit>
-      <trans-unit id="Host or Address to Look Up" xml:space="preserve">
+      <trans-unit id="Host or Address to Look Up" xml:space="preserve" approved="yes">
         <source>Host or Address to Look Up</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">검색할 호스트 또는 주소</target>
+        <target state="final">검색할 호스트 또는 주소</target>
       </trans-unit>
-      <trans-unit id="IMAP Port" xml:space="preserve">
+      <trans-unit id="IMAP Port" xml:space="preserve" approved="yes">
         <source>IMAP Port</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">IMAP 포트</target>
+        <target state="final">IMAP 포트</target>
       </trans-unit>
-      <trans-unit id="IP Address (optional; defaults to host IP)" xml:space="preserve">
+      <trans-unit id="IP Address (optional; defaults to host IP)" xml:space="preserve" approved="yes">
         <source>IP Address (optional; defaults to host IP)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">IP 주소(선택 사항, 기본값은 호스트 IP)</target>
+        <target state="final">IP 주소(선택 사항, 기본값은 호스트 IP)</target>
       </trans-unit>
-      <trans-unit id="Include reclaimable memory" xml:space="preserve">
+      <trans-unit id="Include reclaimable memory" xml:space="preserve" approved="yes">
         <source>Include reclaimable memory</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">반환 가능한 메모리 포함</target>
+        <target state="final">반환 가능한 메모리 포함</target>
       </trans-unit>
-      <trans-unit id="Index Name" xml:space="preserve">
+      <trans-unit id="Index Name" xml:space="preserve" approved="yes">
         <source>Index Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">인덱스 이름</target>
+        <target state="final">인덱스 이름</target>
       </trans-unit>
-      <trans-unit id="Index Owner" xml:space="preserve">
+      <trans-unit id="Index Owner" xml:space="preserve" approved="yes">
         <source>Index Owner</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">인덱스 소유자</target>
+        <target state="final">인덱스 소유자</target>
       </trans-unit>
       <trans-unit approved="yes" id="Input Traffic Critical" xml:space="preserve">
         <source>Input Traffic Critical</source>
@@ -1231,47 +1231,47 @@
         </context-group>
         <target>입력 트래픽 중요</target>
       </trans-unit>
-      <trans-unit id="Interface" xml:space="preserve">
+      <trans-unit id="Interface" xml:space="preserve" approved="yes">
         <source>Interface</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">인터페이스</target>
+        <target state="final">인터페이스</target>
       </trans-unit>
-      <trans-unit id="JDBC Pool Name" xml:space="preserve">
+      <trans-unit id="JDBC Pool Name" xml:space="preserve" approved="yes">
         <source>JDBC Pool Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">JDBC 풀 이름</target>
+        <target state="final">JDBC 풀 이름</target>
       </trans-unit>
-      <trans-unit id="Local IP address filter pattern list" xml:space="preserve">
+      <trans-unit id="Local IP address filter pattern list" xml:space="preserve" approved="yes">
         <source>Local IP address filter pattern list</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">로컬 IP 주소 필터 패턴 목록</target>
+        <target state="final">로컬 IP 주소 필터 패턴 목록</target>
       </trans-unit>
-      <trans-unit id="Local port number filter" xml:space="preserve">
+      <trans-unit id="Local port number filter" xml:space="preserve" approved="yes">
         <source>Local port number filter</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">로컬 포트 번호 필터</target>
+        <target state="final">로컬 포트 번호 필터</target>
       </trans-unit>
-      <trans-unit id="Log file" xml:space="preserve">
+      <trans-unit id="Log file" xml:space="preserve" approved="yes">
         <source>Log file</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">로그 파일</target>
+        <target state="final">로그 파일</target>
       </trans-unit>
-      <trans-unit id="MySQL Port" xml:space="preserve">
+      <trans-unit id="MySQL Port" xml:space="preserve" approved="yes">
         <source>MySQL Port</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">MySQL 포트</target>
+        <target state="final">MySQL 포트</target>
       </trans-unit>
       <trans-unit approved="yes" id="Number of Allocated Extents Critical if Above" xml:space="preserve">
         <source>Number of Allocated Extents Critical if Above</source>
@@ -1294,33 +1294,33 @@
         </context-group>
         <target>확인 종료 상태</target>
       </trans-unit>
-      <trans-unit id="ORACLE_HOME" xml:space="preserve">
+      <trans-unit id="ORACLE_HOME" xml:space="preserve" approved="yes">
         <source>ORACLE_HOME</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">ORACLE_HOME</target>
+        <target state="final">ORACLE_HOME</target>
       </trans-unit>
-      <trans-unit id="Oracle Hostname or IP" xml:space="preserve">
+      <trans-unit id="Oracle Hostname or IP" xml:space="preserve" approved="yes">
         <source>Oracle Hostname or IP</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">Oracle 호스트 이름 또는 IP</target>
+        <target state="final">Oracle 호스트 이름 또는 IP</target>
       </trans-unit>
-      <trans-unit id="Oracle Password" xml:space="preserve">
+      <trans-unit id="Oracle Password" xml:space="preserve" approved="yes">
         <source>Oracle Password</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">Oracle 암호</target>
+        <target state="final">Oracle 암호</target>
       </trans-unit>
-      <trans-unit id="Oracle Port" xml:space="preserve">
+      <trans-unit id="Oracle Port" xml:space="preserve" approved="yes">
         <source>Oracle Port</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">Oracle 포트</target>
+        <target state="final">Oracle 포트</target>
       </trans-unit>
       <trans-unit approved="yes" id="Oracle SID" xml:space="preserve">
         <source>Oracle SID</source>
@@ -1329,12 +1329,12 @@
         </context-group>
         <target>Oracle SID</target>
       </trans-unit>
-      <trans-unit id="Oracle Username" xml:space="preserve">
+      <trans-unit id="Oracle Username" xml:space="preserve" approved="yes">
         <source>Oracle Username</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">Oracle 사용자 이름</target>
+        <target state="final">Oracle 사용자 이름</target>
       </trans-unit>
       <trans-unit approved="yes" id="Output Traffic Critical" xml:space="preserve">
         <source>Output Traffic Critical</source>
@@ -1350,26 +1350,26 @@
         </context-group>
         <target state="needs-translation">PID 파일(명령 이름 보다 우위)</target>
       </trans-unit>
-      <trans-unit id="Packets to send" xml:space="preserve">
+      <trans-unit id="Packets to send" xml:space="preserve" approved="yes">
         <source>Packets to send</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">보낼 패킷</target>
+        <target state="final">보낼 패킷</target>
       </trans-unit>
-      <trans-unit id="Password" xml:space="preserve">
+      <trans-unit id="Password" xml:space="preserve" approved="yes">
         <source>Password</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">암호</target>
+        <target state="final">암호</target>
       </trans-unit>
-      <trans-unit id="Pathname" xml:space="preserve">
+      <trans-unit id="Pathname" xml:space="preserve" approved="yes">
         <source>Pathname</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">경로 이름</target>
+        <target state="final">경로 이름</target>
       </trans-unit>
       <trans-unit approved="yes" id="Percent of Available Extents Critical if Above" xml:space="preserve">
         <source>Percent of Available Extents Critical if Above</source>
@@ -1385,215 +1385,215 @@
         </context-group>
         <target>다음을 초과하는 사용 가능 확장 백분율 경고</target>
       </trans-unit>
-      <trans-unit id="Port" xml:space="preserve">
+      <trans-unit id="Port" xml:space="preserve" approved="yes">
         <source>Port</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">포트</target>
+        <target state="final">포트</target>
       </trans-unit>
-      <trans-unit id="Protocol (TCP/UDP)" xml:space="preserve">
+      <trans-unit id="Protocol (TCP/UDP)" xml:space="preserve" approved="yes">
         <source>Protocol (TCP/UDP)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">프토토콜(TCP/UDP)</target>
+        <target state="final">프토토콜(TCP/UDP)</target>
       </trans-unit>
-      <trans-unit id="Queue Name" xml:space="preserve">
+      <trans-unit id="Queue Name" xml:space="preserve" approved="yes">
         <source>Queue Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">대기열 이름</target>
+        <target state="final">대기열 이름</target>
       </trans-unit>
-      <trans-unit id="RHNMD Port" xml:space="preserve">
+      <trans-unit id="RHNMD Port" xml:space="preserve" approved="yes">
         <source>RHNMD Port</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">RHNMD 포트</target>
+        <target state="final">RHNMD 포트</target>
       </trans-unit>
-      <trans-unit id="RHNMD User" xml:space="preserve">
+      <trans-unit id="RHNMD User" xml:space="preserve" approved="yes">
         <source>RHNMD User</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">RHNMD 사용자</target>
+        <target state="final">RHNMD 사용자</target>
       </trans-unit>
-      <trans-unit id="SSH banner (number of lines)" xml:space="preserve">
+      <trans-unit id="SSH banner (number of lines)" xml:space="preserve" approved="yes">
         <source>SSH banner (number of lines)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">SSH 배너(행 수)</target>
+        <target state="final">SSH 배너(행 수)</target>
       </trans-unit>
-      <trans-unit id="Remote IP Address" xml:space="preserve">
+      <trans-unit id="Remote IP Address" xml:space="preserve" approved="yes">
         <source>Remote IP Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">원격 IP 주소</target>
+        <target state="final">원격 IP 주소</target>
       </trans-unit>
-      <trans-unit id="Remote IP address filter pattern list" xml:space="preserve">
+      <trans-unit id="Remote IP address filter pattern list" xml:space="preserve" approved="yes">
         <source>Remote IP address filter pattern list</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">원격 IP 주소 필터 패턴 목록</target>
+        <target state="final">원격 IP 주소 필터 패턴 목록</target>
       </trans-unit>
-      <trans-unit id="Remote port number filter" xml:space="preserve">
+      <trans-unit id="Remote port number filter" xml:space="preserve" approved="yes">
         <source>Remote port number filter</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">원격 포트 번호 필터</target>
+        <target state="final">원격 포트 번호 필터</target>
       </trans-unit>
-      <trans-unit id="SMTP Port" xml:space="preserve">
+      <trans-unit id="SMTP Port" xml:space="preserve" approved="yes">
         <source>SMTP Port</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">SMTP 포트</target>
+        <target state="final">SMTP 포트</target>
       </trans-unit>
-      <trans-unit id="SNMP Community String" xml:space="preserve">
+      <trans-unit id="SNMP Community String" xml:space="preserve" approved="yes">
         <source>SNMP Community String</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">SNMP 커뮤니티 문자열</target>
+        <target state="final">SNMP 커뮤니티 문자열</target>
       </trans-unit>
-      <trans-unit id="SNMP OID" xml:space="preserve">
+      <trans-unit id="SNMP OID" xml:space="preserve" approved="yes">
         <source>SNMP OID</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">SNMP OID</target>
+        <target state="final">SNMP OID</target>
       </trans-unit>
-      <trans-unit id="SNMP Port" xml:space="preserve">
+      <trans-unit id="SNMP Port" xml:space="preserve" approved="yes">
         <source>SNMP Port</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">SNMP 포트</target>
+        <target state="final">SNMP 포트</target>
       </trans-unit>
-      <trans-unit id="SNMP Version" xml:space="preserve">
+      <trans-unit id="SNMP Version" xml:space="preserve" approved="yes">
         <source>SNMP Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">SNMP 버전</target>
+        <target state="final">SNMP 버전</target>
       </trans-unit>
-      <trans-unit id="SSH Port" xml:space="preserve">
+      <trans-unit id="SSH Port" xml:space="preserve" approved="yes">
         <source>SSH Port</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">SSH 포트</target>
+        <target state="final">SSH 포트</target>
       </trans-unit>
-      <trans-unit id="Send" xml:space="preserve">
+      <trans-unit id="Send" xml:space="preserve" approved="yes">
         <source>Send</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">보내기</target>
+        <target state="final">보내기</target>
       </trans-unit>
-      <trans-unit id="Service Name" xml:space="preserve">
+      <trans-unit id="Service Name" xml:space="preserve" approved="yes">
         <source>Service Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">서비스 이름</target>
+        <target state="final">서비스 이름</target>
       </trans-unit>
-      <trans-unit id="Servlet Name" xml:space="preserve">
+      <trans-unit id="Servlet Name" xml:space="preserve" approved="yes">
         <source>Servlet Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">Servlet 이름</target>
+        <target state="final">Servlet 이름</target>
       </trans-unit>
-      <trans-unit id="Status (OK/WARNING/CRITICAL/UNKNOWN)" xml:space="preserve">
+      <trans-unit id="Status (OK/WARNING/CRITICAL/UNKNOWN)" xml:space="preserve" approved="yes">
         <source>Status (OK/WARNING/CRITICAL/UNKNOWN)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">상태(OK/WARNING/CRITICAL/UNKNOWN)</target>
+        <target state="final">상태(OK/WARNING/CRITICAL/UNKNOWN)</target>
       </trans-unit>
-      <trans-unit id="TNS Listener Port" xml:space="preserve">
+      <trans-unit id="TNS Listener Port" xml:space="preserve" approved="yes">
         <source>TNS Listener Port</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">TNS 리스너 포트</target>
+        <target state="final">TNS 수신자 포트</target>
       </trans-unit>
-      <trans-unit id="Table Name" xml:space="preserve">
+      <trans-unit id="Table Name" xml:space="preserve" approved="yes">
         <source>Table Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">테이블 이름</target>
+        <target state="final">테이블 이름</target>
       </trans-unit>
-      <trans-unit id="Table Owner" xml:space="preserve">
+      <trans-unit id="Table Owner" xml:space="preserve" approved="yes">
         <source>Table Owner</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">테이블 소유자</target>
+        <target state="final">테이블 소유자</target>
       </trans-unit>
-      <trans-unit id="Tablespace Name" xml:space="preserve">
+      <trans-unit id="Tablespace Name" xml:space="preserve" approved="yes">
         <source>Tablespace Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">테이블스페이스 이름</target>
+        <target state="final">테이블공간 이름</target>
       </trans-unit>
-      <trans-unit id="Time Blocking (seconds)" xml:space="preserve">
+      <trans-unit id="Time Blocking (seconds)" xml:space="preserve" approved="yes">
         <source>Time Blocking (seconds)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">차단 시간(초)</target>
+        <target state="final">차단 시간(초)</target>
       </trans-unit>
-      <trans-unit id="Time Idle (seconds)" xml:space="preserve">
+      <trans-unit id="Time Idle (seconds)" xml:space="preserve" approved="yes">
         <source>Time Idle (seconds)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">유휴 시간(초)</target>
+        <target state="final">유휴 시간(초)</target>
       </trans-unit>
-      <trans-unit id="Timeout (seconds)" xml:space="preserve">
+      <trans-unit id="Timeout (seconds)" xml:space="preserve" approved="yes">
         <source>Timeout (seconds)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">시간 초과(초)</target>
+        <target state="final">시간 제한(초)</target>
       </trans-unit>
-      <trans-unit id="URL Path" xml:space="preserve">
+      <trans-unit id="URL Path" xml:space="preserve" approved="yes">
         <source>URL Path</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">URL 경로</target>
+        <target state="final">URL 경로</target>
       </trans-unit>
-      <trans-unit id="UserAgent" xml:space="preserve">
+      <trans-unit id="UserAgent" xml:space="preserve" approved="yes">
         <source>UserAgent</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">사용자 에이전트</target>
+        <target state="final">사용자 에이전트</target>
       </trans-unit>
-      <trans-unit id="Username" xml:space="preserve">
+      <trans-unit id="Username" xml:space="preserve" approved="yes">
         <source>Username</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">사용자 이름</target>
+        <target state="final">사용자 이름</target>
       </trans-unit>
-      <trans-unit id="Virtual Host" xml:space="preserve">
+      <trans-unit id="Virtual Host" xml:space="preserve" approved="yes">
         <source>Virtual Host</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">가상 호스트</target>
+        <target state="final">가상 호스트</target>
       </trans-unit>
       <trans-unit approved="yes" id="Warn 1 min" xml:space="preserve">
         <source>Warn 1 min</source>
@@ -2036,12 +2036,12 @@
         </context-group>
         <target>경고 시간(초)</target>
       </trans-unit>
-      <trans-unit id="Warning Size" xml:space="preserve">
+      <trans-unit id="Warning Size" xml:space="preserve" approved="yes">
         <source>Warning Size</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="needs-translation">경고 크기</target>
+        <target state="final">경고 크기</target>
       </trans-unit>
       <trans-unit approved="yes" id="Warning Space Available" xml:space="preserve">
         <source>Warning Space Available</source>
@@ -2163,26 +2163,26 @@
         <target>경고 쓰기 속도</target>
       </trans-unit>
       <!-- PROBE METRICS -->
-      <trans-unit id="metrics.Active locks" xml:space="preserve">
+      <trans-unit id="metrics.Active locks" xml:space="preserve" approved="yes">
         <source>Active locks</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">활성 잠금</target>
+        <target state="final">활성 잠금</target>
       </trans-unit>
-      <trans-unit id="metrics.Active sessions" xml:space="preserve">
+      <trans-unit id="metrics.Active sessions" xml:space="preserve" approved="yes">
         <source>Active sessions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">활성 세션</target>
+        <target state="final">활성 세션</target>
       </trans-unit>
-      <trans-unit id="metrics.Blocked processes" xml:space="preserve">
+      <trans-unit id="metrics.Blocked processes" xml:space="preserve" approved="yes">
         <source>Blocked processes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">차단된 프로세스</target>
+        <target state="final">차단된 프로세스</target>
       </trans-unit>
       <trans-unit approved="yes" id="metrics.Blocking sessions" xml:space="preserve">
         <source>Blocking sessions</source>
@@ -2198,12 +2198,12 @@
         </context-group>
         <target>버퍼 캐시 적중률</target>
       </trans-unit>
-      <trans-unit id="metrics.CLOSE_WAIT conns" xml:space="preserve">
+      <trans-unit id="metrics.CLOSE_WAIT conns" xml:space="preserve" approved="yes">
         <source>CLOSE_WAIT conns</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">CLOSE_WAIT 연결</target>
+        <target state="final">CLOSE_WAIT 연결</target>
       </trans-unit>
       <trans-unit approved="yes" id="metrics.CPU load 1-min ave" xml:space="preserve">
         <source>CPU load 1-min ave</source>
@@ -2254,26 +2254,26 @@
         </context-group>
         <target>CPU 사용률</target>
       </trans-unit>
-      <trans-unit id="metrics.CPU usage" xml:space="preserve">
+      <trans-unit id="metrics.CPU usage" xml:space="preserve" approved="yes">
         <source>CPU usage</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">CPU 사용량</target>
+        <target state="final">CPU 사용량</target>
       </trans-unit>
-      <trans-unit id="metrics.Cache miss rate" xml:space="preserve">
+      <trans-unit id="metrics.Cache miss rate" xml:space="preserve" approved="yes">
         <source>Cache miss rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">캐시 실패율</target>
+        <target state="final">캐시 실패율</target>
       </trans-unit>
-      <trans-unit id="metrics.Child process groups" xml:space="preserve">
+      <trans-unit id="metrics.Child process groups" xml:space="preserve" approved="yes">
         <source>Child process groups</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">하위 프로세스 그룹</target>
+        <target state="final">하위 프로세스 그룹</target>
       </trans-unit>
       <trans-unit approved="yes" id="metrics.Conn rate" xml:space="preserve">
         <source>Conn rate</source>
@@ -2282,33 +2282,33 @@
         </context-group>
         <target>접속률</target>
       </trans-unit>
-      <trans-unit id="metrics.Connections" xml:space="preserve">
+      <trans-unit id="metrics.Connections" xml:space="preserve" approved="yes">
         <source>Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">연결</target>
+        <target state="final">연결</target>
       </trans-unit>
-      <trans-unit id="metrics.Consistent get rate" xml:space="preserve">
+      <trans-unit id="metrics.Consistent get rate" xml:space="preserve" approved="yes">
         <source>Consistent get rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">일정한 가져오기 속도</target>
+        <target state="final">일정한 수신율</target>
       </trans-unit>
-      <trans-unit id="metrics.Current requests" xml:space="preserve">
+      <trans-unit id="metrics.Current requests" xml:space="preserve" approved="yes">
         <source>Current requests</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">현재 요청</target>
+        <target state="final">현재 요청</target>
       </trans-unit>
-      <trans-unit id="metrics.DB block get rate" xml:space="preserve">
+      <trans-unit id="metrics.DB block get rate" xml:space="preserve" approved="yes">
         <source>DB block get rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">DB 블록 가져오기 속도</target>
+        <target state="final">DB 블록 수신율</target>
       </trans-unit>
       <trans-unit approved="yes" id="metrics.Data dict hit ratio" xml:space="preserve">
         <source>Data dict hit ratio</source>
@@ -2317,19 +2317,19 @@
         </context-group>
         <target>데이터 사전 적중률</target>
       </trans-unit>
-      <trans-unit id="metrics.Defunct processes" xml:space="preserve">
+      <trans-unit id="metrics.Defunct processes" xml:space="preserve" approved="yes">
         <source>Defunct processes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">더 이상 사용되지 않는 프로세스</target>
+        <target state="final">좀비 프로세스</target>
       </trans-unit>
-      <trans-unit id="metrics.Disk sort rate" xml:space="preserve">
+      <trans-unit id="metrics.Disk sort rate" xml:space="preserve" approved="yes">
         <source>Disk sort rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">디스크 정렬 속도</target>
+        <target state="final">디스크 정렬 속도</target>
       </trans-unit>
       <trans-unit approved="yes" id="metrics.Disk sort ratio" xml:space="preserve">
         <source>Disk sort ratio</source>
@@ -2338,19 +2338,19 @@
         </context-group>
         <target>디스크 정렬율</target>
       </trans-unit>
-      <trans-unit id="metrics.ESTABLISHED conns" xml:space="preserve">
+      <trans-unit id="metrics.ESTABLISHED conns" xml:space="preserve" approved="yes">
         <source>ESTABLISHED conns</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">ESTABLISHED 연결</target>
+        <target state="final">ESTABLISHED 연결</target>
       </trans-unit>
-      <trans-unit id="metrics.Exec time moving ave" xml:space="preserve">
+      <trans-unit id="metrics.Exec time moving ave" xml:space="preserve" approved="yes">
         <source>Exec time moving ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">실행 시간 이동 평균</target>
+        <target state="final">실행 시간 이동 평균</target>
       </trans-unit>
       <trans-unit approved="yes" id="metrics.Execution rate" xml:space="preserve">
         <source>Execution rate</source>
@@ -2359,40 +2359,40 @@
         </context-group>
         <target>실행률</target>
       </trans-unit>
-      <trans-unit id="metrics.Execution time ave" xml:space="preserve">
+      <trans-unit id="metrics.Execution time ave" xml:space="preserve" approved="yes">
         <source>Execution time ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">실행 시간 평균</target>
+        <target state="final">실행 시간 평균</target>
       </trans-unit>
-      <trans-unit id="metrics.FIN_WAIT conns" xml:space="preserve">
+      <trans-unit id="metrics.FIN_WAIT conns" xml:space="preserve" approved="yes">
         <source>FIN_WAIT conns</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">FIN_WAIT 연결</target>
+        <target state="final">FIN_WAIT 연결</target>
       </trans-unit>
-      <trans-unit id="metrics.Filesystem pct used" xml:space="preserve">
+      <trans-unit id="metrics.Filesystem pct used" xml:space="preserve" approved="yes">
         <source>Filesystem pct used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">사용된 파일시스템 비율</target>
+        <target state="final">파일시스템 사용률</target>
       </trans-unit>
-      <trans-unit id="metrics.Get rate" xml:space="preserve">
+      <trans-unit id="metrics.Get rate" xml:space="preserve" approved="yes">
         <source>Get rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">가져오기 속도</target>
+        <target state="final">수신율</target>
       </trans-unit>
-      <trans-unit id="metrics.High exec time" xml:space="preserve">
+      <trans-unit id="metrics.High exec time" xml:space="preserve" approved="yes">
         <source>High exec time</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">높은 실행 시간</target>
+        <target state="final">높은 실행 시간</target>
       </trans-unit>
       <trans-unit approved="yes" id="metrics.Idle sessions" xml:space="preserve">
         <source>Idle sessions</source>
@@ -2408,61 +2408,61 @@
         </context-group>
         <target>유휴 스레드</target>
       </trans-unit>
-      <trans-unit id="metrics.Inodes pct used" xml:space="preserve">
+      <trans-unit id="metrics.Inodes pct used" xml:space="preserve" approved="yes">
         <source>Inodes pct used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">사용된 inode 비율</target>
+        <target state="final">Inode 사용률</target>
       </trans-unit>
-      <trans-unit id="metrics.Input rate" xml:space="preserve">
+      <trans-unit id="metrics.Input rate" xml:space="preserve" approved="yes">
         <source>Input rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">입력 속도</target>
+        <target state="final">입력 속도</target>
       </trans-unit>
-      <trans-unit id="metrics.Invocation rate" xml:space="preserve">
+      <trans-unit id="metrics.Invocation rate" xml:space="preserve" approved="yes">
         <source>Invocation rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">호출 속도</target>
+        <target state="final">호출 속도</target>
       </trans-unit>
-      <trans-unit id="metrics.Latency" xml:space="preserve">
+      <trans-unit id="metrics.Latency" xml:space="preserve" approved="yes">
         <source>Latency</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">대기 시간</target>
+        <target state="final">지연 시간</target>
       </trans-unit>
-      <trans-unit id="metrics.Library cache miss ratio" xml:space="preserve">
+      <trans-unit id="metrics.Library cache miss ratio" xml:space="preserve" approved="yes">
         <source>Library cache miss ratio</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">라이브러리 캐시 실패율</target>
+        <target state="final">라이브러리 캐시 실패율</target>
       </trans-unit>
-      <trans-unit id="metrics.Line rate" xml:space="preserve">
+      <trans-unit id="metrics.Line rate" xml:space="preserve" approved="yes">
         <source>Line rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">라인 속도</target>
+        <target state="final">라인 속도</target>
       </trans-unit>
-      <trans-unit id="metrics.Lines" xml:space="preserve">
+      <trans-unit id="metrics.Lines" xml:space="preserve" approved="yes">
         <source>Lines</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">라인</target>
+        <target state="final">라인</target>
       </trans-unit>
-      <trans-unit id="metrics.Low exec time" xml:space="preserve">
+      <trans-unit id="metrics.Low exec time" xml:space="preserve" approved="yes">
         <source>Low exec time</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="needs-translation">짧은 실행 시간</target>
+        <target state="final">짧은 실행 시간</target>
       </trans-unit>
       <trans-unit id="metrics.Max transferred per child" xml:space="preserve">
         <source>Max transferred per child</source>
@@ -2884,9 +2884,9 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="All" xml:space="preserve">
+      <trans-unit id="All" xml:space="preserve" approved="yes">
         <source>All</source>
-        <target state="needs-translation">전체</target>
+        <target state="final">전체</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3444,9 +3444,9 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Users" xml:space="preserve">
+      <trans-unit id="Users" xml:space="preserve" approved="yes">
         <source>Users</source>
-        <target state="needs-translation">사용자</target>
+        <target state="final">사용자</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
