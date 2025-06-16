@@ -2160,6 +2160,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.schedule.fail_system_action', 'W', 'Fail specific event on specified system')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.schedule.lookup_action', 'R', 'Lookup details of an action')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.schedule.list_all_actions', 'R', 'Returns a list of all actions.  This includes completed, in progress,')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)

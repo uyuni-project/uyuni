@@ -304,6 +304,14 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
         return getActionStatusCount(ActionFactory.STATUS_COMPLETED);
     }
 
+    /**
+     * Get the count of the number of systems for which the action has not yet finished.
+     * @return the count of unfinished actions
+     */
+    public Long getInProgressCount() {
+        return getActionStatusCount(ActionFactory.STATUS_QUEUED) + getActionStatusCount(ActionFactory.STATUS_PICKED_UP);
+    }
+
     // Get the number of ServerAction objects that match
     // the passed in ActionStatus
     private long getActionStatusCount(ActionStatus status) {

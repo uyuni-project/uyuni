@@ -7967,6 +7967,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.schedule.lookup_action' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/schedule/lookupAction' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.schedule.list_all_actions' AND ns.access_mode = 'R'
     AND ep.endpoint = '/manager/api/schedule/listAllActions' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;

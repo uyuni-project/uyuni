@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ActionedSystem;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchActionException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 import com.redhat.rhn.manager.action.ActionIsChildException;
@@ -128,6 +129,40 @@ public class ScheduleHandler extends BaseHandler {
                                  String message) {
         return ActionManager.failSystemAction(loggedInUser, sid.longValue(),
                 actionId.longValue(), message);
+    }
+
+    /**
+     * Get details of an action
+     * @param loggedInUser the current user
+     * @param actionId the ID of the action
+     * @return Returns the {@link Action} associated with the given ID
+     *
+     * @apidoc.doc Returns the details of an action by its ID.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "actionId", "the ID of the action")
+     * @apidoc.returntype $ScheduleActionSerializer
+     */
+    @ReadOnly
+    public ScheduledAction lookupAction(User loggedInUser, Integer actionId) {
+        try {
+            Action action = ActionManager.lookupAction(loggedInUser, (long) actionId);
+
+            ScheduledAction actionDto = new ScheduledAction();
+            actionDto.setId(action.getId());
+            actionDto.setActionName(action.getName());
+            actionDto.setTypeName(action.getActionType().getName());
+            actionDto.setSchedulerName(action.getSchedulerUser() != null ? action.getSchedulerUser().getLogin() : null);
+            actionDto.setEarliest(action.getEarliestAction());
+            actionDto.setPrerequisite(action.getPrerequisite() != null ? action.getPrerequisite().getId() : null);
+            actionDto.setCompletedSystems(action.getSuccessfulCount());
+            actionDto.setFailedSystems(action.getFailedCount());
+            actionDto.setInProgressSystems(action.getInProgressCount());
+
+            return actionDto;
+        }
+        catch (LookupException e) {
+            throw new NoSuchActionException(actionId.toString(), e);
+        }
     }
 
     /**
