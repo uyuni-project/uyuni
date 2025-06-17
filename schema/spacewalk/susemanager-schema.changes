@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Tue Jun 17 19:03:07 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.8-0
+  * Add missing RBAC mappings
+  * Fix system/listActiveSystems queries (bsc#1242010)
+  * Fix typo in OES 24.4 channel definition
+  * Add RBAC endpoints and namespaces for Hub Online Sync
+  * Fix order of config channels after migration (bsc#1244481)
+  * Add missing proxies entitlements on upgrade (bsc#1243829)
+
+-------------------------------------------------------------------
 Mon May 12 23:19:42 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.7-0
