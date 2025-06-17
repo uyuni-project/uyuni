@@ -1,2 +1,0 @@
-- Provide token through a query parameter instead of relying on a
-  plugin for DNF version supporting it (bsc#1241307)
