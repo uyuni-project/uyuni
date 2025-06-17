@@ -65,7 +65,7 @@ jmx_exporter:
   cmd.run:
     - name: /usr/bin/rpm --query --info prometheus-jmx_exporter
 
-{% set remove_jmx_props = {'service': 'tomcat', 'file': '/etc/sysconfig/tomcat'} %}
+{% set remove_jmx_props = {'service': 'tomcat', 'file': '/etc/sysconfig/tomcat/systemd/jmx.conf'} %}
 {% include 'srvmonitoring/removejmxprops.sls' %}
 
 jmx_exporter_tomcat_yaml_config:
@@ -80,13 +80,13 @@ jmx_exporter_tomcat_yaml_config:
 
 jmx_tomcat_config:
   file.managed:
-    - name: /usr/lib/systemd/system/tomcat.service.d/jmx.conf
+    - name: /etc/sysconfig/tomcat/systemd/jmx.conf
     - makedirs: True
     - user: root
     - group: root
     - mode: 644
     - source:
-      - salt://srvmonitoring/tomcat_jmx.conf
+      - salt://srvmonitoring/tomcat/systemd/jmx.conf
     - require:
       - cmd: jmx_exporter
   mgrcompat.module_run:
@@ -120,13 +120,13 @@ jmx_exporter_taskomatic_yaml_config:
 
 jmx_taskomatic_config:
   file.managed:
-    - name: /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
+    - name: /etc/sysconfig/taskomatic/systemd/jmx.conf
     - makedirs: True
     - user: root
     - group: root
     - mode: 644
     - source:
-      - salt://srvmonitoring/taskomatic_jmx.conf
+      - salt://srvmonitoring/taskomatic/systemd/jmx.conf
     - require:
       - cmd: jmx_exporter
   mgrcompat.module_run:

@@ -8,12 +8,12 @@ postgres_exporter_service:
     - name: prometheus-postgres_exporter
     - enable: False
 
-{% set remove_jmx_props = {'service': 'tomcat', 'file': '/etc/sysconfig/tomcat'} %}
+{% set remove_jmx_props = {'service': 'tomcat', 'file': '/etc/sysconfig/tomcat/systemd/jmx.conf'} %}
 {% include 'srvmonitoring/removejmxprops.sls' %}
 
 jmx_tomcat_config:
   file.absent:
-    - name: /usr/lib/systemd/system/tomcat.service.d/jmx.conf
+    - name: /etc/sysconfig/tomcat/systemd/jmx.conf
   mgrcompat.module_run:
     - name: service.systemctl_reload
 
@@ -22,7 +22,7 @@ jmx_tomcat_config:
 
 jmx_taskomatic_config:
   file.absent:
-    - name: /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
+    - name: /etc/sysconfig/taskomatic/systemd/jmx.conf
   mgrcompat.module_run:
     - name: service.systemctl_reload
 
