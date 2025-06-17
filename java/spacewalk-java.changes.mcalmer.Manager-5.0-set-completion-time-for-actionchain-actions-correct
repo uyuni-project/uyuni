@@ -1,0 +1,2 @@
+- Set the completion time of actions from an action chain correctly
+  (bsc#1243994)
