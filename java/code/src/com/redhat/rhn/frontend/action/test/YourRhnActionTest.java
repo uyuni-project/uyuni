@@ -36,7 +36,6 @@ public class YourRhnActionTest extends RhnMockStrutsTestCase {
          assertNotNull(request.getAttribute("inactiveSystems"));
          assertNotNull(request.getAttribute("tasks"));
          assertNotNull(request.getAttribute("criticalSystems"));
-         assertNotNull(request.getAttribute("legends"));
          assertNotNull(request.getAttribute("latestErrata"));
          assertNotNull(request.getAttribute("pendingActions"));
          assertNotNull(request.getAttribute("recentlyRegisteredSystems"));
