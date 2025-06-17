@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jun 17 19:28:01 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.7-0
+  * Allow passing env variables to rhn-config-satellite
+    (bsc#1242148)
+
+-------------------------------------------------------------------
 Tue May 13 00:25:11 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.6-0
