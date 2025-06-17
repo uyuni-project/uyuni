@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jun 17 19:37:41 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.7
+  * Don't get repositories from SCC in the server container
+    (bsc#1242916)
+
+-------------------------------------------------------------------
 Mon May 12 23:24:20 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.6
