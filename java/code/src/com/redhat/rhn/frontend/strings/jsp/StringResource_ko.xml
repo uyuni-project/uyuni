@@ -5432,9 +5432,9 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.provisioning.powermanagement.operations" xml:space="preserve">
+      <trans-unit id="ssm.overview.provisioning.powermanagement.operations" xml:space="preserve" approved="yes">
         <source>Run &lt;a href="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"&gt;power management operations&lt;/a&gt;</source>
-        <target>&lt;a href="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"&gt;전원 관리 작업&lt;/a&gt; 실행</target>
+        <target state="final">&lt;a href="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"&gt;전원 관리 작업&lt;/a&gt; 실행</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -11809,10 +11809,9 @@ Please note that some manual configuration of these scripts may still be require
 You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.
 A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.
 For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
-        <target>
+        <target state="final">
 킥스타트 중에 시스템에서 이러한 키/인증서를 설치하려면 킥스타트 프로파일에서 해당 키 및/또는 인증서를 참조하십시오.
-서명된 패키지를 설치하려면 올바른 키 및 @@PRODUCT_NAME@@ 프록시 서버 또는
-@@PRODUCT_NAME@@ 서버에 의해 킥스타트된 올바른 인증서가 필요합니다.
+서명된 패키지를 설치하려면 올바른 키 및 @@PRODUCT_NAME@@ 프록시 서버 또는 @@PRODUCT_NAME@@ 서버에 의해 킥스타트된 올바른 인증서가 필요합니다.
 자세한 정보는 &lt;a href={0} target="_blank" &gt;참조 안내서&lt;/a&gt;를 참조하십시오.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
