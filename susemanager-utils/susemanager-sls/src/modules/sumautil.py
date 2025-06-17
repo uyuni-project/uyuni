@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
+
+# SPDX-FileCopyrightText: 2016-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """
-Utility module for Suse Manager
+Utility module for Uyuni and SUSE Multi-Linux Manager
 
 """
 from __future__ import absolute_import

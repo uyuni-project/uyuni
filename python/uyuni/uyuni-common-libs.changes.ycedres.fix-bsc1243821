@@ -1,0 +1,1 @@
+- Fix decompress function for the zst format (bsc#1243821)

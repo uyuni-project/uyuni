@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2024-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """AppStreams module for SUSE Multi-Linux Manager"""
 
 import re

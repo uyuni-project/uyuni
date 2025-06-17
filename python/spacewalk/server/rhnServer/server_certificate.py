@@ -21,7 +21,7 @@
 import sys
 import hashlib
 import time
-import random
+import secrets
 import socket
 
 try:
@@ -44,8 +44,8 @@ def gen_secret():
     sum = hashlib.new("sha256", seed.encode())
     # feed some random numbers
     # pylint: disable-next=unused-variable
-    for k in range(1, random.randint(5, 15)):
-        sum.update(repr(random.random()).encode())
+    for k in range(1, secrets.SystemRandom().randint(5, 15)):
+        sum.update(repr(secrets.SystemRandom().random()).encode())
     sum.update(socket.gethostname().encode())
     ret = sum.hexdigest()
     del sum

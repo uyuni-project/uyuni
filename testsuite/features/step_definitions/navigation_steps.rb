@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2024 SUSE LLC.
+# Copyright (c) 2010-2025 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning navigation through the Web UI
@@ -503,7 +503,7 @@ end
 
 When(/^I check the "([^"]*)" client$/) do |host|
   system_name = get_system_name(host)
-  step %(I check "#{system_name}" in the list)
+  toggle_checkbox_in_list('check', system_name)
 end
 
 Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
@@ -620,11 +620,11 @@ Then(/^I should see an update in the list$/) do
 end
 
 When(/^I check test channel$/) do
-  step 'I check "Fake-Base-Channel-SUSE-like" in the list'
+  toggle_checkbox_in_list('check', 'Fake-Base-Channel-SUSE-like')
 end
 
 When(/^I check "([^"]*)" patch$/) do |arg1|
-  step %(I check "#{arg1}" in the list)
+  toggle_checkbox_in_list('check', arg1)
 end
 
 Then(/^I should see "([^"]*)" systems selected for SSM$/) do |arg|
@@ -842,15 +842,15 @@ Then(/^I should only see success signs in the product list$/) do
 end
 
 Then(/^I select the "([^"]*)" repo$/) do |repo|
-  step %(I check "#{repo}" in the list)
+  toggle_checkbox_in_list('check', repo)
 end
 
 Then(/^I check the row with the "([^"]*)" link$/) do |text|
-  step %(I check "#{text}" in the list)
+  toggle_checkbox_in_list('check', text)
 end
 
 Then(/^I check the row with the "([^"]*)" text$/) do |text|
-  step %(I check "#{text}" in the list)
+  toggle_checkbox_in_list('check', text)
 end
 
 When(/^I check the first patch in the list, that does not require a reboot$/) do
@@ -900,9 +900,7 @@ When(/^I enter the hostname of "([^"]*)" as the filtered system name$/) do |host
 end
 
 When(/^I enter "([^"]*)" as the filtered package name$/) do |input|
-  raise ArgumentError, 'Package name is not set' if input.empty?
-
-  find('input[placeholder=\'Filter by Package Name: \']').set(input)
+  filter_by_package_name(input)
 end
 
 When(/^I enter "([^"]*)" as the filtered latest package$/) do |input|
@@ -936,11 +934,11 @@ When(/^I enter "([^"]*)" as the filtered formula name$/) do |input|
 end
 
 When(/^I enter the package for "([^"]*)" as the filtered package name$/) do |host|
-  step %(I enter "#{PACKAGE_BY_CLIENT[host]}" as the filtered package name)
+  filter_by_package_name(PACKAGE_BY_CLIENT[host])
 end
 
-When(/^I check the package for "([^"]*)" in the list$/) do |host|
-  step %(I check "#{PACKAGE_BY_CLIENT[host]}" in the list)
+When(/^I check the package(| last version) for "([^"]*)" in the list$/) do |version_flag, host|
+  toggle_checkbox_in_package_list('check', PACKAGE_BY_CLIENT[host], last_version: !version_flag.empty?)
 end
 
 When(/^I check row with "([^"]*)" and arch of "([^"]*)"$/) do |text, client|
@@ -983,12 +981,8 @@ When(/^I check the first row in the list$/) do
   end
 end
 
-When(/^I (check|uncheck) "([^"]*)" in the list$/) do |check_option, text|
-  top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]//input[@type='checkbox']"
-  row = find(:xpath, top_level_xpath_query, match: :first)
-  raise "xpath: #{top_level_xpath_query} not found" if row.nil?
-
-  row.set(check_option == 'check')
+When(/^I (check|uncheck) "([^"]*)"(| last version) in the list$/) do |check_option, text, version_flag|
+  toggle_checkbox_in_package_list(check_option, text, last_version: !version_flag.empty?)
 end
 
 When(/^I (check|uncheck) the "([^"]*)" CLM filter$/) do |check_option, text|
@@ -1244,10 +1238,10 @@ When(/^I enter "([^"]*)" hostname on the search field$/) do |host|
 end
 
 When(/^I enter "([^"]*)" hostname on grafana's host field$/) do |host|
-  step 'I click on "var-hostname"'
+  grafana_url = current_url
   system_name = get_system_name(host)
-  step %(I enter "#{system_name}" as "Enter variable value")
-  send_keys(:return)
+  updated_url = grafana_url.sub(/var-hostname=[^&]*/, "var-hostname=#{system_name}")
+  visit updated_url
 end
 
 Then(/^I should see "([^"]*)" hostname as first search result$/) do |host|
@@ -1293,4 +1287,67 @@ end
 When(/^I visit the grafana dashboards of this "([^"]*)"$/) do |host|
   node = get_target(host)
   visit("http://#{node.public_ip}:3000/dashboards")
+end
+
+###################################
+## Password Policy navigation steps
+###################################
+
+And(/^I set the minimum password length to "([^"]*)"$/) do |min_length|
+  fill_in 'minLength', with: min_length
+end
+
+And(/^I set the maximum password length to "([^"]*)"$/) do |max_length|
+  fill_in 'maxLength', with: max_length
+end
+
+And(/^I set the special characters list to "([^"]*)"$/) do |characters_list|
+  fill_in 'specialChars', with: characters_list
+end
+
+And(/^I set the maximum allowed occurrence of any character to "([^"]*)"$/) do |max_occurence|
+  fill_in 'maxCharacterOccurrence', with: max_occurence
+end
+
+And(/^I (enable|disable) the following restrictions:$/) do |action, table|
+  restriction_map = {
+    'Require Digits' => 'digitFlag',
+    'Require Lowercase Characters' => 'lowerCharFlag',
+    'Require Uppercase Characters' => 'upperCharFlag',
+    'Require Special Characters' => 'specialCharFlag',
+    'Restrict Characters Occurrences' => 'restrictedOccurrenceFlag',
+    'Restrict Consecutive Characters' => 'consecutiveCharsFlag'
+  }
+
+  toggle = action == 'enable' ? 'check' : 'uncheck'
+
+  table.raw.flatten.each do |restriction|
+    checkbox_id = restriction_map[restriction]
+    raise "Unknown restriction: #{restriction}" unless checkbox_id
+
+    toggle_checkbox(toggle, checkbox_id)
+  end
+end
+
+Then(/^the following restrictions should be (enabled|disabled):$/) do |expected_state, table|
+  restriction_map = {
+    'Require Digits' => 'digitFlag',
+    'Require Lowercase Characters' => 'lowerCharFlag',
+    'Require Uppercase Characters' => 'upperCharFlag',
+    'Require Special Characters' => 'specialCharFlag',
+    'Restrict Characters Occurrences' => 'restrictedOccurrenceFlag',
+    'Restrict Consecutive Characters' => 'consecutiveCharsFlag'
+  }
+
+  expected_checkbox_state = expected_state == 'enabled' ? 'checked' : 'unchecked'
+
+  table.raw.flatten.each do |restriction|
+    checkbox_id = restriction_map[restriction]
+    raise "Unknown restriction: #{restriction}" unless checkbox_id
+
+    actual = checkbox_state(checkbox_id)
+    unless actual == expected_checkbox_state
+      raise "Expected '#{restriction}' to be #{expected_checkbox_state}, but was #{actual}"
+    end
+  end
 end

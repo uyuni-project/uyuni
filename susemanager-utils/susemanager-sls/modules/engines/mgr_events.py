@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+
+# SPDX-FileCopyrightText: 2018-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """
 mgr_events.py is a SaltStack engine that writes selected events to SUSE
 Manager's PostgreSQL database. Additionally, it sends notifications via the
@@ -145,7 +150,7 @@ class Responder:
         ):
             queue = 0
             if "id" in data:
-                hash_sum = hashlib.md5(
+                hash_sum = hashlib.sha256(
                     data.get("id").encode(self.connection.encoding)
                 ).hexdigest()[0:8]
                 queue = (

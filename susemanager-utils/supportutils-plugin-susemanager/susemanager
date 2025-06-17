@@ -1,22 +1,22 @@
 #!/bin/bash
 #############################################################
-# Name:        Supportconfig Plugin for SUSE Manager
+# Name:        Supportconfig Plugin for SUSE Multi-Linux Manager
 # Description: Gathers important troubleshooting information
-#              about SUSE Manager
+#              about SUSE Multi-Linux Manager
 # License:     GPLv2
 # Author:      Stefan Bogner <sbogner@suse.com>
 #              Michael Calmer <mc@suse.com>
-# Modified:    2025 May 06
+# Modified:    2025 June 06
 #############################################################
 
-SVER=5.0.1
+SVER=5.1.0
 RCFILE="/usr/lib/supportconfig/resources/supportconfig.rc"
 OF='plugin-susemanager.txt'
 
 [ -s $RCFILE ] && . $RCFILE || { echo "ERROR: Initializing resource file: $RCFILE"; exit 1; }
 
 log_write $OF
-log_entry $OF note "Supportconfig Plugin for SUSE Manager, v${SVER}"
+log_entry $OF note "Supportconfig Plugin for SUSE Multi-Linux Manager, v${SVER}"
 addHeaderFile $OF
 
 log_cmd $OF "grep web.version /usr/share/rhn/config-defaults/rhn_web.conf"
@@ -24,18 +24,18 @@ log_cmd $OF "grep web.version /usr/share/rhn/config-defaults/rhn_web.conf"
 log_cmd $OF "hostname --fqdn"
 
 RPMLIST="
-susemanager-tools
+Multi-Linux-Manager-Server-SLE-release
+Multi-Linux-Manager-Server-release
+salt
+salt-minion
 susemanager
 susemanager-schema
-SUSE-Manager-Server-release
-sle-module-suse-manager-server-release
-salt-minion
-salt
+susemanager-tools
 "
 DAEMONLIST="tomcat taskomatic postgresql rhn-search cobblerd apache2 salt-api salt-master"
 
 if ! rpm -q susemanager &>/dev/null; then
-  echo "ERROR: SUSE Manager package(s) not installed"
+  echo "ERROR: SUSE Multi-Linux Manager package(s) not installed"
   echo
   exit 111
 fi

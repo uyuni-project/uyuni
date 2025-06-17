@@ -1,14 +1,14 @@
 #!/bin/bash
 #############################################################
-# Name:        Supportconfig Plugin for SUSE Manager Proxy
+# Name:        Supportconfig Plugin for SUSE Multi-Linux Manager Proxy
 # Description: Gathers important troubleshooting information
-#              about SUSE Manager Proxy
+#              about SUSE Multi-Linux Manager Proxy
 # License:     GPLv2
 # Author:      Michael Calmer <mc@suse.de>
-# Modified:    2024 February 03
+# Modified:    2025 June 06
 #############################################################
 
-SVER=5.0.0
+SVER=5.1.0
 RCFILE="/usr/lib/supportconfig/resources/supportconfig.rc"
 OF='plugin-susemanager-proxy.txt'
 LOG_LINES=500  # 0 means include the entire file
@@ -16,7 +16,7 @@ LOG_LINES=500  # 0 means include the entire file
 [ -s $RCFILE ] && . $RCFILE || { echo "ERROR: Initializing resource file: $RCFILE"; exit 1; }
 
 log_write $OF
-log_entry $OF note "Supportconfig Plugin for SUSE Manager Proxy, v${SVER}"
+log_entry $OF note "Supportconfig Plugin for SUSE Multi-Linux Manager Proxy, v${SVER}"
 addHeaderFile $OF
 
 log_cmd $OF "grep web.version /usr/share/rhn/config-defaults/rhn_web.conf"
@@ -25,6 +25,8 @@ log_cmd $OF "hostname --fqdn"
 
 #############################################################
 RPMLIST="
+Multi-Linux-Manager-Proxy-SLE-release
+Multi-Linux-Manager-Proxy-release
 spacewalk-backend
 spacewalk-backend-libs
 spacewalk-base-minimal
@@ -38,7 +40,6 @@ spacewalk-proxy-package-manager
 spacewalk-proxy-redirect
 spacewalk-remote-utils
 spacewalk-ssl-cert-check
-SUSE-Manager-Proxy-release
 "
 
 for THISRPM in $RPMLIST; do
@@ -53,13 +54,13 @@ find_and_log_files () {
         fi
 }
 
-log_entry $OF note "SUSE Manager Proxy Config Files"
+log_entry $OF note "SUSE Multi-Linux Manager Proxy Config Files"
 
 conf_files $OF \
     /etc/rhn/rhn.conf \
     /etc/squid/squid.conf
 
-log_entry $OF note "SUSE Manager Proxy Log Files"
+log_entry $OF note "SUSE Multi-Linux Manager Proxy Log Files"
 
 find_and_log_files /var/log/rhn -type f
 find_and_log_files /var/log/squid -type f
