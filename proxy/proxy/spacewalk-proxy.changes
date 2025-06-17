@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Jun 17 19:26:50 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.5-0
+  * Use more secure sha256 to generate cache key
+  * Enable passing config and log paths via environment
+    variables to salt-broker
+
+-------------------------------------------------------------------
 Mon May 12 23:18:27 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.4-0
