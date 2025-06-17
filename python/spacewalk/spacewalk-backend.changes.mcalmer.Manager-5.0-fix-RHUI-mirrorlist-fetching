@@ -1,3 +1,0 @@
-- Fix fetching the mirrorlist with a ca bundle which include only
-  the intermediate CAs. This is the case for RHUI CA bundles
-  (bsc#1243241).
