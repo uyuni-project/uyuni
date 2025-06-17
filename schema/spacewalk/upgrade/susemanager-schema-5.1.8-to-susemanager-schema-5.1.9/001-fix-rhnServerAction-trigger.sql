@@ -26,9 +26,3 @@ begin
 end;
 $$ language plpgsql;
 
-create trigger
-rhn_server_action_mod_trig
-before insert or update on rhnServerAction
-for each row
-execute procedure rhn_server_action_mod_trig_fun();
-
