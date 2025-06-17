@@ -359,7 +359,7 @@
         </context-group>
         <target>영향을 받은 시스템</target>
       </trans-unit>
-      <trans-unit id="All" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="All" xml:space="preserve">
         <source>All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
@@ -1292,7 +1292,7 @@
         </context-group>
         <target state="final">마지막으로 남아있는 @@PRODUCT_NAME@@ 관리자는 삭제할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="Users" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Users" xml:space="preserve">
         <source>Users</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
