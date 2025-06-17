@@ -991,7 +991,7 @@
         </context-group>
         <target>サイトでエラーが発生しました。</target>
       </trans-unit>
-      <trans-unit id="404.jsp.title" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="404.jsp.title" xml:space="preserve">
         <source>404: Page Not Found</source>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
@@ -29798,28 +29798,28 @@ given channel.</source>
         <source>Proxy</source>
         <target state="final">プロキシ</target>
       </trans-unit>
-      <trans-unit id="403.jsp.title" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="403.jsp.title" xml:space="preserve">
         <source>403: Access Denied</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
         <target state="final">403: アクセスが拒否されました</target>
       </trans-unit>
-      <trans-unit id="403.jsp.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="403.jsp.summary" xml:space="preserve">
         <source>You do not have permission to access the page: {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
         <target state="final">ページ {0} にアクセスする許可がありません。</target>
       </trans-unit>
-      <trans-unit id="403.jsp.instruction" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="403.jsp.instruction" xml:space="preserve">
         <source>You are signed in, but your account does not have permission to access this resource. If you believe you should have access, contact your organization administrator to review your access permissions.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
         <target state="final">サインインしていますが、アカウントにはこのリソースにアクセスする許可がありません。アクセス許可があると思われる場合は、組織の管理者に連絡してアクセス許可を確認してください。</target>
       </trans-unit>
-      <trans-unit id="403.jsp.actions" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="403.jsp.actions" xml:space="preserve">
         <source>
           You can also &lt;a href="{0}"&gt;log out&lt;/a&gt; or &lt;a href="javascript:history.back()"&gt;go back&lt;/a&gt; to the previous page.
         </source>

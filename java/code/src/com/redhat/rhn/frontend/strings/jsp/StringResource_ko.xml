@@ -991,7 +991,7 @@
         </context-group>
         <target>사이트에서 오류가 발견되었습니다.</target>
       </trans-unit>
-      <trans-unit id="404.jsp.title" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="404.jsp.title" xml:space="preserve">
         <source>404: Page Not Found</source>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
@@ -5432,7 +5432,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.provisioning.powermanagement.operations" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.overview.provisioning.powermanagement.operations" xml:space="preserve">
         <source>Run &lt;a href="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"&gt;power management operations&lt;/a&gt;</source>
         <target state="final">&lt;a href="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"&gt;전원 관리 작업&lt;/a&gt; 실행</target>
         <context-group name="ctx">
@@ -29784,28 +29784,28 @@ given channel.</source>
         <source>Proxy</source>
         <target state="final">프록시</target>
       </trans-unit>
-      <trans-unit id="403.jsp.title" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="403.jsp.title" xml:space="preserve">
         <source>403: Access Denied</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
         <target state="final">403: 액세스 거부됨</target>
       </trans-unit>
-      <trans-unit id="403.jsp.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="403.jsp.summary" xml:space="preserve">
         <source>You do not have permission to access the page: {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
         <target state="final">페이지에 액세스할 수 있는 권한이 없음: {0}.</target>
       </trans-unit>
-      <trans-unit id="403.jsp.instruction" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="403.jsp.instruction" xml:space="preserve">
         <source>You are signed in, but your account does not have permission to access this resource. If you believe you should have access, contact your organization administrator to review your access permissions.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
         <target state="final">로그인했지만 현재 계정의 권한으로는 해당 리소스에 액세스할 수 없습니다. 액세스 권한이 필요하다고 생각되면 조직 관리자에게 문의하여 액세스 권한을 검토하십시오.</target>
       </trans-unit>
-      <trans-unit id="403.jsp.actions" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="403.jsp.actions" xml:space="preserve">
         <source>
           You can also &lt;a href="{0}"&gt;log out&lt;/a&gt; or &lt;a href="javascript:history.back()"&gt;go back&lt;/a&gt; to the previous page.
         </source>
