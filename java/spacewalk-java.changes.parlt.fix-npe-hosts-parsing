@@ -1,2 +1,0 @@
-- Fix possible NPE when parsing hosts from playbook return
-  (bsc#1244186)

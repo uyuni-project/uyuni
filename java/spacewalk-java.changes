@@ -1,4 +1,38 @@
 -------------------------------------------------------------------
+Tue Jun 17 18:59:24 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.14-0
+  * Fix http_proxy_password stored as clear text in
+    /var/log/messages (bsc#1242148)
+  * Enhances org info gathered from the peripheral with the list
+    of channels of each org
+  * In CLM live-patching template form, show kernel versions from
+    base product as well (bsc#1239907)
+  * Make system.listMigrationTargets API read-only
+  * Update API documentation for 'access' namespace (bsc#1243379)
+  * Run RBAC endpoint validation on startup
+  * Fix system/listActiveSystems queries (bsc#1242010)
+  * Fix scope of hub XMLRPC api endpoints
+  * Fix organization selection in Hub Online Sync page (bsc#1242323)
+  * Fix selection of recommended addons in Product Migration
+    (bsc#1243766)
+  * Show new manager tools channels in the Cloud (bsc#1243327)
+  * Fix order of config channels after migration (bsc#1244481)
+  * Fix possible NPE when parsing hosts from playbook return
+    (bsc#1244186)
+  * Fix semantic version validation to allow optional suffixes
+    (bsc#1243292)
+  * Improve Ubuntu OVAL data parsing to detect more CVEs
+  * Fix: Removed old xsd dynaform validation (bcs#1241140)
+  * Added button to start a mgr-sync-refresh-bunch task from
+    peripheral in the hub admin page
+  * Include implied RBAC groups for ORG_ADMIN
+    and SAT_ADMIN users (bsc#1243145)
+  * Add custom 403 error page for unauthorized access (bsc#1243375)
+  * Allows correct sync of an original channel after the
+    relative cloned channel has been synced (bsc#1244222)
+
+-------------------------------------------------------------------
 Tue May 13 14:55:24 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.13-0
