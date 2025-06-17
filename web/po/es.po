@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:19+0200\n"
-"PO-Revision-Date: 2025-04-09 15:56+0000\n"
+"PO-Revision-Date: 2025-06-14 00:59+0000\n"
 "Last-Translator: Fran Serrador <serrador@proton.me>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
 "Language: es\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.4\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -36,7 +36,7 @@ msgstr "No se admite el navegador Internet Explorer. Se recomienda Firefox, Chro
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:65
 msgid "The action has been <link>scheduled</link>."
-msgstr "La acción se ha <link>programado</link>."
+msgstr "La acción se ha sido <link>planificada</link>."
 
 #: ../html/src/components/CoCoScansList.tsx:90
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:77
@@ -57,7 +57,7 @@ msgstr "Confirmar eliminación"
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:94
 msgid "Schedule"
-msgstr "Programación"
+msgstr "Planificar"
 
 #: ../html/src/components/CoCoScansList.tsx:137
 #: ../html/src/components/CoCoScansList.tsx:192
@@ -86,11 +86,11 @@ msgstr "Se ha guardado la fórmula. No es necesario aplicar el estado alto en es
 
 #: ../html/src/components/FormulaForm.tsx:168
 msgid "Please input required fields: {fields}"
-msgstr "Rellene los campos obligatorios: {fields}"
+msgstr "Rellene los campos requeridos: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:171
 msgid "Invalid format of fields: {fields}"
-msgstr "Formato inválido para los campos: {fields}"
+msgstr "Formato de campos no válido: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:213
 msgid "On this page you can configure Salt Formulas to automatically install and configure software."
@@ -106,11 +106,11 @@ msgstr "Colapsar todas las secciones"
 
 #: ../html/src/components/FormulaForm.tsx:340
 msgid "Unnamed"
-msgstr "Sin nombre"
+msgstr "No nombrado"
 
 #: ../html/src/components/FormulaForm.tsx:349
 msgid "Search by formula's group name"
-msgstr "Buscar por nombre de grupo de la fórmula"
+msgstr "Buscar para nombre de grupo de fórmula"
 
 #: ../html/src/components/action-schedule.tsx:50
 msgid "new action chain"
@@ -235,9 +235,8 @@ msgstr ""
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:41
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:35
-#, fuzzy
 msgid "Status:"
-msgstr "Estado"
+msgstr "Estado:"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:67
 #, fuzzy
@@ -269,9 +268,8 @@ msgid "Overview"
 msgstr "Visión de conjunto"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:19
-#, fuzzy
 msgid "Result Type:"
-msgstr "Tipo de imagen"
+msgstr "Tipo de resultado:"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:27
 msgid "Description:"
@@ -2012,9 +2010,8 @@ msgid "Target Systems"
 msgstr "Tipo de fuente"
 
 #: ../html/src/components/target-systems.tsx:28
-#, fuzzy
 msgid "No systems specified."
-msgstr "Sistema bloqueado"
+msgstr "Sistema bloqueado."
 
 #: ../html/src/components/tree/tree.tsx:112
 msgid "Invalid data"
@@ -2494,7 +2491,7 @@ msgstr "Información adicional"
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:57
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:85
 msgid "Editing properties.."
-msgstr "Editando propiedades…"
+msgstr "Editando propiedades.."
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:24
 #, fuzzy
@@ -2914,9 +2911,8 @@ msgid "AppStream {stream} has {count} packages:"
 msgstr ""
 
 #: ../html/src/manager/appstreams/appstreams.tsx:68
-#, fuzzy
 msgid "Updating the selection of AppStream modules has been <link>scheduled</link>."
-msgstr "La acción se ha "
+msgstr "Actualizando la selección de módulos AppStream ha sido <link>planificada</link>."
 
 #: ../html/src/manager/appstreams/appstreams.tsx:116
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
@@ -4219,9 +4215,8 @@ msgstr ""
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
-#, fuzzy
 msgid "Formula saved. Apply the <link>Highstate</link> for the changes to take effect."
-msgstr "Se ha guardado la fórmula. No es necesario aplicar el estado alto en esta fórmula."
+msgstr "Se ha guardado la fórmula. No es necesario aplicar el <link>estado alto</link> en esta fórmula."
 
 #: ../html/src/manager/header/search/search.tsx:10
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
@@ -4279,12 +4274,11 @@ msgstr ""
 #: ../html/src/manager/systems/proxy.tsx:74
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:384
 msgid "scheduled"
-msgstr "programado"
+msgstr "planificado"
 
 #: ../html/src/manager/images/image-build.tsx:241
-#, fuzzy
 msgid "Profile Summary"
-msgstr "Filtrar por nombre de sistema"
+msgstr "Resumen del Perfil"
 
 #: ../html/src/manager/images/image-build.tsx:251
 msgid "No profile selected"
@@ -4316,9 +4310,8 @@ msgid "Build Image"
 msgstr ""
 
 #: ../html/src/manager/images/image-build.tsx:359
-#, fuzzy
 msgid "Image Profile"
-msgstr "Eliminar perfil"
+msgstr "Perfil Imagen"
 
 #: ../html/src/manager/images/image-build.tsx:389
 #: ../html/src/manager/images/image-import.tsx:291
@@ -4327,11 +4320,11 @@ msgstr "Anfitrión de compilación"
 
 #: ../html/src/manager/images/image-import.tsx:17
 msgid "Image store not found"
-msgstr ""
+msgstr "Almacén de imagen no encontrado"
 
 #: ../html/src/manager/images/image-import.tsx:18
 msgid "The image import has been scheduled."
-msgstr ""
+msgstr "La importación de imagen ha sido planificada."
 
 #: ../html/src/manager/images/image-import.tsx:224
 #: ../html/src/manager/images/image-profile-edit.tsx:386
@@ -4369,19 +4362,19 @@ msgstr "Importar"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:278
 msgid "Target Image Store"
-msgstr ""
+msgstr "Almacenar Imagen Destino"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:302
 msgid "Dockerfile URL"
-msgstr ""
+msgstr "URL del archivo Docker"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:328
 msgid "Config URL"
-msgstr ""
+msgstr "URL Config"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:351
 msgid "Kiwi options"
-msgstr ""
+msgstr "Opciones de Kiwi"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:395
 msgid "Activation key is required for kiwi images."
@@ -4787,9 +4780,8 @@ msgid "Updated"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-runtime.tsx:34
-#, fuzzy
 msgid "Loading runtime information..."
-msgstr "Información adicional"
+msgstr "Cargando información en tiempo de ejecución…"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:70
 msgid "Instance is consistent with {productName}"
@@ -4958,14 +4950,12 @@ msgid "Skip to the next maintenance window"
 msgstr ""
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:120
-#, fuzzy
 msgid "There are no more past maintenance windows"
-msgstr "No hay ningún estado asignado."
+msgstr "No hay más ventanas de mantenimiento pasado"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:154
-#, fuzzy
 msgid "There are no more future maintenance windows"
-msgstr "No hay ninguna entrada que mostrar."
+msgstr "No hay ninguna entrada que mostrar"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:321
 msgid "Today"
@@ -5275,9 +5265,8 @@ msgid "bootstrap"
 msgstr ""
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:225
-#, fuzzy
 msgid "Loading content.."
-msgstr "Información adicional"
+msgstr "Cargando contenido.."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:57
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:50
@@ -5872,9 +5861,8 @@ msgid "All managed packages"
 msgstr ""
 
 #: ../html/src/manager/packages/list.tsx:89
-#, fuzzy
 msgid " Package Management "
-msgstr "Se necesita reiniciar el gestor de paquetes"
+msgstr " Gestión de Empaquetado "
 
 #: ../html/src/manager/packages/list.tsx:117
 #, fuzzy
@@ -5892,9 +5880,8 @@ msgid "package"
 msgstr "Paquete"
 
 #: ../html/src/manager/packages/list.tsx:146
-#, fuzzy
 msgid "No Packages."
-msgstr "Paquetes"
+msgstr "Sin Paquetes."
 
 #: ../html/src/manager/packages/list.tsx:172
 #, fuzzy
@@ -6123,14 +6110,12 @@ msgstr "Reordenar"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:81
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:84
-#, fuzzy
 msgid "Schedule successfully updated."
-msgstr "Se eliminó el filtro correctamente"
+msgstr "Planificación actualizada correctamente."
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:81
-#, fuzzy
 msgid "Schedule successfully created."
-msgstr "Se eliminó el filtro correctamente"
+msgstr "Planificación creada correctamente."
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:92
 #, fuzzy
@@ -6164,9 +6149,8 @@ msgid "Configure states to execute"
 msgstr ""
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:115
-#, fuzzy
 msgid " Recurring Actions "
-msgstr "Estado de acción"
+msgstr " Acciones Recurridas "
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:121
 msgid "The following recurring actions have been created."
@@ -6479,9 +6463,8 @@ msgid "{productName} Default"
 msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:65
-#, fuzzy
 msgid "Loading child channels.."
-msgstr "Cargando el programador…"
+msgstr "Cargando el programador.."
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:114
 #, fuzzy
@@ -6514,9 +6497,8 @@ msgid "Activation key has been modified."
 msgstr ""
 
 #: ../html/src/manager/systems/all-list.tsx:38
-#, fuzzy
 msgid " Systems "
-msgstr "Sistemas"
+msgstr " Sistemas "
 
 #: ../html/src/manager/systems/all-list.tsx:52
 #, fuzzy
@@ -6529,9 +6511,8 @@ msgid "Add system"
 msgstr "Sistema"
 
 #: ../html/src/manager/systems/all-list.tsx:68
-#, fuzzy
 msgid "No Systems."
-msgstr "Sistemas"
+msgstr "Sin Sistemas."
 
 #: ../html/src/manager/systems/all-list.tsx:117
 #: ../html/src/manager/systems/list-filter.tsx:48
@@ -7063,9 +7044,8 @@ msgid "Virtual Systems"
 msgstr "Sistemas virtuales alojados"
 
 #: ../html/src/manager/systems/virtual-list.tsx:58
-#, fuzzy
 msgid "No Virtual Systems."
-msgstr "Sistemas virtuales alojados"
+msgstr "Sin Sistemas Virtuales."
 
 #: ../html/src/manager/systems/virtual-list.tsx:99
 msgid "Base Software Channel"

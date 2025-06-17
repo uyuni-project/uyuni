@@ -991,12 +991,12 @@
         </context-group>
         <target state="translated">您使用我们的网站时发生了错误。</target>
       </trans-unit>
-      <trans-unit id="404.jsp.title" xml:space="preserve">
+      <trans-unit approved="yes" id="404.jsp.title" xml:space="preserve">
         <source>404: Page Not Found</source>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
         </context-group>
-        <target state="needs-adaptation">找不到页面</target>
+        <target state="final">404：找不到页面</target>
       </trans-unit>
       <trans-unit id="404.jsp.summary" xml:space="preserve">
         <source>The page you requested, {0}, was not found.</source>
@@ -7963,12 +7963,12 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个补丁的安装</target>
       </trans-unit>
-      <trans-unit id="message.patchinstalls" xml:space="preserve">
+      <trans-unit approved="yes" id="message.patchinstalls" xml:space="preserve">
         <source>{0} patch installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个补丁的安装</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个补丁的安装</target>
       </trans-unit>
       <trans-unit approved="yes" id="message.xccdfeval" xml:space="preserve">
         <source>XCCDF scan has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;</source>
@@ -21830,8 +21830,9 @@ Base Channel chosen on the
         <target state="final">您可以通过选择下面某个软件包配置文件将正在以无人值守方式
 安装的系统与一个在 @@PRODUCT_NAME@@ 中注册的系
 统的软件包配置文件同步。&lt;strong&gt;请注意&lt;/strong&gt;：
-此列表将只显示针对&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;操作系统&lt;/a&gt;页面中所选基础通道创建的软件包
-配置文件。</target>
+此列表将只显示针对
+&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;操作系统&lt;/a&gt;页面
+中所选基础通道创建的软件包配置文件。</target>
       </trans-unit>
       <trans-unit id="kickstart.packageprofiles.jsp.tip" xml:space="preserve">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt;
@@ -25767,7 +25768,7 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="help.jsp.about.overviewsummary" xml:space="preserve">
+      <trans-unit approved="yes" id="help.jsp.about.overviewsummary" xml:space="preserve">
         <source>
         All @@PRODUCT_NAME@@ functionality (system profiles, reporting data, application server, etc.)
         is stored locally on the customer's network. This provides customers with the ability to take their
@@ -25777,7 +25778,7 @@ given channel.</source>
         the customer's individual systems connect to a locally hosted Proxy.
         The Proxy aggregates data and performs some tasks locally, communicating with the central @@PRODUCT_NAME@@ servers.
         All information stored in the @@PRODUCT_NAME@@ database is kept on the @@PRODUCT_NAME@@ servers.</source>
-        <target>
+        <target state="final">
         所有 @@PRODUCT_NAME@@ 功能（系统配置文件、报告数据、应用程序服务器等）
         都存储在客户网络本地。这样，客户便可根据需要使其
         @@PRODUCT_NAME@@ 解决方案脱离公共互联网，同时对其
@@ -29391,7 +29392,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="final">为 &lt;abbr title="内容生命周期管理"&gt;CLM&lt;/abbr&gt; 创建实时修补过滤器</target>
+        <target state="final">为 &lt;abbr title="内容生命周期管理"&gt;CLM&lt;/abbr&gt; 创建在线增补过滤器</target>
       </trans-unit>
       <trans-unit approved="yes" id="channel.jsp.appstreams" xml:space="preserve">
         <source>AppStreams</source>
@@ -29797,36 +29798,38 @@ given channel.</source>
         <source>Proxy</source>
         <target state="final">代理</target>
       </trans-unit>
-    <trans-unit id="403.jsp.title" xml:space="preserve">
+      <trans-unit approved="yes" id="403.jsp.title" xml:space="preserve">
         <source>403: Access Denied</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="403.jsp.summary" xml:space="preserve">
+        <target state="final">403：访问被拒</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="403.jsp.summary" xml:space="preserve">
         <source>You do not have permission to access the page: {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="403.jsp.instruction" xml:space="preserve">
+        <target state="final">您没有访问此页面的权限：{0}。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="403.jsp.instruction" xml:space="preserve">
         <source>You are signed in, but your account does not have permission to access this resource. If you believe you should have access, contact your organization administrator to review your access permissions.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="403.jsp.actions" xml:space="preserve">
+        <target state="final">虽然您已登录，但您的帐户无权访问此资源。如果您认为自己应该具有权限，请联系组织管理员核查您的访问权限。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="403.jsp.actions" xml:space="preserve">
         <source>
           You can also &lt;a href="{0}"&gt;log out&lt;/a&gt; or &lt;a href="javascript:history.back()"&gt;go back&lt;/a&gt; to the previous page.
         </source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">
+          您也可以&lt;a href="{0}"&gt;注销&lt;/a&gt;或&lt;a href="javascript:history.back()"&gt;后退&lt;/a&gt;到上一页。
+        </target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

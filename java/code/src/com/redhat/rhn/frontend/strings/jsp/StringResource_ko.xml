@@ -991,12 +991,12 @@
         </context-group>
         <target>사이트에서 오류가 발견되었습니다.</target>
       </trans-unit>
-      <trans-unit id="404.jsp.title" xml:space="preserve">
+      <trans-unit approved="yes" id="404.jsp.title" xml:space="preserve">
         <source>404: Page Not Found</source>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
         </context-group>
-        <target state="needs-adaptation">페이지를 찾을 수 없음</target>
+        <target state="final">404: 페이지를 찾을 수 없음</target>
       </trans-unit>
       <trans-unit id="404.jsp.summary" xml:space="preserve">
         <source>The page you requested, {0}, was not found.</source>
@@ -5432,9 +5432,9 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.provisioning.powermanagement.operations" xml:space="preserve">
+      <trans-unit approved="yes" id="ssm.overview.provisioning.powermanagement.operations" xml:space="preserve">
         <source>Run &lt;a href="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"&gt;power management operations&lt;/a&gt;</source>
-        <target>&lt;a href="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"&gt;전원 관리 작업&lt;/a&gt; 실행</target>
+        <target state="final">&lt;a href="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"&gt;전원 관리 작업&lt;/a&gt; 실행</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -11337,7 +11337,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit approved="yes" id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
         <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/cobbler/templates instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
-        <target state="final"> 기존의 자동 설치 프로파일을 다시 사용하려면 브라우저에서가 아닌 /var/lib/cobbler/templates에서 템플릿을 복사하기-붙여넣기하는 것이 좋습니다.  이는 템플릿 변수가 그대로 유지되어 자동 설치한 후 등록 프로세스가 제대로 작동하게 합니다.</target>
+        <target state="final"> 기존 자동 설치 프로파일을 다시 사용하려면 브라우저에서 복사하는 것보다 /var/lib/rhn/kickstarts에서 템플릿을 복사하여 붙여 넣는 것이 좋습니다.  이를 통해 템플릿 변수가 그대로 유지되어 자동 설치 후 등록 프로세스가 올바르게 작동할 수 있습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
@@ -11809,10 +11809,9 @@ Please note that some manual configuration of these scripts may still be require
 You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.
 A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.
 For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
-        <target>
+        <target state="final">
 킥스타트 중에 시스템에서 이러한 키/인증서를 설치하려면 킥스타트 프로파일에서 해당 키 및/또는 인증서를 참조하십시오.
-서명된 패키지를 설치하려면 올바른 키 및 @@PRODUCT_NAME@@ 프록시 서버 또는
-@@PRODUCT_NAME@@ 서버에 의해 킥스타트된 올바른 인증서가 필요합니다.
+서명된 패키지를 설치하려면 올바른 키 및 @@PRODUCT_NAME@@ 프록시 서버 또는 @@PRODUCT_NAME@@ 서버에 의해 킥스타트된 올바른 인증서가 필요합니다.
 자세한 정보는 &lt;a href={0} target="_blank" &gt;참조 안내서&lt;/a&gt;를 참조하십시오.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
@@ -28891,7 +28890,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="copyright.jsp.title" xml:space="preserve">
         <source>Copyright (c) 2011 - 2025 SUSE LLC.</source>
-        <target state="final">Copyright (c) 2011 - 2025 SUSE LLC.</target>
+        <target state="final">Copyright (c) 2011 - 2024 SUSE LLC.</target>
       </trans-unit>
       <trans-unit approved="yes" id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;@@PRODUCT_NAME@@ License Agreement&lt;/a&gt;</source>
@@ -29761,7 +29760,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
-        <target state="final">선택된 경우 이미 채널의 일부인 패치가 표시됩니다. 이 옵션은 패치가 여러 채널의 일부이고, 그중 하나에서 포함되었으며, 다른 채널에서 해당 패키지를 연결해야 할 때 유용합니다.</target>
+        <target state="final">이 항목을 선택하면 이미 채널에 포함된 패치가 표시됩니다. 이 기능은 패치가 여러 채널의 일부이고 그 중 하나로부터 포함되었으며 다른 채널의 패키지를 연결해야 하는 경우에 유용합니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="toolbar.create.distro" xml:space="preserve">
         <source>Create Distribution</source>
@@ -29785,36 +29784,38 @@ given channel.</source>
         <source>Proxy</source>
         <target state="final">프록시</target>
       </trans-unit>
-    <trans-unit id="403.jsp.title" xml:space="preserve">
+      <trans-unit approved="yes" id="403.jsp.title" xml:space="preserve">
         <source>403: Access Denied</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="403.jsp.summary" xml:space="preserve">
+        <target state="final">403: 액세스 거부됨</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="403.jsp.summary" xml:space="preserve">
         <source>You do not have permission to access the page: {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="403.jsp.instruction" xml:space="preserve">
+        <target state="final">페이지에 액세스할 수 있는 권한이 없음: {0}.</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="403.jsp.instruction" xml:space="preserve">
         <source>You are signed in, but your account does not have permission to access this resource. If you believe you should have access, contact your organization administrator to review your access permissions.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="403.jsp.actions" xml:space="preserve">
+        <target state="final">로그인했지만 현재 계정의 권한으로는 해당 리소스에 액세스할 수 없습니다. 액세스 권한이 필요하다고 생각되면 조직 관리자에게 문의하여 액세스 권한을 검토하십시오.</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="403.jsp.actions" xml:space="preserve">
         <source>
           You can also &lt;a href="{0}"&gt;log out&lt;/a&gt; or &lt;a href="javascript:history.back()"&gt;go back&lt;/a&gt; to the previous page.
         </source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">
+          또한  &lt;a href="{0}"&gt;로그아웃&lt;/a&gt; 하거나 이전 페이지로 &lt;a href="javascript:history.back()"&gt;돌아가기&lt;/a&gt;를 수행할 수 있습니다.
+        </target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
