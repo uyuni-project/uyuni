@@ -14,8 +14,10 @@ include:
 {%- set yum_version = salt['pkg.version']("yum") %}
 {%- set is_yum = yum_version and salt['pkg.version_cmp'](yum_version, "4") < 0 %}
 {%- set is_dnf = salt['pkg.version']("dnf") %}
+{#- DNF was tested to be working with GET parameters for versions >= 4.0.9 #}
+{%- set dnf_supports_params = is_dnf and salt['pkg.version_cmp'](is_dnf, "4.0.9") >= 0 %}
 
-{%- if is_dnf %}
+{%- if is_dnf and not dnf_supports_params %}
 {%- set dnf_plugins = salt['cmd.run']("find /usr/lib -type d -name dnf-plugins -printf '%T@ %p\n' | sort -nr | cut -d ' ' -s -f 2- | head -n 1", python_shell=True) %}
 {%- if dnf_plugins %}
 mgrchannels_susemanagerplugin_dnf:
@@ -109,7 +111,7 @@ mgrchannels_repo:
     - require:
        - file: mgr_ca_cert
 {%- if grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
-{%- if is_dnf %}
+{%- if is_dnf and not dnf_supports_params %}
        - file: mgrchannels_susemanagerplugin_dnf
        - file: mgrchannels_susemanagerplugin_conf_dnf
 {%- endif %}
