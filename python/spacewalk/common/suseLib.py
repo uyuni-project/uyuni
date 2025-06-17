@@ -22,6 +22,8 @@ except ImportError:
     except ImportError:
         from StringIO import StringIO
 
+import io
+import os
 import re
 import pycurl
 
@@ -733,3 +735,121 @@ def _useProxyFor(url):
         ):
             return False
     return True
+
+
+def get_content_type(
+    url: str,
+    certfile: str = None,
+    keyfile: str = None,
+    cafile: str = None,
+    proxies: dict = None,
+    headers: dict = None,
+):
+    """
+    Makes an HTTPS GET request to the given URL and return the Content-Type header.
+
+    Args:
+        url (str): The URL to make the request to.
+        certfile (str, optional): Path to the client certificate file (e.g., 'client.pem').
+        keyfile (str, optional): Path to the client's private key file (e.g., 'client_key.pem').
+        cafile (str, optional): Path to a file containing concatenated CA certificates in PEM format.
+                                If provided, pycurl will use these CAs to verify the server's certificate.
+                                If not provided, default system CAs will be used.
+        proxies (dict, optional): A dictionary of proxies. Keys are protocol names (e.g., 'http', 'https')
+                                  and values are the proxy URLs (e.g., 'http://your.proxy.com:8080').
+                                  PycURL typically uses a single proxy setting, so if both http and https
+                                  proxies are given, the 'https' proxy will be prioritized for HTTPS requests.
+        headers (dict, optional): A dictionary of custom HTTP headers to send with the request.
+    """
+    c = pycurl.Curl()
+    buffer = (
+        io.BytesIO()
+    )  # Buffer to store the response body (not used, but required by pycurl)
+
+    try:
+        c.setopt(pycurl.URL, url)
+        c.setopt(
+            pycurl.WRITEFUNCTION, buffer.write
+        )  # Dummy write function, content not used but needed
+
+        # Set custom headers
+        if headers:
+            header_list = [f"{key}: {value}" for key, value in headers.items()]
+            c.setopt(pycurl.HTTPHEADER, header_list)
+
+        # Client certificate authentication
+        if certfile and keyfile:
+            if not os.path.exists(certfile):
+                log_error(f"Error: Client certificate file not found at '{certfile}'")
+                return ""
+            if not os.path.exists(keyfile):
+                log_error(f"Error: Client private key file not found at '{keyfile}'")
+                return ""
+            try:
+                c.setopt(pycurl.SSLCERT, certfile)
+                c.setopt(pycurl.SSLKEY, keyfile)
+            except pycurl.error as pycurl_err:
+                log_error(
+                    f"PycURL SSL Error loading client certificate or key: {pycurl_err}"
+                )
+                log_error(
+                    "Please ensure your certfile and keyfile are valid and in PEM format."
+                )
+                return ""
+
+        # CA bundle for server certificate validation
+        if cafile:
+            if not os.path.exists(cafile):
+                log_error(f"Error: CA bundle file not found at '{cafile}'")
+                return ""
+            c.setopt(pycurl.CAINFO, cafile)
+        else:
+            # For pycurl, it's often good practice to explicitly verify peer even if no custom CAINFO
+            c.setopt(pycurl.SSL_VERIFYPEER, 1)
+            c.setopt(pycurl.SSL_VERIFYHOST, 2)
+
+        # Proxy configuration
+        if proxies:
+            # PycURL typically takes a single proxy.
+            # We'll try to use the 'https' proxy if available for https URLs, otherwise 'http'.
+            proxy_url = None
+            if url.startswith("https://") and "https" in proxies:
+                proxy_url = proxies["https"]
+            elif "http" in proxies:
+                proxy_url = proxies["http"]
+
+            if proxy_url:
+                c.setopt(pycurl.PROXY, proxy_url)
+            else:
+                log_error(
+                    "Warning: No suitable proxy found in the 'proxies' dictionary."
+                )
+
+        # Perform the request
+        c.perform()
+
+        # Get Content-Type from info
+        try:
+            content_type = c.getinfo(pycurl.CONTENT_TYPE)
+        except TypeError:
+            content_type = None
+
+        if content_type:
+            # PycURL content_type might be bytes, decode it
+            if isinstance(content_type, bytes):
+                content_type = content_type.decode("utf-8")
+            return content_type
+
+    except pycurl.error as e:
+        # pycurl.error contains the error code and string message
+        error_code, error_string = e.args
+        log_error(f"PycURL Error occurred for {url}: ({error_code}) {error_string}")
+        if (
+            error_code == pycurl.E_SSL_CACERT
+            or error_code == pycurl.E_SSL_CERTPROBLEM
+            or error_code == pycurl.E_PEER_FAILED_VERIFICATION
+        ):
+            log_error("This might be an SSL/TLS certificate validation error.")
+    finally:
+        c.close()  # Always close the curl handle
+    return ""
