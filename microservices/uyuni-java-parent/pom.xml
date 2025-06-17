@@ -24,7 +24,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <local.repository.relative.path>${basedir}</local.repository.relative.path>
+        <java.parent.dir>${maven.multiModuleProjectDirectory}</java.parent.dir>
+        <obs-to-maven.force-parameter />
     </properties>
 
     <modules>
@@ -33,6 +34,63 @@
         <module>../../branding</module>
         <module>../../java</module>
     </modules>
+
+    <profiles>
+        <!-- Handle the parameter to force a refresh of obs-to-maven dependencies -->
+        <profile>
+            <id>force-obs-to-maven</id>
+            <activation>
+                <property>
+                    <name>obs-to-maven.force</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <properties>
+                <obs-to-maven.force-parameter>--force</obs-to-maven.force-parameter>
+            </properties>
+        </profile>
+        <profile>
+            <id>use-obs-to-maven</id>
+            <activation>
+                <property>
+                    <name>obs-to-maven.disabled</name>
+                    <value>!true</value>
+                </property>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>local-repository</id>
+                    <name>Local Repository with artifacts downloaded from OBS</name>
+                    <url>file://${java.parent.dir}/repository/</url>
+                    <releases>
+                        <updatePolicy>always</updatePolicy>
+                    </releases>
+                </repository>
+            </repositories>
+            <build>
+                <plugins>
+                    <!-- Configure the exec plugin to download the maven dependencies from OBS on initialize -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.4.1</version>
+                        <executions>
+                            <execution>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>/bin/bash</executable>
+                                    <commandlineArgs>${java.parent.dir}/src/scripts/download-to-local-repository.sh ${obs-to-maven.force-parameter} ${project.artifactId} ${basedir}/obs-maven-config.yaml ${java.parent.dir}</commandlineArgs>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <!-- Global dependencies based on the package version in OBS -->
     <dependencyManagement>

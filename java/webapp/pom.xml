@@ -28,24 +28,6 @@
     <artifactId>webapp</artifactId>
     <packaging>war</packaging>
 
-    <profiles>
-        <profile>
-            <id>use-local-repository</id>
-            <activation>
-                <file>
-                    <exists>${basedir}/../../microservices/uyuni-java-parent/repository/enabled</exists>
-                </file>
-            </activation>
-            <repositories>
-                <repository>
-                    <id>local-repository</id>
-                    <name>Local Repository with artifacts downloaded from OBS</name>
-                    <url>file://${basedir}/../../microservices/uyuni-java-parent/repository/</url>
-                </repository>
-            </repositories>
-        </profile>
-    </profiles>
-
     <dependencies>
         <dependency>
             <groupId>org.uyuni-project.spacewalk-java</groupId>
