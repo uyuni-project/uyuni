@@ -1,0 +1,2 @@
+- Move jmx configuration into persisted folder
+  (bsc#1244219)

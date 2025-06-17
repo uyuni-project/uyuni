@@ -80,13 +80,13 @@ jmx_exporter_tomcat_yaml_config:
 
 jmx_tomcat_config:
   file.managed:
-    - name: /usr/lib/systemd/system/tomcat.service.d/jmx.conf
+    - name: /etc/tomcat/conf.d/tomcat_java_jmx.conf
     - makedirs: True
     - user: root
     - group: root
     - mode: 644
     - source:
-      - salt://srvmonitoring/tomcat_jmx.conf
+      - salt://srvmonitoring/tomcat_java_jmx.conf
     - require:
       - cmd: jmx_exporter
   mgrcompat.module_run:
@@ -120,7 +120,7 @@ jmx_exporter_taskomatic_yaml_config:
 
 jmx_taskomatic_config:
   file.managed:
-    - name: /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
+    - name: /etc/sysconfig/rhn/taskomatic_jmx.conf
     - makedirs: True
     - user: root
     - group: root

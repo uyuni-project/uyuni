@@ -1,0 +1,2 @@
+- Move jmx configuration to /etc/sysconfig/tomcat folder
+  (bsc#1244219)
