@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+
+# SPDX-FileCopyrightText: 2016-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Watch RPM or DPkg database via cookies and fire
 an event to the SUSE Multi-Linux Manager if that has been changed.

@@ -1,4 +1,9 @@
 #  pylint: disable=missing-module-docstring
+
+# SPDX-FileCopyrightText: 2020-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 import logging
 import subprocess
 import salt.utils.timed_subprocess

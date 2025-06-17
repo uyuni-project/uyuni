@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2022-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """
 reportdb_user functions
 """

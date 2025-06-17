@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2017-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """A collection of utility runner functions for Uyuni."""
 
 from subprocess import Popen, PIPE
