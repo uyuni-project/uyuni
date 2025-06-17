@@ -75,7 +75,7 @@ artifacts:
     repository: Leap_sle
   - artifact: commons-text
     package: apache-commons-text
-    repository: Leap
+    repository: Leap_sle
   - artifact: commons-logging
     package: apache-commons-logging
     jar: apache-commons-logging\.jar
