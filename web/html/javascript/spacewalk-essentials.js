@@ -449,17 +449,6 @@ function onDocumentReadyInitOldJS() {
 jQuery(document).ready(function() {
   onDocumentReadyGeneral();
   onDocumentReadyAutoBootstrapGrid();
-  //Initialize Bootstrap tooltips
-  jQuery('[data-bs-toggle="tooltip"]').tooltip();
-
-  const tooltipObserver = new MutationObserver(() => {
-    jQuery('[data-bs-toggle="tooltip"]').tooltip();
-  });
-
-  tooltipObserver.observe(document.body, {
-    childList: true,
-    subtree: true,
-  });
   registerSpacewalkContentObservers();
   initIEWarningUse();
   listenForGlobalNotificationChanges();
