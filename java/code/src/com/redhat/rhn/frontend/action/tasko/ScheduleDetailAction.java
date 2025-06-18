@@ -91,7 +91,8 @@ public class ScheduleDetailAction extends RhnAction {
         RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker(
                 request, "date", null);
 
-        if (picker.isDisabled() || StringUtils.isEmpty(picker.getCronEntry())) {
+        if ((picker.isDisabled() || StringUtils.isEmpty(picker.getCronEntry())) &&
+                !ctx.hasParam("activate_button")) {
             if (scheduleId == null) {
                 prepDropdowns(ctx);
                 createErrorMessage(request, "message.scheduledisabled", null);
@@ -121,18 +122,27 @@ public class ScheduleDetailAction extends RhnAction {
                 return getStrutsDelegate().forwardParams(
                         mapping.findForward(RhnHelper.DEFAULT_FORWARD), params);
             }
-            // set the schedule
-            tapi.scheduleSatBunch(loggedInUser,
-                    scheduleName,
-                    bunchName,
-                    picker.getCronEntry()
-                    );
+            if (ctx.hasParam("create_button")) {
+                // create new schedule
+                tapi.scheduleSatBunch(loggedInUser, scheduleName, bunchName, picker.getCronEntry());
+            }
+            else if (ctx.hasParam("activate_button")) {
+                // activate existing schedule
+                tapi.activateSatBunch(loggedInUser, scheduleName, bunchName);
+            }
+            else {
+                // update the schedule
+                tapi.updateSatBunch(loggedInUser, scheduleName, bunchName, picker.getCronEntry());
+            }
             // check, whether it was created
             Map schedule = tapi.lookupScheduleByBunchAndLabel(loggedInUser, bunchName,
                     scheduleName);
             if (schedule != null) {
                 if (ctx.hasParam("create_button")) {
                     createSuccessMessage(request, "message.schedulecreated", scheduleName);
+                }
+                else if (ctx.hasParam("activate_button")) {
+                    createSuccessMessage(request, "message.scheduleactivated", scheduleName);
                 }
                 else {
                     createSuccessMessage(request, "message.scheduleupdated", scheduleName);
