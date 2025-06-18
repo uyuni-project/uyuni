@@ -263,12 +263,14 @@ public class MinionActionUtils {
                         e -> e.getValue().toCompletableFuture().join()));
 
         serverActions.forEach(serverAction ->
-            serverAction.getServer().asMinionServer().map(minion -> running.get(minion.getMinionId()))
-              .ifPresent(r -> {
-                  r.consume(
-                          error -> LOG.error(error.toString()),
-                          runningInfos -> ActionFactory.save(updateMinionActionStatus(serverAction, runningInfos)));
-              })
+                serverAction.getServer().asMinionServer()
+                        .map(minion -> running.get(minion.getMinionId()))
+                        .ifPresentOrElse(
+                                r -> r.consume(
+                                        error -> LOG.error(error.toString()),
+                                        runningInfos -> ActionFactory.save(
+                                                updateMinionActionStatus(serverAction, runningInfos))),
+                                () -> ActionFactory.save(updateMinionActionStatus(serverAction, List.of())))
         );
     }
 
