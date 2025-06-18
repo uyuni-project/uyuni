@@ -101,10 +101,9 @@ public class AttestationResult {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof AttestationResult)) {
+        if (!(o instanceof AttestationResult that)) {
             return false;
         }
-        AttestationResult that = (AttestationResult) o;
         return Objects.equals(reportId, that.reportId) && Objects.equals(resultType, that.resultType);
     }
 
