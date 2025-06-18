@@ -69,10 +69,9 @@ public class AttestationReport {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof AttestationReport)) {
+        if (!(o instanceof AttestationReport attestationReport)) {
             return false;
         }
-        AttestationReport attestationReport = (AttestationReport) o;
         return id == attestationReport.id &&
             cpuGeneration == attestationReport.cpuGeneration &&
             Arrays.equals(randomNonce, attestationReport.randomNonce);

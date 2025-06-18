@@ -82,10 +82,9 @@ public class ProcessOutput {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ProcessOutput)) {
+        if (!(o instanceof ProcessOutput that)) {
             return false;
         }
-        ProcessOutput that = (ProcessOutput) o;
         return exitCode == that.exitCode && Objects.equals(standardOutput,
             that.standardOutput) && Objects.equals(standardError, that.standardError);
     }
