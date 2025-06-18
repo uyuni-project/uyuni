@@ -35,6 +35,7 @@ import Highstate from "./state";
 import Storybook from "./storybook";
 import Systems from "./systems";
 import ActivationKeys from "./systems/activation-key";
+import { initializeTooltips } from '../components/tooltips';
 
 const pages = {
   ...ActivationKeys,
@@ -70,6 +71,8 @@ window.spaImportReactPage = function spaImportReactPage(pageName) {
       `Found no page with name "${pageName}", did you add the renderer to \`pages\` in \`web/html/src/manager/index.ts\`?`
     );
   }
-
+  initializeTooltips();
+  console.log("=====================")
   return pages[pageName]();
 };
+
