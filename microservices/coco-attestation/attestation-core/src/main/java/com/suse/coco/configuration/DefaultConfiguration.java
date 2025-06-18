@@ -22,7 +22,6 @@ import com.suse.common.configuration.ResourceConfigurationSource;
 
 import java.util.List;
 import java.util.Properties;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -51,7 +50,7 @@ public class DefaultConfiguration implements Configuration {
 
         List<String> missingProperty = MANDATORY_PROPERTIES
             .filter(property -> configurationSource.getString(property).isEmpty())
-            .collect(Collectors.toList());
+            .toList();
 
         if (!missingProperty.isEmpty()) {
             throw new IllegalArgumentException("Mandatory configuration properties are missing: " + missingProperty);

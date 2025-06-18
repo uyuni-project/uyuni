@@ -99,11 +99,9 @@ class SNPGuestWorkerTest {
             .thenThrow(PersistenceException.class);
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- Unable to process attestation result: org.apache.ibatis.exceptions.PersistenceException",
-                ""
-            ),
+        assertEquals("""
+                - Unable to process attestation result: org.apache.ibatis.exceptions.PersistenceException
+                """,
             result.getProcessOutput()
         );
 
@@ -123,11 +121,9 @@ class SNPGuestWorkerTest {
             .thenReturn(null);
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- Unable to retrieve attestation report for result",
-                ""
-            ),
+        assertEquals("""
+                - Unable to retrieve attestation report for result
+                """,
             result.getProcessOutput()
         );
 
@@ -146,11 +142,9 @@ class SNPGuestWorkerTest {
         report.setCpuGeneration(EpycGeneration.UNKNOWN);
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- Unable to identify Epyc processor generation for attestation report",
-                ""
-            ),
+        assertEquals("""
+                - Unable to identify Epyc processor generation for attestation report
+                """,
             result.getProcessOutput()
         );
 
@@ -165,16 +159,13 @@ class SNPGuestWorkerTest {
     @Test
     @DisplayName("Rejects report if nonce is null")
     void rejectsWithNullNonce() {
-        // Set the model as UNKNOWN
         report.setRandomNonce(null);
         report.setReport("REPORT".getBytes(StandardCharsets.UTF_8));
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- Unable to verify: randomized nonce not found",
-                ""
-            ),
+        assertEquals("""
+                - Unable to verify: randomized nonce not found
+                """,
             result.getProcessOutput()
         );
 
@@ -189,16 +180,13 @@ class SNPGuestWorkerTest {
     @Test
     @DisplayName("Rejects report if nonce is empty")
     void rejectsWithEmptyNonce() {
-        // Set the model as UNKNOWN
         report.setRandomNonce(new byte[0]);
         report.setReport("REPORT".getBytes(StandardCharsets.UTF_8));
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- Unable to verify: randomized nonce not found",
-                ""
-            ),
+        assertEquals("""
+                - Unable to verify: randomized nonce not found
+                """,
             result.getProcessOutput()
         );
 
@@ -213,16 +201,13 @@ class SNPGuestWorkerTest {
     @Test
     @DisplayName("Rejects report if data is null")
     void rejectsWithNullReport() {
-        // Set the model as UNKNOWN
         report.setReport(null);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- Unable to verify: attestation report not found",
-                ""
-            ),
+        assertEquals("""
+                - Unable to verify: attestation report not found
+                """,
             result.getProcessOutput()
         );
 
@@ -237,16 +222,13 @@ class SNPGuestWorkerTest {
     @Test
     @DisplayName("Rejects report if data is empty")
     void rejectsWithEmptyReport() {
-        // Set the model as UNKNOWN
         report.setReport(new byte[0]);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- Unable to verify: attestation report not found",
-                ""
-            ),
+        assertEquals("""
+                - Unable to verify: attestation report not found
+                """,
             result.getProcessOutput()
         );
 
@@ -261,7 +243,6 @@ class SNPGuestWorkerTest {
     @Test
     @DisplayName("Rejects report if nonce is not found in sequence")
     void rejectsWithoutTheNonceInTheReport() throws IOException {
-        // Set the model as UNKNOWN
         report.setCpuGeneration(EpycGeneration.MILAN);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
         report.setReport("REPORT THAT DOES NOT CONTAIN THE RANDOM SEQUENCE".getBytes(StandardCharsets.UTF_8));
@@ -272,11 +253,9 @@ class SNPGuestWorkerTest {
         when(sequenceFinder.search(report.getReport())).thenReturn(-1);
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- The report does not contain the expected random nonce",
-                ""
-            ),
+        assertEquals("""
+                - The report does not contain the expected random nonce
+                """,
             result.getProcessOutput()
         );
 
@@ -313,15 +292,13 @@ class SNPGuestWorkerTest {
             .thenReturn(new ProcessOutput(-1, "", "Fetch FAILED"));
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- The report contains the expected random nonce",
-                "- Unable to retrieve VCEK file:",
-                "    - Exit code: -1",
-                "    - Standard error: >",
-                "        Fetch FAILED",
-                ""
-            ),
+        assertEquals("""
+                - The report contains the expected random nonce
+                - Unable to retrieve VCEK file:
+                    - Exit code: -1
+                    - Standard error: >
+                        Fetch FAILED
+                """,
             result.getProcessOutput()
         );
 
@@ -362,14 +339,12 @@ class SNPGuestWorkerTest {
         when(directory.isVCEKAvailable()).thenReturn(false);
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- The report contains the expected random nonce",
-                "- Unable to retrieve VCEK file:",
-                "    - Standard output: >",
-                "        Fetch ok",
-                ""
-            ),
+        assertEquals("""
+                - The report contains the expected random nonce
+                - Unable to retrieve VCEK file:
+                    - Standard output: >
+                        Fetch ok
+                """,
             result.getProcessOutput()
         );
 
@@ -414,18 +389,16 @@ class SNPGuestWorkerTest {
             .thenReturn(new ProcessOutput(-1, "", "Certificate verify FAILED"));
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- The report contains the expected random nonce",
-                "- VCEK fetched successfully:",
-                "    - Standard output: >",
-                "        Fetch ok",
-                "- Unable to verify the validity of the certificates:",
-                "    - Exit code: -1",
-                "    - Standard error: >",
-                "        Certificate verify FAILED",
-                ""
-            ),
+        assertEquals("""
+                - The report contains the expected random nonce
+                - VCEK fetched successfully:
+                    - Standard output: >
+                        Fetch ok
+                - Unable to verify the validity of the certificates:
+                    - Exit code: -1
+                    - Standard error: >
+                        Certificate verify FAILED
+                """,
             result.getProcessOutput()
         );
 
@@ -477,21 +450,19 @@ class SNPGuestWorkerTest {
             .thenReturn(new ProcessOutput(-1, "", "Attestation verify FAILED"));
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- The report contains the expected random nonce",
-                "- VCEK fetched successfully:",
-                "    - Standard output: >",
-                "        Fetch ok",
-                "- Certification chain validated successfully:",
-                "    - Standard output: >",
-                "        Certificate verify ok",
-                "- Unable to verify the attestation report:",
-                "    - Exit code: -1",
-                "    - Standard error: >",
-                "        Attestation verify FAILED",
-                ""
-            ),
+        assertEquals("""
+                - The report contains the expected random nonce
+                - VCEK fetched successfully:
+                    - Standard output: >
+                        Fetch ok
+                - Certification chain validated successfully:
+                    - Standard output: >
+                        Certificate verify ok
+                - Unable to verify the attestation report:
+                    - Exit code: -1
+                    - Standard error: >
+                        Attestation verify FAILED
+                """,
             result.getProcessOutput()
         );
 
@@ -532,36 +503,46 @@ class SNPGuestWorkerTest {
 
         // Pass fetching of the VECK
         when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
-            .thenReturn(new ProcessOutput(0, "Fetch ok", ""));
+            .thenReturn(new ProcessOutput(0, """
+                Attempting to fetch VCEK...
+                Fetch ok
+                """, ""));
         when(directory.isVCEKAvailable()).thenReturn(true);
 
         // Pass the certificate verification
         when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR))
-            .thenReturn(new ProcessOutput(0, "Certificate verify ok", ""));
+            .thenReturn(new ProcessOutput(0, """
+                Verifying certificate chain validity...
+                Certificates ok
+                """, ""));
 
         // Pass the attestation verification
         when(snpWrapper.verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE))
-            .thenReturn(new ProcessOutput(0, "Attestation verify ok", ""));
+            .thenReturn(new ProcessOutput(0, """
+                Verifying attestation status...
+                Attestation ok
+                """, ""));
 
         // Retrieve the report
         when(snpWrapper.displayReport(MOCK_REPORT_FILE)).thenReturn(new ProcessOutput(0, "dummy-report", ""));
 
         assertTrue(worker.process(session, result));
         assertEquals("dummy-report", result.getDetails());
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- The report contains the expected random nonce",
-                "- VCEK fetched successfully:",
-                "    - Standard output: >",
-                "        Fetch ok",
-                "- Certification chain validated successfully:",
-                "    - Standard output: >",
-                "        Certificate verify ok",
-                "- Attestation report correctly verified:",
-                "    - Standard output: >",
-                "        Attestation verify ok",
-                ""
-            ),
+        assertEquals("""
+                - The report contains the expected random nonce
+                - VCEK fetched successfully:
+                    - Standard output: >
+                        Attempting to fetch VCEK...
+                        Fetch ok
+                - Certification chain validated successfully:
+                    - Standard output: >
+                        Verifying certificate chain validity...
+                        Certificates ok
+                - Attestation report correctly verified:
+                    - Standard output: >
+                        Verifying attestation status...
+                        Attestation ok
+                """,
             result.getProcessOutput()
         );
 
