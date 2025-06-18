@@ -209,27 +209,17 @@ public class SNPGuestWorker implements AttestationWorker {
 
         StringBuilder processBuilder = new StringBuilder();
         if (processOutput.getExitCode() != 0) {
-            processBuilder.append(" ".repeat(INDENT_SIZE)).append("- Exit code: ")
-                .append(processOutput.getExitCode())
-                .append(System.lineSeparator());
+            processBuilder.append("- Exit code: %d".formatted(processOutput.getExitCode()).indent(INDENT_SIZE));
         }
 
         if (processOutput.hasStandardOutput()) {
-            processBuilder.append(" ".repeat(INDENT_SIZE)).append("- Standard output: >")
-                .append(System.lineSeparator());
-            processOutput.getStandardOutput().lines()
-                .forEach(line ->
-                    processBuilder.append(" ".repeat(INDENT_SIZE * 2)).append(line).append(System.lineSeparator())
-                );
+            processBuilder.append("- Standard output: >".indent(INDENT_SIZE));
+            processBuilder.append(processOutput.getStandardOutput().indent(INDENT_SIZE * 2));
         }
 
         if (processOutput.hasStandardError()) {
-            processBuilder.append(" ".repeat(INDENT_SIZE)).append("- Standard error: >")
-                .append(System.lineSeparator());
-            processOutput.getStandardError().lines()
-                .forEach(line ->
-                    processBuilder.append(" ".repeat(INDENT_SIZE * 2)).append(line).append(System.lineSeparator())
-                );
+            processBuilder.append("- Standard error: >".indent(INDENT_SIZE));
+            processBuilder.append(processOutput.getStandardError().indent(INDENT_SIZE * 2));
         }
 
         return processBuilder.toString();
