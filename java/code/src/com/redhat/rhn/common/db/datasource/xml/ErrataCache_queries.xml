@@ -128,7 +128,13 @@ DELETE FROM rhnOrgErrataCacheQueue WHERE org_id = :org_id
                   AND    SC.server_id = S.id
                   AND    p.id in (%s)
                   AND    NOT EXISTS (SELECT 1 FROM retracted_packages WHERE sid = S.id AND pid = P.id)
-                  AND    NOT EXISTS (SELECT 1 FROM suseServerAppStreamHiddenPackagesView   WHERE sid = S.id AND pid = P.id)
+                  AND (
+                    NOT EXISTS (SELECT 1 FROM suseAppStream WHERE channel_id = :channel_id)
+                    OR (
+                        EXISTS (SELECT 1 FROM suseAppStream WHERE channel_id = :channel_id)
+                        AND NOT EXISTS (SELECT 1 FROM suseServerAppStreamHiddenPackagesView WHERE sid = S.id AND pid = P.id)
+                    )
+                  )
                   AND    p.package_arch_id = spac.package_arch_id
                   AND    spac.server_arch_id = s.server_arch_id
                   AND    SP_EVR.id = SP.evr_id
