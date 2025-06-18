@@ -21,7 +21,7 @@ import java.util.Date;
 /**
  * This is a System Item send to SCC for minimal update registration.
  */
-public class SCCUpdateSystemJson {
+public class SCCUpdateSystemItem {
 
     private String login;
     private String password;
@@ -34,7 +34,7 @@ public class SCCUpdateSystemJson {
      * @param passwdIn the password
      * @param lastSeenIn last seen date
      */
-    public SCCUpdateSystemJson(String loginIn, String passwdIn, Date lastSeenIn) {
+    public SCCUpdateSystemItem(String loginIn, String passwdIn, Date lastSeenIn) {
         login = loginIn;
         password = passwdIn;
         lastSeenAt = lastSeenIn;

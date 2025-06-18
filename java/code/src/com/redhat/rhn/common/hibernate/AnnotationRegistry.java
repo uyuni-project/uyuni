@@ -175,6 +175,7 @@ import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssPeripheralChannels;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
+import com.suse.scc.proxy.SCCProxyRecord;
 
 import java.util.List;
 
@@ -312,6 +313,7 @@ public class AnnotationRegistry {
             SAPWorkload.class,
             SCCCredentials.class,
             SCCOrderItem.class,
+            SCCProxyRecord.class,
             SCCRegCacheItem.class,
             SCCRepositoryAuth.class,
             SCCRepositoryBasicAuth.class,
