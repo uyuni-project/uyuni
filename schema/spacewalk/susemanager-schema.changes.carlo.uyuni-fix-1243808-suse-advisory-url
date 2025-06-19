@@ -1,0 +1,3 @@
+- Creation of table suseErrataAdvisoryMap and
+  added errata-advisory-map-sync taskomatic job
+  fixing bug (bsc#1243808)

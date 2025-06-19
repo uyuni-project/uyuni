@@ -14,6 +14,7 @@
  */
 package com.suse.manager.errata.test;
 
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -29,11 +30,11 @@ abstract class BaseErrataTestCase extends RhnBaseTestCase {
     /**
      * Builds a test errata object
      */
-    protected Errata createErrata(String advisory, String type, LocalDate issedDate, Long release) {
+    protected Errata createErrata(String advisory, String type, LocalDate issuedDate, Long release) {
         final Errata errata = new Errata();
 
-        if (issedDate != null) {
-            errata.setIssueDate(Date.from(issedDate.atStartOfDay(ZoneOffset.systemDefault()).toInstant()));
+        if (issuedDate != null) {
+            errata.setIssueDate(Date.from(issuedDate.atStartOfDay(ZoneOffset.systemDefault()).toInstant()));
         }
 
         errata.setAdvisory(advisory);
@@ -42,5 +43,18 @@ abstract class BaseErrataTestCase extends RhnBaseTestCase {
         return errata;
     }
 
+    /**
+     * Builds a test errata object with one channel owning an update tag
+     */
+    protected Errata createErrataWithUpdateTag(String updateTag,
+                                               String advisory, String type, LocalDate issuedDate, Long release) {
+        final Errata errata = createErrata(advisory, type, issuedDate, release);
 
+        Channel ch = new Channel();
+        ch.addErrata(errata);
+        ch.setUpdateTag(updateTag);
+        errata.addChannel(ch);
+
+        return errata;
+    }
 }

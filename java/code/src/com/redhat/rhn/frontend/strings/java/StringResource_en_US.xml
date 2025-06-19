@@ -8872,6 +8872,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="task.status.oval-data-sync" xml:space="preserve">
         <source>Sync OVAL Data</source>
       </trans-unit>
+      <trans-unit id="task.status.errata-advisory-map-sync" xml:space="preserve">
+        <source>Update SUSE errata advisory map</source>
+      </trans-unit>
       <trans-unit id="task.status.mgr-sync-refresh" xml:space="preserve">
         <source>Refresh mgr-sync data</source>
       </trans-unit>
@@ -8916,6 +8919,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve">
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.errata-advisory-map-sync-bunch" xml:space="preserve">
+        <source>Update SUSE errata advisory map to retrieve announcement ids and advisor URLs</source>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-sync-refresh-bunch" xml:space="preserve">
         <source>Refreshes data about channels, products and subscriptions</source>
