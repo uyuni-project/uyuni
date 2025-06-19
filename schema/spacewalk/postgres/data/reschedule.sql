@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2014 SUSE LLC.
+-- Copyright (c) 2014--2025 SUSE LLC.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -10,3 +10,4 @@
 --
 
 select randomize_bunch_schedule('mgr-sync-refresh-default');
+select randomize_bunch_schedule('errata-advisory-map-sync-default');
