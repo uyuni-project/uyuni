@@ -175,7 +175,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
                                             Entitlement ent,
                                             ServerGroupType groupType
                                             )  throws Exception {
-        Server server = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
+        Server server = ServerTestUtils.createVirtHostWithGuests(user, 1, false, systemEntitlementManager);
 
         systemEntitlementManager.removeServerEntitlement(server, EntitlementManager.VIRTUALIZATION);
         ServerGroupTest.createTestServerGroup(user.getOrg(),

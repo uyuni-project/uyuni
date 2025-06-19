@@ -176,7 +176,7 @@ public class ServerTestUtils {
             s.addChannel(baseChannel);
         }
         else {
-            s = createTestSystem(user);
+            s = createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
         }
 
         // Lets give the org/server virt.
