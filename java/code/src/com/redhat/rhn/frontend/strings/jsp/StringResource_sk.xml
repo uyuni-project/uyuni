@@ -7856,42 +7856,42 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemsearch_cpu_mhz_lt_column" xml:space="preserve">
         <source>CPU Mhz</source>
-        <target/>
+        <target state="translated">CPU Mhz</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_cpu_mhz_gt_column" xml:space="preserve">
         <source>CPU Mhz</source>
-        <target/>
+        <target state="translated">CPU Mhz</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_num_of_cpus_lt_column" xml:space="preserve">
         <source>Number of CPUs</source>
-        <target/>
+        <target state="translated">Počet CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_num_of_cpus_gt_column" xml:space="preserve">
         <source>Number of CPUs</source>
-        <target/>
+        <target state="translated">Počet CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_ram_lt_column" xml:space="preserve">
         <source>RAM</source>
-        <target/>
+        <target state="translated">RAM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_ram_gt_column" xml:space="preserve">
         <source>RAM</source>
-        <target/>
+        <target state="translated">RAM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
@@ -7899,28 +7899,28 @@ organization. You may grant or remove the organization administrator role in the
       <!-- Monitoring General Config Page -->
       <trans-unit id="generalconfig.jsp.header1" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Configuration - Monitoring</source>
-        <target/>
+        <target state="translated">Konfigurácia @@PRODUCT_NAME@@ - Monitorovanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.header2" xml:space="preserve">
         <source>General Monitoring Config</source>
-        <target/>
+        <target state="translated">Všeobecná konfigurácia monitorovania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.summary" xml:space="preserve">
         <source>After updating the configuration options below, monitoring services on this @@PRODUCT_NAME@@ server and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted.  These actions will be scheduled automatically when you update this page.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Po aktualizácii nižšie uvedených konfiguračných možností bude potrebné reštartovať monitorovacie služby na tomto serveri @@PRODUCT_NAME@@ a na všetkých vašich @@PRODUCT_NAME@@ Proxy s povoleným monitorovaním.  Tieto akcie sa naplánujú automaticky po tom, ako aktualizujete túto stránku.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.update_config" xml:space="preserve">
         <source>Update Config</source>
-        <target/>
+        <target state="translated">Aktualizovať konfiguráciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
