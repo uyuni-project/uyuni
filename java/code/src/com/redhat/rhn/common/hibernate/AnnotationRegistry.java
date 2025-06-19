@@ -165,6 +165,7 @@ import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
 
 import com.suse.cloud.domain.PaygDimensionComputation;
 import com.suse.cloud.domain.PaygDimensionResult;
+import com.suse.manager.errata.model.errata.ErrataAdvisoryMap;
 import com.suse.manager.model.attestation.CoCoAttestationResult;
 import com.suse.manager.model.attestation.CoCoEnvironmentTypeConverter;
 import com.suse.manager.model.attestation.CoCoResultTypeConverter;
@@ -232,6 +233,7 @@ public class AnnotationRegistry {
             DockerfileProfile.class,
             EntitlementServerGroup.class,
             EnvironmentTarget.class,
+            ErrataAdvisoryMap.class,
             ErrataFilter.class,
             GroupRecurringAction.class,
             HubSCCCredentials.class,

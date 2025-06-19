@@ -91,6 +91,7 @@ import com.redhat.rhn.taskomatic.task.errata.ErrataCacheWorker;
 
 import com.suse.manager.utils.MinionServerUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -2221,5 +2222,44 @@ public class ErrataManager extends BaseManager {
         params.put("server_id", serverId);
         WriteMode m = ModeFactory.getWriteMode(ERRATA_QUERIES, "delete_invalid_erratas_from_set");
         m.executeUpdate(params);
+    }
+
+    /**
+     * computes the patch id string, given an errata and a channel
+     *
+     * @param errata  the errata
+     * @param channel the channel
+     * @return the computed patch id
+     */
+    public static String getPatchId(Errata errata, Channel channel) {
+        if ((null == errata) || (null == channel)) {
+            return "";
+        }
+        return getPatchId(errata.getAdvisory(), channel);
+    }
+
+    /**
+     * computes the patch id string, given an errata and a channel
+     *
+     * @param errataAdvisory  the errata advisory string
+     * @param channel the channel
+     * @return the computed patch id
+     */
+    public static String getPatchId(String errataAdvisory, Channel channel) {
+        if (null == channel) {
+            return "";
+        }
+        String patchId = StringUtils.isEmpty(errataAdvisory) ? "" : errataAdvisory;
+        String updateTag = ChannelManager.findUpdateTag(channel);
+        if (!StringUtils.isEmpty(updateTag)) {
+            if (patchId.matches("^([C-Z][A-Z]-)*SUSE-(.*)$")) {
+                // SLE12 style where the update tag is not a prefix
+                patchId = patchId.replaceFirst("SUSE", "SUSE-" + updateTag);
+            }
+            else {
+                patchId = updateTag + "-" + patchId;
+            }
+        }
+        return patchId;
     }
 }

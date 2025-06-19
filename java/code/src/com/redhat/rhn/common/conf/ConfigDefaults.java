@@ -398,6 +398,12 @@ public class ConfigDefaults {
      */
     public static final String RHUI_DEFAULT_ORG_ID = "java.rhui_default_org_id";
 
+    /**
+     * url to download advisory-map.csv, the map of errata patch id, announcement id and advisory URL
+     */
+    private static final String ERRATA_ADVISORY_MAP_CSV_DOWNLOAD_URL = "java.errata_advisory_map_csv_download_url";
+
+
     private ConfigDefaults() {
     }
 
@@ -1235,5 +1241,15 @@ public class ConfigDefaults {
      * */
     public boolean isOvalEnabledForCveAudit() {
         return Config.get().getBoolean(CVE_AUDIT_ENABLE_OVAL_METADATA, false);
+    }
+
+    /**
+     * Return the url to download advisory-map.csv, the map of errata patch id, announcement id and advisory URL
+     *
+     * @return the url to download advisory-map.csv, the map of errata patch id, announcement id and advisory URL
+     */
+    public String getErrataAdvisoryMapCsvDownloadUrl() {
+        return Config.get().getString(ERRATA_ADVISORY_MAP_CSV_DOWNLOAD_URL,
+                "https://ftp.suse.com/pub/projects/security/advisory-map.csv");
     }
 }
