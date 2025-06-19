@@ -59,6 +59,7 @@ public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
         };
         ErrataManager.setTaskomaticApi(tapi);
     }
+
     /**
      * Tests a good/clean operation, errata are present.
      *
