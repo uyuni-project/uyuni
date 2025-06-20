@@ -32,6 +32,7 @@ import com.suse.manager.admin.PaygAdminManager;
 import com.suse.manager.hub.HubManager;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
+import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.controllers.admin.beans.ChannelSyncModel;
@@ -204,6 +205,12 @@ public class AdminViewsController {
      */
     private static ModelAndView showChannelSync(Request request, Response response, User user) {
         long peripheralId = Long.parseLong(request.params("id"));
+        IssPeripheral issPeripheral = HUB_FACTORY.findPeripheralById(peripheralId);
+        if (issPeripheral == null) {
+            LOG.error("Peripheral not found");
+            throw Spark.halt(HttpStatus.SC_NOT_FOUND, "Peripheral not found");
+        }
+
         String peripheralFqdn;
         ChannelSyncModel channelSyncModel;
 
