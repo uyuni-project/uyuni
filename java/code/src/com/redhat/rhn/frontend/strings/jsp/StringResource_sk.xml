@@ -7864,7 +7864,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="removeconfirm.jsp.confirmpackageremoval" xml:space="preserve">
         <source>Confirm Package Removal</source>
-        <target/>
+        <target state="translated">Potvrdenie odstránenia balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
           <context context-type="sourcefile">https://wopr.skavenlabs/rhn/ssm/PackageRemove.do</context>
@@ -7872,21 +7872,21 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="removeconfirm.jsp.widgetsummary" xml:space="preserve">
         <source>You may schedule the package removals to take place as soon as possible, or no sooner than a specified time:</source>
-        <target/>
+        <target state="translated">Môžete si naplánovať odstránenia balíkov tak, aby sa uskutočnili čo najskôr, alebo nie skôr ako v stanovenom čase:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="removeconfirm.jsp.confirm" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target state="translated">Potvrdiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.addedtoactionchain" xml:space="preserve">
         <source>Action has been successfully added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</source>
-        <target/>
+        <target state="translated">Akcia bola úspešne pridaná do Reťazca akcií &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7894,7 +7894,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.packageremoval" xml:space="preserve">
         <source>{0} package removal has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} odstránenie balíka bolo &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7902,7 +7902,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.packageremovals" xml:space="preserve">
         <source>{0} package removals have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} odstránenia balíkov boli &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7910,7 +7910,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.packageupgrade" xml:space="preserve">
         <source>{0} package upgrade has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} zvýšenie verzie balíka bolo &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7918,7 +7918,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.packageupgrades" xml:space="preserve">
         <source>{0} package upgrades have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} zvýšenia verzií balíkov boli &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7926,7 +7926,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.packageinstall" xml:space="preserve">
         <source>{0} package install has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} inštalácia balíka bola &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánovaná&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7934,7 +7934,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.packageinstalls" xml:space="preserve">
         <source>{0} package installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} inštalácie balíkov boli &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
