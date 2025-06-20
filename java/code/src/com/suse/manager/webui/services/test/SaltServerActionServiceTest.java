@@ -1024,7 +1024,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
             @Override
             public void updateServerAction(ServerAction serverAction, long retcode, boolean success, String jid,
-                                           JsonElement jsonResult, Optional<Xor<String[], String>> function) {
+                                           JsonElement jsonResult, Optional<Xor<String[], String>> function,
+                                           Date endTime) {
                 serverAction.setStatus(STATUS_COMPLETED);
             }
         };

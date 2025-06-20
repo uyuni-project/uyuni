@@ -547,10 +547,11 @@ public class SaltUtils {
      * @param jid salt job id for the action
      * @param jsonResult the result of the action as json
      * @param function salt function used for the action
+     * @param endTime the time when the action was finished. If null, "now" is used
      */
-    public void updateServerAction(ServerAction serverAction, long retcode,
-            boolean success, String jid, JsonElement jsonResult, Optional<Xor<String[], String>> function) {
-        serverAction.setCompletionTime(new Date());
+    public void updateServerAction(ServerAction serverAction, long retcode, boolean success, String jid,
+                                   JsonElement jsonResult, Optional<Xor<String[], String>> function, Date endTime) {
+        serverAction.setCompletionTime(Optional.ofNullable(endTime).orElse(new Date()));
 
         // Set the result code defaulting to 0
         serverAction.setResultCode(retcode);

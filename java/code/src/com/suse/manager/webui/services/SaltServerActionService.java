@@ -169,7 +169,13 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipal;
 import java.nio.file.attribute.UserPrincipalLookupService;
+import java.time.DateTimeException;
+import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -2014,7 +2020,7 @@ public class SaltServerActionService {
                         */
                         if (!action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
                             saltUtils.updateServerAction(sa, 0L, true, "n/a", jsonResult,
-                                    Optional.of(Xor.right(function)));
+                                    Optional.of(Xor.right(function)), null);
                         }
 
                         else if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
@@ -2137,10 +2143,12 @@ public class SaltServerActionService {
      * @param jobId the ID of the Salt job.
      * @param jsonResult the json results from the Salt job.
      * @param function the Salt function executed.
+     * @param endTime end time when the action finished. If null, "now" is used
      */
     public void handleAction(long actionId, String minionId, int retcode, boolean success,
-                                    String jobId, JsonElement jsonResult,
-                                    Optional<Xor<String[], String>> function) {
+                             String jobId, JsonElement jsonResult,
+                             Optional<Xor<String[], String>> function,
+                             Date endTime) {
         // Lookup the corresponding action
         Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(actionId));
         if (action.isPresent()) {
@@ -2184,7 +2192,8 @@ public class SaltServerActionService {
                                 success,
                                 jobId,
                                 jsonResult,
-                                function);
+                                function,
+                                endTime);
                         ActionFactory.save(sa);
                         SystemManager.updateSystemOverview(sa.getServer());
                     }
@@ -2291,13 +2300,15 @@ public class SaltServerActionService {
                     // don't stop handling the result entries if there's a failed action
                     // the result entries are not returned in order
                 }
+                Date endTime = calculateStateApplyEndTime(actionStateApply.getStartTime(),
+                        actionStateApply.getDuration());
                 handleAction(actionId,
                         minionId,
                         actionStateApply.isResult() ? 0 : -1,
                         actionStateApply.isResult(),
                         jobId,
                         actionStateApply.getChanges().getRet(),
-                        actionStateApply.getName());
+                        actionStateApply.getName(), endTime);
             }
             else if (key.contains("schedule_next_chunk")) {
 
@@ -2309,7 +2320,7 @@ public class SaltServerActionService {
                         if (minionServer.doesOsSupportsTransactionalUpdate() &&
                                 actionId != 0 && checkIfRebootRequired(actionStateApply)) {
                             /*
-                             * Transactional update does not contains reboot in sls files, but apply a reboot using
+                             * Transactional update does not contain reboot in sls files, but apply a reboot using
                              * activate_transaction=True in transactional_update.sls . So it's required to parse
                              * the return to check if schedule_next_chunk contains reboot_required param,
                              * then we can suppose that the next action is a reboot.
@@ -2355,6 +2366,19 @@ public class SaltServerActionService {
                 ActionChainFactory.delete(ac);
             }
         });
+    }
+
+    private Date calculateStateApplyEndTime(String startTimeIn, double durationIn) {
+        try {
+            LocalDate now = LocalDate.now();
+            LocalTime localTime = LocalTime.parse(startTimeIn);
+            LocalDateTime endTime = LocalDateTime.of(now, localTime).plus(Duration.ofMillis((long) durationIn));
+            return Date.from(endTime.atZone(ZoneId.systemDefault()).toInstant());
+        }
+        catch (DateTimeException | ArithmeticException e) {
+            LOG.warn("Unable to parse date time", e);
+        }
+        return new Date();
     }
 
     /**

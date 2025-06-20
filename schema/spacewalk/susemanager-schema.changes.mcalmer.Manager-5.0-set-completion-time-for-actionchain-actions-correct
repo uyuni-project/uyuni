@@ -1,0 +1,2 @@
+- Do not overwrite completion time when it is set from java
+  (bsc#1243994)
