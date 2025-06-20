@@ -690,13 +690,14 @@ public class SystemSearchHelper {
     protected static void filterOutIdsNotInSSM(
             User user, Map<Long, Map<String, Object>> ids) {
         RhnSet systems = RhnSetDecl.SYSTEMS.get(user);
-        for (Long id : ids.keySet()) {
-            if (!systems.contains(id)) {
+        ids.keySet().removeIf(id -> {
+            boolean shouldRemove = !systems.contains(id);
+            if (shouldRemove) {
                 log.debug("SystemSearchHelper.filterOutIdsNotInSSM() removing system id {}, because it is not" +
                         " in the SystemSetManager list of ids", id);
-                ids.remove(id);
             }
-        }
+            return shouldRemove;
+        });
     }
 
     protected static Map<Long, Map<String, Object>> invertResults(User user, Map<Long, Map<String, Object>> ids) {
