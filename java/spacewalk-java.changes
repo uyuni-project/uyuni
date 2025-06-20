@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Jun 20 17:10:45 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.15-0
+  * Set the completion time of actions from an action chain correctly
+    (bsc#1243994)
+  * Fix ISE when using SSM in advanced search (bsc#1244298)
+
+-------------------------------------------------------------------
 Tue Jun 17 18:59:24 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.14-0
