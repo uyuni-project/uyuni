@@ -1066,7 +1066,7 @@ end
 
 When(/I generate a supportconfig for the server$/) do
   node = get_target('server')
-  node.run('supportconfig')
+  node.run('supportconfig', timeout: 600)
   node.run('mv /var/log/scc_*.txz /root/server-supportconfig.txz')
 end
 
