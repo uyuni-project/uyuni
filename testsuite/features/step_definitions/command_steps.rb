@@ -1063,7 +1063,7 @@ end
 
 When(/I generate a supportconfig for the server$/) do
   node = get_target('server')
-  node.run('mgradm support config', runs_in_container: false)
+  node.run('mgradm support config', timeout: 600, runs_in_container: false)
   node.run('mv /root/scc_*.tar.gz /root/server-supportconfig.tar.gz', runs_in_container: false)
 end
 
