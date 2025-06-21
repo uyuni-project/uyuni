@@ -7942,14 +7942,14 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.systeminstalls" xml:space="preserve">
         <source>Package install has been scheduled for {0} system(s).</source>
-        <target/>
+        <target state="translated">Inštalácia balíkov bola naplánovaná pre {0} systém(y).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/TargetSystemsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.packageverify" xml:space="preserve">
         <source>{0} package verification has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} overenie balíka bolo &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7957,7 +7957,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.packageverifys" xml:space="preserve">
         <source>{0} package verifications have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} overenia balíkov boli &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7965,49 +7965,49 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.patchremoval" xml:space="preserve">
         <source>{0} patch removal has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} odstránenie opravy bolo &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.patchremovals" xml:space="preserve">
         <source>{0} patch removals have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} odstránenia opráv boli &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.patchinstall" xml:space="preserve">
         <source>{0} patch install has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} inštalácia opravy bola &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánovaná&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.patchinstalls" xml:space="preserve">
         <source>{0} patch installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} inštalácie opráv boli &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.xccdfeval" xml:space="preserve">
         <source>XCCDF scan has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Skenovanie XCCDF bolo &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;naplánované&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.xccdfeval.ssm" xml:space="preserve">
         <source>XCCDF scan has been scheduled successfully.</source>
-        <target/>
+        <target state="translated">Skenovanie XCCDF bolo úspešne naplánované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.xccdfdiff.missing" xml:space="preserve">
         <source>XCCDF scan of id={0} could not be found for user {1}.</source>
-        <target/>
+        <target state="translated">Skenovanie XCCDF id={0} nebolo možné nájsť pre používateľa {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
