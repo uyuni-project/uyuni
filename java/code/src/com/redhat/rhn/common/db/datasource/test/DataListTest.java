@@ -159,7 +159,7 @@ public class DataListTest extends RhnBaseTestCase {
         }
 
         @Override
-        public void elaborate(List resultList, Map<String, ?> parms) {
+        public void elaborate(List<Object> resultList, Map<String, ?> parms) {
             if (elaborated <= 0) {
                 buildElab();
             }
