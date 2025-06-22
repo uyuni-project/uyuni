@@ -32,6 +32,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 <property name="nrCore" column="nrcore" type="long"/>
                 <property name="nrThread" column="nrthread" type="long"/>
 
+                <property name="archSpecs" type="text">
+                    <column name="arch_specs" sql-type="jsonb" write="?::jsonb" />
+                </property>
+
         <property name="created" column="created" type="timestamp"
                   insert="false" update="false"/>
         <property name="modified" column="modified" type="timestamp"

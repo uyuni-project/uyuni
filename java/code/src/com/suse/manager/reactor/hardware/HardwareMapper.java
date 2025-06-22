@@ -44,6 +44,9 @@ import com.suse.manager.webui.services.SaltGrains;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.salt.netapi.calls.modules.Network;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -118,9 +121,10 @@ public class HardwareMapper {
     /**
      * Store CPU information given as a {@link ValueMap}.
      *
-     * @param cpuinfo Salt returns /proc/cpuinfo data
+     * @param cpuinfo        Salt returns /proc/cpuinfo data
+     * @param cpuArchSpecsIn CPU architecture specific data
      */
-    public void mapCpuInfo(ValueMap cpuinfo) {
+    public void mapCpuInfo(ValueMap cpuinfo, Map<String, Object> cpuArchSpecsIn) {
         final CPU cpu = Optional.ofNullable(server.getCpu()).orElseGet(CPU::new);
 
         // os.uname[4]
@@ -198,6 +202,13 @@ public class HardwareMapper {
         // the number of active CPUs not the total num of CPUs in the system.
         // On s390x this number of active and actual CPUs can be different.
         cpu.setNrCPU(grains.getValueAsLong("total_num_cpus").orElse(0L));
+
+        try {
+            cpu.setArchSpecs(new ObjectMapper().writeValueAsString(cpuArchSpecsIn));
+        }
+        catch (JsonProcessingException e) {
+            LOG.warn("Failed to serialize CPU arch specs, ignoring results.", e);
+        }
 
         if (arch != null) {
             cpu.setServer(server);
