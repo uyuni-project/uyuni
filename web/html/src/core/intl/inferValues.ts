@@ -8,14 +8,19 @@
  */
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-type PlaceholderKeys<T extends string, KS extends string = never> = T extends `${infer F}{${infer K}}${infer R}`
-  ? PlaceholderKeys<R, K | KS>
-  : KS;
+type ValidKey<T extends string> = T extends `${infer A}${"{" | "}" | "," | " "}${infer B}` ? never : T;
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type PlaceholderKeys<T extends string, Keys extends string = never> = T extends `${infer F}{${infer K}${
+  | "}"
+  | ","}${infer R}`
+  ? PlaceholderKeys<R, K | Keys>
+  : Keys;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type TagKeys<T extends string, KS extends string = never> = T extends `${infer F}</${infer K}>${infer R}`
   ? TagKeys<R, K | KS>
   : KS;
-type PossibleKeysOf<T extends string> = PlaceholderKeys<T> | TagKeys<T>;
+type PossibleKeysOf<T extends string> = ValidKey<PlaceholderKeys<T> | TagKeys<T>>;
 type PartialRecord<K extends keyof any, T> = {
   [P in K]?: T;
 };
