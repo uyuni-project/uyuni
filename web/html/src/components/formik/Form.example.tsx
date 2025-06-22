@@ -3,10 +3,12 @@ import { SubmitButton } from "components/buttons";
 import { localizedMoment } from "utils/datetime";
 import { Utils } from "utils/functions";
 
+import { AnsibleTree, AnsibleTreeDemo } from "./ansibleTreeDemo/AnsibleTreeDemo";
 import { Field, MultiField } from "./field";
 import { Form, OnSubmit } from "./Form";
 
 export default () => {
+  const ansibleTree: AnsibleTree = {};
   const initialValues = {
     field: "field value",
     checkbox: false,
@@ -17,6 +19,7 @@ export default () => {
     range_start: "1000",
     range_end: "1100",
     radio: "one",
+    ansibleTree,
   };
 
   const onSubmit: OnSubmit<typeof initialValues> = async (values, helpers) => {
@@ -58,6 +61,8 @@ export default () => {
               ]}
               as={Field.Radio}
             />
+
+            <Field name="ansibleTree" label={t("Ansible tree")} as={AnsibleTreeDemo} />
 
             <SubmitButton className="btn-primary" text={t("Submit")} disabled={isSubmitting} />
           </>
