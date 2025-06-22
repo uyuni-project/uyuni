@@ -27,8 +27,9 @@
 <hr/>
 
 <rhn:hidden name="sid" value="${param.sid}" />
-<input type="submit" name="dispatch" class="btn btn-default pull-right"
-      value='<bean:message key="system.history.snapshot.tagCreate"/>'/>
+<button type="submit" name="dispatch" class="btn btn-default pull-right">
+  <bean:message key="system.history.snapshot.tagCreate"/>
+</button>
 
 </html:form>
 
