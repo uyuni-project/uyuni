@@ -306,6 +306,9 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_HARDWARE_REFRESH_LIST.equals(actionType)) {
             return hardwareRefreshListAction(minions);
         }
+        else if (ActionFactory.TYPE_VIRT_PROFILE_REFRESH.equals(actionType)) {
+            return virtualInstanceRefreshListAction(minions);
+        }
         else if (ActionFactory.TYPE_REBOOT.equals(actionType)) {
             return rebootAction(minions);
         }
@@ -1190,6 +1193,34 @@ public class SaltServerActionService {
             ret.put(State.apply(Arrays.asList(
                     ApplyStatesEventMessage.SYNC_ALL,
                     ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
+                    Optional.empty()), minionSummaries);
+        }
+
+        return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> virtualInstanceRefreshListAction(
+            List<MinionSummary> minionSummaries) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+
+        // salt-ssh minions in the 'true' partition
+        // regular minions in the 'false' partition
+        Map<Boolean, List<MinionSummary>> partitionBySSHPush = minionSummaries.stream()
+                .collect(Collectors.partitioningBy(MinionSummary::isSshPush));
+
+        // Separate SSH push minions from regular minions to apply different states
+        List<MinionSummary> sshPushMinions = partitionBySSHPush.get(true);
+        List<MinionSummary> regularMinions = partitionBySSHPush.get(false);
+
+        if (!sshPushMinions.isEmpty()) {
+            ret.put(State.apply(List.of(
+                            ApplyStatesEventMessage.VIRTUAL_PROFILE_UPDATE),
+                    Optional.empty()), minionSummaries);
+        }
+        if (!regularMinions.isEmpty()) {
+            ret.put(State.apply(Arrays.asList(
+                            ApplyStatesEventMessage.SYNC_ALL,
+                            ApplyStatesEventMessage.VIRTUAL_PROFILE_UPDATE),
                     Optional.empty()), minionSummaries);
         }
 
