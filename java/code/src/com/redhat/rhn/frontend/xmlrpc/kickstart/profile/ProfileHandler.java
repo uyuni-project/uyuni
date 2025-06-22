@@ -1419,7 +1419,7 @@ public class ProfileHandler extends BaseHandler {
                 repos.add(repo.getName());
             }
         }
-        return (String[]) repos.toArray(new String[]{});
+        return repos.toArray(new String[]{});
     }
 
     /**
@@ -1443,7 +1443,7 @@ public class ProfileHandler extends BaseHandler {
                 items.add(repo.getName());
             }
         }
-        return (String[]) items.toArray(new String[]{});
+        return items.toArray(new String[]{});
     }
 
     /**
