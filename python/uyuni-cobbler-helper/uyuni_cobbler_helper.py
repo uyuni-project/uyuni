@@ -42,3 +42,11 @@ def _connect_db():
         dbname=config.get("default", "db_name"),
         port=int(config.get("default", "db_port")),
     )
+
+
+def get_ssl_ca_cert():
+    with open(
+        "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT", "r", encoding="utf-8"
+    ) as fd:
+        content = fd.read()
+        return content
