@@ -1,0 +1,5 @@
+-------------------------------------------------------------------
+Mon Jun 23 23:19:03 EST 2025 - sywen.chen@gmail.com
+- version 5.1.6
+  * Initial image of Salt Event Processor
+  * Extract salt event processing from Tomcat to standalone container
