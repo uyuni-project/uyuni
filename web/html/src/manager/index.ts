@@ -12,6 +12,7 @@ import "./legacy";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
+import { initializeTooltips } from "../components/tooltips";
 import Admin from "./admin";
 import Appstreams from "./appstreams";
 import Audit from "./audit";
@@ -35,7 +36,6 @@ import Highstate from "./state";
 import Storybook from "./storybook";
 import Systems from "./systems";
 import ActivationKeys from "./systems/activation-key";
-import { initializeTooltips } from '../components/tooltips';
 
 const pages = {
   ...ActivationKeys,
@@ -72,7 +72,6 @@ window.spaImportReactPage = function spaImportReactPage(pageName) {
     );
   }
   initializeTooltips();
-  console.log("=====================")
+
   return pages[pageName]();
 };
-
