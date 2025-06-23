@@ -2,13 +2,6 @@
 # SaltEventProcessorDaemon start script
 . /etc/rhn/saltEventProcessor.conf
 
-#RHN_MEM=`grep ^[[:blank:]]*taskomatic.java.maxmemory /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
-#if [ "x$RHN_MEM" != "x" ]; then
-#    TASKO_MAX_MEMORY=$RHN_MEM
-#fi
-
-JAVA_MEM=256Mb
-
 SALTEN_PARAMS="-Dibm.dst.compatibility=true -Dfile.encoding=UTF-8 -Xms${SALTEN_INIT_MEMORY}m -Xmx${SALTEN_MAX_MEMORY}m ${SALTEN_CRASH_PARAMS} ${SALTEN_JAVA_OPTS}"
 SALTEN_CLASSPATH="${SALTEN_RHN_CLASSPATH}:${SALTEN_RHN_JARS}:${SALTEN_JARS}"
 
