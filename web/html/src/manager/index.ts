@@ -72,7 +72,7 @@ window.spaImportReactPage = function spaImportReactPage(pageName) {
     );
   }
   initializeTooltips();
-  console.log("=====================")
+  
   return pages[pageName]();
 };
 
