@@ -583,6 +583,7 @@ install -m 644 conf/cobbler/snippets/minion_script    %{buildroot}%{spacewalksni
 install -m 644 conf/cobbler/snippets/sles_no_signature_checks %{buildroot}%{spacewalksnippetsdir}/sles_no_signature_checks
 install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script %{buildroot}%{spacewalksnippetsdir}/wait_for_networkmanager_script
 install -m 644 conf/cobbler/snippets/autoyast_channels %{buildroot}%{spacewalksnippetsdir}/autoyast_channels
+install -m 644 conf/cobbler/snippets/root_ca %{buildroot}%{spacewalksnippetsdir}/root_ca
 
 # special links for rhn-search
 RHN_SEARCH_BUILD_DIR=%{_datadir}/rhn/search/lib
@@ -750,6 +751,7 @@ fi
 %config %{spacewalksnippetsdir}/sles_no_signature_checks
 %config %{spacewalksnippetsdir}/wait_for_networkmanager_script
 %config %{spacewalksnippetsdir}/autoyast_channels
+%config %{spacewalksnippetsdir}/root_ca
 %if 0%{?suse_version}
 %config(noreplace) %{serverdir}/tomcat/webapps/rhn/META-INF/context.xml
 %else
