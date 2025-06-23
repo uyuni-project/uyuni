@@ -8014,42 +8014,42 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.entitlement.missing" xml:space="preserve">
         <source>One or more of the selected systems lack the {0} system type.</source>
-        <target/>
+        <target state="translated">Jeden alebo viac vybraných systémov nemá typ systému {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.xccdfeval.failed" xml:space="preserve">
         <source>Action was not scheduled.</source>
-        <target/>
+        <target state="translated">Akcia nebola naplánovaná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.capability.missing" xml:space="preserve">
         <source>One or more of the selected systems lack the {0} client-capability.</source>
-        <target/>
+        <target state="translated">Jeden alebo viacero vybraných systémov nemá klientsku podporu {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="removeconfirm.jsp.runremotecommand" xml:space="preserve">
         <source>Add Remote Command To Package Removal</source>
-        <target/>
+        <target state="translated">Pridať vzdialený príkaz na odstránenie balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="installconfirm.jsp.runremotecommand" xml:space="preserve">
         <source>Add Remote Command To Package Install</source>
-        <target/>
+        <target state="translated">Pridať vzdialený príkaz do inštalácie balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="upgradeconfirm.jsp.runremotecommand" xml:space="preserve">
         <source>Add Remote Command To Package Upgrade</source>
-        <target/>
+        <target state="translated">Pridať vzdialený príkaz na zvýšenie verzie balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
         </context-group>
@@ -8057,28 +8057,28 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!-- PROBE EDIT PAGE -->
       <trans-unit id="download.jsp.header" xml:space="preserve">
         <source>Download Packages</source>
-        <target/>
+        <target state="translated">Stiahnuť balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/DownloadConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="download.jsp.download" xml:space="preserve">
         <source>Download Selected Packages Now!</source>
-        <target/>
+        <target state="translated">Stiahnuť vybrané balíky teraz!</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/DownloadConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="repo.jsp.channels" xml:space="preserve">
         <source>Channels</source>
-        <target/>
+        <target state="translated">Kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/repos/RepoList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="download.jsp.package" xml:space="preserve">
         <source>Package</source>
-        <target/>
+        <target state="translated">Balík</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/DownloadConfirm.do</context>
         </context-group>
