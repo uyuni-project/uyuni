@@ -274,11 +274,11 @@ ProxyPassReverse /cobbler https://{config['server']}/cobbler
         'SetEnv HANDLER_TYPE "proxy-docs"',
     )
 
-    # redirect /saltboot to the server
+    # handle large static files outside of the wsgi script
     insert_under_line(
-        "/etc/apache2/conf.d/spacewalk-proxy-wsgi.conf",
-        "WSGIScriptAlias /tftp /usr/share/rhn/wsgi/xmlrpc.py",
-        "WSGIScriptAlias /saltboot /usr/share/rhn/wsgi/xmlrpc.py",
+        "/etc/apache2/conf.d/spacewalk-proxy-static-files.conf",
+        "ProxyPass /saltboot http://localhost/proxyInternalLoop/saltboot",
+        f"ProxyPassMatch /proxyInternalLoop/(.*)$ https://{config['server']}/$1",
     )
 
     os.system("chown root:www /etc/rhn/rhn.conf")
