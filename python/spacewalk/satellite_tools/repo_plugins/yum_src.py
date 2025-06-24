@@ -950,8 +950,16 @@ type=rpm-md
             os.path.join(repo.root, "var/cache/zypp/raw/"),
             os.path.join(repo.root, "var/cache/zypp/solv/"),
         )
+        # libzypp older Curl backend does not set Proxy-Authorization reliably.
+        # The new Curl2 backend does not have the same problem.
+        # See https://bugzilla.suse.com/show_bug.cgi?id=1245222 and
+        # https://bugzilla.suse.com/show_bug.cgi?id=1245221
+        zypper_env = os.environ.copy()
+        zypper_env["ZYPP_CURL2"] = "1"
         # pylint: disable-next=subprocess-run-check
-        process = subprocess.run(zypper_cmd.split(" "), stderr=subprocess.PIPE)
+        process = subprocess.run(
+            zypper_cmd.split(" "), stderr=subprocess.PIPE, env=zypper_env
+        )
 
         if process.returncode:
             if process.stderr:
