@@ -58,7 +58,9 @@ end
 
 Then(/^it should be possible to use the HTTP proxy$/) do
   url = 'https://www.suse.com'
-  proxy = "suma2:P4$$wordWith%and&@#{$server_http_proxy}"
+  # Proxy Password: P4$$w/ord With%and&
+  # we must escape it before passing it to curl
+  proxy = "suma3:P4$$w%2Ford%20With%and&@#{$server_http_proxy}"
   get_target('server').run("curl --insecure --proxy '#{proxy}' --proxy-anyauth --location '#{url}' --output /dev/null")
 end
 
