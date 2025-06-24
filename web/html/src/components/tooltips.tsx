@@ -1,14 +1,15 @@
-import { Tooltip } from 'bootstrap';
+import { Tooltip } from "bootstrap";
 
 export function initializeTooltips() {
   // Initialize tooltips on existing elements
+
   const initTooltips = () => {
     const elements = document.querySelectorAll('[data-bs-toggle="tooltip"]:not([data-tooltip-initialized])');
     elements.forEach((el) => {
-      new Tooltip(el, {
-        trigger: el.getAttribute('data-bs-trigger') || 'hover',
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const tooltip = new Tooltip(el, {
+        trigger: el.getAttribute("data-bs-trigger") || "hover",
       });
-
       el.setAttribute("data-tooltip-initialized", "true");
     });
   };
