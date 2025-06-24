@@ -1,0 +1,2 @@
+- CVE-2025-46809: Do not expose HTTP Proxy password
+  when breaking URL format (bsc#1245005)
