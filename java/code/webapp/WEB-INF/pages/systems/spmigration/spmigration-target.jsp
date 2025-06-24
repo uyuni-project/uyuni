@@ -123,6 +123,9 @@
                                                 </c:forEach>
                                             </ul>
                                         </label>
+                                        <c:if test="${!target.isEveryChannelSynced}">
+                                            <rhn:icon type="header-info" />
+                                        </c:if>
                                     </li>
                                     <c:set var="itemCounter" scope="page" value="${targetEnabled ? itemCounter+1 : itemCounter}"/>
                                 </c:forEach>
