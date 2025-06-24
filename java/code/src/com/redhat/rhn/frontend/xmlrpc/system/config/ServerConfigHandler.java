@@ -96,11 +96,11 @@ public class ServerConfigHandler extends BaseHandler {
      * @apidoc.doc Return the list of files in a given channel.
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
-     * @apidoc.param #param("int", "listLocal")
+     * @apidoc.param #param("boolean", "listLocal")
      *      #options()
-     *          #item_desc ("1", "to return configuration files
+     *          #item_desc ("true", "to return configuration files
      *              in the system's local override configuration channel")
-     *          #item_desc ("0", "to return configuration files
+     *          #item_desc ("false", "to return configuration files
      *              in the system's sandbox configuration channel")
      *      #options_end()
      *
