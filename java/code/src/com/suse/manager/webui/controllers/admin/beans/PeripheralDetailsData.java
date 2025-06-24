@@ -15,6 +15,7 @@ import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssPeripheralChannels;
 import com.suse.manager.model.hub.IssRole;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -44,6 +45,7 @@ public class PeripheralDetailsData extends IssServerDetailsData {
         this.nSyncedChannels = peripheral.getPeripheralChannels().size();
         this.nSyncedOrgs = peripheral.getPeripheralChannels().stream()
                 .map(IssPeripheralChannels::getPeripheralOrgId)
+                .filter(Objects::nonNull)
                 .distinct()
                 .count();
     }
