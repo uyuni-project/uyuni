@@ -185,15 +185,24 @@ export class ServerDetailsForm extends React.Component<Props, State> {
 
     const peripheralData = this.state.model as PeripheralDetailData;
 
+    if (peripheralData.nSyncedChannels === 0) {
+      return t("No channels synchronized.");
+    }
+
     if (peripheralData.nSyncedChannels === 1) {
-      return t("One syncronized channel");
+      return t("One synchronized channel");
+    }
+
+    // Only vendor channels are synchronized
+    if (peripheralData.nSyncedOrgs === 0) {
+      return t("{nSyncedChannels} synchronized channels", peripheralData);
     }
 
     if (peripheralData.nSyncedOrgs === 1) {
-      return t("{nSyncedChannels} syncronized channels, from one organization", peripheralData);
+      return t("{nSyncedChannels} synchronized channels, from one organization", peripheralData);
     }
 
-    return t("{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different organizations", peripheralData);
+    return t("{nSyncedChannels} synchronized channels, from {nSyncedOrgs} different organizations", peripheralData);
   }
 
   private onDeleteRootCA(): Promise<void> {
