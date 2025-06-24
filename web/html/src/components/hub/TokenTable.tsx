@@ -196,6 +196,7 @@ export class TokenTable extends React.Component<Props, State> {
     Network.del(`/rhn/manager/api/admin/hub/access-tokens/${row.id}`)
       .catch((xhr) => Network.showResponseErrorToastr(xhr))
       .then((response) => {
+        this.setState({ selectedRow: undefined });
         this.refresh();
         showInfoToastr("Access token successfully deleted");
       });
@@ -210,7 +211,7 @@ export class TokenTable extends React.Component<Props, State> {
         row.valid = request.valid;
         row.expirationDate = response.data;
         this.tableRef.current?.refresh();
-        showInfoToastr("Access token validity successfully chande");
+        showInfoToastr("Access token validity successfully changed");
       });
   }
 
