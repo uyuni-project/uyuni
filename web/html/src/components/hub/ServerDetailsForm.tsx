@@ -11,6 +11,10 @@ import Network from "utils/network";
 
 // Localized messages that depend on the role of the server
 const roleBasedMessages = {
+  fqdn: {
+    HUB: t("Hub server FQDN:"),
+    PERIPHERAL: t("Peripheral server FQDN:"),
+  },
   rootCA: {
     presentMessage: {
       HUB: t("A customized Root Certificate Authority is currently configured for this hub."),
@@ -64,7 +68,7 @@ export class ServerDetailsForm extends React.Component<Props, State> {
           <li className="list-group-item">
             <div className="row">
               <div className="col-md-2">
-                <strong>{t("Server FQDN:")}</strong>
+                <strong>{roleBasedMessages.fqdn[this.state.model.role]}</strong>
               </div>
               <div className="col-md-10">{this.state.model.fqdn}</div>
             </div>
