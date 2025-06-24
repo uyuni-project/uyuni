@@ -19,7 +19,7 @@ export class PeripheralDetails extends React.Component<Props> {
       <TopPanel
         title={t("{fqdn} - Peripheral Details", this.props.peripheral)}
         icon="fa-cogs"
-        helpUrl="reference/admin/hub/hub-details.html"
+        helpUrl="specialized-guides/large-deployments/hub-online-sync.html#_access_peripheral_server_details_from_the_hub_server"
       >
         <SectionToolbar>
           <div className="action-button-wrapper">

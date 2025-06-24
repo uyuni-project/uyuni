@@ -25,7 +25,7 @@ const IssPeripheral = (props: Props) => {
       <TopPanel
         title={t("Peripherals Configuration")}
         icon="spacewalk-icon-suse-manager"
-        helpUrl="reference/admin/hub/peripherals-configuration.html"
+        helpUrl="specialized-guides/large-deployments/hub-online-sync.html#_registration_of_the_hub_and_peripheral_servers"
         button={
           <div className="btn-group pull-right">
             <Button

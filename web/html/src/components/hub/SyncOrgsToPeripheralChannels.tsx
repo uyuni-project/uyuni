@@ -401,7 +401,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       <TopPanel
         title={t("{peripheralFqdn} - Peripheral Sync Channels", this.props)}
         icon="fa-cogs"
-        helpUrl="reference/admin/hub/hub-details.html"
+        helpUrl="specialized-guides/large-deployments/hub-online-sync.html#_synchronize_channels_from_hub_to_peripheral_server"
       >
         <SectionToolbar>
           <div className="selector-button-wrapper">
