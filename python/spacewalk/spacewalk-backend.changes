@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 24 15:26:10 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.10-0
+  * Use libzypp's Curl2 backend during reposync (bsc#1245222)
+
+-------------------------------------------------------------------
 Tue Jun 17 19:29:59 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.9-0
