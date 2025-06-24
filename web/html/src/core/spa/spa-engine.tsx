@@ -8,7 +8,7 @@ import App, { HtmlScreen } from "senna";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { showErrorToastr } from "components/toastr";
-import { disposeTooltips } from 'components/tooltips';
+import { disposeTooltips } from "components/tooltips";
 function isLoginPage(pathName) {
   const allLoginPossiblePaths = ["/", "/rhn/manager/login"];
   return allLoginPossiblePaths.some((loginPath) => loginPath === pathName);
