@@ -22,6 +22,7 @@ const msgModuleTypes = {
   googlece: t("Google Compute Engine"),
   azure: t("Azure"),
   nutanixahv: t("Nutanix AHV"),
+  libvirt: t("Libvirt API"),
 };
 
 function getHashId() {
