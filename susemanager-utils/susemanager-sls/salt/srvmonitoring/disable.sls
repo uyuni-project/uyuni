@@ -13,7 +13,7 @@ postgres_exporter_service:
 
 jmx_tomcat_config:
   file.absent:
-    - name: /usr/lib/systemd/system/tomcat.service.d/jmx.conf
+    - name: /etc/sysconfig/tomcat/systemd/jmx.conf
   mgrcompat.module_run:
     - name: service.systemctl_reload
 
@@ -22,7 +22,7 @@ jmx_tomcat_config:
 
 jmx_taskomatic_config:
   file.absent:
-    - name: /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
+    - name: /etc/sysconfig/taskomatic/systemd/jmx.conf
   mgrcompat.module_run:
     - name: service.systemctl_reload
 
