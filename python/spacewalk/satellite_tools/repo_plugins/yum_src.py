@@ -320,8 +320,10 @@ class ZypperRepo:
         with cfg_component(component=None) as CFG:
             if not os.path.isdir(self.root):
                 fileutils.makedirs(
-                    self.root, user=CFG.httpd_user, group=CFG.httpd_group
+                    self.root, user="root", group="root", mode=0o0600
                 )
+            else:
+                os.chmod(self.root, mode=0o0600)
             if not os.path.isdir(self.pkgdir):
                 fileutils.makedirs(
                     self.pkgdir, user=CFG.httpd_user, group=CFG.httpd_group

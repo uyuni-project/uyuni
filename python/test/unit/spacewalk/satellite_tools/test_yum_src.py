@@ -60,6 +60,7 @@ class YumSrcTest(unittest.TestCase):
         yum_src.CFG.REPOSYNC_MINRATE = 1000
         yum_src.CFG.REPOSYNC_TIMEOUT = 300
         yum_src.fileutils.makedirs = Mock()
+        yum_src.os.chmod = Mock()
         yum_src.os.makedirs = Mock()
         yum_src.os.path.isdir = Mock()
 
@@ -306,6 +307,7 @@ class YumSrcTest(unittest.TestCase):
     @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
     @patch("spacewalk.common.rhnLog", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.chmod", Mock())
     def test_minrate_timeout_config(self):
         # pylint: disable-next=invalid-name
         CFG = Mock()
@@ -338,6 +340,7 @@ class YumSrcTest(unittest.TestCase):
     @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
     @patch("spacewalk.common.rhnLog", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.chmod", Mock())
     @patch(
         "spacewalk.satellite_tools.repo_plugins.yum_src.etree.parse",
         MagicMock(side_effect=Exception),
@@ -419,6 +422,7 @@ class YumSrcTest(unittest.TestCase):
     @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
     @patch("spacewalk.common.rhnLog", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.chmod", Mock())
     @patch(
         "spacewalk.satellite_tools.repo_plugins.yum_src.etree.parse",
         MagicMock(side_effect=Exception),
@@ -532,6 +536,7 @@ class YumSrcTest(unittest.TestCase):
     @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
     @patch("spacewalk.common.rhnLog", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.chmod", Mock())
     @patch(
         "spacewalk.satellite_tools.repo_plugins.yum_src.etree.parse",
         MagicMock(side_effect=Exception),
