@@ -3,8 +3,7 @@ import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { DropdownButton } from "components/buttons";
-import { Messages } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import Network from "utils/network";
@@ -174,7 +173,7 @@ class VirtualHostManager extends React.Component<Props, State> {
             title={t("Add a virtual host manager")}
             className="btn-primary"
             items={this.state.availableModules.map((name) => (
-              <a data-senna-off href={"#/create/" + name.toLocaleLowerCase()}>
+              <a key={name.toLocaleLowerCase()} data-senna-off href={"#/create/" + name.toLocaleLowerCase()}>
                 {this.getLocalizedModuleName(name.toLocaleLowerCase())}
               </a>
             ))}
@@ -190,31 +189,45 @@ class VirtualHostManager extends React.Component<Props, State> {
         helpUrl="reference/systems/virtual-host-managers.html"
       >
         {this.state.messages ? <Messages items={this.state.messages} /> : null}
-        {this.state.action === "details" ? (
+        {this.renderContent(this.state.action)}
+      </TopPanel>
+    );
+  }
+
+  renderContent(action: string): React.ReactNode {
+    switch (action) {
+      case "details":
+        return (
           <VirtualHostManagerDetails
             data={this.state.selected}
             onCancel={this.handleBackAction}
             onEdit={this.handleEditAction}
             onDelete={this.deleteSelected}
           />
-        ) : this.state.action === "create" ? (
-          <VirtualHostManagerEdit type={this.state.id} onCancel={this.handleBackAction} />
-        ) : this.state.action === "edit" ? (
+        );
+
+      case "create":
+        return <VirtualHostManagerEdit type={this.state.id} onCancel={this.handleBackAction} />;
+
+      case "edit":
+        return (
           <VirtualHostManagerEdit
             item={this.state.selected}
             type={this.state.selected.gathererModule}
             onCancel={this.handleBackAction}
           />
-        ) : (
+        );
+
+      default:
+        return (
           <VirtualHostManagerList
             data={this.state.vhms}
             onSelect={this.handleDetailsAction}
             onEdit={this.handleEditAction}
             onDelete={this.deleteVhm}
           />
-        )}
-      </TopPanel>
-    );
+        );
+    }
   }
 }
 
