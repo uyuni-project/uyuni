@@ -287,7 +287,10 @@ class ZypperRepo:
            self.urls[0] += '/'
        # Make sure root paths are created
        if not os.path.isdir(self.root):
-           fileutils.makedirs(self.root, user=APACHE_USER, group=APACHE_GROUP)
+           fileutils.makedirs(self.root, user="root", group="root", mode=0o0600)
+       else:
+           os.chmod(self.root, mode=0o0600)
+
        if not os.path.isdir(self.pkgdir):
            fileutils.makedirs(self.pkgdir, user=APACHE_USER, group=APACHE_GROUP)
        self.is_configured = False
