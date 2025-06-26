@@ -72,9 +72,6 @@ public class YourRhnClipsRenderer extends RhnAction {
         else if (key.equals(Pane.SYSTEM_GROUPS)) {
             renderer = new SystemGroupsRenderer();
         }
-        else if (key.equals(Pane.TASKS)) {
-            renderer = new TasksRenderer();
-        }
 
         if (renderer != null) {
             request.setAttribute("pageUrl", renderer.getPageUrl());
