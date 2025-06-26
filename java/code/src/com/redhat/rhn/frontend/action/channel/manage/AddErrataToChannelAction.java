@@ -93,8 +93,6 @@ public class AddErrataToChannelAction extends RhnListAction {
 
         // used to schedule an asynchronous action to clone errata because it was
         // so slow. Is much faster now, just do inline.
-        // Set<Long> errataIds = RhnSetDecl.setForChannelErrata(currentChan).get(user).getElementValues()
-        // ErrataManager.publishErrataToChannelAsync(currentChan, errataIds, user)
         List<ErrataOverview> errata = ErrataManager.errataInSet(user,
                 RhnSetDecl.setForChannelErrata(currentChan).get(user).getLabel())
                     .stream()
