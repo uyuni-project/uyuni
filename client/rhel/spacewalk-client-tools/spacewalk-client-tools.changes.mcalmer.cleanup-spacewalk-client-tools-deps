@@ -1,0 +1,2 @@
+- Remove unused python dependencies to dbus, dmidecode, ethtool,
+  hwdata, udev, pygobject2 and hal

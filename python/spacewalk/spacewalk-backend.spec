@@ -81,7 +81,7 @@ BuildRequires:  fdupes
 BuildRequires:  make
 BuildRequires:  python3
 BuildRequires:  python3-debian
-BuildRequires:  python3-rhn-client-tools
+BuildRequires:  python3-spacewalk-client-tools
 BuildRequires:  python3-rhnlib >= 2.5.74
 BuildRequires:  python3-rpm
 BuildRequires:  python3-rpm-macros
@@ -178,7 +178,7 @@ BuildRequires:  systemd-rpm-macros
 %{?systemd_requires}
 %endif
 
-Requires:       python3-rhn-client-tools
+Requires:       python3-spacewalk-client-tools
 Requires:       python3-solv
 Requires:       python3-urlgrabber >= 4
 Requires:       python3-looseversion
