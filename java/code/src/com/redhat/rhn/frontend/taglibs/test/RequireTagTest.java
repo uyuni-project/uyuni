@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import com.redhat.rhn.common.security.acl.AclHandler;
 import com.redhat.rhn.frontend.taglibs.RequireTag;
@@ -58,118 +58,61 @@ public class RequireTagTest extends RhnBaseTestCase {
 
     @Test
     public void testInvalidAcl() {
+        // set test condition
+        rt.setAcl("is(foo)");
 
-        try {
-            // set test condition
-            rt.setAcl("is(foo)");
-
-            tth.assertDoStartTag(Tag.SKIP_BODY);
-        }
-        catch (Exception e) {
-            fail(e.toString());
-        }
+        assertDoesNotThrow(() -> tth.assertDoStartTag(Tag.SKIP_BODY));
     }
 
     @Test
     public void testNullAcl() {
-        try {
-
-            // set test condition
-            rt.setAcl(null);
-
-            // we don't expect this to work
-            tth.assertDoStartTag(-1);
-            fail(); //shouldn't be here
-        }
-        catch (JspException e) {
-            //should be here
-        }
-        catch (Exception e1) {
-            fail(e1.toString());
-        }
+        // set test condition
+        rt.setAcl(null);
+        // we don't expect this to work
+        assertThrows(JspException.class, () -> tth.assertDoStartTag(-1));
     }
 
     @Test
     public void testEmptyAcl() {
-        try {
-
-            // set test condition
-            rt.setAcl("");
-
-            // we don't expect this to work
-            tth.assertDoStartTag(-1);
-            fail(); //shouldn't be here
-        }
-        catch (JspException e) {
-            //should be here
-        }
-        catch (Exception e1) {
-            fail(e1.toString());
-        }
+        // set test condition
+        rt.setAcl("");
+        // we don't expect this to work
+        assertThrows(JspException.class, () -> tth.assertDoStartTag(-1));
     }
 
     @Test
     public void testMixin() {
-        try {
-            rt.setAcl("true_test()");
-            rt.setMixins("throws.class.not.found.exception," +
-                         BooleanAclHandler.class.getName());
+        rt.setAcl("true_test()");
+        rt.setMixins("throws.class.not.found.exception," +
+                BooleanAclHandler.class.getName());
 
-            tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE);
-            fail(); //shouldn't be here
-        }
-        catch (JspException je) {
-            //should be here
-        }
-        catch (Exception e) {
-            fail(e.toString());
-        }
+        assertThrows(JspException.class, () -> tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE));
     }
 
     @Test
     public void testMultipleMixinsMultipleAcls() {
-        try {
-            rt.setMixins(MockOneAclHandler.class.getName() + "," +
-                    MockTwoAclHandler.class.getName());
-            rt.setAcl("first_true_acl(); second_true_acl(); is_foo(foo)");
+        rt.setMixins(MockOneAclHandler.class.getName() + "," +
+                MockTwoAclHandler.class.getName());
+        rt.setAcl("first_true_acl(); second_true_acl(); is_foo(foo)");
 
-            tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE);
-        }
-        catch (Exception je) {
-            fail(je.toString());
-        }
+        assertDoesNotThrow(() -> tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE));
     }
 
     @Test
     public void testMultipleAclsSingleMixin() {
-        try {
-            rt.setAcl("first_true_acl(); second_true_acl()");
-            rt.setMixins(MockOneAclHandler.class.getName());
+        rt.setAcl("first_true_acl(); second_true_acl()");
+        rt.setMixins(MockOneAclHandler.class.getName());
 
-            tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE);
-        }
-        catch (Exception je) {
-            fail(je.toString());
-        }
+        assertDoesNotThrow(() -> tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE));
     }
 
     @Test
     public void testValidAclInvalidMixin() {
-        boolean flag = false;
-        try {
-            rt.setAcl("true_test()");
-            rt.setMixins("throws.class.not.found.exception," +
-                         BooleanAclHandler.class.getName());
+        rt.setAcl("true_test()");
+        rt.setMixins("throws.class.not.found.exception," +
+                BooleanAclHandler.class.getName());
 
-            tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE);
-            flag = true;
-        }
-        catch (JspException je) {
-            assertFalse(flag);
-        }
-        catch (Exception e) {
-            fail(e.toString());
-        }
+        assertThrows(JspException.class, () -> tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE));
     }
 
     public static class MockTwoAclHandler implements AclHandler {
