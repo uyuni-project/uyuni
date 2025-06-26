@@ -18,6 +18,7 @@
 #
 # Copyright 2013 Aron Parsons <aronparsons@gmail.com>
 #
+# pylint: disable=consider-using-f-string,ungrouped-imports
 
 """spacecmd - a command line interface to Spacewalk"""
 from spacecmd.i18n import _N
@@ -75,6 +76,7 @@ def get_localhost_fqdn():
     """
     fqdn = None
     try:
+        # pylint: disable-next=unused-variable
         for family, socktype, proto, canonname, sockaddr in socket.getaddrinfo(
             socket.gethostname(), 0, 0, 0, 0, socket.AI_CANONNAME
         ):
@@ -83,7 +85,7 @@ def get_localhost_fqdn():
                 break
     except socket.gaierror as exc:
         logging.debug("Error while getting FQDN over the network: %s", str(exc))
-    except Exception as exc:
+    except Exception as exc:  # pylint: disable=broad-exception-caught
         logging.error(_N("Unhandled exception occurred while getting FQDN:"), str(exc))
 
     return fqdn or socket.getfqdn()
@@ -208,6 +210,7 @@ if __name__ == "__main__":
 
                     # create a template configuration file
                     logging.debug("Creating configuration file: %s", user_conf_file)
+                    # pylint: disable-next=unspecified-encoding
                     handle = open(user_conf_file, "w")
                     handle.write("[spacecmd]\n")
                     handle.close()
@@ -252,14 +255,14 @@ if __name__ == "__main__":
                 if result == 1:
                     sys.exit(result)
             except KeyboardInterrupt:
-                print
+                print()
                 print(_("User Interrupt"))
             except UnknownCallException:
                 sys.exit(1)
             except BrokenPipeError:
                 # We don't want to log BrokenPipeError, and take an early exit
                 sys.exit(1)
-            except Exception as detail:
+            except Exception as detail:  # pylint: disable=broad-exception-caught
                 # get the relevant part of a XML-RPC fault
                 if isinstance(detail, xmlrpclib.Fault):
                     detail = detail.faultString
@@ -283,12 +286,12 @@ if __name__ == "__main__":
                 try:
                     shell.cmdloop()
                 except KeyboardInterrupt:
-                    print
+                    print()
                 except SystemExit:
                     sys.exit(0)
                 except UnknownCallException:
                     pass
-                except Exception as detail:
+                except Exception as detail:  # pylint: disable=broad-exception-caught
                     # get the relevant part of a XML-RPC fault
                     if isinstance(detail, xmlrpclib.Fault):
                         detail = detail.faultString
