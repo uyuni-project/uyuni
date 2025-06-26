@@ -141,7 +141,7 @@ public class ForgotCredentialsAction extends RhnAction {
     }
 
     private boolean validateNewPasswordFields(String login, String email, ActionErrors errors) {
-        return validateLogin(login, errors) & validateEmail(email, errors);
+        return validateLogin(login, errors) && validateEmail(email, errors);
     }
 
     private boolean validateLogin(String login, ActionErrors errors) {
