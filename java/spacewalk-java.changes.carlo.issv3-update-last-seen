@@ -1,0 +1,2 @@
+- Implements and tests the update last seen mechanism
+  when a hub is acting as an SCC proxy

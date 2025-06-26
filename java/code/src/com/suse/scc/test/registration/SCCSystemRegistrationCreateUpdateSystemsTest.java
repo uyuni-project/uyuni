@@ -21,7 +21,7 @@ import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
-import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCRegisterSystemItem;
 import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.registration.SCCSystemRegistrationContext;
 import com.suse.scc.registration.SCCSystemRegistrationCreateUpdateSystems;
@@ -96,7 +96,7 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
         TestSCCWebClient sccWebClient = new TestSCCWebClient(null) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-                    List<SCCRegisterSystemJson> systems,
+                    List<SCCRegisterSystemItem> systems,
                     String username,
                     String password
             ) throws SCCClientException {
@@ -131,7 +131,7 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
         TestSCCWebClient sccWebClient = new TestSCCWebClient(null) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-                    List<SCCRegisterSystemJson> systems,
+                    List<SCCRegisterSystemItem> systems,
                     String username,
                     String password
             ) {
@@ -173,8 +173,8 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
         for (int i = 0; i < systemSize; i++) {
             context.getPendingRegistrationSystemsByLogin().put(
                     "SCCSystemId.login" + i,
-                    new SCCRegisterSystemJson(
-                            "SCCRegisterSystemJson.login" + i, "SCCRegisterSystemJson.pwd" + i,
+                    new SCCRegisterSystemItem(
+                            "SCCRegisterSystemItem.login" + i, "SCCRegisterSystemItem.pwd" + i,
                             null, null, null, null)
             );
         }
@@ -215,7 +215,7 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
         return new TestSCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-                    List<SCCRegisterSystemJson> systems, String username, String password
+                    List<SCCRegisterSystemItem> systems, String username, String password
             ) {
                 callCnt += 1;
                 return new SCCOrganizationSystemsUpdateResponse(
