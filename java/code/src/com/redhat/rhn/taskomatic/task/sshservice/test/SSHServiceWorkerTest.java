@@ -287,7 +287,7 @@ public class SSHServiceWorkerTest extends JMockBaseTestCaseWithUser {
     }
 
     private ServerAction createChildServerAction(Action action, ActionStatus status,
-            long remainingTries) throws Exception {
+            long remainingTries) {
         return createChildServerAction(minion, action, status, remainingTries);
     }
 
