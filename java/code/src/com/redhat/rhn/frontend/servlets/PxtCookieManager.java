@@ -62,7 +62,6 @@ public class PxtCookieManager {
         // when not using setDomain, default "Host" will be set for the cookie
         // there's no need to use domain and besides that it causes trouble,
         //  when accessing the server within the local network (without FQDN)
-        // pxtCookie.setDomain(request.getServerName())
         if (!userAgentContains(request, "msie")) {
             pxtCookie.setMaxAge(timeout);
         }
