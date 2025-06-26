@@ -1,0 +1,2 @@
+- Remove perl from cleanup as it is not installed anymore
+  by default
