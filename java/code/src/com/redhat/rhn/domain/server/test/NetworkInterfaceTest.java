@@ -91,7 +91,7 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
      * @return Returns a new NetworkInterface object all filled out for testing purposes.
      * @throws Exception something bad happened
      */
-    public static NetworkInterface createTestNetworkInterface() throws Exception {
+    public static NetworkInterface createTestNetworkInterface() {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         Server s = ServerFactoryTest.createTestServer(user);
         return createTestNetworkInterface(s);
@@ -103,8 +103,7 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
      * @return Returns a new NetworkInterface object all filled out for testing purposes.
      * @throws Exception something bad happened
      */
-    public static NetworkInterface createTestNetworkInterface(Server server)
-    throws Exception {
+    public static NetworkInterface createTestNetworkInterface(Server server) {
         return createTestNetworkInterface(server, TestUtils.randomString(),
                 "127.0.0.1", TEST_MAC);
     }
