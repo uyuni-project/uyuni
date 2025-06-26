@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -96,23 +96,17 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
 
     @Test
     public void testCreateAclValidAclInvalidMixin() {
-        try {
-            String output = "<div class=\"toolbar-h1\"><div class=\"" +
+        final String output = "<div class=\"toolbar-h1\"><div class=\"" +
                 "toolbar\"></div></div>";
 
-            setupCloneTag("h1", "Clone-url",
-                             "true_test()", "kickstart");
+        setupCloneTag("h1", "Clone-url",
+                "true_test()", "kickstart");
 
-            tt.setAclMixins("throws.class.not.found.exception");
+        tt.setAclMixins("throws.class.not.found.exception");
 
-            verifyTag(output);
-            fail(); //shouldn't be here
-        }
-        catch (JspException je) {
-            // deep inside the tag, an IllegalArgumentException became
-            // a JspException
-            // should be here
-        }
+        // deep inside the tag, an IllegalArgumentException became
+        // a JspException
+        assertThrows(JspException.class, () -> verifyTag(output));
     }
 
     @Test

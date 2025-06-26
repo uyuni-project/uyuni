@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
@@ -115,24 +116,15 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
 
     @Test
     public void testCreateAclValidAclInvalidMixin() {
-        try {
-            String output = "<div class=\"toolbar-h1\"><div class=\"" +
-            "toolbar\"></div></div>";
+        final String output = "<div class=\"toolbar-h1\"><div class=\"" +
+                "toolbar\"></div></div>";
 
-            setupDeletionTag("h1", "deletion-url",
-                    "true_test()", "user");
+        setupDeletionTag("h1", "deletion-url",
+                "true_test()", "user");
 
-            tt.setAclMixins("throws.class.not.found.exception");
+        tt.setAclMixins("throws.class.not.found.exception");
 
-            verifyTag(output);
-            fail(); //shouldn't be here
-        }
-        catch (JspException je) {
-            //should be here
-        }
-        catch (Exception e) {
-            fail(e.toString());
-        }
+        assertThrows(JspException.class, () -> verifyTag(output));
     }
 
     @Test

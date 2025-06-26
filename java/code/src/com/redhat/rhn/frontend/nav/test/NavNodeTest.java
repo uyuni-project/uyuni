@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.frontend.nav.test;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.frontend.nav.NavNode;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -115,13 +115,7 @@ public class NavNodeTest extends RhnBaseTestCase {
 
     @Test
     public void testExceptionCase() {
-        try {
-            node.getPrimaryURL();
-            fail(); //shouldn't be here
-        }
-        catch (IndexOutOfBoundsException ioobe) {
-            //should be here
-        }
+        assertThrows(IndexOutOfBoundsException.class, () -> node.getPrimaryURL());
     }
 
     @Test
