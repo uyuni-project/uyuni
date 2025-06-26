@@ -48,7 +48,7 @@ public class PrimitiveBuilder implements ManifestFactoryBuilder {
             String lenStr = (String)params.get("length");
             String containedType = (String)params.get("contained-type");
 
-            int len = Integer.valueOf(lenStr);
+            int len = Integer.parseInt(lenStr);
             List ret = new ArrayList<>();
             for (int i = 0; i < len; i++) {
                 try {
