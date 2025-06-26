@@ -48,7 +48,6 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
         assertTrue(found);
         //don't call contextDestroyed here since it stops hibernate and
         //screws everything up ;)
-        //rl.contextDestroyed(null)
         MessageQueue.stopMessaging();
     }
 
