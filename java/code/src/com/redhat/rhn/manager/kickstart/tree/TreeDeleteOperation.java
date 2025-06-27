@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class TreeDeleteOperation extends BaseTreeEditOperation {
 
-    private Boolean deleteProfiles = Boolean.FALSE;
+    private boolean deleteProfiles = false;
 
     /**
      * Default constructor: DONT USE
