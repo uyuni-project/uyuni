@@ -32,10 +32,6 @@ import org.apache.struts.action.DynaActionForm;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//import java.util.HashMap;
-//import java.util.Map;
-
-
 /**
  * KickstartCloneAction - action for cloning a KS. Can't use BaseKickstartEdit
  * action because we have to forward to a different Kickstart vs the one we
