@@ -1204,7 +1204,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
-        ContentEnvironment env = contentManager.createEnvironment(
+        contentManager.createEnvironment(
                 cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
         contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
 
@@ -1585,7 +1585,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         ContentProjectFactory.save(project);
         var fstEnv = contentManager.createEnvironment(
                 project.getLabel(), empty(), "fst", "first env", "fst", false, user);
-        var sndEnv = contentManager.createEnvironment(
+        contentManager.createEnvironment(
                 project.getLabel(), of("fst"), "snd", "second env", "snd", false, user);
         var channel = createPopulatedChannel();
         contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
@@ -1617,7 +1617,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     public void testPromotingPromotingProject() throws Exception {
         var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(project);
-        var fstEnv = contentManager.createEnvironment(
+        contentManager.createEnvironment(
                 project.getLabel(), empty(), "fst", "first env", "fst", false, user);
         var sndEnv = contentManager.createEnvironment(
                 project.getLabel(), of("fst"), "snd", "second env", "snd", false, user);

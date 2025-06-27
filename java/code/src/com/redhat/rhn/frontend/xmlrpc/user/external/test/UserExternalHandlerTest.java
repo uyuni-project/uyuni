@@ -66,8 +66,7 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
         //make sure we get a permission exception if a regular user tries to get the user
         //list.
         try {
-            result =
-                    handler.createExternalGroupToRoleMap(regular,
+            handler.createExternalGroupToRoleMap(regular,
                             "another group" + TestUtils.randomString(), roles);
             fail();
         }
@@ -77,7 +76,7 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
 
         //can't add the same group twice
         try {
-            result = handler.createExternalGroupToRoleMap(satAdmin, name, roles);
+            handler.createExternalGroupToRoleMap(satAdmin, name, roles);
             fail();
         }
         catch (ExternalGroupAlreadyExistsException e) {
@@ -113,16 +112,15 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, group.getRoles().size());
 
         //regular user can't delete
-        int success = -1;
         try {
-            success = handler.deleteExternalGroupToRoleMap(regular, name);
+            handler.deleteExternalGroupToRoleMap(regular, name);
             fail();
         }
         catch (PermissionCheckFailureException e) {
             //success
         }
 
-        success = handler.deleteExternalGroupToRoleMap(satAdmin, name);
+        int success = handler.deleteExternalGroupToRoleMap(satAdmin, name);
         assertEquals(1, success);
     }
 
@@ -147,17 +145,15 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
         sghandler.create(admin, systemGroupName, desc);
 
         //admin should be able to call list users, regular should not
-        OrgUserExtGroup result =
-                handler.createExternalGroupToSystemGroupMap(admin, name,
+        handler.createExternalGroupToSystemGroupMap(admin, name,
                         Arrays.asList(systemGroupName));
 
         //make sure we get a permission exception if a regular user tries to get the user
         //list.
         try {
-            result =
-                    handler.createExternalGroupToSystemGroupMap(regular,
-                            "another group" + TestUtils.randomString(),
-                            Arrays.asList(systemGroupName));
+            handler.createExternalGroupToSystemGroupMap(regular,
+                    "another group" + TestUtils.randomString(),
+                    Arrays.asList(systemGroupName));
             fail();
         }
         catch (PermissionCheckFailureException e) {
@@ -166,9 +162,8 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
 
         //can't add the same group twice
         try {
-            result =
-                    handler.createExternalGroupToSystemGroupMap(admin, name,
-                            Arrays.asList(systemGroupName));
+            handler.createExternalGroupToSystemGroupMap(admin, name,
+                    Arrays.asList(systemGroupName));
             fail();
         }
         catch (ExternalGroupAlreadyExistsException e) {
@@ -201,16 +196,15 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
         assertTrue(group.getServerGroupsName().contains(systemGroupName));
 
         //regular user can't delete
-        int success = -1;
         try {
-            success = handler.deleteExternalGroupToSystemGroupMap(regular, name);
+            handler.deleteExternalGroupToSystemGroupMap(regular, name);
             fail();
         }
         catch (PermissionCheckFailureException e) {
             //success
         }
 
-        success = handler.deleteExternalGroupToSystemGroupMap(admin, name);
+        int success = handler.deleteExternalGroupToSystemGroupMap(admin, name);
         assertEquals(1, success);
 
         sghandler.delete(admin, systemGroupName);

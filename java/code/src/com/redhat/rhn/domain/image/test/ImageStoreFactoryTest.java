@@ -218,7 +218,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testDelete() {
-        ImageStore store = createImageStore("mystore", user);
+        createImageStore("mystore", user);
         assertTrue(ImageStoreFactory.lookupBylabelAndOrg("mystore", user.getOrg())
                 .isPresent());
 
