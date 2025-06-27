@@ -21,6 +21,6 @@
 {# handle overrides #}
 {%- if force_kiwi_ng %}
 {%-   set kiwi_method = 'kiwi-ng' %}
-{%- elif (force_kiwi_podman) %}
+{%- elif force_kiwi_podman %}
 {%-   set kiwi_method = 'podman' %}
 {%- endif %}

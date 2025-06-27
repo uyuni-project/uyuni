@@ -10,14 +10,13 @@
 {%- set kiwi_dir   = '/var/lib/Kiwi/' %}
 {%- set common_repo = kiwi_dir + 'repo' %}
 
-{%- set root_dir   = kiwi_dir + pillar.get('build_id') %}
+{%- set build_id   = pillar.get('build_id') %}
+{%- set root_dir   = kiwi_dir + build_id %}
 {%- set source_dir = root_dir + '/source' %}
 {%- set chroot_dir = root_dir + '/chroot/' %}
 {%- set dest_dir   = root_dir + '/images.build' %}
 {%- set bundle_dir = root_dir + '/images/' %}
-# cache dir is used only with Kiwi-ng
 {%- set cache_dir  = root_dir + '/cache/' %}
-{%- set bundle_id  = pillar.get('build_id') %}
 
 {%- set eib_require = '' %}
 {%- set kpartx_require = '' %}
@@ -28,10 +27,6 @@
 {# Default images and overrides #}
 {%- set eib_image = salt['pillar.get']('custom_info:eib_image', 'registry.suse.com/edge/3.2/edge-image-builder:1.1.0') %}
 {%- set kiwi_image = salt['pillar.get']('custom_info:kiwi_image', 'registry.suse.com/bci/kiwi:10.2') %}
-
-report_method:
-  test.show_notification:
-    - text: "selected kiwi method: {{ kiwi_method }}, kiwi_dir is {{ kiwi_dir }}"
 
 mgr_buildimage_prepare_source:
   file.directory:
@@ -64,7 +59,7 @@ mgr_buildimage_prepare_kpartx_kiwi_yml:
 # EIB support
 mgr_eib:
   file.directory:
-    - name: {{ source_dir}}/root/oem
+    - name: {{ source_dir }}/root/oem
     - onlyif:
       - test -f {{ source_dir }}/eib/eib.yaml
   cmd.run:
@@ -80,10 +75,10 @@ mgr_eib:
 {# need /dev for losetup error during create #}
 {% set kiwi_mount = ' -v '+ kiwi_dir + ':/var/lib/Kiwi:Z ' %}
 {% set kiwi_yml_mount = ' -v ' + source_dir + '/kiwi.yml:/etc/kiwi.yml:ro,Z ' %}
-{%- set kiwi = 'podman run --rm --privileged -v /var/lib/ca-certificates:/var/lib/ca-certificates:ro -v /dev:/dev '+ kiwi_mount + kiwi_yml_mount + kiwi_image + ' kiwi-ng' -%}
+{%- set kiwi = '/usr/bin/podman run --rm --privileged -v /var/lib/ca-certificates:/var/lib/ca-certificates:ro -v /dev:/dev '+ kiwi_mount + kiwi_yml_mount + kiwi_image + ' kiwi-ng' -%}
 {%- elif kiwi_method == 'kiwi-ng' -%}
-{%- set kiwi = 'kiwi-ng' -%}
-{%- endif -%}
+{%- set kiwi = '/usr/bin/kiwi-ng' -%}
+{%- endif -%} {# kiwi_method #}
 
 {%- if kiwi_method == 'podman' or kiwi_method == 'kiwi-ng' %}
 {%- set kiwi_options = pillar.get('kiwi_options', '') %}
@@ -99,10 +94,10 @@ mgr_eib:
 {%- endfor -%}
 {%- endmacro %}
 
+{# we need to remove rpm-md due to kiwi error during create #}
 mgr_buildimage_kiwi_prepare:
   cmd.run:
-# need to remove rpm-md due to kiwi error during create
-    - name: "{{ kiwi }} {{ kiwi_options }} $GLOBAL_PARAMS system prepare $PARAMS && sed -i 's/rpm-dir/rpm-md/g' {{ chroot_dir }}/image/config.xml"
+    - name: "{{ kiwi }} {{ kiwi_options }} $GLOBAL_PARAMS system prepare $PARAMS"
     - hide_output: True
     - env:
       - GLOBAL_PARAMS: "--logfile={{ root_dir }}/build.log --shared-cache-dir={{ cache_dir }}"
@@ -122,17 +117,12 @@ mgr_buildimage_kiwi_create:
 {%- if use_bundle_build %}
 mgr_buildimage_kiwi_bundle:
   cmd.run:
-    - name: "{{ kiwi }} result bundle --target-dir {{ dest_dir }} --id {{ bundle_id }} --bundle-dir {{ bundle_dir }}"
+    - name: "{{ kiwi }} result bundle --target-dir {{ dest_dir }} --id {{ build_id }} --bundle-dir {{ bundle_dir }}"
     - require:
       - cmd: mgr_buildimage_kiwi_create
 {%- endif %}
 
-{%- else %}
-# KIWI Legacy
-#
-
-{%- set kiwi_help = salt['cmd.run']('/usr/bin/kiwi --help') %}
-{%- set have_bundle_build = kiwi_help.find('--bundle-build') > 0 %}
+{%- else %} {# kiwi legacy #}
 
 # i586 build on x86_64 host must be called with linux32
 # let's consider the build i586 if there is no x86_64 repo specified
@@ -167,39 +157,14 @@ mgr_buildimage_kiwi_create:
       - cmd: mgr_buildimage_kiwi_prepare
 
 {%- if use_bundle_build %}
-{%- if have_bundle_build %}
 mgr_buildimage_kiwi_bundle:
   cmd.run:
-    - name: "{{ kiwi }} --nocolor --yes --bundle-build {{ dest_dir }} --bundle-id {{ bundle_id }} --destdir {{ bundle_dir }}"
+    - name: "{{ kiwi }} --nocolor --yes --bundle-build {{ dest_dir }} --bundle-id {{ build_id }} --destdir {{ bundle_dir }}"
     - require:
       - cmd: mgr_buildimage_kiwi_create
 
-{%- else %}
-
-# SLE11 Kiwi does not have --bundle-build option, we have to create the bundle tarball ourselves:
-
-mgr_buildimage_kiwi_bundle_dir:
-  file.directory:
-    - name: {{ bundle_dir }}
-    - require:
-      - cmd: mgr_buildimage_kiwi_create
-
-mgr_buildimage_kiwi_bundle_tarball:
-  cmd.run:
-    - name: "cd '{{ dest_dir }}' && /usr/bin/tar czf '{{ bundle_dir }}'`basename *.packages .packages`-{{ bundle_id }}.tgz --no-recursion `/usr/bin/find . -maxdepth 1 -type f`"
-    - require:
-      - file: mgr_buildimage_kiwi_bundle_dir
-
-mgr_buildimage_kiwi_bundle:
-  cmd.run:
-    - name: "cd '{{ bundle_dir }}' && /usr/bin/sha256sum *.tgz > `/usr/bin/echo *.tgz`.sha256"
-    - require:
-      - cmd: mgr_buildimage_kiwi_bundle_tarball
-
-{%- endif %}
-{%- endif %}
-
-{%- endif %}
+{%- endif %} {# use_bundle_build #}
+{%- endif %} {# else kiwi legacy #}
 
 {%- if pillar.get('use_salt_transport') %}
 mgr_buildimage_kiwi_collect_image:
@@ -214,13 +179,13 @@ mgr_buildimage_kiwi_collect_image:
     - require:
       - cmd: mgr_buildimage_kiwi_create
     {%- endif %}
-{%- endif %}
+{%- endif %} {# use_salt_transport #}
 
 mgr_buildimage_info:
   mgrcompat.module_run:
     - name: kiwi_info.build_info
     - dest: {{ dest_dir }}
-    - build_id: {{ pillar.get('build_id') }}
+    - build_id: {{ build_id }}
     {%- if use_bundle_build %}
     - bundle_dest: {{ bundle_dir }}
     {%- endif %}
@@ -232,12 +197,12 @@ mgr_buildimage_info:
       - mgr_buildimage_kiwi_bundle
     {%- else %}
       - mgr_buildimage_kiwi_create
-    {%- endif %}
-{%- endif %}
+    {%- endif %} {# use_bundle_build #}
+{%- endif %} {# use_salt_transport #}
 
 mgr_buildimage_kiwi_collect_logs:
   mgrcompat.module_run:
     - name: cp.push
     - path: {{ root_dir }}/build.log
-    - upload_path: /image-{{ bundle_id }}.log
+    - upload_path: /image-{{ build_id }}.log
     - order: last
