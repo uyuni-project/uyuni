@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.coco.configuration;
@@ -22,7 +18,6 @@ import com.suse.common.configuration.ResourceConfigurationSource;
 
 import java.util.List;
 import java.util.Properties;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -51,7 +46,7 @@ public class DefaultConfiguration implements Configuration {
 
         List<String> missingProperty = MANDATORY_PROPERTIES
             .filter(property -> configurationSource.getString(property).isEmpty())
-            .collect(Collectors.toList());
+            .toList();
 
         if (!missingProperty.isEmpty()) {
             throw new IllegalArgumentException("Mandatory configuration properties are missing: " + missingProperty);
