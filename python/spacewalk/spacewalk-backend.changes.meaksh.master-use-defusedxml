@@ -1,0 +1,1 @@
+- Use more secure defusedxml parser (bsc#1227577)
