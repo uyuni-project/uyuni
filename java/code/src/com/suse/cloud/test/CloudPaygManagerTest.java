@@ -35,7 +35,7 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
     public void testCloudProvider() {
         CloudPaygManager cpm = new TestCloudPaygManagerBuilder().build();
         CloudProvider prv = cpm.getCloudProvider();
-        assertEquals(CloudProvider.None, prv);
+        assertEquals(CloudProvider.NONE, prv);
 
         CloudPaygManager cpmAWS =  new TestCloudPaygManagerBuilder().withCloudProvider(CloudProvider.AWS).build();
         assertEquals(CloudProvider.AWS, cpmAWS.getCloudProvider());

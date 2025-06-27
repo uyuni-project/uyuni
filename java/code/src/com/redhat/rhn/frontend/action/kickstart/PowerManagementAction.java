@@ -109,7 +109,7 @@ public class PowerManagementAction extends RhnAction {
                         addMessage(request, "kickstart.powermanagement.saved");
                     }
                     if (context.wasDispatched("kickstart.powermanagement.jsp.power_on")) {
-                        error = new CobblerPowerCommand(user, server, Operation.PowerOn)
+                        error = new CobblerPowerCommand(user, server, Operation.POWER_ON)
                             .store();
                         if (error == null) {
                             log.debug("Power on succeded for system {}", sid);
@@ -117,7 +117,7 @@ public class PowerManagementAction extends RhnAction {
                         }
                     }
                     if (context.wasDispatched("kickstart.powermanagement.jsp.power_off")) {
-                        error = new CobblerPowerCommand(user, server, Operation.PowerOff)
+                        error = new CobblerPowerCommand(user, server, Operation.POWER_OFF)
                             .store();
                         if (error == null) {
                             log.debug("Power off succeded for system {}", sid);
@@ -125,7 +125,7 @@ public class PowerManagementAction extends RhnAction {
                         }
                     }
                     if (context.wasDispatched("kickstart.powermanagement.jsp.reboot")) {
-                        error = new CobblerPowerCommand(user, server, Operation.Reboot).
+                        error = new CobblerPowerCommand(user, server, Operation.REBOOT).
                                 store();
                         if (error == null) {
                             log.debug("Reboot succeded for system {}", sid);
