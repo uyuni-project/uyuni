@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jun 27 13:04:53 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.6-0
+  * Remove unused python dependencies to dbus, dmidecode, ethtool,
+    hwdata, udev, pygobject2 and hal
+
+-------------------------------------------------------------------
 Tue May 13 14:51:58 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.5-0
