@@ -25,6 +25,7 @@ import com.redhat.rhn.frontend.taglibs.RhnListTagFunctions;
 import com.redhat.rhn.frontend.taglibs.list.decorators.ExpansionDecorator;
 import com.redhat.rhn.frontend.taglibs.list.decorators.ListDecorator;
 import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
+import com.redhat.rhn.frontend.taglibs.list.decorators.SelectableDecorator;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.row.RowRenderer;
 
@@ -126,6 +127,10 @@ public class ListTag extends BodyTagSupport {
         ListDecorator dec = getDecorator(decName);
         if (dec != null) {
             getDecorators().add(dec);
+
+            if (dec instanceof SelectableDecorator) {
+                ((SelectableDecorator) dec).setTotalRowCount(manip.getTotalDataSetSize());
+            }
         }
     }
 
@@ -540,7 +545,18 @@ public class ListTag extends BodyTagSupport {
                     "<div class=\"spacewalk-list-head-extra\">");
             ListTagUtil.write(pageContext, headExtraContent.toString());
             ListTagUtil.write(pageContext, "</div>");
+            
             // close the panel heading
+            ListTagUtil.write(pageContext, "</div>");
+
+            // Select/Unselect all Div
+            ListTagUtil.write(pageContext,
+                    "<div class=\"selected-row-details\">");
+            renderSelectedRowCount();
+            
+            for (ListDecorator dec : getDecorators()) {
+                dec.onFooterExtraAddons();             
+            }
             ListTagUtil.write(pageContext, "</div>");
         }
 
@@ -636,7 +652,6 @@ public class ListTag extends BodyTagSupport {
         ListTagUtil.write(pageContext, "</table>");
         ListTagUtil.setCurrentCommand(pageContext, getUniqueName(),
                 ListCommand.TBL_FOOTER);
-
         // as the footer addons are populated with decorators, we don't
         // know if there will be content or not, but we want to avoid
         // writing the tfoot tag at all if there is none, so we push a
@@ -646,11 +661,11 @@ public class ListTag extends BodyTagSupport {
         StringWriter footExtraContent = new StringWriter();
 
         pageContext.pushBody(footAddonsContent);
-        if (!manip.isListEmpty()) {
-            for (ListDecorator dec : getDecorators()) {
-                dec.onFooterExtraAddons();
-            }
-        }
+        // if (!manip.isListEmpty()) {
+        //     for (ListDecorator dec : getDecorators()) {
+        //         dec.onFooterExtraAddons();
+        //     }
+        // }
         pageContext.popBody();
 
         pageContext.pushBody(footExtraContent);
@@ -1042,6 +1057,12 @@ public class ListTag extends BodyTagSupport {
 
         ListTagUtil.renderPaginationLinks(pageContext, PAGINATION_NAMES,
                 manip.getPaginationLinks());
+    }
+
+    private void renderSelectedRowCount() throws JspException {
+        for (ListDecorator dec : getDecorators()) {
+            dec.afterTopPagination();
+        }
     }
 
     private void setPageSize() {

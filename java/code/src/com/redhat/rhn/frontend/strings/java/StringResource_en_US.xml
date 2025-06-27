@@ -1780,6 +1780,12 @@
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="message.totalRowCount" xml:space="preserve">
+        <source>{0} items</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="message.range.withtypedescription" xml:space="preserve">
         <source>&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; of &lt;span&gt;{2}&lt;/span&gt;
 {3} displayed</source>
@@ -1788,7 +1794,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="message.numselected" xml:space="preserve">
-        <source>({0} selected)</source>
+        <source>{0} items selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set</context>
           <context context-type="paramnotes">
