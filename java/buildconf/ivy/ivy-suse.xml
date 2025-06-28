@@ -15,14 +15,14 @@
         <dependency org="manager-50" name="common" rev="2.1" />
         <dependency org="manager-50" name="stringprep" rev="1.1" />
         <dependency org="manager-50" name="saslprep" rev="1.1" />
-        <dependency org="manager-50" name="commons-beanutils" rev="1.9.4" />
+        <dependency org="manager-50" name="commons-beanutils" rev="1.11.0" />
         <dependency org="manager-50" name="commons-cli" rev="1.9.0" />
         <dependency org="manager-50" name="commons-codec" rev="1.16.1" />
         <dependency org="manager-50" name="commons-collections" rev="3.2.2" />
         <dependency org="manager-50" name="commons-digester" rev="2.1" />
         <dependency org="manager-50" name="commons-discovery" rev="0.5" />
         <dependency org="manager-50" name="commons-el" rev="1.0" />
-        <dependency org="manager-50" name="commons-fileupload" rev="1.5" />
+        <dependency org="manager-50" name="commons-fileupload" rev="1.6.0" />
         <dependency org="manager-50" name="commons-io" rev="2.18.0" />
         <dependency org="manager-50" name="commons-jexl" rev="2.1.1" />
         <dependency org="manager-50" name="commons-lang3" rev="3.16.0" />
