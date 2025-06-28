@@ -130,7 +130,7 @@ public class MinionServer extends Server implements SaltConfigurable {
     @Override
     public void setConfigChannels(List<ConfigChannel> configChannelList, User user) {
         super.setConfigChannels(configChannelList, user);
-        SaltConfigSubscriptionService.setConfigChannels(this, configChannelList, user);
+        SaltConfigSubscriptionService.setConfigChannels(this, getConfigChannels(), user);
     }
 
     /**
