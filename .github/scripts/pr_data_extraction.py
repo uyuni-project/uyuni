@@ -94,9 +94,9 @@ def get_initial_test_run(test_workflow, pr):
     pr_opened_at = pr.created_at
     pr_closed_at = pr.closed_at or datetime.datetime.max.replace(tzinfo=pr.created_at.tzinfo)
 
-    # Only keep runs that are related to this specific PR
-    # Addresses the edge case of multiple PRs from one branch.
-    # Also removes runs that were cancelled/skipped.
+    # Filter runs that are:
+    # - within the PR lifetime (Addresses edge case of multiple PRs from one branch)
+    # - completed (success or failure, not cancelled/skipped)
     pr_test_runs = [
         run for run in test_runs_on_pr_branch
         if pr_opened_at <= run.created_at <= pr_closed_at
@@ -111,28 +111,30 @@ def get_initial_test_run(test_workflow, pr):
         logger.debug("Matched %s run ID %s created at %s", TEST_WORKFLOW_NAME, run.id, run.created_at)
 
     pr_test_runs.sort(key=lambda run: run.created_at)
-    initial_test_run = pr_test_runs[0]
-    logger.info("Using initial test run #%d created at %s", initial_test_run.id, run.created_at)
-    return initial_test_run
 
-def download_cucumber_artifacts(run, pr_number, headers):
-    has_cucumber_reports = False
-    for artifact in run.get_artifacts():
+    # Return initial test run *that has Cucumber reports*
+    for run in pr_test_runs:
+        logger.debug("Checking if run ID %s has Cucumber reports", run.id)
+        for artifact in run.get_artifacts():
+            if artifact.name.lower().startswith("cucumber"):
+                logger.info("Using initial test run #%d (that has Cucumber reports) created at %s", run.id, run.created_at)
+                return run
+
+    logger.info("No %s runs with Cucumber reports found for PR #%d", TEST_WORKFLOW_NAME, pr.number)
+    return None
+
+def download_cucumber_artifacts(run_with_cucumber, pr_number, headers):
+    for artifact in run_with_cucumber.get_artifacts():
         if artifact.name.lower().startswith("cucumber"):
-            has_cucumber_reports = True
             url = artifact.archive_download_url
             response = requests.get(url, headers=headers, stream=True)
             if response.ok:
-                filename = f"pr{pr_number}_run{run.id}_{artifact.name}.zip"
+                filename = f"pr{pr_number}_run{run_with_cucumber.id}_{artifact.name}.zip"
                 with open(filename, "wb") as f:
                     f.write(response.content)
                 logger.info("Downloaded: %s", filename)
             else:
                 logger.warning("Failed to download %s (HTTP %d)", artifact.name, response.status_code)
-
-    if not has_cucumber_reports:
-        logger.info("No Cucumber reports found in initial test run for PR #%d", pr_number)
-    return has_cucumber_reports
 
 def get_modified_files_at_pr_open(repo, pr, initial_test_run):
     # base_commit_sha: the commit the PR is targeting (e.g., main)
@@ -164,19 +166,24 @@ def extract_pr_data(repo_full_name, N, github_token):
         logger.info("Processing PR #%d: %s", pr.number, pr.title)
 
         try:
-            initial_test_run = get_initial_test_run(test_workflow, pr)
-            if not initial_test_run:
+            initial_test_run_with_cucumber = get_initial_test_run(test_workflow, pr)
+            if not initial_test_run_with_cucumber:
                 continue
-            
-            if not download_cucumber_artifacts(initial_test_run, pr.number, headers):
-                continue
-
-            modified_files = get_modified_files_at_pr_open(repo, pr, initial_test_run)
-            logger.info("Files modified in PR when opened: %s", modified_files)
-
-            processed_prs_with_cucumber_reports += 1
         except Exception as e:
-            logger.error("Error processing PR #%d: %s", pr.number, e)
+            logger.error("Error getting initial test run for PR #%d: %s", pr.number, e)
+        
+        try:
+            download_cucumber_artifacts(initial_test_run_with_cucumber, pr.number, headers)
+        except Exception as e:
+            logger.error("Error downloading cucumber artifacts for PR #%d: %s", pr.number, e)
+        
+        try:
+            modified_files = get_modified_files_at_pr_open(repo, pr, initial_test_run_with_cucumber)
+            logger.info("Files modified in PR when opened: %s", modified_files)
+        except Exception as e:
+            logger.error("Error obtaining modified files for PR #%d: %s", pr.number, e)
+
+        processed_prs_with_cucumber_reports += 1
 
 def main():    
     if len(sys.argv) != 2:
