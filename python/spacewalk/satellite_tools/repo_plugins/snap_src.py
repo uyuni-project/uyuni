@@ -202,7 +202,9 @@ class SnapRepo:
                 try:
                     res = requests.get(url, headers=headers)
                     if res.status_code != 200:
-                        print(f"[ERROR] HTTP {res.status_code} for keyword '{keyword}' page {page}")
+                        print(
+                            f"[ERROR] HTTP {res.status_code} for keyword '{keyword}' page {page}"
+                        )
                         break
 
                     data = res.json()
@@ -261,7 +263,7 @@ class SnapRepo:
                     time.sleep(0.2)
 
                 except Exception as e:
-                    print(f"[ERROR] Exception for keyword '{keyword}' page {page}: {e}")
+                    print(f"[EXCEPTION] Failed to fetch keyword '{keyword}' page {page}: {e}")
                     break
 
         print(f"[DEBUG] Total snap packages collected: {len(to_return)}")
