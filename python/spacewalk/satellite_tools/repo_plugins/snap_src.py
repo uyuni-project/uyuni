@@ -52,6 +52,8 @@ class UniqueIDWrapper:
 
     def __str__(self):
         return self.value  # behave like a string if needed
+
+
 # pylint: disable-next=missing-class-docstring
 class SnapPackage(ContentPackage):
     def __init__(self):
@@ -147,6 +149,7 @@ class SnapRepo:
             "Snap-Device-Series": "16",
             "Accept": "application/json",
         }
+
     def verify(self):
         """
         Verify package index checksum and signature.
@@ -180,6 +183,7 @@ class SnapRepo:
             return proxies
         else:
             return None
+
     def get_package_list(self):
         to_return = []
         seen = set()
@@ -191,7 +195,7 @@ class SnapRepo:
             "Accept": "application/json",
         }
 
-        for ch in range(ord("a"), ord("z") + 1):  
+        for ch in range(ord("a"), ord("z") + 1):
             keyword = chr(ch)
             page = 1
             same_count = 0
@@ -228,7 +232,7 @@ class SnapRepo:
 
                         for arch in arch_list or ["noarch"]:
                             sp = SnapPackage()
-                            #sp = ContentPackage()
+                            # sp = ContentPackage()
                             sp.name = name
                             sp.version = version
                             sp.unique_id = sp
@@ -263,11 +267,14 @@ class SnapRepo:
                     time.sleep(0.2)
 
                 except Exception as e:
-                    print(f"[EXCEPTION] Failed to fetch keyword '{keyword}' page {page}: {e}")
+                    print(
+                        f"[EXCEPTION] Failed to fetch keyword '{keyword}' page {page}: {e}"
+                    )
                     break
 
         print(f"[DEBUG] Total snap packages collected: {len(to_return)}")
         return to_return[:5]
+
 
 # pylint: disable-next=missing-class-docstring
 #
@@ -341,7 +348,6 @@ class ContentSource:
             )
             self.repo.http_headers = http_headers
 
-
             self.num_packages = 0
             self.num_excluded = 0
 
@@ -351,13 +357,12 @@ class ContentSource:
             if query:
                 self.authtoken = query
 
-
-
     def list_packages(self, filters, latest):
         print("[DEBUG] list_packages called")
         pkgs = self.repo.get_package_list()
         self.num_packages = len(pkgs)
         return pkgs
+
     def get_md_checksum_type(self):
         pass
 
@@ -372,7 +377,6 @@ class ContentSource:
     def get_mediaproducts(self):
         # No mediaproducts data
         return None
-
 
     @staticmethod
     def _filter_packages(packages, filters, nevra_filter=False):
@@ -466,7 +470,7 @@ class ContentSource:
 
         params["authtoken"] = self.authtoken
         params["relative_path"] = relative_path
-        params["urls"] =  ["https://api.snapcraft.io/api/v1/snaps/download/"]
+        params["urls"] = ["https://api.snapcraft.io/api/v1/snaps/download/"]
         params["authtoken"] = self.authtoken
         params["target_file"] = target_file
         params["ssl_ca_cert"] = self.repo.sslcacert
