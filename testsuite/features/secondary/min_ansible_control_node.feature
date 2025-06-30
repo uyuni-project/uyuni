@@ -2,20 +2,35 @@
 # Licensed under the terms of the MIT license.
 
 @scope_ansible
+@sle_minion
 Feature: Operate an Ansible control node in a normal minion
 
   Scenario: Log in as org admin user
-    Given I am authorized
+    Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: Deploy test playbooks and inventory file
     When I deploy testing playbooks and inventory files to "sle_minion"
-@skip_if_github_validation	
+
+@susemanager
+  Scenario: Pre-requisite: Subscribe SUSE minions to SLE-Module-Python3-15-SP4-Pool for x86_64
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I check "SLE-Module-Python3-15-SP4-Pool for x86_64" by label
+    And I check "SLE-Product-SLES15-SP4-LTSS-Updates for x86_64" by label
+    And I click on "Next"
+    And I click on "Confirm"
+    And I wait until I see "Changing the channels has been scheduled." text
+    And I follow "scheduled"
+    And I wait until I see "1 system successfully completed this action" text, refreshing the page
+
+# TODO: Check why tools_update_repo is not available on the openSUSE minion
+@skip_if_github_validation
 @susemanager
   Scenario: Pre-requisite: Enable client tools repositories
     When I enable the repositories "tools_update_repo tools_pool_repo" on this "sle_minion"
     And I refresh the metadata for "sle_minion"
 
-    # TODO: Check why tools_update_repo is not available on the openSUSE minion
 @skip_if_github_validation
 @uyuni
   Scenario: Pre-requisite: Enable client tools repositories
@@ -90,12 +105,25 @@ Feature: Operate an Ansible control node in a normal minion
     And I remove package "orion-dummy" from this "sle_minion" without error control
     And I remove "/tmp/file.txt" from "sle_minion"
 
-@skip_if_github_validation
-@susemanager
-  Scenario: Cleanup: Disable client tools repositories
+  @susemanager
+  Scenario: Cleanup: Unsubscribe SUSE minions from SLE-Module-Python3-15-SP4-Pool for x86_64
     Given I am on the Systems overview page of this "sle_minion"
-    When I disable the repositories "tools_update_repo tools_pool_repo" on this "sle_minion"
-    And I refresh the metadata for "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I uncheck "SLE-Module-Python3-15-SP4-Pool for x86_64" by label
+    And I uncheck "SLE-Product-SLES15-SP4-LTSS-Updates for x86_64" by label
+    And I click on "Next"
+    And I click on "Confirm"
+    And I wait until I see "Changing the channels has been scheduled." text
+    And I follow "scheduled"
+    And I wait until I see "1 system successfully completed this action" text, refreshing the page
+
+@susemanager
+@skip_if_github_validation
+Scenario: Cleanup: Disable client tools repositories
+  Given I am on the Systems overview page of this "sle_minion"
+  When I disable the repositories "tools_pool_repo tools_pool_repo" on this "sle_minion"
+  And I refresh the metadata for "sle_minion"
 
 @skip_if_github_validation
 @uyuni
