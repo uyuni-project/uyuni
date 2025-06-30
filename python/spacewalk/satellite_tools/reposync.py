@@ -1374,8 +1374,8 @@ class RepoSync(object):
         for pack in packages:
 
             # for the further design about arch related problem
-            #if pack.arch not in self.arches:
-                # skip packages with incompatible architecture
+            # if pack.arch not in self.arches:
+            # skip packages with incompatible architecture
             #    skipped += 1
             #    continue
 

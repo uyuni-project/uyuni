@@ -49,6 +49,7 @@ class UniqueIDWrapper:
 # pylint: disable-next=missing-class-docstring
 class SnapPackage(ContentPackage):
     """Internal representation of a Snap package."""
+
     def __init__(self):
         super().__init__()
         self.name = None
