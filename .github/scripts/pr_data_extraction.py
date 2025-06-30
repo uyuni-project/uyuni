@@ -22,6 +22,7 @@ import os
 import sys
 import logging
 import requests
+import datetime
 from github import Github
 
 # Constants
@@ -89,20 +90,17 @@ def get_initial_test_run(test_workflow, pr):
         status="completed",
         exclude_pull_requests=True
     )
-
-    try:
-        pr_commits = list(pr.get_commits())
-        commit_shas_in_pr = {commit.sha for commit in pr_commits}
-        logger.debug("PR has %d commits", len(commit_shas_in_pr))
-    except Exception as e:
-        logger.warning("Failed to get commits for PR: %s", e)
-        return None
     
-    # Only keep runs that are tied to this specific PR
+    pr_opened_at = pr.created_at
+    pr_closed_at = pr.closed_at or datetime.datetime.max.replace(tzinfo=pr.created_at.tzinfo)
+
+    # Only keep runs that are related to this specific PR
     # Addresses the edge case of multiple PRs from one branch.
+    # Also removes runs that were cancelled/skipped.
     pr_test_runs = [
         run for run in test_runs_on_pr_branch
-        if run.head_sha in commit_shas_in_pr
+        if pr_opened_at <= run.created_at <= pr_closed_at
+        and run.conclusion in ("success", "failure")
     ]
 
     if not pr_test_runs:
@@ -110,11 +108,11 @@ def get_initial_test_run(test_workflow, pr):
         return None
 
     for run in pr_test_runs:
-        logger.debug("Matched %s run ID %s on commit %s", TEST_WORKFLOW_NAME, run.id, run.head_sha)
+        logger.debug("Matched %s run ID %s created at %s", TEST_WORKFLOW_NAME, run.id, run.created_at)
 
     pr_test_runs.sort(key=lambda run: run.created_at)
     initial_test_run = pr_test_runs[0]
-    logger.info("Using initial test run #%d on commit %s", initial_test_run.id, initial_test_run.head_sha)
+    logger.info("Using initial test run #%d created at %s", initial_test_run.id, run.created_at)
     return initial_test_run
 
 def download_cucumber_artifacts(run, pr_number, headers):
