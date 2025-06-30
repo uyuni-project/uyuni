@@ -17,27 +17,19 @@
 import sys
 import os.path
 from shutil import rmtree
-from shutil import copyfile
 import time
 import re
 import fnmatch
 import requests
-import logging
-from functools import cmp_to_key
 from uyuni.common import fileutils
 from spacewalk.common.suseLib import get_proxy
 from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.syncLib import log2
-from spacewalk.server import rhnSQL
-from spacewalk.common import repo
-
-import looseversion
 
 try:
     #  python 2
-    from urllib import unquote
     import urlparse
 except ImportError:
     #  python3
@@ -56,7 +48,9 @@ class UniqueIDWrapper:
 
 # pylint: disable-next=missing-class-docstring
 class SnapPackage(ContentPackage):
+    """Internal representation of a Snap package."""
     def __init__(self):
+        super().__init__()
         self.name = None
         self.version = None
         self.revision = None
@@ -120,8 +114,8 @@ class SnapRepo:
         proxy_user="",
         proxy_pass="",
         gpg_verify=True,
-        channel_label=None,
-        timeout=None,
+        _channel_label=None,
+        _timeout=None,
     ):
         self.url = url
         parsed_url = urlparse.urlparse(url)
