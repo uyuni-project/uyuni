@@ -216,7 +216,7 @@ if __name__ == '__main__':
                 if result == 1:
                     sys.exit(result)
             except KeyboardInterrupt:
-                print
+                print()
                 print(_('User Interrupt'))
             except UnknownCallException:
                 sys.exit(1)
@@ -247,7 +247,7 @@ if __name__ == '__main__':
                 try:
                     shell.cmdloop()
                 except KeyboardInterrupt:
-                    print
+                    print()
                 except SystemExit:
                     sys.exit(0)
                 except UnknownCallException:
