@@ -106,15 +106,13 @@ const Promote = (props: Props) => {
               <Button
                 className="btn-default"
                 text={t("Cancel")}
-                title={t("Cancel")}
                 handler={() => {
                   closeDialog(modalNameId);
                 }}
               />
               <Button
                 className="btn-primary"
-                text={t("Promote")}
-                title={t("Promote environment")}
+                text={t("Promote environment")}
                 handler={() => {
                   onAction(
                     {

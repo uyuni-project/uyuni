@@ -27,7 +27,7 @@ function channelIcon(channel) {
     iconTitle = t("Normal Configuration Channel");
   }
 
-  return <i className={iconClass} title={iconTitle} style={iconStyle} />;
+  return <i data-bs-toggle="tooltip" className={iconClass} title={iconTitle} style={iconStyle} />;
 }
 
 type RankingTableProps = {
