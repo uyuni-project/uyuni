@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2014 Red Hat, Inc.
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -18,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.frontend.action.user.UserActionHelper;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
@@ -54,10 +57,23 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testNewUserIntoOrgSatellite() {
+        setRequestPathInfo("/newlogin/CreateUserSubmit");
+        RhnMockDynaActionForm form = fillOutForm("userCreateForm", false);
+        setActionForm(form);
+        actionPerform();
+        String forwardPath = getActualForward();
+        assertNotNull(forwardPath);
+        assertTrue(forwardPath.startsWith("/users/ActiveList.do?uid="));
+    }
 
+    @Test
+    public void testPasswordNotValidatedOnPAM() {
+        // setup strict password policy requiring special character
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        factory.updateConfigurationValue(RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHAR_FLAG, true);
 
         setRequestPathInfo("/newlogin/CreateUserSubmit");
-        RhnMockDynaActionForm form = fillOutForm("userCreateForm");
+        RhnMockDynaActionForm form = fillOutForm("userCreateForm", true);
         setActionForm(form);
         actionPerform();
         String forwardPath = getActualForward();
@@ -68,7 +84,7 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
     /**
      * @return Properly filled out user creation form.
      */
-    private RhnMockDynaActionForm fillOutForm(String formName) {
+    private RhnMockDynaActionForm fillOutForm(String formName, boolean usePAM) {
         RhnMockDynaActionForm f = new RhnMockDynaActionForm(formName);
         f.set("login", "testUser" + TestUtils.randomString());
         f.set("address1", "123 somewhere ln");
@@ -83,8 +99,6 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
         f.set("fax", "");
         f.set("firstNames", "CreateUserActionTest fname");
         f.set("lastName", "CreateUserActionTest lname");
-        f.set(UserActionHelper.DESIRED_PASS, "password");
-        f.set(UserActionHelper.DESIRED_PASS_CONFIRM, "password");
         f.set("phone", "123-123-1234");
         f.set("prefix", "Mr.");
         f.set("state", "OH");
@@ -92,6 +106,13 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
         f.set("zip", "45241");
         f.set("timezone", 7010);
         f.set("preferredLocale", "en_US");
+        if (usePAM) {
+            f.set("usepam", Boolean.TRUE);
+        }
+        else {
+            f.set(UserActionHelper.DESIRED_PASS, "password");
+            f.set(UserActionHelper.DESIRED_PASS_CONFIRM, "password");
+        }
         return f;
     }
 }
