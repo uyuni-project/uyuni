@@ -1372,10 +1372,13 @@ class RepoSync(object):
         with cfg_component("server.susemanager") as CFG:
             mount_point = CFG.MOUNT_POINT
         for pack in packages:
+            # for the further design about arch related problem 
+            '''
             if pack.arch not in self.arches:
                 # skip packages with incompatible architecture
                 skipped += 1
                 continue
+            '''
             epoch = ""
             if pack.epoch and pack.epoch != "0":
                 # pylint: disable-next=consider-using-f-string
