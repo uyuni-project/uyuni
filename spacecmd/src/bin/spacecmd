@@ -35,10 +35,12 @@ except ImportError:
 import codecs
 import locale
 import argparse
-try: # python 3
-    from configparser import ConfigParser as SafeConfigParser
-except ImportError: # python 2
-    from ConfigParser import SafeConfigParser
+
+try:
+    from configparser import ConfigParser
+except ImportError:  # python 2
+    from ConfigParser import SafeConfigParser as ConfigParser
+
 import socket
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -139,7 +141,7 @@ if __name__ == '__main__':
         user_conf_file = os.path.join(conf_dir, 'config')
 
         # server-specifics will be loaded from the configuration file later
-        config = SafeConfigParser()
+        config = ConfigParser()
 
         # prevent readline from outputting escape sequences to non-terminals
         if not sys.stdout.isatty():
