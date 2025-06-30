@@ -1347,13 +1347,16 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testAddRemoveServerPath() throws Exception {
         Server minion = ServerTestUtils.createTestSystem();
-        Server proxy = ServerTestUtils.createTestSystem();
+        Server proxy = ServerFactoryTest.createTestProxyServer(user, false);
         String proxyHostname = "proxyHostname";
         Set<ServerPath> serverPaths = ServerFactory.createServerPaths(minion, proxy, proxyHostname);
         minion.getServerPaths().addAll(serverPaths);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
+
+        minion = HibernateFactory.reload(minion);
+        HibernateFactory.reload(proxy);
 
         Server s = ServerFactory.lookupById(minion.getId());
         assertEquals(serverPaths.stream().findFirst().get(),

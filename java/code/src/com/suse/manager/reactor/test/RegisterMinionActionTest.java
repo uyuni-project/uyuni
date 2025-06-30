@@ -56,6 +56,7 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
+import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.StateFactory;
@@ -676,7 +677,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testReRegisterMinionResetProxyPath() throws Exception {
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        MinionServer proxy = MinionServerFactoryTest.createTestMinionServer(user);
+        Server proxy = ServerFactoryTest.createTestProxyServer(user, false);
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMachineId(MACHINE_ID);
         minion.setMinionId(MINION_ID);
@@ -1478,7 +1479,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 user.getOrg());
 
         // create a proxy for minion with correct organization
-        MinionServer proxy = MinionServerFactoryTest.createTestMinionServer(user);
+        Server proxy = ServerFactoryTest.createTestProxyServer(user, false);
         // this proxy minion must have correct fqdn set equaling minions master
         String proxyFqdn = "proxy" + MINION_ID;
         proxy.addFqdn(proxyFqdn);
