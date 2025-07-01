@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jul 01 10:13:24 CEST 2025 - rosuna@suse.com
+
+- version 5.0.13-0
+  * Improve translation update process
+  * Update translation strings
+
+-------------------------------------------------------------------
 Tue Mar 11 15:13:21 CET 2025 - rosuna@suse.com
 
 - version 5.0.12-0
