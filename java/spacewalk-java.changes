@@ -1,4 +1,57 @@
 -------------------------------------------------------------------
+Tue Jul 01 10:29:10 CEST 2025 - rosuna@suse.com
+
+- version 5.0.26-0
+  * Fix tooltip text for icons in the patches list (bsc#1234608)
+  * Fix: openscap audit is running immediately even when scheduled
+    for next days (bsc#1239743)
+  * Adds calling a highstate in the API for actionchain
+    (bsc#1157520)
+  * Fix: Using reboot_suggested or restart_suggested by API
+    always responds false (bsc#1236910)
+  * Fix: severity levels are missing in API output of
+    errata.getDetails (bsc#1240038)
+  * Fix http_proxy_password stored as clear text in
+    /var/log/messages (bsc#1242148)
+  * Fix: manage errors in user-defined pillars (bsc#1230403)
+  * Fix: remove SCAP file upload size limit setting (bsc#1240050)
+  * Fix: openscap audit is running immediately even when scheduled
+    for next days (bsc#1239743)
+  * In CLM live-patching template form, show kernel versions from
+    base product as well (bsc#1239907)
+  * Fix several pages returning 500 status
+  * CVE-2025-23393: Filter user input in systems list page (bsc#1240386)
+  * Remove unneeded debug message
+  * Better handling of system list filtering (bsc#1242004)
+    string escape in the paged query builder
+  * Automatically expand channels when searching (bsc#1230282)
+  * Ensure browser cache is busted when newer assets are available
+    (bsc#1240984)
+  * Update notification message styles
+  * Fix system/listActiveSystems queries (bsc#1242010)
+  * Improve performance when changing channels on multiple system
+    through SSM (bsc#1239154)
+  * Fix package locking for packages not available anymore
+    in the assigned repositories (bsc#1236877)
+  * Fix state apply result formatting by splitting one the correct
+    string token
+  * Do not show Vendor Advisory link for SL-Micro 6.0 and 6.1
+    products. They are not published yet on the web (bsc#1237770)
+  * Fix ISE when adding package to channel (bsc#1240076)
+  * Change releasenotes URL for SUSE Multi-Linux Manager 5.1
+  * Fix semantic version validation to allow optional suffixes
+    (bsc#1243292)
+  * Adapt new version update checker for containers
+  * Improve Ubuntu OVAL data parsing to detect more CVEs
+  * Fix: Removed old xsd dynaform validation (bcs#1241140)
+  * Fix CLM channel name definition (bsc#1239868)
+  * Add custom 403 error page for unauthorized access (bsc#1243375)
+  * Fix content visibility issues on the Action Chains page
+    (bsc#1239558, bsc#1239559)
+  * Fix action chain scheduled within SSM creates no link
+    for the new action chain (bsc#1243825)
+
+-------------------------------------------------------------------
 Wed May 21 15:52:24 CEST 2025 - rosuna@suse.com
 
 - version 5.0.25-0
@@ -31,7 +84,7 @@ Thu Mar 27 16:56:36 CET 2025 - rosuna@suse.com
 Fri Mar 21 08:42:46 CET 2025 - rosuna@suse.com
 
 - version 5.0.21-0
-  * Filter user input in systems list page. CVE-2025-23392 (bsc#1239826)
+  * CVE-2025-23392: Filter user input in systems list page (bsc#1239826)
 
 -------------------------------------------------------------------
 Tue Mar 11 15:17:05 CET 2025 - rosuna@suse.com
