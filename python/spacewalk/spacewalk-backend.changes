@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Tue Jul 01 10:17:25 CEST 2025 - rosuna@suse.com
+
+- version 5.0.13-0
+  * Use localhost instead of getfqdn as server_url
+    (bsc#1238320)
+  * Do not log debug messages as errors (bsc#1240124)
+  * Improve translation update process
+  * Fix fetching the mirrorlist with a CA bundle which includes only
+    the intermediate CAs. This is the case for RHUI CA bundles
+    (bsc#1243241).
+  * Do not log debug messages as errors (bsc#1240124)
+  * Make reposync allow commas as part of HTTP Proxy password
+    (bsc#1243460)
+  * Remove bootloader linux and initrd files from spacewalk-debug
+  * Fix zstd-compressed comps file reposync use case (bsc#1243821)
+  * Use libzypp's Curl2 backend during reposync (bsc#1245222)
+
+-------------------------------------------------------------------
 Tue Mar 11 15:14:34 CET 2025 - rosuna@suse.com
 
 - version 5.0.12-0
