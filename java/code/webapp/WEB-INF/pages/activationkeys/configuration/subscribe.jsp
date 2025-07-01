@@ -60,10 +60,11 @@
                    <rhn:submitted/>
                    <hr/>
 
-                    <input type="submit"
+                    <button type="submit"
                         name ="dispatch"
-                        class="btn btn-default"
-                            value='<bean:message key="sdc.config.subscriptions.jsp.continue"/>'/>
+                        class="btn btn-default">
+                        <bean:message key="sdc.config.subscriptions.jsp.continue"/>
+                    </button>
                 </div>
                 </c:if>
                 </c:when>
