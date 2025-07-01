@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul 01 10:56:23 CEST 2025 - rosuna@suse.com
+
+- version 5.0.4-0
+  * Ensure selinuxenabled exists before executing it (bsc#1241060)
+
+-------------------------------------------------------------------
 Thu Oct 03 16:21:09 CEST 2024 - rosuna@suse.com
 
 - version 5.0.3-0
