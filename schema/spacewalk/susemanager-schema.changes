@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Jul 01 10:44:42 CEST 2025 - rosuna@suse.com
+
+- version 5.0.15-0
+  * Fix system/listActiveSystems queries (bsc#1242010)
+  * Fix typo in OES 24.4 channel definition
+  * Improve CLM build time through query optimization (bsc#1235847)
+
+-------------------------------------------------------------------
 Tue Mar 11 15:20:26 CET 2025 - rosuna@suse.com
 
 - version 5.0.14-0
