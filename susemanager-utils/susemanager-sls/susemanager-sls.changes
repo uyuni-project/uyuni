@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Tue Jul 01 10:47:53 CEST 2025 - rosuna@suse.com
+
+- version 5.0.14-0
+  * Read CWD for remote commands from pillar (bsc#1238173)
+  * Adjust SLS files for SUSE Linux Enterprise 15SP7 and other systems
+    running higher Python versions
+  * Add container based kiwi10 build system
+  * Optimize SAP module to prevent high IO workload (bsc#1241455)
+  * Move Prometheus PostgreSQL exporter configuration to
+    the persisting volume /etc/sysconfig (bsc#1239903)
+
+-------------------------------------------------------------------
 Tue Mar 11 15:20:59 CET 2025 - rosuna@suse.com
 
 - version 5.0.13-0
