@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jul 01 11:04:13 CEST 2025 - rosuna@suse.com
+
+- version 5.0.14
+  * Don't get repositories from SCC in the server container
+    (bsc#1242916)
+
+-------------------------------------------------------------------
 Thu Jun 19 11:18:07 CEST 2025 - rosuna@suse.com
 
 - version 5.0.13
