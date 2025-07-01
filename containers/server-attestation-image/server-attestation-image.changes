@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul 01 11:17:11 CEST 2025 - rosuna@suse.com
+
+- version 5.0.11
+  * Fix the health check of the container (bsc#1240604)
+
+-------------------------------------------------------------------
 Thu Jun 19 11:21:47 CEST 2025 - rosuna@suse.com
 
 - version 5.0.10
