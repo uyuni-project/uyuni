@@ -1365,7 +1365,7 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of all systems
      */
     public static List<Server> list() {
-        return getSession().createNativeQuery("SELECT *, 0 as clazz_ FROM rhnServer s", Server.class).getResultList();
+        return getSession().createQuery("FROM Server", Server.class).getResultList();
 
     }
 
