@@ -115,8 +115,8 @@ class SnapRepo:
         proxy_user="",
         proxy_pass="",
         gpg_verify=True,
-        _channel_label=None,
-        _timeout=None,
+        channel_label=None,
+        timeout=None,
     ):
         self.url = url
         parsed_url = urlparse.urlparse(url)
@@ -256,6 +256,7 @@ class SnapRepo:
                         prev_count = curr_count
 
                     if same_count >= 2:
+                        print(f"[RESULT] '{keyword}' finished, total packages found: {len(to_return)}")
                         break
 
                     page += 1
@@ -353,7 +354,7 @@ class ContentSource:
                 self.authtoken = query
 
     def list_packages(self, filters, latest):
-        print("[DEBUG] list_packages called")
+
         pkgs = self.repo.get_package_list()
         self.num_packages = len(pkgs)
         return pkgs
