@@ -411,6 +411,20 @@ Feature: Sanity checks
     And "opensuse156arm_ssh_minion" should communicate with the server using public interface
     And the clock from "opensuse156arm_ssh_minion" should be exact
 
+@openeuler2403_minion
+  Scenario: The openEuler 24.03 minion is healthy
+    Then "openeuler2403_minion" should have a FQDN
+    And reverse resolution should work for "openeuler2403_minion"
+    And "openeuler2403_minion" should communicate with the server using public interface
+    And the clock from "openeuler2403_minion" should be exact
+
+@openeuler2403_ssh_minion
+  Scenario: The openEuler 24.03 SSH minion is healthy
+    Then "openeuler2403_ssh_minion" should have a FQDN
+    And reverse resolution should work for "openeuler2403_ssh_minion"
+    And "openeuler2403_ssh_minion" should communicate with the server using public interface
+    And the clock from "openeuler2403_ssh_minion" should be exact
+
 @sle15sp5s390_minion
   Scenario: The SLES 15 SP5 s390x minion is healthy
     Then "sle15sp5s390_minion" should have a FQDN

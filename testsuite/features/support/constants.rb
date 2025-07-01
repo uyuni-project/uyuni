@@ -66,6 +66,8 @@ ENV_VAR_BY_HOST = {
   'ubuntu2404_ssh_minion' => 'UBUNTU2404_SSHMINION',
   'debian12_minion' => 'DEBIAN12_MINION',
   'debian12_ssh_minion' => 'DEBIAN12_SSHMINION',
+  'openeuler2403_minion' => 'OPENEULER2403_MINION',
+  'openeuler2403_ssh_minion' => 'OPENEULER2403_SSHMINION',
   'opensuse156arm_minion' => 'OPENSUSE156ARM_MINION',
   'opensuse156arm_ssh_minion' => 'OPENSUSE156ARM_SSHMINION',
   'sle15sp5s390_minion' => 'SLE15SP5S390_MINION',
@@ -212,6 +214,8 @@ PACKAGE_BY_CLIENT = {
   'ubuntu2404_ssh_minion' => 'bison',
   'debian12_minion' => 'bison',
   'debian12_ssh_minion' => 'bison',
+  'openeuler2403_minion' => 'bison',
+  'openeuler2403_ssh_minion' => 'bison',
   'opensuse156arm_minion' => 'bison',
   'opensuse156arm_ssh_minion' => 'bison',
   'sle15sp5s390_minion' => 'bison',
@@ -295,6 +299,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'debian12_ssh_minion' => 'debian-12-pool for amd64',
     'opensuse156arm_minion' => 'openSUSE-Leap-15.6-Pool for aarch64',
     'opensuse156arm_ssh_minion' => 'openSUSE-Leap-15.6-Pool for aarch64',
+    'openeuler2403_minion' => 'openeuler2403-sp1-pool for x86_64',
+    'openeuler2403_ssh_minion' => 'openeuler2403-sp1-pool for x86_64',
     'sle15sp5s390_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
     'sle15sp5s390_ssh_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
     'salt_migration_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64'
@@ -368,6 +374,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'debian12_ssh_minion' => 'Debian 12 (bookworm) pool for amd64 for Uyuni',
     'opensuse156arm_minion' => 'openSUSE Leap 15.6 (aarch64)',
     'opensuse156arm_ssh_minion' => 'openSUSE Leap 15.6 (aarch64)',
+    'openeuler2403_minion' => 'openeuler2403-sp1-pool for x86_64',
+    'openeuler2403_ssh_minion' => 'openeuler2403-sp1-pool for x86_64',
     'sle15sp5s390_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
     'sle15sp5s390_ssh_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
     'salt_migration_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64'
@@ -416,7 +424,8 @@ LABEL_BY_BASE_CHANNEL = {
     'ubuntu-2204-amd64-main for amd64' => 'ubuntu-2204-amd64-main-amd64',
     'ubuntu-2404-amd64-main for amd64' => 'ubuntu-2404-amd64-main-amd64',
     'debian-12-pool for amd64' => 'debian-12-pool-amd64',
-    'openSUSE-Leap-15.6-Pool for aarch64' => 'opensuse-leap-15.6-pool-aarch64'
+    'openSUSE-Leap-15.6-Pool for aarch64' => 'opensuse-leap-15.6-pool-aarch64',
+    'openeuler2403-sp1-pool for x86_64' => 'openeuler2403-sp1-pool-x86_64'
   },
   'Uyuni' => {
     'openSUSE Leap 15.6 (x86_64)' => 'opensuse_leap15_6-x86_64',
@@ -448,7 +457,8 @@ LABEL_BY_BASE_CHANNEL = {
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2204-pool-amd64-uyuni',
     'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2404-pool-amd64-uyuni',
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian-12-pool-amd64-uyuni',
-    'openSUSE Leap 15.6 (aarch64)' => 'opensuse_leap15_6-aarch64'
+    'openSUSE Leap 15.6 (aarch64)' => 'opensuse_leap15_6-aarch64',
+    'openeuler2403-sp1-pool for x86_64' => 'openeuler2403-sp1-pool-x86_64'
   }
 }.freeze
 
@@ -487,7 +497,8 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'ubuntu-2204-amd64-main for amd64' => 'ubuntu-22.04-amd64',
     'ubuntu-2404-amd64-main for amd64' => 'ubuntu-24.04-amd64',
     'debian-12-pool for amd64' => 'debian12-amd64',
-    'openSUSE-Leap-15.6-Pool for aarch64' => 'openSUSE-Leap-15.6-aarch64'
+    'openSUSE-Leap-15.6-Pool for aarch64' => 'openSUSE-Leap-15.6-aarch64',
+    'openeuler2403-sp1-pool for x86_64' => 'openeuler2403-sp1-pool-x86_64' # TODO: Unverified
   },
   'Uyuni' => {
     'openSUSE Leap 15.6 (x86_64)' => 'openSUSE-Leap-15.6-x86_64-uyuni',
@@ -519,7 +530,8 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2204-amd64-uyuni',
     'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2404-amd64-uyuni',
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian12-amd64-uyuni',
-    'openSUSE Leap 15.6 (aarch64)' => 'openSUSE-Leap-15.6-aarch64-uyuni'
+    'openSUSE Leap 15.6 (aarch64)' => 'openSUSE-Leap-15.6-aarch64-uyuni',
+    'openeuler2403-sp1-pool for x86_64' => 'openeuler2403-sp1-pool-x86_64' # TODO: Unverified
   }
 }.freeze
 
@@ -559,7 +571,8 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'ubuntu-2204-amd64-main for amd64' => nil,
     'ubuntu-2404-amd64-main for amd64' => nil,
     'debian-12-pool for amd64' => 'debian-12-pool-amd64',
-    'openSUSE-Leap-15.6-Pool for aarch64' => nil
+    'openSUSE-Leap-15.6-Pool for aarch64' => nil,
+    'openeuler2403-sp1-pool for x86_64' => 'openeuler2403-sp1-pool-x86_64' # TODO: Unverified
   },
   'Uyuni' => {
     'openSUSE Leap 15.6 (x86_64)' => nil,
@@ -590,7 +603,8 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => nil,
     'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => nil,
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian12-amd64-uyuni',
-    'openSUSE Leap 15.6 (aarch64)' => nil
+    'openSUSE Leap 15.6 (aarch64)' => nil,
+    'openeuler2403-sp1-pool for x86_64' => 'openeuler2403-sp1-pool-x86_64' # TODO: Unverified
   }
 }.freeze
 
@@ -655,6 +669,8 @@ PKGARCH_BY_CLIENT = {
   'debian12_ssh_minion' => 'amd64',
   'opensuse156arm_minion' => 'aarch64',
   'opensuse156arm_ssh_minion' => 'aarch64',
+  'openeuler2403_minion' => 'x86_64',
+  'openeuler2403_ssh_minion' => 'x86_64',
   'sle15sp5s390_minion' => 's390x',
   'sle15sp5s390_ssh_minion' => 's390x'
 }.freeze
@@ -917,6 +933,13 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse-sle-15.6-updates-aarch64
         managertools-sle15-pool-aarch64-opensuse-15.6
         managertools-sle15-updates-aarch64-opensuse-15.6
+      ],
+    'openeuler2403-x86_64' =>
+      %w[
+        openeuler2403-sp1-pool-x86_64
+        openeuler2403-sp1-updates-x86_64
+        managertools-el9-pool-x86_64-euler
+        managertools-el9-updates-x86_64-euler
       ],
     'suse-microos-5.1' => # CHECKED
       %w[
@@ -1257,6 +1280,13 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse_leap15_6-aarch64-updates
         opensuse_leap15_6-uyuni-client-devel-aarch64
       ],
+    'openeuler2403-x86_64' =>
+      %w[
+        openeuler2203-x86_64
+        openeuler2203-update-x86_64
+        openeuler2203-uyuni-client-x86_64
+        openeuler2203-uyuni-client-devel-x86_64
+      ],
     'leap-micro5.5-x86_64' => # CHECKED
       %w[
         opensuse_micro5_5-x86_64
@@ -1416,11 +1446,15 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-el9-pool-x86_64' => 60,
   'managertools-el9-pool-x86_64-alma' => 60,
   'managertools-el9-pool-x86_64-amazon' => 60,
+  'managertools-el9-pool-x86_64-euler' => 120,
   'managertools-el9-pool-x86_64-rocky' => 60,
   'managertools-el9-updates-x86_64' => 60,
   'managertools-el9-updates-x86_64-alma' => 60,
   'managertools-el9-updates-x86_64-amazon' => 60,
+  'managertools-el9-updates-x86_64-euler' => 120,
   'managertools-el9-updates-x86_64-rocky' => 60,
+  'managertools-sl-micro-6.0-x86_64' => 60,
+  'managertools-sl-micro-6.1-x86_64' => 60,
   'managertools-sle12-pool-x86_64-sp5' => 60,
   'managertools-sle12-updates-x86_64-sp5' => 60,
   'managertools-sle15-pool-aarch64-opensuse-15.6' => 60,
@@ -1441,15 +1475,18 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-sle15-updates-x86_64-sp7' => 60,
   'managertools-ubuntu2204-updates-amd64' => 60,
   'managertools-ubuntu2404-updates-amd64' => 60,
+  'openeuler2403-sp1-pool-x86_64' => 840,
+  'openeuler2403-sp1-updates-x86_64' => 840,
   'opensuse-backports-15.6-updates-aarch64' => 60,
+  'opensuse-leap-15.6-pool-aarch64' => 11_820,
+  'opensuse-leap-15.6-updates-aarch64' => 60,
+  'opensuse-sle-15.6-updates-aarch64' => 60,
   'opensuse_leap15_6-aarch64' => 10_020,
   'opensuse_leap15_6-aarch64-backports-updates' => 420,
   'opensuse_leap15_6-aarch64-non-oss' => 60,
   'opensuse_leap15_6-aarch64-non-oss-updates' => 60,
   'opensuse_leap15_6-aarch64-sle-updates' => 4140,
   'opensuse_leap15_6-aarch64-updates' => 60,
-  'opensuse-leap-15.6-pool-aarch64' => 11_820,
-  'opensuse-leap-15.6-updates-aarch64' => 60,
   'opensuse_leap15_6-uyuni-client-devel-aarch64' => 120,
   'opensuse_leap15_6-uyuni-client-devel-x86_64' => 120,
   'opensuse_leap15_6-uyuni-client-x86_64' => 120,
@@ -1463,7 +1500,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'opensuse_micro5_5-uyuni-client-x86_64' => 120,
   'opensuse_micro5_5-x86_64' => 240,
   'opensuse_micro5_5-x86_64-sle-updates' => 5400,
-  'opensuse-sle-15.6-updates-aarch64' => 60,
   'oraclelinux9-appstream-x86_64' => 2100,
   'oraclelinux9-uyuni-client-devel-x86_64' => 120,
   'oraclelinux9-x86_64' => 840,
@@ -1473,16 +1509,18 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'res8-manager-tools-updates-x86_64-rocky' => 60,
   'rhel-x86_64-server-7' => 60,
   'rocky-8-iso' => 600,
-  'rockylinux8-uyuni-client-devel-x86_64' => 120,
   'rockylinux-8-x86_64' => 720,
   'rockylinux-8-x86_64-appstream' => 1680,
   'rockylinux-8-x86_64-extras' => 420,
   'rockylinux-9-appstream-x86_64' => 660,
-  'rockylinux9-uyuni-client-devel-x86_64' => 120,
   'rockylinux-9-x86_64' => 120,
   'rockylinux-9-x86_64-extras' => 120,
-  'sle15-sp3-installer-updates-x86_64' => 60,
-  'sle15-sp4-installer-updates-x86_64' => 60,
+  'rockylinux8-uyuni-client-devel-x86_64' => 120,
+  'rockylinux9-uyuni-client-devel-x86_64' => 120,
+  'sl-micro-6.0-devel-uyuni-client-x86_64' => 120,
+  'sl-micro-6.0-pool-x86_64' => 360,
+  'sl-micro-6.1-devel-uyuni-client-x86_64' => 120,
+  'sl-micro-6.1-pool-x86_64' => 180,
   'sle-micro-5.3-devel-uyuni-client-x86_64' => 120,
   'sle-micro-5.3-pool-x86_64' => 120,
   'sle-micro-5.3-updates-x86_64' => 240,
@@ -1511,10 +1549,10 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-containers15-sp4-pool-x86_64' => 60,
   'sle-module-containers15-sp4-pool-x86_64-proxy-4.3' => 60,
   'sle-module-containers15-sp4-pool-x86_64-smrbs-4.3' => 60,
-  'sle-module-containers15-sp7-pool-x86_64' => 60,
   'sle-module-containers15-sp4-updates-x86_64' => 120,
   'sle-module-containers15-sp4-updates-x86_64-proxy-4.3' => 60,
   'sle-module-containers15-sp4-updates-x86_64-smrbs-4.3' => 60,
+  'sle-module-containers15-sp7-pool-x86_64' => 60,
   'sle-module-containers15-sp7-updates-x86_64' => 60,
   'sle-module-desktop-applications15-sp3-pool-x86_64' => 120,
   'sle-module-desktop-applications15-sp3-updates-x86_64' => 60,
@@ -1565,7 +1603,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-server-applications15-sp6-updates-x86_64' => 60,
   'sle-module-server-applications15-sp7-pool-x86_64' => 60,
   'sle-module-server-applications15-sp7-updates-x86_64' => 60,
-  'sles12-sp5-ltss-updates-x86_64' => 1620,
   'sle-product-sles15-sp3-ltss-updates-x86_64' => 960,
   'sle-product-sles15-sp3-pool-x86_64' => 60,
   'sle-product-sles15-sp3-updates-x86_64' => 60,
@@ -1580,7 +1617,10 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-product-sles15-sp6-updates-x86_64' => 60,
   'sle-product-sles15-sp7-pool-x86_64' => 60,
   'sle-product-sles15-sp7-updates-x86_64' => 60,
+  'sle15-sp3-installer-updates-x86_64' => 60,
+  'sle15-sp4-installer-updates-x86_64' => 60,
   'sles12-sp5-installer-updates-x86_64' => 60,
+  'sles12-sp5-ltss-updates-x86_64' => 1620,
   'sles12-sp5-pool-x86_64' => 180,
   'sles12-sp5-updates-x86_64' => 2820,
   'sles12-sp5-uyuni-client-devel-x86_64' => 120,
@@ -1592,32 +1632,26 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sll-9-updates-x86_64' => 2280,
   'sll-as-9-updates-x86_64' => 1620,
   'sll-cb-9-updates-x86_64' => 4320,
-  'sl-micro-6.0-devel-uyuni-client-x86_64' => 120,
-  'sl-micro-6.0-pool-x86_64' => 360,
-  'managertools-sl-micro-6.0-x86_64' => 60,
-  'sl-micro-6.1-devel-uyuni-client-x86_64' => 120,
-  'sl-micro-6.1-pool-x86_64' => 180,
-  'managertools-sl-micro-6.1-x86_64' => 60,
   'suse-manager-proxy-5.0-pool-x86_64' => 60,
   'suse-manager-proxy-5.0-pool-x86_64-sp6' => 60,
-  'suse-multi-linux-manager-proxy-5.1-x86_64' => 60, # for slmicro6.1
-  'suse-multi-linux-manager-proxy-sle-5.1-pool-x86_64-sp7' => 60, # for sles15sp7
   'suse-manager-proxy-5.0-updates-x86_64' => 60,
   'suse-manager-proxy-5.0-updates-x86_64-sp6' => 60,
-  'suse-multi-linux-manager-proxy-sle-5.1-updates-x86_64-sp7' => 60, # for sles15sp7
   'suse-manager-retail-branch-server-5.0-pool-x86_64' => 60,
   'suse-manager-retail-branch-server-5.0-pool-x86_64-sp6' => 60,
-  'suse-multi-linux-manager-retail-branch-server-5.1-x86_64' => 60, # for slmicro6.1
-  'suse-multi-linux-manager-retail-branch-server-sle-5.1-pool-x86_64-sp7' => 60, # for sles15sp7
   'suse-manager-retail-branch-server-5.0-updates-x86_64' => 60,
   'suse-manager-retail-branch-server-5.0-updates-x86_64-sp6' => 60,
-  'suse-multi-linux-manager-retail-branch-server-sle-5.1-updates-x86_64-sp7' => 60, # for sles15sp7
   'suse-microos-5.1-devel-uyuni-client-x86_64' => 120,
   'suse-microos-5.1-pool-x86_64' => 60,
   'suse-microos-5.1-updates-x86_64' => 300,
   'suse-microos-5.2-devel-uyuni-client-x86_64' => 120,
   'suse-microos-5.2-pool-x86_64' => 60,
   'suse-microos-5.2-updates-x86_64' => 60,
+  'suse-multi-linux-manager-proxy-5.1-x86_64' => 60, # for slmicro6.1
+  'suse-multi-linux-manager-proxy-sle-5.1-pool-x86_64-sp7' => 60, # for sles15sp7
+  'suse-multi-linux-manager-proxy-sle-5.1-updates-x86_64-sp7' => 60, # for sles15sp7
+  'suse-multi-linux-manager-retail-branch-server-5.1-x86_64' => 60, # for slmicro6.1
+  'suse-multi-linux-manager-retail-branch-server-sle-5.1-pool-x86_64-sp7' => 60, # for sles15sp7
+  'suse-multi-linux-manager-retail-branch-server-sle-5.1-updates-x86_64-sp7' => 60, # for sles15sp7
   'test-child-channel-x86_64' => 360,
   'ubuntu-2004-amd64-main-amd64' => 480,
   'ubuntu-2004-amd64-main-security-amd64' => 3480,

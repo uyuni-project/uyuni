@@ -457,6 +457,27 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I use spacewalk-common-channel to add all "leap15.6" channels with arch "aarch64"
     And I wait until all synchronized channels for "leap15.6-aarch64" have finished
 
+@susemanager
+@openeuler2403_minion
+  Scenario: Add openEuler 23.04 for x86
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "" as the filtered product description
+    And I select "" as a product
+    Then I should see the "" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "" product has been added
+    And I wait until all synchronized channels for "openeuler2403-x86_64" have finished
+
+@uyuni
+@openeuler2403_minion
+  Scenario: Add openEuler 23.04 for x86 Uyuni Client tools
+    When I use spacewalk-common-channel to add all "openeuler2403" channels with arch "x86_64"
+    And I wait until all synchronized channels for "openeuler2403-x86_64" have finished
+
 @sle15sp5s390_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP5 for s390x
     Given I am authorized for the "Admin" section
