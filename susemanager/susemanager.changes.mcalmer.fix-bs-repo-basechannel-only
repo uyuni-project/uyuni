@@ -1,2 +1,0 @@
-- Fix creating bootstrap repositories for products which have
-  only a base channel (bsc#1239747)
