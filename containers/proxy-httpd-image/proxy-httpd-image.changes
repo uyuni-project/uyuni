@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul 01 11:06:28 CEST 2025 - rosuna@suse.com
+
+- version 5.0.13
+  * Add redirect of API calls from proxy to the server (bsc#1241880)
+
+-------------------------------------------------------------------
 Thu Jun 19 11:19:33 CEST 2025 - rosuna@suse.com
 
 - version 5.0.12
