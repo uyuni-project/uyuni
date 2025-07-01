@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Jul 01 10:27:09 CEST 2025 - rosuna@suse.com
+
+- version 5.0.7-0
+  * Allow passing env variables to rhn-config-satellite
+    (bsc#1242148)
+  * Disable directory listing (bsc#1241094)
+
+-------------------------------------------------------------------
 Tue Mar 11 15:16:41 CET 2025 - rosuna@suse.com
 
 - version 5.0.6-0
