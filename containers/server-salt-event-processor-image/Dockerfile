@@ -6,7 +6,9 @@ FROM $BASE
 
 # Install main packages
 RUN zypper ref && zypper --non-interactive install \
-    spacewalk-java-lib \
+    java-17-openjdk-headless \
+    spacewalk-java \
+    spacewalk-taskomatic \
     procps
 
 ADD --chown=root:root root.tar.gz /
