@@ -21,8 +21,8 @@ Usage:
 import os
 import sys
 import logging
-import requests
 import datetime
+import requests
 from github import Github
 
 # Constants
@@ -32,6 +32,10 @@ REPO_FULL_NAME = "uyuni-project/uyuni"
 TEST_WORKFLOW_NAME = os.getenv("TEST_WORKFLOW_NAME", "TestFlow")
 
 def setup_logging(level):
+    """
+    Initializes and configures logging for the script, returning a logger at the given level.
+    """
+
     if level == logging.DEBUG:
         fmt = "%(levelname)s - %(filename)s:%(lineno)d - %(message)s"
     else:
@@ -44,13 +48,17 @@ def setup_logging(level):
     )
 
     # Set this script’s logger to the desired level
-    logger = logging.getLogger(__name__)
-    logger.setLevel(level)
-    return logger
+    my_logger = logging.getLogger(__name__)
+    my_logger.setLevel(level)
+    return my_logger
 
 logger = setup_logging(logging.DEBUG)
 
 def load_github_token():
+    """
+    Loads the GitHub token from the environment and exits with an error if it's missing.
+    """
+
     github_token = os.getenv("GITHUB_TOKEN")
     if not github_token:
         logger.critical(
@@ -61,6 +69,10 @@ def load_github_token():
     return github_token
 
 def get_repository(gh, repo_full_name):
+    """
+    Retrieves the GitHub repository object using the provided full name, exits if access fails.
+    """
+
     try:
         return gh.get_repo(repo_full_name)
     except Exception as e:
@@ -68,6 +80,10 @@ def get_repository(gh, repo_full_name):
         sys.exit(1)
 
 def get_test_workflow(repo, workflow_name):
+    """
+    Fetches the GitHub Actions workflow in the repository matching the specified name.
+    """
+
     workflows = repo.get_workflows()
     test_workflow = next((wf for wf in workflows if wf.name == workflow_name), None)
     if not test_workflow:
@@ -75,14 +91,22 @@ def get_test_workflow(repo, workflow_name):
         sys.exit(1)
     return test_workflow
 
-def get_candidate_prs(repo, N):
+def get_candidate_prs(repo, n):
+    """
+    Returns n recently created PRs, oversampling to account for filtering out irrelevant ones.
+    """
+
     multiplier = 3  # To oversample in case some PRs don't have Cucumber reports
-    prs = list(repo.get_pulls(state="all", sort="created", direction="desc")[:N*multiplier])
-    if len(prs) < N:
-        logger.warning("Only %d PRs found, but %d requested.", len(prs), N)
+    prs = list(repo.get_pulls(state="all", sort="created", direction="desc")[:n*multiplier])
+    if len(prs) < n:
+        logger.warning("Only %d PRs found, but %d requested.", len(prs), n)
     return prs
 
 def get_initial_test_run(test_workflow, pr):
+    """
+    Finds the first completed test run during the PR's lifetime that includes Cucumber reports.
+    """
+
     # Gets all test workflow runs that occured on the current PR's branch.
     test_runs_on_pr_branch = test_workflow.get_runs(
         branch=pr.head.ref,
@@ -90,7 +114,7 @@ def get_initial_test_run(test_workflow, pr):
         status="completed",
         exclude_pull_requests=True
     )
-    
+
     pr_opened_at = pr.created_at
     pr_closed_at = pr.closed_at or datetime.datetime.max.replace(tzinfo=pr.created_at.tzinfo)
 
@@ -108,7 +132,7 @@ def get_initial_test_run(test_workflow, pr):
         return None
 
     for run in pr_test_runs:
-        logger.debug("Matched %s run ID %s created at %s", TEST_WORKFLOW_NAME, run.id, run.created_at)
+        logger.debug("Match %s run ID %s created at %s", TEST_WORKFLOW_NAME, run.id, run.created_at)
 
     pr_test_runs.sort(key=lambda run: run.created_at)
 
@@ -117,37 +141,57 @@ def get_initial_test_run(test_workflow, pr):
         logger.debug("Checking if run ID %s has Cucumber reports", run.id)
         for artifact in run.get_artifacts():
             if artifact.name.lower().startswith("cucumber"):
-                logger.info("Using initial test run #%d (that has Cucumber reports) created at %s", run.id, run.created_at)
+                logger.info("Using initial test run #%d created at %s", run.id, run.created_at)
                 return run
 
     logger.info("No %s runs with Cucumber reports found for PR #%d", TEST_WORKFLOW_NAME, pr.number)
     return None
 
 def download_cucumber_artifacts(run_with_cucumber, pr_number, headers):
+    """
+    Downloads all Cucumber artifacts from the given workflow run and saves them as ZIP files.
+    """
+
     for artifact in run_with_cucumber.get_artifacts():
         if artifact.name.lower().startswith("cucumber"):
             url = artifact.archive_download_url
-            response = requests.get(url, headers=headers, stream=True)
-            if response.ok:
-                filename = f"pr{pr_number}_run{run_with_cucumber.id}_{artifact.name}.zip"
+            try:
+                response = requests.get(url, headers=headers, stream=True, timeout=30)
+                response.raise_for_status()  # Raise HTTP Error for bad codes
+            except requests.RequestException as e:
+                logger.warning("Failed to download %s: %s", artifact.name, e)
+                continue
+
+            filename = f"pr{pr_number}_run{run_with_cucumber.id}_{artifact.name}.zip"
+            try:
                 with open(filename, "wb") as f:
                     f.write(response.content)
                 logger.info("Downloaded: %s", filename)
-            else:
-                logger.warning("Failed to download %s (HTTP %d)", artifact.name, response.status_code)
+            except OSError as e:
+                logger.error("Failed to write file %s: %s", filename, e)
 
-def get_modified_files_at_pr_open(repo, pr, initial_test_run):
+def get_modified_files(repo, pr, test_run):
+    """
+    Returns the list of modified files in PR that triggered the given test run.
+    """
+
     # base_commit_sha: the commit the PR is targeting (e.g., main)
-    # initial_test_run_commit_sha: the commit the initial workflow ran on when the PR was opened
+    # test_run_commit_sha: the commit the test workflow ran on
+    # note: this may not be the first test run, it's the earliest one with Cucumber reports
     base_commit_sha = pr.base.sha
-    initial_test_run_commit_sha = initial_test_run.head_sha
+    test_run_commit_sha = test_run.head_sha
 
-    # Compare the base commit and the commit of the first workflow run 
-    # to get all changes introduced by the PR when it was first opened.
-    comparison = repo.compare(base_commit_sha, initial_test_run_commit_sha)
+    # Compare the base commit and the test run commit to get the file changes
+    # that were present when this test run was triggered.
+    comparison = repo.compare(base_commit_sha, test_run_commit_sha)
     return [f.filename for f in comparison.files]
 
-def extract_pr_data(repo_full_name, N, github_token):
+def extract_pr_data(repo_full_name, n, github_token):
+    """
+    Coordinates the full PR data extraction process: 
+    getting PRs, test runs, modified files, and downloading Cucumber artifacts.
+    """
+
     gh = Github(github_token)
     headers = {
         "Authorization": f"Bearer {github_token}",
@@ -156,11 +200,11 @@ def extract_pr_data(repo_full_name, N, github_token):
 
     repo = get_repository(gh, repo_full_name)
     test_workflow = get_test_workflow(repo, TEST_WORKFLOW_NAME)
-    prs = get_candidate_prs(repo, N)
+    prs = get_candidate_prs(repo, n)
 
     processed_prs_with_cucumber_reports = 0
     for pr in prs:
-        if processed_prs_with_cucumber_reports >= N:
+        if processed_prs_with_cucumber_reports >= n:
             break
 
         logger.info("Processing PR #%d: %s", pr.number, pr.title)
@@ -171,21 +215,25 @@ def extract_pr_data(repo_full_name, N, github_token):
                 continue
         except Exception as e:
             logger.error("Error getting initial test run for PR #%d: %s", pr.number, e)
-        
+
         try:
             download_cucumber_artifacts(initial_test_run_with_cucumber, pr.number, headers)
         except Exception as e:
             logger.error("Error downloading cucumber artifacts for PR #%d: %s", pr.number, e)
-        
+
         try:
-            modified_files = get_modified_files_at_pr_open(repo, pr, initial_test_run_with_cucumber)
+            modified_files = get_modified_files(repo, pr, initial_test_run_with_cucumber)
             logger.info("Files modified in PR when opened: %s", modified_files)
         except Exception as e:
             logger.error("Error obtaining modified files for PR #%d: %s", pr.number, e)
 
         processed_prs_with_cucumber_reports += 1
 
-def main():    
+def main():
+    """
+    Parses CLI arguments, loads credentials, and starts the PR data extraction process.
+    """
+
     if len(sys.argv) != 2:
         logger.critical(
             "Usage: python pr_data_extraction.py <N>\n"
@@ -194,7 +242,7 @@ def main():
         sys.exit(1)
 
     try:
-        N = int(sys.argv[1])
+        n = int(sys.argv[1])
     except ValueError:
         logger.critical(
             "Argument <N> must be an integer.\n"
@@ -203,7 +251,7 @@ def main():
         sys.exit(1)
 
     github_token = load_github_token()
-    extract_pr_data(REPO_FULL_NAME, N, github_token)
+    extract_pr_data(REPO_FULL_NAME, n, github_token)
 
 if __name__ == "__main__":
     main()
