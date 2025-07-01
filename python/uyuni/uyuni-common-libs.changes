@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul 01 10:55:08 CEST 2025 - rosuna@suse.com
+
+- version 5.0.7-0
+  * Fix decompress function for the zst format (bsc#1243821)
+
+-------------------------------------------------------------------
 Tue Mar 11 15:22:29 CET 2025 - rosuna@suse.com
 
 - version 5.0.6-0
