@@ -1775,7 +1775,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="message.range" xml:space="preserve">
-        <source>{0} - {1} of {2}</source>
+        <source>{0} - {1} of {2} items</source>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>

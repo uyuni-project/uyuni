@@ -111,8 +111,8 @@ public class PageSizeDecorator extends BaseListDecorator {
     public void onHeadExtraAddons() throws JspException {
         if (!getCurrentList().isEmpty()) {
             StringBuilder stringBuild = new StringBuilder();
-
-            stringBuild.append("<div class=\"list-sizeselector\">");
+            // Pagination TODO
+            stringBuild.append("<div class=\"list-sizeselector mt-2\">");
             HtmlTag select = new HtmlTag("Select");
             select.setAttribute("name", makePageSizeLabel(listName));
             select.setAttribute("onChange", makeOnChangeScript());

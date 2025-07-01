@@ -34,6 +34,7 @@ import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -427,7 +428,8 @@ public class ListTag extends BodyTagSupport {
         if (filter != null && manip.getUnfilteredDataSize() !=  0) {
             ListTagUtil.renderFilterSubmit(pageContext, getUniqueName());
         }
-        renderTopPaginationControls();
+        // Pagination TODO
+        // renderTopPaginationControls();
         pageContext.popBody();
 
         pageContext.pushBody(topAddonsContent);
@@ -477,11 +479,13 @@ public class ListTag extends BodyTagSupport {
         pageContext.popBody();
 
         pageContext.pushBody(headAddons);
-        if (!isEmpty()) {
-            for (ListDecorator dec : getDecorators()) {
-                dec.onHeadExtraAddons();
-            }
-        }
+
+        // Pagination TODO: moved in footer
+        // if (!isEmpty()) {
+        //     for (ListDecorator dec : getDecorators()) {
+        //         dec.onHeadExtraAddons();
+        //     }
+        // }
         pageContext.popBody();
 
         pageContext.pushBody(headFilterContent);
@@ -704,11 +708,23 @@ public class ListTag extends BodyTagSupport {
         int footerContentLength = footLinksContent.getBuffer().length() +
                 footAddonsContent.getBuffer().length() +
                 footExtraContent.getBuffer().length();
-
-        if (footerContentLength > 0) {
-            ListTagUtil.write(pageContext, "<div class=\"panel-footer\">");
+        // Pagination TODO: removeing condition render PaginationControls at the bottom panel
+        // if (footerContentLength == 0) {
+            ListTagUtil.write(pageContext, "<div class=\"panel-footer d-flex justify-content-between\">");
             ListTagUtil.write(pageContext,
                     "<div class=\"spacewalk-list-footer-addons\">");
+            // Pagination TODO: : Convert to Bootstrap-style dropdown can use getPaginationMessage()
+            ListTagUtil.write(pageContext,
+                    "<a href=\"#\" class=\"dropdown-toggle btn p-0\" data-bs-toggle=\"dropdown\">");
+            renderTopPaginationControls();
+             ListTagUtil.write(pageContext, " <span class=\"caret\"></span>");
+            ListTagUtil.write(pageContext, "</a>");
+            ListTagUtil.write(pageContext, "<ul class=\"dropdown-menu\">");
+            ListTagUtil.write(pageContext, "<li><a>5</a></li>");
+            ListTagUtil.write(pageContext, "<li><a>10</a></li>");
+            ListTagUtil.write(pageContext, "<li><a>20</a></li>");
+            ListTagUtil.write(pageContext, "<li><a>30</a></li>");
+            ListTagUtil.write(pageContext, "</ul>");
             ListTagUtil.write(pageContext,
                     "<div class=\"spacewalk-list-reflinks\">");
             ListTagUtil.write(pageContext, footLinksContent.toString());
@@ -720,13 +736,22 @@ public class ListTag extends BodyTagSupport {
             ListTagUtil.write(pageContext, "</div>");
             ListTagUtil.write(pageContext, "</div>");
             ListTagUtil.write(pageContext,
-                    "<div class=\"spacewalk-list-footer-extra\">");
+                    "<div class=\"spacewalk-list-footer-extra d-flex\">");
             ListTagUtil.write(pageContext, footExtraContent.toString());
+            // Pagination TODO: moved in footer - render items per page control
+            if (!isEmpty()) {
+                for (ListDecorator dec : getDecorators()) {
+                    dec.onHeadExtraAddons();
+                }
+            }
+            // Pagination TODO: moved in footer - render pagination buttons control
+            ListTagUtil.renderPaginationLinks(pageContext, PAGINATION_NAMES,
+                manip.getPaginationLinks());
             ListTagUtil.write(pageContext, "</div>");
             // closes the panel footer
             ListTagUtil.write(pageContext, "</div>");
-        }
-
+        // }
+        
         // close the panel
         ListTagUtil.write(pageContext, "</div>");
 
@@ -1044,24 +1069,28 @@ public class ListTag extends BodyTagSupport {
         }
     }
 
+    // Pagination TODO:  Moved some controls to different positions
     private void renderTopPaginationControls() throws JspException {
         if (!isEmpty() && !hidePageNums) {
             ListTagUtil.write(pageContext, manip.getPaginationMessage());
         }
 
+        // if (!manip.isListEmpty()) {
+        //     for (ListDecorator dec : getDecorators()) {
+        //         dec.afterTopPagination();
+        //     }
+        // }
+
+        // ListTagUtil.renderPaginationLinks(pageContext, PAGINATION_NAMES,
+        //         manip.getPaginationLinks());
+    }
+
+    // Pagination TODO: show slected row count
+    private void renderSelectedRowCount() throws JspException {
         if (!manip.isListEmpty()) {
             for (ListDecorator dec : getDecorators()) {
                 dec.afterTopPagination();
             }
-        }
-
-        ListTagUtil.renderPaginationLinks(pageContext, PAGINATION_NAMES,
-                manip.getPaginationLinks());
-    }
-
-    private void renderSelectedRowCount() throws JspException {
-        for (ListDecorator dec : getDecorators()) {
-            dec.afterTopPagination();
         }
     }
 
