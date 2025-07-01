@@ -455,10 +455,7 @@ public class ImageInfoFactory extends HibernateFactory {
      * @return Returns a list of ImageInfos
      */
     public static List<ImageInfo> list() {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<ImageInfo> criteria = builder.createQuery(ImageInfo.class);
-        Root<ImageInfo> root = criteria.from(ImageInfo.class);
-        return getSession().createQuery(criteria).getResultList();
+        return getSession().createQuery("FROM ImageInfo", ImageInfo.class).list();
     }
 
     /**
