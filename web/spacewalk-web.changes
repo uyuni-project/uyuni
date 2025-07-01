@@ -1,4 +1,34 @@
 -------------------------------------------------------------------
+Tue Jul 01 10:57:51 CEST 2025 - rosuna@suse.com
+
+- version 5.0.21-0
+  * Fix button alignment in filter modal (bsc#1240160)
+  * Adjust modal height for small screens
+  * Update brand name in Admin proxy page
+  * Fix setup wizard organization credentials list subscriptions
+    not showing correctly the first time (bsc#1243765)
+  * Fix: Filters of type Product Temporary Fix cannot be created
+    bsc#1238922
+  * Better handling of system list filtering (bsc#1242004)
+  * CVE-2025-23392: Filter user input in systems list page (bsc#1239826)
+  * CVE-2025-23393: Filter user input in systems list page (bsc#1240386)
+  * Fix NPM dependency license aggregation bug
+  * Fix layout issues on Ansible pages
+  * Fix sticky toolbar hiding notification messages on packages page 
+    (bsc#1239621)
+  * Fix layout issues in product page (bsc#1240131)
+  * Ensure browser cache is busted when newer assets are available
+    (bsc#1240984)
+  * Update web UI dependencies
+  * Improve translation update process
+  * Fix: better react state handling (bcs#1241140)
+  * Fix the date picker in CLM filter creation (bsc#1237710)
+  * Fix content visibility issues on the Action Chains page
+    (bsc#1239558, bsc#1239559)
+  * Fix datetime picker opening unexpectedly (bsc#1237710)
+  * Bump the WebUI version to 5.0.5
+
+-------------------------------------------------------------------
 Thu Jun 19 10:41:16 CEST 2025 - rosuna@suse.com
 
 - version 5.0.20-0
