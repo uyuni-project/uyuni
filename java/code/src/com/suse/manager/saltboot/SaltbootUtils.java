@@ -16,6 +16,7 @@
 package com.suse.manager.saltboot;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.org.CustomDataKey;
@@ -24,11 +25,14 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.CustomDataValue;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult.BootImage;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
@@ -36,6 +40,7 @@ import org.cobbler.Distro;
 import org.cobbler.Network;
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
+import org.cobbler.XmlRpcException;
 
 import java.util.List;
 import java.util.Map;
@@ -44,6 +49,7 @@ import java.util.stream.Collectors;
 
 public class SaltbootUtils {
     private static final Logger LOG = LogManager.getLogger(SaltbootUtils.class);
+    private static final String DEFAULT_IMAGE = "DEFAULT_IMAGE";
     private SaltbootUtils() { }
 
     /**
@@ -55,29 +61,76 @@ public class SaltbootUtils {
      */
     public static void createSaltbootDistro(ImageInfo imageInfo, BootImage bootImage) {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
+        List<Distro> distros = Distro.list(con);
         String pathPrefix = OSImageStoreUtils.getOSImageStorePathForImage(imageInfo);
         pathPrefix += imageInfo.getName() + "-" + imageInfo.getVersion() + "-" + imageInfo.getRevisionNumber() + "/";
         String initrd = pathPrefix + bootImage.getInitrd().getFilename();
         String kernel = pathPrefix + bootImage.getKernel().getFilename();
-        String name = imageInfo.getOrg().getId() + "-" + imageInfo.getName() + "-" + imageInfo.getVersion() + "-" +
+        String nameVR = imageInfo.getOrg().getId() + "-" + imageInfo.getName() + "-" + imageInfo.getVersion() + "-" +
                 imageInfo.getRevisionNumber();
-        // Generic breed is required for cobbler not appending any autoyast or kickstart keywords
-        Distro cd = new Distro.Builder<String>()
-                .setName(name)
+        String nameV = imageInfo.getOrg().getId() + "-" + imageInfo.getName() + "-" + imageInfo.getVersion();
+        String name = imageInfo.getOrg().getId() + "-" + imageInfo.getName();
+        try {
+            con.transactionBegin();
+            // Generic breed is required for cobbler not appending any autoyast or kickstart keywords
+            Distro cd = new Distro.Builder<String>()
+                .setName(nameVR)
                 .setInitrd(initrd)
                 .setKernel(kernel)
                 .setKernelOptions(Optional.of("panic=60 splash=silent"))
                 .setArch(imageInfo.getImageArch().getName()).setBreed("generic")
                 .build(con);
-        cd.setComment("Distro for image " + name + " belonging to organization " + imageInfo.getOrg().getName());
-        cd.save();
+            cd.setComment("Distro for image " + nameVR + " belonging to organization " + imageInfo.getOrg().getName());
+            cd.save();
 
-        // Each distro have its own private profile for individual system records
-        // SystemRecords need to be decoupled from saltboot group default profiles
-        Profile profile = Profile.create(con, name, cd);
-        profile.setEnableMenu(false);
-        profile.setComment("Distro " + name + " private profile");
-        profile.save();
+            // Each distro have its own private profile for individual system records
+            // SystemRecords need to be decoupled from saltboot group default profiles
+            updateDistroProfile(con, nameVR, cd, "Distro " + nameVR + " private profile");
+
+            distros.add(cd);
+
+            String defaultImage = imageInfo.getOrg().getId() + "-" + DEFAULT_IMAGE;
+
+            selectDistro(distros, imageInfo.getOrg().getId() + "-").ifPresent(n -> {
+                if (nameVR.equals(n)) {
+                    updateDistroProfile(con, defaultImage, cd, "Default image");
+                }
+            });
+
+            selectDistro(distros, name + "-").ifPresent(n -> {
+                if (nameVR.equals(n)) {
+                    updateDistroProfile(con, name, cd, "Default image for " + name);
+                }
+            });
+
+            selectDistro(distros, nameV + "-").ifPresent(n -> {
+                if (nameVR.equals(n)) {
+                    updateDistroProfile(con, nameV, cd, "Default image for " + nameV);
+                }
+            });
+
+            for (ServerGroup saltbootGroup : Pillar.getGroupsForCategory(FormulaFactory.SALTBOOT_PILLAR)) {
+                Optional<String> parentProfileOpt = getParent(saltbootGroup);
+                if (parentProfileOpt.isEmpty()) {
+                    LOG.warn("Can't get image for saltboot group {}-{}",
+                             saltbootGroup.getOrg().getId(), saltbootGroup.getName());
+                    continue;
+                }
+                String parentProfile = parentProfileOpt.get();
+
+                if (parentProfile.equals(nameVR)) {
+                    updateGroupProfile(con, saltbootGroup, parentProfile, false);
+                }
+                if (parentProfile.equals(nameV) || parentProfile.equals(name) || parentProfile.equals(defaultImage)) {
+                    updateGroupProfile(con, saltbootGroup, parentProfile, true);
+                }
+            }
+            con.transactionCommit();
+        }
+        catch (Exception e) {
+            con.transactionAbort();
+            throw e;
+        }
     }
 
     /**
@@ -86,79 +139,178 @@ public class SaltbootUtils {
      * @param info
      */
     public static void deleteSaltbootDistro(ImageInfo info) throws SaltbootException {
+        Long orgId = info.getOrg().getId();
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
-        String fullname = info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber();
+        String nameVR = info.getOrg().getId() + "-" + info.getName() + "-" +
+                        info.getVersion() + "-" + info.getRevisionNumber();
 
-        // First delete hidden distro profile
-        deleteSaltbootProfile(fullname, info.getOrg());
-        // then distro itself
-        Distro d = Distro.lookupByName(con, info.getOrg().getId() + "-" + fullname);
-        if (d != null) {
-            d.remove();
+        Distro distroToDelete = Distro.lookupByName(con, nameVR);
+        if (distroToDelete == null) {
+            return;
         }
+
+        List<Distro> distros = Distro.list(con);
+
+        String nameV = info.getOrg().getId() + "-" + info.getName() + "-" + info.getVersion();
+        String name = info.getOrg().getId() + "-" + info.getName();
+
+        con.transactionBegin();
+        try {
+            // First delete hidden distro profile
+            deleteSaltbootProfile(nameVR, con);
+
+            List<Distro> remainingDistros = distros.stream().filter(
+                d -> !nameVR.equals(d.getName())).collect(Collectors.toList());
+
+            selectDistro(remainingDistros, orgId + "-")
+                 .map(n -> Distro.lookupByName(con, n))
+                 .ifPresentOrElse(
+                     d -> updateDistroProfile(con, orgId + "-" + DEFAULT_IMAGE, d, "Default image"),
+                     () -> LOG.error("Can't update the profile for {}", orgId + "-" + DEFAULT_IMAGE));
+
+            selectDistro(remainingDistros, name + '-')
+                 .map(n -> Distro.lookupByName(con, n))
+                 .ifPresentOrElse(
+                     d -> updateDistroProfile(con, name, d, "Default image for " + name),
+                     () -> LOG.error("Can't update the profile for {}", name));
+
+            selectDistro(remainingDistros, nameV + '-')
+                 .map(n -> Distro.lookupByName(con, n))
+                 .ifPresentOrElse(
+                     d -> updateDistroProfile(con, nameV, d, "Default image for " + nameV),
+                     () -> LOG.error("Can't update the profile for {}", nameV));
+
+            // then distro itself
+            distroToDelete.remove();
+            con.transactionCommit();
+        }
+        catch (Exception e) {
+            con.transactionAbort();
+            throw e;
+        }
+    }
+
+    private static Optional<String> selectDistro(List<Distro> distros, String filter) {
+        SaltbootVersionCompare saltbootCompare = new SaltbootVersionCompare();
+        return distros
+               .stream()
+               .map(d -> d.getName())
+               .filter(s -> s.startsWith(filter))
+               .min(saltbootCompare);
+    }
+
+    private static void updateDistroProfile(CobblerConnection con, String name, Distro d, String comment) {
+        Profile p = Profile.lookupByName(con, name);
+        if (p == null) {
+            p = Profile.create(con, name, d);
+        }
+        else {
+            p.setDistro(d);
+        }
+        p.setEnableMenu(false);
+        p.setKickstart("");
+        p.setComment(comment);
+        p.save();
+    }
+
+    private static void updateGroupProfile(CobblerConnection con,
+                                           ServerGroup saltbootGroup,
+                                           String parentProfile,
+                                           boolean onlyMissing) {
+        String kernelOptions = getKernelOptions(saltbootGroup);
+        Org org = saltbootGroup.getOrg();
+
+        Profile gp = Profile.lookupByName(con, org.getId() + "-" + saltbootGroup.getName());
+
+        if (gp == null) {
+            gp = Profile.create(con, org.getId() + "-" + saltbootGroup.getName(), parentProfile);
+        }
+        else {
+            if (onlyMissing) {
+                return;
+            }
+            gp.setParent(parentProfile);
+        }
+        gp.<String>setKernelOptions(Optional.of(kernelOptions));
+        gp.setComment("Saltboot group " + saltbootGroup.getName() +
+              " of organization " + org.getName() + " default profile");
+        gp.save();
+    }
+
+    private static String getKernelOptions(ServerGroup group) {
+        Map<String, Object> formData = group.getPillarByCategory(FormulaFactory.SALTBOOT_PILLAR)
+                .orElseThrow(() -> new SaltbootException("Missing saltboot group pillar"))
+                .getPillar();
+        Map<String, Object> saltboot = (Map<String, Object>) formData.get("saltboot");
+        String kernelOptions = "MINION_ID_PREFIX=" + group.getName();
+        kernelOptions += " MASTER=" + saltboot.get("download_server");
+        if (Boolean.TRUE.equals(saltboot.get("disable_id_prefix"))) {
+            kernelOptions += " DISABLE_ID_PREFIX=1";
+        }
+        if (Boolean.TRUE.equals(saltboot.get("disable_unique_suffix"))) {
+            kernelOptions += " DISABLE_UNIQUE_SUFFIX=1";
+        }
+        if ("FQDN".equals(saltboot.get("minion_id_naming"))) {
+            kernelOptions += " USE_FQDN_MINION_ID=1";
+        }
+        else if ("HWType".equals(saltboot.get("minion_id_naming"))) {
+            kernelOptions += " DISABLE_HOSTNAME_ID=1";
+        }
+        else if ("MAC".equals(saltboot.get("minion_id_naming"))) {
+            kernelOptions += " USE_MAC_MINION_ID=1";
+        }
+        if (StringUtils.isNotEmpty((String) saltboot.get("default_kernel_parameters"))) {
+            kernelOptions += " " + saltboot.get("default_kernel_parameters");
+        }
+        return kernelOptions;
+    }
+    private static Optional<String> getParent(ServerGroup group) {
+        Org org = group.getOrg();
+
+        Optional<Map<String, Object>> formDataOpt = group.getPillarByCategory(FormulaFactory.SALTBOOT_PILLAR)
+                .map(Pillar::getPillar);
+        if (formDataOpt.isEmpty()) {
+            return Optional.empty();
+        }
+        Map<String, Object> saltboot = (Map<String, Object>) formDataOpt.get().get("saltboot");
+        String bootImage = (String)saltboot.get("default_boot_image");
+        String bootImageVersion = (String)saltboot.get("default_boot_image_version");
+        String parent;
+
+        if (bootImage == null || bootImage.isEmpty()) {
+            parent = org.getId() + "-" + DEFAULT_IMAGE;
+        }
+        else if (bootImageVersion == null || bootImageVersion.isEmpty()) {
+            parent = org.getId() + "-" + bootImage;
+        }
+        else {
+            parent = org.getId() + "-" + bootImage + "-" + bootImageVersion;
+        }
+        return Optional.of(parent);
     }
 
     /**
      * Create saltboot profile
      * Saltboot profile is tied with particular saltboot group and contains default boot instructions for new terminals
-     * @param saltbootGroup Name of the group
-     * @param kernelOptions Compiled kernel options for the saltboot group
-     * @param org organization saltboot group belongs to
-     * @param bootImage Name of the image, used for saltboot distro lookup
-     * @param bootImageVersion Version of the image (including revision number), used for saltboot distro lookup
+     * @param saltbootGroup The group
      * @throws SaltbootException
      */
-    public static void createSaltbootProfile(String saltbootGroup, String kernelOptions, Org org,
-                                     String bootImage, String bootImageVersion) throws SaltbootException {
-        CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
+    public static void createSaltbootProfile(ServerGroup saltbootGroup) throws SaltbootException {
+        Optional<String> parentProfileOpt = getParent(saltbootGroup);
+        if (parentProfileOpt.isEmpty()) {
+            LOG.warn("Can't get image for saltboot group {}-{}",
+                     saltbootGroup.getOrg().getId(), saltbootGroup.getName());
+            throw new SaltbootException("Missing saltboot group pillar");
+        }
+        String parentProfile = parentProfileOpt.get();
+        try {
 
-        String distroToUse;
-        if (bootImage == null || bootImage.isEmpty()) {
-            SaltbootVersionCompare saltbootCompare = new SaltbootVersionCompare();
-            distroToUse = Distro.list(con)
-                    .stream()
-                    .map(d -> d.getName())
-                    .filter(s -> s.startsWith(org.getId() + "-"))
-                    .min(saltbootCompare)
-                    .orElseThrow(() -> new SaltbootException("No registered image found"));
+            CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
+            updateGroupProfile(con, saltbootGroup, parentProfile, false);
         }
-        else if (bootImageVersion == null || bootImageVersion.isEmpty()) {
-            SaltbootVersionCompare saltbootCompare = new SaltbootVersionCompare();
-            distroToUse = Distro.list(con)
-                    .stream()
-                    .map(d -> d.getName())
-                    .filter(s -> s.startsWith(org.getId() + "-" + bootImage))
-                    .min(saltbootCompare)
-                    .orElseThrow(() -> new SaltbootException("Specified image name is not known"));
+        catch (XmlRpcException e) {
+            throw new SaltbootException(e);
         }
-        else if (!bootImageVersion.contains("-")) {
-            // bootImageVersion does not have revision
-            SaltbootVersionCompare saltbootCompare = new SaltbootVersionCompare();
-            distroToUse = Distro.list(con)
-                    .stream()
-                    .map(d -> d.getName())
-                    .filter(s -> s.startsWith(org.getId() + "-" + bootImage + "-" + bootImageVersion))
-                    .min(saltbootCompare)
-                    .orElseThrow(() -> new SaltbootException("Specified image name is not known"));
-        }
-        else {
-            distroToUse = org.getId() + "-" + bootImage + "-" + bootImageVersion;
-        }
-        Distro d = Distro.lookupByName(con, distroToUse);
-        if (d == null) {
-            throw new SaltbootException("Unable to find Cobbler distribution for specified image and version");
-        }
-
-        Profile gp = Profile.lookupByName(con, org.getId() + "-" + saltbootGroup);
-        if (gp == null) {
-            gp = Profile.create(con, org.getId() + "-" + saltbootGroup, d);
-        }
-        else {
-            gp.setDistro(d);
-        }
-        gp.<String>setKernelOptions(Optional.of(kernelOptions));
-        gp.setComment("Saltboot group " + saltbootGroup + " of organization " + org.getName() + " default profile");
-        gp.save();
     }
 
     /**
@@ -168,8 +320,28 @@ public class SaltbootUtils {
      * @param org
      */
     public static void deleteSaltbootProfile(String profileName, Org org) {
+        deleteSaltbootProfile(org.getId() + "-" + profileName);
+    }
+
+    /**
+     * Delete saltboot profile
+     * If profile is not found, does nothing
+     * @param profileName
+     */
+    public static void deleteSaltbootProfile(String profileName) {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
-        Profile p = Profile.lookupByName(con, org.getId() + "-" + profileName);
+        deleteSaltbootProfile(profileName, con);
+    }
+
+    /**
+     * Delete saltboot profile
+     * If profile is not found, does nothing
+     * @param profileName
+     * @param con Use this Cobbler connection
+     */
+    public static void deleteSaltbootProfile(String profileName, CobblerConnection con) {
+
+        Profile p = Profile.lookupByName(con, profileName);
 
         if (p != null) {
             List<SystemRecord> systems = SystemRecord.listByAssociatedProfile(con, p.getName());
