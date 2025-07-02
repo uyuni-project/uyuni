@@ -486,11 +486,11 @@ Before('@opensuse156arm_ssh_minion') do
 end
 
 Before('@openeuler2403_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['@openeuler2403_minion']
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['openeuler2403_minion']
 end
 
 Before('@openeuler2403_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['@openeuler2403_ssh_minion']
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['openeuler2403_ssh_minion']
 end
 
 Before('@sle15sp5s390_minion') do
