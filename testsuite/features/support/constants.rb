@@ -498,7 +498,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'ubuntu-2404-amd64-main for amd64' => 'ubuntu-24.04-amd64',
     'debian-12-pool for amd64' => 'debian12-amd64',
     'openSUSE-Leap-15.6-Pool for aarch64' => 'openSUSE-Leap-15.6-aarch64',
-    'openeuler2403-sp1-pool for x86_64' => 'openeuler2403-sp1-pool-x86_64' # TODO: Unverified
+    'openeuler2403-sp1-pool for x86_64' =>  'openeuler24.03-SP1-x86_64'
   },
   'Uyuni' => {
     'openSUSE Leap 15.6 (x86_64)' => 'openSUSE-Leap-15.6-x86_64-uyuni',
@@ -531,7 +531,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2404-amd64-uyuni',
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian12-amd64-uyuni',
     'openSUSE Leap 15.6 (aarch64)' => 'openSUSE-Leap-15.6-aarch64-uyuni',
-    'openeuler2403-sp1-pool for x86_64' => 'openeuler2403-sp1-pool-x86_64' # TODO: Unverified
+    'openeuler2403-sp1-pool for x86_64' => 'openeuler24.03-SP1-x86_64'
   }
 }.freeze
 
