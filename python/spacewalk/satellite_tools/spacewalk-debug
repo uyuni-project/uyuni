@@ -4,6 +4,7 @@
 #                needed for full diagnosis of Spacewalk Server issues.
 #
 # Copyright (c) 2008--2018 Red Hat, Inc.
+# Copyright (c) 2025 SUSE LLC
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -120,7 +121,6 @@ mkdir -p $DIR/cobbler-logs
 mkdir -p $DIR/rhn-logs/rhn
 mkdir -p $DIR/config-defaults
 mkdir -p $DIR/kickstarts
-mkdir -p $DIR/database/trc
 mkdir -p $DIR/cobbler-lib
 mkdir -p $DIR/tasko
 mkdir -p $DIR/salt-states
@@ -213,12 +213,6 @@ if [ -d /var/log/rhn ]; then
     if [ -d /var/log/rhn/mgr-create-bootstrap-repo ]; then
         cp -fapRd /var/log/rhn/mgr-create-bootstrap-repo $DIR/rhn-logs/rhn
     fi
-fi
-
-DB_INSTALL_LOG=/var/log/rhn/rhn-database-installation.log
-if [ -f "$DB_INSTALL_LOG" ] ; then
-    mkdir -p $DIR/tmp
-    cp -fa "$DB_INSTALL_LOG" $DIR/tmp/
 fi
 
 if [ $IS_SUSE -eq 1 ]; then
@@ -361,63 +355,11 @@ echo "    * get per table configuration options"
 QUERY="SELECT relname, reloptions FROM pg_class JOIN pg_namespace ON  pg_namespace.oid = pg_class.relnamespace WHERE pg_namespace.nspname = 'public' AND pg_class.relkind = 'r';"
 echo "$QUERY" | /usr/bin/spacewalk-sql --select-mode - > "${DIR}/database/table_options.log"
 
-# alert.log
-if [ -f /rhnsat/admin/rhnsat/bdump/alert_rhnsat.log ] ; then
-	echo "    * copying alert_rhnsat.log"
-	cp -fa /rhnsat/admin/rhnsat/bdump/alert_rhnsat.log $DIR/database
-	ls /rhnsat/admin/rhnsat/bdump/*.trc 2>/dev/null | xargs -I file cp -fa file $DIR/database/trc
-	ls /rhnsat/admin/rhnsat/logs/*.log 2>/dev/null | xargs -I file cp -fa file $DIR/database
-fi
-
 PGSQL_ROOT=""
 MAX_PGSQL_LOGS_SIZE="6291456" #6 GB
 rpm -q postgresql92-postgresql > /dev/null
 if [ $? == 0 ]; then
 	PGSQL_ROOT="/opt/rh/postgresql92/root"
-fi
-
-PGMAJOR=`psql --version | cut -f 3 -d" " | cut -b 1`
-
-if [ "$PGMAJOR" = 9 ]; then
-    PGLOGDIR="pg_log"
-else
-    PGLOGDIR="log"
-fi
-
-# PostgreSQL configuration
-if [ -f $PGSQL_ROOT/var/lib/pgsql/postgresql.conf ] ; then
-  echo "    * copying postgresql.conf"
-	cp -fa $PGSQL_ROOT/var/lib/pgsql/data/postgresql.conf $DIR/database
-fi
-if [ -f $PGSQL_ROOT/var/lib/pgsql/pg_hba.conf ] ; then
-  echo "    * copying pg_hba.conf"
-	cp -fa $PGSQL_ROOT/var/lib/pgsql/data/pg_hba.conf $DIR/database
-fi
-
-# PostgreSQL logs
-if [ -f $PGSQL_ROOT/var/lib/pgsql/pgstartup.log ] ; then
-	echo "    * copying pgstartup.log"
-	cp -fa $PGSQL_ROOT/var/lib/pgsql/pgstartup.log $DIR/database
-fi
-if [ -f /var/lib/pgsql/initlog ] ; then
-       echo "    * copying initlog"
-       cp -fa /var/lib/pgsql/initlog $DIR/database
-fi
-ls $PGSQL_ROOT/var/lib/pgsql/data/*.conf 2>/dev/null | xargs -I file cp -fa file $DIR/database
-
-# compress postgres logs
-if [ -d $PGSQL_ROOT/var/lib/pgsql/data/$PGLOGDIR ]; then
-
-    PGSQL_LOGS_SIZE=$(du -s $PGSQL_ROOT/var/lib/pgsql/data/$PGLOGDIR | cut -d'/' -f1)
-    if [ $PGSQL_LOGS_SIZE -gt $MAX_PGSQL_LOGS_SIZE ]; then
-        echo "    * $PGSQL_ROOT/var/lib/pgsql/data/$PGLOGDIR exceeded the maximum size allowed. Please copy it separately."
-        echo "PostgreSQL logs exceeded the maximum size of $MAX_PGSQL_LOGS_SIZE bytes" >> $DIR/database/warning
-    else
-        echo "    * copying logfiles"
-        for pg_log in $(ls $PGSQL_ROOT/var/lib/pgsql/data/$PGLOGDIR/* 2>/dev/null); do
-            cat $pg_log | gzip > $DIR/database/$(basename $pg_log).gz
-        done
-    fi
 fi
 
 if [ -d /var/log/spacewalk/schema-upgrade ] ; then
@@ -472,8 +414,8 @@ if [ "$MAX_LOG_AGE" -eq "$MAX_LOG_AGE" 2>/dev/null ]; then
         -or -iregex ".*[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}\(\.\|_[0-9]\{6\}\(_sync\)\?\.\).*" \) \
         -daystart -mtime +"$MAX_LOG_AGE" -not -ipath "*schema*" -delete
 
-        # tasko and .trc files need to be parsed separately to find old ones
-        for dir in database/trc rhn-logs/rhn/tasko tasko/sat; do
+        # tasko files need to be parsed separately to find old ones
+        for dir in rhn-logs/rhn/tasko tasko/sat; do
             if [ -d $dir ]; then
                 for file in $(find $DIR/$dir); do
                     if [ -f "$file" ]; then
