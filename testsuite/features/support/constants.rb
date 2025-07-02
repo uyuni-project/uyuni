@@ -940,6 +940,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         openeuler2403-sp1-updates-x86_64
         managertools-el9-pool-x86_64-euler
         managertools-el9-updates-x86_64-euler
+        managertools-beta-el9-pool-x86_64-euler
+        managertools-beta-el9-updates-x86_64-euler
       ],
     'suse-microos-5.1' => # CHECKED
       %w[
@@ -1428,9 +1430,11 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-beta-el9-pool-x86_64' => 60,
   'managertools-beta-el9-pool-x86_64-alma' => 60,
   'managertools-beta-el9-pool-x86_64-amazon' => 60,
+  'managertools-beta-el9-pool-x86_64-euler' => 120,
   'managertools-beta-el9-updates-x86_64' => 60,
   'managertools-beta-el9-updates-x86_64-alma' => 60,
   'managertools-beta-el9-updates-x86_64-amazon' => 60,
+  'managertools-beta-el9-updates-x86_64-euler' => 120,
   'managertools-beta-sle15-pool-x86_64-sp4' => 60,
   'managertools-beta-sle15-updates-x86_64-sp4' => 60,
   'managertools-beta-ubuntu2204-updates-amd64' => 60,
@@ -1711,4 +1715,6 @@ EMPTY_CHANNELS = %w[
   test-base-channel-x86_64
   managertools-sle15-updates-x86_64-sp4
   managertools-beta-sle15-updates-x86_64-sp4
+  managertools-el9-updates-x86_64-euler
+  managertools-beta-el9-updates-x86_64-euler
 ].freeze
