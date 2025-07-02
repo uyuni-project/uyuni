@@ -464,12 +464,12 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "" as the filtered product description
-    And I select "" as a product
-    Then I should see the "" selected
+    And I enter "openeuler 24.03-LTS-SP1" as the filtered product description
+    And I select "openEuler 24.03-LTS-SP1" as a product
+    Then I should see the "openEuler 24.03-LTS-SP1" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "" product has been added
+    And I wait until I see "openEuler 24.03-LTS-SP1" product has been added
     And I wait until all synchronized channels for "openeuler2403-x86_64" have finished
 
 @uyuni
