@@ -17,6 +17,8 @@ package com.redhat.rhn.frontend.taglibs.list.decorators;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.frontend.html.HtmlTag;
 import com.redhat.rhn.frontend.taglibs.ListDisplayTag;
+import com.redhat.rhn.frontend.taglibs.list.DataSetManipulator;
+import com.redhat.rhn.frontend.taglibs.list.ListCommand;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
 import com.redhat.rhn.frontend.taglibs.list.SelectableColumnTag;
@@ -25,6 +27,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.jsp.JspException;
+import javax.swing.text.html.HTML.Tag;
 
 /**
  * Handles selectable lists, such as lists backed by RhnSet
@@ -34,7 +37,11 @@ public class SelectableDecorator extends BaseListDecorator {
     private static final String NULL_SELECTION = "0";
     private static final String JAVASCRIPT_TAG =
                     "<script type=\"text/javascript\">%s</script>";
+    private int totalRowCount;
 
+    public void setTotalRowCount(int count) {
+        this.totalRowCount = count;
+    }
     /**
      * {@inheritDoc}
      */
@@ -96,11 +103,13 @@ public class SelectableDecorator extends BaseListDecorator {
             args[0] = selected;
             //
             //
+
             String setName = ListTagHelper.lookupSetDeclFor(listName,
                     pageContext.getRequest());
             if (!RhnSetDecl.SYSTEMS.getLabel().equals(setName)) {
                 String msg = ls.getMessage("message.numselected", args);
-                ListTagUtil.write(pageContext, " <strong><span id=\"");
+               
+                ListTagUtil.write(pageContext, " <span id=\"");
                 if (isHeader) {
                     ListTagUtil.write(pageContext, "pagination_selcount_top");
                 }
@@ -109,7 +118,7 @@ public class SelectableDecorator extends BaseListDecorator {
                 }
                 ListTagUtil.write(pageContext, "\">");
                 ListTagUtil.write(pageContext, msg);
-                ListTagUtil.write(pageContext, "</span></strong>");
+                ListTagUtil.write(pageContext, "</span>");
             }
         }
     }
@@ -120,8 +129,10 @@ public class SelectableDecorator extends BaseListDecorator {
             buf.append("<span class=\"spacewalk-list-selection-btns\">");
             String buttonName = ListTagUtil.makeSelectActionName(listName);
             LocalizationService ls = LocalizationService.getInstance();
+            String totalCount = ls.getMessage("message.totalRowCount", totalRowCount); 
+            
             HtmlTag tag = new HtmlTag("button");
-            tag.setAttribute("class", "btn btn-default");
+            tag.setAttribute("class", "btn btn-tertiary");
             tag.setAttribute("type", "submit");
             tag.setAttribute("name", buttonName);
             tag.setAttribute("value",
@@ -130,19 +141,22 @@ public class SelectableDecorator extends BaseListDecorator {
             tag.setBody(ls.getMessage(ListDisplayTag.UPDATE_LIST_KEY));
             buf.append(tag.render()).append("&nbsp;");
 
-            tag.setAttribute("value",
-                    ls.getMessage(ListDisplayTag.SELECT_ALL_KEY));
-            tag.setBody(ls.getMessage(ListDisplayTag.SELECT_ALL_KEY));
-            buf.append(tag.render()).append("&nbsp;");
-
             String selectedName = ListTagUtil.makeSelectedAmountName(listName);
             String selected = (String) pageContext.getRequest().getAttribute(selectedName);
-            if (!NULL_SELECTION.equals(selected) &&  selected != null) {
-                tag.setAttribute("value",
-                        ls.getMessage(ListDisplayTag.UNSELECT_ALL_KEY));
+           if (selected != null && !NULL_SELECTION.equals(selected)) {
+                tag.setAttribute("value", ls.getMessage(ListDisplayTag.UNSELECT_ALL_KEY));
                 tag.setBody(ls.getMessage(ListDisplayTag.UNSELECT_ALL_KEY));
-                buf.append(tag.render()).append("\n");
+                buf.append(tag.render()).append("&nbsp;");
+            } else {
+                tag.setAttribute("value", ls.getMessage(ListDisplayTag.SELECT_ALL_KEY));
+                tag.setBody(ls.getMessage(ListDisplayTag.SELECT_ALL_KEY) + "&nbsp;" + totalCount);
+                buf.append(tag.render()).append("&nbsp; | &nbsp;");
+
+                tag.setAttribute("value", ls.getMessage(ListDisplayTag.UNSELECT_ALL_KEY));
+                tag.setBody(ls.getMessage(ListDisplayTag.UNSELECT_ALL_KEY));
+                buf.append(tag.render()).append("&nbsp;");
             }
+
             buf.append("</span>");
             ListTagUtil.write(pageContext, buf.toString());
         }
