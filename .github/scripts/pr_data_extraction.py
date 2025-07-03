@@ -22,14 +22,23 @@ import os
 import sys
 import logging
 import datetime
+import csv
 import requests
 from github import Github
 
+# ------------------------------
 # Constants
+# ------------------------------
+
 REPO_FULL_NAME = "uyuni-project/uyuni"
+
+# Time windows (in days) to track recent change frequency of PR modified files
+RECENT_DAYS = [3, 14, 56]
 
 # Can be overridden using the 'TEST_WORKFLOW_NAME' environment variable
 TEST_WORKFLOW_NAME = os.getenv("TEST_WORKFLOW_NAME", "TestFlow")
+
+PR_FEATURES_CSV_FILENAME = "pr_features.csv"
 
 def setup_logging(level, log_file="script.log"):
     """
@@ -122,7 +131,7 @@ def get_candidate_prs(repo, n):
         logger.warning("Only %d PRs found, but %d requested.", len(prs), n)
     return prs
 
-def get_initial_test_run(test_workflow, pr):
+def get_cucumber_initial_test_run(test_workflow, pr):
     """
     Finds the first completed test run during the PR's lifetime that includes Cucumber reports.
     """
@@ -262,7 +271,45 @@ def get_file_extensions(modified_files):
         if '.' in file.split('/')[-1]
     })
 
-def extract_pr_data(repo_full_name, n, github_token):
+def write_pr_features_to_csv(csv_writer, file_extensions, change_history, pr_number):
+    """
+    Writes a single PR's features to the CSV file.
+
+    Args:
+        csv_writer (csv.writer): CSV writer object.
+        file_extensions (List[str]): List of file extensions in the PR.
+        change_history (Dict[int, int]): Mapping of recent_day → change count (ordered).
+        pr_number (int): The PR number.
+    """
+    try:
+        extensions_str = ",".join(file_extensions)
+        change_counts = list(change_history.values())  # Assumes correct and consistent order
+        row = [extensions_str] + change_counts + [pr_number]
+        csv_writer.writerow(row)
+    except Exception as e:
+        logger.error("Error writing PR #%d features to CSV: %s", pr_number, e)
+
+def setup_output_csv(recent_days):
+    """
+    Initializes the CSV output file and returns the file handle and CSV writer.
+    """
+    try:
+        csv_file = open(PR_FEATURES_CSV_FILENAME, mode="w", newline="", encoding="utf-8")
+        csv_writer = csv.writer(csv_file)
+        # PR number wont be used during training AI models,
+        # it only helps later scripts identify the corresponding PR for each row.
+        header = (
+            ["file_extensions"]
+            + [f"changes_last_{d}_days" for d in recent_days]
+            + ["pr_number"]
+        )
+        csv_writer.writerow(header)
+        return csv_file, csv_writer
+    except Exception as e:
+        logger.critical("Failed to initialize PR features CSV file: %s", e)
+        sys.exit(1)
+
+def extract_pr_data(repo_full_name, n, github_token, csv_writer):
     """
     Coordinates the full PR data extraction process: 
     getting PRs, test runs, modified files, and downloading Cucumber artifacts.
@@ -283,44 +330,48 @@ def extract_pr_data(repo_full_name, n, github_token):
         if processed_prs_with_cucumber_reports >= n:
             break
 
-        logger.info("Processing PR #%d: %s, created at %s", pr.number, pr.title, pr.created_at)
+        pr_num = pr.number
+
+        logger.info("Processing PR #%d: %s, created at %s", pr_num, pr.title, pr.created_at)
 
         try:
-            initial_test_run_with_cucumber = get_initial_test_run(test_workflow, pr)
+            initial_test_run_with_cucumber = get_cucumber_initial_test_run(test_workflow, pr)
             if not initial_test_run_with_cucumber:
                 continue
         except Exception as e:
-            logger.error("Error getting initial test run for PR #%d: %s", pr.number, e)
+            logger.error("Error getting initial test run for PR #%d: %s", pr_num, e)
 
         try:
-            download_cucumber_artifacts(initial_test_run_with_cucumber, pr.number, headers)
+            download_cucumber_artifacts(initial_test_run_with_cucumber, pr_num, headers)
         except Exception as e:
-            logger.error("Error downloading cucumber artifacts for PR #%d: %s", pr.number, e)
+            logger.error("Error downloading cucumber artifacts for PR #%d: %s", pr_num, e)
 
         try:
             modified_files = get_modified_files(repo, pr, initial_test_run_with_cucumber)
             logger.info("Files modified in PR that triggered test run: %s", modified_files)
         except Exception as e:
-            logger.error("Error obtaining modified files for PR #%d: %s", pr.number, e)
+            logger.error("Error obtaining modified files for PR #%d: %s", pr_num, e)
 
         try:
             file_extensions = get_file_extensions(modified_files)
             logger.info("File extensions of files modified in PR: %s", file_extensions)
         except Exception as e:
-            logger.error("Error obtaining file extensions for PR #%d: %s", pr.number, e)
+            logger.error("Error obtaining file extensions for PR #%d: %s", pr_num, e)
 
         try:
-            recent_days = [3, 14, 56]
-            change_history = get_files_change_history(repo, modified_files, recent_days)
+            change_history = get_files_change_history(repo, modified_files, RECENT_DAYS)
             logger.info("Files Change History: %s", change_history)
         except Exception as e:
-            logger.error("Error getting modified files change history for PR #%d: %s", pr.number, e)
+            logger.error("Error getting modified files change history for PR #%d: %s", pr_num, e)
+
+        write_pr_features_to_csv(csv_writer, file_extensions, change_history, pr_num)
 
         processed_prs_with_cucumber_reports += 1
 
 def main():
     """
-    Parses CLI arguments, loads credentials, and starts the PR data extraction process.
+    Parses CLI arguments, loads credentials, sets up the CSV output file,
+    and starts the extraction of PR data.
     """
 
     if len(sys.argv) != 2:
@@ -340,7 +391,11 @@ def main():
         sys.exit(1)
 
     github_token = load_github_token()
-    extract_pr_data(REPO_FULL_NAME, n, github_token)
+    csv_file, csv_writer = setup_output_csv(RECENT_DAYS)
+    try:
+        extract_pr_data(REPO_FULL_NAME, n, github_token, csv_writer)
+    finally:
+        csv_file.close()
 
 if __name__ == "__main__":
     main()
