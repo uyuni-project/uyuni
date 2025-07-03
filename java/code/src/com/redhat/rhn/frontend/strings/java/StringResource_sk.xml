@@ -9806,8 +9806,8 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
         <target>Plán &lt;strong&gt;{0}&lt;/strong&gt; bol aktualizovaný.</target>
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
-        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target>Plán &lt;strong&gt;{0}&lt;/strong&gt; bol vymazaný.</target>
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been disabled.</source>
+        <target state="needs-adaptation">Plán &lt;strong&gt;{0}&lt;/strong&gt; bol vymazaný.</target>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
@@ -11517,6 +11517,10 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;Pomôžte nám zlepšiť naše služby tým, že nám oznámite svoj dôvod odstúpenie.&lt;/a&gt;
         </target>
       </trans-unit>
-    </body>
+    <trans-unit id="message.scheduleactivated" xml:space="preserve">
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

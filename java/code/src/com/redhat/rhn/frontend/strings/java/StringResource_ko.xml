@@ -359,7 +359,7 @@
         </context-group>
         <target>영향을 받은 시스템</target>
       </trans-unit>
-      <trans-unit id="All" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="All" xml:space="preserve">
         <source>All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
@@ -1292,7 +1292,7 @@
         </context-group>
         <target state="final">마지막으로 남아있는 @@PRODUCT_NAME@@ 관리자는 삭제할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="Users" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Users" xml:space="preserve">
         <source>Users</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
@@ -9728,8 +9728,8 @@ Follow this url to see the full list of inactive systems:
         <target>스케줄 &lt;strong&gt;{0}&lt;/strong&gt;이 업데이트되었습니다.</target>
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
-        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target>스케줄 &lt;strong&gt;{0}&lt;/strong&gt;이 삭제되었습니다.</target>
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been disabled.</source>
+        <target state="needs-adaptation">스케줄 &lt;strong&gt;{0}&lt;/strong&gt;이 삭제되었습니다.</target>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
@@ -11491,19 +11491,19 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <target>PPC64EL Debian</target>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="scc-data-forwarding.enabled" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="scc-data-forwarding.enabled" xml:space="preserve">
         <source>SCC Data Forwarding enabled successfully.</source>
         <target state="final">SCC 데이터 전달이 활성화되었습니다.</target>
       </trans-unit>
-      <trans-unit id="scc-data-forwarding.not-changed" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="scc-data-forwarding.not-changed" xml:space="preserve">
         <source>SCC Data Forwarding is already enabled.</source>
         <target state="final">SCC 데이터 전달이 이미 활성화되었습니다.</target>
       </trans-unit>
-      <trans-unit id="notification.sccoptoutwarning.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.sccoptoutwarning.summary" xml:space="preserve">
         <source>Data is not being synchronized with SCC</source>
         <target state="final">데이터를 SCC와 동기화하는 중이 아닙니다.</target>
       </trans-unit>
-      <trans-unit id="notification.sccoptoutwarning.detail" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.sccoptoutwarning.detail" xml:space="preserve">
         <source>
           &lt;p&gt;Disabling data synchronizing with SCC will lead to reduced visibility of your managed clients between RMT, SMT, @@PRODUCT_NAME@@ and SCC-directly registered clients.
           By synchronizing data, you ensure a uniform view of all registered clients. &lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;Click here to enable data forwarding&lt;/a&gt;.&lt;/p&gt;
@@ -11515,6 +11515,10 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;수신 거부 사유를 공유하여 서비스 개선에 도움을 주십시오.&lt;/a&gt;
         </target>
       </trans-unit>
-    </body>
+    <trans-unit id="message.scheduleactivated" xml:space="preserve">
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

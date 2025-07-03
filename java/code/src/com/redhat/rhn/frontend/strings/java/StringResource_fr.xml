@@ -9578,8 +9578,8 @@ Suivez cet url pour obtenir la liste complète des systèmes inactifs :
         <target>La programmation &lt;strong&gt;{0}&lt;/strong&gt; a été mise à jour.</target>
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
-        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target>La programmation &lt;strong&gt;{0}&lt;/strong&gt; a été supprimée.</target>
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been disabled.</source>
+        <target state="needs-adaptation">La programmation &lt;strong&gt;{0}&lt;/strong&gt; a été supprimée.</target>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
@@ -11171,6 +11171,10 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
           By synchronizing data, you ensure a uniform view of all registered clients. &lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;Click here to enable data forwarding&lt;/a&gt;.&lt;/p&gt;
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;Help us improve our services by sharing your reason for opting out&lt;/a&gt;
         </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="message.scheduleactivated" xml:space="preserve">
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
       <target state="new"/>
   </trans-unit>
       </body>
