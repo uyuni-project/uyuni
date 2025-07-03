@@ -11,15 +11,22 @@
 
 package com.redhat.rhn.domain.access;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.frontend.listview.PageControl;
+
+import com.suse.manager.utils.PagedSqlQueryBuilder;
+import com.suse.manager.webui.utils.gson.AccessGroupJson;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Factory class for RBAC's {@link AccessGroup} entities
@@ -85,6 +92,41 @@ public class AccessGroupFactory extends HibernateFactory {
                 .createQuery("SELECT a FROM AccessGroup a WHERE a.org = :org OR a.org IS NULL", AccessGroup.class)
                 .setParameter("org", org)
                 .getResultList();
+    }
+
+    /**
+     * Lists s paginated list of access groups
+     * @param pc the page control
+     * @param parser the parser for filters when building query
+     * @return the list of access groups
+     */
+    public static DataResult<AccessGroupJson> listAll(
+            PageControl pc, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser) {
+        String from = "(select " +
+                "ag.id as id, " +
+                "ag.label as name, " +
+                "ag.description as description, " +
+                "case " +
+                "  when ag.org_id is null then 'Built-in' else 'Custom' " +
+                "end as type, " +
+                "uag.users as users, " +
+                "agn.permissions as permissions " +
+                "from access.accessgroup ag " +
+                "join " +
+                "  (select group_id, count(group_id) users " +
+                "  from access.useraccessgroup group by group_id) uag " +
+                "on ag.id = uag.group_id " +
+                "join " +
+                "  (select group_id, count(group_id) permissions " +
+                "  from access.accessgroupnamespace group by group_id) agn " +
+                "on ag.id = agn.group_id " +
+                ") ag ";
+
+        return new PagedSqlQueryBuilder("ag.id")
+                .select("ag.*")
+                .from(from)
+                .where("true")
+                .run(new HashMap<>(), pc, parser, AccessGroupJson.class);
     }
 
     /**

@@ -38,6 +38,7 @@ import com.suse.manager.hub.migration.IssMigratorFactory;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.model.products.migration.MigrationDataFactory;
 import com.suse.manager.utils.SaltKeyUtils;
+import com.suse.manager.webui.controllers.AccessGroupController;
 import com.suse.manager.webui.controllers.AnsibleController;
 import com.suse.manager.webui.controllers.CSVDownloadController;
 import com.suse.manager.webui.controllers.CVEAuditController;
@@ -275,6 +276,9 @@ public class Router implements SparkApplication {
 
         // ISSv3 Sync
         initISSv3Routes(taskomaticApi);
+
+        // RBAC
+        AccessGroupController.initRoutes();
 
         // Validate RBAC endpoints
         RbacRouteValidator.validateEndpoints();
