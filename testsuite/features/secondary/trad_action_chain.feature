@@ -154,10 +154,11 @@ Feature: Action chain on traditional clients
     Then I should not see a "trad_client_action_chain" link
 
   Scenario: Execute the action chain from the web UI on traditional client
-    Given I am on the Systems overview page of this "sle_client"
-    When I follow the left menu "Schedule > Action Chains"
+    Given I am authorized for the "Admin" section
+    When I am on the Systems overview page of this "sle_client"
+    And I follow the left menu "Schedule > Action Chains"
     And I follow "trad_client_action_chain"
-    When I click on "Save and Schedule"
+    And I click on "Save and Schedule"
     Then I should see a "Action Chain trad_client_action_chain has been scheduled for execution." text
     When I run "rhn_check -vvv" on "sle_client"
 
