@@ -5,7 +5,7 @@ import { Button } from "components/buttons";
 import { closeDialog, Dialog } from "components/dialog/LegacyDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { showDialog } from "components/dialog/util";
-import { showErrorToastr, showSuccessToastr, MessagesContainer } from "components/toastr/toastr";
+import { MessagesContainer, showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
 import { Loading } from "components/utils/loading/Loading";
 
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
@@ -118,8 +118,7 @@ const FilterEdit = (props: FilterEditProps) => {
             }
           })
           .catch((error) => {
-            const ErrorMessage = error.errors.filter_name;
-            showErrorToastr(ErrorMessage, { autoHide: true, containerId: "filter-modal-error" });
+            showErrorToastr(error.errors.filter_name, { autoHide: true, containerId: "filter-modal-error" });
           });
       }
     }
