@@ -607,7 +607,15 @@ def _get_proxy_from_rhn_conf():
     if CFG.http_proxy:
         # CFG.http_proxy format is <hostname>[:<port>] in 1.7
         url = 'http://%s' % CFG.http_proxy
-        result = (url, CFG.http_proxy_username, CFG.http_proxy_password)
+        result = (
+            url,
+            CFG.http_proxy_username,
+            (
+                CFG.http_proxy_password
+                if not isinstance(CFG.http_proxy_password, list)
+                else ",".join(CFG.http_proxy_password)
+            ),
+        )
     initCFG(comp)
     log_debug(2, "Could not read proxy URL from rhn config.")
     return result

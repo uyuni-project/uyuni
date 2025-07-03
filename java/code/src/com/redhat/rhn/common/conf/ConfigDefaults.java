@@ -219,9 +219,9 @@ public class ConfigDefaults {
     /**
      * HTTP proxy defaults
      */
-    private static final String HTTP_PROXY = "server.satellite.http_proxy";
-    private static final String HTTP_PROXY_USERNAME = "server.satellite.http_proxy_username";
-    private static final String HTTP_PROXY_PASSWORD = "server.satellite.http_proxy_password";
+    public static final String HTTP_PROXY = "server.satellite.http_proxy";
+    public static final String HTTP_PROXY_USERNAME = "server.satellite.http_proxy_username";
+    public static final String HTTP_PROXY_PASSWORD = "server.satellite.http_proxy_password";
     private static final int DEFAULT_HTTP_PROXY_PORT = 80;
 
     /**

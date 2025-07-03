@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -60,6 +61,17 @@ public class SystemCommandExecutor implements Executor {
      * {@inheritDoc}
      */
     public int execute(String[] args) {
+        return execute(args, null);
+    }
+
+    /**
+     * Execute any command with the passed in arguments.
+     *
+     * @param args array of command you wish to execute.
+     * @param envp array of environment variable settings in the format name=value
+     * @return exit code of command executed.
+     */
+    public int execute(String[] args, String[] envp) {
         if (logger.isDebugEnabled()) {
             logger.debug("execute(String[] args={}) - start", Arrays.asList(args));
         }
@@ -69,7 +81,7 @@ public class SystemCommandExecutor implements Executor {
             if (logger.isDebugEnabled()) {
                 logger.debug("execute() - Calling r.exec ..");
             }
-            Process p = r.exec(args);
+            Process p = r.exec(args, envp);
 
             lastCommandOutput = inputStreamToString(p.getInputStream());
             if (logger.isDebugEnabled()) {

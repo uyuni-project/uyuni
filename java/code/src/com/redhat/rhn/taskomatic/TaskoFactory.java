@@ -561,4 +561,18 @@ public class TaskoFactory extends HibernateFactory {
         return singleton.listObjectsByNamedQuery(
                 "TaskoSchedule.listNewerThanByBunch", params);
     }
+
+    protected static TaskoBunch checkBunchName(Integer orgId, String bunchName) throws NoSuchBunchTaskException {
+        TaskoBunch bunch;
+        if (orgId == null) {
+            bunch = TaskoFactory.lookupSatBunchByName(bunchName);
+        }
+        else {
+            bunch = TaskoFactory.lookupOrgBunchByName(bunchName);
+        }
+        if (bunch == null) {
+            throw new NoSuchBunchTaskException(bunchName);
+        }
+        return bunch;
+    }
 }

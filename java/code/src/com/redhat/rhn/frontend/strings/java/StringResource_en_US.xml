@@ -8431,7 +8431,10 @@ Follow this url to see the full list of inactive systems:
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been updated.</source>
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
-        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been disabled.</source>
+      </trans-unit>
+      <trans-unit id="message.scheduleactivated" xml:space="preserve">
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>

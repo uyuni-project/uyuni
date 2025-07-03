@@ -118,4 +118,14 @@ public class ProxySettingsDto {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ProxySettingsDto{");
+        sb.append("hostname='").append(hostname).append('\'');
+        sb.append(", username='").append(username).append('\'');
+        sb.append(", password='").append("****").append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }
