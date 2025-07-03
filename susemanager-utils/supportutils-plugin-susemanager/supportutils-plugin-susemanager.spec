@@ -17,7 +17,7 @@
 
 
 Name:           supportutils-plugin-susemanager
-Version:        4.3.14
+Version:        4.3.15
 Release:        0
 Source:         %{name}-%{version}.tar.gz
 Summary:        Supportconfig Plugin for SUSE Manager
