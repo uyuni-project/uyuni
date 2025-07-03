@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Jul 03 17:30:06 CEST 2025 - rosuna@suse.com
+
+- version 4.3.5-0
+  * Backport supportutils plugin resource functions, replacing the
+    removed supportutils scplugin.rc functions with those provided
+    by supportconfig.rc
+
+-------------------------------------------------------------------
 Thu Feb 13 16:30:38 CET 2025 - rosuna@suse.com
 
 - version 4.3.4-0
