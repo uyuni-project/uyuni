@@ -3,7 +3,7 @@ import * as React from "react";
 import { AsyncButton, LinkButton } from "components/buttons";
 import { FromNow, HumanDateTime } from "components/datetime";
 import { HubDetailData, IssRole, IssServerDetailData, PeripheralDetailData } from "components/hub/types";
-import { LargeTextAttachment } from "components/large-text-attachment";
+import { ButtonMode, LargeTextAttachment } from "components/large-text-attachment";
 import { showInfoToastr } from "components/toastr";
 
 import { localizedMoment } from "utils/datetime";
@@ -108,6 +108,7 @@ export class ServerDetailsForm extends React.Component<Props, State> {
                   editMessage={roleBasedMessages.rootCA.editMessage[this.state.model.role]}
                   confirmDeleteMessage={roleBasedMessages.rootCA.confirmDeleteMessage[this.state.model.role]}
                   editable={this.props.editable}
+                  buttonMode={ButtonMode.Icon}
                   onDelete={() => this.onDeleteRootCA()}
                   onEdit={(value) => this.onEditRootCA(value)}
                 />
@@ -126,6 +127,7 @@ export class ServerDetailsForm extends React.Component<Props, State> {
                     filename="gpg-pub.key"
                     presentMessage={t("A customized GPG key is currently configured for this hub.")}
                     absentMessage={t("This hub is currently not using a custom GPG key.")}
+                    buttonMode={ButtonMode.Icon}
                     editable={false}
                   />
                 </div>
@@ -143,7 +145,7 @@ export class ServerDetailsForm extends React.Component<Props, State> {
                   <div className="btn-group pull-right">
                     <AsyncButton
                       className="btn-default"
-                      text={t("Regenerate credentials")}
+                      title={t("Regenerate credentials")}
                       icon="fa-refresh"
                       action={() => this.onRegenerateCredentials()}
                     />
@@ -164,7 +166,7 @@ export class ServerDetailsForm extends React.Component<Props, State> {
                     <div className="btn-group pull-right">
                       <LinkButton
                         className="btn-default"
-                        text={t("Edit channels")}
+                        title={t("Edit channels")}
                         icon="fa-pencil"
                         href={`/rhn/manager/admin/hub/peripherals/${this.state.model.id}/sync-channels`}
                       />
