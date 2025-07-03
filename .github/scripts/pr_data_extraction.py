@@ -31,9 +31,17 @@ REPO_FULL_NAME = "uyuni-project/uyuni"
 # Can be overridden using the 'TEST_WORKFLOW_NAME' environment variable
 TEST_WORKFLOW_NAME = os.getenv("TEST_WORKFLOW_NAME", "TestFlow")
 
-def setup_logging(level):
+def setup_logging(level, log_file="script.log"):
     """
     Initializes and configures logging for the script, returning a logger at the given level.
+    Logs will be written to both the console and a file.
+    
+    Args:
+        level: Logging level (e.g., logging.DEBUG, logging.INFO).
+        log_file: Path to the file where logs will be written.
+    
+    Returns:
+        A configured logger instance.
     """
 
     if level == logging.DEBUG:
@@ -41,18 +49,30 @@ def setup_logging(level):
     else:
         fmt = "%(levelname)s - %(message)s"
 
-    # Set root logger level to WARNING to suppress noisy third-party logs
-    logging.basicConfig(
-        level=logging.WARNING,
-        format=fmt,
-    )
+    formatter = logging.Formatter(fmt)
 
-    # Set this script’s logger to the desired level
+    # Get the logger
     my_logger = logging.getLogger(__name__)
     my_logger.setLevel(level)
+
+    # Avoid adding duplicate handlers if setup_logging is called multiple times
+    if not my_logger.handlers:
+
+        # Console handler
+        console_handler = logging.StreamHandler()
+        console_handler.setFormatter(formatter)
+        console_handler.setLevel(level)
+        my_logger.addHandler(console_handler)
+
+        # File handler
+        file_handler = logging.FileHandler(log_file)
+        file_handler.setFormatter(formatter)
+        file_handler.setLevel(level)
+        my_logger.addHandler(file_handler)
+
     return my_logger
 
-logger = setup_logging(logging.DEBUG)
+logger = setup_logging(logging.INFO)
 
 def load_github_token():
     """
@@ -96,7 +116,7 @@ def get_candidate_prs(repo, n):
     Returns n recently created PRs, oversampling to account for filtering out irrelevant ones.
     """
 
-    multiplier = 3  # To oversample in case some PRs don't have Cucumber reports
+    multiplier = 4  # To oversample in case some PRs don't have Cucumber reports
     prs = list(repo.get_pulls(state="all", sort="created", direction="desc")[:n*multiplier])
     if len(prs) < n:
         logger.warning("Only %d PRs found, but %d requested.", len(prs), n)
@@ -132,16 +152,17 @@ def get_initial_test_run(test_workflow, pr):
         return None
 
     for run in pr_test_runs:
-        logger.debug("Match %s run ID %s created at %s", TEST_WORKFLOW_NAME, run.id, run.created_at)
+        logger.debug("Obtained run #%s created at %s", run.run_number, run.created_at)
 
     pr_test_runs.sort(key=lambda run: run.created_at)
 
     # Return initial test run *that has Cucumber reports*
     for run in pr_test_runs:
-        logger.debug("Checking if run ID %s has Cucumber reports", run.id)
+        run_number = run.run_number
+        logger.debug("Checking if run #%s has Cucumber reports", run_number)
         for artifact in run.get_artifacts():
             if artifact.name.lower().startswith("cucumber"):
-                logger.info("Using initial test run #%d created at %s", run.id, run.created_at)
+                logger.info("Using initial test run #%d created at %s", run_number, run.created_at)
                 return run
 
     logger.info("No %s runs with Cucumber reports found for PR #%d", TEST_WORKFLOW_NAME, pr.number)
@@ -172,7 +193,8 @@ def download_cucumber_artifacts(run_with_cucumber, pr_number, headers):
 
 def get_modified_files(repo, pr, test_run):
     """
-    Returns the list of modified files in PR that triggered the given test run.
+    Returns the list of modified files in the PR that triggered the given test run,
+    excluding files that contain '.changes' in their filename.
     """
 
     # base_commit_sha: the commit the PR is targeting (e.g., main)
@@ -184,7 +206,61 @@ def get_modified_files(repo, pr, test_run):
     # Compare the base commit and the test run commit to get the file changes
     # that were present when this test run was triggered.
     comparison = repo.compare(base_commit_sha, test_run_commit_sha)
-    return [f.filename for f in comparison.files]
+    return [f.filename for f in comparison.files if ".changes" not in f.filename]
+
+def get_files_change_history(repo, file_list, recent_days):
+    """
+    For each N in recent_days,
+    returns the total number of times the files in file_list were modified in the last N days.
+
+    Args:
+        repo: GitHub Repository object.
+        file_list: List of modified file paths.
+        recent_days: List of integers (e.g., [3, 14, 56]) representing "last N days".
+
+    Returns:
+        Dict mapping each number of days to total number of changes across all files.
+    """
+    now = datetime.datetime.now(datetime.timezone.utc)
+    earliest_date = now - datetime.timedelta(days=max(recent_days))
+    day_thresholds = {days: now - datetime.timedelta(days=days) for days in recent_days}
+    change_history = {days: 0 for days in recent_days}
+
+    for file_path in file_list:
+        logger.debug("Processing change history of file %s", file_path)
+        try:
+            commits = repo.get_commits(path=file_path, since=earliest_date)
+            logger.debug("Edited in %s commits since %s days", len(list(commits)), max(recent_days))
+            for commit in commits:
+                logger.debug("File edited in commit %s", commit.sha)
+                commit_date = commit.commit.committer.date
+                for days, threshold_date in day_thresholds.items():
+                    if commit_date >= threshold_date:
+                        change_history[days] += 1
+                        logger.debug("Incremented modifications in the last %d days", days)
+        except Exception as e:
+            logger.warning("Could not retrieve commits for file %s: %s", file_path, e)
+
+    return change_history
+
+def get_file_extensions(modified_files):
+    """
+    Returns a list of unique file extensions (without the dot) 
+    from the given list of modified file paths. Files without an 
+    extension are excluded.
+
+    Args:
+        modified_files (List[str]): List of modified file paths.
+
+    Returns:
+        List[str]: Unique file extensions found in the list.
+    """
+
+    return list({
+        file.rsplit('.', 1)[-1]
+        for file in modified_files
+        if '.' in file.split('/')[-1]
+    })
 
 def extract_pr_data(repo_full_name, n, github_token):
     """
@@ -207,7 +283,7 @@ def extract_pr_data(repo_full_name, n, github_token):
         if processed_prs_with_cucumber_reports >= n:
             break
 
-        logger.info("Processing PR #%d: %s", pr.number, pr.title)
+        logger.info("Processing PR #%d: %s, created at %s", pr.number, pr.title, pr.created_at)
 
         try:
             initial_test_run_with_cucumber = get_initial_test_run(test_workflow, pr)
@@ -223,9 +299,22 @@ def extract_pr_data(repo_full_name, n, github_token):
 
         try:
             modified_files = get_modified_files(repo, pr, initial_test_run_with_cucumber)
-            logger.info("Files modified in PR when opened: %s", modified_files)
+            logger.info("Files modified in PR that triggered test run: %s", modified_files)
         except Exception as e:
             logger.error("Error obtaining modified files for PR #%d: %s", pr.number, e)
+
+        try:
+            file_extensions = get_file_extensions(modified_files)
+            logger.info("File extensions of files modified in PR: %s", file_extensions)
+        except Exception as e:
+            logger.error("Error obtaining file extensions for PR #%d: %s", pr.number, e)
+
+        try:
+            recent_days = [3, 14, 56]
+            change_history = get_files_change_history(repo, modified_files, recent_days)
+            logger.info("Files Change History: %s", change_history)
+        except Exception as e:
+            logger.error("Error getting modified files change history for PR #%d: %s", pr.number, e)
 
         processed_prs_with_cucumber_reports += 1
 
