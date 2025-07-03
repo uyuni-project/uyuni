@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024 SUSE LLC
+# Copyright (c) 2021-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
@@ -27,7 +27,7 @@ Feature: Operate an Ansible control node in SSH minion
 
 @susemanager
   Scenario: Pre-requisite: Subscribe SUSE minions to SLE-Module-Python3-15-SP4-Pool for x86_64
-    Given I am on the Systems overview page of this "sle_minion"
+    Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I check "SLE-Module-Python3-15-SP4-Pool for x86_64" by label
@@ -114,7 +114,7 @@ Feature: Operate an Ansible control node in SSH minion
 
 @susemanager
   Scenario: Cleanup: Unsubscribe SUSE minions from SLE-Module-Python3-15-SP4-Pool for x86_64
-    Given I am on the Systems overview page of this "sle_minion"
+    Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I uncheck "SLE-Module-Python3-15-SP4-Pool for x86_64" by label
