@@ -5,7 +5,7 @@ import { Button } from "components/buttons";
 import { closeDialog, Dialog } from "components/dialog/LegacyDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { showDialog } from "components/dialog/util";
-import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
+import { showErrorToastr, showSuccessToastr, MessagesContainer } from "components/toastr/toastr";
 import { Loading } from "components/utils/loading/Loading";
 
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
@@ -36,13 +36,18 @@ const FilterEditModalContent = ({
   }
 
   return (
-    <FilterForm
-      filter={filter}
-      errors={errors}
-      editing={editing}
-      onChange={(updatedFilter) => onChange(updatedFilter)}
-      onClientValidate={onClientValidate}
-    />
+    <>
+      <div className="mb-5">
+        <MessagesContainer containerId="filter-modal-error" />
+      </div>
+      <FilterForm
+        filter={filter}
+        errors={errors}
+        editing={editing}
+        onChange={(updatedFilter) => onChange(updatedFilter)}
+        onClientValidate={onClientValidate}
+      />
+    </>
   );
 };
 
@@ -113,8 +118,8 @@ const FilterEdit = (props: FilterEditProps) => {
             }
           })
           .catch((error) => {
-            setErrors(error.errors);
-            showErrorToastr(error.messages, { autoHide: false });
+            const ErrorMessage = error.errors.filter_name;
+            showErrorToastr(ErrorMessage, { autoHide: true, containerId: "filter-modal-error" });
           });
       }
     }
