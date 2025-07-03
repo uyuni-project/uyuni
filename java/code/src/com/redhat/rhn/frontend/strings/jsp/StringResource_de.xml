@@ -21057,8 +21057,8 @@ dieser Revisionen.  Möchten Sie dies wirklich tun?</target>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.operations.provisioning.remotecommand.form.queue.succeed" xml:space="preserve">
-        <source>Task "{0}" has been successfully added to Action Chain {1}.</source>
-        <target>Aufgabe "{0}" wurde Aktionskette {1} erfolgreich hinzugefügt.</target>
+        <source>Task "{0}" has been successfully added to Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
+        <target state="needs-adaptation">Aufgabe "{0}" wurde Aktionskette {1} erfolgreich hinzugefügt.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -27172,11 +27172,11 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <target>Sie können hier einen Plan für die ausgewählte Gruppe festlegen.</target>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.introparagraph" xml:space="preserve">
-        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on SUSE Manager functionality. Proceed only if you know what you're doing.</source>
+        <source>Are you sure you want to disable the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target>Sind Sie sicher, dass Sie den Plan löschen möchten? Die damit verknüpfte Gruppe wird nicht länger eingeplant. Dies kann weitreichende Auswirkungen auf die Satellite-Funktionalität haben. Fahren Sie nur fort, wenn Sie sich über die Auswirkungen im Klaren sind.</target>
+        <target state="needs-adaptation">Sind Sie sicher, dass Sie den Plan löschen möchten? Die damit verknüpfte Gruppe wird nicht länger eingeplant. Dies kann weitreichende Auswirkungen auf die Satellite-Funktionalität haben. Fahren Sie nur fort, wenn Sie sich über die Auswirkungen im Klaren sind.</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.schedulenameinuse" xml:space="preserve">
         <source>Schedule name {0} is already in use. Please choose another one.</source>
@@ -27214,11 +27214,11 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <target>Plan erstellen</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.schedule" xml:space="preserve">
-        <source>delete schedule</source>
+        <source>disable schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>Plan löschen</target>
+        <target state="needs-adaptation">Plan löschen</target>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.satschedules" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Schedules</source>
@@ -27293,11 +27293,11 @@ für einen angegebenen Channel aufgelistet wird.</target>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.deleteschedule" xml:space="preserve">
-        <source>Delete Schedule</source>
+        <source>Disable Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target>Plan löschen</target>
+        <target state="needs-adaptation">Plan löschen</target>
       </trans-unit>
       <trans-unit id="task.edit.jsp.name" xml:space="preserve">
         <source>Task Name</source>
@@ -29393,6 +29393,13 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
         <target state="new"/>
       </trans-unit>
-    </body>
+    <trans-unit id="schedule.edit.jsp.activateschedule" xml:space="preserve">
+        <source>Activate Schedule</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

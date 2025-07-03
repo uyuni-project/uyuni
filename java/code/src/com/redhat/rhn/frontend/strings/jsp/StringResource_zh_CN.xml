@@ -8030,7 +8030,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个补丁的安装</target>
       </trans-unit>
-      <trans-unit id="message.patchinstalls" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="message.patchinstalls" xml:space="preserve">
         <source>{0} patch installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
@@ -11465,7 +11465,7 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
         <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/cobbler/templates instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
         <target state="final"> 如果您要重复使用现有的自动安装配置文件，我们建议您复制并粘贴 /var/lib/cobbler/templates 中的模板，而不是浏览器中的模板。这可以确保自动安装后模板变量会保留下来，并且注册过程可正常进行。</target>
         <context-group name="ctx">
@@ -21283,8 +21283,8 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.operations.provisioning.remotecommand.form.queue.succeed" xml:space="preserve">
-        <source>Task "{0}" has been successfully added to Action Chain {1}.</source>
-        <target state="translated">已成功在操作链 {1} 中添加任务 "{0}"。</target>
+        <source>Task "{0}" has been successfully added to Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
+        <target state="needs-adaptation">已成功在操作链 {1} 中添加任务 "{0}"。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -27514,11 +27514,11 @@ given channel.</source>
         <target state="translated">您可在此处设置所选组的日程安排。</target>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.introparagraph" xml:space="preserve">
-        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on SUSE Manager functionality. Proceed only if you know what you're doing.</source>
+        <source>Are you sure you want to disable the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target state="translated">您确定要删除该日程安排吗？这样将无法再安排关联的组，会对 SUSE Manager 功能产生很大影响。请仅在您完全清楚自己所执行的操作时继续。</target>
+        <target state="needs-adaptation">您确定要删除该日程安排吗？这样将无法再安排关联的组，会对 SUSE Manager 功能产生很大影响。请仅在您完全清楚自己所执行的操作时继续。</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.schedulenameinuse" xml:space="preserve">
         <source>Schedule name {0} is already in use. Please choose another one.</source>
@@ -27556,11 +27556,11 @@ given channel.</source>
         <target state="translated">创建日程安排</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.schedule" xml:space="preserve">
-        <source>delete schedule</source>
+        <source>disable schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target state="translated">删除日程安排</target>
+        <target state="needs-adaptation">删除日程安排</target>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.satschedules" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Schedules</source>
@@ -27636,11 +27636,11 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.deleteschedule" xml:space="preserve">
-        <source>Delete Schedule</source>
+        <source>Disable Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target state="translated">删除日程安排</target>
+        <target state="needs-adaptation">删除日程安排</target>
       </trans-unit>
       <trans-unit id="task.edit.jsp.name" xml:space="preserve">
         <source>Task Name</source>
@@ -29164,7 +29164,7 @@ given channel.</source>
         <source>OS Image Build Host</source>
         <target>操作系统映像构建主机</target>
       </trans-unit>
-      <trans-unit id="monitoring_entitled" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="monitoring_entitled" xml:space="preserve">
         <source>Monitor this Host</source>
         <target state="final">监控此主机</target>
       </trans-unit>
@@ -29903,14 +29903,21 @@ given channel.</source>
         </context-group>
         <target state="final">这是 Pay-as-you-go 服务器</target>
       </trans-unit>
-      <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
         <source>List Already Included Patches:</source>
         <target state="final">列出已包含的补丁：</target>
       </trans-unit>
-      <trans-unit id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
         <target state="final">如果选择此选项，将会显示通道已包含的补丁。如果某个补丁是多个通道的一部分，且已包含在其中一个通道中，而您必须从另一个通道来关联该补丁的软件包，此选项会很有用。</target>
       </trans-unit>
-    </body>
+    <trans-unit id="schedule.edit.jsp.activateschedule" xml:space="preserve">
+        <source>Activate Schedule</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
