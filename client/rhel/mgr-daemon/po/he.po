@@ -7,52 +7,53 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-27 11:18+0200\n"
-"PO-Revision-Date: 2011-03-04 16:04+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Hebrew <he-users@lists.fedoraproject.org>\n"
+"POT-Creation-Date: 2025-07-03 16:56+0200\n"
+"PO-Revision-Date: 2025-06-14 21:59+0000\n"
+"Last-Translator: a Rubes <aRubes@pm.me>\n"
+"Language-Team: Hebrew <https://l10n.opensuse.org/projects/uyuni/mgr-daemon-4-3/he/>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: ../rhnsd.c:54
 msgid "MINS"
-msgstr ""
+msgstr "MINS"
 
 #: ../rhnsd.c:55
 msgid "Connect to Spacewalk every MINS minutes"
-msgstr ""
+msgstr "חיבור ל spacewalk כל  MINS דקות"
 
 #: ../rhnsd.c:57
 msgid "Run in foreground"
-msgstr ""
+msgstr "רץ בחזית"
 
 #. Short description of program.
 #: ../rhnsd.c:62
 msgid "Spacewalk Services Daemon"
-msgstr ""
+msgstr "תהליך רקע לשירותי spacewalk"
 
 #: ../rhnsd.c:115
 #, c-format
 msgid "Only root can run this program\n"
-msgstr ""
+msgstr "רק משתמש־על יכול להריץ תכנית זו\n"
 
 #: ../rhnsd.c:135
 msgid "wrong number of arguments"
-msgstr ""
+msgstr "מספר ארגומנטים שגוי"
 
 #: ../rhnsd.c:142
 msgid "already running"
-msgstr ""
+msgstr "כבר רץ"
 
 #: ../rhnsd.c:254
 #, c-format
 msgid "Copyright (C) %s Red Hat, Inc.\n"
-msgstr ""
+msgstr "© כל הזכויות שמורות %s לרד האט (Red Hat, Inc)\n"
 
 #: ../rhnsd.c:257
 #, c-format
 msgid "Written by %s.\n"
-msgstr ""
+msgstr "נכתב על ידי %s.\n"

@@ -9729,8 +9729,8 @@ Follow this url to see the full list of inactive systems:
         <target state="translated">已更新日程安排 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
-        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target state="translated">已删除日程安排 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been disabled.</source>
+        <target state="needs-adaptation">已删除日程安排 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
@@ -10410,7 +10410,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled" xml:space="preserve">
         <source>&lt;strong&gt;Monitor this Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
-        <target state="needs-adaptation">已应用&lt;strong&gt;监视&lt;/strong&gt;类型。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;由于您添加了 "监视" 系统类型，因此我们已自动将 Prometheus 导出器公式指派到了系统。请应用 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; 以安装并启用 Prometheus 度量导出器。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;请确保为安装的所有导出器打开&lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;所需的网络端口&lt;/a&gt;。</target>
+        <target state="final">已应用&lt;strong&gt;监控此主机&lt;/strong&gt;类型。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;由于您添加了 "监控" 系统类型，因此我们已自动将 Prometheus 导出器公式分配给了系统。请应用 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; 以安装并启用 Prometheus 指标导出器。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;请确保为安装的所有导出器打开&lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;所需的网络端口&lt;/a&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -11493,26 +11493,34 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <target>PPC64EL Debian</target>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="scc-data-forwarding.enabled" xml:space="preserve">
+      <trans-unit approved="yes" id="scc-data-forwarding.enabled" xml:space="preserve">
         <source>SCC Data Forwarding enabled successfully.</source>
-        <target state="new"/>
+        <target state="final">已成功启用 SCC 数据转发功能。</target>
       </trans-unit>
-      <trans-unit id="scc-data-forwarding.not-changed" xml:space="preserve">
+      <trans-unit approved="yes" id="scc-data-forwarding.not-changed" xml:space="preserve">
         <source>SCC Data Forwarding is already enabled.</source>
-        <target state="new"/>
+        <target state="final">SCC 数据转发功能已启用。</target>
       </trans-unit>
-      <trans-unit id="notification.sccoptoutwarning.summary" xml:space="preserve">
+      <trans-unit approved="yes" id="notification.sccoptoutwarning.summary" xml:space="preserve">
         <source>Data is not being synchronized with SCC</source>
-        <target state="new"/>
+        <target state="final">数据未与 SCC 保持同步</target>
       </trans-unit>
-      <trans-unit id="notification.sccoptoutwarning.detail" xml:space="preserve">
+      <trans-unit approved="yes" id="notification.sccoptoutwarning.detail" xml:space="preserve">
         <source>
           &lt;p&gt;Disabling data synchronizing with SCC will lead to reduced visibility of your managed clients between RMT, SMT, @@PRODUCT_NAME@@ and SCC-directly registered clients.
           By synchronizing data, you ensure a uniform view of all registered clients. &lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;Click here to enable data forwarding&lt;/a&gt;.&lt;/p&gt;
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;Help us improve our services by sharing your reason for opting out&lt;/a&gt;
         </source>
-        <target state="new"/>
+        <target state="final">
+          &lt;p&gt;禁用与 SCC 的数据同步将导致 RMT、SMT、@@PRODUCT_NAME@@ 和 SCC 直接注册的客户端之间托管客户端的可见性降低。
+          通过同步数据，您可以确保所有注册客户端具有统一的视图。&lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;单击此处启用数据转发功能&lt;/a&gt;.&lt;/p&gt;
+          &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;告知我们您选择停用的原因，从而帮助改进我们的服务&lt;/a&gt;
+        </target>
       </trans-unit>
-    </body>
+    <trans-unit id="message.scheduleactivated" xml:space="preserve">
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

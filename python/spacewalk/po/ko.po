@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:22+0200\n"
-"PO-Revision-Date: 2022-08-30 04:13+0000\n"
+"PO-Revision-Date: 2025-06-17 07:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend-4-3/ko/>\n"
 "Language: ko\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.12.1\n"
 
 #: ../server/apacheAuth.py:66
 #, python-format
@@ -204,7 +204,7 @@ msgstr ""
 #: ../server/rhnChannel.py:1999
 #, python-format
 msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
-msgstr "귀하의 계정은 (릴리스='%(release)s', 아키텍처='%(arch)s')%(www_activation)에 일치하는 채널에 액세스할 수 있는 권한이 없습니다."
+msgstr "귀하의 계정은 (릴리스='%(release)s', 아키텍처='%(arch)s')%(www_activation)s에 일치하는 채널에 액세스할 수 있는 권한이 없습니다."
 
 #: ../server/rhnChannel.py:2014
 #, python-format
@@ -286,12 +286,12 @@ msgstr "패키지를 찾을 수 없음"
 #: ../server/rhnServer/server_class.py:97
 #, python-format
 msgid "Architecture `%s' is not supported"
-msgstr "'%s' 아키텍처는 지원되지 않습니다."
+msgstr "`%s' 아키텍처는 지원되지 않습니다."
 
 #: ../server/rhnServer/server_token.py:78
 #, python-format
 msgid "Token `%s' has more than one base channel assigned"
-msgstr "'%s' 토큰에 기본 채널이 1개 이상 할당되었습니다."
+msgstr "`%s' 토큰에 기본 채널이 1개 이상 할당되었습니다."
 
 #: ../server/rhnServer/server_token.py:80
 msgid "Conflicting base channels"
@@ -588,7 +588,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     사용자 그룹 구성원 한도에 도달했습니다..\n"
+"     사용자 그룹 구성원 한도에 도달했습니다.\n"
 "\n"
 "     계정의 현재 설정에서 다른 시스템 프로파일 추가를 허용하지 않습니다.\n"
 "     조직 관리자에게 문의하여 귀하의 계정을 구독할 수 있는 최대 시스템 프로파일 수를\n"

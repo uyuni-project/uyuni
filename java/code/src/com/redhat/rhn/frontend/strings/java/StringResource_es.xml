@@ -9655,8 +9655,8 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
         <target>Programa &lt;strong&gt;{0}&lt;/strong&gt; ha sido actualizado.</target>
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
-        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target>Programa &lt;strong&gt;{0}&lt;/strong&gt; ha sido borrado.</target>
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been disabled.</source>
+        <target state="needs-adaptation">Programa &lt;strong&gt;{0}&lt;/strong&gt; ha sido borrado.</target>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
@@ -11268,6 +11268,10 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </source>
         <target state="new"/>
       </trans-unit>
-    </body>
+    <trans-unit id="message.scheduleactivated" xml:space="preserve">
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

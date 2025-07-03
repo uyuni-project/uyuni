@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:23+0200\n"
-"PO-Revision-Date: 2025-05-30 05:59+0000\n"
+"PO-Revision-Date: 2025-06-14 09:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-3/ja/>\n"
 "Language: ja\n"
@@ -3969,7 +3969,7 @@ msgstr "PAYGインスタンスは準拠していません"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:69
 msgid "SCC Data Sync Disabled"
-msgstr ""
+msgstr "SCCデータ同期が無効"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:160
 msgid "Filter by type"

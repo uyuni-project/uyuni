@@ -5499,9 +5499,9 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.provisioning.powermanagement.operations" xml:space="preserve">
+      <trans-unit approved="yes" id="ssm.overview.provisioning.powermanagement.operations" xml:space="preserve">
         <source>Run &lt;a href="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"&gt;power management operations&lt;/a&gt;</source>
-        <target>&lt;a href="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"&gt;전원 관리 작업&lt;/a&gt; 실행</target>
+        <target state="final">&lt;a href="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"&gt;전원 관리 작업&lt;/a&gt; 실행</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -11464,9 +11464,9 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
+      <trans-unit approved="yes" id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
         <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/cobbler/templates instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
-        <target state="needs-adaptation"> 기존의 자동 설치 프로파일을 다시 사용하려면 브라우저에서가 아닌 /var/lib/rhn/kickstarts에서 템플릿을 복사하기-붙여넣기하는 것이 좋습니다. 이는 템플릿 변수가 그대로 유지되어 자동 설치한 후 등록 프로세스가 제대로 작동하게 합니다.</target>
+        <target state="final"> 기존 자동 설치 프로파일을 다시 사용하려면 브라우저에서 복사하는 것보다 /var/lib/rhn/kickstarts에서 템플릿을 복사하여 붙여 넣는 것이 좋습니다.  이를 통해 템플릿 변수가 그대로 유지되어 자동 설치 후 등록 프로세스가 올바르게 작동할 수 있습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
@@ -11938,10 +11938,9 @@ Please note that some manual configuration of these scripts may still be require
 You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.
 A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.
 For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
-        <target>
+        <target state="final">
 킥스타트 중에 시스템에서 이러한 키/인증서를 설치하려면 킥스타트 프로파일에서 해당 키 및/또는 인증서를 참조하십시오.
-서명된 패키지를 설치하려면 올바른 키 및 @@PRODUCT_NAME@@ 프록시 서버 또는
-@@PRODUCT_NAME@@ 서버에 의해 킥스타트된 올바른 인증서가 필요합니다.
+서명된 패키지를 설치하려면 올바른 키 및 @@PRODUCT_NAME@@ 프록시 서버 또는 @@PRODUCT_NAME@@ 서버에 의해 킥스타트된 올바른 인증서가 필요합니다.
 자세한 정보는 &lt;a href={0} target="_blank" &gt;참조 안내서&lt;/a&gt;를 참조하십시오.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
@@ -21280,8 +21279,8 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.operations.provisioning.remotecommand.form.queue.succeed" xml:space="preserve">
-        <source>Task "{0}" has been successfully added to Action Chain {1}.</source>
-        <target>"{0}" 작업이 작업 체인 {1}에 추가되었습니다.</target>
+        <source>Task "{0}" has been successfully added to Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
+        <target state="needs-adaptation">"{0}" 작업이 작업 체인 {1}에 추가되었습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -27504,11 +27503,11 @@ given channel.</source>
         <target>여기에서 선택한 묶음의 스케줄을 설정할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.introparagraph" xml:space="preserve">
-        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on SUSE Manager functionality. Proceed only if you know what you're doing.</source>
+        <source>Are you sure you want to disable the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target>스케줄을 삭제하시겠습니까? 연결된 묶음은 더 이상 스케줄되지 않게 됩니다. 이는 SUSE Manager 기능에 큰 영향을 미칠 수 있습니다. 삭제로 인한 영향을 잘 이해한 후 계속 실행하십시오.</target>
+        <target state="needs-adaptation">스케줄을 삭제하시겠습니까? 연결된 묶음은 더 이상 스케줄되지 않게 됩니다. 이는 SUSE Manager 기능에 큰 영향을 미칠 수 있습니다. 삭제로 인한 영향을 잘 이해한 후 계속 실행하십시오.</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.schedulenameinuse" xml:space="preserve">
         <source>Schedule name {0} is already in use. Please choose another one.</source>
@@ -27546,11 +27545,11 @@ given channel.</source>
         <target>스케줄 생성</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.schedule" xml:space="preserve">
-        <source>delete schedule</source>
+        <source>disable schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>스케줄 삭제</target>
+        <target state="needs-adaptation">스케줄 삭제</target>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.satschedules" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Schedules</source>
@@ -27626,11 +27625,11 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.deleteschedule" xml:space="preserve">
-        <source>Delete Schedule</source>
+        <source>Disable Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target>스케줄 삭제</target>
+        <target state="needs-adaptation">스케줄 삭제</target>
       </trans-unit>
       <trans-unit id="task.edit.jsp.name" xml:space="preserve">
         <source>Task Name</source>
@@ -29091,7 +29090,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="copyright.jsp.title" xml:space="preserve">
         <source>Copyright (c) 2011 - 2025 SUSE LLC.</source>
-        <target state="needs-adaptation">Copyright (c) 2011 - 2024 SUSE LLC.</target>
+        <target state="final">Copyright (c) 2011 - 2024 SUSE LLC.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
@@ -29152,9 +29151,9 @@ given channel.</source>
         <source>OS Image Build Host</source>
         <target>OD 이미지 빌드 호스트</target>
       </trans-unit>
-      <trans-unit id="monitoring_entitled" xml:space="preserve">
+      <trans-unit approved="yes" id="monitoring_entitled" xml:space="preserve">
         <source>Monitor this Host</source>
-        <target state="needs-adaptation">모니터링</target>
+        <target state="final">이 호스트 모니터링</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -29887,14 +29886,21 @@ given channel.</source>
         </context-group>
         <target state="final">페이고 서버입니다.</target>
       </trans-unit>
-      <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
+      <trans-unit approved="yes" id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
         <source>List Already Included Patches:</source>
-        <target state="new"/>
+        <target state="final">이미 포함된 패치 목록:</target>
       </trans-unit>
-      <trans-unit id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
+      <trans-unit approved="yes" id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
-        <target state="new"/>
+        <target state="final">이 항목을 선택하면 이미 채널에 포함된 패치가 표시됩니다. 이 기능은 패치가 여러 채널의 일부이고 그 중 하나로부터 포함되었으며 다른 채널의 패키지를 연결해야 하는 경우에 유용합니다.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="schedule.edit.jsp.activateschedule" xml:space="preserve">
+        <source>Activate Schedule</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

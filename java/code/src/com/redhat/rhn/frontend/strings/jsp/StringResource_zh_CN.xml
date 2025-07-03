@@ -8030,12 +8030,12 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个补丁的安装</target>
       </trans-unit>
-      <trans-unit id="message.patchinstalls" xml:space="preserve">
+      <trans-unit approved="yes" id="message.patchinstalls" xml:space="preserve">
         <source>{0} patch installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个补丁的安装</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个补丁的安装</target>
       </trans-unit>
       <trans-unit approved="yes" id="message.xccdfeval" xml:space="preserve">
         <source>XCCDF scan has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;</source>
@@ -11465,9 +11465,9 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
+      <trans-unit approved="yes" id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
         <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/cobbler/templates instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
-        <target state="needs-adaptation"> 如果您要重复使用现有的自动安装配置文件，我们建议您复制并粘贴 /var/lib/rhn/kickstarts 中的模板，而不是浏览器中的模板。这可以确保自动安装后模板变量会保留下来，并且注册过程可正常进行。</target>
+        <target state="final"> 如果您要重复使用现有的自动安装配置文件，我们建议您复制并粘贴 /var/lib/cobbler/templates 中的模板，而不是浏览器中的模板。这可以确保自动安装后模板变量会保留下来，并且注册过程可正常进行。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
@@ -21283,8 +21283,8 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.operations.provisioning.remotecommand.form.queue.succeed" xml:space="preserve">
-        <source>Task "{0}" has been successfully added to Action Chain {1}.</source>
-        <target state="translated">已成功在操作链 {1} 中添加任务 "{0}"。</target>
+        <source>Task "{0}" has been successfully added to Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
+        <target state="needs-adaptation">已成功在操作链 {1} 中添加任务 "{0}"。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -21994,8 +21994,9 @@ Base Channel chosen on the
         <target state="final">您可以通过选择下面某个软件包配置文件将正在以无人值守方式
 安装的系统与一个在 @@PRODUCT_NAME@@ 中注册的系
 统的软件包配置文件同步。&lt;strong&gt;请注意&lt;/strong&gt;：
-此列表将只显示针对&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;操作系统&lt;/a&gt;页面中所选基础通道创建的软件包
-配置文件。</target>
+此列表将只显示针对
+&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;操作系统&lt;/a&gt;页面
+中所选基础通道创建的软件包配置文件。</target>
       </trans-unit>
       <trans-unit id="kickstart.packageprofiles.jsp.tip" xml:space="preserve">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt;
@@ -25959,7 +25960,7 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="help.jsp.about.overviewsummary" xml:space="preserve">
+      <trans-unit approved="yes" id="help.jsp.about.overviewsummary" xml:space="preserve">
         <source>
         All @@PRODUCT_NAME@@ functionality (system profiles, reporting data, application server, etc.)
         is stored locally on the customer's network. This provides customers with the ability to take their
@@ -25969,7 +25970,7 @@ given channel.</source>
         the customer's individual systems connect to a locally hosted Proxy.
         The Proxy aggregates data and performs some tasks locally, communicating with the central @@PRODUCT_NAME@@ servers.
         All information stored in the @@PRODUCT_NAME@@ database is kept on the @@PRODUCT_NAME@@ servers.</source>
-        <target>
+        <target state="final">
         所有 @@PRODUCT_NAME@@ 功能（系统配置文件、报告数据、应用程序服务器等）
         都存储在客户网络本地。这样，客户便可根据需要使其
         @@PRODUCT_NAME@@ 解决方案脱离公共互联网，同时对其
@@ -27513,11 +27514,11 @@ given channel.</source>
         <target state="translated">您可在此处设置所选组的日程安排。</target>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.introparagraph" xml:space="preserve">
-        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on SUSE Manager functionality. Proceed only if you know what you're doing.</source>
+        <source>Are you sure you want to disable the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target state="translated">您确定要删除该日程安排吗？这样将无法再安排关联的组，会对 SUSE Manager 功能产生很大影响。请仅在您完全清楚自己所执行的操作时继续。</target>
+        <target state="needs-adaptation">您确定要删除该日程安排吗？这样将无法再安排关联的组，会对 SUSE Manager 功能产生很大影响。请仅在您完全清楚自己所执行的操作时继续。</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.schedulenameinuse" xml:space="preserve">
         <source>Schedule name {0} is already in use. Please choose another one.</source>
@@ -27555,11 +27556,11 @@ given channel.</source>
         <target state="translated">创建日程安排</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.schedule" xml:space="preserve">
-        <source>delete schedule</source>
+        <source>disable schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target state="translated">删除日程安排</target>
+        <target state="needs-adaptation">删除日程安排</target>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.satschedules" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Schedules</source>
@@ -27635,11 +27636,11 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.deleteschedule" xml:space="preserve">
-        <source>Delete Schedule</source>
+        <source>Disable Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target state="translated">删除日程安排</target>
+        <target state="needs-adaptation">删除日程安排</target>
       </trans-unit>
       <trans-unit id="task.edit.jsp.name" xml:space="preserve">
         <source>Task Name</source>
@@ -29102,7 +29103,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="copyright.jsp.title" xml:space="preserve">
         <source>Copyright (c) 2011 - 2025 SUSE LLC.</source>
-        <target state="needs-adaptation">版权所有 (c) 2011 - 2024 SUSE LLC。</target>
+        <target state="final">版权所有 (c) 2011 - 2025 SUSE LLC。</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
@@ -29163,9 +29164,9 @@ given channel.</source>
         <source>OS Image Build Host</source>
         <target>操作系统映像构建主机</target>
       </trans-unit>
-      <trans-unit id="monitoring_entitled" xml:space="preserve">
+      <trans-unit approved="yes" id="monitoring_entitled" xml:space="preserve">
         <source>Monitor this Host</source>
-        <target state="needs-adaptation">监视</target>
+        <target state="final">监控此主机</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -29902,14 +29903,21 @@ given channel.</source>
         </context-group>
         <target state="final">这是 Pay-as-you-go 服务器</target>
       </trans-unit>
-      <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
+      <trans-unit approved="yes" id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
         <source>List Already Included Patches:</source>
-        <target state="new"/>
+        <target state="final">列出已包含的补丁：</target>
       </trans-unit>
-      <trans-unit id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
+      <trans-unit approved="yes" id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
-        <target state="new"/>
+        <target state="final">如果选择此选项，将会显示通道已包含的补丁。如果某个补丁是多个通道的一部分，且已包含在其中一个通道中，而您必须从另一个通道来关联该补丁的软件包，此选项会很有用。</target>
       </trans-unit>
-    </body>
+    <trans-unit id="schedule.edit.jsp.activateschedule" xml:space="preserve">
+        <source>Activate Schedule</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

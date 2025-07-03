@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:23+0200\n"
-"PO-Revision-Date: 2024-10-17 02:48+0000\n"
+"PO-Revision-Date: 2025-06-17 07:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd-4-3/ko/>\n"
 "Language: ko\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.12.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -6128,7 +6128,7 @@ msgstr "일정은 따옴표로 감싸지 않고 Quartz CronTrigger 형식으로 
 
 #: ../src/spacecmd/softwarechannel.py:2659
 msgid "For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 1 * * ?"
-msgstr "예를 들어, 매일 오전 1시에 예약을 설정하려면 <SCHEDULE>은 0 0 1 * * 이어야 합니다."
+msgstr "예를 들어, 매일 오전 1시에 예약을 설정하려면 <SCHEDULE>은 0 0 1 * * ?이어야 합니다."
 
 #: ../src/spacecmd/softwarechannel.py:2660
 msgid "If <SCHEDULE> is left empty, it will be disabled."
@@ -7928,7 +7928,7 @@ msgstr "Salt SSH를 사용하여 관리"
 
 #: ../src/spacecmd/system.py:4569
 msgid "Provided port must be numeric"
-msgstr "제공된 포트는 숫자여야 합니다."
+msgstr "입력한 포트는 숫자여야 합니다."
 
 #: ../src/spacecmd/system.py:4574
 msgid "Hostname must be provided"

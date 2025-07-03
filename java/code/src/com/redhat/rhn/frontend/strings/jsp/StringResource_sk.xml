@@ -7758,140 +7758,140 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemsearch.jsp.toolbar" xml:space="preserve">
         <source>Advanced Search</source>
-        <target/>
+        <target state="translated">Pokročilé vyhľadávanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.summary" xml:space="preserve">
         <source>Advanced Search will return results from all systems to which you have administrative access.</source>
-        <target/>
+        <target state="translated">Pokročilé vyhľadávanie vráti výsledky zo všetkých systémov, ku ktorým máte administrátorský prístup.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.fieldtosearch" xml:space="preserve">
         <source>Field to Search:</source>
-        <target/>
+        <target state="translated">Pole na vyhľadávanie:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.wheretosearch" xml:space="preserve">
         <source>Where to Search:</source>
-        <target/>
+        <target state="translated">Kde hľadať:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.searchallsystems" xml:space="preserve">
         <source>Search all systems</source>
-        <target/>
+        <target state="translated">Hľadať vo všetkých systémoch</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.searchSSM" xml:space="preserve">
         <source>Search system set manager</source>
-        <target/>
+        <target state="translated">Hľadať v správcovi sád systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.invertlabel" xml:space="preserve">
         <source>Invert Result</source>
-        <target/>
+        <target state="translated">Invertovať výsledok</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.finegrainedlabel" xml:space="preserve">
         <source>Fine Grained Search:</source>
-        <target/>
+        <target state="translated">Jemné vyhľadávanie:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.systemname" xml:space="preserve">
         <source>System Name</source>
-        <target/>
+        <target state="translated">Názov systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.entitlement" xml:space="preserve">
         <source>System Type</source>
-        <target/>
+        <target state="translated">Typ systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.invertdescription" xml:space="preserve">
         <source>Invert search results</source>
-        <target/>
+        <target state="translated">Invertovať výsledky hľadania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.finegrained" xml:space="preserve">
         <source>Fine grained search results</source>
-        <target/>
+        <target state="translated">Výsledky jemného vyhľadávania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.noresults" xml:space="preserve">
         <source>No results found.</source>
-        <target/>
+        <target state="translated">Nenašli sa žiadne výsledky.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_name_and_description_column" xml:space="preserve">
         <source>Description</source>
-        <target/>
+        <target state="translated">Popis</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_cpu_mhz_lt_column" xml:space="preserve">
         <source>CPU Mhz</source>
-        <target/>
+        <target state="translated">CPU Mhz</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_cpu_mhz_gt_column" xml:space="preserve">
         <source>CPU Mhz</source>
-        <target/>
+        <target state="translated">CPU Mhz</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_num_of_cpus_lt_column" xml:space="preserve">
         <source>Number of CPUs</source>
-        <target/>
+        <target state="translated">Počet CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_num_of_cpus_gt_column" xml:space="preserve">
         <source>Number of CPUs</source>
-        <target/>
+        <target state="translated">Počet CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_ram_lt_column" xml:space="preserve">
         <source>RAM</source>
-        <target/>
+        <target state="translated">RAM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_ram_gt_column" xml:space="preserve">
         <source>RAM</source>
-        <target/>
+        <target state="translated">RAM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
@@ -7899,35 +7899,35 @@ organization. You may grant or remove the organization administrator role in the
       <!-- Monitoring General Config Page -->
       <trans-unit id="generalconfig.jsp.header1" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Configuration - Monitoring</source>
-        <target/>
+        <target state="translated">Konfigurácia @@PRODUCT_NAME@@ - Monitorovanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.header2" xml:space="preserve">
         <source>General Monitoring Config</source>
-        <target/>
+        <target state="translated">Všeobecná konfigurácia monitorovania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.summary" xml:space="preserve">
         <source>After updating the configuration options below, monitoring services on this @@PRODUCT_NAME@@ server and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted.  These actions will be scheduled automatically when you update this page.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Po aktualizácii nižšie uvedených konfiguračných možností bude potrebné reštartovať monitorovacie služby na tomto serveri @@PRODUCT_NAME@@ a na všetkých vašich @@PRODUCT_NAME@@ Proxy s povoleným monitorovaním.  Tieto akcie sa naplánujú automaticky po tom, ako aktualizujete túto stránku.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.update_config" xml:space="preserve">
         <source>Update Config</source>
-        <target/>
+        <target state="translated">Aktualizovať konfiguráciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="removeconfirm.jsp.confirmpackageremoval" xml:space="preserve">
         <source>Confirm Package Removal</source>
-        <target/>
+        <target state="translated">Potvrdenie odstránenia balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
           <context context-type="sourcefile">https://wopr.skavenlabs/rhn/ssm/PackageRemove.do</context>
@@ -7935,21 +7935,21 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="removeconfirm.jsp.widgetsummary" xml:space="preserve">
         <source>You may schedule the package removals to take place as soon as possible, or no sooner than a specified time:</source>
-        <target/>
+        <target state="translated">Môžete si naplánovať odstránenia balíkov tak, aby sa uskutočnili čo najskôr, alebo nie skôr ako v stanovenom čase:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="removeconfirm.jsp.confirm" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target state="translated">Potvrdiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.addedtoactionchain" xml:space="preserve">
         <source>Action has been successfully added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</source>
-        <target/>
+        <target state="translated">Akcia bola úspešne pridaná do Reťazca akcií &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7957,7 +7957,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="message.packageremoval" xml:space="preserve">
         <source>{0} package removal has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} odstránenie balíka bolo &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7965,7 +7965,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="message.packageremovals" xml:space="preserve">
         <source>{0} package removals have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} odstránenia balíkov boli &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7973,7 +7973,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="message.packageupgrade" xml:space="preserve">
         <source>{0} package upgrade has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} zvýšenie verzie balíka bolo &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7981,7 +7981,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="message.packageupgrades" xml:space="preserve">
         <source>{0} package upgrades have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} zvýšenia verzií balíkov boli &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7989,7 +7989,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="message.packageinstall" xml:space="preserve">
         <source>{0} package install has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} inštalácia balíka bola &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánovaná&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7997,7 +7997,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="message.packageinstalls" xml:space="preserve">
         <source>{0} package installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} inštalácie balíkov boli &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -8005,14 +8005,14 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="message.systeminstalls" xml:space="preserve">
         <source>Package install has been scheduled for {0} system(s).</source>
-        <target/>
+        <target state="translated">Inštalácia balíkov bola naplánovaná pre {0} systém(y).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/TargetSystemsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.packageverify" xml:space="preserve">
         <source>{0} package verification has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} overenie balíka bolo &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -8020,7 +8020,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="message.packageverifys" xml:space="preserve">
         <source>{0} package verifications have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} overenia balíkov boli &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -8028,91 +8028,91 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="message.patchremoval" xml:space="preserve">
         <source>{0} patch removal has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} odstránenie opravy bolo &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.patchremovals" xml:space="preserve">
         <source>{0} patch removals have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} odstránenia opráv boli &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.patchinstall" xml:space="preserve">
         <source>{0} patch install has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} inštalácia opravy bola &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánovaná&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.patchinstalls" xml:space="preserve">
         <source>{0} patch installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} inštalácie opráv boli &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.xccdfeval" xml:space="preserve">
         <source>XCCDF scan has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Skenovanie XCCDF bolo &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;naplánované&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.xccdfeval.ssm" xml:space="preserve">
         <source>XCCDF scan has been scheduled successfully.</source>
-        <target/>
+        <target state="translated">Skenovanie XCCDF bolo úspešne naplánované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.xccdfdiff.missing" xml:space="preserve">
         <source>XCCDF scan of id={0} could not be found for user {1}.</source>
-        <target/>
+        <target state="translated">Skenovanie XCCDF id={0} nebolo možné nájsť pre používateľa {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.entitlement.missing" xml:space="preserve">
         <source>One or more of the selected systems lack the {0} system type.</source>
-        <target/>
+        <target state="translated">Jeden alebo viac vybraných systémov nemá typ systému {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.xccdfeval.failed" xml:space="preserve">
         <source>Action was not scheduled.</source>
-        <target/>
+        <target state="translated">Akcia nebola naplánovaná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.capability.missing" xml:space="preserve">
         <source>One or more of the selected systems lack the {0} client-capability.</source>
-        <target/>
+        <target state="translated">Jeden alebo viacero vybraných systémov nemá klientsku podporu {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="removeconfirm.jsp.runremotecommand" xml:space="preserve">
         <source>Add Remote Command To Package Removal</source>
-        <target/>
+        <target state="translated">Pridať vzdialený príkaz na odstránenie balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="installconfirm.jsp.runremotecommand" xml:space="preserve">
         <source>Add Remote Command To Package Install</source>
-        <target/>
+        <target state="translated">Pridať vzdialený príkaz do inštalácie balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="upgradeconfirm.jsp.runremotecommand" xml:space="preserve">
         <source>Add Remote Command To Package Upgrade</source>
-        <target/>
+        <target state="translated">Pridať vzdialený príkaz na zvýšenie verzie balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
         </context-group>
@@ -8120,28 +8120,28 @@ organization. You may grant or remove the organization administrator role in the
       <!-- PROBE EDIT PAGE -->
       <trans-unit id="download.jsp.header" xml:space="preserve">
         <source>Download Packages</source>
-        <target/>
+        <target state="translated">Stiahnuť balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/DownloadConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="download.jsp.download" xml:space="preserve">
         <source>Download Selected Packages Now!</source>
-        <target/>
+        <target state="translated">Stiahnuť vybrané balíky teraz!</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/DownloadConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="repo.jsp.channels" xml:space="preserve">
         <source>Channels</source>
-        <target/>
+        <target state="translated">Kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/repos/RepoList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="download.jsp.package" xml:space="preserve">
         <source>Package</source>
-        <target/>
+        <target state="translated">Balík</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/DownloadConfirm.do</context>
         </context-group>
@@ -21211,8 +21211,8 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.operations.provisioning.remotecommand.form.queue.succeed" xml:space="preserve">
-        <source>Task "{0}" has been successfully added to Action Chain {1}.</source>
-        <target/>
+        <source>Task "{0}" has been successfully added to Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -27365,8 +27365,8 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.introparagraph" xml:space="preserve">
-        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on SUSE Manager functionality. Proceed only if you know what you're doing.</source>
-        <target/>
+        <source>Are you sure you want to disable the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
@@ -27407,8 +27407,8 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.schedule" xml:space="preserve">
-        <source>delete schedule</source>
-        <target/>
+        <source>disable schedule</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
@@ -27487,8 +27487,8 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.deleteschedule" xml:space="preserve">
-        <source>Delete Schedule</source>
-        <target/>
+        <source>Disable Schedule</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
@@ -29631,6 +29631,13 @@ given channel.</source>
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
         <target state="new"/>
       </trans-unit>
-    </body>
+    <trans-unit id="schedule.edit.jsp.activateschedule" xml:space="preserve">
+        <source>Activate Schedule</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
