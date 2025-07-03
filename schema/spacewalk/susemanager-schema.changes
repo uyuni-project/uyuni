@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jul 03 19:11:17 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.10-0
+  * Preserve NULL values in config channels order
+
+-------------------------------------------------------------------
 Fri Jun 20 17:09:00 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.9-0
