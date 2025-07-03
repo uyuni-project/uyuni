@@ -14,11 +14,16 @@ package com.redhat.rhn.manager.access;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static com.redhat.rhn.domain.role.RoleFactory.SAT_ADMIN;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.access.NamespaceFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.frontend.listview.PageControl;
+
+import com.suse.manager.utils.PagedSqlQueryBuilder;
+import com.suse.manager.webui.utils.gson.AccessGroupJson;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,6 +33,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Class to manage RBAC access groups
@@ -93,6 +99,17 @@ public class AccessGroupManager {
      */
     public List<AccessGroup> list() {
         return AccessGroupFactory.listAll();
+    }
+
+    /**
+     * Lists s paginated list of access groups
+     * @param pc the page control
+     * @param parser the parser for filters when building query
+     * @return the list of access groups
+     */
+    public DataResult<AccessGroupJson> list(
+            PageControl pc, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser) {
+        return AccessGroupFactory.listAll(pc, parser);
     }
 
     /**
