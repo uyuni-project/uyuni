@@ -90,6 +90,10 @@ python/.vscode
 venv/
 .venv/
 
+# Predictive Test Selection outputs
+.github/scripts/predictive-test-selection/*.log
+.github/scripts/predictive-test-selection/*.csv
+
 # Schema
 
 schema/spacewalk/common/data/rhnVersionInfo.sql

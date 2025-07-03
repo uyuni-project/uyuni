@@ -12,7 +12,6 @@ Description:
 
 Requirements:
     - Environment variable GITHUB_TOKEN must be set with a GitHub Access Token.
-    - Optionally, TEST_WORKFLOW_NAME can be set to override the default workflow name ("TestFlow").
 
 Usage:
     python pr_data_extraction.py <N>
@@ -23,22 +22,18 @@ import sys
 import logging
 import datetime
 import csv
+
 import requests
 from github import Github
+
+from config import REPO_FULL_NAME, TEST_WORKFLOW_NAME, PR_FEATURES_CSV_FILENAME
 
 # ------------------------------
 # Constants
 # ------------------------------
 
-REPO_FULL_NAME = "uyuni-project/uyuni"
-
 # Time windows (in days) to track recent change frequency of PR modified files
 RECENT_DAYS = [3, 14, 56]
-
-# Can be overridden using the 'TEST_WORKFLOW_NAME' environment variable
-TEST_WORKFLOW_NAME = os.getenv("TEST_WORKFLOW_NAME", "TestFlow")
-
-PR_FEATURES_CSV_FILENAME = "pr_features.csv"
 
 def setup_logging(level, log_file="script.log"):
     """
