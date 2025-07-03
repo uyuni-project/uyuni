@@ -20,12 +20,27 @@ const resultingCriteria = (matcher: string, value: string) => {
   return matcher && value && value.trim() !== "" ? matcher + value : null;
 };
 
+const decodeHTMLEntities = (str) => {
+  const txt = document.createElement("textarea");
+  txt.innerHTML = str;
+  return txt.value;
+};
+
 export const NumericSearchField = ({ name, criteria, onSearch }) => {
   let criteriaMatcher = "";
   let criteriaValue = "";
   if (criteria) {
-    criteriaMatcher = matchers.find((it) => criteria.startsWith(it.value))?.value ?? "=";
-    criteriaValue = criteria.includes(criteriaMatcher) ? criteria.split(criteriaMatcher)[1] : criteria;
+    const criteriaDecoded = decodeHTMLEntities(criteria);
+    const bestMatcher = matchers.reduce((bestFound, currentMatcher) => {
+      // Find the longest matcher that is a prefix of the criteria string.
+      // It prevents to take "<" matcher when it should be "<="
+      if (criteriaDecoded.startsWith(currentMatcher.value) && currentMatcher.value.length > bestFound.length) {
+        return currentMatcher.value;
+      }
+      return bestFound;
+    }, "");
+    criteriaMatcher = bestMatcher || "=";
+    criteriaValue = criteriaDecoded.substring(criteriaMatcher.length);
   }
 
   const [matcher, setMatcher] = useState<string>(criteriaMatcher);
