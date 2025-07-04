@@ -383,10 +383,11 @@ def setup_output_csv(recent_days):
         logger.critical("Failed to initialize PR features CSV file: %s", e)
         sys.exit(1)
 
-def extract_pr_data(repo_full_name, n, github_token, csv_writer):
+def extract_pr_data(repo_full_name, n, github_token, csv_writer, single_pr_number=None):
     """
     Coordinates the full PR data extraction process: 
-    getting PRs, test runs, modified files, and downloading Cucumber artifacts.
+    getting PRs, modified files, their change history, test runs, and downloading Cucumber reports.
+    If single_pr_number is set, only process that PR and skip downloading cucumber reports.
     """
 
     gh = Github(github_token)
@@ -397,58 +398,80 @@ def extract_pr_data(repo_full_name, n, github_token, csv_writer):
 
     repo = get_repository(gh, repo_full_name)
     test_workflow = get_test_workflow(repo, TEST_WORKFLOW_NAME)
-    prs = get_candidate_prs(repo, n)
 
+    if single_pr_number is not None:
+        try:
+            pr = repo.get_pull(single_pr_number)
+        except Exception as e:
+            logger.critical("Could not find PR #%d: %s", single_pr_number, e)
+            return
+        process_single_pr_mode(repo, pr, csv_writer)
+        return
+
+    prs = get_candidate_prs(repo, n)
     processed_prs_with_cucumber_reports = 0
     for pr in prs:
         if processed_prs_with_cucumber_reports >= n:
             break
 
-        pr_num = pr.number
+        logger.info("Processing PR #%d: %s, created at %s", pr.number, pr.title, pr.created_at)
 
-        logger.info("Processing PR #%d: %s, created at %s", pr_num, pr.title, pr.created_at)
+        if process_training_mode(repo, test_workflow, pr, headers, csv_writer):
+            processed_prs_with_cucumber_reports += 1
 
-        try:
-            initial_test_run_with_cucumber = get_cucumber_initial_test_run(test_workflow, pr)
-            if not initial_test_run_with_cucumber:
-                continue
-        except Exception as e:
-            logger.error("Error getting initial test run for PR #%d: %s", pr_num, e)
+def process_single_pr_mode(repo, pr, csv_writer):
+    """Process a single PR in prediction mode (no test runs, no cucumber downloads)."""
+    try:
+        dummy_test_run = type("DummyRun", (), {"head_sha": pr.head.sha})()
+        extract_and_write_pr_features(repo, pr, dummy_test_run, csv_writer)
+    except Exception as e:
+        logger.error("Error extracting features for PR #%d: %s", pr.number, e)
 
-        try:
-            has_secondary = download_secondary_cucumber_reports(
-                initial_test_run_with_cucumber, pr_num, headers
+def process_training_mode(repo, test_workflow, pr, headers, csv_writer):
+    """Process a PR in training mode (with test runs and cucumber downloads)."""
+    try:
+        initial_test_run_with_cucumber = get_cucumber_initial_test_run(test_workflow, pr)
+        if not initial_test_run_with_cucumber:
+            return False
+    except Exception as e:
+        logger.error("Error getting initial test run for PR #%d: %s", pr.number, e)
+        return False
+
+    try:
+        has_secondary = download_secondary_cucumber_reports(
+            initial_test_run_with_cucumber, pr.number, headers
+        )
+        if not has_secondary:
+            logger.info(
+                "No secondary cucumber reports for PR #%d, skipping feature extraction.",
+                pr.number
             )
-            if not has_secondary:
-                logger.info(
-                    "No secondary cucumber reports for PR #%d, skipping feature extraction.",
-                    pr_num
-                )
-                continue
-        except Exception as e:
-            logger.error("Error downloading secondary cucumber reports for PR #%d: %s", pr_num, e)
+            return False
+    except Exception as e:
+        logger.error("Error downloading secondary cucumber reports for PR #%d: %s", pr.number, e)
+        return False
 
-        try:
-            modified_files = get_modified_files(repo, pr, initial_test_run_with_cucumber)
-            logger.info("Files modified in PR that triggered test run: %s", modified_files)
-        except Exception as e:
-            logger.error("Error obtaining modified files for PR #%d: %s", pr_num, e)
+    try:
+        extract_and_write_pr_features(
+            repo, pr, initial_test_run_with_cucumber, csv_writer
+        )
+    except Exception as e:
+        logger.error("Error extracting features for PR #%d: %s", pr.number, e)
+        return False
 
-        try:
-            file_extensions = get_file_extensions(modified_files)
-            logger.info("File extensions of files modified in PR: %s", file_extensions)
-        except Exception as e:
-            logger.error("Error obtaining file extensions for PR #%d: %s", pr_num, e)
+    return True
 
-        try:
-            change_history = get_files_change_history(repo, modified_files, RECENT_DAYS)
-            logger.info("Files Change History: %s", change_history)
-        except Exception as e:
-            logger.error("Error getting modified files change history for PR #%d: %s", pr_num, e)
-
-        write_pr_features_to_csv(csv_writer, file_extensions, change_history, pr_num)
-
-        processed_prs_with_cucumber_reports += 1
+def extract_and_write_pr_features(repo, pr, test_run, csv_writer):
+    """
+    Extracts modified files, file extensions, and change history for a PR and writes to CSV.
+    """
+    modified_files = get_modified_files(repo, pr, test_run)
+    logger.info("Files modified in PR: %s", modified_files)
+    file_extensions = get_file_extensions(modified_files)
+    logger.info("File extensions of files modified in PR: %s", file_extensions)
+    change_history = get_files_change_history(repo, modified_files, RECENT_DAYS)
+    logger.info("Files Change History: %s", change_history)
+    write_pr_features_to_csv(csv_writer, file_extensions, change_history, pr.number)
 
 def main():
     """
@@ -458,24 +481,38 @@ def main():
 
     if len(sys.argv) != 2:
         logger.critical(
-            "Usage: python pr_data_extraction.py <N>\n"
-            "<N> is the number of latest Uyuni PRs (with Cucumber reports) to extract data from."
+            "Usage: python pr_data_extraction.py <N>|'<#PR_NUMBER>'\n"
+            "<N> is the number of latest Uyuni PRs (with Cucumber reports) to extract data from.\n"
+            "'<#PR_NUMBER>' is a specific PR number (e.g., '#12345') to extract features for."
         )
         sys.exit(1)
 
-    try:
-        n = int(sys.argv[1])
-    except ValueError:
-        logger.critical(
-            "Argument <N> must be an integer.\n"
-            "<N> is the number of latest Uyuni PRs (with Cucumber reports) to extract data from."
-        )
-        sys.exit(1)
+    arg = sys.argv[1]
+    single_pr_number = None
+    if arg.startswith("#"):
+        try:
+            single_pr_number = int(arg[1:])
+            n = 1
+        except ValueError:
+            logger.critical(
+                "In single PR mode, argument must be in the form '#<PR_NUMBER>' (e.g., '#5')."
+            )
+            sys.exit(1)
+    else:
+        try:
+            n = int(arg)
+        except ValueError:
+            logger.critical(
+                "Argument must be an integer (for N) or '#<PR_NUMBER>' (e.g., '#12345')."
+            )
+            sys.exit(1)
 
     github_token = load_github_token()
     csv_file, csv_writer = setup_output_csv(RECENT_DAYS)
     try:
-        extract_pr_data(REPO_FULL_NAME, n, github_token, csv_writer)
+        extract_pr_data(
+            REPO_FULL_NAME, n, github_token, csv_writer, single_pr_number
+        )
     finally:
         csv_file.close()
 
