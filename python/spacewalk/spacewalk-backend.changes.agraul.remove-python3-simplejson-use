@@ -1,2 +1,0 @@
-- Remove python3-simplejson use in spacewalk-repo-sync
-  (bsc#1236635)

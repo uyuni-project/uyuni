@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Fri Jul 04 08:51:02 CEST 2025 - rosuna@suse.com
+
+- version 4.3.32-0
+  * Remove python3-simplejson use in spacewalk-repo-sync
+    (bsc#1236635)
+  * Improve translation update process
+  * Cast float pkg metadata to int (gh#uyuni-project/uyuni#9613)
+  * Make reposync allow commas as part of HTTP Proxy password
+    (bsc#1243460)
+  * Remove bootloader linux and initrd files from spacewalk-debug
+  * Use libzypp's Curl2 backend during reposync (bsc#1245222)
+
+-------------------------------------------------------------------
 Thu Feb 13 16:24:20 CET 2025 - rosuna@suse.com
 
 - version 4.3.31-0
