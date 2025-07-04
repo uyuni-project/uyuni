@@ -10,6 +10,7 @@ Feature: Operate an Ansible control node in a normal minion
   Scenario: Pre-requisite: Deploy test playbooks and inventory file
     When I deploy testing playbooks and inventory files to "sle_minion"
 
+@skip_if_github_validation
 @susemanager
   Scenario: Pre-requisite: Enable client tools repositories
     When I enable the repositories "tools_update_repo tools_pool_repo" on this "sle_minion"
