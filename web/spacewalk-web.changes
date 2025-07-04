@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Jul 04 09:43:03 CEST 2025 - rosuna@suse.com
+
+- version 4.3.45-0
+  * Fix: Filters of type Product Temporary Fix cannot be created
+    (bsc#1238922)
+  * Better handling of system list filtering (bsc#1242004)
+  * CVE-2025-23392: Filter user input in systems list page (bsc#1239826)
+  * CVE-2025-23393: Filter user input in systems list page (bsc#1240386)
+  * Improve translation update process
+
+-------------------------------------------------------------------
 Fri Feb 28 14:28:59 CET 2025 - rosuna@suse.com
 
 - version 4.3.44-0
