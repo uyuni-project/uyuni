@@ -70,9 +70,6 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testSubmitExecute() {
-
-        String expectedHostname = ConfigDefaults.get().getHostname();
-
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(BootstrapConfigAction.HOSTNAME, "localhost");
         setRequestPathInfo("/admin/config/BootstrapConfig");
