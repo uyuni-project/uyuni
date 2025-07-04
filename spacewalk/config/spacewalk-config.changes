@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jul 04 08:52:45 CEST 2025 - rosuna@suse.com
+
+- version 4.3.16-0
+  * Allow passing env variables to rhn-config-satellite
+    (bsc#1242148)
+
+-------------------------------------------------------------------
 Thu Feb 13 16:26:24 CET 2025 - rosuna@suse.com
 
 - version 4.3.15-0
