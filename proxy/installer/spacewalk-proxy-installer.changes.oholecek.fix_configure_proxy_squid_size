@@ -1,2 +1,0 @@
-- Fixed configure-proxy not updating squid size correctly
-  after switch to aufs backend
