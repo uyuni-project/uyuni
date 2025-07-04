@@ -190,7 +190,6 @@ public class ServerFactory extends HibernateFactory {
      * @param name the hostname
      * @return the server, if it is found
      */
-    @SuppressWarnings("unchecked")
     public static Optional<Server> lookupProxyServer(String name) {
         boolean nameIsFullyQualified = name.contains(".");
         if (!nameIsFullyQualified) {
@@ -200,17 +199,18 @@ public class ServerFactory extends HibernateFactory {
 
         Optional<Server> result = findByFqdn(name);
 
-        if (result.isPresent()) {
+        if (result.isPresent() && result.get().isProxy()) {
             return result;
         }
-        result = HibernateFactory.getSession().createNativeQuery("""
-                SELECT *, 0 as clazz_
-                FROM rhnServer
-                WHERE id IN (SELECT server_id FROM rhnProxyInfo)
-                AND hostname = :hostname
-                LIMIT 1;
+        result = getSession().createQuery("""
+                SELECT s
+                FROM Server s
+                JOIN s.proxyInfo pi
+                WHERE s.hostname = :hostname
                 """, Server.class)
-                .setParameter("hostname", name, StandardBasicTypes.STRING).uniqueResultOptional();
+                .setParameter("hostname", name)
+                .setMaxResults(1)
+                .uniqueResultOptional();
 
         if (result.isPresent()) {
             return result;
@@ -218,26 +218,28 @@ public class ServerFactory extends HibernateFactory {
 
         // precise search did not work, try imprecise
         if (nameIsFullyQualified) {
-            String srippedHostname = name.split("\\.")[0];
+            String strippedHostname = name.split("\\.")[0];
 
-            return HibernateFactory.getSession().createNativeQuery("""
-                SELECT *, 0 as clazz_
-                FROM rhnServer
-                WHERE id IN (SELECT server_id FROM rhnProxyInfo)
-                AND hostname = :hostname
-                LIMIT 1;
+            return getSession().createQuery("""
+                SELECT s
+                FROM Server s
+                JOIN s.proxyInfo pi
+                WHERE s.hostname = :hostname
                 """, Server.class)
-                    .setParameter("hostname", srippedHostname, StandardBasicTypes.STRING).uniqueResultOptional();
+                    .setParameter("hostname", strippedHostname)
+                    .setMaxResults(1)
+                    .uniqueResultOptional();
         }
         else {
-            return HibernateFactory.getSession().createNativeQuery("""
-                SELECT *, 0 as clazz_
-                FROM rhnServer
-                WHERE id IN (SELECT server_id FROM rhnProxyInfo)
-                AND hostname LIKE :hostname
-                LIMIT 1;
+            return getSession().createQuery("""
+                SELECT s
+                FROM Server s
+                JOIN s.proxyInfo pi
+                WHERE s.hostname LIKE :hostname
                 """, Server.class)
-                    .setParameter("hostname", name + ".%", StandardBasicTypes.STRING).uniqueResultOptional();
+                    .setParameter("hostname", name + ".%")
+                    .setMaxResults(1)
+                    .uniqueResultOptional();
         }
     }
 

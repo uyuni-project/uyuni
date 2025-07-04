@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.server.test;
 
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceState;
@@ -70,7 +71,8 @@ public class VirtualInstanceManufacturer {
                 VirtualInstanceFactory.getInstance().getRunningState());
         Server server = salt ?
                 MinionServerFactoryTest.createTestMinionServer(user) :
-                ServerFactoryTest.createTestServer(user);
+                ServerFactoryTest.createTestServer(user, false,
+                        ServerConstants.getServerGroupTypeEnterpriseEntitled());
         guest.setGuestSystem(server);
         return guest;
     }

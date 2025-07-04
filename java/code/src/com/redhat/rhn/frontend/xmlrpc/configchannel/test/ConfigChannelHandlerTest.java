@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
@@ -50,6 +51,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigChannelCreationHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -76,6 +78,12 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     private static final String LABEL = "LABEL" + TestUtils.randomString();
     private static final String NAME = "NAME" + TestUtils.randomString();
     private static final String DESCRIPTION = "DESCRIPTION" + TestUtils.randomString();
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi() {
+        @Override
+        public void scheduleActionExecution(Action action) {
+            // disable for testing
+        }
+    };
 
     @Test
     public void testCreate() {
@@ -545,6 +553,8 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testScheduleFileComparisons() {
+        ActionManager.setTaskomaticApi(TASKOMATIC_API);
+
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
@@ -592,6 +602,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testDeployAllSystems()  throws Exception {
+        ActionManager.setTaskomaticApi(TASKOMATIC_API);
         // Create  global config channels
         List<ConfigChannel> gccList = new ArrayList<>();
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
