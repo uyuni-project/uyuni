@@ -15,6 +15,8 @@ CREATE TABLE SystemOutdated
     system_id                   NUMERIC NOT NULL,
     packages_out_of_date        BIGINT,
     errata_out_of_date          BIGINT,
+    extra_pkg_count             BIGINT,
+    status                      VARCHAR(20),
     synced_date                 TIMESTAMPTZ DEFAULT (current_timestamp)
 );
 
