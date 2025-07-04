@@ -34,6 +34,8 @@ COMMENT ON COLUMN System.registration_time
   IS 'When this system was onboarded';
 COMMENT ON COLUMN System.last_checkin_time
   IS 'When this system was visible and reachable last time';
+COMMENT ON COLUMN System.last_boot_time
+  IS 'When this system was last time booted';
 COMMENT ON COLUMN System.kernel_version
   IS 'The version of the kernel installed on this system';
 COMMENT ON COLUMN System.architecture
