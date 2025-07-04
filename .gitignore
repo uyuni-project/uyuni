@@ -93,6 +93,7 @@ venv/
 # Predictive Test Selection outputs
 .github/scripts/predictive-test-selection/*.log
 .github/scripts/predictive-test-selection/*.csv
+.github/scripts/predictive-test-selection/PR*
 
 # Schema
 

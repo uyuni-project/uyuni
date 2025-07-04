@@ -22,6 +22,7 @@ import sys
 import logging
 import datetime
 import csv
+import zipfile
 
 import requests
 from github import Github
@@ -172,14 +173,29 @@ def get_cucumber_initial_test_run(test_workflow, pr):
     logger.info("No %s runs with Cucumber reports found for PR #%d", TEST_WORKFLOW_NAME, pr.number)
     return None
 
-def download_cucumber_artifacts(run_with_cucumber, pr_number, headers):
+def download_secondary_cucumber_reports(run_with_cucumber, pr_number, headers):
     """
-    Downloads all Cucumber artifacts from the given workflow run and saves them as ZIP files.
+    Downloads all Cucumber artifacts from the given workflow run and saves them as ZIP files
+    inside a PR-specific folder. Skips downloading if the PR folder already exists.
+    After downloading, extracts and filters secondary reports.
+    Returns True if secondary/recommended reports exist, False otherwise.
     """
+    pr_folder = f"PR{pr_number}"
+    if os.path.exists(pr_folder):
+        logger.info("Folder %s exists, skipping artifact download for PR #%d", pr_folder, pr_number)
+        # Assume extraction already happened, so check for secondary/recommended files
+        return extract_secondary_reports(pr_number)
+
+    try:
+        os.makedirs(pr_folder, exist_ok=True)
+    except Exception as e:
+        logger.error("Failed to create folder %s: %s", pr_folder, e)
+        return False
 
     for artifact in run_with_cucumber.get_artifacts():
         if artifact.name.lower().startswith("cucumber"):
             url = artifact.archive_download_url
+            zip_filename = os.path.join(pr_folder, f"{artifact.name}.zip")
             try:
                 response = requests.get(url, headers=headers, stream=True, timeout=30)
                 response.raise_for_status()  # Raise HTTP Error for bad codes
@@ -187,13 +203,76 @@ def download_cucumber_artifacts(run_with_cucumber, pr_number, headers):
                 logger.warning("Failed to download %s: %s", artifact.name, e)
                 continue
 
-            filename = f"pr{pr_number}_run{run_with_cucumber.id}_{artifact.name}.zip"
             try:
-                with open(filename, "wb") as f:
+                with open(zip_filename, "wb") as f:
                     f.write(response.content)
-                logger.info("Downloaded: %s", filename)
+                logger.info("Downloaded: %s", zip_filename)
             except OSError as e:
-                logger.error("Failed to write file %s: %s", filename, e)
+                logger.error("Failed to write file %s: %s", zip_filename, e)
+                continue
+
+    return extract_secondary_reports(pr_number)
+
+def extract_secondary_reports(pr_number):
+    """
+    Extracts all zip files in the PR folder, then deletes all files
+    that are not secondary test reports (i.e., files not containing 'secondary'
+    or 'recommended' in their name). Also deletes the original zip files.
+    Returns True if any secondary/recommended files remain, False otherwise.
+    """
+    pr_folder = f"PR{pr_number}"
+    if not os.path.exists(pr_folder):
+        logger.warning("PR folder %s does not exist for extraction.", pr_folder)
+        return False
+
+    extract_all_zip_files(pr_folder)
+    has_secondary = delete_non_secondary_reports(pr_folder)
+    if not has_secondary:
+        try:
+            os.rmdir(pr_folder)
+            logger.info("Delete folder %s as no secondary/recommended reports exist.", pr_folder)
+        except Exception as e:
+            logger.warning("Failed to delete empty PR folder %s: %s", pr_folder, e)
+    return has_secondary
+
+def extract_all_zip_files(pr_folder):
+    """Extract all zip files in the given folder and delete them after extraction."""
+    for filename in os.listdir(pr_folder):
+        if filename.endswith(".zip"):
+            zip_path = os.path.join(pr_folder, filename)
+            try:
+                with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+                    zip_ref.extractall(pr_folder)
+                logger.debug("Extracted: %s", zip_path)
+            except zipfile.BadZipFile as e:
+                logger.error("Failed to extract %s: %s", zip_path, e)
+            except Exception as e:
+                logger.error("Unexpected error extracting %s: %s", zip_path, e)
+            finally:
+                try:
+                    os.remove(zip_path)
+                    logger.debug("Deleted zip file: %s", zip_path)
+                except Exception as e:
+                    logger.warning("Failed to delete zip file %s: %s", zip_path, e)
+
+def delete_non_secondary_reports(pr_folder):
+    """
+    Delete all reports not containing 'secondary' or 'recommended' in their name.
+    Returns True if any secondary/recommended files remain, False otherwise.
+    """
+    has_secondary = False
+    for filename in os.listdir(pr_folder):
+        file_path = os.path.join(pr_folder, filename)
+        keep = any(word in filename for word in ("secondary", "recommended"))
+        if os.path.isfile(file_path) and not keep:
+            try:
+                os.remove(file_path)
+                logger.debug("Deleted non-secondary/recommended cucumber report: %s", file_path)
+            except Exception as e:
+                logger.warning("Failed to delete cucumber report %s: %s", file_path, e)
+        elif os.path.isfile(file_path) and keep:
+            has_secondary = True
+    return has_secondary
 
 def get_modified_files(repo, pr, test_run):
     """
@@ -337,9 +416,17 @@ def extract_pr_data(repo_full_name, n, github_token, csv_writer):
             logger.error("Error getting initial test run for PR #%d: %s", pr_num, e)
 
         try:
-            download_cucumber_artifacts(initial_test_run_with_cucumber, pr_num, headers)
+            has_secondary = download_secondary_cucumber_reports(
+                initial_test_run_with_cucumber, pr_num, headers
+            )
+            if not has_secondary:
+                logger.info(
+                    "No secondary cucumber reports for PR #%d, skipping feature extraction.",
+                    pr_num
+                )
+                continue
         except Exception as e:
-            logger.error("Error downloading cucumber artifacts for PR #%d: %s", pr_num, e)
+            logger.error("Error downloading secondary cucumber reports for PR #%d: %s", pr_num, e)
 
         try:
             modified_files = get_modified_files(repo, pr, initial_test_run_with_cucumber)
