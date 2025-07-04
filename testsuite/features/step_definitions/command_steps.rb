@@ -881,6 +881,30 @@ When(/^I (enable|disable) Debian-like "([^"]*)" repository on "([^"]*)"$/) do |a
   node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} \"#{source_repo}\"")
 end
 
+When(/^I add repository "([^"]*)" with url "([^"]*)" on "([^"]*)"((?: without error control)?)$/) do |repo, url, host, error_control|
+  node = get_target(host)
+  os_family = node.os_family
+  cmd = ''
+  # Pending to be added: cases for rhlike and a deblike minions
+  case os_family
+  when /^opensuse/, /^sles/, /^suse/
+    cmd = "zypper addrepo #{url} #{repo}"
+  end
+  node.run(cmd, verbose: true, check_errors: error_control.empty?)
+end
+
+When(/^I remove repository "([^"]*)" on "([^"]*)"((?: without error control)?)$/) do |repo, host, error_control|
+  node = get_target(host)
+  os_family = node.os_family
+  cmd = ''
+  # Pending to be added: cases for rhlike and a deblike minions
+  case os_family
+  when /^opensuse/, /^sles/, /^suse/
+    cmd = "zypper removerepo #{repo}"
+  end
+  node.run(cmd, verbose: true, check_errors: error_control.empty?)
+end
+
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
   os_family = node.os_family
