@@ -1204,6 +1204,26 @@ When(/^I copy server's keys to the proxy$/) do
   end
 end
 
+When(/^I copy proxy's CA certificate to the traditional client$/) do
+  file = 'RHN-ORG-TRUSTED-SSL-CERT'
+  proxy = get_target('proxy')
+  client = get_target('client')
+
+  client.run("rm /etc/pki/trust/anchors/#{file}")
+
+  success = file_extract(proxy, "/etc/pki/trust/anchors/#{file}", "/tmp/#{file}")
+  raise ScriptError, 'File extraction failed' unless success
+
+  success = file_inject(client, "/tmp/#{file}", "/etc/pki/trust/anchors/#{file}")
+  raise ScriptError, 'File injection failed' unless success
+end
+
+When(/I update the CA certificates on the traditional client$/) do
+  client = get_target('client')
+
+  client.run('update-ca-certificates')
+end
+
 When(/^I configure the proxy$/) do
   # prepare the settings file
   settings = "RHN_PARENT=#{get_target('server').full_hostname}\n" \
@@ -1763,7 +1783,7 @@ When(/^I check all certificates after renaming the server hostname$/) do
 
   raise SystemCallError, 'Error getting server certificate serial!' unless result_code.zero?
 
-  targets = %w[proxy sle_minion ssh_minion rhlike_minion deblike_minion build_host kvm_server]
+  targets = %w[proxy client sle_minion ssh_minion rhlike_minion deblike_minion build_host kvm_server]
   targets.each do |target|
     os_family = get_target(target).os_family
     # get all defined minions from the environment variables and check their certificate serial

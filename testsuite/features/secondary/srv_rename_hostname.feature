@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023 SUSE LLC
+# Copyright (c) 2022-2025 SUSE LLC
 # Licensed under the terms of the MIT License.
 #
 # This feature can cause failures in the following features:
@@ -52,6 +52,11 @@ Feature: Reconfigure the server's hostname
 @buildhost
   Scenario: Apply high state on the build host to populate new server CA
     When I apply highstate on "build_host"
+
+@client
+  Scenario: Install explicitly new server CA on traditional client
+    When I copy proxy's CA certificate to the traditional client
+    And I update the CA certificates on the traditional client
 
 @virthost_kvm
   # WORKAROUND: Use the webUI instead of Salt like with the other minions above
@@ -122,6 +127,11 @@ Feature: Reconfigure the server's hostname
 @buildhost
   Scenario: Apply high state on the build host to populate new server CA
     When I apply highstate on "build_host"
+
+@client
+  Scenario: Install explicitly new server CA on traditional client
+    When I copy proxy's CA certificate to the traditional client
+    And I update the CA certificates on the traditional client
 
 @virthost_kvm
   # WORKAROUND: Use the webUI instead of Salt like with the other minions above
