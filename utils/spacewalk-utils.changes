@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jul 04 09:42:17 CEST 2025 - rosuna@suse.com
+
+- version 4.3.24-0
+  * Remove spacewalk-clone-by-date dependency on python3-simplejson
+
+-------------------------------------------------------------------
 Thu Feb 13 16:28:49 CET 2025 - rosuna@suse.com
 
 - version 4.3.23-0
