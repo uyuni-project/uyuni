@@ -30,7 +30,7 @@ Feature: Action chain on traditional clients
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Create a custom action chain for the traditional client
-    When I create an action chain with label "trad_client_action_chain" via API 
+    When I create an action chain with label "trad_client_action_chain" via API
     And I follow the left menu "Schedule > Action Chains"
     Then I should see a "trad_client_action_chain" text
 
@@ -164,7 +164,7 @@ Feature: Action chain on traditional clients
 
   # previous, completed, action chain will no longer be available
   Scenario: Create a custom action chain for the traditional client minion
-    When I create an action chain with label "trad_client_action_chain_to_delete" via API 
+    When I create an action chain with label "trad_client_action_chain_to_delete" via API
     And I follow the left menu "Schedule > Action Chains"
     Then I should see a "trad_client_action_chain_to_delete" text
 
@@ -215,12 +215,12 @@ Feature: Action chain on traditional clients
 
   Scenario: Run and cancel an action chain via API
     Given I want to operate on this "sle_client"
-    When I create an action chain with label "trad_client_cancelled_chain" via API 
+    When I create an action chain with label "trad_client_cancelled_chain" via API
     And I add a system reboot to the action chain via API
     Then I should be able to see all these actions in the action chain via API
     When I schedule the action chain via API
     And I wait until there are no more action chains listed via API
-    Then I should see scheduled action, called "System reb:qoot scheduled", listed via API
+    Then I should see scheduled action, called "System reboot scheduled", listed via API
     When I cancel all scheduled actions via API
     And I wait until there are no more scheduled actions listed via API
     And I delete the action chain via API
@@ -228,7 +228,7 @@ Feature: Action chain on traditional clients
   Scenario: Run an action chain via API on traditional client
     Given I want to operate on this "sle_client"
     When I run "rhn-actions-control --enable-all" on "sle_client"
-    And I create an action chain with label "trad_client_multiple_scripts" via API 
+    And I create an action chain with label "trad_client_multiple_scripts" via API
     And I add the script "echo -n 1 >> /tmp/action_chain.log" to the action chain via API
     And I add the script "echo -n 2 >> /tmp/action_chain.log" to the action chain via API
     And I add the script "echo -n 3 >> /tmp/action_chain.log" to the action chain via API
