@@ -1,4 +1,46 @@
 -------------------------------------------------------------------
+Fri Jul 04 08:53:11 CEST 2025 - rosuna@suse.com
+
+- version 4.3.86-0
+  * Fix tooltip text for icons in the patches list (bsc#1234608)
+  * Fix: openscap audit is running immediately even when scheduled
+    for next days (bsc#1239743)
+  * Adds calling a highstate in the API for actionchain
+    (bsc#1157520)
+  * Fix: Using reboot_suggested or restart_suggested by API
+    always responds false (bsc#1236910)
+  * Fix action chain scheduled within SSM creates no link
+    for the new action chain (bsc#1243825)
+  * Fix: severity levels are missing in API output of
+    errata.getDetails (bsc#1240038)
+  * Fix: Internal server error when accessing groups in
+    activation keys (bsc#1237581)
+  * Fix http_proxy_password stored as clear text in
+    /var/log/messages (bsc#1242148)
+  * Fix: manage errors in user-defined pillars (bsc#1230403)
+  * In CLM live-patching template form, show kernel versions from
+    base product as well (bsc#1239907)
+  * CVE-2025-23393: Filter user input in systems list page (bsc#1240386)
+  * Remove unneeded debug message
+  * Better handling of system list filtering (bsc#1242004)
+  * Fix issue preventing OES products from showing up (bsc#1237082)
+  * Fix config channels not following priority in highstate
+    (bsc#1237694)
+  * Improve performance when changing channels on multiple system
+    through SSM (bsc#1239154)
+  * Fix package locking for packages not available anymore
+    in the assigned repositories (bsc#1236877)
+  * Do not show Vendor Advisory link for SL-Micro 6.0 and 6.1
+    products. They are not published yet on the web (bsc#1237770)
+  * Fix API namespace for AdminPaygHandler
+  * Fix CLM channel name definition (bsc#1239868)
+  * Fix bug: XMLRPC API endpoint updateRepoSsl resets
+    hasSignedMetadata repository property
+  * Fix API documentation for system config listFiles (bsc#1245027)
+  * Fix inconsistency in task schedule deactivation and
+    add activation capability (bsc#1225740)
+
+-------------------------------------------------------------------
 Fri Mar 21 14:52:47 CET 2025 - rosuna@suse.com
 
 - version 4.3.85-0
