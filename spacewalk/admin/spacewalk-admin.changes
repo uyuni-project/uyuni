@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri Jul 04 08:50:02 CEST 2025 - rosuna@suse.com
+
+- version 4.3.14-0
+  * Support environment variables in rhn-config-satellite
+    (bsc#1242148)
+  * mgr-monitoring-ctl: avoid possible UnicodeDecoreError
+    due non-ascii characters (bsc#1242030)
+
+-------------------------------------------------------------------
 Tue Aug 29 16:35:03 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.13-1
