@@ -30,8 +30,8 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
+import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
-import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
@@ -1169,7 +1169,11 @@ public class SaltUtils {
                                 .orElse(null),
                         fdr));
 
-        ConfigVerifyAction configAction = (ConfigVerifyAction) action;
+        ConfigAction configAction = (ConfigAction) action;
+        if (null == configAction.getConfigRevisionActions()) {
+            return;
+        }
+
         configAction.getConfigRevisionActions().forEach(cra -> {
             ConfigRevision cr = cra.getConfigRevision();
             String fileName = cr.getConfigFile().getConfigFileName().getPath();

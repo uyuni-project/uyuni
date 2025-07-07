@@ -31,9 +31,12 @@ import java.util.Set;
  * PackageAction
  */
 public class PackageAction extends Action {
-
     private static final long serialVersionUID = -6964115307447205711L;
     private Set<PackageActionDetails> details = new HashSet<>();
+
+    protected PackageAction() {
+        //should instantiate one of the child classes
+    }
 
     /**
      * Add a PackageActionDetails to the set of details

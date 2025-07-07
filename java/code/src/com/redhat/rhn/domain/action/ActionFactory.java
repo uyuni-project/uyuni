@@ -30,10 +30,13 @@ import com.redhat.rhn.domain.action.ansible.PlaybookAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
+import com.redhat.rhn.domain.action.config.ConfigDeployAction;
+import com.redhat.rhn.domain.action.config.ConfigDiffAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.ConfigUploadAction;
 import com.redhat.rhn.domain.action.config.ConfigUploadMtimeAction;
+import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
 import com.redhat.rhn.domain.action.config.DaemonConfigAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
@@ -46,6 +49,14 @@ import com.redhat.rhn.domain.action.kickstart.KickstartInitiateGuestAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartScheduleSyncAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
+import com.redhat.rhn.domain.action.rhnpackage.PackageAutoUpdateAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageDeltaAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageLockAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRefreshListAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRunTransactionAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageVerifyAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
@@ -362,47 +373,86 @@ public class ActionFactory extends HibernateFactory {
      */
     public static Action createAction(ActionType typeIn, Date earliest) {
         Action retval;
-        if (typeIn.equals(TYPE_ERRATA)) {
+
+        if (typeIn.equals(TYPE_PACKAGES_REFRESH_LIST)) {
+            retval = new PackageRefreshListAction();
+        }
+        else if (typeIn.equals(TYPE_HARDWARE_REFRESH_LIST)) {
+            retval = new HardwareRefreshAction();
+        }
+        else if (typeIn.equals(TYPE_PACKAGES_UPDATE)) {
+            retval = new PackageUpdateAction();
+        }
+        else if (typeIn.equals(TYPE_PACKAGES_REMOVE)) {
+            retval = new PackageRemoveAction();
+        }
+        else if (typeIn.equals(TYPE_ERRATA)) {
             ErrataAction ea = new ErrataAction();
             ea.setDetails(new ActionPackageDetails(ea, false));
             retval = ea;
         }
-        else if (typeIn.equals(TYPE_SCRIPT_RUN)) {
-            retval = new ScriptRunAction();
+        else if (typeIn.equals(TYPE_UP2DATE_CONFIG_GET)) {
+            retval = new Up2DateConfigGetAction();
         }
-        else if (typeIn.equals(TYPE_CONFIGFILES_DIFF) ||
-                typeIn.equals(TYPE_CONFIGFILES_DEPLOY) ||
-                typeIn.equals(TYPE_CONFIGFILES_VERIFY)) {
-            retval = new ConfigAction();
+        else if (typeIn.equals(TYPE_UP2DATE_CONFIG_UPDATE)) {
+            retval = new Up2DateConfigUpdateAction();
+        }
+        else if (typeIn.equals(TYPE_PACKAGES_DELTA)) {
+            retval = new PackageDeltaAction();
+        }
+        else if (typeIn.equals(TYPE_REBOOT)) {
+            retval = new RebootAction();
+        }
+        else if (typeIn.equals(TYPE_ROLLBACK_CONFIG)) {
+            retval = new RollbackConfigAction();
+        }
+        else if (typeIn.equals(TYPE_ROLLBACK_LISTTRANSACTIONS)) {
+            retval = new RollbackListTransactionsAction();
+        }
+        else if (typeIn.equals(TYPE_ROLLBACK_ROLLBACK)) {
+            retval = new RollbackAction();
+        }
+        else if (typeIn.equals(TYPE_PACKAGES_AUTOUPDATE)) {
+            retval = new PackageAutoUpdateAction();
+        }
+        else if (typeIn.equals(TYPE_PACKAGES_RUNTRANSACTION)) {
+            retval = new PackageRunTransactionAction();
         }
         else if (typeIn.equals(TYPE_CONFIGFILES_UPLOAD)) {
             retval = new ConfigUploadAction();
         }
-        else if (typeIn.equals(TYPE_PACKAGES_AUTOUPDATE) ||
-                typeIn.equals(TYPE_PACKAGES_DELTA) ||
-                typeIn.equals(TYPE_PACKAGES_REFRESH_LIST) ||
-                typeIn.equals(TYPE_PACKAGES_REMOVE) ||
-                typeIn.equals(TYPE_PACKAGES_RUNTRANSACTION) ||
-                typeIn.equals(TYPE_PACKAGES_UPDATE) ||
-                typeIn.equals(TYPE_PACKAGES_VERIFY) ||
-                typeIn.equals(TYPE_PACKAGES_LOCK)) {
-            retval = new PackageAction();
+        else if (typeIn.equals(TYPE_CONFIGFILES_DEPLOY)) {
+            retval = new ConfigDeployAction();
         }
-        else if (typeIn.equals(TYPE_CONFIGFILES_MTIME_UPLOAD)) {
-            retval = new ConfigUploadMtimeAction();
+        else if (typeIn.equals(TYPE_CONFIGFILES_VERIFY)) {
+            retval = new ConfigVerifyAction();
         }
-        //Kickstart Actions
-        else if (typeIn.equals(TYPE_KICKSTART_SCHEDULE_SYNC)) {
-            retval = new KickstartScheduleSyncAction();
+        else if (typeIn.equals(TYPE_CONFIGFILES_DIFF)) {
+            retval = new ConfigDiffAction();
         }
         else if (typeIn.equals(TYPE_KICKSTART_INITIATE)) {
             retval = new KickstartInitiateAction();
         }
-        else if (typeIn.equals(TYPE_KICKSTART_INITIATE_GUEST)) {
-            retval = new KickstartInitiateGuestAction();
+        else if (typeIn.equals(TYPE_KICKSTART_SCHEDULE_SYNC)) {
+            retval = new KickstartScheduleSyncAction();
+        }
+        else if (typeIn.equals(TYPE_CONFIGFILES_MTIME_UPLOAD)) {
+            retval = new ConfigUploadMtimeAction();
+        }
+        else if (typeIn.equals(TYPE_SCRIPT_RUN)) {
+            retval = new ScriptRunAction();
         }
         else if (typeIn.equals(TYPE_DAEMON_CONFIG)) {
             retval = new DaemonConfigAction();
+        }
+        else if (typeIn.equals(TYPE_PACKAGES_VERIFY)) {
+            retval = new PackageVerifyAction();
+        }
+        else if (typeIn.equals(TYPE_RHN_APPLET_USE_SATELLITE)) {
+            retval = new AppletUseSatelliteAction();
+        }
+        else if (typeIn.equals(TYPE_KICKSTART_INITIATE_GUEST)) {
+            retval = new KickstartInitiateGuestAction();
         }
         else if (typeIn.equals(TYPE_VIRTIZATION_HOST_SUBSCRIBE_TO_TOOLS_CHANNEL)) {
             retval = new KickstartHostToolsChannelSubscriptionAction();
@@ -413,11 +463,17 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_SCAP_XCCDF_EVAL)) {
             retval = new ScapAction();
         }
+        else if (typeIn.equals(TYPE_CLIENTCERT_UPDATE_CLIENT_CERT)) {
+            retval = new CertificateUpdateAction();
+        }
         else if (typeIn.equals(TYPE_DEPLOY_IMAGE)) {
             retval = new DeployImageAction();
         }
         else if (typeIn.equals(TYPE_DIST_UPGRADE)) {
             retval = new DistUpgradeAction();
+        }
+        else if (typeIn.equals(TYPE_PACKAGES_LOCK)) {
+            retval = new PackageLockAction();
         }
         else if (typeIn.equals(TYPE_APPLY_STATES)) {
             retval = new ApplyStatesAction();
@@ -434,14 +490,14 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_PLAYBOOK)) {
             retval = new PlaybookAction();
         }
-        else if (typeIn.equals(TYPE_INVENTORY)) {
-            retval = new InventoryAction();
-        }
         else if (typeIn.equals(TYPE_COCO_ATTESTATION)) {
             retval = new CoCoAttestationAction();
         }
         else if (typeIn.equals(TYPE_APPSTREAM_CONFIGURE)) {
             retval = new AppStreamAction();
+        }
+        else if (typeIn.equals(TYPE_INVENTORY)) {
+            retval = new InventoryAction();
         }
         else if (typeIn.equals(TYPE_SUPPORTDATA_GET)) {
             retval = new SupportDataAction();

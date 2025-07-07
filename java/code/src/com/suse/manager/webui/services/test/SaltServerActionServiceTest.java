@@ -36,6 +36,7 @@ import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
+import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.channel.Channel;
@@ -116,6 +117,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     private MinionServer minion;
     private SaltServerActionService saltServerActionService;
     private TaskomaticApi taskomaticMock;
+    private SaltService saltService;
 
     @Override
     @BeforeEach
@@ -123,7 +125,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
-        SaltService saltService = new SaltService() {
+        saltService = new SaltService() {
             @Override
             public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
                 return Optional.of(Result.success(new JsonObject()));
@@ -143,7 +145,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     private SaltServerActionService createSaltServerActionService(SystemQuery systemQuery, SaltApi saltApi) {
         SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi);
         SaltServerActionService service = new SaltServerActionService(saltApi, saltUtils, new SaltKeyUtils(saltApi));
-        service.setSkipCommandScriptPerms(true);
+        ScriptRunAction.setSkipCommandScriptPerms(true);
         return service;
     }
 
@@ -613,6 +615,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         SubscribeChannelsAction action = (SubscribeChannelsAction) ActionManager.createAction(
                 user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS, "Subscribe to channels", Date.from(now.toInstant()));
+        action.setSaltApi(saltService);
 
         SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
         details.setBaseChannel(base);
