@@ -470,7 +470,7 @@ public class SaltUtils {
         // If the State was not executed due 'require' statement
         // we directly set the action to FAILED.
         if (jsonResult == null && function.isEmpty()) {
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setStatusFailed();
             serverAction.setResultMsg("Prerequisite failed");
             return;
         }
@@ -478,7 +478,7 @@ public class SaltUtils {
         // Determine the final status of the action
         if (actionFailed(function, jsonResult, success, retcode)) {
             LOG.debug("Status of action {} being set to Failed.", serverAction.getParentAction().getId());
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setStatusFailed();
             // check if the minion is locked (blackout mode)
             String output = getJsonResultWithPrettyPrint(jsonResult);
             if (output.startsWith("'ERROR") && output.contains("Minion in blackout mode")) {
@@ -487,7 +487,7 @@ public class SaltUtils {
             }
         }
         else {
-            serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+            serverAction.setStatusCompleted();
         }
 
         Action.UpdateAuxArgs auxArgs = new Action.UpdateAuxArgs(retcode, success, jid, this,
@@ -822,7 +822,7 @@ public class SaltUtils {
         int actionsChanged = 0;
         for (ServerAction sa : serverActions) {
             if (shouldCleanupAction(bootTime, sa)) {
-                sa.setStatus(ActionFactory.STATUS_COMPLETED);
+                sa.setStatusCompleted();
                 sa.setCompletionTime(new Date());
                 sa.setResultMsg("Reboot completed.");
                 sa.setResultCode(0L);
@@ -839,13 +839,13 @@ public class SaltUtils {
         Action action = sa.getParentAction();
         boolean result = false;
         if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
-            if (sa.getStatus().equals(ActionFactory.STATUS_PICKED_UP) && sa.getPickupTime() != null) {
+            if (sa.isStatusPickedUp() && sa.getPickupTime() != null) {
                 result = bootTime.after(sa.getPickupTime());
             }
-            else if (sa.getStatus().equals(ActionFactory.STATUS_PICKED_UP) && sa.getPickupTime() == null) {
+            else if (sa.isStatusPickedUp() && sa.getPickupTime() == null) {
                 result = bootTime.after(action.getEarliestAction());
             }
-            else if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+            else if (sa.isStatusQueued()) {
                 if (action.getPrerequisite() != null) {
                     // queued reboot actions that do not complete in 12 hours will
                     // be cleaned up by MinionActionUtils.cleanupMinionActions()
@@ -878,7 +878,7 @@ public class SaltUtils {
         if ((prereqType.isEmpty() || prereqType.get().equals(action.getActionType())) &&
                 action.getServerActions().stream()
                         .filter(sa -> sa.getServer().getId() == systemId)
-                        .filter(sa -> ActionFactory.STATUS_COMPLETED.equals(sa.getStatus()))
+                        .filter(sa -> sa.isStatusCompleted())
                         .findFirst().isPresent()) {
             return true;
         }

@@ -15,7 +15,6 @@
 package com.redhat.rhn.domain.action.config;
 
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -80,7 +79,7 @@ public class ConfigDeployAction extends ConfigAction {
      */
     @Override
     public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+        if (serverAction.isStatusCompleted()) {
             serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.deployed"));
         }
         else {

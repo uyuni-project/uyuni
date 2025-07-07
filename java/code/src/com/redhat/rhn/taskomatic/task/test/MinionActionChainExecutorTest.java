@@ -18,6 +18,7 @@ package com.redhat.rhn.taskomatic.task.test;
 import static org.jmock.AbstractExpectations.any;
 import static org.jmock.AbstractExpectations.returnValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -88,13 +89,13 @@ public class MinionActionChainExecutorTest extends JMockBaseTestCaseWithUser {
 
         Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
         a1.setEarliestAction(Date.from(Instant.now().minus(7, ChronoUnit.DAYS)));
-        ServerAction sa1 = ActionFactoryTest.addServerAction(user, a1, ActionFactory.STATUS_QUEUED);
+        ServerAction sa1 = ActionFactoryTest.addServerAction(user, a1, ServerAction::setStatusQueued);
         TestUtils.saveAndReload(a1);
         ActionChainFactory.queueActionChainEntry(a1, actionChain, sa1.getServer());
 
         Action a2 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_PACKAGES_UPDATE);
         a2.setEarliestAction(Date.from(Instant.now().minus(7, ChronoUnit.DAYS)));
-        ServerAction sa2 = ActionFactoryTest.addServerAction(user, a2, ActionFactory.STATUS_QUEUED);
+        ServerAction sa2 = ActionFactoryTest.addServerAction(user, a2, ServerAction::setStatusQueued);
         TestUtils.saveAndReload(a2);
         ActionChainFactory.queueActionChainEntry(a2, actionChain, sa2.getServer());
 
@@ -137,11 +138,11 @@ public class MinionActionChainExecutorTest extends JMockBaseTestCaseWithUser {
         sa1 = HibernateFactory.reload(sa1);
         sa2 = HibernateFactory.reload(sa2);
 
-        assertEquals(ActionFactory.STATUS_FAILED, sa1.getStatus());
+        assertTrue(sa1.isStatusFailed());
         assertEquals(expectedMessage, sa1.getResultMsg());
         assertEquals(-1, sa1.getResultCode());
 
-        assertEquals(ActionFactory.STATUS_FAILED, sa2.getStatus());
+        assertTrue(sa2.isStatusFailed());
         assertEquals(expectedMessage, sa2.getResultMsg());
         assertEquals(-1, sa2.getResultCode());
     }

@@ -235,9 +235,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals("Suse", minion.getOsFamily());
 
         // Verify the action status
-        assertEquals(action.getServerActions().stream()
+        assertTrue(action.getServerActions().stream()
                 .filter(serverAction -> serverAction.getServer().equals(minion))
-                .findAny().get().getStatus(), ActionFactory.STATUS_COMPLETED);
+                .findAny().get().isStatusCompleted());
     }
 
     @Test
@@ -587,9 +587,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals("RedHat", minion.getOsFamily());
 
         // Verify the action status
-        assertEquals(action.getServerActions().stream()
+        assertTrue(action.getServerActions().stream()
                 .filter(serverAction -> serverAction.getServer().equals(minion))
-                .findAny().get().getStatus(), ActionFactory.STATUS_COMPLETED);
+                .findAny().get().isStatusCompleted());
     }
 
     /**
@@ -646,9 +646,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals("Debian", minion.getOsFamily());
 
         // Verify the action status
-        assertEquals(action.getServerActions().stream()
+        assertTrue(action.getServerActions().stream()
                 .filter(serverAction -> serverAction.getServer().equals(minion))
-                .findAny().get().getStatus(), ActionFactory.STATUS_COMPLETED);
+                .findAny().get().isStatusCompleted());
     }
 
     /**
@@ -706,9 +706,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals("Debian", minion.getOsFamily());
 
         // Verify the action status
-        assertEquals(action.getServerActions().stream()
+        assertTrue(action.getServerActions().stream()
                 .filter(serverAction -> serverAction.getServer().equals(minion))
-                .findAny().get().getStatus(), ActionFactory.STATUS_COMPLETED);
+                .findAny().get().isStatusCompleted());
     }
 
     @Test
@@ -1359,7 +1359,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             ).collect(java.util.stream.Collectors.toList()));
 
         // Verify the action status
-        assertEquals(ActionFactory.STATUS_FAILED, sa.getStatus());
+        assertTrue(sa.isStatusFailed());
         context().assertIsSatisfied();
     }
 
@@ -1420,7 +1420,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ScapAction.setXccdfResumeXsl(resumeXsl);
         messageAction.execute(message);
 
-        assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
+        assertTrue(sa.isStatusCompleted());
     }
 
     /**
@@ -2089,7 +2089,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
-        assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
+        assertTrue(sa.isStatusCompleted());
         assertEquals(0L, (long)sa.getResultCode());
         assertEquals(baseChannel.get().getId(), minion.getBaseChannel().getId());
         assertEquals(2, minion.getChildChannels().size());
@@ -2176,7 +2176,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        applyStateAction.getServerActions().stream().findFirst().get().setStatus(ActionFactory.STATUS_FAILED);
+        applyStateAction.getServerActions().stream().findFirst().get().setStatusFailed();
 
         saltServerActionService.failDependentServerActions(applyStateAction.getId(),
                 minion.getMinionId(), Optional.empty());
@@ -2192,9 +2192,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ServerAction runScriptSeverAction = runScriptAction.getServerActions().stream()
                 .filter(sa -> sa.getServerId().equals(minion.getId())).findFirst().get();
 
-        assertEquals(ActionFactory.STATUS_FAILED, applyStateServerAction.getStatus());
-        assertEquals(ActionFactory.STATUS_FAILED, rebootSeverAction.getStatus());
-        assertEquals(ActionFactory.STATUS_FAILED, runScriptSeverAction.getStatus());
+        assertTrue(applyStateServerAction.isStatusFailed());
+        assertTrue(rebootSeverAction.isStatusFailed());
+        assertTrue(runScriptSeverAction.isStatusFailed());
 
         //Check the output of dependent actions
         assertEquals("Prerequisite failed", rebootSeverAction.getResultMsg());
@@ -2248,7 +2248,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         applyHighstate = (ApplyStatesAction)ActionFactory.lookupById(applyHighstate.getId());
         saHighstate = applyHighstate.getServerActions().stream().findFirst().get();
 
-        assertEquals(ActionFactory.STATUS_COMPLETED, saHighstate.getStatus());
+        assertTrue(saHighstate.isStatusCompleted());
         assertEquals(0L, (long)saHighstate.getResultCode());
         assertEquals(minion.getId(), saHighstate.getServer().getId());
         assertEquals("Successfully applied state(s): highstate", saHighstate.getResultMsg());
@@ -2256,7 +2256,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         runScript = (ScriptRunAction)ActionFactory.lookupById(runScript.getId());
         ServerAction saScript = runScript.getServerActions().stream().findFirst().get();
 
-        assertEquals(ActionFactory.STATUS_COMPLETED, saScript.getStatus());
+        assertTrue(saScript.isStatusCompleted());
         assertEquals(0L, (long)saScript.getResultCode());
         assertEquals(minion.getId(), saScript.getServer().getId());
         ScriptResult scriptResult = runScript.getScriptActionDetails().getResults()

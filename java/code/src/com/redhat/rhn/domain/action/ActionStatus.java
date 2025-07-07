@@ -59,7 +59,23 @@ public class ActionStatus {
      * (either completed or failed)
      */
     public boolean isDone() {
-        return this.equals(ActionFactory.STATUS_COMPLETED) || this.equals(ActionFactory.STATUS_FAILED);
+        return isCompleted() || isFailed();
+    }
+
+    public boolean isQueued() {
+        return this.equals(ActionFactory.STATUS_QUEUED);
+    }
+
+    public boolean isPickedUp() {
+        return this.equals(ActionFactory.STATUS_PICKED_UP);
+    }
+
+    public boolean isCompleted() {
+        return this.equals(ActionFactory.STATUS_COMPLETED);
+    }
+
+    public boolean isFailed() {
+        return this.equals(ActionFactory.STATUS_FAILED);
     }
 
     /**

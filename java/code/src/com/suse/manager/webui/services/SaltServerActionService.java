@@ -10,9 +10,6 @@
  */
 package com.suse.manager.webui.services;
 
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
@@ -27,7 +24,6 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
@@ -103,6 +99,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -226,7 +223,7 @@ public class SaltServerActionService {
                 actionIn.getServerActions().stream()
                         .filter(sa -> failedServerIds.contains(sa.getServer().getId()))
                         .forEach(sa -> {
-                            sa.setStatus(STATUS_FAILED);
+                            sa.setStatusFailed();
                             sa.setResultMsg("Error preparing salt call: " + e.getMessage());
                             sa.setCompletionTime(new Date());
                         });
@@ -467,7 +464,7 @@ public class SaltServerActionService {
                                             .findFirst();
                             rebootServerAction.ifPresentOrElse(
                                     ract -> {
-                                        if (ract.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+                                        if (ract.isStatusQueued()) {
                                             setActionAsPickedUp(ract);
                                         }
                                     },
@@ -890,18 +887,18 @@ public class SaltServerActionService {
                 .filter(sa -> sa.getServerId().equals(minion.getId()))
                 .findFirst();
         serverAction.ifPresent(sa -> {
-            if (List.of(STATUS_FAILED, STATUS_COMPLETED).contains(sa.getStatus())) {
+            if (sa.isDone()) {
                 LOG.info("Action '{}' is completed or failed. Skipping.", action.getName());
                 return;
             }
 
-            if (prerequisiteInStatus(sa, ActionFactory.STATUS_QUEUED)) {
+            if (prerequisiteInStatus(sa, ServerAction::isStatusQueued)) {
                 LOG.info("Prerequisite of action '{}' is still queued. Skipping executing of the action.",
                         action.getName());
                 return;
             }
 
-            if (prerequisiteInStatus(sa, ActionFactory.STATUS_FAILED)) {
+            if (prerequisiteInStatus(sa, ServerAction::isStatusFailed)) {
                 LOG.info("Failing action '{}' as its prerequisite '{}' failed.", action.getName(),
                         action.getPrerequisite().getName());
                 sa.fail(-100L, "Prerequisite failed.");
@@ -915,7 +912,7 @@ public class SaltServerActionService {
                 calls = callsForAction(action, List.of(new MinionSummary(minion)));
             }
             catch (RuntimeException e) {
-                sa.setStatus(STATUS_FAILED);
+                sa.setStatusFailed();
                 sa.setResultMsg("Error preparing salt call: " + e.getMessage());
                 sa.setCompletionTime(new Date());
                 return;
@@ -930,7 +927,7 @@ public class SaltServerActionService {
                 catch (RuntimeException e) {
                     LOG.error("Error executing Salt call for action: {} on minion {}",
                             action.getName(), minion.getMinionId(), e);
-                    sa.setStatus(STATUS_FAILED);
+                    sa.setStatusFailed();
                     sa.setResultMsg("Error calling Salt: " + e.getMessage());
                     sa.setCompletionTime(new Date());
                     return;
@@ -944,7 +941,7 @@ public class SaltServerActionService {
                         if (sa.getRemainingTries() > 0 && errorString.contains("System is going down")) {
                             // SSH login is blocked when a reboot is ongoing. Reschedule this action later again
                             LOG.info("System is going down. Configure re-try in 3 minutes");
-                            sa.setStatus(STATUS_QUEUED);
+                            sa.setStatusQueued();
                             sa.setRemainingTries((sa.getRemainingTries() - 1L));
                             sa.setPickupTime(null);
                             sa.setCompletionTime(null);
@@ -958,13 +955,13 @@ public class SaltServerActionService {
                             }
                             catch (TaskomaticApiException e) {
                                 LOG.error("Unable to reschedule failed Salt SSH Action: {}", errorString, e);
-                                sa.setStatus(STATUS_FAILED);
+                                sa.setStatusFailed();
                                 sa.setResultMsg(errorString);
                                 sa.setCompletionTime(new Date());
                             }
                         }
                         else {
-                            sa.setStatus(STATUS_FAILED);
+                            sa.setStatusFailed();
                             sa.setResultMsg(error.fold(
                                     e -> "function " + e.getFunctionName() + " not available.",
                                     e -> "module " + e.getModuleName() + " not supported.",
@@ -986,7 +983,7 @@ public class SaltServerActionService {
                                     Optional.of(Xor.right(function)), null);
                         }
 
-                        else if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+                        else if (sa.isStatusQueued()) {
                             setActionAsPickedUp(sa);
                         }
 
@@ -1010,7 +1007,7 @@ public class SaltServerActionService {
                 }, () -> {
                     LOG.error("Action '{}' failed. Got not result from Salt, probably minion is down or " +
                             "could not be contacted.", action.getName());
-                    sa.setStatus(STATUS_FAILED);
+                    sa.setStatusFailed();
                     sa.setResultMsg("Minion is down or could not be contacted.");
                     sa.setCompletionTime(new Date());
                 });
@@ -1026,7 +1023,7 @@ public class SaltServerActionService {
      * @return true if there exists a server action in given state associated with the same
      * server as serverAction and parent action of serverAction
      */
-    private boolean prerequisiteInStatus(ServerAction serverAction, ActionStatus state) {
+    private boolean prerequisiteInStatus(ServerAction serverAction, Predicate<ServerAction> statusComparison) {
         Optional<Stream<ServerAction>> prerequisites =
                 ofNullable(serverAction.getParentAction())
                         .map(Action::getPrerequisite)
@@ -1037,8 +1034,7 @@ public class SaltServerActionService {
                 .flatMap(serverActions ->
                         serverActions
                                 .filter(s ->
-                                        serverAction.getServer().equals(s.getServer()) &&
-                                                state.equals(s.getStatus()))
+                                        serverAction.getServer().equals(s.getServer()) && statusComparison.test(s))
                                 .findAny())
                 .isPresent();
     }
@@ -1058,8 +1054,8 @@ public class SaltServerActionService {
             Optional.ofNullable(action)
                     .flatMap(firstAction -> firstAction.getServerActions().stream()
                             .filter(sa -> sa.getServerId().equals(minion.get().getId()))
-                            .filter(sa -> !ActionFactory.STATUS_FAILED.equals(sa.getStatus()))
-                            .filter(sa -> !ActionFactory.STATUS_COMPLETED.equals(sa.getStatus()))
+                            .filter(sa -> !sa.isStatusFailed())
+                            .filter(sa -> !sa.isStatusCompleted())
                             .findFirst()).ifPresent(sa -> sa.fail(message.orElse("Prerequisite failed")));
 
             // walk dependent server actions recursively and set them to failed
@@ -1068,8 +1064,7 @@ public class SaltServerActionService {
             List<ServerAction> serverActions = Optional.ofNullable(action).
                     map(firstAction -> ActionFactory
                         .listServerActionsForServer(minion.get(),
-                                Arrays.asList(ActionFactory.STATUS_QUEUED, ActionFactory.STATUS_PICKED_UP,
-                                        ActionFactory.STATUS_FAILED), action.getCreated()))
+                                ActionFactory.ALL_STATUSES_BUT_COMPLETED, action.getCreated()))
                     .orElse(new ArrayList<>());
 
             while (!actionIdsDependencies.isEmpty()) {
@@ -1092,7 +1087,7 @@ public class SaltServerActionService {
      *
      */
     private void setActionAsPickedUp(ServerAction sa) {
-        sa.setStatus(ActionFactory.STATUS_PICKED_UP);
+        sa.setStatusPickedUp();
         sa.setPickupTime(new Date());
     }
 
@@ -1137,7 +1132,7 @@ public class SaltServerActionService {
                                 ActionFactory.TYPE_REBOOT) && success && retcode == 0) {
                             // Reboot has been scheduled so set reboot action to PICKED_UP.
                             // Wait until next "minion/start/event" to set it to COMPLETED.
-                            if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+                            if (sa.isStatusQueued()) {
                                 setActionAsPickedUp(sa);
                             }
                             return;
