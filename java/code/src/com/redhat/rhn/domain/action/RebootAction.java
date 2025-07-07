@@ -15,9 +15,33 @@
 package com.redhat.rhn.domain.action;
 
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.server.MinionSummary;
+
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.TransactionalUpdate;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 /**
  * RebootAction - Class representing TYPE_REBOOT
  */
 public class RebootAction extends Action {
 
+    /**
+     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
+     * @return minion summaries grouped by local call
+     */
+    public static Map<LocalCall<?>, List<MinionSummary>> rebootAction(List<MinionSummary> minionSummaries) {
+        int rebootDelay = ConfigDefaults.get().getRebootDelay();
+        return minionSummaries.stream().collect(
+                Collectors.groupingBy(
+                        m -> m.isTransactionalUpdate() ? TransactionalUpdate.reboot() :
+                                com.suse.salt.netapi.calls.modules.System.reboot(Optional.of(rebootDelay))
+                )
+        );
+    }
 }

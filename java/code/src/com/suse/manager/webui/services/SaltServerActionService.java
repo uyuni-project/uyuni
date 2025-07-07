@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.HardwareRefreshAction;
+import com.redhat.rhn.domain.action.RebootAction;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
 import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
 import com.redhat.rhn.domain.action.ansible.PlaybookAction;
@@ -118,7 +119,6 @@ import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
-import com.suse.salt.netapi.calls.modules.TransactionalUpdate;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.GenericError;
 import com.suse.salt.netapi.exception.SaltException;
@@ -296,7 +296,7 @@ public class SaltServerActionService {
             return HardwareRefreshAction.hardwareRefreshListAction(minions);
         }
         else if (ActionFactory.TYPE_REBOOT.equals(actionType)) {
-            return rebootAction(minions);
+            return RebootAction.rebootAction(minions);
         }
         else if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.equals(actionType)) {
             return deployFiles(minions, (ConfigAction) actionIn);
@@ -1058,16 +1058,6 @@ public class SaltServerActionService {
                 ),
                 Map.Entry::getValue
         ));
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> rebootAction(List<MinionSummary> minionSummaries) {
-        int rebootDelay = ConfigDefaults.get().getRebootDelay();
-        return minionSummaries.stream().collect(
-            Collectors.groupingBy(
-                m -> m.isTransactionalUpdate() ? TransactionalUpdate.reboot() :
-                        com.suse.salt.netapi.calls.modules.System.reboot(Optional.of(rebootDelay))
-            )
-        );
     }
 
     /**
