@@ -91,7 +91,7 @@ module.exports = (env, opts) => {
     console.log("webpack mode: " + opts.mode);
   }
 
-  return {
+  const config = {
     mode: opts.mode,
     entry: {
       "javascript/manager/main": path.resolve(__dirname, "../manager/index.ts"),
@@ -282,4 +282,10 @@ module.exports = (env, opts) => {
       },
     },
   };
+
+  if (opts.force) {
+    config.cache = false;
+  }
+
+  return config;
 };
