@@ -38,6 +38,7 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.HardwareRefreshAction;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
 import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
 import com.redhat.rhn.domain.action.ansible.PlaybookAction;
@@ -292,7 +293,7 @@ public class SaltServerActionService {
             return PackageRefreshListAction.packagesRefreshListAction(minions);
         }
         else if (ActionFactory.TYPE_HARDWARE_REFRESH_LIST.equals(actionType)) {
-            return hardwareRefreshListAction(minions);
+            return HardwareRefreshAction.hardwareRefreshListAction(minions);
         }
         else if (ActionFactory.TYPE_REBOOT.equals(actionType)) {
             return rebootAction(minions);
@@ -1057,35 +1058,6 @@ public class SaltServerActionService {
                 ),
                 Map.Entry::getValue
         ));
-    }
-
-
-    private Map<LocalCall<?>, List<MinionSummary>> hardwareRefreshListAction(
-            List<MinionSummary> minionSummaries) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-
-        // salt-ssh minions in the 'true' partition
-        // regular minions in the 'false' partition
-        Map<Boolean, List<MinionSummary>> partitionBySSHPush = minionSummaries.stream()
-                .collect(Collectors.partitioningBy(MinionSummary::isSshPush));
-
-        // Separate SSH push minions from regular minions to apply different states
-        List<MinionSummary> sshPushMinions = partitionBySSHPush.get(true);
-        List<MinionSummary> regularMinions = partitionBySSHPush.get(false);
-
-        if (!sshPushMinions.isEmpty()) {
-            ret.put(State.apply(List.of(
-                            ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
-                    Optional.empty()), minionSummaries);
-        }
-        if (!regularMinions.isEmpty()) {
-            ret.put(State.apply(Arrays.asList(
-                    ApplyStatesEventMessage.SYNC_ALL,
-                    ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
-                    Optional.empty()), minionSummaries);
-        }
-
-        return ret;
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> rebootAction(List<MinionSummary> minionSummaries) {
