@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.reactor.SaltEvent;
 import com.redhat.rhn.domain.reactor.SaltEventFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
-import org.hibernate.query.Query;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -145,7 +144,7 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
         saltEventsCount = SaltEventFactory.countSaltEvents(4);
         assertEquals(Arrays.asList(0L, 1L, 0L, 0L), saltEventsCount);
 
-        List<Long> deletedEventIds = SaltEventFactory.deleteSaltEvents(Arrays.asList(saltEvent1.getId()));
+        List<Long> deletedEventIds = SaltEventFactory.deleteSaltEvents(List.of(saltEvent1.getId()));
         assertEquals(deletedEventIds.size(), 1);
         assertTrue(deletedEventIds.stream().allMatch(did -> did.equals(saltEvent1.getId())));
 
@@ -187,31 +186,34 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
         List<Long> saltEventsCount = SaltEventFactory.countSaltEvents(5);
         assertEquals(Arrays.asList(0L, 0L, 0L, 0L, 0L), saltEventsCount);
 
-        // create events in queue 1
+        // create events in queue 1, 2, 3 and 4
         SaltEvent saltEvent1 = new SaltEvent(1L, "minion_1", "data_minion_1", 1);
         insertIntoSuseSaltEvent(saltEvent1);
-        SaltEvent saltEvent2 = new SaltEvent(2L, "minion_2", "data_minion_2", 1);
+        SaltEvent saltEvent2 = new SaltEvent(2L, "minion_2", "data_minion_2", 2);
         insertIntoSuseSaltEvent(saltEvent2);
-        SaltEvent saltEvent3 = new SaltEvent(3L, "minion_3", "data_minion_3", 1);
+        SaltEvent saltEvent3 = new SaltEvent(3L, "minion_3", "data_minion_3", 3);
         insertIntoSuseSaltEvent(saltEvent3);
-        SaltEvent saltEvent4 = new SaltEvent(4L, "minion_4", "data_minion_4", 1);
+        SaltEvent saltEvent4 = new SaltEvent(4L, "minion_4", "data_minion_4", 4);
         insertIntoSuseSaltEvent(saltEvent4);
-
-        SaltEventFactory.fixQueueNumbers(4);
-        // events should be spread across queues 1-4
-        // particular queue number depends on the hashing algorithm
         saltEventsCount = SaltEventFactory.countSaltEvents(5);
-        assertEquals(Arrays.asList(0L, 2L, 0L, 1L, 1L), saltEventsCount);
+        assertEquals(Arrays.asList(0L, 1L, 1L, 1L, 1L), saltEventsCount);
 
-        SaltEventFactory.fixQueueNumbers(2);
-        // events should be re-arranged in queues 1-2, queues 3-4 should be emptied
+        int changed = SaltEventFactory.fixQueueNumbers(4);
+        // Nothing should be changed as queue 1-4 are still available
         saltEventsCount = SaltEventFactory.countSaltEvents(5);
-        assertEquals(Arrays.asList(0L, 3L, 1L, 0L, 0L), saltEventsCount);
+        assertEquals(Arrays.asList(0L, 1L, 1L, 1L, 1L), saltEventsCount);
+        assertEquals(0, changed);
+
+        changed = SaltEventFactory.fixQueueNumbers(2);
+        // events from queue > 2 should be moved to queue 2, queues 3-4 should be emptied
+        saltEventsCount = SaltEventFactory.countSaltEvents(5);
+        assertEquals(Arrays.asList(0L, 1L, 3L, 0L, 0L), saltEventsCount);
+        assertEquals(2, changed);
 
         // pop the events
-        List<SaltEvent> popedSaltEvents = SaltEventFactory.popSaltEvents(3, 1).collect(Collectors.toList());
+        List<SaltEvent> popedSaltEvents = SaltEventFactory.popSaltEvents(3, 2).collect(Collectors.toList());
         assertEquals(popedSaltEvents.size(), 3);
-        popedSaltEvents = SaltEventFactory.popSaltEvents(1, 2).toList();
+        popedSaltEvents = SaltEventFactory.popSaltEvents(1, 1).toList();
         assertEquals(popedSaltEvents.size(), 1);
 
         saltEventsCount = SaltEventFactory.countSaltEvents(5);
@@ -220,12 +222,11 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
 
 
     private void insertIntoSuseSaltEvent(SaltEvent saltEvent) {
-        Query query = HibernateFactory.getSession().createNativeQuery(INSERT_INTO_SUSE_SALT_EVENT_QUERY);
-        query.setParameter("id", saltEvent.getId());
-        query.setParameter("minionId", saltEvent.getMinionId());
-        query.setParameter("data", saltEvent.getData());
-        query.setParameter("queue", saltEvent.getQueue());
-        query.executeUpdate();
+        HibernateFactory.getSession().createNativeQuery(INSERT_INTO_SUSE_SALT_EVENT_QUERY)
+                .setParameter("id", saltEvent.getId())
+                .setParameter("minionId", saltEvent.getMinionId())
+                .setParameter("data", saltEvent.getData())
+                .setParameter("queue", saltEvent.getQueue())
+                .executeUpdate();
     }
-
 }
