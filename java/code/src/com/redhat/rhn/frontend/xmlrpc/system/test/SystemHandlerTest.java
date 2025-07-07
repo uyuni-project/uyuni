@@ -404,6 +404,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        if (first.isPresent()) {
+            ((SubscribeChannelsAction) first.get()).setSaltApi(saltApi);
+        }
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
@@ -423,6 +426,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        if (first.isPresent()) {
+            ((SubscribeChannelsAction) first.get()).setSaltApi(saltApi);
+        }
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
@@ -526,6 +532,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        if (first.isPresent()) {
+            ((SubscribeChannelsAction) first.get()).setSaltApi(saltApi);
+        }
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
@@ -545,6 +554,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        if (first.isPresent()) {
+            ((SubscribeChannelsAction) first.get()).setSaltApi(saltApi);
+        }
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
@@ -638,6 +650,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        if (first.isPresent()) {
+            ((SubscribeChannelsAction) first.get()).setSaltApi(saltApi);
+        }
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
@@ -656,6 +671,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        if (first.isPresent()) {
+            ((SubscribeChannelsAction) first.get()).setSaltApi(saltApi);
+        }
         sa.execute(first.get(), false, false, Optional.empty());
 
         HibernateFactory.getSession().flush();
@@ -721,6 +739,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        if (first.isPresent()) {
+            ((SubscribeChannelsAction) first.get()).setSaltApi(saltApi);
+        }
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
@@ -739,6 +760,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        if (first.isPresent()) {
+            ((SubscribeChannelsAction) first.get()).setSaltApi(saltApi);
+        }
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 

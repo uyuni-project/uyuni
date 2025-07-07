@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -2070,7 +2071,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 new Date(),
                 null);
 
-        Action action = actions.stream().findFirst().get();
+        SubscribeChannelsAction action = (SubscribeChannelsAction) actions.stream().findFirst().get();
+        action.setSaltApi(saltService);
 
         ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
         action.addServerAction(sa);
@@ -2131,6 +2133,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 null);
 
         SubscribeChannelsAction action = (SubscribeChannelsAction) actions.stream().findFirst().get();
+        action.setSaltApi(saltServiceMock);
 
         ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
         action.addServerAction(sa);
@@ -2362,5 +2365,21 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertNotSame(runningKernel, minion.getRunningKernel());
         assertEquals("livepatch_2_2_3", minion.getKernelLiveVersion());
         assertNotSame(lastBoot, minion.getLastBoot());
+    }
+
+    @Test
+    public void testDummyConfigFilesDiff()  throws Exception {
+        Optional<Xor<String[], String>> dummyFunction = Optional.of(Xor.right("state.apply"));
+        JsonObject dummyObj = getJsonElement("hardware.profileupdate.primary_ips_empty_ssh.x86.json");
+        JsonElement dummyJsonResult = dummyObj.get("suma-ref31-min-centos7.mgr.suse.de");
+
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+
+        Action actionDiff = ActionFactoryTest.createAction(user, ActionFactory.TYPE_CONFIGFILES_DIFF);
+        ServerAction saDiff = ActionFactoryTest.createServerAction(server, actionDiff);
+        actionDiff.addServerAction(saDiff);
+
+        assertDoesNotThrow(() ->
+                saltUtils.updateServerAction(saDiff, 0L, true, "", dummyJsonResult, dummyFunction, null));
     }
 }
