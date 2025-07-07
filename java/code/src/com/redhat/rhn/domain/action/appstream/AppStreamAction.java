@@ -14,15 +14,30 @@
  */
 package com.redhat.rhn.domain.action.appstream;
 
+import static java.util.Collections.singletonList;
+
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.server.MinionSummary;
+
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.State;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class AppStreamAction extends Action {
+    public static final String PARAM_APPSTREAMS_ENABLE = "param_appstreams_enable";
+    public static final String PARAM_APPSTREAMS_DISABLE = "param_appstreams_disable";
+    public static final String APPSTREAMS_CONFIGURE = "appstreams.configure";
 
     private static final long serialVersionUID = 1L;
     private Set<AppStreamActionDetails> details = new HashSet<>();
@@ -61,4 +76,34 @@ public class AppStreamAction extends Action {
                 .append(details)
                 .toHashCode();
     }
+
+
+
+    /**
+     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
+     * @param action action which has all the revisions
+     * @return minion summaries grouped by local call
+     */
+    public static Map<LocalCall<?>, List<MinionSummary>> appStreamAction(
+            List<MinionSummary> minionSummaries, AppStreamAction action) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+
+        Map<Boolean, Set<AppStreamActionDetails>> details = action.getDetails().stream()
+                .collect(Collectors.partitioningBy(AppStreamActionDetails::isEnable, Collectors.toSet()));
+
+        var enableParams = details.get(true).stream()
+                .map(d -> d.getStream() == null ?
+                        singletonList(d.getModuleName()) :
+                        Arrays.asList(d.getModuleName(), d.getStream()))
+                .toList();
+        var disableParams = details.get(false).stream().map(AppStreamActionDetails::getModuleName).toList();
+
+        Optional<Map<String, Object>> params = Optional.of(Map.of(
+                PARAM_APPSTREAMS_ENABLE, enableParams,
+                PARAM_APPSTREAMS_DISABLE, disableParams
+        ));
+        ret.put(State.apply(List.of(APPSTREAMS_CONFIGURE), params), minionSummaries);
+        return ret;
+    }
+
 }

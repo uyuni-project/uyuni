@@ -38,7 +38,6 @@ import com.redhat.rhn.domain.action.RebootAction;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
 import com.redhat.rhn.domain.action.ansible.PlaybookAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
-import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
@@ -148,7 +147,6 @@ public class SaltServerActionService {
     private static final String SYSTEM_REBOOT = "system.reboot";
     public static final String APPSTREAMS_CONFIGURE = "appstreams.configure";
     public static final String PARAM_APPSTREAMS_ENABLE = "param_appstreams_enable";
-    public static final String PARAM_APPSTREAMS_DISABLE = "param_appstreams_disable";
 
     /** SLS pillar parameter name for the list of update stack patch names. */
     public static final String PARAM_UPDATE_STACK_PATCHES = "param_update_stack_patches";
@@ -269,7 +267,7 @@ public class SaltServerActionService {
             return CoCoAttestationAction.cocoAttestationAction(minions);
         }
         else if (ActionFactory.TYPE_APPSTREAM_CONFIGURE.equals(actionType)) {
-            return appStreamAction(minions, (AppStreamAction) actionIn);
+            return AppStreamAction.appStreamAction(minions, (AppStreamAction) actionIn);
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -969,29 +967,6 @@ public class SaltServerActionService {
                 ),
                 Map.Entry::getValue
         ));
-    }
-
-
-    private Map<LocalCall<?>, List<MinionSummary>> appStreamAction(
-            List<MinionSummary> minionSummaries, AppStreamAction action) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-
-        Map<Boolean, Set<AppStreamActionDetails>> details = action.getDetails().stream()
-            .collect(Collectors.partitioningBy(AppStreamActionDetails::isEnable, Collectors.toSet()));
-
-        var enableParams = details.get(true).stream()
-            .map(d -> d.getStream() == null ?
-                singletonList(d.getModuleName()) :
-                Arrays.asList(d.getModuleName(), d.getStream()))
-            .toList();
-        var disableParams = details.get(false).stream().map(AppStreamActionDetails::getModuleName).toList();
-
-        Optional<Map<String, Object>> params = Optional.of(Map.of(
-            PARAM_APPSTREAMS_ENABLE, enableParams,
-            PARAM_APPSTREAMS_DISABLE, disableParams
-        ));
-        ret.put(State.apply(List.of(APPSTREAMS_CONFIGURE), params), minionSummaries);
-        return ret;
     }
 
     /**
