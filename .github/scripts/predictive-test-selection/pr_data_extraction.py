@@ -43,6 +43,9 @@ from config import REPO_FULL_NAME, TEST_WORKFLOW_NAME, PR_FEATURES_CSV_FILENAME
 # Time windows (in days) to track recent change frequency of PR modified files
 RECENT_DAYS = [3, 14, 56]
 
+# Oversample when fetching the latest N PRs to account for those missing Cucumber reports
+PR_OVERSAMPLE_MULTIPLIER = 4
+
 def setup_logging(level, log_file="script.log"):
     """
     Set up logging to both console and file.
@@ -146,8 +149,9 @@ def get_candidate_prs(repo, n):
     Returns:
         list: List of PullRequest objects.
     """
-    multiplier = 4  # To oversample in case some PRs don't have Cucumber reports
-    prs = list(repo.get_pulls(state="all", sort="created", direction="desc")[:n*multiplier])
+    prs = list(
+        repo.get_pulls(state="all", sort="created", direction="desc")[:n*PR_OVERSAMPLE_MULTIPLIER]
+    )
     if len(prs) < n:
         logger.warning("Only %d PRs found, but %d requested.", len(prs), n)
     return prs
