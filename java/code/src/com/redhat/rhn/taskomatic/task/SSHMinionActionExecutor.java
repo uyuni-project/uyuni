@@ -104,7 +104,7 @@ public class SSHMinionActionExecutor extends RhnJavaJob {
         action.getServerActions().stream()
                 .filter(sa -> sshMinionOpt.get().getId().equals(sa.getServerId())).findFirst()
                 .ifPresent(sa -> {
-                    sa.setStatus(ActionFactory.STATUS_PICKED_UP);
+                    sa.setStatusPickedUp();
                     sa.setPickupTime(new Date());
                     HibernateFactory.commitTransaction();
                 });

@@ -146,7 +146,7 @@ public class ActionChain extends BaseDomainHelper {
         return !getEntries().isEmpty() &&
                 getEntries().stream().noneMatch(ace -> ace.getAction().getServerActions().isEmpty()) &&
                 getEntries().stream().flatMap(ace -> ace.getAction().getServerActions().stream())
-                .allMatch(sa -> sa.getStatus().isDone());
+                .allMatch(sa -> sa.isDone());
     }
 
     /**

@@ -20,7 +20,6 @@ import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
@@ -178,7 +177,7 @@ public class ScapAction extends Action {
         }
         catch (JsonSyntaxException e) {
             serverAction.setResultMsg("Error parsing minion response: " + jsonResult);
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setStatusFailed();
             return;
         }
         if (openscapResult.isSuccess()) {
@@ -204,7 +203,7 @@ public class ScapAction extends Action {
                                     }
                                     catch (Exception e) {
                                         LOG.error("Error processing SCAP results file {}", resultsFile, e);
-                                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                                        serverAction.setStatusFailed();
                                         serverAction.setResultMsg(
                                                 "Error processing SCAP results file " +
                                                         resultsFile + ": " +
@@ -212,7 +211,7 @@ public class ScapAction extends Action {
                                     }
                                 }
                                 else {
-                                    serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                                    serverAction.setStatusFailed();
                                     serverAction.setResultMsg(
                                             "Could not store SCAP files on server: " +
                                                     moved.getValue());
@@ -220,7 +219,7 @@ public class ScapAction extends Action {
                             });
                         }
                         catch (Exception e) {
-                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                            serverAction.setStatusFailed();
                             serverAction.setResultMsg(
                                     "Error saving SCAP result: " + e.getMessage());
                         }
@@ -228,7 +227,7 @@ public class ScapAction extends Action {
         }
         else {
             serverAction.setResultMsg(openscapResult.getError());
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setStatusFailed();
         }
     }
 

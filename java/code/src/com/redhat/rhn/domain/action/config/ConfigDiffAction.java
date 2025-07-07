@@ -11,7 +11,6 @@
 package com.redhat.rhn.domain.action.config;
 
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -116,7 +115,7 @@ public class ConfigDiffAction extends ConfigAction {
          * 'result' attribute(actionFailed method check this attribute) when File(File, Dir, Symlink)
          * already exist on the system and action is considered as Failed even though there was no error.
          */
-        serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+        serverAction.setStatusCompleted();
     }
 
     /**

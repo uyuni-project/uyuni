@@ -18,7 +18,6 @@ package com.redhat.rhn.domain.action.rhnpackage;
 import static java.util.Collections.singletonMap;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -92,7 +91,7 @@ public class PackageLockAction extends PackageAction {
      */
     @Override
     public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+        if (serverAction.isStatusFailed()) {
             String msg = "Error while changing the lock status";
             SaltUtils.jsonEventToStateApplyResults(jsonResult).ifPresentOrElse(
                     r -> {

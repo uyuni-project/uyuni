@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.action.salt;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFormatter;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.notification.NotificationMessage;
@@ -127,7 +126,7 @@ public class ApplyStatesAction extends Action {
 
         // Revisit the action status if test=true
         if (details.isTest() && auxArgs.getSuccess() && auxArgs.getRetcode() == 0) {
-            serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+            serverAction.setStatusCompleted();
         }
 
         ApplyStatesActionResult statesResult = Optional.ofNullable(
@@ -150,7 +149,7 @@ public class ApplyStatesAction extends Action {
         String states = details.getMods().isEmpty() ?
                 "highstate" : details.getMods().toString();
         String message = "Successfully applied state(s): " + states;
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+        if (serverAction.isStatusFailed()) {
             message = "Failed to apply state(s): " + states;
 
             NotificationMessage nm = UserNotificationFactory.createNotificationMessage(

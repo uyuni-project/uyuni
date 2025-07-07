@@ -100,11 +100,11 @@ public class SystemHistoryEventAction extends RhnAction {
         request.setAttribute("actionnotes", af.getDetails(server,
                 requestContext.getCurrentUser()));
         request.setAttribute("failed",
-                serverAction.getStatus().equals(ActionFactory.STATUS_FAILED));
+                serverAction.isStatusFailed());
         request.setAttribute("pickedup",
-                serverAction.getStatus().equals(ActionFactory.STATUS_PICKED_UP));
+                serverAction.isStatusPickedUp());
         request.setAttribute("completed",
-                serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED));
+                serverAction.isStatusCompleted());
         boolean typeDistUpgradeDryRun = action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE) &&
                         ((DistUpgradeAction) action).getDetails().isDryRun();
         request.setAttribute("typeDistUpgradeDryRun", typeDistUpgradeDryRun);
@@ -115,14 +115,14 @@ public class SystemHistoryEventAction extends RhnAction {
                     serverAction, requestContext.getCurrentUser());
             request.setAttribute("inventory", inventory);
         }
-        if (!serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED) &&
-                !serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+        if (!serverAction.isStatusCompleted() &&
+                !serverAction.isStatusFailed()) {
             request.setAttribute("referrerLink", "Pending.do");
             request.setAttribute("linkLabel", "system.event.pendingReturn");
             request.setAttribute("headerLabel", "system.event.pendingHeader");
         }
         if (isSubmitted((DynaActionForm)formIn)) {
-            if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED) && typeDistUpgradeDryRun) {
+            if (serverAction.isStatusCompleted() && typeDistUpgradeDryRun) {
                 return mapping.findForward("spmigration");
             }
             createMessage(request, "system.event.rescheduled", action.getName(),

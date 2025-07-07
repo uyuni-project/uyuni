@@ -201,9 +201,9 @@ public class ActionManager extends BaseManager {
             throw new LookupException("Could not find action " + actionId + " on system " + serverId);
         }
         Date now = Calendar.getInstance().getTime();
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_QUEUED) ||
-                serverAction.getStatus().equals((ActionFactory.STATUS_PICKED_UP))) {
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+        if (serverAction.isStatusQueued() ||
+                serverAction.isStatusPickedUp()) {
+            serverAction.setStatusFailed();
             serverAction.setResultMsg(message);
             serverAction.setCompletionTime(now);
         }
@@ -363,7 +363,7 @@ public class ActionManager extends BaseManager {
                                               .filter(Objects::nonNull)
                                               .flatMap(p -> p.getServerActions().stream())
                                               .filter(sa -> serverIds.isEmpty() || serverIds.contains(sa.getServerId()))
-                                              .anyMatch(sa -> !ActionFactory.STATUS_FAILED.equals(sa.getStatus()));
+                                              .anyMatch(sa -> !sa.isStatusFailed());
         if (hasValidPrerequisite) {
             StringBuilder message = new StringBuilder();
             for (Action a : actions) {
@@ -393,8 +393,7 @@ public class ActionManager extends BaseManager {
 
         actionsToDelete.stream()
                        .flatMap(a -> a.getServerActions().stream())
-                       .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()) ||
-                           ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus()))
+                       .filter(sa -> sa.isStatusQueued() || sa.isStatusPickedUp())
                        // if serverIds is not specified, do not filter at all
                        // if it is, only ServerActions that have server ids in the specified set can pass
                        .filter(sa -> serverIds.isEmpty() || serverIds.contains(sa.getServerId()))
@@ -412,7 +411,7 @@ public class ActionManager extends BaseManager {
                         a,
                         a.getServerActions()
                          .stream()
-                         .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()))
+                         .filter(sa -> sa.isStatusQueued())
                          .map(ServerAction::getServer)
                          .filter(server -> isMinionServer(server) && servers.contains(server))
                          .collect(toSet())
@@ -438,12 +437,12 @@ public class ActionManager extends BaseManager {
         String cancellationMessage = "Canceled by " + user.getLogin();
         serverActions.forEach(sa -> {
             // Delete ServerActions from the database only if QUEUED
-            if (ActionFactory.STATUS_QUEUED.equals(sa.getStatus())) {
+            if (sa.isStatusQueued()) {
                 sa.getParentAction().getServerActions().remove(sa);
                 ActionFactory.delete(sa);
             }
             // Set to FAILED if the state is PICKED_UP
-            else if (ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus())) {
+            else if (sa.isStatusPickedUp()) {
                 failSystemAction(user, sa.getServerId(), sa.getParentAction().getId(), cancellationMessage);
             }
             SystemManager.updateSystemOverview(sa.getServerId());
@@ -745,7 +744,7 @@ public class ActionManager extends BaseManager {
         action.setOrg(user.getOrg());
 
         ServerAction sa = new ServerAction();
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatusQueued();
         sa.setRemainingTries(5L);
         sa.setServerWithCheck(server);
 
@@ -1210,7 +1209,7 @@ public class ActionManager extends BaseManager {
         action.setEarliestAction(earliest);
 
         ServerAction sa = new ServerAction();
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatusQueued();
         sa.setRemainingTries(REMAINING_TRIES);
         sa.setServerWithCheck(server);
         action.addServerAction(sa);
@@ -1577,7 +1576,7 @@ public class ActionManager extends BaseManager {
         Action action = createScheduledAction(scheduler, type, name, earliestAction);
 
         ServerAction sa = new ServerAction();
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatusQueued();
         sa.setRemainingTries(REMAINING_TRIES);
         sa.setServerWithCheck(srvr);
 
@@ -1781,7 +1780,7 @@ public class ActionManager extends BaseManager {
         action.setEarliestAction(earliestAction);
 
         ServerAction sa = new ServerAction();
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatusQueued();
         sa.setRemainingTries(REMAINING_TRIES);
         sa.setServerWithCheck(srvr);
 
@@ -2624,7 +2623,7 @@ public class ActionManager extends BaseManager {
         action.setDetails(details);
 
         ServerAction sa = new ServerAction();
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatusQueued();
         sa.setRemainingTries(REMAINING_TRIES);
         sa.setServerWithCheck(server);
         action.addServerAction(sa);

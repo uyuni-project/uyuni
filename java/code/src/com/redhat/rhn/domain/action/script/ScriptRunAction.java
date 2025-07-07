@@ -207,7 +207,7 @@ public class ScriptRunAction extends ScriptAction {
      */
     @Override
     public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+        if (serverAction.isStatusFailed()) {
             serverAction.setResultMsg("Failed to execute script. [jid=" + auxArgs.getJid() + "]");
         }
         else {
