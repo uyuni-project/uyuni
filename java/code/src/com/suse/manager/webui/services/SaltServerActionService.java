@@ -22,9 +22,6 @@ import static java.util.Collections.singletonMap;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
@@ -33,7 +30,6 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -59,6 +55,7 @@ import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartInitiateAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageLockAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRefreshListAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
@@ -74,7 +71,6 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
@@ -88,9 +84,6 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 import com.redhat.rhn.domain.product.Tuple2;
-import com.redhat.rhn.domain.rhnpackage.PackageArch;
-import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.server.ErrataInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -101,10 +94,8 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -207,12 +198,9 @@ public class SaltServerActionService {
     /* Logger for this class */
     private static final Logger LOG = LogManager.getLogger(SaltServerActionService.class);
     public static final String PACKAGES_PKGINSTALL = "packages.pkginstall";
-    public static final String PACKAGES_PKGUPDATE = "packages.pkgupdate";
     private static final String PACKAGES_PKGDOWNLOAD = "packages.pkgdownload";
     public static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
     private static final String PACKAGES_PATCHDOWNLOAD = "packages.patchdownload";
-    private static final String PACKAGES_PKGREMOVE = "packages.pkgremove";
-    private static final String PACKAGES_PKGLOCK = "packages.pkglock";
     private static final String CONFIG_DEPLOY_FILES = "configuration.deploy_files";
     private static final String CONFIG_DIFF_FILES = "configuration.diff_files";
     private static final String PARAM_PKGS = "param_pkgs";
@@ -292,16 +280,16 @@ public class SaltServerActionService {
             return errataAction(minions, errataIds, errataAction.getDetails().getAllowVendorChange());
         }
         else if (ActionFactory.TYPE_PACKAGES_LOCK.equals(actionType)) {
-            return packagesLockAction(minions, (PackageLockAction) actionIn);
+            return PackageLockAction.packagesLockAction(minions, (PackageLockAction) actionIn);
         }
         else if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(actionType)) {
-            return packagesUpdateAction(minions, (PackageUpdateAction) actionIn);
+            return PackageUpdateAction.packagesUpdateAction(minions, (PackageUpdateAction) actionIn);
         }
         else if (ActionFactory.TYPE_PACKAGES_REMOVE.equals(actionType)) {
-            return packagesRemoveAction(minions, (PackageRemoveAction) actionIn);
+            return PackageRemoveAction.packagesRemoveAction(minions, (PackageRemoveAction) actionIn);
         }
         else if (ActionFactory.TYPE_PACKAGES_REFRESH_LIST.equals(actionType)) {
-            return packagesRefreshListAction(minions);
+            return PackageRefreshListAction.packagesRefreshListAction(minions);
         }
         else if (ActionFactory.TYPE_HARDWARE_REFRESH_LIST.equals(actionType)) {
             return hardwareRefreshListAction(minions);
@@ -1038,24 +1026,6 @@ public class SaltServerActionService {
         return patchableCalls;
     }
 
-    private Map<LocalCall<?>, List<MinionSummary>> packagesLockAction(
-            List<MinionSummary> minionSummaries, PackageLockAction action) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-
-        for (MinionSummary m : minionSummaries) {
-            DataResult<PackageListItem> setLockPkg = PackageManager.systemSetLockedPackages(
-                    m.getServerId(), action.getId(), null);
-            List<List<String>> pkgs = setLockPkg.stream().map(d -> Arrays.asList(d.getName(), d.getArch(),
-                    new PackageEvr(d.getEpoch(), d.getVersion(), d.getRelease(), d.getPackageType())
-                    .toUniversalEvrString())).toList();
-            LocalCall<Map<String, ApplyResult>> localCall =
-                    State.apply(List.of(PACKAGES_PKGLOCK), Optional.of(singletonMap(PARAM_PKGS, pkgs)));
-            List<MinionSummary> mSums = ret.getOrDefault(localCall, new ArrayList<>());
-            mSums.add(m);
-            ret.put(localCall, mSums);
-        }
-        return ret;
-    }
 
     private Map<LocalCall<Map<String, ApplyResult>>, List<MinionSummary>> errataToPackageInstallCalls(
             List<MinionSummary> minions,
@@ -1089,84 +1059,6 @@ public class SaltServerActionService {
         ));
     }
 
-    private Map<LocalCall<?>, List<MinionSummary>> packagesUpdateAction(
-            List<MinionSummary> minionSummaries, PackageUpdateAction action) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-
-        List<Long> sids = minionSummaries.stream().map(MinionSummary::getServerId).collect(toList());
-
-        List<String> nevraStrings = action.getDetails().stream().map(details -> {
-            PackageName name = details.getPackageName();
-            PackageEvr evr = details.getEvr();
-            PackageArch arch = details.getArch();
-            return name.getName() + "-" + evr.toUniversalEvrString() + "." + arch.getLabel();
-        }).collect(toList());
-
-        List<Tuple2<Long, Long>> retractedPidSidPairs = ErrataFactory.retractedPackagesByNevra(nevraStrings, sids);
-        Map<Long, List<Long>> retractedPidsBySid = retractedPidSidPairs.stream()
-                .collect(groupingBy(Tuple2::getB, mapping(Tuple2::getA, toList())));
-        action.getServerActions().forEach(sa -> {
-            List<Long> packageIds = retractedPidsBySid.get(sa.getServerId());
-            if (packageIds != null) {
-                sa.fail("contains retracted packages: " +
-                        packageIds.stream().map(Object::toString).collect(joining(",")));
-            }
-        });
-        List<MinionSummary> filteredMinions = minionSummaries.stream()
-                .filter(ms -> retractedPidsBySid.get(ms.getServerId()) == null ||
-                        retractedPidsBySid.get(ms.getServerId()).isEmpty())
-                .collect(toList());
-
-        List<List<String>> pkgs = action
-                .getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
-                        d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
-                .toList();
-        if (pkgs.isEmpty()) {
-            // Full system package update using update state
-            ret.put(State.apply(List.of(PACKAGES_PKGUPDATE), Optional.empty()), filteredMinions);
-        }
-        else {
-            ret.put(State.apply(List.of(PACKAGES_PKGINSTALL),
-                    Optional.of(singletonMap(PARAM_PKGS, pkgs))), filteredMinions);
-        }
-        return ret;
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> packagesRemoveAction(
-            List<MinionSummary> minionSummaries, PackageRemoveAction action) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        List<List<String>> pkgsAll = action
-                .getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
-                        d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
-                .toList();
-
-        List<List<String>> uniquePkgs = new ArrayList<>();
-        pkgsAll.forEach(d -> {
-                if (!uniquePkgs.stream().map(p -> p.get(0))
-                        .toList()
-                        .contains(d.get(0))) {
-                                uniquePkgs.add(d);
-                }
-        });
-        List<List<String>> duplicatedPkgs = pkgsAll.stream()
-                .filter(p -> !uniquePkgs.contains(p)).collect(Collectors.toList());
-
-        Map<String, Object> params = new HashMap<>();
-        params.put(PARAM_PKGS, uniquePkgs);
-        params.put("param_pkgs_duplicates", duplicatedPkgs);
-
-        ret.put(State.apply(List.of(PACKAGES_PKGREMOVE),
-                Optional.of(params)), minionSummaries);
-        return ret;
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> packagesRefreshListAction(
-            List<MinionSummary> minionSummaries) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        ret.put(State.apply(List.of(ApplyStatesEventMessage.PACKAGES_PROFILE_UPDATE),
-                Optional.empty()), minionSummaries);
-        return ret;
-    }
 
     private Map<LocalCall<?>, List<MinionSummary>> hardwareRefreshListAction(
             List<MinionSummary> minionSummaries) {

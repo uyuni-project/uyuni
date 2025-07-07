@@ -15,9 +15,31 @@
 package com.redhat.rhn.domain.action.rhnpackage;
 
 
+import com.redhat.rhn.domain.server.MinionSummary;
+
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.State;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 /**
  * PackageRefreshListAction
  */
 public class PackageRefreshListAction extends PackageAction {
 
+    /**
+     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
+     * @return minion summaries grouped by local call
+     */
+    public static Map<LocalCall<?>, List<MinionSummary>> packagesRefreshListAction(
+            List<MinionSummary> minionSummaries) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+        ret.put(State.apply(List.of(ApplyStatesEventMessage.PACKAGES_PROFILE_UPDATE),
+                Optional.empty()), minionSummaries);
+        return ret;
+    }
 }
