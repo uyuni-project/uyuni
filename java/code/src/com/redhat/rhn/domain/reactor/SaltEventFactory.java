@@ -32,12 +32,12 @@ import java.util.stream.Stream;
  */
 public class SaltEventFactory extends HibernateFactory {
 
-    private static Logger log = LogManager.getLogger(SaltEventFactory.class);
-    private static SaltEventFactory singleton = new SaltEventFactory();
+    private static final Logger LOG = LogManager.getLogger(SaltEventFactory.class);
+    private static final SaltEventFactory SINGLETON = new SaltEventFactory();
 
     @Override
     protected Logger getLogger() {
-        return log;
+        return LOG;
     }
 
     private SaltEventFactory() {
@@ -50,7 +50,7 @@ public class SaltEventFactory extends HibernateFactory {
      *  without any minion ID. This queue is referred to as queue 0.
      */
     public static List<Long> countSaltEvents(int queuesCount) {
-        List<Object[]> countObjects = singleton.listObjectsByNamedQuery("SaltEvent.countSaltEvents", Map.of());
+        List<Object[]> countObjects = SINGLETON.listObjectsByNamedQuery("SaltEvent.countSaltEvents", Map.of());
 
         return IntStream.range(0, queuesCount).mapToLong(i -> countObjects.stream()
                 .filter(c -> c[0].equals(i))
@@ -66,7 +66,7 @@ public class SaltEventFactory extends HibernateFactory {
      * @return events
      */
     public static Stream<SaltEvent> popSaltEvents(int limit, int queue) {
-        List<Object[]> eventObjects = singleton.listObjectsByNamedQuery("SaltEvent.popSaltEvents",
+        List<Object[]> eventObjects = SINGLETON.listObjectsByNamedQuery("SaltEvent.popSaltEvents",
                 Map.of("limit", limit, "queue", queue));
 
         return eventObjects.stream()
@@ -79,7 +79,7 @@ public class SaltEventFactory extends HibernateFactory {
      * @return event ids actually deleted
      */
     public static List<Long> deleteSaltEvents(Collection<Long> ids) {
-        return singleton.listObjectsByNamedQuery("SaltEvent.deleteSaltEvents", Map.of("ids", ids));
+        return SINGLETON.listObjectsByNamedQuery("SaltEvent.deleteSaltEvents", Map.of("ids", ids));
     }
 
     /**
