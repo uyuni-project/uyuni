@@ -8,7 +8,7 @@ const fs = require("fs");
 const path = require("path");
 const semver = require("semver");
 
-module.exports = async () => {
+module.exports = async (opts) => {
   let hasFailed = false;
 
   const dirname = path.dirname(__filename);
@@ -42,6 +42,12 @@ module.exports = async () => {
     }
   }
   if (hasFailed) {
-    throw new RangeError("Have you installed the latest dependencies? Try running: yarn install");
+    const errorMessage = "Have you installed the latest dependencies? Try running: yarn install";
+    if (opts.force) {
+      console.error(errorMessage);
+      console.warn("WARN: Ignoring package check errors because build was called with --force");
+    } else {
+      throw new RangeError(errorMessage);
+    }
   }
 };

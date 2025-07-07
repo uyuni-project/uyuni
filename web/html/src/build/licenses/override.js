@@ -1,9 +1,9 @@
 const applyOverrides = (name, version, license) => {
   /**
-   * If the license is "X OR Y" or "X AND B", but doesn't include parentheses, wrap it so it's correct in the aggregate list
+   * If the license is "X OR Y" but doesn't include parentheses, wrap it so it's correct in the aggregate list
    */
   const hasParens = /^\(.*\)$/.test(license);
-  if ((license.includes(" OR ") || license.includes(" AND ")) && !hasParens) {
+  if (license.includes(" OR ") && !hasParens) {
     license = `(${license})`;
   }
 
