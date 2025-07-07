@@ -1,28 +1,35 @@
 #!/usr/bin/env python3
 """
-Script: pr_data_extraction.py
+pr_data_extraction.py
 
-Description:
-    Extracts data from the latest N pull requests in the Uyuni repository
-    that triggered a GitHub Actions test workflow and generated Cucumber reports.
+Extracts data from the latest N pull requests (PRs) in the Uyuni repository that triggered 
+a GitHub Actions test workflow and generated Cucumber reports.
 
-    For each such PR:
-    - Downloads all Cucumber JSON reports from the initial test run.
-    - Logs the files that were modified in the PR at the time it was opened.
+For each qualifying PR:
+- Downloads all Cucumber JSON reports from the initial test run.
+- Extracts and retains only secondary/recommended tests Cucumber reports.
+- Obtains the files modified that triggered the test run in the PR.
+- Obtains the change history of those files over several recent time windows.
+- Outputs a CSV file with PR features: file extensions, change history, and PR number.
+
+Supports extracting features for a single PR (prediction mode),
+or for multiple recent PRs (training mode).
 
 Requirements:
-    - Environment variable GITHUB_TOKEN must be set with a GitHub Access Token.
+- Environment variable GITHUB_TOKEN must be set with a GitHub Access Token.
 
 Usage:
     python pr_data_extraction.py <N>
-    Where <N> is the number of latest Uyuni PRs (with Cucumber reports) to extract data from.
+    python pr_data_extraction.py '#<PR_NUMBER>'
+    Where <N> is the number of latest Uyuni PRs (with Cucumber reports) to extract data from,
+    or '#<PR_NUMBER>' is a specific PR number to extract features for.
 """
 import os
 import sys
-import logging
-import datetime
 import csv
+import logging
 import zipfile
+import datetime
 
 import requests
 from github import Github
@@ -38,52 +45,46 @@ RECENT_DAYS = [3, 14, 56]
 
 def setup_logging(level, log_file="script.log"):
     """
-    Initializes and configures logging for the script, returning a logger at the given level.
-    Logs will be written to both the console and a file.
-    
-    Args:
-        level: Logging level (e.g., logging.DEBUG, logging.INFO).
-        log_file: Path to the file where logs will be written.
-    
-    Returns:
-        A configured logger instance.
-    """
+    Set up logging to both console and file.
 
+    Args:
+        level (int): Logging level (e.g., logging.DEBUG, logging.INFO).
+        log_file (str): Path to the file where logs will be written.
+
+    Returns:
+        logging.Logger: Configured logger instance.
+    """
     if level == logging.DEBUG:
         fmt = "%(levelname)s - %(filename)s:%(lineno)d - %(message)s"
     else:
         fmt = "%(levelname)s - %(message)s"
-
     formatter = logging.Formatter(fmt)
-
-    # Get the logger
     my_logger = logging.getLogger(__name__)
     my_logger.setLevel(level)
-
-    # Avoid adding duplicate handlers if setup_logging is called multiple times
     if not my_logger.handlers:
-
-        # Console handler
         console_handler = logging.StreamHandler()
         console_handler.setFormatter(formatter)
         console_handler.setLevel(level)
         my_logger.addHandler(console_handler)
 
-        # File handler
         file_handler = logging.FileHandler(log_file)
         file_handler.setFormatter(formatter)
         file_handler.setLevel(level)
         my_logger.addHandler(file_handler)
-
     return my_logger
 
 logger = setup_logging(logging.INFO)
 
 def load_github_token():
     """
-    Loads the GitHub token from the environment and exits with an error if it's missing.
-    """
+    Load the GitHub token from the environment.
 
+    Returns:
+        str: GitHub token.
+
+    Exits:
+        If GITHUB_TOKEN is not set.
+    """
     github_token = os.getenv("GITHUB_TOKEN")
     if not github_token:
         logger.critical(
@@ -95,9 +96,18 @@ def load_github_token():
 
 def get_repository(gh, repo_full_name):
     """
-    Retrieves the GitHub repository object using the provided full name, exits if access fails.
-    """
+    Retrieve the GitHub repository object.
 
+    Args:
+        gh (Github): PyGithub Github instance.
+        repo_full_name (str): Full repository name.
+
+    Returns:
+        github.Repository.Repository: Repository object.
+
+    Exits:
+        If repository access fails.
+    """
     try:
         return gh.get_repo(repo_full_name)
     except Exception as e:
@@ -106,9 +116,18 @@ def get_repository(gh, repo_full_name):
 
 def get_test_workflow(repo, workflow_name):
     """
-    Fetches the GitHub Actions workflow in the repository matching the specified name.
-    """
+    Fetch the GitHub Actions workflow in the repository matching the specified name.
 
+    Args:
+        repo (github.Repository.Repository): Repository object.
+        workflow_name (str): Name of the workflow.
+
+    Returns:
+        github.Workflow.Workflow: Workflow object.
+
+    Exits:
+        If workflow is not found.
+    """
     workflows = repo.get_workflows()
     test_workflow = next((wf for wf in workflows if wf.name == workflow_name), None)
     if not test_workflow:
@@ -118,9 +137,15 @@ def get_test_workflow(repo, workflow_name):
 
 def get_candidate_prs(repo, n):
     """
-    Returns n recently created PRs, oversampling to account for filtering out irrelevant ones.
-    """
+    Get n recently created PRs, oversampling to account for filtering out irrelevant ones.
 
+    Args:
+        repo (github.Repository.Repository): Repository object.
+        n (int): Number of PRs to process.
+
+    Returns:
+        list: List of PullRequest objects.
+    """
     multiplier = 4  # To oversample in case some PRs don't have Cucumber reports
     prs = list(repo.get_pulls(state="all", sort="created", direction="desc")[:n*multiplier])
     if len(prs) < n:
@@ -129,10 +154,15 @@ def get_candidate_prs(repo, n):
 
 def get_cucumber_initial_test_run(test_workflow, pr):
     """
-    Finds the first completed test run during the PR's lifetime that includes Cucumber reports.
-    """
+    Find the first completed test run during the PR's lifetime that includes Cucumber reports.
 
-    # Gets all test workflow runs that occured on the current PR's branch.
+    Args:
+        test_workflow (github.Workflow.Workflow): Test workflow object.
+        pr (github.PullRequest.PullRequest): Pull request object.
+
+    Returns:
+        github.WorkflowRun.WorkflowRun or None: Initial test run with Cucumber reports, or None.
+    """
     test_runs_on_pr_branch = test_workflow.get_runs(
         branch=pr.head.ref,
         event="pull_request",
@@ -160,8 +190,6 @@ def get_cucumber_initial_test_run(test_workflow, pr):
         logger.debug("Obtained run #%s created at %s", run.run_number, run.created_at)
 
     pr_test_runs.sort(key=lambda run: run.created_at)
-
-    # Return initial test run *that has Cucumber reports*
     for run in pr_test_runs:
         run_number = run.run_number
         logger.debug("Checking if run #%s has Cucumber reports", run_number)
@@ -175,16 +203,21 @@ def get_cucumber_initial_test_run(test_workflow, pr):
 
 def download_secondary_cucumber_reports(run_with_cucumber, pr_number, headers):
     """
-    Downloads all Cucumber artifacts from the given workflow run and saves them as ZIP files
-    inside a PR-specific folder. Skips downloading if the PR folder already exists.
-    After downloading, extracts and filters secondary reports.
-    Returns True if secondary/recommended reports exist, False otherwise.
+    Download all Cucumber artifacts from the given workflow run and save them as ZIP files
+    inside a PR-specific folder. Extract and filter secondary/recommended reports.
+
+    Args:
+        run_with_cucumber (github.WorkflowRun.WorkflowRun): Workflow run with Cucumber artifacts.
+        pr_number (int): PR number.
+        headers (dict): HTTP headers for requests.
+
+    Returns:
+        bool: True if secondary/recommended reports exist, False otherwise.
     """
     pr_folder = f"PR{pr_number}"
     if os.path.exists(pr_folder):
         logger.info("Folder %s exists, skipping artifact download for PR #%d", pr_folder, pr_number)
-        # Assume extraction already happened, so check for secondary/recommended files
-        return extract_secondary_reports(pr_number)
+        return True
 
     try:
         os.makedirs(pr_folder, exist_ok=True)
@@ -202,7 +235,6 @@ def download_secondary_cucumber_reports(run_with_cucumber, pr_number, headers):
             except requests.RequestException as e:
                 logger.warning("Failed to download %s: %s", artifact.name, e)
                 continue
-
             try:
                 with open(zip_filename, "wb") as f:
                     f.write(response.content)
@@ -211,16 +243,20 @@ def download_secondary_cucumber_reports(run_with_cucumber, pr_number, headers):
                 logger.error("Failed to write file %s: %s", zip_filename, e)
                 continue
 
-    return extract_secondary_reports(pr_number)
+    return extract_secondary_reports(pr_folder)
 
-def extract_secondary_reports(pr_number):
+def extract_secondary_reports(pr_folder):
     """
-    Extracts all zip files in the PR folder, then deletes all files
+    Extract all zip files in the PR folder, then delete all files
     that are not secondary test reports (i.e., files not containing 'secondary'
     or 'recommended' in their name). Also deletes the original zip files.
-    Returns True if any secondary/recommended files remain, False otherwise.
+
+    Args:
+        pr_folder (str): Path to PR folder.
+
+    Returns:
+        bool: True if any secondary/recommended files remain, False otherwise.
     """
-    pr_folder = f"PR{pr_number}"
     if not os.path.exists(pr_folder):
         logger.warning("PR folder %s does not exist for extraction.", pr_folder)
         return False
@@ -236,7 +272,12 @@ def extract_secondary_reports(pr_number):
     return has_secondary
 
 def extract_all_zip_files(pr_folder):
-    """Extract all zip files in the given folder and delete them after extraction."""
+    """
+    Extract all zip files in the given folder and delete them after extraction.
+
+    Args:
+        pr_folder (str): Path to PR folder.
+    """
     for filename in os.listdir(pr_folder):
         if filename.endswith(".zip"):
             zip_path = os.path.join(pr_folder, filename)
@@ -258,7 +299,12 @@ def extract_all_zip_files(pr_folder):
 def delete_non_secondary_reports(pr_folder):
     """
     Delete all reports not containing 'secondary' or 'recommended' in their name.
-    Returns True if any secondary/recommended files remain, False otherwise.
+
+    Args:
+        pr_folder (str): Path to PR folder.
+
+    Returns:
+        bool: True if any secondary/recommended files remain, False otherwise.
     """
     has_secondary = False
     for filename in os.listdir(pr_folder):
@@ -276,13 +322,19 @@ def delete_non_secondary_reports(pr_folder):
 
 def get_modified_files(repo, pr, test_run):
     """
-    Returns the list of modified files in the PR that triggered the given test run,
+    Get the list of modified files in the PR that triggered the given test run,
     excluding files that contain '.changes' in their filename.
-    """
 
+    Args:
+        repo (github.Repository.Repository): Repository object.
+        pr (github.PullRequest.PullRequest): Pull request object.
+        test_run (github.WorkflowRun.WorkflowRun): Workflow run object.
+
+    Returns:
+        list: List of modified file paths.
+    """
     # base_commit_sha: the commit the PR is targeting (e.g., main)
     # test_run_commit_sha: the commit the test workflow ran on
-    # note: this may not be the first test run, it's the earliest one with Cucumber reports
     base_commit_sha = pr.base.sha
     test_run_commit_sha = test_run.head_sha
 
@@ -293,16 +345,16 @@ def get_modified_files(repo, pr, test_run):
 
 def get_files_change_history(repo, file_list, recent_days):
     """
-    For each N in recent_days,
-    returns the total number of times the files in file_list were modified in the last N days.
+    For each N in recent_days, return the total number of times the files in file_list
+    were modified in the last N days.
 
     Args:
-        repo: GitHub Repository object.
-        file_list: List of modified file paths.
-        recent_days: List of integers (e.g., [3, 14, 56]) representing "last N days".
+        repo (github.Repository.Repository): Repository object.
+        file_list (list): List of modified file paths.
+        recent_days (list): List of integers representing "last N days".
 
     Returns:
-        Dict mapping each number of days to total number of changes across all files.
+        dict: Mapping each number of days to total number of changes across all files.
     """
     now = datetime.datetime.now(datetime.timezone.utc)
     earliest_date = now - datetime.timedelta(days=max(recent_days))
@@ -328,17 +380,15 @@ def get_files_change_history(repo, file_list, recent_days):
 
 def get_file_extensions(modified_files):
     """
-    Returns a list of unique file extensions (without the dot) 
-    from the given list of modified file paths. Files without an 
-    extension are excluded.
+    Get a list of unique file extensions from the given list of modified file paths.
+    Files without an extension are excluded.
 
     Args:
-        modified_files (List[str]): List of modified file paths.
+        modified_files (list): List of modified file paths.
 
     Returns:
-        List[str]: Unique file extensions found in the list.
+        list: Unique file extensions found in the list.
     """
-
     return list({
         file.rsplit('.', 1)[-1]
         for file in modified_files
@@ -347,12 +397,12 @@ def get_file_extensions(modified_files):
 
 def write_pr_features_to_csv(csv_writer, file_extensions, change_history, pr_number):
     """
-    Writes a single PR's features to the CSV file.
+    Write a single PR's features to the CSV file.
 
     Args:
         csv_writer (csv.writer): CSV writer object.
-        file_extensions (List[str]): List of file extensions in the PR.
-        change_history (Dict[int, int]): Mapping of recent_day → change count (ordered).
+        file_extensions (list): List of file extensions in the PR.
+        change_history (dict): Mapping of recent_day → change count (ordered).
         pr_number (int): The PR number.
     """
     try:
@@ -365,7 +415,13 @@ def write_pr_features_to_csv(csv_writer, file_extensions, change_history, pr_num
 
 def setup_output_csv(recent_days):
     """
-    Initializes the CSV output file and returns the file handle and CSV writer.
+    Initialize the CSV output file and return the file handle and CSV writer.
+
+    Args:
+        recent_days (list): List of time windows for change frequency.
+
+    Returns:
+        tuple: (csv_file, csv_writer)
     """
     try:
         csv_file = open(PR_FEATURES_CSV_FILENAME, mode="w", newline="", encoding="utf-8")
@@ -385,11 +441,20 @@ def setup_output_csv(recent_days):
 
 def extract_pr_data(repo_full_name, n, github_token, csv_writer, single_pr_number=None):
     """
-    Coordinates the full PR data extraction process: 
-    getting PRs, modified files, their change history, test runs, and downloading Cucumber reports.
+    Coordinate the full PR data extraction process: getting PRs, modified files,
+    their change history, test runs, and downloading Cucumber reports.
     If single_pr_number is set, only process that PR and skip downloading cucumber reports.
-    """
 
+    Args:
+        repo_full_name (str): Full repository name.
+        n (int): Number of PRs to process.
+        github_token (str): GitHub token.
+        csv_writer (csv.writer): CSV writer object.
+        single_pr_number (int, optional): If set, only process this PR.
+
+    Returns:
+        None
+    """
     gh = Github(github_token)
     headers = {
         "Authorization": f"Bearer {github_token}",
@@ -413,14 +478,21 @@ def extract_pr_data(repo_full_name, n, github_token, csv_writer, single_pr_numbe
     for pr in prs:
         if processed_prs_with_cucumber_reports >= n:
             break
-
         logger.info("Processing PR #%d: %s, created at %s", pr.number, pr.title, pr.created_at)
 
-        if process_training_mode(repo, test_workflow, pr, headers, csv_writer):
+        pr_processed = process_training_mode(repo, test_workflow, pr, headers, csv_writer)
+        if pr_processed:
             processed_prs_with_cucumber_reports += 1
 
 def process_single_pr_mode(repo, pr, csv_writer):
-    """Process a single PR in prediction mode (no test runs, no cucumber downloads)."""
+    """
+    Process a single PR in prediction mode (no test runs, no cucumber downloads).
+
+    Args:
+        repo (github.Repository.Repository): Repository object.
+        pr (github.PullRequest.PullRequest): Pull request object.
+        csv_writer (csv.writer): CSV writer object.
+    """
     try:
         dummy_test_run = type("DummyRun", (), {"head_sha": pr.head.sha})()
         extract_and_write_pr_features(repo, pr, dummy_test_run, csv_writer)
@@ -428,7 +500,19 @@ def process_single_pr_mode(repo, pr, csv_writer):
         logger.error("Error extracting features for PR #%d: %s", pr.number, e)
 
 def process_training_mode(repo, test_workflow, pr, headers, csv_writer):
-    """Process a PR in training mode (with test runs and cucumber downloads)."""
+    """
+    Process a PR in training mode (with test runs and cucumber downloads).
+
+    Args:
+        repo (github.Repository.Repository): Repository object.
+        test_workflow (github.Workflow.Workflow): Test workflow object.
+        pr (github.PullRequest.PullRequest): Pull request object.
+        headers (dict): HTTP headers for requests.
+        csv_writer (csv.writer): CSV writer object.
+
+    Returns:
+        bool: True if PR was processed and features extracted, False otherwise.
+    """
     try:
         initial_test_run_with_cucumber = get_cucumber_initial_test_run(test_workflow, pr)
         if not initial_test_run_with_cucumber:
@@ -436,7 +520,6 @@ def process_training_mode(repo, test_workflow, pr, headers, csv_writer):
     except Exception as e:
         logger.error("Error getting initial test run for PR #%d: %s", pr.number, e)
         return False
-
     try:
         has_secondary = download_secondary_cucumber_reports(
             initial_test_run_with_cucumber, pr.number, headers
@@ -450,7 +533,6 @@ def process_training_mode(repo, test_workflow, pr, headers, csv_writer):
     except Exception as e:
         logger.error("Error downloading secondary cucumber reports for PR #%d: %s", pr.number, e)
         return False
-
     try:
         extract_and_write_pr_features(
             repo, pr, initial_test_run_with_cucumber, csv_writer
@@ -463,7 +545,13 @@ def process_training_mode(repo, test_workflow, pr, headers, csv_writer):
 
 def extract_and_write_pr_features(repo, pr, test_run, csv_writer):
     """
-    Extracts modified files, file extensions, and change history for a PR and writes to CSV.
+    Extract modified files, file extensions, and change history for a PR and write to CSV.
+
+    Args:
+        repo (github.Repository.Repository): Repository object.
+        pr (github.PullRequest.PullRequest): Pull request object.
+        test_run (github.WorkflowRun.WorkflowRun): Workflow run object.
+        csv_writer (csv.writer): CSV writer object.
     """
     modified_files = get_modified_files(repo, pr, test_run)
     logger.info("Files modified in PR: %s", modified_files)
@@ -475,10 +563,9 @@ def extract_and_write_pr_features(repo, pr, test_run, csv_writer):
 
 def main():
     """
-    Parses CLI arguments, loads credentials, sets up the CSV output file,
-    and starts the extraction of PR data.
+    Parse CLI arguments, load credentials, set up the CSV output file,
+    and start the extraction of PR data.
     """
-
     if len(sys.argv) != 2:
         logger.critical(
             "Usage: python pr_data_extraction.py <N>|'<#PR_NUMBER>'\n"
@@ -503,7 +590,7 @@ def main():
             n = int(arg)
         except ValueError:
             logger.critical(
-                "Argument must be an integer (for N) or '#<PR_NUMBER>' (e.g., '#12345')."
+                "Argument must be an integer (for N) (e.g., 80) or '#<PR_NUMBER>' (e.g., '#12345')."
             )
             sys.exit(1)
 
