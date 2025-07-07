@@ -58,7 +58,6 @@ import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
-import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -147,8 +146,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -277,8 +274,7 @@ public class SaltServerActionService {
             return DistUpgradeAction.distUpgradeAction(minions, (DistUpgradeAction) actionIn);
         }
         else if (ActionFactory.TYPE_SCAP_XCCDF_EVAL.equals(actionType)) {
-            ScapAction scapAction = (ScapAction)actionIn;
-            return scapXccdfEvalAction(minions, scapAction.getScapActionDetails());
+            return ScapAction.scapXccdfEvalAction(minions, (ScapAction)actionIn);
         }
         else if (ActionFactory.TYPE_SUBSCRIBE_CHANNELS.equals(actionType)) {
             SubscribeChannelsAction subscribeAction = (SubscribeChannelsAction)actionIn;
@@ -1023,52 +1019,6 @@ public class SaltServerActionService {
         return ret;
     }
 
-    private Map<LocalCall<?>, List<MinionSummary>> scapXccdfEvalAction(
-            List<MinionSummary> minionSummaries, ScapActionDetails scapActionDetails) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        Map<String, Object> pillar = new HashMap<>();
-        Matcher profileMatcher = Pattern.compile("--profile (([\\w.-])+)")
-                .matcher(scapActionDetails.getParametersContents());
-        Matcher ruleMatcher = Pattern.compile("--rule (([\\w.-])+)")
-                .matcher(scapActionDetails.getParametersContents());
-        Matcher tailoringFileMatcher = Pattern.compile("--tailoring-file (([\\w./-])+)")
-                .matcher(scapActionDetails.getParametersContents());
-        Matcher tailoringIdMatcher = Pattern.compile("--tailoring-id (([\\w.-])+)")
-                .matcher(scapActionDetails.getParametersContents());
-
-        String oldParameters = "eval " +
-                scapActionDetails.getParametersContents() + " " + scapActionDetails.getPath();
-        pillar.put("old_parameters", oldParameters);
-
-        pillar.put("xccdffile", scapActionDetails.getPath());
-        if (scapActionDetails.getOvalfiles() != null) {
-            pillar.put("ovalfiles", Arrays.stream(scapActionDetails.getOvalfiles().split(","))
-                    .map(String::trim).collect(toList()));
-        }
-        if (profileMatcher.find()) {
-            pillar.put("profile", profileMatcher.group(1));
-        }
-        if (ruleMatcher.find()) {
-            pillar.put("rule", ruleMatcher.group(1));
-        }
-        if (tailoringFileMatcher.find()) {
-            pillar.put("tailoring_file", tailoringFileMatcher.group(1));
-        }
-        if (tailoringIdMatcher.find()) {
-            pillar.put("tailoring_id", tailoringIdMatcher.group(1));
-        }
-        if (scapActionDetails.getParametersContents().contains("--fetch-remote-resources")) {
-            pillar.put("fetch_remote_resources", true);
-        }
-        if (scapActionDetails.getParametersContents().contains("--remediate")) {
-            pillar.put("remediate", true);
-        }
-
-        ret.put(State.apply(singletonList("scap"),
-                Optional.of(singletonMap("mgr_scap_params", (Object)pillar))),
-                minionSummaries);
-        return ret;
-    }
 
     private Map<String, String> prepareCobblerBoot(String kickstartHost,
                                                    String cobblerSystem,
