@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.config.ConfigAction;
+import com.redhat.rhn.domain.action.config.ConfigDiffAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
@@ -48,7 +49,7 @@ public class ConfigRevisionActionTest extends RhnBaseTestCase {
         ConfigRevisionAction cra = new ConfigRevisionAction();
         Date now = new Date();
         Long three = 3L;
-        ConfigAction parent = new ConfigAction();
+        ConfigAction parent = new ConfigDiffAction();
         Server server = ServerFactory.createServer();
         ConfigRevision revision = ConfigurationFactory.newConfigRevision();
         ConfigRevisionActionResult result = new ConfigRevisionActionResult();
