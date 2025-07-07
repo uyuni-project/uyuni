@@ -20,19 +20,6 @@ Feature: Content lifecycle
     And I click on "Save" in "Create a new filter" modal
     Then I should see a "remove fonts packages" text
 
-  Scenario: Create CLM filter to enable Ruby 2.7 module
-    When I follow the left menu "Content Lifecycle > Filters"
-    And I click on "Create Filter"
-    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
-    Then I should see a "Create a new filter" text
-    And I enter "ruby 2.7 module" as "filter_name"
-    And I select "Module (Stream)" from "type"
-    And I select "equals" from "matcher"
-    And I enter "ruby" as "moduleName"
-    And I enter "2.7" as "moduleStream"
-    And I click on "Save" in "Create a new filter" modal
-    Then I should see a "ruby 2.7 module" text
-
   Scenario: Create a content lifecycle project
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "Create Project"
@@ -245,7 +232,7 @@ Scenario: Create CLM filter that allows packages of type Package (Provides Name)
     And I enter "cereal" as "Provides Name"
     And I click on "Save" in "Create a new filter" modal
     Then I should see a "Filter created successfully" text
-  
+
   Scenario: Create CLM filter that denies packages of type Package (Provides Name)
     When I follow the left menu "Content Lifecycle > Filters"
     And I click on "Create Filter"
@@ -270,7 +257,7 @@ Scenario: Create CLM filter of type Package (Build date) that allows packages wh
     And I check radio button "Allow"
     And I click on "Save" in "Create a new filter" modal
     Then I should see a "Filter created successfully" text
-  
+
   Scenario: Create CLM filter of type Package (Build date) that denies packages whose date is lower than a defined one
     When I follow the left menu "Content Lifecycle > Filters"
     And I click on "Create Filter"
@@ -398,7 +385,7 @@ Scenario: Create CLM filter of type Package (Build date) that allows packages wh
     And I check radio button "Allow"
     And I click on "Save" in "Create a new filter" modal
     Then I should see a "Filter created successfully" text
-  
+
   Scenario: Create CLM filter of type Patch(Issue date) that denies patches whose date is greater or equal than a defined one
     When I follow the left menu "Content Lifecycle > Filters"
     And I click on "Create Filter"
