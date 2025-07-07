@@ -17,15 +17,21 @@ package com.redhat.rhn.domain.action;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.server.MinionSummary;
 
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.model.attestation.CoCoAttestationStatus;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.State;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -33,6 +39,8 @@ import java.util.Optional;
  * CoCoAttestationAction - Class representing TYPE_COCO_ATTESTATION
  */
 public class CoCoAttestationAction extends Action {
+    private static final String COCOATTEST_REQUESTDATA = "cocoattest.requestdata";
+
     private static final Logger LOG = LogManager.getLogger(CoCoAttestationAction.class);
 
     @Override
@@ -56,5 +64,18 @@ public class CoCoAttestationAction extends Action {
         catch (Exception e) {
             LOG.log(Level.ERROR, e);
         }
+    }
+
+
+
+    /**
+     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
+     * @return minion summaries grouped by local call
+     */
+    public static Map<LocalCall<?>, List<MinionSummary>> cocoAttestationAction(List<MinionSummary> minionSummaries) {
+        return Map.of(
+                State.apply(Collections.singletonList(COCOATTEST_REQUESTDATA), Optional.empty()),
+                minionSummaries
+        );
     }
 }

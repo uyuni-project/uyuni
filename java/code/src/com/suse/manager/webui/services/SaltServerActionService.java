@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.CoCoAttestationAction;
 import com.redhat.rhn.domain.action.HardwareRefreshAction;
 import com.redhat.rhn.domain.action.RebootAction;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
@@ -145,7 +146,6 @@ public class SaltServerActionService {
     private static final String PARAM_PKGS = "param_pkgs";
     private static final String PARAM_PATCHES = "param_patches";
     private static final String SYSTEM_REBOOT = "system.reboot";
-    private static final String COCOATTEST_REQUESTDATA = "cocoattest.requestdata";
     public static final String APPSTREAMS_CONFIGURE = "appstreams.configure";
     public static final String PARAM_APPSTREAMS_ENABLE = "param_appstreams_enable";
     public static final String PARAM_APPSTREAMS_DISABLE = "param_appstreams_disable";
@@ -266,7 +266,7 @@ public class SaltServerActionService {
             return InventoryAction.inventoryAction(minions, (InventoryAction) actionIn);
         }
         else if (ActionFactory.TYPE_COCO_ATTESTATION.equals(actionType)) {
-            return cocoAttestationAction(minions);
+            return CoCoAttestationAction.cocoAttestationAction(minions);
         }
         else if (ActionFactory.TYPE_APPSTREAM_CONFIGURE.equals(actionType)) {
             return appStreamAction(minions, (AppStreamAction) actionIn);
@@ -971,13 +971,6 @@ public class SaltServerActionService {
         ));
     }
 
-
-    private Map<LocalCall<?>, List<MinionSummary>> cocoAttestationAction(List<MinionSummary> minionSummaries) {
-        return Map.of(
-                State.apply(Collections.singletonList(COCOATTEST_REQUESTDATA), Optional.empty()),
-                minionSummaries
-        );
-    }
 
     private Map<LocalCall<?>, List<MinionSummary>> appStreamAction(
             List<MinionSummary> minionSummaries, AppStreamAction action) {
