@@ -60,6 +60,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I select "Development Tools Module 15 SP4 x86_64" as a product
     Then I should see the "Desktop Applications Module 15 SP4 x86_64" selected
     And I should see the "Development Tools Module 15 SP4 x86_64" selected
+    When I select "Python 3 Module 15 SP4 x86_64" as a product
+    Then I should see the "Python 3 Module 15 SP4 x86_64" selected
     When I select "Containers Module 15 SP4 x86_64" as a product
     Then I should see the "Containers Module 15 SP4 x86_64" selected
     When I select "SUSE Linux Enterprise Server LTSS 15 SP4 x86_64" as a product
