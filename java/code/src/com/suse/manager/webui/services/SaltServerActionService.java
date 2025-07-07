@@ -46,7 +46,6 @@ import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
-import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
@@ -63,13 +62,10 @@ import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.server.ErrataInfo;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -90,7 +86,6 @@ import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
@@ -149,7 +144,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -280,7 +274,7 @@ public class SaltServerActionService {
             return ImageBuildAction.imageBuildAction(minions, (ImageBuildAction) actionIn);
         }
         else if (ActionFactory.TYPE_DIST_UPGRADE.equals(actionType)) {
-            return distUpgradeAction((DistUpgradeAction) actionIn, minions);
+            return DistUpgradeAction.distUpgradeAction(minions, (DistUpgradeAction) actionIn);
         }
         else if (ActionFactory.TYPE_SCAP_XCCDF_EVAL.equals(actionType)) {
             ScapAction scapAction = (ScapAction)actionIn;
@@ -1025,69 +1019,6 @@ public class SaltServerActionService {
         );
         ret.put(State.apply(List.of(ApplyStatesEventMessage.CHANNELS), Optional.empty()),
                 minionSummaries);
-
-        return ret;
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> distUpgradeAction(
-            DistUpgradeAction action,
-            List<MinionSummary> minionSummaries) {
-        Map<Boolean, List<Channel>> collect = action.getDetails().getChannelTasks()
-                .stream().collect(Collectors.partitioningBy(
-                        ct -> ct.getTask() == DistUpgradeChannelTask.SUBSCRIBE,
-                        Collectors.mapping(DistUpgradeChannelTask::getChannel,
-                                Collectors.toList())
-                        ));
-
-        List<Channel> subbed = collect.get(true);
-        List<Channel> unsubbed = collect.get(false);
-
-        action.getServerActions()
-        .stream()
-        .flatMap(s -> Opt.stream(s.getServer().asMinionServer()))
-        .forEach(minion -> {
-            Set<Channel> currentChannels = minion.getChannels();
-            unsubbed.forEach(currentChannels::remove);
-            currentChannels.addAll(subbed);
-            MinionPillarManager.INSTANCE.generatePillar(minion);
-            ServerFactory.save(minion);
-        });
-
-        Map<String, Object> pillar = new HashMap<>();
-        Map<String, Object> susemanager = new HashMap<>();
-        pillar.put("susemanager", susemanager);
-        Map<String, Object> distupgrade = new HashMap<>();
-        susemanager.put("distupgrade", distupgrade);
-        distupgrade.put("dryrun", action.getDetails().isDryRun());
-        distupgrade.put(ALLOW_VENDOR_CHANGE, action.getDetails().isAllowVendorChange());
-        distupgrade.put("channels", subbed.stream()
-                .sorted()
-                .map(c -> "susemanager:" + c.getLabel())
-                .collect(Collectors.toList()));
-        if (Objects.nonNull(action.getDetails().getMissingSuccessors())) {
-            pillar.put("missing_successors", Arrays.asList(action.getDetails().getMissingSuccessors().split(",")));
-        }
-        action.getDetails().getProductUpgrades().stream()
-                .map(SUSEProductUpgrade::getToProduct)
-                .filter(SUSEProduct::isBase)
-                .forEach(tgt -> {
-                    Map<String, String> baseproduct = new HashMap<>();
-                    baseproduct.put("name", tgt.getName());
-                    baseproduct.put("version", tgt.getVersion());
-                    baseproduct.put("arch", tgt.getArch().getLabel());
-                    distupgrade.put("targetbaseproduct", baseproduct);
-                });
-
-        if (commitTransaction) {
-            HibernateFactory.commitTransaction();
-        }
-
-        LocalCall<Map<String, ApplyResult>> distUpgrade = State.apply(
-                Collections.singletonList(ApplyStatesEventMessage.DISTUPGRADE),
-                Optional.of(pillar)
-                );
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        ret.put(distUpgrade, minionSummaries);
 
         return ret;
     }
