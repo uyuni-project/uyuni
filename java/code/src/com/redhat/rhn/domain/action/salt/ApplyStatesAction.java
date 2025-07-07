@@ -17,10 +17,15 @@ package com.redhat.rhn.domain.action.salt;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFormatter;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.salt.netapi.calls.LocalCall;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -87,4 +92,19 @@ public class ApplyStatesAction extends Action {
         }
         return ActionFormatter.formatSaltResultMessage(resultList.get());
     }
+
+    /**
+     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
+     * @return minion summaries grouped by local call
+     */
+    @Override
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
+
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+        ret.put(com.suse.salt.netapi.calls.modules.State.apply(details.getMods(), details.getPillarsMap(),
+                Optional.of(true),
+                details.isTest() ? Optional.of(details.isTest()) : Optional.empty()), minionSummaries);
+        return ret;
+    }
+
 }
