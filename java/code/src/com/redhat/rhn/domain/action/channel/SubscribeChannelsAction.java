@@ -16,6 +16,23 @@
 package com.redhat.rhn.domain.action.channel;
 
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.MinionSummary;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.manager.system.SystemManager;
+
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.State;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * SubscribeChannelsAction - Class representing a channel(s) subscription action
@@ -36,5 +53,37 @@ public class SubscribeChannelsAction extends Action {
      */
     public void setDetails(SubscribeChannelsActionDetails actionDetails) {
         this.details = actionDetails;
+    }
+
+
+    /**
+     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
+     * @param saltApi
+     * @param action action which has all the revisions
+     * @return minion summaries grouped by local call
+     */
+    public static Map<LocalCall<?>, List<MinionSummary>> subscribeChannelsAction(
+            List<MinionSummary> minionSummaries, SaltApi saltApi, SubscribeChannelsAction action) {
+        SubscribeChannelsActionDetails actionDetails = action.getDetails();
+
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+        SystemManager sysMgr = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
+
+        List<MinionServer> minions = MinionServerFactory.lookupByMinionIds(
+                minionSummaries.stream().map(MinionSummary::getMinionId).collect(Collectors.toSet()));
+
+        minions.forEach(minion ->
+                // change channels in DB and execult the ChannelsChangedEventMessageAction
+                // which regenerate pillar and refresh Tokens but does not execute a "state.apply channels"
+                sysMgr.updateServerChannels(
+                        actionDetails.getParentAction().getSchedulerUser(),
+                        minion,
+                        Optional.ofNullable(actionDetails.getBaseChannel()),
+                        actionDetails.getChannels())
+        );
+        ret.put(State.apply(List.of(ApplyStatesEventMessage.CHANNELS), Optional.empty()),
+                minionSummaries);
+
+        return ret;
     }
 }

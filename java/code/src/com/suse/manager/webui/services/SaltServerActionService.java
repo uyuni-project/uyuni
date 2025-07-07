@@ -43,7 +43,6 @@ import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
-import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
@@ -72,7 +71,6 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
@@ -80,7 +78,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -277,8 +274,7 @@ public class SaltServerActionService {
             return ScapAction.scapXccdfEvalAction(minions, (ScapAction)actionIn);
         }
         else if (ActionFactory.TYPE_SUBSCRIBE_CHANNELS.equals(actionType)) {
-            SubscribeChannelsAction subscribeAction = (SubscribeChannelsAction)actionIn;
-            return subscribeChanelsAction(minions, subscribeAction.getDetails());
+            return SubscribeChannelsAction.subscribeChannelsAction(minions, saltApi, (SubscribeChannelsAction)actionIn);
         }
         else if (ActionFactory.TYPE_KICKSTART_INITIATE.equals(actionType)) {
             KickstartInitiateAction autoInitAction = (KickstartInitiateAction)actionIn;
@@ -996,28 +992,6 @@ public class SaltServerActionService {
         ));
     }
 
-    private Map<LocalCall<?>, List<MinionSummary>> subscribeChanelsAction(
-            List<MinionSummary> minionSummaries, SubscribeChannelsActionDetails actionDetails) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        SystemManager sysMgr = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
-
-        List<MinionServer> minions = MinionServerFactory.lookupByMinionIds(
-                minionSummaries.stream().map(MinionSummary::getMinionId).collect(Collectors.toSet()));
-
-        minions.forEach(minion ->
-            // change channels in DB and execult the ChannelsChangedEventMessageAction
-            // which regenerate pillar and refresh Tokens but does not execute a "state.apply channels"
-            sysMgr.updateServerChannels(
-                    actionDetails.getParentAction().getSchedulerUser(),
-                    minion,
-                    Optional.ofNullable(actionDetails.getBaseChannel()),
-                    actionDetails.getChannels())
-        );
-        ret.put(State.apply(List.of(ApplyStatesEventMessage.CHANNELS), Optional.empty()),
-                minionSummaries);
-
-        return ret;
-    }
 
 
     private Map<String, String> prepareCobblerBoot(String kickstartHost,
