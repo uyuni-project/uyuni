@@ -20,6 +20,7 @@ import static java.util.Collections.singletonMap;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.MinionSummary;
 
+import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 
@@ -38,7 +39,6 @@ import java.util.Optional;
  */
 public class PlaybookAction extends Action {
     private static final String INVENTORY_PATH = "/etc/ansible/hosts";
-    private static final String ANSIBLE_RUNPLAYBOOK = "ansible.runplaybook";
 
     private PlaybookActionDetails details;
 
@@ -107,7 +107,8 @@ public class PlaybookAction extends Action {
         pillarData.put("rundir", rundir);
         pillarData.put("flush_cache", details.isFlushCache());
         pillarData.put("extra_vars", details.getExtraVarsContents());
-        return State.apply(singletonList(ANSIBLE_RUNPLAYBOOK), Optional.of(pillarData), Optional.of(true),
+        return State.apply(singletonList(SaltParameters.ANSIBLE_RUNPLAYBOOK),
+                Optional.of(pillarData), Optional.of(true),
                 Optional.of(details.isTestMode()));
     }
 

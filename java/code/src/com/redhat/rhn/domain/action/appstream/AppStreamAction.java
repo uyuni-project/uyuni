@@ -19,6 +19,7 @@ import static java.util.Collections.singletonList;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.MinionSummary;
 
+import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 
@@ -35,10 +36,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class AppStreamAction extends Action {
-    public static final String PARAM_APPSTREAMS_ENABLE = "param_appstreams_enable";
-    public static final String PARAM_APPSTREAMS_DISABLE = "param_appstreams_disable";
-    public static final String APPSTREAMS_CONFIGURE = "appstreams.configure";
-
     private static final long serialVersionUID = 1L;
     private Set<AppStreamActionDetails> details = new HashSet<>();
 
@@ -99,10 +96,10 @@ public class AppStreamAction extends Action {
         var disableParams = details.get(false).stream().map(AppStreamActionDetails::getModuleName).toList();
 
         Optional<Map<String, Object>> params = Optional.of(Map.of(
-                PARAM_APPSTREAMS_ENABLE, enableParams,
-                PARAM_APPSTREAMS_DISABLE, disableParams
+                SaltParameters.PARAM_APPSTREAMS_ENABLE, enableParams,
+                SaltParameters.PARAM_APPSTREAMS_DISABLE, disableParams
         ));
-        ret.put(State.apply(List.of(APPSTREAMS_CONFIGURE), params), minionSummaries);
+        ret.put(State.apply(List.of(SaltParameters.APPSTREAMS_CONFIGURE), params), minionSummaries);
         return ret;
     }
 

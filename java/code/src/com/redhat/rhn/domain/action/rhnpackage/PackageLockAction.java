@@ -25,6 +25,7 @@ import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
+import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 
@@ -42,8 +43,6 @@ import java.util.Optional;
  * PackageLockAction
  */
 public class PackageLockAction extends PackageAction {
-    private static final String PACKAGES_PKGLOCK = "packages.pkglock";
-
     /**
      * {@inheritDoc}
      */
@@ -77,7 +76,8 @@ public class PackageLockAction extends PackageAction {
                     new PackageEvr(d.getEpoch(), d.getVersion(), d.getRelease(), d.getPackageType())
                             .toUniversalEvrString())).toList();
             LocalCall<Map<String, State.ApplyResult>> localCall =
-                    State.apply(List.of(PACKAGES_PKGLOCK), Optional.of(singletonMap(PARAM_PKGS, pkgs)));
+                    State.apply(List.of(SaltParameters.PACKAGES_PKGLOCK),
+                            Optional.of(singletonMap(SaltParameters.PARAM_PKGS, pkgs)));
             List<MinionSummary> mSums = ret.getOrDefault(localCall, new ArrayList<>());
             mSums.add(m);
             ret.put(localCall, mSums);

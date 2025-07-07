@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 
@@ -46,13 +47,6 @@ import java.util.stream.Collectors;
  * ErrataAction - Class representation of the table rhnAction.
  */
 public class ErrataAction extends Action {
-    public static final String PARAM_REGULAR_PATCHES = "param_regular_patches";
-    public static final String PACKAGES_PKGINSTALL = "packages.pkginstall";
-    private static final String PARAM_PKGS = "param_pkgs";
-    public static final String ALLOW_VENDOR_CHANGE = "allow_vendor_change";
-    public static final String PARAM_UPDATE_STACK_PATCHES = "param_update_stack_patches";
-    public static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
-
     private Set<Errata> errata;
     private ActionPackageDetails details;
 
@@ -169,15 +163,15 @@ public class ErrataAction extends Action {
         Map<LocalCall<?>, List<MinionSummary>> patchableCalls = collect.entrySet().stream()
                 .collect(Collectors.toMap(entry -> {
                             Map<String, Object> params = new HashMap<>();
-                            params.put(PARAM_REGULAR_PATCHES,
+                            params.put(SaltParameters.PARAM_REGULAR_PATCHES,
                                     entry.getKey().stream()
                                             .filter(e -> !e.isUpdateStack())
                                             .map(ErrataInfo::getName)
                                             .sorted()
                                             .collect(toList())
                             );
-                            params.put(ALLOW_VENDOR_CHANGE, allowVendorChange);
-                            params.put(PARAM_UPDATE_STACK_PATCHES,
+                            params.put(SaltParameters.ALLOW_VENDOR_CHANGE, allowVendorChange);
+                            params.put(SaltParameters.PARAM_UPDATE_STACK_PATCHES,
                                     entry.getKey().stream()
                                             .filter(ErrataInfo::isUpdateStack)
                                             .map(ErrataInfo::getName)
@@ -188,7 +182,7 @@ public class ErrataAction extends Action {
                                 params.put("include_salt_upgrade", true);
                             }
                             return State.apply(
-                                    List.of(PACKAGES_PATCHINSTALL),
+                                    List.of(SaltParameters.PACKAGES_PATCHINSTALL),
                                     Optional.of(params)
                             );
                         },
@@ -214,8 +208,8 @@ public class ErrataAction extends Action {
 
         return nameArchVersionToMinions.entrySet().stream().collect(toMap(
                 entry -> State.apply(
-                        singletonList(PACKAGES_PKGINSTALL),
-                        Optional.of(singletonMap(PARAM_PKGS,
+                        singletonList(SaltParameters.PACKAGES_PKGINSTALL),
+                        Optional.of(singletonMap(SaltParameters.PARAM_PKGS,
                                 entry.getKey().entrySet()
                                         .stream()
                                         .map(e -> List.of(

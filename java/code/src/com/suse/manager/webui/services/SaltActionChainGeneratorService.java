@@ -16,10 +16,6 @@ package com.suse.manager.webui.services;
 
 import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
-import static com.suse.manager.webui.services.SaltServerActionService.PACKAGES_PATCHINSTALL;
-import static com.suse.manager.webui.services.SaltServerActionService.PACKAGES_PKGINSTALL;
-import static com.suse.manager.webui.services.SaltServerActionService.PARAM_REGULAR_PATCHES;
-import static com.suse.manager.webui.services.SaltServerActionService.PARAM_UPDATE_STACK_PATCHES;
 import static com.suse.manager.webui.services.impl.SaltSSHService.ACTION_STATES_LIST;
 import static com.suse.manager.webui.services.impl.SaltSSHService.DEFAULT_TOPS;
 
@@ -270,7 +266,7 @@ public class SaltActionChainGeneratorService {
         Optional<String> mods = getModsString(moduleRun);
         SaltState retState = null;
 
-        if (mods.isPresent() && mods.get().contains(PACKAGES_PKGINSTALL)) {
+        if (mods.isPresent() && mods.get().contains(SaltParameters.PACKAGES_PKGINSTALL)) {
             Map<String, List<List<String>>> paramPillar =
                     (Map<String, List<List<String>>>) moduleRun.getKwargs().get("pillar");
             SaltPkgInstalled pkgInstalled = new SaltPkgInstalled();
@@ -282,14 +278,14 @@ public class SaltActionChainGeneratorService {
                     });
             retState = pkgInstalled;
         }
-        else if (mods.isPresent() && mods.get().contains(PACKAGES_PATCHINSTALL)) {
+        else if (mods.isPresent() && mods.get().contains(SaltParameters.PACKAGES_PATCHINSTALL)) {
             Map<String, List<String>> paramPillar =
                     (Map<String, List<String>>) moduleRun.getKwargs().get("pillar");
             SaltPatchInstalled patchInstalled = new SaltPatchInstalled();
-            for (String patch : paramPillar.get(PARAM_UPDATE_STACK_PATCHES)) {
+            for (String patch : paramPillar.get(SaltParameters.PARAM_UPDATE_STACK_PATCHES)) {
                 patchInstalled.addPatch(patch);
             }
-            for (String patch : paramPillar.get(PARAM_REGULAR_PATCHES)) {
+            for (String patch : paramPillar.get(SaltParameters.PARAM_REGULAR_PATCHES)) {
                 patchInstalled.addPatch(patch);
             }
             retState = patchInstalled;
@@ -327,7 +323,7 @@ public class SaltActionChainGeneratorService {
         if (state instanceof SaltModuleRun moduleRun) {
             Optional<String> mods = getModsString(moduleRun);
 
-            if (mods.isPresent() && mods.get().contains(PACKAGES_PKGINSTALL)) {
+            if (mods.isPresent() && mods.get().contains(SaltParameters.PACKAGES_PKGINSTALL)) {
                 if (moduleRun.getKwargs() != null) {
                     Map<String, List<List<String>>> paramPillar =
                             (Map<String, List<List<String>>>) moduleRun.getKwargs().get("pillar");
@@ -338,7 +334,7 @@ public class SaltActionChainGeneratorService {
                     }
                 }
             }
-            else if (mods.isPresent() && mods.get().contains(PACKAGES_PATCHINSTALL)) {
+            else if (mods.isPresent() && mods.get().contains(SaltParameters.PACKAGES_PATCHINSTALL)) {
                 if (moduleRun.getKwargs() != null) {
                     Map<String, List<String>> paramPillar =
                             (Map<String, List<String>>) moduleRun.getKwargs().get("pillar");
@@ -368,13 +364,13 @@ public class SaltActionChainGeneratorService {
         if (state instanceof SaltModuleRun moduleRun) {
             Optional<String> mods = getModsString(moduleRun);
 
-            if (mods.isPresent() && mods.get().contains(PACKAGES_PKGINSTALL) &&
+            if (mods.isPresent() && mods.get().contains(SaltParameters.PACKAGES_PKGINSTALL) &&
                     isSaltUpgrade(state) && !minion.isSshPush()) {
                 // split only for regular minions, salt-ssh minions don't have a
                 // salt-minion process
                 return true;
             }
-            else if (mods.isPresent() && mods.get().contains(PACKAGES_PATCHINSTALL) &&
+            else if (mods.isPresent() && mods.get().contains(SaltParameters.PACKAGES_PATCHINSTALL) &&
                     isSaltUpgrade(state)) {
                 return true;
             }

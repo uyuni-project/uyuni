@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.server.MinionSummary;
 
+import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 
@@ -40,9 +41,6 @@ import java.util.Optional;
  * PackageUpdateAction
  */
 public class PackageUpdateAction extends PackageAction {
-    public static final String PACKAGES_PKGUPDATE = "packages.pkgupdate";
-    public static final String PACKAGES_PKGINSTALL = "packages.pkginstall";
-
 
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
@@ -83,11 +81,11 @@ public class PackageUpdateAction extends PackageAction {
                 .toList();
         if (pkgs.isEmpty()) {
             // Full system package update using update state
-            ret.put(State.apply(List.of(PACKAGES_PKGUPDATE), Optional.empty()), filteredMinions);
+            ret.put(State.apply(List.of(SaltParameters.PACKAGES_PKGUPDATE), Optional.empty()), filteredMinions);
         }
         else {
-            ret.put(State.apply(List.of(PACKAGES_PKGINSTALL),
-                    Optional.of(singletonMap(PARAM_PKGS, pkgs))), filteredMinions);
+            ret.put(State.apply(List.of(SaltParameters.PACKAGES_PKGINSTALL),
+                    Optional.of(singletonMap(SaltParameters.PARAM_PKGS, pkgs))), filteredMinions);
         }
         return ret;
     }

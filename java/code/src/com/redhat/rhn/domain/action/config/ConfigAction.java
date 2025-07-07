@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.html.HtmlTag;
 
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
+import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 
@@ -41,10 +42,6 @@ import java.util.stream.Collectors;
  * ConfigAction - Class representation of the table rhnAction.
  */
 public class ConfigAction extends Action {
-    private static final String CONFIG_DEPLOY_FILES = "configuration.deploy_files";
-    private static final String CONFIG_DIFF_FILES = "configuration.diff_files";
-    private static final String PARAM_FILES = "param_files";
-
     private Set<ConfigRevisionAction> configRevisionActions;
 
     /**
@@ -160,8 +157,8 @@ public class ConfigAction extends Action {
                     .stream()
                     .map(revision -> ConfigChannelSaltManager.getInstance().getStateParameters(revision))
                     .toList();
-            ret.put(State.apply(List.of(CONFIG_DEPLOY_FILES),
-                            Optional.of(Collections.singletonMap(PARAM_FILES, fileStates))),
+            ret.put(State.apply(List.of(SaltParameters.CONFIG_DEPLOY_FILES),
+                            Optional.of(Collections.singletonMap(SaltParameters.PARAM_FILES, fileStates))),
                     new ArrayList<>(selectedServers));
         });
         return ret;
@@ -185,8 +182,8 @@ public class ConfigAction extends Action {
                 .map(revision -> ConfigChannelSaltManager.getInstance().getStateParameters(revision))
                 .toList();
         ret.put(com.suse.salt.netapi.calls.modules.State.apply(
-                List.of(CONFIG_DIFF_FILES),
-                Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
+                List.of(SaltParameters.CONFIG_DIFF_FILES),
+                Optional.of(Collections.singletonMap(SaltParameters.PARAM_FILES, fileStates)),
                 Optional.of(true), Optional.of(true)), minionSummaries);
         return ret;
     }

@@ -135,23 +135,6 @@ public class SaltServerActionService {
 
     /* Logger for this class */
     private static final Logger LOG = LogManager.getLogger(SaltServerActionService.class);
-    public static final String PACKAGES_PKGINSTALL = "packages.pkginstall";
-    private static final String PACKAGES_PKGDOWNLOAD = "packages.pkgdownload";
-    public static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
-    private static final String PACKAGES_PATCHDOWNLOAD = "packages.patchdownload";
-    private static final String PARAM_PKGS = "param_pkgs";
-    private static final String PARAM_PATCHES = "param_patches";
-    private static final String SYSTEM_REBOOT = "system.reboot";
-    public static final String APPSTREAMS_CONFIGURE = "appstreams.configure";
-    public static final String PARAM_APPSTREAMS_ENABLE = "param_appstreams_enable";
-
-    /** SLS pillar parameter name for the list of update stack patch names. */
-    public static final String PARAM_UPDATE_STACK_PATCHES = "param_update_stack_patches";
-
-    /** SLS pillar parameter name for the list of regular patch names. */
-    public static final String PARAM_REGULAR_PATCHES = "param_regular_patches";
-    public static final String ALLOW_VENDOR_CHANGE = "allow_vendor_change";
-
 
     private boolean commitTransaction = true;
 
@@ -548,7 +531,7 @@ public class SaltServerActionService {
                         // skip reboot, needs special handling
                         stateResult ->
                                 stateResult.getName().map(x -> x.fold(Arrays::asList, List::of)
-                                        .contains(SYSTEM_REBOOT)).orElse(false));
+                                        .contains(SaltParameters.SYSTEM_REBOOT)).orElse(false));
 
                 boolean refreshPkg = false;
                 Optional<User> scheduler = Optional.empty();
@@ -565,7 +548,7 @@ public class SaltServerActionService {
 
                         Action action = ActionFactory.lookupById(stateId.getActionId());
                         if (stateResult.getName().map(x -> x.fold(Arrays::asList, List::of)
-                                .contains(SYSTEM_REBOOT)).orElse(false) && stateResult.isResult() &&
+                                .contains(SaltParameters.SYSTEM_REBOOT)).orElse(false) && stateResult.isResult() &&
                                 action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
 
                             Optional<ServerAction> rebootServerAction =
@@ -580,7 +563,7 @@ public class SaltServerActionService {
                                         }
                                     },
                                     () -> LOG.error("Action of type {} found in action chain result but not " +
-                                            "in actions for minion {}", SYSTEM_REBOOT, minionId));
+                                            "in actions for minion {}", SaltParameters.SYSTEM_REBOOT, minionId));
                         }
 
                         if (stateResult.isResult() &&
@@ -841,7 +824,7 @@ public class SaltServerActionService {
                             !mods.isEmpty() ?
                                     singletonMap("mods", mods) : emptyMap(),
                             createStateApplyKwargs(kwargs));
-                case SYSTEM_REBOOT:
+                case SaltParameters.SYSTEM_REBOOT:
                     Integer time = (Integer)kwargs.get("at_time");
                     return new SaltSystemReboot(stateId,
                             serverAction.getParentAction().getId(), time);
@@ -877,8 +860,8 @@ public class SaltServerActionService {
                     .getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
                             d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
                     .toList();
-            call = State.apply(List.of(PACKAGES_PKGDOWNLOAD),
-                    Optional.of(Collections.singletonMap(PARAM_PKGS, args)));
+            call = State.apply(List.of(SaltParameters.PACKAGES_PKGDOWNLOAD),
+                    Optional.of(Collections.singletonMap(SaltParameters.PARAM_PKGS, args)));
             LOG.info("Executing staging of packages");
         }
         if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
@@ -895,8 +878,8 @@ public class SaltServerActionService {
                 )
                 .toList();
 
-            call = State.apply(List.of(PACKAGES_PATCHDOWNLOAD),
-                    Optional.of(Collections.singletonMap(PARAM_PATCHES, errataArgs)));
+            call = State.apply(List.of(SaltParameters.PACKAGES_PATCHDOWNLOAD),
+                    Optional.of(Collections.singletonMap(SaltParameters.PARAM_PATCHES, errataArgs)));
             LOG.info("Executing staging of patches");
         }
         return call;

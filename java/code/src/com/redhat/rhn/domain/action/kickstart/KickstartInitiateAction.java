@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
+import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 
@@ -45,8 +46,6 @@ import java.util.Optional;
  * KickstartInitiateAction
  */
 public class KickstartInitiateAction extends KickstartAction {
-    private static final String KICKSTART_INITIATE = "bootloader.autoinstall";
-
     private static final Logger LOG = LogManager.getLogger(KickstartInitiateAction.class);
 
     /**
@@ -69,7 +68,7 @@ public class KickstartInitiateAction extends KickstartAction {
         if (kOpts.contains("autoupgrade=1") || kOpts.contains("uyuni_keep_saltkey=1")) {
             ksActionDetails.setUpgrade(true);
         }
-        ret.put(State.apply(List.of(KICKSTART_INITIATE), Optional.of(pillar)), minionSummaries);
+        ret.put(State.apply(List.of(SaltParameters.KICKSTART_INITIATE), Optional.of(pillar)), minionSummaries);
 
         return ret;
     }

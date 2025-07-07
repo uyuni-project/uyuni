@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.server.MinionSummary;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.model.attestation.CoCoAttestationStatus;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
+import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 
@@ -39,8 +40,6 @@ import java.util.Optional;
  * CoCoAttestationAction - Class representing TYPE_COCO_ATTESTATION
  */
 public class CoCoAttestationAction extends Action {
-    private static final String COCOATTEST_REQUESTDATA = "cocoattest.requestdata";
-
     private static final Logger LOG = LogManager.getLogger(CoCoAttestationAction.class);
 
     @Override
@@ -74,7 +73,7 @@ public class CoCoAttestationAction extends Action {
      */
     public static Map<LocalCall<?>, List<MinionSummary>> cocoAttestationAction(List<MinionSummary> minionSummaries) {
         return Map.of(
-                State.apply(Collections.singletonList(COCOATTEST_REQUESTDATA), Optional.empty()),
+                State.apply(Collections.singletonList(SaltParameters.COCOATTEST_REQUESTDATA), Optional.empty()),
                 minionSummaries
         );
     }

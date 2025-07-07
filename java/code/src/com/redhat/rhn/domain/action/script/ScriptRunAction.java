@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.download.DownloadManager;
 
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 
@@ -56,8 +57,6 @@ import java.util.Set;
  * ScriptRunAction
  */
 public class ScriptRunAction extends ScriptAction {
-    private static final String REMOTE_COMMANDS = "remotecommands";
-
     /* Logger for this class */
     private static final Logger LOG = LogManager.getLogger(ScriptRunAction.class);
 
@@ -172,7 +171,7 @@ public class ScriptRunAction extends ScriptAction {
             pillar.put("mgr_remote_cmd_script", SALT_FS_PREFIX + SCRIPTS_DIR + "/" + scriptFile.getFileName());
             pillar.put("mgr_remote_cmd_runas", scriptAction.getScriptActionDetails().getUsername());
             pillar.put("mgr_remote_cmd_timeout", scriptAction.getScriptActionDetails().getTimeout());
-            ret.put(State.apply(List.of(REMOTE_COMMANDS), Optional.of(pillar)), minions);
+            ret.put(State.apply(List.of(SaltParameters.REMOTE_COMMANDS), Optional.of(pillar)), minions);
         }
         catch (IOException e) {
             String errorMsg = "Could not write script to file " + scriptFile + " - " + e;

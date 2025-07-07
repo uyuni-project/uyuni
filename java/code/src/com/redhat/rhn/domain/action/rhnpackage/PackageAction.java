@@ -31,8 +31,6 @@ import java.util.Set;
  * PackageAction
  */
 public class PackageAction extends Action {
-    protected static final String PARAM_PKGS = "param_pkgs";
-
     private static final long serialVersionUID = -6964115307447205711L;
     private Set<PackageActionDetails> details = new HashSet<>();
 

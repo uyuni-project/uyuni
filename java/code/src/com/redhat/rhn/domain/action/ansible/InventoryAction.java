@@ -21,6 +21,7 @@ import static java.util.Optional.of;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.MinionSummary;
 
+import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 
 import com.google.gson.reflect.TypeToken;
@@ -35,8 +36,6 @@ import java.util.Map;
  * InventoryAction - Action class representing the execution of an Ansible inventory refresh
  */
 public class InventoryAction extends Action {
-    private static final String ANSIBLE_INVENTORIES = "ansible.targets";
-
     private InventoryActionDetails details;
 
     /**
@@ -91,7 +90,7 @@ public class InventoryAction extends Action {
         InventoryActionDetails details = action.getDetails();
         String inventoryPath = details.getInventoryPath();
 
-        return new LocalCall<>(ANSIBLE_INVENTORIES, empty(), of(Map.of("inventory", inventoryPath)),
+        return new LocalCall<>(SaltParameters.ANSIBLE_INVENTORIES, empty(), of(Map.of("inventory", inventoryPath)),
                 new TypeToken<>() { });
     }
 }

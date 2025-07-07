@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.action.rhnpackage;
 
 import com.redhat.rhn.domain.server.MinionSummary;
 
+import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 
@@ -32,7 +33,6 @@ import java.util.stream.Collectors;
  * PackageRemoveAction
  */
 public class PackageRemoveAction extends PackageAction {
-    private static final String PACKAGES_PKGREMOVE = "packages.pkgremove";
 
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
@@ -59,10 +59,10 @@ public class PackageRemoveAction extends PackageAction {
                 .filter(p -> !uniquePkgs.contains(p)).collect(Collectors.toList());
 
         Map<String, Object> params = new HashMap<>();
-        params.put(PARAM_PKGS, uniquePkgs);
+        params.put(SaltParameters.PARAM_PKGS, uniquePkgs);
         params.put("param_pkgs_duplicates", duplicatedPkgs);
 
-        ret.put(State.apply(List.of(PACKAGES_PKGREMOVE),
+        ret.put(State.apply(List.of(SaltParameters.PACKAGES_PKGREMOVE),
                 Optional.of(params)), minionSummaries);
         return ret;
     }

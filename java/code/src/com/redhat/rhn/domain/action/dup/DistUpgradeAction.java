@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.ServerFactory;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.webui.services.SaltParameters;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
@@ -43,8 +44,6 @@ import java.util.stream.Collectors;
  * DistUpgradeAction - Class representation of distribution upgrade action.
  */
 public class DistUpgradeAction extends Action {
-    public static final String ALLOW_VENDOR_CHANGE = "allow_vendor_change";
-
     private static final long serialVersionUID = 1585401756449185047L;
     private DistUpgradeActionDetails details;
 
@@ -100,7 +99,7 @@ public class DistUpgradeAction extends Action {
         Map<String, Object> distupgrade = new HashMap<>();
         susemanager.put("distupgrade", distupgrade);
         distupgrade.put("dryrun", action.getDetails().isDryRun());
-        distupgrade.put(ALLOW_VENDOR_CHANGE, action.getDetails().isAllowVendorChange());
+        distupgrade.put(SaltParameters.ALLOW_VENDOR_CHANGE, action.getDetails().isAllowVendorChange());
         distupgrade.put("channels", subbed.stream()
                 .sorted()
                 .map(c -> "susemanager:" + c.getLabel())
