@@ -17,8 +17,6 @@ import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
@@ -37,9 +35,7 @@ import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.HardwareRefreshAction;
 import com.redhat.rhn.domain.action.RebootAction;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
-import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
 import com.redhat.rhn.domain.action.ansible.PlaybookAction;
-import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
@@ -103,13 +99,11 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.Instant;
@@ -151,8 +145,6 @@ public class SaltServerActionService {
     private static final String PARAM_PKGS = "param_pkgs";
     private static final String PARAM_PATCHES = "param_patches";
     private static final String SYSTEM_REBOOT = "system.reboot";
-    private static final String ANSIBLE_RUNPLAYBOOK = "ansible.runplaybook";
-    private static final String ANSIBLE_INVENTORIES = "ansible.targets";
     private static final String COCOATTEST_REQUESTDATA = "cocoattest.requestdata";
     public static final String APPSTREAMS_CONFIGURE = "appstreams.configure";
     public static final String PARAM_APPSTREAMS_ENABLE = "param_appstreams_enable";
@@ -164,7 +156,6 @@ public class SaltServerActionService {
     /** SLS pillar parameter name for the list of regular patch names. */
     public static final String PARAM_REGULAR_PATCHES = "param_regular_patches";
     public static final String ALLOW_VENDOR_CHANGE = "allow_vendor_change";
-    private static final String INVENTORY_PATH = "/etc/ansible/hosts";
 
 
     private boolean commitTransaction = true;
@@ -269,10 +260,10 @@ public class SaltServerActionService {
             return KickstartInitiateAction.autoinstallInitAction(minions, (KickstartInitiateAction)actionIn);
         }
         else if (ActionFactory.TYPE_PLAYBOOK.equals(actionType)) {
-            return singletonMap(executePlaybookActionCall((PlaybookAction) actionIn), minions);
+            return PlaybookAction.playbookAction(minions, (PlaybookAction) actionIn);
         }
         else if (ActionFactory.TYPE_INVENTORY.equals(actionType)) {
-            return singletonMap(executeInventoryActionCall((InventoryAction) actionIn), minions);
+            return InventoryAction.inventoryAction(minions, (InventoryAction) actionIn);
         }
         else if (ActionFactory.TYPE_COCO_ATTESTATION.equals(actionType)) {
             return cocoAttestationAction(minions);
@@ -980,35 +971,6 @@ public class SaltServerActionService {
         ));
     }
 
-
-    private LocalCall<?> executePlaybookActionCall(PlaybookAction action) {
-        PlaybookActionDetails details = action.getDetails();
-
-        String playbookPath = details.getPlaybookPath();
-        String rundir = new File(playbookPath).getAbsoluteFile().getParent();
-        String inventoryPath = details.getInventoryPath();
-
-        if (StringUtils.isEmpty(inventoryPath)) {
-            inventoryPath = INVENTORY_PATH;
-        }
-
-        Map<String, Object> pillarData = new HashMap<>();
-        pillarData.put("playbook_path", playbookPath);
-        pillarData.put("inventory_path", inventoryPath);
-        pillarData.put("rundir", rundir);
-        pillarData.put("flush_cache", details.isFlushCache());
-        pillarData.put("extra_vars", details.getExtraVarsContents());
-        return State.apply(singletonList(ANSIBLE_RUNPLAYBOOK), Optional.of(pillarData), Optional.of(true),
-                Optional.of(details.isTestMode()));
-    }
-
-    private LocalCall<?> executeInventoryActionCall(InventoryAction action) {
-        InventoryActionDetails details = action.getDetails();
-        String inventoryPath = details.getInventoryPath();
-
-        return new LocalCall<>(ANSIBLE_INVENTORIES, empty(), of(Map.of("inventory", inventoryPath)),
-                new TypeToken<>() { });
-    }
 
     private Map<LocalCall<?>, List<MinionSummary>> cocoAttestationAction(List<MinionSummary> minionSummaries) {
         return Map.of(

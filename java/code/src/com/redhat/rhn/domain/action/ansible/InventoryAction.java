@@ -14,15 +14,28 @@
  */
 package com.redhat.rhn.domain.action.ansible;
 
+import static java.util.Collections.singletonMap;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.server.MinionSummary;
+
+import com.suse.salt.netapi.calls.LocalCall;
+
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * InventoryAction - Action class representing the execution of an Ansible inventory refresh
  */
 public class InventoryAction extends Action {
+    private static final String ANSIBLE_INVENTORIES = "ansible.targets";
 
     private InventoryActionDetails details;
 
@@ -62,5 +75,23 @@ public class InventoryAction extends Action {
                 .appendSuper(super.hashCode())
                 .append(details)
                 .toHashCode();
+    }
+
+    /**
+     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
+     * @param action action which has all the revisions
+     * @return minion summaries grouped by local call
+     */
+    public static Map<LocalCall<?>, List<MinionSummary>> inventoryAction(
+            List<MinionSummary> minionSummaries, InventoryAction action) {
+        return singletonMap(executeInventoryActionCall(action), minionSummaries);
+    }
+
+    private static LocalCall<?> executeInventoryActionCall(InventoryAction action) {
+        InventoryActionDetails details = action.getDetails();
+        String inventoryPath = details.getInventoryPath();
+
+        return new LocalCall<>(ANSIBLE_INVENTORIES, empty(), of(Map.of("inventory", inventoryPath)),
+                new TypeToken<>() { });
     }
 }
