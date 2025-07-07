@@ -1688,7 +1688,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 Arrays.asList("channels", "packages"), new Date());
 
         final ServerAction serverAction = ServerActionTest.createServerAction(server, action);
-        serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
+        serverAction.setStatusPickedUp();
 
         ActionFactory.save(action);
         clearSession();

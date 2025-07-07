@@ -87,10 +87,10 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
 
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction sa = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(user), action);
-        sa.setStatus(ActionFactory.STATUS_COMPLETED);
+        sa.setStatusCompleted();
         action.addServerAction(sa);
         ServerAction sa2 = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(user), action);
-        sa2.setStatus(ActionFactory.STATUS_FAILED);
+        sa2.setStatusFailed();
         action.addServerAction(sa2);
         Path scriptFile = Files.createFile(saltUtils.getScriptPath(action.getId()));
 
@@ -122,10 +122,10 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
         saltUtils.setScriptsDir(Files.createTempDirectory("scripts"));
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction sa = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(user), action);
-        sa.setStatus(ActionFactory.STATUS_PICKED_UP);
+        sa.setStatusPickedUp();
         action.addServerAction(sa);
         ServerAction sa2 = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(user), action);
-        sa2.setStatus(ActionFactory.STATUS_COMPLETED);
+        sa2.setStatusCompleted();
         action.addServerAction(sa2);
         Path scriptFile = Files.createFile(saltUtils.getScriptPath(action.getId()));
 

@@ -118,9 +118,10 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
                 .collect(Collectors.toSet());
 
 
-        ServerAction failed = ActionFactoryTest.createServerAction(minion1, action, ActionFactory.STATUS_FAILED);
-        ServerAction completed = ActionFactoryTest.createServerAction(minion2, action, ActionFactory.STATUS_COMPLETED);
-        ServerAction queued = ActionFactoryTest.createServerAction(minion3, action, ActionFactory.STATUS_QUEUED);
+        ServerAction failed = ActionFactoryTest.createServerAction(minion1, action, ServerAction::setStatusFailed);
+        ServerAction completed = ActionFactoryTest.createServerAction(minion2, action,
+                ServerAction::setStatusCompleted);
+        ServerAction queued = ActionFactoryTest.createServerAction(minion3, action, ServerAction::setStatusQueued);
 
         action.setServerActions(new HashSet<>(Set.of(failed, completed, queued)));
 

@@ -28,7 +28,6 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -724,12 +723,8 @@ public class MaintenanceManager {
 
         Optional<Calendar> calendarOpt = schedule.getCalendarOpt().flatMap(c -> icalUtils.parseCalendar(c));
 
-        List<ActionStatus> pending = new LinkedList<>();
-        pending.add(ActionFactory.STATUS_PICKED_UP);
-        pending.add(ActionFactory.STATUS_QUEUED);
-
         Map<Action, List<Server>> actionsForServerToReschedule = servers.stream()
-            .flatMap(s -> ActionFactory.listServerActionsForServer(s, pending).stream())
+            .flatMap(s -> ActionFactory.listServerActionsForServer(s, ActionFactory.ALL_PENDING_STATUSES).stream())
             .filter(sa -> {
                 Action a = sa.getParentAction();
                 if (a.getPrerequisite() != null) {

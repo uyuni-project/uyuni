@@ -131,7 +131,7 @@ public class MinionActionUtils {
              .isPresent()
         );
 
-        if (!actionIsRunning && !serverAction.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+        if (!actionIsRunning && !serverAction.isStatusQueued()) {
             String message = "No job return event was received.";
             serverAction.fail(message);
         }

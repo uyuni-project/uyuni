@@ -64,17 +64,17 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         Action a1 = ActionFactoryTest.createAction(admin,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         ServerAction saction1 = ServerActionTest.createServerAction(server, a1);
-        saction1.setStatus(ActionFactory.STATUS_COMPLETED);
+        saction1.setStatusCompleted();
 
         Action a2 = ActionFactoryTest.createAction(admin,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         ServerAction saction2 = ServerActionTest.createServerAction(server, a2);
-        saction2.setStatus(ActionFactory.STATUS_QUEUED);
+        saction2.setStatusQueued();
 
         Action a3 = ActionFactoryTest.createAction(admin,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         ServerAction saction3 = ServerActionTest.createServerAction(server, a3);
-        saction3.setStatus(ActionFactory.STATUS_FAILED);
+        saction3.setStatusFailed();
 
         apiActions = handler.listAllActions(admin);
         assertEquals(numActions + 3, apiActions.length);
@@ -111,17 +111,17 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         Action a1 = ActionFactoryTest.createAction(admin,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         ServerAction saction1 = ServerActionTest.createServerAction(server, a1);
-        saction1.setStatus(ActionFactory.STATUS_COMPLETED);
+        saction1.setStatusCompleted();
 
         Action a2 = ActionFactoryTest.createAction(admin,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         ServerAction saction2 = ServerActionTest.createServerAction(server, a2);
-        saction2.setStatus(ActionFactory.STATUS_QUEUED);
+        saction2.setStatusQueued();
 
         Action a3 = ActionFactoryTest.createAction(admin,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         ServerAction saction3 = ServerActionTest.createServerAction(server, a3);
-        saction3.setStatus(ActionFactory.STATUS_FAILED);
+        saction3.setStatusFailed();
 
         // execute
         apiActions = handler.listAllActions(admin);
@@ -148,7 +148,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         Action a = ActionFactoryTest.createAction(admin,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         ServerAction saction = ServerActionTest.createServerAction(server, a);
-        saction.setStatus(ActionFactory.STATUS_COMPLETED);
+        saction.setStatusCompleted();
 
         apiActions = handler.listCompletedActions(admin);
 
@@ -172,7 +172,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         Action a = ActionFactoryTest.createAction(admin,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         ServerAction saction = ServerActionTest.createServerAction(server, a);
-        saction.setStatus(ActionFactory.STATUS_QUEUED);
+        saction.setStatusQueued();
 
         apiActions = handler.listInProgressActions(admin);
 
@@ -196,7 +196,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         Action a = ActionFactoryTest.createAction(admin,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         ServerAction saction = ServerActionTest.createServerAction(server, a);
-        saction.setStatus(ActionFactory.STATUS_FAILED);
+        saction.setStatusFailed();
 
         apiActions = handler.listFailedActions(admin);
 
@@ -221,7 +221,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         a.setArchived(1L);
         ServerAction saction = ServerActionTest.createServerAction(server, a);
-        saction.setStatus(ActionFactory.STATUS_QUEUED);
+        saction.setStatusQueued();
 
         apiActions = handler.listArchivedActions(admin);
 
@@ -245,13 +245,13 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         a.setArchived(1L);
         ServerAction saction = ServerActionTest.createServerAction(server, a);
-        saction.setStatus(ActionFactory.STATUS_QUEUED);
+        saction.setStatusQueued();
 
         Action a2 = ActionFactoryTest.createAction(admin,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         a2.setArchived(1L);
         ServerAction saction2 = ServerActionTest.createServerAction(server, a2);
-        saction2.setStatus(ActionFactory.STATUS_QUEUED);
+        saction2.setStatusQueued();
 
         apiActions = handler.listAllArchivedActions(admin);
         assertTrue(apiActions.length > numActions);
@@ -281,12 +281,12 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         Action a = ActionFactoryTest.createAction(admin,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         ServerAction saction = ServerActionTest.createServerAction(server, a);
-        saction.setStatus(ActionFactory.STATUS_COMPLETED);
+        saction.setStatusCompleted();
 
         Action a2 = ActionFactoryTest.createAction(admin,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         ServerAction saction2 = ServerActionTest.createServerAction(server, a2);
-        saction2.setStatus(ActionFactory.STATUS_COMPLETED);
+        saction2.setStatusCompleted();
 
         apiActions = handler.listAllCompletedActions(admin);
         assertTrue(apiActions.length > numActions);
@@ -307,7 +307,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         Action action = ActionFactoryTest.createAction(admin,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         ServerAction saction = ServerActionTest.createServerAction(server, action);
-        saction.setStatus(ActionFactory.STATUS_COMPLETED);
+        saction.setStatusCompleted();
 
         //obtain number of systems from action manager
         DataResult<ActionedSystem> systems = ActionManager.completedSystems(admin, action, null);
@@ -328,7 +328,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         Action action = ActionFactoryTest.createAction(admin,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         ServerAction saction = ServerActionTest.createServerAction(server, action);
-        saction.setStatus(ActionFactory.STATUS_QUEUED);
+        saction.setStatusQueued();
 
         //obtain number of systems from action manager
         DataResult<ActionedSystem> systems = ActionManager.inProgressSystems(admin, action, null);
@@ -349,7 +349,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         Action action = ActionFactoryTest.createAction(admin,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         ServerAction saction = ServerActionTest.createServerAction(server, action);
-        saction.setStatus(ActionFactory.STATUS_FAILED);
+        saction.setStatusFailed();
 
         //obtain number of systems from action manager
         DataResult<ActionedSystem> systems = ActionManager.failedSystems(admin, action, null);
@@ -388,7 +388,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
 
         Action action = ActionFactoryTest.createEmptyAction(admin, ActionFactory.TYPE_PACKAGES_UPDATE);
         ServerAction serverAction = ServerActionTest.createServerAction(server, action);
-        serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
+        serverAction.setStatusPickedUp();
 
         ActionFactory.save(action);
         ActionFactory.save(serverAction);

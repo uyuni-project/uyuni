@@ -330,8 +330,8 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
         if (getServerActions() == null) {
             return true;
         }
-        return getServerActions().stream().allMatch(sa -> ActionFactory.STATUS_COMPLETED.equals(sa.getStatus()) ||
-                ActionFactory.STATUS_FAILED.equals(sa.getStatus()));
+        return getServerActions().stream().allMatch(sa -> sa.isStatusCompleted() ||
+                sa.isStatusFailed());
     }
 
     /**

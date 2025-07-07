@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.action.rhnpackage;
 
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -89,7 +88,7 @@ public class PackageRefreshListAction extends PackageAction {
      */
     @Override
     public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+        if (serverAction.isStatusFailed()) {
             serverAction.setResultMsg("Failure");
         }
         else {
