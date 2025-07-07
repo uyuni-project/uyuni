@@ -17,20 +17,33 @@ package com.redhat.rhn.domain.action.config;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFormatter;
+import com.redhat.rhn.domain.config.ConfigRevision;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.html.HtmlTag;
 
+import com.suse.manager.webui.services.ConfigChannelSaltManager;
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.State;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ConfigAction - Class representation of the table rhnAction.
  */
 public class ConfigAction extends Action {
+    private static final String CONFIG_DEPLOY_FILES = "configuration.deploy_files";
+    private static final String CONFIG_DIFF_FILES = "configuration.diff_files";
+    private static final String PARAM_FILES = "param_files";
 
     private Set<ConfigRevisionAction> configRevisionActions;
 
@@ -116,4 +129,66 @@ public class ConfigAction extends Action {
         });
         return Collections.unmodifiableList(revisionActions);
     }
+
+
+    /**
+     * Deploy files(files, directory, symlink) through state.apply
+     *
+     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
+     * @param action action which has all the revisions
+     * @return minion summaries grouped by local call
+     */
+    public static Map<LocalCall<?>, List<MinionSummary>> deployFiles(List<MinionSummary> minionSummaries,
+                                                               ConfigAction action) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+
+        Map<Long, MinionSummary> targetMap = minionSummaries.stream().
+                collect(Collectors.toMap(MinionSummary::getServerId, minionId-> minionId));
+
+        Map<MinionSummary, Set<ConfigRevision>> serverConfigMap = action.getConfigRevisionActions()
+                .stream()
+                .filter(cra -> targetMap.containsKey(cra.getServer().getId()))
+                .collect(Collectors.groupingBy(
+                        cra -> targetMap.get(cra.getServer().getId()),
+                        Collectors.mapping(ConfigRevisionAction::getConfigRevision, Collectors.toSet())));
+        Map<Set<ConfigRevision>, Set<MinionSummary>> revsServersMap = serverConfigMap.entrySet()
+                .stream()
+                .collect(Collectors.groupingBy(Map.Entry::getValue,
+                        Collectors.mapping(Map.Entry::getKey, Collectors.toSet())));
+        revsServersMap.forEach((configRevisions, selectedServers) -> {
+            List<Map<String, Object>> fileStates = configRevisions
+                    .stream()
+                    .map(revision -> ConfigChannelSaltManager.getInstance().getStateParameters(revision))
+                    .toList();
+            ret.put(State.apply(List.of(CONFIG_DEPLOY_FILES),
+                            Optional.of(Collections.singletonMap(PARAM_FILES, fileStates))),
+                    new ArrayList<>(selectedServers));
+        });
+        return ret;
+    }
+
+    /**
+     * Deploy files(files, directory, symlink) through state.apply
+     *
+     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
+     * @param action action which has all the revisions
+     * @return minion summaries grouped by local call
+     */
+    public static Map<LocalCall<?>, List<MinionSummary>> diffFiles(List<MinionSummary> minionSummaries,
+                                                                   ConfigAction action) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+        List<Map<String, Object>> fileStates = action.getConfigRevisionActions().stream()
+                .map(ConfigRevisionAction::getConfigRevision)
+                .filter(revision -> revision.isFile() ||
+                        revision.isDirectory() ||
+                        revision.isSymlink())
+                .map(revision -> ConfigChannelSaltManager.getInstance().getStateParameters(revision))
+                .toList();
+        ret.put(com.suse.salt.netapi.calls.modules.State.apply(
+                List.of(CONFIG_DIFF_FILES),
+                Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
+                Optional.of(true), Optional.of(true)), minionSummaries);
+        return ret;
+    }
+
 }
