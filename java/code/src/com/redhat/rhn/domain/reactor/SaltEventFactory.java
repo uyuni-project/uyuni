@@ -84,14 +84,14 @@ public class SaltEventFactory extends HibernateFactory {
 
     /**
      * Update event queue numbers after config change.
-     * @param queues number of queues
+     * Has an effect only when reducing the number of available queues.
+     * All events which are in queues higher than max queues will be moved to the last queue
+     * @param maxQueueNum maximal available queue number
      * @return the number of updated events
      */
-    public static int fixQueueNumbers(int queues) {
-        return getSession()
-                .getNamedQuery("SaltEvent.fixQueueNumbers")
-                .setParameter("queues", queues)
+    public static int fixQueueNumbers(int maxQueueNum) {
+        return getSession().createNativeQuery("UPDATE suseSaltEvent SET queue = :q WHERE queue > :q")
+                .setParameter("q", maxQueueNum)
                 .executeUpdate();
     }
-
 }
