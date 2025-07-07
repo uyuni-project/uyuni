@@ -58,7 +58,6 @@ import com.redhat.rhn.domain.action.rhnpackage.PackageRefreshListAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
-import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
@@ -291,9 +290,7 @@ public class SaltServerActionService {
             return ScriptRunAction.remoteCommandAction(minions, (ScriptAction) actionIn);
         }
         else if (ActionFactory.TYPE_APPLY_STATES.equals(actionType)) {
-            ApplyStatesActionDetails actionDetails = ((ApplyStatesAction) actionIn).getDetails();
-            return applyStatesAction(minions, actionDetails.getMods(),
-                                     actionDetails.getPillarsMap(), actionDetails.isTest());
+            return ApplyStatesAction.applyStatesAction(minions, (ApplyStatesAction) actionIn);
         }
         else if (ActionFactory.TYPE_IMAGE_INSPECT.equals(actionType)) {
             ImageInspectAction iia = (ImageInspectAction) actionIn;
@@ -1041,16 +1038,6 @@ public class SaltServerActionService {
                 ),
                 Map.Entry::getValue
         ));
-    }
-
-
-    private Map<LocalCall<?>, List<MinionSummary>> applyStatesAction(
-            List<MinionSummary> minionSummaries, List<String> mods,
-            Optional<Map<String, Object>> pillar, boolean test) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        ret.put(com.suse.salt.netapi.calls.modules.State.apply(mods, pillar, Optional.of(true),
-                test ? Optional.of(test) : Optional.empty()), minionSummaries);
-        return ret;
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> subscribeChanelsAction(
