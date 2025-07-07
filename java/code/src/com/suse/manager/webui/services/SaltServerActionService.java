@@ -26,8 +26,6 @@ import static java.util.stream.Collectors.toMap;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.RhnRuntimeException;
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -59,9 +57,7 @@ import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
-import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
-import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptAction;
@@ -69,13 +65,6 @@ import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.image.DockerfileProfile;
-import com.redhat.rhn.domain.image.ImageProfile;
-import com.redhat.rhn.domain.image.ImageProfileFactory;
-import com.redhat.rhn.domain.image.ImageStore;
-import com.redhat.rhn.domain.image.ImageStoreFactory;
-import com.redhat.rhn.domain.image.KiwiProfile;
-import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -89,8 +78,6 @@ import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
-import com.redhat.rhn.domain.token.ActivationKey;
-import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
@@ -109,8 +96,6 @@ import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
-import com.suse.manager.webui.utils.token.DownloadTokenBuilder;
-import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
@@ -143,10 +128,6 @@ import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.DateTimeException;
 import java.time.Duration;
@@ -293,25 +274,10 @@ public class SaltServerActionService {
             return ApplyStatesAction.applyStatesAction(minions, (ApplyStatesAction) actionIn);
         }
         else if (ActionFactory.TYPE_IMAGE_INSPECT.equals(actionType)) {
-            ImageInspectAction iia = (ImageInspectAction) actionIn;
-            ImageInspectActionDetails details = iia.getDetails();
-            if (details == null) {
-                return Collections.emptyMap();
-            }
-            return ImageStoreFactory.lookupById(details.getImageStoreId())
-                    .map(store -> imageInspectAction(minions, details, store))
-                    .orElseGet(Collections::emptyMap);
+            return ImageInspectAction.imageInspectAction(minions, (ImageInspectAction) actionIn);
         }
         else if (ActionFactory.TYPE_IMAGE_BUILD.equals(actionType)) {
-            ImageBuildAction imageBuildAction = (ImageBuildAction) actionIn;
-           ImageBuildActionDetails details = imageBuildAction.getDetails();
-            if (details == null) {
-                return Collections.emptyMap();
-            }
-            return ImageProfileFactory.lookupById(details.getImageProfileId()).map(
-                    ip -> imageBuildAction(minions, Optional.ofNullable(details.getVersion()), ip,
-                            imageBuildAction.getId())
-            ).orElseGet(Collections::emptyMap);
+            return ImageBuildAction.imageBuildAction(minions, (ImageBuildAction) actionIn);
         }
         else if (ActionFactory.TYPE_DIST_UPGRADE.equals(actionType)) {
             return distUpgradeAction((DistUpgradeAction) actionIn, minions);
@@ -1061,155 +1027,6 @@ public class SaltServerActionService {
                 minionSummaries);
 
         return ret;
-    }
-
-    private static Map<String, Object> dockerRegPillar(List<ImageStore> stores) {
-        Map<String, Object> dockerRegistries = new HashMap<>();
-        stores.forEach(store -> Optional.ofNullable(store.getCreds())
-                .ifPresent(credentials -> {
-                    Map<String, Object> reg = new HashMap<>();
-                    reg.put("email", "tux@example.com");
-                    reg.put("password", credentials.getPassword());
-                    reg.put("username", credentials.getUsername());
-                    dockerRegistries.put(store.getUri(), reg);
-                }));
-        return dockerRegistries;
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> imageInspectAction(
-            List<MinionSummary> minions, ImageInspectActionDetails details, ImageStore store) {
-        Map<String, Object> pillar = new HashMap<>();
-        Map<LocalCall<?>, List<MinionSummary>> result = new HashMap<>();
-        if (ImageStoreFactory.TYPE_OS_IMAGE.equals(store.getStoreType())) {
-            pillar.put("build_id", "build" + details.getBuildActionId());
-            LocalCall<Map<String, ApplyResult>> apply = State.apply(
-                    Collections.singletonList("images.kiwi-image-inspect"),
-                    Optional.of(pillar));
-            result.put(apply, minions);
-            return result;
-        }
-        else {
-            List<ImageStore> imageStores = new LinkedList<>();
-            imageStores.add(store);
-            Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
-            pillar.put("docker-registries", dockerRegistries);
-            pillar.put("imagename", store.getUri() + "/" + details.getName() + ":" + details.getVersion());
-            pillar.put("build_id", "build" + details.getBuildActionId());
-            LocalCall<Map<String, ApplyResult>> apply = State.apply(
-                    Collections.singletonList("images.profileupdate"),
-                    Optional.of(pillar));
-            result.put(apply, minions);
-            return result;
-        }
-    }
-
-    private String getChannelUrl(MinionServer minion, String channelLabel) {
-        String token;
-
-        try {
-            token = new DownloadTokenBuilder(minion.getOrg().getId())
-                .usingServerSecret()
-                .expiringAfterMinutes(Config.get().getInt(ConfigDefaults.TEMP_TOKEN_LIFETIME))
-                .allowingOnlyChannels(Set.of(channelLabel))
-                .build()
-                .getSerializedForm();
-        }
-        catch (TokenBuildingException e) {
-            LOG.error("Could not generate token for {}", channelLabel, e);
-            token = "";
-        }
-
-        String host = minion.getChannelHost();
-
-        return "https://" + host + "/rhn/manager/download/" + channelLabel + "?" + token;
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> imageBuildAction(
-            List<MinionSummary> minionSummaries, Optional<String> version,
-            ImageProfile profile, Long actionId) {
-        List<ImageStore> imageStores = new LinkedList<>();
-        imageStores.add(profile.getTargetStore());
-
-        List<MinionServer> minions = MinionServerFactory.findMinionsByServerIds(
-                minionSummaries.stream().map(MinionSummary::getServerId).collect(Collectors.toList()));
-
-        //TODO: optimal scheduling would be to group by host and orgid
-        return minions.stream().collect(
-                Collectors.toMap(minion -> {
-                    Map<String, Object> pillar = new HashMap<>();
-
-                    profile.asDockerfileProfile().ifPresent(dockerfileProfile -> {
-                        Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
-                        pillar.put("docker-registries", dockerRegistries);
-
-                        String repoPath = Path.of(profile.getTargetStore().getUri(), profile.getLabel()).toString();
-                        String tag = version.orElse("");
-                        String certificate = "";
-                        // salt 2016.11 dockerng require imagename while salt 2018.3 docker requires it separate
-                        pillar.put("imagerepopath", repoPath);
-                        pillar.put("imagetag", tag);
-                        pillar.put("imagename", repoPath + ":" + tag);
-                        pillar.put("builddir", dockerfileProfile.getPath());
-                        pillar.put("build_id", "build" + actionId);
-                        try {
-                            //TODO: maybe from the database
-                            certificate = String.join("\n\n", Files.readAllLines(
-                                    Paths.get("/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT"),
-                                    Charset.defaultCharset()
-                            ));
-                        }
-                        catch (IOException e) {
-                            LOG.error("Could not read certificate", e);
-                        }
-                        pillar.put("cert", certificate);
-                        String repocontent = "";
-                        if (profile.getToken() != null) {
-                            repocontent = profile.getToken().getChannels().stream()
-                                .map(s -> "[susemanager:" + s.getLabel() + "]\n\n" +
-                                    "name=" + s.getName() + "\n\n" +
-                                    "enabled=1\n\n" +
-                                    "autorefresh=1\n\n" +
-                                    "baseurl=" + getChannelUrl(minion, s.getLabel()) + "\n\n" +
-                                    "type=rpm-md\n\n" +
-                                    "gpgcheck=0\n\n" // we use trusted content and SSL.
-                                ).collect(Collectors.joining("\n\n"));
-                        }
-                        pillar.put("repo", repocontent);
-
-                        // Add custom info values
-                        pillar.put("customvalues", profile.getCustomDataValues().stream()
-                                .collect(toMap(v -> v.getKey().getLabel(), ProfileCustomDataValue::getValue)));
-                    });
-
-                    profile.asKiwiProfile().ifPresent(kiwiProfile -> {
-                        pillar.put("source", kiwiProfile.getPath());
-                        pillar.put("build_id", "build" + actionId);
-                        pillar.put("kiwi_options", kiwiProfile.getKiwiOptions());
-                        List<String> repos = new ArrayList<>();
-                        final ActivationKey activationKey = ActivationKeyFactory.lookupByToken(profile.getToken());
-                        Set<Channel> channels = activationKey.getChannels();
-                        for (Channel channel: channels) {
-                            repos.add(getChannelUrl(minion, channel.getLabel()));
-                        }
-                        pillar.put("kiwi_repositories", repos);
-                        pillar.put("activation_key", activationKey.getKey());
-                    });
-
-                    String saltCall = "";
-                    if (profile instanceof DockerfileProfile) {
-                        saltCall = "images.docker";
-                    }
-                    else if (profile instanceof KiwiProfile) {
-                        saltCall = "images.kiwi-image-build";
-                    }
-
-                    return State.apply(
-                            Collections.singletonList(saltCall),
-                            Optional.of(pillar)
-                    );
-                },
-                m -> Collections.singletonList(new MinionSummary(m))
-        ));
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> distUpgradeAction(
