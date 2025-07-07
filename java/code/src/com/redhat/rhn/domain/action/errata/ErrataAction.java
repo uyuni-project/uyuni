@@ -14,20 +14,44 @@
  */
 package com.redhat.rhn.domain.action.errata;
 
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
+import static java.util.stream.Collectors.partitioningBy;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFormatter;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.product.Tuple2;
+import com.redhat.rhn.domain.server.ErrataInfo;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.State;
+
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ErrataAction - Class representation of the table rhnAction.
  */
 public class ErrataAction extends Action {
+    public static final String PARAM_REGULAR_PATCHES = "param_regular_patches";
+    public static final String PACKAGES_PKGINSTALL = "packages.pkginstall";
+    private static final String PARAM_PKGS = "param_pkgs";
+    public static final String ALLOW_VENDOR_CHANGE = "allow_vendor_change";
+    public static final String PARAM_UPDATE_STACK_PATCHES = "param_update_stack_patches";
+    public static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
 
     private Set<Errata> errata;
     private ActionPackageDetails details;
@@ -107,4 +131,103 @@ public class ErrataAction extends Action {
         return retval.toString();
     }
 
+
+
+    /**
+     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
+     * @param action action which has all the revisions
+     * @return minion summaries grouped by local call
+     */
+    public static Map<LocalCall<?>, List<MinionSummary>> errataAction(List<MinionSummary> minionSummaries,
+                                                                      ErrataAction action) {
+        Set<Long> errataIds = action.getErrata().stream()
+                .map(Errata::getId).collect(Collectors.toSet());
+        boolean allowVendorChange = action.getDetails().getAllowVendorChange();
+
+        Map<Boolean, List<MinionSummary>> byUbuntu = minionSummaries.stream()
+                .collect(partitioningBy(m -> m.getOs().equals("Ubuntu")));
+
+        Map<LocalCall<Map<String, State.ApplyResult>>, List<MinionSummary>> ubuntuErrataInstallCalls =
+                errataToPackageInstallCalls(byUbuntu.get(true), errataIds);
+
+        Set<Long> minionServerIds = byUbuntu.get(false).stream()
+                .map(MinionSummary::getServerId)
+                .collect(Collectors.toSet());
+
+        Map<Long, Map<Long, Set<ErrataInfo>>> errataInfos = ServerFactory
+                .listErrataNamesForServers(minionServerIds, errataIds);
+
+        // Group targeted minions by errata names
+        Map<Set<ErrataInfo>, List<MinionSummary>> collect = byUbuntu.get(false).stream()
+                .collect(Collectors.groupingBy(minionId -> errataInfos.get(minionId.getServerId())
+                        .values().stream()
+                        .flatMap(Set::stream)
+                        .collect(Collectors.toSet())
+                ));
+
+        // Convert errata names to LocalCall objects of type State.apply
+        Map<LocalCall<?>, List<MinionSummary>> patchableCalls = collect.entrySet().stream()
+                .collect(Collectors.toMap(entry -> {
+                            Map<String, Object> params = new HashMap<>();
+                            params.put(PARAM_REGULAR_PATCHES,
+                                    entry.getKey().stream()
+                                            .filter(e -> !e.isUpdateStack())
+                                            .map(ErrataInfo::getName)
+                                            .sorted()
+                                            .collect(toList())
+                            );
+                            params.put(ALLOW_VENDOR_CHANGE, allowVendorChange);
+                            params.put(PARAM_UPDATE_STACK_PATCHES,
+                                    entry.getKey().stream()
+                                            .filter(ErrataInfo::isUpdateStack)
+                                            .map(ErrataInfo::getName)
+                                            .sorted()
+                                            .collect(toList())
+                            );
+                            if (entry.getKey().stream().anyMatch(ErrataInfo::includeSalt)) {
+                                params.put("include_salt_upgrade", true);
+                            }
+                            return State.apply(
+                                    List.of(PACKAGES_PATCHINSTALL),
+                                    Optional.of(params)
+                            );
+                        },
+                        Map.Entry::getValue));
+        patchableCalls.putAll(ubuntuErrataInstallCalls);
+        return patchableCalls;
+    }
+
+
+    private static Map<LocalCall<Map<String, State.ApplyResult>>, List<MinionSummary>> errataToPackageInstallCalls(
+            List<MinionSummary> minions,
+            Set<Long> errataIds) {
+        Set<Long> minionIds = minions.stream()
+                .map(MinionSummary::getServerId).collect(Collectors.toSet());
+        Map<Long, Map<String, Tuple2<String, String>>> longMapMap =
+                ServerFactory.listNewestPkgsForServerErrata(minionIds, errataIds);
+
+        // group minions by packages that need to be updated
+        Map<Map<String, Tuple2<String, String>>, List<MinionSummary>> nameArchVersionToMinions =
+                minions.stream().collect(
+                        Collectors.groupingBy(minion -> longMapMap.get(minion.getServerId()))
+                );
+
+        return nameArchVersionToMinions.entrySet().stream().collect(toMap(
+                entry -> State.apply(
+                        singletonList(PACKAGES_PKGINSTALL),
+                        Optional.of(singletonMap(PARAM_PKGS,
+                                entry.getKey().entrySet()
+                                        .stream()
+                                        .map(e -> List.of(
+                                                e.getKey(),
+                                                e.getValue().getA().replaceAll("-deb$", ""),
+                                                e.getValue().getB().endsWith("-X") ?
+                                                        e.getValue().getB()
+                                                                .substring(0, e.getValue().getB().length() - 2) :
+                                                        e.getValue().getB()))
+                                        .collect(Collectors.toList())))
+                ),
+                Map.Entry::getValue
+        ));
+    }
 }

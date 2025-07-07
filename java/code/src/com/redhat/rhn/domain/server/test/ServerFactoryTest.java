@@ -26,6 +26,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
+import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.channel.Channel;
@@ -107,6 +109,7 @@ import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.SaltParameters;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
@@ -1141,8 +1144,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         List<MinionServer> minions = Arrays.asList(zypperSystem, nonZypperSystem);
         List<MinionSummary> minionSummaries = minions.stream().map(MinionSummary::new).collect(Collectors.toList());
 
-        Map<LocalCall<?>, List<MinionSummary>> localCallListMap =
-                SALT_SERVER_ACTION_SERVICE.errataAction(minionSummaries, Collections.singleton(e1.getId()), false);
+        ErrataAction ea = new ErrataAction();
+        ea.addErrata(e1);
+        ActionPackageDetails apd = new ActionPackageDetails(ea, false);
+        ea.setDetails(apd);
+
+        Map<LocalCall<?>, List<MinionSummary>> localCallListMap = ErrataAction.errataAction(minionSummaries, ea);
 
         assertEquals(1, localCallListMap.size());
         localCallListMap.forEach((call, value) -> {
@@ -1152,12 +1159,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             assertEquals(Collections.singletonList("packages.patchinstall"), kwarg.get("mods"));
             Map<String, Object> pillar = (Map<String, Object>) kwarg.get("pillar");
             Collection<String> regularPatches = (Collection<String>) pillar
-                    .get(SaltServerActionService.PARAM_REGULAR_PATCHES);
+                    .get(SaltParameters.PARAM_REGULAR_PATCHES);
             assertEquals(1, regularPatches.size());
             assertTrue(regularPatches.contains("SUSE-" + updateTag + "-2016-1234"));
 
             Collection<String> updateStackPatches = (Collection<String>) pillar
-                    .get(SaltServerActionService.PARAM_UPDATE_STACK_PATCHES);
+                    .get(SaltParameters.PARAM_UPDATE_STACK_PATCHES);
             assertEquals(0, updateStackPatches.size());
         });
     }
