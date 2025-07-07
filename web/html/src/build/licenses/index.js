@@ -13,7 +13,7 @@ const licenseTextFile = path.resolve(vendors, "npm.licenses.txt");
 const licenseListFile = path.resolve(vendors, "npm.licenses.structured.js");
 const hashFile = path.resolve(vendors, "npm.licenses.hash.txt");
 
-async function aggregateLicenses() {
+async function aggregateLicenses(opts) {
   const licenseTextExists = await fileExists(licenseTextFile);
   const licenseListExists = await fileExists(licenseListFile);
   let previousHash;
@@ -24,7 +24,7 @@ async function aggregateLicenses() {
   }
 
   const currentHash = await getFileHash(path.resolve(webHtmlSrc, "yarn.lock"));
-  if (previousHash && previousHash === currentHash && licenseTextExists && licenseListExists) {
+  if (opts.force !== true && previousHash && previousHash === currentHash && licenseTextExists && licenseListExists) {
     console.info("Skipping license check, hashes match");
     return;
   }
@@ -50,7 +50,8 @@ async function aggregateLicenses() {
       ...new Set(
         Array.from(dependencies.values())
           .flat()
-          .map((item) => item.license)
+          // If the license is "X AND Y", append "X" and "Y" into the individual license types separately to dedupe them
+          .flatMap((item) => item?.license?.split(" AND "))
           .filter(Boolean)
           .sort((a, b) => a.localeCompare(b))
       ),
