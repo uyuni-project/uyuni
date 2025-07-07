@@ -21,18 +21,16 @@ addHeaderFile $OF
 
 log_cmd $OF "grep web.version /usr/share/rhn/config-defaults/rhn_web.conf"
 
-log_cmd $OF "hostname --fqdn"
+log_cmd $OF "echo $HOSTNAME"
 
 RPMLIST="
-Multi-Linux-Manager-Server-SLE-release
-Multi-Linux-Manager-Server-release
 salt
-salt-minion
+salt-master
 susemanager
 susemanager-schema
 susemanager-tools
 "
-DAEMONLIST="tomcat taskomatic postgresql rhn-search cobblerd apache2 salt-api salt-master"
+DAEMONLIST="tomcat taskomatic rhn-search cobblerd apache2 salt-api salt-master"
 
 if ! rpm -q susemanager &>/dev/null; then
   echo "ERROR: SUSE Multi-Linux Manager package(s) not installed"
@@ -76,10 +74,6 @@ else
 fi
 
 
-log_cmd $OF "psql --version"
-log_cmd $OF "cat /var/lib/pgsql/data/PG_VERSION"
-log_cmd $OF "zypper --no-refresh ls"
-log_cmd $OF "zypper --no-refresh lr -u"
 log_cmd $OF "/usr/lib/susemanager/bin/susemanager-connection-check"
 log_cmd $OF "salt-master --versions-report"
 
