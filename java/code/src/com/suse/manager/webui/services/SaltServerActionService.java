@@ -14,8 +14,6 @@ import static com.redhat.rhn.common.hibernate.HibernateFactory.unproxy;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
-import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
-import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
@@ -68,6 +66,7 @@ import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptAction;
+import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
@@ -134,7 +133,6 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -148,17 +146,9 @@ import org.cobbler.SystemRecord;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.FileAttribute;
-import java.nio.file.attribute.PosixFilePermission;
-import java.nio.file.attribute.PosixFilePermissions;
-import java.nio.file.attribute.UserPrincipal;
-import java.nio.file.attribute.UserPrincipalLookupService;
 import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.Instant;
@@ -202,7 +192,6 @@ public class SaltServerActionService {
     private static final String PACKAGES_PATCHDOWNLOAD = "packages.patchdownload";
     private static final String PARAM_PKGS = "param_pkgs";
     private static final String PARAM_PATCHES = "param_patches";
-    private static final String REMOTE_COMMANDS = "remotecommands";
     private static final String SYSTEM_REBOOT = "system.reboot";
     private static final String KICKSTART_INITIATE = "bootloader.autoinstall";
     private static final String ANSIBLE_RUNPLAYBOOK = "ansible.runplaybook";
@@ -230,7 +219,6 @@ public class SaltServerActionService {
     private final SaltSSHService saltSSHService = GlobalInstanceHolder.SALT_API.getSaltSSHService();
     private SaltUtils saltUtils;
     private final SaltKeyUtils saltKeyUtils;
-    private boolean skipCommandScriptPerms;
     private TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     /**
@@ -300,7 +288,7 @@ public class SaltServerActionService {
             return ConfigAction.diffFiles(minions, (ConfigAction) actionIn);
         }
         else if (ActionFactory.TYPE_SCRIPT_RUN.equals(actionType)) {
-            return remoteCommandAction(minions, (ScriptAction) actionIn);
+            return ScriptRunAction.remoteCommandAction(minions, (ScriptAction) actionIn);
         }
         else if (ActionFactory.TYPE_APPLY_STATES.equals(actionType)) {
             ApplyStatesActionDetails actionDetails = ((ApplyStatesAction) actionIn).getDetails();
@@ -1055,69 +1043,6 @@ public class SaltServerActionService {
         ));
     }
 
-    private Map<LocalCall<?>, List<MinionSummary>> remoteCommandAction(
-            List<MinionSummary> minions, ScriptAction scriptAction) {
-        String script = scriptAction.getScriptActionDetails().getScriptContents();
-
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        // write script to /srv/susemanager/salt/scripts/script_<action_id>.sh
-        Path scriptFile = saltUtils.getScriptPath(scriptAction.getId());
-        try {
-            // make sure parent dir exists
-            if (!Files.exists(scriptFile) && !Files.exists(scriptFile.getParent())) {
-                FileAttribute<Set<PosixFilePermission>> dirAttributes =
-                        PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwxr-xr-x"));
-
-                Files.createDirectory(scriptFile.getParent(), dirAttributes);
-                // make sure correct user is set
-            }
-
-            if (!skipCommandScriptPerms) {
-                setFileOwner(scriptFile.getParent());
-            }
-
-            // In case of action retry, the files script files will be already created.
-            if (!Files.exists(scriptFile)) {
-                FileAttribute<Set<PosixFilePermission>> fileAttributes =
-                        PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-r--r--"));
-                Files.createFile(scriptFile, fileAttributes);
-                FileUtils.writeStringToFile(scriptFile.toFile(),
-                        script.replace("\r\n", "\n"), StandardCharsets.UTF_8);
-            }
-
-            if (!skipCommandScriptPerms) {
-                setFileOwner(scriptFile);
-            }
-
-            // state.apply remotecommands
-            Map<String, Object> pillar = new HashMap<>();
-            pillar.put("mgr_remote_cmd_script", SALT_FS_PREFIX + SCRIPTS_DIR + "/" + scriptFile.getFileName());
-            pillar.put("mgr_remote_cmd_runas", scriptAction.getScriptActionDetails().getUsername());
-            pillar.put("mgr_remote_cmd_timeout", scriptAction.getScriptActionDetails().getTimeout());
-            ret.put(State.apply(List.of(REMOTE_COMMANDS), Optional.of(pillar)), minions);
-        }
-        catch (IOException e) {
-            String errorMsg = "Could not write script to file " + scriptFile + " - " + e;
-            LOG.error(errorMsg, e);
-            scriptAction.getServerActions().stream()
-                    .filter(entry -> entry.getServer().asMinionServer()
-                            .map(minionServer -> minions.contains(new MinionSummary(minionServer)))
-                            .orElse(false))
-                    .forEach(sa -> {
-                        sa.fail("Error scheduling the action: " + errorMsg);
-                        ActionFactory.save(sa);
-            });
-        }
-        return ret;
-    }
-
-    private void setFileOwner(Path path) throws IOException {
-        FileSystem fileSystem = FileSystems.getDefault();
-        UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
-        UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
-
-        Files.setOwner(path, tomcatUser);
-    }
 
     private Map<LocalCall<?>, List<MinionSummary>> applyStatesAction(
             List<MinionSummary> minionSummaries, List<String> mods,
@@ -2203,14 +2128,6 @@ public class SaltServerActionService {
      */
     public void setSaltApi(SaltApi saltApiIn) {
         this.saltApi = saltApiIn;
-    }
-
-    /**
-     * Only used in unit tests.
-     * @param skipCommandScriptPermsIn to set
-     */
-    public void setSkipCommandScriptPerms(boolean skipCommandScriptPermsIn) {
-        this.skipCommandScriptPerms = skipCommandScriptPermsIn;
     }
 
     /**

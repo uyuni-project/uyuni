@@ -14,22 +14,61 @@
  */
 package com.redhat.rhn.domain.action.script;
 
+import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
+import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
+
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.FileUtils;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.download.DownloadManager;
 
 import com.suse.manager.utils.SaltUtils;
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.State;
 
 import org.apache.commons.text.StringEscapeUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.nio.file.attribute.UserPrincipal;
+import java.nio.file.attribute.UserPrincipalLookupService;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 
 /**
  * ScriptRunAction
  */
 public class ScriptRunAction extends ScriptAction {
+    private static final String REMOTE_COMMANDS = "remotecommands";
+
+    /* Logger for this class */
+    private static final Logger LOG = LogManager.getLogger(ScriptRunAction.class);
+
+    private static boolean skipCommandScriptPerms = false;
+    /**
+     * Only used in unit tests.
+     * @param skipCommandScriptPermsIn to set
+     */
+    public static void setSkipCommandScriptPerms(boolean skipCommandScriptPermsIn) {
+        skipCommandScriptPerms = skipCommandScriptPermsIn;
+    }
 
     private static final SaltUtils SALT_UTILS = GlobalInstanceHolder.SALT_UTILS;
 
@@ -86,5 +125,75 @@ public class ScriptRunAction extends ScriptAction {
         if (allServersFinished()) {
             FileUtils.deleteFile(SALT_UTILS.getScriptPath(getId()));
         }
+    }
+
+
+    /**
+     * @param minions a list of minion summaries of the minions involved in the given Action
+     * @param scriptAction action which has all the revisions
+     * @return minion summaries grouped by local call
+     */
+    public static Map<LocalCall<?>, List<MinionSummary>> remoteCommandAction(
+            List<MinionSummary> minions, ScriptAction scriptAction) {
+        String script = scriptAction.getScriptActionDetails().getScriptContents();
+
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+        // write script to /srv/susemanager/salt/scripts/script_<action_id>.sh
+        Path scriptFile = SALT_UTILS.getScriptPath(scriptAction.getId());
+        try {
+            // make sure parent dir exists
+            if (!Files.exists(scriptFile) && !Files.exists(scriptFile.getParent())) {
+                FileAttribute<Set<PosixFilePermission>> dirAttributes =
+                        PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwxr-xr-x"));
+
+                Files.createDirectory(scriptFile.getParent(), dirAttributes);
+                // make sure correct user is set
+            }
+
+            if (!skipCommandScriptPerms) {
+                setFileOwner(scriptFile.getParent());
+            }
+
+            // In case of action retry, the files script files will be already created.
+            if (!Files.exists(scriptFile)) {
+                FileAttribute<Set<PosixFilePermission>> fileAttributes =
+                        PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-r--r--"));
+                Files.createFile(scriptFile, fileAttributes);
+                org.apache.commons.io.FileUtils.writeStringToFile(scriptFile.toFile(),
+                        script.replace("\r\n", "\n"), StandardCharsets.UTF_8);
+            }
+
+            if (!skipCommandScriptPerms) {
+                setFileOwner(scriptFile);
+            }
+
+            // state.apply remotecommands
+            Map<String, Object> pillar = new HashMap<>();
+            pillar.put("mgr_remote_cmd_script", SALT_FS_PREFIX + SCRIPTS_DIR + "/" + scriptFile.getFileName());
+            pillar.put("mgr_remote_cmd_runas", scriptAction.getScriptActionDetails().getUsername());
+            pillar.put("mgr_remote_cmd_timeout", scriptAction.getScriptActionDetails().getTimeout());
+            ret.put(State.apply(List.of(REMOTE_COMMANDS), Optional.of(pillar)), minions);
+        }
+        catch (IOException e) {
+            String errorMsg = "Could not write script to file " + scriptFile + " - " + e;
+            LOG.error(errorMsg, e);
+            scriptAction.getServerActions().stream()
+                    .filter(entry -> entry.getServer().asMinionServer()
+                            .map(minionServer -> minions.contains(new MinionSummary(minionServer)))
+                            .orElse(false))
+                    .forEach(sa -> {
+                        sa.fail("Error scheduling the action: " + errorMsg);
+                        ActionFactory.save(sa);
+                    });
+        }
+        return ret;
+    }
+
+    private static void setFileOwner(Path path) throws IOException {
+        FileSystem fileSystem = FileSystems.getDefault();
+        UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
+        UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
+
+        Files.setOwner(path, tomcatUser);
     }
 }

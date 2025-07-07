@@ -17,6 +17,7 @@ package com.suse.manager.reactor.test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
@@ -132,7 +133,7 @@ public class RebootInfoBeaconTest extends RhnJmockBaseTestCase {
     private SaltServerActionService createSaltServerActionService(SystemQuery systemQuery, SaltApi saltApi) {
         SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi);
         SaltServerActionService service = new SaltServerActionService(saltApi, saltUtils, new SaltKeyUtils(saltApi));
-        service.setSkipCommandScriptPerms(true);
+        ScriptRunAction.setSkipCommandScriptPerms(true);
         return service;
     }
 }
