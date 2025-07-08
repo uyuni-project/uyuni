@@ -28,6 +28,7 @@ import com.redhat.rhn.manager.access.AccessGroupManager;
 import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.AccessGroupJson;
+import com.suse.manager.webui.utils.gson.NamespaceJson;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 
 import com.google.gson.Gson;
@@ -58,6 +59,7 @@ public class AccessGroupController {
      */
     public static void initRoutes() {
         get("/manager/api/admin/access-group/roles", withProductAdmin(AccessGroupController::listRoles));
+        get("/manager/api/admin/access-group/namespaces", withProductAdmin(AccessGroupController::listNamespaces));
     }
 
     /**
@@ -74,6 +76,23 @@ public class AccessGroupController {
         DataResult<AccessGroupJson> roles = MANAGER.list(pc, PagedSqlQueryBuilder::parseFilterAsText);
         TypeToken<PagedDataResultJson<AccessGroupJson, Long>> type = new TypeToken<>() { };
         return json(GSON, response, new PagedDataResultJson<>(roles, roles.getTotalSize(),
+                Collections.emptySet()), type);
+    }
+
+    /**
+     * Processes a GET request to get a paginated list of namespaces
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the user
+     * @return the result JSON object
+     */
+    public static String listNamespaces(Request request, Response response, User user) {
+        PageControlHelper pageHelper = new PageControlHelper(request, "namespace");
+        PageControl pc = pageHelper.getPageControl();
+        DataResult<NamespaceJson> namespaces = MANAGER.listNamespaces(pc, PagedSqlQueryBuilder::parseFilterAsText);
+        TypeToken<PagedDataResultJson<NamespaceJson, Long>> type = new TypeToken<>() { };
+        return json(GSON, response, new PagedDataResultJson<>(namespaces, namespaces.getTotalSize(),
                 Collections.emptySet()), type);
     }
 }

@@ -11,14 +11,22 @@
 
 package com.redhat.rhn.domain.access;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.frontend.listview.PageControl;
+
+import com.suse.manager.utils.PagedSqlQueryBuilder;
+import com.suse.manager.webui.utils.gson.NamespaceJson;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Factory class for RBAC's {@link Namespace} entities
@@ -44,6 +52,30 @@ public class NamespaceFactory extends HibernateFactory {
         return getSession()
                 .createQuery("SELECT n FROM Namespace n", Namespace.class)
                 .getResultList();
+    }
+
+    /**
+     * Lists s paginated list of namespaces
+     * @param pc the page control
+     * @param parser the parser for filters when building query
+     * @return the list of access groups
+     */
+    public static DataResult<NamespaceJson> list(
+            PageControl pc, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser) {
+        String from = "(select " +
+                "min(id) as id, " +
+                "namespace, " +
+                "min(description) as description, " +
+                "string_agg(access_mode, '') as access_mode " +
+                "from access.namespace " +
+                "group by namespace " +
+                ") ns";
+
+        return new PagedSqlQueryBuilder("ns.id")
+                .select("ns.*")
+                .from(from)
+                .where("true")
+                .run(new HashMap<>(), pc, parser, NamespaceJson.class);
     }
 
     /**
