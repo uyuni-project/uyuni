@@ -40,7 +40,6 @@ import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.scap.ScapAction;
-import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
@@ -578,43 +577,7 @@ public class SaltUtils {
             ApplyStatesAction.handleStateApplyData(serverAction, jsonResult, retcode, success, this);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
-            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                serverAction.setResultMsg("Failed to execute script. [jid=" + jid + "]");
-            }
-            else {
-                serverAction.setResultMsg("Script executed successfully. [jid=" +
-                        jid + "]");
-            }
-            Map<String, StateApplyResult<CmdResult>> stateApplyResult = Json.GSON.fromJson(jsonResult,
-                    new TypeToken<Map<String, StateApplyResult<CmdResult>>>() { }.getType());
-            CmdResult result = new CmdResult();
-            if (stateApplyResult != null) {
-                result = stateApplyResult.entrySet().stream()
-                        .findFirst().map(e -> e.getValue().getChanges())
-                        .orElseGet(CmdResult::new);
-            }
-            ScriptRunAction scriptAction = (ScriptRunAction) action;
-            ScriptResult scriptResult = Optional.ofNullable(
-                    scriptAction.getScriptActionDetails().getResults())
-                    .orElse(Collections.emptySet())
-                    .stream()
-                    .filter(res -> serverAction.getServerId().equals(res.getServerId()))
-                    .findFirst()
-                    .orElse(new ScriptResult());
-
-            scriptAction.getScriptActionDetails().addResult(scriptResult);
-            scriptResult.setActionScriptId(scriptAction.getScriptActionDetails().getId());
-            scriptResult.setServerId(serverAction.getServerId());
-            scriptResult.setReturnCode(retcode);
-
-            // Start and end dates
-            Date startDate = action.getCreated().before(action.getEarliestAction()) ?
-                    action.getEarliestAction() : action.getCreated();
-            scriptResult.setStartDate(startDate);
-            scriptResult.setStopDate(serverAction.getCompletionTime());
-
-            // Depending on the status show stdout or stderr in the output
-            scriptResult.setOutput(printStdMessages(result.getStderr(), result.getStdout()).getBytes());
+            ScriptRunAction.handleUpdateServerAction(serverAction, retcode, jid, jsonResult, action);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_IMAGE_BUILD)) {
             handleImageBuildData(serverAction, jsonResult);
