@@ -22,7 +22,7 @@ export const Check = (props: CheckProps) => {
     <label className={styles.check}>
       <input
         {...rest}
-        className={`form-check-input ${props.className || ""}`}
+        className="form-check-input"
         checked={props.checked}
         onChange={(event) => props.onChange?.(event.target.checked)}
         type="checkbox"

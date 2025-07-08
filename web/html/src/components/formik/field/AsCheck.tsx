@@ -9,8 +9,6 @@ type Props = CheckProps & {
 };
 
 export const AsCheck = (props: Props) => {
-  // Formik uses the `value` field, native inputs use `checked`
-  // const { value, ...rest } = props;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [field, meta, helper] = useField(props.name);
 
