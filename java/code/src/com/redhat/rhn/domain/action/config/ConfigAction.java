@@ -39,10 +39,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * ConfigAction - Class representation of the table rhnAction.
+ * ConfigAction
  */
 public class ConfigAction extends Action {
-    private Set<ConfigRevisionAction> configRevisionActions;
+    protected Set<ConfigRevisionAction> configRevisionActions;
+
+    protected ConfigAction() {
+        //ConfigAction should never be instantiated
+        //instead, one of ConfigDiffAction, ConfigDeployAction,ConfigVerifyAction classes should
+    }
 
     /**
      * @return Returns the configRevisionActions.

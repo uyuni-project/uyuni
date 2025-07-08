@@ -30,10 +30,13 @@ import com.redhat.rhn.domain.action.ansible.PlaybookAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
+import com.redhat.rhn.domain.action.config.ConfigDeployAction;
+import com.redhat.rhn.domain.action.config.ConfigDiffAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.ConfigUploadAction;
 import com.redhat.rhn.domain.action.config.ConfigUploadMtimeAction;
+import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
 import com.redhat.rhn.domain.action.config.DaemonConfigAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
@@ -369,10 +372,14 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_SCRIPT_RUN)) {
             retval = new ScriptRunAction();
         }
-        else if (typeIn.equals(TYPE_CONFIGFILES_DIFF) ||
-                typeIn.equals(TYPE_CONFIGFILES_DEPLOY) ||
-                typeIn.equals(TYPE_CONFIGFILES_VERIFY)) {
-            retval = new ConfigAction();
+        else if (typeIn.equals(TYPE_CONFIGFILES_DIFF)) {
+            retval = new ConfigDiffAction();
+        }
+        else if (typeIn.equals(TYPE_CONFIGFILES_DEPLOY)) {
+            retval = new ConfigDeployAction();
+        }
+        else if (typeIn.equals(TYPE_CONFIGFILES_VERIFY)) {
+            retval = new ConfigVerifyAction();
         }
         else if (typeIn.equals(TYPE_CONFIGFILES_UPLOAD)) {
             retval = new ConfigUploadAction();
