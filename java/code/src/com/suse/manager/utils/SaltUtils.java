@@ -15,8 +15,6 @@
 
 package com.suse.manager.utils;
 
-import static com.suse.manager.webui.services.SaltConstants.SALT_CP_PUSH_ROOT_PATH;
-import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 
@@ -36,7 +34,6 @@ import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
-import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.scap.ScapAction;
@@ -44,14 +41,10 @@ import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
-import com.redhat.rhn.domain.image.ImageFile;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImagePackage;
-import com.redhat.rhn.domain.image.ImageProfile;
-import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageRepoDigest;
-import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.Tuple2;
@@ -96,7 +89,6 @@ import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.custom.AppStreamsChangeSlsResult;
@@ -109,12 +101,9 @@ import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.DirectoryResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.FileResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.SymLinkResult;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
-import com.suse.manager.webui.utils.salt.custom.ImageChecksum;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
-import com.suse.manager.webui.utils.salt.custom.OSImageBuildImageInfoResult;
-import com.suse.manager.webui.utils.salt.custom.OSImageBuildSlsResult;
 import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
@@ -153,7 +142,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -580,7 +568,7 @@ public class SaltUtils {
             ScriptRunAction.handleUpdateServerAction(serverAction, retcode, jid, jsonResult, action);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_IMAGE_BUILD)) {
-            handleImageBuildData(serverAction, jsonResult);
+            ImageBuildAction.handleImageBuildData(serverAction, jsonResult, saltApi, systemQuery);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_IMAGE_INSPECT)) {
             handleImageInspectData(serverAction, jsonResult);
@@ -731,7 +719,7 @@ public class SaltUtils {
      * @param jsonResult json result with pretty print
      * @return the pretty print
      */
-    public String  getJsonResultWithPrettyPrint(JsonElement jsonResult) {
+    public static String getJsonResultWithPrettyPrint(JsonElement jsonResult) {
         return YamlHelper.INSTANCE.dump(Json.GSON.fromJson(jsonResult, Object.class));
     }
 
@@ -958,144 +946,6 @@ public class SaltUtils {
         }
     }
 
-    private void handleImageBuildLog(ImageInfo info, Action action) {
-        MinionServer buildHost = info.getBuildServer();
-        if (buildHost == null) {
-            return;
-        }
-
-        Path srcPath = Path.of(SALT_CP_PUSH_ROOT_PATH + buildHost.getMinionId() +
-                            "/files/image-build" + action.getId() + ".log");
-        Path tmpPath = Path.of(SALT_FILE_GENERATION_TEMP_PATH + "/image-build" + action.getId() + ".log");
-
-        try {
-            // copy the log to a directory readable by tomcat
-            saltApi.copyFile(srcPath, tmpPath)
-                        .orElseThrow(() -> new RuntimeException("Can't copy the build log file"));
-
-            String log = Files.readString(tmpPath);
-            info.setBuildLog(log);
-            saltApi.removeFile(srcPath);
-            saltApi.removeFile(tmpPath);
-        }
-        catch (Exception e) {
-            LOG.info("No build log for action {} {}", action.getId(), e);
-        }
-    }
-
-    private void handleImageBuildData(ServerAction serverAction, JsonElement jsonResult) {
-        Action action = serverAction.getParentAction();
-        ImageBuildAction ba = (ImageBuildAction) action;
-        ImageBuildActionDetails details = ba.getDetails();
-
-        serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
-
-        Optional<ImageInfo> infoOpt = ImageInfoFactory.lookupByBuildAction(ba);
-        if (infoOpt.isEmpty()) {
-            LOG.error("ImageInfo not found while performing: {} in handleImageBuildData", action.getName());
-            return;
-        }
-        ImageInfo info = infoOpt.get();
-
-        handleImageBuildLog(info, action);
-
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-            if (details == null) {
-                LOG.error("Details not found while performing: {} in handleImageBuildData", action.getName());
-                return;
-            }
-            Long imageProfileId = details.getImageProfileId();
-            if (imageProfileId == null) { // It happens when the image profile is deleted during a build action
-                LOG.error("Image Profile ID not found while performing: {} in handleImageBuildData", action.getName());
-                return;
-            }
-
-            boolean isKiwiProfile = false;
-            Optional<ImageProfile> profileOpt = ImageProfileFactory.lookupById(imageProfileId);
-            if (profileOpt.isPresent()) {
-                isKiwiProfile = profileOpt.get().asKiwiProfile().isPresent();
-            }
-            else {
-                LOG.warn("Could not find any profile for profile ID {}", imageProfileId);
-            }
-
-            if (isKiwiProfile) {
-                serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                    // Update the image info and download the built Kiwi image to SUSE Manager server
-                    OSImageBuildImageInfoResult buildInfo =
-                            Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
-                                    .getKiwiBuildInfo().getChanges().getRet();
-
-                    info.setChecksum(ImageInfoFactory.convertChecksum(buildInfo.getImage().getChecksum()));
-                    info.setName(buildInfo.getImage().getName());
-                    info.setVersion(buildInfo.getImage().getVersion());
-
-                    ImageInfoFactory.updateRevision(info);
-
-                    List<List<Object>> files = new ArrayList<>();
-                    String imageDir = info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
-                    if (!buildInfo.getBundles().isEmpty()) {
-                        buildInfo.getBundles().forEach(bundle -> files.add(List.of(bundle.getFilepath(),
-                                    imageDir + bundle.getFilename(), "bundle", bundle.getChecksum())));
-                    }
-                    else {
-                        files.add(List.of(buildInfo.getImage().getFilepath(),
-                                imageDir + buildInfo.getImage().getFilename(), "image",
-                                buildInfo.getImage().getChecksum()));
-                        buildInfo.getBootImage().ifPresent(f -> {
-                            files.add(List.of(f.getKernel().getFilepath(),
-                                    imageDir + f.getKernel().getFilename(), "kernel",
-                                    f.getKernel().getChecksum()));
-                            files.add(List.of(f.getInitrd().getFilepath(),
-                                    imageDir + f.getInitrd().getFilename(), "initrd",
-                                    f.getInitrd().getChecksum()));
-                        });
-                    }
-                    files.stream().forEach(file -> {
-                        String targetPath = OSImageStoreUtils.getOSImageStorePathForImage(info);
-                        targetPath += info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
-                        MgrUtilRunner.ExecResult collectResult = systemQuery
-                                .collectKiwiImage(minionServer, (String)file.get(0), targetPath)
-                                .orElseThrow(() -> new RuntimeException("Failed to download image."));
-
-                        if (collectResult.getReturnCode() != 0) {
-                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                            serverAction.setResultMsg(StringUtils
-                                    .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()),
-                                            1024));
-                        }
-                        else {
-                            ImageFile imagefile = new ImageFile();
-                            imagefile.setFile((String)file.get(1));
-                            imagefile.setType((String)file.get(2));
-                            imagefile.setChecksum(ImageInfoFactory.convertChecksum(
-                                    (ImageChecksum.Checksum)file.get(3)));
-                            imagefile.setImageInfo(info);
-                            info.getImageFiles().add(imagefile);
-                        }
-                    });
-                });
-            }
-            else {
-                ImageInfoFactory.updateRevision(info);
-                if (info.getImageType().equals(ImageProfile.TYPE_DOCKERFILE)) {
-                    ImageInfoFactory.obsoletePreviousRevisions(info);
-                }
-            }
-        }
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-            // both building and uploading results succeeded
-            info.setBuilt(true);
-
-            try {
-                ImageInfoFactory.scheduleInspect(info, Date.from(Instant.now()), action.getSchedulerUser());
-            }
-            catch (TaskomaticApiException e) {
-                LOG.error("Could not schedule image inspection ", e);
-            }
-        }
-        ImageInfoFactory.save(info);
-    }
 
     private void handleImageInspectData(ServerAction serverAction,
             JsonElement jsonResult) {

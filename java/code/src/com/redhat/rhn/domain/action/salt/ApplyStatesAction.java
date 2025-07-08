@@ -155,7 +155,7 @@ public class ApplyStatesAction extends Action {
         statesResult.setReturnCode(retcode);
 
         // Set the output to the result
-        statesResult.setOutput(saltUtils.getJsonResultWithPrettyPrint(jsonResult).getBytes());
+        statesResult.setOutput(SaltUtils.getJsonResultWithPrettyPrint(jsonResult).getBytes());
 
         // Create the result message depending on the action status
         String states = applyStatesAction.getDetails().getMods().isEmpty() ?
