@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.action.config.ConfigDeployAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageLockAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRefreshListAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
@@ -52,7 +53,6 @@ import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -62,8 +62,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.manager.reactor.utils.RhelUtils;
-import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.bootstrap.BootstrapError;
 import com.suse.manager.webui.controllers.bootstrap.SaltBootstrapError;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
@@ -71,8 +69,6 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.YamlHelper;
-import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
-import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Pkg.Info;
@@ -82,7 +78,6 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.Change;
-import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.salt.netapi.results.StateApplyResult;
@@ -104,18 +99,14 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -146,9 +137,6 @@ public class SaltUtils {
 
     private final SystemQuery systemQuery;
     private final SaltApi saltApi;
-
-    // SUSE OS family as defined in Salt grains
-    private static final String OS_FAMILY_SUSE = "Suse";
 
     private static final LocalizationService LOCALIZATION = LocalizationService.getInstance();
 
@@ -532,15 +520,7 @@ public class SaltUtils {
             ImageInspectAction.handleImageInspectData(serverAction, jsonResult);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST)) {
-            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                serverAction.setResultMsg("Failure");
-            }
-            else {
-                serverAction.setResultMsg("Success");
-            }
-            serverAction.getServer().asMinionServer()
-                    .ifPresent(minionServer -> handlePackageProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
-                    PkgProfileUpdateSlsResult.class)));
+            PackageRefreshListAction.handleUpdateServerAction(serverAction, jsonResult);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
             PackageLockAction.handlePackageLockData(serverAction, jsonResult, action);
@@ -578,8 +558,6 @@ public class SaltUtils {
         LOG.debug("Finished update server action for action {}", action.getId());
     }
 
-
-
     /**
      * Return the path where scripts from Remote Commands Actions are stored.
      * @param scriptActionId the ID of the ScriptAction
@@ -598,8 +576,6 @@ public class SaltUtils {
     public static String getJsonResultWithPrettyPrint(JsonElement jsonResult) {
         return YamlHelper.INSTANCE.dump(Json.GSON.fromJson(jsonResult, Object.class));
     }
-
-
 
     /**
      * Check if an action is failed based on the return event data. The status depends on
@@ -646,230 +622,6 @@ public class SaltUtils {
     }
 
     /**
-     * Perform the actual update of the database based on given event data.
-     *
-     * @param server the minion server
-     * @param result the result of the call as parsed from event data
-     */
-    private void handlePackageProfileUpdate(MinionServer server,
-            PkgProfileUpdateSlsResult result) {
-        Instant start = Instant.now();
-
-        HibernateFactory.doWithoutAutoFlushing(() -> updatePackages(server, result));
-
-        Optional.ofNullable(result.getListProducts())
-                .map(products -> products.getChanges().getRet())
-                .map(SaltUtils::getInstalledProducts)
-                .ifPresent(server::setInstalledProducts);
-
-        Optional<String> rhelReleaseFile =
-                Optional.ofNullable(result.getRhelReleaseFile())
-                .map(StateApplyResult::getChanges)
-                .filter(ret -> ret.getStdout() != null)
-                .map(CmdResult::getStdout);
-        Optional<String> centosReleaseFile =
-                Optional.ofNullable(result.getCentosReleaseFile())
-                .map(StateApplyResult::getChanges)
-                .filter(ret -> ret.getStdout() != null)
-                .map(CmdResult::getStdout);
-        Optional<String> oracleReleaseFile =
-                Optional.ofNullable(result.getOracleReleaseFile())
-                .map(StateApplyResult::getChanges)
-                .filter(ret -> ret.getStdout() != null)
-                .map(CmdResult::getStdout);
-        Optional<String> alibabaReleaseFile =
-                Optional.ofNullable(result.getAlibabaReleaseFile())
-                .map(StateApplyResult::getChanges)
-                .filter(ret -> ret.getStdout() != null)
-                .map(CmdResult::getStdout);
-        Optional<String> almaReleaseFile =
-                Optional.ofNullable(result.getAlmaReleaseFile())
-                .map(StateApplyResult::getChanges)
-                .filter(ret -> ret.getStdout() != null)
-                .map(CmdResult::getStdout);
-        Optional<String> amazonReleaseFile =
-                Optional.ofNullable(result.getAmazonReleaseFile())
-                .map(StateApplyResult::getChanges)
-                .filter(ret -> ret.getStdout() != null)
-                .map(CmdResult::getStdout);
-        Optional<String> rockyReleaseFile =
-                Optional.ofNullable(result.getRockyReleaseFile())
-                .map(StateApplyResult::getChanges)
-                .filter(ret -> ret.getStdout() != null)
-                .map(CmdResult::getStdout);
-        Optional<String> resReleasePkg =
-                Optional.ofNullable(result.getWhatProvidesResReleasePkg())
-                .map(StateApplyResult::getChanges)
-                .filter(ret -> ret.getStdout() != null)
-                .map(CmdResult::getStdout);
-        Optional<String> sllReleasePkg =
-                Optional.ofNullable(result.getWhatProvidesSLLReleasePkg())
-                .map(StateApplyResult::getChanges)
-                .filter(ret -> ret.getStdout() != null)
-                .map(CmdResult::getStdout);
-
-        ValueMap grains = new ValueMap(result.getGrains());
-
-        if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
-                oracleReleaseFile.isPresent() || alibabaReleaseFile.isPresent() ||
-                almaReleaseFile.isPresent() || amazonReleaseFile.isPresent() ||
-                rockyReleaseFile.isPresent() || resReleasePkg.isPresent()) {
-            Set<InstalledProduct> products = getInstalledProductsForRhel(
-                    server, resReleasePkg, sllReleasePkg,
-                    rhelReleaseFile, centosReleaseFile, oracleReleaseFile, alibabaReleaseFile,
-                    almaReleaseFile, amazonReleaseFile, rockyReleaseFile);
-            server.setInstalledProducts(products);
-        }
-        else if ("ubuntu".equalsIgnoreCase(grains.getValueAsString("os"))) {
-            String osArch = grains.getValueAsString("osarch") + "-deb";
-            String osVersion = grains.getValueAsString("osrelease");
-            // Check if we have a product for the specific arch and version
-            SUSEProduct ubuntuProduct = SUSEProductFactory.findSUSEProduct("ubuntu-client", osVersion, null, osArch,
-                    false);
-            if (ubuntuProduct != null) {
-                InstalledProduct installedProduct = SUSEProductFactory.findInstalledProduct(ubuntuProduct)
-                        .orElse(new InstalledProduct(ubuntuProduct));
-                server.setInstalledProducts(Collections.singleton(installedProduct));
-            }
-        }
-        else if ("debian".equalsIgnoreCase(grains.getValueAsString("os"))) {
-            String osArch = grains.getValueAsString("osarch") + "-deb";
-            String osVersion = grains.getValueAsString("osmajorrelease");
-            // Check if we have a product for the specific arch and version
-            SUSEProduct debianProduct = SUSEProductFactory.findSUSEProduct("debian-client", osVersion, null, osArch,
-                    false);
-            if (debianProduct != null) {
-                InstalledProduct installedProduct = SUSEProductFactory.findInstalledProduct(debianProduct)
-                        .orElse(new InstalledProduct(debianProduct));
-                server.setInstalledProducts(Collections.singleton(installedProduct));
-            }
-        }
-
-        // Update last boot time
-        handleUptimeUpdate(server, result.getUpTime()
-                .map(ut -> (Number)ut.getChanges().getRet().get("seconds"))
-                .map(n -> n.longValue())
-                .orElse(null));
-
-        result.getRebootRequired()
-            .map(rr -> rr.getChanges().getRet())
-            .filter(Objects::nonNull)
-            .map(ret -> (Boolean) ret.get("reboot_required"))
-            .ifPresent(flag -> server.setRebootRequiredAfter(flag ? new Date() : null));
-
-        // Update live patching version
-        server.setKernelLiveVersion(result.getKernelLiveVersionInfo()
-                .map(klv -> klv.getChanges().getRet()).filter(Objects::nonNull)
-                .map(KernelLiveVersionInfo::getKernelLiveVersion).orElse(null));
-
-        // Update AppStream modules
-        Set<ServerAppStream> enabledAppStreams = result.getEnabledAppstreamModules()
-                .map(m -> m.getChanges().getRet())
-                .orElse(Collections.emptySet())
-                .stream()
-                .map(nsvca -> new ServerAppStream(server, nsvca))
-                .collect(Collectors.toSet());
-
-        server.getAppStreams().clear();
-        server.getAppStreams().addAll(enabledAppStreams);
-
-        // Update grains
-        if (!result.getGrains().isEmpty()) {
-            server.setOsFamily(grains.getValueAsString("os_family"));
-            server.setRunningKernel(grains.getValueAsString("kernelrelease"));
-            server.setOs(grains.getValueAsString("osfullname"));
-            server.setCpe(grains.getValueAsString("cpe"));
-
-            /** Release is set directly from grain information for SUSE systems only.
-                RH systems require some parsing on the grains to get the correct release
-                See RegisterMinionEventMessageAction#getOsRelease
-
-                However, release can change only after product migration and SUMA supports this only on SUSE systems.
-                Also, the getOsRelease method requires remote command execution and was therefore avoided for now.
-                If we decide to support RedHat distro/SP upgrades in the future, this code has to be reviewed.
-             */
-            if (server.getOsFamily().equals(OS_FAMILY_SUSE)) {
-                server.setRelease(grains.getValueAsString("osrelease"));
-            }
-        }
-
-        ServerFactory.save(server);
-        if (LOG.isDebugEnabled()) {
-            long duration = Duration.between(start, Instant.now()).getSeconds();
-            LOG.debug("Package profile updated for minion: {} ({} seconds)", server.getMinionId(), duration);
-        }
-
-        // Trigger update of errata cache for this server
-        ErrataManager.insertErrataCacheTask(server);
-    }
-
-    /**
-     * Updates a minion's packages with the result coming from Salt
-     *
-     * @param server a Server object corresponding to a minion
-     * @param result the result from the package profile update state
-     */
-    private static void updatePackages(MinionServer server,
-            PkgProfileUpdateSlsResult result) {
-        Set<InstalledPackage> packages = server.getPackages();
-
-        Map<String, InstalledPackage> oldPackageMap = packages.stream()
-            .collect(Collectors.toMap(
-                    SaltUtils::packageToKey,
-                    Function.identity()
-             ));
-
-        Map<String, Map.Entry<String, Pkg.Info>> newPackageMap =
-            result.getInfoInstalled().getChanges().getRet()
-                .entrySet().stream()
-                .flatMap(entry ->
-                   entry.getValue().fold(Stream::of, Collection::stream)
-                        .flatMap(x -> {
-                           Map<String, Info> infoTuple = new HashMap<>();
-                           infoTuple.put(entry.getKey(), x);
-                           return infoTuple.entrySet().stream();
-                        })
-                )
-                .collect(Collectors.toMap(
-                        SaltUtils::packageToKey,
-                        Function.identity(),
-                        SaltUtils::resolveDuplicatePackage
-                ));
-
-        Collection<InstalledPackage> unchanged = oldPackageMap.entrySet().stream().filter(
-            e -> newPackageMap.containsKey(e.getKey())
-        ).map(Map.Entry::getValue).collect(Collectors.toList());
-        packages.retainAll(unchanged);
-
-        Map<String, Tuple2<String, Pkg.Info>> packagesToAdd = newPackageMap.entrySet().stream().filter(
-                e -> !oldPackageMap.containsKey(e.getKey())
-        ).collect(Collectors.toMap(Map.Entry::getKey, e -> new Tuple2(e.getValue().getKey(), e.getValue().getValue())));
-
-        packages.addAll(createPackagesFromSalt(packagesToAdd, server));
-        SystemManager.updateSystemOverview(server.getId());
-    }
-
-    private static Map.Entry<String, Info> resolveDuplicatePackage(Map.Entry<String, Info> firstEntry,
-            Map.Entry<String, Info> secondEntry) {
-        Info first = firstEntry.getValue();
-        Info second = secondEntry.getValue();
-
-        if (first.getInstallDateUnixTime().isEmpty() && second.getInstallDateUnixTime().isEmpty()) {
-            LOG.warn("Got duplicate packages NEVRA and the install timestamp is missing." +
-                    " Taking the first one. First:  {}, second: {}", first, second);
-            return firstEntry;
-        }
-
-        // the later one wins
-        if (first.getInstallDateUnixTime().get() > second.getInstallDateUnixTime().get()) {
-            return firstEntry;
-        }
-        else {
-            return secondEntry;
-        }
-    }
-
-    /**
      * Create a list of {@link InstalledPackage} for a  {@link Server} given the package names and package information.
      *
      * @param packageInfoAndNameBySaltPackageKey a map that contains a package name and a package info, by the package
@@ -877,7 +629,7 @@ public class SaltUtils {
      * @param server server this package will be added to
      * @return a list of {@link InstalledPackage}
      */
-    private static List<InstalledPackage> createPackagesFromSalt(
+    public static List<InstalledPackage> createPackagesFromSalt(
             Map<String, Tuple2<String, Pkg.Info>> packageInfoAndNameBySaltPackageKey, Server server) {
         List<String> names = new ArrayList<>(packageInfoAndNameBySaltPackageKey.values().stream().map(Tuple2::getA)
                 .collect(Collectors.toSet()));
@@ -984,11 +736,9 @@ public class SaltUtils {
      * @param entry the package
      * @return the key
      */
-    private static String packageToKey(Map.Entry<String, Pkg.Info> entry) {
+    public static String packageToKey(Map.Entry<String, Pkg.Info> entry) {
         return packageToKey(entry.getKey(), entry.getValue());
     }
-
-
 
     /**
      * @param epoch
@@ -1048,48 +798,6 @@ public class SaltUtils {
         }).collect(Collectors.toSet());
     }
 
-    private static Set<InstalledProduct> getInstalledProductsForRhel(
-           MinionServer server,
-           Optional<String> resPackage,
-           Optional<String> sllPackage,
-           Optional<String> rhelReleaseFile,
-           Optional<String> centosRelaseFile,
-           Optional<String> oracleReleaseFile,
-           Optional<String> alibabaReleaseFile,
-           Optional<String> almaReleaseFile,
-           Optional<String> amazonReleaseFile,
-           Optional<String> rockyReleaseFile) {
-
-        Optional<RhelUtils.RhelProduct> rhelProductInfo =
-                RhelUtils.detectRhelProduct(server, resPackage, sllPackage,
-                        rhelReleaseFile, centosRelaseFile, oracleReleaseFile,
-                        alibabaReleaseFile, almaReleaseFile, amazonReleaseFile,
-                        rockyReleaseFile);
-
-        if (!rhelProductInfo.isPresent()) {
-            LOG.warn("Could not determine RHEL product type for minion: {}", server.getMinionId());
-            return Collections.emptySet();
-        }
-
-        LOG.debug("Detected minion {} as a RedHat compatible system: {} {} {} {}",
-                server.getMinionId(),
-                rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
-                rhelProductInfo.get().getRelease(), server.getServerArch().getName());
-
-        return rhelProductInfo.get().getAllSuseProducts().stream().map(product -> {
-            String arch = server.getServerArch().getLabel().replace("-redhat-linux", "");
-
-            InstalledProduct installedProduct = new InstalledProduct();
-            installedProduct.setName(product.getName());
-            installedProduct.setVersion(product.getVersion());
-            installedProduct.setRelease(product.getRelease());
-            installedProduct.setArch(PackageFactory.lookupPackageArchByLabel(arch));
-            installedProduct.setBaseproduct(product.isBase());
-
-            return installedProduct;
-        }).collect(Collectors.toSet());
-    }
-
     /**
      * Update the system info through grains and data returned by status.uptime
      *
@@ -1100,7 +808,6 @@ public class SaltUtils {
         SystemInfo systemInfo = Json.GSON.fromJson(jsonResult, SystemInfo.class);
         updateSystemInfo(systemInfo, minion);
     }
-
 
     /**
      * Update the minion connection path according to master/proxy hostname
@@ -1191,7 +898,6 @@ public class SaltUtils {
             LOG.debug("{} reboot actions set to completed", actionsChanged);
         }
     }
-
 
     private static boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
         Action action = sa.getParentAction();
