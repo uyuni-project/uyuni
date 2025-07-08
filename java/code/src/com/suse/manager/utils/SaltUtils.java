@@ -25,6 +25,7 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.HardwareRefreshAction;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
@@ -54,7 +55,6 @@ import com.redhat.rhn.domain.server.AnsibleFactory;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -71,8 +71,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.model.attestation.CoCoAttestationStatus;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
-import com.suse.manager.reactor.hardware.CpuArchUtil;
-import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
@@ -92,7 +90,6 @@ import com.suse.manager.webui.utils.salt.custom.FilesDiffResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.DirectoryResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.FileResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.SymLinkResult;
-import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
@@ -580,15 +577,7 @@ public class SaltUtils {
             handleAppStreamsChange(serverAction, jsonResult);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
-            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                serverAction.setResultMsg("Failure");
-            }
-            else {
-                serverAction.setResultMsg("Success");
-            }
-            serverAction.getServer().asMinionServer()
-                    .ifPresent(minionServer -> handleHardwareProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
-                    HwProfileUpdateSlsResult.class), serverAction));
+            HardwareRefreshAction.handleUpdateServerAction(serverAction, jsonResult);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
             DistUpgradeAction dupAction = (DistUpgradeAction) action;
@@ -1386,74 +1375,6 @@ public class SaltUtils {
         }
     }
 
-    /**
-     * Update the hardware profile for a minion in the database from incoming
-     * event data.
-     *
-     * @param server the minion server
-     * @param result the result of the call as parsed from event data
-     * @param serverAction the server action
-     */
-    private static void handleHardwareProfileUpdate(MinionServer server,
-            HwProfileUpdateSlsResult result, ServerAction serverAction) {
-        Instant start = Instant.now();
-
-        HardwareMapper hwMapper = new HardwareMapper(server,
-                new ValueMap(result.getGrains()));
-        hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo()));
-        server.setRam(hwMapper.getTotalMemory());
-        server.setSwap(hwMapper.getTotalSwapMemory());
-        if (CpuArchUtil.isDmiCapable(hwMapper.getCpuArch())) {
-            hwMapper.mapDmiInfo(
-                    result.getSmbiosRecordsBios().orElse(Collections.emptyMap()),
-                    result.getSmbiosRecordsSystem().orElse(Collections.emptyMap()),
-                    result.getSmbiosRecordsBaseboard().orElse(Collections.emptyMap()),
-                    result.getSmbiosRecordsChassis().orElse(Collections.emptyMap()));
-        }
-        hwMapper.mapDevices(result.getUdevdb());
-        if (CpuArchUtil.isS390(hwMapper.getCpuArch())) {
-            hwMapper.mapSysinfo(result.getMainframeSysinfo());
-        }
-        hwMapper.mapVirtualizationInfo(result.getSmbiosRecordsSystem());
-        hwMapper.mapNetworkInfo(result.getNetworkInterfaces(), Optional.of(result.getNetworkIPs()),
-                result.getNetworkModules(),
-                Stream.concat(
-                    Stream.concat(
-                        result.getFqdns().stream(),
-                        result.getDnsFqdns().stream()
-                    ),
-                    result.getCustomFqdns().stream()
-                ).distinct().collect(Collectors.toList())
-        );
-        server.setPayg(result.getInstanceFlavor().map(o -> o.equals("PAYG")).orElse(false));
-        server.setContainerRuntime(result.getContainerRuntime());
-        server.setUname(result.getUname());
-
-        var sapWorkloads = result.getSAPWorkloads()
-                .map(m -> m.getChanges().getRet())
-                .orElse(Collections.emptySet())
-                .stream()
-                .map(workload -> new SAPWorkload(
-                        server, workload.get("system_id"), workload.get("instance_type")
-                ))
-                .collect(Collectors.toSet());
-
-        server.getSapWorkloads().retainAll(sapWorkloads);
-        server.getSapWorkloads().addAll(sapWorkloads);
-
-        // Let the action fail in case there is error messages
-        if (!hwMapper.getErrors().isEmpty()) {
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-            serverAction.setResultMsg("Hardware list could not be refreshed completely:\n" +
-                    hwMapper.getErrors().stream().collect(Collectors.joining("\n")));
-            serverAction.setResultCode(-1L);
-        }
-
-        if (LOG.isDebugEnabled()) {
-            long duration = Duration.between(start, Instant.now()).getSeconds();
-            LOG.debug("Hardware profile updated for minion: {} ({} seconds)", server.getMinionId(), duration);
-        }
-    }
 
     private void handleInventoryRefresh(Action action, ServerAction serverAction, JsonElement jsonResult) {
         if (jsonResult == null) {
