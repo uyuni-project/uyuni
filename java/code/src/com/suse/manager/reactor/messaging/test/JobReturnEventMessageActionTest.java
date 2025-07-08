@@ -1417,7 +1417,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             will(returnValue(result));
         }});
 
-        saltUtils.setXccdfResumeXsl(resumeXsl);
+        ScapAction.setXccdfResumeXsl(resumeXsl);
         messageAction.execute(message);
 
         assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());

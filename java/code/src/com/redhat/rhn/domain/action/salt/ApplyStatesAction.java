@@ -16,17 +16,30 @@ package com.redhat.rhn.domain.action.salt;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFormatter;
+import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.notification.NotificationMessage;
+import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.notification.types.StateApplyFailed;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.utils.SaltUtils;
 import com.suse.salt.netapi.calls.LocalCall;
 
+import com.google.gson.JsonElement;
+
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+
 
 /**
  * ApplyStatesAction - Action class representing the application of Salt states.
@@ -94,8 +107,7 @@ public class ApplyStatesAction extends Action {
     }
 
     /**
-     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @return minion summaries grouped by local call
+     * {@inheritDoc}
      */
     @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
@@ -105,6 +117,60 @@ public class ApplyStatesAction extends Action {
                 Optional.of(true),
                 details.isTest() ? Optional.of(details.isTest()) : Optional.empty()), minionSummaries);
         return ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
+
+        // Revisit the action status if test=true
+        if (details.isTest() && auxArgs.getSuccess() && auxArgs.getRetcode() == 0) {
+            serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+        }
+
+        ApplyStatesActionResult statesResult = Optional.ofNullable(
+                        details.getResults())
+                .orElse(Collections.emptySet())
+                .stream()
+                .filter(result ->
+                        serverAction.getServerId().equals(result.getServerId()))
+                .findFirst()
+                .orElse(new ApplyStatesActionResult());
+        details.addResult(statesResult);
+        statesResult.setActionApplyStatesId(details.getId());
+        statesResult.setServerId(serverAction.getServerId());
+        statesResult.setReturnCode(auxArgs.getRetcode());
+
+        // Set the output to the result
+        statesResult.setOutput(SaltUtils.getJsonResultWithPrettyPrint(jsonResult).getBytes());
+
+        // Create the result message depending on the action status
+        String states = details.getMods().isEmpty() ?
+                "highstate" : details.getMods().toString();
+        String message = "Successfully applied state(s): " + states;
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+            message = "Failed to apply state(s): " + states;
+
+            NotificationMessage nm = UserNotificationFactory.createNotificationMessage(
+                    new StateApplyFailed(serverAction.getServer().getName(),
+                            serverAction.getServerId(), serverAction.getParentAction().getId()));
+
+            Set<User> admins = new HashSet<>(ServerFactory.listAdministrators(serverAction.getServer()));
+            // TODO: are also org admins and the creator part of this list?
+            UserNotificationFactory.storeForUsers(nm, admins);
+        }
+        if (details.isTest()) {
+            message += " (test-mode)";
+        }
+        serverAction.setResultMsg(message);
+
+        serverAction.getServer().asMinionServer().ifPresent(minion -> {
+            if (jsonResult.isJsonObject()) {
+                auxArgs.getSaltUtils().updateSystemInfo(jsonResult, minion);
+            }
+        });
     }
 
 }
