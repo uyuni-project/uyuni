@@ -35,7 +35,6 @@ import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
-import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
@@ -54,9 +53,6 @@ import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageRepoDigest;
 import com.redhat.rhn.domain.image.OSImageStoreUtils;
-import com.redhat.rhn.domain.notification.NotificationMessage;
-import com.redhat.rhn.domain.notification.UserNotificationFactory;
-import com.redhat.rhn.domain.notification.types.StateApplyFailed;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.Tuple2;
@@ -75,7 +71,6 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
@@ -171,7 +166,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -581,7 +575,7 @@ public class SaltUtils {
 
         Action action = HibernateFactory.unproxy(serverAction.getParentAction());
         if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
-            handleStateApplyData(serverAction, jsonResult, retcode, success);
+            ApplyStatesAction.handleStateApplyData(serverAction, jsonResult, retcode, success, this);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
@@ -729,59 +723,6 @@ public class SaltUtils {
     }
 
 
-    private void handleStateApplyData(ServerAction serverAction, JsonElement jsonResult, long retcode,
-            boolean success) {
-        ApplyStatesAction applyStatesAction =
-                (ApplyStatesAction)HibernateFactory.unproxy(serverAction.getParentAction());
-
-        // Revisit the action status if test=true
-        if (applyStatesAction.getDetails().isTest() && success && retcode == 0) {
-            serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
-        }
-
-        ApplyStatesActionResult statesResult = Optional.ofNullable(
-                applyStatesAction.getDetails().getResults())
-                .orElse(Collections.emptySet())
-                .stream()
-                .filter(result ->
-                        serverAction.getServerId().equals(result.getServerId()))
-                .findFirst()
-                .orElse(new ApplyStatesActionResult());
-        applyStatesAction.getDetails().addResult(statesResult);
-        statesResult.setActionApplyStatesId(applyStatesAction.getDetails().getId());
-        statesResult.setServerId(serverAction.getServerId());
-        statesResult.setReturnCode(retcode);
-
-        // Set the output to the result
-        statesResult.setOutput(getJsonResultWithPrettyPrint(jsonResult).getBytes());
-
-        // Create the result message depending on the action status
-        String states = applyStatesAction.getDetails().getMods().isEmpty() ?
-                "highstate" : applyStatesAction.getDetails().getMods().toString();
-        String message = "Successfully applied state(s): " + states;
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-            message = "Failed to apply state(s): " + states;
-
-            NotificationMessage nm = UserNotificationFactory.createNotificationMessage(
-                    new StateApplyFailed(serverAction.getServer().getName(),
-                            serverAction.getServerId(), serverAction.getParentAction().getId()));
-
-            Set<User> admins = new HashSet<>(ServerFactory.listAdministrators(serverAction.getServer()));
-            // TODO: are also org admins and the creator part of this list?
-            UserNotificationFactory.storeForUsers(nm, admins);
-        }
-        if (applyStatesAction.getDetails().isTest()) {
-            message += " (test-mode)";
-        }
-        serverAction.setResultMsg(message);
-
-        serverAction.getServer().asMinionServer().ifPresent(minion -> {
-            if (jsonResult.isJsonObject()) {
-                updateSystemInfo(jsonResult, minion);
-            }
-        });
-    }
-
     private void handlePackageLockData(ServerAction serverAction, JsonElement jsonResult, Action action) {
         if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
             String msg = "Error while changing the lock status";
@@ -825,8 +766,9 @@ public class SaltUtils {
      * Get the raw json result with pretty-print. If json result will be longer than 1024, it will
      * be trimmed.
      * @param jsonResult json result with pretty print
+     * @return the pretty print
      */
-    private String  getJsonResultWithPrettyPrint(JsonElement jsonResult) {
+    public String  getJsonResultWithPrettyPrint(JsonElement jsonResult) {
         return YamlHelper.INSTANCE.dump(Json.GSON.fromJson(jsonResult, Object.class));
     }
 
