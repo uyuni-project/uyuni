@@ -7,163 +7,6 @@ import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
 
-const dataTest = {
-  items: [
-    {
-      id: 1000010000,
-      name: "Content Management",
-      description: "View image details, patches, packages, build log and cluster information",
-      type: "Built-in",
-      users: 0,
-      permissions: 15,
-      selected: false,
-      disabled: false,
-    },
-    {
-      id: 1000020000,
-      name: "Activation Key Administrator",
-      description: "View Activation Administrator, Configuration Administrator.",
-      type: "Built-in",
-      users: 2,
-      permissions: 5,
-      selected: false,
-      disabled: false,
-    },
-    {
-      id: 1000030000,
-      name: "Configuration Administrator",
-      description: "View Configuration Administrator Administrator, Configuration Administrator.",
-      type: "Built-in",
-      users: 4,
-      permissions: 15,
-      selected: false,
-      disabled: false,
-    },
-    {
-      id: 1000040000,
-      name: "System Group Administrator",
-      description: "View Activation Administrator, Configuration Administrator.",
-      type: "Built-in",
-      users: 2,
-      permissions: 5,
-      selected: false,
-      disabled: false,
-    },
-    {
-      id: 1000050000,
-      name: "Custom group1",
-      description: "Custom group1 Activation Administrator, Configuration Administrator.",
-      type: "Custome",
-      users: 7,
-      permissions: 25,
-      selected: false,
-      disabled: false,
-    },
-    {
-      id: 1000060000,
-      name: "Content Management",
-      description: "View image details, patches, packages, build log and cluster information",
-      type: "Built-in",
-      users: 0,
-      permissions: 15,
-      selected: false,
-      disabled: false,
-    },
-    {
-      id: 1000070000,
-      name: "Activation Key Administrator",
-      description: "View Activation Administrator, Configuration Administrator.",
-      type: "Built-in",
-      users: 2,
-      permissions: 5,
-      selected: false,
-      disabled: false,
-    },
-    {
-      id: 1000080000,
-      name: "Configuration Administrator",
-      description: "View Configuration Administrator Administrator, Configuration Administrator.",
-      type: "Built-in",
-      users: 4,
-      permissions: 15,
-      selected: false,
-      disabled: false,
-    },
-    {
-      id: 1000090000,
-      name: "System Group Administrator",
-      description: "View Activation Administrator, Configuration Administrator.",
-      type: "Built-in",
-      users: 2,
-      permissions: 5,
-      selected: false,
-      disabled: false,
-    },
-    {
-      id: 1000100000,
-      name: "Custom group1",
-      description: "Custom group1 Activation Administrator, Configuration Administrator.",
-      type: "Custome",
-      users: 7,
-      permissions: 25,
-      selected: false,
-      disabled: false,
-    },
-    {
-      id: 1000011000,
-      name: "Content Management",
-      description: "View image details, patches, packages, build log and cluster information",
-      type: "Built-in",
-      users: 0,
-      permissions: 15,
-      selected: false,
-      disabled: false,
-    },
-    {
-      id: 1000012000,
-      name: "Activation Key Administrator",
-      description: "View Activation Administrator, Configuration Administrator.",
-      type: "Built-in",
-      users: 2,
-      permissions: 5,
-      selected: false,
-      disabled: false,
-    },
-    {
-      id: 1000013000,
-      name: "Configuration Administrator",
-      description: "View Configuration Administrator Administrator, Configuration Administrator.",
-      type: "Built-in",
-      users: 4,
-      permissions: 15,
-      selected: false,
-      disabled: false,
-    },
-    {
-      id: 1000014000,
-      name: "System Group Administrator",
-      description: "View Activation Administrator, Configuration Administrator.",
-      type: "Built-in",
-      users: 2,
-      permissions: 5,
-      selected: false,
-      disabled: false,
-    },
-    {
-      id: 1000015000,
-      name: "Custom group1",
-      description: "Custom group1 Activation Administrator, Configuration Administrator.",
-      type: "Custome",
-      users: 7,
-      permissions: 25,
-      selected: false,
-      disabled: false,
-    },
-  ],
-  total: 19,
-  selectedIds: [],
-};
-
 type Props = {
   state: any;
   onChange: Function;
@@ -191,13 +34,13 @@ const AccessGroupPermissions = (props: Props) => {
         <Button className="btn-primary pull-right" text="Add Permissions" />
       </div>
       <Table
-        data={dataTest.items}
+        data={"/rhn/manager/api/admin/access-group/namespaces"}
         identifier={(item) => item.id}
-        initialSortColumnKey="server_name"
+        initialSortColumnKey="namespace"
         emptyText={t("No Permissions found.")}
         searchField={<SearchField placeholder={t("Filter by name")} />}
       >
-        <Column columnKey="name" comparator={Utils.sortByText} header={t("Name")} cell={(item) => item.name} />
+        <Column columnKey="namespace" comparator={Utils.sortByText} header={t("Name")} cell={(item) => item.namespace} />
         <Column
           columnKey="description"
           comparator={Utils.sortByText}
@@ -206,18 +49,19 @@ const AccessGroupPermissions = (props: Props) => {
         />
         <Column
           columnKey="view"
-          comparator={Utils.sortByText}
           header={t("View")}
-          cell={<input name="view" type="checkbox" />}
+          cell={(item) => <input name="view" type="checkbox" disabled={!item.accessMode.includes("R")} checked={false} />}
         />
 
         <Column
           columnKey="modify"
-          comparator={Utils.sortByText}
           header={t("Modify")}
-          cell={<input name="Modify" type="checkbox" />}
+          cell={(item) => <input name="modify" type="checkbox" disabled={!item.accessMode.includes("W")} checked={false} />}
         />
-        <Column columnKey="count" comparator={Utils.sortByText} header={t("Count")} cell={(item) => item.permissions} />
+        <Column
+          columnKey="count"
+          header={t("Count")}
+          cell={(item) => item.permissions} />
       </Table>
     </div>
   );

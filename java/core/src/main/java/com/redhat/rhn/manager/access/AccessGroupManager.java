@@ -24,6 +24,7 @@ import com.redhat.rhn.frontend.listview.PageControl;
 
 import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.utils.gson.AccessGroupJson;
+import com.suse.manager.webui.utils.gson.NamespaceJson;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -110,6 +111,17 @@ public class AccessGroupManager {
     public DataResult<AccessGroupJson> list(
             PageControl pc, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser) {
         return AccessGroupFactory.listAll(pc, parser);
+    }
+
+    /**
+     * Lists s paginated list of namespaces
+     * @param pc the page control
+     * @param parser the parser for filters when building query
+     * @return the list of access groups
+     */
+    public DataResult<NamespaceJson> listNamespaces(
+            PageControl pc, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser) {
+        return NamespaceFactory.list(pc, parser);
     }
 
     /**
