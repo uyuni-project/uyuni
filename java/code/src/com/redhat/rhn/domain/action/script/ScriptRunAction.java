@@ -21,6 +21,7 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -30,6 +31,12 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.results.CmdResult;
+import com.suse.salt.netapi.results.StateApplyResult;
+import com.suse.utils.Json;
+
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
@@ -46,6 +53,8 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipal;
 import java.nio.file.attribute.UserPrincipalLookupService;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,10 +135,8 @@ public class ScriptRunAction extends ScriptAction {
         }
     }
 
-
     /**
-     * @param minions a list of minion summaries of the minions involved in the given Action
-     * @return minion summaries grouped by local call
+     * {@inheritDoc}
      */
     @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minions) {
@@ -193,5 +200,48 @@ public class ScriptRunAction extends ScriptAction {
         UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
 
         Files.setOwner(path, tomcatUser);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+            serverAction.setResultMsg("Failed to execute script. [jid=" + auxArgs.getJid() + "]");
+        }
+        else {
+            serverAction.setResultMsg("Script executed successfully. [jid=" +
+                    auxArgs.getJid() + "]");
+        }
+        Map<String, StateApplyResult<CmdResult>> stateApplyResult = Json.GSON.fromJson(jsonResult,
+                new TypeToken<Map<String, StateApplyResult<CmdResult>>>() { }.getType());
+        CmdResult result = new CmdResult();
+        if (stateApplyResult != null) {
+            result = stateApplyResult.entrySet().stream()
+                    .findFirst().map(e -> e.getValue().getChanges())
+                    .orElseGet(CmdResult::new);
+        }
+
+        ScriptResult scriptResult = Optional.ofNullable(
+                        getScriptActionDetails().getResults())
+                .orElse(Collections.emptySet())
+                .stream()
+                .filter(res -> serverAction.getServerId().equals(res.getServerId()))
+                .findFirst()
+                .orElse(new ScriptResult());
+
+        getScriptActionDetails().addResult(scriptResult);
+        scriptResult.setActionScriptId(getScriptActionDetails().getId());
+        scriptResult.setServerId(serverAction.getServerId());
+        scriptResult.setReturnCode(auxArgs.getRetcode());
+
+        // Start and end dates
+        Date startDate = getCreated().before(getEarliestAction()) ? getEarliestAction() : getCreated();
+        scriptResult.setStartDate(startDate);
+        scriptResult.setStopDate(serverAction.getCompletionTime());
+
+        // Depending on the status show stdout or stderr in the output
+        scriptResult.setOutput(SaltUtils.printStdMessages(result.getStderr(), result.getStdout()).getBytes());
     }
 }

@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.action.rhnpackage;
 import static java.util.Collections.singletonMap;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -25,9 +26,12 @@ import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
+
+import com.google.gson.JsonElement;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -61,8 +65,7 @@ public class PackageLockAction extends PackageAction {
     }
 
     /**
-     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @return minion summaries grouped by local call
+     * {@inheritDoc}
      */
     @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
@@ -82,5 +85,39 @@ public class PackageLockAction extends PackageAction {
             ret.put(localCall, mSums);
         }
         return ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+            String msg = "Error while changing the lock status";
+            SaltUtils.jsonEventToStateApplyResults(jsonResult).ifPresentOrElse(
+                    r -> {
+                        if (r.containsKey("pkg_|-pkg_locked_|-pkg_locked_|-held")) {
+                            serverAction.setResultMsg(msg + ":\n" +
+                                    r.get("pkg_|-pkg_locked_|-pkg_locked_|-held").getComment());
+                        }
+                        else {
+                            serverAction.setResultMsg(msg);
+                        }
+                    },
+                    () -> serverAction.setResultMsg(msg));
+            serverAction.getServer().asMinionServer()
+                    .ifPresent(minionServer -> PackageManager.syncLockedPackages(minionServer.getId(), getId()));
+        }
+        else {
+            String msg = "Successfully changed lock status";
+            SaltUtils.jsonEventToStateApplyResults(jsonResult).ifPresentOrElse(
+                    r -> serverAction.setResultMsg(msg + ":\n" +
+                            r.get("pkg_|-pkg_locked_|-pkg_locked_|-held").getComment()),
+                    () -> serverAction.setResultMsg(msg));
+            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                PackageManager.updateLockedPackages(minionServer.getId(), getId());
+                PackageManager.updateUnlockedPackages(minionServer.getId(), getId());
+            });
+        }
     }
 }
