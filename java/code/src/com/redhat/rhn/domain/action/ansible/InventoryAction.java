@@ -78,16 +78,13 @@ public class InventoryAction extends Action {
 
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @param action action which has all the revisions
      * @return minion summaries grouped by local call
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> inventoryAction(
-            List<MinionSummary> minionSummaries, InventoryAction action) {
-        return singletonMap(executeInventoryActionCall(action), minionSummaries);
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
+        return singletonMap(executeInventoryActionCall(), minionSummaries);
     }
 
-    private static LocalCall<?> executeInventoryActionCall(InventoryAction action) {
-        InventoryActionDetails details = action.getDetails();
+    private LocalCall<?> executeInventoryActionCall() {
         String inventoryPath = details.getInventoryPath();
 
         return new LocalCall<>(SaltParameters.ANSIBLE_INVENTORIES, empty(), of(Map.of("inventory", inventoryPath)),

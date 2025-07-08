@@ -51,7 +51,6 @@ import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
-import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.errata.Errata;
@@ -185,67 +184,67 @@ public class SaltServerActionService {
         ActionType actionType = actionIn.getActionType();
         actionIn = unproxy(actionIn);
         if (ActionFactory.TYPE_ERRATA.equals(actionType)) {
-            return ErrataAction.errataAction(minions, (ErrataAction) actionIn);
+            return ((ErrataAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_PACKAGES_LOCK.equals(actionType)) {
-            return PackageLockAction.packagesLockAction(minions, (PackageLockAction) actionIn);
+            return ((PackageLockAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(actionType)) {
-            return PackageUpdateAction.packagesUpdateAction(minions, (PackageUpdateAction) actionIn);
+            return ((PackageUpdateAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_PACKAGES_REMOVE.equals(actionType)) {
-            return PackageRemoveAction.packagesRemoveAction(minions, (PackageRemoveAction) actionIn);
+            return ((PackageRemoveAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_PACKAGES_REFRESH_LIST.equals(actionType)) {
-            return PackageRefreshListAction.packagesRefreshListAction(minions);
+            return ((PackageRefreshListAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_HARDWARE_REFRESH_LIST.equals(actionType)) {
-            return HardwareRefreshAction.hardwareRefreshListAction(minions);
+            return ((HardwareRefreshAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_REBOOT.equals(actionType)) {
-            return RebootAction.rebootAction(minions);
+            return ((RebootAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.equals(actionType)) {
-            return ConfigDeployAction.deployFiles(minions, (ConfigDeployAction) actionIn);
+            return ((ConfigDeployAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_CONFIGFILES_DIFF.equals(actionType)) {
-            return ConfigDiffAction.diffFiles(minions, (ConfigDiffAction) actionIn);
+            return ((ConfigDiffAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_SCRIPT_RUN.equals(actionType)) {
-            return ScriptRunAction.remoteCommandAction(minions, (ScriptAction) actionIn);
+            return ((ScriptRunAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_APPLY_STATES.equals(actionType)) {
-            return ApplyStatesAction.applyStatesAction(minions, (ApplyStatesAction) actionIn);
+            return ((ApplyStatesAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_IMAGE_INSPECT.equals(actionType)) {
-            return ImageInspectAction.imageInspectAction(minions, (ImageInspectAction) actionIn);
+            return ((ImageInspectAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_IMAGE_BUILD.equals(actionType)) {
-            return ImageBuildAction.imageBuildAction(minions, (ImageBuildAction) actionIn);
+            return ((ImageBuildAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_DIST_UPGRADE.equals(actionType)) {
-            return DistUpgradeAction.distUpgradeAction(minions, (DistUpgradeAction) actionIn);
+            return ((DistUpgradeAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_SCAP_XCCDF_EVAL.equals(actionType)) {
-            return ScapAction.scapXccdfEvalAction(minions, (ScapAction)actionIn);
+            return ((ScapAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_SUBSCRIBE_CHANNELS.equals(actionType)) {
-            return SubscribeChannelsAction.subscribeChannelsAction(minions, saltApi, (SubscribeChannelsAction)actionIn);
+            return ((SubscribeChannelsAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_KICKSTART_INITIATE.equals(actionType)) {
-            return KickstartInitiateAction.autoinstallInitAction(minions, (KickstartInitiateAction)actionIn);
+            return ((KickstartInitiateAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_PLAYBOOK.equals(actionType)) {
-            return PlaybookAction.playbookAction(minions, (PlaybookAction) actionIn);
+            return ((PlaybookAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_INVENTORY.equals(actionType)) {
-            return InventoryAction.inventoryAction(minions, (InventoryAction) actionIn);
+            return ((InventoryAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_COCO_ATTESTATION.equals(actionType)) {
-            return CoCoAttestationAction.cocoAttestationAction(minions);
+            return ((CoCoAttestationAction) actionIn).getSaltCalls(minions);
         }
         else if (ActionFactory.TYPE_APPSTREAM_CONFIGURE.equals(actionType)) {
-            return AppStreamAction.appStreamAction(minions, (AppStreamAction) actionIn);
+            return ((AppStreamAction) actionIn).getSaltCalls(minions);
         }
         else {
             if (LOG.isDebugEnabled()) {

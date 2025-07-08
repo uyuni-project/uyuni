@@ -83,32 +83,28 @@ public class ScapAction extends Action {
 
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @param action action which has all the revisions
      * @return minion summaries grouped by local call
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> scapXccdfEvalAction(
-            List<MinionSummary> minionSummaries, ScapAction action) {
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
 
-        ScapActionDetails details = action.getScapActionDetails();
-
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+       Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
         Map<String, Object> pillar = new HashMap<>();
         Matcher profileMatcher = Pattern.compile("--profile (([\\w.-])+)")
-                .matcher(details.getParametersContents());
+                .matcher(scapActionDetails.getParametersContents());
         Matcher ruleMatcher = Pattern.compile("--rule (([\\w.-])+)")
-                .matcher(details.getParametersContents());
+                .matcher(scapActionDetails.getParametersContents());
         Matcher tailoringFileMatcher = Pattern.compile("--tailoring-file (([\\w./-])+)")
-                .matcher(details.getParametersContents());
+                .matcher(scapActionDetails.getParametersContents());
         Matcher tailoringIdMatcher = Pattern.compile("--tailoring-id (([\\w.-])+)")
-                .matcher(details.getParametersContents());
+                .matcher(scapActionDetails.getParametersContents());
 
         String oldParameters = "eval " +
-                details.getParametersContents() + " " + details.getPath();
+                scapActionDetails.getParametersContents() + " " + scapActionDetails.getPath();
         pillar.put("old_parameters", oldParameters);
 
-        pillar.put("xccdffile", details.getPath());
-        if (details.getOvalfiles() != null) {
-            pillar.put("ovalfiles", Arrays.stream(details.getOvalfiles().split(","))
+        pillar.put("xccdffile", scapActionDetails.getPath());
+        if (scapActionDetails.getOvalfiles() != null) {
+            pillar.put("ovalfiles", Arrays.stream(scapActionDetails.getOvalfiles().split(","))
                     .map(String::trim).collect(toList()));
         }
         if (profileMatcher.find()) {
@@ -123,10 +119,10 @@ public class ScapAction extends Action {
         if (tailoringIdMatcher.find()) {
             pillar.put("tailoring_id", tailoringIdMatcher.group(1));
         }
-        if (details.getParametersContents().contains("--fetch-remote-resources")) {
+        if (scapActionDetails.getParametersContents().contains("--fetch-remote-resources")) {
             pillar.put("fetch_remote_resources", true);
         }
-        if (details.getParametersContents().contains("--remediate")) {
+        if (scapActionDetails.getParametersContents().contains("--remediate")) {
             pillar.put("remediate", true);
         }
 

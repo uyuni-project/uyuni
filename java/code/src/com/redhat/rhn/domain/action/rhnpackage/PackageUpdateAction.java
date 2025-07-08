@@ -44,16 +44,14 @@ public class PackageUpdateAction extends PackageAction {
 
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @param action action which has all the revisions
      * @return minion summaries grouped by local call
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> packagesUpdateAction(
-            List<MinionSummary> minionSummaries, PackageUpdateAction action) {
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
 
         List<Long> sids = minionSummaries.stream().map(MinionSummary::getServerId).collect(toList());
 
-        List<String> nevraStrings = action.getDetails().stream().map(details -> {
+        List<String> nevraStrings = getDetails().stream().map(details -> {
             PackageName name = details.getPackageName();
             PackageEvr evr = details.getEvr();
             PackageArch arch = details.getArch();
@@ -63,7 +61,7 @@ public class PackageUpdateAction extends PackageAction {
         List<Tuple2<Long, Long>> retractedPidSidPairs = ErrataFactory.retractedPackagesByNevra(nevraStrings, sids);
         Map<Long, List<Long>> retractedPidsBySid = retractedPidSidPairs.stream()
                 .collect(groupingBy(Tuple2::getB, mapping(Tuple2::getA, toList())));
-        action.getServerActions().forEach(sa -> {
+        getServerActions().forEach(sa -> {
             List<Long> packageIds = retractedPidsBySid.get(sa.getServerId());
             if (packageIds != null) {
                 sa.fail("contains retracted packages: " +
@@ -75,8 +73,8 @@ public class PackageUpdateAction extends PackageAction {
                         retractedPidsBySid.get(ms.getServerId()).isEmpty())
                 .collect(toList());
 
-        List<List<String>> pkgs = action
-                .getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
+        List<List<String>> pkgs =
+                getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
                         d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
                 .toList();
         if (pkgs.isEmpty()) {

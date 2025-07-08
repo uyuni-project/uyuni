@@ -50,14 +50,12 @@ public class KickstartInitiateAction extends KickstartAction {
 
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @param action action which has all the revisions
      * @return minion summaries grouped by local call
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> autoinstallInitAction(List<MinionSummary> minionSummaries,
-                                                                         KickstartInitiateAction action) {
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
 
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        KickstartActionDetails ksActionDetails = action.getKickstartActionDetails();
+        KickstartActionDetails ksActionDetails = getKickstartActionDetails();
         String cobblerSystem = ksActionDetails.getCobblerSystemName();
         String host = ksActionDetails.getKickstartHost();
         Map<String, String> bootParams = prepareCobblerBoot(host, cobblerSystem, true);
@@ -73,7 +71,7 @@ public class KickstartInitiateAction extends KickstartAction {
         return ret;
     }
 
-    private static Map<String, String> prepareCobblerBoot(String kickstartHost,
+    private Map<String, String> prepareCobblerBoot(String kickstartHost,
                                                    String cobblerSystem,
                                                    boolean autoinstall) {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();

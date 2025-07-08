@@ -66,13 +66,9 @@ public class ImageInspectAction extends Action {
 
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @param action action which has all the revisions
      * @return minion summaries grouped by local call
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> imageInspectAction(
-            List<MinionSummary> minionSummaries, ImageInspectAction action) {
-
-        ImageInspectActionDetails details = action.getDetails();
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
         if (details == null) {
             return Collections.emptyMap();
         }
@@ -81,8 +77,8 @@ public class ImageInspectAction extends Action {
                 .orElseGet(Collections::emptyMap);
     }
 
-    private static Map<LocalCall<?>, List<MinionSummary>> imageInspectAction(
-            List<MinionSummary> minions, ImageInspectActionDetails details, ImageStore store) {
+    private Map<LocalCall<?>, List<MinionSummary>> imageInspectAction(List<MinionSummary> minions,
+                                                                      ImageStore store) {
         Map<String, Object> pillar = new HashMap<>();
         Map<LocalCall<?>, List<MinionSummary>> result = new HashMap<>();
         if (ImageStoreFactory.TYPE_OS_IMAGE.equals(store.getStoreType())) {

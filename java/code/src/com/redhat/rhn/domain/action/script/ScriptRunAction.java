@@ -129,16 +129,14 @@ public class ScriptRunAction extends ScriptAction {
 
     /**
      * @param minions a list of minion summaries of the minions involved in the given Action
-     * @param scriptAction action which has all the revisions
      * @return minion summaries grouped by local call
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> remoteCommandAction(
-            List<MinionSummary> minions, ScriptAction scriptAction) {
-        String script = scriptAction.getScriptActionDetails().getScriptContents();
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minions) {
+        String script = getScriptActionDetails().getScriptContents();
 
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
         // write script to /srv/susemanager/salt/scripts/script_<action_id>.sh
-        Path scriptFile = SALT_UTILS.getScriptPath(scriptAction.getId());
+        Path scriptFile = SALT_UTILS.getScriptPath(getId());
         try {
             // make sure parent dir exists
             if (!Files.exists(scriptFile) && !Files.exists(scriptFile.getParent())) {
@@ -169,14 +167,14 @@ public class ScriptRunAction extends ScriptAction {
             // state.apply remotecommands
             Map<String, Object> pillar = new HashMap<>();
             pillar.put("mgr_remote_cmd_script", SALT_FS_PREFIX + SCRIPTS_DIR + "/" + scriptFile.getFileName());
-            pillar.put("mgr_remote_cmd_runas", scriptAction.getScriptActionDetails().getUsername());
-            pillar.put("mgr_remote_cmd_timeout", scriptAction.getScriptActionDetails().getTimeout());
+            pillar.put("mgr_remote_cmd_runas", getScriptActionDetails().getUsername());
+            pillar.put("mgr_remote_cmd_timeout", getScriptActionDetails().getTimeout());
             ret.put(State.apply(List.of(SaltParameters.REMOTE_COMMANDS), Optional.of(pillar)), minions);
         }
         catch (IOException e) {
             String errorMsg = "Could not write script to file " + scriptFile + " - " + e;
             LOG.error(errorMsg, e);
-            scriptAction.getServerActions().stream()
+            getServerActions().stream()
                     .filter(entry -> entry.getServer().asMinionServer()
                             .map(minionServer -> minions.contains(new MinionSummary(minionServer)))
                             .orElse(false))
@@ -188,7 +186,7 @@ public class ScriptRunAction extends ScriptAction {
         return ret;
     }
 
-    private static void setFileOwner(Path path) throws IOException {
+    private void setFileOwner(Path path) throws IOException {
         FileSystem fileSystem = FileSystems.getDefault();
         UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
         UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");

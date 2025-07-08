@@ -41,17 +41,15 @@ public class ConfigDeployAction extends ConfigAction {
      * Deploy files(files, directory, symlink) through state.apply
      *
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @param action action which has all the revisions
      * @return minion summaries grouped by local call
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> deployFiles(List<MinionSummary> minionSummaries,
-                                                                     ConfigAction action) {
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
 
         Map<Long, MinionSummary> targetMap = minionSummaries.stream().
                 collect(Collectors.toMap(MinionSummary::getServerId, minionId-> minionId));
 
-        Map<MinionSummary, Set<ConfigRevision>> serverConfigMap = action.getConfigRevisionActions()
+        Map<MinionSummary, Set<ConfigRevision>> serverConfigMap = getConfigRevisionActions()
                 .stream()
                 .filter(cra -> targetMap.containsKey(cra.getServer().getId()))
                 .collect(Collectors.groupingBy(

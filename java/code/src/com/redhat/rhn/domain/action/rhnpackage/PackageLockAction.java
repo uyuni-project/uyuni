@@ -62,16 +62,14 @@ public class PackageLockAction extends PackageAction {
 
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @param action action which has all the revisions
      * @return minion summaries grouped by local call
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> packagesLockAction(
-            List<MinionSummary> minionSummaries, PackageLockAction action) {
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
 
         for (MinionSummary m : minionSummaries) {
             DataResult<PackageListItem> setLockPkg = PackageManager.systemSetLockedPackages(
-                    m.getServerId(), action.getId(), null);
+                    m.getServerId(), getId(), null);
             List<List<String>> pkgs = setLockPkg.stream().map(d -> Arrays.asList(d.getName(), d.getArch(),
                     new PackageEvr(d.getEpoch(), d.getVersion(), d.getRelease(), d.getPackageType())
                             .toUniversalEvrString())).toList();

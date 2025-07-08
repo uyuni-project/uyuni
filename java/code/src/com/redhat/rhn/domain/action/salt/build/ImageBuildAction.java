@@ -93,23 +93,20 @@ public class ImageBuildAction extends Action {
 
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @param action          action which has all the revisions
      * @return minion summaries grouped by local call
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> imageBuildAction(
-            List<MinionSummary> minionSummaries, ImageBuildAction action) {
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
 
-        ImageBuildActionDetails details = action.getDetails();
         if (details == null) {
             return Collections.emptyMap();
         }
         return ImageProfileFactory.lookupById(details.getImageProfileId()).map(
                 ip -> imageBuildAction(minionSummaries, Optional.ofNullable(details.getVersion()), ip,
-                        action.getId())
+                        getId())
         ).orElseGet(Collections::emptyMap);
     }
 
-    protected static Map<LocalCall<?>, List<MinionSummary>> imageBuildAction(
+    protected Map<LocalCall<?>, List<MinionSummary>> imageBuildAction(
             List<MinionSummary> minionSummaries, Optional<String> version,
             ImageProfile profile, Long actionId) {
         List<ImageStore> imageStores = new LinkedList<>();
@@ -199,7 +196,7 @@ public class ImageBuildAction extends Action {
                 ));
     }
 
-    private static String getChannelUrl(MinionServer minion, String channelLabel) {
+    private String getChannelUrl(MinionServer minion, String channelLabel) {
         String token;
 
         try {

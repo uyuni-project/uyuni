@@ -82,17 +82,13 @@ public class PlaybookAction extends Action {
 
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @param action action which has all the revisions
      * @return minion summaries grouped by local call
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> playbookAction(
-            List<MinionSummary> minionSummaries, PlaybookAction action) {
-        return singletonMap(executePlaybookActionCall(action), minionSummaries);
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
+        return singletonMap(executePlaybookActionCall(), minionSummaries);
     }
 
-    private static LocalCall<?> executePlaybookActionCall(PlaybookAction action) {
-        PlaybookActionDetails details = action.getDetails();
-
+    private LocalCall<?> executePlaybookActionCall() {
         String playbookPath = details.getPlaybookPath();
         String rundir = new File(playbookPath).getAbsoluteFile().getParent();
         String inventoryPath = details.getInventoryPath();

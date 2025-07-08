@@ -129,14 +129,12 @@ public class ErrataAction extends Action {
 
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @param action action which has all the revisions
      * @return minion summaries grouped by local call
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> errataAction(List<MinionSummary> minionSummaries,
-                                                                      ErrataAction action) {
-        Set<Long> errataIds = action.getErrata().stream()
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
+        Set<Long> errataIds = getErrata().stream()
                 .map(Errata::getId).collect(Collectors.toSet());
-        boolean allowVendorChange = action.getDetails().getAllowVendorChange();
+        boolean allowVendorChange = getDetails().getAllowVendorChange();
 
         Map<Boolean, List<MinionSummary>> byUbuntu = minionSummaries.stream()
                 .collect(partitioningBy(m -> m.getOs().equals("Ubuntu")));
@@ -191,8 +189,7 @@ public class ErrataAction extends Action {
         return patchableCalls;
     }
 
-
-    private static Map<LocalCall<Map<String, State.ApplyResult>>, List<MinionSummary>> errataToPackageInstallCalls(
+    private Map<LocalCall<Map<String, State.ApplyResult>>, List<MinionSummary>> errataToPackageInstallCalls(
             List<MinionSummary> minions,
             Set<Long> errataIds) {
         Set<Long> minionIds = minions.stream()

@@ -64,15 +64,12 @@ public class DistUpgradeAction extends Action {
         this.details = detailsIn;
     }
 
-
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @param action action which has all the revisions
      * @return minion summaries grouped by local call
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> distUpgradeAction(
-            List<MinionSummary> minionSummaries, DistUpgradeAction action) {
-        Map<Boolean, List<Channel>> collect = action.getDetails().getChannelTasks()
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
+        Map<Boolean, List<Channel>> collect = getDetails().getChannelTasks()
                 .stream().collect(Collectors.partitioningBy(
                         ct -> ct.getTask() == DistUpgradeChannelTask.SUBSCRIBE,
                         Collectors.mapping(DistUpgradeChannelTask::getChannel,
@@ -82,7 +79,7 @@ public class DistUpgradeAction extends Action {
         List<Channel> subbed = collect.get(true);
         List<Channel> unsubbed = collect.get(false);
 
-        action.getServerActions()
+        getServerActions()
                 .stream()
                 .flatMap(s -> Opt.stream(s.getServer().asMinionServer()))
                 .forEach(minion -> {
@@ -98,16 +95,16 @@ public class DistUpgradeAction extends Action {
         pillar.put("susemanager", susemanager);
         Map<String, Object> distupgrade = new HashMap<>();
         susemanager.put("distupgrade", distupgrade);
-        distupgrade.put("dryrun", action.getDetails().isDryRun());
-        distupgrade.put(SaltParameters.ALLOW_VENDOR_CHANGE, action.getDetails().isAllowVendorChange());
+        distupgrade.put("dryrun", getDetails().isDryRun());
+        distupgrade.put(SaltParameters.ALLOW_VENDOR_CHANGE, getDetails().isAllowVendorChange());
         distupgrade.put("channels", subbed.stream()
                 .sorted()
                 .map(c -> "susemanager:" + c.getLabel())
                 .collect(Collectors.toList()));
-        if (Objects.nonNull(action.getDetails().getMissingSuccessors())) {
-            pillar.put("missing_successors", Arrays.asList(action.getDetails().getMissingSuccessors().split(",")));
+        if (Objects.nonNull(getDetails().getMissingSuccessors())) {
+            pillar.put("missing_successors", Arrays.asList(getDetails().getMissingSuccessors().split(",")));
         }
-        action.getDetails().getProductUpgrades().stream()
+        getDetails().getProductUpgrades().stream()
                 .map(SUSEProductUpgrade::getToProduct)
                 .filter(SUSEProduct::isBase)
                 .forEach(tgt -> {
@@ -129,5 +126,4 @@ public class DistUpgradeAction extends Action {
 
         return ret;
     }
-
 }

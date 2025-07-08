@@ -96,18 +96,14 @@ public class ApplyStatesAction extends Action {
 
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @param action          action which has all the revisions
      * @return minion summaries grouped by local call
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> applyStatesAction(
-            List<MinionSummary> minionSummaries, ApplyStatesAction action) {
-
-        ApplyStatesActionDetails actionDetails = action.getDetails();
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
 
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        ret.put(com.suse.salt.netapi.calls.modules.State.apply(actionDetails.getMods(), actionDetails.getPillarsMap(),
+        ret.put(com.suse.salt.netapi.calls.modules.State.apply(details.getMods(), details.getPillarsMap(),
                 Optional.of(true),
-                actionDetails.isTest() ? Optional.of(actionDetails.isTest()) : Optional.empty()), minionSummaries);
+                details.isTest() ? Optional.of(details.isTest()) : Optional.empty()), minionSummaries);
         return ret;
     }
 

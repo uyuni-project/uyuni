@@ -35,8 +35,7 @@ public class PackageRefreshListAction extends PackageAction {
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
      * @return minion summaries grouped by local call
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> packagesRefreshListAction(
-            List<MinionSummary> minionSummaries) {
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
         ret.put(State.apply(List.of(ApplyStatesEventMessage.PACKAGES_PROFILE_UPDATE),
                 Optional.empty()), minionSummaries);

@@ -36,14 +36,12 @@ public class PackageRemoveAction extends PackageAction {
 
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @param action action which has all the revisions
      * @return minion summaries grouped by local call
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> packagesRemoveAction(
-            List<MinionSummary> minionSummaries, PackageRemoveAction action) {
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        List<List<String>> pkgsAll = action
-                .getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
+        List<List<String>> pkgsAll =
+                getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
                         d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
                 .toList();
 

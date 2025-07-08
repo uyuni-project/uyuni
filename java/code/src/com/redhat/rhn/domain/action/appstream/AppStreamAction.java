@@ -78,22 +78,20 @@ public class AppStreamAction extends Action {
 
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @param action action which has all the revisions
      * @return minion summaries grouped by local call
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> appStreamAction(
-            List<MinionSummary> minionSummaries, AppStreamAction action) {
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
 
-        Map<Boolean, Set<AppStreamActionDetails>> details = action.getDetails().stream()
+        Map<Boolean, Set<AppStreamActionDetails>> det = getDetails().stream()
                 .collect(Collectors.partitioningBy(AppStreamActionDetails::isEnable, Collectors.toSet()));
 
-        var enableParams = details.get(true).stream()
+        var enableParams = det.get(true).stream()
                 .map(d -> d.getStream() == null ?
                         singletonList(d.getModuleName()) :
                         Arrays.asList(d.getModuleName(), d.getStream()))
                 .toList();
-        var disableParams = details.get(false).stream().map(AppStreamActionDetails::getModuleName).toList();
+        var disableParams = det.get(false).stream().map(AppStreamActionDetails::getModuleName).toList();
 
         Optional<Map<String, Object>> params = Optional.of(Map.of(
                 SaltParameters.PARAM_APPSTREAMS_ENABLE, enableParams,

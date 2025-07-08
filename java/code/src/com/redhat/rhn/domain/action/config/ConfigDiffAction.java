@@ -31,13 +31,11 @@ public class ConfigDiffAction extends ConfigAction {
      * Deploy files(files, directory, symlink) through state.apply
      *
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @param action action which has all the revisions
      * @return minion summaries grouped by local call
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> diffFiles(List<MinionSummary> minionSummaries,
-                                                                   ConfigAction action) {
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        List<Map<String, Object>> fileStates = action.getConfigRevisionActions().stream()
+        List<Map<String, Object>> fileStates = getConfigRevisionActions().stream()
                 .map(ConfigRevisionAction::getConfigRevision)
                 .filter(revision -> revision.isFile() ||
                         revision.isDirectory() ||

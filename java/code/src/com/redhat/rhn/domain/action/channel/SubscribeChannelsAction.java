@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.domain.action.channel;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -58,16 +59,13 @@ public class SubscribeChannelsAction extends Action {
 
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @param saltApi
-     * @param action action which has all the revisions
      * @return minion summaries grouped by local call
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> subscribeChannelsAction(
-            List<MinionSummary> minionSummaries, SaltApi saltApi, SubscribeChannelsAction action) {
-        SubscribeChannelsActionDetails actionDetails = action.getDetails();
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
 
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        SystemManager sysMgr = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
+        SystemManager sysMgr = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
+                GlobalInstanceHolder.SALT_API);
 
         List<MinionServer> minions = MinionServerFactory.lookupByMinionIds(
                 minionSummaries.stream().map(MinionSummary::getMinionId).collect(Collectors.toSet()));
@@ -76,10 +74,10 @@ public class SubscribeChannelsAction extends Action {
                 // change channels in DB and execult the ChannelsChangedEventMessageAction
                 // which regenerate pillar and refresh Tokens but does not execute a "state.apply channels"
                 sysMgr.updateServerChannels(
-                        actionDetails.getParentAction().getSchedulerUser(),
+                        details.getParentAction().getSchedulerUser(),
                         minion,
-                        Optional.ofNullable(actionDetails.getBaseChannel()),
-                        actionDetails.getChannels())
+                        Optional.ofNullable(details.getBaseChannel()),
+                        details.getChannels())
         );
         ret.put(State.apply(List.of(ApplyStatesEventMessage.CHANNELS), Optional.empty()),
                 minionSummaries);
