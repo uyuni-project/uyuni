@@ -15,12 +15,27 @@
 package com.redhat.rhn.domain.action.config;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.config.ConfigRevision;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.salt.custom.FilesDiffResult;
+import com.suse.utils.Json;
 
 import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
+
+import org.apache.commons.text.StringEscapeUtils;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -92,4 +107,93 @@ public class ConfigDeployAction extends ConfigAction {
             serverAction.setResultMsg(SaltUtils.getJsonResultWithPrettyPrint(jsonResult));
         }
     }
+
+
+    /**
+     *
+     *
+     * the following stuff goes in ConfigDiffAction
+     * parked here for a while
+     *
+     *
+     */
+
+
+    /**
+     * @param serverAction
+     * @param jsonResult
+     * @param action
+     */
+    public static void handleUpdateServerActionConfigDiffAction(ServerAction serverAction, JsonElement jsonResult,
+                                                                Action action) {
+        handleFilesDiff(jsonResult, action);
+        serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.diffed"));
+        /**
+         * For comparison we are simply using file.managed state in dry-run mode, Salt doesn't return
+         * 'result' attribute(actionFailed method check this attribute) when File(File, Dir, Symlink)
+         * already exist on the system and action is considered as Failed even though there was no error.
+         */
+        serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+    }
+
+    /**
+     * Set the results based on the result from SALT
+     * @param jsonResult response from SALT master
+     * @param action main action
+     */
+    private static void handleFilesDiff(JsonElement jsonResult, Action action) {
+        TypeToken<Map<String, FilesDiffResult>> typeToken = new TypeToken<>() {
+        };
+        Map<String, FilesDiffResult> results = Json.GSON.fromJson(jsonResult, typeToken.getType());
+        Map<String, FilesDiffResult> diffResults = new HashMap<>();
+        // We are only interested in results where files are different/new.
+        results.values().stream().filter(fdr -> !fdr.isResult())
+                .forEach(fdr -> diffResults.put(
+                        fdr.getName()
+                                .flatMap(x -> x.fold(arr -> Arrays.stream(arr).findFirst(), Optional::of))
+                                .orElse(null),
+                        fdr));
+
+        ConfigVerifyAction configAction = (ConfigVerifyAction) action;
+        configAction.getConfigRevisionActions().forEach(cra -> {
+            ConfigRevision cr = cra.getConfigRevision();
+            String fileName = cr.getConfigFile().getConfigFileName().getPath();
+            FilesDiffResult mapFileResult = diffResults.get(fileName);
+            boolean isNew = false;
+            if (mapFileResult != null) {
+                if (cr.isFile()) {
+                    FilesDiffResult.FileResult filePchanges =
+                            mapFileResult.getPChanges(FilesDiffResult.FileResult.class);
+                    isNew = filePchanges.getNewfile().isPresent();
+                }
+                else if (cr.isSymlink()) {
+                    FilesDiffResult.SymLinkResult symLinkPchanges =
+                            mapFileResult.getPChanges(FilesDiffResult.SymLinkResult.class);
+                    isNew = symLinkPchanges.getNewSymlink().isPresent();
+                }
+                else if (cr.isDirectory()) {
+                    TypeToken<Map<String, FilesDiffResult.DirectoryResult>> typeTokenD =
+                            new TypeToken<>() {
+                            };
+                    FilesDiffResult.DirectoryResult dirPchanges = mapFileResult.getPChanges(typeTokenD).get(fileName);
+                    isNew = dirPchanges.getDirectory().isPresent();
+                }
+                if (isNew) {
+                    cra.setFailureId(1L); // 1 is for missing file(Client does not have this file yet)
+                }
+                else {
+                    ConfigRevisionActionResult cresult = new ConfigRevisionActionResult();
+                    cresult.setConfigRevisionAction(cra);
+                    String result = StringEscapeUtils
+                            .unescapeJava(YamlHelper.INSTANCE.dump(mapFileResult.getPChanges()));
+                    cresult.setResult(result.getBytes());
+                    cresult.setCreated(new Date());
+                    cresult.setModified(new Date());
+                    cra.setConfigRevisionActionResult(cresult);
+                    SystemManager.updateSystemOverview(cra.getServer());
+                }
+            }
+        });
+    }
+
 }

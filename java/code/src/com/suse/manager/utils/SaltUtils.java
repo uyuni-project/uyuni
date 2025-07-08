@@ -39,7 +39,6 @@ import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.Tuple2;
@@ -72,10 +71,6 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.YamlHelper;
-import com.suse.manager.webui.utils.salt.custom.FilesDiffResult;
-import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.DirectoryResult;
-import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.FileResult;
-import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.SymLinkResult;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
@@ -102,7 +97,6 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -552,7 +546,7 @@ public class SaltUtils {
             PackageLockAction.handlePackageLockData(serverAction, jsonResult, action);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_APPSTREAM_CONFIGURE)) {
-            handleAppStreamsChange(serverAction, jsonResult);
+            AppStreamAction.handleAppStreamsChange(serverAction, jsonResult);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
             HardwareRefreshAction.handleUpdateServerAction(serverAction, jsonResult);
@@ -564,14 +558,7 @@ public class SaltUtils {
             ScapAction.handleScapXccdfEval(serverAction, jsonResult, action, saltApi);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
-            handleFilesDiff(jsonResult, action);
-            serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.diffed"));
-            /**
-             * For comparison we are simply using file.managed state in dry-run mode, Salt doesn't return
-             * 'result' attribute(actionFailed method check this attribute) when File(File, Dir, Symlink)
-             * already exist on the system and action is considered as Failed even though there was no error.
-             */
-            serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+            ConfigDeployAction.handleUpdateServerActionConfigDiffAction(serverAction, jsonResult, action);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY)) {
             ConfigDeployAction.handleUpdateServerAction(serverAction, jsonResult);
@@ -612,68 +599,6 @@ public class SaltUtils {
         return YamlHelper.INSTANCE.dump(Json.GSON.fromJson(jsonResult, Object.class));
     }
 
-
-    /**
-     * Set the results based on the result from SALT
-     * @param jsonResult response from SALT master
-     * @param action main action
-     */
-    private void handleFilesDiff(JsonElement jsonResult, Action action) {
-        TypeToken<Map<String, FilesDiffResult>> typeToken = new TypeToken<>() {
-        };
-        Map<String, FilesDiffResult> results = Json.GSON.fromJson(jsonResult, typeToken.getType());
-        Map<String, FilesDiffResult> diffResults = new HashMap<>();
-        // We are only interested in results where files are different/new.
-        results.values().stream().filter(fdr -> !fdr.isResult())
-                .forEach(fdr -> diffResults.put(
-                        fdr.getName()
-                                .flatMap(x -> x.fold(arr -> Arrays.stream(arr).findFirst(), Optional::of))
-                                .orElse(null),
-                        fdr));
-
-        ConfigAction configAction = (ConfigAction) action;
-        if (null == configAction.getConfigRevisionActions()) {
-            return;
-        }
-
-        configAction.getConfigRevisionActions().forEach(cra -> {
-            ConfigRevision cr = cra.getConfigRevision();
-            String fileName = cr.getConfigFile().getConfigFileName().getPath();
-            FilesDiffResult mapFileResult = diffResults.get(fileName);
-            boolean isNew = false;
-            if (mapFileResult != null) {
-                if (cr.isFile()) {
-                    FileResult filePchanges = mapFileResult.getPChanges(FileResult.class);
-                    isNew = filePchanges.getNewfile().isPresent();
-                }
-                else if (cr.isSymlink()) {
-                    SymLinkResult symLinkPchanges = mapFileResult.getPChanges(SymLinkResult.class);
-                    isNew = symLinkPchanges.getNewSymlink().isPresent();
-                }
-                else if (cr.isDirectory()) {
-                    TypeToken<Map<String, DirectoryResult>> typeTokenD =
-                            new TypeToken<>() {
-                            };
-                    DirectoryResult dirPchanges = mapFileResult.getPChanges(typeTokenD).get(fileName);
-                    isNew = dirPchanges.getDirectory().isPresent();
-                }
-                if (isNew) {
-                    cra.setFailureId(1L); // 1 is for missing file(Client does not have this file yet)
-                }
-                else {
-                    ConfigRevisionActionResult cresult = new ConfigRevisionActionResult();
-                    cresult.setConfigRevisionAction(cra);
-                    String result = StringEscapeUtils
-                            .unescapeJava(YamlHelper.INSTANCE.dump(mapFileResult.getPChanges()));
-                    cresult.setResult(result.getBytes());
-                    cresult.setCreated(new Date());
-                    cresult.setModified(new Date());
-                    cra.setConfigRevisionActionResult(cresult);
-                    SystemManager.updateSystemOverview(cra.getServer());
-                }
-            }
-        });
-    }
 
 
     /**
@@ -718,47 +643,6 @@ public class SaltUtils {
             LOG.error(jsonResult.toString());
         }
         return results;
-    }
-
-    /**
-     * Returns the root cause of a failed state.apply result by filtering out the subsequent failures.
-     * @param stateApplyResultMap the map of the state apply results
-     * @return the first failed state.apply result
-     * @param <R> the type of the state.apply result
-     */
-    private static <R> Optional<StateApplyResult<R>> getOriginalStateApplyError(
-            Map<String, StateApplyResult<R>> stateApplyResultMap) {
-        return stateApplyResultMap.values().stream()
-                .filter(r -> !r.getComment().startsWith("One or more requisite failed"))
-                .findFirst();
-    }
-
-    private void handleAppStreamsChange(ServerAction serverAction, JsonElement jsonResult) {
-        Optional<MinionServer> server = serverAction.getServer().asMinionServer();
-        if (server.isEmpty()) {
-            return;
-        }
-
-        if (ActionFactory.STATUS_FAILED.equals(serverAction.getStatus())) {
-            // Filter out the subsequent errors to find the root cause
-            var originalErrorMsg = jsonEventToStateApplyResults(jsonResult)
-                    .map(SaltUtils::getOriginalStateApplyError)
-                        .orElseThrow(() -> new RuntimeException("Failed to parse the state.apply error result"))
-                    .map(StateApplyResult::getComment)
-                    .map(msg -> msg.isEmpty() ? null : msg)
-                    .orElse("Error while configuring AppStreams on the system.\nGot no result from the system.");
-
-            serverAction.setResultMsg(originalErrorMsg);
-            return;
-        }
-
-        var currentlyEnabled = Json.GSON.fromJson(jsonResult, AppStreamsChangeSlsResult.class).getCurrentlyEnabled();
-        Set<ServerAppStream> enabledModules = currentlyEnabled.stream()
-            .map(nsvca -> new ServerAppStream(server.get(), nsvca))
-            .collect(Collectors.toSet());
-        server.get().getAppStreams().clear();
-        server.get().getAppStreams().addAll(enabledModules);
-        serverAction.setResultMsg("Successfully changed system AppStreams.");
     }
 
     /**
