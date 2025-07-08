@@ -24,6 +24,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.CoCoAttestationAction;
 import com.redhat.rhn.domain.action.HardwareRefreshAction;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
@@ -65,9 +66,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.attestation.AttestationManager;
-import com.suse.manager.model.attestation.CoCoAttestationStatus;
-import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
@@ -78,7 +76,6 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.YamlHelper;
-import com.suse.manager.webui.utils.salt.custom.CoCoAttestationRequestData;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.DirectoryResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.FileResult;
@@ -587,7 +584,7 @@ public class SaltUtils {
             SubscribeChannelsAction.handleSubscribeChannels(serverAction, jsonResult);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_COCO_ATTESTATION)) {
-            handleCocoAttestationResult(action, serverAction, jsonResult);
+            CoCoAttestationAction.handleCocoAttestationResult(action, serverAction, jsonResult);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_INVENTORY)) {
                 handleInventoryRefresh(action, serverAction, jsonResult);
@@ -1111,56 +1108,6 @@ public class SaltUtils {
         return packageToKey(entry.getKey(), entry.getValue());
     }
 
-    private void handleCocoAttestationResult(Action action, ServerAction serverAction, JsonElement jsonResult) {
-        AttestationManager mgr = new AttestationManager();
-
-        Optional<ServerCoCoAttestationReport> optReport =
-                mgr.lookupReportByServerAndAction(serverAction.getServer(), action);
-        if (optReport.isEmpty()) {
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-            serverAction.setResultMsg("Failed to find a report entry");
-            return;
-        }
-        ServerCoCoAttestationReport report = optReport.get();
-
-        if (jsonResult == null) {
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-            if (StringUtils.isBlank(serverAction.getResultMsg())) {
-                serverAction.setResultMsg("Error while request attestation data from target system:\n" +
-                       "Got no result from system");
-            }
-            return;
-        }
-
-        try {
-            CoCoAttestationRequestData requestData = Json.GSON.fromJson(jsonResult, CoCoAttestationRequestData.class);
-            report.setOutData(requestData.asMap());
-            mgr.initializeResults(report);
-        }
-        catch (JsonSyntaxException e) {
-            String msg = "Failed to parse the attestation result:\n";
-            msg += Optional.of(jsonResult)
-                    .map(JsonElement::toString)
-                    .orElse("Got no result");
-            LOG.error(msg);
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-            serverAction.setResultMsg(msg);
-            return;
-        }
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-            String msg = "Error while request attestation data from target system:\n";
-            msg += getJsonResultWithPrettyPrint(jsonResult);
-            serverAction.setResultMsg(msg);
-            if (report.getResults().isEmpty()) {
-                // results are not initialized yet. So we need to set the report status
-                // directly to failed.
-                report.setStatus(CoCoAttestationStatus.FAILED);
-            }
-        }
-        else {
-            serverAction.setResultMsg("Successfully collected attestation data");
-        }
-    }
 
 
     private void handleInventoryRefresh(Action action, ServerAction serverAction, JsonElement jsonResult) {
