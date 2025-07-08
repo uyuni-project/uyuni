@@ -57,7 +57,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -85,7 +84,6 @@ import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.SymLinkResult;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
-import com.suse.salt.netapi.calls.modules.Openscap;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Pkg.Info;
 import com.suse.salt.netapi.calls.modules.State;
@@ -113,9 +111,6 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.file.Path;
@@ -162,8 +157,6 @@ public class SaltUtils {
 
     private final SystemQuery systemQuery;
     private final SaltApi saltApi;
-
-    private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
 
     // SUSE OS family as defined in Salt grains
     private static final String OS_FAMILY_SUSE = "Suse";
@@ -573,7 +566,7 @@ public class SaltUtils {
             DistUpgradeAction.handleUpdateServerAction(serverAction, action, jsonResult, saltApi);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCAP_XCCDF_EVAL)) {
-            handleScapXccdfEval(serverAction, jsonResult, action);
+            ScapAction.handleScapXccdfEval(serverAction, jsonResult, action, saltApi);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
             handleFilesDiff(jsonResult, action);
@@ -699,75 +692,6 @@ public class SaltUtils {
                 }
             }
         });
-    }
-
-    private void handleScapXccdfEval(ServerAction serverAction,
-                                     JsonElement jsonResult, Action action) {
-        ScapAction scapAction = (ScapAction)action;
-        Openscap.OpenscapResult openscapResult;
-        try {
-            TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>> typeToken =
-                    new TypeToken<>() {
-                    };
-            Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>> stateResult = Json.GSON.fromJson(
-                    jsonResult, typeToken.getType());
-            openscapResult = stateResult.entrySet().stream().findFirst().map(e -> e.getValue().getChanges().getRet())
-                    .orElseThrow(() -> new RuntimeException("missing scap result"));
-        }
-        catch (JsonSyntaxException e) {
-            serverAction.setResultMsg("Error parsing minion response: " + jsonResult);
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-            return;
-        }
-        if (openscapResult.isSuccess()) {
-            serverAction.getServer().asMinionServer().ifPresent(
-                    minion -> {
-                        try {
-                            Map<Boolean, String> moveRes = saltApi.storeMinionScapFiles(
-                                    minion, openscapResult.getUploadDir(), action.getId());
-                            moveRes.entrySet().stream().findFirst().ifPresent(moved -> {
-                                if (moved.getKey()) {
-                                    Path resultsFile = Paths.get(moved.getValue(),
-                                            "results.xml");
-                                    try (InputStream resultsFileIn =
-                                                 new FileInputStream(
-                                                         resultsFile.toFile())) {
-                                        ScapManager.xccdfEval(
-                                                minion, scapAction,
-                                                openscapResult.getReturnCode(),
-                                                openscapResult.getError(),
-                                                resultsFileIn,
-                                                new File(xccdfResumeXsl));
-                                        serverAction.setResultMsg("Success");
-                                    }
-                                    catch (Exception e) {
-                                        LOG.error("Error processing SCAP results file {}", resultsFile, e);
-                                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                                        serverAction.setResultMsg(
-                                                "Error processing SCAP results file " +
-                                                        resultsFile + ": " +
-                                                        e.getMessage());
-                                    }
-                                }
-                                else {
-                                    serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                                    serverAction.setResultMsg(
-                                            "Could not store SCAP files on server: " +
-                                                    moved.getValue());
-                                }
-                            });
-                        }
-                        catch (Exception e) {
-                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                            serverAction.setResultMsg(
-                                    "Error saving SCAP result: " + e.getMessage());
-                        }
-                    });
-        }
-        else {
-            serverAction.setResultMsg(openscapResult.getError());
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-        }
     }
 
 
@@ -1545,14 +1469,6 @@ public class SaltUtils {
         }
         return prerequisiteIsCompleted(action.getPrerequisite(), prereqType, systemId);
     }
-
-    /**
-     * @param xccdfResumeXslIn to set
-     */
-    public void setXccdfResumeXsl(String xccdfResumeXslIn) {
-        this.xccdfResumeXsl = xccdfResumeXslIn;
-    }
-
 
     /**
      * Returns the same provided UUID string but representing the first
