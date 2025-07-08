@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
+import com.redhat.rhn.domain.action.rhnpackage.PackageLockAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
@@ -61,7 +62,6 @@ import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -574,7 +574,7 @@ public class SaltUtils {
                     PkgProfileUpdateSlsResult.class)));
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
-            handlePackageLockData(serverAction, jsonResult, action);
+            PackageLockAction.handlePackageLockData(serverAction, jsonResult, action);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_APPSTREAM_CONFIGURE)) {
             handleAppStreamsChange(serverAction, jsonResult);
@@ -663,35 +663,6 @@ public class SaltUtils {
     }
 
 
-    private void handlePackageLockData(ServerAction serverAction, JsonElement jsonResult, Action action) {
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-            String msg = "Error while changing the lock status";
-            jsonEventToStateApplyResults(jsonResult).ifPresentOrElse(
-                    r -> {
-                        if (r.containsKey("pkg_|-pkg_locked_|-pkg_locked_|-held")) {
-                            serverAction.setResultMsg(msg + ":\n" +
-                                    r.get("pkg_|-pkg_locked_|-pkg_locked_|-held").getComment());
-                        }
-                        else {
-                            serverAction.setResultMsg(msg);
-                        }
-                    },
-                    () -> serverAction.setResultMsg(msg));
-            serverAction.getServer().asMinionServer()
-                    .ifPresent(minionServer -> PackageManager.syncLockedPackages(minionServer.getId(), action.getId()));
-        }
-        else {
-            String msg = "Successfully changed lock status";
-            jsonEventToStateApplyResults(jsonResult).ifPresentOrElse(
-                    r -> serverAction.setResultMsg(msg + ":\n" +
-                            r.get("pkg_|-pkg_locked_|-pkg_locked_|-held").getComment()),
-                    () -> serverAction.setResultMsg(msg));
-            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                PackageManager.updateLockedPackages(minionServer.getId(), action.getId());
-                PackageManager.updateUnlockedPackages(minionServer.getId(), action.getId());
-            });
-        }
-    }
 
     /**
      * Return the path where scripts from Remote Commands Actions are stored.
@@ -960,8 +931,9 @@ public class SaltUtils {
      * Converts the json representation of an event to a map
      *
      * @param jsonResult json representation of an event
+     * @return state apply results
      */
-    private static Optional<Map<String, StateApplyResult<Map<String, Object>>>>
+    public static Optional<Map<String, StateApplyResult<Map<String, Object>>>>
     jsonEventToStateApplyResults(JsonElement jsonResult) {
         TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
                 new TypeToken<>() {
