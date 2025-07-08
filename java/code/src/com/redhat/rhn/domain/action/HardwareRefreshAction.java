@@ -55,7 +55,7 @@ import java.util.stream.Stream;
  * HardwareRefreshAction
  */
 public class HardwareRefreshAction extends Action {
-    private static final Logger LOG = LogManager.getLogger(ImageBuildAction.class);
+    private static final Logger LOG = LogManager.getLogger(HardwareRefreshAction.class);
 
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action

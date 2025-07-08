@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFormatter;
 import com.redhat.rhn.domain.action.ActionStatus;
-import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
@@ -74,7 +73,7 @@ import java.util.Optional;
  * ImageInspectAction
  */
 public class ImageInspectAction extends Action {
-    private static final Logger LOG = LogManager.getLogger(ImageBuildAction.class);
+    private static final Logger LOG = LogManager.getLogger(ImageInspectAction.class);
 
     private ImageInspectActionDetails details;
 

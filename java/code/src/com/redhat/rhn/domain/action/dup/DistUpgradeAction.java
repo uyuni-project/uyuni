@@ -76,7 +76,7 @@ import java.util.stream.Collectors;
  * DistUpgradeAction - Class representation of distribution upgrade action.
  */
 public class DistUpgradeAction extends Action {
-    private static final Logger LOG = LogManager.getLogger(ImageBuildAction.class);
+    private static final Logger LOG = LogManager.getLogger(DistUpgradeAction.class);
 
     private static final long serialVersionUID = 1585401756449185047L;
     private DistUpgradeActionDetails details;
