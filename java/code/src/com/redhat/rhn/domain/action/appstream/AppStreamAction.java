@@ -17,6 +17,17 @@ package com.redhat.rhn.domain.action.appstream;
 import static java.util.Collections.singletonList;
 
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerAppStream;
+
+import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.utils.salt.custom.AppStreamsChangeSlsResult;
+import com.suse.salt.netapi.results.StateApplyResult;
+import com.suse.utils.Json;
+
+import com.google.gson.JsonElement;
 import com.redhat.rhn.domain.server.MinionSummary;
 
 import com.suse.manager.webui.services.SaltParameters;
@@ -29,6 +40,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -100,6 +113,53 @@ public class AppStreamAction extends Action {
         ));
         ret.put(State.apply(List.of(SaltParameters.APPSTREAMS_CONFIGURE), params), minionSummaries);
         return ret;
+    }
+
+
+
+    /**
+     * @param serverAction
+     * @param jsonResult
+     */
+    public static void handleAppStreamsChange(ServerAction serverAction, JsonElement jsonResult) {
+        Optional<MinionServer> server = serverAction.getServer().asMinionServer();
+        if (server.isEmpty()) {
+            return;
+        }
+
+        if (ActionFactory.STATUS_FAILED.equals(serverAction.getStatus())) {
+            // Filter out the subsequent errors to find the root cause
+            var originalErrorMsg = SaltUtils.jsonEventToStateApplyResults(jsonResult)
+                    .map(AppStreamAction::getOriginalStateApplyError)
+                    .orElseThrow(() -> new RuntimeException("Failed to parse the state.apply error result"))
+                    .map(StateApplyResult::getComment)
+                    .map(msg -> msg.isEmpty() ? null : msg)
+                    .orElse("Error while configuring AppStreams on the system.\nGot no result from the system.");
+
+            serverAction.setResultMsg(originalErrorMsg);
+            return;
+        }
+
+        var currentlyEnabled = Json.GSON.fromJson(jsonResult, AppStreamsChangeSlsResult.class).getCurrentlyEnabled();
+        Set<ServerAppStream> enabledModules = currentlyEnabled.stream()
+                .map(nsvca -> new ServerAppStream(server.get(), nsvca))
+                .collect(Collectors.toSet());
+        server.get().getAppStreams().clear();
+        server.get().getAppStreams().addAll(enabledModules);
+        serverAction.setResultMsg("Successfully changed system AppStreams.");
+    }
+
+    /**
+     * Returns the root cause of a failed state.apply result by filtering out the subsequent failures.
+     * @param stateApplyResultMap the map of the state apply results
+     * @return the first failed state.apply result
+     * @param <R> the type of the state.apply result
+     */
+    private static <R> Optional<StateApplyResult<R>> getOriginalStateApplyError(
+            Map<String, StateApplyResult<R>> stateApplyResultMap) {
+        return stateApplyResultMap.values().stream()
+                .filter(r -> !r.getComment().startsWith("One or more requisite failed"))
+                .findFirst();
     }
 
 }
