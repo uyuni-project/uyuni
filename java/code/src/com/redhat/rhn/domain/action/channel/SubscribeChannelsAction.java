@@ -17,6 +17,13 @@ package com.redhat.rhn.domain.action.channel;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerAction;
+
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.utils.SaltUtils;
+
+import com.google.gson.JsonElement;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -91,5 +98,20 @@ public class SubscribeChannelsAction extends Action {
                 minionSummaries);
 
         return ret;
+    }
+
+
+    /**
+     * @param serverAction
+     * @param jsonResult
+     */
+    public static void handleSubscribeChannels(ServerAction serverAction, JsonElement jsonResult) {
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+            serverAction.setResultMsg("Successfully applied state: " + ApplyStatesEventMessage.CHANNELS);
+        }
+        else {
+            serverAction.setResultMsg("Failed to apply state: " + ApplyStatesEventMessage.CHANNELS + ".\n" +
+                    SaltUtils.getJsonResultWithPrettyPrint(jsonResult));
+        }
     }
 }

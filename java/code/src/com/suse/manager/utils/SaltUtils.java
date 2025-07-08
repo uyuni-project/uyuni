@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.action.HardwareRefreshAction;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.config.ConfigDeployAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
@@ -583,7 +584,7 @@ public class SaltUtils {
             ConfigDeployAction.handleUpdateServerAction(serverAction, jsonResult);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS)) {
-            handleSubscribeChannels(serverAction, jsonResult, action);
+            SubscribeChannelsAction.handleSubscribeChannels(serverAction, jsonResult);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_COCO_ATTESTATION)) {
             handleCocoAttestationResult(action, serverAction, jsonResult);
@@ -618,15 +619,6 @@ public class SaltUtils {
         return YamlHelper.INSTANCE.dump(Json.GSON.fromJson(jsonResult, Object.class));
     }
 
-    private void handleSubscribeChannels(ServerAction serverAction, JsonElement jsonResult, Action action) {
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-            serverAction.setResultMsg("Successfully applied state: " + ApplyStatesEventMessage.CHANNELS);
-        }
-        else {
-            serverAction.setResultMsg("Failed to apply state: " + ApplyStatesEventMessage.CHANNELS + ".\n" +
-                    getJsonResultWithPrettyPrint(jsonResult));
-        }
-    }
 
     /**
      * Set the results based on the result from SALT
