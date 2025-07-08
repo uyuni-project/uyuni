@@ -33,6 +33,7 @@ public class ConfigDiffAction extends ConfigAction {
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
      * @return minion summaries grouped by local call
      */
+    @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
         List<Map<String, Object>> fileStates = getConfigRevisionActions().stream()

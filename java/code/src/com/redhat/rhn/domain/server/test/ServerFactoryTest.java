@@ -1149,7 +1149,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ActionPackageDetails apd = new ActionPackageDetails(ea, false);
         ea.setDetails(apd);
 
-        Map<LocalCall<?>, List<MinionSummary>> localCallListMap = ErrataAction.errataAction(minionSummaries, ea);
+        Map<LocalCall<?>, List<MinionSummary>> localCallListMap = ea.getSaltCalls(minionSummaries);
 
         assertEquals(1, localCallListMap.size());
         localCallListMap.forEach((call, value) -> {

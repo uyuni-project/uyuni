@@ -69,6 +69,7 @@ public class CoCoAttestationAction extends Action {
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
      * @return minion summaries grouped by local call
      */
+    @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
         return Map.of(
                 State.apply(Collections.singletonList(SaltParameters.COCOATTEST_REQUESTDATA), Optional.empty()),

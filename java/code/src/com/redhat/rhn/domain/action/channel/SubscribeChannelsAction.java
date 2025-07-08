@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 
@@ -61,6 +60,7 @@ public class SubscribeChannelsAction extends Action {
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
      * @return minion summaries grouped by local call
      */
+    @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
 
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();

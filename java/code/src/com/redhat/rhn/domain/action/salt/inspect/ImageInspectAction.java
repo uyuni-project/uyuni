@@ -68,12 +68,13 @@ public class ImageInspectAction extends Action {
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
      * @return minion summaries grouped by local call
      */
+    @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
         if (details == null) {
             return Collections.emptyMap();
         }
         return ImageStoreFactory.lookupById(details.getImageStoreId())
-                .map(store -> imageInspectAction(minionSummaries, details, store))
+                .map(store -> imageInspectAction(minionSummaries, store))
                 .orElseGet(Collections::emptyMap);
     }
 

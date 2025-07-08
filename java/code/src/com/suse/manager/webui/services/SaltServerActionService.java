@@ -10,7 +10,6 @@
  */
 package com.suse.manager.webui.services;
 
-import static com.redhat.rhn.common.hibernate.HibernateFactory.unproxy;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
@@ -29,29 +28,9 @@ import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
-import com.redhat.rhn.domain.action.ActionType;
-import com.redhat.rhn.domain.action.CoCoAttestationAction;
-import com.redhat.rhn.domain.action.HardwareRefreshAction;
-import com.redhat.rhn.domain.action.RebootAction;
-import com.redhat.rhn.domain.action.ansible.InventoryAction;
-import com.redhat.rhn.domain.action.ansible.PlaybookAction;
-import com.redhat.rhn.domain.action.appstream.AppStreamAction;
-import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
-import com.redhat.rhn.domain.action.config.ConfigDeployAction;
-import com.redhat.rhn.domain.action.config.ConfigDiffAction;
-import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
-import com.redhat.rhn.domain.action.kickstart.KickstartInitiateAction;
-import com.redhat.rhn.domain.action.rhnpackage.PackageLockAction;
-import com.redhat.rhn.domain.action.rhnpackage.PackageRefreshListAction;
-import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
-import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
-import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
-import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
-import com.redhat.rhn.domain.action.scap.ScapAction;
-import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.server.ErrataInfo;
@@ -181,77 +160,7 @@ public class SaltServerActionService {
             return Collections.emptyMap();
         }
 
-        ActionType actionType = actionIn.getActionType();
-        actionIn = unproxy(actionIn);
-        if (ActionFactory.TYPE_ERRATA.equals(actionType)) {
-            return ((ErrataAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_PACKAGES_LOCK.equals(actionType)) {
-            return ((PackageLockAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(actionType)) {
-            return ((PackageUpdateAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_PACKAGES_REMOVE.equals(actionType)) {
-            return ((PackageRemoveAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_PACKAGES_REFRESH_LIST.equals(actionType)) {
-            return ((PackageRefreshListAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_HARDWARE_REFRESH_LIST.equals(actionType)) {
-            return ((HardwareRefreshAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_REBOOT.equals(actionType)) {
-            return ((RebootAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.equals(actionType)) {
-            return ((ConfigDeployAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_CONFIGFILES_DIFF.equals(actionType)) {
-            return ((ConfigDiffAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_SCRIPT_RUN.equals(actionType)) {
-            return ((ScriptRunAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_APPLY_STATES.equals(actionType)) {
-            return ((ApplyStatesAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_IMAGE_INSPECT.equals(actionType)) {
-            return ((ImageInspectAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_IMAGE_BUILD.equals(actionType)) {
-            return ((ImageBuildAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_DIST_UPGRADE.equals(actionType)) {
-            return ((DistUpgradeAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_SCAP_XCCDF_EVAL.equals(actionType)) {
-            return ((ScapAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_SUBSCRIBE_CHANNELS.equals(actionType)) {
-            return ((SubscribeChannelsAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_KICKSTART_INITIATE.equals(actionType)) {
-            return ((KickstartInitiateAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_PLAYBOOK.equals(actionType)) {
-            return ((PlaybookAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_INVENTORY.equals(actionType)) {
-            return ((InventoryAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_COCO_ATTESTATION.equals(actionType)) {
-            return ((CoCoAttestationAction) actionIn).getSaltCalls(minions);
-        }
-        else if (ActionFactory.TYPE_APPSTREAM_CONFIGURE.equals(actionType)) {
-            return ((AppStreamAction) actionIn).getSaltCalls(minions);
-        }
-        else {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Action type {} is not supported with Salt", actionType != null ? actionType.getName() : "");
-            }
-            return Collections.emptyMap();
-        }
+        return actionIn.getSaltCalls(minions);
     }
 
     /**

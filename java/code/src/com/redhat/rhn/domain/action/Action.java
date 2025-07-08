@@ -18,25 +18,33 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.webui.websocket.WebSocketActionIdProvider;
+import com.suse.salt.netapi.calls.LocalCall;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * Action - Class representation of the table rhnAction.
  */
 public class Action extends BaseDomainHelper implements Serializable, WebSocketActionIdProvider {
+    private static final Logger LOG = LogManager.getLogger(Action.class);
 
     public static final Integer NAME_LENGTH_LIMIT = 128;
 
@@ -398,4 +406,17 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     public String getWebSocketActionId() {
         return null;
     }
+
+
+    /**
+     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
+     * @return minion summaries grouped by local call
+     */
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Action type {} is not supported with Salt", actionType != null ? actionType.getName() : "");
+        }
+        return Collections.emptyMap();
+    }
 }
+
