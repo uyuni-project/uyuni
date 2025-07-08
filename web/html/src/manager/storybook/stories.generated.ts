@@ -115,6 +115,18 @@ export const components_input_check_form_example_tsx = {
 };
 
 // @ts-ignore
+import components_input_check_indeterminate_example_tsx_component from "components/input/check/indeterminate.example.tsx";
+import components_input_check_indeterminate_example_tsx_raw from "components/input/check/indeterminate.example.tsx?raw";
+
+export const components_input_check_indeterminate_example_tsx = {
+  path: "components/input/check/indeterminate.example.tsx",
+  title: "indeterminate.example.tsx",
+  groupName: "check",
+  component: components_input_check_indeterminate_example_tsx_component,
+  raw: components_input_check_indeterminate_example_tsx_raw,
+};
+
+// @ts-ignore
 import components_input_check_standalone_example_tsx_component from "components/input/check/standalone.example.tsx";
 import components_input_check_standalone_example_tsx_raw from "components/input/check/standalone.example.tsx?raw";
 
