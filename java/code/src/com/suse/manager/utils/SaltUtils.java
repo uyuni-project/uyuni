@@ -24,7 +24,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
@@ -35,16 +34,11 @@ import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
-import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
-import com.redhat.rhn.domain.image.ImageInfo;
-import com.redhat.rhn.domain.image.ImageInfoFactory;
-import com.redhat.rhn.domain.image.ImagePackage;
-import com.redhat.rhn.domain.image.ImageRepoDigest;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.Tuple2;
@@ -82,11 +76,9 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.saltboot.SaltbootUtils;
 import com.suse.manager.webui.controllers.bootstrap.BootstrapError;
 import com.suse.manager.webui.controllers.bootstrap.SaltBootstrapError;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
-import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
@@ -101,10 +93,7 @@ import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.DirectoryResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.FileResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.SymLinkResult;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
-import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
-import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
-import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
@@ -571,7 +560,7 @@ public class SaltUtils {
             ImageBuildAction.handleImageBuildData(serverAction, jsonResult, saltApi, systemQuery);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_IMAGE_INSPECT)) {
-            handleImageInspectData(serverAction, jsonResult);
+            ImageInspectAction.handleImageInspectData(serverAction, jsonResult);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST)) {
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
@@ -947,29 +936,6 @@ public class SaltUtils {
     }
 
 
-    private void handleImageInspectData(ServerAction serverAction,
-            JsonElement jsonResult) {
-        Action action = serverAction.getParentAction();
-        ImageInspectAction ia = (ImageInspectAction) action;
-        ImageInspectActionDetails details = ia.getDetails();
-        if (details == null) {
-            LOG.warn("Details not found while performing: {} in handleImageInspectData", action.getName());
-            return;
-        }
-        Long imageStoreId = details.getImageStoreId();
-        if (imageStoreId == null) { // It happens when the store is deleted during an inspect action
-            LOG.warn("Image Store ID not found while performing: {} in handleImageInspectData", action.getName());
-            return;
-        }
-        ImageInfoFactory
-                .lookupByInspectAction(ia)
-                .ifPresent(imageInfo -> serverAction.getServer().asMinionServer()
-                        .ifPresent(minionServer ->
-                                handleImagePackageProfileUpdate(imageInfo, Json.GSON.fromJson(jsonResult,
-                                                ImagesProfileUpdateSlsResult.class),
-                                        serverAction)));
-    }
-
     /**
      * Check if an action is failed based on the return event data. The status depends on
      * the "success" and "retcode" attributes as well as on the single states results in
@@ -1024,141 +990,6 @@ public class SaltUtils {
         return stateApplyResultMap.values().stream()
                 .filter(r -> !r.getComment().startsWith("One or more requisite failed"))
                 .findFirst();
-    }
-
-    private void handleImagePackageProfileUpdate(ImageInfo imageInfo,
-            ImagesProfileUpdateSlsResult result, ServerAction serverAction) {
-        ActionStatus as = ActionFactory.STATUS_COMPLETED;
-        serverAction.setResultMsg("Success");
-        if (Optional.ofNullable(imageInfo.getProfile()).isEmpty() ||
-                imageInfo.getProfile().asDockerfileProfile().isPresent()) {
-            if (result.getDockerInspect().isResult()) {
-                ImageInspectSlsResult iret = result.getDockerInspect().getChanges().getRet();
-                imageInfo.setChecksum(ImageInfoFactory.convertChecksum(iret.getId()));
-                imageInfo.getRepoDigests().addAll(
-                        iret.getRepoDigests().stream().map(digest -> {
-                            ImageRepoDigest repoDigest = new ImageRepoDigest();
-                            repoDigest.setRepoDigest(digest);
-                            repoDigest.setImageInfo(imageInfo);
-                            return repoDigest;
-                        }).collect(Collectors.toSet()));
-            }
-            else {
-                serverAction.setResultMsg(result.getDockerInspect().getComment());
-                as = ActionFactory.STATUS_FAILED;
-            }
-
-            if (result.getDockerSlsBuild().isResult()) {
-                PkgProfileUpdateSlsResult ret =
-                        result.getDockerSlsBuild().getChanges().getRet();
-
-                Optional.of(ret.getInfoInstalled().getChanges().getRet())
-                        .map(saltPkgs -> saltPkgs.entrySet().stream()
-                                .flatMap(entry -> Opt.stream(entry.getValue().left())
-                                        .map(info -> createImagePackageFromSalt(entry.getKey(), info, imageInfo)))
-                                .collect(Collectors.toSet()));
-
-                Optional.of(ret.getInfoInstalled().getChanges().getRet())
-                        .map(saltPkgs -> saltPkgs.entrySet().stream()
-                                .flatMap(entry -> Opt.stream(entry.getValue().right())
-                                        .flatMap(Collection::stream)
-                                        .map(info -> createImagePackageFromSalt(entry.getKey(), info, imageInfo)))
-                                .collect(Collectors.toSet()));
-
-                Optional.ofNullable(ret.getListProducts())
-                        .map(products -> products.getChanges().getRet())
-                        .map(SaltUtils::getInstalledProducts)
-                        .ifPresent(imageInfo::setInstalledProducts);
-
-                Optional<String> rhelReleaseFile =
-                        Optional.ofNullable(ret.getRhelReleaseFile())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdResult::getStdout);
-                Optional<String> centosReleaseFile =
-                        Optional.ofNullable(ret.getCentosReleaseFile())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdResult::getStdout);
-                Optional<String> alibabaReleaseFile =
-                        Optional.ofNullable(ret.getAlibabaReleaseFile())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdResult::getStdout);
-                Optional<String> oracleReleaseFile =
-                        Optional.ofNullable(ret.getOracleReleaseFile())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdResult::getStdout);
-                Optional<String> almaReleaseFile =
-                        Optional.ofNullable(ret.getAlmaReleaseFile())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdResult::getStdout);
-                Optional<String> amazonReleaseFile =
-                        Optional.ofNullable(ret.getAmazonReleaseFile())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdResult::getStdout);
-                Optional<String> rockyReleaseFile =
-                        Optional.ofNullable(ret.getRockyReleaseFile())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdResult::getStdout);
-                Optional<String> resReleasePkg =
-                        Optional.ofNullable(ret.getWhatProvidesResReleasePkg())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdResult::getStdout);
-                Optional<String> sllReleasePkg =
-                        Optional.ofNullable(ret.getWhatProvidesSLLReleasePkg())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdResult::getStdout);
-                if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
-                        oracleReleaseFile.isPresent() || alibabaReleaseFile.isPresent() ||
-                        almaReleaseFile.isPresent() || amazonReleaseFile.isPresent() ||
-                        rockyReleaseFile.isPresent() || resReleasePkg.isPresent()) {
-                    Set<InstalledProduct> products = getInstalledProductsForRhel(
-                            imageInfo, resReleasePkg, sllReleasePkg,
-                            rhelReleaseFile, centosReleaseFile, oracleReleaseFile, alibabaReleaseFile,
-                            almaReleaseFile, amazonReleaseFile, rockyReleaseFile);
-                    imageInfo.setInstalledProducts(products);
-                }
-            }
-            else {
-                // do not fail the action when no packages are returned
-                serverAction.setResultMsg(result.getDockerSlsBuild().getComment());
-            }
-        }
-        else {
-            if (result.getKiwiInspect().isResult()) {
-                Long instantNow = new Date().getTime() / 1000L;
-                OSImageInspectSlsResult ret = result.getKiwiInspect().getChanges().getRet();
-                List<OSImageInspectSlsResult.Package> packages = ret.getPackages();
-                packages.forEach(pkg -> createImagePackageFromSalt(pkg.getName(), Optional.of(pkg.getEpoch()),
-                        Optional.of(pkg.getRelease()), pkg.getVersion(), Optional.of(instantNow),
-                        Optional.of(pkg.getArch()), imageInfo));
-                if ("pxe".equals(ret.getImage().getType())) {
-                    SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(),
-                            ret.getBootImage(), imageInfo);
-                    if (ret.getBootImage().isPresent() && ret.getBundles().isEmpty()) {
-                        SaltbootUtils.createSaltbootDistro(imageInfo, ret.getBootImage().get());
-                    }
-                }
-            }
-            else {
-                serverAction.setResultMsg(result.getKiwiInspect().getComment());
-                as = ActionFactory.STATUS_FAILED;
-            }
-        }
-
-        serverAction.setStatus(as);
-        if (as.equals(ActionFactory.STATUS_COMPLETED)) {
-            imageInfo.setBuilt(true);
-        }
-        ImageInfoFactory.save(imageInfo);
-        ErrataManager.insertErrataCacheTask(imageInfo);
     }
 
     private void handleAppStreamsChange(ServerAction serverAction, JsonElement jsonResult) {
@@ -1694,7 +1525,14 @@ public class SaltUtils {
         }
     }
 
-    private static PackageEvr parsePackageEvr(Optional<String> epoch, String version, Optional<String> release,
+    /**
+     * @param epoch
+     * @param version
+     * @param release
+     * @param type
+     * @return PackageEvr
+     */
+    public static PackageEvr parsePackageEvr(Optional<String> epoch, String version, Optional<String> release,
                                               PackageType type) {
         switch (type) {
             case DEB:
@@ -1707,28 +1545,6 @@ public class SaltUtils {
         }
     }
 
-    private static ImagePackage createImagePackageFromSalt(String name, Pkg.Info info, ImageInfo imageInfo) {
-        return createImagePackageFromSalt(name, info.getEpoch(), info.getRelease(), info.getVersion().get(),
-                info.getInstallDateUnixTime(), info.getArchitecture(), imageInfo);
-    }
-
-    private static ImagePackage createImagePackageFromSalt(String name, Optional<String> epoch,
-            Optional<String> release, String version, Optional<Long> installDateUnixTime, Optional<String> architecture,
-            ImageInfo imageInfo) {
-
-        PackageType packageType = imageInfo.getPackageType();
-        Optional<String> pkgArch = architecture.map(arch -> packageType == PackageType.DEB ? arch + "-deb" : arch);
-        PackageEvr evr = parsePackageEvr(epoch, version, release, packageType);
-        ImagePackage pkg = new ImagePackage();
-        pkg.setEvr(evr);
-        pkgArch.ifPresent(arch -> pkg.setArch(PackageFactory.lookupPackageArchByLabel(arch)));
-        installDateUnixTime.ifPresent(udut -> pkg.setInstallTime(new Date(udut * 1000)));
-        pkg.setName(PackageFactory.lookupOrCreatePackageByName(name));
-        pkg.setImageInfo(imageInfo);
-        ImageInfoFactory.save(pkg);
-        return pkg;
-    }
-
     /**
      * Convert a list of {@link ProductInfo} objects into a set of {@link InstalledProduct}
      * objects.
@@ -1736,7 +1552,7 @@ public class SaltUtils {
      * @param productsIn list of products as received from Salt
      * @return set of installed products
      */
-    private static Set<InstalledProduct> getInstalledProducts(
+    public static Set<InstalledProduct> getInstalledProducts(
             List<ProductInfo> productsIn) {
         return productsIn.stream().flatMap(saltProduct -> {
             String name = saltProduct.getName();
@@ -1808,48 +1624,6 @@ public class SaltUtils {
             return installedProduct;
         }).collect(Collectors.toSet());
     }
-
-    private static Set<InstalledProduct> getInstalledProductsForRhel(
-            ImageInfo image,
-            Optional<String> resPackage,
-            Optional<String> sllPackage,
-            Optional<String> rhelReleaseFile,
-            Optional<String> centosReleaseFile,
-            Optional<String> oracleReleaseFile,
-            Optional<String> alibabaReleaseFile,
-            Optional<String> almaReleaseFile,
-            Optional<String> amazonReleaseFile,
-            Optional<String> rockyReleaseFile) {
-
-         Optional<RhelUtils.RhelProduct> rhelProductInfo =
-                 RhelUtils.detectRhelProduct(image, resPackage, sllPackage,
-                         rhelReleaseFile, centosReleaseFile, oracleReleaseFile,
-                         alibabaReleaseFile, almaReleaseFile, amazonReleaseFile,
-                         rockyReleaseFile);
-
-         if (!rhelProductInfo.isPresent()) {
-             LOG.warn("Could not determine RHEL product type for image: {} {}", image.getName(), image.getVersion());
-             return Collections.emptySet();
-         }
-
-         LOG.debug("Detected image {}:{} as a RedHat compatible system: {} {} {} {}",
-                 image.getName(), image.getVersion(),
-                 rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
-                 rhelProductInfo.get().getRelease(), image.getImageArch().getName());
-
-         return rhelProductInfo.get().getAllSuseProducts().stream().map(product -> {
-             String arch = image.getImageArch().getLabel().replace("-redhat-linux", "");
-
-             InstalledProduct installedProduct = new InstalledProduct();
-             installedProduct.setName(product.getName());
-             installedProduct.setVersion(product.getVersion());
-             installedProduct.setRelease(product.getRelease());
-             installedProduct.setArch(PackageFactory.lookupPackageArchByLabel(arch));
-             installedProduct.setBaseproduct(true);
-
-             return installedProduct;
-         }).collect(Collectors.toSet());
-     }
 
     /**
      * Update the system info through grains and data returned by status.uptime
