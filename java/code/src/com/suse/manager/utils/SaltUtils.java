@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.action.HardwareRefreshAction;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
+import com.redhat.rhn.domain.action.config.ConfigDeployAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageLockAction;
@@ -579,12 +580,7 @@ public class SaltUtils {
             serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY)) {
-            if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-                serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.deployed"));
-            }
-            else {
-                serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
-            }
+            ConfigDeployAction.handleUpdateServerAction(serverAction, jsonResult);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS)) {
             handleSubscribeChannels(serverAction, jsonResult, action);

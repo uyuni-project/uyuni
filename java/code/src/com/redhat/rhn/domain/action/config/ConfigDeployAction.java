@@ -14,6 +14,14 @@
  */
 package com.redhat.rhn.domain.action.config;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerAction;
+
+import com.suse.manager.utils.SaltUtils;
+
+import com.google.gson.JsonElement;
+
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.server.MinionSummary;
 
@@ -72,4 +80,16 @@ public class ConfigDeployAction extends ConfigAction {
         return ret;
     }
 
+    /**
+     * @param serverAction
+     * @param jsonResult
+     */
+    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult) {
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+            serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.deployed"));
+        }
+        else {
+            serverAction.setResultMsg(SaltUtils.getJsonResultWithPrettyPrint(jsonResult));
+        }
+    }
 }
