@@ -184,7 +184,11 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
                   <div>
                     <div>{t("Refreshing the calendar will reschedule all affected actions.")}</div>
                     <div>{t("Confirm if you want to proceed.")}</div>
-                    <DEPRECATED_Check name="strategy" label={<b>{t("Cancel affected actions?")}</b>} divClass="col-md-6" />
+                    <DEPRECATED_Check
+                      name="strategy"
+                      label={<b>{t("Cancel affected actions?")}</b>}
+                      divClass="col-md-6"
+                    />
                   </div>
                 }
                 onConfirm={() => onConfirmRefresh()}
