@@ -36,7 +36,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum;
 import com.suse.manager.webui.utils.salt.custom.OSImageBuildImageInfoResult;
@@ -246,25 +245,23 @@ public class ImageBuildAction extends Action {
     /**
      * @param serverAction
      * @param jsonResult
-     * @param saltApi
-     * @param systemQuery
+     * @param auxArgs
+     * @param action
      */
-    public static void handleImageBuildData(ServerAction serverAction, JsonElement jsonResult, SaltApi saltApi,
-                                            SystemQuery systemQuery) {
-        Action action = serverAction.getParentAction();
-        ImageBuildAction ba = (ImageBuildAction) action;
-        ImageBuildActionDetails details = ba.getDetails();
+    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
+                                                UpdateAuxArgs auxArgs, ImageBuildAction action) {
+        ImageBuildActionDetails details = action.getDetails();
 
         serverAction.setResultMsg(SaltUtils.getJsonResultWithPrettyPrint(jsonResult));
 
-        Optional<ImageInfo> infoOpt = ImageInfoFactory.lookupByBuildAction(ba);
+        Optional<ImageInfo> infoOpt = ImageInfoFactory.lookupByBuildAction(action);
         if (infoOpt.isEmpty()) {
             LOG.error("ImageInfo not found while performing: {} in handleImageBuildData", action.getName());
             return;
         }
         ImageInfo info = infoOpt.get();
 
-        handleImageBuildLog(info, action, saltApi);
+        handleImageBuildLog(info, action, auxArgs.getSaltApi());
 
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             if (details == null) {
@@ -321,7 +318,7 @@ public class ImageBuildAction extends Action {
                     files.stream().forEach(file -> {
                         String targetPath = OSImageStoreUtils.getOSImageStorePathForImage(info);
                         targetPath += info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
-                        MgrUtilRunner.ExecResult collectResult = systemQuery
+                        MgrUtilRunner.ExecResult collectResult = auxArgs.getSystemQuery()
                                 .collectKiwiImage(minionServer, (String)file.get(0), targetPath)
                                 .orElseThrow(() -> new RuntimeException("Failed to download image."));
 
@@ -365,7 +362,7 @@ public class ImageBuildAction extends Action {
         ImageInfoFactory.save(info);
     }
 
-    private static void handleImageBuildLog(ImageInfo info, Action action, SaltApi saltApi) {
+    private static void handleImageBuildLog(ImageInfo info, ImageBuildAction action, SaltApi saltApi) {
         MinionServer buildHost = info.getBuildServer();
         if (buildHost == null) {
             return;

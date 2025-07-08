@@ -149,9 +149,10 @@ public class ImageInspectAction extends Action {
     /**
      * @param serverAction
      * @param jsonResult
+     * @param auxArgs
      */
-    public static void handleImageInspectData(ServerAction serverAction,
-                                        JsonElement jsonResult) {
+    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
+                                                UpdateAuxArgs auxArgs) {
         Action action = serverAction.getParentAction();
         ImageInspectAction ia = (ImageInspectAction) action;
         ImageInspectActionDetails details = ia.getDetails();

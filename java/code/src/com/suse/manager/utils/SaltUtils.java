@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.config.ConfigDeployAction;
+import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageLockAction;
@@ -506,54 +507,60 @@ public class SaltUtils {
             serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
         }
 
+        Action.UpdateAuxArgs auxArgs = new Action.UpdateAuxArgs(retcode, success, jid, this,
+                saltApi, systemQuery);
+
         Action action = HibernateFactory.unproxy(serverAction.getParentAction());
         if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
-            ApplyStatesAction.handleStateApplyData(serverAction, jsonResult, retcode, success, this);
+            ApplyStatesAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs, (ApplyStatesAction) action);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
-            ScriptRunAction.handleUpdateServerAction(serverAction, retcode, jid, jsonResult, action);
+            ScriptRunAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs, (ScriptRunAction) action);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_IMAGE_BUILD)) {
-            ImageBuildAction.handleImageBuildData(serverAction, jsonResult, saltApi, systemQuery);
+            ImageBuildAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs, (ImageBuildAction) action);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_IMAGE_INSPECT)) {
-            ImageInspectAction.handleImageInspectData(serverAction, jsonResult);
+            ImageInspectAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST)) {
-            PackageRefreshListAction.handleUpdateServerAction(serverAction, jsonResult);
+            PackageRefreshListAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
-            PackageLockAction.handlePackageLockData(serverAction, jsonResult, action);
+            PackageLockAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs, (PackageLockAction) action);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_APPSTREAM_CONFIGURE)) {
-            AppStreamAction.handleAppStreamsChange(serverAction, jsonResult);
+            AppStreamAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
-            HardwareRefreshAction.handleUpdateServerAction(serverAction, jsonResult);
+            HardwareRefreshAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
-            DistUpgradeAction.handleUpdateServerAction(serverAction, action, jsonResult, saltApi);
+            DistUpgradeAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs, (DistUpgradeAction) action);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCAP_XCCDF_EVAL)) {
-            ScapAction.handleScapXccdfEval(serverAction, jsonResult, action, saltApi);
+            ScapAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs, (ScapAction) action);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
-            ConfigDeployAction.handleUpdateServerActionConfigDiffAction(serverAction, jsonResult, action);
+            ConfigDeployAction.handleUpdateServerActionConfigDiffAction(serverAction, jsonResult, auxArgs,
+                    //(ConfigDiffAction) action);
+                    (ConfigVerifyAction) action);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY)) {
-            ConfigDeployAction.handleUpdateServerAction(serverAction, jsonResult);
+            ConfigDeployAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS)) {
-            SubscribeChannelsAction.handleSubscribeChannels(serverAction, jsonResult);
+            SubscribeChannelsAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_COCO_ATTESTATION)) {
-            CoCoAttestationAction.handleCocoAttestationResult(action, serverAction, jsonResult);
+            CoCoAttestationAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs,
+                    (CoCoAttestationAction) action);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_INVENTORY)) {
-            InventoryAction.handleInventoryRefresh(action, serverAction, jsonResult);
+            InventoryAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs, (InventoryAction) action);
         }
         else {
-           serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
+            Action.handleUpdateServerAction(serverAction, jsonResult, auxArgs, action);
         }
         LOG.debug("Finished update server action for action {}", action.getId());
     }

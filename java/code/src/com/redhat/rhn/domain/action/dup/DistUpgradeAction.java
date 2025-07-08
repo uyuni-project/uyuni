@@ -48,7 +48,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeOldSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
@@ -166,12 +165,11 @@ public class DistUpgradeAction extends Action {
      * @param serverAction
      * @param action
      * @param jsonResult
-     * @param saltApi
+     * @param auxArgs
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, Action action, JsonElement jsonResult,
-                                                SaltApi saltApi) {
-        DistUpgradeAction dupAction = (DistUpgradeAction) action;
-        DistUpgradeActionDetails actionDetails = dupAction.getDetails();
+    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
+                                                UpdateAuxArgs auxArgs, DistUpgradeAction action) {
+        DistUpgradeActionDetails actionDetails = action.getDetails();
         if (actionDetails.isDryRun()) {
             Map<Boolean, List<Channel>> collect = actionDetails.getChannelTasks()
                     .stream().collect(Collectors.partitioningBy(
@@ -200,7 +198,7 @@ public class DistUpgradeAction extends Action {
             // Make sure grains are updated after dist upgrade
             serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
                 MinionList minionTarget = new MinionList(minionServer.getMinionId());
-                saltApi.syncGrains(minionTarget);
+                auxArgs.getSaltApi().syncGrains(minionTarget);
             });
         }
     }

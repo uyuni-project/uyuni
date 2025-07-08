@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.domain.action.salt;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -127,39 +126,36 @@ public class ApplyStatesAction extends Action {
     /**
      * @param serverAction
      * @param jsonResult
-     * @param retcode
-     * @param success
-     * @param saltUtils
+     * @param auxArgs
+     * @param action
      */
-    public static void handleStateApplyData(ServerAction serverAction, JsonElement jsonResult, long retcode,
-                                      boolean success, SaltUtils saltUtils) {
-        ApplyStatesAction applyStatesAction =
-                (ApplyStatesAction) HibernateFactory.unproxy(serverAction.getParentAction());
+    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
+                                                UpdateAuxArgs auxArgs, ApplyStatesAction action) {
 
         // Revisit the action status if test=true
-        if (applyStatesAction.getDetails().isTest() && success && retcode == 0) {
+        if (action.getDetails().isTest() && auxArgs.getSuccess() && auxArgs.getRetcode() == 0) {
             serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
         }
 
         ApplyStatesActionResult statesResult = Optional.ofNullable(
-                        applyStatesAction.getDetails().getResults())
+                        action.getDetails().getResults())
                 .orElse(Collections.emptySet())
                 .stream()
                 .filter(result ->
                         serverAction.getServerId().equals(result.getServerId()))
                 .findFirst()
                 .orElse(new ApplyStatesActionResult());
-        applyStatesAction.getDetails().addResult(statesResult);
-        statesResult.setActionApplyStatesId(applyStatesAction.getDetails().getId());
+        action.getDetails().addResult(statesResult);
+        statesResult.setActionApplyStatesId(action.getDetails().getId());
         statesResult.setServerId(serverAction.getServerId());
-        statesResult.setReturnCode(retcode);
+        statesResult.setReturnCode(auxArgs.getRetcode());
 
         // Set the output to the result
         statesResult.setOutput(SaltUtils.getJsonResultWithPrettyPrint(jsonResult).getBytes());
 
         // Create the result message depending on the action status
-        String states = applyStatesAction.getDetails().getMods().isEmpty() ?
-                "highstate" : applyStatesAction.getDetails().getMods().toString();
+        String states = action.getDetails().getMods().isEmpty() ?
+                "highstate" : action.getDetails().getMods().toString();
         String message = "Successfully applied state(s): " + states;
         if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
             message = "Failed to apply state(s): " + states;
@@ -172,14 +168,14 @@ public class ApplyStatesAction extends Action {
             // TODO: are also org admins and the creator part of this list?
             UserNotificationFactory.storeForUsers(nm, admins);
         }
-        if (applyStatesAction.getDetails().isTest()) {
+        if (action.getDetails().isTest()) {
             message += " (test-mode)";
         }
         serverAction.setResultMsg(message);
 
         serverAction.getServer().asMinionServer().ifPresent(minion -> {
             if (jsonResult.isJsonObject()) {
-                saltUtils.updateSystemInfo(jsonResult, minion);
+                auxArgs.getSaltUtils().updateSystemInfo(jsonResult, minion);
             }
         });
     }

@@ -27,7 +27,6 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.audit.ScapManager;
 
-import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.calls.modules.Openscap;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
@@ -171,11 +170,10 @@ public class ScapAction extends Action {
      * @param serverAction
      * @param jsonResult
      * @param action
-     * @param saltApi
+     * @param auxArgs
      */
-    public static void handleScapXccdfEval(ServerAction serverAction,
-                                     JsonElement jsonResult, Action action, SaltApi saltApi) {
-        ScapAction scapAction = (ScapAction)action;
+    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
+                                                UpdateAuxArgs auxArgs, ScapAction action) {
         Openscap.OpenscapResult openscapResult;
         try {
             TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>> typeToken =
@@ -195,7 +193,7 @@ public class ScapAction extends Action {
             serverAction.getServer().asMinionServer().ifPresent(
                     minion -> {
                         try {
-                            Map<Boolean, String> moveRes = saltApi.storeMinionScapFiles(
+                            Map<Boolean, String> moveRes = auxArgs.getSaltApi().storeMinionScapFiles(
                                     minion, openscapResult.getUploadDir(), action.getId());
                             moveRes.entrySet().stream().findFirst().ifPresent(moved -> {
                                 if (moved.getKey()) {
@@ -205,7 +203,7 @@ public class ScapAction extends Action {
                                                  new FileInputStream(
                                                          resultsFile.toFile())) {
                                         ScapManager.xccdfEval(
-                                                minion, scapAction,
+                                                minion, action,
                                                 openscapResult.getReturnCode(),
                                                 openscapResult.getError(),
                                                 resultsFileIn,

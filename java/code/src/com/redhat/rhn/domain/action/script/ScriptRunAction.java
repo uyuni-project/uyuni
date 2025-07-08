@@ -20,7 +20,6 @@ import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.FileUtils;
-import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -207,19 +206,18 @@ public class ScriptRunAction extends ScriptAction {
 
     /**
      * @param serverAction
-     * @param retcode
-     * @param jid
      * @param jsonResult
+     * @param auxArgs
      * @param action
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, long retcode, String jid,
-                                                JsonElement jsonResult, Action action) {
+    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
+                                                UpdateAuxArgs auxArgs, ScriptRunAction action) {
         if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-            serverAction.setResultMsg("Failed to execute script. [jid=" + jid + "]");
+            serverAction.setResultMsg("Failed to execute script. [jid=" + auxArgs.getJid() + "]");
         }
         else {
             serverAction.setResultMsg("Script executed successfully. [jid=" +
-                    jid + "]");
+                    auxArgs.getJid() + "]");
         }
         Map<String, StateApplyResult<CmdResult>> stateApplyResult = Json.GSON.fromJson(jsonResult,
                 new TypeToken<Map<String, StateApplyResult<CmdResult>>>() { }.getType());
@@ -229,19 +227,19 @@ public class ScriptRunAction extends ScriptAction {
                     .findFirst().map(e -> e.getValue().getChanges())
                     .orElseGet(CmdResult::new);
         }
-        ScriptRunAction scriptAction = (ScriptRunAction) action;
+
         ScriptResult scriptResult = Optional.ofNullable(
-                        scriptAction.getScriptActionDetails().getResults())
+                        action.getScriptActionDetails().getResults())
                 .orElse(Collections.emptySet())
                 .stream()
                 .filter(res -> serverAction.getServerId().equals(res.getServerId()))
                 .findFirst()
                 .orElse(new ScriptResult());
 
-        scriptAction.getScriptActionDetails().addResult(scriptResult);
-        scriptResult.setActionScriptId(scriptAction.getScriptActionDetails().getId());
+        action.getScriptActionDetails().addResult(scriptResult);
+        scriptResult.setActionScriptId(action.getScriptActionDetails().getId());
         scriptResult.setServerId(serverAction.getServerId());
-        scriptResult.setReturnCode(retcode);
+        scriptResult.setReturnCode(auxArgs.getRetcode());
 
         // Start and end dates
         Date startDate = action.getCreated().before(action.getEarliestAction()) ?

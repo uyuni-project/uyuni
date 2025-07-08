@@ -86,11 +86,13 @@ public class CoCoAttestationAction extends Action {
 
 
     /**
-     * @param action
      * @param serverAction
      * @param jsonResult
+     * @param auxArgs
+     * @param action
      */
-    public static void handleCocoAttestationResult(Action action, ServerAction serverAction, JsonElement jsonResult) {
+    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
+                                                UpdateAuxArgs auxArgs, CoCoAttestationAction action) {
         AttestationManager mgr = new AttestationManager();
 
         Optional<ServerCoCoAttestationReport> optReport =

@@ -95,8 +95,10 @@ public class PackageRefreshListAction extends PackageAction {
     /**
      * @param serverAction
      * @param jsonResult
+     * @param auxArgs
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult) {
+    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
+                                                UpdateAuxArgs auxArgs) {
         if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
             serverAction.setResultMsg("Failure");
         }

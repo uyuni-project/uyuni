@@ -120,8 +120,10 @@ public class AppStreamAction extends Action {
     /**
      * @param serverAction
      * @param jsonResult
+     * @param auxArgs
      */
-    public static void handleAppStreamsChange(ServerAction serverAction, JsonElement jsonResult) {
+    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
+                                                UpdateAuxArgs auxArgs) {
         Optional<MinionServer> server = serverAction.getServer().asMinionServer();
         if (server.isEmpty()) {
             return;

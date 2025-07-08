@@ -15,7 +15,6 @@
 package com.redhat.rhn.domain.action.config;
 
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.config.ConfigRevision;
@@ -98,8 +97,10 @@ public class ConfigDeployAction extends ConfigAction {
     /**
      * @param serverAction
      * @param jsonResult
+     * @param auxArgs
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult) {
+    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
+                                                UpdateAuxArgs auxArgs) {
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.deployed"));
         }
@@ -122,10 +123,11 @@ public class ConfigDeployAction extends ConfigAction {
     /**
      * @param serverAction
      * @param jsonResult
+     * @param auxArgs
      * @param action
      */
     public static void handleUpdateServerActionConfigDiffAction(ServerAction serverAction, JsonElement jsonResult,
-                                                                Action action) {
+                                                                UpdateAuxArgs auxArgs, ConfigVerifyAction action) {
         handleFilesDiff(jsonResult, action);
         serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.diffed"));
         /**
@@ -141,7 +143,7 @@ public class ConfigDeployAction extends ConfigAction {
      * @param jsonResult response from SALT master
      * @param action main action
      */
-    private static void handleFilesDiff(JsonElement jsonResult, Action action) {
+    private static void handleFilesDiff(JsonElement jsonResult, ConfigVerifyAction action) {
         TypeToken<Map<String, FilesDiffResult>> typeToken = new TypeToken<>() {
         };
         Map<String, FilesDiffResult> results = Json.GSON.fromJson(jsonResult, typeToken.getType());
@@ -154,8 +156,7 @@ public class ConfigDeployAction extends ConfigAction {
                                 .orElse(null),
                         fdr));
 
-        ConfigVerifyAction configAction = (ConfigVerifyAction) action;
-        configAction.getConfigRevisionActions().forEach(cra -> {
+        action.getConfigRevisionActions().forEach(cra -> {
             ConfigRevision cr = cra.getConfigRevision();
             String fileName = cr.getConfigFile().getConfigFileName().getPath();
             FilesDiffResult mapFileResult = diffResults.get(fileName);

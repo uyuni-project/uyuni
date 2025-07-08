@@ -93,8 +93,10 @@ public class HardwareRefreshAction extends Action {
     /**
      * @param serverAction
      * @param jsonResult
+     * @param auxArgs
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult) {
+    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
+                                                UpdateAuxArgs auxArgs) {
         if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
             serverAction.setResultMsg("Failure");
         }
@@ -114,8 +116,8 @@ public class HardwareRefreshAction extends Action {
      * @param result the result of the call as parsed from event data
      * @param serverAction the server action
      */
-    private static void handleHardwareProfileUpdate(MinionServer server,
-                                                    HwProfileUpdateSlsResult result, ServerAction serverAction) {
+    private static void handleHardwareProfileUpdate(MinionServer server, HwProfileUpdateSlsResult result,
+                                                    ServerAction serverAction) {
         Instant start = Instant.now();
 
         HardwareMapper hwMapper = new HardwareMapper(server,

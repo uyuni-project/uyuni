@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.domain.action.rhnpackage;
 
-import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import static java.util.Collections.singletonMap;
 
@@ -93,9 +92,11 @@ public class PackageLockAction extends PackageAction {
     /**
      * @param serverAction
      * @param jsonResult
+     * @param auxArgs
      * @param action
      */
-    public static void handlePackageLockData(ServerAction serverAction, JsonElement jsonResult, Action action) {
+    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
+                                                UpdateAuxArgs auxArgs, PackageLockAction action) {
         if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
             String msg = "Error while changing the lock status";
             SaltUtils.jsonEventToStateApplyResults(jsonResult).ifPresentOrElse(
