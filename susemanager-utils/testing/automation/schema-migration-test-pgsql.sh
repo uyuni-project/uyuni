@@ -8,10 +8,11 @@ else
     VPRODUCT="VERSION.${PRODUCT}"
 fi
 
-while getopts 'P:h' option
+while getopts 'P:ph' option
 do
     case ${option} in
         P) VPRODUCT="VERSION.${OPTARG}" ;;
+        p) EXECUTOR="podman" ;;
         h) echo "Usage ${SCRIPT} [-P PRODUCT]";exit 2;;
     esac
 done
