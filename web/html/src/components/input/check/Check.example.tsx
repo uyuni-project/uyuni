@@ -1,25 +1,16 @@
-import { SubmitButton } from "components/buttons";
+import { useState } from "react";
 
-import { Form } from "../form/Form";
-import { Check } from "./Check";
+import { Check } from "components/input";
 
 export default () => {
-  const model = {
-    booleanValue: false,
-  };
+  const [checked, setChecked] = useState(true);
 
   return (
-    <Form
-      model={model}
-      onSubmit={() => Loggerhead.info(model)}
-      divClass="col-md-12"
-      formDirection="form-horizontal"
-      onChange={(newModel) => {
-        model["booleanValue"] = newModel["booleanValue"];
-      }}
-    >
-      <Check name="booleanValue" label="Boolean value" divClass="col-md-6 col-md-offset-3 offset-md-3" />
-      <SubmitButton className="btn-primary" text={t("Submit")} />
-    </Form>
+    <>
+      <p>
+        value: <code>{JSON.stringify(checked)}</code>
+      </p>
+      <Check checked={checked} onChange={setChecked} />
+    </>
   );
 };

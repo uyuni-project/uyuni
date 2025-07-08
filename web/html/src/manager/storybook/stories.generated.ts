@@ -103,6 +103,18 @@ export const components_input_check_Check_example_tsx = {
 };
 
 // @ts-ignore
+import components_input_check_DEPRECATED_Check_example_tsx_component from "components/input/check/DEPRECATED_Check.example.tsx";
+import components_input_check_DEPRECATED_Check_example_tsx_raw from "components/input/check/DEPRECATED_Check.example.tsx?raw";
+
+export const components_input_check_DEPRECATED_Check_example_tsx = {
+  path: "components/input/check/DEPRECATED_Check.example.tsx",
+  title: "DEPRECATED_Check.example.tsx",
+  groupName: "check",
+  component: components_input_check_DEPRECATED_Check_example_tsx_component,
+  raw: components_input_check_DEPRECATED_Check_example_tsx_raw,
+};
+
+// @ts-ignore
 import components_input_datetime_DateTime_example_tsx_component from "components/input/datetime/DateTime.example.tsx";
 import components_input_datetime_DateTime_example_tsx_raw from "components/input/datetime/DateTime.example.tsx?raw";
 
