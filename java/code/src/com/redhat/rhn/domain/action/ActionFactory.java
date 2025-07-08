@@ -49,6 +49,14 @@ import com.redhat.rhn.domain.action.kickstart.KickstartInitiateGuestAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartScheduleSyncAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
+import com.redhat.rhn.domain.action.rhnpackage.PackageAutoUpdateAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageDeltaAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageLockAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRefreshListAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRunTransactionAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageVerifyAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
@@ -384,15 +392,29 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_CONFIGFILES_UPLOAD)) {
             retval = new ConfigUploadAction();
         }
-        else if (typeIn.equals(TYPE_PACKAGES_AUTOUPDATE) ||
-                typeIn.equals(TYPE_PACKAGES_DELTA) ||
-                typeIn.equals(TYPE_PACKAGES_REFRESH_LIST) ||
-                typeIn.equals(TYPE_PACKAGES_REMOVE) ||
-                typeIn.equals(TYPE_PACKAGES_RUNTRANSACTION) ||
-                typeIn.equals(TYPE_PACKAGES_UPDATE) ||
-                typeIn.equals(TYPE_PACKAGES_VERIFY) ||
-                typeIn.equals(TYPE_PACKAGES_LOCK)) {
-            retval = new PackageAction();
+        else if (typeIn.equals(TYPE_PACKAGES_AUTOUPDATE)) {
+            retval = new PackageAutoUpdateAction();
+        }
+        else if (typeIn.equals(TYPE_PACKAGES_DELTA)) {
+            retval = new PackageDeltaAction();
+        }
+        else if (typeIn.equals(TYPE_PACKAGES_REFRESH_LIST)) {
+            retval = new PackageRefreshListAction();
+        }
+        else if (typeIn.equals(TYPE_PACKAGES_REMOVE)) {
+            retval = new PackageRemoveAction();
+        }
+        else if (typeIn.equals(TYPE_PACKAGES_RUNTRANSACTION)) {
+            retval = new PackageRunTransactionAction();
+        }
+        else if (typeIn.equals(TYPE_PACKAGES_UPDATE)) {
+            retval = new PackageUpdateAction();
+        }
+        else if (typeIn.equals(TYPE_PACKAGES_VERIFY)) {
+            retval = new PackageVerifyAction();
+        }
+        else if (typeIn.equals(TYPE_PACKAGES_LOCK)) {
+            retval = new PackageLockAction();
         }
         else if (typeIn.equals(TYPE_CONFIGFILES_MTIME_UPLOAD)) {
             retval = new ConfigUploadMtimeAction();

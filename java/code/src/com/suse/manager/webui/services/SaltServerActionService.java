@@ -37,7 +37,6 @@ import com.redhat.rhn.domain.action.ansible.InventoryAction;
 import com.redhat.rhn.domain.action.ansible.PlaybookAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
-import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigDeployAction;
 import com.redhat.rhn.domain.action.config.ConfigDiffAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
