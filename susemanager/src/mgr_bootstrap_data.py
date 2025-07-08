@@ -898,6 +898,16 @@ DATA = {
         "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/opensusemicro/6/1/bootstrap/",
     },
+    "openSUSE-Leap-Micro-6.2-x86_64-uyuni": {
+        "BASECHANNEL": "opensuse_micro6_2-x86_64",
+        "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensusemicro/6/2/bootstrap/",
+    },
+    "openSUSE-Leap-Micro-6.2-aarch64-uyuni": {
+        "BASECHANNEL": "opensuse_micro6_2-aarch64",
+        "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensusemicro/6/2/bootstrap/",
+    },
     "openSUSE-MicroOS-x86_64-uyuni": {
         "BASECHANNEL": "opensuse_microos-x86_64",
         "PKGLIST": PKGLISTMICROOS_BUNDLE_ONLY,
