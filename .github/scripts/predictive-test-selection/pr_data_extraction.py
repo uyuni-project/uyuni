@@ -5,15 +5,17 @@ pr_data_extraction.py
 Extracts data from the latest N pull requests (PRs) in the Uyuni repository that triggered 
 a GitHub Actions test workflow and generated Cucumber reports.
 
-For each qualifying PR:
+For each qualifying PR (training mode):
 - Downloads all Cucumber JSON reports from the initial test run.
 - Extracts and retains only secondary/recommended tests Cucumber reports.
 - Obtains the files modified that triggered the test run in the PR.
+- Extracts the unique file extensions of the modified files.
 - Obtains the change history of those files over several recent time windows.
 - Outputs a CSV file with PR features: file extensions, change history, and PR number.
 
-Supports extracting features for a single PR (prediction mode),
-or for multiple recent PRs (training mode).
+In prediction mode (single PR), only extracts modified files, their unique file extensions,
+and change history features for the PR;
+Cucumber reports are not downloaded or processed.
 
 Requirements:
 - Environment variable GITHUB_TOKEN must be set with a GitHub Access Token.
