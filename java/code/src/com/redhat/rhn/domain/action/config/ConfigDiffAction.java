@@ -10,8 +10,45 @@
  */
 package com.redhat.rhn.domain.action.config;
 
+import com.redhat.rhn.domain.server.MinionSummary;
+
+import com.suse.manager.webui.services.ConfigChannelSaltManager;
+import com.suse.manager.webui.services.SaltParameters;
+import com.suse.salt.netapi.calls.LocalCall;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 /**
  * ConfigDiffAction - Class representing TYPE_CONFIGFILES_DIFF
  */
 public class ConfigDiffAction extends ConfigAction {
+
+    /**
+     * Deploy files(files, directory, symlink) through state.apply
+     *
+     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
+     * @param action action which has all the revisions
+     * @return minion summaries grouped by local call
+     */
+    public static Map<LocalCall<?>, List<MinionSummary>> diffFiles(List<MinionSummary> minionSummaries,
+                                                                   ConfigAction action) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+        List<Map<String, Object>> fileStates = action.getConfigRevisionActions().stream()
+                .map(ConfigRevisionAction::getConfigRevision)
+                .filter(revision -> revision.isFile() ||
+                        revision.isDirectory() ||
+                        revision.isSymlink())
+                .map(revision -> ConfigChannelSaltManager.getInstance().getStateParameters(revision))
+                .toList();
+        ret.put(com.suse.salt.netapi.calls.modules.State.apply(
+                List.of(SaltParameters.CONFIG_DIFF_FILES),
+                Optional.of(Collections.singletonMap(SaltParameters.PARAM_FILES, fileStates)),
+                Optional.of(true), Optional.of(true)), minionSummaries);
+        return ret;
+    }
+
 }

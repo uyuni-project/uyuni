@@ -38,6 +38,8 @@ import com.redhat.rhn.domain.action.ansible.PlaybookAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
+import com.redhat.rhn.domain.action.config.ConfigDeployAction;
+import com.redhat.rhn.domain.action.config.ConfigDiffAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
@@ -205,10 +207,10 @@ public class SaltServerActionService {
             return RebootAction.rebootAction(minions);
         }
         else if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.equals(actionType)) {
-            return ConfigAction.deployFiles(minions, (ConfigAction) actionIn);
+            return ConfigDeployAction.deployFiles(minions, (ConfigDeployAction) actionIn);
         }
         else if (ActionFactory.TYPE_CONFIGFILES_DIFF.equals(actionType)) {
-            return ConfigAction.diffFiles(minions, (ConfigAction) actionIn);
+            return ConfigDiffAction.diffFiles(minions, (ConfigDiffAction) actionIn);
         }
         else if (ActionFactory.TYPE_SCRIPT_RUN.equals(actionType)) {
             return ScriptRunAction.remoteCommandAction(minions, (ScriptAction) actionIn);
