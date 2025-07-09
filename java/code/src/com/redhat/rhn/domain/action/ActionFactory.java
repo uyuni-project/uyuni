@@ -49,6 +49,7 @@ import com.redhat.rhn.domain.action.kickstart.KickstartInitiateGuestAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartScheduleSyncAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRefreshListAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAutoUpdateAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageDeltaAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageLockAction;
