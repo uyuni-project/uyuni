@@ -10,7 +10,11 @@
  */
 package com.redhat.rhn.domain.action.config;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.server.MinionSummary;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.html.HtmlTag;
 
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltParameters;
@@ -28,8 +32,45 @@ import java.util.Optional;
 public class ConfigDiffAction extends ConfigAction {
 
     /**
-     * Deploy files(files, directory, symlink) through state.apply
-     *
+     * {@inheritDoc}
+     */
+    @Override
+    public String getHistoryDetails(Server server, User currentUser) {
+        LocalizationService ls = LocalizationService.getInstance();
+        StringBuilder retval = new StringBuilder();
+        retval.append("</br>");
+        retval.append(ls.getMessage("system.event.configFiles"));
+        retval.append("</br>");
+        for (ConfigRevisionAction rev : this.getConfigRevisionActionsSorted()) {
+            if (rev.getServer().equals(server)) {
+                HtmlTag a = new HtmlTag("a");
+                a.setAttribute("href", "/rhn/configuration/file/FileDetails.do?sid=" +
+                        server.getId() + "&crid=" + rev.getConfigRevision().getId());
+                a.addBody(rev.getConfigRevision().getConfigFile().getConfigFileName()
+                        .getPath());
+                retval.append(a.render());
+                retval.append(" (rev. " + rev.getConfigRevision().getRevision() + ")");
+                if (rev.getConfigRevisionActionResult() != null) {
+                    a.setAttribute("href",
+                            "/rhn/systems/details/configuration/ViewDiffResult.do?sid=" +
+                                    server.getId() + "&acrid=" +
+                                    rev.getConfigRevisionActionResult().getConfigRevisionAction()
+                                            .getId());
+                    a.setBody(ls.getMessage("system.event.configFiesDiffExist"));
+                    retval.append(" ");
+                    retval.append(a.render());
+                }
+                if (rev.getFailureId() != null) {
+                    retval.append(" ");
+                    retval.append(ls.getMessage("system.event.configFiesMissing"));
+                }
+                retval.append("</br>");
+            }
+        }
+        return retval.toString();
+    }
+
+    /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
      * @return minion summaries grouped by local call
      */
