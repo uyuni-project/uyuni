@@ -31,7 +31,7 @@ import java.util.Set;
  * ConfigAction
  */
 public class ConfigAction extends Action {
-    protected Set<ConfigRevisionAction> configRevisionActions;
+    private Set<ConfigRevisionAction> configRevisionActions;
 
     protected ConfigAction() {
         //ConfigAction should never be instantiated
