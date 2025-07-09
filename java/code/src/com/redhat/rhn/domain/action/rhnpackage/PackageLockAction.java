@@ -93,10 +93,9 @@ public class PackageLockAction extends PackageAction {
      * @param serverAction
      * @param jsonResult
      * @param auxArgs
-     * @param action
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
-                                                UpdateAuxArgs auxArgs, PackageLockAction action) {
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
         if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
             String msg = "Error while changing the lock status";
             SaltUtils.jsonEventToStateApplyResults(jsonResult).ifPresentOrElse(
@@ -111,7 +110,7 @@ public class PackageLockAction extends PackageAction {
                     },
                     () -> serverAction.setResultMsg(msg));
             serverAction.getServer().asMinionServer()
-                    .ifPresent(minionServer -> PackageManager.syncLockedPackages(minionServer.getId(), action.getId()));
+                    .ifPresent(minionServer -> PackageManager.syncLockedPackages(minionServer.getId(), getId()));
         }
         else {
             String msg = "Successfully changed lock status";
@@ -120,8 +119,8 @@ public class PackageLockAction extends PackageAction {
                             r.get("pkg_|-pkg_locked_|-pkg_locked_|-held").getComment()),
                     () -> serverAction.setResultMsg(msg));
             serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                PackageManager.updateLockedPackages(minionServer.getId(), action.getId());
-                PackageManager.updateUnlockedPackages(minionServer.getId(), action.getId());
+                PackageManager.updateLockedPackages(minionServer.getId(), getId());
+                PackageManager.updateUnlockedPackages(minionServer.getId(), getId());
             });
         }
     }

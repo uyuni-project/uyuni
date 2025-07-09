@@ -23,6 +23,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.CoCoAttestationAction;
 import com.redhat.rhn.domain.action.HardwareRefreshAction;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
@@ -36,10 +37,6 @@ import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageLockAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageRefreshListAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
-import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
-import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
-import com.redhat.rhn.domain.action.scap.ScapAction;
-import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -511,56 +508,14 @@ public class SaltUtils {
                 saltApi, systemQuery);
 
         Action action = HibernateFactory.unproxy(serverAction.getParentAction());
-        if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
-            ApplyStatesAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs, (ApplyStatesAction) action);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
-            ScriptRunAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs, (ScriptRunAction) action);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_IMAGE_BUILD)) {
-            ImageBuildAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs, (ImageBuildAction) action);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_IMAGE_INSPECT)) {
-            ImageInspectAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST)) {
-            PackageRefreshListAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
-            PackageLockAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs, (PackageLockAction) action);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_APPSTREAM_CONFIGURE)) {
-            AppStreamAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
-            HardwareRefreshAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
-            DistUpgradeAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs, (DistUpgradeAction) action);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_SCAP_XCCDF_EVAL)) {
-            ScapAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs, (ScapAction) action);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
+
+        if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
+            //parked here until merged with the other stuff, (ConfigDiffAction) action)
             ConfigDeployAction.handleUpdateServerActionConfigDiffAction(serverAction, jsonResult, auxArgs,
-                    //(ConfigDiffAction) action);
-                    (ConfigVerifyAction) action);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY)) {
-            ConfigDeployAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS)) {
-            SubscribeChannelsAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_COCO_ATTESTATION)) {
-            CoCoAttestationAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs,
-                    (CoCoAttestationAction) action);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_INVENTORY)) {
-            InventoryAction.handleUpdateServerAction(serverAction, jsonResult, auxArgs, (InventoryAction) action);
+                    (ConfigAction)action);
         }
         else {
-            Action.handleUpdateServerAction(serverAction, jsonResult, auxArgs, action);
+            action.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
         }
         LOG.debug("Finished update server action for action {}", action.getId());
     }

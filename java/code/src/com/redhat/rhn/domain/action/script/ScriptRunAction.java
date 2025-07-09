@@ -208,10 +208,9 @@ public class ScriptRunAction extends ScriptAction {
      * @param serverAction
      * @param jsonResult
      * @param auxArgs
-     * @param action
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
-                                                UpdateAuxArgs auxArgs, ScriptRunAction action) {
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
         if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
             serverAction.setResultMsg("Failed to execute script. [jid=" + auxArgs.getJid() + "]");
         }
@@ -229,21 +228,20 @@ public class ScriptRunAction extends ScriptAction {
         }
 
         ScriptResult scriptResult = Optional.ofNullable(
-                        action.getScriptActionDetails().getResults())
+                        getScriptActionDetails().getResults())
                 .orElse(Collections.emptySet())
                 .stream()
                 .filter(res -> serverAction.getServerId().equals(res.getServerId()))
                 .findFirst()
                 .orElse(new ScriptResult());
 
-        action.getScriptActionDetails().addResult(scriptResult);
-        scriptResult.setActionScriptId(action.getScriptActionDetails().getId());
+        getScriptActionDetails().addResult(scriptResult);
+        scriptResult.setActionScriptId(getScriptActionDetails().getId());
         scriptResult.setServerId(serverAction.getServerId());
         scriptResult.setReturnCode(auxArgs.getRetcode());
 
         // Start and end dates
-        Date startDate = action.getCreated().before(action.getEarliestAction()) ?
-                action.getEarliestAction() : action.getCreated();
+        Date startDate = getCreated().before(getEarliestAction()) ? getEarliestAction() : getCreated();
         scriptResult.setStartDate(startDate);
         scriptResult.setStopDate(serverAction.getCompletionTime());
 

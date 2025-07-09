@@ -122,8 +122,8 @@ public class AppStreamAction extends Action {
      * @param jsonResult
      * @param auxArgs
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
-                                                UpdateAuxArgs auxArgs) {
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
         Optional<MinionServer> server = serverAction.getServer().asMinionServer();
         if (server.isEmpty()) {
             return;

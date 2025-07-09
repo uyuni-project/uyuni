@@ -106,8 +106,8 @@ public class SubscribeChannelsAction extends Action {
      * @param jsonResult
      * @param auxArgs
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
-                                                UpdateAuxArgs auxArgs) {
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             serverAction.setResultMsg("Successfully applied state: " + ApplyStatesEventMessage.CHANNELS);
         }

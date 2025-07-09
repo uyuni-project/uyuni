@@ -89,14 +89,13 @@ public class CoCoAttestationAction extends Action {
      * @param serverAction
      * @param jsonResult
      * @param auxArgs
-     * @param action
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
-                                                UpdateAuxArgs auxArgs, CoCoAttestationAction action) {
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
         AttestationManager mgr = new AttestationManager();
 
         Optional<ServerCoCoAttestationReport> optReport =
-                mgr.lookupReportByServerAndAction(serverAction.getServer(), action);
+                mgr.lookupReportByServerAndAction(serverAction.getServer(), this);
         if (optReport.isEmpty()) {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
             serverAction.setResultMsg("Failed to find a report entry");

@@ -99,8 +99,8 @@ public class ConfigDeployAction extends ConfigAction {
      * @param jsonResult
      * @param auxArgs
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
-                                                UpdateAuxArgs auxArgs) {
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.deployed"));
         }
@@ -127,7 +127,7 @@ public class ConfigDeployAction extends ConfigAction {
      * @param action
      */
     public static void handleUpdateServerActionConfigDiffAction(ServerAction serverAction, JsonElement jsonResult,
-                                                                UpdateAuxArgs auxArgs, ConfigVerifyAction action) {
+                                                                UpdateAuxArgs auxArgs, ConfigAction action) {
         handleFilesDiff(jsonResult, action);
         serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.diffed"));
         /**
@@ -143,7 +143,7 @@ public class ConfigDeployAction extends ConfigAction {
      * @param jsonResult response from SALT master
      * @param action main action
      */
-    private static void handleFilesDiff(JsonElement jsonResult, ConfigVerifyAction action) {
+    private static void handleFilesDiff(JsonElement jsonResult, ConfigAction action) {
         TypeToken<Map<String, FilesDiffResult>> typeToken = new TypeToken<>() {
         };
         Map<String, FilesDiffResult> results = Json.GSON.fromJson(jsonResult, typeToken.getType());

@@ -479,10 +479,8 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
      * @param serverAction
      * @param jsonResult
      * @param auxArgs
-     * @param action
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
-                                                UpdateAuxArgs auxArgs, Action action) {
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
         serverAction.setResultMsg(SaltUtils.getJsonResultWithPrettyPrint(jsonResult));
     }
 }

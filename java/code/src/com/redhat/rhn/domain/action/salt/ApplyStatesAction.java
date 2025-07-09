@@ -127,26 +127,25 @@ public class ApplyStatesAction extends Action {
      * @param serverAction
      * @param jsonResult
      * @param auxArgs
-     * @param action
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
-                                                UpdateAuxArgs auxArgs, ApplyStatesAction action) {
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
 
         // Revisit the action status if test=true
-        if (action.getDetails().isTest() && auxArgs.getSuccess() && auxArgs.getRetcode() == 0) {
+        if (details.isTest() && auxArgs.getSuccess() && auxArgs.getRetcode() == 0) {
             serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
         }
 
         ApplyStatesActionResult statesResult = Optional.ofNullable(
-                        action.getDetails().getResults())
+                        details.getResults())
                 .orElse(Collections.emptySet())
                 .stream()
                 .filter(result ->
                         serverAction.getServerId().equals(result.getServerId()))
                 .findFirst()
                 .orElse(new ApplyStatesActionResult());
-        action.getDetails().addResult(statesResult);
-        statesResult.setActionApplyStatesId(action.getDetails().getId());
+        details.addResult(statesResult);
+        statesResult.setActionApplyStatesId(details.getId());
         statesResult.setServerId(serverAction.getServerId());
         statesResult.setReturnCode(auxArgs.getRetcode());
 
@@ -154,8 +153,8 @@ public class ApplyStatesAction extends Action {
         statesResult.setOutput(SaltUtils.getJsonResultWithPrettyPrint(jsonResult).getBytes());
 
         // Create the result message depending on the action status
-        String states = action.getDetails().getMods().isEmpty() ?
-                "highstate" : action.getDetails().getMods().toString();
+        String states = details.getMods().isEmpty() ?
+                "highstate" : details.getMods().toString();
         String message = "Successfully applied state(s): " + states;
         if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
             message = "Failed to apply state(s): " + states;
@@ -168,7 +167,7 @@ public class ApplyStatesAction extends Action {
             // TODO: are also org admins and the creator part of this list?
             UserNotificationFactory.storeForUsers(nm, admins);
         }
-        if (action.getDetails().isTest()) {
+        if (details.isTest()) {
             message += " (test-mode)";
         }
         serverAction.setResultMsg(message);

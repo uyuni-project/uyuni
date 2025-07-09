@@ -169,11 +169,10 @@ public class ScapAction extends Action {
     /**
      * @param serverAction
      * @param jsonResult
-     * @param action
      * @param auxArgs
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
-                                                UpdateAuxArgs auxArgs, ScapAction action) {
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
         Openscap.OpenscapResult openscapResult;
         try {
             TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>> typeToken =
@@ -194,7 +193,7 @@ public class ScapAction extends Action {
                     minion -> {
                         try {
                             Map<Boolean, String> moveRes = auxArgs.getSaltApi().storeMinionScapFiles(
-                                    minion, openscapResult.getUploadDir(), action.getId());
+                                    minion, openscapResult.getUploadDir(), getId());
                             moveRes.entrySet().stream().findFirst().ifPresent(moved -> {
                                 if (moved.getKey()) {
                                     Path resultsFile = Paths.get(moved.getValue(),
@@ -203,7 +202,7 @@ public class ScapAction extends Action {
                                                  new FileInputStream(
                                                          resultsFile.toFile())) {
                                         ScapManager.xccdfEval(
-                                                minion, action,
+                                                minion, this,
                                                 openscapResult.getReturnCode(),
                                                 openscapResult.getError(),
                                                 resultsFileIn,

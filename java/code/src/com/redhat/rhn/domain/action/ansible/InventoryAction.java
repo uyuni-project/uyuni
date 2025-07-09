@@ -119,17 +119,16 @@ public class InventoryAction extends Action {
      * @param serverAction
      * @param jsonResult
      * @param auxArgs
-     * @param action
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
-                                                UpdateAuxArgs auxArgs, InventoryAction action) {
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
         if (jsonResult == null) {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
             serverAction.setResultMsg(
                     "Error while requesting inventory data from target system: Got no result from system");
             return;
         }
-        String inventoryPath = action.getDetails().getInventoryPath();
+        String inventoryPath = details.getInventoryPath();
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             try {
                 Set<String> inventorySystems = AnsibleManager.parseInventoryAndGetHostnames(

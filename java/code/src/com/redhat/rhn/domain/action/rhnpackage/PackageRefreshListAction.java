@@ -97,8 +97,8 @@ public class PackageRefreshListAction extends PackageAction {
      * @param jsonResult
      * @param auxArgs
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
-                                                UpdateAuxArgs auxArgs) {
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
         if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
             serverAction.setResultMsg("Failure");
         }
@@ -110,14 +110,13 @@ public class PackageRefreshListAction extends PackageAction {
                         PkgProfileUpdateSlsResult.class)));
     }
 
-
     /**
      * Perform the actual update of the database based on given event data.
      *
      * @param server the minion server
      * @param result the result of the call as parsed from event data
      */
-    private static void handlePackageProfileUpdate(MinionServer server,
+    private void handlePackageProfileUpdate(MinionServer server,
                                             PkgProfileUpdateSlsResult result) {
         Instant start = Instant.now();
 
@@ -213,7 +212,7 @@ public class PackageRefreshListAction extends PackageAction {
 
         // Update last boot time
         SaltUtils.handleUptimeUpdate(server, result.getUpTime()
-                .map(ut -> (Number)ut.getChanges().getRet().get("seconds"))
+                .map(ut -> (Number) ut.getChanges().getRet().get("seconds"))
                 .map(n -> n.longValue())
                 .orElse(null));
 
@@ -275,8 +274,8 @@ public class PackageRefreshListAction extends PackageAction {
      * @param server a Server object corresponding to a minion
      * @param result the result from the package profile update state
      */
-    private static void updatePackages(MinionServer server,
-                                       PkgProfileUpdateSlsResult result) {
+    private void updatePackages(MinionServer server,
+                                PkgProfileUpdateSlsResult result) {
         Set<InstalledPackage> packages = server.getPackages();
 
         Map<String, InstalledPackage> oldPackageMap = packages.stream()
@@ -315,7 +314,7 @@ public class PackageRefreshListAction extends PackageAction {
         SystemManager.updateSystemOverview(server.getId());
     }
 
-    private static Set<InstalledProduct> getInstalledProductsForRhel(
+    private Set<InstalledProduct> getInstalledProductsForRhel(
             MinionServer server,
             Optional<String> resPackage,
             Optional<String> sllPackage,
@@ -358,7 +357,7 @@ public class PackageRefreshListAction extends PackageAction {
     }
 
     private static Map.Entry<String, Pkg.Info> resolveDuplicatePackage(Map.Entry<String, Pkg.Info> firstEntry,
-                                                                       Map.Entry<String, Pkg.Info> secondEntry) {
+                                                                Map.Entry<String, Pkg.Info> secondEntry) {
         Pkg.Info first = firstEntry.getValue();
         Pkg.Info second = secondEntry.getValue();
 

@@ -163,15 +163,13 @@ public class DistUpgradeAction extends Action {
 
     /**
      * @param serverAction
-     * @param action
      * @param jsonResult
      * @param auxArgs
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
-                                                UpdateAuxArgs auxArgs, DistUpgradeAction action) {
-        DistUpgradeActionDetails actionDetails = action.getDetails();
-        if (actionDetails.isDryRun()) {
-            Map<Boolean, List<Channel>> collect = actionDetails.getChannelTasks()
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
+        if (details.isDryRun()) {
+            Map<Boolean, List<Channel>> collect = details.getChannelTasks()
                     .stream().collect(Collectors.partitioningBy(
                             ct -> ct.getTask() == DistUpgradeChannelTask.SUBSCRIBE,
                             Collectors.mapping(DistUpgradeChannelTask::getChannel,
@@ -203,8 +201,7 @@ public class DistUpgradeAction extends Action {
         }
     }
 
-
-    private static String parseDryRunMessage(JsonElement jsonResult) {
+    private String parseDryRunMessage(JsonElement jsonResult) {
         try {
             DistUpgradeDryRunSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
                     jsonResult, DistUpgradeDryRunSlsResult.class);
@@ -230,8 +227,7 @@ public class DistUpgradeAction extends Action {
         return "Unable to parse dry run result";
     }
 
-
-    private static String parseMigrationMessage(JsonElement jsonResult) {
+    private String parseMigrationMessage(JsonElement jsonResult) {
         try {
             DistUpgradeSlsResult distUpgradeSlsResult = Json.GSON.fromJson(jsonResult, DistUpgradeSlsResult.class);
             if (distUpgradeSlsResult.getSpmigration() != null) {

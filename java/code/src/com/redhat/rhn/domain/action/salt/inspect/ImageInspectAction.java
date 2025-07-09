@@ -151,22 +151,19 @@ public class ImageInspectAction extends Action {
      * @param jsonResult
      * @param auxArgs
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
-                                                UpdateAuxArgs auxArgs) {
-        Action action = serverAction.getParentAction();
-        ImageInspectAction ia = (ImageInspectAction) action;
-        ImageInspectActionDetails details = ia.getDetails();
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
         if (details == null) {
-            LOG.warn("Details not found while performing: {} in handleImageInspectData", action.getName());
+            LOG.warn("Details not found while performing: {} in handleImageInspectData", getName());
             return;
         }
         Long imageStoreId = details.getImageStoreId();
         if (imageStoreId == null) { // It happens when the store is deleted during an inspect action
-            LOG.warn("Image Store ID not found while performing: {} in handleImageInspectData", action.getName());
+            LOG.warn("Image Store ID not found while performing: {} in handleImageInspectData", getName());
             return;
         }
         ImageInfoFactory
-                .lookupByInspectAction(ia)
+                .lookupByInspectAction(this)
                 .ifPresent(imageInfo -> serverAction.getServer().asMinionServer()
                         .ifPresent(minionServer ->
                                 handleImagePackageProfileUpdate(imageInfo, Json.GSON.fromJson(jsonResult,
@@ -174,8 +171,7 @@ public class ImageInspectAction extends Action {
                                         serverAction)));
     }
 
-
-    private static void handleImagePackageProfileUpdate(ImageInfo imageInfo,
+    private void handleImagePackageProfileUpdate(ImageInfo imageInfo,
                                                  ImagesProfileUpdateSlsResult result, ServerAction serverAction) {
         ActionStatus as = ActionFactory.STATUS_COMPLETED;
         serverAction.setResultMsg("Success");
@@ -310,12 +306,12 @@ public class ImageInspectAction extends Action {
         ErrataManager.insertErrataCacheTask(imageInfo);
     }
 
-    private static ImagePackage createImagePackageFromSalt(String name, Pkg.Info info, ImageInfo imageInfo) {
+    private ImagePackage createImagePackageFromSalt(String name, Pkg.Info info, ImageInfo imageInfo) {
         return createImagePackageFromSalt(name, info.getEpoch(), info.getRelease(), info.getVersion().get(),
                 info.getInstallDateUnixTime(), info.getArchitecture(), imageInfo);
     }
 
-    private static ImagePackage createImagePackageFromSalt(String name, Optional<String> epoch,
+    private ImagePackage createImagePackageFromSalt(String name, Optional<String> epoch,
                                                            Optional<String> release, String version,
                                                            Optional<Long> installDateUnixTime,
                                                            Optional<String> architecture,
@@ -334,8 +330,7 @@ public class ImageInspectAction extends Action {
         return pkg;
     }
 
-
-    private static Set<InstalledProduct> getInstalledProductsForRhel(
+    private Set<InstalledProduct> getInstalledProductsForRhel(
             ImageInfo image,
             Optional<String> resPackage,
             Optional<String> sllPackage,

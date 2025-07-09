@@ -246,31 +246,29 @@ public class ImageBuildAction extends Action {
      * @param serverAction
      * @param jsonResult
      * @param auxArgs
-     * @param action
      */
-    public static void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult,
-                                                UpdateAuxArgs auxArgs, ImageBuildAction action) {
-        ImageBuildActionDetails details = action.getDetails();
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
 
         serverAction.setResultMsg(SaltUtils.getJsonResultWithPrettyPrint(jsonResult));
 
-        Optional<ImageInfo> infoOpt = ImageInfoFactory.lookupByBuildAction(action);
+        Optional<ImageInfo> infoOpt = ImageInfoFactory.lookupByBuildAction(this);
         if (infoOpt.isEmpty()) {
-            LOG.error("ImageInfo not found while performing: {} in handleImageBuildData", action.getName());
+            LOG.error("ImageInfo not found while performing: {} in handleImageBuildData", getName());
             return;
         }
         ImageInfo info = infoOpt.get();
 
-        handleImageBuildLog(info, action, auxArgs.getSaltApi());
+        handleImageBuildLog(info, auxArgs.getSaltApi());
 
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             if (details == null) {
-                LOG.error("Details not found while performing: {} in handleImageBuildData", action.getName());
+                LOG.error("Details not found while performing: {} in handleImageBuildData", getName());
                 return;
             }
             Long imageProfileId = details.getImageProfileId();
             if (imageProfileId == null) { // It happens when the image profile is deleted during a build action
-                LOG.error("Image Profile ID not found while performing: {} in handleImageBuildData", action.getName());
+                LOG.error("Image Profile ID not found while performing: {} in handleImageBuildData", getName());
                 return;
             }
 
@@ -353,7 +351,7 @@ public class ImageBuildAction extends Action {
             info.setBuilt(true);
 
             try {
-                ImageInfoFactory.scheduleInspect(info, Date.from(Instant.now()), action.getSchedulerUser());
+                ImageInfoFactory.scheduleInspect(info, Date.from(Instant.now()), getSchedulerUser());
             }
             catch (TaskomaticApiException e) {
                 LOG.error("Could not schedule image inspection ", e);
@@ -362,15 +360,15 @@ public class ImageBuildAction extends Action {
         ImageInfoFactory.save(info);
     }
 
-    private static void handleImageBuildLog(ImageInfo info, ImageBuildAction action, SaltApi saltApi) {
+    private void handleImageBuildLog(ImageInfo info, SaltApi saltApi) {
         MinionServer buildHost = info.getBuildServer();
         if (buildHost == null) {
             return;
         }
 
         Path srcPath = Path.of(SALT_CP_PUSH_ROOT_PATH + buildHost.getMinionId() +
-                "/files/image-build" + action.getId() + ".log");
-        Path tmpPath = Path.of(SALT_FILE_GENERATION_TEMP_PATH + "/image-build" + action.getId() + ".log");
+                "/files/image-build" + getId() + ".log");
+        Path tmpPath = Path.of(SALT_FILE_GENERATION_TEMP_PATH + "/image-build" + getId() + ".log");
 
         try {
             // copy the log to a directory readable by tomcat
@@ -383,7 +381,7 @@ public class ImageBuildAction extends Action {
             saltApi.removeFile(tmpPath);
         }
         catch (Exception e) {
-            LOG.info("No build log for action {} {}", action.getId(), e);
+            LOG.info("No build log for action {} {}", getId(), e);
         }
     }
 
