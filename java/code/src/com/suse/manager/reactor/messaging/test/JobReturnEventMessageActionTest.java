@@ -2074,7 +2074,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 new Date(),
                 null);
 
-        Action action = actions.stream().findFirst().get();
+        SubscribeChannelsAction action = (SubscribeChannelsAction) actions.stream().findFirst().get();
+        action.setSaltApi(saltService);
 
         ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
         action.addServerAction(sa);
@@ -2135,6 +2136,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 null);
 
         SubscribeChannelsAction action = (SubscribeChannelsAction) actions.stream().findFirst().get();
+        action.setSaltApi(saltServiceMock);
 
         ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
         action.addServerAction(sa);

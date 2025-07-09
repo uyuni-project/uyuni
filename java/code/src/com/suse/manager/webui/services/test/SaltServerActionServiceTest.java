@@ -116,6 +116,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     private MinionServer minion;
     private SaltServerActionService saltServerActionService;
     private TaskomaticApi taskomaticMock;
+    private SaltService saltService;
 
     @Override
     @BeforeEach
@@ -123,7 +124,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
-        SaltService saltService = new SaltService() {
+        saltService = new SaltService() {
             @Override
             public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
                 return Optional.of(Result.success(new JsonObject()));
@@ -612,6 +613,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         SubscribeChannelsAction action = (SubscribeChannelsAction) ActionManager.createAction(
                 user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS, "Subscribe to channels", Date.from(now.toInstant()));
+        action.setSaltApi(saltService);
 
         SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
         details.setBaseChannel(base);
