@@ -1,0 +1,2 @@
+- CVE-2025-46811: Clean up stale sessions on websocket open
+  (bsc#1246119)
