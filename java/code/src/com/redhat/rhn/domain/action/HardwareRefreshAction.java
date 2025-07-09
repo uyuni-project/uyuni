@@ -53,13 +53,13 @@ public class HardwareRefreshAction extends Action {
         if (!sshPushMinions.isEmpty()) {
             ret.put(State.apply(List.of(
                             ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
-                    Optional.empty()), minionSummaries);
+                    Optional.empty()), sshPushMinions);
         }
         if (!regularMinions.isEmpty()) {
             ret.put(State.apply(Arrays.asList(
                             ApplyStatesEventMessage.SYNC_ALL,
                             ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
-                    Optional.empty()), minionSummaries);
+                    Optional.empty()), regularMinions);
         }
 
         return ret;
