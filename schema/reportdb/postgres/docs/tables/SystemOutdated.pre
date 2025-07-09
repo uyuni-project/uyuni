@@ -20,6 +20,10 @@ COMMENT ON COLUMN SystemOutdated.packages_out_of_date
   IS 'The number of outdated packages installed on this system';
 COMMENT ON COLUMN SystemOutdated.errata_out_of_date
   IS 'The number of outdated patches associated to this system';
+COMMENT ON COLUMN SystemOutdated.extra_pkg_count
+  IS 'The number of packages which do not exist in a channel assigned to this system';
+COMMENT ON COLUMN SystemOutdated.status
+  IS 'The status of this system: unentitled, awol, kickstarting, reboot needed, updates scheduled, actions scheduled, up2date, critical or updates';
 COMMENT ON COLUMN SystemOutdated.synced_date
   IS 'The timestamp of when this data was last refreshed.';
 

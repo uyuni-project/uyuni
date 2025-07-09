@@ -22,6 +22,7 @@ CREATE TABLE System
     registered_by                 VARCHAR(64),
     registration_time             TIMESTAMPTZ,
     last_checkin_time             TIMESTAMPTZ,
+    last_boot_time                TIMESTAMPTZ,
     kernel_version                VARCHAR(64),
     architecture                  VARCHAR(64),
     is_proxy                      BOOLEAN NOT NULL DEFAULT FALSE,
