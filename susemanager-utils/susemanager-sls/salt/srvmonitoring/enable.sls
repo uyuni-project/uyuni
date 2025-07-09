@@ -65,9 +65,6 @@ jmx_exporter:
   cmd.run:
     - name: /usr/bin/rpm --query --info prometheus-jmx_exporter
 
-{% set remove_jmx_props = {'service': 'tomcat', 'file': '/etc/sysconfig/tomcat/systemd/jmx.conf'} %}
-{% include 'srvmonitoring/removejmxprops.sls' %}
-
 jmx_exporter_tomcat_yaml_config:
   file.managed:
     - name: /etc/prometheus-jmx_exporter/tomcat/java_agent.yml
@@ -77,6 +74,14 @@ jmx_exporter_tomcat_yaml_config:
     - mode: 644
     - source:
       - salt://srvmonitoring/java_agent.yaml
+
+# Workaround for previous tomcat configuration
+remove_tomcat_previous:
+  file.rename:
+    - source: /etc/sysconfig/tomcat
+    - name: /etc/sysconfig/tomcat.bak
+    - force: True
+    - onlyif: test -f /etc/sysconfig/tomcat
 
 jmx_tomcat_config:
   file.managed:
@@ -100,9 +105,6 @@ jmx_exporter_tomcat_service_cleanup:
 jmx_exporter_taskomatic_systemd_config_cleanup:
   file.absent:
     - name: /etc/prometheus-jmx_exporter/taskomatic/environment
-
-{% set remove_jmx_props = {'service': 'taskomatic', 'file': '/etc/rhn/taskomatic.conf'} %}
-{%- include 'srvmonitoring/removejmxprops.sls' %}
 
 jmx_exporter_taskomatic_yaml_config_cleanup:
   file.absent:
