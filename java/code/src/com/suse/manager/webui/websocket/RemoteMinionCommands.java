@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.frontend.events.TransactionHelper;
-import com.redhat.rhn.frontend.servlets.LocalizedEnvironmentFilter;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.maintenance.MaintenanceManager;
@@ -74,8 +73,10 @@ import javax.websocket.server.ServerEndpoint;
  * Websocket endpoint for executing remote commands on Salt minions.
  * NOTE: there's an endpoint instance for each websocket session
  */
-@ServerEndpoint(value = "/websocket/minion/remote-commands")
+@ServerEndpoint(value = "/websocket/minion/remote-commands", configurator = WebsocketSessionConfigurator.class)
 public class RemoteMinionCommands {
+
+    private static final String PX_SESSION_ID = "pxSessionID";
 
     // Logger for this class
     private static final Logger LOG = LogManager.getLogger(RemoteMinionCommands.class);
@@ -95,18 +96,18 @@ public class RemoteMinionCommands {
      */
     @OnOpen
     public void onOpen(Session session) {
-        this.sessionId = LocalizedEnvironmentFilter.getCurrentSessionId();
-        if (this.sessionId == null) {
-            try {
-                LOG.debug("No web sessionId available. Closing the web socket.");
-                session.close();
-            }
-            catch (IOException e) {
-                LOG.debug("Error closing web socket session", e);
-            }
+        if (session != null) {
+            Optional.ofNullable(session.getUserProperties().get(PX_SESSION_ID))
+                    .map(pxSessionId -> (Long) pxSessionId)
+                    .ifPresentOrElse(pxSessionId -> {
+                                LOG.debug(String.format("Hooked a new websocket session [id:%s]", session.getId()));
+                                sessionId = pxSessionId;
+                                HEARTBEAT_SERVICE.register(session);
+                            },
+                            ()-> LOG.debug("no authenticated user."));
         }
         else {
-            HEARTBEAT_SERVICE.register(session);
+            LOG.debug("No web sessionId available. Closing the web socket.");
         }
     }
 
@@ -134,6 +135,10 @@ public class RemoteMinionCommands {
         ExecuteMinionActionDto msg = Json.GSON.fromJson(
                 messageBody, ExecuteMinionActionDto.class);
         try {
+            if (sessionId == null) {
+                LOG.debug("No web sessionId available. Stop message processing.");
+                return;
+            }
             WebSession webSession = WebSessionFactory.lookupById(sessionId);
 
             if (invalidWebSession(session, webSession)) {
