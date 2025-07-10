@@ -502,10 +502,7 @@ else
 fi
 
 # This awk command can read a single line yaml value which may optionally be double or single quoted.
-COBBLER_CONF="/etc/cobbler/settings.yaml"
-if [ ! -f "$COBBLER_CONF" ]; then
-    COBBLER_CONF="/etc/cobbler/settings"
-fi
+COBBLER_CONF="/etc/cobbler/settings.d/zz-uyuni.settings"
 OLD_HOSTNAME=$(awk -F ':' '/redhat_management_server/{sub(/^[[:blank:]]+/,"", $2); gsub(/["'\'']/, "", $2); print $2}' "$COBBLER_CONF")
 
 echo "=============================================" | tee -a $LOG
