@@ -688,7 +688,7 @@ public class SaltUtils {
      * @return PackageEvr
      */
     public static PackageEvr parsePackageEvr(Optional<String> epoch, String version, Optional<String> release,
-                                              PackageType type) {
+                                             PackageType type) {
         return switch (type) {
             case DEB -> PackageEvrFactory.lookupOrCreatePackageEvr(PackageEvr.parseDebian(version));
             case RPM -> PackageEvrFactory.lookupOrCreatePackageEvr(epoch.map(StringUtils::trimToNull).orElse(null),

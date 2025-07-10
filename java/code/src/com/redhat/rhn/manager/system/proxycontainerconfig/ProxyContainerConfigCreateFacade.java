@@ -79,13 +79,17 @@ public interface ProxyContainerConfigCreateFacade {
      * @param certData                 the data needed to generate the new proxy SSL certificate.
      *                                 Can be omitted if proxyCertKey is not provided
      * @param certManager              the SSLCertManager to use
+     * @param sshPub                   the proxy SSH public key if known
+     * @param sshPriv                  the proxy SSH private key if known
+     * @param sshParent                the parent SSH public key if known
      * @return the configuration files as a map
      */
     Map<String, Object> createFiles(
             SaltApi saltApi, SystemEntitlementManager systemEntitlementManager, User user,
             String serverFqdn, String proxyFqdn, Integer proxyPort, Long maxCache, String email,
             String rootCA, List<String> intermediateCAs, SSLCertPair proxyCertKey,
-            SSLCertPair caPair, String caPassword, SSLCertData certData, SSLCertManager certManager
+            SSLCertPair caPair, String caPassword, SSLCertData certData, SSLCertManager certManager,
+            String sshPub, String sshPriv, String sshParent
     );
 
 }

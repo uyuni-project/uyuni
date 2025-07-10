@@ -29,6 +29,7 @@ public class UyuniGeneralException extends RuntimeException implements Serializa
      * @param errorsIn the list of errors
      */
     public UyuniGeneralException(List<UyuniError> errorsIn) {
+        super(String.join(". ", errorsIn.stream().map(UyuniError::getMessage).toList()));
         this.errors = errorsIn;
     }
 
