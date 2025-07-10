@@ -78,7 +78,8 @@ public class ProxyConfigUpdateFileAcquisitor implements ProxyConfigUpdateContext
                             context.getRootCA(),
                             context.getIntermediateCAs(),
                             new SSLCertPair(context.getProxyCert(), context.getProxyKey()),
-                            null, null, null, new SSLCertManager())
+                            null, null, null, new SSLCertManager(),
+                            request.getProxySshPub(), request.getProxySshPriv(), request.getParentSshPub())
             );
 
         }

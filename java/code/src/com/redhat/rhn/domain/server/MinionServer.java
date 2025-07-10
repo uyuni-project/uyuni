@@ -173,8 +173,7 @@ public class MinionServer extends Server implements SaltConfigurable {
      * @param pillarsIn value of pillars
      */
     public void setPillars(Set<Pillar> pillarsIn) {
-        pillars.clear();
-        pillars.addAll(pillarsIn);
+        this.pillars = pillarsIn;
     }
 
     /**

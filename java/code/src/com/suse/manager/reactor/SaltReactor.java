@@ -56,6 +56,9 @@ import com.suse.manager.webui.utils.salt.custom.ImageDeployedEvent;
 import com.suse.manager.webui.utils.salt.custom.ImageSyncedEvent;
 import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
 import com.suse.manager.webui.utils.salt.custom.SystemIdGenerateEvent;
+import com.suse.proxy.event.ProxyBackupEvent;
+import com.suse.proxy.event.ProxyBackupEventAction;
+import com.suse.proxy.event.ProxyBackupEventMessage;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.BatchStartedEvent;
 import com.suse.salt.netapi.event.BeaconEvent;
@@ -138,6 +141,7 @@ public class SaltReactor {
                 ImageSyncedEventMessage.class);
         MessageQueue.registerAction(new PXEEventMessageAction(),
                 PXEEventMessage.class);
+        MessageQueue.registerAction(new ProxyBackupEventAction(saltApi), ProxyBackupEventMessage.class);
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
@@ -183,9 +187,10 @@ public class SaltReactor {
                ImageDeployedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                ImageSyncedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                PXEEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
-               BeaconEvent.parse(event).map(this::eventToMessages).orElse(
+               BeaconEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
+               ProxyBackupEvent.parse(event).map(this::eventToMessages).orElse(
                empty()
-        ))))))));
+        )))))))));
     }
 
     /**
@@ -313,5 +318,7 @@ public class SaltReactor {
     private Stream<EventMessage> eventToMessages(PXEEvent pxeEvent) {
         return of(new PXEEventMessage(pxeEvent));
     }
-
+    private Stream<EventMessage> eventToMessages(ProxyBackupEvent proxyEvent) {
+        return of(new ProxyBackupEventMessage(proxyEvent));
+    }
 }

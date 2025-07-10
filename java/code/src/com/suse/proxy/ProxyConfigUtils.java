@@ -25,11 +25,14 @@ import static com.suse.utils.Predicates.allAbsent;
 import static com.suse.utils.Predicates.isAbsent;
 import static com.suse.utils.Predicates.isProvided;
 
+import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.server.Pillar;
 
+import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.proxy.model.ProxyConfig;
 import com.suse.proxy.model.ProxyConfigImage;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -78,6 +81,9 @@ public class ProxyConfigUtils {
     public static final String REGISTRY_MODE_ADVANCED = "advanced";
     public static final String REGISTRY_BASE_URL = "registryBaseURL";
     public static final String REGISTRY_BASE_TAG = "registryBaseTag";
+    public static final String PROXY_SSH_PUB = "proxySshPub";
+    public static final String PROXY_SSH_PRIV = "proxySshPriv";
+    public static final String PROXY_SSH_PARENT_PUB = "parentSshPub";
 
     // Registry entries
     public static final String PILLAR_REGISTRY_ENTRY = "registries";
@@ -109,6 +115,9 @@ public class ProxyConfigUtils {
         proxyConfig.setProxyCert(Objects.toString(pillar.get(PROXY_CERT_FIELD), null));
         proxyConfig.setProxyKey(Objects.toString(pillar.get(PROXY_KEY_FIELD), null));
 
+        proxyConfig.setProxySshPub(Objects.toString(pillar.get(PROXY_SSH_PUB), null));
+        proxyConfig.setProxySshPriv(Objects.toString(pillar.get(PROXY_SSH_PRIV), null));
+        proxyConfig.setParentSshPub(Objects.toString(pillar.get(PROXY_SSH_PARENT_PUB), null));
 
         Map<String, Object> registries = (Map<String, Object>) pillar.get(PILLAR_REGISTRY_ENTRY);
         if (isProvided(registries)) {
@@ -162,6 +171,80 @@ public class ProxyConfigUtils {
         }
 
         return proxyConfig;
+    }
+
+    /**
+     * Stores ProxyConfig to pillar
+     *
+     * @param proxyConfig ProxyConfig to store
+     * @return the pillar object with stored proxyConfig
+     */
+    public static Pillar proxyConfigToPillar(ProxyConfig proxyConfig) {
+        Pillar pillar = new Pillar(ProxyConfigUtils.PROXY_PILLAR_CATEGORY, new HashMap<>());
+
+        if (proxyConfig == null) {
+            return pillar;
+        }
+
+        pillar.add(SERVER_ID_FIELD, proxyConfig.getServerId());
+        pillar.add(PROXY_FQDN_FIELD, proxyConfig.getProxyFqdn());
+        pillar.add(PARENT_FQDN_FIELD, proxyConfig.getParentFqdn());
+        pillar.add(PROXY_PORT_FIELD, proxyConfig.getProxyPort());
+        pillar.add(MAX_CACHE_FIELD, proxyConfig.getMaxCache());
+        pillar.add(EMAIL_FIELD, proxyConfig.getEmail());
+        pillar.add(ROOT_CA_FIELD, proxyConfig.getRootCA());
+        pillar.add(INTERMEDIATE_CAS_FIELD, proxyConfig.getIntermediateCAs());
+        pillar.add(PROXY_CERT_FIELD, proxyConfig.getProxyCert());
+        pillar.add(PROXY_KEY_FIELD, proxyConfig.getProxyKey());
+
+        pillar.add(PROXY_SSH_PUB, proxyConfig.getProxySshPub());
+        pillar.add(PROXY_SSH_PRIV, proxyConfig.getProxySshPriv());
+        pillar.add(PROXY_SSH_PARENT_PUB, proxyConfig.getParentSshPub());
+
+        Pillar registries = new Pillar();
+
+        ProxyConfigImage httpImageEntry = proxyConfig.getHttpdImage();
+        if (isProvided(httpImageEntry)) {
+            Pillar subEntry = new Pillar();
+            subEntry.add(PILLAR_REGISTRY_URL_ENTRY, httpImageEntry.getUrl());
+            subEntry.add(PILLAR_REGISTRY_TAG_ENTRY, httpImageEntry.getTag());
+            registries.add(PROXY_HTTPD.getImageName(), subEntry);
+        }
+
+        ProxyConfigImage saltBrokerImageEntry = proxyConfig.getSaltBrokerImage();
+        if (isProvided(saltBrokerImageEntry)) {
+            Pillar subEntry = new Pillar();
+            subEntry.add(PILLAR_REGISTRY_URL_ENTRY, saltBrokerImageEntry.getUrl());
+            subEntry.add(PILLAR_REGISTRY_TAG_ENTRY, saltBrokerImageEntry.getTag());
+            registries.add(PROXY_SALT_BROKER.getImageName(), subEntry);
+        }
+
+        ProxyConfigImage squidImageEntry = proxyConfig.getSaltBrokerImage();
+        if (isProvided(squidImageEntry)) {
+            Pillar subEntry = new Pillar();
+            subEntry.add(PILLAR_REGISTRY_URL_ENTRY, squidImageEntry.getUrl());
+            subEntry.add(PILLAR_REGISTRY_TAG_ENTRY, squidImageEntry.getTag());
+            registries.add(PROXY_SQUID.getImageName(), subEntry);
+        }
+
+        ProxyConfigImage sshImageEntry = proxyConfig.getSaltBrokerImage();
+        if (isProvided(sshImageEntry)) {
+            Pillar subEntry = new Pillar();
+            subEntry.add(PILLAR_REGISTRY_URL_ENTRY, sshImageEntry.getUrl());
+            subEntry.add(PILLAR_REGISTRY_TAG_ENTRY, sshImageEntry.getTag());
+            registries.add(PROXY_SSH.getImageName(), subEntry);
+        }
+
+        ProxyConfigImage tftpImageEntry = proxyConfig.getSaltBrokerImage();
+        if (isProvided(tftpImageEntry)) {
+            Pillar subEntry = new Pillar();
+            subEntry.add(PILLAR_REGISTRY_URL_ENTRY, tftpImageEntry.getUrl());
+            subEntry.add(PILLAR_REGISTRY_TAG_ENTRY, tftpImageEntry.getTag());
+            registries.add(PROXY_TFTPD.getImageName(), subEntry);
+        }
+
+        pillar.add(PILLAR_REGISTRY_ENTRY, registries);
+        return pillar;
     }
 
     /**
@@ -247,6 +330,38 @@ public class ProxyConfigUtils {
         }
 
         return data;
+    }
+
+    /**
+     * Load collected files to the ProxyConfig
+     *
+     * @param configPath path to the general configuration file
+     * @param httpdPath path to the httpd configuration file
+     * @param sshPath path to the ssh configuration file
+     * @return map object with parsed data
+     */
+    public static ProxyConfig loadFilesToProxyConfig(Path configPath, Path httpdPath, Path sshPath) {
+        ProxyConfig proxyConfig = new ProxyConfig();
+
+        Map<String, String> httpd = YamlHelper.loadAs(
+                FileUtils.readStringFromFile(httpdPath.toString()), Map.class);
+        proxyConfig.setProxyCert(httpd.get("server_crt"));
+        proxyConfig.setProxyKey(httpd.get("server_key"));
+
+        Map<String, String> ssh = YamlHelper.loadAs(
+                FileUtils.readStringFromFile(sshPath.toString()), Map.class);
+        proxyConfig.setProxySshPriv(ssh.get("server_ssh_push"));
+        proxyConfig.setProxySshPub(ssh.get("server_ssh_push_pub"));
+        proxyConfig.setParentSshPub(ssh.get("server_ssh_key_pub"));
+
+        Map<String, Object> config = YamlHelper.loadAs(
+                FileUtils.readStringFromFile(configPath.toString()), Map.class);
+        proxyConfig.setRootCA(config.get("ca_crt").toString());
+        proxyConfig.setEmail(config.get("email").toString());
+        proxyConfig.setMaxCache((Integer)config.get("max_cache_size_mb"));
+        proxyConfig.setParentFqdn(config.get("server").toString());
+        proxyConfig.setProxyFqdn(config.get("proxy_fqdn").toString());
+        return proxyConfig;
     }
 
     /**

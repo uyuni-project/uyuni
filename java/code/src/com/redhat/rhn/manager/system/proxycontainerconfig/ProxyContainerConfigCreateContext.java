@@ -69,7 +69,7 @@ public class ProxyContainerConfigCreateContext {
             SaltApi saltApiIn, User userIn, SystemEntitlementManager systemEntitlementManagerIn, String serverFqdnIn,
             String proxyFqdnIn, Integer proxyPortIn, Long maxCacheIn, String emailIn, String rootCAIn,
             List<String> intermediateCAsIn, SSLCertPair proxyCertKeyIn, SSLCertPair caPairIn, String caPasswordIn,
-            SSLCertData certDataIn, SSLCertManager certManagerIn
+            SSLCertData certDataIn, SSLCertManager certManagerIn, String sshPubIn, String sshPrivIn, String sshParentIn
     ) {
         saltApi = saltApiIn;
         user = userIn;
@@ -86,6 +86,10 @@ public class ProxyContainerConfigCreateContext {
         caPassword = caPasswordIn;
         certData = certDataIn;
         certManager = certManagerIn;
+        serverSshPublicKey = sshParentIn;
+        if (sshPubIn != null && sshPrivIn != null) {
+            proxySshKey = new MgrUtilRunner.SshKeygenResult(sshPrivIn, sshPubIn);
+        }
     }
 
     public SaltApi getSaltApi() {
