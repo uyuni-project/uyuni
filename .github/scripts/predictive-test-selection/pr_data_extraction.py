@@ -36,17 +36,13 @@ import datetime
 import requests
 from github import Github
 
-from config import REPO_FULL_NAME, TEST_WORKFLOW_NAME, PR_FEATURES_CSV_FILENAME
-
-# ------------------------------
-# Constants
-# ------------------------------
-
-# Time windows (in days) to track recent change frequency of PR modified files
-RECENT_DAYS = [3, 14, 56]
-
-# Oversample when fetching the latest N PRs to account for those missing Cucumber reports
-PR_OVERSAMPLE_MULTIPLIER = 4
+from config import (
+    REPO_FULL_NAME,
+    TEST_WORKFLOW_NAME,
+    PR_FEATURES_CSV_FILENAME,
+    RECENT_DAYS,
+    PR_OVERSAMPLE_MULTIPLIER,
+)
 
 def setup_logging(level, log_file="script.log"):
     """

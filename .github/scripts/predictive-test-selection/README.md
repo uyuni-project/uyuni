@@ -22,7 +22,7 @@ The project is composed of several interconnected parts. This README explains ea
 ### How to Use the Script
 
 1. Set the `GITHUB_TOKEN` environment variable with a valid GitHub Access Token.
-2. Optionally, adjust `REPO_FULL_NAME`, `TEST_WORKFLOW_NAME`, and `PR_FEATURES_CSV_FILENAME` in [config.py](config.py), as well as the constants at the top of the script.
+2. Optionally, adjust PR Data Extraction constants in [config.py](config.py)
 3. The script supports two modes:
     1. **Training mode**: Collects data from the latest `N` PRs (with Cucumber reports). This includes downloading the Cucumber reports for secondary tests executed on each PR, enabling the preparation of training data that links PRs to their corresponding test results.
     2. **Prediction mode**: Gathers data from a single PR. In this mode, Cucumber reports are not collected, as they are not available in production scenarios where the goal is to predict which tests are most likely to fail for a new PR.
