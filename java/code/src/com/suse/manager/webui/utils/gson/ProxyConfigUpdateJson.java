@@ -43,6 +43,11 @@ public class ProxyConfigUpdateJson {
     private String proxyCert;
     private String proxyKey;
 
+    private String proxySshPub;
+    private String proxySshPriv;
+    private String parentSshPub;
+
+
     private String sourceMode;
     private String registryMode;
     private String registryBaseURL;
@@ -90,6 +95,9 @@ public class ProxyConfigUpdateJson {
      * @param registrySshTagIn Ssh image tag
      * @param registryTftpdURLIn Tftpd image registry
      * @param registryTftpdTagIn Tftpd image tag
+     * @param proxySshPubIn The proxy SSH public key
+     * @param proxySshPrivIn The proxy SSH private key
+     * @param parentSshPubIn The SSH public key of the proxy's parent
      */
 
     public ProxyConfigUpdateJson(
@@ -103,7 +111,9 @@ public class ProxyConfigUpdateJson {
         String registrySaltbrokerURLIn, String registrySaltbrokerTagIn,
         String registrySquidURLIn, String registrySquidTagIn,
         String registrySshURLIn, String registrySshTagIn,
-        String registryTftpdURLIn, String registryTftpdTagIn
+        String registryTftpdURLIn, String registryTftpdTagIn,
+        String proxySshPubIn, String proxySshPrivIn,
+        String parentSshPubIn
         ) {
         serverId = serverIdIn;
         parentFqdn = parentFqdnIn;
@@ -129,6 +139,9 @@ public class ProxyConfigUpdateJson {
         registrySshTag = registrySshTagIn;
         registryTftpdURL = registryTftpdURLIn;
         registryTftpdTag = registryTftpdTagIn;
+        proxySshPub = proxySshPubIn;
+        proxySshPriv = proxySshPrivIn;
+        parentSshPub = parentSshPubIn;
     }
 
     public String getParentFqdn() {
@@ -221,6 +234,18 @@ public class ProxyConfigUpdateJson {
 
     public Long getServerId() {
         return serverId;
+    }
+
+    public String getProxySshPub() {
+        return proxySshPub;
+    }
+
+    public String getProxySshPriv() {
+        return proxySshPriv;
+    }
+
+    public String getParentSshPub() {
+        return parentSshPub;
     }
 
     public String getUseCertsMode() {
