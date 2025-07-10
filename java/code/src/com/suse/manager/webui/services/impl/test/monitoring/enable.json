@@ -167,13 +167,13 @@
             "duration": 8.879,
             "__id__": "jmx_exporter_tomcat_yaml_config"
         },
-        "file_|-jmx_tomcat_config_|-/usr/lib/systemd/system/tomcat.service.d/jmx.conf_|-managed": {
+        "file_|-jmx_tomcat_config_|-/etc/sysconfig/tomcat/systemd/jmx.conf_|-managed": {
             "changes": {
                 "diff": "New file",
                 "mode": "0644"
             },
-            "comment": "File /usr/lib/systemd/system/tomcat.service.d/jmx.conf updated",
-            "name": "/usr/lib/systemd/system/tomcat.service.d/jmx.conf",
+            "comment": "File /etc/sysconfig/tomcat/systemd/jmx.conf updated",
+            "name": "/etc/sysconfig/tomcat/systemd/jmx.conf",
             "result": true,
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 13,
@@ -298,13 +298,13 @@
             "duration": 6.03,
             "__id__": "jmx_exporter_taskomatic_yaml_config"
         },
-        "file_|-jmx_taskomatic_config_|-/usr/lib/systemd/system/taskomatic.service.d/jmx.conf_|-managed": {
+        "file_|-jmx_taskomatic_config_|-/etc/sysconfig/taskomatic/systemd/jmx.conf_|-managed": {
             "changes": {
                 "diff": "New file",
                 "mode": "0644"
             },
-            "comment": "File /usr/lib/systemd/system/taskomatic.service.d/jmx.conf updated",
-            "name": "/usr/lib/systemd/system/taskomatic.service.d/jmx.conf",
+            "comment": "File /etc/sysconfig/taskomatic/systemd/jmx.conf updated",
+            "name": "/etc/sysconfig/taskomatic/systemd/jmx.conf",
             "result": true,
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 24,
