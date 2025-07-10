@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.action.salt.build;
 
 import static com.suse.manager.webui.services.SaltConstants.SALT_CP_PUSH_ROOT_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
-
 import static java.util.stream.Collectors.toMap;
 
 import com.redhat.rhn.common.conf.Config;
@@ -25,13 +24,22 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFormatter;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageFile;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
+import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.image.OSImageStoreUtils;
+import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.MinionSummary;
+import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.utils.SaltUtils;
@@ -40,6 +48,10 @@ import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum;
 import com.suse.manager.webui.utils.salt.custom.OSImageBuildImageInfoResult;
 import com.suse.manager.webui.utils.salt.custom.OSImageBuildSlsResult;
+import com.suse.manager.webui.utils.token.DownloadTokenBuilder;
+import com.suse.manager.webui.utils.token.TokenBuildingException;
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.utils.Json;
 
 import com.google.gson.JsonElement;
@@ -48,37 +60,23 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.image.DockerfileProfile;
-import com.redhat.rhn.domain.image.ImageStore;
-import com.redhat.rhn.domain.image.KiwiProfile;
-import com.redhat.rhn.domain.image.ProfileCustomDataValue;
-import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.MinionSummary;
-import com.redhat.rhn.domain.token.ActivationKey;
-import com.redhat.rhn.domain.token.ActivationKeyFactory;
-
-import com.suse.manager.webui.utils.token.DownloadTokenBuilder;
-import com.suse.manager.webui.utils.token.TokenBuildingException;
-import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.State;
-
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 
 /**
  * ApplyStatesAction - Action class representing the application of Salt states.
@@ -142,7 +140,7 @@ public class ImageBuildAction extends Action {
 
         //TODO: optimal scheduling would be to group by host and orgid
         return minions.stream().collect(
-                Collectors.toMap(minion -> {
+                toMap(minion -> {
                             Map<String, Object> pillar = new HashMap<>();
 
                             profile.asDockerfileProfile().ifPresent(dockerfileProfile -> {

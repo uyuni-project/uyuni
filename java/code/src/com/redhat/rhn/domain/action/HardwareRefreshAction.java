@@ -15,28 +15,18 @@
 package com.redhat.rhn.domain.action;
 
 
-import com.redhat.rhn.domain.server.MinionSummary;
-
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.State;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.SAPWorkload;
 
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.utils.Json;
 
 import com.google.gson.JsonElement;
@@ -46,7 +36,11 @@ import org.apache.logging.log4j.Logger;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -117,7 +111,7 @@ public class HardwareRefreshAction extends Action {
      * @param serverAction the server action
      */
     private void handleHardwareProfileUpdate(MinionServer server, HwProfileUpdateSlsResult result,
-                                                    ServerAction serverAction) {
+                                             ServerAction serverAction) {
         Instant start = Instant.now();
 
         HardwareMapper hwMapper = new HardwareMapper(server,

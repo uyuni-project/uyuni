@@ -15,10 +15,10 @@
 
 package com.redhat.rhn.domain.action.rhnpackage;
 
-import com.redhat.rhn.domain.action.ActionFactory;
 import static java.util.Collections.singletonMap;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -27,12 +27,11 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import com.suse.manager.utils.SaltUtils;
-
-import com.google.gson.JsonElement;
-
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
+
+import com.google.gson.JsonElement;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;

@@ -28,18 +28,18 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.utils.SaltUtils;
+import com.suse.salt.netapi.calls.LocalCall;
 
 import com.google.gson.JsonElement;
 
 import java.util.Collections;
-import java.util.HashSet;
-import com.suse.salt.netapi.calls.LocalCall;
-
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+
 
 /**
  * ApplyStatesAction - Action class representing the application of Salt states.

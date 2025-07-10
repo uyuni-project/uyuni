@@ -23,11 +23,11 @@ import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.model.attestation.CoCoAttestationStatus;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.webui.utils.salt.custom.CoCoAttestationRequestData;
-import com.suse.utils.Json;
 import com.suse.manager.webui.services.SaltParameters;
+import com.suse.manager.webui.utils.salt.custom.CoCoAttestationRequestData;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
+import com.suse.utils.Json;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;

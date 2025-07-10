@@ -20,37 +20,34 @@ import static java.util.Optional.of;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.server.MinionSummary;
-
-import com.suse.manager.webui.services.SaltParameters;
-import com.suse.salt.netapi.calls.LocalCall;
-
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.AnsibleFactory;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.manager.system.AnsibleManager;
 
+import com.suse.manager.webui.services.SaltParameters;
+import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.utils.Json;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import java.util.List;
-import java.util.Map;
 
 /**
  * InventoryAction - Action class representing the execution of an Ansible inventory refresh

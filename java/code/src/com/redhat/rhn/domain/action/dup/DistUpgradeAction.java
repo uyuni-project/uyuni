@@ -15,9 +15,10 @@
 
 package com.redhat.rhn.domain.action.dup;
 
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
@@ -25,39 +26,23 @@ import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.ServerFactory;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.manager.webui.services.SaltParameters;
-import com.suse.manager.webui.services.pillar.MinionPillarManager;
-import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.State;
-import com.suse.utils.Opt;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
-import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.server.ServerFactory;
-
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.SaltParameters;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeOldSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.results.Change;
 import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.ModuleRun;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
+import com.suse.utils.Opt;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
@@ -66,8 +51,13 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 

@@ -23,10 +23,13 @@ import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImagePackage;
 import com.redhat.rhn.domain.image.ImageRepoDigest;
+import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.InstalledProduct;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
 import com.suse.manager.reactor.utils.RhelUtils;
@@ -37,7 +40,9 @@ import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
+import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Pkg;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
@@ -51,23 +56,13 @@ import org.apache.logging.log4j.Logger;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import com.redhat.rhn.domain.image.ImageStore;
-import com.redhat.rhn.domain.image.ImageStoreFactory;
-import com.redhat.rhn.domain.server.MinionSummary;
-
-import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.State;
-
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ImageInspectAction

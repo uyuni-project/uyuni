@@ -20,19 +20,18 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.ServerAppStream;
 
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.SaltParameters;
 import com.suse.manager.webui.utils.salt.custom.AppStreamsChangeSlsResult;
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
 
 import com.google.gson.JsonElement;
-import com.redhat.rhn.domain.server.MinionSummary;
-
-import com.suse.manager.webui.services.SaltParameters;
-import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.State;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -40,13 +39,12 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 
 public class AppStreamAction extends Action {
     private static final long serialVersionUID = 1L;

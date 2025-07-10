@@ -27,7 +27,9 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.audit.ScapManager;
 
+import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Openscap;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
@@ -35,9 +37,6 @@ import com.suse.utils.Json;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-
-import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.State;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
@@ -48,9 +47,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
-
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;

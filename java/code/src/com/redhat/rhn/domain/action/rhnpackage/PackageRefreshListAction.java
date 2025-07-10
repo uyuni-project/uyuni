@@ -15,17 +15,6 @@
 package com.redhat.rhn.domain.action.rhnpackage;
 
 
-import com.redhat.rhn.domain.server.MinionSummary;
-
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.State;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -36,17 +25,21 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
+import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Pkg;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
@@ -62,6 +55,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;

@@ -19,11 +19,6 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
-
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.manager.utils.SaltUtils;
-
-import com.google.gson.JsonElement;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -32,9 +27,12 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
+
+import com.google.gson.JsonElement;
 
 import java.util.HashMap;
 import java.util.List;
