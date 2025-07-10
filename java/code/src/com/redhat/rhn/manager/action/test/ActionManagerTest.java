@@ -197,7 +197,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         ServerAction serverAction = ServerActionTest.createServerAction(server, action);
-        serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+        serverAction.setStatusCompleted();
 
         action.addServerAction(serverAction);
         ActionManager.storeAction(action);
@@ -222,7 +222,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Server server = ServerTestUtils.createTestSystem(user);
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         ServerAction serverAction = ServerActionTest.createServerAction(server, action);
-        serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+        serverAction.setStatusCompleted();
 
         action.addServerAction(serverAction);
         ActionManager.storeAction(action);
@@ -245,7 +245,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
                 .createTestServer(user), parent);
 
-        child.setStatus(ActionFactory.STATUS_FAILED);
+        child.setStatusFailed();
 
         parent.addServerAction(child);
         ActionFactory.save(parent);
@@ -262,7 +262,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
                 .createTestServer(user), parent);
 
-        child.setStatus(ActionFactory.STATUS_QUEUED);
+        child.setStatusQueued();
 
         parent.addServerAction(child);
         ActionFactory.save(parent);
@@ -286,7 +286,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             TestUtils.saveAndFlush(server);
 
             ServerAction child = ServerActionTest.createServerAction(server, parent);
-            child.setStatus(ActionFactory.STATUS_QUEUED);
+            child.setStatusQueued();
             TestUtils.saveAndFlush(child);
 
             parent.addServerAction(child);
@@ -444,12 +444,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Iterator<ServerAction> iterator = action.getServerActions().iterator();
         ServerAction completed = iterator.next();
         Server serverCompleted = completed.getServer();
-        completed.setStatus(ActionFactory.STATUS_COMPLETED);
+        completed.setStatusCompleted();
 
         // Set second server action to FAILED
         ServerAction failed = iterator.next();
         Server serverFailed = failed.getServer();
-        failed.setStatus(ActionFactory.STATUS_FAILED);
+        failed.setStatusFailed();
 
         // Third server action stays in PICKEDUP
         ServerAction pickedUp = iterator.next();
@@ -596,7 +596,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         servers.forEach(server -> {
             ServerAction serverAction = ActionFactoryTest.createServerAction(server, parent);
-            serverAction.setStatus(first.equals(server) ? ActionFactory.STATUS_FAILED : ActionFactory.STATUS_QUEUED);
+            if (first.equals(server)) {
+                serverAction.setStatusFailed();
+            }
+            else {
+                serverAction.setStatusQueued();
+            }
             parent.addServerAction(serverAction);
             ActionFactory.save(serverAction);
         });
@@ -607,7 +612,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         servers.forEach(server -> {
             ServerAction serverAction = ActionFactoryTest.createServerAction(server, child);
-            serverAction.setStatus(ActionFactory.STATUS_QUEUED);
+            serverAction.setStatusQueued();
             child.addServerAction(serverAction);
             ActionFactory.save(serverAction);
         });
@@ -715,7 +720,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
                 .createTestServer(user), parent);
 
-        child.setStatus(ActionFactory.STATUS_COMPLETED);
+        child.setStatusCompleted();
 
         parent.addServerAction(child);
         ActionFactory.save(parent);
@@ -732,7 +737,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
                 .createTestServer(user), parent);
 
-        child.setStatus(ActionFactory.STATUS_COMPLETED);
+        child.setStatusCompleted();
         child.setCreated(new Date(System.currentTimeMillis()));
 
         parent.addServerAction(child);
@@ -766,7 +771,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
 
-        sa.setStatus(ActionFactory.STATUS_FAILED);
+        sa.setStatusFailed();
         sa.setRemainingTries(0L);
         ActionFactory.save(a1);
 
@@ -781,7 +786,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatusQueued();
         ActionFactory.save(a1);
         DataResult<ActionedSystem> dr = ActionManager.inProgressSystems(user, a1, null);
         assertFalse(dr.isEmpty());
@@ -796,7 +801,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
-        sa.setStatus(ActionFactory.STATUS_FAILED);
+        sa.setStatusFailed();
         ActionFactory.save(a1);
 
         assertFalse(ActionManager.failedSystems(user, a1, null).isEmpty());

@@ -107,7 +107,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(a.getServerActions());
         for (ServerAction next : a.getServerActions()) {
             next.setCompletionTime(new Date());
-            next.setStatus(ActionFactory.STATUS_COMPLETED);
+            next.setStatusCompleted();
         }
         ActionFactory.save(a);
         ConfigRevisionAction cra = a.
@@ -294,7 +294,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         a1.setEarliestAction(Date.from(originalInstant));
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
-        sa.setStatus(ActionFactory.STATUS_FAILED);
+        sa.setStatusFailed();
         sa.setRemainingTries(0L);
         ActionFactory.save(a1);
 

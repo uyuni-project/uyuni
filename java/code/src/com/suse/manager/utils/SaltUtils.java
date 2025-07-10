@@ -471,7 +471,7 @@ public class SaltUtils {
         // If the State was not executed due 'require' statement
         // we directly set the action to FAILED.
         if (jsonResult == null && function.isEmpty()) {
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setStatusFailed();
             serverAction.setResultMsg("Prerequisite failed");
             return;
         }
@@ -479,7 +479,7 @@ public class SaltUtils {
         // Determine the final status of the action
         if (actionFailed(function, jsonResult, success, retcode)) {
             LOG.debug("Status of action {} being set to Failed.", serverAction.getParentAction().getId());
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setStatusFailed();
             // check if the minion is locked (blackout mode)
             String output = getJsonResultWithPrettyPrint(jsonResult);
             if (output.startsWith("\'ERROR") && output.contains("Minion in blackout mode")) {
@@ -488,7 +488,7 @@ public class SaltUtils {
             }
         }
         else {
-            serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+            serverAction.setStatusCompleted();
         }
 
         Action.UpdateAuxArgs auxArgs = new Action.UpdateAuxArgs(retcode, success, jid, this,
@@ -829,7 +829,7 @@ public class SaltUtils {
         int actionsChanged = 0;
         for (ServerAction sa : serverActions) {
             if (shouldCleanupAction(bootTime, sa)) {
-                sa.setStatus(ActionFactory.STATUS_COMPLETED);
+                sa.setStatusCompleted();
                 sa.setCompletionTime(new Date());
                 sa.setResultMsg("Reboot completed.");
                 sa.setResultCode(0L);

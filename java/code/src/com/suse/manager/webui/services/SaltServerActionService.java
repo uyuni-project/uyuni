@@ -10,8 +10,6 @@
  */
 package com.suse.manager.webui.services;
 
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
@@ -225,7 +223,7 @@ public class SaltServerActionService {
                 actionIn.getServerActions().stream()
                         .filter(sa -> failedServerIds.contains(sa.getServer().getId()))
                         .forEach(sa -> {
-                            sa.setStatus(STATUS_FAILED);
+                            sa.setStatusFailed();
                             sa.setResultMsg("Error preparing salt call: " + e.getMessage());
                             sa.setCompletionTime(new Date());
                         });
@@ -914,7 +912,7 @@ public class SaltServerActionService {
                 calls = callsForAction(action, List.of(new MinionSummary(minion)));
             }
             catch (RuntimeException e) {
-                sa.setStatus(STATUS_FAILED);
+                sa.setStatusFailed();
                 sa.setResultMsg("Error preparing salt call: " + e.getMessage());
                 sa.setCompletionTime(new Date());
                 return;
@@ -929,7 +927,7 @@ public class SaltServerActionService {
                 catch (RuntimeException e) {
                     LOG.error("Error executing Salt call for action: {} on minion {}",
                             action.getName(), minion.getMinionId(), e);
-                    sa.setStatus(STATUS_FAILED);
+                    sa.setStatusFailed();
                     sa.setResultMsg("Error calling Salt: " + e.getMessage());
                     sa.setCompletionTime(new Date());
                     return;
@@ -943,7 +941,7 @@ public class SaltServerActionService {
                         if (sa.getRemainingTries() > 0 && errorString.contains("System is going down")) {
                             // SSH login is blocked when a reboot is ongoing. Reschedule this action later again
                             LOG.info("System is going down. Configure re-try in 3 minutes");
-                            sa.setStatus(STATUS_QUEUED);
+                            sa.setStatusQueued();
                             sa.setRemainingTries((sa.getRemainingTries() - 1L));
                             sa.setPickupTime(null);
                             sa.setCompletionTime(null);
@@ -957,13 +955,13 @@ public class SaltServerActionService {
                             }
                             catch (TaskomaticApiException e) {
                                 LOG.error("Unable to reschedule failed Salt SSH Action: {}", errorString, e);
-                                sa.setStatus(STATUS_FAILED);
+                                sa.setStatusFailed();
                                 sa.setResultMsg(errorString);
                                 sa.setCompletionTime(new Date());
                             }
                         }
                         else {
-                            sa.setStatus(STATUS_FAILED);
+                            sa.setStatusFailed();
                             sa.setResultMsg(error.fold(
                                     e -> "function " + e.getFunctionName() + " not available.",
                                     e -> "module " + e.getModuleName() + " not supported.",
@@ -1009,7 +1007,7 @@ public class SaltServerActionService {
                 }, () -> {
                     LOG.error("Action '{}' failed. Got not result from Salt, probably minion is down or " +
                             "could not be contacted.", action.getName());
-                    sa.setStatus(STATUS_FAILED);
+                    sa.setStatusFailed();
                     sa.setResultMsg("Minion is down or could not be contacted.");
                     sa.setCompletionTime(new Date());
                 });
@@ -1091,7 +1089,7 @@ public class SaltServerActionService {
      *
      */
     private void setActionAsPickedUp(ServerAction sa) {
-        sa.setStatus(ActionFactory.STATUS_PICKED_UP);
+        sa.setStatusPickedUp();
         sa.setPickupTime(new Date());
     }
 

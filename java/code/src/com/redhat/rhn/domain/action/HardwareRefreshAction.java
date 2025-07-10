@@ -155,7 +155,7 @@ public class HardwareRefreshAction extends Action {
 
         // Let the action fail in case there is error messages
         if (!hwMapper.getErrors().isEmpty()) {
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setStatusFailed();
             serverAction.setResultMsg("Hardware list could not be refreshed completely:\n" +
                     hwMapper.getErrors().stream().collect(Collectors.joining("\n")));
             serverAction.setResultCode(-1L);

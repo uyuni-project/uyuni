@@ -20,7 +20,6 @@ import static java.util.Optional.of;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.AnsibleFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -116,7 +115,7 @@ public class InventoryAction extends Action {
     @Override
     public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
         if (jsonResult == null) {
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setStatusFailed();
             serverAction.setResultMsg(
                     "Error while requesting inventory data from target system: Got no result from system");
             return;
@@ -142,12 +141,12 @@ public class InventoryAction extends Action {
             }
             catch (JsonSyntaxException e) {
                 LOG.error("Unable to parse Ansible hostnames from json: {}", e.getMessage());
-                serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                serverAction.setStatusFailed();
                 serverAction.setResultMsg("Unable to parse hostnames from inventory: " + inventoryPath);
             }
             catch (LookupException e) {
                 LOG.error(e.getMessage());
-                serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                serverAction.setStatusFailed();
                 serverAction.setResultMsg(e.getMessage());
             }
         }

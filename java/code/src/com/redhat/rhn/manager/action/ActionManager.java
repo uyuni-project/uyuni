@@ -199,7 +199,7 @@ public class ActionManager extends BaseManager {
         Date now = Calendar.getInstance().getTime();
         if (serverAction.isStatusQueued() ||
                 serverAction.isStatusPickedUp()) {
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setStatusFailed();
             serverAction.setResultMsg(message);
             serverAction.setCompletionTime(now);
         }
@@ -734,7 +734,7 @@ public class ActionManager extends BaseManager {
         action.setOrg(user.getOrg());
 
         ServerAction sa = new ServerAction();
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatusQueued();
         sa.setRemainingTries(5L);
         sa.setServerWithCheck(server);
 
@@ -1199,7 +1199,7 @@ public class ActionManager extends BaseManager {
         action.setEarliestAction(earliest);
 
         ServerAction sa = new ServerAction();
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatusQueued();
         sa.setRemainingTries(REMAINING_TRIES);
         sa.setServerWithCheck(server);
         action.addServerAction(sa);
@@ -1566,7 +1566,7 @@ public class ActionManager extends BaseManager {
         Action action = createScheduledAction(scheduler, type, name, earliestAction);
 
         ServerAction sa = new ServerAction();
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatusQueued();
         sa.setRemainingTries(REMAINING_TRIES);
         sa.setServerWithCheck(srvr);
 
@@ -1770,7 +1770,7 @@ public class ActionManager extends BaseManager {
         action.setEarliestAction(earliestAction);
 
         ServerAction sa = new ServerAction();
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatusQueued();
         sa.setRemainingTries(REMAINING_TRIES);
         sa.setServerWithCheck(srvr);
 
@@ -2560,7 +2560,7 @@ public class ActionManager extends BaseManager {
         action.setDetails(details);
 
         ServerAction sa = new ServerAction();
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatusQueued();
         sa.setRemainingTries(REMAINING_TRIES);
         sa.setServerWithCheck(server);
         action.addServerAction(sa);

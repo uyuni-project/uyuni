@@ -259,7 +259,7 @@ public class ActionFactory extends HibernateFactory {
         ServerAction sa = new ServerAction();
         sa.setCreated(new Date());
         sa.setModified(new Date());
-        sa.setStatus(STATUS_QUEUED);
+        sa.setStatusQueued();
         sa.setServerWithCheck(server);
         sa.setParentActionWithCheck(parent);
         sa.setRemainingTries(5L); //arbitrary number from perl
