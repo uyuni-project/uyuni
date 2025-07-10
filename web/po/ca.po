@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:19+0200\n"
-"PO-Revision-Date: 2025-06-06 13:59+0000\n"
+"PO-Revision-Date: 2025-07-10 09:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
 "Language: ca\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -1491,7 +1491,7 @@ msgstr "No s'ha pogut netejar la selecció"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:107
 msgid "Unable to perform action."
-msgstr "No s'ha pogut realitzar l'acció."
+msgstr "No s'ha pogut fer l'acció."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:208
 #: ../html/src/components/package/PackageListActionScheduler.tsx:241
@@ -3231,7 +3231,7 @@ msgstr "Missatges "
 
 #: ../html/src/manager/content-management/create-project/create-project.tsx:32
 msgid "You do not have permissions to perform this action"
-msgstr "No teniu permisos per realitzar aquesta acció"
+msgstr "No teniu permisos per fer aquesta acció"
 
 #: ../html/src/manager/content-management/create-project/create-project.tsx:37
 msgid "Create a new Content Lifecycle Project"
@@ -6253,7 +6253,7 @@ msgstr "Sol·licitud de resposta interrompuda o no vàlida rebuda del servidor. 
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:357
 msgid "Bootstrap process initiated. Your system should be visible at the following location shortly: <link>systems</link>. If any issues arise, you'll receive an error notification. In case you're working with a transactional system, please perform a system reboot to complete the registration process."
-msgstr "S'ha iniciat el procés de Bootstrap. El vostre sistema hauria de ser visible en la següent ubicació: <link>systems</link>. Si sorgeix algun problema, rebreu una notificació d'error. En cas que treballeu amb un sistema transaccional, si us plau, realitzeu un reinici del sistema per completar el procés de registre."
+msgstr "S'ha iniciat el procés de Bootstrap. El vostre sistema hauria de ser visible en la següent ubicació: <link>systems</link>. Si sorgeix algun problema, rebreu una notificació d'error. En cas que treballeu amb un sistema transaccional, si us plau, reinicieu el sistema per completar el procés de registre."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:377
 msgid "Show additional details about this error"
@@ -6294,7 +6294,7 @@ msgstr "Minions Bootstrap"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:467
 msgid "You can add systems to be managed by providing SSH credentials only. {productName} will prepare the system remotely and will perform the registration."
-msgstr "Podeu afegir sistemes que es gestionaran proporcionant només credencials SSH. {productName} prepararà el sistema remotament i realitzarà el registre."
+msgstr "Podeu afegir sistemes que es gestionaran proporcionant només credencials SSH. {productName} prepararà el sistema remotament i farà el registre."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:481
 msgid "e.g., host.domain.com"
