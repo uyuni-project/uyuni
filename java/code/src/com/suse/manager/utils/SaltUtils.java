@@ -498,14 +498,8 @@ public class SaltUtils {
 
         Action action = HibernateFactory.unproxy(serverAction.getParentAction());
 
-        if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
-            //parked here until merged with the other stuff, (ConfigDiffAction) action)
-            ConfigDeployAction.handleUpdateServerActionConfigDiffAction(serverAction, jsonResult, auxArgs,
-                    (ConfigAction)action);
-        }
-        else {
-            action.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
-        }
+        action.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
+
         LOG.debug("Finished update server action for action {}", action.getId());
     }
 
