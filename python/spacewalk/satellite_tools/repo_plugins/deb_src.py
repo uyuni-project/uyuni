@@ -34,13 +34,13 @@ from spacewalk.server import rhnSQL
 from spacewalk.common import repo
 
 try:
-    #  python 2 
-    from urllib import unquote
+    #  python 2
+    from urllib import unquote, quote
     import urlparse
 except ImportError:
     #  python3
-    import urllib.parse as urlparse # pylint: disable=F0401,E0611
-    from urllib.parse import unquote
+    import urllib.parse as urlparse  # pylint: disable=F0401,E0611
+    from urllib.parse import unquote, quote
 
 RETRIES = 10
 RETRY_DELAY = 1
@@ -205,8 +205,18 @@ class DebRepo:
             }
             if self.proxy_username and self.proxy_password:
                 proxies = {
-                    'http': 'http://' + self.proxy_username + ":" + self.proxy_password + "@" + netloc,
-                    'https': 'http://' + self.proxy_username + ":" + self.proxy_password + "@" + netloc,
+                    "http": "http://"
+                    + self.proxy_username
+                    + ":"
+                    + quote(self.proxy_password, safe="")
+                    + "@"
+                    + netloc,
+                    "https": "http://"
+                    + self.proxy_username
+                    + ":"
+                    + quote(self.proxy_password, safe="")
+                    + "@"
+                    + netloc,
                 }
             return proxies
         else:

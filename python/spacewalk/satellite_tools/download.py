@@ -101,7 +101,7 @@ def get_proxies(proxy, user, password):
     if user:
         auth = quote(user)
         if password:
-            auth += ':' + quote(password)
+            auth += ":" + quote(password, safe="")
         proto, rest = re.match(r'(\w+://)(.+)', proxy_string).groups()
         proxy_string = "%s%s@%s" % (proto, auth, rest)
     proxies = {'http': proxy_string, 'https': proxy_string, 'ftp': proxy_string}
