@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Jul 10 18:13:26 CEST 2025 - marina.latini@suse.com
+
+- version 5.0.14-0
+  * CVE-2025-46809: Do not expose HTTP Proxy password
+    when breaking URL format (bsc#1245005)
+  * Enhance permissions for reposync zypper cache
+
+-------------------------------------------------------------------
 Tue Jul 01 10:17:25 CEST 2025 - rosuna@suse.com
 
 - version 5.0.13-0
