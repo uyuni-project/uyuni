@@ -88,6 +88,9 @@ public class LocalizedEnvironmentFilter implements Filter {
         if (webSession != null) {
             CURRENT_SESSION_ID.set(webSession.getId());
         }
+        else {
+            CURRENT_SESSION_ID.remove();
+        }
     }
 
     private void setTimeZone(Context ctx, User user, HttpServletRequest request) {
