@@ -13,6 +13,8 @@ package com.suse.manager.webui.controllers.admin.beans;
 import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssPeripheralChannels;
 
+import java.util.Objects;
+
 /**
  * The information about a peripheral as shown in the list page
  * @param id the id
@@ -35,6 +37,7 @@ public record PeripheralListData(long id, String fqdn, String rootCA, long nSync
             peripheralEntity.getPeripheralChannels().size(),
             peripheralEntity.getPeripheralChannels().stream()
                 .map(IssPeripheralChannels::getPeripheralOrgId)
+                .filter(Objects::nonNull)
                 .distinct()
                 .count()
         );
