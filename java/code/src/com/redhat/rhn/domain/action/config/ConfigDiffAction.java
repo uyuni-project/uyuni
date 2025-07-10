@@ -136,6 +136,10 @@ public class ConfigDiffAction extends ConfigAction {
                                 .orElse(null),
                         fdr));
 
+        if (null == getConfigRevisionActions()) {
+            return;
+        }
+
         getConfigRevisionActions().forEach(cra -> {
             ConfigRevision cr = cra.getConfigRevision();
             String fileName = cr.getConfigFile().getConfigFileName().getPath();
