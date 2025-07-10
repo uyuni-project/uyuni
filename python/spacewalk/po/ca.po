@@ -6,16 +6,15 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-25 09:41+0200\n"
-"PO-Revision-Date: 2025-03-28 15:56+0000\n"
+"PO-Revision-Date: 2025-07-10 09:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
-"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/"
-">\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.3\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #: ../server/apacheAuth.py:72
 #, python-format
@@ -103,7 +102,7 @@ msgstr "No esteu autoritzat per gestionar els paquets de l'organització %s"
 #. take a hike.
 #: ../server/importlib/userAuth.py:132
 msgid "You are not allowed to perform administrative tasks"
-msgstr "No esteu autoritzat per realitzar les tasques administratives"
+msgstr "No esteu autoritzat per fer tasques administratives"
 
 #: ../server/importlib/userAuth.py:159
 #, python-format
@@ -484,9 +483,7 @@ msgstr "Acció no vàlida"
 
 #: ../common/rhnException.py:101
 msgid "You are not allowed to perform administrative tasks on this system."
-msgstr ""
-"No esteu autoritzat per realitzar les tasques administratives en aquest "
-"sistema."
+msgstr "No esteu autoritzat per fer tasques administratives en aquest sistema."
 
 #: ../common/rhnException.py:104
 msgid "The system is already subscribed to the specified channel."
