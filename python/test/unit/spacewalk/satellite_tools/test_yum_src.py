@@ -54,6 +54,7 @@ class YumSrcTest(unittest.TestCase):
         yum_src.CFG.REPOSYNC_MINRATE = 1000
         yum_src.CFG.REPOSYNC_TIMEOUT = 300
         yum_src.fileutils.makedirs = Mock()
+        yum_src.os.chmod = Mock()
         yum_src.os.makedirs = Mock()
         yum_src.os.path.isdir = Mock()
 
@@ -263,6 +264,7 @@ class YumSrcTest(unittest.TestCase):
     @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
     @patch("spacewalk.common.rhnLog", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.chmod", Mock())
     def test_minrate_timeout_config(self):
         CFG = Mock()
         CFG.REPOSYNC_TIMEOUT = 42
@@ -294,6 +296,7 @@ class YumSrcTest(unittest.TestCase):
     @patch("spacewalk.common.rhnLog", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.etree.parse", MagicMock(side_effect=Exception))
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.chmod", Mock())
     def test_get_file_with_mirrorlist_repo(self):
         cs = self._make_dummy_cs()
         cs.url = "http://example.com/url_with_mirrorlist/"
@@ -356,6 +359,7 @@ class YumSrcTest(unittest.TestCase):
     @patch("spacewalk.common.rhnLog", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.etree.parse", MagicMock(side_effect=Exception))
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.chmod", Mock())
     def test_mirror_list_arch(self):
         cs = self._make_dummy_cs()
         fake_mirrorlist_file = self.tmpdir + "/mirrorlist.txt"
@@ -435,6 +439,7 @@ class YumSrcTest(unittest.TestCase):
     @patch("spacewalk.common.rhnLog", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.etree.parse", MagicMock(side_effect=Exception))
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.chmod", Mock())
     def test_proxy_usage_with_mirrorlist(self):
         cs = self._make_dummy_cs()
         fake_mirrorlist_file = self.tmpdir + "/mirrorlist.txt"
