@@ -13,3 +13,5 @@ RECENT_DAYS = [3, 14, 56]
 PR_OVERSAMPLE_MULTIPLIER = 4
 # Maximum number of consecutive PRs without Cucumber reports before aborting the extraction loop
 MAX_CONSECUTIVE_PRS_WITHOUT_CUCUMBER_REPORTS = 15
+# Parent directory for all PRs Cucumber reports folders
+CUCUMBER_REPORTS_PARENT_DIR = "PRs-cucumber-reports"

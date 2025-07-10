@@ -47,6 +47,7 @@ from config import (
     RECENT_DAYS,
     PR_OVERSAMPLE_MULTIPLIER,
     MAX_CONSECUTIVE_PRS_WITHOUT_CUCUMBER_REPORTS,
+    CUCUMBER_REPORTS_PARENT_DIR,
 )
 
 def setup_logging(level, log_file="script.log"):
@@ -211,7 +212,8 @@ def get_cucumber_initial_test_run(test_workflow, pr):
 def download_secondary_cucumber_reports(run_with_cucumber, pr_number, headers):
     """
     Download all Cucumber artifacts from the given workflow run and save them as ZIP files
-    inside a PR-specific folder. Extract and filter secondary/recommended reports.
+    inside a PR-specific folder under a common parent directory.
+    Extract and filter secondary/recommended reports.
 
     Args:
         run_with_cucumber (github.WorkflowRun.WorkflowRun): Workflow run with Cucumber artifacts.
@@ -221,7 +223,7 @@ def download_secondary_cucumber_reports(run_with_cucumber, pr_number, headers):
     Returns:
         bool: True if secondary/recommended reports exist, False otherwise.
     """
-    pr_folder = f"PR{pr_number}"
+    pr_folder = os.path.join(CUCUMBER_REPORTS_PARENT_DIR, f"PR{pr_number}")
     if os.path.exists(pr_folder):
         logger.info("Folder %s exists, skipping artifact download for PR #%d", pr_folder, pr_number)
         return True
