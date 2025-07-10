@@ -87,7 +87,7 @@ public class HardwareRefreshAction extends Action {
      */
     @Override
     public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+        if (serverAction.isStatusFailed()) {
             serverAction.setResultMsg("Failure");
         }
         else {

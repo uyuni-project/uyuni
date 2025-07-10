@@ -151,7 +151,7 @@ public class ApplyStatesAction extends Action {
         String states = details.getMods().isEmpty() ?
                 "highstate" : details.getMods().toString();
         String message = "Successfully applied state(s): " + states;
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+        if (serverAction.isStatusFailed()) {
             message = "Failed to apply state(s): " + states;
 
             NotificationMessage nm = UserNotificationFactory.createNotificationMessage(

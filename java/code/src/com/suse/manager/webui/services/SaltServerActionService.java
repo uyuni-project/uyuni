@@ -10,7 +10,6 @@
  */
 package com.suse.manager.webui.services;
 
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 import static java.util.Collections.emptyMap;
@@ -467,7 +466,7 @@ public class SaltServerActionService {
                                             .findFirst();
                             rebootServerAction.ifPresentOrElse(
                                     ract -> {
-                                        if (ract.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+                                        if (ract.isStatusQueued()) {
                                             setActionAsPickedUp(ract);
                                         }
                                     },
@@ -890,7 +889,7 @@ public class SaltServerActionService {
                 .filter(sa -> sa.getServerId().equals(minion.getId()))
                 .findFirst();
         serverAction.ifPresent(sa -> {
-            if (List.of(STATUS_FAILED, STATUS_COMPLETED).contains(sa.getStatus())) {
+            if (sa.isDone()) {
                 LOG.info("Action '{}' is completed or failed. Skipping.", action.getName());
                 return;
             }
@@ -986,7 +985,7 @@ public class SaltServerActionService {
                                     Optional.of(Xor.right(function)), null);
                         }
 
-                        else if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+                        else if (sa.isStatusQueued()) {
                             setActionAsPickedUp(sa);
                         }
 
@@ -1058,8 +1057,8 @@ public class SaltServerActionService {
             Optional.ofNullable(action)
                     .flatMap(firstAction -> firstAction.getServerActions().stream()
                             .filter(sa -> sa.getServerId().equals(minion.get().getId()))
-                            .filter(sa -> !ActionFactory.STATUS_FAILED.equals(sa.getStatus()))
-                            .filter(sa -> !ActionFactory.STATUS_COMPLETED.equals(sa.getStatus()))
+                            .filter(sa -> !sa.isStatusFailed())
+                            .filter(sa -> !sa.isStatusCompleted())
                             .findFirst()).ifPresent(sa -> sa.fail(message.orElse("Prerequisite failed")));
 
             // walk dependent server actions recursively and set them to failed
@@ -1137,7 +1136,7 @@ public class SaltServerActionService {
                                 ActionFactory.TYPE_REBOOT) && success && retcode == 0) {
                             // Reboot has been scheduled so set reboot action to PICKED_UP.
                             // Wait until next "minion/start/event" to set it to COMPLETED.
-                            if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+                            if (sa.isStatusQueued()) {
                                 setActionAsPickedUp(sa);
                             }
                             return;

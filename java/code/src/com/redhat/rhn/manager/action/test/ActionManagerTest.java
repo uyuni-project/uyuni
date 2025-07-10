@@ -772,7 +772,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         ActionManager.rescheduleAction(a1);
         sa = (ServerAction) ActionFactory.reload(sa);
-        assertEquals(sa.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertTrue(sa.isStatusQueued());
         assertTrue(sa.getRemainingTries() > 0);
     }
 
@@ -831,7 +831,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(a.getServerActions().size(), 1);
         Object[] array = a.getServerActions().toArray();
         ServerAction sa = (ServerAction)array[0];
-        assertEquals(sa.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertTrue(sa.isStatusQueued());
         assertEquals(sa.getServer(), s);
     }
 

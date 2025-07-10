@@ -123,7 +123,7 @@ public class CoCoAttestationAction extends Action {
             serverAction.setResultMsg(msg);
             return;
         }
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+        if (serverAction.isStatusFailed()) {
             String msg = "Error while request attestation data from target system:\n";
             msg += SaltUtils.getJsonResultWithPrettyPrint(jsonResult);
             serverAction.setResultMsg(msg);

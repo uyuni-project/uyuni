@@ -256,7 +256,7 @@ public class ImageBuildAction extends Action {
 
         handleImageBuildLog(info, auxArgs.getSaltApi());
 
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+        if (serverAction.isStatusCompleted()) {
             if (details == null) {
                 LOG.error("Details not found while performing: {} in handleImageBuildData", getName());
                 return;
@@ -341,7 +341,7 @@ public class ImageBuildAction extends Action {
                 }
             }
         }
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+        if (serverAction.isStatusCompleted()) {
             // both building and uploading results succeeded
             info.setBuilt(true);
 

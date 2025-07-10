@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.action.channel;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -102,7 +101,7 @@ public class SubscribeChannelsAction extends Action {
      */
     @Override
     public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+        if (serverAction.isStatusCompleted()) {
             serverAction.setResultMsg("Successfully applied state: " + ApplyStatesEventMessage.CHANNELS);
         }
         else {

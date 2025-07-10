@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.action.server.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -48,19 +49,19 @@ public class ServerActionTest extends RhnBaseTestCase {
         sa1.fail(-1L, "Fail_message", new Date());
         assertEquals(sa1.getResultMsg(), "Fail_message");
         assertEquals(sa1.getResultCode(), Long.valueOf(-1));
-        assertEquals(sa1.getStatus(), ActionFactory.STATUS_FAILED);
+        assertTrue(sa1.isStatusFailed());
 
         ServerAction sa2 = new ServerAction();
         sa2.fail(-1L, "Fail_message");
         assertEquals(sa2.getResultMsg(), "Fail_message");
         assertEquals(sa2.getResultCode(), Long.valueOf(-1));
-        assertEquals(sa2.getStatus(), ActionFactory.STATUS_FAILED);
+        assertTrue(sa2.isStatusFailed());
 
         ServerAction sa3 = new ServerAction();
         sa3.fail("Fail_message");
         assertEquals(sa3.getResultMsg(), "Fail_message");
         assertEquals(sa3.getResultCode(), Long.valueOf(-1));
-        assertEquals(sa3.getStatus(), ActionFactory.STATUS_FAILED);
+        assertTrue(sa3.isStatusFailed());
     }
 
     @Test

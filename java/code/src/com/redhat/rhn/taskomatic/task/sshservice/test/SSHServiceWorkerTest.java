@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.taskomatic.task.sshservice.test;
 
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -140,7 +138,7 @@ public class SSHServiceWorkerTest extends JMockBaseTestCaseWithUser {
         worker.setParentQueue(mockQueue());
         worker.run();
 
-        assertEquals(STATUS_COMPLETED, serverAction.getStatus());
+        assertTrue(serverAction.isStatusCompleted());
         assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
         assertEquals(Long.valueOf(0L), serverAction.getResultCode());
         assertEquals("Reboot completed.", serverAction.getResultMsg());
@@ -212,7 +210,7 @@ public class SSHServiceWorkerTest extends JMockBaseTestCaseWithUser {
         // assertions
         assertRebootCompleted(upcomingServerAction);
         assertRebootCompleted(oldServerAction);
-        assertEquals(STATUS_QUEUED, futureServerAction.getStatus());
+        assertTrue(futureServerAction.isStatusQueued());
         assertEquals(Long.valueOf(5L), futureServerAction.getRemainingTries());
         assertNull(futureServerAction.getResultCode());
         assertTrue(minion.getLastBoot() > 1L);
@@ -273,7 +271,7 @@ public class SSHServiceWorkerTest extends JMockBaseTestCaseWithUser {
     }
 
     private void assertRebootCompleted(ServerAction serverAction) {
-        assertEquals(STATUS_COMPLETED, serverAction.getStatus());
+        assertTrue(serverAction.isStatusCompleted());
         assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
         assertEquals(Long.valueOf(0L), serverAction.getResultCode());
         assertEquals("Reboot completed.", serverAction.getResultMsg());

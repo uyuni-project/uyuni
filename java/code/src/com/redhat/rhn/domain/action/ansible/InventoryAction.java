@@ -122,7 +122,7 @@ public class InventoryAction extends Action {
             return;
         }
         String inventoryPath = details.getInventoryPath();
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+        if (serverAction.isStatusCompleted()) {
             try {
                 Set<String> inventorySystems = AnsibleManager.parseInventoryAndGetHostnames(
                         Json.GSON.fromJson(jsonResult, Map.class));

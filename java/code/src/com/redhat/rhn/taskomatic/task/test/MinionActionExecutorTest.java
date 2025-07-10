@@ -17,6 +17,7 @@ package com.redhat.rhn.taskomatic.task.test;
 
 import static org.jmock.AbstractExpectations.returnValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -134,9 +135,9 @@ public class MinionActionExecutorTest extends JMockBaseTestCaseWithUser {
         String expectedMessage = LOCALIZATION.getMessage("task.action.rejection.reason",
             MinionActionExecutor.MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS);
 
-        assertEquals(ActionFactory.STATUS_COMPLETED, sa1.getStatus());
+        assertTrue(sa1.isStatusCompleted());
 
-        assertEquals(ActionFactory.STATUS_FAILED, sa2.getStatus());
+        assertTrue(sa2.isStatusFailed());
         assertEquals(expectedMessage, sa2.getResultMsg());
         assertEquals(-1, sa2.getResultCode());
     }

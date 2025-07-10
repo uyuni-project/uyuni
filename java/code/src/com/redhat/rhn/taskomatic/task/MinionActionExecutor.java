@@ -193,7 +193,7 @@ public class MinionActionExecutor extends RhnJavaJob {
 
         return action.getServerActions()
                      .stream()
-                     .filter(serverAction -> ActionFactory.STATUS_QUEUED.equals(serverAction.getStatus()))
+                     .filter(serverAction -> serverAction.isStatusQueued())
                      .count();
     }
 }

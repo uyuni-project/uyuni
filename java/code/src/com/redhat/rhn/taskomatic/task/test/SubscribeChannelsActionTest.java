@@ -122,7 +122,7 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
 
         MinionServer server2 = MinionServerFactory.lookupById(serverId).orElse(null);
         assertNotNull(server);
-        assertEquals(ActionFactory.STATUS_QUEUED, serverAction.getStatus());
+        assertTrue(serverAction.isStatusQueued());
         assertNull(serverAction.getResultCode());
         assertEquals(server2, serverAction.getServer());
 

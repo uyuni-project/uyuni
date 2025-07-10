@@ -255,7 +255,7 @@ public class SSHServiceWorker implements QueueWorker {
                 .map(ActionFactory::lookupById)
                 .flatMap(action -> action.getServerActions().stream()
                         .filter(sa -> sa.getServer().equals(minion)).findFirst())
-                .filter(sa -> ActionFactory.STATUS_FAILED.equals(sa.getStatus()))
+                .filter(sa -> sa.isStatusFailed())
                 .isPresent();
         if (nextActionIsFailed) {
             // Next action is failed due to some previous error in the action chain.

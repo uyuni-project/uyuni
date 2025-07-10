@@ -211,7 +211,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         ServerAction sa = (ServerAction)array[0];
         assertTrue(TimeUtilsTest.timeEquals(sa.getCreated().getTime(),
                 sa.getModified().getTime()));
-        assertEquals(sa.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertTrue(sa.isStatusQueued());
 
         assertEquals(sa.getServer(), s);
     }
@@ -303,7 +303,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         a1 = HibernateFactory.reload(a1);
         sa = HibernateFactory.reload(sa);
 
-        assertEquals(sa.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertTrue(sa.isStatusQueued());
         assertTrue(sa.getRemainingTries() > 0);
 
         Instant newEarliestInstant = a1.getEarliestAction().toInstant();
@@ -327,10 +327,10 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         ActionFactory.rescheduleFailedServerActions(a1, 5L);
         sa1 = HibernateFactory.reload(sa1);
 
-        assertEquals(sa1.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertTrue(sa1.isStatusQueued());
         assertTrue(sa1.getRemainingTries() > 0);
 
-        assertEquals(sa2.getStatus(), ActionFactory.STATUS_COMPLETED);
+        assertTrue(sa2.isStatusCompleted());
 
         Instant newEarliestInstant = a1.getEarliestAction().toInstant();
         assertTrue(originalInstant.isBefore(newEarliestInstant));
@@ -355,10 +355,10 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         sa1 = HibernateFactory.reload(sa1);
         sa2 = HibernateFactory.reload(sa2);
 
-        assertEquals(sa1.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertTrue(sa1.isStatusQueued());
         assertTrue(sa1.getRemainingTries() > 0);
 
-        assertEquals(sa2.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertTrue(sa2.isStatusQueued());
         assertTrue(sa2.getRemainingTries() > 0);
     }
 
@@ -390,14 +390,14 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         // Should NOT update if already in final state.
         ActionFactory.updateServerActionsPickedUp(a1, list);
         HibernateFactory.reload(sa1);
-        assertEquals(sa1.getStatus(), ActionFactory.STATUS_FAILED);
+        assertTrue(sa1.isStatusFailed());
 
         list.clear();
         list.add(sa2.getServerId());
         //Should update to STATUS_COMPLETED
         ActionFactory.updateServerActions(a1, list, ActionFactory.STATUS_COMPLETED);
         HibernateFactory.reload(sa2);
-        assertEquals(sa2.getStatus(), ActionFactory.STATUS_COMPLETED);
+        assertTrue(sa2.isStatusCompleted());
     }
 
     @Test
@@ -421,17 +421,17 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         sa3 = HibernateFactory.reload(sa3);
         sa4 = HibernateFactory.reload(sa4);
 
-        assertEquals(ActionFactory.STATUS_COMPLETED, sa1.getStatus());
+        assertTrue(sa1.isStatusCompleted());
 
-        assertEquals(ActionFactory.STATUS_FAILED, sa2.getStatus());
+        assertTrue(sa2.isStatusFailed());
         assertEquals("Test Rejection Reason", sa2.getResultMsg());
         assertEquals(-1, sa2.getResultCode());
 
-        assertEquals(ActionFactory.STATUS_FAILED, sa3.getStatus());
+        assertTrue(sa3.isStatusFailed());
         assertEquals("Test Rejection Reason", sa3.getResultMsg());
         assertEquals(-1, sa3.getResultCode());
 
-        assertEquals(ActionFactory.STATUS_PICKED_UP, sa4.getStatus());
+        assertTrue(sa4.isStatusPickedUp());
     }
 
     public static Action createAction(User user, ActionType type) throws Exception {

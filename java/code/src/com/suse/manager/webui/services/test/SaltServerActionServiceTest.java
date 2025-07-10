@@ -16,7 +16,6 @@ package com.suse.manager.webui.services.test;
 
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_PICKED_UP;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -287,7 +286,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         List<MinionSummary> summaries = result.values().iterator().next();
         assertTrue(summaries.isEmpty());
         ServerAction serverAction = HibernateFactory.reload(action.getServerActions().iterator().next());
-        assertEquals(STATUS_FAILED, serverAction.getStatus());
+        assertTrue(serverAction.isStatusFailed());
     }
 
     @Test
@@ -693,7 +692,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         testService.executeSSHAction(action, minion);
 
         // both status and remaining tries should remain unchanged
-        assertEquals(STATUS_QUEUED, serverAction.getStatus());
+        assertTrue(serverAction.isStatusQueued());
         assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
 
         AtomicInteger counter2 = new AtomicInteger();
@@ -707,11 +706,11 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         testService = createSaltServerActionService(new TestSystemQuery(), saltApi);
 
         testService.executeSSHAction(prereq, minion);
-        assertEquals(STATUS_COMPLETED, prereqServerAction.getStatus());
+        assertTrue(prereqServerAction.isStatusCompleted());
 
         // 2nd try
         testService.executeSSHAction(action, minion);
-        assertEquals(STATUS_COMPLETED, serverAction.getStatus());
+        assertTrue(serverAction.isStatusCompleted());
 
         assertEquals(0, counter.get());
         assertEquals(2, counter2.get());
@@ -732,7 +731,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         testService.executeSSHAction(action, minion);
 
-        assertEquals(STATUS_COMPLETED, serverAction.getStatus());
+        assertTrue(serverAction.isStatusCompleted());
         assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
         assertEquals(0, counter.get());
     }
@@ -774,7 +773,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         testService.executeSSHAction(action, minion);
 
-        assertEquals(STATUS_FAILED, serverAction.getStatus());
+        assertTrue(serverAction.isStatusFailed());
         assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
         assertEquals(0, counter.get());
     }
@@ -800,7 +799,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         testService.executeSSHAction(action, minion);
 
-        assertEquals(STATUS_FAILED, serverAction.getStatus());
+        assertTrue(serverAction.isStatusFailed());
         assertEquals("Prerequisite failed.", serverAction.getResultMsg());
         // this comes from the xmlrpc/queue.py
         assertEquals(Long.valueOf(-100L), serverAction.getResultCode());
@@ -826,7 +825,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         saltServerActionService.executeSSHAction(action, minion);
 
         assertEquals(Long.valueOf(4L), serverAction.getRemainingTries());
-        assertEquals(STATUS_COMPLETED, serverAction.getStatus());
+        assertTrue(serverAction.isStatusCompleted());
     }
 
     /**
@@ -852,7 +851,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         testService.executeSSHAction(action, minion);
 
-        assertEquals(STATUS_FAILED, serverAction.getStatus());
+        assertTrue(serverAction.isStatusFailed());
         assertEquals("Minion is down or could not be contacted.", serverAction.getResultMsg());
     }
 
@@ -882,7 +881,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
             fail("Runtime exception should not have been thrown.");
         }
 
-        assertEquals(STATUS_FAILED, serverAction.getStatus());
+        assertTrue(serverAction.isStatusFailed());
         assertTrue(serverAction.getResultMsg().startsWith("Error calling Salt: "));
     }
 
@@ -909,7 +908,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         testService.executeSSHAction(action, minion);
 
-        assertEquals(STATUS_PICKED_UP, serverAction.getStatus());
+        assertTrue(serverAction.isStatusPickedUp());
         assertEquals(Long.valueOf(4L), serverAction.getRemainingTries());
     }
 
@@ -945,7 +944,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         testService.executeSSHAction(action, minion);
 
         // both status and remaining tries should remain unchanged
-        assertEquals(STATUS_QUEUED, serverAction.getStatus());
+        assertTrue(serverAction.isStatusQueued());
         assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
         assertEquals(0, counter.get());
     }

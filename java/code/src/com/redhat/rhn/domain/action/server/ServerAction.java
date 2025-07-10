@@ -62,6 +62,30 @@ public class ServerAction extends ActionChild implements Serializable {
         return this.status;
     }
 
+    public boolean isStatusQueued() {
+        return status.equals(ActionFactory.STATUS_QUEUED);
+    }
+
+    public boolean isStatusPickedUp() {
+        return status.equals(ActionFactory.STATUS_PICKED_UP);
+    }
+
+    public boolean isStatusCompleted() {
+        return status.equals(ActionFactory.STATUS_COMPLETED);
+    }
+
+    public boolean isStatusFailed() {
+        return status.equals(ActionFactory.STATUS_FAILED);
+    }
+
+    /**
+     * @return if the status represents an action that is in its final state and considered done.
+     * (either completed or failed)
+     */
+    public boolean isDone() {
+        return isStatusCompleted() || isStatusFailed();
+    }
+
     /**
      * Setter for status
      * @param statusIn to set
