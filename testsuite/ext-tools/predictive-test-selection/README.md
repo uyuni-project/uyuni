@@ -69,6 +69,7 @@ or '#<PR_NUMBER>' is a specific PR number to extract features for.
     - Extracts the unique file extensions of the modified files.
     - Retrieves the change history for those files over several recent time windows.
     - Outputs a CSV file containing PR features: file extensions, change history, and PR number.
+    - If the script encounters a configurable number of consecutive PRs without Cucumber reports, it will stop early and log a warning. This prevents unnecessary API calls when it is unlikely that more qualifying PRs exist among the candidates.
 
 ### Q&A
 
@@ -90,7 +91,13 @@ Since the other tests are core tests, they are always executed at the start of e
 
 In practice, running the script with `N = 500` allowed us to collect data for about 150 PRs. We did not hit GitHub API rate limits, the script simply could not obtain more data because older PRs did not have stored Cucumber reports. The script continues processing until it gathers data for `N` PRs or exhausts all `N * PR_OVERSAMPLE_MULTIPLIER` candidates.
 
-To further improve efficiency and minimize unnecessary API calls, a future enhancement could be to stop after encountering a set number of consecutive PRs without Cucumber reports (for example, after 20 misses in a row). Performance could also be improved by parallelizing requests or relying more on local Git operations instead of the GitHub API. While I wasn't able to accurately measure the time it took to collect data for the 150 PRs, it was less than two hours.
+To further improve efficiency and minimize unnecessary API calls, the script will stop after encountering a set number of consecutive PRs without Cucumber reports. This helps avoid wasting time and API requests when it is unlikely that more qualifying PRs exist among the candidates.
+
+Performance could also be improved by parallelizing 
+requests or relying more on local Git operations instead 
+of the GitHub API. While I wasn't able to accurately 
+measure the time it took to collect data for the 150 PRs, 
+it was less than two hours.
 
 #### Why is `PR_OVERSAMPLE_MULTIPLIER` set to 4?
 

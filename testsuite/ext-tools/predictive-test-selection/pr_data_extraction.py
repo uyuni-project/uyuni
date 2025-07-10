@@ -5,17 +5,21 @@ pr_data_extraction.py
 Extracts data from the latest N pull requests (PRs) in the Uyuni repository that triggered 
 a GitHub Actions test workflow and generated Cucumber reports.
 
-For each qualifying PR (training mode):
-- Downloads all Cucumber JSON reports from the initial test run.
-- Extracts and retains only secondary/recommended tests Cucumber reports.
-- Obtains the files modified that triggered the test run in the PR.
+For each PR (training mode):
+- Finds the first completed test run during the PR's lifetime that includes Cucumber reports 
+(if none exist, the PR is skipped).
+- Downloads all Cucumber JSON reports from this initial test run.
+- Extracts and retains only secondary/recommended Cucumber test reports.
+- Identifies the files modified that triggered this test run.
 - Extracts the unique file extensions of the modified files.
-- Obtains the change history of those files over several recent time windows.
-- Outputs a CSV file with PR features: file extensions, change history, and PR number.
+- Retrieves the change history for those files over several recent time windows.
+- Outputs a CSV file containing PR features: file extensions, change history, and PR number.
+- If the script encounters a configurable number of consecutive PRs without Cucumber reports,
+it will stop early and log a warning. This prevents unnecessary API calls when it is unlikely
+that more qualifying PRs exist among the candidates.
 
 In prediction mode (single PR), only extracts modified files, their unique file extensions,
-and change history features for the PR;
-Cucumber reports are not downloaded or processed.
+and change history features for the PR, Cucumber reports are not downloaded or processed.
 
 Requirements:
 - Environment variable GITHUB_TOKEN must be set with a GitHub Access Token.
@@ -42,6 +46,7 @@ from config import (
     PR_FEATURES_CSV_FILENAME,
     RECENT_DAYS,
     PR_OVERSAMPLE_MULTIPLIER,
+    MAX_CONSECUTIVE_PRS_WITHOUT_CUCUMBER_REPORTS,
 )
 
 def setup_logging(level, log_file="script.log"):
@@ -447,6 +452,10 @@ def extract_pr_data(repo_full_name, n, github_token, csv_writer, single_pr_numbe
     their change history, test runs, and downloading Cucumber reports.
     If single_pr_number is set, only process that PR and skip downloading cucumber reports.
 
+    The function will stop early if a configurable number of consecutive PRs do not have
+    Cucumber reports. This prevents wasting API calls when it is unlikely that more qualifying
+    PRs exist among the candidates.
+
     Args:
         repo_full_name (str): Full repository name.
         n (int): Number of PRs to process.
@@ -477,14 +486,30 @@ def extract_pr_data(repo_full_name, n, github_token, csv_writer, single_pr_numbe
 
     prs = get_candidate_prs(repo, n)
     processed_prs_with_cucumber_reports = 0
+    consecutive_without_cucumber = 0
     for pr in prs:
         if processed_prs_with_cucumber_reports >= n:
+            logger.info(
+                "Processed the required number of PRs with Cucumber reports: %d.",
+                processed_prs_with_cucumber_reports
+            )
+            break
+        if consecutive_without_cucumber >= MAX_CONSECUTIVE_PRS_WITHOUT_CUCUMBER_REPORTS:
+            logger.warning(
+                "Stopped after %d consecutive PRs without Cucumber reports. "
+                "Processed %d PRs with Cucumber reports.",
+                MAX_CONSECUTIVE_PRS_WITHOUT_CUCUMBER_REPORTS,
+                processed_prs_with_cucumber_reports
+            )
             break
         logger.info("Processing PR #%d: %s, created at %s", pr.number, pr.title, pr.created_at)
 
         pr_processed = process_training_mode(repo, test_workflow, pr, headers, csv_writer)
         if pr_processed:
             processed_prs_with_cucumber_reports += 1
+            consecutive_without_cucumber = 0
+        else:
+            consecutive_without_cucumber += 1
 
 def process_single_pr_mode(repo, pr, csv_writer):
     """
