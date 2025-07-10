@@ -195,7 +195,7 @@ public class MinionActionChainExecutor extends RhnJavaJob {
                           .map(ActionChainEntry::getAction)
                           .filter(action -> action != null && CollectionUtils.isNotEmpty(action.getServerActions()))
                           .flatMap(action -> action.getServerActions().stream())
-                          .filter(serverAction -> ActionFactory.STATUS_QUEUED.equals(serverAction.getStatus()))
+                          .filter(serverAction -> serverAction.isStatusQueued())
                           .count();
     }
 

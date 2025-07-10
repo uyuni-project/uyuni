@@ -378,7 +378,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         action.setEarliestAction(Date.from(start.toInstant()));
 
         ServerAction serverAction = ServerActionTest.createServerAction(server, action);
-        serverAction.setStatus(ActionFactory.STATUS_QUEUED);
+        serverAction.setStatusQueued();
 
         action.addServerAction(serverAction);
         ActionManager.storeAction(action);

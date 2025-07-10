@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.action.appstream;
 import static java.util.Collections.singletonList;
 
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -120,7 +119,7 @@ public class AppStreamAction extends Action {
             return;
         }
 
-        if (ActionFactory.STATUS_FAILED.equals(serverAction.getStatus())) {
+        if (serverAction.isStatusFailed()) {
             // Filter out the subsequent errors to find the root cause
             var originalErrorMsg = SaltUtils.jsonEventToStateApplyResults(jsonResult)
                     .map(AppStreamAction::getOriginalStateApplyError)

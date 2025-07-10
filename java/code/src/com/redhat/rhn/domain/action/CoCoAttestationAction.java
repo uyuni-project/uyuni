@@ -93,14 +93,14 @@ public class CoCoAttestationAction extends Action {
         Optional<ServerCoCoAttestationReport> optReport =
                 mgr.lookupReportByServerAndAction(serverAction.getServer(), this);
         if (optReport.isEmpty()) {
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setStatusFailed();
             serverAction.setResultMsg("Failed to find a report entry");
             return;
         }
         ServerCoCoAttestationReport report = optReport.get();
 
         if (jsonResult == null) {
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setStatusFailed();
             if (StringUtils.isBlank(serverAction.getResultMsg())) {
                 serverAction.setResultMsg("Error while request attestation data from target system:\n" +
                         "Got no result from system");
@@ -119,11 +119,11 @@ public class CoCoAttestationAction extends Action {
                     .map(JsonElement::toString)
                     .orElse("Got no result");
             LOG.error(msg);
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setStatusFailed();
             serverAction.setResultMsg(msg);
             return;
         }
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+        if (serverAction.isStatusFailed()) {
             String msg = "Error while request attestation data from target system:\n";
             msg += SaltUtils.getJsonResultWithPrettyPrint(jsonResult);
             serverAction.setResultMsg(msg);
