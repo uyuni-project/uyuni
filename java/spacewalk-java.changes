@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jul 10 18:14:34 CEST 2025 - marina.latini@suse.com
+
+- version 5.0.27-0
+  * CVE-2025-46811: Clean up stale sessions on websocket open
+    (bsc#1246119)
+
+-------------------------------------------------------------------
 Tue Jul 01 10:29:10 CEST 2025 - rosuna@suse.com
 
 - version 5.0.26-0
