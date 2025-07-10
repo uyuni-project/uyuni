@@ -73,10 +73,8 @@ public class PackageRefreshListAction extends PackageAction {
     // SUSE OS family as defined in Salt grains
     private static final String OS_FAMILY_SUSE = "Suse";
 
-
     /**
-     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @return minion summaries grouped by local call
+     * {@inheritDoc}
      */
     @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
@@ -87,9 +85,7 @@ public class PackageRefreshListAction extends PackageAction {
     }
 
     /**
-     * @param serverAction
-     * @param jsonResult
-     * @param auxArgs
+     * {@inheritDoc}
      */
     @Override
     public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {

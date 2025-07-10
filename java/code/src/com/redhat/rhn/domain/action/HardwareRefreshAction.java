@@ -52,8 +52,7 @@ public class HardwareRefreshAction extends Action {
     private static final Logger LOG = LogManager.getLogger(HardwareRefreshAction.class);
 
     /**
-     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @return minion summaries grouped by local call
+     * {@inheritDoc}
      */
     @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
@@ -83,11 +82,8 @@ public class HardwareRefreshAction extends Action {
         return ret;
     }
 
-
     /**
-     * @param serverAction
-     * @param jsonResult
-     * @param auxArgs
+     * {@inheritDoc}
      */
     @Override
     public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {

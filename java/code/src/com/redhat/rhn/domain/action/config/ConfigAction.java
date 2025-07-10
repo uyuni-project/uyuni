@@ -125,8 +125,13 @@ public class ConfigAction extends Action {
         return Collections.unmodifiableList(revisionActions);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
-        throw new RuntimeException("SHOULDN'T BE HERE!");
+        //ConfigAction should never be instantiated
+        //instead, one of ConfigDiffAction, ConfigDeployAction,ConfigVerifyAction classes should
+        throw new IllegalStateException("SHOULDN'T BE HERE: ConfigAction::getSaltCalls");
     }
 }

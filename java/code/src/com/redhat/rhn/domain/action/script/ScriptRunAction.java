@@ -135,10 +135,8 @@ public class ScriptRunAction extends ScriptAction {
         }
     }
 
-
     /**
-     * @param minions a list of minion summaries of the minions involved in the given Action
-     * @return minion summaries grouped by local call
+     * {@inheritDoc}
      */
     @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minions) {
@@ -205,9 +203,7 @@ public class ScriptRunAction extends ScriptAction {
     }
 
     /**
-     * @param serverAction
-     * @param jsonResult
-     * @param auxArgs
+     * {@inheritDoc}
      */
     @Override
     public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
