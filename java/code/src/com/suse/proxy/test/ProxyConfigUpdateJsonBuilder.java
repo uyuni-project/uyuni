@@ -22,6 +22,9 @@ import static com.suse.proxy.ProxyConfigUtils.PARENT_FQDN_FIELD;
 import static com.suse.proxy.ProxyConfigUtils.PROXY_CERT_FIELD;
 import static com.suse.proxy.ProxyConfigUtils.PROXY_KEY_FIELD;
 import static com.suse.proxy.ProxyConfigUtils.PROXY_PORT_FIELD;
+import static com.suse.proxy.ProxyConfigUtils.PROXY_SSH_PARENT_PUB;
+import static com.suse.proxy.ProxyConfigUtils.PROXY_SSH_PRIV;
+import static com.suse.proxy.ProxyConfigUtils.PROXY_SSH_PUB;
 import static com.suse.proxy.ProxyConfigUtils.REGISTRY_BASE_TAG;
 import static com.suse.proxy.ProxyConfigUtils.REGISTRY_BASE_URL;
 import static com.suse.proxy.ProxyConfigUtils.REGISTRY_MODE;
@@ -64,6 +67,9 @@ public class ProxyConfigUpdateJsonBuilder {
     private String proxyCert;
     private String proxyKey;
     private String sourceMode;
+    private String sshParentPub;
+    private String sshPub;
+    private String sshKey;
     private String registryMode;
     private String registryBaseURL;
     private String registryBaseTag;
@@ -141,6 +147,21 @@ public class ProxyConfigUpdateJsonBuilder {
         return this;
     }
 
+    public ProxyConfigUpdateJsonBuilder sshParentPub(String sshParentPubIn) {
+        this.sshParentPub = sshParentPubIn;
+        return this;
+    }
+
+    public ProxyConfigUpdateJsonBuilder sshPub(String sshPubIn) {
+        this.sshPub = sshPubIn;
+        return this;
+    }
+
+    public ProxyConfigUpdateJsonBuilder sshKey(String sshKeyIn) {
+        this.sshKey = sshKeyIn;
+        return this;
+    }
+
     public ProxyConfigUpdateJsonBuilder registryMode(String registryModeIn) {
         this.registryMode = registryModeIn;
         return this;
@@ -188,6 +209,9 @@ public class ProxyConfigUpdateJsonBuilder {
         requestJsonObject.addProperty(EMAIL_FIELD, this.email);
         requestJsonObject.addProperty(USE_CERTS_MODE_FIELD, this.useCertsMode);
         requestJsonObject.addProperty(ROOT_CA_FIELD, this.rootCA);
+        requestJsonObject.addProperty(PROXY_SSH_PARENT_PUB, this.sshParentPub);
+        requestJsonObject.addProperty(PROXY_SSH_PUB, this.sshPub);
+        requestJsonObject.addProperty(PROXY_SSH_PRIV, this.sshKey);
         JsonArray intermediateCAsArray = new JsonArray();
         if (isProvided(this.intermediateCAs)) {
             for (String ca : this.intermediateCAs) {

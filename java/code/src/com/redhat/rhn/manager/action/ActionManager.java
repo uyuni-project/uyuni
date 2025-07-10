@@ -2181,4 +2181,20 @@ public class ActionManager extends BaseManager {
         return action;
     }
 
+    /**
+     * Schedule proxy.backup salt state.
+     *
+     * @param loggedInUser The current user
+     * @param proxyIds     A list of systems ids of the proxies
+     * @return the scheduled action
+     *
+     */
+    public static Action scheduleProxyBackup(User loggedInUser, List<Long> proxyIds) throws TaskomaticApiException {
+        Date earliestAction = new Date();
+        Action action = scheduleApplyStates(loggedInUser, proxyIds, Collections.singletonList("proxy.backup"),
+                earliestAction, Optional.empty());
+        action = ActionFactory.save(action);
+        taskomaticApi.scheduleActionExecution(action);
+        return action;
+    }
 }

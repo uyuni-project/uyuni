@@ -9653,6 +9653,15 @@ For a detailed analysis, please refer to the log files.</source>
       <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
       </trans-unit>
+      <trans-unit id="notification.proxybackupfailed" xml:space="preserve">
+        <source>Failed to process proxy backup event</source>
+      </trans-unit>
+      <trans-unit id="notification.proxybackupnominion" xml:space="preserve">
+        <source>No system with {0} name</source>
+      </trans-unit>
+      <trans-unit id="notification.pxeeventfailed" xml:space="preserve">
+        <source>Processing of a PXE event for the minion {0} failed</source>
+      </trans-unit>
       <trans-unit id="maintenance.calendar.name.empty" xml:space="preserve">
         <source>Calendar name required</source>
       </trans-unit>

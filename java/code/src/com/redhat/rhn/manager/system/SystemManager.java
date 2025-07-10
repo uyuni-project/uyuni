@@ -2196,6 +2196,9 @@ public class SystemManager extends BaseManager {
      * @param certData        the data needed to generate the new proxy SSL certificate.
      *                        Can be omitted if proxyCertKey is provided
      * @param certManager     the SSLCertManager to use
+     * @param sshPub          the proxy SSH public key if known
+     * @param sshPriv         the proxy SSH private key if known
+     * @param sshParent       the parent SSH public key if known
      * @return the configuration files as a map
      */
     public Map<String, Object> createProxyContainerConfigFiles(
@@ -2204,11 +2207,13 @@ public class SystemManager extends BaseManager {
             String rootCA, List<String> intermediateCAs,
             SSLCertPair proxyCertKey,
             SSLCertPair caPair, String caPassword, SSLCertData certData,
-            SSLCertManager certManager
+            SSLCertManager certManager,
+            String sshPub, String sshPriv, String sshParent
     ) throws SSLCertGenerationException {
         return this.proxyContainerConfigCreateFacade.createFiles(
                 saltApi, systemEntitlementManager, user, server, proxyName, proxyPort, maxCache, email,
-                rootCA, intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager
+                rootCA, intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager,
+                sshPub, sshPriv, sshParent
         );
     }
 
