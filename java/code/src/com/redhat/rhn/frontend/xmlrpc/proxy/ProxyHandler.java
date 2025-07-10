@@ -40,6 +40,7 @@ import com.redhat.rhn.frontend.xmlrpc.ProxyMissingEntitlementException;
 import com.redhat.rhn.frontend.xmlrpc.ProxyNotActivatedException;
 import com.redhat.rhn.frontend.xmlrpc.ProxySystemIsSatelliteException;
 import com.redhat.rhn.frontend.xmlrpc.SSLCertFaultException;
+import com.redhat.rhn.frontend.xmlrpc.SaltFaultException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -586,7 +587,8 @@ public class ProxyHandler extends BaseHandler {
                 registrySaltbrokerURL, registrySaltbrokerTag,
                 registrySquidURL, registrySquidTag,
                 registrySshURL, registrySshTag,
-                registryTftpdURL, registryTftpdTag
+                registryTftpdURL, registryTftpdTag,
+                null, null, null
             );
 
             proxyConfigUpdateFacade.update(request, systemManager, loggedInUser);
@@ -594,6 +596,31 @@ public class ProxyHandler extends BaseHandler {
         catch (RhnRuntimeException | UyuniGeneralException e) {
             LOG.error("Failed to apply proxy configuration to minion", e);
             throw new ValidationException(e.getMessage());
+        }
+        return 1;
+    }
+
+    /**
+     * Backup the proxy configuration in order to migrate it later.
+     *
+     * @param loggedInUser the connected user
+     * @param serverId the ID of the proxy to backup
+     *
+     * @return 1 in case of success
+     *
+     * @apidoc.doc Deploy a proxy container on given salt minion. Allows individual registry for each image.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "serverId", "The ID of the target server")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int backupConfiguration(User loggedInUser, Integer serverId) {
+        try {
+            Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, serverId);
+            server.asMinionServer().ifPresent(proxy -> systemManager.backupProxyConfig(proxy));
+        }
+        catch (RhnRuntimeException e) {
+            LOG.error("Failed to backup proxy configuration", e);
+            throw new SaltFaultException(e.getMessage());
         }
         return 1;
     }

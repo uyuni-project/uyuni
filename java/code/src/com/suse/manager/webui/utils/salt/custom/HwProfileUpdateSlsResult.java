@@ -94,6 +94,9 @@ public class HwProfileUpdateSlsResult {
     @SerializedName("mgrcompat_|-container_runtime_|-container_runtime.get_container_runtime_|-module_run")
     private Optional<StateApplyResult<Ret<String>>> containerRuntime = Optional.empty();
 
+    @SerializedName("mgrcompat_|-proxy_info_|-proxy.info_|-module_run")
+    private Optional<StateApplyResult<Ret<SumaUtil.ProxyInfo>>> proxyInfo = Optional.empty();
+
     @SerializedName("cmd_|-uname_|-uname -r -v_|-run")
     private Optional<StateApplyResult<CmdResult>> uname = Optional.empty();
 
@@ -277,5 +280,13 @@ public class HwProfileUpdateSlsResult {
      */
     public String getUname() {
         return uname.map(ret -> ret.getChanges().getStdout()).orElse(null);
+    }
+
+    public boolean missesProxyConfig() {
+        return proxyInfo.map(res -> {
+            SumaUtil.ProxyInfo info = res.getChanges().getRet();
+            return !info.hasConfigFiles() && !info.getVersion().isEmpty();
+        }
+        ).orElse(false);
     }
 }

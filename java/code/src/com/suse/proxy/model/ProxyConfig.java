@@ -34,6 +34,10 @@ public class ProxyConfig {
     private String proxyCert;
     private String proxyKey;
 
+    private String proxySshPub;
+    private String proxySshPriv;
+    private String parentSshPub;
+
     private ProxyConfigImage httpdImage;
     private ProxyConfigImage saltBrokerImage;
     private ProxyConfigImage squidImage;
@@ -118,6 +122,30 @@ public class ProxyConfig {
 
     public void setProxyKey(String proxyKeyIn) {
         proxyKey = proxyKeyIn;
+    }
+
+    public String getProxySshPub() {
+        return proxySshPub;
+    }
+
+    public void setProxySshPub(String proxySshPubIn) {
+        proxySshPub = proxySshPubIn;
+    }
+
+    public String getProxySshPriv() {
+        return proxySshPriv;
+    }
+
+    public void setProxySshPriv(String proxySshPrivIn) {
+        proxySshPriv = proxySshPrivIn;
+    }
+
+    public String getParentSshPub() {
+        return parentSshPub;
+    }
+
+    public void setParentSshPub(String parentSshPubIn) {
+        parentSshPub = parentSshPubIn;
     }
 
     public ProxyConfigImage getHttpdImage() {
