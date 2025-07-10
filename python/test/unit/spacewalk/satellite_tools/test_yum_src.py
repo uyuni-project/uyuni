@@ -607,7 +607,7 @@ class YumSrcTest(unittest.TestCase):
         ]
         proxy_url = "http://proxy.example.com:8080"
         proxy_user = "user"
-        proxy_pass = "pass"
+        proxy_pass = "password with spaces and /, % and $"
         cs.proxy_hostname = proxy_url
         cs.proxy_user = proxy_user
         cs.proxy_pass = proxy_pass
@@ -647,7 +647,7 @@ class YumSrcTest(unittest.TestCase):
                 separator,
                 quote(proxy_url),
                 proxy_user,
-                proxy_pass,
+                quote(proxy_pass, safe=""),
                 extra_query,
             )
             with patch("builtins.open", mock_open()), patch(
