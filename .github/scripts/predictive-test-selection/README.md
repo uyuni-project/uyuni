@@ -35,6 +35,14 @@ Where <N> is the number of the latest Uyuni PRs (with Cucumber reports) to extra
 or '#<PR_NUMBER>' is a specific PR number to extract features for.
 ```
 
+### Example Script Output
+
+#### Cucumber Reports
+![](images/pr_data_extract_output_1.png)
+
+#### CSV File
+![](images/pr_data_extract_output_2.png)
+
 ### How the Script Works
 
 **Prediction mode (single PR):**
