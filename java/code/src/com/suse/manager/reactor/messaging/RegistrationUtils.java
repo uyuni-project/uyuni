@@ -53,7 +53,7 @@ import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.channels.ChannelsUtils;
-import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.SaltParameters;
 import com.suse.manager.webui.services.iface.RedhatProductInfo;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
@@ -180,12 +180,12 @@ public class RegistrationUtils {
         if (activationKey.isPresent() && activationKey.get().getChannels().stream().anyMatch(Channel::isModular)) {
             var appStreamsToEnable = activationKey.get().getAppStreams();
             if (!appStreamsToEnable.isEmpty()) {
-                statesToApply.add(SaltServerActionService.APPSTREAMS_CONFIGURE);
+                statesToApply.add(SaltParameters.APPSTREAMS_CONFIGURE);
                 var appStreamsParams = appStreamsToEnable
                     .stream()
                     .map(it -> List.of(it.getName(), it.getStream()))
                     .collect(toList());
-                statesToApplyPillar.put(SaltServerActionService.PARAM_APPSTREAMS_ENABLE, appStreamsParams);
+                statesToApplyPillar.put(SaltParameters.PARAM_APPSTREAMS_ENABLE, appStreamsParams);
             }
         }
     }
