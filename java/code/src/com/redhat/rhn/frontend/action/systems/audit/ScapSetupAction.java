@@ -53,11 +53,11 @@ public abstract class ScapSetupAction extends RhnAction {
         if (server.asMinionServer().isPresent()) {
             MinionServer minion = server.asMinionServer().get();
             switch (minion.getOsFamily()) {
-                case "Suse":
+                case ServerConstants.OS_FAMILY_SUSE:
                     requiredPackage = OPENSCAP_SUSE_PKG;
                     break;
 
-                case "Debian":
+                case ServerConstants.OS_FAMILY_DEBIAN:
                     requiredPackage = getPackageForDebianFamily(minion.getOs(), minion.getRelease());
                     break;
 
