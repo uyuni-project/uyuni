@@ -17,10 +17,10 @@ package com.redhat.rhn.domain.action.server.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
@@ -36,6 +36,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
+import java.util.function.Consumer;
 
 /**
  * ServerActionTest
@@ -48,19 +49,19 @@ public class ServerActionTest extends RhnBaseTestCase {
         sa1.fail(-1L, "Fail_message", new Date());
         assertEquals(sa1.getResultMsg(), "Fail_message");
         assertEquals(sa1.getResultCode(), Long.valueOf(-1));
-        assertEquals(sa1.getStatus(), ActionFactory.STATUS_FAILED);
+        assertTrue(sa1.isStatusFailed());
 
         ServerAction sa2 = new ServerAction();
         sa2.fail(-1L, "Fail_message");
         assertEquals(sa2.getResultMsg(), "Fail_message");
         assertEquals(sa2.getResultCode(), Long.valueOf(-1));
-        assertEquals(sa2.getStatus(), ActionFactory.STATUS_FAILED);
+        assertTrue(sa2.isStatusFailed());
 
         ServerAction sa3 = new ServerAction();
         sa3.fail("Fail_message");
         assertEquals(sa3.getResultMsg(), "Fail_message");
         assertEquals(sa3.getResultCode(), Long.valueOf(-1));
-        assertEquals(sa3.getStatus(), ActionFactory.STATUS_FAILED);
+        assertTrue(sa3.isStatusFailed());
     }
 
     @Test
@@ -143,20 +144,20 @@ public class ServerActionTest extends RhnBaseTestCase {
      * @return ServerAction created
      */
     public static ServerAction createServerAction(Server newS, Action newA) {
-        return createServerAction(newS, newA, ActionFactory.STATUS_QUEUED);
+        return createServerAction(newS, newA, ServerAction::setStatusQueued);
     }
 
     /**
      * Create a new ServerAction
      * @param newS new server
      * @param newA new action
-     * @param status action status
+     * @param statusSetter method that set status to a ServerAction
      * @return ServerAction created
      */
-    public static ServerAction createServerAction(Server newS, Action newA, ActionStatus status) {
+    public static ServerAction createServerAction(Server newS, Action newA, Consumer<ServerAction> statusSetter) {
         ServerAction sa = new ServerAction();
-        sa.setStatus(status);
-        sa.setRemainingTries(ActionFactory.STATUS_FAILED.equals(status) ? 0L : 10L);
+        statusSetter.accept(sa);
+        sa.setRemainingTries(sa.isStatusFailed() ? 0L : 10L);
         sa.setServerWithCheck(newS);
         sa.setParentActionWithCheck(newA);
         newA.addServerAction(sa);

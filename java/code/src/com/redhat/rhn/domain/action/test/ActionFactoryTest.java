@@ -24,7 +24,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.test.TimeUtilsTest;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigDateDetails;
@@ -72,6 +71,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -107,7 +107,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(a.getServerActions());
         for (ServerAction next : a.getServerActions()) {
             next.setCompletionTime(new Date());
-            next.setStatus(ActionFactory.STATUS_COMPLETED);
+            next.setStatusCompleted();
         }
         ActionFactory.save(a);
         ConfigRevisionAction cra = a.
@@ -211,7 +211,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         ServerAction sa = (ServerAction)array[0];
         assertTrue(TimeUtilsTest.timeEquals(sa.getCreated().getTime(),
                 sa.getModified().getTime()));
-        assertEquals(sa.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertTrue(sa.isStatusQueued());
 
         assertEquals(sa.getServer(), s);
     }
@@ -294,7 +294,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         a1.setEarliestAction(Date.from(originalInstant));
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
-        sa.setStatus(ActionFactory.STATUS_FAILED);
+        sa.setStatusFailed();
         sa.setRemainingTries(0L);
         ActionFactory.save(a1);
 
@@ -303,7 +303,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         a1 = HibernateFactory.reload(a1);
         sa = HibernateFactory.reload(sa);
 
-        assertEquals(sa.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertTrue(sa.isStatusQueued());
         assertTrue(sa.getRemainingTries() > 0);
 
         Instant newEarliestInstant = a1.getEarliestAction().toInstant();
@@ -319,18 +319,18 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
         a1.setEarliestAction(Date.from(originalInstant));
 
-        ServerAction sa1 = addServerAction(user, a1, ActionFactory.STATUS_FAILED);
-        ServerAction sa2 = addServerAction(user, a1, ActionFactory.STATUS_COMPLETED);
+        ServerAction sa1 = addServerAction(user, a1, ServerAction::setStatusFailed);
+        ServerAction sa2 = addServerAction(user, a1, ServerAction::setStatusCompleted);
 
         ActionFactory.save(a1);
 
         ActionFactory.rescheduleFailedServerActions(a1, 5L);
         sa1 = HibernateFactory.reload(sa1);
 
-        assertEquals(sa1.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertTrue(sa1.isStatusQueued());
         assertTrue(sa1.getRemainingTries() > 0);
 
-        assertEquals(sa2.getStatus(), ActionFactory.STATUS_COMPLETED);
+        assertTrue(sa2.isStatusCompleted());
 
         Instant newEarliestInstant = a1.getEarliestAction().toInstant();
         assertTrue(originalInstant.isBefore(newEarliestInstant));
@@ -345,8 +345,8 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
         a1.setEarliestAction(Date.from(originalInstant));
 
-        ServerAction sa1 = addServerAction(user, a1, ActionFactory.STATUS_FAILED);
-        ServerAction sa2 = addServerAction(user, a1, ActionFactory.STATUS_COMPLETED);
+        ServerAction sa1 = addServerAction(user, a1, ServerAction::setStatusFailed);
+        ServerAction sa2 = addServerAction(user, a1, ServerAction::setStatusCompleted);
 
         ActionFactory.save(a1);
 
@@ -355,10 +355,10 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         sa1 = HibernateFactory.reload(sa1);
         sa2 = HibernateFactory.reload(sa2);
 
-        assertEquals(sa1.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertTrue(sa1.isStatusQueued());
         assertTrue(sa1.getRemainingTries() > 0);
 
-        assertEquals(sa2.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertTrue(sa2.isStatusQueued());
         assertTrue(sa2.getRemainingTries() > 0);
     }
 
@@ -377,8 +377,8 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testUpdateServerActions() {
         Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
-        ServerAction sa1 = addServerAction(user, a1, ActionFactory.STATUS_FAILED);
-        ServerAction sa2 = addServerAction(user, a1, ActionFactory.STATUS_QUEUED);
+        ServerAction sa1 = addServerAction(user, a1, ServerAction::setStatusFailed);
+        ServerAction sa2 = addServerAction(user, a1, ServerAction::setStatusQueued);
 
         ActionFactory.save(a1);
         flushAndEvict(sa1);
@@ -390,25 +390,25 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         // Should NOT update if already in final state.
         ActionFactory.updateServerActionsPickedUp(a1, list);
         HibernateFactory.reload(sa1);
-        assertEquals(sa1.getStatus(), ActionFactory.STATUS_FAILED);
+        assertTrue(sa1.isStatusFailed());
 
         list.clear();
         list.add(sa2.getServerId());
         //Should update to STATUS_COMPLETED
         ActionFactory.updateServerActions(a1, list, ActionFactory.STATUS_COMPLETED);
         HibernateFactory.reload(sa2);
-        assertEquals(sa2.getStatus(), ActionFactory.STATUS_COMPLETED);
+        assertTrue(sa2.isStatusCompleted());
     }
 
     @Test
     public void rejectScheduledActionsMarkPendingServerActionsAsFailed() {
         Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
-        ServerAction sa1 = addServerAction(user, a1, ActionFactory.STATUS_COMPLETED);
-        ServerAction sa2 = addServerAction(user, a1, ActionFactory.STATUS_QUEUED);
+        ServerAction sa1 = addServerAction(user, a1, ServerAction::setStatusCompleted);
+        ServerAction sa2 = addServerAction(user, a1, ServerAction::setStatusQueued);
 
         Action a2 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_APPLY_STATES);
-        ServerAction sa3 = addServerAction(user, a2, ActionFactory.STATUS_QUEUED);
-        ServerAction sa4 = addServerAction(user, a2, ActionFactory.STATUS_PICKED_UP);
+        ServerAction sa3 = addServerAction(user, a2, ServerAction::setStatusQueued);
+        ServerAction sa4 = addServerAction(user, a2, ServerAction::setStatusPickedUp);
 
         TestUtils.saveAndReload(a1);
         TestUtils.saveAndReload(a2);
@@ -421,17 +421,17 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         sa3 = HibernateFactory.reload(sa3);
         sa4 = HibernateFactory.reload(sa4);
 
-        assertEquals(ActionFactory.STATUS_COMPLETED, sa1.getStatus());
+        assertTrue(sa1.isStatusCompleted());
 
-        assertEquals(ActionFactory.STATUS_FAILED, sa2.getStatus());
+        assertTrue(sa2.isStatusFailed());
         assertEquals("Test Rejection Reason", sa2.getResultMsg());
         assertEquals(-1, sa2.getResultCode());
 
-        assertEquals(ActionFactory.STATUS_FAILED, sa3.getStatus());
+        assertTrue(sa3.isStatusFailed());
         assertEquals("Test Rejection Reason", sa3.getResultMsg());
         assertEquals(-1, sa3.getResultCode());
 
-        assertEquals(ActionFactory.STATUS_PICKED_UP, sa4.getStatus());
+        assertTrue(sa4.isStatusPickedUp());
     }
 
     public static Action createAction(User user, ActionType type) throws Exception {
@@ -557,7 +557,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         // objects.
         else if (type.equals(ActionFactory.TYPE_REBOOT)) {
             user.addPermanentRole(RoleFactory.ORG_ADMIN);
-            addServerAction(user, newA, ActionFactory.STATUS_QUEUED);
+            addServerAction(user, newA, ServerAction::setStatusQueued);
         }
         else if (type.equals(ActionFactory.TYPE_DAEMON_CONFIG)) {
             DaemonConfigDetails dcd = new DaemonConfigDetails();
@@ -581,9 +581,9 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         return newA;
     }
 
-    public static ServerAction addServerAction(User user, Action newA, ActionStatus status) {
+    public static ServerAction addServerAction(User user, Action newA, Consumer<ServerAction> statusSetter) {
         Server newS = ServerFactoryTest.createTestServer(user, true);
-        ServerAction serverAction = ServerActionTest.createServerAction(newS, newA, status);
+        ServerAction serverAction = ServerActionTest.createServerAction(newS, newA, statusSetter);
         newA.addServerAction(serverAction);
         return serverAction;
     }
@@ -609,19 +609,19 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
      * @return ServerAction created
      */
     public static ServerAction createServerAction(Server newS, Action newA) {
-        return createServerAction(newS, newA, ActionFactory.STATUS_QUEUED);
+        return createServerAction(newS, newA, ServerAction::setStatusQueued);
     }
 
     /**
      * Create a new ServerAction
      * @param newS new system
      * @param newA new action
-     * @param status the status
+     * @param statusSetter the status setter
      * @return ServerAction created
      */
-    public static ServerAction createServerAction(Server newS, Action newA, ActionStatus status) {
+    public static ServerAction createServerAction(Server newS, Action newA, Consumer<ServerAction> statusSetter) {
         ServerAction sa = new ServerAction();
-        sa.setStatus(status);
+        statusSetter.accept(sa);
         sa.setRemainingTries(10L);
         sa.setCreated(new Date());
         sa.setModified(new Date());

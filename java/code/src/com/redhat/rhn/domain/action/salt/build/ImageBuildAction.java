@@ -21,7 +21,6 @@ import static java.util.stream.Collectors.toMap;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFormatter;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
@@ -256,7 +255,7 @@ public class ImageBuildAction extends Action {
 
         handleImageBuildLog(info, auxArgs.getSaltApi());
 
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+        if (serverAction.isStatusCompleted()) {
             if (details == null) {
                 LOG.error("Details not found while performing: {} in handleImageBuildData", getName());
                 return;
@@ -316,7 +315,7 @@ public class ImageBuildAction extends Action {
                                 .orElseThrow(() -> new RuntimeException("Failed to download image."));
 
                         if (collectResult.getReturnCode() != 0) {
-                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                            serverAction.setStatusFailed();
                             serverAction.setResultMsg(StringUtils
                                     .left(SaltUtils.printStdMessages(collectResult.getStderr(),
                                                     collectResult.getStdout()),
@@ -341,7 +340,7 @@ public class ImageBuildAction extends Action {
                 }
             }
         }
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+        if (serverAction.isStatusCompleted()) {
             // both building and uploading results succeeded
             info.setBuilt(true);
 

@@ -53,11 +53,10 @@ public class ServerAction extends ActionChild implements Serializable {
 
     private static MaintenanceManager maintenanceManager = new MaintenanceManager();
 
-
     /**
      * Getter for status
      * @return ActionStatus to get
-    */
+     */
     public ActionStatus getStatus() {
         return this.status;
     }
@@ -65,7 +64,7 @@ public class ServerAction extends ActionChild implements Serializable {
     /**
      * Setter for status
      * @param statusIn to set
-    */
+     */
     public void setStatus(ActionStatus statusIn) {
         if (Objects.equals(statusIn, ActionFactory.STATUS_FAILED) && !Objects.equals(status, statusIn)) {
             Optional.ofNullable(getParentAction()).ifPresent(pa -> {
@@ -78,6 +77,58 @@ public class ServerAction extends ActionChild implements Serializable {
             });
         }
         this.status = statusIn;
+    }
+
+    public boolean isStatusQueued() {
+        return status.isQueued();
+    }
+
+    /**
+     * set ServerAction status to Queued
+     */
+    public void setStatusQueued() {
+        setStatus(ActionFactory.STATUS_QUEUED);
+    }
+
+    public boolean isStatusPickedUp() {
+        return status.isPickedUp();
+    }
+
+    /**
+     * set ServerAction status to PickedUp
+     */
+    public void setStatusPickedUp() {
+        setStatus(ActionFactory.STATUS_PICKED_UP);
+    }
+
+    public boolean isStatusCompleted() {
+        return status.isCompleted();
+    }
+
+    /**
+     * set ServerAction status to Completed
+     */
+    public void setStatusCompleted() {
+        setStatus(ActionFactory.STATUS_COMPLETED);
+    }
+
+    public boolean isStatusFailed() {
+        return status.isFailed();
+    }
+
+    /**
+     * set ServerAction status to Failed
+     */
+    public void setStatusFailed() {
+        setStatus(ActionFactory.STATUS_FAILED);
+    }
+
+    /**
+     * @return if the status represents an action that is in its final state and considered done.
+     * (either completed or failed)
+     */
+    public boolean isDone() {
+        return isStatusCompleted() || isStatusFailed();
     }
 
     /**
@@ -296,7 +347,7 @@ public class ServerAction extends ActionChild implements Serializable {
     public void fail(long resultCodeIn, String message, Date completionTimeIn) {
         this.setCompletionTime(completionTimeIn);
         this.setResultCode(resultCodeIn);
-        this.setStatus(ActionFactory.STATUS_FAILED);
+        this.setStatusFailed();
         this.setResultMsg(message);
     }
 

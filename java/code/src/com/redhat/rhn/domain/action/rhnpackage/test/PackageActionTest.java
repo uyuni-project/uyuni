@@ -155,7 +155,7 @@ public class PackageActionTest extends RhnBaseTestCase {
         Server srvr = ServerFactoryTest.createTestServer(user);
 
         ServerAction sa = new ServerAction();
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatusQueued();
         sa.setRemainingTries(10L);
         sa.setServerWithCheck(srvr);
         log.debug("Creating PackageRemoveAction.");

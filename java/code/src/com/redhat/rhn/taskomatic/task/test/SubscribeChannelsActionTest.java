@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.taskomatic.task.test;
 
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -24,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -53,6 +51,7 @@ import org.quartz.JobExecutionContext;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -84,7 +83,7 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
         serverId = server.getId();
         SubscribeChannelsAction action = (SubscribeChannelsAction) ActionFactoryTest
                 .createAction(user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS);
-        serverAction = createChildServerAction(action, server, STATUS_QUEUED);
+        serverAction = createChildServerAction(action, server, ServerAction::setStatusQueued);
 
         SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
         details.setBaseChannel(base);
@@ -122,7 +121,7 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
 
         MinionServer server2 = MinionServerFactory.lookupById(serverId).orElse(null);
         assertNotNull(server);
-        assertEquals(ActionFactory.STATUS_QUEUED, serverAction.getStatus());
+        assertTrue(serverAction.isStatusQueued());
         assertNull(serverAction.getResultCode());
         assertEquals(server2, serverAction.getServer());
 
@@ -130,9 +129,9 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
         assertTrue(server2.getChannels().isEmpty());
     }
 
-    private ServerAction createChildServerAction(Action action, Server server, ActionStatus status) {
+    private ServerAction createChildServerAction(Action action, Server server, Consumer<ServerAction> statusSetter) {
         ServerAction serverAction = ActionFactoryTest.createServerAction(server, action);
-        serverAction.setStatus(status);
+        statusSetter.accept(serverAction);
         serverAction.setRemainingTries(1L);
         action.setServerActions(Collections.singleton(serverAction));
         return serverAction;
