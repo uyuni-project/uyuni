@@ -252,7 +252,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
-        s.setOsFamily("RedHat");
+        s.setOsFamily(ServerConstants.OS_FAMILY_REDHAT);
         s.setRelease("6");
         assertTrue(s.doesOsSupportsMonitoring());
     }
@@ -265,7 +265,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
-        s.setOsFamily("RedHat");
+        s.setOsFamily(ServerConstants.OS_FAMILY_REDHAT);
         s.setRelease("7");
         assertTrue(s.doesOsSupportsMonitoring());
     }
@@ -278,7 +278,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
-        s.setOsFamily("RedHat");
+        s.setOsFamily(ServerConstants.OS_FAMILY_REDHAT);
         s.setRelease("8");
         assertTrue(s.doesOsSupportsMonitoring());
     }
@@ -291,7 +291,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
-        s.setOsFamily("RedHat");
+        s.setOsFamily(ServerConstants.OS_FAMILY_REDHAT);
         s.setRelease("9");
         assertTrue(s.doesOsSupportsMonitoring());
     }
