@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -65,6 +64,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * SSHServiceWorkerTest
@@ -108,8 +108,7 @@ public class SSHServiceWorkerTest extends JMockBaseTestCaseWithUser {
         minion.setLastBoot(1L); // last boot is long time in the past
         Action action = createRebootAction(
                 Date.from(Instant.now().minus(5, ChronoUnit.MINUTES)));
-        ServerAction serverAction = createChildServerAction(action,
-                ActionFactory.STATUS_PICKED_UP, 5L);
+        ServerAction serverAction = createChildServerAction(action, ServerAction::setStatusPickedUp, 5L);
         ActionFactory.save(action);
         SaltApi saltApi = new TestSaltApi() {
             @Override
@@ -163,22 +162,20 @@ public class SSHServiceWorkerTest extends JMockBaseTestCaseWithUser {
         minion.setLastBoot(1L); // last boot is long time in the past
         // very old reboot action
         Action oldAction = createRebootAction(new Date(1L));
-        ServerAction oldServerAction = createChildServerAction(oldAction,
-                ActionFactory.STATUS_PICKED_UP, 5L);
+        ServerAction oldServerAction = createChildServerAction(oldAction, ServerAction::setStatusPickedUp, 5L);
         ActionFactory.save(oldAction);
 
         // very new reboot action, shouldn't be cleaned
         Action futureAction = createRebootAction(
                 Date.from(Instant.now().plus(5, ChronoUnit.DAYS)));
-        ServerAction futureServerAction = createChildServerAction(futureAction,
-                ActionFactory.STATUS_QUEUED, 5L);
+        ServerAction futureServerAction = createChildServerAction(futureAction, ServerAction::setStatusQueued, 5L);
         ActionFactory.save(futureAction);
 
         // action to be picked up
         Action upcomingAction = createRebootAction(
                 Date.from(Instant.now().minus(5, ChronoUnit.MINUTES)));
-        ServerAction upcomingServerAction = createChildServerAction(upcomingAction,
-                ActionFactory.STATUS_PICKED_UP, 5L);
+        ServerAction upcomingServerAction = createChildServerAction(upcomingAction, ServerAction::setStatusPickedUp,
+                5L);
         ActionFactory.save(upcomingAction);
 
         SaltApi saltApi = new TestSaltApi() {
@@ -224,8 +221,8 @@ public class SSHServiceWorkerTest extends JMockBaseTestCaseWithUser {
         // action to be picked up
         Action upcomingAction = createRebootAction(
                 Date.from(Instant.now().minus(5, ChronoUnit.MINUTES)));
-        ServerAction upcomingServerAction = createChildServerAction(upcomingAction,
-                ActionFactory.STATUS_PICKED_UP, 5L);
+        ServerAction upcomingServerAction = createChildServerAction(upcomingAction, ServerAction::setStatusPickedUp,
+                5L);
         ActionFactory.save(upcomingAction);
 
         SaltApi saltApi = new TestSaltApi() {
@@ -284,15 +281,10 @@ public class SSHServiceWorkerTest extends JMockBaseTestCaseWithUser {
         return action;
     }
 
-    private ServerAction createChildServerAction(Action action, ActionStatus status,
-            long remainingTries) throws Exception {
-        return createChildServerAction(minion, action, status, remainingTries);
-    }
-
-    private ServerAction createChildServerAction(MinionServer minoin, Action action, ActionStatus status,
+    private ServerAction createChildServerAction(Action action, Consumer<ServerAction> statusSetter,
                                                  long remainingTries) {
         ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
-        serverAction.setStatus(status);
+        statusSetter.accept(serverAction);
         serverAction.setRemainingTries(remainingTries);
         action.setServerActions(Collections.singleton(serverAction));
         return serverAction;

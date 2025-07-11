@@ -1039,6 +1039,17 @@ public class ActionFactory extends HibernateFactory {
         STATUS_FAILED);
 
     /**
+     * All the possible action statuses, but completed
+     */
+    public static final List<ActionStatus> ALL_STATUSES_BUT_COMPLETED = List.of(STATUS_QUEUED, STATUS_PICKED_UP,
+            STATUS_FAILED);
+
+    /**
+     * All the pending action statuses
+     */
+    public static final List<ActionStatus> ALL_PENDING_STATUSES = List.of(STATUS_QUEUED, STATUS_PICKED_UP);
+
+    /**
      * The constant representing Package Refresh List action.  [ID:1]
      */
     public static final ActionType TYPE_PACKAGES_REFRESH_LIST =

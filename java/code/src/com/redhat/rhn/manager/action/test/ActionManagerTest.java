@@ -36,7 +36,6 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
@@ -135,7 +134,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -295,9 +296,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         return parent;
     }
 
-    private Action createActionWithMinionServerActions(User user, ActionStatus status, int numServerActions)
+    private Action createActionWithMinionServerActions(User user, Consumer<ServerAction> statusSetter,
+                                                       int numServerActions)
             throws Exception {
-        return createActionWithMinionServerActions(user, status, numServerActions,
+        return createActionWithMinionServerActions(user, statusSetter, numServerActions,
                 i -> {
                     try {
                         return MinionServerFactoryTest.createTestMinionServer(user);
@@ -308,9 +310,9 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 });
     }
 
-    private Action createActionWithMinionServerActions(User user, ActionStatus status, int numServerActions,
-                                                       Function<Integer, ? extends Server> serverFactory
-                                                       )
+    private Action createActionWithMinionServerActions(User user, Consumer<ServerAction> statusSetter,
+                                                       int numServerActions,
+                                                       Function<Integer, ? extends Server> serverFactory)
             throws Exception {
         Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         Channel baseChannel = ChannelFactoryTest.createTestChannel(user);
@@ -321,7 +323,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             TestUtils.saveAndFlush(server);
 
             ServerAction child = ServerActionTest.createServerAction(server, parent);
-            child.setStatus(status);
+            statusSetter.accept(child);
             TestUtils.saveAndFlush(child);
 
             parent.addServerAction(child);
@@ -352,11 +354,11 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(expected, getServerActions(parentAction).size());
     }
 
-    private void assertServerActionStatus(Action parentAction, Server server, ActionStatus expectedStatus) {
+    private void assertServerActionStatus(Action parentAction, Server server, Predicate<ServerAction> statusPredicate) {
         boolean found = false;
         for (ServerAction sa : getServerActions(parentAction)) {
             if (server.equals(sa.getServer())) {
-                assertEquals(expectedStatus, sa.getStatus());
+                assertTrue(statusPredicate.test(sa));
                 found = true;
             }
         }
@@ -398,7 +400,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testSimpleCancelMinionActions() throws Exception {
-        Action parent = createActionWithMinionServerActions(user, ActionFactory.STATUS_QUEUED, 3);
+        Action parent = createActionWithMinionServerActions(user, ServerAction::setStatusQueued, 3);
         List actionList = createActionList(user, new Action [] {parent});
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -438,7 +440,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testCancelMinionActionsMixedStatus() throws Exception {
-        Action action = createActionWithMinionServerActions(user, ActionFactory.STATUS_PICKED_UP, 3);
+        Action action = createActionWithMinionServerActions(user, ServerAction::setStatusPickedUp, 3);
 
         // Set first server action to COMPLETED
         Iterator<ServerAction> iterator = action.getServerActions().iterator();
@@ -459,14 +461,14 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ActionManager.cancelActions(user, actionList);
 
         assertServerActionCount(action, 3);
-        assertServerActionStatus(action, serverCompleted, ActionFactory.STATUS_COMPLETED);
-        assertServerActionStatus(action, serverFailed, ActionFactory.STATUS_FAILED);
-        assertServerActionStatus(action, serverPickedUp, ActionFactory.STATUS_FAILED);
+        assertServerActionStatus(action, serverCompleted, ServerAction::isStatusCompleted);
+        assertServerActionStatus(action, serverFailed, ServerAction::isStatusFailed);
+        assertServerActionStatus(action, serverPickedUp, ServerAction::isStatusFailed);
     }
 
     @Test
     public void testSimpleCancelMixedActions() throws Exception {
-        Action parent = createActionWithMinionServerActions(user, ActionFactory.STATUS_QUEUED, 4,
+        Action parent = createActionWithMinionServerActions(user, ServerAction::setStatusQueued, 4,
                 i -> {
                     try {
                         if (i < 3) {

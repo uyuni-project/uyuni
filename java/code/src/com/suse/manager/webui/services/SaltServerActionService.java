@@ -24,7 +24,6 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
@@ -100,6 +99,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -892,13 +892,13 @@ public class SaltServerActionService {
                 return;
             }
 
-            if (prerequisiteInStatus(sa, ActionFactory.STATUS_QUEUED)) {
+            if (prerequisiteInStatus(sa, ServerAction::isStatusQueued)) {
                 LOG.info("Prerequisite of action '{}' is still queued. Skipping executing of the action.",
                         action.getName());
                 return;
             }
 
-            if (prerequisiteInStatus(sa, ActionFactory.STATUS_FAILED)) {
+            if (prerequisiteInStatus(sa, ServerAction::isStatusFailed)) {
                 LOG.info("Failing action '{}' as its prerequisite '{}' failed.", action.getName(),
                         action.getPrerequisite().getName());
                 sa.fail(-100L, "Prerequisite failed.");
@@ -1023,7 +1023,7 @@ public class SaltServerActionService {
      * @return true if there exists a server action in given state associated with the same
      * server as serverAction and parent action of serverAction
      */
-    private boolean prerequisiteInStatus(ServerAction serverAction, ActionStatus state) {
+    private boolean prerequisiteInStatus(ServerAction serverAction, Predicate<ServerAction> statusComparison) {
         Optional<Stream<ServerAction>> prerequisites =
                 ofNullable(serverAction.getParentAction())
                         .map(Action::getPrerequisite)
@@ -1034,8 +1034,7 @@ public class SaltServerActionService {
                 .flatMap(serverActions ->
                         serverActions
                                 .filter(s ->
-                                        serverAction.getServer().equals(s.getServer()) &&
-                                                state.equals(s.getStatus()))
+                                        serverAction.getServer().equals(s.getServer()) && statusComparison.test(s))
                                 .findAny())
                 .isPresent();
     }
@@ -1065,8 +1064,7 @@ public class SaltServerActionService {
             List<ServerAction> serverActions = Optional.ofNullable(action).
                     map(firstAction -> ActionFactory
                         .listServerActionsForServer(minion.get(),
-                                Arrays.asList(ActionFactory.STATUS_QUEUED, ActionFactory.STATUS_PICKED_UP,
-                                        ActionFactory.STATUS_FAILED), action.getCreated()))
+                                ActionFactory.ALL_STATUSES_BUT_COMPLETED, action.getCreated()))
                     .orElse(new ArrayList<>());
 
             while (!actionIdsDependencies.isEmpty()) {

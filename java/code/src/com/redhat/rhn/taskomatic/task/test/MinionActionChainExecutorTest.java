@@ -89,13 +89,13 @@ public class MinionActionChainExecutorTest extends JMockBaseTestCaseWithUser {
 
         Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
         a1.setEarliestAction(Date.from(Instant.now().minus(7, ChronoUnit.DAYS)));
-        ServerAction sa1 = ActionFactoryTest.addServerAction(user, a1, ActionFactory.STATUS_QUEUED);
+        ServerAction sa1 = ActionFactoryTest.addServerAction(user, a1, ServerAction::setStatusQueued);
         TestUtils.saveAndReload(a1);
         ActionChainFactory.queueActionChainEntry(a1, actionChain, sa1.getServer());
 
         Action a2 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_PACKAGES_UPDATE);
         a2.setEarliestAction(Date.from(Instant.now().minus(7, ChronoUnit.DAYS)));
-        ServerAction sa2 = ActionFactoryTest.addServerAction(user, a2, ActionFactory.STATUS_QUEUED);
+        ServerAction sa2 = ActionFactoryTest.addServerAction(user, a2, ServerAction::setStatusQueued);
         TestUtils.saveAndReload(a2);
         ActionChainFactory.queueActionChainEntry(a2, actionChain, sa2.getServer());
 

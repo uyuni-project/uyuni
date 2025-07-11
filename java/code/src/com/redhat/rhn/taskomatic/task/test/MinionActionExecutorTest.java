@@ -86,8 +86,8 @@ public class MinionActionExecutorTest extends JMockBaseTestCaseWithUser {
         // Set the earliest action date to one week ago
         a1.setEarliestAction(Date.from(Instant.now().minus(7, ChronoUnit.DAYS)));
 
-        ServerAction sa1 = ActionFactoryTest.addServerAction(user, a1, ActionFactory.STATUS_COMPLETED);
-        ServerAction sa2 = ActionFactoryTest.addServerAction(user, a1, ActionFactory.STATUS_QUEUED);
+        ServerAction sa1 = ActionFactoryTest.addServerAction(user, a1, ServerAction::setStatusCompleted);
+        ServerAction sa2 = ActionFactoryTest.addServerAction(user, a1, ServerAction::setStatusQueued);
 
         TestUtils.saveAndReload(a1);
 
