@@ -97,19 +97,10 @@ public class ProxyConfigGetFacadeImpl implements ProxyConfigGetFacade {
         data.put("currentConfig", Json.GSON.toJson(context.getProxyConfigAsMap()));
         data.put("parents", Json.GSON.toJson(context.getElectableParentsFqdn()));
         data.put("initFailMessage", context.getInitFailMessage());
+        data.put("registryUrlExample", context.getRegistryUrlExample());
+        data.put("registryTagExample", context.getRegistryTagExample());
 
         return data;
     }
-
-    @Override
-    public List<String> getRegistryUrlTags(String registryUrl, boolean isExact) {
-        ProxyConfigGetRegistryTags getRegistryTags = new ProxyConfigGetRegistryTags(registryUrl, isExact);
-        getRegistryTags.retrieveTags();
-        getRegistryTags.getErrorReport().report();
-        return getRegistryTags.getTags();
-    }
-
-
-
 
 }

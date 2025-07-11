@@ -53,7 +53,6 @@ import java.util.Map;
 public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
 
     private final ConfigDefaults configDefaults = ConfigDefaults.get();
-    private ProxyConfigGetFacadeImpl proxyConfigGetFacadeImpl = new ProxyConfigGetFacadeImpl();
 
     @SuppressWarnings({"java:S1171", "java:S3599"})
     @RegisterExtension
@@ -69,7 +68,6 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
-
     @Override
     @AfterEach
     public void tearDown() throws NoSuchFieldException, IllegalAccessException {
@@ -81,7 +79,7 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
      */
     @Test
     public void getProxyConfigWithNullServer() {
-        assertNull(proxyConfigGetFacadeImpl.getProxyConfig(null));
+        assertNull(new ProxyConfigGetFacadeImpl().getProxyConfig(null));
     }
 
     /**
@@ -91,7 +89,7 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
     public void getProxyConfigWithValidServerWhenProxyConfigNotExists() {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 
-        ProxyConfig proxyConfig = proxyConfigGetFacadeImpl.getProxyConfig(minion);
+        ProxyConfig proxyConfig = new ProxyConfigGetFacadeImpl().getProxyConfig(minion);
         assertNull(proxyConfig);
     }
 
@@ -109,7 +107,7 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(minion);
 
         //
-        ProxyConfig proxyConfig = proxyConfigGetFacadeImpl.getProxyConfig(minion);
+        ProxyConfig proxyConfig = new ProxyConfigGetFacadeImpl().getProxyConfig(minion);
         assertNotNull(proxyConfig);
         assertEquals(DUMMY_PROXY_FQDN, proxyConfig.getProxyFqdn());
         assertEquals(DUMMY_PARENT_FQDN, proxyConfig.getParentFqdn());
@@ -125,7 +123,7 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
         final String expectedInitFailMessage = "Server not found";
 
         //
-        Map<String, Object> formData = proxyConfigGetFacadeImpl.getFormData(user, null);
+        Map<String, Object> formData = new ProxyConfigGetFacadeImpl().getFormData(user, null);
 
         assertEquals(expectedCurrentConfig, formData.get("currentConfig"));
         assertEquals(expectedParents, formData.get("parents"));
@@ -138,8 +136,9 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
     @SuppressWarnings({"java:S3599", "java:S1171"})
     @Test
     public void getFormDataWithWhenNewProxyConfiguration() throws NoSuchFieldException, IllegalAccessException {
-        final String expectedCurrentConfig = "{\"sourceMode\":\"registry\",\"registryMode\":\"simple\"," +
-                "\"registryBaseTag\":\"99.98.97\",\"registryBaseURL\":\"registry.suse.com/suse/manager/99.98/x86_64\"}";
+        final String expectedCurrentConfig = "{\"sourceMode\":\"rpm\",\"registryMode\":\"simple\"," +
+                "\"registryBaseTag\":\"99.98.97\",\"registryBaseURL\":" +
+                "\"registry.suse.com/suse/multi-linux-manager/99.98/x86_64\"}";
         final String expectedParents = "[\"" + Config.get().getString(ConfigDefaults.SERVER_HOSTNAME) + "\"]";
 
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -157,7 +156,7 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
         setConfigDefaultsInstance(mockConfigDefaults);
 
         //
-        Map<String, Object> formData = proxyConfigGetFacadeImpl.getFormData(user, minion);
+        Map<String, Object> formData = new ProxyConfigGetFacadeImpl().getFormData(user, minion);
 
         assertEquals(expectedCurrentConfig, formData.get("currentConfig"));
         assertEquals(expectedParents, formData.get("parents"));
