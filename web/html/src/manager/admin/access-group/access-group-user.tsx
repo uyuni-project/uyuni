@@ -6,21 +6,7 @@ import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
-
-const dataTest = {
-  items: [
-    { id: 1, username: "jdoe", email: "jdoe@example.com", orgId: "ORG123" },
-    { id: 2, username: "asmith", email: "asmith@example.com", orgId: "ORG456" },
-    { id: 3, username: "bwilliams", email: "bwilliams@example.com", orgId: "ORG789" },
-    { id: 4, username: "cmtiller", email: "cmiller@example.com", orgId: "ORG101" },
-    { id: 5, username: "john", email: "john@example.com", orgId: "ORG123" },
-    { id: 6, username: "parker", email: "parker@example.com", orgId: "ORG456" },
-    { id: 7, username: "williams", email: "williams@example.com", orgId: "ORG789" },
-    { id: 8, username: "asmitha", email: "asmitha@example.com", orgId: "ORG101" },
-  ],
-  total: "",
-  selectedIds: [],
-};
+import Network from "utils/network";
 
 type Props = {
   state: any;
@@ -28,25 +14,45 @@ type Props = {
   errors: any;
 };
 
+type User = {
+  id: number;
+  login: string;
+  email: string;
+  name: string;
+  orgName: string;
+}
+
 const AccessGroupUsers = (props: Props) => {
   // List data
-  const [listData, setListData] = useState(dataTest);
+  const [listData, setListData] = useState<{items: User[]}>({items: []});
   const [search, setSearch] = useState({
     username: "",
   });
 
   // Table data
-  const [selectedUsers, setSelectedUsers] = useState<{ id: number; username: string; email: string; orgId: string }[]>(
-    []
-  );
+  const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    getUserList();
+  }, []);
+
+  const getUserList = () => {
+    const endpoint = "/rhn/manager/api/admin/access-group/users";
+    return Network.get(endpoint)
+      .then((users) => {
+        setListData((prevData) => ({...prevData, items: users}));
+      })
+      // TODO: Handle errors
+      .catch(props.errors);
+  }
 
   const updateUserList = (search) => {
-    const selectedUser = listData.items.find((user) => user.username === search.username);
+    const selectedUser = listData.items.find((user) => user.login === search.username);
     if (selectedUser) {
       // Prevent duplicate users
       setListData((prevData) => ({
         ...prevData,
-        items: listData.items.filter((name) => name.username !== search.username), // Update the items list
+        items: listData.items.filter((name) => name.login !== search.username), // Update the items list
       }));
 
       setSelectedUsers((prevUsers) => {
@@ -60,14 +66,14 @@ const AccessGroupUsers = (props: Props) => {
   };
 
   const deleteUser = (username) => {
-    const removeUser = selectedUsers.find((user) => user.username === username);
+    const removeUser = selectedUsers.find((user) => user.login === username);
     if (removeUser) {
       setListData((prevData) => ({
         ...prevData,
         items: [removeUser, ...prevData.items], // Update the items list
       }));
       setSelectedUsers(
-        (prevUsers) => prevUsers.filter((user) => user.username !== username) //Remove the user form the list
+        (prevUsers) => prevUsers.filter((user) => user.login !== username) //Remove the user form the list
       );
       props.onChange(removeUser, "remove");
       setSearch({ username: "" });
@@ -102,41 +108,46 @@ const AccessGroupUsers = (props: Props) => {
           label={t("Search & Add Users")}
           labelClass="col-md-12 text-start fw-bold fs-4 mb-3"
           divClass="col-md-6"
-          options={listData.items.map((user) => `${user.username}`)}
+          options={listData.items.map((user) => `${user.login}`)}
           onChange={() => updateUserList(search)}
         />
       </Form>
       <Table
         data={selectedUsers}
         identifier={(item) => item.id}
-        initialSortColumnKey="server_name"
-        emptyText={t("No Users.")}
+        initialSortColumnKey="login"
+        emptyText={t("No Users selected.")}
       >
         <Column
-          columnKey="server_name"
+          columnKey="login"
           comparator={Utils.sortByText}
-          header={t("Name")}
-          cell={(item) => item.username}
+          header={t("Username")}
+          cell={(item) => item.login}
         />
         <Column
-          columnKey="status_type"
+          columnKey="email"
           comparator={Utils.sortByText}
-          header={t("Email ID")}
+          header={t("Email")}
           cell={(item) => item.email}
         />
         <Column
-          columnKey="totalErrataCount"
+          columnKey="name"
           comparator={Utils.sortByText}
-          header={t("orgId")}
-          cell={(item) => item.orgId}
+          header={t("Real Name")}
+          cell={(item) => item.name}
+        />
+        <Column
+          columnKey="orgName"
+          comparator={Utils.sortByText}
+          header={t("Organization")}
+          cell={(item) => item.orgName}
         />
 
         <Column
-          columnKey="outdated_packages"
-          comparator={Utils.sortByText}
+          columnKey="action"
           header={t("Actions")}
           cell={(item) => (
-            <Button className="btn-default btn-sm" icon="fa-trash" handler={() => deleteUser(item.username)} />
+            <Button className="btn-default btn-sm" icon="fa-trash" handler={() => deleteUser(item.login)} />
           )}
         />
       </Table>
