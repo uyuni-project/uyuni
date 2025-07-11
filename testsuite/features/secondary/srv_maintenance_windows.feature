@@ -14,18 +14,20 @@ Feature: Maintenance windows
   Scenario: Log in as org admin user
     Given I am authorized
 
-  Scenario: Create single calendar
+  Scenario: Create a single calendar
     When I follow the left menu "Schedule > Maintenance Windows > Calendars"
-    And I click on "Create" in element "maintenance-windows"
+    Then I should see a "No calendars created" text
+    When I click on "Create" in element "maintenance-windows"
     Then I should see a "Calendar Name" text
     When I enter "singlecalendar" as "name"
     And I add "maintenance-windows-exchange.ics" calendar file as url
     And I click on "Create Calendar"
     Then I should see a "Calendar successfully created" text
 
-  Scenario: Create multi calendar
+  Scenario: Create a multi calendar
     When I follow the left menu "Schedule > Maintenance Windows > Calendars"
-    And I click on "Create" in element "maintenance-windows"
+    Then I should see a "Items 1 - 1 of 1" text
+    When I click on "Create" in element "maintenance-windows"
     Then I should see a "Calendar Name" text
     When I enter "multicalendar" as "name"
     And I add "maintenance-windows-multi-exchange-1.ics" calendar file as url
@@ -34,7 +36,8 @@ Feature: Maintenance windows
 
   Scenario: Create a single schedule
     When I follow the left menu "Schedule > Maintenance Windows > Schedules"
-    And I click on "Create" in element "maintenance-windows"
+    Then I should see a "No schedules created" text
+    When I click on "Create" in element "maintenance-windows"
     Then I should see a "Schedule Name" text
     When I enter "singleschedule" as "name"
     And I choose "SINGLE"
@@ -43,9 +46,10 @@ Feature: Maintenance windows
     And I click on "Create Schedule"
     Then I should see a "Schedule successfully created" text
 
-  Scenario: Create multi schedules
+  Scenario: Create a multi schedule
     When I follow the left menu "Schedule > Maintenance Windows > Schedules"
-    And I click on "Create" in element "maintenance-windows"
+    Then I should see a "Items 1 - 1 of 1" text
+    When I click on "Create" in element "maintenance-windows"
     Then I should see a "Schedule Name" text
     When I enter "SAP Maintenance Window" as "name"
     And I choose "MULTI"
@@ -68,7 +72,7 @@ Feature: Maintenance windows
     And I click on "Update Properties"
     Then I should see a "System properties changed" text
 
-  Scenario: Assign systems to a multi schedule using SSM
+  Scenario: Assign systems to the multi schedule using SSM
     When I follow the left menu "Systems > System List > All"
     And I click on the clear SSM button
     And I check the "rhlike_minion" client
@@ -141,7 +145,7 @@ Feature: Maintenance windows
     When I click on the red confirmation button
     And I wait until I see "singleschedule' has been deleted." text
 
-  Scenario: Delete calendars
+  Scenario: Delete maintenance calendars
     When I follow the left menu "Schedule > Maintenance Windows > Calendars"
     And I click the "singlecalendar" item delete button
     Then I should see a "Delete maintenance calendar" text
