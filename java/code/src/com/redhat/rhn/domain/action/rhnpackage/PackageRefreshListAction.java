@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.ServerAppStream;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -68,9 +69,6 @@ import java.util.stream.Stream;
  */
 public class PackageRefreshListAction extends PackageAction {
     private static final Logger LOG = LogManager.getLogger(PackageRefreshListAction.class);
-
-    // SUSE OS family as defined in Salt grains
-    private static final String OS_FAMILY_SUSE = "Suse";
 
     /**
      * {@inheritDoc}
@@ -242,7 +240,7 @@ public class PackageRefreshListAction extends PackageAction {
              Also, the getOsRelease method requires remote command execution and was therefore avoided for now.
              If we decide to support RedHat distro/SP upgrades in the future, this code has to be reviewed.
              */
-            if (server.getOsFamily().equals(OS_FAMILY_SUSE)) {
+            if (server.getOsFamily().equals(ServerConstants.OS_FAMILY_SUSE)) {
                 server.setRelease(grains.getValueAsString("osrelease"));
             }
         }
