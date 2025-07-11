@@ -222,7 +222,7 @@ class CVEAudit extends React.Component<Props, State> {
           results: [],
           selectedItems: [],
           messages: data.messages,
-          auditExecuted: true,
+          auditExecuted: false,
         });
       }
     });
