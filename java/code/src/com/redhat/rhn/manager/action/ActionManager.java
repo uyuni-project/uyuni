@@ -389,8 +389,7 @@ public class ActionManager extends BaseManager {
 
         actionsToDelete.stream()
                        .flatMap(a -> a.getServerActions().stream())
-                       .filter(sa -> sa.isStatusQueued() ||
-                           sa.isStatusPickedUp())
+                       .filter(sa -> sa.isStatusQueued() || sa.isStatusPickedUp())
                        // if serverIds is not specified, do not filter at all
                        // if it is, only ServerActions that have server ids in the specified set can pass
                        .filter(sa -> serverIds.isEmpty() || serverIds.contains(sa.getServerId()))
