@@ -37,6 +37,8 @@ public class ProxyConfigGetFormDataContext {
     private final Map<String, Object> proxyConfigAsMap = new HashMap<>();
     private final List<String> electableParentsFqdn = new ArrayList<>();
     private String initFailMessage;
+    private String registryUrlExample;
+    private String registryTagExample;
 
     /**
      * Constructor
@@ -77,5 +79,21 @@ public class ProxyConfigGetFormDataContext {
 
     public String getInitFailMessage() {
         return initFailMessage;
+    }
+
+    public String getRegistryUrlExample() {
+        return registryUrlExample;
+    }
+
+    public void setRegistryUrlExample(String registryUrlExampleIn) {
+        registryUrlExample = registryUrlExampleIn;
+    }
+
+    public String getRegistryTagExample() {
+        return registryTagExample;
+    }
+
+    public void setRegistryTagExample(String registryTagExampleIn) {
+        registryTagExample = registryTagExampleIn;
     }
 }
