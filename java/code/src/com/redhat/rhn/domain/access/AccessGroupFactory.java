@@ -18,6 +18,7 @@ import com.redhat.rhn.frontend.listview.PageControl;
 
 import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.utils.gson.AccessGroupJson;
+import com.suse.manager.webui.utils.gson.AccessGroupUserJson;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +28,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+
+import javax.persistence.Tuple;
 
 /**
  * Factory class for RBAC's {@link AccessGroup} entities
@@ -127,6 +130,25 @@ public class AccessGroupFactory extends HibernateFactory {
                 .from(from)
                 .where("true")
                 .run(new HashMap<>(), pc, parser, AccessGroupJson.class);
+    }
+
+    /**
+     * Lists all the users
+     * @return the list of all users
+     */
+    public static List<AccessGroupUserJson> listUsers() {
+        return getSession().createNativeQuery("""
+                 SELECT wc.id,
+                        wc.login,
+                        wupi.email,
+                        concat(wupi.first_names, ', ', wupi.last_name) AS name,
+                        wcu.name AS org_name
+                 FROM web_contact wc
+                 JOIN web_user_personal_info wupi ON wc.id = wupi.web_user_id
+                 JOIN web_customer wcu ON wc.org_id = wcu.id;
+                 """, Tuple.class)
+                .stream().map(AccessGroupUserJson::new)
+                .toList();
     }
 
     /**
