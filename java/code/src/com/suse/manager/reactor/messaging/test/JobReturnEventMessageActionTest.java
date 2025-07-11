@@ -234,7 +234,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(1, minion.getInstalledProducts().size());
 
         // Verify OS family
-        assertEquals("Suse", minion.getOsFamily());
+        assertTrue(minion.isOsFamilySuse());
 
         // Verify the action status
         assertTrue(action.getServerActions().stream()

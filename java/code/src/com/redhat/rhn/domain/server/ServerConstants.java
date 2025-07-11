@@ -41,6 +41,12 @@ public class ServerConstants {
     public static final String SLED = "SLED";
     public static final String RHEL = "Red Hat Enterprise Linux";
 
+    // SUSE OS family as defined in Salt grains
+    public static final String OS_FAMILY_SUSE = "Suse";
+
+    public static final String OS_FAMILY_DEBIAN = "Debian";
+    public static final String OS_FAMILY_REDHAT = "RedHat";
+
     private ServerConstants() {
 
     }
