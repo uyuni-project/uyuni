@@ -1,8 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
-import { isUyuni } from "core/user-preferences";
-
 import { AsyncButton, SubmitButton } from "components/buttons";
 import { DEPRECATED_Select } from "components/input";
 import { Form } from "components/input/form/Form";
@@ -14,35 +12,24 @@ import { Messages } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import Validation from "components/validation";
 
-import { useDebounce } from "utils/hooks";
 import Network from "utils/network";
 
 import { ContainerConfigMessages } from "./proxy-config-messages";
-import {
-  ProxyConfigModel,
-  ProxyConfigProps,
-  RegistryBaseURL,
-  RegistryMode,
-  SourceMode,
-  TagOptions,
-  UseCertsMode,
-} from "./proxy-config-types";
-import {
-  getRegistryData,
-  imageNames,
-  modelDefaults,
-  readFileFields,
-  restoreRegistryInputs,
-  retrieveRegistryTags,
-} from "./proxy-config-utils";
+import { ProxyConfigProps, RegistryMode, SourceMode, UseCertsMode } from "./proxy-config-types";
+import { getRegistryData, modelDefaults, readFileFields, restoreRegistryInputs } from "./proxy-config-utils";
 
-export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage }: Readonly<ProxyConfigProps>) {
+export function ProxyConfig({
+  serverId,
+  parents,
+  currentConfig,
+  initFailMessage,
+  registryUrlExample,
+  registryTagExample,
+}: Readonly<ProxyConfigProps>) {
   const [messages, setMessages] = useState<React.ReactNode[]>([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<boolean | undefined>();
   const [isValidated, setIsValidated] = useState(false);
-  const [errors, setErrors] = useState({});
-  const [tagOptions, setTagOptions] = useState<TagOptions>({});
 
   const hasExistingConfig = currentConfig !== undefined && Object.keys(currentConfig).length > 0;
   const originalConfig = { ...currentConfig };
@@ -57,25 +44,11 @@ export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage 
   });
 
   useEffect(() => {
-    if (currentConfig.sourceMode === SourceMode.RPM) {
-      //work-around to trigger validation for filled forms using RPM
-      retrieveRegistryTags(currentConfig, "", setErrors, setTagOptions, setModel);
-    } else if (currentConfig.registryBaseURL) {
-      retrieveRegistryTags(currentConfig, RegistryBaseURL, setErrors, setTagOptions, setModel);
-    } else {
-      imageNames.forEach((url) => {
-        if (currentConfig[url]) {
-          retrieveRegistryTags(currentConfig, url, setErrors, setTagOptions, setModel);
-        }
-      });
-    }
     if (initFailMessage) {
       setSuccess(false);
       setMessages([initFailMessage]);
     }
   }, [currentConfig]);
-
-  const registryUrlExample = isUyuni ? "registry.opensuse.org/.../uyuni" : "registry.suse.com/suse/manager/...";
 
   const onSubmit = () => {
     setMessages([]);
@@ -132,7 +105,6 @@ export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage 
 
   const onChange = (newModel) => {
     setModel({ ...newModel });
-    asyncValidate(newModel);
   };
 
   const onAddField = (fieldName: string) => {
@@ -159,21 +131,6 @@ export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage 
     }
   };
 
-  const asyncValidate = useDebounce<(newModel: ProxyConfigModel) => void>(async (newModel) => {
-    setErrors({});
-    if (newModel.registryMode === RegistryMode.Simple) {
-      if (newModel.registryBaseURL && !tagOptions.registryBaseURL?.length) {
-        retrieveRegistryTags(newModel, RegistryBaseURL, setErrors, setTagOptions, setModel);
-      }
-    } else if (newModel.registryMode === RegistryMode.Advanced) {
-      imageNames.forEach((property) => {
-        if (newModel[property] && !tagOptions[property]?.length) {
-          retrieveRegistryTags(newModel, property, setErrors, setTagOptions, setModel);
-        }
-      });
-    }
-  }, 500);
-
   return (
     <TopPanel
       title={t("Proxy Configuration")}
@@ -191,7 +148,6 @@ export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage 
           onChange={onChange}
           onSubmit={onSubmit}
           title={t("Convert Minion to Proxy")}
-          errors={errors}
         >
           <DEPRECATED_Select
             name="parentFQDN"
@@ -330,10 +286,10 @@ export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage 
             required
             labelClass="col-md-3"
             divClass="col-md-6"
-            defaultValue={SourceMode.Registry}
+            defaultValue={SourceMode.RPM}
             items={[
-              { label: t("Registry"), value: SourceMode.Registry },
               { label: t("RPM"), value: SourceMode.RPM },
+              { label: t("Registry"), value: SourceMode.Registry },
             ]}
             onChange={onChangeSourceMode}
           />
@@ -364,20 +320,13 @@ export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage 
                     labelClass="col-md-3"
                     divClass="col-md-6"
                   />
-                  <DEPRECATED_Select
+                  <Text
                     name="registryBaseTag"
                     label={t("Containers Tag")}
+                    placeholder={t("e.g., " + registryTagExample)}
                     required
-                    placeholder={t("e.g., latest")}
                     labelClass="col-md-3"
                     divClass="col-md-6"
-                    options={
-                      tagOptions.registryBaseURL?.map((tag) => ({
-                        value: tag,
-                        label: tag,
-                      })) || []
-                    }
-                    isClearable={true}
                   />
                 </>
               )}
@@ -391,20 +340,13 @@ export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage 
                     labelClass="col-md-3"
                     divClass="col-md-6"
                   />
-                  <DEPRECATED_Select
+                  <Text
                     name="registryHttpdTag"
                     label={t("HTTPD Tag")}
+                    placeholder={t("e.g., " + registryTagExample)}
                     required
-                    placeholder={t("e.g., latest")}
                     labelClass="col-md-3"
                     divClass="col-md-6"
-                    options={
-                      tagOptions.registryHttpdURL?.map((tag) => ({
-                        value: tag,
-                        label: tag,
-                      })) || []
-                    }
-                    isClearable={true}
                   />
 
                   <Text
@@ -415,20 +357,13 @@ export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage 
                     labelClass="col-md-3"
                     divClass="col-md-6"
                   />
-                  <DEPRECATED_Select
+                  <Text
                     name="registrySaltbrokerTag"
                     label={t("Salt Broker Tag")}
+                    placeholder={t("e.g., " + registryTagExample)}
                     required
-                    placeholder={t("e.g., latest")}
                     labelClass="col-md-3"
                     divClass="col-md-6"
-                    options={
-                      tagOptions.registrySaltbrokerURL?.map((tag) => ({
-                        value: tag,
-                        label: tag,
-                      })) || []
-                    }
-                    isClearable={true}
                   />
 
                   <Text
@@ -439,20 +374,13 @@ export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage 
                     labelClass="col-md-3"
                     divClass="col-md-6"
                   />
-                  <DEPRECATED_Select
+                  <Text
                     name="registrySquidTag"
                     label={t("Squid Tag")}
+                    placeholder={t("e.g., " + registryTagExample)}
                     required
-                    placeholder={t("e.g., latest")}
                     labelClass="col-md-3"
                     divClass="col-md-6"
-                    options={
-                      tagOptions.registrySquidURL?.map((tag) => ({
-                        value: tag,
-                        label: tag,
-                      })) || []
-                    }
-                    isClearable={true}
                   />
 
                   <Text
@@ -463,20 +391,13 @@ export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage 
                     labelClass="col-md-3"
                     divClass="col-md-6"
                   />
-                  <DEPRECATED_Select
+                  <Text
                     name="registrySshTag"
                     label={t("SSH Tag")}
+                    placeholder={t("e.g., " + registryTagExample)}
                     required
-                    placeholder={t("e.g., latest")}
                     labelClass="col-md-3"
                     divClass="col-md-6"
-                    options={
-                      tagOptions.registrySshURL?.map((tag) => ({
-                        value: tag,
-                        label: tag,
-                      })) || []
-                    }
-                    isClearable={true}
                   />
 
                   <Text
@@ -487,20 +408,13 @@ export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage 
                     labelClass="col-md-3"
                     divClass="col-md-6"
                   />
-                  <DEPRECATED_Select
+                  <Text
                     name="registryTftpdTag"
                     label={t("TFTPD Tag")}
+                    placeholder={t("e.g., " + registryTagExample)}
                     required
-                    placeholder={t("e.g., latest")}
                     labelClass="col-md-3"
                     divClass="col-md-6"
-                    options={
-                      tagOptions.registryTftpdURL?.map((tag) => ({
-                        value: tag,
-                        label: tag,
-                      })) || []
-                    }
-                    isClearable={true}
                   />
                 </>
               )}

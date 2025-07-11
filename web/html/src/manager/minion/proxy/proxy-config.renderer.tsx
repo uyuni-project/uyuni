@@ -6,19 +6,28 @@ export const renderer = (
   id: string,
   {
     serverId,
-    isUyuni,
     parents,
     currentConfig,
     initFailMessage,
-  }: { serverId: string; isUyuni: boolean; parents: any[]; currentConfig: any; initFailMessage: string }
+    registryUrlExample,
+    registryTagExample,
+  }: {
+    serverId: string;
+    parents: any[];
+    currentConfig: any;
+    initFailMessage: string;
+    registryUrlExample: string;
+    registryTagExample: string;
+  }
 ) => {
   return SpaRenderer.renderNavigationReact(
     <ProxyConfig
       serverId={serverId}
-      isUyuni={isUyuni}
       parents={parents}
       currentConfig={currentConfig}
       initFailMessage={initFailMessage}
+      registryUrlExample={registryUrlExample}
+      registryTagExample={registryTagExample}
     />,
     document.getElementById(id)
   );
