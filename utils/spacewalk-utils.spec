@@ -33,36 +33,18 @@ BuildRequires:  python3-rpm-macros
 BuildRequires:  uyuni-base-common
 # Required by depsolver.py
 Requires:       (python3-PyYAML or python3-pyyaml)
-# Required by spacewalk-hostname-rename, spacewalk-watch-channel-sync.sh
+# Required by spacewalk-watch-channel-sync.sh
 Requires:       bash
-# Required by spacewalk-hostname-rename
-Requires:       cobbler
-# Required by spacewalk-hostname-rename
-Requires:       iproute
-# Required by spacewalk-hostname-rename
-Requires:       perl-Satcon
 # Required by depsolver.py
 Requires:       python3-solv
 # Required by depsolver.py, cloneByDate.py, spacewalk-common-channels
 Requires:       python3-uyuni-common-libs
-# Required by spacewalk-hostname-rename
-Requires:       rpm
-# Required by spacewalk-hostname-rename
-Requires:       spacewalk-admin
 # Required by cloneByDate.py, spacewalk-clone-by-date, spacewalk-common-channels
 Requires:       spacewalk-backend
 # Required by cloneByDate.py
 Requires:       spacewalk-backend-sql
 # Required by cloneByDate.py, depsolver.py
 Requires:       spacewalk-backend-tools >= 2.2.27
-# Required by spacewalk-hostname-rename
-Requires:       spacewalk-certs-tools
-# Required by spacewalk-hostname-rename
-Requires:       spacewalk-config
-# Required by spacewalk-hostname-rename
-Requires:       spacewalk-setup
-# Required by spacewalk-hostname-rename (provides /usr/bin/spacewalk-sql)
-Requires:       susemanager-schema
 # Required by cloneByDate.py, depsolver.py,spacewalk-clone-by-date
 Requires(pre):  uyuni-base-common
 # Required by taskotop
@@ -105,7 +87,6 @@ popd
 %license COPYING.GPLv2 COPYING.GPLv3
 %attr(755,root,root) %{_bindir}/spacewalk-common-channels
 %attr(755,root,root) %{_bindir}/spacewalk-clone-by-date
-%attr(755,root,root) %{_bindir}/spacewalk-hostname-rename
 %attr(755,root,root) %{_bindir}/spacewalk-manage-channel-lifecycle
 %attr(755,root,root) %{_bindir}/taskotop
 %attr(755,root,root) %{_bindir}/spacewalk-watch-channel-sync.sh
@@ -119,7 +100,6 @@ popd
 %{python3_sitelib}/utils/__pycache__/cloneByDate.*
 %{python3_sitelib}/utils/__pycache__/depsolver.*
 %{_mandir}/man8/spacewalk-clone-by-date.8%{?ext_man}
-%{_mandir}/man8/spacewalk-hostname-rename.8%{?ext_man}
 %{_mandir}/man8/taskotop.8%{?ext_man}
 
 

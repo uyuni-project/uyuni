@@ -1,0 +1,1 @@
+- Fix spacewalk-hostname-rename with containers (bsc#1229825)
