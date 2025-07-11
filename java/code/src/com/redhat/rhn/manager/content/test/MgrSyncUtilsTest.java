@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
@@ -56,6 +57,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         super.tearDown();
         Config.get().remove(ContentSyncManager.RESOURCE_PATH);
         FileUtils.deleteDirectory(fromdir.toFile());
+        Config.get().setString(ConfigDefaults.SCC_UPDATE_HOST_DOMAIN, ".suse.com");
     }
 
     @Test
@@ -68,6 +70,15 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         URI expected = new URI(
                 String.format("file://%s/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update", fromdir));
         assertContains(opath.toString(), expected.toString());
+
+        Config.get().setString(ConfigDefaults.SCC_UPDATE_HOST_DOMAIN, ".ranchergovernment.com");
+        url = "https://updates.scc-proxy.rgscc-dev.ranchergovernment.com/SUSE/Updates/SLE-Module-Basesystem/" +
+                "15-SP3/x86_64/update/";
+        opath = MgrSyncUtils.urlToFSPath(url, name);
+        expected = new URI(
+                String.format("file://%s/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update", fromdir));
+        assertContains(opath.toString(), expected.toString());
+
     }
 
     @Test
@@ -78,6 +89,15 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
 
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(
+                String.format("file://%s/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update", fromdir));
+        assertContains(opath.toString(), expected.toString());
+
+        Config.get().setString(ConfigDefaults.SCC_UPDATE_HOST_DOMAIN, ".ranchergovernment.com");
+        url = "https://updates.scc-proxy.rgscc-dev.ranchergovernment.com/SUSE/Updates/SLE-Module-Basesystem/" +
+                "15-SP3/x86_64/update/?123456789abcde";
+
+        opath = MgrSyncUtils.urlToFSPath(url, name);
+        expected = new URI(
                 String.format("file://%s/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update", fromdir));
         assertContains(opath.toString(), expected.toString());
     }

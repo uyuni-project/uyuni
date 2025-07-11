@@ -18,6 +18,8 @@ package com.redhat.rhn.domain.scc.test;
 import static org.jmock.AbstractExpectations.returnValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
 import com.redhat.rhn.domain.credentials.RemoteCredentials;
 import com.redhat.rhn.domain.scc.SCCRepository;
@@ -25,6 +27,7 @@ import com.redhat.rhn.domain.scc.SCCRepositoryCloudRmtAuth;
 import com.redhat.rhn.testing.MockObjectTestCase;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -37,18 +40,40 @@ public class SCCRepositoryCloudRmtAuthTest extends MockObjectTestCase {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
+    @AfterEach
+    public void tearDown() throws Exception {
+        Config.get().setString(ConfigDefaults.SCC_UPDATE_HOST_DOMAIN, ".suse.com");
+    }
+
     @Test
     public void canCombineUrlsCorrectly() {
 
         SCCRepositoryCloudRmtAuth repoAuth = createAuthFor(
-            "https://updates.suse.com/SUSE/Products/RES/8-CLIENT-TOOLS/x86_64/product/",
-            1L, "https://smt-ec2.susecloud.net/repo"
+                "https://updates.suse.com/SUSE/Products/RES/8-CLIENT-TOOLS/x86_64/product/",
+                1L, "https://smt-ec2.susecloud.net/repo"
         );
 
         assertEquals(
-            "https://smt-ec2.susecloud.net/repo/SUSE/Products/RES/8-CLIENT-TOOLS/x86_64/product/" +
-                "?credentials=mirrcred_1",
-            repoAuth.getUrl()
+                "https://smt-ec2.susecloud.net/repo/SUSE/Products/RES/8-CLIENT-TOOLS/x86_64/product/" +
+                        "?credentials=mirrcred_1",
+                repoAuth.getUrl()
+        );
+    }
+
+    @Test
+    public void canCombineUrlsCorrectlyRGS() {
+
+        Config.get().setString(ConfigDefaults.SCC_UPDATE_HOST_DOMAIN, ".ranchergovernment.com");
+        SCCRepositoryCloudRmtAuth repoAuth = createAuthFor(
+                "https://updates.scc-proxy.rgscc-dev.ranchergovernment.com/SUSE/Products/RES/8-CLIENT-TOOLS/" +
+                        "x86_64/product/",
+                1L, "https://smt-ec2.susecloud.net/repo"
+        );
+
+        assertEquals(
+                "https://smt-ec2.susecloud.net/repo/SUSE/Products/RES/8-CLIENT-TOOLS/x86_64/product/" +
+                        "?credentials=mirrcred_1",
+                repoAuth.getUrl()
         );
     }
 
@@ -56,13 +81,28 @@ public class SCCRepositoryCloudRmtAuthTest extends MockObjectTestCase {
     public void doesNotDuplicateFolderWhenPathIsRepeated() {
 
         SCCRepositoryCloudRmtAuth repoAuth = createAuthFor(
-            "https://updates.suse.com/repo/$RCE/RES7-SUSE-Manager-Tools/x86_64/",
-            1L, "https://smt-ec2.susecloud.net/repo"
+                "https://updates.suse.com/repo/$RCE/RES7-SUSE-Manager-Tools/x86_64/",
+                1L, "https://smt-ec2.susecloud.net/repo"
         );
 
         assertEquals(
-            "https://smt-ec2.susecloud.net/repo/$RCE/RES7-SUSE-Manager-Tools/x86_64/?credentials=mirrcred_1",
-            repoAuth.getUrl()
+                "https://smt-ec2.susecloud.net/repo/$RCE/RES7-SUSE-Manager-Tools/x86_64/?credentials=mirrcred_1",
+                repoAuth.getUrl()
+        );
+    }
+
+    @Test
+    public void doesNotDuplicateFolderWhenPathIsRepeatedRGS() {
+
+        Config.get().setString(ConfigDefaults.SCC_UPDATE_HOST_DOMAIN, ".ranchergovernment.com");
+        SCCRepositoryCloudRmtAuth repoAuth = createAuthFor(
+                "https://updates.scc-proxy.rgscc-dev.ranchergovernment.com/repo/$RCE/RES7-SUSE-Manager-Tools/x86_64/",
+                1L, "https://smt-ec2.susecloud.net/repo"
+        );
+
+        assertEquals(
+                "https://smt-ec2.susecloud.net/repo/$RCE/RES7-SUSE-Manager-Tools/x86_64/?credentials=mirrcred_1",
+                repoAuth.getUrl()
         );
     }
 
@@ -70,13 +110,13 @@ public class SCCRepositoryCloudRmtAuthTest extends MockObjectTestCase {
     public void doesNotAlterPathWhenUrlIsExternalToCredentialBase() {
 
         SCCRepositoryCloudRmtAuth repoAuth = createAuthFor(
-            "https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/",
-            1L, "https://smt-ec2.susecloud.net/repo"
+                "https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/",
+                1L, "https://smt-ec2.susecloud.net/repo"
         );
 
         assertEquals(
-            "https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/",
-            repoAuth.getUrl()
+                "https://developer.download.nvidia.com/compute/cuda/repos/sles15/sbsa/",
+                repoAuth.getUrl()
         );
     }
 
