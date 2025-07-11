@@ -57,7 +57,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void canSearchForCorrectPackageForSUSE() {
-        server.setOsFamily("Suse");
+        server.setOsFamilySuse();
         server.setOs(ServerConstants.SLES);
         server.setRelease("15.6");
 
@@ -70,7 +70,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void canSearchForCorrectPackageForRHEL() {
-        server.setOsFamily("RedHat");
+        server.setOsFamily(ServerConstants.OS_FAMILY_REDHAT);
         server.setOs(ServerConstants.ROCKY);
         server.setRelease("8");
 
@@ -83,7 +83,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void canSearchForCorrectPackageForDebianLegacy() {
-        server.setOsFamily("Debian");
+        server.setOsFamily(ServerConstants.OS_FAMILY_DEBIAN);
         server.setOs(ServerConstants.DEBIAN);
         server.setRelease("10");
 
@@ -96,7 +96,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void canSearchForCorrectPackageForDebian() {
-        server.setOsFamily("Debian");
+        server.setOsFamily(ServerConstants.OS_FAMILY_DEBIAN);
         server.setOs(ServerConstants.DEBIAN);
         server.setRelease("12");
 
@@ -112,7 +112,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void canSearchForCorrectPackageForUbuntuLegacy() {
-        server.setOsFamily("Debian");
+        server.setOsFamily(ServerConstants.OS_FAMILY_DEBIAN);
         server.setOs(ServerConstants.UBUNTU);
         server.setRelease("22.04");
 
@@ -125,7 +125,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void canSearchForCorrectPackageForUbuntu() {
-        server.setOsFamily("Debian");
+        server.setOsFamily(ServerConstants.OS_FAMILY_DEBIAN);
         server.setOs(ServerConstants.UBUNTU);
         server.setRelease("24.04");
 
@@ -141,7 +141,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void scapIsEnabledWhenCorrectPackageIsInstalled() {
-        server.setOsFamily("Suse");
+        server.setOsFamilySuse();
         server.setOs(ServerConstants.SLES);
         server.setRelease("15.6");
 
@@ -157,7 +157,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void scapIsEnabledWhenAllRequiredPackagesAreInstalled() {
-        server.setOsFamily("Debian");
+        server.setOsFamily(ServerConstants.OS_FAMILY_DEBIAN);
         server.setOs(ServerConstants.DEBIAN);
         server.setRelease("12");
 
