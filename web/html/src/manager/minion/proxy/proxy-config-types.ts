@@ -48,19 +48,11 @@ export interface Parent {
 
 export interface ProxyConfigProps {
   serverId: string;
-  isUyuni: boolean;
   parents: Parent[];
   currentConfig: ProxyConfigModel;
   initFailMessage?: string;
+  registryUrlExample?: string;
+  registryTagExample?: string;
 }
-
-export type TagOptions = {
-  registryBaseURL?: string[];
-  registryHttpdURL?: string[];
-  registrySaltbrokerURL?: string[];
-  registrySquidURL?: string[];
-  registrySshURL?: string[];
-  registryTftpdURL?: string[];
-};
 
 export const RegistryBaseURL = "registryBaseURL";

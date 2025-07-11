@@ -42,7 +42,6 @@ public class ProxyConfigUpdateFacadeImpl implements ProxyConfigUpdateFacade {
         this.contextHandlerChain.addAll(asList(
                 new ProxyConfigUpdateAcquisitor(),
                 new ProxyConfigUpdateValidation(),
-                new ProxyConfigUpdateRegistryPreConditions(),
                 new ProxyConfigUpdateFileAcquisitor(),
                 new ProxyConfigUpdateSavePillars(),
                 new ProxyConfigUpdateApplySaltState()
