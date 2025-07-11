@@ -20,15 +20,33 @@ import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.audit.ScapManager;
 
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.Openscap;
 import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.results.Ret;
+import com.suse.salt.netapi.results.StateApplyResult;
+import com.suse.utils.Json;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.text.StringEscapeUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +59,17 @@ import java.util.regex.Pattern;
  * ScapAction - Class representing TYPE_SCAP_*.
  */
 public class ScapAction extends Action {
+    private static final Logger LOG = LogManager.getLogger(ScapAction.class);
+
+    private static String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
+
+    /**
+     * Used only for testing
+     * @param xccdfResumeXslIn to set
+     */
+    public static void setXccdfResumeXsl(String xccdfResumeXslIn) {
+        xccdfResumeXsl = xccdfResumeXslIn;
+    }
 
     private ScapActionDetails scapActionDetails;
 
@@ -82,8 +111,7 @@ public class ScapAction extends Action {
     }
 
     /**
-     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @return minion summaries grouped by local call
+     * {@inheritDoc}
      */
     @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
@@ -132,4 +160,76 @@ public class ScapAction extends Action {
                 minionSummaries);
         return ret;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
+        Openscap.OpenscapResult openscapResult;
+        try {
+            TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>> typeToken =
+                    new TypeToken<>() {
+                    };
+            Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>> stateResult = Json.GSON.fromJson(
+                    jsonResult, typeToken.getType());
+            openscapResult = stateResult.entrySet().stream().findFirst().map(e -> e.getValue().getChanges().getRet())
+                    .orElseThrow(() -> new RuntimeException("missing scap result"));
+        }
+        catch (JsonSyntaxException e) {
+            serverAction.setResultMsg("Error parsing minion response: " + jsonResult);
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            return;
+        }
+        if (openscapResult.isSuccess()) {
+            serverAction.getServer().asMinionServer().ifPresent(
+                    minion -> {
+                        try {
+                            Map<Boolean, String> moveRes = auxArgs.getSaltApi().storeMinionScapFiles(
+                                    minion, openscapResult.getUploadDir(), getId());
+                            moveRes.entrySet().stream().findFirst().ifPresent(moved -> {
+                                if (moved.getKey()) {
+                                    Path resultsFile = Paths.get(moved.getValue(),
+                                            "results.xml");
+                                    try (InputStream resultsFileIn =
+                                                 new FileInputStream(
+                                                         resultsFile.toFile())) {
+                                        ScapManager.xccdfEval(
+                                                minion, this,
+                                                openscapResult.getReturnCode(),
+                                                openscapResult.getError(),
+                                                resultsFileIn,
+                                                new File(xccdfResumeXsl));
+                                        serverAction.setResultMsg("Success");
+                                    }
+                                    catch (Exception e) {
+                                        LOG.error("Error processing SCAP results file {}", resultsFile, e);
+                                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                                        serverAction.setResultMsg(
+                                                "Error processing SCAP results file " +
+                                                        resultsFile + ": " +
+                                                        e.getMessage());
+                                    }
+                                }
+                                else {
+                                    serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                                    serverAction.setResultMsg(
+                                            "Could not store SCAP files on server: " +
+                                                    moved.getValue());
+                                }
+                            });
+                        }
+                        catch (Exception e) {
+                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                            serverAction.setResultMsg(
+                                    "Error saving SCAP result: " + e.getMessage());
+                        }
+                    });
+        }
+        else {
+            serverAction.setResultMsg(openscapResult.getError());
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+        }
+    }
+
 }

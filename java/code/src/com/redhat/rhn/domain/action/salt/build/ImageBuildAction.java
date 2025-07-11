@@ -14,30 +14,49 @@
  */
 package com.redhat.rhn.domain.action.salt.build;
 
+import static com.suse.manager.webui.services.SaltConstants.SALT_CP_PUSH_ROOT_PATH;
+import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
 import static java.util.stream.Collectors.toMap;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFormatter;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.image.DockerfileProfile;
+import com.redhat.rhn.domain.image.ImageFile;
+import com.redhat.rhn.domain.image.ImageInfo;
+import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.KiwiProfile;
+import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum;
+import com.suse.manager.webui.utils.salt.custom.OSImageBuildImageInfoResult;
+import com.suse.manager.webui.utils.salt.custom.OSImageBuildSlsResult;
 import com.suse.manager.webui.utils.token.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
+import com.suse.utils.Json;
 
+import com.google.gson.JsonElement;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,8 +65,10 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,6 +76,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 
 /**
  * ApplyStatesAction - Action class representing the application of Salt states.
@@ -92,8 +114,7 @@ public class ImageBuildAction extends Action {
     }
 
     /**
-     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @return minion summaries grouped by local call
+     * {@inheritDoc}
      */
     @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
@@ -118,7 +139,7 @@ public class ImageBuildAction extends Action {
 
         //TODO: optimal scheduling would be to group by host and orgid
         return minions.stream().collect(
-                Collectors.toMap(minion -> {
+                toMap(minion -> {
                             Map<String, Object> pillar = new HashMap<>();
 
                             profile.asDockerfileProfile().ifPresent(dockerfileProfile -> {
@@ -217,4 +238,146 @@ public class ImageBuildAction extends Action {
 
         return "https://" + host + "/rhn/manager/download/" + channelLabel + "?" + token;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
+
+        serverAction.setResultMsg(SaltUtils.getJsonResultWithPrettyPrint(jsonResult));
+
+        Optional<ImageInfo> infoOpt = ImageInfoFactory.lookupByBuildAction(this);
+        if (infoOpt.isEmpty()) {
+            LOG.error("ImageInfo not found while performing: {} in handleImageBuildData", getName());
+            return;
+        }
+        ImageInfo info = infoOpt.get();
+
+        handleImageBuildLog(info, auxArgs.getSaltApi());
+
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+            if (details == null) {
+                LOG.error("Details not found while performing: {} in handleImageBuildData", getName());
+                return;
+            }
+            Long imageProfileId = details.getImageProfileId();
+            if (imageProfileId == null) { // It happens when the image profile is deleted during a build action
+                LOG.error("Image Profile ID not found while performing: {} in handleImageBuildData", getName());
+                return;
+            }
+
+            boolean isKiwiProfile = false;
+            Optional<ImageProfile> profileOpt = ImageProfileFactory.lookupById(imageProfileId);
+            if (profileOpt.isPresent()) {
+                isKiwiProfile = profileOpt.get().asKiwiProfile().isPresent();
+            }
+            else {
+                LOG.warn("Could not find any profile for profile ID {}", imageProfileId);
+            }
+
+            if (isKiwiProfile) {
+                serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                    // Update the image info and download the built Kiwi image to SUSE Manager server
+                    OSImageBuildImageInfoResult buildInfo =
+                            Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
+                                    .getKiwiBuildInfo().getChanges().getRet();
+
+                    info.setChecksum(ImageInfoFactory.convertChecksum(buildInfo.getImage().getChecksum()));
+                    info.setName(buildInfo.getImage().getName());
+                    info.setVersion(buildInfo.getImage().getVersion());
+
+                    ImageInfoFactory.updateRevision(info);
+
+                    List<List<Object>> files = new ArrayList<>();
+                    String imageDir = info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
+                    if (!buildInfo.getBundles().isEmpty()) {
+                        buildInfo.getBundles().forEach(bundle -> files.add(List.of(bundle.getFilepath(),
+                                imageDir + bundle.getFilename(), "bundle", bundle.getChecksum())));
+                    }
+                    else {
+                        files.add(List.of(buildInfo.getImage().getFilepath(),
+                                imageDir + buildInfo.getImage().getFilename(), "image",
+                                buildInfo.getImage().getChecksum()));
+                        buildInfo.getBootImage().ifPresent(f -> {
+                            files.add(List.of(f.getKernel().getFilepath(),
+                                    imageDir + f.getKernel().getFilename(), "kernel",
+                                    f.getKernel().getChecksum()));
+                            files.add(List.of(f.getInitrd().getFilepath(),
+                                    imageDir + f.getInitrd().getFilename(), "initrd",
+                                    f.getInitrd().getChecksum()));
+                        });
+                    }
+                    files.stream().forEach(file -> {
+                        String targetPath = OSImageStoreUtils.getOSImageStorePathForImage(info);
+                        targetPath += info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
+                        MgrUtilRunner.ExecResult collectResult = auxArgs.getSystemQuery()
+                                .collectKiwiImage(minionServer, (String)file.get(0), targetPath)
+                                .orElseThrow(() -> new RuntimeException("Failed to download image."));
+
+                        if (collectResult.getReturnCode() != 0) {
+                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                            serverAction.setResultMsg(StringUtils
+                                    .left(SaltUtils.printStdMessages(collectResult.getStderr(),
+                                                    collectResult.getStdout()),
+                                            1024));
+                        }
+                        else {
+                            ImageFile imagefile = new ImageFile();
+                            imagefile.setFile((String)file.get(1));
+                            imagefile.setType((String)file.get(2));
+                            imagefile.setChecksum(ImageInfoFactory.convertChecksum(
+                                    (ImageChecksum.Checksum)file.get(3)));
+                            imagefile.setImageInfo(info);
+                            info.getImageFiles().add(imagefile);
+                        }
+                    });
+                });
+            }
+            else {
+                ImageInfoFactory.updateRevision(info);
+                if (info.getImageType().equals(ImageProfile.TYPE_DOCKERFILE)) {
+                    ImageInfoFactory.obsoletePreviousRevisions(info);
+                }
+            }
+        }
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+            // both building and uploading results succeeded
+            info.setBuilt(true);
+
+            try {
+                ImageInfoFactory.scheduleInspect(info, Date.from(Instant.now()), getSchedulerUser());
+            }
+            catch (TaskomaticApiException e) {
+                LOG.error("Could not schedule image inspection ", e);
+            }
+        }
+        ImageInfoFactory.save(info);
+    }
+
+    private void handleImageBuildLog(ImageInfo info, SaltApi saltApi) {
+        MinionServer buildHost = info.getBuildServer();
+        if (buildHost == null) {
+            return;
+        }
+
+        Path srcPath = Path.of(SALT_CP_PUSH_ROOT_PATH + buildHost.getMinionId() +
+                "/files/image-build" + getId() + ".log");
+        Path tmpPath = Path.of(SALT_FILE_GENERATION_TEMP_PATH + "/image-build" + getId() + ".log");
+
+        try {
+            // copy the log to a directory readable by tomcat
+            saltApi.copyFile(srcPath, tmpPath)
+                    .orElseThrow(() -> new RuntimeException("Can't copy the build log file"));
+
+            String log = Files.readString(tmpPath);
+            info.setBuildLog(log);
+            saltApi.removeFile(srcPath);
+            saltApi.removeFile(tmpPath);
+        }
+        catch (Exception e) {
+            LOG.info("No build log for action {} {}", getId(), e);
+        }
+    }
+
 }
