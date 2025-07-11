@@ -28,6 +28,7 @@ import com.redhat.rhn.manager.access.AccessGroupManager;
 import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.AccessGroupJson;
+import com.suse.manager.webui.utils.gson.AccessGroupUserJson;
 import com.suse.manager.webui.utils.gson.NamespaceJson;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 
@@ -39,6 +40,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
+import java.util.List;
 
 import spark.Request;
 import spark.Response;
@@ -60,6 +62,7 @@ public class AccessGroupController {
     public static void initRoutes() {
         get("/manager/api/admin/access-group/roles", withProductAdmin(AccessGroupController::listRoles));
         get("/manager/api/admin/access-group/namespaces", withProductAdmin(AccessGroupController::listNamespaces));
+        get("/manager/api/admin/access-group/users", withProductAdmin(AccessGroupController::listAccessGroupUsers));
     }
 
     /**
@@ -94,5 +97,18 @@ public class AccessGroupController {
         TypeToken<PagedDataResultJson<NamespaceJson, Long>> type = new TypeToken<>() { };
         return json(GSON, response, new PagedDataResultJson<>(namespaces, namespaces.getTotalSize(),
                 Collections.emptySet()), type);
+    }
+
+    /**
+     * Processes a GET request to get a list of all users
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the user
+     * @return the result JSON object
+     */
+    public static String listAccessGroupUsers(Request request, Response response, User user) {
+        List<AccessGroupUserJson> users = MANAGER.listUsers();
+        return json(GSON, response, users, new TypeToken<>() { });
     }
 }
