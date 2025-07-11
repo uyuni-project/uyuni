@@ -111,9 +111,14 @@ function capitalize(str: string): string {
     return str;
   }
 
-  return str.replace(new RegExp("_|-", "g"), " ").replace(/\w\S*/g, function (txt) {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-  });
+  return str
+    .replace(/_|-/g, " ")
+    .replace(/\w\S*/g, function (txt) {
+      if (txt === txt.toUpperCase()) {
+        return txt; // keep acronyms as is
+      }
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
 }
 
 function generatePassword(): string {
