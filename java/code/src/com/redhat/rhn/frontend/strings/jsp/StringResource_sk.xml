@@ -8299,49 +8299,49 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="pkg.lock.message.genericerror" xml:space="preserve">
         <source>Error occurred: {0}</source>
-        <target/>
+        <target state="translated">Nastala chyba: {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.menu" xml:space="preserve">
         <source>Lock / Unlock</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Zamknúť / Odomknúť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.requestlock" xml:space="preserve">
         <source>Lock</source>
-        <target/>
+        <target state="translated">Zamknúť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.requestunlock" xml:space="preserve">
         <source>Unlock</source>
-        <target/>
+        <target state="translated">Odomknúť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.setLocks" xml:space="preserve">
         <source>Packages Lock/Unlock</source>
-        <target/>
+        <target state="translated">Zamknúť/Odomknúť balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.locking" xml:space="preserve">
         <source>Locking...</source>
-        <target/>
+        <target state="translated">Zamykanie...</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.unlocking" xml:space="preserve">
         <source>Unlocking...</source>
-        <target/>
+        <target state="translated">Odomykanie...</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
@@ -8349,21 +8349,21 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!-- Package Profile strings -->
       <trans-unit id="compare.jsp.compareto" xml:space="preserve">
         <source>Compare to {0}</source>
-        <target/>
+        <target state="translated">Porovnať s {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="compare.jsp.difference" xml:space="preserve">
         <source>Difference</source>
-        <target/>
+        <target state="translated">Rozdiel</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="compare.jsp.nodifferences" xml:space="preserve">
         <source>No differences.</source>
-        <target/>
+        <target state="translated">Žiadne rozdiely.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
