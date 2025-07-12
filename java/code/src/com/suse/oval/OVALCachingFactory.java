@@ -15,8 +15,6 @@
 
 package com.suse.oval;
 
-import static java.util.stream.Collectors.groupingBy;
-
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -24,8 +22,9 @@ import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
 
-import com.suse.oval.manager.OVALLookupHelper;
+import com.suse.oval.manager.OVALResourcesCache;
 import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.ovaltypes.OvalRootType;
 import com.suse.oval.vulnerablepkgextractor.ProductVulnerablePackages;
@@ -50,9 +49,22 @@ public class OVALCachingFactory extends HibernateFactory {
         // Left empty on purpose
     }
 
-    private static void clearOVALMetadataByPlatform(String platformCpe) {
-        WriteMode mode = ModeFactory.getWriteMode("oval_queries", "clear_oval_metadata_by_platform");
-        mode.executeUpdate(Map.of("cpe", platformCpe));
+    /**
+     * Clears the OVAL metadata for the given OS product, meaning:
+     * <ul>
+     *     <li>Clears all entries in the suseOVALPlatformVulnerablePackage table that correspond
+     *     to the given OS product.</li>
+     *     <li>Deletes the OS product from the suseOVALOsProduct table.</li>
+     * </ul>
+     *
+     * @param osProduct the OS product to clear the OVAL metadata for.
+     * */
+    public static void clearOVALMetadataByOsProduct(CVEAuditManagerOVAL.OVALOsProduct osProduct) {
+        WriteMode mode = ModeFactory.getWriteMode("oval_queries", "clear_oval_metadata_by_os_product");
+        Map<String, String> params = new HashMap<>();
+        params.put("os_product_family", osProduct.getOsFamily().toString());
+        params.put("os_product_version", osProduct.getOsVersion());
+        mode.executeUpdate(params);
     }
 
     /**
@@ -63,20 +75,17 @@ public class OVALCachingFactory extends HibernateFactory {
     public static void savePlatformsVulnerablePackages(OvalRootType rootType) {
         CallableMode mode = ModeFactory.getCallableMode("oval_queries", "add_product_vulnerable_package");
 
-        OVALLookupHelper ovalLookupHelper = new OVALLookupHelper(rootType);
+        OVALResourcesCache ovalResourcesCache = new OVALResourcesCache(rootType);
+        CVEAuditManagerOVAL.OVALOsProduct ovalOsProduct =
+            new CVEAuditManagerOVAL.OVALOsProduct(rootType.getOsFamily(), rootType.getOsVersion());
 
         List<ProductVulnerablePackages> productVulnerablePackages = new ArrayList<>();
         for (DefinitionType definition : rootType.getDefinitions()) {
             VulnerablePackagesExtractor vulnerablePackagesExtractor =
-                    VulnerablePackagesExtractors.create(definition, rootType.getOsFamily(), ovalLookupHelper);
+                    VulnerablePackagesExtractors.create(definition, rootType.getOsFamily(), ovalResourcesCache);
 
             productVulnerablePackages.addAll(vulnerablePackagesExtractor.extract());
         }
-
-        // Clear previous OVAL metadata
-        productVulnerablePackages.stream()
-                .collect(groupingBy(ProductVulnerablePackages::getProductCpe))
-                .keySet().forEach(OVALCachingFactory::clearOVALMetadataByPlatform);
 
         // Write OVAL metadata in batches
         DataResult<Map<String, Object>> batch = new DataResult<>(new ArrayList<>(1000));
@@ -84,7 +93,9 @@ public class OVALCachingFactory extends HibernateFactory {
             for (String cve : pvp.getCves()) {
                 for (VulnerablePackage vulnerablePackage : pvp.getVulnerablePackages()) {
                     Map<String, Object> params = new HashMap<>();
-                    params.put("product_name", pvp.getProductCpe());
+                    params.put("os_product_family", ovalOsProduct.getOsFamily().toString());
+                    params.put("os_product_version", ovalOsProduct.getOsVersion());
+                    params.put("platform_cpe", pvp.getProductCpe());
                     params.put("cve_name", cve);
                     params.put("package_name", vulnerablePackage.getName());
                     params.put("fix_version", vulnerablePackage.getFixVersion().orElse(null));

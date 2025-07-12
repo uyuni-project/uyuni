@@ -48,8 +48,8 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.oval.OVALCachingFactory;
 import com.suse.oval.OVALCleaner;
 import com.suse.oval.OsFamily;
-import com.suse.oval.OvalParser;
 import com.suse.oval.ovaltypes.OvalRootType;
+import com.suse.oval.parser.OvalParser;
 
 import org.junit.jupiter.api.Test;
 
