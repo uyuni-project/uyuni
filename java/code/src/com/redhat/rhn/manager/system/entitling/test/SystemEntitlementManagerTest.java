@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorResult;
-import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -149,11 +148,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
                 "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerTestUtils.createTestSystem(user);
-        Channel[] children = ChannelTestUtils.setupBaseChannelForVirtualization(user,
-                server.getBaseChannel());
-
-        Channel rhnTools = children[0];
-        Channel rhelVirt = children[1];
+        ChannelTestUtils.setupBaseChannelForVirtualization(user, server.getBaseChannel());
 
         // Entitlements
         UserTestUtils.addVirtualization(user.getOrg());

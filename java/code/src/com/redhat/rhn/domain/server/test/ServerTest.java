@@ -160,7 +160,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     public void testNetworkInterfaces() throws Exception {
         Server s = ServerTestUtils.createTestSystem(user);
         NetworkInterfaceTest.createTestNetworkInterface(s);
-        s = TestUtils.saveAndReload(s);
+        TestUtils.saveAndReload(s);
         Server s2 = ServerTestUtils.createTestSystem(user);
         s2 = TestUtils.saveAndReload(s2);
         NetworkInterfaceTest.createTestNetworkInterface(s2);

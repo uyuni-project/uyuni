@@ -210,7 +210,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
        assertTrue(dr.isEmpty());
        SystemManager.unsubscribeServerFromChannel(user, server, server.getBaseChannel());
-       server = SystemManager.subscribeServerToChannel(user, server, channel);
+       SystemManager.subscribeServerToChannel(user, server, channel);
 
        dr = ChannelManager.popularChannelTree(user, 1L, null);
 
@@ -761,10 +761,9 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         UserTestUtils.addVirtualization(user.getOrg());
         Server s = ServerTestUtils.createTestSystem(user);
-        Channel[] chans = ChannelTestUtils.
-        setupBaseChannelForVirtualization(s.getCreator(), s.getBaseChannel());
+        ChannelTestUtils.setupBaseChannelForVirtualization(s.getCreator(), s.getBaseChannel());
         // Repeat to ensure there's multiple child channels created:
-        chans = ChannelTestUtils.
+        Channel[] chans = ChannelTestUtils.
         setupBaseChannelForVirtualization(s.getCreator(), s.getBaseChannel());
 
         // Subscribe to one set of the child channels but not the other, this should *not*
