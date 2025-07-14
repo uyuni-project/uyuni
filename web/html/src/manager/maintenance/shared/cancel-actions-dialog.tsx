@@ -14,7 +14,6 @@ export default function CancelActionsDialog(props: Props) {
       title={t("Cancel affected actions")}
       onConfirmAsync={props.onConfirmAsync}
       submitText={t("Confirm")}
-      submitIcon="fa-check"
       btnClass="btn-primary"
       content={
         <>
