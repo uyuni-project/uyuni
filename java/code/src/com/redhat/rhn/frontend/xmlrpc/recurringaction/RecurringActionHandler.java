@@ -91,7 +91,7 @@ public class RecurringActionHandler extends BaseHandler {
                 case ORG:
                     return RecurringActionManager.listOrgRecurringActions(id, loggedInUser);
                 default:
-                    throw new IllegalStateException("Unsupported type " + type);
+                    throw new InvalidArgsException(type);
             }
         }
         catch (PermissionException e) {
