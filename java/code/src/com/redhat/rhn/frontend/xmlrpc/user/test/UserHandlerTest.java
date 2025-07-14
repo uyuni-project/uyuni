@@ -442,7 +442,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
                     admin, admin.getLogin(), null);
             fail("null should be invalid");
         }
-        catch (IllegalArgumentException iae) {
+        catch (InvalidParameterException iae) {
             // expected exception
         }
 
@@ -452,7 +452,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
                     admin, admin.getLogin(), new LinkedList<>());
             fail("empty array should be invalid");
         }
-        catch (IllegalArgumentException iae) {
+        catch (InvalidParameterException iae) {
             // expected exception
         }
     }
@@ -704,7 +704,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
                     admin, admin.getLogin(), null);
             fail("null should be invalid");
         }
-        catch (IllegalArgumentException iae) {
+        catch (InvalidParameterException iae) {
             // expected exception
         }
 
@@ -714,12 +714,9 @@ public class UserHandlerTest extends BaseHandlerTestCase {
                     admin, admin.getLogin(), new LinkedList<>());
             fail("empty array should be invalid");
         }
-        catch (IllegalArgumentException iae) {
+        catch (InvalidParameterException iae) {
             // expected exception
         }
-
-
-
     }
 
     @Test

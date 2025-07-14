@@ -703,7 +703,7 @@ public class UserHandler extends BaseHandler {
 
     /**
      * Add ServerGroup to the list of Default System groups. The ServerGroup
-     * <strong>MUST</strong> exist otherwise a IllegalArgumentException is
+     * <strong>MUST</strong> exist otherwise a InvalidParameterException is
      * thrown.
      * @param loggedInUser The current user
      * in user.
@@ -726,7 +726,7 @@ public class UserHandler extends BaseHandler {
 
     /**
      * Add ServerGroups to the list of Default System groups. The ServerGroups
-     * <strong>MUST</strong> exist otherwise a IllegalArgumentException is
+     * <strong>MUST</strong> exist otherwise a InvalidParameterException is
      * thrown.
      * @param loggedInUser The current user
      * in user.
@@ -747,7 +747,7 @@ public class UserHandler extends BaseHandler {
                 loggedInUser, login);
 
         if (sgNames == null || sgNames.isEmpty()) {
-            throw new IllegalArgumentException("no servergroup names supplied");
+            throw new InvalidParameterException("no servergroup names supplied");
         }
 
         List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(target.getOrg());
@@ -782,7 +782,7 @@ public class UserHandler extends BaseHandler {
     /**
      * Remove ServerGroup from the list of Default System groups. The
      * ServerGroup <strong>MUST</strong> exist otherwise a
-     * IllegalArgumentException is thrown.
+     * InvalidParameterException is thrown.
      * @param loggedInUser The current user
      * in user.
      * @param login The login for the user whose Default ServerGroup list will
@@ -805,7 +805,7 @@ public class UserHandler extends BaseHandler {
     /**
      * Remove ServerGroups from the list of Default System groups. The
      * ServerGroups <strong>MUST</strong> exist otherwise a
-     * IllegalArgumentException is thrown.
+     * InvalidParameterException is thrown.
      * @param loggedInUser The current user
      * in user.
      * @param login The login for the user whose Default ServerGroup list will
@@ -825,7 +825,7 @@ public class UserHandler extends BaseHandler {
                 loggedInUser, login);
 
         if (sgNames == null || sgNames.isEmpty()) {
-            throw new IllegalArgumentException("no servergroup names supplied");
+            throw new InvalidParameterException("no servergroup names supplied");
         }
 
         List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(target.getOrg());
@@ -1045,7 +1045,7 @@ public class UserHandler extends BaseHandler {
                 loggedInUser, login);
 
         if (sgNames == null || sgNames.isEmpty()) {
-            throw new IllegalArgumentException("no servergroup names supplied");
+            throw new InvalidParameterException("no servergroup names supplied");
         }
 
 
