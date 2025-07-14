@@ -57,6 +57,10 @@ Feature: Maintenance windows
     And I select "multicalendar" from "calendarSelect"
     And I click on "Create Schedule"
     Then I should see a "Schedule successfully created" text
+
+  Scenario: Create another multi schedule
+    When I follow the left menu "Schedule > Maintenance Windows > Schedules"
+    Then I should see a "Items 1 - 2 of 2" text
     When I click on "Create"
     And I enter "Core Server Window" as "name"
     And I choose "MULTI"
