@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.IOFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.FormulaUtil;
@@ -95,10 +96,15 @@ public class FormulaHandler extends BaseHandler {
      */
     @ReadOnly
     public List<String> getFormulasByGroupId(User loggedInUser, Integer systemGroupId) {
-        ManagedServerGroup group = ServerGroupFactory
-                .lookupByIdAndOrg(systemGroupId.longValue(), loggedInUser.getOrg());
-        FormulaUtil.ensureUserHasPermissionsOnServerGroup(loggedInUser, group);
-        return FormulaFactory.getFormulasByGroup(group);
+        try {
+            ManagedServerGroup group = ServerGroupFactory
+                    .lookupByIdAndOrg(systemGroupId.longValue(), loggedInUser.getOrg());
+            FormulaUtil.ensureUserHasPermissionsOnServerGroup(loggedInUser, group);
+            return FormulaFactory.getFormulasByGroup(group);
+        }
+        catch (PermissionException e) {
+            throw new PermissionCheckFailureException(e.getMessage());
+        }
    }
 
     /**
@@ -115,10 +121,15 @@ public class FormulaHandler extends BaseHandler {
      */
     @ReadOnly
     public List<String> getFormulasByServerId(User loggedInUser, Integer sid) {
-        Server server = ServerFactory.lookupById(sid.longValue());
-        FormulaUtil.ensureUserHasPermissionsOnServer(loggedInUser, server);
-        return FormulaFactory.getFormulasByMinion(server.asMinionServer()
-                .orElseThrow(() -> new UnsupportedOperationException("Not a Salt minion: " + sid)));
+        try {
+            Server server = ServerFactory.lookupById(sid.longValue());
+            FormulaUtil.ensureUserHasPermissionsOnServer(loggedInUser, server);
+            return FormulaFactory.getFormulasByMinion(server.asMinionServer()
+                    .orElseThrow(() -> new UnsupportedOperationException("Not a Salt minion: " + sid)));
+        }
+        catch (PermissionException e) {
+            throw new PermissionCheckFailureException(e.getMessage());
+        }
     }
 
     /**
@@ -135,11 +146,16 @@ public class FormulaHandler extends BaseHandler {
      */
     @ReadOnly
     public List<String> getCombinedFormulasByServerId(User loggedInUser, Integer sid) {
-        MinionServer minion = MinionServerFactory.lookupById(sid.longValue())
-                .orElseThrow(() -> new InvalidParameterException(
-                        "Provided systemId does not correspond to a minion"));
-        FormulaUtil.ensureUserHasPermissionsOnServer(loggedInUser, minion);
-        return FormulaFactory.getCombinedFormulasByServer(minion);
+        try {
+            MinionServer minion = MinionServerFactory.lookupById(sid.longValue())
+                    .orElseThrow(() -> new InvalidParameterException(
+                            "Provided systemId does not correspond to a minion"));
+            FormulaUtil.ensureUserHasPermissionsOnServer(loggedInUser, minion);
+            return FormulaFactory.getCombinedFormulasByServer(minion);
+        }
+        catch (PermissionException e) {
+            throw new PermissionCheckFailureException(e.getMessage());
+        }
     }
 
     /**
@@ -202,7 +218,8 @@ public class FormulaHandler extends BaseHandler {
             saltApi.refreshPillar(new MinionList(minion.getMinionId()));
         }
         catch (PermissionException e) {
-            throw new PermissionException(LocalizationService.getInstance().getMessage("formula.accessdenied"));
+            throw new PermissionCheckFailureException(LocalizationService.getInstance()
+                    .getMessage("formula.accessdenied"));
         }
         catch (ValidatorException e) {
             throw new ValidationException(e.getMessage(), e);
