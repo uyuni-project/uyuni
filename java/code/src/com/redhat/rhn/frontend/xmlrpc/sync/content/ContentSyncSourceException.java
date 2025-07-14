@@ -15,7 +15,8 @@
 
 package com.redhat.rhn.frontend.xmlrpc.sync.content;
 
-import com.redhat.rhn.manager.content.ContentSyncException;
+
+import com.redhat.rhn.frontend.xmlrpc.ContentSyncException;
 
 public class ContentSyncSourceException extends ContentSyncException {
 
