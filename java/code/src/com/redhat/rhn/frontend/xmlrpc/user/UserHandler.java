@@ -34,10 +34,10 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
-import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.DeleteUserException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidOperationException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.LookupServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchRoleException;
@@ -567,8 +567,8 @@ public class UserHandler extends BaseHandler {
                     errorString.append(" :: ");
                 }
             }
-            //Throw a BadParameterException with our message string
-            throw new BadParameterException(errorString.toString());
+            //Throw a InvalidParameterException with our message string
+            throw new InvalidParameterException(errorString.toString());
         }
 
         command.storeNewUser();
