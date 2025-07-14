@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.services.impl;
 
@@ -25,9 +21,11 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
+import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerPath;
+import com.redhat.rhn.domain.server.ServerPathId;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 
 import com.suse.manager.utils.SaltUtils;
@@ -85,6 +83,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -375,7 +374,11 @@ public class SaltSSHService {
      * directly to the minion
      */
     public static List<String> proxyPathToHostnames(Server proxy) {
-        String port = Optional.ofNullable(proxy.getProxyInfo().getSshPort()).map(p -> ":" + p).orElse("");
+        String port = Optional.of(proxy)
+                .map(Server::getProxyInfo)
+                .map(ProxyInfo::getSshPort)
+                .map(p -> ":" + p)
+                .orElse("");
         return proxyPathToHostnames(proxy.getServerPaths(), Optional.of(proxy.getHostname() + port));
     }
 
@@ -391,11 +394,22 @@ public class SaltSSHService {
         }
 
         List<ServerPath> proxyPath = sortServerPaths(serverPaths);
-        List<String> hostnamePath = proxyPath.stream().map(path -> {
-            String port = Optional.ofNullable(path.getId().getProxyServer().getProxyInfo().getSshPort())
-                    .map(p -> ":" + p.toString()).orElse("");
-            return path.getHostname() + port;
-        }).collect(Collectors.toList());
+        List<String> hostnamePath = proxyPath.stream()
+                .filter(Objects::nonNull)
+                .map(path -> {
+                    String port = Optional.of(path)
+                            .map(ServerPath::getId)
+                            .map(ServerPathId::getProxyServer)
+                            .map(Server::getProxyInfo)
+                            .map(ProxyInfo::getSshPort)
+                            .map(p -> ":" + p)
+                            .orElse("");
+
+                    if (port.isEmpty()) {
+                        LOG.warn("Unable to identify port for proxy path {}. Using default.", path);
+                    }
+                    return path.getHostname() + port;
+                }).collect(Collectors.toList());
 
         lastProxy.ifPresent(hostnamePath::add);
 
