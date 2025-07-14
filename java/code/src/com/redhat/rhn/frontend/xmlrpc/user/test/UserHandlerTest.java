@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchRoleException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchUserException;
@@ -243,7 +244,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
                     "And Ted", "iron.maiden@rufus.com");
             fail();
         }
-        catch (BadParameterException e) {
+        catch (InvalidParameterException e) {
             // success
         }
     }
@@ -304,7 +305,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
             handler.create(admin, login, invalidPassword, firstName, lastName, email);
             fail();
         }
-        catch (BadParameterException e) {
+        catch (InvalidParameterException e) {
             //success
         }
 
