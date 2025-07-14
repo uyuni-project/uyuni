@@ -1726,7 +1726,7 @@ public class SystemHandler extends BaseHandler {
         SsmDeleteServersEvent event =
                 new SsmDeleteServersEvent(loggedInUser, deletion,
                         SystemManager.ServerCleanupType.fromString(cleanupType).orElseThrow(() ->
-                        new IllegalArgumentException("Invalid server cleanup type value: " + cleanupType)));
+                        new InvalidParameterException("Invalid server cleanup type value: " + cleanupType)));
         MessageQueue.publish(event);
 
         // If we skipped any systems, create an error message and throw a FaultException
@@ -1807,7 +1807,7 @@ public class SystemHandler extends BaseHandler {
         systemManager.deleteServerAndCleanup(loggedInUser,
                 server.getId(),
                 SystemManager.ServerCleanupType.fromString(cleanupType).orElseThrow(() ->
-                                    new IllegalArgumentException(
+                                    new InvalidParameterException(
                                             "Invalid server cleanup type value: " + cleanupType))
         );
         return 1;
@@ -2304,11 +2304,11 @@ public class SystemHandler extends BaseHandler {
      */
     public int deleteNote(User loggedInUser, Integer sid, Integer noteId) {
         if (sid == null) {
-            throw new IllegalArgumentException("sid cannot be null");
+            throw new InvalidParameterException("sid cannot be null");
         }
 
         if (noteId == null) {
-            throw new IllegalArgumentException("nid cannot be null");
+            throw new InvalidParameterException("nid cannot be null");
         }
 
         SystemManager.deleteNote(loggedInUser, sid.longValue(), noteId.longValue());
@@ -2332,7 +2332,7 @@ public class SystemHandler extends BaseHandler {
      */
     public int deleteNotes(User loggedInUser, Integer sid) {
         if (sid == null) {
-            throw new IllegalArgumentException("sid cannot be null");
+            throw new InvalidParameterException("sid cannot be null");
         }
 
         SystemManager.deleteNotes(loggedInUser, sid.longValue());
@@ -6891,7 +6891,7 @@ public class SystemHandler extends BaseHandler {
      * @param systemName system name
      * @param data the data about system
      * @throws SystemsExistFaultException - when system(s) matching given data exists
-     * @throws java.lang.IllegalArgumentException when the input data contains insufficient information or
+     * @throws InvalidParameterException when the input data contains insufficient information or
      * if the format of the hardware address is invalid
      * @return int - ID of the created system on success, exception thrown otherwise.
      *
@@ -8775,11 +8775,11 @@ public class SystemHandler extends BaseHandler {
             MinionServer minion = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
                     .orElseThrow(() -> new UnsupportedOperationException("System not managed with Salt: " + sid));
             PackageStates vPkgState = PackageStates.byId(state)
-                    .orElseThrow(()-> new IllegalArgumentException("Invalid package state"));
+                    .orElseThrow(()-> new InvalidParameterException("Invalid package state"));
             VersionConstraints vVersionConstraint = VersionConstraints.byId(versionConstraint)
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid version constraint"));
+                    .orElseThrow(() -> new InvalidParameterException("Invalid version constraint"));
             PackageName pkgName = Optional.ofNullable(PackageManager.lookupPackageName(packageName))
-                    .orElseThrow(() -> new IllegalArgumentException("No such package exists"));
+                    .orElseThrow(() -> new InvalidParameterException("No such package exists"));
 
             //update the state
            SystemManager.updatePackageState(loggedInUser, minion, pkgName, vPkgState, vVersionConstraint);
