@@ -15,27 +15,44 @@
 package com.redhat.rhn.domain.action;
 
 
+import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionSummary;
+import com.redhat.rhn.domain.server.SAPWorkload;
 
+import com.suse.manager.reactor.hardware.CpuArchUtil;
+import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
+import com.suse.utils.Json;
 
+import com.google.gson.JsonElement;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * HardwareRefreshAction
  */
 public class HardwareRefreshAction extends Action {
+    private static final Logger LOG = LogManager.getLogger(HardwareRefreshAction.class);
 
     /**
-     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @return minion summaries grouped by local call
+     * {@inheritDoc}
      */
     @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
@@ -65,4 +82,88 @@ public class HardwareRefreshAction extends Action {
         return ret;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+            serverAction.setResultMsg("Failure");
+        }
+        else {
+            serverAction.setResultMsg("Success");
+        }
+        serverAction.getServer().asMinionServer()
+                .ifPresent(minionServer -> handleHardwareProfileUpdate(minionServer,
+                        Json.GSON.fromJson(jsonResult, HwProfileUpdateSlsResult.class), serverAction));
+    }
+
+    /**
+     * Update the hardware profile for a minion in the database from incoming
+     * event data.
+     *
+     * @param server the minion server
+     * @param result the result of the call as parsed from event data
+     * @param serverAction the server action
+     */
+    private void handleHardwareProfileUpdate(MinionServer server, HwProfileUpdateSlsResult result,
+                                             ServerAction serverAction) {
+        Instant start = Instant.now();
+
+        HardwareMapper hwMapper = new HardwareMapper(server,
+                new ValueMap(result.getGrains()));
+        hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo()));
+        server.setRam(hwMapper.getTotalMemory());
+        server.setSwap(hwMapper.getTotalSwapMemory());
+        if (CpuArchUtil.isDmiCapable(hwMapper.getCpuArch())) {
+            hwMapper.mapDmiInfo(
+                    result.getSmbiosRecordsBios().orElse(Collections.emptyMap()),
+                    result.getSmbiosRecordsSystem().orElse(Collections.emptyMap()),
+                    result.getSmbiosRecordsBaseboard().orElse(Collections.emptyMap()),
+                    result.getSmbiosRecordsChassis().orElse(Collections.emptyMap()));
+        }
+        hwMapper.mapDevices(result.getUdevdb());
+        if (CpuArchUtil.isS390(hwMapper.getCpuArch())) {
+            hwMapper.mapSysinfo(result.getMainframeSysinfo());
+        }
+        hwMapper.mapVirtualizationInfo(result.getSmbiosRecordsSystem());
+        hwMapper.mapNetworkInfo(result.getNetworkInterfaces(), Optional.of(result.getNetworkIPs()),
+                result.getNetworkModules(),
+                Stream.concat(
+                        Stream.concat(
+                                result.getFqdns().stream(),
+                                result.getDnsFqdns().stream()
+                        ),
+                        result.getCustomFqdns().stream()
+                ).distinct().collect(Collectors.toList())
+        );
+        server.setPayg(result.getInstanceFlavor().map(o -> o.equals("PAYG")).orElse(false));
+        server.setContainerRuntime(result.getContainerRuntime());
+        server.setUname(result.getUname());
+
+        var sapWorkloads = result.getSAPWorkloads()
+                .map(m -> m.getChanges().getRet())
+                .orElse(Collections.emptySet())
+                .stream()
+                .map(workload -> new SAPWorkload(
+                        server, workload.get("system_id"), workload.get("instance_type")
+                ))
+                .collect(Collectors.toSet());
+
+        server.getSapWorkloads().retainAll(sapWorkloads);
+        server.getSapWorkloads().addAll(sapWorkloads);
+
+        // Let the action fail in case there is error messages
+        if (!hwMapper.getErrors().isEmpty()) {
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setResultMsg("Hardware list could not be refreshed completely:\n" +
+                    hwMapper.getErrors().stream().collect(Collectors.joining("\n")));
+            serverAction.setResultCode(-1L);
+        }
+
+        if (LOG.isDebugEnabled()) {
+            long duration = Duration.between(start, Instant.now()).getSeconds();
+            LOG.debug("Hardware profile updated for minion: {} ({} seconds)", server.getMinionId(), duration);
+        }
+    }
 }

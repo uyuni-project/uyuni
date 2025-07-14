@@ -14,13 +14,19 @@
  */
 package com.redhat.rhn.domain.action.config;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.server.MinionSummary;
 
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
+
+import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,17 +37,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
 /**
  * ConfigDeployAction - Class representing TYPE_CONFIGFILES_DEPLOY
  */
 public class ConfigDeployAction extends ConfigAction {
 
-
     /**
-     * Deploy files(files, directory, symlink) through state.apply
-     *
-     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @return minion summaries grouped by local call
+     * {@inheritDoc}
      */
     @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
@@ -70,6 +73,19 @@ public class ConfigDeployAction extends ConfigAction {
                     new ArrayList<>(selectedServers));
         });
         return ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+            serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.deployed"));
+        }
+        else {
+            serverAction.setResultMsg(SaltUtils.getJsonResultWithPrettyPrint(jsonResult));
+        }
     }
 
 }

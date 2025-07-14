@@ -17,6 +17,8 @@ package com.redhat.rhn.domain.action.channel;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -25,9 +27,12 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
+
+import com.google.gson.JsonElement;
 
 import java.util.HashMap;
 import java.util.List;
@@ -65,8 +70,7 @@ public class SubscribeChannelsAction extends Action {
     }
 
     /**
-     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @return minion summaries grouped by local call
+     * {@inheritDoc}
      */
     @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
@@ -91,5 +95,19 @@ public class SubscribeChannelsAction extends Action {
                 minionSummaries);
 
         return ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+            serverAction.setResultMsg("Successfully applied state: " + ApplyStatesEventMessage.CHANNELS);
+        }
+        else {
+            serverAction.setResultMsg("Failed to apply state: " + ApplyStatesEventMessage.CHANNELS + ".\n" +
+                    SaltUtils.getJsonResultWithPrettyPrint(jsonResult));
+        }
     }
 }
