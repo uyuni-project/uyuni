@@ -21,6 +21,12 @@ import com.redhat.rhn.domain.org.Org;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.beans.Transient;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -170,4 +176,23 @@ public class ImageStore extends BaseDomainHelper {
                                     .append(org)
                                     .toHashCode();
     }
+
+    /**
+     * @param stores list of stores
+     * @return map
+     */
+    @Transient
+    public static Map<String, Object> dockerRegPillar(List<ImageStore> stores) {
+        Map<String, Object> dockerRegistries = new HashMap<>();
+        stores.forEach(store -> Optional.ofNullable(store.getCreds())
+                .ifPresent(credentials -> {
+                    Map<String, Object> reg = new HashMap<>();
+                    reg.put("email", "tux@example.com");
+                    reg.put("password", credentials.getPassword());
+                    reg.put("username", credentials.getUsername());
+                    dockerRegistries.put(store.getUri(), reg);
+                }));
+        return dockerRegistries;
+    }
+
 }

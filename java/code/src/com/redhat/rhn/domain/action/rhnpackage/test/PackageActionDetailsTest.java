@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRefreshListAction;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
@@ -61,7 +62,7 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
 
         PackageEvr evr = PackageEvrFactoryTest.createTestPackageEvr();
         PackageName pn = PackageNameTest.createTestPackageName();
-        PackageAction action = new PackageAction();
+        PackageAction action = new PackageRefreshListAction();
 
         pad.setCreated(now);
         assertEquals(now, pad.getCreated());
