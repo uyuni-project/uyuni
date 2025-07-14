@@ -27,7 +27,7 @@ const MaintenanceWindowsList = (props: MaintenanceListProps) => {
         disabled={!window.isAdmin}
         icon="fa-plus"
         text={t("Create")}
-        title={t("Create a new maintenance schedule")}
+        title={type === "schedule" ? t("Create a new Maintenance Schedules") : t("Create a new Maintenance Calendars")}
         handler={() => props.onActionChanged("create")}
       />
     </div>,
