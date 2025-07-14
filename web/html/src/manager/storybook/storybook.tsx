@@ -17,6 +17,7 @@ export const Storybook = () => {
   const { tab, story } = useQueryParams();
 
   const normalize = (input: string = "") => input.replaceAll(" ", "-").toLowerCase();
+  const isDeprecated = (input: string = "") => input.startsWith("DEPRECATED_");
 
   const activeTab = normalize(tab) || normalize(stories[0]?.title);
 
@@ -89,29 +90,35 @@ export const Storybook = () => {
       {stories.map((group) => (
         <div key={`${group.title}`}>
           {normalize(group.title) === activeTab &&
-            group.stories?.map((item) => {
-              const storyTitle = normalize(item.title);
-              const href = new URL(window.location.href);
-              href.searchParams.set("story", storyTitle);
-              return (
-                <Fragment key={`${group.title}-${item.title}`}>
-                  <p id={storyTitle}>
-                    <a href={href.toString()}>
-                      <code>{item.title}</code>
-                    </a>
-                  </p>
-                  <div className={styles.story}>
-                    <div>{item.component ? <item.component /> : null}</div>
-                    {showCode ? (
-                      <pre>
-                        <code>{item.raw}</code>
-                      </pre>
-                    ) : null}
-                  </div>
-                  <hr />
-                </Fragment>
-              );
-            })}
+            group.stories
+              ?.sort((a, b) => {
+                if (isDeprecated(a.title) && !isDeprecated(b.title)) return +1;
+                if (!isDeprecated(a.title) && isDeprecated(b.title)) return -1;
+                return a.title.localeCompare(b.title);
+              })
+              .map((item) => {
+                const storyTitle = normalize(item.title);
+                const href = new URL(window.location.href);
+                href.searchParams.set("story", storyTitle);
+                return (
+                  <Fragment key={`${group.title}-${item.title}`}>
+                    <p id={storyTitle}>
+                      <a href={href.toString()}>
+                        <code>{item.title}</code>
+                      </a>
+                    </p>
+                    <div className={styles.story}>
+                      <div>{item.component ? <item.component /> : null}</div>
+                      {showCode ? (
+                        <pre>
+                          <code>{item.raw}</code>
+                        </pre>
+                      ) : null}
+                    </div>
+                    <hr />
+                  </Fragment>
+                );
+              })}
         </div>
       ))}
     </>
