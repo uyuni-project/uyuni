@@ -19,7 +19,6 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ActionedSystem;
@@ -66,7 +65,7 @@ public class ScheduleHandler extends BaseHandler {
             }
 
             for (ServerAction sa : action.getServerActions()) {
-                if (ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus())) {
+                if (sa.isStatusPickedUp()) {
                     throw new UnsupportedOperationException(locService.getMessage("api.schedule.cannotcancelpickedup"));
                 }
             }

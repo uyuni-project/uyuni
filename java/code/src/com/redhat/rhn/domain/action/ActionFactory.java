@@ -259,7 +259,7 @@ public class ActionFactory extends HibernateFactory {
         ServerAction sa = new ServerAction();
         sa.setCreated(new Date());
         sa.setModified(new Date());
-        sa.setStatus(STATUS_QUEUED);
+        sa.setStatusQueued();
         sa.setServerWithCheck(server);
         sa.setParentActionWithCheck(parent);
         sa.setRemainingTries(5L); //arbitrary number from perl
@@ -1037,6 +1037,17 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final List<ActionStatus> ALL_STATUSES = List.of(STATUS_QUEUED, STATUS_PICKED_UP, STATUS_COMPLETED,
         STATUS_FAILED);
+
+    /**
+     * All the possible action statuses, but completed
+     */
+    public static final List<ActionStatus> ALL_STATUSES_BUT_COMPLETED = List.of(STATUS_QUEUED, STATUS_PICKED_UP,
+            STATUS_FAILED);
+
+    /**
+     * All the pending action statuses
+     */
+    public static final List<ActionStatus> ALL_PENDING_STATUSES = List.of(STATUS_QUEUED, STATUS_PICKED_UP);
 
     /**
      * The constant representing Package Refresh List action.  [ID:1]

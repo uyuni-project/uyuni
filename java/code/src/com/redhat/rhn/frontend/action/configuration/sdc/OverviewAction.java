@@ -254,7 +254,7 @@ public class OverviewAction extends RhnAction {
                     server.getId();
             String messageKey;
 
-            if (sa == null || ActionFactory.STATUS_FAILED.equals(sa.getStatus())) {
+            if (sa == null || sa.isStatusFailed()) {
                 messageKey = "sdc.config.deploy.failure";
             }
             else {
