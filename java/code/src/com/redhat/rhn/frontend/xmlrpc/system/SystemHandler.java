@@ -69,7 +69,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
-import com.redhat.rhn.domain.rhnpackage.profile.DuplicateProfileNameException;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -116,7 +115,9 @@ import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.DuplicateProfileNameException;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
+import com.redhat.rhn.frontend.xmlrpc.IOFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidActionTypeException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
@@ -208,7 +209,6 @@ import org.cobbler.SystemRecord;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -5998,7 +5998,7 @@ public class SystemHandler extends BaseHandler {
      * returns uuid and other transition data for the system according to the mapping file
      * @param clientCert client certificate
      * @return map containing transition data (hostname, uuid, system_id, timestamp)
-     * @throws FileNotFoundException in case no transition data are available
+     * @throws IOFaultException in case no transition data are available
      * @throws NoSuchSystemException in case no transition data for the specific system
      * were found
      *
@@ -6006,8 +6006,7 @@ public class SystemHandler extends BaseHandler {
      * is not useful to external users of the API, the typical XMLRPC API documentation
      * is not being included.
      */
-    public Map transitionDataForSystem(String clientCert) throws FileNotFoundException,
-        NoSuchSystemException {
+    public Map transitionDataForSystem(String clientCert) throws IOFaultException, NoSuchSystemException {
         final File transitionFolder =  new File("/usr/share/rhn/transition");
         final String csvUuid = "uuid";
         final String csvSystemId = "system_id";
@@ -6021,7 +6020,7 @@ public class SystemHandler extends BaseHandler {
 
         File[] files = transitionFolder.listFiles();
         if (files == null) {
-            throw new FileNotFoundException("Transition data not available");
+            throw new IOFaultException("Transition data not available");
         }
         for (File file : files) {
             Pattern pattern = Pattern.compile("id_to_uuid-(\\d+).map");
@@ -6166,7 +6165,7 @@ public class SystemHandler extends BaseHandler {
                     profileLabel, description);
             ProfileManager.copyFrom(server, profile);
         }
-        catch (DuplicateProfileNameException dbe) {
+        catch (com.redhat.rhn.domain.rhnpackage.profile.DuplicateProfileNameException dbe) {
             throw new DuplicateProfileNameException("Package Profile already exists " +
                     "with name: " + profileLabel);
         }
