@@ -73,6 +73,7 @@ public class SparkApplicationHelper {
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
             .create();
     private static final ThrottlingService THROTTLER = GlobalInstanceHolder.THROTTLING_SERVICE;
+    private static final String APPLICATION_JSON = "application/json";
 
     /**
      * Private constructor.
@@ -384,7 +385,7 @@ public class SparkApplicationHelper {
      */
     public static Route asJson(Route route) {
         return (request, response) -> {
-            response.type("application/json");
+            response.type(APPLICATION_JSON);
             return route.handle(request, response);
         };
     }
@@ -433,7 +434,7 @@ public class SparkApplicationHelper {
      * @return true if the content type is application/json
      */
     public static boolean isJson(Response response) {
-        return response.type().contains("application/json");
+        return response.type().contains(APPLICATION_JSON);
     }
 
     /**
@@ -498,7 +499,7 @@ public class SparkApplicationHelper {
             if (request.headers("accept").contains("json") || isJson(response)) {
                 Map<String, Object> exc = new HashMap<>();
                 exc.put("message", e.getMessage());
-                response.type("application/json");
+                response.type(APPLICATION_JSON);
                 response.body(GSON.toJson(exc));
                 response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             }
@@ -534,7 +535,7 @@ public class SparkApplicationHelper {
      */
     @Deprecated
     public static String json(Response response, Object result) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         return GSON.toJson(result);
     }
 
@@ -547,7 +548,7 @@ public class SparkApplicationHelper {
      */
     @Deprecated
     public static String json(Response response, Map<String, Object> result) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         return GSON.toJson(result);
     }
 
@@ -562,7 +563,7 @@ public class SparkApplicationHelper {
      */
     @Deprecated
     public static String json(Response response, int httpStatusCode, Object result) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         response.status(httpStatusCode);
         return GSON.toJson(result);
     }
@@ -577,7 +578,7 @@ public class SparkApplicationHelper {
      */
     @Deprecated
     public static String json(Gson gson, Response response, Object result) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         return gson.toJson(result);
     }
 
@@ -587,7 +588,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static String jsonNull(Response response) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         return GSON.toJson(null);
     }
 
@@ -598,7 +599,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static String json(Response response, JsonElement result) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         return GSON.toJson(result);
     }
 
@@ -609,7 +610,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static String json(Response response, boolean result) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         return GSON.toJson(result);
     }
 
@@ -620,7 +621,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static String json(Response response, int result) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         return GSON.toJson(result);
     }
 
@@ -631,7 +632,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static String json(Response response, String result) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         return GSON.toJson(result);
     }
 
@@ -642,7 +643,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static String json(Response response, List<String> result) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         return GSON.toJson(result);
     }
 
@@ -687,7 +688,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static <T> String json(Response response, T result, TypeToken<T> type) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         return GSON.toJson(result, type.getType());
     }
 
@@ -701,7 +702,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static <T> String json(Response response, int httpStatusCode, T result, TypeToken<T> type) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         response.status(httpStatusCode);
         return GSON.toJson(result, type.getType());
     }
@@ -715,7 +716,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static <T> String result(Response response, ResultJson<T> result, TypeToken<T> type) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         ParameterizedType parameterizedType = new ParameterizedTypeImpl(null, ResultJson.class, type.getType());
         return GSON.toJson(result, parameterizedType);
     }
@@ -739,7 +740,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static String json(Gson gson, Response response, long result) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         return gson.toJson(result);
     }
 
@@ -753,7 +754,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static <T> String json(Gson gson, Response response, T result, TypeToken<T> type) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         return gson.toJson(result, type.getType());
     }
 
@@ -768,7 +769,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static <T> String result(Response response, int httpStatusCode, ResultJson<T> result, TypeToken<T> type) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         response.status(httpStatusCode);
         ParameterizedType parameterizedType = new ParameterizedTypeImpl(null, ResultJson.class, type.getType());
         return GSON.toJson(result, parameterizedType);
@@ -782,7 +783,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static String badRequest(Response response, String... messages) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         response.status(HttpStatus.SC_BAD_REQUEST);
         return GSON.toJson(ResultJson.error(messages));
     }
@@ -795,7 +796,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static String notFound(Response response, String... messages) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         response.status(HttpStatus.SC_NOT_FOUND);
         return GSON.toJson(ResultJson.error(messages));
     }
@@ -808,7 +809,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static String internalServerError(Response response, String... messages) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
         return GSON.toJson(ResultJson.error(messages));
     }
@@ -821,7 +822,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static String forbidden(Response response, String... messages) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         response.status(HttpStatus.SC_FORBIDDEN);
         return GSON.toJson(ResultJson.error(messages));
     }
@@ -837,7 +838,7 @@ public class SparkApplicationHelper {
      */
     @Deprecated
     public static String jsonError(Response response, int httpStatusCode, String result) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         response.status(httpStatusCode);
         return GSON.toJson(result);
     }
@@ -854,7 +855,7 @@ public class SparkApplicationHelper {
      */
     @Deprecated
     public static String json(Gson gson, Response response, int httpStatusCode, Object result) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         response.status(httpStatusCode);
         return gson.toJson(result);
     }
@@ -871,7 +872,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static <T> String json(Gson gson, Response response, int httpStatusCode, T result, TypeToken<T> type) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         response.status(httpStatusCode);
         return gson.toJson(result, type.getType());
     }
@@ -889,7 +890,7 @@ public class SparkApplicationHelper {
      */
     public static <T> String result(Gson gson, Response response, int httpStatusCode, ResultJson<T> result,
                                     TypeToken<T> type) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         response.status(httpStatusCode);
         ParameterizedType parameterizedType = new ParameterizedTypeImpl(null, ResultJson.class, type.getType());
         return gson.toJson(result, parameterizedType);
