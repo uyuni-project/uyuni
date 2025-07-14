@@ -2607,12 +2607,27 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * Predicate to check for Suse os family
+     * @return true is Suse os family
+     */
+    public boolean isOsFamilySuse() {
+        return this.osFamily.equals(ServerConstants.OS_FAMILY_SUSE);
+    }
+
+    /**
      * Setter for os family
      *
      * @param osFamilyIn to set
      */
     public void setOsFamily(String osFamilyIn) {
         this.osFamily = osFamilyIn;
+    }
+
+    /**
+     * Setter for Suse os family
+     */
+    public void setOsFamilySuse() {
+        this.osFamily = ServerConstants.OS_FAMILY_SUSE;
     }
 
     /**

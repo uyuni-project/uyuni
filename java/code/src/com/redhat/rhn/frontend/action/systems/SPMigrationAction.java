@@ -147,7 +147,7 @@ public class SPMigrationAction extends RhnAction {
         request.setAttribute(IS_MINION, isMinion);
 
         // Check if this is a SUSE system (for minions only)
-        boolean isSUSEMinion = isMinion && minion.get().getOsFamily().equals("Suse");
+        boolean isSUSEMinion = isMinion && minion.get().isOsFamilySuse();
         logger.debug("is a SUSE minion? {}", isSUSEMinion);
         request.setAttribute(IS_SUSE_MINION, isSUSEMinion);
 

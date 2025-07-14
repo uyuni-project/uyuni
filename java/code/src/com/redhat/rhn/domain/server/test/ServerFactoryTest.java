@@ -736,7 +736,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             // a Mgr Server is also a Minion
             MinionServer minionServer = (MinionServer) s;
             minionServer.setMinionId(s.getName());
-            minionServer.setOsFamily("RedHat");
+            minionServer.setOsFamily(ServerConstants.OS_FAMILY_REDHAT);
             minionServer.setMachineId(TestUtils.randomString());
 
             ReportDBCredentials reportCredentials = CredentialsFactory.createReportCredentials("pythia", "secret");
@@ -760,7 +760,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         else if (type == TYPE_SERVER_MINION) {
             MinionServer minionServer = (MinionServer) s;
             minionServer.setMinionId(s.getName());
-            minionServer.setOsFamily("RedHat");
+            minionServer.setOsFamily(ServerConstants.OS_FAMILY_REDHAT);
             minionServer.setMachineId(TestUtils.randomString());
         }
     }
