@@ -7,7 +7,7 @@ For each row in pr_features.csv:
 - Processes all Cucumber JSON reports in the corresponding PR folder.
 - For each feature in each JSON file, determines if any step failed (Fail) or all passed (Pass).
 - Outputs a new CSV with the original row fields (except PR number), in addition,
-for each feature/test than ran on the PR, we add the feature name and Pass/Fail result.
+for each feature/test than ran on the PR, we add the feature name, scenario count, Pass/Fail result.
 """
 import os
 import csv
@@ -18,6 +18,7 @@ from config import (
     CUCUMBER_REPORTS_PARENT_DIR,
     PR_FEATURES_CSV_FILENAME,
     CUCUMBER_RESULTS_CSV_FILENAME,
+    DEBUG_MODE,
 )
 from utilities import setup_logging
 
@@ -137,12 +138,18 @@ def main():
             reader = csv.reader(infile)
             writer = csv.writer(outfile)
             header = next(reader)
-            # Remove PR number column (assume it's last)
-            new_header = header[:-1] + ["feature_name", "result", "scenario_count"]
+            # Remove PR number column (assume it's last) unless debugging
+            if DEBUG_MODE:
+                new_header = header + ["feature_name", "scenario_count", "result"]
+            else:
+                new_header = header[:-1] + ["feature_name", "scenario_count", "result"]
             writer.writerow(new_header)
             for row in reader:
                 pr_number = row[-1]
-                base_fields = row[:-1]
+                if DEBUG_MODE:
+                    base_fields = row
+                else:
+                    base_fields = row[:-1]
                 logger.info("Processing PR #%s", pr_number)
                 try:
                     pr_reports_folder = os.path.join(CUCUMBER_REPORTS_PARENT_DIR, f"PR{pr_number}")
@@ -151,7 +158,7 @@ def main():
                         logger.error("No test results found for PR #%s", pr_number)
                     for feature_name, result, scenario_count in test_results:
                         if result != "Skipped":
-                            writer.writerow(base_fields + [feature_name, result, scenario_count])
+                            writer.writerow(base_fields + [feature_name, scenario_count, result])
                         else:
                             logger.debug("Feature %s is skipped on PR %s", feature_name, pr_number)
                 except Exception as e:

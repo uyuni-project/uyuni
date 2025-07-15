@@ -7,6 +7,8 @@ Configuration constants for the project.
 CUCUMBER_REPORTS_PARENT_DIR = "PRs-cucumber-reports"
 PR_FEATURES_CSV_FILENAME = "pr_features.csv"
 CUCUMBER_RESULTS_CSV_FILENAME = "pr_features_with_results.csv"
+# Debug mode: 1 = debugging, 0 = production
+DEBUG_MODE = 1
 
 # ------------------------------
 # PR Data Extraction
