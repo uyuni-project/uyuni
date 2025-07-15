@@ -1,0 +1,14 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//SUSE Manager//Maintenance Scheduler//EN
+BEGIN:VEVENT
+UID:daily-maintenance@example.com
+DTSTAMP:20250704T120000Z
+ORGANIZER;CN=SUSE Manager Admin:MAILTO:admin@example.com
+DTSTART;TZID=Europe/Prague:20250705T000000
+DTEND;TZID=Europe/Prague:20250705T003000
+RRULE:FREQ=DAILY
+SUMMARY:Daily Maintenance Window
+DESCRIPTION:Regular maintenance window for SUSE Manager tasks.
+END:VEVENT
+END:VCALENDAR
