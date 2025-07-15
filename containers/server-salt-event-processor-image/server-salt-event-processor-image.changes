@@ -1,0 +1,3 @@
+- version 5.1.6
+  * Initial image of Salt Event Processor
+  * Extract salt event processing from Tomcat to standalone container
