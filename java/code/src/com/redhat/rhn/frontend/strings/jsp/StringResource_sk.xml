@@ -8370,70 +8370,70 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="compare.jsp.package" xml:space="preserve">
         <source>Package</source>
-        <target/>
+        <target state="translated">Balík</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="compare.jsp.pagesummary" xml:space="preserve">
         <source>Below is a comparison of the package profile of this system and the profile selected for comparison.</source>
-        <target/>
+        <target state="translated">Nižšie je uvedené porovnanie profilu balíka tohto systému a profilu vybraného na porovnanie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="compare.jsp.profileof" xml:space="preserve">
         <source>Profile of {0}</source>
-        <target/>
+        <target state="translated">Profil {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="compare.jsp.profilemadefrom" xml:space="preserve">
         <source>Profile made from {0}</source>
-        <target/>
+        <target state="translated">Profil vytvorený z {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="compare.jsp.syncpackageto" xml:space="preserve">
         <source>Sync Packages To '{0}'</source>
-        <target/>
+        <target state="translated">Synchronizovať balíky s '{0}'</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="compare.jsp.thissystem" xml:space="preserve">
         <source>This System</source>
-        <target/>
+        <target state="translated">Tento systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="create.jsp.createprofile" xml:space="preserve">
         <source>Create Profile</source>
-        <target/>
+        <target state="translated">Vytvoriť profil</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="create.jsp.createstoredprofile" xml:space="preserve">
         <source>Create Stored Profile</source>
-        <target/>
+        <target state="translated">Vytvoriť uložený profil</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="create.jsp.pagesummary" xml:space="preserve">
         <source>This will create a stored profile, based upon the package set of this system, that you may use for profile comparisons.</source>
-        <target/>
+        <target state="translated">Takto sa vytvorí uložený profil založený na sade balíkov tohto systému, ktorý môžete použiť na porovnávania profilov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="create.jsp.profiledescription" xml:space="preserve">
         <source>Profile Description</source>
-        <target/>
+        <target state="translated">Popis profilu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
