@@ -39,6 +39,7 @@ public class ProxyConfigGetFormDataContext {
     private String initFailMessage;
     private String registryUrlExample;
     private String registryTagExample;
+    private boolean hasCertificates = false;
 
     /**
      * Constructor
@@ -95,5 +96,18 @@ public class ProxyConfigGetFormDataContext {
 
     public void setRegistryTagExample(String registryTagExampleIn) {
         registryTagExample = registryTagExampleIn;
+    }
+
+    /**
+     * Returns true if the proxy configuration has certificates.
+     *
+     * @return true if the proxy configuration has certificates
+     */
+    public boolean hasCertificates() {
+        return hasCertificates;
+    }
+
+    public void setHasCertificates(boolean hasCertificatesIn) {
+        hasCertificates = hasCertificatesIn;
     }
 }

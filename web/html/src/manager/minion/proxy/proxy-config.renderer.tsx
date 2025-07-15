@@ -11,6 +11,7 @@ export const renderer = (
     initFailMessage,
     registryUrlExample,
     registryTagExample,
+    hasCertificates,
   }: {
     serverId: string;
     parents: any[];
@@ -18,6 +19,7 @@ export const renderer = (
     initFailMessage: string;
     registryUrlExample: string;
     registryTagExample: string;
+    hasCertificates?: boolean;
   }
 ) => {
   return SpaRenderer.renderNavigationReact(
@@ -28,6 +30,7 @@ export const renderer = (
       initFailMessage={initFailMessage}
       registryUrlExample={registryUrlExample}
       registryTagExample={registryTagExample}
+      hasCertificates={hasCertificates}
     />,
     document.getElementById(id)
   );
