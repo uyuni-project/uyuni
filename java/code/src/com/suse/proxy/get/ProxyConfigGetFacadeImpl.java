@@ -99,6 +99,7 @@ public class ProxyConfigGetFacadeImpl implements ProxyConfigGetFacade {
         data.put("initFailMessage", context.getInitFailMessage());
         data.put("registryUrlExample", context.getRegistryUrlExample());
         data.put("registryTagExample", context.getRegistryTagExample());
+        data.put("hasCertificates", context.hasCertificates());
 
         return data;
     }

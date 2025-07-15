@@ -53,6 +53,7 @@ export interface ProxyConfigProps {
   initFailMessage?: string;
   registryUrlExample?: string;
   registryTagExample?: string;
+  hasCertificates?: boolean;
 }
 
 export const RegistryBaseURL = "registryBaseURL";
