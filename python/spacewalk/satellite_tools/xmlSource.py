@@ -545,7 +545,6 @@ class ChannelItem(BaseItem):
         "rhn-channel-product-name": "product_name",
         "rhn-channel-product-version": "product_version",
         "rhn-channel-product-beta": "product_beta",
-        "rhn-channel-receiving-updates": "receiving_updates",
         "rhn-channel-checksum-type": "checksum_type",
         "rhn-channel-comps-last-modified": "comps_last_modified",
         "rhn-channel-modules-last-modified": "modules_last_modified",
