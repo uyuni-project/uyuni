@@ -25,13 +25,13 @@ export function ProxyConfig({
   initFailMessage,
   registryUrlExample,
   registryTagExample,
+  hasCertificates,
 }: Readonly<ProxyConfigProps>) {
   const [messages, setMessages] = useState<React.ReactNode[]>([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<boolean | undefined>();
   const [isValidated, setIsValidated] = useState(false);
 
-  const hasExistingConfig = currentConfig !== undefined && Object.keys(currentConfig).length > 0;
   const originalConfig = { ...currentConfig };
 
   const [model, setModel] = useState(() => {
@@ -191,7 +191,7 @@ export function ProxyConfig({
             divClass="col-md-6"
           />
           <hr />
-          {hasExistingConfig && (
+          {hasCertificates && (
             <Radio
               name="useCertsMode"
               label={t("Certificates")}
@@ -208,7 +208,7 @@ export function ProxyConfig({
               ]}
             />
           )}
-          {Object.keys(currentConfig).length > 0 && model.useCertsMode === UseCertsMode.Keep && (
+          {hasCertificates && model.useCertsMode === UseCertsMode.Keep && (
             <div className="offset-md-3 col-md-6">
               <Messages
                 items={[
@@ -293,6 +293,18 @@ export function ProxyConfig({
             ]}
             onChange={onChangeSourceMode}
           />
+          <div className="offset-md-3 col-md-6">
+            <Messages
+              items={[
+                {
+                  severity: "warning",
+                  text: t(
+                    "The availability of container images depends on your environment’s connectivity. In air-gapped/restricted environments, using RPM as the source mode is recommended to ensure all required images are available locally. Selecting an incompatible source mode may result in deployment failures."
+                  ),
+                },
+              ]}
+            />
+          </div>
           {model.sourceMode === SourceMode.Registry && (
             <>
               <Radio
@@ -323,7 +335,7 @@ export function ProxyConfig({
                   <Text
                     name="registryBaseTag"
                     label={t("Containers Tag")}
-                    placeholder={t("e.g., " + registryTagExample)}
+                    placeholder={t("e.g. {registryTagExample}", { registryTagExample })}
                     required
                     labelClass="col-md-3"
                     divClass="col-md-6"
@@ -343,7 +355,7 @@ export function ProxyConfig({
                   <Text
                     name="registryHttpdTag"
                     label={t("HTTPD Tag")}
-                    placeholder={t("e.g., " + registryTagExample)}
+                    placeholder={t("e.g. {registryTagExample}", { registryTagExample })}
                     required
                     labelClass="col-md-3"
                     divClass="col-md-6"
@@ -360,7 +372,7 @@ export function ProxyConfig({
                   <Text
                     name="registrySaltbrokerTag"
                     label={t("Salt Broker Tag")}
-                    placeholder={t("e.g., " + registryTagExample)}
+                    placeholder={t("e.g. {registryTagExample}", { registryTagExample })}
                     required
                     labelClass="col-md-3"
                     divClass="col-md-6"
@@ -377,7 +389,7 @@ export function ProxyConfig({
                   <Text
                     name="registrySquidTag"
                     label={t("Squid Tag")}
-                    placeholder={t("e.g., " + registryTagExample)}
+                    placeholder={t("e.g. {registryTagExample}", { registryTagExample })}
                     required
                     labelClass="col-md-3"
                     divClass="col-md-6"
@@ -394,7 +406,7 @@ export function ProxyConfig({
                   <Text
                     name="registrySshTag"
                     label={t("SSH Tag")}
-                    placeholder={t("e.g., " + registryTagExample)}
+                    placeholder={t("e.g. {registryTagExample}", { registryTagExample })}
                     required
                     labelClass="col-md-3"
                     divClass="col-md-6"
@@ -411,7 +423,7 @@ export function ProxyConfig({
                   <Text
                     name="registryTftpdTag"
                     label={t("TFTPD Tag")}
-                    placeholder={t("e.g., " + registryTagExample)}
+                    placeholder={t("e.g. {registryTagExample}", { registryTagExample })}
                     required
                     labelClass="col-md-3"
                     divClass="col-md-6"
