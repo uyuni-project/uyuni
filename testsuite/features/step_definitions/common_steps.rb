@@ -145,20 +145,6 @@ Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
   raise ScriptError, "Expected uptime message to be one of #{valid_uptime_messages} - found '#{ui_uptime_text}'" unless check
 end
 
-Then(/^I should see several text fields$/) do
-  steps 'Then I should see a "UUID" text
-    And I should see a "Virtualization" text
-    And I should see a "Installed Products" text
-    And I should see a "Checked In" text
-    And I should see a "Registered" text
-    And I should see a "Contact Method" text
-    And I should see a "Auto Patch Update" text
-    And I should see a "Maintenance Schedule" text
-    And I should see a "Description" text
-    And I should see a "Location" text
-  '
-end
-
 # events
 
 When(/^I wait until event "([^"]*)" is completed$/) do |event|
