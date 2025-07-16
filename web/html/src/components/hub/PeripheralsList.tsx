@@ -51,7 +51,11 @@ export class PeripheralsList extends React.Component<Props> {
           header={t("Download Root CA")}
           cell={(row: PeripheralListData) => this.renderDownloadRootCA(row)}
         />
-        <Column columnKey="remove" header={t("Delete")} cell={(row: PeripheralListData) => this.renderDeregister(row)} />
+        <Column
+          columnKey="remove"
+          header={t("Delete")}
+          cell={(row: PeripheralListData) => this.renderDeregister(row)}
+        />
       </Table>
     );
 

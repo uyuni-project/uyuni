@@ -602,7 +602,9 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
   render() {
     let runtimeColumns: React.ReactNode[] = [];
     if (this.props.runtimeInfoEnabled) {
-      runtimeColumns.push(<Column columnKey="runtime" header={t("Runtime")} cell={(row) => this.renderRuntimeIcon(row)} />);
+      runtimeColumns.push(
+        <Column columnKey="runtime" header={t("Runtime")} cell={(row) => this.renderRuntimeIcon(row)} />
+      );
       runtimeColumns.push(
         <Column
           columnKey="instances"
