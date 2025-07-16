@@ -238,6 +238,8 @@ public class HardwareMapper {
         String systemSerial = system.getOptionalAsString("serial_number").orElse(null);
 
         String boardSerial = baseboard.getOptionalAsString("serial_number").orElse(null);
+        String boardName = baseboard.getOptionalAsString("product_name").orElse(null);
+        String boardManufacturer = baseboard.getOptionalAsString("manufacturer").orElse(null);
 
         String chassisSerial = chassis.getOptionalAsString("serial_number").orElse(null);
         String chassisTag = chassis.getOptionalAsString("asset_tag").orElse(null);
@@ -251,17 +253,27 @@ public class HardwareMapper {
             dmiSystem.append(productName);
         }
         if (StringUtils.isNotBlank(systemVersion)) {
-            if (dmiSystem.length() > 0) {
+            if (!dmiSystem.isEmpty()) {
                 dmiSystem.append(" ");
             }
             dmiSystem.append(systemVersion);
         }
-        dmi.setSystem(dmiSystem.length() > 0 ? dmiSystem.toString().trim() : null);
+        dmi.setSystem(dmiSystem.isEmpty() ? null : dmiSystem.toString().trim());
         dmi.setProduct(productName);
         if (biosVendor != null || biosVersion != null || biosReleseDate != null) {
             dmi.setBios(biosVendor, biosVersion, biosReleseDate);
         }
         dmi.setVendor(biosVendor);
+
+        StringBuilder board = new StringBuilder();
+        if (StringUtils.isNotBlank(boardManufacturer)) {
+            board.append(boardManufacturer.trim());
+            board.append(" ");
+        }
+        if (StringUtils.isNotBlank(boardName)) {
+            board.append(boardName.trim());
+        }
+        dmi.setBoard(board.isEmpty() ? null : board.toString().trim());
 
         dmi.setAsset(String.format("(chassis: %s) (chassis: %s) (board: %s) (system: %s)",
                 Objects.toString(chassisSerial, ""), Objects.toString(chassisTag, ""),
