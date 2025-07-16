@@ -1,0 +1,75 @@
+import { Column } from "./Column";
+import { SelectableColumn } from "./SelectableColumn";
+import { Table } from "./Table";
+import { placeholderData } from "./Table.example.placeholderData";
+import { useSelected } from "./useSelected";
+
+// This is just a placeholder type
+type ChannelWithHierarchy = any & {
+  children: ChannelWithHierarchy[];
+};
+
+export default () => {
+  const identifier = (item: ChannelWithHierarchy) => item.channelId;
+  const viewSelected = useSelected(identifier);
+  const modifySelected = useSelected(identifier);
+
+  const channels = placeholderData.channelSyncData.channels;
+
+  return (
+    <>
+      <button
+        onClick={() => {
+          viewSelected.setSelected([114, 115, 116, 102, 103, 104]);
+        }}
+        style={{ marginBottom: "10px" }}
+      >
+        call <code>viewSelected.setSelected(...)</code>
+      </button>
+      <Table data={channels} identifier={identifier} expandable>
+        <Column
+          columnKey="channelName"
+          header={t("Channel name")}
+          cell={(row, criteria, nestingLevel) => {
+            if (nestingLevel) {
+              return row.channelName;
+            }
+            return <b>{row.channelName}</b>;
+          }}
+          width="20%"
+        />
+        <Column
+          columnKey="channelLabel"
+          header={t("Channel Label")}
+          cell={(row: ChannelWithHierarchy) => row.channelLabel}
+          width="20%"
+        />
+        <Column
+          columnKey="channelArch"
+          header={t("Architecture")}
+          cell={(row: ChannelWithHierarchy) => row.channelArch}
+        />
+        <Column
+          columnKey="hubOrg"
+          header={t("Hub Org")}
+          cell={(row: ChannelWithHierarchy) => (row.channelOrg ? row.channelOrg.orgName : "SUSE")}
+          width="20%"
+        />
+        <SelectableColumn
+          columnKey="view"
+          header={t("View")}
+          selected={viewSelected}
+          headerClass="text-center"
+          columnClass="text-center"
+        />
+        <SelectableColumn
+          columnKey="modify"
+          header={t("Modify")}
+          selected={modifySelected}
+          headerClass="text-center"
+          columnClass="text-center"
+        />
+      </Table>
+    </>
+  );
+};

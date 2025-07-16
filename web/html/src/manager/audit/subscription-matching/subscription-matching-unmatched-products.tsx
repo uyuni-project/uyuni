@@ -71,6 +71,7 @@ class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
               cell={(row) => row.systemCount}
             />
             <Column
+              columnKey="showList"
               cell={(row) => (
                 <ModalButton
                   className="btn-default btn-cell"

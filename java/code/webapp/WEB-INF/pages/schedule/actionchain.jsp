@@ -44,7 +44,7 @@
             <h4><bean:message key="actionchain.jsp.edit"/></h4>
         </div>
         <div class="panel-body">
-            <div class="panel panel-default"><div class="table-responsive"><table class="table table-striped">
+            <div class="panel panel-default"><div class="table-responsive"><table class="table">
                 <thead>
                     <tr>
                         <th><bean:message key="actionchain.jsp.action"/></th>

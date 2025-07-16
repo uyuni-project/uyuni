@@ -449,7 +449,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
               </div>
             ) : (
               <span>
-                <table className="table table-striped">
+                <table className="table">
                   <thead>
                     <tr>
                       <th>{this.props.type === "state" ? t("State Name") : t("Channel Name")}</th>

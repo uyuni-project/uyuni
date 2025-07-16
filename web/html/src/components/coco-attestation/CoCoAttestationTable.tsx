@@ -105,6 +105,7 @@ class CoCoAttestationTable extends React.Component<Props> {
                 cell={(row) => renderTime(row.attestationTime)}
               />
               <Column
+                columnKey="actions"
                 columnClass="text-right"
                 headerClass="text-right"
                 header={t("Actions")}
