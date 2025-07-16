@@ -89,7 +89,7 @@ export const Storybook = () => {
       {stories.map((group) => (
         <div key={`${group.title}`}>
           {normalize(group.title) === activeTab &&
-            group.stories?.map((item) => {
+            group.stories?.map((item, index) => {
               const storyTitle = normalize(item.title);
               const href = new URL(window.location.href);
               href.searchParams.set("story", storyTitle);
@@ -108,7 +108,7 @@ export const Storybook = () => {
                       </pre>
                     ) : null}
                   </div>
-                  <hr />
+                  {group.stories && group.stories.length - 1 > index ? <hr /> : null}
                 </Fragment>
               );
             })}

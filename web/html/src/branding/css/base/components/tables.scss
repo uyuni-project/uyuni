@@ -2,9 +2,16 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  flex-wrap: wrap;
 
   label {
     cursor: pointer;
+  }
+
+  .spacewalk-list-head-addons-extra {
+    float: right;
+    width: auto;
+    white-space: nowrap;
   }
 }
 

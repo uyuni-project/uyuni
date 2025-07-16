@@ -186,6 +186,7 @@ class ImageStores extends React.Component<Props, State> {
             />
             {window.isAdmin && (
               <Column
+                columnKey="actions"
                 width="15%"
                 columnClass="text-right"
                 headerClass="text-right"

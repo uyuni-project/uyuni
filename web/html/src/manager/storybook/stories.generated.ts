@@ -353,6 +353,19 @@ export const components_steps_progress_bar_stories_tsx = {
   raw: components_steps_progress_bar_stories_tsx_raw,
 };
 
+// @ts-ignore
+import components_table_Table_example_tsx_component from "components/table/Table.example.tsx";
+import components_table_Table_example_tsx_raw from "components/table/Table.example.tsx?raw";
+
+export const components_table_Table_example_tsx = {
+  path: "components/table/Table.example.tsx",
+  title: "Table.example.tsx",
+  groupName: "table",
+  component: components_table_Table_example_tsx_component,
+  raw: components_table_Table_example_tsx_raw,
+};
+
+// @ts-ignore
 import components_toastr_toastr_example_tsx_component from "components/toastr/toastr.example.tsx";
 import components_toastr_toastr_example_tsx_raw from "components/toastr/toastr.example.tsx?raw";
 

@@ -195,6 +195,7 @@ class RecurringActionsList extends React.Component<Props, State> {
             cell={(row) => row.actionTypeDescription}
           />
           <Column
+            columnKey="actions"
             columnClass="text-right"
             headerClass="text-right"
             header={t("Actions")}
