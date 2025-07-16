@@ -1,0 +1,2 @@
+- CVE-2025-53883: Escape input strings in system search form
+  (bsc#1246439)

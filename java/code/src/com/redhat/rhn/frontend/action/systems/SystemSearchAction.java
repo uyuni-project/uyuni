@@ -27,6 +27,7 @@ import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
@@ -230,6 +231,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable<Sys
         Boolean invertResults = StringUtils.defaultString(
                         (String)request.getAttribute(INVERT_RESULTS)).equals("on");
         Boolean isFineGrained = (Boolean)request.getAttribute(FINE_GRAINED);
+        String escapedSearchString = StringEscapeUtils.escapeHtml4(searchString);
 
         ActionErrors errs = new ActionErrors();
         DataResult<SystemSearchResult> dr = null;
@@ -251,18 +253,18 @@ public class SystemSearchAction extends BaseSearchAction implements Listable<Sys
                 LOG.error("Invalid search query", e);
                 errs.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("packages.search.could_not_parse_query",
-                                          searchString));
+                                          escapedSearchString));
             }
             else if (e.getErrorCode() == 200) {
                 LOG.error("Index files appear to be missing: ", e);
                 errs.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("packages.search.index_files_missing",
-                                          searchString));
+                                          escapedSearchString));
             }
             else {
                 errs.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("packages.search.could_not_execute_query",
-                                      searchString));
+                                      escapedSearchString));
             }
         }
         if (dr == null) {
