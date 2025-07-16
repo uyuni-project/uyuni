@@ -115,7 +115,7 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
 
     private static final String EXPECTED_HTML_OUT =
         "<div class=\"spacewalk-list\"><div class=\"panel panel-default\">" +
-        "<table class=\"table table-striped\"><thead><tr></tbody></table>\n" +
+        "<table class=\"table\"><thead><tr></tbody></table>\n" +
         "</div>\n" +
         "</div>\n";
 
@@ -125,7 +125,7 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
         "<div class=\"panel-heading\"><h4 class=\"panel-title\">**Inactive Systems**</h4>" +
         "<div class=\"spacewalk-list-head-addons\">" +
         "<div class=\"spacewalk-list-head-addons-extra\"></div>" +
-        "</div></div><table class=\"table table-striped\"><thead><tr></tbody></table>\n" +
+        "</div></div><table class=\"table\"><thead><tr></tbody></table>\n" +
         "</div>\n" +
         "</div>\n";
 }
