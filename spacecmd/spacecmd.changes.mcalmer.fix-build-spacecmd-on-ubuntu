@@ -1,0 +1,2 @@
+- Fix installation of python lib files on Ubuntu 24.04
+  (bsc#1246586)
