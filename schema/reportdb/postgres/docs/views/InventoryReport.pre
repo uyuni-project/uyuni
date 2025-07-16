@@ -30,6 +30,8 @@ COMMENT ON COLUMN InventoryReport.registration_time
   IS 'When this system was onboarded';
 COMMENT ON COLUMN InventoryReport.last_checkin_time
   IS 'When this system was visible and reachable last time';
+COMMENT ON COLUMN InventoryReport.last_boot_time
+  IS 'When this system was last time booted';
 COMMENT ON COLUMN InventoryReport.kernel_version
   IS 'The version of the kernel installed on this system';
 COMMENT ON COLUMN InventoryReport.organization
@@ -64,5 +66,9 @@ COMMENT ON COLUMN InventoryReport.packages_out_of_date
   IS 'The number of packages installed on the system that can be updated';
 COMMENT ON COLUMN InventoryReport.errata_out_of_date
   IS 'The number of patches that can be applied to the system';
+COMMENT ON COLUMN InventoryReport.extra_pkg_count
+  IS 'The number of packages which do not exist in a channel assigned to this system';
+COMMENT ON COLUMN InventoryReport.status
+  IS 'The status of this system: unentitled, awol, kickstarting, reboot needed, updates scheduled, actions scheduled, up2date, critical or updates';
 COMMENT ON COLUMN InventoryReport.synced_date
   IS 'The timestamp of when this data was last refreshed.';

@@ -9,6 +9,8 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
+DROP VIEW IF EXISTS InventoryReport;
+
 CREATE OR REPLACE VIEW InventoryReport AS
     -- CTEs to group all one to many relationship joining values with ; as separator
     WITH Entitlements AS (
