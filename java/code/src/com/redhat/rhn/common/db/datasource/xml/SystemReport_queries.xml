@@ -110,6 +110,45 @@
     </query>
 </mode>
 
+<mode name="SystemHardware" class="">
+    <query params="system_id, limit">
+        SELECT rhnserver.id AS system_id
+             , rhnserver.machine_id AS machine_id
+             , rhncpuarch.label AS architecture
+             , rhncpu.bogomips AS cpu_bogomips
+             , rhncpu.cache AS cpu_cache
+             , rhncpu.family AS cpu_family
+             , rhncpu.MHz AS cpu_MHz
+             , rhncpu.stepping AS cpu_stepping
+             , rhncpu.flags AS cpu_flags
+             , rhncpu.model AS cpu_model
+             , rhncpu.version AS cpu_version
+             , rhncpu.vendor AS cpu_vendor
+             , rhncpu.nrcpu AS nrcpu
+             , rhncpu.nrsocket AS nrsocket
+             , rhncpu.nrcore AS nrcore
+             , rhncpu.nrthread AS nrthread
+             , rhnram.ram AS ram
+             , rhnram.swap AS swap
+             , rhnserverdmi.vendor AS vendor
+             , rhnserverdmi.system AS system
+             , rhnserverdmi.product AS product
+             , rhnserverdmi.bios_vendor AS bios_vendor
+             , rhnserverdmi.bios_version AS bios_version
+             , rhnserverdmi.bios_release AS bios_release
+             , rhnserverdmi.asset AS asset
+             , rhnserverdmi.board AS board
+        FROM rhnserver
+            LEFT JOIN rhncpu ON rhnserver.id = rhncpu.server_id
+            LEFT JOIN rhncpuarch on rhncpu.cpu_arch_id = rhncpuarch.id
+            LEFT JOIN rhnram ON rhnserver.id = rhnram.server_id
+            LEFT JOIN rhnserverdmi ON  rhnserver.id = rhnserverdmi.server_id
+        WHERE rhnserver.id &gt; :system_id
+        ORDER BY system_id
+        FETCH FIRST :limit ROWS WITH TIES
+    </query>
+</mode>
+
 <mode name="SystemNetInterface" class="">
     <query params="system_id, interface_id, limit">
           SELECT server_id AS system_id
