@@ -19,6 +19,7 @@ from config import (
     PR_FEATURES_CSV_FILENAME,
     CUCUMBER_RESULTS_CSV_FILENAME,
     DEBUG_MODE,
+    CUCUMBER_FEATURE_CATEGORIES,
 )
 from utilities import setup_logging
 
@@ -38,6 +39,22 @@ def get_feature_name_from_uri(uri):
     if base.endswith(".feature"):
         base = base[:-len(".feature")]
     return base
+
+def get_feature_category(feature_name):
+    """
+    Extract the feature category from the feature name using CUCUMBER_FEATURE_CATEGORIES.
+    The first matching category (prefix) is returned, or 'uncategorized' if none match.
+
+    Args:
+        feature_name (str): The name of the feature (e.g., 'srv_users').
+
+    Returns:
+        str: The matched category (e.g., srv) or 'uncategorized'.
+    """
+    for category in CUCUMBER_FEATURE_CATEGORIES:
+        if feature_name.startswith(category):
+            return category
+    return "uncategorized"
 
 def get_feature_result(feature):
     """
@@ -94,7 +111,7 @@ def extract_results_and_scenario_counts(cucumber_folder_path):
         cucumber_folder_path (str): Path to the folder containing Cucumber JSON reports.
 
     Returns:
-        list of (feature_name, result, scenario_count) tuples for all features in all JSON files.
+        list of (feature_name, scenario_count, result) tuples for all features in all JSON files.
     """
     if not os.path.isdir(cucumber_folder_path):
         logger.warning("Folder not found: %s", cucumber_folder_path)
@@ -112,7 +129,7 @@ def extract_results_and_scenario_counts(cucumber_folder_path):
                     feature_name = get_feature_name_from_uri(feature.get("uri", ""))
                     result = get_feature_result(feature)
                     scenario_count = len(feature.get("elements", []))
-                    results.append((feature_name, result, scenario_count))
+                    results.append((feature_name, scenario_count, result))
             except json.JSONDecodeError as e:
                 logger.error("Failed to parse JSON file %s: %s", fpath, e)
             except Exception as e:
@@ -128,9 +145,10 @@ def main():
     For each PR in pr_features.csv:
     - Extracts the PR number.
     - Processes all Cucumber JSON reports in the corresponding PR folder.
-    - For each feature in each Cucumber report, determines the feature result and scenario count.
-    - Outputs a new CSV with the original row fields (except PR number), 
-    feature name, result, and scenario count.
+    - For each feature in each Cucumber report,
+      determines the feature result, feature category, and scenario count.
+    - Outputs a new CSV with original row fields (PR number based on DEBUG_MODE), in addition to:
+      feature name, feature category, scenario count, and result.
     """
     try:
         with open(PR_FEATURES_CSV_FILENAME, newline="", encoding="utf-8") as infile, \
@@ -140,9 +158,15 @@ def main():
             header = next(reader)
             # Remove PR number column (assume it's last) unless debugging
             if DEBUG_MODE:
-                new_header = header + ["feature_name", "scenario_count", "result"]
+                new_header = (
+                    header
+                    + ["feature", "feature_category", "scenario_count", "result"]
+                )
             else:
-                new_header = header[:-1] + ["feature_name", "scenario_count", "result"]
+                new_header = (
+                    header[:-1]
+                    + ["feature", "feature_category", "scenario_count", "result"]
+                )
             writer.writerow(new_header)
             for row in reader:
                 pr_number = row[-1]
@@ -156,9 +180,13 @@ def main():
                     test_results = extract_results_and_scenario_counts(pr_reports_folder)
                     if not test_results:
                         logger.error("No test results found for PR #%s", pr_number)
-                    for feature_name, result, scenario_count in test_results:
+                    for feature_name, scenario_count, result in test_results:
+                        feature_category = get_feature_category(feature_name)
                         if result != "Skipped":
-                            writer.writerow(base_fields + [feature_name, scenario_count, result])
+                            writer.writerow(
+                                base_fields
+                                + [feature_name, feature_category, scenario_count, result]
+                            )
                         else:
                             logger.debug("Feature %s is skipped on PR %s", feature_name, pr_number)
                 except Exception as e:
