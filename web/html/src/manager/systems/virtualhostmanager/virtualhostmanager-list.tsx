@@ -64,6 +64,7 @@ class VirtualHostManagerList extends React.Component<Props, State> {
             cell={(row, criteria) => row.orgName}
           />
           <Column
+            columnKey="actions"
             width="10%"
             columnClass="text-right"
             headerClass="text-right"
