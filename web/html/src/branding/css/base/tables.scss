@@ -13,6 +13,24 @@
   .table {
     background-color: $white;
   }
+
+  .expand-icon {
+    width: 14px;
+    text-align: center;
+    margin: 0;
+  }
+
+  .nesting-1 {
+    padding-left: 24px;
+  }
+
+  .nesting-2 {
+    padding-left: 40px;
+  }
+
+  .nesting-3 {
+    padding-left: 56px;
+  }
 }
 
 .table > thead > tr.active > th {
@@ -25,6 +43,9 @@ td {
 
 th {
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .table-framed td,

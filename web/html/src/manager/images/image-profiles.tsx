@@ -186,6 +186,7 @@ class ImageProfiles extends React.Component<Props, State> {
             />
             {window.isAdmin && (
               <Column
+                columnKey="actions"
                 width="15%"
                 header={t("Actions")}
                 columnClass="text-right"
