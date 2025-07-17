@@ -234,7 +234,7 @@ def main():
     - For each feature in each Cucumber report,
       determines the feature category, scenario count, and result.
     - Outputs a new CSV with original row fields (PR number based on DEBUG_MODE), in addition to:
-      feature name, feature category, scenario count, and result.
+      feature name, feature category, scenario count, and result (pass/fail), skipped is ignored.
     """
     try:
         with open(PR_FEATURES_CSV_FILENAME, newline="", encoding="utf-8") as infile, \
@@ -262,9 +262,10 @@ def main():
                     if not test_results:
                         logger.error("No test results found for PR #%s", pr_number)
                     for feature_name, scenario_count, result in test_results:
-                        feature_category = get_feature_category(feature_name)
-                        new_fields = [feature_name, feature_category, scenario_count, result]
-                        writer.writerow(base_fields + new_fields)
+                        if result != "skipped":
+                            feature_category = get_feature_category(feature_name)
+                            new_fields = [feature_name, feature_category, scenario_count, result]
+                            writer.writerow(base_fields + new_fields)
                 except Exception as e:
                     logger.error("Error processing PR #%s: %s", pr_number, e)
     except FileNotFoundError as e:
