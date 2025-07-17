@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """
-Extracts features' results from Cucumber JSON reports for each PR listed in pr_features.csv.
+Extracts tests/features' results from the Cucumber JSON reports for each PR listed in the CSV file
+produced by the PR data extraction script, and outputs a new CSV file with the
+feature name, feature category, scenario counts, and pass/fail result added per feature per PR.
 
-For each row in pr_features.csv:
-- Extracts the PR number.
-- Processes all Cucumber JSON reports in the corresponding PR folder.
-- For each feature in each JSON file, determines if any step failed (Fail) or all passed (Pass).
-- Outputs a new CSV with the original row fields (except PR number), in addition,
-for each feature/test than ran on the PR, we add the feature name, scenario count, Pass/Fail result.
+- Run the PR data extraction script first, this script depends on its output and should not be used
+independently.
+- The extract_results_and_scenario_counts function is reusable and can help track
+historical test failure rates in the workflow we plan to implement.
+- Cucumber statistics are logged for verification and debugging purposes.
 """
 import os
 import csv
@@ -228,13 +229,10 @@ def extract_results_and_scenario_counts(cucumber_folder_path, log_stats=True):
 
 def main():
     """
-    Reads pr_features.csv, processes each PR's Cucumber reports, and writes the output CSV.
-
-    For each PR in pr_features.csv:
-    - Extracts the PR number.
+    Reads PR features CSV, for each PR in the CSV file:
     - Processes all Cucumber JSON reports in the corresponding PR folder.
     - For each feature in each Cucumber report,
-      determines the feature result, feature category, and scenario count.
+      determines the feature category, scenario count, and result.
     - Outputs a new CSV with original row fields (PR number based on DEBUG_MODE), in addition to:
       feature name, feature category, scenario count, and result.
     """
@@ -244,17 +242,12 @@ def main():
             reader = csv.reader(infile)
             writer = csv.writer(outfile)
             header = next(reader)
-            # Remove PR number column (assume it's last) unless debugging
+            new_columns = ["feature", "feature_category", "scenario_count", "result"]
+            # If not debugging, remove PR number column (assume it's last)
             if DEBUG_MODE:
-                new_header = (
-                    header
-                    + ["feature", "feature_category", "scenario_count", "result"]
-                )
+                new_header = header + new_columns
             else:
-                new_header = (
-                    header[:-1]
-                    + ["feature", "feature_category", "scenario_count", "result"]
-                )
+                new_header = header[:-1] + new_columns
             writer.writerow(new_header)
             for row in reader:
                 pr_number = row[-1]
@@ -270,14 +263,12 @@ def main():
                         logger.error("No test results found for PR #%s", pr_number)
                     for feature_name, scenario_count, result in test_results:
                         feature_category = get_feature_category(feature_name)
-                        writer.writerow(
-                            base_fields
-                            + [feature_name, feature_category, scenario_count, result]
-                        )
+                        new_fields = [feature_name, feature_category, scenario_count, result]
+                        writer.writerow(base_fields + new_fields)
                 except Exception as e:
                     logger.error("Error processing PR #%s: %s", pr_number, e)
     except FileNotFoundError as e:
-        logger.critical("Input CSV file not found: %s", e)
+        logger.critical("Input CSV file %s not found: %s", PR_FEATURES_CSV_FILENAME, e)
     except Exception as e:
         logger.critical("Fatal error: %s", e)
 
