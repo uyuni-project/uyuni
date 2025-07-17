@@ -86,10 +86,10 @@ def get_entry_result(entry):
 
 def get_scenario_result(scenario, stats=None):
     """
-    Determine scenario result and update stats if provided.
+    Determine scenario or background result. Updates stats (if provided) only for real scenarios.
 
     Args:
-        scenario (dict): A scenario object from the Cucumber JSON report.
+        scenario (dict): A scenario or background object from the Cucumber JSON report.
         stats (dict, optional): Dict to accumulate step and scenario counts by status.
 
     Returns:
@@ -114,17 +114,15 @@ def get_scenario_result(scenario, stats=None):
         elif step_result == "skipped":
             scenario_skipped = True
     if scenario_failed:
-        if stats is not None:
-            stats["scenarios"]["failed"] += 1
-        return "failed"
+        result = "failed"
     elif scenario_skipped:
-        if stats is not None:
-            stats["scenarios"]["skipped"] += 1
-        return "skipped"
+        result = "skipped"
     else:
-        if stats is not None:
-            stats["scenarios"]["passed"] += 1
-        return "passed"
+        result = "passed"
+    # Only count scenario-level stats if it's a real scenario, not a background.
+    if stats is not None and scenario.get("type") == "scenario":
+        stats["scenarios"][result] += 1
+    return result
 
 def get_feature_result(feature, stats=None):
     """
@@ -210,7 +208,7 @@ def extract_results_and_scenario_counts(cucumber_folder_path, log_stats=True):
                     feature_name = get_feature_name_from_uri(feature.get("uri", ""))
                     feature_stats = make_cucumber_stats_dict()
                     result = get_feature_result(feature, stats=feature_stats)
-                    scenario_count = len(feature.get("elements", []))
+                    scenario_count = sum(feature_stats["scenarios"].values())
                     # Aggregate feature_stats into pr_stats
                     for status in ("failed", "skipped", "passed"):
                         pr_stats["steps"][status] += feature_stats["steps"][status]
