@@ -8440,21 +8440,21 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="create.jsp.profilename" xml:space="preserve">
         <source>Profile Name</source>
-        <target/>
+        <target state="translated">Názov profilu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="create.jsp.successmessage" xml:space="preserve">
         <source>Profile &lt;strong&gt;{0}&lt;/strong&gt; successfully created from &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target/>
+        <target state="translated">Profil &lt;strong&gt;{0}&lt;/strong&gt; bol úspešne vytvorený z &lt;strong&gt;{1}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.confirmsatadminrole" xml:space="preserve">
         <source>Confirm @@PRODUCT_NAME@@ Administrator Modification</source>
-        <target/>
+        <target state="translated">Potvrdiť zmenu administrátora @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/admin/multiorg/SatRoleConfirm</context>
         </context-group>
@@ -8465,14 +8465,18 @@ your own login? You will need to contact another @@PRODUCT_NAME@@ administrator 
 regain this role if you choose to remove it now.  You will no longer have access to the @@PRODUCT_NAME@@ configuration tools and
 organization management tools if you choose to remove this role from your login.
 </source>
-        <target/>
+        <target state="translated">Ste si istí, že chcete odstrániť rolu "Administrátor @@PRODUCT_NAME@@" zo svojho prihlásenia?
+Budete musieť kontaktovať iného administrátora @@PRODUCT_NAME@@, aby ste túto rolu získali späť,
+ak sa ju teraz rozhodnete odstrániť.  Ak sa rozhodnete odstrániť túto rolu zo svojho prihlásenia, nebudete
+mať viac prístup ku konfiguračným nástrojom @@PRODUCT_NAME@@ a nástrojom na správu organizácie.
+</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/admin/multiorg/SatRoleConfirm</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgs.trust.channels.plural.jsp.enabled" xml:space="preserve">
         <source>{0} trusted organizations enabled.</source>
-        <target/>
+        <target state="translated">{0} povolené dôveryhodné organizácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/OrgList</context>
         </context-group>
