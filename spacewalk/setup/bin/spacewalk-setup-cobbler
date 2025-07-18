@@ -27,7 +27,7 @@ parser.add_argument('--apache2-config-directory', '-a', dest='httpd_config_direc
 parser.add_argument('--fqdn', '-f', dest='fqdn', default=None)
 
 COBBLER_CONFIG_DIRECTORY = "/etc/cobbler/"
-COBBLER_CONFIG_FILES = ["modules.conf", "settings.yaml"]
+COBBLER_CONFIG_FILES = ["modules.conf", "settings.d/zz-uyuni.settings"]
 HTTPD_CONFIG_DIRECTORY = "/etc/apache2/conf.d/"
 COBBLER_HTTP_CONFIG = "cobbler.conf"
 
@@ -52,10 +52,7 @@ def manipulate_cobbler_settings(config_dir: str, settings_yaml: str, fqdn: str):
     :param fqdn: The FQDN of the server. If None (default), the FQDN is resolved from the system
     """
     full_path = os.path.join(config_dir, settings_yaml)
-    backup_file(full_path)
-    with open(full_path) as settings_file:
-        filecontent = yaml.safe_load(settings_file.read())
-
+    filecontent = {}
     filecontent["server"] = fqdn or socket.getfqdn()
 
     # In case of failing DNS resolution, we get a OSError (socket.gaierror)
