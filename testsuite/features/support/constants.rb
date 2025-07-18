@@ -415,6 +415,7 @@ LABEL_BY_BASE_CHANNEL = {
     'ubuntu-2004-amd64-main for amd64' => 'ubuntu-2004-amd64-main-amd64',
     'ubuntu-2204-amd64-main for amd64' => 'ubuntu-2204-amd64-main-amd64',
     'ubuntu-2404-amd64-main for amd64' => 'ubuntu-2404-amd64-main-amd64',
+    'debian-12-pool for amd64' => 'debian-12-pool-amd64',
     'openSUSE-Leap-15.6-Pool for aarch64' => 'opensuse-leap-15.6-pool-aarch64'
   },
   'Uyuni' => {

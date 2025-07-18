@@ -431,6 +431,7 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
     timeout = 60
   else
     timeout = TIMEOUT_BY_CHANNEL_NAME[channel]
+    timeout *= 2 if $code_coverage_mode
   end
   begin
     repeat_until_timeout(timeout: timeout, message: 'Channel not fully synced') do
@@ -463,6 +464,7 @@ When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do 
       timeout += 60
     else
       timeout += TIMEOUT_BY_CHANNEL_NAME[channel]
+      timeout += TIMEOUT_BY_CHANNEL_NAME[channel] if $code_coverage_mode
     end
   end
   begin

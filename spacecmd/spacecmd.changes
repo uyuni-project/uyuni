@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Fri Jul 18 11:59:14 CEST 2025 - michael.calmer@suse.com
+
+- version 5.1.10-0
+  * Fix use of renamed config parser class where the backward
+    compatible alias was dropped in latest python version
+    (bsc#1246586)
+
+-------------------------------------------------------------------
+Fri Jul 18 10:40:44 CEST 2025 - michael.calmer@suse.com
+
+- version 5.1.9-0
+  * Fix installation of python lib files on Ubuntu 24.04
+    (bsc#1246586)
+
+-------------------------------------------------------------------
 Tue Jun 17 18:42:30 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.8-0
@@ -992,4 +1007,3 @@ Wed Sep 15 08:32:37 CEST 2010 - mantel@suse.de
 
 - Initial release of spacecmd
 
--------------------------------------------------------------------
