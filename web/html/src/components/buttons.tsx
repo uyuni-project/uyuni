@@ -175,11 +175,12 @@ export class Button extends _ButtonBase<ButtonProps> {
   render() {
     const text = this.props.text ?? this.props.children;
     const cssClasses = "btn " + (this.props.className ?? "btn-default");
-    const tooltipProps = this.props.title 
-      ? { 
-          'data-bs-toggle': "tooltip",
-          'data-bs-placement': this.props.tooltipPlacement
-        } : {};
+    const tooltipProps = this.props.title
+      ? {
+          "data-bs-toggle": "tooltip",
+          "data-bs-placement": this.props.tooltipPlacement,
+        }
+      : {};
 
     return (
       <button
@@ -219,11 +220,12 @@ export class LinkButton extends _ButtonBase<LinkProps> {
   render() {
     const text = this.props.text ?? this.props.children;
     const cssClasses = "btn " + (this.props.className ?? "btn-default");
-    const tooltipProps = this.props.title 
-      ? { 
-          'data-bs-toggle': "tooltip",
-          'data-bs-placement': this.props.tooltipPlacement
-        } : {};
+    const tooltipProps = this.props.title
+      ? {
+          "data-bs-toggle": "tooltip",
+          "data-bs-placement": this.props.tooltipPlacement,
+        }
+      : {};
 
     const targetProps: Partial<React.HTMLProps<HTMLAnchorElement>> =
       this.props.target === "_blank"

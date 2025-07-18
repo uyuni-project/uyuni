@@ -51,6 +51,7 @@ export class HeaderSearch extends React.PureComponent {
         <Button
           icon="fa-search"
           title={t("Open search")}
+          tooltipPlacement="bottom"
           className={`is-plain header-non-link manual-toggle-box ${this.state.isOpen ? "open" : ""}`}
           handler={() => this.setState({ isOpen: !this.state.isOpen })}
         />

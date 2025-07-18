@@ -179,7 +179,7 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
                     <div className="d-block" key={p.id}>
                       <pre className="pointer" onClick={() => this.setState({ editPlaybookPath: p })}>
                         {p.path}
-                        <i className="fa fa-edit pull-right" />
+                        <i className="fa fa-edit pull-right" data-bs-toggle="tooltip" title="Edit" />
                       </pre>
                     </div>
                   )
@@ -212,7 +212,7 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
                     <div className="d-block" key={p.id}>
                       <pre className="pointer" onClick={() => this.setState({ editInventoryPath: p })}>
                         {p.path}
-                        <i className="fa fa-edit pull-right" />
+                        <i className="fa fa-edit pull-right" data-bs-toggle="tooltip" title="Edit" />
                       </pre>
                     </div>
                   )

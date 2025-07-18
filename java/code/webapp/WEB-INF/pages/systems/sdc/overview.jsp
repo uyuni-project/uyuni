@@ -265,6 +265,7 @@
         <div class="panel-heading">
           <h4><bean:message key="sdc.details.overview.subscribedchannels" arg0="/rhn/systems/details/SystemChannels.do?sid=${system.id}"/>
             <a href="/rhn/systems/details/SystemChannels.do?sid=${system.id}"
+              data-bs-toggle="tooltip"
               title="<bean:message key='sdc.details.overview.subscribedchannels.edit' />"
               role="button"
               class="js-spa btn btn-tertiary pull-right">
@@ -379,6 +380,7 @@
         <div class="panel-heading">
           <h4><bean:message key="sdc.details.overview.sysproperties" />
             <a href="/rhn/systems/details/Edit.do?sid=${system.id}"
+              data-bs-toggle="tooltip"
               title="<bean:message key='sdc.details.overview.sysproperties.edit' />"
               role="button"
               class="js-spa btn btn-tertiary pull-right">
