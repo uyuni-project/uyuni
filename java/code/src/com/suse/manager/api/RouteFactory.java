@@ -207,22 +207,27 @@ public class RouteFactory {
             }
             catch (InvocationTargetException e) {
                 Throwable exceptionInMethod = e.getCause();
-                if (exceptionInMethod instanceof FaultException) {
-                    // This fixes rollback for all XMLRPC fault exceptions
-                    // When using Rest-Like API calls, the Hibernate database commit/rollback is done into the method
-                    // SparkApplicationHelper.setupHibernateSessionFilter
-                    // That method does a commit if a transaction is currently in process
-                    // (it checks for HibernateFactory.inTransaction())
-                    // When some database activity is done and suddenly a FaultException exception is thrown,
-                    // Hibernate has still a transaction pending, so it will erroneously be committed, unless we do a
-                    // rollback here.
-                    // The equivalent for XMLRPC is implemented in BaseHandler.invoke
-
-                    HibernateFactory.rollbackTransaction();
-                    return json(gson, res,
-                            HttpApiResponse.error(exceptionInMethod.getMessage()), new TypeToken<>() { });
+                // This fixes rollback for all XMLRPC fault exceptions
+                // When using Rest-Like API calls, the Hibernate database commit/rollback is done into the method
+                // SparkApplicationHelper.setupHibernateSessionFilter
+                // That method does a commit if a transaction is currently in process
+                // (it checks for HibernateFactory.inTransaction())
+                // When some database activity is done and suddenly a FaultException exception is thrown,
+                // Hibernate has still a transaction pending, so it will erroneously be committed, unless we do a
+                // rollback here.
+                // The equivalent for XMLRPC is implemented in BaseHandler.invoke
+                HibernateFactory.rollbackTransaction();
+                if (!(exceptionInMethod instanceof FaultException)) {
+                    if (LOG.isInfoEnabled()) {
+                        LOG.warn("{}: is not a fault exception.", exceptionInMethod.getClass().getName(),
+                                exceptionInMethod);
+                    }
+                    else {
+                        LOG.warn("{}: is not a fault exception. {}", exceptionInMethod.getClass().getName(), methods);
+                    }
                 }
-                throw new RuntimeException(exceptionInMethod);
+                return json(gson, res,
+                        HttpApiResponse.error(exceptionInMethod.getMessage()), new TypeToken<>() { });
             }
         };
         return asJson(route);

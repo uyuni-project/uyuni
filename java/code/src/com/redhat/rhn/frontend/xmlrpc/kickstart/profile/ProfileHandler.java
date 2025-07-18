@@ -496,7 +496,7 @@ public class ProfileHandler extends BaseHandler {
             if (script.getScriptType().equals(KickstartScript.TYPE_PRE)) {
                 myPreScripts.add(script);
                 if (!preScripts.contains(script.getId().intValue())) {
-                    throw new IllegalArgumentException("Kickstart Script ID missing: " +
+                    throw new InvalidParameterException("Kickstart Script ID missing: " +
                             script.getId());
                 }
             }
@@ -505,17 +505,17 @@ public class ProfileHandler extends BaseHandler {
                 if (!(postScriptsBeforeRegistration.contains(script.getId().intValue()) ||
                         postScriptsAfterRegistration.contains(
                         script.getId().intValue()))) {
-                    throw new IllegalArgumentException("Kickstart Script ID missing: " +
+                    throw new InvalidParameterException("Kickstart Script ID missing: " +
                             script.getId());
                 }
             }
         }
         if (preScripts.size() != myPreScripts.size()) {
-            throw new IllegalArgumentException("Too many pre script IDs.");
+            throw new InvalidParameterException("Too many pre script IDs.");
         }
         if ((postScriptsBeforeRegistration.size() + postScriptsAfterRegistration.size() !=
                 myPostScripts.size())) {
-            throw new IllegalArgumentException("Too many post script IDs.");
+            throw new InvalidParameterException("Too many post script IDs.");
         }
 
         // To avoid db constraint error about two scripts having same position,
@@ -1139,11 +1139,11 @@ public class ProfileHandler extends BaseHandler {
                                                                   String kickstartLabel2) {
 
         if (kickstartLabel1 == null) {
-            throw new IllegalArgumentException("kickstartLabel1 cannot be null");
+            throw new InvalidParameterException("kickstartLabel1 cannot be null");
         }
 
         if (kickstartLabel2 == null) {
-            throw new IllegalArgumentException("kickstartLabel2 cannot be null");
+            throw new InvalidParameterException("kickstartLabel2 cannot be null");
         }
 
         // Leverage exisitng handler for key loading
@@ -1204,11 +1204,11 @@ public class ProfileHandler extends BaseHandler {
                                        String kickstartLabel1, String kickstartLabel2) {
         // Validate parameters
         if (kickstartLabel1 == null) {
-            throw new IllegalArgumentException("kickstartLabel1 cannot be null");
+            throw new InvalidParameterException("kickstartLabel1 cannot be null");
         }
 
         if (kickstartLabel2 == null) {
-            throw new IllegalArgumentException("kickstartLabel2 cannot be null");
+            throw new InvalidParameterException("kickstartLabel2 cannot be null");
         }
 
         // Load the profiles and their package lists
@@ -1287,11 +1287,11 @@ public class ProfileHandler extends BaseHandler {
                                         String kickstartLabel1, String kickstartLabel2) {
         // Validate parameters
         if (kickstartLabel1 == null) {
-            throw new IllegalArgumentException("kickstartLabel1 cannot be null");
+            throw new InvalidParameterException("kickstartLabel1 cannot be null");
         }
 
         if (kickstartLabel2 == null) {
-            throw new IllegalArgumentException("kickstartLabel2 cannot be null");
+            throw new InvalidParameterException("kickstartLabel2 cannot be null");
         }
 
         // Load the profiles
