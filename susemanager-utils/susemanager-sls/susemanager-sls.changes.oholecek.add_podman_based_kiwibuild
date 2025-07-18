@@ -1,0 +1,2 @@
+- Add container based kiwi10 build system (bsc#1240882)
+- Remove kiwi bundle build support
