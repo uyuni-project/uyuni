@@ -1,3 +1,0 @@
-- Fix use of renamed config parser class where the backward
-  compatible alias was dropped in latest python version
-  (bsc#1246586)
