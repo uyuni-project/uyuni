@@ -142,21 +142,21 @@ def get_feature_result(feature: dict, stats: dict | None = None) -> str:
 
     Returns:
         CUCUMBER_FAILED if any scenario failed,
-        CUCUMBER_SKIPPED if any were skipped (and none failed), otherwise CUCUMBER_PASSED.
+        CUCUMBER_PASSED if any scenario passed (and none failed), otherwise CUCUMBER_SKIPPED.
     """
-    scenario_skipped = False
+    scenario_passed = False
     scenario_failed = False
     for scenario in feature.get("elements", []):
         scenario_result = get_scenario_result(scenario, stats)
         if scenario_result == CUCUMBER_FAILED:
             scenario_failed = True
-        elif scenario_result == CUCUMBER_SKIPPED:
-            scenario_skipped = True
+        elif scenario_result == CUCUMBER_PASSED:
+            scenario_passed = True
     if scenario_failed:
         return CUCUMBER_FAILED
-    if scenario_skipped:
-        return CUCUMBER_SKIPPED
-    return CUCUMBER_PASSED
+    if scenario_passed:
+        return CUCUMBER_PASSED
+    return CUCUMBER_SKIPPED
 
 def make_cucumber_stats_dict() -> dict:
     """Return a new stats dictionary for cucumber steps, scenarios, and features."""
