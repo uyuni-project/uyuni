@@ -44,6 +44,7 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
           }
         />
         <Column
+          columnKey="actions"
           columnClass="text-right"
           headerClass="text-right"
           header={t("Actions")}

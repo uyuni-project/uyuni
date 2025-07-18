@@ -28,7 +28,7 @@
       <bean:message key="task.status.last.execution"/>
     </div>
     <div class="panel-body">
-      <table class="table table-striped">
+      <table class="table">
         <tbody>
         <c:forEach items="${list}" var="item">
                 <tr>

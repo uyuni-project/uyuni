@@ -14,7 +14,7 @@ interface Props {
 
 export const AppStreamPanel = ({ channel, appStreams, toEnable, toDisable, onToggle, showPackages }: Props) => (
   <Panel headingLevel="h4" icon="spacewalk-icon-software-channels" title={channel.name} key={`panel-${channel.label}`}>
-    <table className="table table-striped">
+    <table className="table">
       <thead>
         <tr>
           <th>{t("Modules")}</th>
