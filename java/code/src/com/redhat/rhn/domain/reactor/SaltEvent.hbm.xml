@@ -41,11 +41,4 @@
         <return-scalar column="id" type="long"/>
     </sql-query>
 
-    <sql-query name="SaltEvent.fixQueueNumbers">
-        <![CDATA[
-            UPDATE suseSaltEvent
-                SET queue = mod(cast(cast('x'||substr(md5(minion_id),1,8) as bit(32)) as bigint), :queues) + 1
-                WHERE minion_id <> '';
-        ]]>
-    </sql-query>
 </hibernate-mapping>

@@ -32,12 +32,12 @@ import java.util.stream.Stream;
  */
 public class SaltEventFactory extends HibernateFactory {
 
-    private static Logger log = LogManager.getLogger(SaltEventFactory.class);
-    private static SaltEventFactory singleton = new SaltEventFactory();
+    private static final Logger LOG = LogManager.getLogger(SaltEventFactory.class);
+    private static final SaltEventFactory SINGLETON = new SaltEventFactory();
 
     @Override
     protected Logger getLogger() {
-        return log;
+        return LOG;
     }
 
     private SaltEventFactory() {
@@ -50,7 +50,7 @@ public class SaltEventFactory extends HibernateFactory {
      *  without any minion ID. This queue is referred to as queue 0.
      */
     public static List<Long> countSaltEvents(int queuesCount) {
-        List<Object[]> countObjects = singleton.listObjectsByNamedQuery("SaltEvent.countSaltEvents", Map.of());
+        List<Object[]> countObjects = SINGLETON.listObjectsByNamedQuery("SaltEvent.countSaltEvents", Map.of());
 
         return IntStream.range(0, queuesCount).mapToLong(i -> countObjects.stream()
                 .filter(c -> c[0].equals(i))
@@ -66,7 +66,7 @@ public class SaltEventFactory extends HibernateFactory {
      * @return events
      */
     public static Stream<SaltEvent> popSaltEvents(int limit, int queue) {
-        List<Object[]> eventObjects = singleton.listObjectsByNamedQuery("SaltEvent.popSaltEvents",
+        List<Object[]> eventObjects = SINGLETON.listObjectsByNamedQuery("SaltEvent.popSaltEvents",
                 Map.of("limit", limit, "queue", queue));
 
         return eventObjects.stream()
@@ -79,19 +79,19 @@ public class SaltEventFactory extends HibernateFactory {
      * @return event ids actually deleted
      */
     public static List<Long> deleteSaltEvents(Collection<Long> ids) {
-        return singleton.listObjectsByNamedQuery("SaltEvent.deleteSaltEvents", Map.of("ids", ids));
+        return SINGLETON.listObjectsByNamedQuery("SaltEvent.deleteSaltEvents", Map.of("ids", ids));
     }
 
     /**
      * Update event queue numbers after config change.
-     * @param queues number of queues
+     * Has an effect only when reducing the number of available queues.
+     * All events which are in queues higher than max queues will be moved to the last queue
+     * @param maxQueueNum maximal available queue number
      * @return the number of updated events
      */
-    public static int fixQueueNumbers(int queues) {
-        return getSession()
-                .getNamedQuery("SaltEvent.fixQueueNumbers")
-                .setParameter("queues", queues)
+    public static int fixQueueNumbers(int maxQueueNum) {
+        return getSession().createNativeQuery("UPDATE suseSaltEvent SET queue = :q WHERE queue > :q")
+                .setParameter("q", maxQueueNum)
                 .executeUpdate();
     }
-
 }
