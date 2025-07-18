@@ -1,5 +1,6 @@
 import { Tooltip } from "bootstrap";
 
+let isListening = false;
 export function initializeTooltips() {
   // Initialize tooltips on existing elements
 
@@ -13,13 +14,15 @@ export function initializeTooltips() {
       el.setAttribute("data-tooltip-initialized", "true");
     });
   };
-
+  
   initTooltips();
+  if (isListening) return;
 
   new MutationObserver(() => initTooltips()).observe(document.body, {
     childList: true,
     subtree: true,
   });
+  isListening = true;
 }
 
 export function disposeTooltips() {
