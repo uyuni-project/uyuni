@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.entitlement.AnsibleControlNodeEntitlement;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -56,7 +57,7 @@ public class AnsibleControlNodeEntitlementTest extends BaseEntitlementTestCase {
      */
     @Test
     public void testIsForbiddenOnTraditionalClients() throws Exception {
-        Server server = ServerTestUtils.createTestSystem(user);
+        Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
         assertFalse(EntitlementManager.ANSIBLE_CONTROL_NODE.isAllowedOnServer(server));
     }
 }
