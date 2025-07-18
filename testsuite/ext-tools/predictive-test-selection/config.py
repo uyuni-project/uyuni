@@ -36,3 +36,7 @@ CUCUMBER_FEATURE_CATEGORIES = [
     "buildhost_salt", "buildhost_docker", "buildhost",
     "allcli"
 ]
+CUCUMBER_FAILED = "failed"
+CUCUMBER_PASSED = "passed"
+CUCUMBER_SKIPPED = "skipped"
+CUCUMBER_RESULTS_COLUMNS = ["feature", "feature_category", "scenario_count", "result"]
