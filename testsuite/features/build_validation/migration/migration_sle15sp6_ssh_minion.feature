@@ -20,6 +20,19 @@ Feature: Migrate a SLES 15 SP6 Salt SSH minion to 15 SP7
     Then I should see a "package upgrades have been scheduled" text
     And I wait until event "Package Install/Upgrade scheduled" is completed
 
+  Scenario: Prerequisite: update OS zypper to the latest version
+    Given I am on the Systems overview page of this "sle15sp6_ssh_minion"
+    When I follow "Software" in the content area
+    And I follow "Packages"
+    And I follow "Upgrade"
+    And I enter "zypp" as the filtered latest package
+    And I click on the filter button
+    And I click on "Select All"
+    And I click on "Upgrade Packages"
+    And I click on "Confirm"
+    Then I should see a "package upgrades have been scheduled" text
+    And I wait until event "Package Install/Upgrade scheduled" is completed
+
   Scenario: Migrate this SSH minion to SLE 15 SP7
     Given I am on the Systems overview page of this "sle15sp6_ssh_minion"
     When I follow "Software" in the content area
