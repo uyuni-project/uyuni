@@ -34,4 +34,7 @@ CREATE UNIQUE INDEX idx_uq_as_module_nsvca
 CREATE INDEX suse_appstream_name_stream_arch_idx
   ON suseAppStream (name, stream, arch);
 
+CREATE INDEX suse_appstream_nsca_idx
+  ON suseAppStream (name, stream, arch, context);
+
 CREATE SEQUENCE suse_as_module_seq;
