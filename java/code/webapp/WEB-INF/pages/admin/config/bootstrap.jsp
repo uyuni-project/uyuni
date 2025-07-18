@@ -37,16 +37,6 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 control-label" for="salt">
-                            <bean:message key="bootstrap.jsp.salt"/>
-                        </label>
-                        <div class="col-lg-6">
-                            <div class="checkbox">
-                                <html:checkbox property="salt" styleId="salt" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label class="col-lg-3 control-label" for="gpg">
                             <bean:message key="bootstrap.jsp.gpg"/>
                         </label>
@@ -70,14 +60,6 @@
                         </label>
                         <div class="col-lg-6">
                             <html:text size="32" property="http-proxy-username" styleClass="form-control" styleId="http-proxy-username" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="http-proxy-password">
-                            <bean:message key="bootstrap.jsp.http-proxy-password"/>
-                        </label>
-                        <div class="col-lg-6">
-                            <html:text size="32" property="http-proxy-password" styleId="http-proxy-password" styleClass="form-control" />
                         </div>
                     </div>
                     <div class="form-group">

@@ -33,7 +33,6 @@ public class ConfigureBootstrapCommand extends BaseConfigureCommand
         implements SatelliteConfigurator {
 
     private String hostname;
-    private Boolean saltEnabled;
     private String sslPath;
     private Boolean enableGpg;
     private String httpProxy;
@@ -69,9 +68,6 @@ public class ConfigureBootstrapCommand extends BaseConfigureCommand
             args.add("--hostname=" + this.hostname);
         }
 
-        if (!BooleanUtils.toBooleanDefaultIfNull(this.saltEnabled, false)) {
-            args.add("--traditional");
-        }
         if (!StringUtils.isEmpty(this.sslPath)) {
             args.add("--ssl-cert=" + this.sslPath);
         }
@@ -190,20 +186,5 @@ public class ConfigureBootstrapCommand extends BaseConfigureCommand
      */
     public void setSslPath(String sslPathIn) {
         this.sslPath = sslPathIn;
-    }
-
-    /**
-     * @return Returns the saltEnabled.
-     */
-    public Boolean getSaltEnabled() {
-        return saltEnabled;
-    }
-
-
-    /**
-     * @param saltEnabledIn The saltEnabled to set.
-     */
-    public void setSaltEnabled(Boolean saltEnabledIn) {
-        this.saltEnabled = saltEnabledIn;
     }
 }

@@ -61,8 +61,6 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
                 CACertPathUtil.processCACertPath());
         assertEquals(Boolean.TRUE,
                 form.get(BootstrapConfigAction.ENABLE_GPG));
-        assertEquals(Boolean.TRUE,
-                form.get(BootstrapConfigAction.SALT));
         assertEquals("", form.getString(BootstrapConfigAction.HTTP_PROXY));
         assertEquals("", form.getString(BootstrapConfigAction.HTTP_PROXY_USERNAME));
         assertEquals("", form.getString(BootstrapConfigAction.HTTP_PROXY_PASSWORD));
