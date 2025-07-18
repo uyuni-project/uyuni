@@ -44,6 +44,8 @@ export function ProxyConfig({
   });
 
   useEffect(() => {
+    setModel((prev) => ({ ...prev }));
+
     if (initFailMessage) {
       setSuccess(false);
       setMessages([initFailMessage]);
@@ -227,7 +229,7 @@ export function ProxyConfig({
               <Text
                 name="rootCA"
                 label={t("Root CA")}
-                hint={t("To sign the SSL certificate in PEM format")}
+                hint={t("Certificate authority that issued the proxy certificate (PEM format)")}
                 required
                 type="file"
                 labelClass="col-md-3"
@@ -246,7 +248,7 @@ export function ProxyConfig({
                   {(index) => (
                     <Text
                       name={`intermediateCAs${index}`}
-                      label={t("CA file in PEM format")}
+                      label={t("An intermediate CA certificate (PEM format)")}
                       required
                       type="file"
                       divClass="col-md-8"
@@ -259,7 +261,7 @@ export function ProxyConfig({
               <Text
                 name="proxyCertificate"
                 label={t("Proxy certificate")}
-                hint={t("In PEM format")}
+                hint={t("SSL certificate issued for the proxy system (PEM format)")}
                 required
                 type="file"
                 labelClass="col-md-3"
@@ -268,7 +270,7 @@ export function ProxyConfig({
               <Text
                 name="proxyKey"
                 label={t("Proxy SSL private key")}
-                hint={t("In PEM format")}
+                hint={t("SSL private key for the proxy system (PEM format)")}
                 required
                 type="file"
                 labelClass="col-md-3"
