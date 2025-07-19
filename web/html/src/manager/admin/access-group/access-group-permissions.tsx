@@ -4,26 +4,35 @@ import { Button } from "components/buttons";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
+import { AccessGroupState } from "manager/admin/access-group/access-group";
 
 import { Utils } from "utils/functions";
 
 type Props = {
-  state: any;
+  state: AccessGroupState;
   onChange: Function;
   errors: any;
 };
 
 const AccessGroupPermissions = (props: Props) => {
+  const isChecked = (item, type) => {
+    const permission = props.state.permissions.filter((p) => p.id === item.id)
+    if (permission.length > 0) {
+      return type === "view" ? permission[0].view : permission[0].modify;
+    }
+    return type === "view" ? item.view : item.modify;
+  };
+
   return (
     <div>
       <div className="d-flex">
         <div className="me-5">
           <strong className="me-1">Name:</strong>
-          {props.state.detailsproperties.name}
+          {props.state.name}
         </div>
         <div>
           <strong className="me-1">Description:</strong>
-          {props.state.detailsproperties.description}
+          {props.state.description}
         </div>
       </div>
       <hr></hr>
@@ -31,7 +40,11 @@ const AccessGroupPermissions = (props: Props) => {
         Click <strong>Add Permissions</strong> to select the permissions you want to add to this custom Access group.
       </p>
       <div className="d-block mb-3">
-        <Button className="btn-primary pull-right" text="Add Permissions" />
+        <Button
+          className="btn-primary pull-right"
+          text="Add Permissions"
+          handler={() => {}}
+        />
       </div>
       <Table
         data={"/rhn/manager/api/admin/access-group/namespaces"}
@@ -50,13 +63,26 @@ const AccessGroupPermissions = (props: Props) => {
         <Column
           columnKey="view"
           header={t("View")}
-          cell={(item) => <input name="view" type="checkbox" disabled={!item.accessMode.includes("R")} checked={false} />}
+          cell={(item) =>
+            <input
+              name="view"
+              type="checkbox"
+              checked={isChecked(item,"view")}
+              disabled={!item.accessMode.includes("R")}
+              onChange={() => props.onChange(item, "view")}
+            />}
         />
-
         <Column
           columnKey="modify"
           header={t("Modify")}
-          cell={(item) => <input name="modify" type="checkbox" disabled={!item.accessMode.includes("W")} checked={false} />}
+          cell={(item) =>
+            <input
+              name="modify"
+              type="checkbox"
+              checked={isChecked(item, "modify")}
+              disabled={!item.accessMode.includes("W")}
+              onChange={() => props.onChange(item, "modify")}
+            />}
         />
         <Column
           columnKey="count"
