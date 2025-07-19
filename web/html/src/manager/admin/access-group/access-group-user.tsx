@@ -1,8 +1,9 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Button } from "components/buttons";
-import { DEPRECATED_Select, Form } from "components/input";
 import { Column } from "components/table/Column";
+import { Form } from "components/formik";
+import { Field } from "components/formik/field";
 import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
@@ -25,12 +26,9 @@ type User = {
 const AccessGroupUsers = (props: Props) => {
   // List data
   const [listData, setListData] = useState<{items: User[]}>({items: []});
-  const [search, setSearch] = useState({
-    username: "",
-  });
 
   // Table data
-  const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<User[]>(props.state.users);
 
   useEffect(() => {
     getUserList();
@@ -40,19 +38,22 @@ const AccessGroupUsers = (props: Props) => {
     const endpoint = "/rhn/manager/api/admin/access-group/users";
     return Network.get(endpoint)
       .then((users) => {
-        setListData((prevData) => ({...prevData, items: users}));
+        setListData((prevData) => ({
+          ...prevData,
+          items: users.filter((u) => !selectedUsers.find(({id}) => u.id === id))
+        }));
       })
       // TODO: Handle errors
       .catch(props.errors);
   }
 
-  const updateUserList = (search) => {
-    const selectedUser = listData.items.find((user) => user.login === search.username);
+  const updateUserList = (item) => {
+    const selectedUser = listData.items.find((user) => user.login === item.login);
     if (selectedUser) {
       // Prevent duplicate users
       setListData((prevData) => ({
         ...prevData,
-        items: listData.items.filter((name) => name.login !== search.username), // Update the items list
+        items: listData.items.filter((name) => name.login !== item.login), // Update the items list
       }));
 
       setSelectedUsers((prevUsers) => {
@@ -60,8 +61,6 @@ const AccessGroupUsers = (props: Props) => {
       });
 
       props.onChange(selectedUser, "add");
-    } else {
-      setSelectedUsers([]);
     }
   };
 
@@ -76,7 +75,6 @@ const AccessGroupUsers = (props: Props) => {
         (prevUsers) => prevUsers.filter((user) => user.login !== username) //Remove the user form the list
       );
       props.onChange(removeUser, "remove");
-      setSearch({ username: "" });
     }
   };
 
@@ -85,31 +83,33 @@ const AccessGroupUsers = (props: Props) => {
       <div className="d-flex">
         <div className="me-5">
           <strong className="me-1">Name:</strong>
-          {props.state.detailsproperties.name}
+          {props.state.name}
         </div>
         <div>
           <strong className="me-1">Description:</strong>
-          {props.state.detailsproperties.description}
+          {props.state.description}
         </div>
       </div>
       <hr></hr>
       <Form
-        model={search}
-        onChange={(newModel) => {
-          setSearch(() => ({
-            username: newModel.username,
-          }));
-        }}
+        initialValues={props.state.users}
+        // TODO: Use onChange instead of validate to update access group details
+        // onChange={updateUserList}
+        validate={updateUserList}
+        onSubmit={() => {}}
         divClass="col-md-12"
         formDirection="form-horizontal"
       >
-        <DEPRECATED_Select
-          name="username"
+        <Field
+          name="login"
           label={t("Search & Add Users")}
           labelClass="col-md-12 text-start fw-bold fs-4 mb-3"
           divClass="col-md-6"
-          options={listData.items.map((user) => `${user.login}`)}
-          onChange={() => updateUserList(search)}
+          options={listData.items.map((user) => {return {label: user.login, value: user.login}})}
+          as={Field.Select}
+          // TODO: Clear selected value from the picker once it's selected
+          value={null}
+          onChange={() => null}
         />
       </Form>
       <Table
