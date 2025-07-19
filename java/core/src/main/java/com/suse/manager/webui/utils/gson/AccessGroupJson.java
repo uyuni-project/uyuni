@@ -17,6 +17,8 @@ package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.frontend.dto.BaseTupleDto;
 
+import java.util.Set;
+
 import javax.persistence.Tuple;
 
 /**
@@ -34,16 +36,18 @@ public class AccessGroupJson extends BaseTupleDto {
         setName(getTupleValue(tuple, "name" , String.class).orElse("-"));
         setDescription(getTupleValue(tuple, "description" , String.class).orElse("-"));
         setType(getTupleValue(tuple, "type" , String.class).orElse("-"));
-        setUsers(getTupleValue(tuple, "users", Number.class).map(Number::longValue).orElse(null));
-        setPermissions(getTupleValue(tuple, "permissions", Number.class).map(Number::longValue).orElse(null));
+        setNumUsers(getTupleValue(tuple, "users", Number.class).map(Number::longValue).orElse(null));
+        setNumPermissions(getTupleValue(tuple, "permissions", Number.class).map(Number::longValue).orElse(null));
     }
 
     private Long id;
     private String name;
     private String description;
     private String type;
-    private Long users;
-    private Long permissions;
+    private Long numUsers;
+    private Set<AccessGroupUserJson> users;
+    private Long numPermissions;
+    private Set<NamespaceJson> permissions;
 
     @Override
     public Long getId() {
@@ -78,19 +82,35 @@ public class AccessGroupJson extends BaseTupleDto {
         type = typeIn;
     }
 
-    public Long getUsers() {
+    public Long getNumUsers() {
+        return numUsers;
+    }
+
+    public void setNumUsers(Long numUsersIn) {
+        numUsers = numUsersIn;
+    }
+
+    public Set<AccessGroupUserJson> getUsers() {
         return users;
     }
 
-    public void setUsers(Long usersIn) {
+    public void setUsers(Set<AccessGroupUserJson> usersIn) {
         users = usersIn;
     }
 
-    public Long getPermissions() {
+    public Long getNumPermissions() {
+        return numPermissions;
+    }
+
+    public void setNumPermissions(Long numPermissionsIn) {
+        numPermissions = numPermissionsIn;
+    }
+
+    public Set<NamespaceJson> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(Long permissionsIn) {
+    public void setPermissions(Set<NamespaceJson> permissionsIn) {
         permissions = permissionsIn;
     }
 }

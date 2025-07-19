@@ -11,37 +11,63 @@ import AccessGroupDetails from "./access-group-details";
 import AccessGroupPermissions from "./access-group-permissions";
 import AccessGroupUsers from "./access-group-user";
 
-const CreateAccessGroup = () => {
-  type AccessGroupState = {
-    detailsproperties: {
-      name: string;
-      description: string;
-      accessGroup: string[];
-    };
-    permissions: string[];
-    users: { id: number; username: string; email: string; orgId: string }[];
-    errors: any;
-  };
+export type AccessGroupState = {
+  name: string;
+  description: string;
+  accessGroups: string[];
+  permissions: { id: number; namespace: string; description: string; accessMode: string; view: boolean; modify: boolean }[];
+  users: { id: number; username: string; email: string; orgId: string }[];
+  errors: any;
+};
 
+const CreateAccessGroup = () => {
   const [accessGroupState, setAccessGroupState] = useState<AccessGroupState>({
-    detailsproperties: {
-      name: "",
-      description: "",
-      accessGroup: [],
-    },
+    name: "",
+    description: "",
+    accessGroups: [],
     permissions: [],
     users: [],
     errors: {},
   });
 
-  const handleFormChange = (newProperties) => {
-    setAccessGroupState((prev) => ({
-      ...prev,
-      detailsproperties: { ...prev.detailsproperties, ...newProperties },
-    }));
+  const handleFormChange = (newAccessGroupState) => {
+    setAccessGroupState(newAccessGroupState)
   };
 
-  const handleNamespace = (newname) => {};
+  const handleNamespace = (newname, type) => {
+    type === "view" ? newname.view = !newname.view : newname.modify = !newname.modify;
+    setAccessGroupState((prevState) => {
+      if (newname.view || newname.modify) {
+        let add = true;
+        // Modify existing item
+        prevState = {
+          ...prevState,
+          permissions: prevState.permissions.map((p) => {
+            if (p.id === newname.id) {
+              add = false;
+              return type === "view" ? {...p, view: newname.view} : {...p, modify: newname.modify};
+            } else {
+              return p;
+            }
+          })
+        }
+        // Add new item
+        if (add) {
+          return {
+            ...prevState,
+            permissions: [...prevState.permissions, newname],
+          };
+        }
+        return prevState;
+      // Remove existing item
+      } else {
+        return {
+          ...prevState,
+          permissions: prevState.permissions.filter((p) => p.id !== newname.id),
+        };
+      }
+    })
+  };
 
   const handleUsers = (user, action) => {
     setAccessGroupState((prevState) => {
@@ -69,7 +95,7 @@ const CreateAccessGroup = () => {
       title: "Details",
       content: (
         <AccessGroupDetails
-          properties={accessGroupState.detailsproperties}
+          state={accessGroupState}
           onChange={handleFormChange}
           errors={accessGroupState.errors}
         />
