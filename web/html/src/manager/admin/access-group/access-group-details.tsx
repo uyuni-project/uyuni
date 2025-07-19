@@ -1,15 +1,11 @@
 import * as React from "react";
 
-import {DEPRECATED_Select, Form, Text, TextArea} from "components/input";
-
-type Detailsproperties = {
-  name: string;
-  description: string;
-  accessGroup: string[];
-};
+import { Form } from "components/formik";
+import { Field } from "components/formik/field";
+import { AccessGroupState } from "manager/admin/access-group/access-group";
 
 type Props = {
-  properties: Detailsproperties;
+  state: AccessGroupState;
   onChange: Function;
   errors: any;
 };
@@ -28,25 +24,29 @@ const options = [
 ];
 
 const AccessGroupDetails = (props: Props) => {
+
   return (
     <Form
-      model={props.properties}
-      errors={props.errors}
-      onChange={(model) => {
-        props.onChange(model);
-      }}
+      initialValues={props.state}
+      // TODO: Use onChange instead of validate to update access group details
+      // onChange={(model) => {
+      //   props.onChange(model);
+      // }}
+      onSubmit={() => {}}
+      validate={(model) => props.onChange(model)}
     >
       <div className="row">
-        <Text required name="name" label={t("Name")} labelClass="col-md-3" divClass="col-md-6" />
+        <Field required name="name" label={t("Name")} labelClass="col-md-3" divClass="col-md-6" />
       </div>
       <div className="row">
-        <TextArea name="description" rows={10} label={t("Description")} labelClass="col-md-3" divClass="col-md-6" />
+        <Field name="description" rows={10} label={t("Description")} as={Field.TextArea} labelClass="col-md-3" divClass="col-md-6" />
       </div>
       <div className="row">
-        <DEPRECATED_Select
-          name="accessGroup"
+        <Field
+          name="accessGroups"
           label={t("Copy Permissions From")}
           options={options}
+          as={Field.Select}
           placeholder={t("Search for existing access groups...")}
           emptyText={t("No Access group")}
           labelClass="col-md-3"

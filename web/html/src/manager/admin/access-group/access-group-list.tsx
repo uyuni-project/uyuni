@@ -56,13 +56,13 @@ export function AccessGroupList(props) {
         />
         <Column columnKey="type" comparator={Utils.sortByText} header={t("Type")} cell={(item) => item.type} />
 
-        <Column columnKey="users" comparator={Utils.sortByText} header={t("Users")} cell={(item) => item.users} />
+        <Column columnKey="users" comparator={Utils.sortByText} header={t("Users")} cell={(item) => item.numUsers} />
 
         <Column
           columnKey="permissions"
           comparator={Utils.sortByText}
           header={t("permissions")}
-          cell={(item) => item.permissions}
+          cell={(item) => item.numPermissions}
         />
         <Column
           columnKey="action"
