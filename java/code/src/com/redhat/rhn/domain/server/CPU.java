@@ -42,6 +42,12 @@ public class CPU extends BaseDomainHelper {
     private String chipSet;
     private CPUArch arch;
 
+    /**
+     * This field stores CPU architecture-specific information. Although the corresponding database field is of type
+     * JSONB, it is mapped here as a String due to limitations in XML mapping for JSON types. Since it is currently
+     * intended only for sending to SCC, parsing is not necessary.
+     */
+    private String archSpecs;
 
     /**
      * @return Returns the acpiVersion.
@@ -329,6 +335,20 @@ public class CPU extends BaseDomainHelper {
      */
     public String  getArchName() {
         return arch.getName();
+    }
+
+    /**
+     * @return Returns the archSpecs.
+     */
+    public String getArchSpecs() {
+        return archSpecs;
+    }
+
+    /**
+     * @param archSpecsIn The archSpecs to set.
+     */
+    public void setArchSpecs(String archSpecsIn) {
+        this.archSpecs = archSpecsIn;
     }
 
     @Override
