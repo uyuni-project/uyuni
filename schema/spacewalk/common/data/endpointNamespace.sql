@@ -6472,6 +6472,16 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.contentmanagement.generate_project_difference' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/contentmanagement/generateProjectDifference' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.contentmanagement.generate_environment_difference' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/contentmanagement/generateEnvironmentDifference' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.contentmanagement.create_app_stream_filters' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/contentmanagement/createAppStreamFilters' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
@@ -6499,6 +6509,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.contentmanagement.detach_source' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/contentmanagement/detachSource' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.contentmanagement.list_environment_difference' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/contentmanagement/listEnvironmentDifference' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep

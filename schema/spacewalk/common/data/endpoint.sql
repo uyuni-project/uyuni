@@ -4083,6 +4083,12 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('com.redhat.rhn.frontend.xmlrpc.contentmgmt.ContentManagementHandler.attachSource', '/manager/api/contentmanagement/attachSource', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.contentmgmt.ContentManagementHandler.generateProjectDifference', '/manager/api/contentmanagement/generateProjectDifference', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.contentmgmt.ContentManagementHandler.generateEnvironmentDifference', '/manager/api/contentmanagement/generateEnvironmentDifference', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.contentmgmt.ContentManagementHandler.buildProject', '/manager/api/contentmanagement/buildProject', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -4102,6 +4108,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.contentmgmt.ContentManagementHandler.detachSource', '/manager/api/contentmanagement/detachSource', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.contentmgmt.ContentManagementHandler.listEnvironmentDifference', '/manager/api/contentmanagement/listEnvironmentDifference', 'GET', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.contentmgmt.ContentManagementHandler.listFilterCriteria', '/manager/api/contentmanagement/listFilterCriteria', 'GET', 'A', True)

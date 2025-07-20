@@ -200,4 +200,10 @@ VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'),
         (SELECT id FROM rhnTaskoBunch WHERE name = 'errata-advisory-map-sync-bunch'),
         current_timestamp, '0 0 23 ? * *');
 
+-- Once a day at 6am
+INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
+    VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'compare-task-default',
+        (SELECT id FROM rhnTaskoBunch WHERE name='compare-task-bunch'),
+        current_timestamp, '0 0 6 ? * *');
+
 commit;
