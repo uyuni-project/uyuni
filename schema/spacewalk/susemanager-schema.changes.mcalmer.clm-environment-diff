@@ -1,0 +1,2 @@
+- Add taskomatic jobs and tables to generate and store
+  differencen between CLM environments (jsc#SUMA-301)
