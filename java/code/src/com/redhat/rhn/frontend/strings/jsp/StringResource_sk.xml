@@ -8483,35 +8483,35 @@ mať viac prístup ku konfiguračným nástrojom @@PRODUCT_NAME@@ a nástrojom n
       </trans-unit>
       <trans-unit id="orgs.trust.channels.single.jsp.enabled" xml:space="preserve">
         <source>{0} trusted organization enabled.</source>
-        <target/>
+        <target state="translated">{0} povolená dôveryhodná organizácia.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/OrgList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.systemconsume1" xml:space="preserve">
         <source>systems in your organization consume {0} of these</source>
-        <target/>
+        <target state="translated">systémy vo vašej organizácii spotrebúvajú {0} týchto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.systemconsume2" xml:space="preserve">
         <source>systems in the {0} organization consume {1} of these</source>
-        <target/>
+        <target state="translated">systémy v {0} organizáciách spotrebúvajú {1} týchto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.header1" xml:space="preserve">
         <source>Basic Details</source>
-        <target/>
+        <target state="translated">Základné podrobnosti</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.header2" xml:space="preserve">
         <source>Channel Details</source>
-        <target/>
+        <target state="translated">Podrobnosti o kanáli</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
