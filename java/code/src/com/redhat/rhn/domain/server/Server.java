@@ -2704,8 +2704,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public boolean isConvertibleToProxy() {
         return !isProxy() && (
                 ConfigDefaults.get().isUyuni() ||
-                (isSLEMicro() && getRelease().equals("6.1")) ||
-                (isSLES() && getRelease().equals("15.7"))
+                        (ServerConstants.SLMICRO.equalsIgnoreCase(getOs()) && getRelease().equals("6.1")) ||
+                        (isSLES() && getRelease().equals("15.7"))
         );
     }
 
