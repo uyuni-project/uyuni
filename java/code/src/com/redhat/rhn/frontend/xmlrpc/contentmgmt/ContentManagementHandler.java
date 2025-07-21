@@ -931,6 +931,33 @@ public class ContentManagementHandler extends BaseHandler {
     }
 
     /**
+     * Generate the Environment differences for the whole project
+     *
+     * @param loggedInUser the user
+     * @param projectLabel the Project label
+     * @return 1 if successful
+     *
+     * @apidoc.doc Generate the Environment differences for the whole project
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Project label")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int generateEnvironmentDifferences(User loggedInUser, String projectLabel) {
+        ensureOrgAdmin(loggedInUser);
+        // Validate the project for promote
+        ContentProject project = lookupProject(loggedInUser, projectLabel);
+        validateContentProject(project);
+
+        try {
+            contentManager.diffProject(project);
+        }
+        catch (ContentManagementException e) {
+            throw new ContentManagementFaultException(e);
+        }
+        return 1;
+    }
+
+    /**
      * Validates a content project for build/promote
      *
      * The validation fails only in case of an error. Info and warning messages are ignored since the build/promote
