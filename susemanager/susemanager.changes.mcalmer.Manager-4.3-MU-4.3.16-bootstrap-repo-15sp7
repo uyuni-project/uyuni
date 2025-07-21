@@ -1,0 +1,2 @@
+- Fix bootstrap repository definition for SLE 15 SP7 and
+  support only bootstrapping with salt-bundle (bsc#1246788)
