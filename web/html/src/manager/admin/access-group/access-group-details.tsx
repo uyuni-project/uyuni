@@ -39,7 +39,7 @@ const AccessGroupDetails = (props: Props) => {
         <Field required name="name" label={t("Name")} labelClass="col-md-3" divClass="col-md-6" />
       </div>
       <div className="row">
-        <Field name="description" rows={10} label={t("Description")} as={Field.TextArea} labelClass="col-md-3" divClass="col-md-6" />
+        <Field required name="description" rows={10} label={t("Description")} as={Field.TextArea} labelClass="col-md-3" divClass="col-md-6" />
       </div>
       <div className="row">
         <Field

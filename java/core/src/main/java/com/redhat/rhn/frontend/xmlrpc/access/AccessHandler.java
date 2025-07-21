@@ -16,8 +16,10 @@ import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.access.NamespaceFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.RoleCannotBeAlteredException;
+import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.access.AccessGroupManager;
 import com.redhat.rhn.manager.access.DefaultRoleException;
 
@@ -72,6 +74,9 @@ public class AccessHandler extends BaseHandler {
         }
         catch (DefaultRoleException e) {
             throw new RoleCannotBeAlteredException(e);
+        }
+        catch (EntityExistsException e) {
+            throw new EntityExistsFaultException(e);
         }
         catch (NoSuchElementException e) {
             throw new EntityNotExistsFaultException(e);
