@@ -22,6 +22,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -106,6 +107,21 @@ public class NamespaceFactory extends HibernateFactory {
                         Namespace.class)
                 .setParameter("namespace", sanitizeNamespacePattern(namespace))
                 .setParameter("modes", modes)
+                .getResultList();
+    }
+
+    /**
+     * Lists namespaces matching given list of ids
+     * @param ids the list of ids to filter the namespaces by
+     * @return the list of namespaces matching the ids
+     */
+    public static List<Namespace> listByIds(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return getSession()
+                .createQuery("SELECT n FROM Namespace n WHERE n.id IN :ids", Namespace.class)
+                .setParameter("ids", ids)
                 .getResultList();
     }
 
