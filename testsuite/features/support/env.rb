@@ -59,6 +59,7 @@ $current_user = 'admin'
 $current_password = 'admin'
 $chromium_dev_tools = ENV.fetch('REMOTE_DEBUG', false)
 $chromium_dev_port = 9222 + ENV['TEST_ENV_NUMBER'].to_i
+$use_salt_bundle = ENV.fetch('USE_SALT_BUNDLE', true)
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -647,12 +648,12 @@ end
 
 # do some tests only if we are using salt bundle
 Before('@salt_bundle') do
-  skip_this_scenario unless use_salt_bundle
+  skip_this_scenario unless $use_salt_bundle
 end
 
 # do some tests only if we are using salt bundle
 Before('@skip_if_salt_bundle') do
-  skip_this_scenario if use_salt_bundle
+  skip_this_scenario if $use_salt_bundle
 end
 
 # do test only if HTTP proxy for Uyuni is defined

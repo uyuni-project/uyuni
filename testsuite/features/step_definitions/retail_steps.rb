@@ -208,7 +208,7 @@ end
 When(/^I create the bootstrap script for "([^"]+)" hostname and "([^"]*)" activation key on "([^"]*)"$/) do |hostname, key, host|
   node = get_target(host)
   # WORKAROUND: Revert once pxeboot autoinstallation contains venv-salt-minion
-  # force_bundle = use_salt_bundle ? '--force-bundle' : ''
+  # force_bundle = $use_salt_bundle ? '--force-bundle' : ''
   # get_target(host).run("mgr-bootstrap #{force_bundle}")
   node.run("mgr-bootstrap --hostname=#{hostname} --activation-keys=#{key}")
 
