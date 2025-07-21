@@ -55,25 +55,6 @@ def get_ips(fqdn: str) -> Tuple[str, str]:
     return (ipv4, ipv6)
 
 
-def insert_under_line(file_path, line_to_match, line_to_insert):
-    # add 4 leading spaces and a new line in the end
-    line_to_insert = line_to_insert.rjust(len(line_to_insert) + 4) + "\n"
-
-    with open(file_path, "r", encoding="utf-8") as f:
-        contents = f.readlines()
-
-    index = -1
-    for ind, line in enumerate(contents):
-        if line_to_match in line:
-            index = ind + 1
-
-    contents.insert(index, line_to_insert)
-
-    with open(file_path, "w", encoding="utf-8") as f:
-        contents = "".join(contents)
-        f.write(contents)
-
-
 # read from files
 with open(config_path + "config.yaml", encoding="utf-8") as source:
     config = yaml.safe_load(source)
@@ -184,6 +165,15 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
         )
 
     with open(
+        "/etc/apache2/conf.d/smlm-proxy-forwards.conf", "r+", encoding="utf-8"
+    ) as smlm_conf:
+        file_content = smlm_conf.read()
+        file_content = re.sub(r"{{ SERVER }}", config["server"], file_content)
+        smlm_conf.seek(0, 0)
+        smlm_conf.write(file_content)
+        smlm_conf.truncate()
+
+    with open(
         "/etc/apache2/conf.d/susemanager-tftpsync-recv.conf", "w", encoding="utf-8"
     ) as file:
         require_ipv4 = ""
@@ -203,28 +193,6 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
 WSGIScriptAlias /tftpsync/add /srv/www/tftpsync/add
 WSGIScriptAlias /tftpsync/delete /srv/www/tftpsync/delete"""
         )
-
-    with open("/etc/apache2/conf.d/cobbler-proxy.conf", "w", encoding="utf-8") as file:
-        file.write(
-            f"""ProxyPass /cobbler_api https://{config['server']}/download/cobbler_api
-ProxyPassReverse /cobbler_api https://{config['server']}/download/cobbler_api
-RewriteRule ^/cblr/svc/op/ks/(.*)$ /download/$0 [R,L]
-RewriteRule ^/cblr/svc/op/autoinstall/(.*)$ /download/$0 [R,L]
-ProxyPass /cblr https://{config['server']}/cblr
-ProxyPassReverse /cblr https://{config['server']}/cblr
-ProxyPass /cobbler https://{config['server']}/cobbler
-ProxyPassReverse /cobbler https://{config['server']}/cobbler
-        """
-        )
-
-    with open(
-        "/etc/apache2/conf.d/susemanager-pub.conf", "w", encoding="utf-8"
-    ) as file:
-        file.write("WSGIScriptAlias /pub /usr/share/rhn/wsgi/xmlrpc.py")
-
-    # redirect API calls to the server
-    with open("/etc/apache2/conf.d/smlm-api.conf", "w", encoding="utf-8") as file:
-        file.write("WSGIScriptAlias /rhn/manager/api /usr/share/rhn/wsgi/xmlrpc.py")
 
     with open("/etc/apache2/vhosts.d/ssl.conf", "w", encoding="utf-8") as file:
         file.write(
@@ -256,35 +224,11 @@ ProxyPassReverse /cobbler https://{config['server']}/cobbler
 """
         )
 
-    # Adjust logs format in apache httpd:
-    # Modify the other configurations so that the var HANDLER_TYPE gets set based on a directory of a script executed
-    insert_under_line(
-        "/etc/apache2/conf.d/spacewalk-proxy-wsgi.conf",
-        "<Directory /usr/share/rhn>",
-        'SetEnv HANDLER_TYPE "proxy-broker"',
-    )
-    insert_under_line(
-        "/etc/apache2/conf.d/spacewalk-proxy.conf",
-        '<Directory "/srv/www/htdocs/pub/*">',
-        'SetEnv HANDLER_TYPE "proxy-html"',
-    )
-    insert_under_line(
-        "/etc/apache2/conf.d/spacewalk-proxy.conf",
-        '<Directory "/srv/www/htdocs/docs/*">',
-        'SetEnv HANDLER_TYPE "proxy-docs"',
-    )
-
-    # handle large static files outside of the wsgi script
-    insert_under_line(
-        "/etc/apache2/conf.d/spacewalk-proxy-static-files.conf",
-        "ProxyPass /saltboot http://localhost/proxyInternalLoop/saltboot",
-        f"ProxyPassMatch /proxyInternalLoop/(.*)$ https://{config['server']}/$1",
-    )
-
-    os.system("/usr/bin/chown root:www /etc/rhn/rhn.conf")
-    os.system("/usr/bin/chmod 640 /etc/rhn/rhn.conf")
 
 # Make sure permissions are set as desired
+os.system("/usr/bin/chown root:www /etc/rhn/rhn.conf")
+os.system("/usr/bin/chmod 640 /etc/rhn/rhn.conf")
+
 os.system("/usr/bin/chown -R wwwrun:www /var/spool/rhn-proxy")
 os.system("/usr/bin/chmod -R 750 /var/spool/rhn-proxy")
 if not os.path.exists("/var/cache/rhn/proxy-auth"):
