@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -75,6 +76,14 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * Save the Content Environment Difference
+     * @param envDiff the diff
+     */
+    public static void save(ContentEnvironmentDiff envDiff) {
+        INSTANCE.saveObject(envDiff);
+    }
+
+    /**
      * Remove a Content Project
      *
      * @param contentProject the Content Project to remove
@@ -82,6 +91,36 @@ public class ContentProjectFactory extends HibernateFactory {
      */
     public static int remove(ContentProject contentProject) {
         return INSTANCE.removeObject(contentProject);
+    }
+
+    /**
+     * Remove a Content Environment Difference
+     * @param envDiff the diff
+     * @return the number of objects affected
+     */
+    public static int remove(ContentEnvironmentDiff envDiff) {
+        return INSTANCE.removeObject(envDiff);
+    }
+
+    /**
+     * Lookup Environment differences by project and env name
+     * @param project the CML project
+     * @param environment the CML environment
+     * @param channel the channel
+     * @return return a set of differences
+     */
+    public static Set<ContentEnvironmentDiff> lookupEnvDiffByProjectAndEnv(ContentProject project,
+                                                                           ContentEnvironment environment,
+                                                                           Channel channel) {
+        return getSession().createQuery("""
+                FROM ContentEnvironmentDiff
+                 WHERE project = :project
+                  AND environment = :env
+                  AND channel = :channel""", ContentEnvironmentDiff.class)
+                .setParameter("project", project)
+                .setParameter("env", environment)
+                .setParameter("channel", channel)
+                .stream().collect(Collectors.toSet());
     }
 
     /**

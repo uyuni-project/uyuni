@@ -40,6 +40,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentEnvironmentDiff;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
@@ -667,8 +668,121 @@ public class ContentManager {
         firstEnv.setVersion(entry.getVersion());
     }
 
+    /**
+     * Generate a diff of all environments of a project
+     *
+     * @param project the project
+     */
+    public void diffProject(ContentProject project) {
+
+        Optional<ContentEnvironment> env = project.getFirstEnvironmentOpt();
+
+        do {
+            // current Environment is BUILDING -> Forbid as content change
+            if (isEnvironmentBuilding(env)) {
+                throw new ContentManagementException("Build/Promote already in progress");
+            }
+            ContentEnvironment currentEnv = env.orElseThrow(
+                    () -> new ContentManagementException("Environment missing"));
+
+            // Resolve filters for dependencies
+            try {
+                DependencyResolver resolver = new DependencyResolver(project, this.modulemdApi);
+                DependencyResolutionResult result = resolver.resolveFilters(project.getActiveFilters());
+
+                currentEnv.getTargets().stream().flatMap(tgt -> stream(tgt.asSoftwareTarget()))
+                        .map(SoftwareEnvironmentTarget::getChannel).forEach(channel -> {
+                            if (!channel.isCloned()) {
+                                throw new ContentManagementException("Channel is not a cloned channel: %s"
+                                        .formatted(channel.getLabel()));
+                            }
+                            diffEnvironmentChannel(project, currentEnv, channel, result.getFilters());
+                        });
+            }
+            catch (DependencyResolutionException e) {
+                throw new ContentManagementException(e);
+            }
+            env = currentEnv.getNextEnvironmentOpt();
+        }
+        while(env.isPresent());
+    }
+
+    private void diffEnvironmentChannel(ContentProject project, ContentEnvironment env, Channel channel,
+                                        List<ContentFilter> filters) {
+        Channel src = channel.getOriginal();
+        List<PackageFilter> packageFilters = extractFiltersOfType(filters, PackageFilter.class);
+        List<ErrataFilter> errataFilters = extractFiltersOfType(filters, ErrataFilter.class);
+
+        Set<Package> oldTgtPackages = new HashSet<>(channel.getPackages());
+        Pair<Set<Package>, Set<Package>> partPackages = filterEntities(src.getPackages(), packageFilters);
+        Set<Package> includedPackages = partPackages.getLeft();
+        Set<Package> excludedPackages = partPackages.getRight();
+
+        Set<Package> newPackagesInTgt = includedPackages.stream()
+                .filter(p -> !oldTgtPackages.contains(p)).collect(toSet());
+        Set<Package> removedPackagesInTgt = oldTgtPackages.stream()
+                .filter(p -> !includedPackages.contains(p))
+                .filter(p -> !excludedPackages.contains(p))
+                .collect(toSet());
+
+        Set<ContentEnvironmentDiff> oldEnvDiff =
+                ContentProjectFactory.lookupEnvDiffByProjectAndEnv(project, env, channel);
+        Set<ContentEnvironmentDiff> newEnvDiff = new HashSet<>();
+
+        // newPackagesInTgt : packages which will be added on next build/promote
+        // excludedPackages : packages excluded by filter
+        // removedPackagesInTgt: removed packages from Target because they were removed in SRC
+        newPackagesInTgt.forEach(p -> newEnvDiff.add(
+                        new ContentEnvironmentDiff(project, env, channel, p.getId(), "PACKAGE", "+",
+                                p.getPackageName().getName(), p.getPackageEvr().toUniversalEvrString(),
+                                false))
+        );
+        excludedPackages.forEach(p -> newEnvDiff.add(
+                        new ContentEnvironmentDiff(project, env, channel, p.getId(), "PACKAGE", "-",
+                                p.getPackageName().getName(), p.getPackageEvr().toUniversalEvrString(),
+                                true))
+        );
+        removedPackagesInTgt.forEach(p -> newEnvDiff.add(
+                        new ContentEnvironmentDiff(project, env, channel, p.getId(), "PACKAGE", "-",
+                                p.getPackageName().getName(), p.getPackageEvr().toUniversalEvrString(),
+                                false))
+        );
+
+        Set<Errata> oldTgtErrata = new HashSet<>(channel.getErratas());
+        Pair<Set<Errata>, Set<Errata>> partErrata = filterEntities(src.getErratas(), errataFilters);
+        Set<Errata> includedErrata = partErrata.getLeft();
+        Set<Errata> excludedErrata = partErrata.getRight();
+
+        Set<Errata> newErrataInTgt = includedErrata.stream()
+                .filter(e -> !oldTgtErrata.contains(e))
+                .collect(toSet());
+        Set<Errata> removedErrataInTgt = oldTgtErrata.stream()
+                .filter(e -> !includedErrata.contains(e))
+                .filter(e -> !excludedErrata.contains(e))
+                .collect(toSet());
+        // newErrataInTgt : errata which will be added on next build/promote
+        // excludedErrata : errata excluded by filter
+        // removedErrataInTgt: removed errata from Target because they were removed in SRC
+        newErrataInTgt.forEach(e -> newEnvDiff.add(
+                        new ContentEnvironmentDiff(project, env, channel, e.getId(), "ERRATA", "+",
+                                e.getAdvisoryName(), e.getAdvisorySynopsis(), false))
+        );
+        excludedErrata.forEach(e -> newEnvDiff.add(
+                        new ContentEnvironmentDiff(project, env, channel, e.getId(), "ERRATA", "-",
+                                e.getAdvisoryName(), e.getAdvisorySynopsis(), true))
+        );
+        removedErrataInTgt.forEach(e -> newEnvDiff.add(
+                        new ContentEnvironmentDiff(project, env, channel, e.getId(), "ERRATA", "-",
+                                e.getAdvisoryName(), e.getAdvisorySynopsis(), false))
+        );
+
+        oldEnvDiff.stream().filter(d -> !newEnvDiff.contains(d)).forEach(ContentProjectFactory::remove);
+        oldEnvDiff.addAll(newEnvDiff);
+        oldEnvDiff.forEach(ContentProjectFactory::save);
+    }
+
     // helper method to determine if given environment is BUILDING
-    private Boolean isEnvironmentBuilding(Optional<ContentEnvironment> env) {
+    private boolean isEnvironmentBuilding(Optional<ContentEnvironment> env) {
         return env.flatMap(e -> e.computeStatus().map(status -> status.equals(EnvironmentTarget.Status.BUILDING)))
                 .orElse(false);
     }
