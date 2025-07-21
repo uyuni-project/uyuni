@@ -27,7 +27,11 @@ parser.add_argument('--apache2-config-directory', '-a', dest='httpd_config_direc
 parser.add_argument('--fqdn', '-f', dest='fqdn', default=None)
 
 COBBLER_CONFIG_DIRECTORY = "/etc/cobbler/"
-COBBLER_CONFIG_FILES = ["modules.conf", "settings.d/zz-uyuni.settings"]
+COBBLER_CONFIG_FILES = [
+    "modules.conf",
+    "settings.d/zz-uyuni.settings",
+    "settings.d/zz-uyuni-tftpsync.settings",
+]
 HTTPD_CONFIG_DIRECTORY = "/etc/apache2/conf.d/"
 COBBLER_HTTP_CONFIG = "cobbler.conf"
 
