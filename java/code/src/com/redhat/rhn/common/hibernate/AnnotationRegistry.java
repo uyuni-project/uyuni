@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentEnvironmentDiff;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
@@ -222,6 +223,7 @@ public class AnnotationRegistry {
             ConfigChannelType.class,
             ConfigFile.class,
             ContentEnvironment.class,
+            ContentEnvironmentDiff.class,
             ContentFilter.class,
             ContentProject.class,
             ContentProjectFilter.class,
