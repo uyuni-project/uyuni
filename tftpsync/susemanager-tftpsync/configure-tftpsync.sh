@@ -41,14 +41,10 @@ for proxy in $@; do
     fi
 done
 
-cp /etc/cobbler/settings.d/zz-uyuni.settings /etc/cobbler/settings.d/zz-uyuni.settings.bak
-# remove proxies section from conf
-cat /etc/cobbler/settings.d/zz-uyuni.settings.bak | awk '{if(/^proxies:/) x=1; else if (x == 1 && /^[[:space:]]*-/) x=1; else if (x == 1 && ! /^[[:space:]]*-/) {x=0; print;} else print }' > /etc/cobbler/settings.d/zz-uyuni.settings
-
-# create new proxies section
-echo "proxies:" >> /etc/cobbler/settings.d/zz-uyuni.settings
+# create new proxies section in dedicated settings file
+echo "proxies:" > /etc/cobbler/settings.d/zz-uyuni-tftpsync.settings
 for proxy in $@; do
-    echo " - \"$proxy\"" >> /etc/cobbler/settings.d/zz-uyuni.settings
+    echo " - \"$proxy\"" >> /etc/cobbler/settings.d/zz-uyuni-tftpsync.settings
 done
 
 # remove cache file to push all files again
