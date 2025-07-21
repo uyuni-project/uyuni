@@ -17,7 +17,7 @@ package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.frontend.dto.BaseTupleDto;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Tuple;
 
@@ -43,11 +43,12 @@ public class AccessGroupJson extends BaseTupleDto {
     private Long id;
     private String name;
     private String description;
+    private List<String> accessGroups;
     private String type;
     private Long numUsers;
-    private Set<AccessGroupUserJson> users;
+    private List<AccessGroupUserJson> users;
     private Long numPermissions;
-    private Set<NamespaceJson> permissions;
+    private List<NamespaceJson> permissions;
 
     @Override
     public Long getId() {
@@ -74,6 +75,14 @@ public class AccessGroupJson extends BaseTupleDto {
         description = descriptionIn;
     }
 
+    public List<String> getAccessGroups() {
+        return accessGroups;
+    }
+
+    public void setAccessGroups(List<String> accessGroupsIn) {
+        accessGroups = accessGroupsIn;
+    }
+
     public String getType() {
         return type;
     }
@@ -90,11 +99,11 @@ public class AccessGroupJson extends BaseTupleDto {
         numUsers = numUsersIn;
     }
 
-    public Set<AccessGroupUserJson> getUsers() {
+    public List<AccessGroupUserJson> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<AccessGroupUserJson> usersIn) {
+    public void setUsers(List<AccessGroupUserJson> usersIn) {
         users = usersIn;
     }
 
@@ -106,11 +115,11 @@ public class AccessGroupJson extends BaseTupleDto {
         numPermissions = numPermissionsIn;
     }
 
-    public Set<NamespaceJson> getPermissions() {
+    public List<NamespaceJson> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(Set<NamespaceJson> permissionsIn) {
+    public void setPermissions(List<NamespaceJson> permissionsIn) {
         permissions = permissionsIn;
     }
 }

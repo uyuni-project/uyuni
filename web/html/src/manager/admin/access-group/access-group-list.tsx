@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useRef } from "react";
 
 import { Button, LinkButton } from "components/buttons";
 import { TopPanel } from "components/panels/TopPanel";
@@ -7,25 +8,61 @@ import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
+import Network from "utils/network";
+import {Messages, MessageType, Utils as MessagesUtils} from "components/messages/messages";
+import { DeleteDialog } from "components/dialog/DeleteDialog";
+import { ModalButton } from "components/dialog/ModalButton";
 
-const actionButtons = (type) => {
-  if (type === "Built-in") {
-    return (
-      <div className="btn-group">
-        <Button className="btn-default btn-sm" icon="fa-user" />
-      </div>
-    );
-  } else {
-    return (
-      <div className="btn-group">
-        <Button className="btn-default btn-sm" icon="fa-user" />
-        <Button className="btn-default btn-sm" icon="fa-pencil" />
-        <Button className="btn-default btn-sm" icon="fa-trash" />
-      </div>
-    );
-  }
+type AccessGroupListItem = {
+  id: number;
+  name: string;
+  description: string;
+  type: string;
+  numUsers: number;
+  numPermissions: number;
 };
-export function AccessGroupList(props) {
+
+const AccessGroupList = (props) => {
+  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [toDelete, setToDelete] = useState<AccessGroupListItem>();
+  const tableRef = useRef(null);
+
+  const onDelete = (item, tableRef) => {
+    return Network.del("/rhn/manager/api/admin/access-group/delete/" + item.id)
+      .then((_) => {
+        setMessages(MessagesUtils.info("Access Group '" + item.name + "' has been deleted."));
+        if (tableRef) {
+          tableRef.current.refresh();
+        }
+      })
+      .catch((error) => setMessages(Network.responseErrorMessage(error)));
+  };
+
+  const actionButtons = (item: AccessGroupListItem) => {
+    if (item.type === "Built-in") {
+      return (
+        <div className="btn-group">
+          <Button className="btn-default btn-sm" icon="fa-user" />
+        </div>
+      );
+    } else {
+      return (
+        <div className="btn-group">
+          <Button className="btn-default btn-sm" icon="fa-user" />
+          <Button className="btn-default btn-sm" icon="fa-pencil" />
+          <ModalButton
+            className="btn-default btn-sm"
+            title={t("Delete")}
+            icon="fa-trash"
+            target="delete-modal"
+            item={item}
+            onClick={(i) => setToDelete(i)}
+          />
+        </div>
+      );
+    }
+  };
+
   return (
     <TopPanel
       title={t("Access Group Management")}
@@ -40,12 +77,14 @@ export function AccessGroupList(props) {
         </div>
       }
     >
+      <Messages items={messages} />
       <Table
         data={"/rhn/manager/api/admin/access-group/roles"}
         identifier={(item) => item.id}
         initialSortColumnKey="name"
         emptyText={t("No Access Group found.")}
         searchField={<SearchField placeholder={t("Filter by name")} />}
+        ref={tableRef}
       >
         <Column columnKey="name" comparator={Utils.sortByText} header={t("Name")} cell={(item) => item.name} />
         <Column
@@ -67,9 +106,18 @@ export function AccessGroupList(props) {
         <Column
           columnKey="action"
           header={t("Actions")}
-          cell={(item) => actionButtons(item.type)}
+          cell={(item) => actionButtons(item)}
         />
       </Table>
+      <DeleteDialog
+        id="delete-modal"
+        title={t("Delete Access Group")}
+        content={t("Are you sure you want to delete the selected Access Group?")}
+        onConfirm={() => onDelete(toDelete, tableRef)}
+        onClosePopUp={() => setToDelete(undefined)}
+      />
     </TopPanel>
   );
 }
+
+export default AccessGroupList;

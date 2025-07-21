@@ -10,6 +10,8 @@ import { StepsProgressBar } from "components/steps-progress-bar";
 import AccessGroupDetails from "./access-group-details";
 import AccessGroupPermissions from "./access-group-permissions";
 import AccessGroupUsers from "./access-group-user";
+import Network from "utils/network";
+import {Messages, MessageType, Utils as MessagesUtils} from "components/messages/messages";
 
 export type AccessGroupState = {
   name: string;
@@ -21,6 +23,9 @@ export type AccessGroupState = {
 };
 
 const CreateAccessGroup = () => {
+  // TODO: Handle displaying success messages on create / update on access-group-list
+  const [messages, setMessages] = useState<MessageType[]>([]);
+  // const [messages, setMessages] = useState<any[]>([]);
   const [accessGroupState, setAccessGroupState] = useState<AccessGroupState>({
     name: "",
     description: "",
@@ -87,7 +92,12 @@ const CreateAccessGroup = () => {
   };
 
   const handleCreateAccessGroup = () => {
-    window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/access-group`);
+    Network.post("/rhn/manager/api/admin/access-group/save", accessGroupState)
+      .then((_) => {
+        setMessages(MessagesUtils.info(t("Access Group successfully created.")));
+        window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/access-group`);
+      })
+      .catch((error) => setMessages(Network.responseErrorMessage(error)));
   };
 
   const steps = [
@@ -117,6 +127,7 @@ const CreateAccessGroup = () => {
   ];
   return (
     <TopPanel title={t("Create: Access Group")}>
+      <Messages items={messages} />
       <StepsProgressBar steps={steps} onCreate={handleCreateAccessGroup} onCancel={"/rhn/manager/admin/access-group"} />
     </TopPanel>
   );
