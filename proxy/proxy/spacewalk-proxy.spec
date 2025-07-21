@@ -419,6 +419,7 @@ fi
 %attr(640,root,%{apache_group}) %config(noreplace) %{rhnconf}/rhn.conf
 %attr(644,root,%{apache_group}) %{_datadir}/rhn/config-defaults/rhn_proxy.conf
 %attr(644,root,%{apache_group}) %config %{httpdconf}/spacewalk-proxy.conf
+%attr(644,root,%{apache_group}) %config %{httpdconf}/smlm-proxy-forwards.conf
 # this file is created by either cli or webui installer
 %ghost %config %{httpdconf}/cobbler-proxy.conf
 %attr(644,root,%{apache_group}) %config %{httpdconf}/spacewalk-proxy-wsgi.conf
