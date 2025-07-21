@@ -98,11 +98,11 @@
                     </div>
                 </div>
             </div>
-
+            <script type="text/javascript" src="/javascript/spacewalk-pwstrength-handler.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
             <script type="text/javascript">
-function toggleAsterisk() {
-  jQuery("[name='password-asterisk']").toggle()
-}
+                function toggleAsterisk() {
+                    jQuery("[name='password-asterisk']").toggle()
+                }
             </script>
 
             <c:if test="${empty param.account_type}">

@@ -9,10 +9,10 @@ function setupPasswordStrengthMeter() {
             jQuery('input[name="desiredpassword"]').popover('show');
             //when there are no errors the popover disappears
             if (jQuery('ul.error-list').is(':empty')) {
-                jQuery('input[name="desiredpassword"]').popover('destroy');
+                jQuery('input[name="desiredpassword"]').popover('dispose');
             }
             //update the tick next to the desiredpassword input field
-            updateTickIcon();
+            // updateTickIcon();
         }
     };
     options.rules = {
@@ -97,5 +97,5 @@ function updateTickIcon() {
 
 // document ready handler
 jQuery(document).ready(function() {
-    setupPasswordStrengthMeter();
+    updateTickIcon();
 });
