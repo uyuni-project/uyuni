@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.org.Org;
 
@@ -258,6 +259,36 @@ public class Pillar implements Identifiable, Serializable {
      */
     public Map<String, Object> getPillar() {
         return pillar;
+    }
+
+    /**
+     * Get a single string value from the pillar
+     * The path consists of : separated components. An empty component takes the first item.
+     *
+     * @param path the path in the pillar
+     * @return the value
+     */
+    public String getPillarValue(String path) {
+        Object value = getPillar();
+        try {
+            for (String key: path.split(":")) {
+                Map<String, Object> entry = (Map<String, Object>)value;
+                if (key.isEmpty()) {
+                    value = entry.entrySet().iterator().next().getValue();
+                }
+                else {
+                    value = entry.get(key);
+                }
+            }
+        }
+        catch (NullPointerException e) {
+            throw new LookupException("The pillar path does not exist");
+        }
+        if (value == null) {
+            throw new LookupException("The pillar entry does not exist");
+        }
+
+        return (String)value;
     }
 
     /**
