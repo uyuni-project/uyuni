@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jul 21 15:49:10 CEST 2025 - marina.latini@suse.com
+
+- version 4.3.17
+  * Chart rebuilt to the newest version with updated dependencies
+    for SUSE Manager 4.3.16
+
+-------------------------------------------------------------------
 Thu Feb 13 16:15:00 CET 2025 - rosuna@suse.com
 
 - version 4.3.16
