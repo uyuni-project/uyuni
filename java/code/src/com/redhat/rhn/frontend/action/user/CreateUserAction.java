@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2014 Red Hat, Inc.
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -46,7 +47,7 @@ public class CreateUserAction extends RhnAction {
     public static final String FAILURE = "failure";
     public static final String SUCCESS_INTO_ORG = "existorgsuccess";
 
-    private ActionErrors populateCommand(DynaActionForm form, CreateUserCommand command, boolean validatePassword) {
+    private ActionErrors populateCommand(DynaActionForm form, CreateUserCommand command) {
         ActionErrors errors = new ActionErrors();
 
         command.setEmail(form.getString("email"));
@@ -67,7 +68,7 @@ public class CreateUserAction extends RhnAction {
         String passwd = (String)form.get(UserActionHelper.DESIRED_PASS);
         String passwdConfirm = (String)form.get(UserActionHelper.DESIRED_PASS_CONFIRM);
         if (passwd.equals(passwdConfirm)) {
-            command.setPassword(passwd, validatePassword);
+            command.setPassword(passwd);
         }
         else {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
@@ -122,7 +123,6 @@ public class CreateUserAction extends RhnAction {
          * in the db (even though it won't be used), we'll just validate it like a regular
          * password and allow it.
          */
-        boolean validatePassword = true;
         if (form.get("usepam") != null && (Boolean) form.get("usepam")) {
             String fakePassword = CryptHelper.getRandomPasswordForPamAuth();
             if (form.get(UserActionHelper.DESIRED_PASS) == null ||
@@ -144,7 +144,7 @@ public class CreateUserAction extends RhnAction {
 
         // Create the user and do some more validation
         CreateUserCommand command = getCommand();
-        ActionErrors errors = populateCommand(form, command, validatePassword);
+        ActionErrors errors = populateCommand(form, command);
         if (!errors.isEmpty()) {
             return returnError(mapping, request, errors);
         }
