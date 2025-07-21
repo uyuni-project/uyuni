@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jul 21 13:05:36 CEST 2025 - marina.latini@suse.com
+
+- version 4.3.42-0
+  * Fix bootstrap repository definition for SLE 15 SP7 and
+    support only bootstrapping with salt-bundle (bsc#1246788)
+
+-------------------------------------------------------------------
 Fri Jul 04 09:45:41 CEST 2025 - rosuna@suse.com
 
 - version 4.3.41-0
