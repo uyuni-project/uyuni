@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import { Button, DropdownButton } from "components/buttons";
 
-import { DropdownButton } from "components/buttons";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 type PaginationBlockProps = {
   currentPage: number;
   lastPage: number;
@@ -57,11 +57,11 @@ type PaginationButtonProps = {
 };
 const PaginationButton = (props: PaginationButtonProps) => {
   return (
-
     <button type="button" className="btn btn-tertiary" disabled={props.disabled} onClick={props.onClick}>
-      <i className={`pagination-icon fa ${props.icon}`} />{props.text}
+      <i className={`pagination-icon fa ${props.icon}`} />
+      {props.text}
     </button>
-  )
+  );
 };
 
 type ItemsPerPageSelectorProps = {
@@ -75,22 +75,20 @@ type ItemsPerPageSelectorProps = {
 const ItemsPerPageSelector = (props: ItemsPerPageSelectorProps) => (
   <div>
     <DropdownButton
-      text={t("{from} - {to} of {total} Items", { from: props.fromItem, to: props.toItem, total: props.itemCount })}
+      text={t("{from} - {to} of {total} items", { from: props.fromItem, to: props.toItem, total: props.itemCount })}
       className="page-selector"
       items={[5, 10, 15, 25, 50, 100, 250, 500].map((o) => (
-        <a
+        <Button
           key={o}
-          href="#"
-          className="d-flex justify-content-between"
-          onClick={(e) => {
+          className="dropdown-item justify-content-between"
+          handler={(e) => {
             e.preventDefault();
             props.onChange(o);
           }}
         >
           <div>{o} per page</div>
-          <div>{props.currentValue === o ? <i className="fa fa-check" /> : null}
-          </div>
-        </a>
+          <div>{props.currentValue === o ? <i className="fa fa-check" /> : null}</div>
+        </Button>
       ))}
     />
   </div>

@@ -142,7 +142,7 @@ class RecurringActionsList extends React.Component<Props, State> {
           emptyText={t(emptyListText)}
           searchField={<RecurringActionsSearch />}
           ref={this.tableRef}
-          hidHeaderFooter="header"
+          hideHeaderFooter="header"
         >
           <Column
             columnKey="active"

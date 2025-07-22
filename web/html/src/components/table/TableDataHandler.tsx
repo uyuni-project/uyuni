@@ -68,7 +68,7 @@ type Props = {
   initialItemsPerPage?: number;
 
   /** Hid header and footer */
-  hidHeaderFooter?: string;
+  hideHeaderFooter?: string;
 
   /** enables item selection.
    * tells if a row is selectable.
@@ -378,7 +378,7 @@ export class TableDataHandler extends React.Component<Props, State> {
 
     const emptyText = this.props.emptyText || t("There are no entries to show.");
     const isSelectable = typeof this.props.selectable !== "undefined" && this.props.selectable !== false;
-    const isHeader = this.props.hidHeaderFooter === "header" || this.props.hidHeaderFooter === "both"
+    const isHeader = this.props.hideHeaderFooter === "header" || this.props.hideHeaderFooter === "both"
     return (
       <div className="spacewalk-list">
         <div className="panel panel-default">
@@ -440,7 +440,7 @@ export class TableDataHandler extends React.Component<Props, State> {
               </div>
             </div>
           )}
-          {this.props.hidHeaderFooter !== "footer" && this.props.hidHeaderFooter !== "both" ? (
+          {this.props.hideHeaderFooter !== "footer" && this.props.hideHeaderFooter !== "both" ? (
             <div className="panel-footer">
               <div className="spacewalk-list-bottom-addons d-flex justify-content-between">
                 <ItemsPerPageSelector

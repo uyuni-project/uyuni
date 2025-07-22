@@ -43,7 +43,7 @@ type TableProps = {
   initialItemsPerPage?: number;
 
   /** Hid header and footer */
-  hidHeaderFooter?: "header" | "footer" | "both";
+  hideHeaderFooter?: "header" | "footer" | "both";
 
   /** enables item selection. */
   selectable?: boolean | ((row: any) => boolean);

@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { Button } from "components/buttons";
+
 type SearchPanelPropss = {
   /** number representing the number of the first displayed item */
   fromItem: number;
@@ -33,19 +35,26 @@ export function SelectedRowDetails(props: SearchPanelPropss) {
             {props.selectedCount === props.itemCount ? (
               <>
                 {t("All {totalCount} items are selected.", { totalCount: props.itemCount })}&nbsp;
-                <button className="btn btn-tertiary" onClick={props.onClear}>{t("Clear")}</button>
+                <button className="btn btn-tertiary" onClick={props.onClear}>
+                  {t("Clear")}
+                </button>
               </>
             ) : (
               <>
-                {/* {t("{selectedCount} items selected.", { selectedCount: props.selectedCount })}&nbsp; */}
-                {props.selectedCount === 1
-                  ? t("1 item selected.")
-                  : t("{selectedCount} items selected.", { selectedCount: props.selectedCount })}
-                <button className="btn btn-tertiary" onClick={props.onSelectAll}>
+                {t(
+                  `{itemCount, plural,
+                    one {1 item selected.}
+                    other {{itemCount} items selected.}
+                  }` as string,
+                  { itemCount: props.selectedCount }
+                )}
+                <Button className="btn btn-tertiary" handler={props.onSelectAll}>
                   {t("Select All {totalCount} items", { totalCount: props.itemCount })}
-                </button>
-                &nbsp;|&nbsp;
-                <button className="btn btn-tertiary" onClick={props.onClear}>{t("Clear")}</button>
+                </Button>
+                <span aria-hidden="true">&nbsp;|&nbsp;</span>
+                <Button className="btn btn-tertiary" handler={props.onClear}>
+                  {t("Clear")}
+                </Button>
               </>
             )}
           </span>
