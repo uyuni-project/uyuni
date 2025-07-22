@@ -572,7 +572,7 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node.run("rm -f #{salt_bundle_config_dir}/grains #{salt_bundle_config_dir}/minion_id", check_errors: false)
   node.run("find #{salt_bundle_config_dir}/minion.d/ -type f ! -name '00-venv.conf' -delete", check_errors: false)
   node.run("rm -f #{salt_bundle_config_dir}/pki/minion/*", check_errors: false)
-  
+
   node.run("rm -f #{salt_classic_config_dir}/grains #{salt_classic_config_dir}/minion_id", check_errors: false)
   node.run("find #{salt_classic_config_dir}/minion.d/ -type f ! -name '00-venv.conf' -delete", check_errors: false)
   node.run("rm -f #{salt_classic_config_dir}/pki/minion/*", check_errors: false)
@@ -582,7 +582,7 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
 
   # Package removal using the existing step
   step %(I remove packages "venv-salt-minion salt salt-minion" from this "#{host}" without error control)
-  
+
   # Disable repositories
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)
 end

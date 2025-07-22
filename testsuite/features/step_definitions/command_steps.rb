@@ -347,7 +347,7 @@ When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_versio
     command_output, _code = get_target('server').run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     process = command_output.split("\n")[0]
     if process.nil?
-      log "#{time_spent / 60.to_i} minutes waiting for '#{os_product_version}' remaining channels to start their repo-sync processes:\n#{channels_to_kill}" if ((time_spent += checking_rate) % 60).zero?
+      log "#{time_spent / 60} minutes waiting for '#{os_product_version}' remaining channels to start their repo-sync processes:\n#{channels_to_kill}" if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate
       next
     end
@@ -379,7 +379,7 @@ When(/^I kill running spacewalk-repo-sync for "([^"]*)" channel$/) do |channel|
     process = command_output.split("\n")[0]
     channel_synchronizing = process.split[5].strip
     if process.nil?
-      log "#{time_spent / 60.to_i} minutes waiting for '#{channel}' channel to start its repo-sync processes." if ((time_spent += checking_rate) % 60).zero?
+      log "#{time_spent / 60} minutes waiting for '#{channel}' channel to start its repo-sync processes." if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate
       next
     elsif channel_synchronizing == channel
@@ -437,7 +437,7 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
     repeat_until_timeout(timeout: timeout, message: 'Channel not fully synced') do
       break if channel_sync_completed?(channel)
 
-      log "#{time_spent / 60.to_i} minutes out of #{timeout / 60.to_i} waiting for '#{channel}' channel to be synchronized" if ((time_spent += checking_rate) % 60).zero?
+      log "#{time_spent / 60} minutes out of #{timeout / 60} waiting for '#{channel}' channel to be synchronized" if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate
     end
   rescue StandardError => e
@@ -477,7 +477,7 @@ When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do 
       end
       break if channels_to_wait.empty?
 
-      log "#{time_spent / 60.to_i} minutes out of #{timeout / 60.to_i} waiting for '#{os_product_version}' channels to be synchronized" if ((time_spent += checking_rate) % 60).zero?
+      log "#{time_spent / 60} minutes out of #{timeout / 60} waiting for '#{os_product_version}' channels to be synchronized" if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate
     end
   rescue StandardError => e
