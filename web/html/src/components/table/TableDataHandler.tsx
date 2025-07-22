@@ -14,7 +14,7 @@ import { ItemsPerPageSelector, PaginationBlock } from "../pagination";
 import { Header } from "./Header";
 import { SearchField } from "./SearchField";
 import { SearchPanel } from "./SearchPanel";
-import { SelectedRowDetails } from "./SelectedRowDetails"
+import { SelectedRowDetails } from "./SelectedRowDetails";
 
 type ChildrenArgsProps = {
   currItems: Array<any>;
@@ -65,8 +65,8 @@ type Props = {
   /** the initial number of how many row-per-page to show.*/
   initialItemsPerPage?: number;
 
-  /** Hid header and footer */
-  hidHeaderFooter?: string;
+  /** Hide header and footer */
+  hideHeaderFooter?: string;
 
   /** enables item selection.
    * tells if a row is selectable.
@@ -391,11 +391,12 @@ export class TableDataHandler extends React.Component<Props, State> {
 
     const emptyText = this.props.emptyText || t("There are no entries to show.");
     const isSelectable = typeof this.props.selectable !== "undefined" && this.props.selectable !== false;
-    const isHeader = this.props.hidHeaderFooter === "header" || this.props.hidHeaderFooter === "both"
+    const hideHeader = this.props.hideHeaderFooter === "header" || this.props.hideHeaderFooter === "both";
+    const hideFooter = this.props.hideHeaderFooter === "footer" || this.props.hideHeaderFooter === "both";
     return (
       <div className="spacewalk-list">
         <div className="panel panel-default">
-          {!isHeader && !isTableHeaderEmpty ? (
+          {!hideHeader && !isTableHeaderEmpty ? (
             <>
               <div className=" panel-heading">
                 <div className="spacewalk-list-head-addons align-items-center">
@@ -451,7 +452,7 @@ export class TableDataHandler extends React.Component<Props, State> {
               </div>
             </div>
           )}
-          {this.props.hidHeaderFooter !== "footer" && this.props.hidHeaderFooter !== "both" ? (
+          {!hideFooter ? (
             <div className="panel-footer">
               <div className="spacewalk-list-bottom-addons d-flex justify-content-between">
                 <ItemsPerPageSelector
@@ -472,7 +473,7 @@ export class TableDataHandler extends React.Component<Props, State> {
             </div>
           ) : null}
         </div>
-      </div >
+      </div>
     );
   }
 }

@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { Button } from "components/buttons";
+
 type SearchPanelPropss = {
   /** number representing the number of the first displayed item */
   fromItem: number;
@@ -32,20 +34,39 @@ export function SelectedRowDetails(props: SearchPanelPropss) {
           <span>
             {props.selectedCount === props.itemCount ? (
               <>
-                {t("All {totalCount} items are selected.", { totalCount: props.itemCount })}&nbsp;
-                <button className="btn btn-tertiary" onClick={props.onClear}>{t("Clear")}</button>
+                {t(
+                  `All {totalCount, plural,
+                    one {1 item selected.}
+                    other {{totalCount} items selected.}
+                  }` as string,
+                  { totalCount: props.itemCount }
+                )}
+                <button className="btn btn-tertiary ms-2" onClick={props.onClear}>
+                  {t("Clear")}
+                </button>
               </>
             ) : (
               <>
-                {/* {t("{selectedCount} items selected.", { selectedCount: props.selectedCount })}&nbsp; */}
-                {props.selectedCount === 1
-                  ? t("1 item selected.")
-                  : t("{selectedCount} items selected.", { selectedCount: props.selectedCount })}
-                <button className="btn btn-tertiary" onClick={props.onSelectAll}>
-                  {t("Select All {totalCount} items", { totalCount: props.itemCount })}
-                </button>
-                &nbsp;|&nbsp;
-                <button className="btn btn-tertiary" onClick={props.onClear}>{t("Clear")}</button>
+                {t(
+                  `{itemCount, plural,
+                    one {1 item selected.}
+                    other {{itemCount} items selected.}
+                  }` as string,
+                  { itemCount: props.selectedCount }
+                )}
+                <Button className="btn btn-tertiary ms-2" handler={props.onSelectAll}>
+                  {t(
+                    `Select all {totalCount, plural,
+                    one {1 item.}
+                    other {{totalCount} items.}
+                  }` as string,
+                    { totalCount: props.itemCount }
+                  )}
+                </Button>
+                <span aria-hidden="true">&nbsp;|&nbsp;</span>
+                <Button className="btn btn-tertiary" handler={props.onClear}>
+                  {t("Clear")}
+                </Button>
               </>
             )}
           </span>

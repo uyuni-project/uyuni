@@ -135,10 +135,8 @@ const ListFilters = (props: Props) => {
     </div>
   );
 
-  // const unusedFilter = <Button className="btn-default" handler={onSelectUnused} text={t("Select unused")}></Button>;
-
   const actionButtons = [
-    <div className="btn-group">
+    <div key="filter-action-buttons" className="btn-group">
       <Button className="btn-default" handler={onSelectUnused} text={t("Select unused")}></Button>
       <Button
         className="btn btn-danger"
@@ -146,7 +144,7 @@ const ListFilters = (props: Props) => {
         handler={deleteSelectedRows}
         text={t("Delete")}
       />
-    </div>
+    </div>,
   ];
 
   return (

@@ -139,6 +139,7 @@ export class AsyncButton extends _ButtonBase<AsyncProps, AsyncState> {
     const tooltipProps = this.props.title
       ? {
           "data-bs-toggle": "tooltip",
+          "aria-label": this.props.title,
           "data-bs-placement": this.props.tooltipPlacement,
         }
       : {};
@@ -178,6 +179,7 @@ export class Button extends _ButtonBase<ButtonProps> {
     const tooltipProps = this.props.title
       ? {
           "data-bs-toggle": "tooltip",
+          "aria-label": this.props.title,
           "data-bs-placement": this.props.tooltipPlacement,
         }
       : {};
@@ -223,6 +225,7 @@ export class LinkButton extends _ButtonBase<LinkProps> {
     const tooltipProps = this.props.title
       ? {
           "data-bs-toggle": "tooltip",
+          "aria-label": this.props.title,
           "data-bs-placement": this.props.tooltipPlacement,
         }
       : {};
@@ -230,12 +233,12 @@ export class LinkButton extends _ButtonBase<LinkProps> {
     const targetProps: Partial<React.HTMLProps<HTMLAnchorElement>> =
       this.props.target === "_blank"
         ? {
-          target: "_blank",
-          rel: "noopener noreferrer",
-        }
+            target: "_blank",
+            rel: "noopener noreferrer",
+          }
         : {
-          target: this.props.target,
-        };
+            target: this.props.target,
+          };
     return (
       <a
         id={this.props.id}
@@ -263,6 +266,7 @@ export class SubmitButton extends _ButtonBase {
     const tooltipProps = this.props.title
       ? {
           "data-bs-toggle": "tooltip",
+          "aria-label": this.props.title,
           "data-bs-placement": this.props.tooltipPlacement,
         }
       : {};
@@ -300,6 +304,7 @@ export class DropdownButton extends _ButtonBase<DropdownProps> {
     const tooltipProps = this.props.title
       ? {
           "data-bs-toggle": "tooltip",
+          "aria-label": this.props.title,
           "data-bs-placement": this.props.tooltipPlacement,
         }
       : {};

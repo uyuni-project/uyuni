@@ -119,13 +119,13 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
                 {
                   // TODO: Refactor this when https://github.com/SUSE/spacewalk/issues/20449 is implemented
                   details.cronTimes.dayOfMonth +
-                  (details.cronTimes.dayOfMonth === "1"
-                    ? "st "
-                    : details.cronTimes.dayOfMonth === "2"
+                    (details.cronTimes.dayOfMonth === "1"
+                      ? "st "
+                      : details.cronTimes.dayOfMonth === "2"
                       ? "nd "
                       : details.cronTimes.dayOfMonth === "3"
-                        ? "rd "
-                        : "th ")
+                      ? "rd "
+                      : "th ")
                 }
               </b>
               {"of the month at "}
@@ -275,7 +275,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
               identifier={(item) => item.position}
               selectable={false}
               data={_sortBy(this.state.details.states, "position")}
-              hidHeaderFooter="both"
+              hideHeaderFooter="both"
             >
               <Column header={t("Order")} columnKey="position" cell={(row) => row.position} />
               <Column
