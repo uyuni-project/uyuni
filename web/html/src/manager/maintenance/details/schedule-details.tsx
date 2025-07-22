@@ -100,7 +100,7 @@ const MaintenanceScheduleOverview = (props: OverviewProps) => {
   return (
     <div>
       <BootstrapPanel title={t("Schedule Details")}>
-        <Table data={tableData} identifier={(row) => tableData.indexOf(row)} hidHeaderFooter="both">
+        <Table data={tableData} identifier={(row) => tableData.indexOf(row)} hideHeaderFooter="both">
           <Column columnKey="left" cell={(row) => row.left} />
           <Column columnKey="right" cell={(row) => row.right} />
         </Table>

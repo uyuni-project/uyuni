@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import { Button, DropdownButton } from "components/buttons";
 
-import { DropdownButton } from "components/buttons";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 type PaginationBlockProps = {
   currentPage: number;
   lastPage: number;
@@ -57,11 +57,11 @@ type PaginationButtonProps = {
 };
 const PaginationButton = (props: PaginationButtonProps) => {
   return (
-
     <button type="button" className="btn btn-tertiary" disabled={props.disabled} onClick={props.onClick}>
-      <i className={`pagination-icon fa ${props.icon}`} />{props.text}
+      <i className={`pagination-icon fa ${props.icon}`} />
+      {props.text}
     </button>
-  )
+  );
 };
 
 type ItemsPerPageSelectorProps = {
@@ -72,29 +72,31 @@ type ItemsPerPageSelectorProps = {
   toItem: number;
 };
 
-const ItemsPerPageSelector = (props: ItemsPerPageSelectorProps) => (
-  <div>
-    <DropdownButton
-      text={t("{from} - {to} of {total} Items", { from: props.fromItem, to: props.toItem, total: props.itemCount })}
-      className="page-selector"
-      items={[5, 10, 15, 25, 50, 100, 250, 500].map((o) => (
-        <a
-          key={o}
-          href="#"
-          className="d-flex justify-content-between"
-          onClick={(e) => {
-            e.preventDefault();
-            props.onChange(o);
-          }}
-        >
-          <div>{o} per page</div>
-          <div>{props.currentValue === o ? <i className="fa fa-check" /> : null}
-          </div>
-        </a>
-      ))}
-    />
-  </div>
-);
+const ItemsPerPageSelector = (props: ItemsPerPageSelectorProps) => {
+  const testIdPrefix = `data-testid-pageSize-child`;
+
+  return (
+    <div>
+      <DropdownButton
+        text={t("{from} - {to} of {total} items", { from: props.fromItem, to: props.toItem, total: props.itemCount })}
+        className={`page-selector ${testIdPrefix}__control`}
+        items={[5, 10, 15, 25, 50, 100, 250, 500].map((o) => (
+          <Button
+            key={o}
+            className={`dropdown-item justify-content-between ${testIdPrefix}__option`}
+            handler={(e) => {
+              e.preventDefault();
+              props.onChange(o);
+            }}
+          >
+            <div>{t(`${o} per page`)}</div>
+            <div>{props.currentValue === o ? <i className="fa fa-check" /> : null}</div>
+          </Button>
+        ))}
+      />
+    </div>
+  );
+};
 
 type PageSelectorProps = {
   lastPage: number;
@@ -107,20 +109,17 @@ const PageSelector = (props: PageSelectorProps) => {
     <div className="table-page-information me-5">
       {t("<dropdown></dropdown> of {total} pages", {
         dropdown: () => (
-          <>
-            <select
-              className="display-number small-select"
-              value={props.currentValue}
-              onChange={(e) => props.onChange(parseInt(e.target.value, 10))}
-              key="select"
-            >
-              {Array.from(Array(props.lastPage)).map((_, i) => (
-                <option value={i + 1} key={i + 1}>
-                  {i + 1}
-                </option>
-              ))}
-            </select>
-          </>
+          <select
+            className="display-number small-select"
+            value={props.currentValue}
+            onChange={(e) => props.onChange(parseInt(e.target.value, 10))}
+          >
+            {Array.from(Array(props.lastPage)).map((_, i) => (
+              <option value={i + 1} key={i + 1}>
+                {i + 1}
+              </option>
+            ))}
+          </select>
         ),
         total: props.lastPage,
       })}
