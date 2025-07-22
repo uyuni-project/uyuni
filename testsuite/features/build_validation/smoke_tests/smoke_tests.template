@@ -51,7 +51,18 @@ Feature: Smoke tests for <client>
     And the IPv6 address for "<client>" should be correct
     And the system ID for "<client>" should be correct
     And the system name for "<client>" should be correct
-    And I should see several text fields
+
+  Scenario: Client <client> fields are displayed correctly on the details page
+    And I should see a "Virtualization" text
+    And I should see a "Installed Products" text
+    And I should see a "Checked In" text
+    And I should see a "Registered" text
+    And I should see a "Contact Method" text
+    And I should see a "Auto Patch Update" text
+    And I should see a "Maintenance Schedule" text
+    And I should see a "Description" text
+    And I should see a "Location" text
+    And I should see a "UUID" text
 
 @skip_for_debianlike
 @skip_for_rocky9
