@@ -205,12 +205,12 @@ export class LinkButton extends _ButtonBase<LinkProps> {
     const targetProps: Partial<React.HTMLProps<HTMLAnchorElement>> =
       this.props.target === "_blank"
         ? {
-          target: "_blank",
-          rel: "noopener noreferrer",
-        }
+            target: "_blank",
+            rel: "noopener noreferrer",
+          }
         : {
-          target: this.props.target,
-        };
+            target: this.props.target,
+          };
     return (
       <a
         id={this.props.id}

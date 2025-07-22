@@ -96,17 +96,15 @@ export class TokenTable extends React.Component<Props, State> {
           header={t("Last Modified")}
           cell={(row: AccessToken) => this.renderDate(row.modificationDate)}
         />
-        {
-          (this.props.allowDeletion || this.props.allowToggleValidity) && (
-            <Column
-              columnClass="text-center"
-              headerClass="text-center"
-              header={t("Actions")}
-              cell={(row: AccessToken) => this.renderActions(row)}
-            />
-          )
-        }
-      </Table >
+        {(this.props.allowDeletion || this.props.allowToggleValidity) && (
+          <Column
+            columnClass="text-center"
+            headerClass="text-center"
+            header={t("Actions")}
+            cell={(row: AccessToken) => this.renderActions(row)}
+          />
+        )}
+      </Table>
     );
   }
 

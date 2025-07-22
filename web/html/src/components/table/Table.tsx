@@ -42,7 +42,7 @@ type TableProps = {
   /** the initial number of how many row-per-page to show */
   initialItemsPerPage?: number;
 
-  /** Hid header and footer */
+  /** Hide header and footer */
   hideHeaderFooter?: "header" | "footer" | "both";
 
   /** enables item selection. */

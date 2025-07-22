@@ -68,7 +68,7 @@ export default function HighstateSummary({ minionId }) {
     <>
       <Table identifier={identifier} data={summary} hideHeaderFooter="both">
         <Column
-          header={t("State Sources")}
+          header={t("State Source")}
           comparator={Utils.sortByText}
           columnKey="name"
           cell={(source) => <State minionId={minionId} state={source} />}

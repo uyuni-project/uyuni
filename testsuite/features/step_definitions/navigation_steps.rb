@@ -178,7 +178,7 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
   else
     # Custom React selector
     xpath_field = "//*[contains(@class, 'data-testid-#{field}-child__control')]"
-    xpath_option = ".//*[contains(@class, 'data-testid-#{field}-child__option') and contains(text(), '#{option}')]"
+    xpath_option = ".//*[contains(@class, 'data-testid-#{field}-child__option') and contains(., '#{option}')]"
     find(:xpath, xpath_field).click
     find(:xpath, xpath_option, match: :first).click
   end

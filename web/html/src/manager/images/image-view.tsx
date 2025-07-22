@@ -740,8 +740,8 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
               {this.state.selectedItems.length === 1
                 ? t("Are you sure you want to delete the selected image?")
                 : t("Are you sure you want to delete selected images? ({count} images selected)", {
-                  count: this.state.selectedItems.length,
-                })}
+                    count: this.state.selectedItems.length,
+                  })}
             </span>
           }
           onConfirm={() => this.props.onDelete(this.state.selectedItems)}

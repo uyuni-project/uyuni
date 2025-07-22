@@ -56,7 +56,7 @@ class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
             data={this.buildData(this.props)}
             identifier={(row) => row.id}
             initialSortColumnKey="productName"
-            titleButtons={[<CsvLink name="unmatched_product_report.csv" />]}
+            titleButtons={[<CsvLink key="unmatched_product_report" name="unmatched_product_report.csv" />]}
           >
             <Column
               columnKey="productName"
