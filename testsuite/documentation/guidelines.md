@@ -134,6 +134,31 @@ In the implementation:
 * Don't use global variables, prefer member variables
 * Use `log` instead of `puts`, as the `puts` method will not be captured by Cucumber.
 
+### User and Role Management in Tests
+
+To ensure test determinism and enhance Role-Based Access Control (RBAC) coverage, the test suite implements a "user per feature" approach. This strategy isolates System Set Manager (SSM) selections, preventing conflicts when multiple features run concurrently and ensuring predictable test outcomes.
+
+**How it Works:**
+
+* **Deterministic SSM Selection**: By creating a unique user for each feature, the selection of systems within the SSM remains isolated to that specific feature's execution, eliminating potential interference from other concurrent tests. This guarantees determinism in test runs.
+* **RBAC Coverage Enhancement**: This approach also serves as a crucial mechanism for identifying API endpoints that are not accessible to non-admin roles. Since these feature-specific users are intentionally **not** granted admin privileges, any API calls made during a test that require elevated permissions will fail, thereby highlighting potential RBAC authorization issues.
+
+**Implementation Details:**
+
+* A Cucumber hook, runs automatically before each test scenario on `env.rb` file. This hook identifies the current feature's filename.
+* For most features, excluding those designated as "core" or setup-related (such as core, reposync, finishing, and build_validation), this hook checks if a dedicated user for that feature has already been created for the current test run.
+* If a user specific to the feature doesn't exist, the hook proceeds to create a new user. The username for this new user is derived directly from the feature's filename, ensuring a unique identity for each feature's execution.
+* A Cucumber test step, titled `Given I am authorized`, is then used to log in. This step intelligently determines the appropriate user to log in as: it prioritizes using the newly created feature-specific user (if available for the current scenario) but falls back to a default 'admin' user if no feature-specific user context has been established, thus ensuring the correct authentication context for each test.
+
+**Handling Admin Access:**
+
+* Feature-specific users are intentionally **not** given the admin role.
+* If a specific part of a feature requires admin access, the test will temporarily log in as an administrator to perform the necessary actions. After completing the admin-level tasks, the test will revert to the feature-specific user's session.
+
+**Future Improvements:**
+
+For enhanced RBAC test coverage, the plan is to apply even more restrictive roles to these feature-specific users. This increased restrictiveness aims to proactively identify additional authorization issues with API endpoints, further strengthening the system's security model.
+
 ## Other
 
 See [pitfalls](pitfalls.md) for more details on the problems you might face and for more recommendations.
