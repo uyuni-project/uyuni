@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Tue Jun 17 19:01:59 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.11-0
+  * Read CWD for remote commands from pillar (bsc#1238173)
+  * For GPG keys using file URL, check if the file exists before
+    importing it
+  * mgr-events: use sha256 instead of md5 to determine queue
+  * Fix openEuler bootstrap to make it identified as RedHat family
+  * Optimize sap module to prevent high IO workload (bsc#1241455)
+  * Provide token through a query parameter instead of relying on a
+    plugin for DNF version supporting it (bsc#1241307)
+  * Define Apache-2.0 as the license for Salt modules
+  * Rename references to old SUSE Manager name
+
+-------------------------------------------------------------------
 Mon May 12 23:06:47 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.10-0

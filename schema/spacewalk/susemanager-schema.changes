@@ -1,4 +1,28 @@
 -------------------------------------------------------------------
+Thu Jul 03 19:11:17 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.10-0
+  * Preserve NULL values in config channels order
+
+-------------------------------------------------------------------
+Fri Jun 20 17:09:00 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.9-0
+  * Do not overwrite completion time when it is set from java
+    (bsc#1243994)
+
+-------------------------------------------------------------------
+Tue Jun 17 19:03:07 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.8-0
+  * Add missing RBAC mappings
+  * Fix system/listActiveSystems queries (bsc#1242010)
+  * Fix typo in OES 24.4 channel definition
+  * Add RBAC endpoints and namespaces for Hub Online Sync
+  * Fix order of config channels after migration (bsc#1244481)
+  * Add missing proxies entitlements on upgrade (bsc#1243829)
+
+-------------------------------------------------------------------
 Mon May 12 23:19:42 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.7-0

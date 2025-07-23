@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Tue Jun 17 18:47:52 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.12-0
+  * Adjust modal height for small screens.
+  * Fix setup wizard organization credentials list subscriptions
+    not showing correctly the first time (bsc#1243765)
+  * Show an error message when there are no ISSv1 slaves to migrate
+    (bsc#1242773)
+  * Fix organization selection in Hub Online Sync page (bsc#1242323)
+  * Fix: better react state handling (bcs#1241140)
+  * Add button to start a mgr-sync-refresh-bunch task from
+    peripheral in the hub admin page
+
+-------------------------------------------------------------------
 Tue May 13 14:52:45 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.11-0

@@ -1,2 +1,0 @@
-- Show an error message when there are no ISSv1 slaves to migrate
-  (bsc#1242773)

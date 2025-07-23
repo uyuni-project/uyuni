@@ -1,4 +1,32 @@
 -------------------------------------------------------------------
+Fri Jun 27 13:02:54 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.11-0
+  * Require the current name of spacewalk-client-tools
+
+-------------------------------------------------------------------
+Tue Jun 24 15:26:10 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.10-0
+  * Use libzypp's Curl2 backend during reposync (bsc#1245222)
+
+-------------------------------------------------------------------
+Tue Jun 17 19:29:59 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.9-0
+  * Use localhost instead of getfqdn as server_url
+    (bsc#1238320)
+  * Avoid excessive logging from RPM when syncing
+    GPG keys during reposync execution
+  * Make reposync to allow commas as part of HTTP Proxy password
+    (bsc#1243460)
+  * Use cryptographically secure random generation for secrets
+  * Fix zstd-compressed comps file reposync use case (bsc#1243821)
+  * Fix fetching the mirrorlist with a ca bundle which include only
+    the intermediate CAs. This is the case for RHUI CA bundles
+    (bsc#1243241).
+
+-------------------------------------------------------------------
 Mon May 12 23:20:56 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.8-0

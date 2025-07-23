@@ -1,2 +1,0 @@
-- Allows correct sync of an original channel after the
-  relative cloned channel has been synced (bsc#1244222)

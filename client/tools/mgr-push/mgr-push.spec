@@ -33,7 +33,7 @@
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 Name:           mgr-push
-Version:        5.1.2
+Version:        5.1.3
 Release:        0
 Summary:        Package uploader for the Spacewalk
 License:        GPL-2.0-only
@@ -63,10 +63,10 @@ per channel.
 Summary:        Package uploader for the Spacewalk or Red Hat Satellite Server
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
-BuildRequires:  python2-rhn-client-tools
+BuildRequires:  python2-spacewalk-client-tools
 BuildRequires:  python2-uyuni-common-libs
 Requires:       %{name} = %{version}-%{release}
-Requires:       python2-rhn-client-tools
+Requires:       python2-spacewalk-client-tools
 Requires:       python2-uyuni-common-libs
 Requires:       rhnlib >= 2.8.3
 Provides:       python2-%{oldname} = %{oldversion}
@@ -89,11 +89,11 @@ Summary:        Package uploader for the Spacewalk or Red Hat Satellite Server
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
 BuildRequires:  python3-devel
-BuildRequires:  python3-rhn-client-tools
+BuildRequires:  python3-spacewalk-client-tools
 BuildRequires:  python3-rpm-macros
 BuildRequires:  python3-uyuni-common-libs
 Requires:       %{name} = %{version}-%{release}
-Requires:       python3-rhn-client-tools
+Requires:       python3-spacewalk-client-tools
 Requires:       python3-rhnlib >= 2.8.3
 Requires:       python3-uyuni-common-libs
 Provides:       python3-%{oldname} = %{oldversion}

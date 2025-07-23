@@ -7,17 +7,18 @@
 # @param text [String] The text to match in the row
 # @param last_version [Boolean] Whether to select the row with the latest package version
 def toggle_checkbox_in_package_list(action, text, last_version: false)
-  if last_version
+  return toggle_checkbox_in_list(action, text) unless last_version
+
+  begin
     link_elements = all(:xpath, "//div[@class='table-responsive']/table/tbody/tr/td[@class=' sortedCol']/a")
-    packages_list = link_elements.map(&:text)
-    latest = latest_package(packages_list)
-    top_level_xpath_query = "//div[@class='table-responsive']/table/tbody/tr/td[@class=' sortedCol']/a[text()='#{latest}']/../../td/input[@type='checkbox']"
+    packages      = link_elements.map(&:text)
+    latest        = latest_package(packages)
 
-    row = find(:xpath, top_level_xpath_query, match: :first)
-    raise "xpath: #{top_level_xpath_query} not found" if row.nil?
-
+    xpath = "//div[@class='table-responsive']/table/tbody/tr/td[@class=' sortedCol']/a[text()='#{latest}']/../../td/input[@type='checkbox']"
+    row   = find(:xpath, xpath, match: :first)
     row.set(action == 'check')
-  else
+  rescue StandardError => e
+    warn "[toggle_checkbox] fallback to text match: #{e.message}"
     toggle_checkbox_in_list(action, text)
   end
 end
