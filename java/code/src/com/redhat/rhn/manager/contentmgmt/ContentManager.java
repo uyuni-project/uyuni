@@ -47,6 +47,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
+import com.redhat.rhn.domain.contentmgmt.DiffAction;
 import com.redhat.rhn.domain.contentmgmt.DiffType;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.ErrataFilter;
@@ -755,7 +756,7 @@ public class ContentManager {
         newPackagesInTgt.forEach(p -> {
                     Pair<Long, DiffType> ident = Pair.of(p.getId(), DiffType.PACKAGE);
                     ContentEnvironmentDiff entry = new ContentEnvironmentDiff(project, env, channel,
-                            p.getId(), DiffType.PACKAGE, "+", p.getPackageName().getName(),
+                            p.getId(), DiffType.PACKAGE, DiffAction.ADD, p.getPackageName().getName(),
                             p.getPackageEvr().toUniversalEvrString());
                     diffMap.computeIfAbsent(ident, k -> entry).update(entry);
                     keep.add(ident);
@@ -764,7 +765,7 @@ public class ContentManager {
         excludedPackages.forEach(p -> {
                     Pair<Long, DiffType> ident = Pair.of(p.getId(), DiffType.PACKAGE);
                     ContentEnvironmentDiff entry = new ContentEnvironmentDiff(project, env, channel,
-                            p.getId(), DiffType.PACKAGE, "x", p.getPackageName().getName(),
+                            p.getId(), DiffType.PACKAGE, DiffAction.FILTERED, p.getPackageName().getName(),
                             p.getPackageEvr().toUniversalEvrString());
                     diffMap.computeIfAbsent(ident, k -> entry).update(entry);
                     keep.add(ident);
@@ -773,7 +774,7 @@ public class ContentManager {
         removedPackagesInTgt.forEach(p -> {
                     Pair<Long, DiffType> ident = Pair.of(p.getId(), DiffType.PACKAGE);
                     ContentEnvironmentDiff entry = new ContentEnvironmentDiff(project, env, channel,
-                            p.getId(), DiffType.PACKAGE, "-", p.getPackageName().getName(),
+                            p.getId(), DiffType.PACKAGE, DiffAction.DEL, p.getPackageName().getName(),
                             p.getPackageEvr().toUniversalEvrString());
                     diffMap.computeIfAbsent(ident, k -> entry).update(entry);
                     keep.add(ident);
@@ -789,8 +790,10 @@ public class ContentManager {
                 .filter(e -> !oldTgtErrata.stream().map(Errata::getAdvisory).anyMatch(i -> i.endsWith(e.getAdvisory())))
                 .collect(toSet());
         Set<Errata> removedErrataInTgt = oldTgtErrata.stream()
-                .filter(e -> !includedErrata.stream().map(Errata::getAdvisory).anyMatch(i -> e.getAdvisory().endsWith(i)))
-                .filter(e -> !excludedErrata.stream().map(Errata::getAdvisory).anyMatch(i -> e.getAdvisory().endsWith(i)))
+                .filter(e -> !includedErrata.stream()
+                        .map(Errata::getAdvisory).anyMatch(i -> e.getAdvisory().endsWith(i)))
+                .filter(e -> !excludedErrata.stream()
+                        .map(Errata::getAdvisory).anyMatch(i -> e.getAdvisory().endsWith(i)))
                 .collect(toSet());
         // newErrataInTgt : errata which will be added on next build/promote
         // excludedErrata : errata excluded by filter
@@ -798,7 +801,7 @@ public class ContentManager {
         newErrataInTgt.forEach(e -> {
                     Pair<Long, DiffType> ident = Pair.of(e.getId(), DiffType.ERRATA);
                     ContentEnvironmentDiff entry = new ContentEnvironmentDiff(project, env, channel, e.getId(),
-                            DiffType.ERRATA, "+", e.getAdvisoryName(), e.getAdvisorySynopsis());
+                            DiffType.ERRATA, DiffAction.ADD, e.getAdvisoryName(), e.getAdvisorySynopsis());
                     diffMap.computeIfAbsent(ident, k -> entry).update(entry);
                     keep.add(ident);
                 }
@@ -806,13 +809,13 @@ public class ContentManager {
         excludedErrata.forEach(e -> {
                     Pair<Long, DiffType> ident = Pair.of(e.getId(), DiffType.ERRATA);
                     ContentEnvironmentDiff entry = new ContentEnvironmentDiff(project, env, channel, e.getId(),
-                            DiffType.ERRATA, "x", e.getAdvisoryName(), e.getAdvisorySynopsis());
+                            DiffType.ERRATA, DiffAction.FILTERED, e.getAdvisoryName(), e.getAdvisorySynopsis());
                     diffMap.computeIfAbsent(ident, k -> entry).update(entry);
                     keep.add(ident);
                     e.getPackages().stream().map(p -> Pair.of(p.getId(), DiffType.PACKAGE))
                             .forEach(p -> {
                                 if (diffMap.containsKey(p)) {
-                                    diffMap.get(p).setEntryDiff("x");
+                                    diffMap.get(p).setAction(DiffAction.FILTERED);
                                 }
                             });
                 }
@@ -820,7 +823,7 @@ public class ContentManager {
         removedErrataInTgt.forEach(e -> {
                     Pair<Long, DiffType> ident = Pair.of(e.getId(), DiffType.ERRATA);
                     ContentEnvironmentDiff entry = new ContentEnvironmentDiff(project, env, channel, e.getId(),
-                            DiffType.ERRATA, "-", e.getAdvisoryName(), e.getAdvisorySynopsis());
+                            DiffType.ERRATA, DiffAction.DEL, e.getAdvisoryName(), e.getAdvisorySynopsis());
                     diffMap.computeIfAbsent(ident, k -> entry).update(entry);
                     keep.add(ident);
                 }

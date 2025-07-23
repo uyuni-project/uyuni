@@ -41,7 +41,7 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
     private Channel channel;
     private long entryId;
     private DiffType entryType;
-    private String entryDiff;
+    private DiffAction action;
     private String entryName;
     private String entryVersion;
 
@@ -57,20 +57,20 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
      * @param environmentIn
      * @param channelIn
      * @param entryTypeIn
-     * @param entryDiffIn
+     * @param actionIn
      * @param entryIdIn
      * @param entryNameIn
      * @param entryVersionIn
      */
     public ContentEnvironmentDiff(ContentProject projectIn, ContentEnvironment environmentIn,
-                                  Channel channelIn, long entryIdIn, DiffType entryTypeIn, String entryDiffIn,
+                                  Channel channelIn, long entryIdIn, DiffType entryTypeIn, DiffAction actionIn,
                                   String entryNameIn, String entryVersionIn) {
         project = projectIn;
         environment = environmentIn;
         channel = channelIn;
         entryId = entryIdIn;
         entryType = entryTypeIn;
-        entryDiff = entryDiffIn;
+        action = actionIn;
         entryName = entryNameIn;
         entryVersion = entryVersionIn;
     }
@@ -135,12 +135,13 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
     }
 
     @Column(name = "entry_diff")
-    public String getEntryDiff() {
-        return entryDiff;
+    @Type(type = "com.redhat.rhn.domain.contentmgmt.DiffActionEnumType")
+    public DiffAction getAction() {
+        return action;
     }
 
-    public void setEntryDiff(String entryDiffIn) {
-        entryDiff = entryDiffIn;
+    public void setAction(DiffAction actionIn) {
+        action = actionIn;
     }
 
     @Column(name = "entry_name")
@@ -161,12 +162,14 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
         entryVersion = entryVersionIn;
     }
 
-    public void update(ContentEnvironmentDiff newdiff) {
-        if (this.equals(newdiff)) {
-            setEntryDiff(newdiff.getEntryDiff());
-            setEntryName(newdiff.getEntryName());
-            setEntryVersion(newdiff.getEntryVersion());
-        }
+    /**
+     * Update this entry with data from other object
+     * @param other the other object
+     */
+    public void update(ContentEnvironmentDiff other) {
+        setAction(other.getAction());
+        setEntryName(other.getEntryName());
+        setEntryVersion(other.getEntryVersion());
     }
 
     /**
@@ -186,7 +189,7 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
                 .append(this.getChannel(), that.getChannel())
                 .append(this.getEntryType(), that.getEntryType())
                 .append(this.getEntryId(), that.getEntryId())
-                .append(this.getEntryDiff(), that.getEntryDiff())
+                .append(this.getAction(), that.getAction())
                 .append(this.getEntryName(), that.getEntryName())
                 .append(this.getEntryVersion(), that.getEntryVersion())
                 .isEquals();
