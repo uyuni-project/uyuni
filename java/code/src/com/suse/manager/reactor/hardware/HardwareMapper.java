@@ -44,6 +44,7 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltGrains;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.salt.netapi.calls.modules.Network;
+import com.suse.utils.Json;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -199,6 +200,14 @@ public class HardwareMapper {
         // the number of active CPUs not the total num of CPUs in the system.
         // On s390x this number of active and actual CPUs can be different.
         cpu.setNrCPU(grains.getValueAsLong("total_num_cpus").orElse(0L));
+
+        var archSpecs = grains.get("cpu_arch_specs")
+            .filter(v -> v instanceof Map)
+            .map(v -> (Map<?, ?>) v)
+            .filter(map -> !map.isEmpty())
+            .map(Json.GSON::toJson)
+            .orElse(null);
+        cpu.setArchSpecs(archSpecs);
 
         if (arch != null) {
             cpu.setServer(server);
