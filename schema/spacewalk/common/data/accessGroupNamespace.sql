@@ -468,6 +468,7 @@ INSERT INTO access.accessGroupNamespace
         'api.contentmanagement.attach_filter',
         'api.contentmanagement.attach_source',
         'api.contentmanagement.build_project',
+        'api.contentmanagement.generate_environment_difference',
         'api.contentmanagement.create_app_stream_filters',
         'api.contentmanagement.create_environment',
         'api.contentmanagement.create_filter',

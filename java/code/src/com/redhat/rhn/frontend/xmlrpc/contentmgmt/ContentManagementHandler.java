@@ -23,6 +23,7 @@ import static java.util.Optional.ofNullable;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
@@ -46,6 +47,7 @@ import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
+import com.redhat.rhn.manager.contentmgmt.DependencyResolutionException;
 import com.redhat.rhn.manager.contentmgmt.FilterTemplateManager;
 
 import com.suse.manager.api.ReadOnly;
@@ -925,6 +927,67 @@ public class ContentManagementHandler extends BaseHandler {
             throw new EntityExistsFaultException(e);
         }
         catch (ContentManagementException e) {
+            throw new ContentManagementFaultException(e);
+        }
+        return 1;
+    }
+
+    /**
+     * Generate the Environment differences for the whole project
+     *
+     * @param loggedInUser the user
+     * @param projectLabel the Project label
+     * @return 1 if successful
+     *
+     * @apidoc.doc Generate the Environment differences for the whole project
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Project label")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int generateEnvironmentDifferences(User loggedInUser, String projectLabel) {
+        ensureOrgAdmin(loggedInUser);
+        // Validate the project for promote
+        ContentProject project = lookupProject(loggedInUser, projectLabel);
+        validateContentProject(project);
+
+        try {
+            contentManager.diffProject(project);
+        }
+        catch (ContentManagementException e) {
+            throw new ContentManagementFaultException(e);
+        }
+        return 1;
+    }
+
+    /**
+     * Generate the Environment differences for a specific channel in a given environment
+     *
+     * @param loggedInUser the user
+     * @param projectLabel the Project label
+     * @param environmentLabel the Environment Label
+     * @param channelLabel the channel label
+     * @return 1 if successful
+     *
+     * @apidoc.doc Generate the Environment differences for the whole project
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Project label")
+     * @apidoc.param #param_desc("string", "environmentLabel", "Environment label")
+     * @apidoc.param #param_desc("string", "channelLabel", "Channel label")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int generateEnvironmentDifferences(User loggedInUser, String projectLabel, String environmentLabel,
+                                              String channelLabel) {
+        ensureOrgAdmin(loggedInUser);
+        // Validate the project for promote
+        ContentProject project = lookupProject(loggedInUser, projectLabel);
+        validateContentProject(project);
+        ContentEnvironment env = lookupEnvironment(loggedInUser, projectLabel, environmentLabel);
+        Channel channel = ChannelFactory.lookupByLabelAndUser(channelLabel, loggedInUser);
+
+        try {
+            contentManager.diffEnvironmentChannel(project, env, channel, null);
+        }
+        catch (ContentManagementException | DependencyResolutionException e) {
             throw new ContentManagementFaultException(e);
         }
         return 1;

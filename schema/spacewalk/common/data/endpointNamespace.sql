@@ -6462,6 +6462,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.contentmanagement.generate_environment_difference' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/contentmanagement/generateEnvironmentDifferences' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.contentmanagement.create_app_stream_filters' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/contentmanagement/createAppStreamFilters' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
