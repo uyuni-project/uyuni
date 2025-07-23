@@ -4,10 +4,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-import json
 import logging
 import salt.modules.cmdmod
-import salt.utils
 import os
 import re
 
@@ -193,3 +191,159 @@ def cpu_data():
         except (CommandExecutionError, ValueError) as error:
             # pylint: disable-next=logging-format-interpolation,consider-using-f-string
             log.warning("lscpu: {0}".format(str(error)))
+
+# -----------------------------------------------------------------------------
+# Grain for Architecture-Specific CPU Data
+# -----------------------------------------------------------------------------
+
+def _read_file(path):
+    """
+    Helper to read a file and return its content. Returns empty string if not found.
+    """
+    try:
+        with open(path, "r", errors="replace") as f:
+            return f.read()
+    except FileNotFoundError:
+        return ""
+
+
+def _exact_string_match(key, text):
+    """
+    Extract a value based on a key in the text using regex.
+    """
+    match = re.search(r"{}\s*:\s*(.*)".format(re.escape(key)), text)
+    return match.group(1).strip() if match else ""
+
+
+def _add_device_tree(specs):
+    """
+    Attempts to read the device tree from predefined paths and adds it to the specs dict.
+    """
+    device_tree_paths = [
+        "/sys/firmware/devicetree/base/compatible",
+        "/sys/firmware/devicetree/base/hypervisor/compatible",
+    ]
+    for path in device_tree_paths:
+        content = _read_file(path)
+        if content:
+            compatible_strings = [s for s in content.split("\x00") if s]
+            specs["device_tree"] = ",".join(compatible_strings)
+            break
+
+
+def _add_ppc64_extras(specs):
+    """
+    Adds PowerPC specific details.
+    """
+    _add_device_tree(specs)
+
+    lparcfg_content = _read_file("/proc/ppc64/lparcfg")
+    if lparcfg_content:
+        match = re.search(r"shared_processor_mode\s*=\s*(\d+)", lparcfg_content)
+        if match:
+            specs["lpar_mode"] = "shared" if match.group(1) == "1" else "dedicated"
+
+
+def _add_arm64_extras(specs):
+    """
+    Adds ARM64-specific details. It first checks for Device Tree information.
+    If not found, it falls back to dmidecode for ACPI-based systems.
+    """
+    _add_device_tree(specs)
+
+    if "device_tree" in specs:
+        return
+
+    dmidecode = _which_bin(["dmidecode"])
+    if not dmidecode:
+        log.debug("dmidecode executable not found, skipping for ARM64 extras.")
+        return
+
+    try:
+        ret = __salt__["cmd.run_all"](
+            "{0} -t processor".format(dmidecode),
+            output_loglevel="quiet"
+        )
+
+        if ret["retcode"] == 0:
+            output = ret["stdout"]
+            family = _exact_string_match("Family", output)
+            manufacturer = _exact_string_match("Manufacturer", output)
+            signature = _exact_string_match("Signature", output)
+
+            if family or manufacturer or signature:
+                specs["family"] = family
+                specs["manufacturer"] = manufacturer
+                specs["signature"] = signature
+        else:
+            log.warning("dmidecode failed for ARM64 extras: %s", ret["stderr"])
+
+    except (CommandExecutionError, OSError) as e:
+        log.warning("Failed to retrieve arm64 CPU details via dmidecode: %s", str(e))
+
+
+def _add_z_systems_extras(specs):
+    """
+    Collects extended metadata for z Systems based on `read_values -s`.
+    """
+    read_values = _which_bin(["read_values"])
+    if not read_values:
+        log.warning("read_values executable not found, skipping for z Systems extras.")
+        return
+
+    try:
+        ret = __salt__["cmd.run_all"]("{0} -s".format(read_values), output_loglevel="quiet")
+        if ret["retcode"] == 0:
+            output = ret["stdout"]
+
+            # Identify z architecture layer
+            for candidate in ("VM00", "LPAR"):
+                if candidate in output:
+                    layer_id = candidate
+                    break
+            else:
+                return
+
+            fields = {
+                "type": "Type",
+                "type_name": "Type Name",
+                "layer_type": f"{layer_id} Name",
+            }
+
+            for key, label in fields.items():
+                value = _exact_string_match(label, output)
+                if value:
+                    specs[key] = value
+        else:
+            log.warning("read_values failed for z Systems extras: %s", ret["stderr"])
+
+    except (CommandExecutionError, OSError):
+        log.warning("Failed to retrieve z System CPU details.", exc_info=True)
+
+def _get_architecture():
+    """
+    Returns the system architecture.
+    """
+    try:
+        ret = __salt__["cmd.run_all"]("uname -m", output_loglevel="quiet")
+        return ret["stdout"].strip() if ret.get("retcode") == 0 else "unknown"
+    except (CommandExecutionError, OSError):
+        log.warning("Failed to determine system architecture.", exc_info=True)
+        return "unknown"
+
+def arch_specs():
+    """
+    Returns extended CPU architecture-specific metadata.
+    This function is designed to be called to generate a Salt grain.
+    """
+    specs = {}
+    arch = _get_architecture()
+
+    if arch in ["ppc64", "ppc64le"]:
+        _add_ppc64_extras(specs)
+    elif arch in ["arm64", "aarch64"]:
+        _add_arm64_extras(specs)
+    elif arch.startswith("s390"):
+        _add_z_systems_extras(specs)
+
+    return {"cpu_arch_specs": specs}
