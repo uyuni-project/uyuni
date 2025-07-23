@@ -21,7 +21,7 @@ end
 # @return [String] The number of items in the table.
 # @raise [ScriptError] If there is an error counting the items.
 def count_table_items
-  items_label_xpath = '//span[contains(text(), \'Items \')]'
+  items_label_xpath = '//button[contains(text(), \'items\')]'
   raise ScriptError, 'Error counting items' unless (items_label = find(:xpath, items_label_xpath).text)
 
   items_label.split('of ')[1].strip

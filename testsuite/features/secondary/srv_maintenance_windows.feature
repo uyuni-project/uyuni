@@ -26,7 +26,7 @@ Feature: Maintenance windows
 
   Scenario: Create a multi calendar
     When I follow the left menu "Schedule > Maintenance Windows > Calendars"
-    Then I should see a "Items 1 - 1 of 1" text
+    Then I should see a "1 - 1 of 1 items" text
     When I click on "Create" in element "maintenance-windows"
     Then I should see a "Calendar Name" text
     When I enter "multicalendar" as "name"
@@ -48,7 +48,7 @@ Feature: Maintenance windows
 
   Scenario: Create a multi schedule
     When I follow the left menu "Schedule > Maintenance Windows > Schedules"
-    Then I should see a "Items 1 - 1 of 1" text
+    Then I should see a "1 - 1 of 1 items" text
     When I click on "Create" in element "maintenance-windows"
     Then I should see a "Schedule Name" text
     When I enter "SAP Maintenance Window" as "name"
