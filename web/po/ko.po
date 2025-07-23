@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:19+0200\n"
-"PO-Revision-Date: 2025-06-17 15:24+0000\n"
+"PO-Revision-Date: 2025-06-20 06:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -2279,14 +2279,13 @@ msgstr "암호 정책 설정"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:33
 msgid "Min Password Length"
-msgstr "최소 암호 길이"
+msgstr "비밀번호 최소 길이"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:40
 msgid "Max Password Length"
-msgstr "최대 암호 길이"
+msgstr "비밀번호 최대 길이"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:47
-#, fuzzy
 msgid "Require Digits"
 msgstr "숫자 필요"
 
