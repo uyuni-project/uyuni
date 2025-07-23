@@ -109,8 +109,8 @@ public class ContentProjectFactory extends HibernateFactory {
      * @return return a list of differences
      */
     public static List<ContentEnvironmentDiff> lookupEnvDiffByProjectAndEnv(ContentProject project,
-                                                                           ContentEnvironment environment,
-                                                                           Channel channel) {
+                                                                            ContentEnvironment environment,
+                                                                            Channel channel) {
         return getSession().createQuery("""
                 FROM ContentEnvironmentDiff
                  WHERE project = :project

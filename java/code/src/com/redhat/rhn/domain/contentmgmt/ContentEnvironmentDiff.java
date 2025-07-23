@@ -16,6 +16,7 @@ import com.redhat.rhn.domain.channel.Channel;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,7 +40,7 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
     private ContentEnvironment environment;
     private Channel channel;
     private long entryId;
-    private String entryType;
+    private DiffType entryType;
     private String entryDiff;
     private String entryName;
     private String entryVersion;
@@ -62,7 +63,7 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
      * @param entryVersionIn
      */
     public ContentEnvironmentDiff(ContentProject projectIn, ContentEnvironment environmentIn,
-                                  Channel channelIn, long entryIdIn, String entryTypeIn, String entryDiffIn,
+                                  Channel channelIn, long entryIdIn, DiffType entryTypeIn, String entryDiffIn,
                                   String entryNameIn, String entryVersionIn) {
         project = projectIn;
         environment = environmentIn;
@@ -124,11 +125,12 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
     }
 
     @Column(name = "entry_type")
-    public String getEntryType() {
+    @Type(type = "com.redhat.rhn.domain.contentmgmt.DiffTypeEnumType")
+    public DiffType getEntryType() {
         return entryType;
     }
 
-    public void setEntryType(String entryTypeIn) {
+    public void setEntryType(DiffType entryTypeIn) {
         entryType = entryTypeIn;
     }
 
