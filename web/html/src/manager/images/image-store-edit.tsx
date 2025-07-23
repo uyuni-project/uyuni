@@ -4,7 +4,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { Button, SubmitButton } from "components/buttons";
 import { Select } from "components/input";
-import { Check } from "components/input/check/Check";
+import { DEPRECATED_Check } from "components/input/check/DEPRECATED_Check";
 import { Form } from "components/input/form/Form";
 import { Password } from "components/input/password/Password";
 import { Text } from "components/input/text/Text";
@@ -159,7 +159,7 @@ class CreateImageStore extends React.Component<Props, State> {
     switch (type) {
       case "registry":
         return [
-          <Check
+          <DEPRECATED_Check
             key="useCredentials"
             name="useCredentials"
             label={t("Use credentials")}
