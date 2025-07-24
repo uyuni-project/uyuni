@@ -56,7 +56,7 @@ When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)
   end
 
   # Prepare bootstrap script for different types of clients
-  force_bundle = use_salt_bundle ? '--force-bundle' : ''
+  force_bundle = $use_salt_bundle ? '--force-bundle' : ''
 
   node = get_target(host)
   gpg_keys = get_gpg_keys(node, target)

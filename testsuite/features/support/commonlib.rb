@@ -71,17 +71,6 @@ def product_version_full
   out.strip if code.zero? && !out.nil?
 end
 
-# TODO: All our current supported versions are using Salt Bundle, consider to remove this method
-#       Refactoring all the code call it.
-# Determines whether to use the Salt bundle based on the product and product version.
-#
-# @return [Boolean] true if the product is 'Uyuni' or the product version is 'head', '5.0', '4.3', or '4.2'
-# - false otherwise
-def use_salt_bundle
-  # Use venv-salt-minion in Uyuni, or SUMA Head, 5.1, 5.0, 4.2 and 4.3
-  product == 'Uyuni' || %w[develHead 5.1 5.0 4.3 4.2].include?(product_version)
-end
-
 # WARN: It's working for /24 mask, but couldn't not work properly with others
 # Returns the reverse DNS lookup address for a given network address.
 #
