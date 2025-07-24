@@ -49,7 +49,7 @@
 %endif
 
 Name:           spacewalk-backend
-Version:        5.1.11
+Version:        5.1.12
 Release:        0
 Summary:        Common programs needed to be installed on the %{productprettyname} servers/proxies
 License:        GPL-2.0-only
