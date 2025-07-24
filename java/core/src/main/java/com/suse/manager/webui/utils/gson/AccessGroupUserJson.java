@@ -15,6 +15,7 @@
 
 package com.suse.manager.webui.utils.gson;
 
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.BaseTupleDto;
 
 import javax.persistence.Tuple;
@@ -36,6 +37,20 @@ public class AccessGroupUserJson extends BaseTupleDto {
         setName(getTupleValue(tuple, "name" , String.class).orElse("-"));
         setOrgName(getTupleValue(tuple, "org_name" , String.class).orElse("-"));
     }
+
+    /**
+     * Constructor used to serialize a user into json object
+     *
+     * @param user the user
+     */
+    public AccessGroupUserJson(User user) {
+        setId(user.getId());
+        setLogin(user.getLogin());
+        setEmail(user.getEmail());
+        setName(user.getLastName() + ", " +  user.getFirstNames());
+        setOrgName(user.getOrg().getName());
+    }
+
 
     private Long id;
     private String login;
