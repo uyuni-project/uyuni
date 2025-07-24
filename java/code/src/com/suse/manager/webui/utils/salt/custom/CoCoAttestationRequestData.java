@@ -32,6 +32,9 @@ public class CoCoAttestationRequestData {
     @SerializedName("cmd_|-mgr_snpguest_report_|-cat /tmp/cocoattest/report.bin | base64_|-run")
     private StateApplyResult<CmdResult> snpguestResult;
 
+    @SerializedName("cmd_|-mgr_vlek_certificate_|-cat /tmp/cocoattest/vlek.pem_|-run")
+    private StateApplyResult<CmdResult> vlekCertificateResult;
+
     @SerializedName("cmd_|-mgr_secureboot_enabled_|-mokutil --sb-state_|-run")
     private StateApplyResult<CmdResult> securebootResult;
 
@@ -41,6 +44,14 @@ public class CoCoAttestationRequestData {
      */
     public Optional<StateApplyResult<CmdResult>> getSnpguestReport() {
         return Optional.ofNullable(snpguestResult);
+    }
+
+    /**
+     * Gets the certificate of Versioned Loaded Endorsement Key (VLEK)
+     * @return the certificate if available
+     */
+    public Optional<StateApplyResult<CmdResult>> getVlekCertificate() {
+        return Optional.ofNullable(vlekCertificateResult);
     }
 
     /**
@@ -62,6 +73,14 @@ public class CoCoAttestationRequestData {
                 .ifPresent(c -> {
                     if (c.getRetcode() == 0) {
                         out.put("mgr_snpguest_report", c.getStdout());
+                    }
+                });
+
+        getVlekCertificate()
+                .map(StateApplyResult::getChanges)
+                .ifPresent(c -> {
+                    if (c.getRetcode() == 0) {
+                        out.put("mgr_vlek_certificate", c.getStdout());
                     }
                 });
 
