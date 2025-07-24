@@ -147,7 +147,7 @@ public class ScheduleHandler extends BaseHandler {
     @ReadOnly
     public Object[] listAllActions(User loggedInUser) {
 
-        // the second argument is "PageControl". This is not needed for the api usage;
+        // the second argument is "PageControl". This is not needed for the api usage
         // therefore, null will be used.
         return ActionManager.allActions(loggedInUser, null).toArray();
     }
@@ -166,7 +166,7 @@ public class ScheduleHandler extends BaseHandler {
      */
     @ReadOnly
     public Object[] listCompletedActions(User loggedInUser) {
-        // the second argument is "PageControl". This is not needed for the api usage;
+        // the second argument is "PageControl". This is not needed for the api usage
         // therefore, null will be used.
         DataResult<ScheduledAction> dr = ActionManager.completedActions(loggedInUser, null);
         return dr.toArray();
@@ -186,7 +186,7 @@ public class ScheduleHandler extends BaseHandler {
      */
     @ReadOnly
     public Object[] listInProgressActions(User loggedInUser) {
-        // the second argument is "PageControl". This is not needed for the api usage;
+        // the second argument is "PageControl". This is not needed for the api usage
         // therefore, null will be used.
         DataResult<ScheduledAction> dr = ActionManager.pendingActions(loggedInUser, null);
         return dr.toArray();
@@ -206,7 +206,7 @@ public class ScheduleHandler extends BaseHandler {
      */
     @ReadOnly
     public Object[] listFailedActions(User loggedInUser) {
-        // the second argument is "PageControl". This is not needed for the api usage;
+        // the second argument is "PageControl". This is not needed for the api usage
         // therefore, null will be used.
         DataResult<ScheduledAction> dr = ActionManager.failedActions(loggedInUser, null);
         return dr.toArray();
@@ -226,7 +226,7 @@ public class ScheduleHandler extends BaseHandler {
      */
     @ReadOnly
     public Object[] listArchivedActions(User loggedInUser) {
-        // the second argument is "PageControl". This is not needed for the api usage;
+        // the second argument is "PageControl". This is not needed for the api usage
         // therefore, null will be used.
         return ActionManager.archivedActions(loggedInUser, null).toArray();
     }
@@ -245,7 +245,7 @@ public class ScheduleHandler extends BaseHandler {
      */
     @ReadOnly
     public Object[] listAllArchivedActions(User loggedInUser) {
-        // the second argument is "PageControl". This is not needed for the api usage;
+        // the second argument is "PageControl". This is not needed for the api usage
         // therefore, null will be used.
         return ActionManager.allArchivedActions(loggedInUser, null).toArray();
     }
@@ -268,7 +268,7 @@ public class ScheduleHandler extends BaseHandler {
     public Object[] listCompletedSystems(User loggedInUser, Integer actionId) {
         Long aid = actionId.longValue();
         Action action = ActionManager.lookupAction(loggedInUser, aid);
-        // the third argument is "PageControl". This is not needed for the api usage;
+        // the third argument is "PageControl". This is not needed for the api usage
         // therefore, null will be used.
         DataResult<ActionedSystem> dr = ActionManager.completedSystems(loggedInUser, action, null);
         dr.elaborate();
@@ -290,7 +290,7 @@ public class ScheduleHandler extends BaseHandler {
      */
     @ReadOnly
     public Object[] listAllCompletedActions(User loggedInUser) {
-        // the second argument is "PageControl". This is not needed for the api usage;
+        // the second argument is "PageControl". This is not needed for the api usage
         // therefore, null will be used.
         return ActionManager.allCompletedActions(loggedInUser, null).toArray();
     }
@@ -313,7 +313,7 @@ public class ScheduleHandler extends BaseHandler {
     public Object[] listInProgressSystems(User loggedInUser, Integer actionId) {
         Long aid = actionId.longValue();
         Action action = ActionManager.lookupAction(loggedInUser, aid);
-        // the third argument is "PageControl". This is not needed for the api usage;
+        // the third argument is "PageControl". This is not needed for the api usage
         // therefore, null will be used.
         DataResult<ActionedSystem> dr = ActionManager.inProgressSystems(loggedInUser, action, null);
         dr.elaborate();
@@ -339,7 +339,7 @@ public class ScheduleHandler extends BaseHandler {
     public Object[] listFailedSystems(User loggedInUser, Integer actionId) {
         Long aid = actionId.longValue();
         Action action = ActionManager.lookupAction(loggedInUser, aid);
-        // the third argument is "PageControl". This is not needed for the api usage;
+        // the third argument is "PageControl". This is not needed for the api usage
         // therefore, null will be used.
         DataResult<ActionedSystem> dr = ActionManager.failedSystems(loggedInUser, action, null);
         dr.elaborate();
