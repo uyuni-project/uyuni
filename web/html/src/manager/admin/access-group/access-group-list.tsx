@@ -49,7 +49,7 @@ const AccessGroupList = (props) => {
       return (
         <div className="btn-group">
           <Button className="btn-default btn-sm" icon="fa-user" />
-          <Button className="btn-default btn-sm" icon="fa-pencil" />
+          <LinkButton className="btn-default btn-sm" icon="fa-pencil" href={"/rhn/manager/admin/access-group/show/" + item.id} />
           <ModalButton
             className="btn-default btn-sm"
             title={t("Delete")}

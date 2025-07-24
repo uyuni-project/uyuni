@@ -226,7 +226,7 @@ public class AccessGroupController {
             users.forEach(user -> user.addToGroup(accessGroup));
         }
         else {
-            List<User> accessGroupUsers = AccessGroupFactory.listAccessGroupUsers(accessGroup);
+            List<User> accessGroupUsers = AccessGroupFactory.listAccessGroupUsers(accessGroup.getId());
             // Users that need to be added to the access group
             List<User> toAdd = users.stream().filter(user -> !accessGroupUsers.contains(user)).toList();
             toAdd.forEach(user -> user.addToGroup(accessGroup));
