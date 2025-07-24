@@ -82,6 +82,7 @@ install -p -D -m 755 configure-tftpsync.sh  %{buildroot}%{_sbindir}/configure-tf
 %{python_sitelib}/cobbler/modules/sync_post_tftpd_proxies.py*
 %{python_sitelib}/cobbler/MultipartPostHandler.py*
 %{_sbindir}/configure-tftpsync.sh
+%ghost %{_sysconfdir}/cobbler/settings.d/zz-uyuni-tftpsync.settings
 %if 0%{?build_py3}
 %{python_sitelib}/cobbler/__pycache__/*
 %{python_sitelib}/cobbler/modules/__pycache__/*
