@@ -2441,8 +2441,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return <code>true</code> if OS supports CoCo Attestation
      */
     public boolean doesOsSupportCoCoAttestation() {
-        return (isSLES15() && getRelease().equals("15.6")) ||
-            (isLeap15() && getRelease().equals("15.6"));
+        return (isSLES15() && (getRelease().equals("15.6") || getRelease().equals("15.7"))) ||
+                (isLeap15() && (getRelease().equals("15.6") || getRelease().equals("15.7")));
     }
 
     /**
