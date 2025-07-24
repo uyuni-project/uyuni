@@ -32,31 +32,33 @@ import java.util.concurrent.Executors;
 /**
  * Wrapper to execute the command line tool SNPGuest.
  */
-public class SNPGuestWrapper {
+public abstract class AbstractSNPGuestWrapper {
 
-    private static final Marker STDOUT_MARKER = MarkerManager.getMarker("stdout");
+    protected static final Marker STDOUT_MARKER = MarkerManager.getMarker("stdout");
 
-    private static final Marker STDERR_MARKER = MarkerManager.getMarker("stderr");
+    protected static final Marker STDERR_MARKER = MarkerManager.getMarker("stderr");
 
-    private static final Logger LOGGER = LogManager.getLogger(SNPGuestWrapper.class);
+    protected final Logger logger;
 
-    private static final Path SNPGUEST = Path.of("/usr/bin/snpguest");
+    protected static final Path SNPGUEST = Path.of("/usr/bin/snpguest");
 
-    private final Runtime runtime;
+    protected final Runtime runtime;
 
     /**
      * Default constructor.
      */
-    public SNPGuestWrapper() {
-        this.runtime = Runtime.getRuntime();
+    protected AbstractSNPGuestWrapper() {
+        this(Runtime.getRuntime());
     }
 
     /**
      * Constructor to specify a runtime. For unit testing.
+     *
      * @param runtimeIn the runtime used to execute processes
      */
-    SNPGuestWrapper(Runtime runtimeIn) {
+    protected AbstractSNPGuestWrapper(Runtime runtimeIn) {
         this.runtime = runtimeIn;
+        this.logger = LogManager.getLogger(getClass());
     }
 
     /**
@@ -67,17 +69,8 @@ public class SNPGuestWrapper {
      * @return the exit code of the fetching process
      * @throws ExecutionException when an error happens during the process execution
      */
-    public ProcessOutput fetchVCEK(EpycGeneration generation, Path certsDir, Path report) throws ExecutionException {
-        return executeProcess(
-            SNPGUEST.toString(),
-            "fetch",
-            "vcek",
-            "DER",
-            generation.name().toLowerCase(),
-            certsDir.toString(),
-            report.toString()
-        );
-    }
+    public abstract ProcessOutput fetchVCEK(EpycGeneration generation, Path certsDir, Path report)
+            throws ExecutionException;
 
     /**
      * Verify the certificate chain.
@@ -96,20 +89,14 @@ public class SNPGuestWrapper {
 
     /**
      * Verify the attestation report.
+     * @param generation Specify the processor model for the certificate chain.
      * @param certsDir Path to directory containing VCEK.
      * @param report Path to attestation report to use for validation.
      * @return the exit code of the verification process
      * @throws ExecutionException when an error happens during the process execution
      */
-    public ProcessOutput verifyAttestation(Path certsDir, Path report) throws ExecutionException {
-        return executeProcess(
-            SNPGUEST.toString(),
-            "verify",
-            "attestation",
-            certsDir.toString(),
-            report.toString()
-        );
-    }
+    public abstract ProcessOutput verifyAttestation(EpycGeneration generation, Path certsDir, Path report)
+            throws ExecutionException;
 
     /**
      * Display the attestation report.
@@ -136,8 +123,8 @@ public class SNPGuestWrapper {
         Process snpguestProcess;
 
         try {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Executing {}", Arrays.toString(command));
+            if (logger.isDebugEnabled()) {
+                logger.debug("Executing {}", Arrays.toString(command));
             }
 
             snpguestProcess = runtime.exec(command);
@@ -172,14 +159,14 @@ public class SNPGuestWrapper {
         }
     }
 
-    private static String getOutput(InputStream stream, Marker logMarker) throws IOException {
+    private String getOutput(InputStream stream, Marker logMarker) throws IOException {
         StringWriter writer = new StringWriter();
 
         try (BufferedReader inErr = new BufferedReader(new InputStreamReader(stream))) {
             String line;
             while ((line = inErr.readLine()) != null) {
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug(logMarker, line);
+                if (logger.isDebugEnabled()) {
+                    logger.debug(logMarker, line);
                 }
 
                 writer.write(line);
