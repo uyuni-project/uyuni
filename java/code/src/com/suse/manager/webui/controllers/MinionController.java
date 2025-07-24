@@ -56,7 +56,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -642,7 +641,7 @@ public class MinionController {
     private static void addCoCoMetadata(Map<String, Object> data) {
         // Confidential computing environment types. Using linked hash map to keep the enum order
         Map<String, String> environmentMap = new LinkedHashMap<>();
-        Stream.of(CoCoEnvironmentType.values())
+        CoCoEnvironmentType.validValues()
             .forEach(e -> environmentMap.put(e.name(), e.getDescription()));
 
         data.put("availableEnvironmentTypes", Json.GSON.toJson(environmentMap));
