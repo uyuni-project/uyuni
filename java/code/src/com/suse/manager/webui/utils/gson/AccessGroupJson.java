@@ -15,8 +15,10 @@
 
 package com.suse.manager.webui.utils.gson;
 
+import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.frontend.dto.BaseTupleDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Tuple;
@@ -38,6 +40,18 @@ public class AccessGroupJson extends BaseTupleDto {
         setType(getTupleValue(tuple, "type" , String.class).orElse("-"));
         setNumUsers(getTupleValue(tuple, "users", Number.class).map(Number::longValue).orElse(null));
         setNumPermissions(getTupleValue(tuple, "permissions", Number.class).map(Number::longValue).orElse(null));
+    }
+
+    /** Constructor used to serialize an access group into json object
+     *
+     * @param group the access group
+     */
+    public AccessGroupJson(AccessGroup group) {
+        setId(group.getId());
+        setName(group.getLabel());
+        setDescription(group.getDescription());
+        setUsers(new ArrayList<>());
+        setPermissions(new ArrayList<>());
     }
 
     private Long id;
