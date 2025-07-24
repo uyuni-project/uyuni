@@ -546,7 +546,7 @@ public class ListTagUtil {
             return;
         }
         ListTagUtil.write(pageContext,
-                "<div class=\"spacewalk-list-pagination-btns btn-group\">");
+                "<div class=\"spacewalk-list-pagination-btns btn-group pull-right ms-5\">");
         for (String linkNameIn : linkNames) {
             String[] linkData = links.get(linkNameIn);
             ListTagUtil.write(pageContext, "<button ");

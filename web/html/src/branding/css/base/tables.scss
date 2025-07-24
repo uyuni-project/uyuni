@@ -101,3 +101,12 @@ th button.btn-link {
 .vertical-middle td {
   vertical-align: middle !important;
 }
+
+.selected-row-details {
+  background-color: rgba(179, 232, 246, 0.5);
+  padding: 0px 15px;
+
+  .btn {
+    padding: 4px 6px;
+  }
+}

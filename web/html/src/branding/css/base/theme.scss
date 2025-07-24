@@ -754,6 +754,7 @@ i[class~="fa-right"] {
 
   .spacewalk-list-footer-addons {
     @include make-row;
+    line-height: 40px;
     .spacewalk-list-footer-addons-extra {
       // TODO: Check
       @extend .pull-left;
