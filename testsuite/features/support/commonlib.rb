@@ -24,7 +24,7 @@ def count_table_items
   items_label_xpath = '//button[contains(text(), \' items\')]'
   raise ScriptError, 'Error counting items' unless (items_label = find(:xpath, items_label_xpath).text)
 
-  items_label.split('of ')[1].split(' ')[0];
+  items_label.split('of ')[1].split[0]
 end
 
 # Determines the product type (Uyuni or SUSE Manager) based on installed patterns, raises error if undetermined.
