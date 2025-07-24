@@ -111,17 +111,16 @@ function capitalize(str: string): string {
     return str;
   }
 
-  str = str.replace(/multi[\s_-]+linux/gi, "{MULTILINUX}");
-  console.log(str)
+  str = str.replace(/multi[\s_-]*linux/gi, "{MULTILINUX}");
 
-  str = str.replace(/_|-/g, " ");
+  str = str.replace(/[_-]/g, " ");
 
-  str = str.replace(/\w\S*/g, word => {
+  str = str.replace(/\w\S*/g, (word) => {
     if (word === "{MULTILINUX}") return word;
     if (word === word.toUpperCase()) return word;
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
   });
-  
+
   str = str.replace(/{MULTILINUX}/g, "Multi-Linux");
 
   return str;
