@@ -1246,11 +1246,9 @@ public class ErrataHandler extends BaseHandler {
             catch (ClassCastException e) {
                 // just catch, do not do anything
             }
-            finally {
-                if (cc == null || !cc.isCloned()) {
-                    throw new InvalidChannelException("Cloned channel " +
-                            "expected: " + c.getLabel());
-                }
+            if (cc == null || !cc.isCloned()) {
+                throw new InvalidChannelException("Cloned channel " +
+                        "expected: " + c.getLabel());
             }
             Channel original = ChannelFactory.lookupOriginalChannel(c);
             if (original == null) {
