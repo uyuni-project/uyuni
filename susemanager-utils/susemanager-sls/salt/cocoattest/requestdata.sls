@@ -37,6 +37,19 @@ mgr_snpguest_report:
       - cmd: mgr_create_snpguest_report
       - file: mgr_create_attestdir
 
+mgr_create_vlek_certificate:
+  cmd.run:
+    - name: snpguest certificates PEM /tmp/cocoattest
+    - require:
+      - file: mgr_create_attestdir
+
+mgr_vlek_certificate:
+  cmd.run:
+    - name: cat /tmp/cocoattest/vlek.pem
+    - require:
+      - cmd: mgr_create_vlek_certificate
+      - file: mgr_create_attestdir
+
 mgr_secureboot_enabled:
   cmd.run:
     - name: /usr/bin/mokutil --sb-state
