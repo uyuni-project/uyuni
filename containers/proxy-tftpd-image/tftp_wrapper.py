@@ -7,6 +7,7 @@
 import argparse
 import logging
 import os
+import errno
 import re
 import requests
 import yaml
@@ -14,6 +15,7 @@ import yaml
 from fbtftp.base_handler import BaseHandler
 from fbtftp.base_handler import ResponseData
 from fbtftp.base_server import BaseServer
+from fbtftp import constants
 
 
 def stats(s):
@@ -44,7 +46,7 @@ class HttpResponseData(ResponseData):
         # request file by url and store it
         self._request = requests.get(url, stream=True, verify=capath)
         if self._request.status_code == 404:
-            raise FileNotFoundError()
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), url)
         self._request.raise_for_status()
         self._stream = self._request.iter_content(chunk_size=1024)
         self._content = b""
@@ -91,7 +93,7 @@ class HttpResponseDataFiltered(HttpResponseData):
         self._replace_fqdns = replace_fqdns
         self._request = requests.get(url, stream=True, verify=capath)
         if self._request.status_code == 404:
-            raise FileNotFoundError()
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), url)
         self._request.raise_for_status()
 
         self._stream = None
@@ -241,7 +243,28 @@ class TFTPHandler(BaseHandler):
         self._replace_fqdns = replace_fqdns
         super().__init__(server_addr, peer, path, options, stats)
 
+    def run(self):
+        try:
+            self._response_data = self.get_response_data_delayed()
+        except FileNotFoundError as e:
+            logging.warning(str(e))
+            self._stats.error = {
+                "error_code": constants.ERR_FILE_NOT_FOUND,
+                "error_message": str(e),
+            }
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            logging.exception("Caught exception: %s.", e)
+            self._stats.error = {
+                "error_code": constants.ERR_UNDEFINED,
+                "error_message": str(e),
+            }
+        super().run()
+
     def get_response_data(self):
+        # do not block the constructor, do the work in get_response_data_delayed()
+        return None
+
+    def get_response_data_delayed(self):
         capath = self._capath
         target = self._http_host
         path = self._path
@@ -281,7 +304,7 @@ class TFTPHandler(BaseHandler):
         elif path.startswith("pxelinux.cfg/"):
             # ignore other pxelinux.cfg files
             logging.debug("Got request for %s, ignoring", path)
-            raise FileNotFoundError()
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), path)
         elif path.startswith("grub/") and path.endswith("_menu_items.cfg"):
             logging.debug("Got request for %s, filtering HTTP", path)
             return HttpResponseDataFilteredGrub(
