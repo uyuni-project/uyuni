@@ -1,7 +1,7 @@
 import { hot } from "react-hot-loader/root";
 
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import withPageWrapper from "components/general/with-page-wrapper";
 import { TopPanel } from "components/panels/TopPanel";
@@ -14,6 +14,7 @@ import Network from "utils/network";
 import {Messages, MessageType, Utils as MessagesUtils} from "components/messages/messages";
 
 export type AccessGroupState = {
+  id: number | undefined;
   name: string;
   description: string;
   accessGroups: string[];
@@ -22,11 +23,15 @@ export type AccessGroupState = {
   errors: any;
 };
 
-const CreateAccessGroup = () => {
+type AccessGroupProps = {
+  accessGroup?: AccessGroupState;
+}
+
+const AccessGroup = (props: AccessGroupProps) => {
   // TODO: Handle displaying success messages on create / update on access-group-list
   const [messages, setMessages] = useState<MessageType[]>([]);
-  // const [messages, setMessages] = useState<any[]>([]);
-  const [accessGroupState, setAccessGroupState] = useState<AccessGroupState>({
+  const [accessGroupState, setAccessGroupState] = useState<AccessGroupState>(props.accessGroup ? props.accessGroup : {
+    id: undefined,
     name: "",
     description: "",
     accessGroups: [],
@@ -48,7 +53,7 @@ const CreateAccessGroup = () => {
         prevState = {
           ...prevState,
           permissions: prevState.permissions.map((p) => {
-            if (p.id === newname.id) {
+            if (p.namespace === newname.namespace) {
               add = false;
               return type === "view" ? {...p, view: newname.view} : {...p, modify: newname.modify};
             } else {
@@ -68,7 +73,7 @@ const CreateAccessGroup = () => {
       } else {
         return {
           ...prevState,
-          permissions: prevState.permissions.filter((p) => p.id !== newname.id),
+          permissions: prevState.permissions.filter((p) => p.namespace !== newname.namespace),
         };
       }
     })
@@ -133,4 +138,4 @@ const CreateAccessGroup = () => {
   );
 };
 
-export default hot(withPageWrapper<{}>(CreateAccessGroup));
+export default hot(withPageWrapper<AccessGroupProps>(AccessGroup));

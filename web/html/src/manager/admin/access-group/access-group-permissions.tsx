@@ -16,7 +16,7 @@ type Props = {
 
 const AccessGroupPermissions = (props: Props) => {
   const isChecked = (item, type) => {
-    const permission = props.state.permissions.filter((p) => p.id === item.id)
+    const permission = props.state.permissions.filter((p) => p.namespace === item.namespace)
     if (permission.length > 0) {
       return type === "view" ? permission[0].view : permission[0].modify;
     }

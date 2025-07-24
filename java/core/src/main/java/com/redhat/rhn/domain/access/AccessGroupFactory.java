@@ -148,7 +148,7 @@ public class AccessGroupFactory extends HibernateFactory {
                  SELECT wc.id,
                         wc.login,
                         wupi.email,
-                        concat(wupi.first_names, ', ', wupi.last_name) AS name,
+                        concat(wupi.last_name, ', ', wupi.first_names) AS name,
                         wcu.name AS org_name
                  FROM web_contact wc
                  JOIN web_user_personal_info wupi ON wc.id = wupi.web_user_id
@@ -160,13 +160,13 @@ public class AccessGroupFactory extends HibernateFactory {
 
     /**
      * Lists all the users that are subscribed to the given access group
-     * @param group the access group
+     * @param groupId the access group id
      * @return the list of users
      */
-    public static List<User> listAccessGroupUsers(AccessGroup group) {
+    public static List<User> listAccessGroupUsers(Long groupId) {
         List<Long> ids = getSession().createNativeQuery(
                 "SELECT uag.user_id FROM access.useraccessgroup uag WHERE uag.group_id = :group_id", Tuple.class)
-                .setParameter("group_id", group.getId())
+                .setParameter("group_id", groupId)
                 .addScalar("user_id", StandardBasicTypes.LONG)
                 .stream().map(tuple -> tuple.get("user_Id", Long.class))
                 .toList();

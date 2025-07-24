@@ -34,8 +34,8 @@ public class NamespaceJson extends BaseTupleDto {
         setNamespace(getTupleValue(tuple, "namespace" , String.class).orElse("-"));
         setDescription(getTupleValue(tuple, "description" , String.class).orElse("-"));
         setAccessMode(getTupleValue(tuple, "access_mode" , String.class).orElse("-"));
-        setView(false);
-        setModify(false);
+        setView(getTupleValue(tuple, "view", Boolean.class).orElse(false));
+        setModify(getTupleValue(tuple, "modify", Boolean.class).orElse(false));
     }
 
     private Long id;
