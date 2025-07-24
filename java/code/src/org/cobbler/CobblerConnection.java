@@ -15,6 +15,8 @@
 
 package org.cobbler;
 
+import com.redhat.rhn.common.util.StringUtil;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -150,7 +152,8 @@ public class CobblerConnection {
                     dbgArgs.add("<token>");
                 }
             }
-            log.debug("procedure: {} args: {}", procedureName, dbgArgs);
+            log.debug("procedure: {} args: {}",
+                    StringUtil.sanitizeLogInput(procedureName), StringUtil.sanitizeLogInput(dbgArgs.toString()));
         }
         Object retval;
         try {
