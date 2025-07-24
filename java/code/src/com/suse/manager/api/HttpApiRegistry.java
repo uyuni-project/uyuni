@@ -21,6 +21,7 @@ import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
 
 import com.suse.manager.webui.controllers.login.LoginController;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -94,7 +95,7 @@ public class HttpApiRegistry {
             methodsByName.forEach((groupKey, methodList) -> {
                 String path = HTTP_API_ROOT + namespace.replace('.', '/') + '/' + groupKey.getLeft();
                 Route route = routeFactory.createRoute(methodList, handler);
-                if (groupKey.getRight()) {
+                if (BooleanUtils.isTrue(groupKey.getRight())) {
                     registrationHelper.addGetRoute(path, route);
                 }
                 else {
@@ -108,7 +109,7 @@ public class HttpApiRegistry {
                             groupKey.getLeft(),
                             methodList.size() > 1 ?
                                     MessageFormat.format(" ({0} overloads)", methodList.size()) : "",
-                            groupKey.getRight() ? " (Read-only)" : ""));
+                            BooleanUtils.isTrue(groupKey.getRight()) ? " (Read-only)" : ""));
                 }
                 methodCount[0] += 1;
             });

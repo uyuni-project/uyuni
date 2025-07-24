@@ -111,7 +111,7 @@ public class OrgConfigAction extends RhnAction {
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
-    private Boolean getOptionScapRetentionPeriodSet(HttpServletRequest request) {
+    private boolean getOptionScapRetentionPeriodSet(HttpServletRequest request) {
         String strRetentionSet = request.getParameter(SCAP_RETENTION_SET);
         return "on".equals(strRetentionSet);
     }
