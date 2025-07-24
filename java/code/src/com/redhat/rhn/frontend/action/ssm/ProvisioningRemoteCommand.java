@@ -248,7 +248,7 @@ public class ProvisioningRemoteCommand extends RhnAction implements
                 else {
                     infoMessages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                         "ssm.operations.provisioning.remotecommand.form.queue.succeed",
-                        label, actionChain.getLabel()));
+                        label, actionChain.getId(), actionChain.getLabel()));
                 }
             }
             else {
