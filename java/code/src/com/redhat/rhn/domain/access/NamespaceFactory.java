@@ -29,6 +29,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
+import javax.persistence.Tuple;
+
 /**
  * Factory class for RBAC's {@link Namespace} entities
  */
@@ -77,6 +79,37 @@ public class NamespaceFactory extends HibernateFactory {
                 .from(from)
                 .where("true")
                 .run(new HashMap<>(), pc, parser, NamespaceJson.class);
+    }
+
+    /**
+     * List all namespaces assigned to an access group as json object
+     * @param groupId the access group id
+     * @return the list of namespaces
+     */
+    public static List<NamespaceJson> getAccessGroupNamespaces(Long groupId) {
+        return getSession().createNativeQuery("""
+                 SELECT *,
+                 CASE
+                   WHEN access_mode LIKE '%R%' THEN TRUE ELSE FALSE
+                 END AS view,
+                 CASE
+                   WHEN access_Mode LIKE '%W%' THEN TRUE ELSE FALSE
+                 END AS modify
+                 FROM (
+                   SELECT min(id) AS id,
+                   namespace,
+                   min(description) AS description,
+                   string_agg(access_mode, '') AS access_mode
+                   FROM access.namespace ns
+                   JOIN access.accessgroupnamespace agn ON ns.id = agn.namespace_id
+                   WHERE agn.group_id = :group_id
+                   GROUP BY namespace
+                 )
+                 """, Tuple.class)
+                .setParameter("group_id", groupId)
+                .stream().map(NamespaceJson::new)
+                .toList();
+
     }
 
     /**
