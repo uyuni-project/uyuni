@@ -235,7 +235,7 @@ public class PowerManagementHandler extends BaseHandler {
      */
     public int powerOn(User loggedInUser, Integer sid) {
         ValidatorError error = new CobblerPowerCommand(loggedInUser, lookupServer(loggedInUser, sid),
-                CobblerPowerCommand.Operation.PowerOn).store();
+                CobblerPowerCommand.Operation.POWER_ON).store();
         if (error != null) {
             LOG.error("Power management action 'powerOn' failed");
             throw new PowerManagementOperationFailedException(error.getMessage());
@@ -259,7 +259,7 @@ public class PowerManagementHandler extends BaseHandler {
     public int powerOn(User loggedInUser, String name) {
         ensureOrgAdmin(loggedInUser);
         ValidatorError error = new CobblerPowerCommand(loggedInUser, name,
-                CobblerPowerCommand.Operation.PowerOn).store();
+                CobblerPowerCommand.Operation.POWER_ON).store();
         if (error != null) {
             LOG.error("Power management action 'powerOn' failed");
             throw new PowerManagementOperationFailedException(error.getMessage());
@@ -282,7 +282,7 @@ public class PowerManagementHandler extends BaseHandler {
      */
     public int powerOff(User loggedInUser, Integer sid) {
         ValidatorError error = new CobblerPowerCommand(loggedInUser, lookupServer(loggedInUser, sid),
-                CobblerPowerCommand.Operation.PowerOff).store();
+                CobblerPowerCommand.Operation.POWER_OFF).store();
         if (error != null) {
             LOG.error("Power management action 'powerOff' failed");
             throw new PowerManagementOperationFailedException(error.getMessage());
@@ -306,7 +306,7 @@ public class PowerManagementHandler extends BaseHandler {
     public int powerOff(User loggedInUser, String name) {
         ensureOrgAdmin(loggedInUser);
         ValidatorError error = new CobblerPowerCommand(loggedInUser, name,
-                CobblerPowerCommand.Operation.PowerOff).store();
+                CobblerPowerCommand.Operation.POWER_OFF).store();
         if (error != null) {
             LOG.error("Power management action 'powerOff' failed");
             throw new PowerManagementOperationFailedException(error.getMessage());
@@ -329,7 +329,7 @@ public class PowerManagementHandler extends BaseHandler {
      */
     public int reboot(User loggedInUser, Integer sid) {
         ValidatorError error = new CobblerPowerCommand(loggedInUser, lookupServer(loggedInUser, sid),
-                CobblerPowerCommand.Operation.Reboot).store();
+                CobblerPowerCommand.Operation.REBOOT).store();
         if (error != null) {
             LOG.error("Power management action 'reboot' failed");
             throw new PowerManagementOperationFailedException(error.getMessage());
@@ -353,7 +353,7 @@ public class PowerManagementHandler extends BaseHandler {
     public int reboot(User loggedInUser, String name) {
         ensureOrgAdmin(loggedInUser);
         ValidatorError error = new CobblerPowerCommand(loggedInUser, name,
-                CobblerPowerCommand.Operation.Reboot).store();
+                CobblerPowerCommand.Operation.REBOOT).store();
         if (error != null) {
             LOG.error("Power management action 'reboot' failed");
             throw new PowerManagementOperationFailedException(error.getMessage());
