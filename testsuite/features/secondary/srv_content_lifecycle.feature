@@ -632,7 +632,7 @@ Scenario: Create CLM filter of type Package (Build date) that allows packages wh
   Scenario: Cleanup: remove the CLM filters
     When I follow the left menu "Content Lifecycle > Filters"
     And I click on "Select unused"
-    And I click on "Delete selected"
+    And I click on "Delete"
     Then I should not see a "remove fonts packages" text
     And I should not see a "africa-patch" text
     And I should not see a "andromeda-patch" text

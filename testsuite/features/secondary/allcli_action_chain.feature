@@ -67,7 +67,7 @@ Feature: Action chains on several systems at once
     And I enter "andromeda-dummy" as the filtered package name
     And I click on the filter button
     And I check "andromeda-dummy" in the list
-    And I click on "Install Selected Packages"
+    And I click on "Install Packages"
     Then I should see "sle_minion" hostname
     And I should see "ssh_minion" hostname
     When I check radio button "schedule-by-action-chain"
