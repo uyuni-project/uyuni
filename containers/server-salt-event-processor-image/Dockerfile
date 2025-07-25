@@ -9,6 +9,7 @@ RUN zypper ref && zypper --non-interactive install \
     java-17-openjdk-headless \
     spacewalk-java \
     spacewalk-taskomatic \
+#    spacewalk-backend \
     procps
 
 ADD --chown=root:root root.tar.gz /
