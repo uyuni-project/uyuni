@@ -500,7 +500,6 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupByIdsAndOrg() {
-        ImageStore store = createImageStore("mystore", user);
         ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);
         ImageInfo img2 = createImageInfo("myimage1", "2.0.0", user);
         ImageInfo img3 = createImageInfo("myimage2", "1.0.0", user);
@@ -534,7 +533,6 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testUpdateRevision() {
-        ImageStore store = createImageStore("mystore", user);
         ImageInfo img1 = createImageInfo("test", "1.0.0", user);
         ImageInfoFactory.updateRevision(img1);
         assertEquals(1, img1.getRevisionNumber());
@@ -608,7 +606,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         DeltaImageInfo delta1 = ImageInfoFactory.createDeltaImageInfo(img1, img2,
                                                  "delta1.tgz", new TreeMap<String, Object>());
-        DeltaImageInfo delta2 = ImageInfoFactory.createDeltaImageInfo(img2, img3,
+        ImageInfoFactory.createDeltaImageInfo(img2, img3,
                                                  "delta2.tgz", new TreeMap<String, Object>());
 
         HibernateFactory.getSession().flush();
