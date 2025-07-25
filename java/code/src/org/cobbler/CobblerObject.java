@@ -190,8 +190,8 @@ public abstract class CobblerObject {
      */
     @SuppressWarnings("unchecked")
     protected static Map<String, Object> lookupDataMapByName(CobblerConnection client,
-                                                             String name, String lookupMethod) {
-        Object obj = client.invokeMethod(lookupMethod, name);
+                                                             String name, String lookupMethod, Object... args) {
+        Object obj = client.invokeTokenMethod(lookupMethod, name, args[0], args[1]);
         if ("~".equals(obj)) {
             return null;
         }
@@ -319,7 +319,7 @@ public abstract class CobblerObject {
      * @param value The new value for the property. This must be a "raw" object value and not a resolved one.
      */
     protected void modify(String key, Object value) {
-        modify(key, value, true);
+        modify(key, value, false);
     }
 
     /**
