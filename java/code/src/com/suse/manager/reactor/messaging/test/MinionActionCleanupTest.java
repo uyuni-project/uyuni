@@ -68,6 +68,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 
 /**
@@ -103,15 +105,18 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         action.addServerAction(ActionFactoryTest.createServerAction(minion1, action));
         action.addServerAction(ActionFactoryTest.createServerAction(minion2, action));
 
-        Map<String, Result<List<SaltUtil.RunningInfo>>> running = new HashMap<>();
-        running.put(minion1.getMinionId(), new Result<>(Xor.right(Collections.emptyList())));
-        running.put(minion2.getMinionId(), new Result<>(Xor.right(Collections.emptyList())));
+        Map<String, CompletionStage<Result<List<SaltUtil.RunningInfo>>>> running = new HashMap<>();
+        running.put(minion1.getMinionId(), CompletableFuture.completedStage(
+                new Result<>(Xor.right(Collections.emptyList()))));
+        running.put(minion2.getMinionId(), CompletableFuture.completedStage(
+                new Result<>(Xor.right(Collections.emptyList()))));
+
 
         Jobs.Info listJobResult = listJob("jobs.list_job.state.apply.json", action.getId());
         SaltService saltServiceMock = mock(SaltService.class);
 
         context().checking(new Expectations() { {
-            allowing(saltServiceMock).running(with(any(MinionList.class)));
+            allowing(saltServiceMock).running(with(any(MinionList.class)), with(any(CompletableFuture.class)));
             will(returnValue(running));
             never(saltServiceMock).jobsByMetadata(with(any(Object.class)));
             never(saltServiceMock).listJob(with(any(String.class)));
