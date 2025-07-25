@@ -172,7 +172,7 @@ public class SubscribeConfirm extends RhnAction {
         // Position:
         //   LOWEST: Subscribe to new channels at the lowest priority
         //   REPLACE: Replace subscriptions with the new list
-        //   HIGHEST: Subscripe to new channels at the highest priority
+        //   HIGHEST: Subscribe to new channels at the highest priority
 
         List<ConfigChannel> existingChannels = server.getConfigChannelList();
         ArrayList<ConfigChannel> newChannels = new ArrayList<>(channels);

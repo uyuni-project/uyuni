@@ -33,7 +33,6 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerVirtualSystemCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -53,7 +52,6 @@ import java.util.regex.Pattern;
 public class ProvisionVirtualInstanceCommand extends KickstartScheduleCommand {
 
     private static Logger log = LogManager.getLogger(ProvisionVirtualInstanceCommand.class);
-    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     public static final int MIN_NAME_SIZE = 4;
     public static final int MAX_CPU = 32;
@@ -203,7 +201,7 @@ public class ProvisionVirtualInstanceCommand extends KickstartScheduleCommand {
         ksSession.setAction(ksAction);
         ksAction.setPrerequisite(prereqAction);
         ActionFactory.save(ksAction);
-        TASKOMATIC_API.scheduleActionExecution(ksAction);
+        taskomaticApi.scheduleActionExecution(ksAction);
         return ksAction;
     }
 

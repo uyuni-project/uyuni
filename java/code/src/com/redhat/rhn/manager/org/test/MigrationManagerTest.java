@@ -48,6 +48,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.salt.netapi.calls.LocalCall;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,6 +56,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -69,7 +71,12 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
     private Server server;  // virt host w/guests
     private Server server2; // server w/provisioning ent
 
-    private final SaltApi saltApi = new TestSaltApi();
+    private final SaltApi saltApi = new TestSaltApi() {
+         @Override
+        public <R> Optional<R> callSync(LocalCall<R> call, String minionId) {
+            return Optional.empty();
+        }
+    };
     private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(saltApi), new SystemEntitler(saltApi)

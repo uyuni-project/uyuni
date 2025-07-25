@@ -487,11 +487,13 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         List<EssentialChannelDto> channels = ChannelManager.listBaseChannelsForSystem(user, s);
 
-        assertEquals(2, channels.size());
+        assertEquals(3, channels.size());
         List<String> expectedNames = new ArrayList<>(List.of(
                 "Channel for SUSE Liberty Linux 7 x86_64",
                 "Channel for SUSE Liberty Linux LTSS 7 x86_64"));
-        List<String> names = channels.stream().map(EssentialChannelDto::getName).toList();
+        List<String> names = channels.stream()
+                .filter(c -> !c.isCustom())
+                .map(EssentialChannelDto::getName).toList();
         expectedNames.removeAll(names);
         assertTrue(expectedNames.isEmpty(), "Missing expected channel names: " + expectedNames);
     }

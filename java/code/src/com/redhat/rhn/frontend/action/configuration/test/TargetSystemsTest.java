@@ -16,7 +16,9 @@ package com.redhat.rhn.frontend.action.configuration.test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
@@ -43,8 +45,9 @@ public class TargetSystemsTest extends RhnMockStrutsTestCase {
         ctxt.setLocale(Locale.ENGLISH);
         ctxt.setTimezone(TimeZone.getDefault());
 
-        //Make a not currently managed system
-        ServerFactoryTest.createTestServer(user, true);
+        //Make a not currently managed system (Salt Systems are not supported by called target)
+        ServerFactoryTest.createTestServer(user, true, ServerConstants.getServerGroupTypeEnterpriseEntitled());
+        HibernateFactory.getSession().flush();
 
         setRequestPathInfo("/configuration/system/TargetSystems");
         actionPerform();

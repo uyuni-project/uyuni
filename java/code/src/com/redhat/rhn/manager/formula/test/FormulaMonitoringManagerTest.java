@@ -28,6 +28,9 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -57,8 +60,9 @@ import java.util.Map;
  */
 public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
 
-    static final String TEMP_PATH = "formulas/";
-    private SaltApi saltApi = new TestSaltApi();
+    private final SaltApi saltApi = new TestSaltApi();
+    private final SystemEntitlementManager sysEntMgr = new SystemEntitlementManager(
+            new SystemUnentitler(saltApi), new SystemEntitler(saltApi));
     private FormulaMonitoringManager manager = new FormulaMonitoringManager(saltApi);
     private Path metadataDir;
 
@@ -86,6 +90,9 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testIsMonitoringCleanupNeeded() throws Exception {
+
+        FormulaFactory.setSystemEntitlementManager(sysEntMgr);
+
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         FormulaFactory.setMetadataDirOfficial(metadataDir + File.separator);
 

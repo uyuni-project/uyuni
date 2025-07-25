@@ -100,7 +100,6 @@
           <property name="allowUnknownTags" value="true" />
         </module>
         <module name="JavadocVariable">
-          <property name="scope" value="${javadoc.var.scope}" />
           <property name="severity" value="ignore"/>
         </module>
 

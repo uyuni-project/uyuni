@@ -202,7 +202,12 @@ import java.util.regex.Pattern;
 @ExtendWith(JUnit5Mockery.class)
 public class SystemHandlerTest extends BaseHandlerTestCase {
 
-    private TaskomaticApi taskomaticApi = new TaskomaticApi();
+    private TaskomaticApi taskomaticApi = new TaskomaticApi() {
+        @Override
+        public void scheduleActionExecution(Action action) {
+            // disable for testing
+        }
+    };
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
     private final CloudPaygManager paygManager = new TestCloudPaygManagerBuilder().build();
@@ -749,8 +754,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SystemHandler mockedHandler = getMockedHandler();
         ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
 
-        Server server1 = ServerFactoryTest.createTestServer(admin, true);
-        Server server2 = ServerFactoryTest.createTestServer(admin, true);
+        Server server1 = ServerFactoryTest.createTestServer(admin, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
+        Server server2 = ServerFactoryTest.createTestServer(admin, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         Channel child1 = ChannelFactoryTest.createTestChannel(admin);
         Channel child2 = ChannelFactoryTest.createTestChannel(admin);
         Channel parent = ChannelFactoryTest.createTestChannel(admin);
@@ -1046,7 +1053,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testDeleteSystemWithCert() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(admin, true);
+        Server server = ServerFactoryTest.createTestServer(admin, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         Long sid = server.getId();
         ClientCertificate cert = SystemManager.createClientCertificate(server);
         cert.validate(server.getSecret());
@@ -2199,9 +2207,13 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    /**
+     * System Lock works only for traditional systems
+     */
     @Test
     public void testSetLockStatus() {
-        Server server = ServerFactoryTest.createTestServer(admin, true);
+        Server server = ServerFactoryTest.createTestServer(admin, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
         //server unlocked by default
         assertNull(server.getLock());
@@ -3184,7 +3196,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testHighstateNoMinion() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(admin);
+        Server server = ServerFactoryTest.createTestServer(admin, false,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         try {
             getMockedHandler().scheduleApplyHighstate(
                     admin, server.getId().intValue(), new Date(), false);
@@ -3471,11 +3484,13 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     /**
      * Test the validation part of SystemHandler.updatePackageState
+     * Traditional Server should throw
      * @throws Exception
      */
     @Test
     public void testUpdatePackageValidation() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(admin);
+        Server server = ServerFactoryTest.createTestServer(admin, false,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         SystemHandler systemHandler = getMockedHandler();
 
         try {
@@ -3545,7 +3560,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testRefreshPillar() throws Exception {
         MinionServer server1 = MinionServerFactoryTest.createTestMinionServer(admin);
         MinionServer server2 = MinionServerFactoryTest.createTestMinionServer(admin);
-        Server server3 = ServerFactoryTest.createTestServer(admin);
+        Server server3 = ServerFactoryTest.createTestServer(admin, false,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
         SystemHandler systemHandler = getMockedHandler();
         List<Integer> skipped = systemHandler.refreshPillar(admin, "General",

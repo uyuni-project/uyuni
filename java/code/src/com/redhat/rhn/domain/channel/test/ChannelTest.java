@@ -191,7 +191,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         Package p = PackageTest.createTestPackage(user.getOrg());
         assertNotNull(c);
-        assertEquals("channel-ia32", c.getChannelArch().getLabel());
+        assertEquals("channel-x86_64", c.getChannelArch().getLabel());
         assertNotNull(p);
         assertEquals("noarch", p.getPackageArch().getLabel());
 
@@ -199,16 +199,16 @@ public class ChannelTest extends BaseTestCaseWithUser {
             c.addPackage(p);
         }
         catch (Exception e) {
-            fail("noarch should be acceptible in an ia32 channel");
+            fail("noarch should be acceptible in an x86_64 channel");
         }
 
 
         try {
-            PackageArch pa = PackageFactory.lookupPackageArchByLabel("x86_64");
+            PackageArch pa = PackageFactory.lookupPackageArchByLabel("aarch64");
             assertNotNull(pa);
             p.setPackageArch(pa);
             c.addPackage(p);
-            fail("x86_64 is not acceptible in an ia32 channel");
+            fail("aarch64 is not acceptible in an x86_64 channel");
         }
         catch (Exception e) {
             // expected.

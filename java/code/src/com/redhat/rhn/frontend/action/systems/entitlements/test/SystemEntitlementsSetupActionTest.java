@@ -101,7 +101,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
                 .getAttribute(SystemEntitlementsSetupAction.BASE_ENTITLEMENT_COUNTS);
 
         assertEquals("1 system(s).",
-                baseEntitlementCounts.get(EntitlementManager.MANAGEMENT.getLabel()));
+                baseEntitlementCounts.get(EntitlementManager.SALT.getLabel()));
     }
 
     @Test

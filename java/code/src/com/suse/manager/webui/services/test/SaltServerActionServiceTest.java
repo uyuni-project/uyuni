@@ -51,6 +51,7 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
@@ -562,7 +563,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
         SystemManager.giveCapability(minion2.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
-        Server server1 = ServerFactoryTest.createTestServer(user);
+        Server server1 = ServerFactoryTest.createTestServer(user, false,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         SystemManager.giveCapability(server1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
         String label = TestUtils.randomString();
@@ -953,6 +955,11 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         MinionServer sshMinion = MinionServerFactoryTest.createTestMinionServer(user);
         sshMinion.setContactMethod(ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH));
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+
+        // set the auto generated server action to failed
+        action.getServerActions().forEach(sa -> sa.fail("not needed"));
+        action.setServerActions(null);
+
         createChildServerAction(action, STATUS_QUEUED, sshMinion, 5L);
         createChildServerAction(action, STATUS_QUEUED, testMinionServer, 5L);
         HibernateFactory.getSession().flush();
@@ -984,6 +991,9 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
 
+        // set the auto generated server action to failed
+        action.getServerActions().forEach(sa -> sa.fail("not needed"));
+        action.setServerActions(null);
         createChildServerAction(action, STATUS_COMPLETED, firstMinion, 5L);
         createChildServerAction(action, STATUS_QUEUED, secondMinion, 5L);
 

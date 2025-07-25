@@ -41,10 +41,13 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
+import com.suse.salt.netapi.calls.LocalCall;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
 
 /**
  * SystemEntitlementsSubmitActionTest
@@ -57,7 +60,12 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
                                     "system_entitlements.unentitle";
 
     private final SystemQuery systemQuery = new TestSystemQuery();
-    private final SaltApi saltApi = new TestSaltApi();
+    private final SaltApi saltApi = new TestSaltApi() {
+        @Override
+        public <R> Optional<R> callSync(LocalCall<R> call, String minionId) {
+            return Optional.empty();
+        }
+    };
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
     );
@@ -167,7 +175,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
                                             Entitlement ent,
                                             ServerGroupType groupType
                                             )  throws Exception {
-        Server server = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
+        Server server = ServerTestUtils.createVirtHostWithGuests(user, 1, false, systemEntitlementManager);
 
         systemEntitlementManager.removeServerEntitlement(server, EntitlementManager.VIRTUALIZATION);
         ServerGroupTest.createTestServerGroup(user.getOrg(),

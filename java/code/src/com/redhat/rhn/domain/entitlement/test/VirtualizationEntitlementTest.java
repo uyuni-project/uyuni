@@ -32,16 +32,22 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
+import com.suse.salt.netapi.calls.LocalCall;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class VirtualizationEntitlementTest extends BaseEntitlementTestCase {
 
     private final SystemQuery systemQuery = new TestSystemQuery();
-    private final SaltApi saltApi = new TestSaltApi();
+    private final SaltApi saltApi = new TestSaltApi() {
+        public <R> Optional<R> callSync(LocalCall<R> call, String minionId) {
+            return Optional.empty();
+        }
+    };
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
     );
