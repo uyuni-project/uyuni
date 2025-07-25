@@ -759,6 +759,11 @@ i[class~="fa-right"] {
       @extend .pull-left;
       @extend .text-left;
     }
+
+    .spacewalk-list-reflinks {
+      display: flex;
+      justify-content: space-between
+    }
   }
 }
 

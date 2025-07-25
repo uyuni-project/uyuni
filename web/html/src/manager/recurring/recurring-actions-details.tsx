@@ -275,7 +275,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
               identifier={(item) => item.position}
               selectable={false}
               data={_sortBy(this.state.details.states, "position")}
-              initialItemsPerPage={0}
+              hideHeaderFooter="both"
             >
               <Column header={t("Order")} columnKey="position" cell={(row) => row.position} />
               <Column

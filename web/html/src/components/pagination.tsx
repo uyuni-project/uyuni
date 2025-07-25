@@ -1,7 +1,8 @@
 import * as React from "react";
 
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import { Button, DropdownButton } from "components/buttons";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 type PaginationBlockProps = {
   currentPage: number;
   lastPage: number;
@@ -12,7 +13,6 @@ const PaginationBlock = (props: PaginationBlockProps) => {
   const currentPage = props.currentPage;
   const lastPage = props.lastPage;
   const onPageChange = props.onPageChange;
-
   const pagination =
     lastPage > 1 ? (
       <div className="spacewalk-list-pagination">
@@ -20,22 +20,22 @@ const PaginationBlock = (props: PaginationBlockProps) => {
           <PaginationButton
             onClick={() => onPageChange(1)}
             disabled={DEPRECATED_unsafeEquals(currentPage, 1)}
-            text={t("First")}
+            icon="fa-angle-double-left"
           />
           <PaginationButton
             onClick={() => onPageChange(currentPage - 1)}
             disabled={DEPRECATED_unsafeEquals(currentPage, 1)}
-            text={t("Prev")}
+            icon="fa-angle-left "
           />
           <PaginationButton
             onClick={() => onPageChange(currentPage + 1)}
             disabled={DEPRECATED_unsafeEquals(currentPage, lastPage)}
-            text={t("Next")}
+            icon="fa-angle-right"
           />
           <PaginationButton
             onClick={() => onPageChange(lastPage)}
             disabled={DEPRECATED_unsafeEquals(currentPage, lastPage)}
-            text={t("Last")}
+            icon="fa-angle-double-right"
           />
         </div>
       </div>
@@ -52,34 +52,51 @@ const PaginationBlock = (props: PaginationBlockProps) => {
 type PaginationButtonProps = {
   disabled?: boolean;
   onClick: (...args: any[]) => any;
-  text: React.ReactNode;
+  text?: React.ReactNode;
+  icon?: React.ReactNode;
 };
-
-const PaginationButton = (props: PaginationButtonProps) => (
-  <button type="button" className="btn btn-default" disabled={props.disabled} onClick={props.onClick}>
-    {props.text}
-  </button>
-);
+const PaginationButton = (props: PaginationButtonProps) => {
+  return (
+    <button type="button" className="btn btn-tertiary" disabled={props.disabled} onClick={props.onClick}>
+      <i className={`pagination-icon fa ${props.icon}`} />
+      {props.text}
+    </button>
+  );
+};
 
 type ItemsPerPageSelectorProps = {
   currentValue: number;
   onChange: (value: number) => any;
+  itemCount: number;
+  fromItem: number;
+  toItem: number;
 };
 
-const ItemsPerPageSelector = (props: ItemsPerPageSelectorProps) => (
-  <select
-    name="pageSize"
-    className="display-number"
-    defaultValue={props.currentValue}
-    onChange={(e) => props.onChange(parseInt(e.target.value, 10))}
-  >
-    {[5, 10, 15, 25, 50, 100, 250, 500].map((o) => (
-      <option value={o} key={o}>
-        {o}
-      </option>
-    ))}
-  </select>
-);
+const ItemsPerPageSelector = (props: ItemsPerPageSelectorProps) => {
+  const testIdPrefix = `data-testid-pageSize-child`;
+
+  return (
+    <div>
+      <DropdownButton
+        text={t("{from} - {to} of {total} items", { from: props.fromItem, to: props.toItem, total: props.itemCount })}
+        className={`page-selector ${testIdPrefix}__control`}
+        items={[5, 10, 15, 25, 50, 100, 250, 500].map((o) => (
+          <Button
+            key={o}
+            className={`dropdown-item justify-content-between ${testIdPrefix}__option`}
+            handler={(e) => {
+              e.preventDefault();
+              props.onChange(o);
+            }}
+          >
+            <div>{t(`${o} per page`)}</div>
+            <div>{props.currentValue === o ? <i className="fa fa-check" /> : null}</div>
+          </Button>
+        ))}
+      />
+    </div>
+  );
+};
 
 type PageSelectorProps = {
   lastPage: number;
@@ -88,36 +105,26 @@ type PageSelectorProps = {
 };
 
 const PageSelector = (props: PageSelectorProps) => {
-  if (props.lastPage > 1) {
-    return (
-      <div className="table-page-information">
-        {t("Page <dropdown></dropdown> of {total}", {
-          dropdown: () => (
-            <select
-              name="pageNumber"
-              className="display-number small-select"
-              value={props.currentValue}
-              onChange={(e) => props.onChange(parseInt(e.target.value, 10))}
-              key="select"
-            >
-              {Array.from(Array(props.lastPage)).map((_, i) => (
-                <option value={i + 1} key={i + 1}>
-                  {i + 1}
-                </option>
-              ))}
-            </select>
-          ),
-          total: props.lastPage,
-        })}
-      </div>
-    );
-  } else {
-    return (
-      <div className="table-page-information">
-        {t("Page {current} of {total}", { current: props.currentValue, total: props.lastPage })}
-      </div>
-    );
-  }
+  return props.lastPage > 1 ? (
+    <div className="table-page-information me-5">
+      {t("<dropdown></dropdown> of {total} pages", {
+        dropdown: () => (
+          <select
+            className="display-number small-select"
+            value={props.currentValue}
+            onChange={(e) => props.onChange(parseInt(e.target.value, 10))}
+          >
+            {Array.from(Array(props.lastPage)).map((_, i) => (
+              <option value={i + 1} key={i + 1}>
+                {i + 1}
+              </option>
+            ))}
+          </select>
+        ),
+        total: props.lastPage,
+      })}
+    </div>
+  ) : null;
 };
 
 export { PaginationBlock, ItemsPerPageSelector };
