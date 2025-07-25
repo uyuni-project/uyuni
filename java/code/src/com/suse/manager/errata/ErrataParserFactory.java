@@ -37,7 +37,7 @@ public final class ErrataParserFactory {
         REDHAT("release-engineering@redhat.com", RedhatErrataParser::new),
         ROCKYLINUX("releng@rockylinux.org", RockyLinuxErrataParser::new),
         SUSE_RES("res-maintenance@suse.de", SUSERESErrataParser::new),
-        SUSE("maint-coord@suse.de", SUSEErrataParser::new);
+        SUSE("maint-coord@suse.de", SUSEAdvisoryMapErrataParser::new);
 
         /** Email used in the errata */
         private final String vendorEmail;

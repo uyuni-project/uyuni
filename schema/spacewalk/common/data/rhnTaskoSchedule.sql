@@ -194,4 +194,10 @@ VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'),
         (SELECT id FROM rhnTaskoBunch WHERE name = 'oval-data-sync-bunch'),
         current_timestamp, '0 0 23 ? * *');
 
+INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
+VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'),
+        'errata-advisory-map-sync-default',
+        (SELECT id FROM rhnTaskoBunch WHERE name = 'errata-advisory-map-sync-bunch'),
+        current_timestamp, '0 0 23 ? * *');
+
 commit;

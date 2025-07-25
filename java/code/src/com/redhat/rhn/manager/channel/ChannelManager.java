@@ -2865,4 +2865,25 @@ public class ChannelManager extends BaseManager {
         var m = ModeFactory.getCallableMode(CHANNEL_QUERIES, "analyze_channel_packages");
         m.execute(new HashMap<>(), new HashMap<>());
     }
+
+    /**
+     * Find the update tag for a given channel looking also at original channels
+     * in case the given channel is a clone.
+     * @param channel channel
+     * @return update tag or null
+     */
+    public static String findUpdateTag(Channel channel) {
+        String updateTag = channel.getUpdateTag();
+        if (StringUtils.isEmpty(updateTag)) {
+            Channel current = channel;
+            while (current.isCloned()) {
+                current = current.asCloned().map(ClonedChannel::getOriginal).orElseThrow();
+                updateTag = current.getUpdateTag();
+                if (updateTag != null && !updateTag.isEmpty()) {
+                    break;
+                }
+            }
+        }
+        return updateTag;
+    }
 }

@@ -359,6 +359,20 @@ def argparser():
     return args
 
 
+def pre_idempotency_test():
+    """run sql command prior to idempotency test"""
+    # pylint: disable-next=consider-using-f-string
+    command = "psql -U postgres -d susemanager -f %s" % (
+        sys.path[0] + "/pre_idempotency_test_query.sql",
+    )
+    if run_command(command):
+        # pylint: disable-next=consider-using-f-string
+        print("Pre idempotency test script correctly executed")
+    else:
+        # pylint: disable-next=consider-using-f-string
+        raise RuntimeError("Error in pre idempotency test script!")
+
+
 def main():
     """Main function"""
     print("============================================================")
@@ -371,9 +385,11 @@ def main():
         args.schema_path, new_version, args.pr_file, args.version
     )
     manage_postgresql("start")
+    pre_idempotency_test()
     initial_dump = "/tmp/initial_dump.sql"
     dump_database(initial_dump, args.excluded_tables)
     run_upgrade(args.upgrade_script, new_version)
+    pre_idempotency_test()
     migrated_dump = "/tmp/migrated_dump.sql"
     dump_database(migrated_dump, args.excluded_tables)
     manage_postgresql("stop")

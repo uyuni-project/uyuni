@@ -155,4 +155,7 @@ VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'root-ca-cert-update', 'com.r
 INSERT INTO rhnTaskoTask (id, name, class)
 VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'custom-gpg-key-import', 'com.redhat.rhn.taskomatic.task.GpgImportTask');
 
+INSERT INTO rhnTaskoTask (id, name, class)
+VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'errata-advisory-map-sync', 'com.redhat.rhn.taskomatic.task.ErrataAdvisoryMapSync');
+
 commit;
