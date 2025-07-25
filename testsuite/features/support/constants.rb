@@ -838,6 +838,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-desktop-applications15-sp6-updates-x86_64
         sle-module-devtools15-sp6-updates-x86_64
         sle-module-devtools15-sp6-pool-x86_64
+        sle-module-systems-management-15-sp6-pool-x86_64-sled
+        sle-module-systems-management-15-sp6-updates-x86_64-sled
       ],
     'sles15-sp7' =>
       %w[
@@ -855,6 +857,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-desktop-applications15-sp7-updates-x86_64
         sle-module-devtools15-sp7-updates-x86_64
         sle-module-devtools15-sp7-pool-x86_64
+        sle-module-systems-management-15-sp7-pool-x86_64-sled
+        sle-module-systems-management-15-sp7-updates-x86_64
       ],
     'slesforsap15-sp5' =>
       %w[
@@ -1548,8 +1552,12 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-python3-15-sp5-updates-x86_64' => 60,
   'sle-module-python3-15-sp6-pool-x86_64' => 60,
   'sle-module-python3-15-sp6-updates-x86_64' => 60,
+  'sle-module-systems-management-15-sp6-pool-x86_64-sled' => 60,
+  'sle-module-systems-management-15-sp6-updates-x86_64-sled' => 60,
   'sle-module-python3-15-sp7-pool-x86_64' => 60,
   'sle-module-python3-15-sp7-updates-x86_64' => 60,
+  'sle-module-systems-management-15-sp7-pool-x86_64-sled' => 60,
+  'sle-module-systems-management-15-sp7-updates-x86_64-sled' => 60,
   'sle-module-server-applications15-sp3-pool-x86_64' => 60,
   'sle-module-server-applications15-sp3-updates-x86_64' => 120,
   'sle-module-server-applications15-sp4-pool-x86_64' => 60,
