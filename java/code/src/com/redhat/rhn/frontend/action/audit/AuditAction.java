@@ -58,7 +58,7 @@ public class AuditAction extends RhnAction implements Listable<AuditMachineDto> 
         paramNames = request.getParameterNames();
 
         while (paramNames.hasMoreElements()) {
-            str = (String) paramNames.nextElement();
+            str = paramNames.nextElement();
             forwardParams.put(str, request.getParameter(str));
         }
 
