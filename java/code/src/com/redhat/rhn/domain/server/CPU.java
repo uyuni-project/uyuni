@@ -16,10 +16,25 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import com.suse.utils.Json;
+
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.Map;
+
+import javax.persistence.Transient;
+
 /**
  * CPU
  */
 public class CPU extends BaseDomainHelper {
+    private static final Logger LOG = LogManager.getLogger(CPU.class);
 
     private Long id;
     private Server server;
@@ -42,6 +57,11 @@ public class CPU extends BaseDomainHelper {
     private String chipSet;
     private CPUArch arch;
 
+    /**
+     * This field stores CPU architecture-specific information. Although the corresponding database field is of type
+     * JSONB, it is mapped here as a String due to limitations in XML mapping for JSON types.
+     */
+    private String archSpecs;
 
     /**
      * @return Returns the acpiVersion.
@@ -329,6 +349,38 @@ public class CPU extends BaseDomainHelper {
      */
     public String  getArchName() {
         return arch.getName();
+    }
+
+    /**
+     * @return Returns the archSpecs.
+     */
+    public String getArchSpecs() {
+        return archSpecs;
+    }
+
+    /**
+     * @return Returns the archSpecs as a Map.
+     */
+    @Transient
+    public Map<String, Object> getArchSpecsMap() {
+        if (archSpecs == null || archSpecs.isBlank()) {
+            return Collections.emptyMap();
+        }
+        try {
+            Type type = new TypeToken<Map<String, Object>>() { }.getType();
+            return Json.GSON.fromJson(archSpecs, type);
+        }
+        catch (JsonSyntaxException e) {
+            LOG.warn("Failed to parse arch specs JSON, ignoring. Error: {}. Raw JSON: {}", e.getMessage(), archSpecs);
+            return Collections.emptyMap();
+        }
+    }
+
+    /**
+     * @param archSpecsIn The archSpecs to set.
+     */
+    public void setArchSpecs(String archSpecsIn) {
+        this.archSpecs = archSpecsIn;
     }
 
     @Override
