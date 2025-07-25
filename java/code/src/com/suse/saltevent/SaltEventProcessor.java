@@ -28,12 +28,6 @@ public class SaltEventProcessor {
 
             LOG.info("SaltReactor started");
 
-            // Keep alive
-            while (true) {
-                Thread.sleep(30000);
-                LOG.info("Still running...");
-            }
-
         } catch (Exception e) {
             LOG.error("Salt Event Processor failed to start" + e.getMessage());
             System.exit(1);
