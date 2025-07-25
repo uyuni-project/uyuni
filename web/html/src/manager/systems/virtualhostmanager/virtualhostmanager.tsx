@@ -3,8 +3,7 @@ import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { DropdownButton } from "components/buttons";
-import { Messages } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import Network from "utils/network";
@@ -23,6 +22,7 @@ const msgModuleTypes = {
   googlece: t("Google Compute Engine"),
   azure: t("Azure"),
   nutanixahv: t("Nutanix AHV"),
+  libvirt: t("Libvirt API"),
 };
 
 function getHashId() {
@@ -119,11 +119,6 @@ class VirtualHostManager extends React.Component<Props, State> {
       .catch(this.handleResponseError);
   };
 
-  getCreateType() {
-    const types = ["file", "vmware", "kubernetes", "amazonec2", "googlece", "azure", "nutanixahv"];
-    return types.includes(this.state.id) ? this.state.id : types[0];
-  }
-
   handleBackAction = () => {
     this.getVhmList().then((data) => {
       const loc = window.location;
@@ -152,10 +147,21 @@ class VirtualHostManager extends React.Component<Props, State> {
     if (action === "details") {
       return this.state.selected.label;
     } else if (action === "create") {
-      return t("Add a {type} Virtual Host Manager", { type: msgModuleTypes[this.state.id] });
+      return t("Add a {type} Virtual Host Manager", { type: this.getLocalizedModuleName(this.state.id) });
     } else {
       return t("Virtual Host Managers");
     }
+  }
+
+  getLocalizedModuleName(moduleId: string): string {
+    return (
+      // first use the localized name
+      msgModuleTypes[moduleId] ??
+      // then the module name as returned by the server
+      this.state.availableModules.find((name) => name.toLocaleLowerCase() === moduleId) ??
+      // if still undefined, fallback to the lowercase module id (execution should never reach here)
+      moduleId
+    );
   }
 
   render() {
@@ -168,8 +174,8 @@ class VirtualHostManager extends React.Component<Props, State> {
             title={t("Add a virtual host manager")}
             className="btn-primary"
             items={this.state.availableModules.map((name) => (
-              <a data-senna-off href={"#/create/" + name.toLocaleLowerCase()}>
-                {msgModuleTypes[name.toLocaleLowerCase()]}
+              <a key={name.toLocaleLowerCase()} data-senna-off href={"#/create/" + name.toLocaleLowerCase()}>
+                {this.getLocalizedModuleName(name.toLocaleLowerCase())}
               </a>
             ))}
           />
@@ -184,31 +190,45 @@ class VirtualHostManager extends React.Component<Props, State> {
         helpUrl="reference/systems/virtual-host-managers.html"
       >
         {this.state.messages ? <Messages items={this.state.messages} /> : null}
-        {this.state.action === "details" ? (
+        {this.renderContent(this.state.action)}
+      </TopPanel>
+    );
+  }
+
+  renderContent(action: string): React.ReactNode {
+    switch (action) {
+      case "details":
+        return (
           <VirtualHostManagerDetails
             data={this.state.selected}
             onCancel={this.handleBackAction}
             onEdit={this.handleEditAction}
             onDelete={this.deleteSelected}
           />
-        ) : this.state.action === "create" ? (
-          <VirtualHostManagerEdit type={this.getCreateType()} onCancel={this.handleBackAction} />
-        ) : this.state.action === "edit" ? (
+        );
+
+      case "create":
+        return <VirtualHostManagerEdit type={this.state.id} onCancel={this.handleBackAction} />;
+
+      case "edit":
+        return (
           <VirtualHostManagerEdit
             item={this.state.selected}
             type={this.state.selected.gathererModule}
             onCancel={this.handleBackAction}
           />
-        ) : (
+        );
+
+      default:
+        return (
           <VirtualHostManagerList
             data={this.state.vhms}
             onSelect={this.handleDetailsAction}
             onEdit={this.handleEditAction}
             onDelete={this.deleteVhm}
           />
-        )}
-      </TopPanel>
-    );
+        );
+    }
   }
 }
 
