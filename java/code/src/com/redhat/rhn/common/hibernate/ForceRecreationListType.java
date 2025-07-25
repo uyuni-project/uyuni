@@ -125,7 +125,7 @@ public class ForceRecreationListType implements UserCollectionType {
     public Object replaceElements(Object original, Object target,
             CollectionPersister persister, Object owner, Map copyCache,
             SharedSessionContractImplementor session) throws HibernateException {
-        List result = (List) target;
+        List<Object> result = (List) target;
         result.clear();
         result.addAll((Collection) original);
         return result;
@@ -177,7 +177,7 @@ public class ForceRecreationListType implements UserCollectionType {
          * @param session session implementation
          * @param list  list to persist
          */
-        ForceRecreationList(SharedSessionContractImplementor session, List list) {
+        ForceRecreationList(SharedSessionContractImplementor session, List<Object> list) {
             super(session, list);
         }
 
