@@ -75,6 +75,7 @@ const AccessGroupDetails = (props: Props) => {
       </div>
       <div className="row">
         <Field
+          disabled={!!props.state.id}
           required
           name="orgId"
           label={t("Organization")}
@@ -86,24 +87,27 @@ const AccessGroupDetails = (props: Props) => {
           divClass="col-md-6"
         />
       </div>
-      <div className="row">
-        <Field
-          name="accessGroups"
-          label={t("Copy Permissions From")}
-          options={options}
-          as={Field.Select}
-          placeholder={t("Search for existing access groups...")}
-          emptyText={t("No Access group")}
-          labelClass="col-md-3"
-          divClass="col-md-6"
-          isMulti
-        />
-        <div className="offset-md-3 col-md-6">
-          {t(
-            "This action copy permissions from an existing access group to a new one. Once created, the new access group will function independently, unaffected by future updates to the original."
-          )}
+      { !props.state.id ? (
+        <div className="row">
+          <Field
+            name="accessGroups"
+            label={t("Copy Permissions From")}
+            options={options}
+            as={Field.Select}
+            placeholder={t("Search for existing access groups...")}
+            emptyText={t("No Access group")}
+            labelClass="col-md-3"
+            divClass="col-md-6"
+            isMulti
+          />
+          <div className="offset-md-3 col-md-6">
+            {t(
+              "This action copy permissions from an existing access group to a new one. Once created, the new access group will function independently, unaffected by future updates to the original."
+            )}
+          </div>
+
         </div>
-      </div>
+      ) : null }
     </Form>
   );
 };
