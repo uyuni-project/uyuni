@@ -69,7 +69,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
-import com.redhat.rhn.domain.rhnpackage.profile.DuplicateProfileNameException;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -116,7 +115,9 @@ import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.DuplicateProfileNameException;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
+import com.redhat.rhn.frontend.xmlrpc.IOFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidActionTypeException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
@@ -208,7 +209,6 @@ import org.cobbler.SystemRecord;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -1723,7 +1723,7 @@ public class SystemHandler extends BaseHandler {
         SsmDeleteServersEvent event =
                 new SsmDeleteServersEvent(loggedInUser, deletion,
                         SystemManager.ServerCleanupType.fromString(cleanupType).orElseThrow(() ->
-                        new IllegalArgumentException("Invalid server cleanup type value: " + cleanupType)));
+                        new InvalidParameterException("Invalid server cleanup type value: " + cleanupType)));
         MessageQueue.publish(event);
 
         // If we skipped any systems, create an error message and throw a FaultException
@@ -1804,7 +1804,7 @@ public class SystemHandler extends BaseHandler {
         systemManager.deleteServerAndCleanup(loggedInUser,
                 server.getId(),
                 SystemManager.ServerCleanupType.fromString(cleanupType).orElseThrow(() ->
-                                    new IllegalArgumentException(
+                                    new InvalidParameterException(
                                             "Invalid server cleanup type value: " + cleanupType))
         );
         return 1;
@@ -2301,11 +2301,11 @@ public class SystemHandler extends BaseHandler {
      */
     public int deleteNote(User loggedInUser, Integer sid, Integer noteId) {
         if (sid == null) {
-            throw new IllegalArgumentException("sid cannot be null");
+            throw new InvalidParameterException("sid cannot be null");
         }
 
         if (noteId == null) {
-            throw new IllegalArgumentException("nid cannot be null");
+            throw new InvalidParameterException("nid cannot be null");
         }
 
         SystemManager.deleteNote(loggedInUser, sid.longValue(), noteId.longValue());
@@ -2329,7 +2329,7 @@ public class SystemHandler extends BaseHandler {
      */
     public int deleteNotes(User loggedInUser, Integer sid) {
         if (sid == null) {
-            throw new IllegalArgumentException("sid cannot be null");
+            throw new InvalidParameterException("sid cannot be null");
         }
 
         SystemManager.deleteNotes(loggedInUser, sid.longValue());
@@ -5998,7 +5998,7 @@ public class SystemHandler extends BaseHandler {
      * returns uuid and other transition data for the system according to the mapping file
      * @param clientCert client certificate
      * @return map containing transition data (hostname, uuid, system_id, timestamp)
-     * @throws FileNotFoundException in case no transition data are available
+     * @throws IOFaultException in case no transition data are available
      * @throws NoSuchSystemException in case no transition data for the specific system
      * were found
      *
@@ -6006,8 +6006,7 @@ public class SystemHandler extends BaseHandler {
      * is not useful to external users of the API, the typical XMLRPC API documentation
      * is not being included.
      */
-    public Map transitionDataForSystem(String clientCert) throws FileNotFoundException,
-        NoSuchSystemException {
+    public Map transitionDataForSystem(String clientCert) throws IOFaultException, NoSuchSystemException {
         final File transitionFolder =  new File("/usr/share/rhn/transition");
         final String csvUuid = "uuid";
         final String csvSystemId = "system_id";
@@ -6021,7 +6020,7 @@ public class SystemHandler extends BaseHandler {
 
         File[] files = transitionFolder.listFiles();
         if (files == null) {
-            throw new FileNotFoundException("Transition data not available");
+            throw new IOFaultException("Transition data not available");
         }
         for (File file : files) {
             Pattern pattern = Pattern.compile("id_to_uuid-(\\d+).map");
@@ -6166,7 +6165,7 @@ public class SystemHandler extends BaseHandler {
                     profileLabel, description);
             ProfileManager.copyFrom(server, profile);
         }
-        catch (DuplicateProfileNameException dbe) {
+        catch (com.redhat.rhn.domain.rhnpackage.profile.DuplicateProfileNameException dbe) {
             throw new DuplicateProfileNameException("Package Profile already exists " +
                     "with name: " + profileLabel);
         }
@@ -6891,7 +6890,7 @@ public class SystemHandler extends BaseHandler {
      * @param systemName system name
      * @param data the data about system
      * @throws SystemsExistFaultException - when system(s) matching given data exists
-     * @throws java.lang.IllegalArgumentException when the input data contains insufficient information or
+     * @throws InvalidParameterException when the input data contains insufficient information or
      * if the format of the hardware address is invalid
      * @return int - ID of the created system on success, exception thrown otherwise.
      *
@@ -8775,11 +8774,11 @@ public class SystemHandler extends BaseHandler {
             MinionServer minion = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
                     .orElseThrow(() -> new UnsupportedOperationException("System not managed with Salt: " + sid));
             PackageStates vPkgState = PackageStates.byId(state)
-                    .orElseThrow(()-> new IllegalArgumentException("Invalid package state"));
+                    .orElseThrow(()-> new InvalidParameterException("Invalid package state"));
             VersionConstraints vVersionConstraint = VersionConstraints.byId(versionConstraint)
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid version constraint"));
+                    .orElseThrow(() -> new InvalidParameterException("Invalid version constraint"));
             PackageName pkgName = Optional.ofNullable(PackageManager.lookupPackageName(packageName))
-                    .orElseThrow(() -> new IllegalArgumentException("No such package exists"));
+                    .orElseThrow(() -> new InvalidParameterException("No such package exists"));
 
             //update the state
            SystemManager.updatePackageState(loggedInUser, minion, pkgName, vPkgState, vVersionConstraint);
