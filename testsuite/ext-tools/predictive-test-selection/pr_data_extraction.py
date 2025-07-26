@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
 """
-Extracts data from the latest N pull requests (PRs) in the Uyuni repository that triggered 
-a GitHub Actions test workflow and generated Cucumber reports.
+Extracts data from pull requests (PRs) in the Uyuni repository that triggered a GitHub Actions
+test run and generated Cucumber reports.
 
-For each PR (training mode):
-- Finds the first completed test run during the PR's lifetime that includes Cucumber reports 
-(if none exist, the PR is skipped).
+The script can operate in one of three modes:
+1.  **Latest N PRs**: Extracts data from the latest N PRs.
+2.  **Date-based**: Extracts data for all PRs created from a specified start date up to now.
+3.  **Single PR**: Extracts data for a specific PR by its number.
+
+For each PR (training mode, i.e., not a single PR):
+- Finds the first completed test run during the PR's lifetime that includes Cucumber reports
+  (if none exist, the PR is skipped).
 - Downloads all Cucumber JSON reports from this initial test run.
 - Extracts and retains only secondary/recommended Cucumber test reports.
 - Identifies the files modified that triggered this test run.
@@ -13,20 +18,22 @@ For each PR (training mode):
 - Retrieves the change history for those files over several recent time windows.
 - Outputs a CSV file containing PR features: file extensions, change history, and PR number.
 - If the script encounters a configurable number of consecutive PRs without Cucumber reports,
-it will stop early and log a warning. This prevents unnecessary API calls when it is unlikely
-that more qualifying PRs exist among the candidates.
+  it will stop early and log a warning. This prevents unnecessary API calls when it is unlikely
+  that more qualifying PRs exist among the candidates.
 
 In prediction mode (single PR), only extracts modified files, their unique file extensions,
-and change history features for the PR, Cucumber reports are not downloaded or processed.
+and change history features for the PR. Cucumber reports are not downloaded or processed.
 
 Requirements:
 - Environment variable GITHUB_TOKEN must be set with a GitHub Access Token.
 
 Usage:
-    python pr_data_extraction.py <N>
-    python pr_data_extraction.py '#<PR_NUMBER>'
-    Where <N> is the number of latest Uyuni PRs (with Cucumber reports) to extract data from
-    or '#<PR_NUMBER>' is a specific PR number to extract features for.
+    python pr_data_extraction.py <N> | '#<PR_NUMBER>' | <YYYY-MM-DD>
+
+Where:
+    <N>              - Number of latest Uyuni PRs to extract data from.
+    '#<PR_NUMBER>'   - A specific PR number to extract features for (e.g., '#12345').
+    <YYYY-MM-DD>     - A start date (e.g., '2025-01-20') to get all PRs from that date up to now.
 """
 import os
 import sys
@@ -111,22 +118,48 @@ def get_test_workflow(repo, workflow_name):
         sys.exit(1)
     return test_workflow
 
-def get_candidate_prs(repo, n):
+def get_latest_n_prs(repo, n):
     """
-    Get n recently created PRs, oversampling to account for filtering out irrelevant ones.
+    Get the N most recently created pull requests, oversampling to account for
+    filtering out irrelevant ones.
 
     Args:
         repo (github.Repository.Repository): Repository object.
-        n (int): Number of PRs to process.
+        n (int): Number of PRs to retrieve.
 
     Returns:
-        list: List of PullRequest objects.
+        list: List of PullRequest objects, ordered from newest to oldest.
     """
     prs = list(
-        repo.get_pulls(state="all", sort="created", direction="desc")[:n*PR_OVERSAMPLE_MULTIPLIER]
+        repo.get_pulls(
+            state="all",
+            sort="created",
+            direction="desc"
+        )[:n*PR_OVERSAMPLE_MULTIPLIER]
     )
     if len(prs) < n:
         logger.warning("Only %d PRs found, but %d requested.", len(prs), n)
+    return prs
+
+def get_prs_since_date(gh, repo, start_date):
+    """
+    Get all pull requests created since the specified date, ordered from newest to oldest.
+    Uses the GitHub search API for efficiency.
+
+    Args:
+        gh (Github): PyGithub Github instance.
+        repo (github.Repository.Repository): Repository object.
+        start_date (datetime.datetime): Start date for PR retrieval.
+
+    Returns:
+        list: List of PullRequest objects created on or after start_date.
+    """
+    query = f"repo:{repo.full_name} is:pr created:>={start_date.strftime('%Y-%m-%d')}"
+    issues = gh.search_issues(query, sort="created", order="desc")
+
+    prs = [repo.get_pull(issue.number) for issue in issues]
+
+    logger.info("Found %d PRs created since %s", len(prs), start_date.date())
     return prs
 
 def get_cucumber_initial_test_run(test_workflow, pr):
@@ -417,7 +450,14 @@ def setup_output_csv(recent_days):
         logger.critical("Failed to initialize PR features CSV file: %s", e)
         sys.exit(1)
 
-def extract_pr_data(repo_full_name, n, github_token, csv_writer, single_pr_number=None):
+def extract_pr_data(
+    repo_full_name,
+    n,
+    github_token,
+    csv_writer,
+    single_pr_number=None,
+    start_date=None
+):
     """
     Coordinate the full PR data extraction process: getting PRs, modified files,
     their change history, test runs, and downloading Cucumber reports.
@@ -433,7 +473,8 @@ def extract_pr_data(repo_full_name, n, github_token, csv_writer, single_pr_numbe
         github_token (str): GitHub token.
         csv_writer (csv.writer): CSV writer object.
         single_pr_number (int, optional): If set, only process this PR.
-
+        start_date (datetime.datetime, optional): If set, process all PRs since this date.
+    
     Returns:
         None
     """
@@ -455,11 +496,11 @@ def extract_pr_data(repo_full_name, n, github_token, csv_writer, single_pr_numbe
         process_single_pr_mode(repo, pr, csv_writer)
         return
 
-    prs = get_candidate_prs(repo, n)
+    prs = get_prs_since_date(gh, repo, start_date) if start_date else get_latest_n_prs(repo, n)
     processed_prs_with_cucumber_reports = 0
     consecutive_without_cucumber = 0
     for pr in prs:
-        if processed_prs_with_cucumber_reports >= n:
+        if not start_date and processed_prs_with_cucumber_reports >= n:
             logger.info(
                 "Processed the required number of PRs with Cucumber reports: %d.",
                 processed_prs_with_cucumber_reports
@@ -566,14 +607,18 @@ def main():
     """
     if len(sys.argv) != 2:
         logger.critical(
-            "Usage: python pr_data_extraction.py <N>|'<#PR_NUMBER>'\n"
+            "Usage: python pr_data_extraction.py <N>|'#<PR_NUMBER>'|<YYYY-MM-DD>\n"
             "<N> is the number of latest Uyuni PRs (with Cucumber reports) to extract data from.\n"
-            "'<#PR_NUMBER>' is a specific PR number (e.g., '#12345') to extract features for."
+            "'#<PR_NUMBER>' is a specific PR number (e.g., '#12345') to extract features for.\n"
+            "<YYYY-MM-DD> is a date (e.g., '2025-01-20') to get all PRs from that date up to now."
         )
         sys.exit(1)
 
     arg = sys.argv[1]
     single_pr_number = None
+    start_date = None
+    n = None
+
     if arg.startswith("#"):
         try:
             single_pr_number = int(arg[1:])
@@ -585,18 +630,26 @@ def main():
             sys.exit(1)
     else:
         try:
-            n = int(arg)
-        except ValueError:
-            logger.critical(
-                "Argument must be an integer (for N) (e.g., 80) or '#<PR_NUMBER>' (e.g., '#12345')."
+            # Try parsing as date first
+            start_date = datetime.datetime.strptime(arg, "%Y-%m-%d").replace(
+                tzinfo=datetime.timezone.utc
             )
-            sys.exit(1)
+        except ValueError:
+            # If not a date, try parsing as integer
+            try:
+                n = int(arg)
+            except ValueError:
+                logger.critical(
+                    "Argument must be an integer (for N) (e.g., 80)" 
+                    ", or '#<PR_NUMBER>' (e.g., '#12345'), or a date in YYYY-MM-DD format."
+                )
+                sys.exit(1)
 
     github_token = load_github_token()
     csv_file, csv_writer = setup_output_csv(RECENT_DAYS)
     try:
         extract_pr_data(
-            REPO_FULL_NAME, n, github_token, csv_writer, single_pr_number
+            REPO_FULL_NAME, n, github_token, csv_writer, single_pr_number, start_date
         )
     finally:
         csv_file.close()

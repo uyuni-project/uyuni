@@ -23,16 +23,20 @@ The project is composed of several interconnected parts. This README explains ea
 
 1. Set the `GITHUB_TOKEN` environment variable with a valid GitHub Access Token.
 2. Optionally, adjust PR Data Extraction constants in [config.py](config.py)
-3. The script supports two modes:
-    1. **Training mode**: Collects data from the latest `N` PRs (with Cucumber reports). This includes downloading the Cucumber reports for secondary tests executed on each PR, enabling the preparation of training data that links PRs to their corresponding test results.
-    2. **Prediction mode**: Gathers data from a single PR. In this mode, Cucumber reports are not collected, as they are not available in production scenarios where the goal is to predict which tests are most likely to fail for a new PR.
+3. The script supports three modes:
+    1. **Training mode (N)**: Collects data from the latest `N` PRs (with Cucumber reports). This includes downloading the Cucumber reports for secondary tests executed on each PR, enabling the preparation of training data that links PRs to their corresponding test results.
+    2. **Training mode (Date)**: Collects data from all PRs created since a specified date up to now. Like the N-based mode, this includes downloading Cucumber reports for training data preparation.
+    3. **Prediction mode**: Gathers data from a single PR. In this mode, Cucumber reports are not collected, as they are not available in production scenarios where the goal is to predict which tests are most likely to fail for a new PR.
 
 ```
 python pr_data_extraction.py <N>
 python pr_data_extraction.py '#<PR_NUMBER>'
+python pr_data_extraction.py <YYYY-MM-DD>
 
-Where <N> is the number of the latest Uyuni PRs (with Cucumber reports) to extract data from,
-or '#<PR_NUMBER>' is a specific PR number to extract features for.
+Where:
+- <N> is the number of the latest Uyuni PRs to extract data from.
+- '#<PR_NUMBER>' is a specific PR number to extract features for.
+- <YYYY-MM-DD> is a start date (e.g., '2025-01-20') to get all PRs from that date up to now.
 ```
 
 ### Example Script Output
@@ -60,8 +64,9 @@ or '#<PR_NUMBER>' is a specific PR number to extract features for.
 
 **Training mode (multiple PRs):**
 
-1. Retrieves the `N * PR_OVERSAMPLE_MULTIPLIER` most recently created PRs, oversampling to account for PRs that lack test runs or Cucumber reports.
-2. For each of the `N` PRs:
+1. For N-based mode: Retrieves the `N * PR_OVERSAMPLE_MULTIPLIER` most recently created PRs.
+   For date-based mode: Retrieves all PRs created since the specified date.
+2. For each PR:
     - Finds the **first completed** test run during the PR's lifetime that includes Cucumber reports (if none exist, the PR is skipped).
     - Downloads all Cucumber JSON reports from this initial test run.
     - Extracts and retains only secondary/recommended Cucumber test reports.
