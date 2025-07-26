@@ -17,6 +17,8 @@ export type AccessGroupState = {
   id: number | undefined;
   name: string;
   description: string;
+  orgId: number | undefined;
+  orgName: string;
   accessGroups: string[];
   permissions: { id: number; namespace: string; description: string; accessMode: string; view: boolean; modify: boolean }[];
   users: { id: number; username: string; email: string; orgId: string }[];
@@ -34,6 +36,8 @@ const AccessGroup = (props: AccessGroupProps) => {
     id: undefined,
     name: "",
     description: "",
+    orgId: undefined,
+    orgName: "",
     accessGroups: [],
     permissions: [],
     users: [],
@@ -41,7 +45,17 @@ const AccessGroup = (props: AccessGroupProps) => {
   });
 
   const handleFormChange = (newAccessGroupState) => {
-    setAccessGroupState(newAccessGroupState)
+    /* TODO: using the validate prop to update the form change messes with setting the users to empty on org change
+    **  that's why accessGroupState.users.length === 0 ? [] is needed here. Once onChange is used to update it it can be
+    **  removed */
+    setAccessGroupState((prevState) => ({...prevState,
+      name: newAccessGroupState.name,
+      description: newAccessGroupState.description,
+      orgId: newAccessGroupState.orgId,
+      orgName: newAccessGroupState.orgName,
+      users: accessGroupState.orgId !== newAccessGroupState.orgId || accessGroupState.users.length === 0 ? [] : newAccessGroupState.users,
+      accessGroups: newAccessGroupState.accessGroups
+    }));
   };
 
   const handleNamespace = (newname, type) => {

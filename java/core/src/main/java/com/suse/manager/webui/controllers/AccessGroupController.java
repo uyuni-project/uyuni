@@ -28,12 +28,16 @@ import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.access.NamespaceFactory;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.access.AccessGroupManager;
+import com.redhat.rhn.manager.org.OrgManager;
 
+import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.AccessGroupJson;
@@ -81,8 +85,10 @@ public class AccessGroupController {
                 asJson(withProductAdmin(AccessGroupController::listRoles)));
         get("/manager/api/admin/access-group/namespaces",
                 asJson(withProductAdmin(AccessGroupController::listNamespaces)));
-        get("/manager/api/admin/access-group/users",
-                asJson(withProductAdmin(AccessGroupController::listAccessGroupUsers)));
+        get("/manager/api/admin/access-group/users/:id",
+                asJson(withProductAdmin(AccessGroupController::listOrgUsers)));
+        get("/manager/api/admin/access-group/organizations",
+                asJson(withProductAdmin(AccessGroupController::listOrganizations)));
         post("/manager/api/admin/access-group/save",
                 asJson(withProductAdmin(AccessGroupController::save)));
         delete("/manager/api/admin/access-group/delete/:id",
@@ -124,16 +130,31 @@ public class AccessGroupController {
     }
 
     /**
-     * Processes a GET request to get a list of all users
+     * Processes a GET request to get a list of all users of an organization
      *
      * @param request the request object
      * @param response the response object
      * @param user the user
      * @return the result JSON object
      */
-    public static String listAccessGroupUsers(Request request, Response response, User user) {
-        List<AccessGroupUserJson> users = MANAGER.listUsers();
+    public static String listOrgUsers(Request request, Response response, User user) {
+        Long orgId = Long.parseLong(request.params("id"));
+        List<AccessGroupUserJson> users = MANAGER.listUsers(orgId);
         return json(GSON, response, users, new TypeToken<>() { });
+    }
+
+    /**
+     * Processes a GET request to get a list of all organizations
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the user
+     * @return the result JSON object
+     */
+    public static String listOrganizations(Request request, Response response, User user) {
+        List<OrgInfoJson> organizations = OrgManager.allOrgs(user).stream().map(org ->
+            new OrgInfoJson(org.getId(), org.getName())).toList();
+        return json(GSON, response, organizations, new TypeToken<>() { });
     }
 
     /**
@@ -157,11 +178,12 @@ public class AccessGroupController {
             try {
                 AccessGroup accessGroup;
                 if (json.getId() == null) {
+                    Org org  = OrgFactory.lookupById(json.getOrgId());
                     Set<AccessGroup> groups = json.getAccessGroups().stream()
                             .map(group -> MANAGER.lookup(group, user.getOrg())
                                     .orElseThrow(() -> new EntityNotExistsException(group)))
                             .collect(Collectors.toUnmodifiableSet());
-                    accessGroup = MANAGER.create(json.getName(), json.getDescription(), user.getOrg(), groups);
+                    accessGroup = MANAGER.create(json.getName(), json.getDescription(), org, groups);
                 }
                 else {
                     accessGroup = MANAGER.lookupById(json.getId()).orElseThrow();
@@ -184,7 +206,7 @@ public class AccessGroupController {
      * @return string containing the JSON response
      */
     public static String remove(Request request, Response response, User user) {
-        long id = Long.parseLong(request.params("id"));
+        Long id = Long.parseLong(request.params("id"));
         try {
             MANAGER.remove(id);
         }

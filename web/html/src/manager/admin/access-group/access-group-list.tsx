@@ -17,7 +17,7 @@ type AccessGroupListItem = {
   id: number;
   name: string;
   description: string;
-  type: string;
+  orgName: string;
   numUsers: number;
   numPermissions: number;
 };
@@ -39,7 +39,7 @@ const AccessGroupList = (props) => {
   };
 
   const actionButtons = (item: AccessGroupListItem) => {
-    if (item.type === "Built-in") {
+    if (item.orgName === "-") {
       return (
         <div className="btn-group">
           <Button className="btn-default btn-sm" icon="fa-user" />
@@ -93,7 +93,9 @@ const AccessGroupList = (props) => {
           header={t("Description")}
           cell={(item) => item.description}
         />
-        <Column columnKey="type" comparator={Utils.sortByText} header={t("Type")} cell={(item) => item.type} />
+        <Column columnKey="type" header={t("Type")} cell={(item) => item.orgName === "-" ? t("Built-In") : t("Custom")} />
+
+        <Column columnKey="orgName" comparator={Utils.sortByText} header={t("Organization")} cell={(item) => item.orgName} />
 
         <Column columnKey="users" comparator={Utils.sortByText} header={t("Users")} cell={(item) => item.numUsers} />
 

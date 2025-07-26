@@ -37,7 +37,8 @@ public class AccessGroupJson extends BaseTupleDto {
         setId(getTupleValue(tuple, "id" , Number.class).map(Number::longValue).orElse(null));
         setName(getTupleValue(tuple, "name" , String.class).orElse("-"));
         setDescription(getTupleValue(tuple, "description" , String.class).orElse("-"));
-        setType(getTupleValue(tuple, "type" , String.class).orElse("-"));
+        setOrgId(getTupleValue(tuple, "org_id" , Number.class).map(Number::longValue).orElse(null));
+        setOrgName(getTupleValue(tuple, "org_name" , String.class).orElse("-"));
         setNumUsers(getTupleValue(tuple, "users", Number.class).map(Number::longValue).orElse(null));
         setNumPermissions(getTupleValue(tuple, "permissions", Number.class).map(Number::longValue).orElse(null));
     }
@@ -50,6 +51,8 @@ public class AccessGroupJson extends BaseTupleDto {
         setId(group.getId());
         setName(group.getLabel());
         setDescription(group.getDescription());
+        setOrgId(group.getOrg().getId());
+        setOrgName(group.getOrg().getName());
         setUsers(new ArrayList<>());
         setPermissions(new ArrayList<>());
     }
@@ -58,7 +61,8 @@ public class AccessGroupJson extends BaseTupleDto {
     private String name;
     private String description;
     private List<String> accessGroups;
-    private String type;
+    private Long orgId;
+    private String orgName;
     private Long numUsers;
     private List<AccessGroupUserJson> users;
     private Long numPermissions;
@@ -97,12 +101,20 @@ public class AccessGroupJson extends BaseTupleDto {
         accessGroups = accessGroupsIn;
     }
 
-    public String getType() {
-        return type;
+    public Long getOrgId() {
+        return orgId;
     }
 
-    public void setType(String typeIn) {
-        type = typeIn;
+    public void setOrgId(Long orgIdIn) {
+        orgId = orgIdIn;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgNameIn) {
+        orgName = orgNameIn;
     }
 
     public Long getNumUsers() {
