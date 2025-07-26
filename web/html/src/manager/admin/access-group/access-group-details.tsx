@@ -1,14 +1,22 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 
 import { Form } from "components/formik";
 import { Field } from "components/formik/field";
 import { AccessGroupState } from "manager/admin/access-group/access-group";
+import Network from "utils/network";
+import Organizations from "manager/organizations";
 
 type Props = {
   state: AccessGroupState;
   onChange: Function;
   errors: any;
 };
+
+type Organization = {
+  value: number;
+  label: string;
+}
 
 const options = [
   { value: "Activation KeyAdmin", label: "ActivationKeyAdmin" },
@@ -25,6 +33,28 @@ const options = [
 
 const AccessGroupDetails = (props: Props) => {
 
+  const [organizations, setOrganizations] = useState<Organization[]>([]);
+
+  useEffect(() => {
+    getOrganizations();
+  }, []);
+
+  const getOrganizations = () => {
+    const endpoint = "/rhn/manager/api/admin/access-group/organizations";
+    return Network.get(endpoint)
+      .then((orgs) => {
+        setOrganizations(orgs.map((org) => ({value: org.orgId, label: org.orgName})));
+      })
+      // TODO: Handle errors
+      .catch(props.errors);
+  }
+
+  const handleFormChange = (model) => {
+    props.onChange({...model,
+      orgName: organizations.filter((org) => org.value === model.orgId)[0]?.label
+    });
+  }
+
   return (
     <Form
       initialValues={props.state}
@@ -32,14 +62,29 @@ const AccessGroupDetails = (props: Props) => {
       // onChange={(model) => {
       //   props.onChange(model);
       // }}
-      onSubmit={() => {}}
-      validate={(model) => props.onChange(model)}
+      onSubmit={() => {
+      }}
+      validate={handleFormChange}
     >
       <div className="row">
-        <Field required name="name" label={t("Name")} labelClass="col-md-3" divClass="col-md-6" />
+        <Field required name="name" label={t("Name")} labelClass="col-md-3" divClass="col-md-6"/>
       </div>
       <div className="row">
-        <Field required name="description" rows={10} label={t("Description")} as={Field.TextArea} labelClass="col-md-3" divClass="col-md-6" />
+        <Field required name="description" rows={10} label={t("Description")} as={Field.TextArea} labelClass="col-md-3"
+               divClass="col-md-6"/>
+      </div>
+      <div className="row">
+        <Field
+          required
+          name="orgId"
+          label={t("Organization")}
+          options={organizations}
+          as={Field.Select}
+          placeholder={t("Search for organizations...")}
+          emptyText={t("No Organizations Found")}
+          labelClass="col-md-3"
+          divClass="col-md-6"
+        />
       </div>
       <div className="row">
         <Field

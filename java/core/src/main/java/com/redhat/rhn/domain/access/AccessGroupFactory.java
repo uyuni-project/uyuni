@@ -112,9 +112,8 @@ public class AccessGroupFactory extends HibernateFactory {
                 "ag.id as id, " +
                 "ag.label as name, " +
                 "ag.description as description, " +
-                "case " +
-                "  when ag.org_id is null then 'Built-in' else 'Custom' " +
-                "end as type, " +
+                "ag.org_id as org_id, " +
+                "wc.name as org_name, " +
                 "case" +
                 "  when uag.users is not null then uag.users else 0 " +
                 "end as users, " +
@@ -130,6 +129,8 @@ public class AccessGroupFactory extends HibernateFactory {
                 "  (select group_id, count(group_id) permissions " +
                 "  from access.accessgroupnamespace group by group_id) agn " +
                 "on ag.id = agn.group_id " +
+                "left join web_customer wc " +
+                "on wc.id = ag.org_id " +
                 ") ag ";
 
         return new PagedSqlQueryBuilder("ag.id")
@@ -140,10 +141,11 @@ public class AccessGroupFactory extends HibernateFactory {
     }
 
     /**
-     * Lists all the users
-     * @return the list of all users
+     * Lists all the users of a given organization
+     * @param orgId the org id
+     * @return the list of users as json object
      */
-    public static List<AccessGroupUserJson> listUsers() {
+    public static List<AccessGroupUserJson> listUsers(Long orgId) {
         return getSession().createNativeQuery("""
                  SELECT wc.id,
                         wc.login,
@@ -152,8 +154,10 @@ public class AccessGroupFactory extends HibernateFactory {
                         wcu.name AS org_name
                  FROM web_contact wc
                  JOIN web_user_personal_info wupi ON wc.id = wupi.web_user_id
-                 JOIN web_customer wcu ON wc.org_id = wcu.id;
+                 JOIN web_customer wcu ON wc.org_id = wcu.id
+                 WHERE wcu.id = :org_id
                  """, Tuple.class)
+                .setParameter("org_id", orgId)
                 .stream().map(AccessGroupUserJson::new)
                 .toList();
     }

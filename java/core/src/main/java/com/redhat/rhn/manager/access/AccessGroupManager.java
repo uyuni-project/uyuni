@@ -146,11 +146,12 @@ public class AccessGroupManager {
     }
 
     /**
-     * Lists all the users
-     * @return the list of all users
+     * Lists all the users of the given organization
+     * @param orgId the org id
+     * @return the list of users as json object
      */
-    public List<AccessGroupUserJson> listUsers() {
-        return AccessGroupFactory.listUsers();
+    public List<AccessGroupUserJson> listUsers(Long orgId) {
+        return AccessGroupFactory.listUsers(orgId);
     }
 
     /**
