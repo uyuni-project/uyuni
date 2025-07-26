@@ -74,6 +74,7 @@ import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
@@ -83,6 +84,7 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.VirtualInstanceManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -114,6 +116,7 @@ import com.suse.manager.webui.utils.salt.custom.FilesDiffResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.DirectoryResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.FileResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.SymLinkResult;
+import com.suse.manager.webui.utils.salt.custom.GuestProperties;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
@@ -125,6 +128,8 @@ import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
+import com.suse.manager.webui.utils.salt.custom.VmInfo;
+import com.suse.manager.webui.utils.salt.custom.VmInfoSlsResult;
 import com.suse.salt.netapi.calls.modules.Openscap;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Pkg.Info;
@@ -235,8 +240,8 @@ public class SaltUtils {
     /**
      * Constructor for testing purposes.
      *
-     * @param systemQueryIn
-     * @param saltApiIn
+     * @param systemQueryIn the system query
+     * @param saltApiIn the salt api
      */
     public SaltUtils(SystemQuery systemQueryIn, SaltApi saltApiIn) {
         this.saltApi = saltApiIn;
@@ -400,7 +405,7 @@ public class SaltUtils {
             String name = e.getKey();
             Change<List<Info>> change = e.getValue();
 
-            // Sometimes Salt lists the same NEVRA twice, only with different install timestamps.
+            // Sometimes Salt lists the same NEVRA twice, only with different installation timestamps.
             // Use a merge function is to ignore these duplicate entries.
             Map<String, Info> newPackages = change.getNewValue().stream()
                     .collect(Collectors.toMap(info -> packageToKey(name, info), Function.identity(), (a, b) -> a));
@@ -419,7 +424,7 @@ public class SaltUtils {
 
             Map<String, Tuple2<String, Info>> packagesToCreate = newPackages.values().stream()
                     .filter(info -> !currentPackages.containsKey(packageToKey(name, info)))
-                    .collect(Collectors.toMap(info -> packageToKey(name, info), info -> new Tuple2(name, info)));
+                    .collect(Collectors.toMap(info -> packageToKey(name, info), info -> new Tuple2<>(name, info)));
 
             packagesToAdd.addAll(createPackagesFromSalt(packagesToCreate, server));
             server.getPackages().addAll(packagesToAdd);
@@ -571,7 +576,7 @@ public class SaltUtils {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
             // check if the minion is locked (blackout mode)
             String output = getJsonResultWithPrettyPrint(jsonResult);
-            if (output.startsWith("\'ERROR") && output.contains("Minion in blackout mode")) {
+            if (output.startsWith("'ERROR") && output.contains("Minion in blackout mode")) {
                 serverAction.setResultMsg(output);
                 return;
             }
@@ -648,14 +653,31 @@ public class SaltUtils {
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                serverAction.setResultMsg("Failure");
+                var originalErrorMsg = getErrorFromStateApplyResult(jsonResult,
+                        "Error while updating the hardware profile.\nGot no result from the system.");
+                serverAction.setResultMsg(originalErrorMsg);
             }
             else {
                 serverAction.setResultMsg("Success");
             }
-            serverAction.getServer().asMinionServer()
-                    .ifPresent(minionServer -> handleHardwareProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
-                    HwProfileUpdateSlsResult.class), serverAction));
+            serverAction.getServer().asMinionServer().ifPresentOrElse(
+                    minionServer -> handleHardwareProfileUpdate(minionServer,
+                            Json.GSON.fromJson(jsonResult, HwProfileUpdateSlsResult.class), serverAction),
+                    () -> LOG.error("{} is not a minion", serverAction.getServer().getName()));
+        }
+        else if (action.getActionType().equals(ActionFactory.TYPE_VIRT_PROFILE_REFRESH)) {
+            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+                var originalErrorMsg = getErrorFromStateApplyResult(jsonResult,
+                        "Error while updating the virtual instance profile.\nGot no result from the system.");
+                serverAction.setResultMsg(originalErrorMsg);
+            }
+            else {
+                serverAction.setResultMsg("Success");
+            }
+            serverAction.getServer().asMinionServer().ifPresentOrElse(
+                    minionServer -> handleVirtualMachineUpdate(minionServer,
+                            Json.GSON.fromJson(jsonResult, VmInfoSlsResult.class)),
+                    () -> LOG.error("{} is not a minion", serverAction.getServer().getName()));
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
             DistUpgradeAction dupAction = (DistUpgradeAction) action;
@@ -670,7 +692,7 @@ public class SaltUtils {
                 List<Channel> subbed = collect.get(true);
                 List<Channel> unsubbed = collect.get(false);
                 Set<Channel> currentChannels = serverAction.getServer().getChannels();
-                currentChannels.removeAll(subbed);
+                subbed.forEach(currentChannels::remove);
                 currentChannels.addAll(unsubbed);
                 ServerFactory.save(serverAction.getServer());
                 MessageQueue.publish(
@@ -699,8 +721,8 @@ public class SaltUtils {
         else if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
             handleFilesDiff(jsonResult, action);
             serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.diffed"));
-            /**
-             * For comparison we are simply using file.managed state in dry-run mode, Salt doesn't return
+            /*
+             * For comparison, we are simply using file.managed state in dry-run mode, Salt doesn't return
              * 'result' attribute(actionFailed method check this attribute) when File(File, Dir, Symlink)
              * already exist on the system and action is considered as Failed even though there was no error.
              */
@@ -715,7 +737,7 @@ public class SaltUtils {
             }
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS)) {
-            handleSubscribeChannels(serverAction, jsonResult, action);
+            handleSubscribeChannels(serverAction, jsonResult);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_COCO_ATTESTATION)) {
             handleCocoAttestationResult(action, serverAction, jsonResult);
@@ -831,7 +853,7 @@ public class SaltUtils {
         return YamlHelper.INSTANCE.dump(Json.GSON.fromJson(jsonResult, Object.class));
     }
 
-    private void handleSubscribeChannels(ServerAction serverAction, JsonElement jsonResult, Action action) {
+    private void handleSubscribeChannels(ServerAction serverAction, JsonElement jsonResult) {
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             serverAction.setResultMsg("Successfully applied state: " + ApplyStatesEventMessage.CHANNELS);
         }
@@ -1233,24 +1255,41 @@ public class SaltUtils {
     }
 
     /**
+     * Parse and return the error message from the state.apply
+     * @param jsonResult the json representaion of an event
+     * @param genericErrorMsg a generic error message
+     * @return the error as string
+     */
+    public static String getErrorFromStateApplyResult(JsonElement jsonResult, String genericErrorMsg) {
+        try {
+            return jsonEventToStateApplyResults(jsonResult)
+                    .map(SaltUtils::getOriginalStateApplyError)
+                    .orElseThrow(() -> new RuntimeException("Failed to parse the state.apply error result"))
+                    .map(StateApplyResult::getComment)
+                    .map(msg -> msg.isEmpty() ? null : msg)
+                    .orElse(genericErrorMsg);
+        }
+        catch (RuntimeException e) {
+            return e.getMessage();
+        }
+    }
+
+    /**
      * Converts the json representation of an event to a map
      *
      * @param jsonResult json representation of an event
      */
     private static Optional<Map<String, StateApplyResult<Map<String, Object>>>>
     jsonEventToStateApplyResults(JsonElement jsonResult) {
-        TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
-                new TypeToken<>() {
-                };
-        Optional<Map<String, StateApplyResult<Map<String, Object>>>> results;
-        results = Optional.empty();
+        TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken = new TypeToken<>() { };
+        Optional<Map<String, StateApplyResult<Map<String, Object>>>> results = Optional.empty();
         try {
              results = Optional.ofNullable(
                 Json.GSON.fromJson(jsonResult, typeToken.getType()));
         }
         catch (JsonSyntaxException e) {
             LOG.error("JSON syntax error while decoding into a StateApplyResult:");
-            LOG.error(jsonResult.toString());
+            LOG.error(jsonResult == null ? "NULL" : jsonResult.toString());
         }
         return results;
     }
@@ -1264,7 +1303,9 @@ public class SaltUtils {
     private static <R> Optional<StateApplyResult<R>> getOriginalStateApplyError(
             Map<String, StateApplyResult<R>> stateApplyResultMap) {
         return stateApplyResultMap.values().stream()
+                .filter(r -> !r.isResult())
                 .filter(r -> !r.getComment().startsWith("One or more requisite failed"))
+                .sorted(Comparator.comparing(StateApplyResult::getRunNum))
                 .findFirst();
     }
 
@@ -1411,13 +1452,8 @@ public class SaltUtils {
 
         if (ActionFactory.STATUS_FAILED.equals(serverAction.getStatus())) {
             // Filter out the subsequent errors to find the root cause
-            var originalErrorMsg = jsonEventToStateApplyResults(jsonResult)
-                    .map(SaltUtils::getOriginalStateApplyError)
-                        .orElseThrow(() -> new RuntimeException("Failed to parse the state.apply error result"))
-                    .map(StateApplyResult::getComment)
-                    .map(msg -> msg.isEmpty() ? null : msg)
-                    .orElse("Error while configuring AppStreams on the system.\nGot no result from the system.");
-
+            var originalErrorMsg = getErrorFromStateApplyResult(jsonResult,
+                    "Error while configuring AppStreams on the system.\nGot no result from the system.");
             serverAction.setResultMsg(originalErrorMsg);
             return;
         }
@@ -1534,18 +1570,17 @@ public class SaltUtils {
         // Update last boot time
         handleUptimeUpdate(server, result.getUpTime()
                 .map(ut -> (Number)ut.getChanges().getRet().get("seconds"))
-                .map(n -> n.longValue())
+                .map(Number::longValue)
                 .orElse(null));
 
         result.getRebootRequired()
             .map(rr -> rr.getChanges().getRet())
-            .filter(Objects::nonNull)
             .map(ret -> (Boolean) ret.get("reboot_required"))
             .ifPresent(flag -> server.setRebootRequiredAfter(flag ? new Date() : null));
 
         // Update live patching version
         server.setKernelLiveVersion(result.getKernelLiveVersionInfo()
-                .map(klv -> klv.getChanges().getRet()).filter(Objects::nonNull)
+                .map(klv -> klv.getChanges().getRet())
                 .map(KernelLiveVersionInfo::getKernelLiveVersion).orElse(null));
 
         // Update AppStream modules
@@ -1566,13 +1601,13 @@ public class SaltUtils {
             server.setOs(grains.getValueAsString("osfullname"));
             server.setCpe(grains.getValueAsString("cpe"));
 
-            /** Release is set directly from grain information for SUSE systems only.
-                RH systems require some parsing on the grains to get the correct release
-                See RegisterMinionEventMessageAction#getOsRelease
+            /* Release is set directly from grain information for SUSE systems only.
+               RH systems require some parsing on the grains to get the correct release
+               See RegisterMinionEventMessageAction#getOsRelease
 
-                However, release can change only after product migration and SUMA supports this only on SUSE systems.
-                Also, the getOsRelease method requires remote command execution and was therefore avoided for now.
-                If we decide to support RedHat distro/SP upgrades in the future, this code has to be reviewed.
+               However, release can change only after product migration and SUMA supports this only on SUSE systems.
+               Also, the getOsRelease method requires remote command execution and was therefore avoided for now.
+               If we decide to support RedHat distro/SP upgrades in the future, this code has to be reviewed.
              */
             if (server.getOsFamily().equals(OS_FAMILY_SUSE)) {
                 server.setRelease(grains.getValueAsString("osrelease"));
@@ -1627,9 +1662,11 @@ public class SaltUtils {
         ).map(Map.Entry::getValue).collect(Collectors.toList());
         packages.retainAll(unchanged);
 
-        Map<String, Tuple2<String, Pkg.Info>> packagesToAdd = newPackageMap.entrySet().stream().filter(
-                e -> !oldPackageMap.containsKey(e.getKey())
-        ).collect(Collectors.toMap(Map.Entry::getKey, e -> new Tuple2(e.getValue().getKey(), e.getValue().getValue())));
+        Map<String, Tuple2<String, Pkg.Info>> packagesToAdd = newPackageMap.entrySet().stream()
+                .filter(e -> !oldPackageMap.containsKey(e.getKey()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> new Tuple2<>(e.getValue().getKey(), e.getValue().getValue())));
 
         packages.addAll(createPackagesFromSalt(packagesToAdd, server));
         SystemManager.updateSystemOverview(server.getId());
@@ -1665,19 +1702,20 @@ public class SaltUtils {
      */
     private static List<InstalledPackage> createPackagesFromSalt(
             Map<String, Tuple2<String, Pkg.Info>> packageInfoAndNameBySaltPackageKey, Server server) {
-        List<String> names = new ArrayList<>(packageInfoAndNameBySaltPackageKey.values().stream().map(Tuple2::getA)
-                .collect(Collectors.toSet()));
-        Collections.sort(names);
+        List<String> names = packageInfoAndNameBySaltPackageKey.values().stream()
+                .map(Tuple2::getA)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
 
         Map<String, PackageName> packageNames = names.stream().collect(Collectors.toMap(Function.identity(),
                 PackageFactory::lookupOrCreatePackageByName));
-
 
         Map<String, PackageEvr> packageEvrsBySaltPackageKey = packageInfoAndNameBySaltPackageKey.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey,
                         e -> {
                             Pkg.Info pkgInfo = e.getValue().getB();
-                            return parsePackageEvr(pkgInfo.getEpoch(), pkgInfo.getVersion().get(),
+                            return parsePackageEvr(pkgInfo.getEpoch(), pkgInfo.getVersion().orElseThrow(),
                                     pkgInfo.getRelease(), server.getPackageType());
                         }));
 
@@ -1708,7 +1746,7 @@ public class SaltUtils {
         pkg.setServer(server);
 
         // Add -deb suffix to architectures for Debian systems
-        String pkgArch = pkgInfo.getArchitecture().get();
+        String pkgArch = pkgInfo.getArchitecture().orElseThrow();
         if (server.getPackageType() == PackageType.DEB) {
             pkgArch += "-deb";
         }
@@ -1752,13 +1790,13 @@ public class SaltUtils {
         sb.append(
                 new PackageEvr(
                         info.getEpoch().orElse(null),
-                        info.getVersion().get(),
+                        info.getVersion().orElseThrow(),
                         info.getRelease().orElse("X"),
                         PackageType.RPM
                 ).toUniversalEvrString()
         );
         sb.append(".");
-        sb.append(info.getArchitecture().get());
+        sb.append(info.getArchitecture().orElseThrow());
 
         return sb.toString();
     }
@@ -1823,6 +1861,37 @@ public class SaltUtils {
         else {
             serverAction.setResultMsg("Successfully collected attestation data");
         }
+    }
+
+    private static void handleVirtualMachineUpdate(MinionServer server, VmInfoSlsResult result) {
+        Map<String, Map<String, Object>> vmInfos = result.getVmInfos();
+
+        if (vmInfos.isEmpty()) {
+            LOG.info("No virtual machines found");
+            return;
+        }
+        VirtualInstanceManager.updateHostVirtualInstance(server,
+                VirtualInstanceFactory.getInstance().getFullyVirtType());
+
+        List<VmInfo> plan = new ArrayList<>();
+        plan.add(new VmInfo(0, VirtualInstanceManager.EVENT_TYPE_FULLREPORT, null, null));
+
+        plan.addAll(
+                vmInfos.entrySet().stream().map(entry -> {
+                    Map<String, Object> vm = entry.getValue();
+                    String state = vm.get("state").toString();
+                    GuestProperties props = new GuestProperties(
+                            ((Double)vm.get("maxMem")).longValue() / 1024,
+                            entry.getKey(),
+                            "shutdown".equals(state) ? "stopped" : state,
+                            vm.get("uuid").toString(),
+                            ((Double)vm.get("cpu")).intValue(),
+                            null
+                    );
+                    return new VmInfo(0, VirtualInstanceManager.EVENT_TYPE_EXISTS, null, props);
+                }).toList()
+        );
+        VirtualInstanceManager.updateGuestsVirtualInstances(server, plan);
     }
 
     /**
@@ -1938,19 +2007,15 @@ public class SaltUtils {
 
     private static PackageEvr parsePackageEvr(Optional<String> epoch, String version, Optional<String> release,
                                               PackageType type) {
-        switch (type) {
-            case DEB:
-                return PackageEvrFactory.lookupOrCreatePackageEvr(PackageEvr.parseDebian(version));
-            case RPM:
-                return PackageEvrFactory.lookupOrCreatePackageEvr(epoch.map(StringUtils::trimToNull).orElse(null),
-                        version, release.orElse("0"), PackageType.RPM);
-            default:
-                throw new RuntimeException("unreachable");
-        }
+        return switch (type) {
+            case DEB -> PackageEvrFactory.lookupOrCreatePackageEvr(PackageEvr.parseDebian(version));
+            case RPM -> PackageEvrFactory.lookupOrCreatePackageEvr(epoch.map(StringUtils::trimToNull).orElse(null),
+                    version, release.orElse("0"), PackageType.RPM);
+        };
     }
 
     private static ImagePackage createImagePackageFromSalt(String name, Pkg.Info info, ImageInfo imageInfo) {
-        return createImagePackageFromSalt(name, info.getEpoch(), info.getRelease(), info.getVersion().get(),
+        return createImagePackageFromSalt(name, info.getEpoch(), info.getRelease(), info.getVersion().orElseThrow(),
                 info.getInstallDateUnixTime(), info.getArchitecture(), imageInfo);
     }
 
@@ -1990,7 +2055,7 @@ public class SaltUtils {
             // Find the corresponding SUSEProduct in the database, if any
             Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
                     .findSUSEProduct(name, version, release, arch, true));
-            if (!suseProduct.isPresent()) {
+            if (suseProduct.isEmpty()) {
                 LOG.warn(String.format("No product match found for: %s %s %s %s",
                         name, version, release, arch));
             }
@@ -2027,7 +2092,7 @@ public class SaltUtils {
                         alibabaReleaseFile, almaReleaseFile, amazonReleaseFile,
                         rockyReleaseFile);
 
-        if (!rhelProductInfo.isPresent()) {
+        if (rhelProductInfo.isEmpty()) {
             LOG.warn("Could not determine RHEL product type for minion: {}", server.getMinionId());
             return Collections.emptySet();
         }
@@ -2069,7 +2134,7 @@ public class SaltUtils {
                          alibabaReleaseFile, almaReleaseFile, amazonReleaseFile,
                          rockyReleaseFile);
 
-         if (!rhelProductInfo.isPresent()) {
+         if (rhelProductInfo.isEmpty()) {
              LOG.warn("Could not determine RHEL product type for image: {} {}", image.getName(), image.getVersion());
              return Collections.emptySet();
          }
@@ -2236,7 +2301,7 @@ public class SaltUtils {
         if (action == null) {
             return false;
         }
-        if ((!prereqType.isPresent() || prereqType.get().equals(action.getActionType())) &&
+        if ((prereqType.isEmpty() || prereqType.get().equals(action.getActionType())) &&
                 action.getServerActions().stream()
                         .filter(sa -> sa.getServer().getId() == systemId)
                         .filter(sa -> ActionFactory.STATUS_COMPLETED.equals(sa.getStatus()))

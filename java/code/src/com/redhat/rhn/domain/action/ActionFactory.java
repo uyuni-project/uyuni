@@ -671,6 +671,24 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * List all pending server actions of the given types
+     * @param typesIn the types to look for
+     * @return return a list of server actions
+     */
+    public static List<ServerAction> listPendingServerActionsByTypes(List<ActionType> typesIn) {
+        return getSession().createQuery("""
+            SELECT sa.*
+              FROM rhnAction a
+              JOIN rhnserveraction sa ON a.id = sa.action_id
+             WHERE a.action_type IN (:types)
+               AND sa.status in (0, 1)
+               AND a.earliest_action <= current_timestamp
+            """, ServerAction.class)
+                .setParameterList("types", typesIn.stream().map(ActionType::getId).toList())
+                .list();
+    }
+
+    /**
      * Lookup a List of ServerAction objects for a given Server.
      * @param serverIn you want to limit the list of Actions to
      * @return List of ServerAction objects
@@ -1253,5 +1271,10 @@ public class ActionFactory extends HibernateFactory {
      * The constant representing "Refresh Ansible inventories" [ID:525]
      */
     public static final ActionType TYPE_INVENTORY = lookupActionTypeByLabel("ansible.inventory");
+
+    /**
+     * The constant representing "Refresh Virtual Machine list" [ID:527]
+     */
+    public static final ActionType TYPE_VIRT_PROFILE_REFRESH = lookupActionTypeByLabel("virt.refresh_list");
 }
 

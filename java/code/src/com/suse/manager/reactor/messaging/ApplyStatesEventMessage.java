@@ -36,6 +36,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     public static final String PACKAGES = "packages";
     public static final String PACKAGES_PROFILE_UPDATE = "packages.profileupdate";
     public static final String HARDWARE_PROFILE_UPDATE = "hardware.profileupdate";
+    public static final String VIRTUAL_PROFILE_UPDATE = "hardware.virtprofile";
     public static final String CHANNELS = "channels";
     public static final String SALT_MINION_SERVICE = "services.salt-minion";
     public static final String REPORTDB_USER = "services.reportdb-user";
