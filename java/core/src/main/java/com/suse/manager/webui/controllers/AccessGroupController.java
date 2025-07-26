@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.access.AccessGroupManager;
 import com.redhat.rhn.manager.org.OrgManager;
@@ -187,6 +188,14 @@ public class AccessGroupController {
                 }
                 else {
                     accessGroup = MANAGER.lookupById(json.getId()).orElseThrow();
+                    accessGroup.setDescription(json.getDescription());
+                    if (!accessGroup.getLabel().equals(json.getName())) {
+                        if (MANAGER.lookup(json.getName(), accessGroup.getOrg()).isPresent()) {
+                            throw new EntityExistsException("Access Group: " + json.getName() +
+                                    " already exists on " + "organization: " + accessGroup.getOrg().getName() + ".");
+                        }
+                        accessGroup.setLabel(json.getName());
+                    }
                 }
                 MANAGER.setAccess(accessGroup, getNamespacesFromPermissions(json.getPermissions()));
                 handleAccessGroupUsers(json, accessGroup);
