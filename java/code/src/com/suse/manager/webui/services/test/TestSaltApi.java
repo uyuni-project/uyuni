@@ -292,6 +292,11 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
+    public Optional<String> execOnMaster(String cmd) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public Map<String, Result<Map<String, String>>> getPendingResume(List<String> minionIds) {
         throw new UnsupportedOperationException();
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2015--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,17 +7,15 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
@@ -25,12 +23,14 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.CoCoAttestationAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
+import com.redhat.rhn.domain.action.supportdata.UploadGeoType;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -46,6 +46,7 @@ import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.attestation.AttestationManager;
@@ -71,9 +72,11 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.SaltMinionJson;
 import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 import com.suse.manager.webui.utils.gson.ServerSetProxyJson;
+import com.suse.manager.webui.utils.gson.SupportDataRequest;
 import com.suse.manager.webui.utils.gson.SystemScheduledRequestJson;
 import com.suse.manager.webui.utils.gson.SystemsCoCoSettingsJson;
 import com.suse.salt.netapi.calls.wheel.Key;
+import com.suse.utils.gson.RecordTypeAdapterFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -91,6 +94,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -120,11 +124,14 @@ public class MinionsAPI {
 
     private final AttestationManager attestationManager;
 
+    private final TaskomaticApi taskomaticApi;
+
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .registerTypeAdapter(BootstrapHostsJson.AuthMethod.class, new AuthMethodAdapter())
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+            .registerTypeAdapterFactory(new RecordTypeAdapterFactory())
             .serializeNulls()
             .create();
 
@@ -136,28 +143,53 @@ public class MinionsAPI {
      * @param sshMinionBootstrapperIn ssh bootstrapper
      * @param saltKeyUtilsIn salt key utils instance
      * @param attestationManagerIn the attestation manager
+     * @param taskomaticApiIn the taskomatic api client
      */
     public MinionsAPI(SaltApi saltApiIn, SSHMinionBootstrapper sshMinionBootstrapperIn,
-                      RegularMinionBootstrapper regularMinionBootstrapperIn,
-                      SaltKeyUtils saltKeyUtilsIn, AttestationManager attestationManagerIn) {
+                      RegularMinionBootstrapper regularMinionBootstrapperIn, SaltKeyUtils saltKeyUtilsIn,
+                      AttestationManager attestationManagerIn, TaskomaticApi taskomaticApiIn) {
         this.saltApi = saltApiIn;
         this.sshMinionBootstrapper = sshMinionBootstrapperIn;
         this.regularMinionBootstrapper = regularMinionBootstrapperIn;
         this.saltKeyUtils = saltKeyUtilsIn;
         this.attestationManager = attestationManagerIn;
+        this.taskomaticApi = taskomaticApiIn;
     }
 
     /**
      * Invoked from Router. Initializes routes.
      */
     public void initRoutes() {
+        initBootstrapRoutes();
+        initKeysRoutes();
+        initProxyRoutes();
+        initDetailsRoutes();
+        initPTFRoutes();
+        initCoCoRoutes();
+    }
+
+    private void initBootstrapRoutes() {
         post("/manager/api/systems/bootstrap", withOrgAdmin(this::bootstrap));
         post("/manager/api/systems/bootstrap-ssh", withOrgAdmin(this::bootstrapSSH));
+    }
+
+    private void initKeysRoutes() {
         get("/manager/api/systems/keys", withUser(this::listKeys));
         post("/manager/api/systems/keys/:target/accept", withOrgAdmin(this::accept));
         post("/manager/api/systems/keys/:target/reject", withOrgAdmin(this::reject));
         post("/manager/api/systems/keys/:target/delete", withOrgAdmin(this::delete));
+    }
+
+    private void initProxyRoutes() {
         post("/manager/api/systems/proxy", asJson(withOrgAdmin(this::setProxy)));
+    }
+
+    private void initDetailsRoutes() {
+        post("/manager/api/systems/:sid/details/uploadSupportData",
+            asJson(withUserAndServer(this::uploadSupportData)));
+    }
+
+    private void initPTFRoutes() {
         get("/manager/api/systems/:sid/details/ptf/allowedActions",
             asJson(withUserAndServer(this::allowedPtfActions)));
         get("/manager/api/systems/:sid/details/ptf/installed",
@@ -166,6 +198,9 @@ public class MinionsAPI {
             asJson(withUserAndServer(this::availablePtfsForSystem)));
         post("/manager/api/systems/:sid/details/ptf/scheduleAction",
             asJson(withUserAndServer(this::schedulePtfAction)));
+    }
+
+    private void initCoCoRoutes() {
         get("/manager/api/systems/:sid/details/coco/settings",
             asJson(withUserAndServer(this::getCoCoSettings)));
         post("/manager/api/systems/:sid/details/coco/settings",
@@ -190,7 +225,6 @@ public class MinionsAPI {
     public String listKeys(Request request, Response response, User user) {
         Key.Fingerprints fingerprints = saltApi.getFingerprints();
 
-        Map<String, Object> data = new TreeMap<>();
         boolean isOrgAdmin = user.hasRole(RoleFactory.ORG_ADMIN);
 
         Set<String> minionIds = Stream.of(
@@ -340,7 +374,7 @@ public class MinionsAPI {
              Map<String, Object> data = new TreeMap<>();
              List<Long> actions = ActionManager.changeProxy(user, rq.getIds(), rq.getProxy());
              if (actions.isEmpty()) {
-                 throw new RuntimeException("No action in schedule result");
+                 throw new IllegalStateException("No action in schedule result");
              }
              data.put("actions", actions);
              return json(GSON, res, ResultJson.success(data), new TypeToken<>() { });
@@ -350,6 +384,58 @@ public class MinionsAPI {
             res.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             return "{}";
         }
+    }
+
+    /**
+     * API to schedule the execution of the upload support data action
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @param server the current server
+     * @return json success or failure
+     */
+    private String uploadSupportData(Request request, Response response, User user, Server server) {
+        var scheduleRequest = GSON.fromJson(request.body(), SupportDataRequest.class);
+
+        String caseNumber = scheduleRequest.caseNumber();
+        if (caseNumber == null || !caseNumber.matches("^\\d+$")) {
+            badRequest(response, LOCAL.getMessage("system.details.support.invalid_case_number", caseNumber));
+        }
+
+        String region = scheduleRequest.region();
+        if (Arrays.stream(UploadGeoType.values()).noneMatch(uploadGeo -> uploadGeo.getLabel().equals(region))) {
+            badRequest(response, LOCAL.getMessage("system.details.support.invalid_region", region));
+        }
+
+        try {
+            Action action = createSupportDataAction(user, server, scheduleRequest);
+            taskomaticApi.scheduleActionExecution(action);
+
+            return success(response, ResultJson.success(action.getId().intValue()));
+        }
+        catch (TaskomaticApiException ex) {
+            LOG.error("Unable to schedule taskomatic execution for support data action", ex);
+            HibernateFactory.rollbackTransaction();
+
+            return internalServerError(response, LOCAL.getMessage("system.details.support.unable_to_schedule"));
+        }
+        catch (RuntimeException ex) {
+            LOG.error("Unable to create and execute the support data action", ex);
+            HibernateFactory.rollbackTransaction();
+
+            return internalServerError(response, LOCAL.getMessage("system.details.support.unable_to_upload"));
+        }
+    }
+
+    private static Action createSupportDataAction(User user, Server server, SupportDataRequest scheduleRequest) {
+        return ActionManager.scheduleSupportDataAction(
+            user,
+            server.getId(),
+            scheduleRequest.caseNumber(),
+            scheduleRequest.parameters(),
+            UploadGeoType.byLabel(scheduleRequest.region()),
+            scheduleRequest.earliest()
+        );
     }
 
     /**
@@ -613,13 +699,11 @@ public class MinionsAPI {
 
                 return cfg;
             })
-            .orElseGet(() -> {
-                return attestationManager.createConfig(user, server,
-                    jsonConfig.getEnvironmentType(),
-                    jsonConfig.isEnabled(),
-                    jsonConfig.isAttestOnBoot()
-                );
-            });
+            .orElseGet(() -> attestationManager.createConfig(user, server,
+                jsonConfig.getEnvironmentType(),
+                jsonConfig.isEnabled(),
+                jsonConfig.isAttestOnBoot()
+            ));
     }
 
     private String scheduleAllCoCoAttestation(Request request, Response response, User user) {

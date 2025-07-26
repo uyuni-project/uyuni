@@ -53,6 +53,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     private final Transaction txn;
     private final Optional<Map<String, Object>> pillar;
     private final Optional<Date> earliest;
+    private final boolean directCall;
 
     /**
      * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
@@ -133,6 +134,23 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     public ApplyStatesEventMessage(long serverIdIn, Long userIdIn,
             boolean forcePackageListRefreshIn, Map<String, Object> pillarIn,
             Date earliestIn, String... stateNamesIn) {
+        this(serverIdIn, userIdIn, forcePackageListRefreshIn, pillarIn, earliestIn, false, stateNamesIn);
+    }
+
+    /**
+     * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
+     *
+     * @param serverIdIn the server id
+     * @param userIdIn the user id
+     * @param forcePackageListRefreshIn set true to request a package list refresh
+     * @param pillarIn state specific pillar data
+     * @param earliestIn earliest date to execute the action
+     * @param stateNamesIn state module names to be applied to the server
+     * @param directCallIn set true when the state.apply should be executed as direct call
+     */
+    public ApplyStatesEventMessage(long serverIdIn, Long userIdIn, boolean forcePackageListRefreshIn,
+                                   Map<String, Object> pillarIn, Date earliestIn, boolean directCallIn,
+                                   String... stateNamesIn) {
         serverId = serverIdIn;
         userId = userIdIn;
         stateNames = Arrays.asList(stateNamesIn);
@@ -140,6 +158,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
         txn = HibernateFactory.getSession().getTransaction();
         pillar = Optional.ofNullable(pillarIn);
         earliest = Optional.ofNullable(earliestIn);
+        directCall = directCallIn;
     }
 
     /**
@@ -184,6 +203,14 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
      */
     public boolean isForcePackageListRefresh() {
         return forcePackageListRefresh;
+    }
+
+    /**
+     * Return true when this should be requested as salt direct call
+     * @return true on direct call
+     */
+    public boolean isDirectCall() {
+        return directCall;
     }
 
     @Override
