@@ -30,9 +30,13 @@ const AccessGroupPermissions = (props: Props) => {
           <strong className="me-1">Name:</strong>
           {props.state.name}
         </div>
-        <div>
+        <div className="me-5">
           <strong className="me-1">Description:</strong>
           {props.state.description}
+        </div>
+        <div>
+          <strong className="me-1">Organization:</strong>
+          {props.state.orgName}
         </div>
       </div>
       <hr></hr>

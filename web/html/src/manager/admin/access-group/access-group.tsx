@@ -12,6 +12,7 @@ import AccessGroupPermissions from "./access-group-permissions";
 import AccessGroupUsers from "./access-group-user";
 import Network from "utils/network";
 import {Messages, MessageType, Utils as MessagesUtils} from "components/messages/messages";
+import AccessGroupTabContainer from "manager/admin/access-group/access-group-tab-container";
 
 export type AccessGroupState = {
   id: number | undefined;
@@ -43,6 +44,7 @@ const AccessGroup = (props: AccessGroupProps) => {
     users: [],
     errors: {},
   });
+  const [step, setStep] = useState("Details");
 
   const handleFormChange = (newAccessGroupState) => {
     /* TODO: using the validate prop to update the form change messes with setting the users to empty on org change
@@ -110,7 +112,7 @@ const AccessGroup = (props: AccessGroupProps) => {
     });
   };
 
-  const handleCreateAccessGroup = () => {
+  const handleSaveAccessGroup = () => {
     Network.post("/rhn/manager/api/admin/access-group/save", accessGroupState)
       .then((_) => {
         setMessages(MessagesUtils.info(t("Access Group successfully created.")));
@@ -145,10 +147,20 @@ const AccessGroup = (props: AccessGroupProps) => {
     },
   ];
   return (
-    <TopPanel title={t("Create: Access Group")}>
-      <Messages items={messages} />
-      <StepsProgressBar steps={steps} onCreate={handleCreateAccessGroup} onCancel={"/rhn/manager/admin/access-group"} />
-    </TopPanel>
+    <>
+      { props.accessGroup && props.accessGroup.id ? (
+        <TopPanel title={t("Access Group Details")}>
+          <Messages items={messages}/>
+          <AccessGroupTabContainer tabs={steps} onUpdate={handleSaveAccessGroup} onCancel={"/rhn/manager/admin/access-group"} />
+        </TopPanel>
+      ) : (
+        <TopPanel title={t("Create: Access Group")}>
+          <Messages items={messages}/>
+          <StepsProgressBar steps={steps} onCreate={handleSaveAccessGroup}
+                            onCancel={"/rhn/manager/admin/access-group"}/>
+        </TopPanel>
+      )}
+    </>
   );
 };
 
