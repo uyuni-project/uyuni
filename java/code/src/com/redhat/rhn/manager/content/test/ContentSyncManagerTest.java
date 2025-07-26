@@ -966,7 +966,6 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 inReaderRepos, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
 
         ContentSyncManager csm = new ContentSyncManager();
-        //csm.updateSUSEProducts(productsChanged, upgradePaths, staticTreeChanged, Collections.emptyList());
         csm.refreshRepositoriesAuthentication(repositoriesChanged, new SCCContentSyncSource(scc2nd), null);
         csm.linkAndRefreshContentSource(null);
 

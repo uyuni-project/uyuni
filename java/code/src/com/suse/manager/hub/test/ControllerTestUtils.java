@@ -53,6 +53,7 @@ import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.utils.Json;
 
 import java.time.Instant;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -148,12 +149,44 @@ public class ControllerTestUtils {
             }
         }
 
-        return simulateApiEndpointCall(apiEndpoint, httpMethod,
+        return simulateApiEndpointCallBearerToken(apiEndpoint, httpMethod,
                 addBearerTokenToHeaders ? authBearerToken : null, bodyString);
     }
 
-    public static Object simulateApiEndpointCall(String apiEndpoint, HttpMethod httpMethod,
+    private static Map<String, String> getHeadersBearerToken(String authBearerToken) {
+        if (null == authBearerToken) {
+            return new HashMap<>();
+        }
+        return Map.of("Authorization", "Bearer " + authBearerToken);
+    }
+
+    public static Object simulateApiEndpointCallBearerToken(String apiEndpoint, HttpMethod httpMethod,
                                                  String authBearerToken, String body) throws Exception {
+        Map<String, String> httpHeaders = getHeadersBearerToken(authBearerToken);
+        return simulateApiEndpoint(apiEndpoint, httpMethod, httpHeaders, body);
+    }
+
+    private static Map<String, String> getHeadersBasicAuth(String authBasicUser, String authBasicPasswd) {
+        if (null == authBasicUser) {
+            return new HashMap<>();
+        }
+
+        String basicUserPass = Base64.getEncoder()
+                .encodeToString("%s:%s".formatted(authBasicUser, authBasicPasswd).getBytes());
+        return Map.of("Authorization", "Basic " + basicUserPass);
+    }
+
+    public static Object simulateApiEndpointCallBasicAuth(String apiEndpoint, HttpMethod httpMethod,
+                                                          String authBasicUser, String authBasicPasswd, String body)
+            throws Exception {
+        Map<String, String> httpHeaders = getHeadersBasicAuth(authBasicUser, authBasicPasswd);
+        return simulateApiEndpoint(apiEndpoint, httpMethod, httpHeaders, body);
+    }
+
+    private static Object simulateApiEndpoint(String apiEndpoint, HttpMethod httpMethod,
+                                              Map<String, String> httpHeaders, String body)
+            throws Exception {
+
         Optional<RouteMatch> routeMatch = spark.Spark.routes()
                 .stream()
                 .filter(e -> apiEndpoint.equals(e.getMatchUri()))
@@ -166,13 +199,17 @@ public class ControllerTestUtils {
 
         RouteImpl routeImpl = (RouteImpl) routeMatch.get().getTarget();
 
-        Map<String, String> httpHeaders = (null == authBearerToken) ?
-                new HashMap<>() :
-                Map.of("Authorization", "Bearer " + authBearerToken);
-
-        Request dummyTestRequest = (null == body) ?
-                SparkTestUtils.createMockRequestWithParams(apiEndpoint, new HashMap<>(), httpHeaders) :
-                SparkTestUtils.createMockRequestWithBody(apiEndpoint, httpHeaders, body);
+        Request dummyTestRequest;
+        if (null == body) {
+            dummyTestRequest = SparkTestUtils.createMockRequestWithParams(apiEndpoint, new HashMap<>(), httpHeaders);
+        }
+        else if (httpMethod == HttpMethod.delete) {
+            dummyTestRequest = SparkTestUtils.createMockRequestWithParams(apiEndpoint, new HashMap<>(), httpHeaders,
+                    body);
+        }
+        else {
+            dummyTestRequest = SparkTestUtils.createMockRequestWithBody(apiEndpoint, httpHeaders, body);
+        }
 
         Response dummyTestResponse = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         return routeImpl.handle(dummyTestRequest, dummyTestResponse);

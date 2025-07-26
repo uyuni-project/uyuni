@@ -139,7 +139,7 @@ public class ContentPropertiesValidator {
      * @param label label to validate
      * @return true if label is valid
      */
-    public static Boolean isLabelValid(String label) {
+    public static boolean isLabelValid(String label) {
         return Pattern.compile(CreateChannelCommand.CHANNEL_LABEL_REGEX).matcher(label).find() &&
                 Pattern.compile(CreateChannelCommand.CHANNEL_NAME_REGEX).matcher(label).find();
     }

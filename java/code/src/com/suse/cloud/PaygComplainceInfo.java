@@ -53,7 +53,7 @@ public class PaygComplainceInfo {
      */
     public PaygComplainceInfo() {
         // By default, assume it's a compliant BYOS instance
-        this(CloudProvider.None, false, false, true, true, true);
+        this(CloudProvider.NONE, false, false, true, true, true);
     }
 
     /**

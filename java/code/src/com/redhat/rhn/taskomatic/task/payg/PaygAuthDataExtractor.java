@@ -276,7 +276,6 @@ public class PaygAuthDataExtractor {
             channel.setCommand("/bin/sh ");
             channel.setInputStream(PaygAuthDataExtractor.class.getResourceAsStream("script/detect_os.sh"));
 
-            //channel.setInputStream(null);
             InputStream stdout = channel.getInputStream();
             InputStream stderr = channel.getErrStream();
             channel.connect();

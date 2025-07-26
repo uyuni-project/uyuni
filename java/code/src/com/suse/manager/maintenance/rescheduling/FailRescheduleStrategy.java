@@ -30,7 +30,7 @@ import java.util.Map;
  * FailRescheduleStrategy - fallback which always fail to reschedule the action.
  */
 public class FailRescheduleStrategy implements RescheduleStrategy {
-    private static final Logger LOG = LogManager.getLogger(CancelRescheduleStrategy.class);
+    private static final Logger LOG = LogManager.getLogger(FailRescheduleStrategy.class);
 
     @Override
     public RescheduleResult reschedule(User user, Map<Action, List<Server>> actionsServers,

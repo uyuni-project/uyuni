@@ -83,13 +83,6 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
     static final String UNMATCHED_CHILD_CHANNELS = "unmatched_child_channels";
     static final String FOUND_UNMATCHED_CHANNELS = "foundUnmatchedChannels";
 
-    /*
-    Map<Long, List<Long>> successes = new HashMap<Long, List<Long>>();
-    Map<Long, List<Long>> failures = new HashMap<Long, List<Long>>();
-    Map<Long, List<Long>> skipped = new HashMap<Long, List<Long>>();
-*/
-
-
     @Override
     protected Map<String, String> getKeyMethodMap() {
         Map<String, String> map = new HashMap<>();
@@ -209,7 +202,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                 List<Long> servers = serversInSSMWithBase(user, oldBaseChannelId);
                 List<Server> skippedServers = new LinkedList<>();
 
-                // Check if for all servers in the set we can guess base channel;
+                // Check if for all servers in the set we can guess base channel
                 // if not add them to the skipped list
                 for (Long sId : servers) {
                     Server server = SystemManager.lookupByIdAndUser(sId, user);

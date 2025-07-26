@@ -152,13 +152,13 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         verifyActionMessage("kickstart.powermanagement.saved");
 
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user);
-        SystemRecord record = SystemRecord.lookupById(connection, server.getCobblerId());
+        SystemRecord systemRecord = SystemRecord.lookupById(connection, server.getCobblerId());
 
-        assertEquals(EXPECTED_TYPE, record.getPowerType());
-        assertEquals(EXPECTED_ADDRESS, record.getPowerAddress());
-        assertEquals(EXPECTED_USERNAME, record.getPowerUsername());
-        assertEquals(EXPECTED_PASSWORD, record.getPowerPassword());
-        assertEquals(EXPECTED_ID, record.getPowerId());
+        assertEquals(EXPECTED_TYPE, systemRecord.getPowerType());
+        assertEquals(EXPECTED_ADDRESS, systemRecord.getPowerAddress());
+        assertEquals(EXPECTED_USERNAME, systemRecord.getPowerUsername());
+        assertEquals(EXPECTED_PASSWORD, systemRecord.getPowerPassword());
+        assertEquals(EXPECTED_ID, systemRecord.getPowerId());
     }
 
     /**
@@ -235,12 +235,12 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         assertEquals(EXPECTED_ID_2, request.getAttribute(PowerManagementAction.POWER_ID));
 
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user);
-        SystemRecord record = SystemRecord.lookupById(connection, server.getCobblerId());
+        SystemRecord systemRecord = SystemRecord.lookupById(connection, server.getCobblerId());
 
-        assertEquals(EXPECTED_ADDRESS_2, record.getPowerAddress());
-        assertEquals(EXPECTED_USERNAME_2, record.getPowerUsername());
-        assertEquals(EXPECTED_PASSWORD_2, record.getPowerPassword());
-        assertEquals(EXPECTED_ID_2, record.getPowerId());
+        assertEquals(EXPECTED_ADDRESS_2, systemRecord.getPowerAddress());
+        assertEquals(EXPECTED_USERNAME_2, systemRecord.getPowerUsername());
+        assertEquals(EXPECTED_PASSWORD_2, systemRecord.getPowerPassword());
+        assertEquals(EXPECTED_ID_2, systemRecord.getPowerId());
         verifyNoActionErrors();
     }
 

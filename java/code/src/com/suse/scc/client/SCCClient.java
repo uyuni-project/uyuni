@@ -19,10 +19,10 @@ import com.redhat.rhn.manager.content.ProductTreeEntry;
 import com.suse.scc.model.SCCOrderJson;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
 import com.suse.scc.model.SCCProductJson;
-import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCRegisterSystemItem;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
-import com.suse.scc.model.SCCUpdateSystemJson;
+import com.suse.scc.model.SCCUpdateSystemItem;
 import com.suse.scc.model.SCCVirtualizationHostJson;
 
 import java.util.List;
@@ -87,10 +87,10 @@ public interface SCCClient {
      * @param username the username for http basic auth
      * @param password the password for http basic auth
      * @throws SCCClientException SCCRegisterSystemItemJson
-     * @return SCCRegisterSystemJson a collection of systems created/updated
+     * @return SCCRegisterSystemItem a collection of systems created/updated
      */
     SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-            List<SCCRegisterSystemJson> systems, String username, String password
+            List<SCCRegisterSystemItem> systems, String username, String password
     ) throws SCCClientException;
 
     /**
@@ -100,7 +100,7 @@ public interface SCCClient {
      * @param password the password
      * @throws SCCClientException
      */
-    void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password)
+    void updateBulkLastSeen(List<SCCUpdateSystemItem> systems, String username, String password)
             throws SCCClientException;
 
     /**

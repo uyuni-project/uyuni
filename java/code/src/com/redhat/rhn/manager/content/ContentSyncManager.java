@@ -220,7 +220,7 @@ public class ContentSyncManager {
      * Set the channel_family.json {@link File} to a different path.
      * @param file the channel_family.json
      */
-    public void setChannelFamiliesJson(File file) {
+    public static void setChannelFamiliesJson(File file) {
         channelFamiliesJson = file;
     }
 
@@ -236,7 +236,7 @@ public class ContentSyncManager {
      * Set the additional_products.json {@link File} to read from.
      * @param file the add additional_products.json file
      */
-    public void setAdditionalProductsJson(File file) {
+    public static void setAdditionalProductsJson(File file) {
         additionalProductsJson = file;
     }
 

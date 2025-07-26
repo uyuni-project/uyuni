@@ -481,7 +481,6 @@ public abstract class HibernateFactory {
      * @param <T> the entity type
      */
     public static <T> T reload(T obj) throws HibernateException {
-        // assertNotNull(obj);
         ClassMetadata cmd = connectionManager.getMetadata(obj);
         Serializable id = cmd.getIdentifier(obj, (SessionImplementor) getSession());
         Session session = getSession();
@@ -489,12 +488,11 @@ public abstract class HibernateFactory {
         session.evict(obj);
         /*
          * In hibernate 3, the following doesn't work:
-         * session.load(obj.getClass(), id);
+         * session.load(obj.getClass(), id)
          * load returns the proxy class instead of the persisted class, ie,
          * Filter$$EnhancerByCGLIB$$9bcc734d_2 instead of Filter.
          * session.get is set to not return the proxy class, so that is what we'll use.
          */
-        // assertNotSame(obj, result);
         return (T) session.get(obj.getClass(), id);
     }
 

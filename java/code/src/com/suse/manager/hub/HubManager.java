@@ -68,6 +68,8 @@ import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenParser;
 import com.suse.manager.webui.utils.token.TokenParsingException;
+import com.suse.scc.SCCTaskManager;
+import com.suse.scc.proxy.SCCProxyFactory;
 import com.suse.utils.CertificateUtils;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -372,10 +374,19 @@ public class HubManager {
         deletePeripheral(peripheral);
     }
 
-    private void deletePeripheral(IssPeripheral peripheral) {
+    private void cleanupSccWhenDeregisteringPeripheral(IssPeripheral peripheral) {
+        //update proxy entries
+        SCCTaskManager sccTaskManager = new SCCTaskManager();
+        sccTaskManager.cleanupSccProxyWhenDeregisteringPeripheral(peripheral.getFqdn());
+
         if (null != peripheral.getMirrorCredentials()) {
             CredentialsFactory.removeCredentials(peripheral.getMirrorCredentials());
         }
+    }
+
+    private void deletePeripheral(IssPeripheral peripheral) {
+        cleanupSccWhenDeregisteringPeripheral(peripheral);
+
         hubFactory.remove(peripheral);
         hubFactory.removeAccessTokensFor(peripheral.getFqdn());
         try {
@@ -397,14 +408,25 @@ public class HubManager {
         deleteHub(hub);
     }
 
-    private void deleteHub(IssHub hub) {
+    private void cleanupSccDeletingHub(IssHub hub) {
         SCCCredentials mirrorCredentials = hub.getMirrorCredentials();
         if (null != mirrorCredentials) {
             // Clear Repository Authentications
+            SCCCachingFactory.listRegItemsByCredentials(mirrorCredentials)
+                    .forEach(SCCCachingFactory::deleteRegCacheItem);
             SCCCachingFactory.lookupRepositoryAuthByCredential(mirrorCredentials)
                     .forEach(SCCCachingFactory::deleteRepositoryAuth);
             CredentialsFactory.removeCredentials(mirrorCredentials);
         }
+
+        //set scc proxy entries as if they were just created, remove pending to be removed
+        SCCProxyFactory sccProxyFactory = new SCCProxyFactory();
+        sccProxyFactory.setReregisterProxyEntries();
+        sccProxyFactory.removeRemovalPendingProxyEntries();
+    }
+
+    private void deleteHub(IssHub hub) {
+        cleanupSccDeletingHub(hub);
         hubFactory.remove(hub);
         hubFactory.removeAccessTokensFor(hub.getFqdn());
         try {

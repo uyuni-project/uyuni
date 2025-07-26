@@ -269,7 +269,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testFetchPlaybookContentsInvalidPath() throws Exception {
-        MinionServer controlNode = createAnsibleControlNode(admin);
+        createAnsibleControlNode(admin);
         try {
             handler.fetchPlaybookContents(admin, -123, "tmp/123");
             fail("An exception shold have been thrown");

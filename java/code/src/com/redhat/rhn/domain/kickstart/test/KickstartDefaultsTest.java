@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDefaults;
-import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.frontend.action.kickstart.test.KickstartTestHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
@@ -36,12 +35,6 @@ public class KickstartDefaultsTest extends BaseTestCaseWithUser {
         KickstartData ksdata = KickstartTestHelper.createTestKickStart(user);
         KickstartDefaults ksdefaults = ksdata.getKickstartDefaults();
         assertNotNull(ksdefaults);
-
-        KickstartFactory.saveKickstartData(ksdata);
-        ksdata = (KickstartData) reload(ksdata);
-        ksdefaults = ksdata.getKickstartDefaults();
-
-
     }
 
 }

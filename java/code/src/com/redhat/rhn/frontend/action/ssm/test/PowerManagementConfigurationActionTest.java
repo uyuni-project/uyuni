@@ -96,16 +96,16 @@ public class PowerManagementConfigurationActionTest extends RhnMockStrutsTestCas
         actionPerform();
 
         for (Server server : servers) {
-            SystemRecord record = SystemRecord
+            SystemRecord systemRecord = SystemRecord
                 .lookupById(connection, server.getCobblerId());
-            assertEquals(PowerManagementActionTest.EXPECTED_TYPE, record.getPowerType());
+            assertEquals(PowerManagementActionTest.EXPECTED_TYPE, systemRecord.getPowerType());
             assertEquals(PowerManagementActionTest.EXPECTED_ADDRESS,
-                record.getPowerAddress());
+                    systemRecord.getPowerAddress());
             assertEquals(PowerManagementActionTest.EXPECTED_USERNAME,
-                record.getPowerUsername());
+                    systemRecord.getPowerUsername());
             assertEquals(PowerManagementActionTest.EXPECTED_PASSWORD,
-                record.getPowerPassword());
-            assertEquals(PowerManagementActionTest.EXPECTED_ID, record.getPowerId());
+                    systemRecord.getPowerPassword());
+            assertEquals(PowerManagementActionTest.EXPECTED_ID, systemRecord.getPowerId());
         }
 
         // In SSM empty string means "do not change"
@@ -120,16 +120,16 @@ public class PowerManagementConfigurationActionTest extends RhnMockStrutsTestCas
         actionPerform();
 
         for (Server server : servers) {
-            SystemRecord record = SystemRecord
+            SystemRecord systemRecord = SystemRecord
                 .lookupById(connection, server.getCobblerId());
-            assertEquals(PowerManagementActionTest.EXPECTED_TYPE, record.getPowerType());
+            assertEquals(PowerManagementActionTest.EXPECTED_TYPE, systemRecord.getPowerType());
             assertEquals(PowerManagementActionTest.EXPECTED_ADDRESS,
-                record.getPowerAddress());
+                    systemRecord.getPowerAddress());
             assertEquals(PowerManagementActionTest.EXPECTED_USERNAME_2,
-                record.getPowerUsername());
+                    systemRecord.getPowerUsername());
             assertEquals(PowerManagementActionTest.EXPECTED_PASSWORD_2,
-                record.getPowerPassword());
-            assertEquals(PowerManagementActionTest.EXPECTED_ID, record.getPowerId());
+                    systemRecord.getPowerPassword());
+            assertEquals(PowerManagementActionTest.EXPECTED_ID, systemRecord.getPowerId());
         }
     }
 }

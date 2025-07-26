@@ -68,7 +68,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         assertNotNull(temp);
         manager.remove(temp, user);
         try {
-            temp = manager.lookupByKey(key.getKey(), user);
+            manager.lookupByKey(key.getKey(), user);
             String msg = "NUll lookup failed, because this object should exist!";
             fail(msg);
         }
@@ -138,7 +138,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
             // great!.. Exception for permission failure always welcome
         }
         try {
-            temp = manager.lookupByKey(key.getKey() + "FOFOFOFOFOFOF", user);
+            manager.lookupByKey(key.getKey() + "FOFOFOFOFOFOF", user);
             String msg = "NUll lookup failed, because this object should NOT exist!";
             fail(msg);
         }
@@ -155,7 +155,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         ActivationKey key;
         //test permissions
         try {
-            key = manager.createNewActivationKey(user,  "Test");
+            manager.createNewActivationKey(user,  "Test");
             String msg = "Permission check failed :(.." +
                             "Activation key should not have gotten created" +
                             " because the user does not have activation key admin role";
@@ -171,7 +171,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
             Long usageLimit = 1200L;
             Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
             String note = "Test";
-            key = manager.createNewActivationKey(user,
+            manager.createNewActivationKey(user,
                                                     keyName, note, usageLimit,
                                                     baseChannel, true);
 

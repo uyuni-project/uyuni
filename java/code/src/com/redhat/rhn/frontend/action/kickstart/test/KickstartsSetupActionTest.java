@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
-import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
@@ -38,7 +37,7 @@ public class KickstartsSetupActionTest extends RhnMockStrutsTestCase {
 
         // Create a kickstart and the defaults so the list
         // will return something.
-        KickstartData k = KickstartDataTest.createKickstartWithChannel(user.getOrg());
+        KickstartDataTest.createKickstartWithChannel(user.getOrg());
         setRequestPathInfo("/kickstart/Kickstarts");
         actionPerform();
         DataResult dr = (DataResult) request.getAttribute(RequestContext.PAGE_LIST);

@@ -191,7 +191,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
      */
     @Test
     public void testManagementEntitledUser() {
-        Server server = ServerFactoryTest.createTestServer(user, true,
+        ServerFactoryTest.createTestServer(user, true,
                         ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
         UserFactory.save(user);

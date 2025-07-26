@@ -51,7 +51,7 @@ public class KickstartSoftwareEditActionTest extends BaseKickstartEditTestCase {
 
     @Test
     public void testSetupExecute() throws Exception {
-        Channel child = ChannelTestUtils.createChildChannel(user,
+        ChannelTestUtils.createChildChannel(user,
                 ksdata.getTree().getChannel());
 
         actionPerform();

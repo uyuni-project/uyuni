@@ -84,7 +84,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         ksdata.addScript(kss2);
         assertTrue(kss1.getPosition() < kss2.getPosition());
         KickstartFactory.saveKickstartData(ksdata);
-        ksdata = (KickstartData) reload(ksdata);
+        reload(ksdata);
         assertTrue(kss1.getPosition() < kss2.getPosition());
     }
 

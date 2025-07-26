@@ -60,14 +60,12 @@ public class TaskSchedulerTest extends RhnBaseTestCase {
 
         assertEquals(2, e.getChannels().size());
 
-        List tasks = TaskFactory.getTaskListByChannel(org);
-
         TaskScheduler scheduler = new TaskScheduler(e, org);
         scheduler.updateByChannels();
 
 
         //Ok, we should have stuff in our list now...
-        tasks = TaskFactory.getTaskListByChannel(org);
+        List tasks = TaskFactory.getTaskListByChannel(org);
         assertTrue(tasks.size() >= 2);
 
         Task t = null;

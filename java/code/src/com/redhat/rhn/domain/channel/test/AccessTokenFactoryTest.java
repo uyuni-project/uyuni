@@ -69,7 +69,6 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
 
         assertEquals(1, AccessTokenFactory.all().size());
         AccessTokenFactory.cleanupUnusedExpired();
-        List<AccessToken> all = AccessTokenFactory.all();
         assertEquals(initialChannelCount + 1, ChannelFactory.listAllBaseChannels().size());
     }
 

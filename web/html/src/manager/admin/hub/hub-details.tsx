@@ -56,7 +56,7 @@ export class HubDetails extends React.Component<Props, State> {
       <TopPanel
         title={t("Hub Details")}
         icon="fa-cogs"
-        helpUrl="reference/admin/hub/hub-details.html"
+        helpUrl="specialized-guides/large-deployments/hub-online-sync.html#_access_hub_server_details_from_the_peripheral_server"
         button={
           <div className="btn-group pull-right">
             {this.state.hub !== null && (

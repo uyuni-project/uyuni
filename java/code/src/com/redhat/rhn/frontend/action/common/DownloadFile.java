@@ -798,7 +798,7 @@ public class DownloadFile extends DownloadAction {
         // class instead of using parent execute() (and copy()).
         // New copy() method will take into account Content-Range header in response
         // and copy only these bytes. Uncomment after fixing following line:
-        // return getStreamForPath(diskPath, CONTENT_TYPE_OCTET_STREAM);
+        // return getStreamForPath(diskPath, CONTENT_TYPE_OCTET_STREAM)
 
         // gotta make sure it is end + 1
         byte[] chunk = FileUtils.readByteArrayFromFile(actualFile, start, end + 1);

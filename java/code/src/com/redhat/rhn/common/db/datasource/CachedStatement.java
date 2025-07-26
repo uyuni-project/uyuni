@@ -419,7 +419,7 @@ public class CachedStatement implements Serializable {
                 parametersIn != null ? new HashMap<>(parametersIn) : new HashMap<>();
 
         if (len == 0) {
-            // Nothing to elaborate, just return;
+            // Nothing to elaborate, just return
             return resultList;
         }
 

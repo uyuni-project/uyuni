@@ -75,7 +75,7 @@ public class DeleteRevisionAction extends RhnAction {
                             msgs.add(ActionMessages.GLOBAL_MESSAGE, am);
                             /*
                              * Although I would like to just do:
-                             * ConfigActionHelper.processParamMap(request, params);
+                             * ConfigActionHelper.processParamMap(request, params)
                              * The revision from the request is the one we just deleted,
                              * so this would cause a LookupException.
                              */

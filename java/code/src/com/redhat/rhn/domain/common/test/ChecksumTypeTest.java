@@ -42,8 +42,6 @@ public class ChecksumTypeTest extends RhnBaseTestCase {
 
         ChecksumType at2 = (ChecksumType) TestUtils.lookupFromCacheById(at1.getId(), query);
         assertEquals(at1.getLabel(), at2.getLabel());
-
-        ChecksumType at3 = (ChecksumType) TestUtils.lookupFromCacheById(at1.getId(), query);
     }
 
     @Test

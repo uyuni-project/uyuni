@@ -176,7 +176,6 @@ public abstract class BaseSystemPackagesConfirmAction extends RhnAction implemen
 
         Long sid = requestContext.getRequiredParam("sid");
         User user = requestContext.getCurrentUser();
-        //updateList(newactions, user.getId());
 
         List<Map<String, Long>> data = PackageListItem.toKeyMaps(getDataResult(request));
         int numPackages = data.size();

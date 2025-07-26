@@ -373,7 +373,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/results_malformed.xml")
                 .openStream();
         try {
-            XccdfTestResult result = ScapManager.xccdfEval(minion, action, 2, "", resultsIn, resumeXsl);
+            ScapManager.xccdfEval(minion, action, 2, "", resultsIn, resumeXsl);
             fail("Expected exception");
         }
         catch (Exception e) {

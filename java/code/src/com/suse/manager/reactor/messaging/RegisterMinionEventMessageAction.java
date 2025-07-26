@@ -270,7 +270,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                             server.getId().toString()};
                                     LOG.error(LocalizationService.getInstance().getMessage(
                                             "bootstrap.minion.error.conflicting.minionid", Locale.US, args));
-                                    //throw new RegisterMinionException(minionId, null, msg);
                                     throw new RegisterMinionException(minionId, null,
                                             "bootstrap.minion.error.conflicting.minionid", args);
                                 }))),

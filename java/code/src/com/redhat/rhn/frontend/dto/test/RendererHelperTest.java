@@ -79,10 +79,7 @@ public class RendererHelperTest extends RhnBaseTestCase {
         pageControl.setStart(1);
         pageControl.setPageSize(PAGE_SIZE);
 
-        DataResult<SystemOverview> criticalSystems =
-                SystemManager.mostCriticalSystems(user, pageControl);
-
-        return criticalSystems;
+        return SystemManager.mostCriticalSystems(user, pageControl);
     }
 
     private void createCriticalServerWithErrataCount(User user, Channel channel,

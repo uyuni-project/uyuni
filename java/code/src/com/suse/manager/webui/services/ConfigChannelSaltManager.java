@@ -32,13 +32,13 @@ import com.redhat.rhn.domain.config.ConfigRevision;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.utils.Opt;
 
-import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
@@ -214,7 +214,7 @@ public class ConfigChannelSaltManager {
             throws IOException {
         assertStateInOrgDir(channelDir, outFile);
         outFile.getParentFile().mkdirs();
-        FileUtils.writeStringToFile(outFile, content, CharEncoding.UTF_8);
+        FileUtils.writeStringToFile(outFile, content, StandardCharsets.UTF_8);
      }
 
     /**

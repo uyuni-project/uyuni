@@ -149,6 +149,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
@@ -1005,7 +1006,7 @@ public class SaltUtils {
                             Map<Boolean, String> moveRes = saltApi.storeMinionScapFiles(
                                     minion, openscapResult.getUploadDir(), action.getId());
                             moveRes.entrySet().stream().findFirst().ifPresent(moved -> {
-                                if (moved.getKey()) {
+                                if (BooleanUtils.isTrue(moved.getKey())) {
                                     Path resultsFile = Paths.get(moved.getValue(),
                                             "results.xml");
                                     try (InputStream resultsFileIn =

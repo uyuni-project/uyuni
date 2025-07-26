@@ -14,25 +14,52 @@
  */
 package com.suse.scc.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.Date;
+
 /**
- * SCCSystemCredentialsJson
+ * SCCSystemCredentialsJson: response to SCC put to /organizations/systems
  */
 public class SCCSystemCredentialsJson {
 
+    private Long id;
     private String login;
     private String password;
-    private Long id;
+    @SerializedName("system_token")
+    private String systemToken;
+    @SerializedName("last_seen_at")
+    private Date lastSeenAt;
 
     /**
      * Constructor
-     * @param loginIn the login
+     *
+     * @param loginIn    the login
      * @param passwordIn the password
-     * @param idIn the scc ID
+     * @param idIn       the scc ID
      */
     public SCCSystemCredentialsJson(String loginIn, String passwordIn, Long idIn) {
-       this.login = loginIn;
-       this.password = passwordIn;
-       this.id = idIn;
+        this.login = loginIn;
+        this.password = passwordIn;
+        this.id = idIn;
+        this.systemToken = null;
+        this.lastSeenAt = null;
+    }
+
+    /**
+     * Constructor
+     *
+     * @param loginIn      the login
+     * @param passwordIn   the password
+     * @param idIn         the scc ID
+     * @param lastSeenAtIn the last seen date
+     */
+    public SCCSystemCredentialsJson(String loginIn, String passwordIn, Long idIn, Date lastSeenAtIn) {
+        this.login = loginIn;
+        this.password = passwordIn;
+        this.id = idIn;
+        this.systemToken = null;
+        this.lastSeenAt = lastSeenAtIn;
     }
 
     /**

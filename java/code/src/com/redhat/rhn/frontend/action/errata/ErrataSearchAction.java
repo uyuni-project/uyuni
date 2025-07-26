@@ -45,6 +45,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -98,7 +99,7 @@ public class ErrataSearchAction extends BaseSearchAction {
                 "erratasearch.jsp.start_date",
                 "erratasearch.jsp.end_date");
         DatePickerResults dates = null;
-        Boolean dateSearch = getOptionIssueDateSearch(request);
+        boolean dateSearch = getOptionIssueDateSearch(request);
 
         /*
          * If search/viewmode aren't null, we need to search and set
@@ -399,29 +400,19 @@ public class ErrataSearchAction extends BaseSearchAction {
         }
         List<ErrataOverview> filteredByType = new ArrayList<>();
         for (ErrataOverview eo : unfiltered) {
-            Boolean type = null;
             if (eo.isBugFix()) {
-                type = (Boolean)formIn.get(ERRATA_BUG);
-                if (type != null) {
-                    if (type) {
-                            filteredByType.add(eo);
-                    }
+                if (Optional.ofNullable((Boolean)formIn.get(ERRATA_BUG)).orElse(false)) {
+                    filteredByType.add(eo);
                 }
             }
             if (eo.isSecurityAdvisory()) {
-                type = (Boolean)formIn.get(ERRATA_SEC);
-                if (type != null) {
-                    if (type) {
-                        filteredByType.add(eo);
-                    }
+                if (Optional.ofNullable((Boolean)formIn.get(ERRATA_SEC)).orElse(false)) {
+                    filteredByType.add(eo);
                 }
             }
             if (eo.isProductEnhancement()) {
-                type = (Boolean)formIn.get(ERRATA_ENH);
-                if (type != null) {
-                    if (type) {
-                        filteredByType.add(eo);
-                    }
+                if (Optional.ofNullable((Boolean)formIn.get(ERRATA_ENH)).orElse(false)) {
+                    filteredByType.add(eo);
                 }
             }
         }
@@ -524,7 +515,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         return queryIn.replace(":", "\\:");
     }
 
-    private Boolean getOptionIssueDateSearch(HttpServletRequest request) {
+    private boolean getOptionIssueDateSearch(HttpServletRequest request) {
         Object dateSrch = request.getAttribute(OPT_ISSUE_DATE);
         if (dateSrch == null) {
             return false;

@@ -3,7 +3,7 @@ import * as React from "react";
 import { AsyncButton, LinkButton } from "components/buttons";
 import { FromNow, HumanDateTime } from "components/datetime";
 import { HubDetailData, IssRole, IssServerDetailData, PeripheralDetailData } from "components/hub/types";
-import { LargeTextAttachment } from "components/large-text-attachment";
+import { ButtonMode, LargeTextAttachment } from "components/large-text-attachment";
 import { showInfoToastr } from "components/toastr";
 
 import { localizedMoment } from "utils/datetime";
@@ -11,6 +11,10 @@ import Network from "utils/network";
 
 // Localized messages that depend on the role of the server
 const roleBasedMessages = {
+  fqdn: {
+    HUB: t("Hub server FQDN:"),
+    PERIPHERAL: t("Peripheral server FQDN:"),
+  },
   rootCA: {
     presentMessage: {
       HUB: t("A customized Root Certificate Authority is currently configured for this hub."),
@@ -64,7 +68,7 @@ export class ServerDetailsForm extends React.Component<Props, State> {
           <li className="list-group-item">
             <div className="row">
               <div className="col-md-2">
-                <strong>{t("Server FQDN:")}</strong>
+                <strong>{roleBasedMessages.fqdn[this.state.model.role]}</strong>
               </div>
               <div className="col-md-10">{this.state.model.fqdn}</div>
             </div>
@@ -104,6 +108,7 @@ export class ServerDetailsForm extends React.Component<Props, State> {
                   editMessage={roleBasedMessages.rootCA.editMessage[this.state.model.role]}
                   confirmDeleteMessage={roleBasedMessages.rootCA.confirmDeleteMessage[this.state.model.role]}
                   editable={this.props.editable}
+                  buttonMode={ButtonMode.Icon}
                   onDelete={() => this.onDeleteRootCA()}
                   onEdit={(value) => this.onEditRootCA(value)}
                 />
@@ -122,6 +127,7 @@ export class ServerDetailsForm extends React.Component<Props, State> {
                     filename="gpg-pub.key"
                     presentMessage={t("A customized GPG key is currently configured for this hub.")}
                     absentMessage={t("This hub is currently not using a custom GPG key.")}
+                    buttonMode={ButtonMode.Icon}
                     editable={false}
                   />
                 </div>
@@ -139,7 +145,7 @@ export class ServerDetailsForm extends React.Component<Props, State> {
                   <div className="btn-group pull-right">
                     <AsyncButton
                       className="btn-default"
-                      text={t("Regenerate credentials")}
+                      title={t("Regenerate credentials")}
                       icon="fa-refresh"
                       action={() => this.onRegenerateCredentials()}
                     />
@@ -160,7 +166,7 @@ export class ServerDetailsForm extends React.Component<Props, State> {
                     <div className="btn-group pull-right">
                       <LinkButton
                         className="btn-default"
-                        text={t("Edit channels")}
+                        title={t("Edit channels")}
                         icon="fa-pencil"
                         href={`/rhn/manager/admin/hub/peripherals/${this.state.model.id}/sync-channels`}
                       />
@@ -181,15 +187,24 @@ export class ServerDetailsForm extends React.Component<Props, State> {
 
     const peripheralData = this.state.model as PeripheralDetailData;
 
+    if (peripheralData.nSyncedChannels === 0) {
+      return t("No channels synchronized.");
+    }
+
     if (peripheralData.nSyncedChannels === 1) {
-      return t("One syncronized channel");
+      return t("One synchronized channel");
+    }
+
+    // Only vendor channels are synchronized
+    if (peripheralData.nSyncedOrgs === 0) {
+      return t("{nSyncedChannels} synchronized channels", peripheralData);
     }
 
     if (peripheralData.nSyncedOrgs === 1) {
-      return t("{nSyncedChannels} syncronized channels, from one organization", peripheralData);
+      return t("{nSyncedChannels} synchronized channels, from one organization", peripheralData);
     }
 
-    return t("{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different organizations", peripheralData);
+    return t("{nSyncedChannels} synchronized channels, from {nSyncedOrgs} different organizations", peripheralData);
   }
 
   private onDeleteRootCA(): Promise<void> {

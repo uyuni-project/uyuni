@@ -6,6 +6,12 @@ import { Dialog } from "components/dialog/Dialog";
 import { Form, Radio, Text, TextArea } from "components/input";
 import { showErrorToastr } from "components/toastr";
 
+export enum ButtonMode {
+  TextAndIcon,
+  Text,
+  Icon,
+}
+
 enum EditMethod {
   Upload = "upload",
   Paste = "paste",
@@ -38,6 +44,8 @@ type Props = {
   editMessage?: string;
   /** Message displayed on the delete confirmation dialog */
   confirmDeleteMessage: string;
+  /** Show only icons for the buttons */
+  buttonMode: ButtonMode;
   /** Enable or disable the component */
   disabled: boolean;
   /** Callback to invoked when the user confirms on the edit dialog */
@@ -69,6 +77,7 @@ export class LargeTextAttachment extends React.Component<Props, State> {
     editDialogTitle: t("Edit"),
     editMessage: undefined,
     confirmDeleteMessage: "Are you sure?",
+    buttonMode: ButtonMode.TextAndIcon,
     disabled: false,
     onEdit: async (_value: string) => undefined,
     onDelete: async () => undefined,
@@ -96,8 +105,9 @@ export class LargeTextAttachment extends React.Component<Props, State> {
         <div className={`btn-group${this.props.hideMessage ? "" : " pull-right"}`}>
           {valuePresent && this.props.downloadable && (
             <LinkButton
-              text={t("Download")}
-              icon="fa-download"
+              text={this.showTextIfNeeded(t("Download"))}
+              icon={this.showIconIfNeeded("fa-download")}
+              title={this.showTooltipIfNeeded(t("Download"))}
               className="btn-default"
               href={downloadUrl}
               download={this.props.filename}
@@ -107,8 +117,9 @@ export class LargeTextAttachment extends React.Component<Props, State> {
           {this.props.editable && (
             <>
               <Button
-                text={valuePresent ? t("Edit") : t("Add")}
-                icon={valuePresent ? "fa-edit" : "fa-plus"}
+                text={this.showTextIfNeeded(valuePresent ? t("Edit") : t("Add"))}
+                icon={this.showIconIfNeeded(valuePresent ? "fa-edit" : "fa-plus")}
+                title={this.showTooltipIfNeeded(valuePresent ? t("Edit") : t("Add"))}
                 className="btn-default"
                 disabled={this.props.disabled}
                 handler={() =>
@@ -192,8 +203,9 @@ export class LargeTextAttachment extends React.Component<Props, State> {
               {valuePresent && (
                 <>
                   <Button
-                    text={t("Delete")}
-                    icon="fa-trash"
+                    text={this.showTextIfNeeded(t("Delete"))}
+                    icon={this.showIconIfNeeded("fa-trash")}
+                    title={this.showTooltipIfNeeded(t("Delete"))}
                     className="btn-default"
                     disabled={this.props.disabled}
                     handler={() => this.setState({ showDeleteDialog: true })}
@@ -207,7 +219,6 @@ export class LargeTextAttachment extends React.Component<Props, State> {
                       onConfirmAsync={this.props.onDelete}
                       onClose={() => this.setState({ showDeleteDialog: false })}
                       submitText={t("Delete")}
-                      submitIcon="fa-trash"
                     />
                   )}
                 </>
@@ -256,5 +267,32 @@ export class LargeTextAttachment extends React.Component<Props, State> {
       .then((value) => this.props.onEdit(value))
       .catch((error) => showErrorToastr(error))
       .finally(() => this.setState({ showEditDialog: false }));
+  }
+
+  // Shows the text based on the current button mode
+  private showTextIfNeeded(text: string): string | undefined {
+    if (this.props.buttonMode === ButtonMode.Icon) {
+      return undefined;
+    }
+
+    return text;
+  }
+
+  // Shows the icon based on the current button mode
+  private showIconIfNeeded(iconName: string): string {
+    if (this.props.buttonMode === ButtonMode.Text) {
+      return "";
+    }
+
+    return iconName;
+  }
+
+  // Shows the tooltip based on the current button mode
+  private showTooltipIfNeeded(tooltip: string): string | undefined {
+    if (this.props.buttonMode !== ButtonMode.Icon) {
+      return "";
+    }
+
+    return tooltip;
   }
 }

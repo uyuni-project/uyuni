@@ -80,10 +80,6 @@ public abstract class SsmPackagesAction implements MessageAction {
         long operationId = SsmOperationManager.createOperation(user,
                 getOperationName(), RhnSetDecl.SYSTEMS.getLabel());
 
-        // Explicitly call handle transactions here so the operation creation above
-        // is persisted before the potentially long running logic below
-        //handleTransactions(true);
-
         try {
             long actionStart = System.currentTimeMillis();
 

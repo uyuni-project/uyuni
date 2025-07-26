@@ -253,8 +253,6 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         // verify
         assertEquals(1, result);
 
-        Errata updatedErrata = ErrataManager.lookupErrata(errata.getId(), user);
-
         assertEquals(errata.getSynopsis(), "synopsis-1");
         assertEquals(errata.getAdvisory(), "advisory-1-123");
         assertEquals(errata.getAdvisoryName(), "advisory-1");

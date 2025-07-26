@@ -143,7 +143,7 @@ public class ChannelOverviewAction extends RhnAction {
     private void createInitSlsFile(ConfigChannel channel,
                                      HttpServletRequest request, DynaActionForm form) {
         if (channel.isStateChannel()) {
-            channel = (ConfigChannel) HibernateFactory.reload(channel);
+            channel = HibernateFactory.reload(channel);
             ConfigFileData data = new SLSFileData(StringUtil.webToLinux(
                                     form.getString(ConfigFileForm.REV_CONTENTS)));
             try {

@@ -19,7 +19,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,23 +55,11 @@ public class StringConstraint extends RequiredIfConstraint {
     }
 
     private boolean lengthLessThan(String str, Number length) {
-        try {
-            return str.getBytes("UTF8").length <= length.intValue();
-        }
-        catch (UnsupportedEncodingException use) {
-            LOG.warn("Couldn;t convert to UTF8-> [{}]", str);
-            return str.length() < length.intValue();
-        }
+        return str.getBytes(StandardCharsets.UTF_8).length <= length.intValue();
     }
 
     private boolean lengthGreaterThan(String str, Number length) {
-        try {
-            return str.getBytes("UTF8").length >= length.intValue();
-        }
-        catch (UnsupportedEncodingException use) {
-            LOG.warn("Couldn;t convert to UTF8-> [{}]", str);
-            return str.length() >= length.intValue();
-        }
+        return str.getBytes(StandardCharsets.UTF_8).length >= length.intValue();
     }
 
     /** {@inheritDoc} */

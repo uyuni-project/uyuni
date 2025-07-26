@@ -2399,6 +2399,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         }
 
         EditRepoCommand repoEditor = new EditRepoCommand(loggedInUser, repo.getId());
+        repoEditor.setMetadataSigned(repo.getMetadataSigned());
 
         // set new SSL Certificates for the repository
         if (!StringUtils.isEmpty(sslCaCert)) {

@@ -77,53 +77,58 @@
                     </div>
                 </div>
             </c:if>
-                    <c:if test="${not active}">
-                        <c:if test="${cron}">
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label">
-                                    <bean:message key="schedule.edit.jsp.frequency"/>
-                                </label>
-                                <div class="col-lg-6">
-                                    <div class="form-control">
-                                        <c:out value="${cronexpr}"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </c:if>
-                        <c:if test='${not empty param.schid}'>
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label">
-                                    <bean:message key="schedule.edit.jsp.activetill"/>:
-                                </label>
-                                <div class="col-lg-6">
-                                    <rhn:formatDate value="${activetill}" />
-                                </div>
-                            </div>
-                        </c:if>
-                    </c:if>
-
+            <c:if test="${not active}">
+                <c:if test="${cron}">
                     <div class="form-group">
-                        <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
-                            <c:choose>
-                                <c:when test='${empty param.schid}'>
-                                    <html:submit property="create_button" styleClass="btn btn-primary">
-                                        <bean:message key="schedule.edit.jsp.createschedule"/>
-                                    </html:submit>
-                                </c:when>
-                                <c:otherwise>
-                                    <c:if test="${active}">
-                                        <html:submit property="edit_button" styleClass="btn btn-primary">
-                                            <bean:message key="schedule.edit.jsp.updateschedule"/>
-                                        </html:submit>
-                                    </c:if>
-                                </c:otherwise>
-                            </c:choose>
+                        <label class="col-lg-3 control-label">
+                            <bean:message key="schedule.edit.jsp.frequency"/>
+                        </label>
+                        <div class="col-lg-6">
+                            <div class="form-control">
+                                <c:out value="${cronexpr}"/>
+                            </div>
                         </div>
                     </div>
-                    <html:hidden property="submitted" value="true" />
-                    <c:if test='${not empty param.schid}'>
-                        <html:hidden property="schid" value="${param.schid}" />
-                    </c:if>
+                </c:if>
+                <c:if test='${not empty param.schid}'>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">
+                            <bean:message key="schedule.edit.jsp.activetill"/>:
+                        </label>
+                        <div class="col-lg-6">
+                            <rhn:formatDate value="${activetill}" />
+                        </div>
+                    </div>
+                </c:if>
+            </c:if>
+
+            <div class="form-group">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
+                    <c:choose>
+                        <c:when test='${empty param.schid}'>
+                            <html:submit property="create_button" styleClass="btn btn-primary">
+                                <bean:message key="schedule.edit.jsp.createschedule"/>
+                            </html:submit>
+                        </c:when>
+                        <c:otherwise>
+                            <c:if test="${active}">
+                                <html:submit property="edit_button" styleClass="btn btn-primary">
+                                    <bean:message key="schedule.edit.jsp.updateschedule"/>
+                                </html:submit>
+                            </c:if>
+                            <c:if test="${not active}">
+                                <html:submit property="activate_button" styleClass="btn btn-primary">
+                                    <bean:message key="schedule.edit.jsp.activateschedule"/>
+                                </html:submit>
+                            </c:if>
+                         </c:otherwise>
+                    </c:choose>
+                </div>
+            </div>
+            <html:hidden property="submitted" value="true" />
+            <c:if test='${not empty param.schid}'>
+                <html:hidden property="schid" value="${param.schid}" />
+            </c:if>
         </html:form>
     </body>
 </html>

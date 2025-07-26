@@ -596,7 +596,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
                 }
                 else {
                     // If we need a guaranteed token then uncomment the following line and remove the active code
-                    // tokenList = profile.getResolvedRedHatManagementKey();
+                    // tokenList = profile.getResolvedRedHatManagementKey()
                     tokenList = "";
                 }
             }

@@ -142,6 +142,78 @@ public class TaskoXmlRpcHandler {
     }
 
     /**
+     * Activate Sat Bunch specified by bunchName and jobLabel
+     * @param bunchName the bunch name
+     * @param jobLabel the job name
+     * @return date of the first schedule
+     * @throws InvalidParamException thrown if job name already in use,
+     * @throws SchedulerException throwm if the trigger is not found,
+     * @throws NoSuchBunchTaskException thrown if bunch name not known
+     */
+    public Date activateSatBunch(String bunchName, String jobLabel)
+            throws InvalidParamException, SchedulerException, NoSuchBunchTaskException {
+
+        TaskoBunch bunch = doBasicCheck(null, bunchName, jobLabel);
+        List<TaskoSchedule> schedules = TaskoFactory.listScheduleByLabel(jobLabel);
+        TaskoSchedule schedule = schedules.stream()
+                .filter(s -> s.getBunch().equals(bunch))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchBunchTaskException("No compatible schedule found for bunch"));
+        schedule.setActiveTill(null);
+        TaskoFactory.save(schedule);
+        HibernateFactory.commitTransaction();
+        // create job
+        try {
+            return TaskoQuartzHelper.createJob(schedule);
+        }
+        catch (SchedulerException | InvalidParamException e) {
+            log.error("Unable to create job {}", schedule.getJobLabel(), e);
+            TaskoFactory.delete(schedule);
+            HibernateFactory.commitTransaction();
+            throw e;
+        }
+    }
+
+    /**
+     * Update Sat Bunch specified by bunchName and jobLabel
+     * @param bunchName the bunch name
+     * @param jobLabel the job name
+     * @param cronExpression the cron expression to set
+     * @return date of the first schedule
+     * @throws InvalidParamException thrown if job name already in use,
+     * @throws SchedulerException thrown if the trigger is not found,
+     * @throws NoSuchBunchTaskException thrown if bunch name not known
+     */
+    public Date updateSatBunch(String bunchName, String jobLabel, String cronExpression)
+            throws InvalidParamException, SchedulerException, NoSuchBunchTaskException {
+
+        TaskoBunch bunch = TaskoFactory.checkBunchName(null, bunchName);
+        List<TaskoSchedule> schedules = TaskoFactory.listScheduleByLabel(jobLabel);
+        TaskoSchedule schedule = schedules.stream()
+                .filter(s -> s.getBunch().equals(bunch))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchBunchTaskException("No compatible schedule found for bunch"));
+
+        if (SchedulerKernel.getScheduler().getTrigger(triggerKey(jobLabel, null)) != null) {
+            // remove the old Job
+            TaskoQuartzHelper.destroyJob(null, jobLabel);
+        }
+        schedule.setCronExpr(cronExpression);
+        TaskoFactory.save(schedule);
+        HibernateFactory.commitTransaction();
+        // create the new job
+        try {
+            return TaskoQuartzHelper.createJob(schedule);
+        }
+        catch (SchedulerException | InvalidParamException e) {
+            log.error("Unable to create job {}", schedule.getJobLabel(), e);
+            TaskoFactory.delete(schedule);
+            HibernateFactory.commitTransaction();
+            throw e;
+        }
+    }
+
+    /**
      * start scheduling a satellite bunch
      * @param bunchName bunch name
      * @param jobLabel job name

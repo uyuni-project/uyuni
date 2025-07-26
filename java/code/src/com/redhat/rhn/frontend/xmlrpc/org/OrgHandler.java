@@ -52,6 +52,7 @@ import com.redhat.rhn.manager.user.UserManager;
 
 import com.suse.manager.api.ReadOnly;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -177,7 +178,7 @@ public class OrgHandler extends BaseHandler {
         cmd.setPrefix(prefix);
 
         String pamAuthService = Config.get().getString(ConfigDefaults.WEB_PAM_AUTH_SERVICE);
-        if (usePamAuth) {
+        if (BooleanUtils.isTrue(usePamAuth)) {
             if (pamAuthService != null && !pamAuthService.trim().isEmpty()) {
                 cmd.setUsePam(usePamAuth);
             }
@@ -220,7 +221,7 @@ public class OrgHandler extends BaseHandler {
             throw new ValidationException(e.getMessage());
         }
 
-        if (!usePamAuth && StringUtils.isEmpty(password)) {
+        if (BooleanUtils.isNotTrue(usePamAuth) && StringUtils.isEmpty(password)) {
             throw new FaultException(-501, "passwordRequiredOrUsePam",
                     "Password is required if not using PAM authentication");
         }
@@ -659,7 +660,7 @@ public class OrgHandler extends BaseHandler {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
         OrgConfig orgConfig = verifyOrgExists(orgId).getOrgConfig();
         if (newSettings.containsKey("enabled")) {
-            if ((Boolean) newSettings.get("enabled")) {
+            if (BooleanUtils.isTrue((Boolean) newSettings.get("enabled"))) {
                 orgConfig.setScapRetentionPeriodDays(90L);
             }
             else {
@@ -828,7 +829,7 @@ public class OrgHandler extends BaseHandler {
                                      Boolean enable) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
         Org org = verifyOrgExists(orgId);
-        if (enable) {
+        if (BooleanUtils.isTrue(enable)) {
             org.getOrgConfig().setStagingContentEnabled(enable);
         }
         else {

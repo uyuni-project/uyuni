@@ -33,7 +33,6 @@ import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
 import com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
@@ -250,7 +249,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     public void testCanVerifyVendorChannelConflictsWithCustomChannel() {
         ProductSyncManager manager = new ProductSyncManager();
 
-        final User user = UserTestUtils.findNewUser("testUser", "testOrg");
+        UserTestUtils.findNewUser("testUser", "testOrg");
         ChannelFamily family = getOrCreateChannelFamily();
         String uniquePrefix = RandomStringUtils.randomAlphanumeric(6);
 

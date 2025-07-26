@@ -248,8 +248,8 @@ public abstract class BaseSearchAction extends RhnAction {
                     boolean flag) {
         LocalizationService ls = LocalizationService.getInstance();
         Map<String, String> selection = new HashMap<>();
-        selection.put("display", (flag ? "*" : "") + ls.getMessage(key));
-        selection.put("value", StringEscapeUtils.escapeHtml4(value));
+        selection.put(DISPLAY_KEY, (flag ? "*" : "") + ls.getMessage(key));
+        selection.put(VALUE_KEY, StringEscapeUtils.escapeHtml4(value));
         options.add(selection);
     }
 

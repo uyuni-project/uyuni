@@ -109,7 +109,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testUpdate() {
 
-        ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
+        handler.create(admin, NAME, DESCRIPTION);
         assertNotNull(manager.lookup(NAME, admin));
         regular.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
         String newDescription = DESCRIPTION + TestUtils.randomString();
@@ -120,7 +120,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         catch (Exception e) {
             //access check successful.
         }
-        group = handler.update(admin, NAME, newDescription);
+        ServerGroup group = handler.update(admin, NAME, newDescription);
         assertEquals(group.getDescription(), newDescription);
     }
 

@@ -107,6 +107,7 @@ public class AdminMonitoringHandlerTest extends BaseHandlerTestCase {
             fail("PermissionCheckFailureException should be thrown");
         }
         catch (PermissionCheckFailureException e) {
+            //should be here
         }
 
         try {

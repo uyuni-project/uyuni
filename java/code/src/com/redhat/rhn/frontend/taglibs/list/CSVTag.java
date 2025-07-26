@@ -116,7 +116,7 @@ public class CSVTag extends BodyTagSupport {
         }
         if (d != null) {
             if (d instanceof List data) {
-                pageData = (List<BaseDto>) data;
+                pageData = data;
             }
             else {
                 throw new JspException("Dataset named \'" + dataSetName +

@@ -63,7 +63,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         //make sure we get a permission exception if a regular user tries to get the user
         //list.
         try {
-            result = handler.listUsers(regular);
+            handler.listUsers(regular);
             fail();
         }
         catch (PermissionCheckFailureException e) {
@@ -107,7 +107,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
         //regular looking up admin
         try {
-            result = handler.getDetails(regular, admin.getLogin());
+            handler.getDetails(regular, admin.getLogin());
             fail();
         }
         catch (PermissionCheckFailureException e) {

@@ -147,6 +147,7 @@ public class RegistrationUtils {
                 minion.getCreator() != null ? minion.getCreator().getId() : null,
                 !applyHighstate, // Refresh package list if we're not going to apply the highstate afterwards
                 statesToApplyPillar,
+                null,
                 statesToApply.toArray(new String[0])
         ));
 
@@ -156,7 +157,8 @@ public class RegistrationUtils {
                     minion.getId(),
                     minion.getCreator() != null ? minion.getCreator().getId() : null,
                     true,
-                    emptyList()));
+                    null,
+                    Date.from(Instant.now().plus(1, ChronoUnit.MINUTES))));
         }
 
         // get hardware and network async

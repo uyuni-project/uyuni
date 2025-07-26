@@ -17,7 +17,6 @@ package com.redhat.rhn.taskomatic.task.repomd;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
-import com.redhat.rhn.domain.rhnpackage.PackageArch;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
@@ -100,8 +99,8 @@ public class DebReleaseWriter {
     }
 
     private String toArchString(ChannelArch channelArch) {
-        return (String)channelArch.getCompatiblePackageArches().stream().
-               map(a -> ((PackageArch)a).getLabel().replaceAll("-deb", "")).
+        return channelArch.getCompatiblePackageArches().stream().
+               map(a -> a.getLabel().replaceAll("-deb", "")).
                filter(a -> !("all".equals(a) || "src".equals(a))).
                sorted().collect(Collectors.joining(" "));
     }

@@ -38,6 +38,7 @@ import com.redhat.rhn.manager.kickstart.SystemDetailsCommand;
 
 import com.suse.manager.api.ReadOnly;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
@@ -293,7 +294,7 @@ public class SystemDetailsHandler extends BaseHandler {
         }
 
         command.setTimezone(locale);
-        if (useUtc) {
+        if (BooleanUtils.isTrue(useUtc)) {
             command.useUtc();
         }
         else {

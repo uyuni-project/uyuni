@@ -37,7 +37,7 @@ import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
-import org.quartz.impl.jdbcjobstore.StdJDBCConstants;
+import org.quartz.impl.jdbcjobstore.Constants;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -51,7 +51,7 @@ import java.util.Date;
 public class TaskoQuartzHelper {
 
     private static final String QRTZ_PREFIX = Config.get()
-            .getString("org.quartz.jobStore.tablePrefix", StdJDBCConstants.DEFAULT_TABLE_PREFIX);
+            .getString("org.quartz.jobStore.tablePrefix", Constants.DEFAULT_TABLE_PREFIX);
     private static final String QRTZ_TRIGGERS = QRTZ_PREFIX.concat("TRIGGERS");
     private static final String QRTZ_SIMPLE_TRIGGERS = QRTZ_PREFIX.concat("SIMPLE_TRIGGERS");
     private static final String QRTZ_CRON_TRIGGERS = QRTZ_PREFIX.concat("CRON_TRIGGERS");

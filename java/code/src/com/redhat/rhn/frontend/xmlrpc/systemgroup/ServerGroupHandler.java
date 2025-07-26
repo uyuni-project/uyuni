@@ -45,6 +45,8 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.api.ReadOnly;
 
+import org.apache.commons.lang3.BooleanUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -124,8 +126,7 @@ public class ServerGroupHandler extends BaseHandler {
         String admins = null;
         for (String login : loginNames) {
             User user = UserFactory.lookupByLogin(login);
-            if ((user != null) && ((user.hasRole(RoleFactory.SAT_ADMIN) ||
-                (user.hasRole(RoleFactory.ORG_ADMIN))))) {
+            if ((user != null) && (user.hasRole(RoleFactory.SAT_ADMIN) || user.hasRole(RoleFactory.ORG_ADMIN))) {
                 if (admins == null) {
                     admins = login;
                 }
@@ -213,7 +214,7 @@ public class ServerGroupHandler extends BaseHandler {
 
         List servers = xmlRpcSystemHelper.lookupServers(loggedInUser, serverIds);
 
-        if (add) {
+        if (BooleanUtils.isTrue(add)) {
             serverGroupManager.addServers(group, servers, loggedInUser);
         }
         else {

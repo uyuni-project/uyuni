@@ -16,7 +16,7 @@
 package com.suse.cloud;
 
 public enum CloudProvider {
-    None,
+    NONE,
     AWS,
     AZURE,
     GCE
