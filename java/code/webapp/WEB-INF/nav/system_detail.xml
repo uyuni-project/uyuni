@@ -29,7 +29,7 @@
     <rhn-tab name="Custom Info" acl="authorized_for(systems.details.custom_data); system_feature(ftr_custom_info)">
       <rhn-tab-url>/rhn/systems/details/ListCustomData.do</rhn-tab-url>
     </rhn-tab>
-    <rhn-tab name="Support" acl="authorized_for(systems.details.support)" url="/rhn/manager/systems/details/support">
+    <rhn-tab name="Support" acl="authorized_for(systems.details.support); not is(java.disable_supportdata_upload)" url="/rhn/manager/systems/details/support">
       <rhn-tab-url>/rhn/manager/systems/details/support</rhn-tab-url>
     </rhn-tab>
   </rhn-tab>

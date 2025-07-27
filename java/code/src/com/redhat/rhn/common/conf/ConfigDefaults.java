@@ -72,6 +72,7 @@ public class ConfigDefaults {
     public static final String WEB_SMTP_WRITE_TIMEOUT = "java.smtp_write_timeout";
     public static final String WEB_DISABLE_UPDATE_STATUS = "java.disable_update_status";
     public static final String WEB_DISABLE_REMOTE_COMMANDS_FROM_UI = "java.disable_remote_commands_from_ui";
+    public static final String WEB_DISABLE_SUPPORTDATA_UPLOAD = "java.disable_supportdata_upload";
 
     public static final String ERRATA_CACHE_COMPUTE_THRESHOLD
     = "errata_cache_compute_threshold";
@@ -232,6 +233,7 @@ public class ConfigDefaults {
      * SUSE Manager defaults
      */
     public static final String SCC_URL = "server.susemanager.scc_url";
+    public static final String SCC_UPDATE_HOST_DOMAIN = "server.susemanager.update_host_domain";
     public static final String FORWARD_REGISTRATION = "server.susemanager.forward_registration";
     public static final String REG_ERROR_EXPIRE_TIME = "server.susemanager.reg_error_expire_time";
     public static final String REG_BATCH_SIZE = "server.susemanager.reg_batch_size";
@@ -1176,6 +1178,13 @@ public class ConfigDefaults {
      */
     public boolean isForwardRegistrationEnabled() {
         return Config.get().getBoolean(FORWARD_REGISTRATION);
+    }
+
+    /**
+     * @return return the domain expected for the official update host
+     */
+    public String getOfficialUpdateHostDomain() {
+        return Config.get().getString(SCC_UPDATE_HOST_DOMAIN, ".suse.com");
     }
 
     /**
