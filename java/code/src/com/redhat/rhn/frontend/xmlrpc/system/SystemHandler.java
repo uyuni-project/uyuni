@@ -9215,6 +9215,9 @@ public class SystemHandler extends BaseHandler {
      */
     public Integer scheduleSupportDataUpload(User loggedInUser, Integer sid, String caseNumber, String parameter,
                                              String uploadGeo, Date earliestOccurrence) {
+        if (Config.get().getBoolean(ConfigDefaults.WEB_DISABLE_SUPPORTDATA_UPLOAD)) {
+            throw new UnsupportedOperationException("Disabled");
+        }
         try {
             SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
 
