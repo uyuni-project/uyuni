@@ -54,7 +54,7 @@ CREATE OR REPLACE VIEW InventoryReport AS
               , Entitlements.entitlements
               , Groups.system_groups
               , SystemVirtualdata.host_system_id AS virtual_host
-              , SystemVirtualdata.virtual_system_id IS NULL AS is_virtualized
+              , SystemVirtualdata.virtual_system_id IS NOT NULL AS is_virtualized
               , SystemVirtualdata.instance_type_name AS virt_type
               , Channels.software_channels
               , COALESCE(SystemOutdated.packages_out_of_date, (0)::bigint) AS packages_out_of_date
