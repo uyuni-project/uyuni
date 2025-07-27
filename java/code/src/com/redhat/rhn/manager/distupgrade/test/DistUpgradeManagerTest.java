@@ -52,6 +52,7 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -473,7 +474,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testCapabilityMissing() {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         try {
             DistUpgradeManager.performServerChecks(server.getId(), user);
             fail("Missing capability should make the server checks fail!");
@@ -490,7 +492,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testZyppPluginNotInstalled() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         SystemManagerTest.giveCapability(server.getId(), "distupgrade.upgrade", 1L);
         try {
             DistUpgradeManager.performServerChecks(server.getId(), user);
@@ -508,7 +511,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testDistUpgradeScheduled() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         SystemManagerTest.giveCapability(server.getId(), "distupgrade.upgrade", 1L);
 
         // Install the zypp-plugin-spacewalk package

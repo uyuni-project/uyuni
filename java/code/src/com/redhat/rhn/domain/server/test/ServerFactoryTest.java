@@ -136,10 +136,10 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     private Server server;
     public static final int TYPE_SERVER_MGR = 0;
     public static final int TYPE_SERVER_PROXY = 1;
-    public static final int TYPE_SERVER_NORMAL = 2;
+    public static final int TYPE_SERVER_NORMAL = 2; // bootstrap or foreign
     public static final int TYPE_SERVER_VIRTUAL = 3;
     public static final int TYPE_SERVER_MINION = 4;
-    public static final String RUNNING_KERNEL = "2.6.9-55.EL";
+    public static final String RUNNING_KERNEL = "3.12.48-52.27-default";
     public static final String HOSTNAME = "foo.bar.com";
 
     private static final SystemQuery SYSTEM_QUERY = new TestSystemQuery();
@@ -589,6 +589,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Create a test Server and commit it to the DB.
+     * Create a x86_64 Minion Server
      * @param owner the owner of this Server
      * @return Server that was created
      */
@@ -596,31 +597,30 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         return createTestServer(owner, false);
     }
 
-    public static Server createTestServer(User owner, boolean ensureOwnerAccess,
-            ServerGroupType type) {
-        return createTestServer(owner, ensureOwnerAccess, type, TYPE_SERVER_NORMAL,
-                                new Date());
+    public static Server createTestServer(User owner, boolean ensureOwnerAccess, ServerGroupType type) {
+        return createTestServer(owner, ensureOwnerAccess, type, TYPE_SERVER_NORMAL, new Date());
     }
-
 
     public static Server createTestServer(User owner, boolean ensureOwnerAccess, ServerGroupType type, int stype) {
         return createTestServer(owner, ensureOwnerAccess, type, stype, new Date());
     }
 
-
     private static Server createTestServer(User owner, boolean ensureOwnerAccess,
             ServerGroupType type, int stype, Date dateCreated) {
 
+        if (type.getAssociatedEntitlement().equals(EntitlementManager.SALT) && stype == TYPE_SERVER_NORMAL) {
+            stype = TYPE_SERVER_MINION;
+        }
         Server newS = createUnentitledTestServer(owner, ensureOwnerAccess, stype,
                 dateCreated);
 
         if (!type.getAssociatedEntitlement().isBase()) {
             EntitlementServerGroup mgmt = ServerGroupFactory.lookupEntitled(
-                    EntitlementManager.MANAGEMENT, owner.getOrg());
+                    EntitlementManager.SALT, owner.getOrg());
             if (mgmt == null) {
                 newS = TestUtils.saveAndReload(newS);
                 mgmt = ServerGroupFactory.lookupEntitled(
-                        EntitlementManager.MANAGEMENT,
+                        EntitlementManager.SALT,
                         owner.getOrg());
                 newS = ServerFactory.lookupById(newS.getId());
             }
@@ -629,9 +629,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(newS, mgmt.getGroupType().getAssociatedEntitlement());
         }
 
-
-        EntitlementServerGroup sg = ServerGroupTestUtils.createEntitled(owner.getOrg(),
-                                                                        type);
+        EntitlementServerGroup sg = ServerGroupTestUtils.createEntitled(owner.getOrg(), type);
 
         SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(newS, sg.getGroupType().getAssociatedEntitlement());
         return TestUtils.saveAndReload(newS);
@@ -668,7 +666,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         newS.addNetworkInterface(netint);
 
         ServerFactory.save(newS);
-        TestUtils.saveAndReload(newS);
+        newS = TestUtils.saveAndReload(newS);
 
 
         /* Since we added a server to the Org we need
@@ -717,14 +715,14 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         s.setCreator(owner);
         s.setOrg(owner.getOrg());
         s.setDigitalServerId("ID-" + TestUtils.randomString());
-        s.setOs("Red Hat Linux");
+        s.setOs("SLES");
         s.setRunningKernel(RUNNING_KERNEL);
-        s.setName("serverfactorytest" + TestUtils.randomString() + ".rhn.redhat.com");
-        s.setRelease("9");
+        s.setName("serverfactorytest" + TestUtils.randomString() + ".example.com");
+        s.setRelease("15");
         s.setSecret("1234567890123456789012345678901234567890123456789012345678901234");
         s.setAutoUpdate("N");
         s.setLastBoot(System.currentTimeMillis() / 1000);
-        s.setServerArch(ServerFactory.lookupServerArchByLabel("i386-redhat-linux"));
+        s.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         s.setCreated(new Date());
         s.setModified(new Date());
         s.setRam(1024);
@@ -734,7 +732,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             // a Mgr Server is also a Minion
             MinionServer minionServer = (MinionServer) s;
             minionServer.setMinionId(s.getName());
-            minionServer.setOsFamily("RedHat");
+            minionServer.setOsFamily("Suse");
             minionServer.setMachineId(TestUtils.randomString());
 
             ReportDBCredentials reportCredentials = CredentialsFactory.createReportCredentials("pythia", "secret");
@@ -750,6 +748,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             minionServer.setMgrServerInfo(info);
         }
         else if (type == TYPE_SERVER_PROXY) {
+            // a Proxy Server is also a Minion
+            MinionServer minionServer = (MinionServer) s;
+            minionServer.setMinionId(s.getName());
+            minionServer.setOsFamily("Suse");
+            minionServer.setMachineId(TestUtils.randomString());
+
             ProxyInfo info = new ProxyInfo();
             info.setVersion(PackageEvrFactory.lookupOrCreatePackageEvr("10", "10", "10", s.getPackageType()));
             info.setServer(s);
@@ -758,7 +762,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         else if (type == TYPE_SERVER_MINION) {
             MinionServer minionServer = (MinionServer) s;
             minionServer.setMinionId(s.getName());
-            minionServer.setOsFamily("RedHat");
+            minionServer.setOsFamily("Suse");
             minionServer.setMachineId(TestUtils.randomString());
         }
     }
@@ -785,16 +789,14 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     public static Server createTestServer(User owner, boolean ensureOwnerAccess) {
         return createTestServer(owner, ensureOwnerAccess,
-                ServerConstants.getServerGroupTypeEnterpriseEntitled());
+                ServerConstants.getServerGroupTypeSaltEntitled());
     }
 
     private static Server createServer(int type) {
         switch(type) {
-            case TYPE_SERVER_PROXY:
             case TYPE_SERVER_NORMAL:
                 return ServerFactory.createServer();
-            case TYPE_SERVER_MGR:
-            case TYPE_SERVER_MINION:
+            case TYPE_SERVER_PROXY, TYPE_SERVER_MGR, TYPE_SERVER_MINION:
                 return new MinionServer();
 
             default:
@@ -1345,13 +1347,16 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testAddRemoveServerPath() throws Exception {
         Server minion = ServerTestUtils.createTestSystem();
-        Server proxy = ServerTestUtils.createTestSystem();
+        Server proxy = ServerFactoryTest.createTestProxyServer(user, false);
         String proxyHostname = "proxyHostname";
         Set<ServerPath> serverPaths = ServerFactory.createServerPaths(minion, proxy, proxyHostname);
         minion.getServerPaths().addAll(serverPaths);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
+
+        minion = HibernateFactory.reload(minion);
+        HibernateFactory.reload(proxy);
 
         Server s = ServerFactory.lookupById(minion.getId());
         assertEquals(serverPaths.stream().findFirst().get(),
@@ -1414,13 +1419,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     /**
      * Tests looking up of a proxy server, assuming the proxy's FQDN is
      * in rhnServer.
-     * @throws Exception - if anything goes wrong.
      */
     @Test
-    public void testLookupProxyServer() throws Exception {
+    public void testLookupProxyServer() {
         Server s = createTestServer(user,
                 false,
-                ServerConstants.getServerGroupTypeEnterpriseEntitled(),
+                ServerConstants.getServerGroupTypeSaltEntitled(),
                 TYPE_SERVER_PROXY);
         s.setHostname(HOSTNAME);
 
@@ -1439,10 +1443,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     /**
      * Tests looking up of a proxy server, assuming the proxy's FQDN is
      * in rhnServer and FQDN name have different cases.
-     * @throws Exception - if anything goes wrong.
      */
     @Test
-    public void testLookupProxyServerFQDNWithCaseName() throws Exception {
+    public void testLookupProxyServerFQDNWithCaseName() {
         Server s = createTestServer(user,
                 false,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
@@ -1455,16 +1458,15 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         // FQDN: precise lookup
-        assertEquals(s, ServerFactory.lookupProxyServer(hostCaseName).get());
+        assertEquals(ServerFactory.lookupProxyServer(hostCaseName).orElse(null), s);
     }
 
     /**
      * Tests looking up of a proxy server, assuming the proxy's FQDN is
      * in rhnServer and FQDN name with case different from the used in query.
-     * @throws Exception - if anything goes wrong.
      */
     @Test
-    public void testLookupProxyServerFQDNIgnoreCase() throws Exception {
+    public void testLookupProxyServerFQDNIgnoreCase() {
         Server s = createTestServer(user,
                 false,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
@@ -1477,16 +1479,15 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         // FQDN: precise lookup
-        assertEquals(s, ServerFactory.lookupProxyServer(hostCaseName.toLowerCase()).get());
+        assertEquals(ServerFactory.lookupProxyServer(hostCaseName.toLowerCase()).orElse(null), s);
     }
 
     /**
      * Tests looking up of a proxy server, assuming the proxy's simple name is
      * in rhnServer.
-     * @throws Exception - if anything goes wrong.
      */
     @Test
-    public void testLookupProxyServerWithSimpleName() throws Exception {
+    public void testLookupProxyServerWithSimpleName() {
         Server s = createTestServer(user,
                 false,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
@@ -1499,9 +1500,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         // FQDN: imprecise lookup
-        assertEquals(s, ServerFactory.lookupProxyServer(fullyQualifiedDomainName).get());
+        assertEquals(ServerFactory.lookupProxyServer(fullyQualifiedDomainName).orElse(null), s);
         // plain hostname: precise lookup
-        assertEquals(s, ServerFactory.lookupProxyServer(simpleHostname).get());
+        assertEquals(ServerFactory.lookupProxyServer(simpleHostname).orElse(null), s);
     }
 
     @Test
@@ -1552,11 +1553,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Test assigning maintenance windows to systems
-     *
-     * @throws Exception
      */
     @Test
-    public void testSetMaintenanceWindowToSystems() throws Exception {
+    public void testSetMaintenanceWindowToSystems() {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         MaintenanceSchedule schedule = new MaintenanceManager().createSchedule(
                 user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
