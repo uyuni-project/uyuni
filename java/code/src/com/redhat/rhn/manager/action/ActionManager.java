@@ -56,6 +56,9 @@ import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
+import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
+import com.redhat.rhn.domain.action.supportdata.UploadGeoType;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFileName;
@@ -2349,6 +2352,26 @@ public class ActionManager extends BaseManager {
      */
     public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
             Optional<Map<String, Object>> pillar, Date earliest, Optional<Boolean> test, boolean recurring) {
+        return scheduleApplyStates(scheduler, sids, mods, pillar, earliest, test, recurring, false);
+    }
+
+    /**
+     * Schedule state application given a list of state modules. Salt will apply the
+     * highstate if an empty list of state modules is given.
+     *
+     * @param scheduler the user who is scheduling
+     * @param sids list of server ids
+     * @param mods list of state modules to be applied
+     * @param pillar optional pillar map
+     * @param earliest action will not be executed before this date
+     * @param test run states in test-only mode
+     * @param recurring whether the state is being applied recurring
+     * @param direct  whenther the state should be executed as direct call
+     * @return the action object
+     */
+    public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
+                                                        Optional<Map<String, Object>> pillar, Date earliest,
+                                                        Optional<Boolean> test, boolean recurring, boolean direct) {
         ApplyStatesAction action = (ApplyStatesAction) ActionFactory
                 .createAction(ActionFactory.TYPE_APPLY_STATES, earliest);
         action.setName(defineStatesActionName(mods, recurring));
@@ -2360,6 +2383,7 @@ public class ActionManager extends BaseManager {
         actionDetails.setMods(mods);
         actionDetails.setPillarsMap(pillar);
         test.ifPresent(actionDetails::setTest);
+        actionDetails.setDirect(direct);
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
@@ -2523,6 +2547,38 @@ public class ActionManager extends BaseManager {
             ret.add(a.getId());
         }
         return ret;
+    }
+
+    /**
+     * Schedule Action to get and upload supportdata from the defined system to SCC.
+     * @param scheduler the scheduler of this action
+     * @param sid the system ID
+     * @param caseNumber the support case number
+     * @param parameter additional parameter for the tool which collect the data
+     * @param uploadGeoType the uploadGeo Type
+     * @param earliest the date when this action should be executed
+     * @return the action
+     */
+    public static Action scheduleSupportDataAction(User scheduler, long sid, String caseNumber, String parameter,
+                                                   UploadGeoType uploadGeoType, Date earliest) {
+        SupportDataAction action = (SupportDataAction) ActionFactory
+                .createAction(ActionFactory.TYPE_SUPPORTDATA_GET, earliest);
+        action.setName("Get and Upload Support data");
+        action.setOrg(scheduler != null ?
+                scheduler.getOrg() : OrgFactory.getSatelliteOrg());
+        action.setSchedulerUser(scheduler);
+
+        SupportDataActionDetails actionDetails = new SupportDataActionDetails();
+        actionDetails.setCaseNumber(caseNumber);
+        actionDetails.setParameter(parameter);
+        actionDetails.setGeoType(uploadGeoType);
+        actionDetails.setParentAction(action);
+
+        action.setDetails(actionDetails);
+        ActionFactory.save(action);
+
+        scheduleForExecution(action, Set.of(sid));
+        return action;
     }
 
     /**

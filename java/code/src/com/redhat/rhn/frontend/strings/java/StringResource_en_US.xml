@@ -1919,6 +1919,12 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="supportdata.get" xml:space="preserve">
+        <source>Get and Upload Support data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="reboot.reboot" xml:space="preserve">
         <source>System reboot</source>
         <context-group name="ctx">
@@ -9181,6 +9187,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="hub.unable_to_deregister" xml:space="preserve">
         <source>Unable to deregister: an unexpected error is occurred while contacting the remote server. Please check the server logs.</source>
       </trans-unit>
+      <trans-unit id="supportdata.uploadGeoType.eu" xml:space="preserve">
+        <source>EU</source>
+      </trans-unit>
+      <trans-unit id="supportdata.uploadGeoType.us" xml:space="preserve">
+        <source>US</source>
+      </trans-unit>
       <trans-unit id="hub.cannot_refresh_certificate" xml:space="preserve">
         <source>An error occurred while attempting to refresh the root certificate authorities. Please check the server logs.</source>
       </trans-unit>
@@ -9874,6 +9886,18 @@ For a detailed analysis, please refer to the log files.
       </trans-unit>
       <trans-unit id="system.audit.coco.configNotUpdated">
         <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
+      </trans-unit>
+      <trans-unit id="system.details.support.invalid_case_number">
+        <source>The case number {0} is not valid.</source>
+      </trans-unit>
+      <trans-unit id="system.details.support.invalid_region">
+        <source>The region {0] is not valid.</source>
+      </trans-unit>
+      <trans-unit id="system.details.support.unable_to_schedule">
+        <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
+      </trans-unit>
+      <trans-unit id="system.details.support.unable_to_upload">
+        <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
       </trans-unit>
     </body>
   </file>

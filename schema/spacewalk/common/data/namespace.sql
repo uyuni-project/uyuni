@@ -424,6 +424,12 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('systems.software.refresh', 'W', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('systems.details.support', 'R', 'Views for generating and uploading the support data')
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('systems.details.support', 'W', 'Schedule the support data action on the system')
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('systems.maintenance', 'W', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
@@ -2797,6 +2803,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.schedule_script_run', 'W', 'Schedule a script to run.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.system.schedule_support_data_upload', 'W', 'Schedule fetch and upload support data from a system to SCC')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.schedule_sync_packages_with_system', 'W', 'Sync packages from a source system to a target.')

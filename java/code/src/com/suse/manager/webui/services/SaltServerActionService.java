@@ -71,6 +71,7 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.errata.Errata;
@@ -115,9 +116,11 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
+import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
+import com.suse.manager.webui.utils.salt.LocalCallWithExecutors;
 import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.manager.webui.utils.token.DownloadTokenBuilder;
@@ -126,6 +129,7 @@ import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
+import com.suse.salt.netapi.calls.modules.Test;
 import com.suse.salt.netapi.calls.modules.TransactionalUpdate;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.GenericError;
@@ -294,6 +298,9 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_PACKAGES_LOCK.equals(actionType)) {
             return packagesLockAction(minions, (PackageLockAction) actionIn);
         }
+        else if (ActionFactory.TYPE_SUPPORTDATA_GET.equals(actionType)) {
+            return supportDataAction(minions, (SupportDataAction) actionIn);
+        }
         else if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(actionType)) {
             return packagesUpdateAction(minions, (PackageUpdateAction) actionIn);
         }
@@ -324,7 +331,8 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_APPLY_STATES.equals(actionType)) {
             ApplyStatesActionDetails actionDetails = ((ApplyStatesAction) actionIn).getDetails();
             return applyStatesAction(minions, actionDetails.getMods(),
-                                     actionDetails.getPillarsMap(), actionDetails.isTest());
+                                     actionDetails.getPillarsMap(), actionDetails.isTest(),
+                                     actionDetails.isDirect());
         }
         else if (ActionFactory.TYPE_IMAGE_INSPECT.equals(actionType)) {
             ImageInspectAction iia = (ImageInspectAction) actionIn;
@@ -380,6 +388,32 @@ public class SaltServerActionService {
             }
             return Collections.emptyMap();
         }
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> supportDataAction(List<MinionSummary> minions,
+                                                                     SupportDataAction action) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+
+        var partitioned = minions.stream().collect(Collectors.partitioningBy(minionSummary -> {
+            var actionPath = MinionActionUtils.getFullActionPath(action.getOrg().getId(), minionSummary.getServerId(),
+                    action.getId());
+            var bundle = actionPath.resolve("bundle.tar");
+            return Files.exists(bundle);
+        }));
+
+        var pillar = Optional.ofNullable(action.getDetails().getParameter())
+                .map(p -> Map.of("arguments", (Object)p));
+        var full = partitioned.get(false);
+        var onlyUpload = partitioned.get(true);
+        if (!full.isEmpty()) {
+            // supportdata should be taken always in direct mode - also on transactional systems
+            var apply = State.apply(List.of("supportdata"), pillar);
+            ret.put(new LocalCallWithExecutors<>(apply, List.of("direct_call"), Collections.emptyMap()), full);
+        }
+        if (!onlyUpload.isEmpty()) {
+            ret.put(Test.echo("supportdata"), onlyUpload);
+        }
+        return ret;
     }
 
     /**
@@ -1362,10 +1396,17 @@ public class SaltServerActionService {
 
     private Map<LocalCall<?>, List<MinionSummary>> applyStatesAction(
             List<MinionSummary> minionSummaries, List<String> mods,
-            Optional<Map<String, Object>> pillar, boolean test) {
+            Optional<Map<String, Object>> pillar, boolean test, boolean direct) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        ret.put(com.suse.salt.netapi.calls.modules.State.apply(mods, pillar, Optional.of(true),
-                test ? Optional.of(test) : Optional.empty()), minionSummaries);
+        LocalCall<Map<String, ApplyResult>> apply = State.apply(mods, pillar, Optional.of(true),
+                test ? Optional.of(test) : Optional.empty());
+        if (direct) {
+            ret.put(new LocalCallWithExecutors<>(apply, List.of("direct_call"), Collections.emptyMap()),
+                    minionSummaries);
+        }
+        else {
+            ret.put(apply, minionSummaries);
+        }
         return ret;
     }
 
