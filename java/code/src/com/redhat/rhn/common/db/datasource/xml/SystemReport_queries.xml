@@ -26,6 +26,7 @@
                     , web_contact.login AS registered_by
                     , rhnserver.created AS registration_time
                     , rhnserverinfo.checkin AS last_checkin_time
+                    , to_timestamp(rhnserver.last_boot) AS last_boot_time
                     , rhnserver.running_kernel AS kernel_version
                     , rhnserverarch.name AS architecture
                     , rhnproxyinfo.server_id IS NOT NULL AS is_proxy
@@ -197,13 +198,13 @@
 
 <mode name="SystemOutdated" class="">
     <query params="system_id, limit">
-          SELECT rhnserverneededcache.server_id AS system_id
-                    , count(distinct rhnpackage.name_id) AS packages_out_of_date
-                    , count(distinct rhnserverneededcache.errata_id) AS errata_out_of_date
-            FROM rhnpackage, rhnserverneededcache
-           WHERE rhnserverneededcache.package_id = rhnpackage.id
-                    AND rhnserverneededcache.server_id &gt; :system_id
-        GROUP BY rhnserverneededcache.server_id
+          SELECT susesystemoverview.id AS system_id
+               , COALESCE(susesystemoverview.outdated_packages, 0) AS packages_out_of_date
+               , COALESCE(susesystemoverview.security_errata, 0) +  COALESCE(susesystemoverview.bug_errata, 0) + COALESCE(susesystemoverview.enhancement_errata, 0) AS errata_out_of_date
+               , COALESCE(susesystemoverview.extra_pkg_count, 0) AS extra_pkg_count
+               , susesystemoverview.status_type AS status
+            FROM susesystemoverview
+           WHERE susesystemoverview.id &gt; :system_id
         ORDER BY system_id
            FETCH FIRST :limit ROWS WITH TIES
     </query>
