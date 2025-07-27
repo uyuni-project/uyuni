@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.client.ClientCertificate;
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -247,6 +248,13 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testCreateSupportdataAction() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
+
+        Config.get().setBoolean(ConfigDefaults.WEB_DISABLE_SUPPORTDATA_UPLOAD, "true");
+
+        assertThrows(UnsupportedOperationException.class, () -> handler.scheduleSupportDataUpload(
+                admin, server.getId().intValue(), "012345", "-i LVM", "EU", getNow()));
+
+        Config.get().setBoolean(ConfigDefaults.WEB_DISABLE_SUPPORTDATA_UPLOAD, "false");
 
         Integer aid = handler.scheduleSupportDataUpload(admin, server.getId().intValue(),
                 "012345", "-i LVM", "EU", getNow());
