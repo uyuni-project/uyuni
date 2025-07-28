@@ -28,11 +28,11 @@ with open(config_path + "config.yaml", encoding="utf-8") as source:
         file.write(
             f'''# Automatically generated Uyuni Proxy Server configuration file.
 TFTP_USER="tftp"
-TFTP_OPTIONS="{config.get('tftp_options', '')} "
+TFTP_OPTIONS="{config.get("tftp_options", "")} "
 TFTP_DIRECTORY="{tftp_root}"'''
         )
 
-    os.system(f"chmod 640 {tftp_config}")
+    os.system(f"/usr/bin/chmod 640 {tftp_config}")
 
 # Make sure we can read
 if not os.access(tftp_root, os.R_OK | os.X_OK):
