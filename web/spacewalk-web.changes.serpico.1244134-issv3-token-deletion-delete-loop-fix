@@ -1,1 +1,1 @@
-- Fixed the token removal loop bug (bcs#1244134)
+- Fixed the token removal loop bug (bsc#1244134)
