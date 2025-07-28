@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Select } from "components/input";
+import { DEPRECATED_Select } from "components/input";
 
 type Matcher = {
   label: string;
@@ -57,7 +57,7 @@ export const NumericSearchField = ({ name, criteria, onSearch }) => {
   return (
     <div className="row">
       <div className="col-sm-6">
-        <Select
+        <DEPRECATED_Select
           name="matcher"
           placeholder={t("Matcher")}
           defaultValue={matcher}

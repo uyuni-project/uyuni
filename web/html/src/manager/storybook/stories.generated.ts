@@ -247,15 +247,27 @@ export const components_input_select_async_example_tsx = {
 };
 
 // @ts-ignore
-import components_input_select_custom_example_tsx_component from "components/input/select/custom.example.tsx";
-import components_input_select_custom_example_tsx_raw from "components/input/select/custom.example.tsx?raw";
+import components_input_select_custom_fields_example_tsx_component from "components/input/select/custom-fields.example.tsx";
+import components_input_select_custom_fields_example_tsx_raw from "components/input/select/custom-fields.example.tsx?raw";
 
-export const components_input_select_custom_example_tsx = {
-  path: "components/input/select/custom.example.tsx",
-  title: "custom.example.tsx",
+export const components_input_select_custom_fields_example_tsx = {
+  path: "components/input/select/custom-fields.example.tsx",
+  title: "custom-fields.example.tsx",
   groupName: "select",
-  component: components_input_select_custom_example_tsx_component,
-  raw: components_input_select_custom_example_tsx_raw,
+  component: components_input_select_custom_fields_example_tsx_component,
+  raw: components_input_select_custom_fields_example_tsx_raw,
+};
+
+// @ts-ignore
+import components_input_select_multiple_example_tsx_component from "components/input/select/multiple.example.tsx";
+import components_input_select_multiple_example_tsx_raw from "components/input/select/multiple.example.tsx?raw";
+
+export const components_input_select_multiple_example_tsx = {
+  path: "components/input/select/multiple.example.tsx",
+  title: "multiple.example.tsx",
+  groupName: "select",
+  component: components_input_select_multiple_example_tsx_component,
+  raw: components_input_select_multiple_example_tsx_raw,
 };
 
 // @ts-ignore

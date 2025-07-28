@@ -1,6 +1,11 @@
 import { components as WrapperComponents } from "react-select";
 
-const TestIdContainer = function ({ children, ...props }) {
+import { ClearIndicator } from "./ClearIndicator";
+
+const TestIdContainer = function ({
+  children,
+  ...props
+}: React.ComponentProps<typeof WrapperComponents.SelectContainer>) {
   const innerProps = Object.assign(
     {
       "data-testid": props.selectProps["data-testid"],
@@ -14,7 +19,7 @@ const TestIdContainer = function ({ children, ...props }) {
   );
 };
 
-export default function withTestAttributes(testId: string | undefined, fallbackName: string | undefined) {
+export default function withCustomComponents(testId: string | undefined, fallbackName: string | undefined) {
   // The name-based fallback is used to keep compatibility with existing forms that use the `name` prop for binding to tests
   const testClassName = testId || fallbackName || undefined;
   const classNamePrefix = testClassName ? `data-testid-${testClassName}-child` : undefined;
@@ -24,8 +29,9 @@ export default function withTestAttributes(testId: string | undefined, fallbackN
     components: testId
       ? {
           SelectContainer: TestIdContainer,
+          ClearIndicator,
         }
-      : undefined,
+      : { ClearIndicator },
     "data-testid": testId,
   };
 }

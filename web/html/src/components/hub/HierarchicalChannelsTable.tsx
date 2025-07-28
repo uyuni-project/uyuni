@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useCallback, useMemo, useState } from "react";
 
-import { Form, Select } from "components/input";
+import { DEPRECATED_Select, Form } from "components/input";
 import { Column } from "components/table/Column";
 import { HierarchicalRow, HierarchicalTable } from "components/table/HierarchicalTable";
 import { SearchField } from "components/table/SearchField";
@@ -136,7 +136,7 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
 
       return (
         <Form>
-          <Select
+          <DEPRECATED_Select
             className="mb-0"
             name={`org-select-${row.channelId}`}
             placeholder={t("Select Organization")}
@@ -167,7 +167,7 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
     () => (
       <div className="multiple-select-wrapper table-input-search">
         <Form>
-          <Select
+          <DEPRECATED_Select
             name="channel-arch-filter"
             placeholder={t("Filter by architecture")}
             options={getDistinctArchsFromData(channels)}
