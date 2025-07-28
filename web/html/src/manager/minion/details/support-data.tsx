@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 
 import { SubmitButton } from "components/buttons";
-import { DateTime, Form, Select, Text } from "components/input";
+import { DateTime, DEPRECATED_Select, Form, Text } from "components/input";
 import { ActionLink } from "components/links";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels";
@@ -108,7 +108,7 @@ export const SupportData: React.FC<Props> = ({ serverId, availableRegions, suppo
             validators={Validation.isInt({ gt: 0 })}
             invalidHint={t("Has to be a valid support case number")}
           />
-          <Select
+          <DEPRECATED_Select
             name="region"
             label={t("Upload Region")}
             hint={t("The location of the FTP server where the data is uploaded.")}
