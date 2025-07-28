@@ -21,15 +21,15 @@ with open(config_path + "ssh.yaml", encoding="utf-8") as sshSource:
     SSH_PUSH_KEY_DIR = f"{SSH_PUSH_USER_HOME}/.ssh"
 
     # create ssh push tunnel user
-    os.system(f"groupadd -r {SSH_PUSH_USER}")
+    os.system(f"/usr/sbin/groupadd -r {SSH_PUSH_USER}")
     os.system(
-        f'useradd -r -g {SSH_PUSH_USER} -m -d {SSH_PUSH_USER_HOME} -c "susemanager ssh push tunnel" {SSH_PUSH_USER}'
+        f'/usr/sbin/useradd -r -g {SSH_PUSH_USER} -m -d {SSH_PUSH_USER_HOME} -c "susemanager ssh push tunnel" {SSH_PUSH_USER}'
     )
 
     # create .ssh dir in home and set permissions
     os.makedirs(SSH_PUSH_KEY_DIR)
-    os.system(f"chown {SSH_PUSH_USER}:{SSH_PUSH_USER} {SSH_PUSH_KEY_DIR}")
-    os.system(f"chmod 700 {SSH_PUSH_KEY_DIR}")
+    os.system(f"/usr/bin/chown {SSH_PUSH_USER}:{SSH_PUSH_USER} {SSH_PUSH_KEY_DIR}")
+    os.system(f"/usr/bin/chmod 700 {SSH_PUSH_KEY_DIR}")
 
     # store the ssh push server/parent key files
     with open(f"{SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}", "w", encoding="utf-8") as file:
@@ -41,13 +41,13 @@ with open(config_path + "ssh.yaml", encoding="utf-8") as sshSource:
 
     # change owner to {SSH_PUSH_USER}
     os.system(
-        f"chown {SSH_PUSH_USER}:{SSH_PUSH_USER} {SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}"
+        f"/usr/bin/chown {SSH_PUSH_USER}:{SSH_PUSH_USER} {SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}"
     )
-    os.system(f"chmod 600 {SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}")
+    os.system(f"/usr/bin/chmod 600 {SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}")
     os.system(
-        f"chown {SSH_PUSH_USER}:{SSH_PUSH_USER} {SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}.pub"
+        f"/usr/bin/chown {SSH_PUSH_USER}:{SSH_PUSH_USER} {SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}.pub"
     )
-    os.system(f"chmod 644 {SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}.pub")
+    os.system(f"/usr/bin/chmod 644 {SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}.pub")
 
     # Authorize the server to ssh into this container
     with open(f"{SSH_PUSH_KEY_DIR}/authorized_keys", "w", encoding="utf-8") as file:
