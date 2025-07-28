@@ -168,7 +168,7 @@ install_gnupg_debian:
 {%- endif %}
 
 {%- if not salt['pillar.get']('susemanager:distupgrade:dryrun', False) %}
-{%- if grains['os_family'] == 'Suse' and grains['osmajorrelease']|int > 11 and "opensuse" not in grains['oscodename']|lower %}
+{%- if grains['os_family'] == 'Suse' and "opensuse" not in grains['oscodename']|lower %}
 mgrchannels_install_products:
   product.all_installed:
     - require:
