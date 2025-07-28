@@ -9,11 +9,13 @@ The script can operate in one of three modes:
 3.  **Single PR**: Extracts data for a specific PR by its number.
 
 For each PR (training mode, i.e., not a single PR):
-- Finds the first completed test run during the PR's lifetime that includes Cucumber reports
+- Finds all completed test runs during the PR's lifetime that include Cucumber reports
   (if none exist, the PR is skipped).
-- Downloads all Cucumber JSON reports from this initial test run.
-- Extracts and retains only secondary/recommended Cucumber test reports.
-- Identifies the files modified that triggered this test run.
+- For each test run, it downloads all Cucumber JSON reports.
+- It creates a directory for each run and stores the secondary/recommended reports there.
+- It also creates a `run_data.json` file in each run directory with metadata about the run.
+- It identifies the files modified that triggered each test run.
+- It sets the modified files for the PR as the modified files in the first run.
 - Extracts the unique file extensions of the modified files.
 - Retrieves the change history for those files over several recent time windows.
 - Outputs a CSV file containing PR features: file extensions, change history, and PR number.
@@ -38,6 +40,7 @@ Where:
 import os
 import sys
 import csv
+import json
 import logging
 import zipfile
 import datetime
@@ -53,6 +56,7 @@ from config import (
     PR_OVERSAMPLE_MULTIPLIER,
     MAX_CONSECUTIVE_PRS_WITHOUT_CUCUMBER_REPORTS,
     CUCUMBER_REPORTS_PARENT_DIR,
+    RUN_DATA_FILENAME,
 )
 from utilities import setup_logging
 
@@ -162,16 +166,16 @@ def get_prs_since_date(gh, repo, start_date):
     logger.info("Found %d PRs created since %s", len(prs), start_date.date())
     return prs
 
-def get_cucumber_initial_test_run(test_workflow, pr):
+def get_all_cucumber_test_runs(test_workflow, pr):
     """
-    Find the first completed test run during the PR's lifetime that includes Cucumber reports.
+    Find all completed test runs during the PR's lifetime that include Cucumber reports.
 
     Args:
         test_workflow (github.Workflow.Workflow): Test workflow object.
         pr (github.PullRequest.PullRequest): Pull request object.
 
     Returns:
-        github.WorkflowRun.WorkflowRun or None: Initial test run with Cucumber reports, or None.
+        list: A list of github.WorkflowRun.WorkflowRun objects, sorted from oldest to newest.
     """
     test_runs_on_pr_branch = test_workflow.get_runs(
         branch=pr.head.ref,
@@ -193,68 +197,113 @@ def get_cucumber_initial_test_run(test_workflow, pr):
     ]
 
     if not pr_test_runs:
-        logger.info("No %s runs found for PR", TEST_WORKFLOW_NAME)
-        return None
+        logger.info("No %s runs found for PR #%d", TEST_WORKFLOW_NAME, pr.number)
+        return []
 
+    runs_with_cucumber = []
     for run in pr_test_runs:
-        logger.debug("Obtained run #%s created at %s", run.run_number, run.created_at)
-
-    pr_test_runs.sort(key=lambda run: run.created_at)
-    for run in pr_test_runs:
-        run_number = run.run_number
-        logger.debug("Checking if run #%s has Cucumber reports", run_number)
+        logger.debug("Checking if run #%s has Cucumber reports", run.run_number)
         for artifact in run.get_artifacts():
             if artifact.name.lower().startswith("cucumber"):
-                logger.info("Using initial test run #%d created at %s", run_number, run.created_at)
-                return run
+                runs_with_cucumber.append(run)
+                logger.info("Found run #%d with Cucumber reports", run.run_number)
+                break
 
-    logger.info("No %s runs with Cucumber reports found for PR #%d", TEST_WORKFLOW_NAME, pr.number)
-    return None
+    if not runs_with_cucumber:
+        logger.info("No test runs with Cucumber reports found for PR #%d", pr.number)
+        return []
 
-def download_secondary_cucumber_reports(run_with_cucumber, pr_number, headers):
+    runs_with_cucumber.sort(key=lambda r: r.created_at)
+    return runs_with_cucumber
+
+def store_run_data(repo, pr, run, run_folder):
     """
-    Download all Cucumber artifacts from the given workflow run and save them as ZIP files
-    inside a PR-specific folder under a common parent directory.
-    Extract and filter secondary/recommended reports.
+    Create and store workflow test run data in a JSON file.
 
     Args:
-        run_with_cucumber (github.WorkflowRun.WorkflowRun): Workflow run with Cucumber artifacts.
-        pr_number (int): PR number.
+        repo (github.Repository.Repository): Repository object.
+        pr (github.PullRequest.PullRequest): Pull request object.
+        run (github.WorkflowRun.WorkflowRun): Workflow run object.
+        run_folder (str): Path to the run folder where data should be stored.
+    """
+    try:
+        modified_files = get_modified_files(repo, pr, run)
+        run_data = {
+            "github_id": run.id,
+            "commit_sha": run.head_sha,
+            "result": run.conclusion,
+            "execution_timestamp": run.created_at.isoformat(),
+            "modified_files": modified_files
+        }
+        run_data_path = os.path.join(run_folder, RUN_DATA_FILENAME)
+        with open(run_data_path, "w", encoding="utf-8") as f:
+            json.dump(run_data, f, indent=4)
+        logger.info("Stored run metadata for run #%d in %s", run.id, run_data_path)
+    except Exception as e:
+        logger.error("Failed to write run metadata for run #%d: %s", run.id, e)
+
+def download_and_organize_secondary_cucumber_reports(repo, pr, runs_with_cucumber, headers):
+    """
+    Download all Cucumber artifacts from the given workflow runs and save them.
+    For each run, a folder is created, inside a PR-specific folder under a common parent directory,
+    and inside it, secondary/recommended reports of this run are extracted and stored,
+    along with a JSON file containing run metadata.
+
+    Args:
+        repo (github.Repository.Repository): Repository object.
+        pr (github.PullRequest.PullRequest): Pull request object.
+        runs_with_cucumber (list): List of workflow runs with Cucumber artifacts.
         headers (dict): HTTP headers for requests.
 
     Returns:
-        bool: True if secondary/recommended reports exist, False otherwise.
+        bool: True if any secondary reports were downloaded for any run, False otherwise.
     """
+    pr_number = pr.number
     pr_folder = os.path.join(CUCUMBER_REPORTS_PARENT_DIR, f"PR{pr_number}")
-    if os.path.exists(pr_folder):
-        logger.info("Folder %s exists, skipping artifact download for PR #%d", pr_folder, pr_number)
-        return True
+    secondary_reports_downloaded = False
 
-    try:
-        os.makedirs(pr_folder, exist_ok=True)
-    except Exception as e:
-        logger.error("Failed to create folder %s: %s", pr_folder, e)
-        return False
+    for i, run in enumerate(runs_with_cucumber):
+        run_folder = os.path.join(pr_folder, f"run_{i+1}")
+        if os.path.exists(run_folder):
+            logger.info("Folder %s exists, skipping artifact download", run_folder)
+            secondary_reports_downloaded = True
+            continue
 
-    for artifact in run_with_cucumber.get_artifacts():
-        if artifact.name.lower().startswith("cucumber"):
-            url = artifact.archive_download_url
-            zip_filename = os.path.join(pr_folder, f"{artifact.name}.zip")
+        try:
+            os.makedirs(run_folder, exist_ok=True)
+        except Exception as e:
+            logger.error("Failed to create folder %s: %s", run_folder, e)
+            continue
+
+        for artifact in run.get_artifacts():
+            if artifact.name.lower().startswith("cucumber"):
+                url = artifact.archive_download_url
+                zip_filename = os.path.join(run_folder, f"{artifact.name}.zip")
+                try:
+                    response = requests.get(url, headers=headers, stream=True, timeout=30)
+                    response.raise_for_status()
+                except requests.RequestException as e:
+                    logger.warning("Failed to download %s for run %d: %s", artifact.name, run.id, e)
+                    continue
+                try:
+                    with open(zip_filename, "wb") as f:
+                        f.write(response.content)
+                    logger.info("Downloaded: %s", zip_filename)
+                except OSError as e:
+                    logger.error("Failed to write file %s: %s", zip_filename, e)
+                    continue
+
+        if extract_secondary_reports(run_folder):
+            secondary_reports_downloaded = True
+            store_run_data(repo, pr, run, run_folder)
+        else:
             try:
-                response = requests.get(url, headers=headers, stream=True, timeout=30)
-                response.raise_for_status()  # Raise HTTP Error for bad codes
-            except requests.RequestException as e:
-                logger.warning("Failed to download %s: %s", artifact.name, e)
-                continue
-            try:
-                with open(zip_filename, "wb") as f:
-                    f.write(response.content)
-                logger.info("Downloaded: %s", zip_filename)
-            except OSError as e:
-                logger.error("Failed to write file %s: %s", zip_filename, e)
-                continue
+                os.rmdir(run_folder)
+                logger.info("Deleted empty run folder %s", run_folder)
+            except OSError:
+                pass
 
-    return extract_secondary_reports(pr_folder)
+    return secondary_reports_downloaded
 
 def extract_secondary_reports(pr_folder):
     """
@@ -278,7 +327,7 @@ def extract_secondary_reports(pr_folder):
         try:
             os.rmdir(pr_folder)
             logger.info("Delete folder %s as no secondary/recommended reports exist.", pr_folder)
-        except Exception as e:
+        except OSError as e:
             logger.warning("Failed to delete empty PR folder %s: %s", pr_folder, e)
     return has_secondary
 
@@ -413,7 +462,7 @@ def write_pr_features_to_csv(csv_writer, file_extensions, change_history, pr_num
     Args:
         csv_writer (csv.writer): CSV writer object.
         file_extensions (list): List of file extensions in the PR.
-        change_history (dict): Mapping of recent_day → change count (ordered).
+        change_history (dict): Mapping of recent_day -> change count (ordered).
         pr_number (int): The PR number.
     """
     try:
@@ -474,9 +523,6 @@ def extract_pr_data(
         csv_writer (csv.writer): CSV writer object.
         single_pr_number (int, optional): If set, only process this PR.
         start_date (datetime.datetime, optional): If set, process all PRs since this date.
-    
-    Returns:
-        None
     """
     gh = Github(github_token)
     headers = {
@@ -534,7 +580,8 @@ def process_single_pr_mode(repo, pr, csv_writer):
     """
     try:
         dummy_test_run = type("DummyRun", (), {"head_sha": pr.head.sha})()
-        extract_and_write_pr_features(repo, pr, dummy_test_run, csv_writer)
+        modified_files = get_modified_files(repo, pr, dummy_test_run)
+        extract_and_write_pr_features(repo, modified_files, pr.number, csv_writer)
     except Exception as e:
         logger.error("Error extracting features for PR #%d: %s", pr.number, e)
 
@@ -553,19 +600,20 @@ def process_training_mode(repo, test_workflow, pr, headers, csv_writer):
         bool: True if PR was processed and features extracted, False otherwise.
     """
     try:
-        initial_test_run_with_cucumber = get_cucumber_initial_test_run(test_workflow, pr)
-        if not initial_test_run_with_cucumber:
+        all_test_runs_with_cucumber = get_all_cucumber_test_runs(test_workflow, pr)
+        if not all_test_runs_with_cucumber:
             return False
     except Exception as e:
-        logger.error("Error getting initial test run for PR #%d: %s", pr.number, e)
+        logger.error("Error getting test runs for PR #%d: %s", pr.number, e)
         return False
+
     try:
-        has_secondary = download_secondary_cucumber_reports(
-            initial_test_run_with_cucumber, pr.number, headers
+        has_secondary = download_and_organize_secondary_cucumber_reports(
+            repo, pr, all_test_runs_with_cucumber, headers
         )
         if not has_secondary:
             logger.info(
-                "No secondary cucumber reports for PR #%d, skipping feature extraction.",
+                "No secondary cucumber reports for any run in PR #%d, skipping feature extraction.",
                 pr.number
             )
             return False
@@ -573,32 +621,30 @@ def process_training_mode(repo, test_workflow, pr, headers, csv_writer):
         logger.error("Error downloading secondary cucumber reports for PR #%d: %s", pr.number, e)
         return False
     try:
-        extract_and_write_pr_features(
-            repo, pr, initial_test_run_with_cucumber, csv_writer
-        )
+        modified_files = get_modified_files(repo, pr, all_test_runs_with_cucumber[0])
+        extract_and_write_pr_features(repo, modified_files, pr.number, csv_writer)
     except Exception as e:
         logger.error("Error extracting features for PR #%d: %s", pr.number, e)
         return False
 
     return True
 
-def extract_and_write_pr_features(repo, pr, test_run, csv_writer):
+def extract_and_write_pr_features(repo, modified_files, pr_number, csv_writer):
     """
-    Extract modified files, file extensions, and change history for a PR and write to CSV.
+    Extract file extensions and change history for a PR and write to CSV.
 
     Args:
         repo (github.Repository.Repository): Repository object.
-        pr (github.PullRequest.PullRequest): Pull request object.
-        test_run (github.WorkflowRun.WorkflowRun): Workflow run object.
+        modified_files (list): List of modified file paths.
+        pr_number (int): The PR number.
         csv_writer (csv.writer): CSV writer object.
     """
-    modified_files = get_modified_files(repo, pr, test_run)
     logger.info("Files modified in PR: %s", modified_files)
     file_extensions = get_file_extensions(modified_files)
     logger.info("File extensions of files modified in PR: %s", file_extensions)
     change_history = get_files_change_history(repo, modified_files, RECENT_DAYS)
     logger.info("Files Change History: %s", change_history)
-    write_pr_features_to_csv(csv_writer, file_extensions, change_history, pr.number)
+    write_pr_features_to_csv(csv_writer, file_extensions, change_history, pr_number)
 
 def main():
     """
@@ -607,7 +653,7 @@ def main():
     """
     if len(sys.argv) != 2:
         logger.critical(
-            "Usage: python pr_data_extraction.py <N>|'#<PR_NUMBER>'|<YYYY-MM-DD>\n"
+            "Usage: python pr_data_extraction.py <N>|<'#<PR_NUMBER>'>|<YYYY-MM-DD>\n"
             "<N> is the number of latest Uyuni PRs (with Cucumber reports) to extract data from.\n"
             "'#<PR_NUMBER>' is a specific PR number (e.g., '#12345') to extract features for.\n"
             "<YYYY-MM-DD> is a date (e.g., '2025-01-20') to get all PRs from that date up to now."
@@ -640,7 +686,7 @@ def main():
                 n = int(arg)
             except ValueError:
                 logger.critical(
-                    "Argument must be an integer (for N) (e.g., 80)" 
+                    "Argument must be an integer (for N) (e.g., 80)"
                     ", or '#<PR_NUMBER>' (e.g., '#12345'), or a date in YYYY-MM-DD format."
                 )
                 sys.exit(1)

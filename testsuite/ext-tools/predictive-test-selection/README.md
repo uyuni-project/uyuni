@@ -11,6 +11,9 @@ The project is composed of several interconnected parts. This README explains ea
 > [!NOTE]
 > Once the project is complete, I plan to include an architectural diagram illustrating the components and their interactions.
 
+> [!TIP]
+> Before running any of the below scripts, run `pip install -r requirements.txt`
+
 ## 1. Pull Request Data Extraction Script
 
 [pr_data_extraction.py](pr_data_extraction.py)
@@ -41,8 +44,12 @@ Where:
 
 ### Example Script Output
 
-#### Cucumber Reports
-![](images/pr_data_extract_output_1.png)
+#### Test Runs' Cucumber Reports
+![](images/pr_data_extract_test_runs_output.png)
+
+#### run_data.json
+
+![](images/pr_data_extract_run_data_json.png)
 
 #### CSV File
 ![](images/pr_data_extract_output_2.png)
@@ -67,10 +74,12 @@ Where:
 1. For N-based mode: Retrieves the `N * PR_OVERSAMPLE_MULTIPLIER` most recently created PRs.
    For date-based mode: Retrieves all PRs created since the specified date.
 2. For each PR:
-    - Finds the **first completed** test run during the PR's lifetime that includes Cucumber reports (if none exist, the PR is skipped).
-    - Downloads all Cucumber JSON reports from this initial test run.
-    - Extracts and retains only secondary/recommended Cucumber test reports.
-    - Identifies the files modified that triggered this test run.
+    - Finds all completed test runs during the PR's lifetime that include Cucumber reports (if none exist, the PR is skipped).
+    - For each test run, it downloads all Cucumber JSON reports.
+    - It creates a directory for each run and stores the secondary/recommended reports there.
+    - It also creates a `run_data.json` file in each run directory with metadata about the run (run GitHub ID, commit SHA, result (passed/failed), execution timestamp, and modified files).
+    - It identifies the files modified that triggered each test run.
+    - It sets the modified files for the PR as the modified files in the first run.
     - Extracts the unique file extensions of the modified files.
     - Retrieves the change history for those files over several recent time windows.
     - Outputs a CSV file containing PR features: file extensions, change history, and PR number.
@@ -84,7 +93,7 @@ These features are inspired by the [Facebook paper](https://arxiv.org/pdf/1810.0
 
 While file extensions were useful at Facebook, they may be less informative for Uyuni, which is predominantly Java. Therefore, we plan to experiment with additional PR features as discussed in [#10553](https://github.com/uyuni-project/uyuni/issues/10553).
 
-#### Why use the first test run with Cucumber reports, not the last?
+#### Why use the files modified in the first run as the PR's features?
 
 My intuition is that we should focus on the first test run with Cucumber reports because it best reflects the real-world scenario we want to model: predicting test failures as soon as a new PR is opened, before any feedback or fixes have occurred. By using the initial test run, we capture the state of the code as it was originally submitted, ensuring our predictions are based on the same conditions developers face when their code is first tested. This approach avoids any bias introduced by subsequent test runs, which may include fixes or changes made in response to earlier failures.
 
