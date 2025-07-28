@@ -5,7 +5,6 @@ import { Button } from "components/buttons";
 
 import { Column } from "./Column";
 import { SearchField } from "./SearchField";
-import { SelectableColumn } from "./SelectableColumn";
 import { TableDataHandler } from "./TableDataHandler";
 import { useExpanded } from "./useExpanded";
 
@@ -92,12 +91,7 @@ type TableProps = {
 };
 
 function isColumn(input: any): input is React.ReactElement<React.ComponentProps<typeof Column>> {
-  return (
-    input?.type === Column ||
-    input?.type?.displayName === "Column" ||
-    input?.type === SelectableColumn ||
-    input?.type?.displayName === "SelectableColumn"
-  );
+  return input?.type === Column || input?.type?.displayName === "Column";
 }
 
 export type TableRef = {

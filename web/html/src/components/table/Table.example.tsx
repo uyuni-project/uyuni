@@ -1,5 +1,4 @@
 import { Column } from "./Column";
-import { SelectableColumn } from "./SelectableColumn";
 import { Table } from "./Table";
 import { placeholderData } from "./Table.example.placeholderData";
 import { useSelected } from "./useSelected";
@@ -55,20 +54,8 @@ export default () => {
           cell={(row: ChannelWithHierarchy) => (row.channelOrg ? row.channelOrg.orgName : "SUSE")}
           width="20%"
         />
-        <SelectableColumn
-          columnKey="view"
-          header={t("View")}
-          selected={viewSelected}
-          headerClass="text-center"
-          columnClass="text-center"
-        />
-        <SelectableColumn
-          columnKey="modify"
-          header={t("Modify")}
-          selected={modifySelected}
-          headerClass="text-center"
-          columnClass="text-center"
-        />
+        <viewSelected.Column columnKey="view" header={t("View")} />
+        <modifySelected.Column columnKey="modify" header={t("Modify")} />
       </Table>
     </>
   );

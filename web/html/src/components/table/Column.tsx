@@ -39,7 +39,7 @@ export type ColumnProps = {
   criteria?: string;
 
   /** On click for columns that behave as raw buttons */
-  onClick?: () => void;
+  onClick?: (data?: any) => void;
 
   /** Disable `onClick` */
   disabled?: boolean;
@@ -63,12 +63,13 @@ export function Column(props: ColumnProps) {
       className={props.columnClass}
       key={props.columnKey}
       role={props.onClick ? "button" : undefined}
-      onClick={props.onClick && !props.disabled ? props.onClick : undefined}
+      onClick={props.onClick && !props.disabled ? () => props.onClick?.(props.data) : undefined}
     >
       {content}
     </td>
   );
 }
+
 Column.defaultProps = {
   header: undefined,
   comparator: undefined,
