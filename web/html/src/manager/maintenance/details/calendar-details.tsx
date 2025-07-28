@@ -4,7 +4,7 @@ import { useState } from "react";
 import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
 
 import { DeleteDialog } from "components/dialog/DeleteDialog";
-import { Check } from "components/input/check/Check";
+import { DEPRECATED_Check } from "components/input/check/DEPRECATED_Check";
 import { Form } from "components/input/form/Form";
 import { MessageType } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
@@ -43,7 +43,7 @@ const MaintenanceCalendarDetails = (props: CalendarDetailsProps) => {
           <Form model={{ strategy }} onChange={setCheck}>
             <div>{t("Are you sure you want to delete the selected item?")}</div>
             <div>{t("This will remove the current schedule from all the systems assigned to it.")}</div>
-            <Check name="strategy" label={<b>{t("Cancel affected actions?")}</b>} divClass="col-md-6" />
+            <DEPRECATED_Check name="strategy" label={<b>{t("Cancel affected actions?")}</b>} divClass="col-md-6" />
           </Form>
         }
         onConfirm={() =>
