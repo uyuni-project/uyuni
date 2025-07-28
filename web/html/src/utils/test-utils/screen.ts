@@ -62,10 +62,10 @@ const additionalQueries = {
 };
 
 Object.assign(rawScreen, {
-  getByLabelText: (...[text, options, waitForElementOptions]: GetByLabelTextArgs) => {
+  getByLabelText: (...[text, options]: GetByLabelTextArgs) => {
     options ??= {};
     options.normalizer ??= labelNormalizer;
-    return getByLabelText(text, options, waitForElementOptions);
+    return getByLabelText(text, options);
   },
   additionalQueries,
 } as Partial<Screen>);
