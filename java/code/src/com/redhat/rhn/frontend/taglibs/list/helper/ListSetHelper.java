@@ -19,9 +19,7 @@ import com.redhat.rhn.frontend.dto.BaseDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.Selectable;
-import com.redhat.rhn.frontend.taglibs.list.AlphaBarHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
-import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -136,13 +134,11 @@ public abstract class ListSetHelper extends ListHelper {
     public void execute() {
         RequestContext context = getContext();
         HttpServletRequest request = context.getRequest();
-        String alphaBarPressed = request.getParameter(
-                                AlphaBarHelper.makeAlphaKey(
-                                  TagHelper.generateUniqueName(getListName())));
+
         //if its not submitted
         // ==> this is the first visit to this page
         // clear the 'dirty set'
-        if (!context.isSubmitted() && alphaBarPressed == null && willClearSet) {
+        if (!context.isSubmitted() && willClearSet) {
             clear();
             add(getPreSelected());
         }
@@ -166,7 +162,7 @@ public abstract class ListSetHelper extends ListHelper {
         dataList = getDataSet();
 
 
-        if (!context.isSubmitted() && alphaBarPressed == null && preSelectAll) {
+        if (!context.isSubmitted() && preSelectAll) {
             Set selSet = new HashSet<>();
             for (BaseDto bdto : (List<BaseDto>) dataList) {
                 selSet.add(bdto.getId());

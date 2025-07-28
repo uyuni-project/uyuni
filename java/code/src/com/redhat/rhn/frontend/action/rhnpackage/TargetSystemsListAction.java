@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListSetHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
-import com.redhat.rhn.frontend.taglibs.list.AlphaBarHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -99,9 +98,6 @@ public class TargetSystemsListAction extends RhnAction {
         DataResult<SystemOverview> result = SystemManager.listPotentialSystemsForPackage(
                 user, pid);
         result.setElaborationParams(new HashMap<>());
-
-        request.getParameter(AlphaBarHelper.makeAlphaKey(TagHelper
-                .generateUniqueName(LIST_NAME)));
 
         if (ListTagHelper.getListAction(LIST_NAME, request) != null) {
             helper.execute(set, LIST_NAME, result);
