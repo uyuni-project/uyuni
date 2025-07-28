@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { Column, ColumnProps } from "./Column";
+
 export const useSelected = <T extends { children?: T[] }, I>(identifier: (item: T) => I) => {
   const [selected, setSelected] = useState(new Set<I>());
 
@@ -77,7 +79,35 @@ export const useSelected = <T extends { children?: T[] }, I>(identifier: (item: 
     setSelected(new Set());
   };
 
+  const SelectionColumn = (props: ColumnProps) => (
+    <Column
+      onClick={(item) => toggle(item)}
+      cell={(
+        item // TODO: Use the new Checkbox here once that PR is merged
+      ) => (
+        <div style={isIndeterminate(item) ? { background: "red" } : undefined}>
+          <input
+            type="checkbox"
+            checked={isSelected(item)}
+            // indeterminate={props.selected.isIndeterminate(item)}
+            readOnly
+          />
+        </div>
+      )}
+      {...props}
+      // The props below this line may be overwritten by the spread props
+      width="30px"
+      columnClass="text-center"
+      headerClass="text-center"
+    />
+  );
+
+  // Table.tsx needs to know this is a real column for `isColumn`
+  SelectionColumn.displayName = "Column";
+
   return {
+    /** Render this selection as a <Column /> */
+    Column: SelectionColumn,
     /** Recursively select an item */
     select,
     /** Recursively unselect an item */
