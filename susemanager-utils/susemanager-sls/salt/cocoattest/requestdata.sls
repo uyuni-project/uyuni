@@ -6,7 +6,7 @@ mgr_create_attestdir:
     - name: /tmp/cocoattest
     - dir_mode: 700
 
-{% if salt['pillar.get']('attestation_data:environment_type', 'NONE') in ['KVM_AMD_EPYC_MILAN', 'KVM_AMD_EPYC_GENOA'] %}
+{% if salt['pillar.get']('attestation_data:environment_type', 'NONE') not in ['NONE'] %}
 
 mgr_inst_snpguest:
   pkg.latest:
