@@ -24,8 +24,9 @@ from spacewalk.server import rhnSQL
 
 def run_uyuni_configfiles_sync():
     if not os.path.isfile("/usr/bin/uyuni-configfiles-sync"):
-        return
+        return 0
 
+    exitCode = 0
     result = subprocess.run(
         ["/usr/bin/uyuni-configfiles-sync", "sync"],
         stdout=subprocess.PIPE,
@@ -42,7 +43,8 @@ def run_uyuni_configfiles_sync():
             "Failed to synchronize files to persistent volumes. Aborting!\n"
         )
         sys.stdout.flush()
-        sys.exit(1)
+        exitCode = 1
+    return exitCode
 
 
 def move_config_to_db():
@@ -222,9 +224,26 @@ def remove_product_name_overwrite():
         f.truncate()
 
 
+def change_hostname():
+    result = subprocess.run(
+        ["/usr/bin/spacewalk-hostname-rename"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        encoding="utf-8",
+        check=False,
+    )
+
+    if result.returncode:
+        sys.stdout.write("Failed to rename the server\n")
+    if result.stdout:
+        sys.stdout.write(f"{result.stdout}\n")
+    sys.stdout.flush()
+    return result.returncode
+
+
 def main():
     init_dirs_and_perms()
-    run_uyuni_configfiles_sync()
+    exitCode = run_uyuni_configfiles_sync()
     init_scc_login()
     import_suma_gpg_keyring()
     copy_ca()
@@ -232,6 +251,8 @@ def main():
     change_billing_data_service()
     remove_product_name_overwrite()
 
+    exitCode = max(change_hostname(), exitCode)
+    return exitCode
 
 if __name__ == "__main__":
     sys.exit(abs(main() or 0))
