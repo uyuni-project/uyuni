@@ -15,6 +15,7 @@ with open("/etc/uyuni/config.yaml", encoding="utf-8") as source:
         file_content = config_file.read()
         file_content = re.sub(
             r"cache_dir aufs .*",
+            # pylint: disable-next=inconsistent-quotes
             f"cache_dir aufs /var/cache/squid {str(config['max_cache_size_mb'])} 16 256",
             file_content,
         )
@@ -28,4 +29,4 @@ with open("/etc/uyuni/config.yaml", encoding="utf-8") as source:
         config_file.truncate()
 
 # make sure "squid" is the user and group owner of the cache squid path
-os.system("chown -R squid:squid /var/cache/squid")
+os.system("/usr/bin/chown -R squid:squid /var/cache/squid")

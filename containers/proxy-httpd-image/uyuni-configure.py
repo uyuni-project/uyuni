@@ -281,17 +281,17 @@ ProxyPassReverse /cobbler https://{config['server']}/cobbler
         f"ProxyPassMatch /proxyInternalLoop/(.*)$ https://{config['server']}/$1",
     )
 
-    os.system("chown root:www /etc/rhn/rhn.conf")
-    os.system("chmod 640 /etc/rhn/rhn.conf")
+    os.system("/usr/bin/chown root:www /etc/rhn/rhn.conf")
+    os.system("/usr/bin/chmod 640 /etc/rhn/rhn.conf")
 
 # Make sure permissions are set as desired
-os.system("chown -R wwwrun:www /var/spool/rhn-proxy")
-os.system("chmod -R 750 /var/spool/rhn-proxy")
+os.system("/usr/bin/chown -R wwwrun:www /var/spool/rhn-proxy")
+os.system("/usr/bin/chmod -R 750 /var/spool/rhn-proxy")
 if not os.path.exists("/var/cache/rhn/proxy-auth"):
     os.makedirs("/var/cache/rhn/proxy-auth")
-os.system("chown -R wwwrun:root /var/cache/rhn/proxy-auth")
-os.system("chown -R wwwrun:root /srv/tftpboot")
-os.system("chmod 755 /srv/tftpboot")
+os.system("/usr/bin/chown -R wwwrun:root /var/cache/rhn/proxy-auth")
+os.system("/usr/bin/chown -R wwwrun:root /srv/tftpboot")
+os.system("/usr/bin/chmod 755 /srv/tftpboot")
 
 # Invalidate (remove) possible old proxy auth cache files, based on sha1
 # after migration to sha256 proxy auth cache files.
