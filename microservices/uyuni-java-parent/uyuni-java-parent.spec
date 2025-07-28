@@ -25,7 +25,7 @@ Group:          Development/Libraries/Java
 URL:            https://www.uyuni-project.org
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  fdupes
-BuildRequires:  java-devel >= 11
+BuildRequires:  java-devel >= 17
 BuildRequires:  maven-local
 BuildArch:      noarch
 
