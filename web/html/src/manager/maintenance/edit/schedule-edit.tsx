@@ -3,7 +3,7 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 
 import { Button } from "components/buttons";
 import { Combobox } from "components/combobox";
-import { Check } from "components/input/check/Check";
+import { DEPRECATED_Check } from "components/input/check/DEPRECATED_Check";
 import { Form } from "components/input/form/Form";
 import { Radio } from "components/input/radio/Radio";
 import { Text } from "components/input/text/Text";
@@ -111,7 +111,7 @@ const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
         ]}
       />
       {props.isEdit && (
-        <Check
+        <DEPRECATED_Check
           name="strategy"
           label={<b>{t("Cancel affected actions")}</b>}
           divClass="col-md-6 col-md-offset-3 offset-md-3"

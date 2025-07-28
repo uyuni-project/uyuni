@@ -5,7 +5,7 @@ import { AceEditor } from "components/ace-editor";
 import { ActionChain, ActionSchedule } from "components/action-schedule";
 import { AsyncButton, Button } from "components/buttons";
 import { Combobox, ComboboxItem } from "components/combobox";
-import { Check, Form } from "components/input";
+import { DEPRECATED_Check, Form } from "components/input";
 import { ActionChainLink, ActionLink } from "components/links";
 import { Messages, MessageType, Utils as MsgUtils } from "components/messages/messages";
 import { InnerPanel } from "components/panels/InnerPanel";
@@ -175,7 +175,7 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
                   />
                 </div>
               </div>
-              <Check
+              <DEPRECATED_Check
                 name="flushCache"
                 label={t("Flush Ansible fact cache")}
                 title={t("Clear the fact cache for every host in inventory")}

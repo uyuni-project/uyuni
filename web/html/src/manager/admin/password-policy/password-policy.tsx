@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { AsyncButton } from "components/buttons";
 import withPageWrapper from "components/general/with-page-wrapper";
-import { Check, Form, Text } from "components/input";
+import { DEPRECATED_Check, Form, Text } from "components/input";
 import { Panel } from "components/panels/Panel";
 import { TopPanel } from "components/panels/TopPanel";
 import { MessagesContainer, showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
@@ -46,35 +46,35 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
               <div className="col-md-4 text-left">
                 <label htmlFor="digitFlag">{t("Require Digits")}</label>
               </div>
-              <Check name="digitFlag" key="digitFlag" divClass="col-md-2" />
+              <DEPRECATED_Check name="digitFlag" key="digitFlag" divClass="col-md-2" />
             </div>
             {/* Require Lowercase Characters */}
             <div className="row">
               <div className="col-md-4 text-left">
                 <label htmlFor="lowerCharFlag">{t("Require Lowercase Characters")}</label>
               </div>
-              <Check name="lowerCharFlag" key="lowerCharFlag" divClass="col-md-2" />
+              <DEPRECATED_Check name="lowerCharFlag" key="lowerCharFlag" divClass="col-md-2" />
             </div>
             {/* Require Uppercase Characters */}
             <div className="row">
               <div className="col-md-4 text-left">
                 <label htmlFor="upperCharFlag">{t("Require Uppercase Characters")}</label>
               </div>
-              <Check name="upperCharFlag" key="upperCharFlag" divClass="col-md-2" />
+              <DEPRECATED_Check name="upperCharFlag" key="upperCharFlag" divClass="col-md-2" />
             </div>
             {/* Restrict Consecutive Characters */}
             <div className="row">
               <div className="col-md-4 text-left">
                 <label htmlFor="consecutiveCharsFlag">{t("Restrict Consecutive Characters")}</label>
               </div>
-              <Check name="consecutiveCharsFlag" key="consecutiveCharsFlag" divClass="col-md-2" />
+              <DEPRECATED_Check name="consecutiveCharsFlag" key="consecutiveCharsFlag" divClass="col-md-2" />
             </div>
             {/* Require Special Characters */}
             <div className="row">
               <div className="col-md-4 text-left">
                 <label htmlFor="specialCharFlag">{t("Require Special Characters")}</label>
               </div>
-              <Check name="specialCharFlag" key="specialCharFlag" divClass="col-md-2" />
+              <DEPRECATED_Check name="specialCharFlag" key="specialCharFlag" divClass="col-md-2" />
             </div>
             {/* Allowed Special Characters */}
             <div className="row form-group">
@@ -93,7 +93,7 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
               <div className="col-md-4 text-left">
                 <label htmlFor="restrictedOccurrenceFlag">{t("Restrict Characters Occurrences")}</label>
               </div>
-              <Check key="restrictedOccurrenceFlag" name="restrictedOccurrenceFlag" divClass="col-md-2" />
+              <DEPRECATED_Check key="restrictedOccurrenceFlag" name="restrictedOccurrenceFlag" divClass="col-md-2" />
             </div>
             {/* Maximum Character Occurrence */}
             <div className="row form-group">

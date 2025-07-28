@@ -1,4 +1,5 @@
 export * from "./check/Check";
+export * from "./check/DEPRECATED_Check";
 export * from "./datetime/DateTime";
 export * from "./form/Form";
 export * from "./FormGroup";
