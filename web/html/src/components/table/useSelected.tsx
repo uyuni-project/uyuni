@@ -82,9 +82,8 @@ export const useSelected = <T extends { children?: T[] }, I>(identifier: (item: 
   const SelectionColumn = (props: ColumnProps) => (
     <Column
       onClick={(item) => toggle(item)}
-      cell={(
-        item // TODO: Use the new Checkbox here once that PR is merged
-      ) => (
+      cell={(item) => (
+        // TODO: Use the new Checkbox component here once that PR is merged
         <div style={isIndeterminate(item) ? { background: "red" } : undefined}>
           <input
             type="checkbox"
@@ -106,7 +105,7 @@ export const useSelected = <T extends { children?: T[] }, I>(identifier: (item: 
   SelectionColumn.displayName = "Column";
 
   return {
-    /** Render this selection as a <Column /> */
+    /** Render this selection as a `<Column />` */
     Column: SelectionColumn,
     /** Recursively select an item */
     select,
