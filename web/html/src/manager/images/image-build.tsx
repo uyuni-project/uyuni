@@ -4,7 +4,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { ActionChain, ActionSchedule } from "components/action-schedule";
 import { LinkButton, SubmitButton } from "components/buttons";
-import { Select } from "components/input";
+import { DEPRECATED_Select } from "components/input";
 import { Form } from "components/input/form/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Text } from "components/input/text/Text";
@@ -353,7 +353,7 @@ class BuildImage extends React.Component<Props, State> {
             onSubmit={this.onBuild}
             onValidate={this.onValidate}
           >
-            <Select
+            <DEPRECATED_Select
               name="profileId"
               required
               label={t("Image Profile")}
@@ -383,7 +383,7 @@ class BuildImage extends React.Component<Props, State> {
               />
             )}
 
-            <Select
+            <DEPRECATED_Select
               name="buildHostId"
               required
               label={t("Build Host")}
