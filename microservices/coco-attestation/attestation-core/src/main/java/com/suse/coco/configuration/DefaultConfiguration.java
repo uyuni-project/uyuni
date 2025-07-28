@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -27,6 +27,7 @@ import java.util.stream.Stream;
  */
 public class DefaultConfiguration implements Configuration {
 
+    // These are the only properties that do not have a default value in configuration-defaults.properties
     private static final Stream<String> MANDATORY_PROPERTIES = Stream.of(
         "database_user",
         "database_password",
@@ -55,44 +56,37 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public String getDatabaseUser() {
-        return configurationSource.getString("database_user")
-            .orElseThrow(() -> new MissingConfigurationException("No value set for database_user"));
+        return configurationSource.requireString("database_user");
     }
 
     @Override
     public String getDatabasePassword() {
-        return configurationSource.getString("database_password")
-            .orElseThrow(() -> new MissingConfigurationException("No value set for database_password"));
+        return configurationSource.requireString("database_password");
     }
 
     @Override
     public String getDatabaseConnectionString() {
-        return configurationSource.getString("database_connection")
-            .orElseThrow(() -> new MissingConfigurationException("No value set for database_connection"));
+        return configurationSource.requireString("database_connection");
     }
 
     @Override
     public int getCorePoolSize() {
-        return configurationSource.getInteger("processor_corePoolSize")
-            .orElseThrow(() -> new MissingConfigurationException("No value set for database_connection"));
+        return configurationSource.requireInteger("processor_corePoolSize");
     }
 
     @Override
     public int getMaximumPoolSize() {
-        return configurationSource.getInteger("processor_maxPoolSize")
-            .orElseThrow(() -> new MissingConfigurationException("No value set for database_connection"));
+        return configurationSource.requireInteger("processor_maxPoolSize");
     }
 
     @Override
     public long getThreadKeepAliveInSeconds() {
-        return configurationSource.getInteger("processor_threadKeepAlive")
-            .orElseThrow(() -> new MissingConfigurationException("No value set for database_connection"));
+        return configurationSource.requireInteger("processor_threadKeepAlive");
     }
 
     @Override
     public int getBatchSize() {
-        return configurationSource.getInteger("processor_batchSize")
-            .orElseThrow(() -> new MissingConfigurationException("No value set for database_connection"));
+        return configurationSource.requireInteger("processor_batchSize");
     }
 
     @Override
