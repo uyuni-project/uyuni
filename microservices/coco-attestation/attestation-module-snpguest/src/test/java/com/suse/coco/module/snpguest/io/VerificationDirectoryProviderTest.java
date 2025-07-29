@@ -26,6 +26,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -71,13 +73,19 @@ class VerificationDirectoryProviderTest {
         }
     }
 
-    @Test
-    @DisplayName("Verification directory is created by the provider and destroyed on resource closure")
-    void canCreateAndDestroyVerificationDirectory() throws IOException {
+    @ParameterizedTest
+    @EnumSource(EpycGeneration.class)
+    @DisplayName("Verification directory is created by the provider and destroyed on resource closure" +
+            " for each cpu generation")
+    void canCreateAndDestroyVerificationDirectory(EpycGeneration cpuGeneration) throws IOException {
+        if (EpycGeneration.UNKNOWN == cpuGeneration) {
+            return;
+        }
+
         Path verificationDirectory;
 
         when(attestationReport.getCpuGeneration())
-            .thenReturn(EpycGeneration.GENOA);
+            .thenReturn(cpuGeneration);
         when(attestationReport.getReport())
             .thenReturn("This is a dummy report for unit test".getBytes(StandardCharsets.UTF_8));
 
@@ -100,9 +108,15 @@ class VerificationDirectoryProviderTest {
             Path askCert = directory.getCertsPath().resolve("ask.pem");
             assertTrue(Files.exists(askCert));
 
+            Path asvkCert = directory.getCertsPath().resolve("asvk.pem");
+            assertTrue(Files.exists(asvkCert));
+
             // Check they contain the correct value
-            assertEquals("Genoa ROOT fake certificate", Files.readString(arkCert).strip());
-            assertEquals("Genoa INTERMEDIATE fake certificate", Files.readString(askCert).strip());
+            String cpuName = cpuGeneration.name().toLowerCase();
+            cpuName = cpuName.substring(0, 1).toUpperCase() + cpuName.substring(1);
+            assertEquals("%s ROOT fake certificate".formatted(cpuName), Files.readString(arkCert).strip());
+            assertEquals("%s INTERMEDIATE fake certificate".formatted(cpuName), Files.readString(askCert).strip());
+            assertEquals("%s INTERMEDIATE VLEK fake certificate".formatted(cpuName), Files.readString(asvkCert).strip());
 
             // Verify the report is present
             assertTrue(Files.isReadable(directory.getReportPath()));
