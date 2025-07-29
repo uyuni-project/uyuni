@@ -499,9 +499,6 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_INVENTORY)) {
             retval = new InventoryAction();
         }
-        else if (typeIn.equals(TYPE_INVENTORY)) {
-            retval = new InventoryAction();
-        }
         else if (typeIn.equals(TYPE_SUPPORTDATA_GET)) {
             retval = new SupportDataAction();
         }
