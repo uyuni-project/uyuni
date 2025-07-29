@@ -1,9 +1,10 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
+
 import { Button } from "components/buttons";
-import { Column } from "components/table/Column";
 import { Form } from "components/formik";
 import { Field } from "components/formik/field";
+import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
@@ -21,11 +22,11 @@ type User = {
   email: string;
   name: string;
   orgName: string;
-}
+};
 
 const AccessGroupUsers = (props: Props) => {
   // List data
-  const [listData, setListData] = useState<{items: User[]}>({items: []});
+  const [listData, setListData] = useState<{ items: User[] }>({ items: [] });
 
   // Table data
   const [selectedUsers, setSelectedUsers] = useState<User[]>(props.state.users);
@@ -36,16 +37,18 @@ const AccessGroupUsers = (props: Props) => {
 
   const getUserList = () => {
     const endpoint = "/rhn/manager/api/admin/access-group/users/" + props.state.orgId;
-    return Network.get(endpoint)
-      .then((users) => {
-        setListData((prevData) => ({
-          ...prevData,
-          items: users.filter((u) => !selectedUsers.find(({id}) => u.id === id))
-        }));
-      })
-      // TODO: Handle errors
-      .catch(props.errors);
-  }
+    return (
+      Network.get(endpoint)
+        .then((users) => {
+          setListData((prevData) => ({
+            ...prevData,
+            items: users.filter((u) => !selectedUsers.find(({ id }) => u.id === id)),
+          }));
+        })
+        // TODO: Handle errors
+        .catch(props.errors)
+    );
+  };
 
   const updateUserList = (item) => {
     const selectedUser = listData.items.find((user) => user.login === item.login);
@@ -109,7 +112,9 @@ const AccessGroupUsers = (props: Props) => {
           label={t("Search & Add Users")}
           labelClass="col-md-12 text-start fw-bold fs-4 mb-3"
           divClass="col-md-6"
-          options={listData.items.map((user) => {return {label: user.login, value: user.login}})}
+          options={listData.items.map((user) => {
+            return { label: user.login, value: user.login };
+          })}
           as={Field.Select}
           // TODO: Clear selected value from the picker once it's selected
           value={null}
@@ -122,24 +127,9 @@ const AccessGroupUsers = (props: Props) => {
         initialSortColumnKey="login"
         emptyText={t("No Users selected.")}
       >
-        <Column
-          columnKey="login"
-          comparator={Utils.sortByText}
-          header={t("Username")}
-          cell={(item) => item.login}
-        />
-        <Column
-          columnKey="email"
-          comparator={Utils.sortByText}
-          header={t("Email")}
-          cell={(item) => item.email}
-        />
-        <Column
-          columnKey="name"
-          comparator={Utils.sortByText}
-          header={t("Real Name")}
-          cell={(item) => item.name}
-        />
+        <Column columnKey="login" comparator={Utils.sortByText} header={t("Username")} cell={(item) => item.login} />
+        <Column columnKey="email" comparator={Utils.sortByText} header={t("Email")} cell={(item) => item.email} />
+        <Column columnKey="name" comparator={Utils.sortByText} header={t("Real Name")} cell={(item) => item.name} />
         <Column
           columnKey="orgName"
           comparator={Utils.sortByText}

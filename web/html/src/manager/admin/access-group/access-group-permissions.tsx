@@ -1,10 +1,11 @@
 import * as React from "react";
 
+import { AccessGroupState } from "manager/admin/access-group/access-group";
+
 import { Button } from "components/buttons";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
-import { AccessGroupState } from "manager/admin/access-group/access-group";
 
 import { Utils } from "utils/functions";
 
@@ -16,7 +17,7 @@ type Props = {
 
 const AccessGroupPermissions = (props: Props) => {
   const isChecked = (item, type) => {
-    const permission = props.state.permissions.filter((p) => p.namespace === item.namespace)
+    const permission = props.state.permissions.filter((p) => p.namespace === item.namespace);
     if (permission.length > 0) {
       return type === "view" ? permission[0].view : permission[0].modify;
     }
@@ -44,11 +45,7 @@ const AccessGroupPermissions = (props: Props) => {
         Click <strong>Add Permissions</strong> to select the permissions you want to add to this custom Access group.
       </p>
       <div className="d-block mb-3">
-        <Button
-          className="btn-primary pull-right"
-          text="Add Permissions"
-          handler={() => {}}
-        />
+        <Button className="btn-primary pull-right" text="Add Permissions" handler={() => {}} />
       </div>
       <Table
         data={"/rhn/manager/api/admin/access-group/namespaces"}
@@ -57,7 +54,12 @@ const AccessGroupPermissions = (props: Props) => {
         emptyText={t("No Permissions found.")}
         searchField={<SearchField placeholder={t("Filter by name")} />}
       >
-        <Column columnKey="namespace" comparator={Utils.sortByText} header={t("Name")} cell={(item) => item.namespace} />
+        <Column
+          columnKey="namespace"
+          comparator={Utils.sortByText}
+          header={t("Name")}
+          cell={(item) => item.namespace}
+        />
         <Column
           columnKey="description"
           comparator={Utils.sortByText}
@@ -67,31 +69,30 @@ const AccessGroupPermissions = (props: Props) => {
         <Column
           columnKey="view"
           header={t("View")}
-          cell={(item) =>
+          cell={(item) => (
             <input
               name="view"
               type="checkbox"
-              checked={isChecked(item,"view")}
+              checked={isChecked(item, "view")}
               disabled={!item.accessMode.includes("R")}
               onChange={() => props.onChange(item, "view")}
-            />}
+            />
+          )}
         />
         <Column
           columnKey="modify"
           header={t("Modify")}
-          cell={(item) =>
+          cell={(item) => (
             <input
               name="modify"
               type="checkbox"
               checked={isChecked(item, "modify")}
               disabled={!item.accessMode.includes("W")}
               onChange={() => props.onChange(item, "modify")}
-            />}
+            />
+          )}
         />
-        <Column
-          columnKey="count"
-          header={t("Count")}
-          cell={(item) => item.permissions} />
+        <Column columnKey="count" header={t("Count")} cell={(item) => item.permissions} />
       </Table>
     </div>
   );
