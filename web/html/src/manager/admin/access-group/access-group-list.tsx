@@ -1,7 +1,10 @@
 import * as React from "react";
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 
 import { Button, LinkButton } from "components/buttons";
+import { DeleteDialog } from "components/dialog/DeleteDialog";
+import { ModalButton } from "components/dialog/ModalButton";
+import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
@@ -9,9 +12,6 @@ import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
-import {Messages, MessageType, Utils as MessagesUtils} from "components/messages/messages";
-import { DeleteDialog } from "components/dialog/DeleteDialog";
-import { ModalButton } from "components/dialog/ModalButton";
 
 type AccessGroupListItem = {
   id: number;
@@ -49,7 +49,11 @@ const AccessGroupList = (props) => {
       return (
         <div className="btn-group">
           <Button className="btn-default btn-sm" icon="fa-user" />
-          <LinkButton className="btn-default btn-sm" icon="fa-pencil" href={"/rhn/manager/admin/access-group/show/" + item.id} />
+          <LinkButton
+            className="btn-default btn-sm"
+            icon="fa-pencil"
+            href={"/rhn/manager/admin/access-group/show/" + item.id}
+          />
           <ModalButton
             className="btn-default btn-sm"
             title={t("Delete")}
@@ -93,9 +97,18 @@ const AccessGroupList = (props) => {
           header={t("Description")}
           cell={(item) => item.description}
         />
-        <Column columnKey="type" header={t("Type")} cell={(item) => item.orgName === "-" ? t("Built-In") : t("Custom")} />
+        <Column
+          columnKey="type"
+          header={t("Type")}
+          cell={(item) => (item.orgName === "-" ? t("Built-In") : t("Custom"))}
+        />
 
-        <Column columnKey="orgName" comparator={Utils.sortByText} header={t("Organization")} cell={(item) => item.orgName} />
+        <Column
+          columnKey="orgName"
+          comparator={Utils.sortByText}
+          header={t("Organization")}
+          cell={(item) => item.orgName}
+        />
 
         <Column columnKey="users" comparator={Utils.sortByText} header={t("Users")} cell={(item) => item.numUsers} />
 
@@ -105,11 +118,7 @@ const AccessGroupList = (props) => {
           header={t("permissions")}
           cell={(item) => item.numPermissions}
         />
-        <Column
-          columnKey="action"
-          header={t("Actions")}
-          cell={(item) => actionButtons(item)}
-        />
+        <Column columnKey="action" header={t("Actions")} cell={(item) => actionButtons(item)} />
       </Table>
       <DeleteDialog
         id="delete-modal"
@@ -120,6 +129,6 @@ const AccessGroupList = (props) => {
       />
     </TopPanel>
   );
-}
+};
 
 export default AccessGroupList;

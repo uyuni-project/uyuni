@@ -1,31 +1,20 @@
-import { hot } from "react-hot-loader/root";
-
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-import withPageWrapper from "components/general/with-page-wrapper";
-import { TopPanel } from "components/panels/TopPanel";
-import { StepsProgressBar } from "components/steps-progress-bar";
-
-import AccessGroupDetails from "./access-group-details";
-import AccessGroupPermissions from "./access-group-permissions";
-import AccessGroupUsers from "./access-group-user";
-import Network from "utils/network";
-import {Messages, MessageType, Utils as MessagesUtils} from "components/messages/messages";
-import {TabContainer} from "components/tab-container";
-import {Button, LinkButton} from "components/buttons";
+import { Button, LinkButton } from "components/buttons";
+import { TabContainer } from "components/tab-container";
 
 type Tab = {
   title: string;
   content: React.ReactNode;
   validate?: boolean | null;
-}
+};
 
 type AccessGroupTabContainerProps = {
   tabs: Tab[];
   onUpdate?: Function;
   onCancel?: string;
-}
+};
 
 const AccessGroupTabContainer = (props: AccessGroupTabContainerProps) => {
   const [currentTab, setCurrentTab] = useState("#details");
@@ -51,12 +40,17 @@ const AccessGroupTabContainer = (props: AccessGroupTabContainerProps) => {
           <Button className="btn-primary pull-right" text={t("Update Access Group")} handler={onUpdate} />
         </div>
         <div className="content-section">
-          <TabContainer labels={labels} hashes={hashes} tabs={tabs} initialActiveTabHash={currentTab}
-                        onTabHashChange={onTabHashChanged}/>
+          <TabContainer
+            labels={labels}
+            hashes={hashes}
+            tabs={tabs}
+            initialActiveTabHash={currentTab}
+            onTabHashChange={onTabHashChanged}
+          />
         </div>
       </div>
       <div className="progress-bar-footer">
-        <LinkButton className="btn-default btn-sm pull-left" text={t("Cancel")} href={props.onCancel}/>
+        <LinkButton className="btn-default btn-sm pull-left" text={t("Cancel")} href={props.onCancel} />
       </div>
     </div>
   );
