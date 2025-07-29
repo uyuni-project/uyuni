@@ -71,7 +71,7 @@ export default () => {
               <input
                 type="checkbox"
                 checked={viewSelected.isAllSelected}
-                onClick={() => viewSelected.toggleSelectAll()}
+                onChange={() => viewSelected.toggleSelectAll()}
               />
               &nbsp;
               {t("View")}
