@@ -9,8 +9,8 @@ export type ColumnProps = {
   /** Content of the cell or function to compute it from the row data */
   cell?: React.ReactNode | ((data: any, criteria?: string, nestingLevel?: number) => React.ReactNode);
 
-  /** Title of the row */
-  header?: string;
+  /** Title of the row, prefer `string` where possible for consistency */
+  header?: string | React.ReactNode;
 
   /** CSS value for the column width */
   width?: string;
