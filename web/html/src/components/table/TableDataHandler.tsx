@@ -291,7 +291,7 @@ export class TableDataHandler extends React.Component<Props, State> {
 
           return (
             <Header
-              key={index}
+              key={column.props.columnKey}
               columnKey={column.props.columnKey}
               sortDirection={sortDirection}
               onSortChange={this.onSortChange.bind(this)}
@@ -303,7 +303,9 @@ export class TableDataHandler extends React.Component<Props, State> {
             </Header>
           );
         } else {
-          return <Header key={index} width={column.props.width} className={column.props.headerClass} />;
+          return (
+            <Header key={column.props.columnKey} width={column.props.width} className={column.props.headerClass} />
+          );
         }
       });
 
