@@ -8,7 +8,7 @@
 </rl:column>
 
 <rl:column bound="true"
-        headerkey="userdetails.jsp.roles"
+        headerkey="userdetails.jsp.adminroles"
         sortable="true"
         attr="roleNames"/>
 
