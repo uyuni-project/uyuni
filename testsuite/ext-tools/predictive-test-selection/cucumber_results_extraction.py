@@ -208,7 +208,7 @@ def extract_results_and_scenario_counts(
     found_json = False
     pr_stats = make_cucumber_stats_dict()
     for report in os.listdir(cucumber_folder_path):
-        if report.endswith(".json"):
+        if report.endswith(".json") and report.startswith("output_"):
             found_json = True
             report_path = os.path.join(cucumber_folder_path, report)
             try:
