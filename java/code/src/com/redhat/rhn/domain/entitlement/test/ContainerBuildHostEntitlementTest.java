@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.entitlement.ContainerBuildHostEntitlement;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -77,7 +78,7 @@ public class ContainerBuildHostEntitlementTest extends BaseEntitlementTestCase {
     public void testIsAllowedOnServerWithGrains() throws Exception {
         Server minion = MinionServerFactoryTest.createTestMinionServer(user);
         Map<String, Object> grains = new HashMap<>();
-        grains.put("os_family", "Suse");
+        grains.put("os_family", ServerConstants.OS_FAMILY_SUSE);
         grains.put("osmajorrelease", "12");
 
         assertTrue(ent.isAllowedOnServer(minion, new ValueMap(grains)));

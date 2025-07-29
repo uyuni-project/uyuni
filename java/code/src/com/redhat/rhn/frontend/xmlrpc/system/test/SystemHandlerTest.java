@@ -3014,7 +3014,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         });
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         server.setServerArch(ServerFactory.lookupServerArchByName("x86_64"));
-        server.setOsFamily("Suse"); // SP Migration will only work for Minions with OS family `SUSE
+        server.setOsFamilySuse(); // SP Migration will only work for Minions with OS family `SUSE
 
         // Setup source products
         ChannelFamily family = createTestChannelFamily();
@@ -3119,7 +3119,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testListMigrationTargetWithAndWithoutSuccessor() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         server.setServerArch(ServerFactory.lookupServerArchByName("x86_64"));
-        server.setOsFamily("Suse"); // SP Migration will only work for Minions with OS family `SUSE
+        server.setOsFamilySuse(); // SP Migration will only work for Minions with OS family `SUSE
 
         // Setup source products
         ChannelFamily family = createTestChannelFamily();

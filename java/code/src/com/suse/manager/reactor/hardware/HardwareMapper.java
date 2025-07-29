@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
@@ -678,7 +679,7 @@ public class HardwareMapper {
             List<VirtualInstance> virtualInstances = VirtualInstanceFactory.getInstance()
                     .lookupVirtualInstanceByUuid(virtUuid);
 
-            if (grains.getValueAsString("os_family").contentEquals("Suse") &&
+            if (grains.getValueAsString("os_family").contentEquals(ServerConstants.OS_FAMILY_SUSE) &&
                     grains.getValueAsString("osrelease").startsWith("11") &&
                         StringUtils.isEmpty(instanceId)) {
                 virtUuid = fixAndReturnSle11Uuid(virtUuid);

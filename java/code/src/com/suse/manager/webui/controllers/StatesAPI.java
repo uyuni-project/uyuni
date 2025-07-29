@@ -614,7 +614,7 @@ public class StatesAPI {
         SaltPkgLatest pkgLatest = new SaltPkgLatest();
 
         MinionServerFactory.lookupById(server.getId()).ifPresent(minion -> {
-            if (minion.getOsFamily().equals("Suse")) {
+            if (minion.isOsFamilySuse()) {
                 pkgInstalled.addRequire("file", ZYPPER_SUMA_CHANNEL_REPO_FILE);
                 pkgRemoved.addRequire("file", ZYPPER_SUMA_CHANNEL_REPO_FILE);
                 pkgLatest.addRequire("file", ZYPPER_SUMA_CHANNEL_REPO_FILE);

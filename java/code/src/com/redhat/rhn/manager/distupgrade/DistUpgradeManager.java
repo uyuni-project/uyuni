@@ -605,7 +605,7 @@ public class DistUpgradeManager extends BaseManager {
         }
         else {
             Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
-            if (minion.isEmpty() || !minion.get().getOsFamily().equals("Suse")) {
+            if (minion.isEmpty() || !minion.get().isOsFamilySuse()) {
                 throw new DistUpgradeException("Dist upgrade only supported for SUSE systems");
             }
         }
