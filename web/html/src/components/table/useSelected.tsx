@@ -2,10 +2,14 @@ import { useState } from "react";
 
 import { Column, ColumnProps } from "./Column";
 
+/**
+ * Create a selectable table column
+ *
+ * @param identifier A function to identify table rows, for example `row => row.id`
+ * @param getAllIdentifiers Async request to get all available table rows, including children, in order to select all items across all pages
+ */
 export const useSelected = <T extends { children?: T[] }, I>(
-  /** A function to identify table rows, for example `row => row.id` */
   identifier: (item: T) => I,
-  /** Async request to get all available table rows, including children, in order to select all items across all pages */
   getAllIdentifiers?: () => Promise<I[]>
 ) => {
   const [selected, setSelected] = useState(new Set<I>());
