@@ -2,8 +2,15 @@ import { useState } from "react";
 
 import { Column, ColumnProps } from "./Column";
 
-export const useSelected = <T extends { children?: T[] }, I>(identifier: (item: T) => I) => {
+export const useSelected = <T extends { children?: T[] }, I>(
+  /** A function to identify table rows, for example `row => row.id` */
+  identifier: (item: T) => I,
+  /** Async request to get all available table rows, including children, in order to select all items across all pages */
+  getAllIdentifiers?: () => Promise<I[]>
+) => {
   const [selected, setSelected] = useState(new Set<I>());
+  // Fyi, we do NOT set `isAllSelected` even if you manually go and select everything on every page, we only set it from the async request
+  const [isAllSelected, setIsAllSelected] = useState(false);
 
   const selectRecursive = (item: T, targetSet: Set<I>) => {
     targetSet.add(identifier(item));
@@ -32,6 +39,7 @@ export const useSelected = <T extends { children?: T[] }, I>(identifier: (item: 
   };
 
   const unselect = (item: T) => {
+    setIsAllSelected(false);
     setSelected((prev) => {
       const newSelected = new Set(prev);
       unselectRecursive(item, newSelected);
@@ -75,6 +83,20 @@ export const useSelected = <T extends { children?: T[] }, I>(identifier: (item: 
     }
   };
 
+  const toggleSelectAll = async () => {
+    if (!getAllIdentifiers) {
+      throw new RangeError("Missing getAllIdentifiers in useSelected");
+    }
+    if (isAllSelected) {
+      setSelected(new Set());
+      setIsAllSelected(false);
+    } else {
+      const allIdentifiers = await getAllIdentifiers();
+      setSelected(new Set(allIdentifiers));
+      setIsAllSelected(true);
+    }
+  };
+
   const clear = () => {
     setSelected(new Set());
   };
@@ -83,7 +105,7 @@ export const useSelected = <T extends { children?: T[] }, I>(identifier: (item: 
     <Column
       onClick={(item) => toggle(item)}
       cell={(item) => (
-        // TODO: Use the new Checkbox component here once that PR is merged
+        // TODO: Use the new Checkbox component here once that PR is merged, these styles are a placeholder to show state
         <div style={isIndeterminate(item) ? { background: "red" } : undefined}>
           <input
             type="checkbox"
@@ -94,10 +116,6 @@ export const useSelected = <T extends { children?: T[] }, I>(identifier: (item: 
         </div>
       )}
       {...props}
-      // The props below this line may be overwritten by the spread props
-      width="30px"
-      columnClass="text-center"
-      headerClass="text-center"
     />
   );
 
@@ -117,6 +135,10 @@ export const useSelected = <T extends { children?: T[] }, I>(identifier: (item: 
     isSelected,
     /** Does a given item have mixed children, some selected, some not selected */
     isIndeterminate,
+    /** Select or unselect all items across all pages */
+    toggleSelectAll,
+    /** Are all items across all pages selected */
+    isAllSelected,
     /** Set selected values, overwriting all previous values */
     setSelected(iterable?: Iterable<I>) {
       setSelected(new Set(iterable));
