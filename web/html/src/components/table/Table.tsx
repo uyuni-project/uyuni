@@ -100,9 +100,7 @@ export type TableRef = {
 
 export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
   const { ...allProps } = props;
-  const columns = React.Children.toArray(props.children)
-    .filter(isColumn)
-    .map((child) => React.cloneElement(child));
+  const columns = React.Children.toArray(props.children).filter(isColumn);
   const dataHandlerRef = React.useRef<TableDataHandler>(null);
 
   const expanded = useExpanded();
@@ -123,6 +121,7 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
             .filter(isColumn)
             .map((column, index) =>
               React.cloneElement(column, {
+                key: column.props.columnKey,
                 data: item,
                 criteria: criteria,
                 columnClass: `${index === 0 ? `nesting-${nestingLevel}` : ""} ${column.props.columnClass ?? ""}`,
@@ -134,6 +133,7 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
           if (selectableValue && isSelectable(item)) {
             const checkbox = (
               <Column
+                key="check"
                 columnKey="check"
                 cell={
                   <input
@@ -153,6 +153,7 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
           if (props.expandable) {
             const toggle = (
               <Column
+                key="expandable"
                 columnKey="expandable"
                 onClick={() => expanded.toggle(props.identifier(item))}
                 cell={() => {
@@ -184,6 +185,7 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
             );
             const column = (
               <Column
+                key="delete"
                 columnKey="delete"
                 cell={(row) => {
                   if (typeof props.deletable === "function") {
@@ -205,15 +207,13 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
             key = index;
           }
           return (
-            <>
-              <tr className={rowClass} key={key}>
-                {cells}
-              </tr>
+            <React.Fragment key={key}>
+              <tr className={rowClass}>{cells}</tr>
               {props.expandable &&
                 "children" in item &&
                 expanded.has(props.identifier(item)) &&
                 item.children.map((childItem, childIndex) => renderRow(childItem, childIndex, nestingLevel + 1))}
-            </>
+            </React.Fragment>
           );
         };
 
