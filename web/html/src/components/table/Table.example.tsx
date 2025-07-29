@@ -10,8 +10,17 @@ type ChannelWithHierarchy = any & {
 
 export default () => {
   const identifier = (item: ChannelWithHierarchy) => item.channelId;
-  const viewSelected = useSelected(identifier);
-  const modifySelected = useSelected(identifier);
+  const getAllIdentifiers = () => {
+    return new Promise<number[]>((resolve) =>
+      window.setTimeout(
+        () => resolve([114, 115, 116, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 101]),
+        100
+      )
+    );
+  };
+
+  const viewSelected = useSelected(identifier, getAllIdentifiers);
+  const modifySelected = useSelected(identifier, getAllIdentifiers);
 
   const channels = placeholderData.channelSyncData.channels;
 
@@ -54,7 +63,21 @@ export default () => {
           cell={(row: ChannelWithHierarchy) => (row.channelOrg ? row.channelOrg.orgName : "SUSE")}
           width="20%"
         />
-        <viewSelected.Column columnKey="view" header={t("View")} />
+        <viewSelected.Column
+          columnKey="view"
+          header={
+            <>
+              {/* TODO: Use the new Check here */}
+              <input
+                type="checkbox"
+                checked={viewSelected.isAllSelected}
+                onClick={() => viewSelected.toggleSelectAll()}
+              />
+              &nbsp;
+              {t("View")}
+            </>
+          }
+        />
         <modifySelected.Column columnKey="modify" header={t("Modify")} />
       </Table>
     </>
