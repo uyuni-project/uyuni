@@ -51,7 +51,7 @@
         <rl:column attr="roleNames"
                    bound="true"
                    sortable="true"
-                   headerkey="userdetails.jsp.roles"
+                   headerkey="userdetails.jsp.adminroles"
                     />
 
         <!-- Last logged in column -->
