@@ -25,6 +25,7 @@
                       END AS cpu_generation
                     , decode(in_data->>'nonce', 'base64') AS random_nonce
                     , decode(out_data->>'mgr_snpguest_report', 'base64') AS report
+                    , out_data->>'mgr_vlek_certificate' AS vlek_certificate
             FROM suseServerCoCoAttestationReport
            WHERE id = #{reportId}
     </select>
