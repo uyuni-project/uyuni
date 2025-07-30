@@ -19,6 +19,7 @@ import static com.suse.manager.webui.services.SaltConstants.SALT_CP_PUSH_ROOT_PA
 import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
+import static com.suse.proxy.ProxyConfigUtils.USE_CERTS_MODE_REPLACE;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
@@ -70,10 +71,12 @@ import com.redhat.rhn.domain.server.AnsibleFactory;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
@@ -105,6 +108,7 @@ import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 import com.suse.manager.webui.utils.salt.custom.AppStreamsChangeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.CoCoAttestationRequestData;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
@@ -125,6 +129,10 @@ import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
+import com.suse.proxy.ProxyConfigUtils;
+import com.suse.proxy.model.ProxyConfig;
+import com.suse.proxy.update.ProxyConfigUpdateFacade;
+import com.suse.proxy.update.ProxyConfigUpdateFacadeImpl;
 import com.suse.salt.netapi.calls.modules.Openscap;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Pkg.Info;
@@ -1832,7 +1840,7 @@ public class SaltUtils {
      * @param result the result of the call as parsed from event data
      * @param serverAction the server action
      */
-    private static void handleHardwareProfileUpdate(MinionServer server,
+    private void handleHardwareProfileUpdate(MinionServer server,
             HwProfileUpdateSlsResult result, ServerAction serverAction) {
         Instant start = Instant.now();
 
@@ -1879,6 +1887,12 @@ public class SaltUtils {
         server.getSapWorkloads().retainAll(sapWorkloads);
         server.getSapWorkloads().addAll(sapWorkloads);
 
+        if (result.missesProxyConfig()) {
+            server.getPillarByCategory(ProxyConfigUtils.PROXY_PILLAR_CATEGORY).ifPresent(pillar -> {
+                handleMissingProxyConfig(pillar, server);
+            });
+        }
+
         // Let the action fail in case there is error messages
         if (!hwMapper.getErrors().isEmpty()) {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
@@ -1891,6 +1905,59 @@ public class SaltUtils {
             long duration = Duration.between(start, Instant.now()).getSeconds();
             LOG.debug("Hardware profile updated for minion: {} ({} seconds)", server.getMinionId(), duration);
         }
+    }
+
+    private void handleMissingProxyConfig(Pillar pillar, MinionServer proxy) {
+        ProxyConfig config = ProxyConfigUtils.proxyConfigFromPillar(pillar);
+        ProxyConfigUpdateFacade updater = new ProxyConfigUpdateFacadeImpl();
+        SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
+
+        String httpdURL = null, httpdTag = null;
+        if (config.getHttpdImage() != null) {
+            httpdURL = config.getHttpdImage().getUrl();
+            httpdTag = config.getHttpdImage().getTag();
+        }
+
+        String saltbrokerURL = null, saltbrokerTag = null;
+        if (config.getSaltBrokerImage() != null) {
+            saltbrokerURL = config.getSaltBrokerImage().getUrl();
+            saltbrokerTag = config.getSaltBrokerImage().getTag();
+        }
+
+        String squidURL = null, squidTag = null;
+        if (config.getSquidImage() != null) {
+            squidURL = config.getSquidImage().getUrl();
+            squidTag = config.getSquidImage().getTag();
+        }
+
+        String sshURL = null, sshTag = null;
+        if (config.getSshImage() != null) {
+            sshURL = config.getSshImage().getUrl();
+            sshTag = config.getSshImage().getTag();
+        }
+
+        String tftpdURL = null, tftpdTag = null;
+        if (config.getTftpdImage() != null) {
+            tftpdURL = config.getTftpdImage().getUrl();
+            tftpdTag = config.getTftpdImage().getTag();
+        }
+
+        ProxyConfigUpdateJson request = new ProxyConfigUpdateJson(
+                proxy.getId(), config.getParentFqdn(),
+                config.getProxyPort(), config.getMaxCache(), config.getEmail(),
+                USE_CERTS_MODE_REPLACE,
+                config.getRootCA(), config.getIntermediateCAs(), config.getProxyCert(), config.getProxyKey(),
+                ProxyConfigUtils.SOURCE_MODE_RPM,
+                ProxyConfigUtils.REGISTRY_MODE_SIMPLE,
+                null, null,
+                httpdURL, httpdTag,
+                saltbrokerURL, saltbrokerTag,
+                squidURL, squidTag,
+                sshURL, sshTag,
+                tftpdURL, tftpdTag,
+                config.getProxySshPub(), config.getProxySshPriv(), config.getParentSshPub()
+        );
+        updater.update(request, systemManager, null);
     }
 
     private void handleInventoryRefresh(Action action, ServerAction serverAction, JsonElement jsonResult) {
