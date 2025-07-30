@@ -42,6 +42,7 @@ columns:
   primary_interface The name of the system primary network interface
   hardware_address The MAC address of the network interface
   ip_address The IPv4 address of the primary network interface of the system
+  ip6_addresses The list of IPv6 addresses and their scopes of the primary network interface of the system, separated by ;
   is_virtualized True if the system is virtualized
   synced_date The timestamp of when this data was last refreshed.
 
@@ -80,6 +81,7 @@ sql:
                  , primary_interface
                  , hardware_address
                  , ip_address
+                 , ip6_addresses
                  , is_virtualized
                  , synced_date
         FROM SystemHardwareReport
