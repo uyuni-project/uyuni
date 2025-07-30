@@ -319,7 +319,7 @@ public abstract class CobblerObject {
      * @param value The new value for the property. This must be a "raw" object value and not a resolved one.
      */
     protected void modify(String key, Object value) {
-        modify(key, value, false);
+        modify(key, value, !client.isInTransaction());
     }
 
     /**
@@ -328,7 +328,7 @@ public abstract class CobblerObject {
      * @param key   The property name. Normally this is one of the constants defined above.
      * @param value The new value for the property. This must be a "raw" object value and not a resolved one.
      * @param updateResolved Whether to update the resolved value in our internal Map. This should only be set to
-     *                       false if you create a new object.
+     *                       false if you create a new object or in a transaction.
      */
     protected void modify(String key, Object value, boolean updateResolved) {
         if (key == null || key.isBlank()) {

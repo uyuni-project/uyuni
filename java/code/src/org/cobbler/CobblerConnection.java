@@ -53,6 +53,10 @@ public class CobblerConnection {
      * Contains the currently valid token
      */
     private String token;
+    /**
+     * The connection is in a transaction
+     */
+    private boolean inTransaction;
 
     /**
      * Default empty constructor that does not contain any initialization code
@@ -223,9 +227,13 @@ public class CobblerConnection {
 
     /**
      * Begins a new transaction
+     * note: the cached resolved entries are not updated during transaction
+     * (the final result is not valid before commit), so an object modified
+     * in transaction should be looked up again after commit, if needed.
      */
     public void transactionBegin() {
         invokeTokenMethod("transaction_begin");
+        inTransaction = true;
     }
 
     /**
@@ -233,6 +241,7 @@ public class CobblerConnection {
      */
     public void transactionCommit() {
         invokeTokenMethod("transaction_commit");
+        inTransaction = false;
     }
 
     /**
@@ -240,5 +249,14 @@ public class CobblerConnection {
      */
     public void transactionAbort() {
         invokeTokenMethod("transaction_abort");
+        inTransaction = false;
+    }
+    /**
+     * is the connection in transaction?
+     *
+     * @return true if in transaction
+     */
+    public boolean isInTransaction() {
+        return inTransaction;
     }
 }
