@@ -1,0 +1,2 @@
+- Fix using 3rd party intermediate certificates
+  (bsc#1247083)
