@@ -1,1 +1,2 @@
-- Fixed misaligned Vendor Change checkbox in product migration.
+Fix tooltip text for Create button on Maintenance page. 
+(bsc#1241044)
