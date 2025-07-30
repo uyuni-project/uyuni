@@ -4,14 +4,14 @@
 
 <%-- This widget assumes the "maintenanceWindows" is populated --%>
 
-<div class="form-group">
-    <div class="col-sm-6">
-        <select name="maintenance_window" id="maintenance-window-select" class="form-control">
-            <c:forEach var="window" items="${maintenanceWindows}">
-                <option value="${window.fromMilliseconds}">
-                    <p><c:out value="${window.from} - ${window.to}" /></p>
-                </option>
-            </c:forEach>
-        <select>
-    </div>
+
+<div class="col-sm-6">
+    <select name="maintenance_window" id="maintenance-window-select" class="form-control">
+        <c:forEach var="window" items="${maintenanceWindows}">
+            <option value="${window.fromMilliseconds}">
+                <p><c:out value="${window.from} - ${window.to}" /></p>
+            </option>
+        </c:forEach>
+    <select>
 </div>
+
