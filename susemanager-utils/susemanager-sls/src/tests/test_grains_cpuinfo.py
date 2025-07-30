@@ -152,9 +152,17 @@ def test_cpusockets_cpu_data(arch):
 
 
 def test_arch_specs_unknown():
-    cpuinfo._get_architecture = MagicMock(return_value="ppc64")
-    specs = cpuinfo.arch_specs()
-    assert specs == { "cpu_arch_specs": {} }
+    with patch('src.grains.cpuinfo._get_architecture', return_value="unknown"), \
+         patch('src.grains.cpuinfo._add_ppc64_extras') as mock_ppc64, \
+         patch('src.grains.cpuinfo._add_arm64_extras') as mock_arm64, \
+         patch('src.grains.cpuinfo._add_z_systems_extras') as mock_z:
+
+        specs = cpuinfo.arch_specs()
+
+        assert mock_ppc64.call_count == 0
+        assert mock_arm64.call_count == 0
+        assert mock_z.call_count == 0
+        assert specs == {"cpu_arch_specs": {}}
 
 def test_arch_specs_ppc64():
     cpuinfo._get_architecture = MagicMock(return_value="ppc64")
