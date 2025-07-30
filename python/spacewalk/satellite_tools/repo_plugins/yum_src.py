@@ -159,7 +159,7 @@ class ZyppoSync:
             # which are not needed and can cause issues when importing into the RPMDB
             all_keys_file = os.path.join(temp_dir, "_all_keys.gpg")
             args = [
-                "gpg",
+                "/usr/bin/gpg",
                 "-q",
                 "--batch",
                 "--no-options",
@@ -200,7 +200,13 @@ class ZyppoSync:
             )
 
             # Collect GPG keys from reposync Zypper RPM database
-            args = ["rpm", "-q", "gpg-pubkey", "--dbpath", REPOSYNC_ZYPPER_RPMDB_PATH]
+            args = [
+                "/usr/bin/rpm",
+                "-q",
+                "gpg-pubkey",
+                "--dbpath",
+                REPOSYNC_ZYPPER_RPMDB_PATH,
+            ]
             _log_command(args)
             process = subprocess.Popen(args, stdout=subprocess.PIPE)
             for line in process.stdout.readlines():
@@ -227,7 +233,7 @@ class ZyppoSync:
                     # This GPG key has a newer release on the Spacewalk GPG keyring that on the reposync Zypper RPM database.
                     # We delete this key from the RPM database to allow importing the newer version.
                     args = [
-                        "rpm",
+                        "/usr/bin/rpm",
                         "-q",
                         "--dbpath",
                         REPOSYNC_ZYPPER_RPMDB_PATH,
@@ -257,7 +263,7 @@ class ZyppoSync:
                 # pylint: disable-next=consider-using-f-string
                 key_file = os.path.join(temp_dir, "{}.gpg".format(key_id))
                 args = [
-                    "gpg",
+                    "/usr/bin/gpg",
                     "-q",
                     "--batch",
                     "--no-options",
@@ -277,7 +283,7 @@ class ZyppoSync:
                 _log_command(args)
                 subprocess.run(args, check=False)
                 args = [
-                    "rpmkeys",
+                    "/usr/bin/rpmkeys",
                     "-vv",
                     "--dbpath",
                     REPOSYNC_ZYPPER_RPMDB_PATH,
@@ -1005,12 +1011,12 @@ type=rpm-md
             sys.stdout.write(str(msg) + "\n")
             os.system(
                 # pylint: disable-next=consider-using-f-string
-                'awk \'BEGIN {{c=0;}} /BEGIN CERT/{{c++}} {{ print > "{0}/cert." c ".pem"}}\' < {1}'.format(
+                '/usr/bin/awk \'BEGIN {{c=0;}} /BEGIN CERT/{{c++}} {{ print > "{0}/cert." c ".pem"}}\' < {1}'.format(
                     _ssl_capath, self.sslcacert
                 )
             )
             # pylint: disable-next=consider-using-f-string
-            os.system("c_rehash {} 2&>1 /dev/null".format(_ssl_capath))
+            os.system("/usr/bin/c_rehash {} 2&>1 /dev/null".format(_ssl_capath))
             query_params["ssl_capath"] = _ssl_capath
         if self.sslclientcert:
             query_params["ssl_clientcert"] = self.sslclientcert

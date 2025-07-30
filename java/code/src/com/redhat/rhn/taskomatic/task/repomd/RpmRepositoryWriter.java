@@ -423,7 +423,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
 
         if (ConfigDefaults.get().isMetadataSigningEnabled()) {
             String[] signCommand = new String[2];
-            signCommand[0] = "mgr-sign-metadata";
+            signCommand[0] = "/usr/bin/mgr-sign-metadata";
             signCommand[1] = prefix + "repomd.xml";
             cmdExecutor.execute(signCommand);
             createdFiles.add(new File(prefix, "repomd.xml.asc"));
