@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.user.legacy.UserImpl;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.ListIndexBase;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,6 +69,7 @@ public class StateRevision {
             inverseJoinColumns = @JoinColumn(name = "config_channel_id")
     )
     @OrderColumn(name = "position")
+    @ListIndexBase(1)
     private List<ConfigChannel> configChannels = new ArrayList<>();
 
     @Column(name = "created", insertable = false, updatable = false)

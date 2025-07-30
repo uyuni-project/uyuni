@@ -1,2 +1,0 @@
-- Make system.listMigrationTargets API read-only
-- Update API documentation for 'access' namespace (bsc#1243379)

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jun 17 18:56:54 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.6-0
+  * Fix base channel for openSUSE Micro 6.1 Uyuni Client Devel in spacewalk-common-channels
+  * Fix base channel for Oracle Linux 6 mysql57 in spacewalk-common-channels
+
+-------------------------------------------------------------------
 Mon May 12 23:04:22 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.5-0

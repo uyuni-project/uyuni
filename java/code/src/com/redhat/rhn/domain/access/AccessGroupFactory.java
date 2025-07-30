@@ -11,15 +11,28 @@
 
 package com.redhat.rhn.domain.access;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.frontend.listview.PageControl;
+
+import com.suse.manager.utils.PagedSqlQueryBuilder;
+import com.suse.manager.webui.utils.gson.AccessGroupJson;
+import com.suse.manager.webui.utils.gson.AccessGroupUserJson;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.type.StandardBasicTypes;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+
+import javax.persistence.Tuple;
 
 /**
  * Factory class for RBAC's {@link AccessGroup} entities
@@ -88,6 +101,83 @@ public class AccessGroupFactory extends HibernateFactory {
     }
 
     /**
+     * Lists s paginated list of access groups
+     * @param pc the page control
+     * @param parser the parser for filters when building query
+     * @return the list of access groups
+     */
+    public static DataResult<AccessGroupJson> listAll(
+            PageControl pc, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser) {
+        String from = "(select " +
+                "ag.id as id, " +
+                "ag.label as name, " +
+                "ag.description as description, " +
+                "ag.org_id as org_id, " +
+                "wc.name as org_name, " +
+                "case" +
+                "  when uag.users is not null then uag.users else 0 " +
+                "end as users, " +
+                "case" +
+                "  when agn.permissions is not null then agn.permissions else 0 " +
+                "end as permissions " +
+                "from access.accessgroup ag " +
+                "left join " +
+                "  (select group_id, count(group_id) users " +
+                "  from access.useraccessgroup group by group_id) uag " +
+                "on ag.id = uag.group_id " +
+                "left join " +
+                "  (select group_id, count(group_id) permissions " +
+                "  from access.accessgroupnamespace group by group_id) agn " +
+                "on ag.id = agn.group_id " +
+                "left join web_customer wc " +
+                "on wc.id = ag.org_id " +
+                ") ag ";
+
+        return new PagedSqlQueryBuilder("ag.id")
+                .select("ag.*")
+                .from(from)
+                .where("true")
+                .run(new HashMap<>(), pc, parser, AccessGroupJson.class);
+    }
+
+    /**
+     * Lists all the users of a given organization
+     * @param orgId the org id
+     * @return the list of users as json object
+     */
+    public static List<AccessGroupUserJson> listUsers(Long orgId) {
+        return getSession().createNativeQuery("""
+                 SELECT wc.id,
+                        wc.login,
+                        wupi.email,
+                        concat(wupi.last_name, ', ', wupi.first_names) AS name,
+                        wcu.name AS org_name
+                 FROM web_contact wc
+                 JOIN web_user_personal_info wupi ON wc.id = wupi.web_user_id
+                 JOIN web_customer wcu ON wc.org_id = wcu.id
+                 WHERE wcu.id = :org_id
+                 """, Tuple.class)
+                .setParameter("org_id", orgId)
+                .stream().map(AccessGroupUserJson::new)
+                .toList();
+    }
+
+    /**
+     * Lists all the users that are subscribed to the given access group
+     * @param groupId the access group id
+     * @return the list of users
+     */
+    public static List<User> listAccessGroupUsers(Long groupId) {
+        List<Long> ids = getSession().createNativeQuery(
+                "SELECT uag.user_id FROM access.useraccessgroup uag WHERE uag.group_id = :group_id", Tuple.class)
+                .setParameter("group_id", groupId)
+                .addScalar("user_id", StandardBasicTypes.LONG)
+                .stream().map(tuple -> tuple.get("user_Id", Long.class))
+                .toList();
+        return UserFactory.lookupByIds(ids);
+    }
+
+    /**
      * Looks up an access group by its label.
      * @param label the label of the access group
      * @param org the org to search in
@@ -99,6 +189,18 @@ public class AccessGroupFactory extends HibernateFactory {
                         AccessGroup.class)
                 .setParameter("label", label)
                 .setParameter("org", org)
+                .uniqueResultOptional();
+    }
+
+    /**
+     * Looks up an access group by its id.
+     * @param id the id of the access group
+     * @return an {@code Optional} containing the access group, or an empty {@code Optional} if not found
+     */
+    public static Optional<AccessGroup> lookupById(Long id) {
+        return getSession()
+                .createQuery("SELECT a FROM AccessGroup a WHERE a.id = :id", AccessGroup.class)
+                .setParameter("id", id)
                 .uniqueResultOptional();
     }
 

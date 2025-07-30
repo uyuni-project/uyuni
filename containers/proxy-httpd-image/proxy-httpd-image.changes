@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Fri Jun 27 13:05:49 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.8
+  * Remove perl from cleanup as it is not installed anymore
+    by default
+
+-------------------------------------------------------------------
+Tue Jun 17 19:39:42 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.7
+  * Invalidate possible old proxy auth cache files
+  * Add redirect of API calls from proxy to the server (bsc#1241880)
+
+-------------------------------------------------------------------
 Mon May 12 23:40:18 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.6

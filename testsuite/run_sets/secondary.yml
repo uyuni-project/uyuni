@@ -30,7 +30,8 @@
 - features/secondary/min_rhlike_openscap_audit.feature
 - features/secondary/min_rhlike_remote_command.feature
 - features/secondary/min_rhlike_ssh.feature
-- features/secondary/min_deblike_openscap_audit.feature
+# Commented because openScap in not supported for ubuntu 24
+#- features/secondary/min_deblike_openscap_audit.feature
 - features/secondary/min_deblike_remote_command.feature
 - features/secondary/min_deblike_ssh.feature
 - features/secondary/minssh_bootstrap_api.feature

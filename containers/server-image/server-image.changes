@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 17 19:47:16 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.7
+  * Clean repositories from server container image (bsc#1242916)
+
+-------------------------------------------------------------------
 Tue May 13 00:15:55 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.6

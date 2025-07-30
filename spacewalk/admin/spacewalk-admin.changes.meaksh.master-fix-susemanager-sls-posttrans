@@ -1,2 +1,0 @@
-- mgr-monitoring-ctl: avoid possible UnicodeDecoreError
-  due non-ascii characters (bsc#1242030)

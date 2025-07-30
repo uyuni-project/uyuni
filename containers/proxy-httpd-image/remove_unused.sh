@@ -3,9 +3,6 @@
 
 set -xe
 
-# remove perl and its dependencies
-rpm -e --nodeps perl
-
 # remove locale data
 rm -rf /usr/share/locale
 

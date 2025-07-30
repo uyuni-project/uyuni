@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """Find out if a reboot is needed for different Linux distributions."""
 
 import logging

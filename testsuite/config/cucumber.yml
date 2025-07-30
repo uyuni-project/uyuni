@@ -1,4 +1,4 @@
-default: -f pretty -r features --publish-quiet
+default: -f pretty -r features
 action_chains: --tags @scope_action_chains
 ansible: --tags @scope_ansible
 api: --tags @scope_api

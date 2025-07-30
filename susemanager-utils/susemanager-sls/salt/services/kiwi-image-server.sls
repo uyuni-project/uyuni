@@ -1,4 +1,4 @@
-# Image Server installation state - part of SUSE Manager for Retail
+# Image Server installation state - part of SUSE Multi-Linux Manager for Retail
 #
 # Copyright (c) 2017 - 2022 SUSE LLC
 
@@ -43,7 +43,7 @@ mgr_kiwi_dir_created:
     - group: root
     - dir_mode: 755
 
-# repo for common kiwi build needs - mainly RPM with SUSE Manager certificate
+# repo for common kiwi build needs - mainly RPM with SUSE Multi-Linux Manager certificate
 mgr_kiwi_dir_repo_created:
   file.directory:
     - name: {{ kiwi_dir }}/repo

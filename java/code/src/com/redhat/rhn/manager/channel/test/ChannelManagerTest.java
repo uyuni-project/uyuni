@@ -1108,6 +1108,37 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertEquals(result.get(0).getId(), testPackage.getId());
     }
 
+    @Test
+    public void ensureForceBecomingCloneOfWorksOnClonedChannels() throws Exception {
+        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
+        Channel origCh = ChannelFactoryTest.createTestChannel(user);
+        Channel clonedCh = ChannelFactoryTest.createTestClonedChannel(origCh, user);
+
+        assertTrue(clonedCh.asCloned().isPresent());
+        assertEquals(origCh, clonedCh.asCloned().orElseThrow().getOriginal());
+
+        Channel substituteOrigCh = ChannelFactoryTest.createTestChannel(user);
+        ChannelManager.forceBecomingCloneOf(clonedCh, substituteOrigCh);
+
+        assertTrue(clonedCh.asCloned().isPresent());
+        assertEquals(substituteOrigCh, clonedCh.asCloned().orElseThrow().getOriginal());
+    }
+
+    @Test
+    public void ensureForceBecomingCloneOfWorksOnRegularChannels() throws Exception {
+        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
+        Channel regularCh = ChannelFactoryTest.createTestChannel(user);
+
+        assertFalse(regularCh.asCloned().isPresent());
+
+        Channel origCh = ChannelFactoryTest.createTestChannel(user);
+        ChannelManager.forceBecomingCloneOf(regularCh, origCh);
+        regularCh = HibernateFactory.reload(regularCh);
+
+        assertTrue(regularCh.asCloned().isPresent());
+        assertEquals(origCh, regularCh.asCloned().orElseThrow().getOriginal());
+    }
+
     /**
      * Clears the list of servers in the SSM.
      */

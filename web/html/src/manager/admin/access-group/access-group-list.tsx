@@ -1,88 +1,72 @@
 import * as React from "react";
+import { useRef, useState } from "react";
 
 import { Button, LinkButton } from "components/buttons";
+import { DeleteDialog } from "components/dialog/DeleteDialog";
+import { ModalButton } from "components/dialog/ModalButton";
+import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
+import Network from "utils/network";
 
-const dataTest = {
-  items: [
-    {
-      id: 1000010000,
-      name: "Content Management",
-      description: "View image details, patches, packages, build log and cluster information",
-      type: "Built-in",
-      users: 0,
-      permissions: 15,
-      selected: false,
-      disabled: false,
-    },
-    {
-      id: 1000020000,
-      name: "Activation Key Administrator",
-      description: "View Activation Administrator, Configuration Administrator.",
-      type: "Built-in",
-      users: 2,
-      permissions: 5,
-      selected: false,
-      disabled: false,
-    },
-    {
-      id: 1000030000,
-      name: "Configuration Administrator",
-      description: "View Configuration Administrator Administrator, Configuration Administrator.",
-      type: "Built-in",
-      users: 4,
-      permissions: 15,
-      selected: false,
-      disabled: false,
-    },
-    {
-      id: 1000040000,
-      name: "System Group Administrator",
-      description: "View Activation Administrator, Configuration Administrator.",
-      type: "Built-in",
-      users: 2,
-      permissions: 5,
-      selected: false,
-      disabled: false,
-    },
-    {
-      id: 1000050000,
-      name: "Custom group1",
-      description: "Custom group1 Activation Administrator, Configuration Administrator.",
-      type: "Custome",
-      users: 7,
-      permissions: 25,
-      selected: false,
-      disabled: false,
-    },
-  ],
-  total: 19,
-  selectedIds: [],
+type AccessGroupListItem = {
+  id: number;
+  name: string;
+  description: string;
+  orgName: string;
+  numUsers: number;
+  numPermissions: number;
 };
 
-const actionButtons = (type) => {
-  if (type === "Built-in") {
-    return (
-      <div className="btn-group">
-        <Button className="btn-default btn-sm" icon="fa-user" />
-      </div>
-    );
-  } else {
-    return (
-      <div className="btn-group">
-        <Button className="btn-default btn-sm" icon="fa-user" />
-        <Button className="btn-default btn-sm" icon="fa-pencil" />
-        <Button className="btn-default btn-sm" icon="fa-trash" />
-      </div>
-    );
-  }
-};
-export function AccessGroupList(props) {
+const AccessGroupList = (props) => {
+  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [toDelete, setToDelete] = useState<AccessGroupListItem>();
+  const tableRef = useRef(null);
+
+  const onDelete = (item, tableRef) => {
+    return Network.del("/rhn/manager/api/admin/access-group/delete/" + item.id)
+      .then((_) => {
+        setMessages(MessagesUtils.info("Access Group '" + item.name + "' has been deleted."));
+        if (tableRef) {
+          tableRef.current.refresh();
+        }
+      })
+      .catch((error) => setMessages(Network.responseErrorMessage(error)));
+  };
+
+  const actionButtons = (item: AccessGroupListItem) => {
+    if (item.orgName === "-") {
+      return (
+        <div className="btn-group">
+          <Button className="btn-default btn-sm" icon="fa-user" />
+        </div>
+      );
+    } else {
+      return (
+        <div className="btn-group">
+          <Button className="btn-default btn-sm" icon="fa-user" />
+          <LinkButton
+            className="btn-default btn-sm"
+            icon="fa-pencil"
+            href={"/rhn/manager/admin/access-group/show/" + item.id}
+          />
+          <ModalButton
+            className="btn-default btn-sm"
+            title={t("Delete")}
+            icon="fa-trash"
+            target="delete-modal"
+            item={item}
+            onClick={(i) => setToDelete(i)}
+          />
+        </div>
+      );
+    }
+  };
+
   return (
     <TopPanel
       title={t("Access Group Management")}
@@ -97,37 +81,54 @@ export function AccessGroupList(props) {
         </div>
       }
     >
+      <Messages items={messages} />
       <Table
-        data={dataTest.items}
+        data={"/rhn/manager/api/admin/access-group/roles"}
         identifier={(item) => item.id}
-        initialSortColumnKey="group_name"
+        initialSortColumnKey="name"
         emptyText={t("No Access Group found.")}
         searchField={<SearchField placeholder={t("Filter by name")} />}
+        ref={tableRef}
       >
-        <Column columnKey="group_name" comparator={Utils.sortByText} header={t("Name")} cell={(item) => item.name} />
+        <Column columnKey="name" comparator={Utils.sortByText} header={t("Name")} cell={(item) => item.name} />
         <Column
-          columnKey="group_description"
+          columnKey="description"
           comparator={Utils.sortByText}
           header={t("Description")}
           cell={(item) => item.description}
         />
-        <Column columnKey="group_type" comparator={Utils.sortByText} header={t("Type")} cell={(item) => item.type} />
-
-        <Column columnKey="group_users" comparator={Utils.sortByText} header={t("Users")} cell={(item) => item.users} />
+        <Column
+          columnKey="type"
+          header={t("Type")}
+          cell={(item) => (item.orgName === "-" ? t("Built-In") : t("Custom"))}
+        />
 
         <Column
-          columnKey="group_permissions"
+          columnKey="orgName"
+          comparator={Utils.sortByText}
+          header={t("Organization")}
+          cell={(item) => item.orgName}
+        />
+
+        <Column columnKey="users" comparator={Utils.sortByText} header={t("Users")} cell={(item) => item.numUsers} />
+
+        <Column
+          columnKey="permissions"
           comparator={Utils.sortByText}
           header={t("permissions")}
-          cell={(item) => item.permissions}
+          cell={(item) => item.numPermissions}
         />
-        <Column
-          columnKey="action"
-          comparator={Utils.sortByText}
-          header={t("Actions")}
-          cell={(item) => actionButtons(item.type)}
-        />
+        <Column columnKey="action" header={t("Actions")} cell={(item) => actionButtons(item)} />
       </Table>
+      <DeleteDialog
+        id="delete-modal"
+        title={t("Delete Access Group")}
+        content={t("Are you sure you want to delete the selected Access Group?")}
+        onConfirm={() => onDelete(toDelete, tableRef)}
+        onClosePopUp={() => setToDelete(undefined)}
+      />
     </TopPanel>
   );
-}
+};
+
+export default AccessGroupList;

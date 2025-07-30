@@ -15,9 +15,9 @@ begin
         end if;
 
         if handle_status = 1 then
-                if new.status = 1 then
+                if new.status = 1 and new.pickup_time IS NULL then
                         new.pickup_time := current_timestamp;
-                elsif new.status = 2 then
+                elsif new.status = 2 and new.completion_time IS NULL then
                         new.completion_time := current_timestamp;
                 end if;
         end if;

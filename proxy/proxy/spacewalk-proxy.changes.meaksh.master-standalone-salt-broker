@@ -1,2 +1,0 @@
-- Enable passing config and log paths via environment
-  variables to salt-broker

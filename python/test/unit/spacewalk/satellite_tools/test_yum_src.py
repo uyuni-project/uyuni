@@ -60,6 +60,7 @@ class YumSrcTest(unittest.TestCase):
         yum_src.CFG.REPOSYNC_MINRATE = 1000
         yum_src.CFG.REPOSYNC_TIMEOUT = 300
         yum_src.fileutils.makedirs = Mock()
+        yum_src.os.chmod = Mock()
         yum_src.os.makedirs = Mock()
         yum_src.os.path.isdir = Mock()
 
@@ -309,6 +310,7 @@ class YumSrcTest(unittest.TestCase):
     @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
     @patch("spacewalk.common.rhnLog", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.chmod", Mock())
     def test_minrate_timeout_config(self):
         # pylint: disable-next=invalid-name
         CFG = Mock()
@@ -341,6 +343,7 @@ class YumSrcTest(unittest.TestCase):
     @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
     @patch("spacewalk.common.rhnLog", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.chmod", Mock())
     @patch(
         "spacewalk.satellite_tools.repo_plugins.yum_src.etree.parse",
         MagicMock(side_effect=Exception),
@@ -422,6 +425,7 @@ class YumSrcTest(unittest.TestCase):
     @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
     @patch("spacewalk.common.rhnLog", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.chmod", Mock())
     @patch(
         "spacewalk.satellite_tools.repo_plugins.yum_src.etree.parse",
         MagicMock(side_effect=Exception),
@@ -432,14 +436,12 @@ class YumSrcTest(unittest.TestCase):
         self.repo.root = self.tmpdir
         cs.channel_arch = "arch1"
         grabber_mock = Mock()
-        mirror_request_mock = Mock()
-        mirror_request_mock.return_value.headers = {"Content-Type": "text/plain"}
-        nonmirror_request_mock = Mock()
-        nonmirror_request_mock.return_value.headers = {"Content-Type": "text/html"}
+        mirror_request_mock = Mock(return_value="text/plain")
+        nonmirror_request_mock = Mock(return_value="text/html")
 
         # If webpage is plaintext format, check list of mirrors is returned
         with patch(
-            "spacewalk.satellite_tools.repo_plugins.yum_src.requests.get",
+            "spacewalk.satellite_tools.repo_plugins.yum_src.get_content_type",
             mirror_request_mock,
         ):
             with patch(
@@ -468,7 +470,7 @@ class YumSrcTest(unittest.TestCase):
 
         # If webpage is html format, and so not mirrorlist, check list of 'mirrors' is blank
         with patch(
-            "spacewalk.satellite_tools.repo_plugins.yum_src.requests.get",
+            "spacewalk.satellite_tools.repo_plugins.yum_src.get_content_type",
             nonmirror_request_mock,
         ):
             with patch(
@@ -490,7 +492,7 @@ class YumSrcTest(unittest.TestCase):
 
         # If mirrorlist contains invalid repos, check they are discarded
         with patch(
-            "spacewalk.satellite_tools.repo_plugins.yum_src.requests.get",
+            "spacewalk.satellite_tools.repo_plugins.yum_src.get_content_type",
             mirror_request_mock,
         ):
             with patch(
@@ -537,6 +539,7 @@ class YumSrcTest(unittest.TestCase):
     @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
     @patch("spacewalk.common.rhnLog", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.chmod", Mock())
     @patch(
         "spacewalk.satellite_tools.repo_plugins.yum_src.etree.parse",
         MagicMock(side_effect=Exception),
@@ -570,11 +573,10 @@ class YumSrcTest(unittest.TestCase):
                 )
             )
         grabber_mock = Mock()
-        mirror_request_mock = Mock()
-        mirror_request_mock.return_value.headers = {"Content-Type": "text/plain"}
+        mirror_request_mock = Mock(return_value="text/plain")
 
         with patch(
-            "spacewalk.satellite_tools.repo_plugins.yum_src.requests.get",
+            "spacewalk.satellite_tools.repo_plugins.yum_src.get_content_type",
             mirror_request_mock,
         ):
             with patch(
@@ -608,7 +610,7 @@ class YumSrcTest(unittest.TestCase):
         ]
         proxy_url = "http://proxy.example.com:8080"
         proxy_user = "user"
-        proxy_pass = "pass"
+        proxy_pass = "password with spaces and /, % and $"
         cs.proxy_hostname = proxy_url
         cs.proxy_user = proxy_user
         cs.proxy_pass = proxy_pass
@@ -648,7 +650,7 @@ class YumSrcTest(unittest.TestCase):
                 separator,
                 quote(proxy_url),
                 proxy_user,
-                proxy_pass,
+                quote(proxy_pass, safe=""),
                 extra_query,
             )
             with patch("builtins.open", mock_open()), patch(

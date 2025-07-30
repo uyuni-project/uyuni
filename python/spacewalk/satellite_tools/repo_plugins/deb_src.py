@@ -37,12 +37,12 @@ import looseversion
 
 try:
     #  python 2
-    from urllib import unquote
+    from urllib import unquote, quote
     import urlparse
 except ImportError:
     #  python3
     import urllib.parse as urlparse  # pylint: disable=F0401,E0611
-    from urllib.parse import unquote
+    from urllib.parse import unquote, quote
 
 RETRIES = 10
 RETRY_DELAY = 1
@@ -237,13 +237,13 @@ class DebRepo:
                     "http": "http://"
                     + self.proxy_username
                     + ":"
-                    + self.proxy_password
+                    + quote(self.proxy_password, safe="")
                     + "@"
                     + netloc,
                     "https": "http://"
                     + self.proxy_username
                     + ":"
-                    + self.proxy_password
+                    + quote(self.proxy_password, safe="")
                     + "@"
                     + netloc,
                 }

@@ -2303,14 +2303,13 @@ and try again.
 &lt;p&gt;この問題を解決するには下記の点を確認してください:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-このキックスタートプロファイルのベースチャンネルに対して、 'appstream' という子ソフトウェアチャンネルが
-組織内で提供されていますか？提供されていない場合は、 @@PRODUCT_NAME@@ の管理者に問い合わせて、
-'appstream' ソフトウェアチャンネルに必要な資格を得る必要があります。
+このキックスタートプロファイルのベースチャンネルに対して、 'appstream' という
+子ソフトウェアチャンネルが組織内で提供されていますか？提供されていない場合は、@@PRODUCT_NAME@@ の
+管理者に問い合わせて、 'appstream' ソフトウェアチャンネルに必要な資格を得る必要があります。
 &lt;/li&gt;
 &lt;li&gt;
 このキックスタートプロファイルのベースチャンネルに対して、 'appstream' 子チャンネルが @@PRODUCT_NAME@@
-向けに利用可能になっているかどうか確認してください。利用可能になっていない場合は、 @@PRODUCT_NAME@@ 管理者に
-問い合わせて appstream チャンネル向けの cdn-sync をリクエストしてから再度実行してください。
+向けに利用可能になっているかどうか確認してください。利用可能になっていない場合は、 @@PRODUCT_NAME@@ の管理者に問い合わせて appstream チャンネル向けの cdn-sync をリクエストしてから再度実行してください。
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
@@ -6070,7 +6069,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target state="final">ブートストラップスクリプトが正しく生成されました。 &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt; からアクセスできます。</target>
+        <target state="final">ブートストラップスクリプトが正常に生成されました。&lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt;からアクセスできます。</target>
       </trans-unit>
       <trans-unit id="restart.config.error" xml:space="preserve">
         <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
@@ -10286,7 +10285,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled" xml:space="preserve">
         <source>&lt;strong&gt;Monitor this Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
-        <target state="final">&lt;strong&gt;このホストのモニタリング&lt;/strong&gt;の種類を適用しました。&lt;br/&gt;&lt;strong&gt;注意:&lt;/strong&gt; システムに対してモニタリングの種類を追加したため、自動的にPrometheus Exporters formulaの割り当ても行いました。Prometheus metrics exportersをインストールして有効化するには&lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;を適用してください。&lt;br/&gt;&lt;strong&gt;注意:&lt;/strong&gt; インストールされているすべてのexportersに&lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;必要なネットワークポート&lt;/a&gt;を必ず開いてください。</target>
+        <target state="final">&lt;strong&gt;このホストのモニタリング&lt;/strong&gt;の種類を適用しました。&lt;br/&gt;&lt;strong&gt;メモ:&lt;/strong&gt; システムに対してモニタリングの種類を追加したため、自動的にPrometheus Exporters formulaの割り当ても行いました。Prometheus metrics exportersをインストールして有効化するには&lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;を適用してください。&lt;br/&gt;&lt;strong&gt;メモ:&lt;/strong&gt; インストールされているすべてのexportersに&lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;必要なネットワークポート&lt;/a&gt;を必ず開いてください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -11486,7 +11485,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit approved="yes" id="task.status.oval-data-sync" xml:space="preserve">
         <source>Sync OVAL Data</source>
-        <target state="final">OVALデータを同期</target>
+        <target state="final">OVALデータの同期</target>
       </trans-unit>
       <trans-unit approved="yes" id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve">
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
@@ -11511,8 +11510,8 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;Help us improve our services by sharing your reason for opting out&lt;/a&gt;
         </source>
         <target state="final">
-          &lt;p&gt;SCCとのデータ同期を無効にすると、RMT、SMT、@@PRODUCT_NAME@@、およびSCCに直接登録されたクライアント間の管理対象クライアントの可視性が低下します。
-          データの同期により、登録されたすべてのクライアントの統一されたビューが確保されます。&lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;データ転送を有効にするには、ここをクリックしてください&lt;/a&gt;.&lt;/p&gt;
+          &lt;p&gt;SCCとのデータ同期を無効にすると、RMT、SMT、@@PRODUCT_NAME@@、およびSCCに直接登録されたクライアント間の管理対象クライアントの可視性が低下します。 
+          データの同期により、登録されたすべてのクライアントの統一されたビューが確保されます。&lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;データ転送を有効にするには、ここをクリックしてください&lt;/a&gt;.&lt;/p&gt; 
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;オプトアウトの理由を共有して、サービス向上にご協力ください&lt;/a&gt;
         </target>
       </trans-unit>
@@ -11853,10 +11852,10 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>The server {0} cannot be registered as a peripheral of this hub</source>
         <target state="final">サーバ {0} は、このハブの周辺機器として登録できません</target>
       </trans-unit>
-    <trans-unit id="hub.sync_bunch_error" xml:space="preserve">
+      <trans-unit id="hub.sync_bunch_error" xml:space="preserve">
         <source>Error when triggering the channels sync.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

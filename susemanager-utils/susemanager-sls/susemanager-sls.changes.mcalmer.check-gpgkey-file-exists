@@ -1,2 +1,0 @@
-- For GPG keys using file URL, check if the file exists before
-  importing it

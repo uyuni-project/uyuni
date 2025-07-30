@@ -111,7 +111,7 @@ target_type: target type, one of the following: glob, grain, grain_pcre, pillar,
 **(name, org_admin_user, org_admin_password, first_name, last_name, email, admin_prefix='Mr.', pam=False, admin_user=None, admin_password=None)**
 
 Create an Uyuni organization
-Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
 ....
 name: organization name
@@ -132,7 +132,7 @@ admin_password: uyuni admin password
 **(name, admin_user=None, admin_password=None)**
 
 Delete an organization
-Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
 ....
 name: organization name
@@ -146,7 +146,7 @@ admin_password: uyuni admin password
 **(name, admin_user=None, admin_password=None)**
 
 Get details of an organization.
-Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
 ....
 name: organisation name
@@ -160,7 +160,7 @@ admin_password: uyuni admin password
 **(admin_user=None, admin_password=None)**
 
 List all organizations.
-Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
 ....
 name: organisation name
@@ -174,7 +174,7 @@ admin_password: uyuni admin password
 **(org_id, org_trust_id, admin_user=None, admin_password=None)**
 
 Add an organization to the list of trusted organizations.
-Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
 ....
 org_id: Organization id
@@ -189,7 +189,7 @@ admin_password: uyuni admin password
 **(org_name, org_trust, admin_user=None, admin_password=None)**
 
 Add an organization to the list of trusted organizations.
-Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
 ....
 org_name: organization name
@@ -216,7 +216,7 @@ org_admin_password: organization admin password
 **(org_name, admin_user=None, admin_password=None)**
 
 List all trusts for one organization
-Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
 ....
 org_name: Name of the organization to get the trusts
@@ -230,7 +230,7 @@ admin_password: authentication user password
 **(org_id, org_untrust_id, admin_user=None, admin_password=None)**
 
 Remove an organization from the list of trusted organizations.
-Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
 ....
 org_id: orgnization id
@@ -245,7 +245,7 @@ admin_password: uyuni admin password
 **(org_name, org_untrust, admin_user=None, admin_password=None)**
 
 Remove an organization from the list of trusted organizations.
-Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
 ....
 org_name: organization name
@@ -260,7 +260,7 @@ admin_password: uyuni admin password
 **(org_id, name, admin_user=None, admin_password=None)**
 
 update an Uyuni organization name
-Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
 ....
 org_id: organization internal id

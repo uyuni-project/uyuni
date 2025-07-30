@@ -32,7 +32,7 @@ org_admin_password: organization administrator password
 **(name, admin_user=None, admin_password=None)**
 
 Ensure an Uyuni organization is not present
-Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
 ....
 name: organization name
@@ -46,7 +46,7 @@ admin_password: uyuni admin password
 **(name, org_admin_user, org_admin_password, first_name, last_name, email, pam=False, admin_user=None, admin_password=None)**
 
 Create or update an Uyuni organization
-Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
 ....
 name: organization name

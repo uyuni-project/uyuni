@@ -1,27 +1,14 @@
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "components/buttons";
-import { Form, Select } from "components/input";
+import { Form } from "components/formik";
+import { Field } from "components/formik/field";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
-
-const dataTest = {
-  items: [
-    { id: 1, username: "jdoe", email: "jdoe@example.com", orgId: "ORG123" },
-    { id: 2, username: "asmith", email: "asmith@example.com", orgId: "ORG456" },
-    { id: 3, username: "bwilliams", email: "bwilliams@example.com", orgId: "ORG789" },
-    { id: 4, username: "cmtiller", email: "cmiller@example.com", orgId: "ORG101" },
-    { id: 5, username: "john", email: "john@example.com", orgId: "ORG123" },
-    { id: 6, username: "parker", email: "parker@example.com", orgId: "ORG456" },
-    { id: 7, username: "williams", email: "williams@example.com", orgId: "ORG789" },
-    { id: 8, username: "asmitha", email: "asmitha@example.com", orgId: "ORG101" },
-  ],
-  total: "",
-  selectedIds: [],
-};
+import Network from "utils/network";
 
 type Props = {
   state: any;
@@ -29,25 +16,47 @@ type Props = {
   errors: any;
 };
 
+type User = {
+  id: number;
+  login: string;
+  email: string;
+  name: string;
+  orgName: string;
+};
+
 const AccessGroupUsers = (props: Props) => {
   // List data
-  const [listData, setListData] = useState(dataTest);
-  const [search, setSearch] = useState({
-    username: "",
-  });
+  const [listData, setListData] = useState<{ items: User[] }>({ items: [] });
 
   // Table data
-  const [selectedUsers, setSelectedUsers] = useState<{ id: number; username: string; email: string; orgId: string }[]>(
-    []
-  );
+  const [selectedUsers, setSelectedUsers] = useState<User[]>(props.state.users);
 
-  const updateUserList = (search) => {
-    const selectedUser = listData.items.find((user) => user.username === search.username);
+  useEffect(() => {
+    getUserList();
+  }, []);
+
+  const getUserList = () => {
+    const endpoint = "/rhn/manager/api/admin/access-group/users/" + props.state.orgId;
+    return (
+      Network.get(endpoint)
+        .then((users) => {
+          setListData((prevData) => ({
+            ...prevData,
+            items: users.filter((u) => !selectedUsers.find(({ id }) => u.id === id)),
+          }));
+        })
+        // TODO: Handle errors
+        .catch(props.errors)
+    );
+  };
+
+  const updateUserList = (item) => {
+    const selectedUser = listData.items.find((user) => user.login === item.login);
     if (selectedUser) {
       // Prevent duplicate users
       setListData((prevData) => ({
         ...prevData,
-        items: listData.items.filter((name) => name.username !== search.username), // Update the items list
+        items: listData.items.filter((name) => name.login !== item.login), // Update the items list
       }));
 
       setSelectedUsers((prevUsers) => {
@@ -55,23 +64,20 @@ const AccessGroupUsers = (props: Props) => {
       });
 
       props.onChange(selectedUser, "add");
-    } else {
-      setSelectedUsers([]);
     }
   };
 
   const deleteUser = (username) => {
-    const removeUser = selectedUsers.find((user) => user.username === username);
+    const removeUser = selectedUsers.find((user) => user.login === username);
     if (removeUser) {
       setListData((prevData) => ({
         ...prevData,
         items: [removeUser, ...prevData.items], // Update the items list
       }));
       setSelectedUsers(
-        (prevUsers) => prevUsers.filter((user) => user.username !== username) //Remove the user form the list
+        (prevUsers) => prevUsers.filter((user) => user.login !== username) //Remove the user form the list
       );
       props.onChange(removeUser, "remove");
-      setSearch({ username: "" });
     }
   };
 
@@ -80,64 +86,62 @@ const AccessGroupUsers = (props: Props) => {
       <div className="d-flex">
         <div className="me-5">
           <strong className="me-1">Name:</strong>
-          {props.state.detailsproperties.name}
+          {props.state.name}
+        </div>
+        <div className="me-5">
+          <strong className="me-1">Description:</strong>
+          {props.state.description}
         </div>
         <div>
-          <strong className="me-1">Description:</strong>
-          {props.state.detailsproperties.description}
+          <strong className="me-1">Organization:</strong>
+          {props.state.orgName}
         </div>
       </div>
       <hr></hr>
       <Form
-        model={search}
-        onChange={(newModel) => {
-          setSearch(() => ({
-            username: newModel.username,
-          }));
-        }}
+        initialValues={props.state.users}
+        // TODO: Use onChange instead of validate to update access group details
+        // onChange={updateUserList}
+        validate={updateUserList}
+        onSubmit={() => {}}
         divClass="col-md-12"
         formDirection="form-horizontal"
       >
-        <Select
-          name="username"
+        <Field
+          name="login"
           label={t("Search & Add Users")}
           labelClass="col-md-12 text-start fw-bold fs-4 mb-3"
           divClass="col-md-6"
-          options={listData.items.map((user) => `${user.username}`)}
-          onChange={() => updateUserList(search)}
+          options={listData.items.map((user) => {
+            return { label: user.login, value: user.login };
+          })}
+          as={Field.Select}
+          // TODO: Clear selected value from the picker once it's selected
+          value={null}
+          onChange={() => null}
         />
       </Form>
       <Table
         data={selectedUsers}
         identifier={(item) => item.id}
-        initialSortColumnKey="server_name"
-        emptyText={t("No Users.")}
+        initialSortColumnKey="login"
+        emptyText={t("No Users selected.")}
       >
+        <Column columnKey="login" comparator={Utils.sortByText} header={t("Username")} cell={(item) => item.login} />
+        <Column columnKey="email" comparator={Utils.sortByText} header={t("Email")} cell={(item) => item.email} />
+        <Column columnKey="name" comparator={Utils.sortByText} header={t("Real Name")} cell={(item) => item.name} />
         <Column
-          columnKey="server_name"
+          columnKey="orgName"
           comparator={Utils.sortByText}
-          header={t("Name")}
-          cell={(item) => item.username}
-        />
-        <Column
-          columnKey="status_type"
-          comparator={Utils.sortByText}
-          header={t("Email ID")}
-          cell={(item) => item.email}
-        />
-        <Column
-          columnKey="totalErrataCount"
-          comparator={Utils.sortByText}
-          header={t("orgId")}
-          cell={(item) => item.orgId}
+          header={t("Organization")}
+          cell={(item) => item.orgName}
         />
 
         <Column
-          columnKey="outdated_packages"
-          comparator={Utils.sortByText}
+          columnKey="action"
           header={t("Actions")}
           cell={(item) => (
-            <Button className="btn-default btn-sm" icon="fa-trash" handler={() => deleteUser(item.username)} />
+            <Button className="btn-default btn-sm" icon="fa-trash" handler={() => deleteUser(item.login)} />
           )}
         />
       </Table>

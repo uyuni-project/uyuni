@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Select } from "components/input";
+import { DEPRECATED_Select } from "components/input";
 import { Form } from "components/input/form/Form";
 import { SelectSearchField } from "components/table/SelectSearchField";
 
@@ -74,7 +74,7 @@ export const TableFilter = (props) => {
   return (
     <Form model={model} onChange={onChange} title={t("Filter")} divClass="row">
       <div className="col-sm-4">
-        <Select
+        <DEPRECATED_Select
           name="filter"
           placeholder={t("Select a filter")}
           defaultValue={selectedFilter}

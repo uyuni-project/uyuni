@@ -1,4 +1,4 @@
-# SUSE Manager for Retail build trigger
+# SUSE Multi-Linux Manager for Retail build trigger
 #
 {%- set root_dir   = '/var/lib/Kiwi/' + pillar.get('build_id') %}
 {%- set dest_dir   = root_dir + '/images.build' %}

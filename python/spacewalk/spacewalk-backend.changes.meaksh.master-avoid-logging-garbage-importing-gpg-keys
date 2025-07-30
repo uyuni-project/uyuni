@@ -1,2 +1,0 @@
-- Avoid excessive logging from RPM when syncing
-  GPG keys during reposync execution

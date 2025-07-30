@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 17 19:45:38 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.7
+  * Chart rebuilt to the newest version with updated dependencies
+
+-------------------------------------------------------------------
 Tue May 13 00:12:41 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.6

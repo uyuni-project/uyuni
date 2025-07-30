@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Jun 17 19:29:05 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.6-0
+  * Add the possibility to use env variables for ACTIVATION_KEYS
+    and ORG_GPG_KEY
+  * Add the possibility to use env variable for HOSTNAME
+
+-------------------------------------------------------------------
 Tue May 13 00:21:53 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.5-0

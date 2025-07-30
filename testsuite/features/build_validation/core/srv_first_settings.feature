@@ -63,8 +63,8 @@ Feature: Very first settings
     And I should see a "HTTP Proxy Username" text
     And I should see a "HTTP Proxy Password" text
     When I enter the address of the HTTP proxy as "HTTP Proxy Hostname"
-    And I enter "suma2" as "HTTP Proxy Username"
-    And I enter "P4$$wordWith%and&" as "HTTP Proxy Password"
+    And I enter "suma3" as "HTTP Proxy Username"
+    And I enter "P4$$w/ord With%and&" as "HTTP Proxy Password"
     And I click on "Save and Verify"
     Then HTTP proxy verification should have succeeded
 

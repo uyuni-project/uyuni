@@ -1,7 +1,7 @@
-# Copyright (c) 2019-2024 SUSE LLC
+# Copyright (c) 2019-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Do not let Taskomatic tasks interfer with our tests
+Feature: Do not let Taskomatic tasks interfere with our CI tests
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section

@@ -41,7 +41,6 @@ import bz2
 import lzma
 import os
 import re
-import requests
 import solv
 import subprocess
 import sys
@@ -73,7 +72,7 @@ from spacewalk.satellite_tools.syncLib import log
 
 # pylint: disable-next=unused-import
 from spacewalk.common.rhnConfig import cfg_component
-from spacewalk.common.suseLib import get_proxy, URL as suseLibURL
+from spacewalk.common.suseLib import get_proxy, URL as suseLibURL, get_content_type
 from rhn.stringutils import sstr
 from urlgrabber.grabber import URLGrabError
 from urlgrabber.mirror import MirrorGroup
@@ -321,9 +320,9 @@ class ZypperRepo:
         # pylint: disable-next=invalid-name
         with cfg_component(component=None) as CFG:
             if not os.path.isdir(self.root):
-                fileutils.makedirs(
-                    self.root, user=CFG.httpd_user, group=CFG.httpd_group
-                )
+                fileutils.makedirs(self.root, user="root", group="root", mode=0o0600)
+            else:
+                os.chmod(self.root, mode=0o0600)
             if not os.path.isdir(self.pkgdir):
                 fileutils.makedirs(
                     self.pkgdir, user=CFG.httpd_user, group=CFG.httpd_group
@@ -728,36 +727,21 @@ class ContentSource:
         # If page not plaintext or xml, is not a valid mirrorlist or metalink,
         # so continue without it.
         proxies = get_proxies(self.proxy_url, self.proxy_user, self.proxy_pass)
-        cert = (self.sslclientcert, self.sslclientkey)
-        verify = self.sslcacert
-        try:
-            webpage = requests.get(
-                url,
-                proxies=proxies,
-                cert=cert,
-                verify=verify,
-                headers=self.http_headers,
-            )
-            # We want to check the page content-type usually, but
-            # we have to wrap the next bit in a try-block for if the resource is
-            # cached and returns a 304; cached page returns no content type
-            # (if page is cached, for now we will assume it is the right type)
-            try:
-                content_type = webpage.headers["Content-Type"]
-                # amazonlinux core channels content-type = binary/octet-stream
-                if (
-                    "text/plain" not in content_type
-                    and "xml" not in content_type
-                    and "octet-stream" not in content_type
-                ):
-                    # Not a valid mirrorlist or metalink; continue without it
-                    return returnlist
-            except KeyError:
-                # This will then go straight to the next try block.
-                log(1, "No content-type header. Treating as valid.")
-        except requests.exceptions.RequestException as exc:
-            # pylint: disable-next=consider-using-f-string
-            self.error_msg("ERROR: Failed to reach repo url: {} - {}".format(url, exc))
+
+        content_type = get_content_type(
+            url,
+            certfile=self.sslclientcert,
+            keyfile=self.sslclientkey,
+            cafile=self.sslcacert,
+            proxies=proxies,
+            headers=self.http_headers,
+        )
+        if (
+            "text/plain" not in content_type
+            and "xml" not in content_type
+            and "octet-stream" not in content_type
+        ):
+            # Not a valid mirrorlist or metalink; continue without it
             return returnlist
 
         try:
@@ -966,8 +950,16 @@ type=rpm-md
             os.path.join(repo.root, "var/cache/zypp/raw/"),
             os.path.join(repo.root, "var/cache/zypp/solv/"),
         )
+        # libzypp older Curl backend does not set Proxy-Authorization reliably.
+        # The new Curl2 backend does not have the same problem.
+        # See https://bugzilla.suse.com/show_bug.cgi?id=1245222 and
+        # https://bugzilla.suse.com/show_bug.cgi?id=1245221
+        zypper_env = os.environ.copy()
+        zypper_env["ZYPP_CURL2"] = "1"
         # pylint: disable-next=subprocess-run-check
-        process = subprocess.run(zypper_cmd.split(" "), stderr=subprocess.PIPE)
+        process = subprocess.run(
+            zypper_cmd.split(" "), stderr=subprocess.PIPE, env=zypper_env
+        )
 
         if process.returncode:
             if process.stderr:
@@ -1001,7 +993,7 @@ type=rpm-md
         if self.proxy_user:
             query_params["proxyuser"] = quote(self.proxy_user)
         if self.proxy_pass:
-            query_params["proxypass"] = quote(self.proxy_pass)
+            query_params["proxypass"] = quote(self.proxy_pass, safe="")
         if self.sslcacert:
             # Since Zypper only accepts CAPATH, we need to split the certificates bundle
             # and run "c_rehash" on our custom CAPATH

@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+
+# SPDX-FileCopyrightText: 2018-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """
 SUSE Multi-Linux Manager Action Chains module for Salt
 

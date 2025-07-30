@@ -1280,6 +1280,21 @@ public class ChannelManager extends BaseManager {
     }
 
     /**
+     * Forces the original-clone relation. If the channel is regular (not cloned), it is transformed to a cloned one.
+     *
+     * @param maybeClonedChannel the channel id
+     * @param originalChannel    the original channel id
+     */
+    public static void forceBecomingCloneOf(Channel maybeClonedChannel, Channel originalChannel) {
+        maybeClonedChannel.asCloned().ifPresentOrElse(
+                asClonedCh -> asClonedCh.setOriginal(originalChannel),
+                () -> {
+                    log.info("Channel is not a clone: {}. Adding clone info.", maybeClonedChannel);
+                    ChannelManager.addCloneInfo(originalChannel.getId(), maybeClonedChannel.getId());
+                });
+    }
+
+    /**
      * Finds the id of a child channel with the given parent channel id that contains
      * a package with the given name.  Returns all child channel unless expectOne is True
      * @param org Organization of the current user.

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jun 17 17:04:48 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.11-0
+  * Use a persisted folder for custom modules to import in
+    mgr-create-bootstrap-repo (bsc#1242135)
+
+-------------------------------------------------------------------
 Tue May 13 14:51:06 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.10-0

@@ -423,7 +423,9 @@ end
 # @return [String] The system ID.
 def get_system_id(node)
   result = $api_test.system.search_by_name(node.full_hostname)
-  result.any? ? result.first['id'] : nil
+  raise "No system found for hostname: #{node.full_hostname}" unless result.any?
+
+  result.first['id']
 end
 
 # Checks if a host has shut down within a specified timeout period.

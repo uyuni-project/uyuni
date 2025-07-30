@@ -89,7 +89,7 @@ describe("Highstate output", () => {
 
     const highstateLink = screen.getByRole("button", { name: "Show full highstate output" }) as HTMLButtonElement;
     expect(highstateLink.disabled).toBeFalsy();
-    click(highstateLink);
+    await click(highstateLink);
     expect(highstateLink.disabled).toBeTruthy();
     await waitForElementToBeRemoved(highstateLink);
 

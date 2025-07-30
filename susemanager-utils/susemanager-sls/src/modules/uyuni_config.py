@@ -1,6 +1,11 @@
 #  pylint: disable=missing-module-docstring
 # coding: utf-8
 # pylint: disable-next=unused-import
+
+# SPDX-FileCopyrightText: 2020-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 from typing import Any, Dict, List, Optional, Union, Tuple
 import ssl
 import xmlrpc.client  # type: ignore

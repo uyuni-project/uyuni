@@ -58,7 +58,9 @@ end
 
 Then(/^it should be possible to use the HTTP proxy$/) do
   url = 'https://www.suse.com'
-  proxy = "suma2:P4$$wordWith%and&@#{$server_http_proxy}"
+  # Proxy Password: P4$$w/ord With%and&
+  # we must escape it before passing it to curl
+  proxy = "suma3:P4$$w%2Ford%20With%and&@#{$server_http_proxy}"
   get_target('server').run("curl --insecure --proxy '#{proxy}' --proxy-anyauth --location '#{url}' --output /dev/null")
 end
 
@@ -431,6 +433,7 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
     timeout = 60
   else
     timeout = TIMEOUT_BY_CHANNEL_NAME[channel]
+    timeout *= 2 if $code_coverage_mode
   end
   begin
     repeat_until_timeout(timeout: timeout, message: 'Channel not fully synced') do
@@ -463,6 +466,7 @@ When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do 
       timeout += 60
     else
       timeout += TIMEOUT_BY_CHANNEL_NAME[channel]
+      timeout += TIMEOUT_BY_CHANNEL_NAME[channel] if $code_coverage_mode
     end
   end
   begin
@@ -876,6 +880,30 @@ When(/^I (enable|disable) Debian-like "([^"]*)" repository on "([^"]*)"$/) do |a
   sources = '/etc/apt/sources.list.d/ubuntu.sources'
   tmp = '/tmp//ubuntu.sources'
   node.run("awk -f #{dest} -v action=#{action} -v distro=$(lsb_release -sc) -v repo=#{repo} #{sources} > #{tmp} && mv #{tmp} #{sources}")
+end
+
+When(/^I add repository "([^"]*)" with url "([^"]*)" on "([^"]*)"((?: without error control)?)$/) do |repo, url, host, error_control|
+  node = get_target(host)
+  os_family = node.os_family
+  cmd = ''
+  # Pending to be added: cases for rhlike and a deblike minions
+  case os_family
+  when /^opensuse/, /^sles/, /^suse/
+    cmd = "zypper addrepo #{url} #{repo}"
+  end
+  node.run(cmd, verbose: true, check_errors: error_control.empty?)
+end
+
+When(/^I remove repository "([^"]*)" on "([^"]*)"((?: without error control)?)$/) do |repo, host, error_control|
+  node = get_target(host)
+  os_family = node.os_family
+  cmd = ''
+  # Pending to be added: cases for rhlike and a deblike minions
+  case os_family
+  when /^opensuse/, /^sles/, /^suse/
+    cmd = "zypper removerepo #{repo}"
+  end
+  node.run(cmd, verbose: true, check_errors: error_control.empty?)
 end
 
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|

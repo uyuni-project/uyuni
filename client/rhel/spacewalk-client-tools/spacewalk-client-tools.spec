@@ -65,7 +65,7 @@
 %bcond_with    test
 
 Name:           spacewalk-client-tools
-Version:        5.1.5
+Version:        5.1.6
 Release:        0
 Summary:        Support programs and libraries for Spacewalk
 License:        GPL-2.0-only
@@ -172,34 +172,7 @@ Requires:       rhnlib >= 4.2.2
 %if "%{_vendor}" != "debbuild"
 Requires:       python2-uyuni-common-libs
 Requires:       rpm-python
-%ifnarch s390 s390x
-Requires:       python-dmidecode
-%endif
-Requires:       python-ethtool >= 0.4
 BuildRequires:  python-devel
-%if 0%{?fedora}
-Requires:       libgudev
-Requires:       pygobject2
-Requires:       python-hwdata
-%else
-%if 0%{?suse_version} >= 1140
-Requires:       python-hwdata
-Requires:       python-pyudev
-%else
-%if 0%{?rhel} > 5
-Requires:       python-gudev
-Requires:       python-hwdata
-%else
-Requires:       hal >= 0.5.8.1-52
-%endif # 0{?rhel} > 5
-%endif # 0{?suse_version} >= 1140
-%endif # 0{?fedora}
-
-%if 0%{?suse_version}
-Requires:       dbus-1-python
-%else
-Requires:       dbus-python
-%endif # 0{?suse_version}
 Requires:       logrotate
 
 %if %{with test} && 0%{?rhel} != 6
@@ -213,14 +186,8 @@ BuildRequires:  rpm-python
 BuildRequires:  python-coverage
 BuildRequires:  python-dev
 BuildRequires:  python-rpm
-Requires:       gir1.2-gudev-1.0
-Requires:       python-dbus
-Requires:       python-dmidecode
-Requires:       python-ethtool >= 0.4
 Requires:       python-gi
-Requires:       python-pyudev
 Requires:       python-rpm
-Requires:       python2-hwdata
 Requires(post): python-minimal
 Requires(preun): python-minimal
 %endif
@@ -242,38 +209,17 @@ Provides:       python3-rhn-client-tools = %{version}-%{release}
 Obsoletes:      python3-rhn-client-tools < %{version}-%{release}
 Requires:       %{name} = %{version}-%{release}
 %if "%{_vendor}" != "debbuild"
-%if 0%{?suse_version}
-%if 0%{?suse_version} >= 1500
-Requires:       python3-dbus-python
-%else
-Requires:       dbus-1-python3
-%endif
-Requires:       libgudev-1_0-0
-Requires:       python3-pyudev
-%else
-Requires:       libgudev
-Requires:       python3-dbus
-Requires:       python3-gobject-base
-%endif
 BuildRequires:  python3-devel
 BuildRequires:  python3-rpm-macros
 %endif
 
-%ifnarch s390 s390x
-Requires:       python3-dmidecode
-%endif
-Requires:       python3-hwdata
-Requires:       python3-netifaces
 Requires:       python3-rhnlib >= 4.2.2
 Requires:       python3-rpm
 Requires:       python3-uyuni-common-libs
 
 %if "%{_vendor}" == "debbuild"
 BuildRequires:  python3-dev
-Requires:       gir1.2-gudev-1.0
-Requires:       python3-dbus
 Requires:       python3-gi
-Requires:       python3-pyudev
 Requires(post): python3-minimal
 Requires(preun): python3-minimal
 %endif

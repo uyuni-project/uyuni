@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.ListIndexBase;
 import org.hibernate.annotations.Type;
 
 import java.util.ArrayList;
@@ -141,6 +142,7 @@ public class Token implements Identifiable {
             inverseJoinColumns = @JoinColumn(name = "config_channel_id")
     )
     @OrderColumn(name = "position") // Handles list indexing.
+    @ListIndexBase(1)
     private List<ConfigChannel> configChannels  = new ArrayList<>();
     /**
      * @return Returns the entitlements.

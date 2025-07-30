@@ -55,7 +55,8 @@ Feature: Virtual host manager web UI
   Scenario: Delete Virtual Host Manager
     When I follow the left menu "Systems > Virtual Host Managers"
     And I follow "file-vmware"
-    And I click on "Delete" in element "virtual-host-managers"
+    Then I should see a "file:///var/tmp/vCenter.json" text
+    When I click on "Delete" in element "virtual-host-managers"
     And I click on "Delete" in "Delete Virtual Host Manager" modal
     And I wait until I see "Virtual Host Manager has been deleted." text
     Then I should see a "No Virtual Host Managers." text

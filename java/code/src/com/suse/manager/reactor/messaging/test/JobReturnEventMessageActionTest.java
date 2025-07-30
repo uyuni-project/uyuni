@@ -1086,7 +1086,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Set<NetworkInterface> oldIfs = new HashSet<>(server.getNetworkInterfaces());
 
         saltUtils.updateServerAction(sa, 0L, true, "n/a", element,
-                Optional.of(Xor.right("state.apply")));
+                Optional.of(Xor.right("state.apply")), null);
 
         Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
                 NetworkInterface::getName,

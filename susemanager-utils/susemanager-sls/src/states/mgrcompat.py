@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+
+# SPDX-FileCopyrightText: 2019-2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """
 SUSE Multi-Linux Manager custom wrapper for Salt "module.run" state module.
 
