@@ -116,7 +116,7 @@ Feature: Project Lotus
   Scenario: Cleanup: Delete custom channel for PTFs
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for SLES15SP4 PTFs"
-    And I follow "Delete software channel"
+    And I follow "Delete Channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
     Then I should see a "Channel Custom Channel for SLES15SP4 PTFs has been deleted" text

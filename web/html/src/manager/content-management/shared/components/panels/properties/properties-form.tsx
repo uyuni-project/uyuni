@@ -20,7 +20,7 @@ const PropertiesForm = (props: Props) => (
     }}
   >
     <div className="row">
-      <Text required name="name" label={t("Name")} labelClass="col-md-2" divClass="col-md-10" />
+      <Text required name="name" label={t("Name")} labelClass="col-md-2" divClass="col-md-8" />
     </div>
     <div className="row">
       <Text
@@ -28,12 +28,12 @@ const PropertiesForm = (props: Props) => (
         name="label"
         label={t("Label")}
         labelClass="col-md-2"
-        divClass="col-md-10"
+        divClass="col-md-8"
         disabled={props.editing}
       />
     </div>
     <div className="row">
-      <Text name="description" label={t("Description")} labelClass="col-md-2" divClass="col-md-10" />
+      <Text name="description" label={t("Description")} labelClass="col-md-2" divClass="col-md-8" />
     </div>
   </Form>
 );

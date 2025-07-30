@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
+import { Button } from "components/buttons";
 import { DateTime, Form, Radio, Select, Text } from "components/input";
 
 import { localizedMoment } from "utils";
@@ -100,13 +101,19 @@ const FilterForm = (props: Props) => {
           <div className="row form-group">
             <div className="col-md-6 col-md-offset-3 offset-md-3">
               {filterBy === FilterBy.Type ? (
-                <button className="btn-link" onClick={() => setFilterBy(FilterBy.Template)}>
-                  <i className="fa fa-file-text-o" role="presentation" /> {t("Use a template")}
-                </button>
+                <Button
+                  className="btn-tertiary"
+                  handler={() => setFilterBy(FilterBy.Template)}
+                  icon="fa-file-text-o"
+                  text={t("Use a template")}
+                />
               ) : (
-                <button className="btn-link" onClick={() => setFilterBy(FilterBy.Type)}>
-                  <i className="fa fa-filter" role="presentation" /> {t("Use a manual filter")}
-                </button>
+                <Button
+                  className="btn-tertiary"
+                  handler={() => setFilterBy(FilterBy.Type)}
+                  icon="fa-filter"
+                  text={t("Use a manual filter")}
+                />
               )}
             </div>
           </div>

@@ -465,12 +465,12 @@ public class ListDisplayTag extends ListDisplayTagBase {
                                                     "update_list_key_id").render());
                 buf.append(" ");
                 buf.append(addButtonTo(buf,
-                                       RequestContext.DISPATCH, SELECT_ALL_KEY).render());
+                                        RequestContext.DISPATCH, SELECT_ALL_KEY).render());
 
                 if (numItemsChecked > 0) {
                     buf.append(" ");
                     buf.append(addButtonTo(buf, RequestContext.DISPATCH, UNSELECT_ALL_KEY)
-                        .render());
+                    .render());
                 }
                 buf.append("</span>");
             }
@@ -594,7 +594,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
             return;
         }
 
-        out.println("<div class=\"col-sm-12 text-right\">");
+        out.println("<div class=\"action-button-wrapper\">");
         if (getButton2() != null && AclManager.hasAcl(getButton2Acl(),
                 (HttpServletRequest) pageContext.getRequest(), getMixins())) {
 
@@ -772,13 +772,6 @@ public class ListDisplayTag extends ListDisplayTagBase {
                 doSort(sortedColumn);
             }
 
-            out.print("<div class=\"spacewalk-list ");
-            out.println(type + "\"");
-            if (tableId != null) {
-                out.print(" id=\"" + tableId + "\"");
-            }
-            out.println(">");
-
             /*
              * If pageList contains an index and pageList.size() (what we are
              * displaying on the page) is less than pageList.getTotalSize() (the
@@ -787,6 +780,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
              * the entries on a single page and is similar to how the perl code
              * behaves.
              */
+
             StringWriter alphaBarContent = new StringWriter();
             StringWriter paginationContent = new StringWriter();
 
@@ -817,6 +811,18 @@ public class ListDisplayTag extends ListDisplayTagBase {
                 out.print(paginationContent.getBuffer().toString());
                 out.println("</div>");
             }
+            if (isPaging()) {
+                out.print("<div class=\"spacewalk-section-toolbar\">\n");
+                renderActionButtons(out);
+                out.println("</div>");
+            }
+
+            out.print("<div class=\"spacewalk-list ");
+            out.println(type + "\"");
+            if (tableId != null) {
+                out.print(" id=\"" + tableId + "\"");
+            }
+            out.println(">");
 
             out.print("<div class=\"panel panel-default\">");
 
@@ -943,11 +949,6 @@ public class ListDisplayTag extends ListDisplayTagBase {
                 out.println("</span>");
             }
             out.println("</div>");
-            if (isPaging()) {
-                out.print("<div class=\"row-0\">\n");
-                renderActionButtons(out);
-                out.println("</div>");
-            }
             out.println("</div>");
 
             // close list

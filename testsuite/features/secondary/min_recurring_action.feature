@@ -136,7 +136,7 @@ Feature: Recurring Actions
     When I am on the "Groups" page of this "sle_minion"
     And I follow first "Join"
     And I check the first row in the list
-    And I click on "Join Selected Groups"
+    And I click on "Join Groups"
     Then I wait until I see "1 system groups added" text
 
   Scenario: Pre-requisite: subscribe system to Fake Channel

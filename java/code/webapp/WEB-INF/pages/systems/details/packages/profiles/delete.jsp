@@ -23,7 +23,7 @@
         <html:hidden property="sid" value="${param.sid}" />
         <html:hidden property="prid" value="${param.prid}" />
         <html:hidden property="submitted" value="true" />
-        <html:submit styleClass="btn btn-default">
+        <html:submit styleClass="btn btn-danger">
                 <bean:message key="deleteconfirm.jsp.deleteprofile"/>
             </html:submit>
       </div>

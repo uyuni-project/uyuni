@@ -92,6 +92,11 @@ class Messages extends React.Component<Props> {
       body = (
         <div>
           <p>{t("Please review warning and information messages below.")}</p>
+          <div className="spacewalk-section-toolbar">
+            <div className="action-button-wrapper">
+              <CsvLink name="message_report.csv" />
+            </div>
+          </div>
           <Table
             data={this.buildRows(this.props.messages, this.props.systems, this.props.subscriptions)}
             identifier={(row) => row.id}
@@ -110,8 +115,6 @@ class Messages extends React.Component<Props> {
               cell={(row) => row.info}
             />
           </Table>
-
-          <CsvLink name="message_report.csv" />
         </div>
       );
     } else {

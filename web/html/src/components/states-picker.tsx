@@ -557,7 +557,6 @@ class ExecuteStatesButton extends React.Component<ExecuteStatesProps> {
             onClose={this.onClose}
             content={contentPopup}
             submitText={t("Confirm")}
-            submitIcon="fa-check"
             btnClass="btn-primary"
             onConfirmAsync={this.onConfirmExecute}
           />

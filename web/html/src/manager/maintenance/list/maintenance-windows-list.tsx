@@ -26,7 +26,7 @@ const MaintenanceWindowsList = (props: MaintenanceListProps) => {
         className="btn-primary"
         disabled={!window.isAdmin}
         icon="fa-plus"
-        text={t("Create")}
+        text={type === "schedule" ? t("Create Schedule") : t("Create Calendar")}
         title={t("Create a new maintenance schedule")}
         handler={() => props.onActionChanged("create")}
       />

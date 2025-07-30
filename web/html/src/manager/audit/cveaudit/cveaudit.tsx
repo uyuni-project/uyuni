@@ -307,7 +307,7 @@ class CVEAudit extends React.Component<Props, State> {
               );
             })}
           </div>
-          <p>
+          <div className="spacewalk-section-toolbar">
             <div className="btn-group">
               <AsyncButton
                 id="bootstrap-btn"
@@ -324,7 +324,26 @@ class CVEAudit extends React.Component<Props, State> {
                 action={() => this.audit(TARGET_IMAGE)}
               />
             </div>
-          </p>
+            <div className="action-button-wrapper">
+              <a
+                href={
+                  "/rhn/manager/api/audit/cve.csv?cveIdentifier=CVE-" +
+                  this.state.cveYear +
+                  "-" +
+                  this.state.cveNumber +
+                  "&target=" +
+                  this.state.resultType +
+                  "&statuses=" +
+                  this.state.statuses
+                }
+                data-senna-off="true"
+                className="btn btn-default"
+              >
+                <IconTag type="item-download-csv" />
+                {t("Download CSV")}
+              </a>
+            </div>
+          </div>
           {this.state.auditExecuted && (
             <div>
               <p>
@@ -513,23 +532,6 @@ class CVEAudit extends React.Component<Props, State> {
               }}
             />
           </Table>
-          <a
-            href={
-              "/rhn/manager/api/audit/cve.csv?cveIdentifier=CVE-" +
-              this.state.cveYear +
-              "-" +
-              this.state.cveNumber +
-              "&target=" +
-              this.state.resultType +
-              "&statuses=" +
-              this.state.statuses
-            }
-            data-senna-off="true"
-            className="btn btn-default"
-          >
-            <IconTag type="item-download-csv" />
-            {t("Download CSV")}
-          </a>
         </TopPanel>
         Please note that underlying data needed for this audit is updated nightly. If systems were registered very
         recently or channel subscriptions have been changed in the last 24 hours it is recommended that an{" "}

@@ -123,6 +123,9 @@
                 <html:hidden property="invert" value="${invert}" />
                 <html:hidden property="fineGrained" value="${fineGrained}" />
 
+                <rl:csv dataset="searchResults"
+                    name="pageList"
+                    exportColumns="id,serverName,matchingField,matchingFieldValue,entitlementLevel,room,rack,building,address1,address2,city,state,country,dmiBiosVendor,dmiBiosVersion,dmiBiosRelease,dmiSystem,dmiAsset,cpuModel,cpuMHz,cpuNumberOfCpus,ram,name,hostname,serverArchName,os,runningKernel,release"/>
                 <rl:list name="pageList" dataset="searchResults"
                          emptykey="systemsearch.jsp.noresults" width="100%"
                          decorator="SelectableDecorator"
@@ -204,9 +207,6 @@
                         ${current.entitlementLevel}
                     </rl:column>
                 </rl:list>
-                <rl:csv dataset="searchResults"
-                        name="pageList"
-                        exportColumns="id,serverName,matchingField,matchingFieldValue,entitlementLevel,room,rack,building,address1,address2,city,state,country,dmiBiosVendor,dmiBiosVersion,dmiBiosRelease,dmiSystem,dmiAsset,cpuModel,cpuMHz,cpuNumberOfCpus,ram,name,hostname,serverArchName,os,runningKernel,release"/>
             </rl:listset>
         </c:if>
     </body>

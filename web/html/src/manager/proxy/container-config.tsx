@@ -382,14 +382,8 @@ export function ProxyConfig() {
         )}
 
         <div className="col-md-offset-3 offset-md-3 col-md-6">
-          <SubmitButton id="submit-btn" className="btn-primary" text={t("Generate")} disabled={!isValidated} />
-          <AsyncButton
-            id="clear-btn"
-            defaultType="btn-default pull-right"
-            icon="fa-eraser"
-            text={t("Clear fields")}
-            action={clearFields}
-          />
+          <SubmitButton id="submit-btn" className="btn-primary me-3" text={t("Generate")} disabled={!isValidated} />
+          <AsyncButton id="clear-btn" defaultType="btn-default" text={t("Clear fields")} action={clearFields} />
         </div>
       </Form>
     </TopPanel>

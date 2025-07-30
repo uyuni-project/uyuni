@@ -16,11 +16,11 @@
 
 <html:form action="/admin/multiorg/SatRoleConfirm.do">
       <rhn:csrf />
-      <div class="text-right">
+      <div>
         <hr />
         <html:hidden property="uid" value="${param.uid}" />
         <html:hidden property="submitted" value="true" />
-        <html:submit styleClass="btn btn-default">
+        <html:submit styleClass="btn btn-primary">
                 <bean:message key="confirm.displayname"/>
             </html:submit>
       </div>

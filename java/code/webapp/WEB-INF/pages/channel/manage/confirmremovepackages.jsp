@@ -23,6 +23,9 @@
 
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
+                <rl:csv dataset="pageList"
+                    name="packageList"
+                    exportColumns="id, nvrea, summary, provider"/>
                 <input type="submit" name="confirm" class="btn btn-danger"
                        value="<bean:message key='channel.jsp.package.confirmbutton'/>"/>
             </div>
@@ -62,9 +65,6 @@
             </rl:column>
 
         </rl:list>
-        <rl:csv dataset="pageList"
-                name="packageList"
-                exportColumns="id, nvrea, summary, provider"/>
     </rl:listset>
 
 </body>

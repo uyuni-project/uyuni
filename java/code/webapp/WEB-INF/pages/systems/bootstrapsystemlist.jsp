@@ -17,6 +17,14 @@
     </rhn:toolbar>
 
     <rl:listset name="bareMetalListSet" legend="system">
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+            <c:if test="${empty noCsv}">
+                <rl:csv dataset="pageList" name="systemList"
+                exportColumns="name,id,lastCheckin,cpuCount,cpuClockFrequency,ram,diskCount,macs" />
+        </c:if>
+            </div>
+        </div>
         <rhn:csrf />
         <rhn:submitted />
 
@@ -82,10 +90,6 @@
               </c:forEach>
             </rl:column>
         </rl:list>
-        <c:if test="${empty noCsv}">
-            <rl:csv dataset="pageList" name="systemList"
-                exportColumns="name,id,lastCheckin,cpuCount,cpuClockFrequency,ram,diskCount,macs" />
-        </c:if>
         <rhn:csrf />
         <rhn:submitted />
     </rl:listset>
