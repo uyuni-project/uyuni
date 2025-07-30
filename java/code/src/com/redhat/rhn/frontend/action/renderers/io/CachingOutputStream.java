@@ -18,6 +18,7 @@ package com.redhat.rhn.frontend.action.renderers.io;
 import com.redhat.rhn.frontend.servlets.LegacyServletOutputStream;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Caches all content written to it to be retrieved
@@ -40,6 +41,6 @@ public class CachingOutputStream extends LegacyServletOutputStream {
      * @return returns the cached content
      */
     public String getCachedContent() {
-        return buffer.toString();
+        return buffer.toString(StandardCharsets.UTF_8);
     }
 }
