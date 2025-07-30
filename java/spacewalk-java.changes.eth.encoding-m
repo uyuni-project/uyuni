@@ -1,0 +1,2 @@
+- Fix character encoding issue on organization credentials page
+  (bsc#1246436)
