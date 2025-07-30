@@ -38,7 +38,7 @@ function listenForGlobalNotificationChanges() {
   isListening = true;
 
   var observer = new MutationObserver(alignContentDimensions);
-  observer.observe(globalNotificationsContainer, {subtree: true, childList: true});
+  // observer.observe(globalNotificationsContainer, {subtree: true, childList: true});
 }
 
 // A container function for what should be fired
@@ -69,7 +69,7 @@ function sstScrollBehaviorSetup(sst) {
     { threshold: [1] }
   );
 
-  observer.observe(element);
+  // observer.observe(element);
 }
 
 // when the page scrolls down and the toolbar is going up and hidden,
@@ -340,7 +340,7 @@ function registerSpacewalkContentObservers() {
   // configuration of the observer:
   var config = { childList: true, characterData: true, subtree: true };
   // pass in the target node, as well as the observer options
-  spacewalkContentObserver.observe(target, config);
+  // spacewalkContentObserver.observe(target, config);
 }
 
 jQuery(document).on('click', '.toggle-box', function() {

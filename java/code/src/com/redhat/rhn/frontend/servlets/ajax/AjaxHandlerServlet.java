@@ -178,8 +178,9 @@ public class AjaxHandlerServlet extends HttpServlet {
             boolean isJsonResponse = JSON_RESULT_URLS.contains(url);
 
             String response = isJsonResponse ? gson.toJson(result) : result.toString();
-            String contentType = isJsonResponse ? "application/json" : "text/html";
+            String contentType = isJsonResponse ? "application/json; charset=UTF-8" : "text/html; charset=UTF-8";
             resp.setContentType(contentType);
+            resp.setCharacterEncoding("UTF-8");
             resp.getOutputStream().print(response);
             resp.getOutputStream().close();
         }
