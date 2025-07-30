@@ -28,6 +28,8 @@ public class AttestationReport {
 
     private byte[] report;
 
+    private String vlekCertificate;
+
     public long getId() {
         return id;
     }
@@ -58,6 +60,22 @@ public class AttestationReport {
 
     public void setReport(byte[] reportIn) {
         this.report = reportIn;
+    }
+
+    public String getVlekCertificate() {
+        return vlekCertificate;
+    }
+
+    public void setVlekCertificate(String vlekCertificateIn) {
+        this.vlekCertificate = vlekCertificateIn;
+    }
+
+    public boolean isUsingVlekAttestation() {
+        //The Versioned Loaded Endorsement Key (VLEK) is a versioned signing key that is certified by AMD
+        //and used by the AMD CPU to sign the AMD SEV-SNP attestation reports
+
+        //if VLEK fails, we assume VCEK.
+        return (null != vlekCertificate) && (!vlekCertificate.isEmpty());
     }
 
     @Override
