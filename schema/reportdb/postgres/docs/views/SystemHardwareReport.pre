@@ -76,6 +76,8 @@ COMMENT ON COLUMN SystemHardwareReport.hardware_address
   IS 'The MAC address of the network interface';
 COMMENT ON COLUMN SystemHardwareReport.ip_address
   IS 'The IPv4 address of the primary network interface of the system';
+COMMENT ON COLUMN SystemHardwareReport.ip6_addresses
+  IS 'The list of IPv6 addresses and their scopes of the primary network interface of the system, separated by ;';
 COMMENT ON COLUMN SystemHardwareReport.is_virtualized
   IS 'True if the system is virtualized';
 COMMENT ON COLUMN SystemHardwareReport.synced_date
