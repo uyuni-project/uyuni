@@ -34,8 +34,12 @@
             </div>
         </div>
 
-        <button class="btn btn-danger" type="button" data-bs-toggle="modal"
-            data-bs-target="#confirmDeleteDialog">${rhn:localize('ssm.delete.systems.confirmbutton')}</button>
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+                <button class="btn btn-danger" type="button" data-bs-toggle="modal"
+                        data-bs-target="#confirmDeleteDialog">${rhn:localize('ssm.delete.systems.confirmbutton')}</button>
+            </div>
+        </div>
     </c:when>
     <c:otherwise>
         <input type="hidden" name="saltCleanup" value="FORCE_DELETE"/>
