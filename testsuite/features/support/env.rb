@@ -150,7 +150,12 @@ After do |scenario|
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
   if scenario.failed?
     begin
-      if web_session_is_active?
+      if scenario.exception.is_a?(Selenium::WebDriver::Error::WebDriverError)
+        log "Caught web driver error: #{scenario.exception.message}"
+        Capybara.current_session.driver.quit
+        visit Capybara.app_host
+        log 'Web driver has been restarted'
+      elsif web_session_is_active?
         handle_screenshot_and_relog(scenario, current_epoch)
       else
         warn 'There is no active web session; unable to take a screenshot or relog.'
