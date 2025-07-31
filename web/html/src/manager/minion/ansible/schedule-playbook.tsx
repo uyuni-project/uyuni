@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
+import yaml from "js-yaml";
+
 import { AceEditor } from "components/ace-editor";
 import { ActionChain, ActionSchedule } from "components/action-schedule";
 import { AsyncButton, Button } from "components/buttons";
@@ -16,7 +18,9 @@ import { localizedMoment } from "utils";
 import Network, { JsonResult } from "utils/network";
 
 import { PlaybookDetails } from "./accordion-path-content";
+import styles from "./Ansible.module.scss";
 import { AnsiblePath } from "./ansible-path-type";
+import EditAnsibleVarsModal from "./edit-ansible-vars-modal";
 
 interface SchedulePlaybookProps {
   playbook: PlaybookDetails;
@@ -39,7 +43,6 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
   const [playbookArgs, setPlaybookArgs] = useState<PlaybookArgs>({ flushCache: false });
   const [actionChain, setActionChain] = useState<ActionChain | null>(null);
   const [datetime, setDatetime] = useState(localizedMoment());
-
   const defaultInventory = "-";
 
   useEffect(() => {
@@ -80,6 +83,45 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
       .then((res: JsonResult<number>) => (res.success ? res.data : Promise.reject(res)))
       .then((actionId) => setMessages(MsgUtils.info(<ScheduleMessage id={actionId} actionChain={actionChain?.text} />)))
       .catch((res) => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
+  };
+
+  const updatePlaybookContent = (updatedPlaybook, extraVars) => {
+    let mergedVars = { ...updatedPlaybook };
+
+    const extraVarsObject = yaml.load(extraVars);
+    if (typeof extraVarsObject === "object" && extraVarsObject !== null) {
+      mergedVars = { ...updatedPlaybook, ...extraVarsObject };
+    }
+
+    const parsed = yaml.load(playbookContent);
+    if (Array.isArray(parsed)) {
+      parsed[0].vars = mergedVars;
+
+      const updatedYaml = `---\n${yaml.dump(parsed, {
+        quotingType: '"',
+        forceQuotes: true,
+      })}`;
+      setPlaybookContent(updatedYaml);
+      sendUpdatedPlaybook(updatedYaml);
+    }
+  };
+
+  const sendUpdatedPlaybook = (yamlString: string) => {
+    const yamlObject = yaml.load(yamlString);
+    return fetch("/rhn/manager/api/ansible/playbooks/save-playbook-var", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(yamlObject),
+    }).then((response) => {
+      if (!response.ok) {
+        return response.json().then((errorData) => {
+          throw errorData;
+        });
+      }
+      return response.json();
+    });
   };
 
   const selectPlaybook = () => {
@@ -186,7 +228,15 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
         </div>
 
         <div>
-          <h3>{t("Playbook Content")}</h3>
+          <div className="d-flex justify-content-between">
+            <h3>{t("Playbook Content")}</h3>
+            <EditAnsibleVarsModal
+              id="anisble-var"
+              className={styles.anisbleVar}
+              renderContent={playbookContent}
+              updatePlaybookContent={updatePlaybookContent}
+            />
+          </div>
           <AceEditor
             className="form-control"
             id="playbook-content"
