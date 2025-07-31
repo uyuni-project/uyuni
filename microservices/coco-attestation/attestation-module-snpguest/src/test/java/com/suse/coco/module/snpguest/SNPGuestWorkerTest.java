@@ -383,10 +383,11 @@ class SNPGuestWorkerTest {
         verifyNoMoreInteractions(snpWrapper);
     }
 
-    @ParameterizedTest(name = TestHelper.cpuUsingVlekName)
+    @ParameterizedTest(name = TestHelper.CPU_USING_VLEK_NAME)
     @MethodSource("listCpuAndUsingVlek")
     @DisplayName("Rejects report if the certificate verification fails")
-    void rejectsWhenCertificatesCannotBeVerified(EpycGeneration cpuGeneration, boolean usingVlek) throws IOException, ExecutionException {
+    void rejectsWhenCertificatesCannotBeVerified(EpycGeneration cpuGeneration, boolean usingVlek)
+            throws IOException, ExecutionException {
         report.setCpuGeneration(cpuGeneration);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
         report.setReport("REPORT WITH NONCE".getBytes(StandardCharsets.UTF_8));
@@ -399,7 +400,7 @@ class SNPGuestWorkerTest {
         // Pass nonce verification
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
-        if(usingVlek) {
+        if (usingVlek) {
             report.setVlekCertificate("This is a dummy VLEK certificaate");
             when(directory.isVLEKAvailable()).thenReturn(true);
         }
@@ -407,9 +408,9 @@ class SNPGuestWorkerTest {
             // Pass fetching of the VECK
             when(snpWrapper.fetchVCEK(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
                     .thenReturn(new ProcessOutput(0, """
-                    Attempting to fetch VCEK...
-                    Fetch ok
-                    """, ""));
+                            Attempting to fetch VCEK...
+                            Fetch ok
+                            """, ""));
             when(directory.isVCEKAvailable()).thenReturn(true);
         }
 
@@ -454,10 +455,11 @@ class SNPGuestWorkerTest {
         verifyNoMoreInteractions(snpWrapper);
     }
 
-    @ParameterizedTest(name = TestHelper.cpuUsingVlekName)
+    @ParameterizedTest(name = TestHelper.CPU_USING_VLEK_NAME)
     @MethodSource("listCpuAndUsingVlek")
     @DisplayName("Rejects report if the attestation verification fails")
-    void rejectsWhenAttestationCannotBeVerified(EpycGeneration cpuGeneration, boolean usingVlek) throws IOException, ExecutionException {
+    void rejectsWhenAttestationCannotBeVerified(EpycGeneration cpuGeneration, boolean usingVlek)
+            throws IOException, ExecutionException {
         report.setCpuGeneration(cpuGeneration);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
         report.setReport("REPORT WITH NONCE".getBytes(StandardCharsets.UTF_8));
@@ -470,7 +472,7 @@ class SNPGuestWorkerTest {
         // Pass nonce verification
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
-        if(usingVlek) {
+        if (usingVlek) {
             report.setVlekCertificate("This is a dummy VLEK certificaate");
             when(directory.isVLEKAvailable()).thenReturn(true);
         }
@@ -478,9 +480,9 @@ class SNPGuestWorkerTest {
             // Pass fetching of the VECK
             when(snpWrapper.fetchVCEK(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
                     .thenReturn(new ProcessOutput(0, """
-                    Attempting to fetch VCEK...
-                    Fetch ok
-                    """, ""));
+                            Attempting to fetch VCEK...
+                            Fetch ok
+                            """, ""));
             when(directory.isVCEKAvailable()).thenReturn(true);
         }
 
@@ -533,10 +535,11 @@ class SNPGuestWorkerTest {
         verify(snpWrapper).verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE);
     }
 
-    @ParameterizedTest(name = TestHelper.cpuUsingVlekName)
+    @ParameterizedTest(name = TestHelper.CPU_USING_VLEK_NAME)
     @MethodSource("listCpuAndUsingVlek")
     @DisplayName("Approves report if all checks pass")
-    void approvesReportIfAllChecksPass(EpycGeneration cpuGeneration, boolean usingVlek) throws IOException, ExecutionException {
+    void approvesReportIfAllChecksPass(EpycGeneration cpuGeneration, boolean usingVlek)
+            throws IOException, ExecutionException {
         report.setCpuGeneration(cpuGeneration);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
         report.setReport("REPORT WITH NONCE".getBytes(StandardCharsets.UTF_8));
@@ -549,17 +552,17 @@ class SNPGuestWorkerTest {
         // Pass nonce verification
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
-        if(usingVlek) {
+        if (usingVlek) {
             report.setVlekCertificate("This is a dummy VLEK certificate");
             when(directory.isVLEKAvailable()).thenReturn(true);
         }
         else {
             // Pass fetching of the VECK
             when(snpWrapper.fetchVCEK(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
-                .thenReturn(new ProcessOutput(0, """
-                    Attempting to fetch VCEK...
-                    Fetch ok
-                    """, ""));
+                    .thenReturn(new ProcessOutput(0, """
+                            Attempting to fetch VCEK...
+                            Fetch ok
+                            """, ""));
             when(directory.isVCEKAvailable()).thenReturn(true);
         }
 

@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 
 public class TestHelper {
 
-    public static final String cpuUsingVlekName = "Cpu: {0} using VLEK: {1}";
+    public static final String CPU_USING_VLEK_NAME = "Cpu: {0} using VLEK: {1}";
 
     public static Stream<Arguments> listCpuAndUsingVlek() {
         return Stream.of(
@@ -33,5 +33,9 @@ public class TestHelper {
                 Arguments.of(EpycGeneration.TURIN, false),
                 Arguments.of(EpycGeneration.TURIN, true)
         );
+    }
+
+    private TestHelper() {
+        // utility classes should not have a public or default constructor
     }
 }
