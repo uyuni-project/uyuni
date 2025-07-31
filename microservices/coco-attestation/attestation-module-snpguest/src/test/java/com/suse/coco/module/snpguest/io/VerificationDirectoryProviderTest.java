@@ -16,8 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
+import com.suse.coco.module.snpguest.TestHelper;
 import com.suse.coco.module.snpguest.model.AttestationReport;
 import com.suse.coco.module.snpguest.model.EpycGeneration;
 
@@ -27,7 +29,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -73,21 +76,25 @@ class VerificationDirectoryProviderTest {
         }
     }
 
-    @ParameterizedTest
-    @EnumSource(EpycGeneration.class)
+    private static Stream<Arguments> listCpuAndUsingVlek() {
+        return TestHelper.listCpuAndUsingVlek();
+    }
+
+    @ParameterizedTest(name = TestHelper.cpuUsingVlekName)
+    @MethodSource("listCpuAndUsingVlek")
     @DisplayName("Verification directory is created by the provider and destroyed on resource closure" +
             " for each cpu generation")
-    void canCreateAndDestroyVerificationDirectory(EpycGeneration cpuGeneration) throws IOException {
-        if (EpycGeneration.UNKNOWN == cpuGeneration) {
-            return;
-        }
-
+    void canCreateAndDestroyVerificationDirectory(EpycGeneration cpuGeneration, boolean usingVlek) throws IOException {
         Path verificationDirectory;
 
         when(attestationReport.getCpuGeneration())
             .thenReturn(cpuGeneration);
         when(attestationReport.getReport())
             .thenReturn("This is a dummy report for unit test".getBytes(StandardCharsets.UTF_8));
+        when(attestationReport.isUsingVlekAttestation())
+                .thenReturn(usingVlek);
+        lenient().when(attestationReport.getVlekCertificate())
+                .thenReturn(usingVlek ? "This is a dummy VLEK certificaate" : null);
 
         try (VerificationDirectory directory = directoryProvider.createDirectoryFor(5L, attestationReport)) {
             verificationDirectory = directory.getBasePath();
@@ -110,6 +117,9 @@ class VerificationDirectoryProviderTest {
 
             Path asvkCert = directory.getCertsPath().resolve("asvk.pem");
             assertTrue(Files.exists(asvkCert));
+
+            Path vlekCert = directory.getCertsPath().resolve("vlek.pem");
+            assertEquals(usingVlek, Files.exists(vlekCert));
 
             // Check they contain the correct value
             String cpuName = cpuGeneration.name().toLowerCase();
