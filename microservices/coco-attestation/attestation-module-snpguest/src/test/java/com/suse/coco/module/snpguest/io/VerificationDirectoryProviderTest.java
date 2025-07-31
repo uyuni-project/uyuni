@@ -80,7 +80,7 @@ class VerificationDirectoryProviderTest {
         return TestHelper.listCpuAndUsingVlek();
     }
 
-    @ParameterizedTest(name = TestHelper.cpuUsingVlekName)
+    @ParameterizedTest(name = TestHelper.CPU_USING_VLEK_NAME)
     @MethodSource("listCpuAndUsingVlek")
     @DisplayName("Verification directory is created by the provider and destroyed on resource closure" +
             " for each cpu generation")
@@ -126,7 +126,8 @@ class VerificationDirectoryProviderTest {
             cpuName = cpuName.substring(0, 1).toUpperCase() + cpuName.substring(1);
             assertEquals("%s ROOT fake certificate".formatted(cpuName), Files.readString(arkCert).strip());
             assertEquals("%s INTERMEDIATE fake certificate".formatted(cpuName), Files.readString(askCert).strip());
-            assertEquals("%s INTERMEDIATE VLEK fake certificate".formatted(cpuName), Files.readString(asvkCert).strip());
+            assertEquals("%s INTERMEDIATE VLEK fake certificate".formatted(cpuName),
+                    Files.readString(asvkCert).strip());
 
             // Verify the report is present
             assertTrue(Files.isReadable(directory.getReportPath()));
@@ -156,7 +157,8 @@ class VerificationDirectoryProviderTest {
         // Check the exception is the expected one
         assertEquals("Cannot find certificate for cpu generation UNKNOWN", ex.getMessage());
         // Check no files have been created
-        assertEquals(totalFiles, countTotalFileInFolder(destPath), "Some files have been created and left behind");
+        assertEquals(totalFiles, countTotalFileInFolder(destPath),
+                "Some files have been created and left behind");
     }
 
     private long countTotalFileInFolder(Path path) throws IOException {
