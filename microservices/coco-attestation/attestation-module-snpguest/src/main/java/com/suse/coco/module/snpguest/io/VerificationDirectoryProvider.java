@@ -98,6 +98,18 @@ public class VerificationDirectoryProvider {
             throw ex.getCause();
         }
 
+        // Retrieve and save VLEK certificate if needed
+        if (report.isUsingVlekAttestation()) {
+            String vlekCertificate = report.getVlekCertificate();
+
+            try {
+                Files.write(certs.resolve(VerificationDirectory.VLEK_FILE), vlekCertificate.getBytes());
+            }
+            catch (IOException ioEx) {
+                throw new UncheckedIOException(ioEx);
+            }
+        }
+
         // Store the report in the file report.bin
         Files.write(basePath.resolve("report.bin"), report.getReport());
 
