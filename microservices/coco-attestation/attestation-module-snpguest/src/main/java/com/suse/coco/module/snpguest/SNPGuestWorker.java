@@ -109,15 +109,27 @@ public class SNPGuestWorker implements AttestationWorker {
                 // Reference to the paths snpguest needs to work with
                 Path certsPath = workingDir.getCertsPath();
                 Path reportPath = workingDir.getReportPath();
+                ProcessOutput processOutput;
 
-                // Download the VCEK for this cpu model
-                ProcessOutput processOutput = snpGuest.fetchVCEK(report.getCpuGeneration(), certsPath, reportPath);
-                if (processOutput.getExitCode() != 0 || !workingDir.isVCEKAvailable()) {
-                    appendError("Unable to retrieve VCEK file", processOutput);
-                    return false;
+                if (report.isUsingVlekAttestation()) {
+                    if (!workingDir.isVLEKAvailable()) {
+                        appendError("Unable to retrieve VLEK certification file");
+                        return false;
+                    }
+                    else {
+                        appendSuccess("VLEK certification retrieved successfully");
+                    }
                 }
                 else {
-                    appendSuccess("VCEK fetched successfully", processOutput);
+                    // Download the VCEK for this cpu model
+                    processOutput = snpGuest.fetchVCEK(report.getCpuGeneration(), certsPath, reportPath);
+                    if (processOutput.getExitCode() != 0 || !workingDir.isVCEKAvailable()) {
+                        appendError("Unable to retrieve VCEK file", processOutput);
+                        return false;
+                    }
+                    else {
+                        appendSuccess("VCEK fetched successfully", processOutput);
+                    }
                 }
 
                 // Verify the certificates

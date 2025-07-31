@@ -36,6 +36,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -43,6 +46,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Stream;
 
 @ExtendWith(MockitoExtension.class)
 class SNPGuestWorkerTest {
@@ -80,11 +84,33 @@ class SNPGuestWorkerTest {
 
         report = new AttestationReport();
         report.setId(5L);
+        report.setVlekCertificate(null);
 
         // Common mocking
         when(session.selectOne("SNPGuestModule.retrieveReport", 5L)).thenReturn(report);
 
         worker = new SNPGuestWorker(directoryProvider, snpWrapper, sequenceFinder);
+    }
+
+    private static Stream<Arguments> listCpuAndUsingVlek() {
+        return TestHelper.listCpuAndUsingVlek();
+    }
+
+    private String getCertificateSuccessfulFetchString(boolean usingVlek) {
+
+        if (usingVlek) {
+            return """
+                    - VLEK certification retrieved successfully
+                    """;
+        }
+        else {
+            return """
+                    - VCEK fetched successfully:
+                        - Standard output: >
+                            Attempting to fetch VCEK...
+                            Fetch ok
+                    """;
+        }
     }
 
     @Test
@@ -270,7 +296,6 @@ class SNPGuestWorkerTest {
     @Test
     @DisplayName("Rejects report if the VCEK could not be retrieved")
     void rejectsWhenVECKIsNotRetrieved() throws IOException, ExecutionException {
-        // Set the model as UNKNOWN
         report.setCpuGeneration(EpycGeneration.MILAN);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
         report.setReport("REPORT WITH NONCE".getBytes(StandardCharsets.UTF_8));
@@ -316,7 +341,6 @@ class SNPGuestWorkerTest {
     @Test
     @DisplayName("Rejects report if the VCEK is not readable")
     void rejectsWhenVECKIsNotReadable() throws IOException, ExecutionException {
-        // Set the model as UNKNOWN
         report.setCpuGeneration(EpycGeneration.MILAN);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
         report.setReport("REPORT WITH NONCE".getBytes(StandardCharsets.UTF_8));
@@ -359,11 +383,11 @@ class SNPGuestWorkerTest {
         verifyNoMoreInteractions(snpWrapper);
     }
 
-    @Test
+    @ParameterizedTest(name = TestHelper.cpuUsingVlekName)
+    @MethodSource("listCpuAndUsingVlek")
     @DisplayName("Rejects report if the certificate verification fails")
-    void rejectsWhenCertificatesCannotBeVerified() throws IOException, ExecutionException {
-        // Set the model as UNKNOWN
-        report.setCpuGeneration(EpycGeneration.MILAN);
+    void rejectsWhenCertificatesCannotBeVerified(EpycGeneration cpuGeneration, boolean usingVlek) throws IOException, ExecutionException {
+        report.setCpuGeneration(cpuGeneration);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
         report.setReport("REPORT WITH NONCE".getBytes(StandardCharsets.UTF_8));
 
@@ -375,10 +399,19 @@ class SNPGuestWorkerTest {
         // Pass nonce verification
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
-        // Pass fetching of the VECK
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
-            .thenReturn(new ProcessOutput(0, "Fetch ok", ""));
-        when(directory.isVCEKAvailable()).thenReturn(true);
+        if(usingVlek) {
+            report.setVlekCertificate("This is a dummy VLEK certificaate");
+            when(directory.isVLEKAvailable()).thenReturn(true);
+        }
+        else {
+            // Pass fetching of the VECK
+            when(snpWrapper.fetchVCEK(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+                    .thenReturn(new ProcessOutput(0, """
+                    Attempting to fetch VCEK...
+                    Fetch ok
+                    """, ""));
+            when(directory.isVCEKAvailable()).thenReturn(true);
+        }
 
         // Fail the certificate verification
         when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR))
@@ -386,16 +419,16 @@ class SNPGuestWorkerTest {
 
         assertFalse(worker.process(session, result));
         assertEquals("""
-                - The report contains the expected random nonce
-                - VCEK fetched successfully:
-                    - Standard output: >
-                        Fetch ok
-                - Unable to verify the validity of the certificates:
-                    - Exit code: -1
-                    - Standard error: >
-                        Certificate verify FAILED
-                """,
-            result.getProcessOutput()
+                        - The report contains the expected random nonce
+                        """ +
+                        getCertificateSuccessfulFetchString(usingVlek) +
+                        """
+                        - Unable to verify the validity of the certificates:
+                            - Exit code: -1
+                            - Standard error: >
+                                Certificate verify FAILED
+                        """,
+                result.getProcessOutput()
         );
 
         // Verify the required files have been created and deleted
@@ -406,9 +439,14 @@ class SNPGuestWorkerTest {
         verify(sequenceFinder).setSequence(report.getRandomNonce());
         verify(sequenceFinder).search(report.getReport());
 
-        // Verify the VCEK was fetched
-        verify(snpWrapper).fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE);
-        verify(directory).isVCEKAvailable();
+        if (usingVlek) {
+            verify(directory).isVLEKAvailable();
+        }
+        else {
+            // Verify the VCEK was fetched
+            verify(snpWrapper).fetchVCEK(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE);
+            verify(directory).isVCEKAvailable();
+        }
 
         // Verify the certificate verification have happened
         verify(snpWrapper).verifyCertificates(MOCK_CERTS_DIR);
@@ -416,11 +454,11 @@ class SNPGuestWorkerTest {
         verifyNoMoreInteractions(snpWrapper);
     }
 
-    @Test
+    @ParameterizedTest(name = TestHelper.cpuUsingVlekName)
+    @MethodSource("listCpuAndUsingVlek")
     @DisplayName("Rejects report if the attestation verification fails")
-    void rejectsWhenAttestationCannotBeVerified() throws IOException, ExecutionException {
-        // Set the model as UNKNOWN
-        report.setCpuGeneration(EpycGeneration.MILAN);
+    void rejectsWhenAttestationCannotBeVerified(EpycGeneration cpuGeneration, boolean usingVlek) throws IOException, ExecutionException {
+        report.setCpuGeneration(cpuGeneration);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
         report.setReport("REPORT WITH NONCE".getBytes(StandardCharsets.UTF_8));
 
@@ -432,10 +470,19 @@ class SNPGuestWorkerTest {
         // Pass nonce verification
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
-        // Pass fetching of the VECK
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
-            .thenReturn(new ProcessOutput(0, "Fetch ok", ""));
-        when(directory.isVCEKAvailable()).thenReturn(true);
+        if(usingVlek) {
+            report.setVlekCertificate("This is a dummy VLEK certificaate");
+            when(directory.isVLEKAvailable()).thenReturn(true);
+        }
+        else {
+            // Pass fetching of the VECK
+            when(snpWrapper.fetchVCEK(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+                    .thenReturn(new ProcessOutput(0, """
+                    Attempting to fetch VCEK...
+                    Fetch ok
+                    """, ""));
+            when(directory.isVCEKAvailable()).thenReturn(true);
+        }
 
         // Pass the certificate verification
         when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR))
@@ -447,19 +494,19 @@ class SNPGuestWorkerTest {
 
         assertFalse(worker.process(session, result));
         assertEquals("""
-                - The report contains the expected random nonce
-                - VCEK fetched successfully:
-                    - Standard output: >
-                        Fetch ok
-                - Certification chain validated successfully:
-                    - Standard output: >
-                        Certificate verify ok
-                - Unable to verify the attestation report:
-                    - Exit code: -1
-                    - Standard error: >
-                        Attestation verify FAILED
-                """,
-            result.getProcessOutput()
+            - The report contains the expected random nonce
+            """ +
+            getCertificateSuccessfulFetchString(usingVlek) +
+            """
+            - Certification chain validated successfully:
+                - Standard output: >
+                    Certificate verify ok
+            - Unable to verify the attestation report:
+                - Exit code: -1
+                - Standard error: >
+                    Attestation verify FAILED
+            """,
+                result.getProcessOutput()
         );
 
         // Verify the required files have been created and deleted
@@ -470,9 +517,14 @@ class SNPGuestWorkerTest {
         verify(sequenceFinder).setSequence(report.getRandomNonce());
         verify(sequenceFinder).search(report.getReport());
 
-        // Verify the VCEK was fetched
-        verify(snpWrapper).fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE);
-        verify(directory).isVCEKAvailable();
+        if (usingVlek) {
+            verify(directory).isVLEKAvailable();
+        }
+        else {
+            // Verify the VCEK was fetched
+            verify(snpWrapper).fetchVCEK(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE);
+            verify(directory).isVCEKAvailable();
+        }
 
         // Verify the certificate verification have happened
         verify(snpWrapper).verifyCertificates(MOCK_CERTS_DIR);
@@ -481,11 +533,11 @@ class SNPGuestWorkerTest {
         verify(snpWrapper).verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE);
     }
 
-    @Test
+    @ParameterizedTest(name = TestHelper.cpuUsingVlekName)
+    @MethodSource("listCpuAndUsingVlek")
     @DisplayName("Approves report if all checks pass")
-    void approvesReportIfAllChecksPass() throws IOException, ExecutionException {
-        // Set the model as UNKNOWN
-        report.setCpuGeneration(EpycGeneration.MILAN);
+    void approvesReportIfAllChecksPass(EpycGeneration cpuGeneration, boolean usingVlek) throws IOException, ExecutionException {
+        report.setCpuGeneration(cpuGeneration);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
         report.setReport("REPORT WITH NONCE".getBytes(StandardCharsets.UTF_8));
 
@@ -497,13 +549,19 @@ class SNPGuestWorkerTest {
         // Pass nonce verification
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
-        // Pass fetching of the VECK
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
-            .thenReturn(new ProcessOutput(0, """
-                Attempting to fetch VCEK...
-                Fetch ok
-                """, ""));
-        when(directory.isVCEKAvailable()).thenReturn(true);
+        if(usingVlek) {
+            report.setVlekCertificate("This is a dummy VLEK certificate");
+            when(directory.isVLEKAvailable()).thenReturn(true);
+        }
+        else {
+            // Pass fetching of the VECK
+            when(snpWrapper.fetchVCEK(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+                .thenReturn(new ProcessOutput(0, """
+                    Attempting to fetch VCEK...
+                    Fetch ok
+                    """, ""));
+            when(directory.isVCEKAvailable()).thenReturn(true);
+        }
 
         // Pass the certificate verification
         when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR))
@@ -525,21 +583,20 @@ class SNPGuestWorkerTest {
         assertTrue(worker.process(session, result));
         assertEquals("dummy-report", result.getDetails());
         assertEquals("""
-                - The report contains the expected random nonce
-                - VCEK fetched successfully:
-                    - Standard output: >
-                        Attempting to fetch VCEK...
-                        Fetch ok
-                - Certification chain validated successfully:
-                    - Standard output: >
-                        Verifying certificate chain validity...
-                        Certificates ok
-                - Attestation report correctly verified:
-                    - Standard output: >
-                        Verifying attestation status...
-                        Attestation ok
-                """,
-            result.getProcessOutput()
+                        - The report contains the expected random nonce
+                        """ +
+                        getCertificateSuccessfulFetchString(usingVlek) +
+                        """
+                        - Certification chain validated successfully:
+                            - Standard output: >
+                                Verifying certificate chain validity...
+                                Certificates ok
+                        - Attestation report correctly verified:
+                            - Standard output: >
+                                Verifying attestation status...
+                                Attestation ok
+                        """,
+                result.getProcessOutput()
         );
 
         // Verify the required files have been created and deleted
@@ -550,9 +607,14 @@ class SNPGuestWorkerTest {
         verify(sequenceFinder).setSequence(report.getRandomNonce());
         verify(sequenceFinder).search(report.getReport());
 
-        // Verify the VCEK was fetched
-        verify(snpWrapper).fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE);
-        verify(directory).isVCEKAvailable();
+        if (usingVlek) {
+            verify(directory).isVLEKAvailable();
+        }
+        else {
+            // Verify the VCEK was fetched
+            verify(snpWrapper).fetchVCEK(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE);
+            verify(directory).isVCEKAvailable();
+        }
 
         // Verify the certificate verification have happened
         verify(snpWrapper).verifyCertificates(MOCK_CERTS_DIR);
