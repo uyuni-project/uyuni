@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
-import { FormContext, Select } from "components/input";
+import { DEPRECATED_Select, FormContext } from "components/input";
 
 import { usePrevious } from "utils/hooks";
 import Network, { JsonResult } from "utils/network";
@@ -102,7 +102,7 @@ export default (props: FilterFormProps & { template: Template }) => {
     <>
       {template === Template.LivePatchingProduct && (
         <>
-          <Select
+          <DEPRECATED_Select
             name="productId"
             label={t("Product")}
             labelClass="col-md-3"
@@ -115,7 +115,7 @@ export default (props: FilterFormProps & { template: Template }) => {
       )}
       {template === Template.LivePatchingSystem && (
         <>
-          <Select
+          <DEPRECATED_Select
             loadOptions={getSystems}
             name="systemId"
             label={t("System")}
@@ -127,7 +127,7 @@ export default (props: FilterFormProps & { template: Template }) => {
           />
         </>
       )}
-      <Select
+      <DEPRECATED_Select
         name="kernelId"
         label={t("Kernel")}
         labelClass="col-md-3"

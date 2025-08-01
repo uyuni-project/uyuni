@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { FormContext, Select } from "components/input";
+import { DEPRECATED_Select, FormContext } from "components/input";
 
 import { Props as FilterFormProps } from "../filter-form";
 import AppStreams from "./app-streams";
@@ -43,7 +43,7 @@ export default (props: FilterFormProps) => {
   ];
   return (
     <>
-      <Select
+      <DEPRECATED_Select
         label={t("Template")}
         name="template"
         labelClass="col-md-3"

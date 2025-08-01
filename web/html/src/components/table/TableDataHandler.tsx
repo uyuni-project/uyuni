@@ -19,9 +19,7 @@ type ChildrenArgsProps = {
   currItems: Array<any>;
   headers: React.ReactNode;
   handleSelect: Function;
-  selectable: boolean | ((row: any) => boolean);
   selectedItems: Array<any>;
-  deletable?: boolean | ((row: any) => boolean);
   criteria?: string;
   field?: string;
 };
@@ -84,6 +82,8 @@ type Props = {
   /** The handler to call when an item is deleted. */
   onDelete?: (row: any) => void;
 
+  expandable?: boolean;
+
   /** The message which is shown when there are no rows to display */
   emptyText?: string;
 
@@ -92,6 +92,8 @@ type Props = {
 
   /** The message which is shown when the data is loading */
   loadingText?: string;
+
+  onLoad?: () => void;
 
   /** Children node in the table */
   children: (args: ChildrenArgsProps) => React.ReactNode;
@@ -184,7 +186,12 @@ export class TableDataHandler extends React.Component<Props, State> {
 
     this.setState({ loading: true }, () => {
       this.state.provider.get((promise) => {
-        promise.then((data) => this.updateData(data)).finally(() => this.setState({ loading: false }));
+        promise
+          .then((data) => this.updateData(data))
+          .finally(() => {
+            // TODO: We should set all selection to empty here, no?
+            this.setState({ loading: false });
+          });
       }, pageControl);
     });
   }
@@ -318,6 +325,7 @@ export class TableDataHandler extends React.Component<Props, State> {
       const currIds = selectableItems.map((item) => this.props.identifier(item));
 
       const handleSelectAll = (sel) => {
+        // TODO: Also handle children, if available
         let arr = selectedItems;
         if (sel) {
           arr = arr.concat(currIds.filter((id) => !arr.includes(id)));
@@ -334,6 +342,11 @@ export class TableDataHandler extends React.Component<Props, State> {
         </Header>
       );
       headers && headers.unshift(checkbox);
+    }
+
+    if (this.props.expandable) {
+      const spacer = <Header key="expandable" width="30px" />;
+      headers && headers.unshift(spacer);
     }
 
     if (this.props.deletable) {
@@ -423,9 +436,7 @@ export class TableDataHandler extends React.Component<Props, State> {
                   currItems,
                   headers,
                   handleSelect,
-                  selectable: this.props.selectable,
                   selectedItems: selectedItems,
-                  deletable: this.props.deletable,
                   criteria: this.state.criteria,
                   field: this.state.field,
                 })}

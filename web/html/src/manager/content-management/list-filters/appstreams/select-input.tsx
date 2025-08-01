@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 
-import { Select } from "components/input";
+import { DEPRECATED_Select } from "components/input";
 import { showErrorToastr } from "components/toastr";
 
 import useLifecycleActionsApi from "../../shared/api/use-lifecycle-actions-api";
@@ -29,7 +29,7 @@ export default function SelectInput(props: SelectInputProps) {
 
   return (
     <>
-      <Select
+      <DEPRECATED_Select
         name="moduleChannel"
         label={t("Channel")}
         labelClass="col-md-3"

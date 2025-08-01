@@ -189,6 +189,7 @@ class KeyManagement extends React.Component<Props, State> {
               cell={(row) => labelFor(row.state)}
             />
             <Column
+              columnKey="actions"
               width="15%"
               columnClass="text-right"
               headerClass="text-right"

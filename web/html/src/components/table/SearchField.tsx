@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Select } from "components/input";
+import { DEPRECATED_Select } from "components/input";
 import { Form } from "components/input/form/Form";
 
 type SearchFieldOption = {
@@ -48,7 +48,7 @@ export function SearchField(props: SearchFieldProps) {
   return (
     <Form model={model} onChange={onChange} title={t("Filter")}>
       {props.options != null && (
-        <Select
+        <DEPRECATED_Select
           name="filter"
           placeholder={t("Select a filter")}
           defaultValue={props.field}

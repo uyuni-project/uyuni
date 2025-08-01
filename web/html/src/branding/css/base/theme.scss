@@ -68,6 +68,12 @@ header {
     float: none !important;
   }
 
+  #spacewalk-content,
+  .flipped {
+    height: 100%;
+    overflow: auto;
+  }
+
   #page-body {
     flex: 1 1 auto;
     overflow: auto;
@@ -544,15 +550,6 @@ nav.navbar-pf {
   background-color: #ffffff;
   border-color: #cccccc;
   margin-left: 8px !important;
-}
-
-.spacewalk-list {
-  .spacewalk-list-head-addons {
-    .spacewalk-list-head-addons-extra {
-      float: right;
-      width: auto;
-    }
-  }
 }
 
 //Table's filters

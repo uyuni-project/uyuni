@@ -126,7 +126,7 @@
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@testing-library/react": "^11.1.2",
+    "@testing-library/react": "12.1.5",
     "@testing-library/user-event": "^12.6.0",
     "@types/d3": "4.5.0",
     "@types/dompurify": "3.2.0",

@@ -44,7 +44,7 @@ describe("AccordionPathContent summary", () => {
     render(<AccordionPathContent path={path} onSelectPlaybook={() => {}} />); // load the component at initial state
 
     const pathAccordionButtonToOpen = screen.getByRole("button", { name: path.path }) as HTMLButtonElement; // get the clickable element
-    click(pathAccordionButtonToOpen);
+    await click(pathAccordionButtonToOpen);
 
     screen.getByText("Loading content..");
 
