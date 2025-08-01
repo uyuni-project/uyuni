@@ -73,8 +73,8 @@
                 "duration": 524.332,
                 "__id__": "packages"
             },
-            "cmd_|-debianrelease_|-cat /etc/os-release_|-run": {
-                "name": "cat /etc/os-release",
+            "cmd_|-debianrelease_|-/usr/bin/cat /etc/os-release_|-run": {
+                "name": "/usr/bin/cat /etc/os-release",
                 "changes": {
                     "pid": 13835,
                     "retcode": 0,
@@ -82,7 +82,7 @@
                     "stderr": ""
                 },
                 "result": true,
-                "comment": "Command \"cat /etc/os-release\" run",
+                "comment": "Command \"/usr/bin/cat /etc/os-release\" run",
                 "__sls__": "packages.profileupdate",
                 "__run_num__": 4,
                 "start_time": "16:34:40.683970",

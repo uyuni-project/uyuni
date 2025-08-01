@@ -10,9 +10,9 @@
         ],
         "jid": "20160407084101455804",
         "return": {
-            "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run": {
-                "comment": "Command \"rpm -q --whatprovides 'sles_es-release-server'\" run",
-                "name": "rpm -q --whatprovides 'sles_es-release-server'",
+            "cmd_|-respkgquery_|-/usr/bin/rpm -q --whatprovides 'sles_es-release-server'_|-run": {
+                "comment": "Command \"/usr/bin/rpm -q --whatprovides 'sles_es-release-server'\" run",
+                "name": "/usr/bin/rpm -q --whatprovides 'sles_es-release-server'",
                 "start_time": "15:12:28.730937",
                 "result": true,
                 "duration": 522.726,
@@ -24,9 +24,9 @@
                     "stdout": "sles_es-release-server-7.2-9.el7.2.1.x86_64"
                 }
             },
-            "cmd_|-centosrelease_|-cat /etc/centos-release_|-run": {
+            "cmd_|-centosrelease_|-/usr/bin/cat /etc/centos-release_|-run": {
                 "comment": "onlyif execution failed",
-                "name": "cat /etc/centos-release",
+                "name": "/usr/bin/cat /etc/centos-release",
                 "start_time": "15:12:28.510221",
                 "skip_watch": true,
                 "result": true,
@@ -34,9 +34,9 @@
                 "__run_num__": 2,
                 "changes": {}
             },
-            "cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run": {
-                "comment": "Command \"cat /etc/redhat-release\" run",
-                "name": "cat /etc/redhat-release",
+            "cmd_|-rhelrelease_|-/usr/bin/cat /etc/redhat-release_|-run": {
+                "comment": "Command \"/usr/bin/cat /etc/redhat-release\" run",
+                "name": "/usr/bin/cat /etc/redhat-release",
                 "start_time": "15:12:28.047595",
                 "result": true,
                 "duration": 462.21,
