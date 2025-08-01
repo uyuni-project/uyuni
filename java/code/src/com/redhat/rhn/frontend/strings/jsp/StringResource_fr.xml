@@ -9679,12 +9679,6 @@ Veuillez noter qu'une configuration manuelle de ces scripts peut toujours être 
         </context-group>
         <target>Emplacement du certificat SSL</target>
       </trans-unit>
-      <trans-unit id="bootstrap.jsp.salt" xml:space="preserve">
-        <source>Bootstrap using Salt</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="bootstrap.jsp.gpg" xml:space="preserve">
         <source>Enable Client GPG checking</source>
         <context-group name="ctx">
@@ -20908,8 +20902,8 @@ pour ces versions seront également supprimées, ainsi que tous les historiques 
         </context-group>
         </trans-unit>
         <trans-unit id="ssm.operations.provisioning.remotecommand.form.queue.succeed" xml:space="preserve">
-          <source>Task "{0}" has been successfully added to Action Chain {1}.</source>
-          <target>La tâche « {0} » a été ajoutée à la chaîne d'actions {1} avec succès.</target>
+          <source>Task "{0}" has been successfully added to Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
+          <target state="needs-adaptation">La tâche « {0} » a été ajoutée à la chaîne d'actions {1} avec succès.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -26994,7 +26988,7 @@ canal  {0}. Les systèmes abonnés vont perdre leur accès aux paquetages spéci
         <target>Vous pouvez définir la programmation du bunch sélectionné ici.</target>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.introparagraph" xml:space="preserve">
-        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
+        <source>Are you sure you want to disable the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
@@ -27036,11 +27030,11 @@ canal  {0}. Les systèmes abonnés vont perdre leur accès aux paquetages spéci
         <target>créer une programmation</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.schedule" xml:space="preserve">
-        <source>delete schedule</source>
+        <source>disable schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>supprimer la programmation</target>
+        <target state="needs-adaptation">supprimer la programmation</target>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.satschedules" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Schedules</source>
@@ -27115,11 +27109,11 @@ canal  {0}. Les systèmes abonnés vont perdre leur accès aux paquetages spéci
         </context-group>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.deleteschedule" xml:space="preserve">
-        <source>Delete Schedule</source>
+        <source>Disable Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target>Supprimer la programmation</target>
+        <target state="needs-adaptation">Supprimer la programmation</target>
       </trans-unit>
       <trans-unit id="task.edit.jsp.name" xml:space="preserve">
         <source>Task Name</source>
@@ -29361,6 +29355,20 @@ canal  {0}. Les systèmes abonnés vont perdre leur accès aux paquetages spéci
         </source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="userdetails.jsp.adminroles" xml:space="preserve">
+        <source>Administrative Roles</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserDetails</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="schedule.edit.jsp.activateschedule" xml:space="preserve">
+        <source>Activate Schedule</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
       <target state="new"/>
   </trans-unit>

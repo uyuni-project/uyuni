@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../src/bin/spacecmd:60
+#: ../src/bin/spacecmd:62
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-25 09:41+0200\n"
+"POT-Creation-Date: 2025-08-01 16:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7947,6 +7947,6 @@ msgstr ""
 msgid "Parameter {} not a string type, but {}."
 msgstr ""
 
-#: ../src/bin/spacecmd:75
+#: ../src/bin/spacecmd:77
 msgid "Unhandled exception occurred while getting FQDN:"
 msgstr ""

@@ -9694,8 +9694,8 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
         <target>Plán &lt;strong&gt;{0}&lt;/strong&gt; bol aktualizovaný.</target>
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
-        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target>Plán &lt;strong&gt;{0}&lt;/strong&gt; bol vymazaný.</target>
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been disabled.</source>
+        <target state="needs-adaptation">Plán &lt;strong&gt;{0}&lt;/strong&gt; bol vymazaný.</target>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
@@ -10012,10 +10012,6 @@ pre informácie o tom, ako si obnovíte svoj certifikát @@PRODUCT_NAME@@.
 Ďakujeme, že používate @@PRODUCT_NAME@@.
 --Tím @@PRODUCT_NAME@@
 </target>
-      </trans-unit>
-      <trans-unit id="alphabar.label" xml:space="preserve">
-        <source>Select first character</source>
-        <target>Vybrať prvý znak</target>
       </trans-unit>
       <trans-unit id="lookup.customkey.title" xml:space="preserve">
         <source>We're sorry, but the custom key could not be found.</source>
@@ -11005,8 +11001,8 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         <target state="translated">Neočakávaná chyba pri pridávaní produktu.</target>
       </trans-unit>
       <trans-unit id="cveaudit.notfound" xml:space="preserve">
-        <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
-        <target state="translated">Zadané číslo CVE sa v našej databáze nenašlo. Ďalšie informácie o tomto CVE môžete získať z odkazov uvedených nižšie.</target>
+        <source>The specified CVE number was not found in our database.</source>
+        <target state="needs-adaptation">Zadané číslo CVE sa v našej databáze nenašlo. Ďalšie informácie o tomto CVE môžete získať z odkazov uvedených nižšie.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
         <source>Error during applying the bootstrap state. Check the server logs.</source>
@@ -11861,6 +11857,49 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <source>Error when triggering the channels sync.</source>
         <target state="translated">Chyba pri spúšťaní synchronizácie kanálov.</target>
       </trans-unit>
+    <trans-unit id="supportdata.get" xml:space="preserve">
+        <source>Get and Upload Support data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="message.scheduleactivated" xml:space="preserve">
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.errata-advisory-map-sync" xml:space="preserve">
+        <source>Update SUSE errata advisory map</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.errata-advisory-map-sync-bunch" xml:space="preserve">
+        <source>Update SUSE errata advisory map to retrieve announcement ids and advisor URLs</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="supportdata.uploadGeoType.eu" xml:space="preserve">
+        <source>EU</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="supportdata.uploadGeoType.us" xml:space="preserve">
+        <source>US</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.details.support.invalid_case_number" xml:space="preserve">
+        <source>The case number {0} is not valid.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.details.support.invalid_region" xml:space="preserve">
+        <source>The region {0] is not valid.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.details.support.unable_to_schedule" xml:space="preserve">
+        <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.details.support.unable_to_upload" xml:space="preserve">
+        <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
+      <target state="new"/>
+  </trans-unit>
     </body>
   </file>
 </xliff>
