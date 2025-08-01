@@ -295,7 +295,8 @@ public class PackageRefreshListAction extends PackageAction {
 
         Map<String, Tuple2<String, Pkg.Info>> packagesToAdd = newPackageMap.entrySet().stream().filter(
                 e -> !oldPackageMap.containsKey(e.getKey())
-        ).collect(Collectors.toMap(Map.Entry::getKey, e -> new Tuple2(e.getValue().getKey(), e.getValue().getValue())));
+        ).collect(Collectors.toMap(Map.Entry::getKey,
+                e -> new Tuple2<>(e.getValue().getKey(), e.getValue().getValue())));
 
         packages.addAll(SaltUtils.createPackagesFromSalt(packagesToAdd, server));
         SystemManager.updateSystemOverview(server.getId());
@@ -354,8 +355,7 @@ public class PackageRefreshListAction extends PackageAction {
             return firstEntry;
         }
 
-        // the later one wins
-        if (first.getInstallDateUnixTime().get() > second.getInstallDateUnixTime().get()) {
+        if (first.getInstallDateUnixTime().orElse(0L) > second.getInstallDateUnixTime().orElse(0L)) {
             return firstEntry;
         }
         else {

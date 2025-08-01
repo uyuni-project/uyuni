@@ -298,7 +298,7 @@ public class ImageInspectAction extends Action {
     }
 
     private ImagePackage createImagePackageFromSalt(String name, Pkg.Info info, ImageInfo imageInfo) {
-        return createImagePackageFromSalt(name, info.getEpoch(), info.getRelease(), info.getVersion().get(),
+        return createImagePackageFromSalt(name, info.getEpoch(), info.getRelease(), info.getVersion().orElse("0"),
                 info.getInstallDateUnixTime(), info.getArchitecture(), imageInfo);
     }
 

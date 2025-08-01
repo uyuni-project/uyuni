@@ -112,8 +112,6 @@ public class SaltServerActionService {
     /* Logger for this class */
     private static final Logger LOG = LogManager.getLogger(SaltServerActionService.class);
 
-    private boolean commitTransaction = true;
-
     private SaltActionChainGeneratorService saltActionChainGeneratorService =
             SaltActionChainGeneratorService.INSTANCE;
 
@@ -1019,7 +1017,7 @@ public class SaltServerActionService {
      * Checks whether the parent action of given server action contains a server action
      * that is in given state and is associated with the server of given server action.
      * @param serverAction server action
-     * @param state state
+     * @param statusComparison status
      * @return true if there exists a server action in given state associated with the same
      * server as serverAction and parent action of serverAction
      */
@@ -1345,16 +1343,6 @@ public class SaltServerActionService {
     public void setSaltActionChainGeneratorService(SaltActionChainGeneratorService
                                                            saltActionChainGeneratorServiceIn) {
         this.saltActionChainGeneratorService = saltActionChainGeneratorServiceIn;
-    }
-
-    /**
-     * Whether to commit hibernate transaction or not. Default is commit.
-     * Only used in unit tests.
-     *
-     * @param commitTransactionIn flag to set
-     */
-    public void setCommitTransaction(boolean commitTransactionIn) {
-        this.commitTransaction = commitTransactionIn;
     }
 
     /**

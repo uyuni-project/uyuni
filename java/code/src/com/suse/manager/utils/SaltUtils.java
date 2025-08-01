@@ -878,8 +878,7 @@ public class SaltUtils {
         if ((prereqType.isEmpty() || prereqType.get().equals(action.getActionType())) &&
                 action.getServerActions().stream()
                         .filter(sa -> sa.getServer().getId() == systemId)
-                        .filter(sa -> sa.isStatusCompleted())
-                        .findFirst().isPresent()) {
+                        .anyMatch(ServerAction::isStatusCompleted)) {
             return true;
         }
         return prerequisiteIsCompleted(action.getPrerequisite(), prereqType, systemId);

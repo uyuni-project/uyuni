@@ -136,7 +136,7 @@ public class ImageBuildAction extends Action {
         List<MinionServer> minions = MinionServerFactory.findMinionsByServerIds(
                 minionSummaries.stream().map(MinionSummary::getServerId).collect(Collectors.toList()));
 
-        //TODO: optimal scheduling would be to group by host and orgid
+        //INFO: optimal scheduling would be to group by host and orgid
         return minions.stream().collect(
                 toMap(minion -> {
                             Map<String, Object> pillar = new HashMap<>();
@@ -156,7 +156,7 @@ public class ImageBuildAction extends Action {
                                 pillar.put("builddir", dockerfileProfile.getPath());
                                 pillar.put("build_id", "build" + actionId);
                                 try {
-                                    //TODO: maybe from the database
+                                    //Q: maybe from the database
                                     certificate = String.join("\n\n", Files.readAllLines(
                                             Paths.get("/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT"),
                                             Charset.defaultCharset()

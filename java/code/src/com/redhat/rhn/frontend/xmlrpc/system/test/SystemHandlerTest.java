@@ -372,7 +372,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SystemHandler mockedHandler = getMockedHandler();
         ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
         SaltServerActionService sa = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
-        sa.setCommitTransaction(false);
         sa.setSaltApi(saltApi);
         List<Long> finishedActions = new ArrayList<>();
 
@@ -495,7 +494,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SystemHandler mockedHandler = getMockedHandler();
         ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
         SaltServerActionService sa = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
-        sa.setCommitTransaction(false);
         sa.setSaltApi(saltApi);
         List<Long> finishedActions = new ArrayList<>();
 
@@ -627,7 +625,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SystemHandler mockedHandler = getMockedHandler();
         ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
         SaltServerActionService sa = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
-        sa.setCommitTransaction(false);
         sa.setSaltApi(saltApi);
         List<Long> finishedActions = new ArrayList<>();
 
@@ -716,7 +713,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SystemHandler mockedHandler = getMockedHandler();
         ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
         SaltServerActionService sa = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
-        sa.setCommitTransaction(false);
         sa.setSaltApi(saltApi);
         List<Long> finishedActions = new ArrayList<>();
 

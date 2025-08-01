@@ -157,7 +157,7 @@ public class ApplyStatesAction extends Action {
                             serverAction.getServerId(), serverAction.getParentAction().getId()));
 
             Set<User> admins = new HashSet<>(ServerFactory.listAdministrators(serverAction.getServer()));
-            // TODO: are also org admins and the creator part of this list?
+            // Q: are also org admins and the creator part of this list?
             UserNotificationFactory.storeForUsers(nm, admins);
         }
         if (details.isTest()) {
