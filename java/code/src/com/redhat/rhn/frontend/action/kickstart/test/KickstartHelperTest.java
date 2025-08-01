@@ -62,7 +62,6 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserFactory.save(user);
         ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
-        // ksdata = KickstartDataTest.createKickstartWithChannel(user.getOrg());
         mockRequest = new RhnMockHttpServletRequest();
         mockRequest.setupGetRemoteAddr("127.0.0.1");
         request = new RhnHttpServletRequest(mockRequest);
@@ -178,7 +177,6 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
                 ",1006678487::1152567362.02:21600.0:t15lgsaTRKpX6AxkUFQ11A==:f" +
                 "js-0-12.rhndev.redhat.com";
 
-        // mockRequest.setupAddHeader(KickstartHelper.XRHNPROXYAUTH, proxyheader);
         mockRequest.setupGetHeader(KickstartHelper.XRHNPROXYAUTH, proxyheader);
         helper = new KickstartHelper(request);
         assertEquals("fjs-0-08.rhndev.redhat.com", helper.getKickstartHost());

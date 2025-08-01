@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -47,6 +47,7 @@ import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.supportdata.UploadGeoType;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -201,6 +202,7 @@ import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.xmlrpc.NoSuchHistoryEventException;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -279,6 +281,7 @@ public class SystemHandler extends BaseHandler {
             this.cloudPaygManager = cloudPaygManagerIn;
         }
         this.attestationManager = attestationManagerIn;
+        ActionManager.setTaskomaticApi(this.taskomaticApi);
     }
 
     /**
@@ -312,7 +315,7 @@ public class SystemHandler extends BaseHandler {
 
         // if there are any existing reactivation keys, remove them before
         // creating a new one... there should only be 1; however, earlier
-        // versions of the API did not remove the existing reactivation keys;
+        // versions of the API did not remove the existing reactivation keys
         // therefore, it is possible that multiple will be returned...
         ActivationKeyFactory.removeKeysForServer(server.getId());
 
@@ -887,7 +890,7 @@ public class SystemHandler extends BaseHandler {
         ret.put("id", channel.getId());
         ret.put("name", channel.getName());
         ret.put("label", channel.getLabel());
-        ret.put("current_base", currentBase ? Integer.valueOf(1) : Integer.valueOf(0));
+        ret.put("current_base", BooleanUtils.isTrue(currentBase) ? Integer.valueOf(1) : Integer.valueOf(0));
         return ret;
     }
 
@@ -1232,7 +1235,7 @@ public class SystemHandler extends BaseHandler {
 
             //Check epoch
             String pkgEpoch = StringUtils.trim((String) pkg.get("epoch"));
-            // If epoch is null, we arrived here from the isNvreInstalled(...n,v,r) method;
+            // If epoch is null, we arrived here from the isNvreInstalled(...n,v,r) method
             // therefore, just skip the comparison
             if ((epoch != null) && !pkgEpoch.equals(StringUtils.trim(epoch))) {
                 continue;
@@ -1945,7 +1948,7 @@ public class SystemHandler extends BaseHandler {
             List<Server> servers = new ArrayList<>(1);
             servers.add(server);
 
-            if (member) {
+            if (BooleanUtils.isTrue(member)) {
                 //add to server group
                 serverGroupManager.addServers(group, servers, loggedInUser);
             }
@@ -3279,6 +3282,7 @@ public class SystemHandler extends BaseHandler {
                 sid.longValue(), ksdata.getId(), loggedInUser, new Date(),
                 ConfigDefaults.get().getCobblerHost());
 
+        KickstartScheduleCommand.setTaskomaticApi(taskomaticApi);
         cmd.setGuestName(guestName);
         cmd.setMemoryAllocation(Long.valueOf(memoryMb));
         cmd.setVirtualCpus(Long.valueOf(vcpus.toString()));
@@ -3752,10 +3756,8 @@ public class SystemHandler extends BaseHandler {
 
         Server server = lookupServer(loggedInUser, sid);
 
-        DataResult<ErrataOverview> dr = SystemManager.relevantErrataByType(loggedInUser,
+        return SystemManager.relevantErrataByType(loggedInUser,
                 server.getId(), advisoryType);
-
-        return dr;
     }
 
     /**
@@ -3909,7 +3911,7 @@ public class SystemHandler extends BaseHandler {
             .map(Integer::longValue)
             .collect(toList());
 
-        if (!allowModules) {
+        if (BooleanUtils.isNotTrue(allowModules)) {
             for (Long sid : serverIds) {
                 Server server = SystemManager.lookupByIdAndUser(sid, loggedInUser);
                 for (Channel channel : server.getChannels()) {
@@ -4217,7 +4219,7 @@ public class SystemHandler extends BaseHandler {
 
         List<Long> actionIds = new ArrayList<>();
 
-        if (!allowModules) {
+        if (BooleanUtils.isNotTrue(allowModules)) {
             boolean hasModules = false;
             for (Integer sid : sids) {
                 Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
@@ -5713,7 +5715,7 @@ public class SystemHandler extends BaseHandler {
         if (details.containsKey("auto_errata_update")) {
             Boolean autoUpdate = (Boolean)details.get("auto_errata_update");
 
-            if (autoUpdate) {
+            if (BooleanUtils.isTrue(autoUpdate)) {
                 server.setAutoUpdate("Y");
             }
             else {
@@ -5812,7 +5814,7 @@ public class SystemHandler extends BaseHandler {
                     server);
         }
         else {
-            if (lockStatus) {
+            if (BooleanUtils.isTrue(lockStatus)) {
                 // lock the server, if it isn't already locked.
                 if (server.getLock() == null) {
                     SystemManager.lockServer(loggedInUser, server,
@@ -6068,8 +6070,7 @@ public class SystemHandler extends BaseHandler {
                             map.put(csvUuid, record[uuidPos]);
                             map.put(csvSystemId, record[systemIdPos]);
                             map.put(csvStamp, fileStamp);
-                            String[] cmd = {"rpm", "--qf=%{NAME}",
-                                    "-qf", file.getAbsolutePath()};
+                            String[] cmd = {"/usr/bin/rpm", "--qf=%{NAME}", "-qf", file.getAbsolutePath()};
                             map.remove(csvHostname);
                             SystemCommandExecutor ce = new SystemCommandExecutor();
                             if (ce.execute(cmd) == 0) {
@@ -7411,7 +7412,7 @@ public class SystemHandler extends BaseHandler {
             String interfaceName) {
         Server server = lookupServer(loggedInUser, sid);
 
-        if (!server.existsActiveInterfaceWithName(interfaceName)) {
+        if (BooleanUtils.isNotTrue(server.existsActiveInterfaceWithName(interfaceName))) {
             throw new NoSuchNetworkInterfaceException("No such network interface: " +
                     interfaceName);
         }
@@ -9187,6 +9188,55 @@ public class SystemHandler extends BaseHandler {
         }
         catch (LookupException ex) {
             throw new EntityNotExistsFaultException(resultId);
+        }
+    }
+
+    /**
+     * Schedule Action to get and upload support data from the defined system to SCC.
+     * @param loggedInUser the user
+     * @param sid the system ID
+     * @param caseNumber the support case number
+     * @param parameter additional parameter for the tool which collect the data
+     * @param uploadGeo The location of the upload server [EU, US]
+     * @param earliestOccurrence the date when this action should be executed
+     * @return the action
+     *
+     * @apidoc.doc Schedule an action to get and upload support data from the specified system to SCC.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #param_desc("string", "caseNumber", "The SCC case number")
+     * @apidoc.param #param_desc("string", "parameter",
+     * "Additional parameter for the tool which collect the data from the system. Can be empty")
+     * @apidoc.param #param_desc("string", "uploadGeo", "The location of the upload server [EU, US]")
+     * @apidoc.param #param("$date",  "earliestOccurrence")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
+     */
+    public Integer scheduleSupportDataUpload(User loggedInUser, Integer sid, String caseNumber, String parameter,
+                                             String uploadGeo, Date earliestOccurrence) {
+        if (Config.get().getBoolean(ConfigDefaults.WEB_DISABLE_SUPPORTDATA_UPLOAD)) {
+            throw new UnsupportedOperationException("Disabled");
+        }
+        try {
+            SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
+
+            if (!caseNumber.matches("^\\d+$")) {
+                throw new InvalidParameterException("invalid case number: " + caseNumber);
+            }
+
+            Action action = ActionManager.scheduleSupportDataAction(loggedInUser, sid.longValue(),
+                    caseNumber, parameter, UploadGeoType.byLabel(StringUtils.lowerCase(uploadGeo)), earliestOccurrence);
+            taskomaticApi.scheduleActionExecution(action);
+            return action.getId().intValue();
+        }
+        catch (LookupException e) {
+            throw new NoSuchSystemException();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException eIn) {
+            throw new TaskomaticApiException(eIn.getMessage());
+        }
+        catch (IllegalArgumentException ex) {
+            throw new InvalidParameterException("invalid upload geo type " + uploadGeo);
         }
     }
 

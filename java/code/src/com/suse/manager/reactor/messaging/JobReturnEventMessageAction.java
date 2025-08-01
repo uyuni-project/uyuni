@@ -172,7 +172,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                                             .filter(m -> m.getMinionId().equals(jobReturnEvent.getMinionId()))
                                             .isPresent()
                                     )
-                                    .filter(sa -> !sa.getStatus().isDone())
+                                    .filter(sa -> !sa.isDone())
                                     .forEach(sa -> sa.fail(jobReturnEvent.getData().getResult().toString()));
                             if (ac.isDone()) {
                                 ActionChainFactory.delete(ac);

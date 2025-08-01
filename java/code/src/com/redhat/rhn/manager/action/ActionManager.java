@@ -56,6 +56,9 @@ import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
+import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
+import com.redhat.rhn.domain.action.supportdata.UploadGeoType;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFileName;
@@ -101,6 +104,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
@@ -197,9 +201,9 @@ public class ActionManager extends BaseManager {
             throw new LookupException("Could not find action " + actionId + " on system " + serverId);
         }
         Date now = Calendar.getInstance().getTime();
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_QUEUED) ||
-                serverAction.getStatus().equals((ActionFactory.STATUS_PICKED_UP))) {
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+        if (serverAction.isStatusQueued() ||
+                serverAction.isStatusPickedUp()) {
+            serverAction.setStatusFailed();
             serverAction.setResultMsg(message);
             serverAction.setCompletionTime(now);
         }
@@ -359,7 +363,7 @@ public class ActionManager extends BaseManager {
                                               .filter(Objects::nonNull)
                                               .flatMap(p -> p.getServerActions().stream())
                                               .filter(sa -> serverIds.isEmpty() || serverIds.contains(sa.getServerId()))
-                                              .anyMatch(sa -> !ActionFactory.STATUS_FAILED.equals(sa.getStatus()));
+                                              .anyMatch(sa -> !sa.isStatusFailed());
         if (hasValidPrerequisite) {
             StringBuilder message = new StringBuilder();
             for (Action a : actions) {
@@ -389,8 +393,7 @@ public class ActionManager extends BaseManager {
 
         actionsToDelete.stream()
                        .flatMap(a -> a.getServerActions().stream())
-                       .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()) ||
-                           ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus()))
+                       .filter(sa -> sa.isStatusQueued() || sa.isStatusPickedUp())
                        // if serverIds is not specified, do not filter at all
                        // if it is, only ServerActions that have server ids in the specified set can pass
                        .filter(sa -> serverIds.isEmpty() || serverIds.contains(sa.getServerId()))
@@ -408,13 +411,20 @@ public class ActionManager extends BaseManager {
                         a,
                         a.getServerActions()
                          .stream()
-                         .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()))
+                         .filter(sa -> sa.isStatusQueued())
                          .map(ServerAction::getServer)
                          .filter(server -> isMinionServer(server) && servers.contains(server))
                          .collect(toSet())
                     )
                 )
                 .filter(p -> !p.getRight().isEmpty())
+                // select Actions that have no minions besides those in the specified set
+                // (those that have any other minion should NOT be unscheduled!)
+                .filter(e -> e.getKey().getServerActions().stream()
+                        .map(ServerAction::getServer)
+                        .filter(MinionServerUtils::isMinionServer)
+                        .allMatch(s -> e.getValue().contains(s))
+                )
                 .collect(toMap(
                     Pair::getLeft,
                     Pair::getRight
@@ -427,12 +437,12 @@ public class ActionManager extends BaseManager {
         String cancellationMessage = "Canceled by " + user.getLogin();
         serverActions.forEach(sa -> {
             // Delete ServerActions from the database only if QUEUED
-            if (ActionFactory.STATUS_QUEUED.equals(sa.getStatus())) {
+            if (sa.isStatusQueued()) {
                 sa.getParentAction().getServerActions().remove(sa);
                 ActionFactory.delete(sa);
             }
             // Set to FAILED if the state is PICKED_UP
-            else if (ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus())) {
+            else if (sa.isStatusPickedUp()) {
                 failSystemAction(user, sa.getServerId(), sa.getParentAction().getId(), cancellationMessage);
             }
             SystemManager.updateSystemOverview(sa.getServerId());
@@ -734,7 +744,7 @@ public class ActionManager extends BaseManager {
         action.setOrg(user.getOrg());
 
         ServerAction sa = new ServerAction();
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatusQueued();
         sa.setRemainingTries(5L);
         sa.setServerWithCheck(server);
 
@@ -1199,7 +1209,7 @@ public class ActionManager extends BaseManager {
         action.setEarliestAction(earliest);
 
         ServerAction sa = new ServerAction();
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatusQueued();
         sa.setRemainingTries(REMAINING_TRIES);
         sa.setServerWithCheck(server);
         action.addServerAction(sa);
@@ -1566,7 +1576,7 @@ public class ActionManager extends BaseManager {
         Action action = createScheduledAction(scheduler, type, name, earliestAction);
 
         ServerAction sa = new ServerAction();
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatusQueued();
         sa.setRemainingTries(REMAINING_TRIES);
         sa.setServerWithCheck(srvr);
 
@@ -1770,7 +1780,7 @@ public class ActionManager extends BaseManager {
         action.setEarliestAction(earliestAction);
 
         ServerAction sa = new ServerAction();
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatusQueued();
         sa.setRemainingTries(REMAINING_TRIES);
         sa.setServerWithCheck(srvr);
 
@@ -2341,6 +2351,26 @@ public class ActionManager extends BaseManager {
      */
     public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
             Optional<Map<String, Object>> pillar, Date earliest, Optional<Boolean> test, boolean recurring) {
+        return scheduleApplyStates(scheduler, sids, mods, pillar, earliest, test, recurring, false);
+    }
+
+    /**
+     * Schedule state application given a list of state modules. Salt will apply the
+     * highstate if an empty list of state modules is given.
+     *
+     * @param scheduler the user who is scheduling
+     * @param sids list of server ids
+     * @param mods list of state modules to be applied
+     * @param pillar optional pillar map
+     * @param earliest action will not be executed before this date
+     * @param test run states in test-only mode
+     * @param recurring whether the state is being applied recurring
+     * @param direct  whenther the state should be executed as direct call
+     * @return the action object
+     */
+    public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
+                                                        Optional<Map<String, Object>> pillar, Date earliest,
+                                                        Optional<Boolean> test, boolean recurring, boolean direct) {
         ApplyStatesAction action = (ApplyStatesAction) ActionFactory
                 .createAction(ActionFactory.TYPE_APPLY_STATES, earliest);
         action.setName(defineStatesActionName(mods, recurring));
@@ -2352,6 +2382,7 @@ public class ActionManager extends BaseManager {
         actionDetails.setMods(mods);
         actionDetails.setPillarsMap(pillar);
         test.ifPresent(actionDetails::setTest);
+        actionDetails.setDirect(direct);
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
@@ -2518,6 +2549,38 @@ public class ActionManager extends BaseManager {
     }
 
     /**
+     * Schedule Action to get and upload supportdata from the defined system to SCC.
+     * @param scheduler the scheduler of this action
+     * @param sid the system ID
+     * @param caseNumber the support case number
+     * @param parameter additional parameter for the tool which collect the data
+     * @param uploadGeoType the uploadGeo Type
+     * @param earliest the date when this action should be executed
+     * @return the action
+     */
+    public static Action scheduleSupportDataAction(User scheduler, long sid, String caseNumber, String parameter,
+                                                   UploadGeoType uploadGeoType, Date earliest) {
+        SupportDataAction action = (SupportDataAction) ActionFactory
+                .createAction(ActionFactory.TYPE_SUPPORTDATA_GET, earliest);
+        action.setName("Get and Upload Support data");
+        action.setOrg(scheduler != null ?
+                scheduler.getOrg() : OrgFactory.getSatelliteOrg());
+        action.setSchedulerUser(scheduler);
+
+        SupportDataActionDetails actionDetails = new SupportDataActionDetails();
+        actionDetails.setCaseNumber(caseNumber);
+        actionDetails.setParameter(parameter);
+        actionDetails.setGeoType(uploadGeoType);
+        actionDetails.setParentAction(action);
+
+        action.setDetails(actionDetails);
+        ActionFactory.save(action);
+
+        scheduleForExecution(action, Set.of(sid));
+        return action;
+    }
+
+    /**
      * Schedule an immediate Ansible inventory refresh without a user.
      *
      * @param server the server
@@ -2560,7 +2623,7 @@ public class ActionManager extends BaseManager {
         action.setDetails(details);
 
         ServerAction sa = new ServerAction();
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatusQueued();
         sa.setRemainingTries(REMAINING_TRIES);
         sa.setServerWithCheck(server);
         action.addServerAction(sa);

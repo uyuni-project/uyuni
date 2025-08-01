@@ -319,8 +319,7 @@ public class ListTag extends BodyTagSupport {
      * @return number of rows on current page
      */
     public int getPageRowCount() {
-        int retval = pageData == null ? 0 : pageData.size();
-        return retval;
+        return pageData == null ? 0 : pageData.size();
     }
 
     /**
@@ -459,17 +458,9 @@ public class ListTag extends BodyTagSupport {
         // know if there will be content or not, but we want to avoid
         // writing the head tag at all if there is none, so we push a
         // buffer into the stack, and empty it later.
-        StringWriter headAlphaBarContent = new StringWriter();
         StringWriter headAddons = new StringWriter();
         StringWriter headFilterContent = new StringWriter();
         StringWriter headExtraContent = new StringWriter();
-
-        pageContext.pushBody(headAlphaBarContent);
-        if (!manip.isListEmpty() && !StringUtils.isBlank(alphaBarColumn)) {
-            AlphaBarHelper.getInstance().writeAlphaBar(pageContext,
-                    manip.getAlphaBarIndex(), getUniqueName());
-        }
-        pageContext.popBody();
 
         pageContext.pushBody(headAddons);
         if (!isEmpty()) {
@@ -495,7 +486,6 @@ public class ListTag extends BodyTagSupport {
         pageContext.popBody();
 
         int headContentLength = headFilterContent.getBuffer().length() +
-                headAlphaBarContent.getBuffer().length() +
                 headAddons.getBuffer().length() +
                 headExtraContent.getBuffer().length();
         if (!StringUtils.isBlank(title)) {
@@ -520,12 +510,6 @@ public class ListTag extends BodyTagSupport {
             if (headFilterContent.getBuffer().length() > 0) {
                 ListTagUtil.write(pageContext, "<div class=\"spacewalk-list-filter\">");
                 ListTagUtil.write(pageContext, headFilterContent.toString());
-                ListTagUtil.write(pageContext, "</div>");
-            }
-
-            if (headAlphaBarContent.getBuffer().length() > 0) {
-                ListTagUtil.write(pageContext, "<div class=\"spacewalk-list-alphabar\">");
-                ListTagUtil.write(pageContext, headAlphaBarContent.toString());
                 ListTagUtil.write(pageContext, "</div>");
             }
 
@@ -864,7 +848,6 @@ public class ListTag extends BodyTagSupport {
     }
 
     private void setupManipulator() throws JspException {
-        manip.setAlphaColumn(alphaBarColumn);
         manip.filter(filter, pageContext);
         manip.setDefaultSortAttribute(defaultSortAttr);
         manip.setDefaultAscending(!RequestContext.SORT_DESC.equals(defaultSortDir));
@@ -978,9 +961,6 @@ public class ListTag extends BodyTagSupport {
 
         ListTagUtil.write(pageContext, " class=\"");
         ListTagUtil.write(pageContext, getRowRenderer().getRowClass(getCurrentObject()));
-        if (rowCounter == manip.findAlphaPosition() % pageSize) {
-            ListTagUtil.write(pageContext, " alphaResult");
-        }
         ListTagUtil.write(pageContext, "\" ");
         if (getCurrentObject() != null) { //if we're rendering a non-item row (e.g. reflink)
             ListTagUtil.write(pageContext, "id=\"");

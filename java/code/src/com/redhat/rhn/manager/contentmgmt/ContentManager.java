@@ -668,7 +668,7 @@ public class ContentManager {
     }
 
     // helper method to determine if given environment is BUILDING
-    private Boolean isEnvironmentBuilding(Optional<ContentEnvironment> env) {
+    private boolean isEnvironmentBuilding(Optional<ContentEnvironment> env) {
         return env.flatMap(e -> e.computeStatus().map(status -> status.equals(EnvironmentTarget.Status.BUILDING)))
                 .orElse(false);
     }
@@ -848,7 +848,7 @@ public class ContentManager {
         // fix the original-clone relation
         ChannelManager.forceBecomingCloneOf(tgt, newSource);
 
-        // handle the module data: if there are modules filters present, we strip them, even if the source is modular;
+        // handle the module data: if there are modules filters present, we strip them, even if the source is modular
         // otherwise we set them according to the source channel modules
         if (stripModuleData) {
             stripModuleMetadata(tgt);

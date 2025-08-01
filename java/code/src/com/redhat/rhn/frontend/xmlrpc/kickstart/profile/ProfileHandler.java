@@ -675,7 +675,7 @@ public class ProfileHandler extends BaseHandler {
         script.setData(contents.getBytes());
         script.setInterpreter(interpreter.equals("") ? null : interpreter);
         script.setScriptType(type);
-        script.setChroot(chroot ? "Y" : "N");
+        script.setChroot(BooleanUtils.isTrue(chroot) ? "Y" : "N");
         script.setRaw(!template);
         script.setErrorOnFail(erroronfail);
         script.setKsdata(ksData);
@@ -1419,7 +1419,7 @@ public class ProfileHandler extends BaseHandler {
                 repos.add(repo.getName());
             }
         }
-        return (String[]) repos.toArray(new String[]{});
+        return repos.toArray(new String[]{});
     }
 
     /**
@@ -1443,7 +1443,7 @@ public class ProfileHandler extends BaseHandler {
                 items.add(repo.getName());
             }
         }
-        return (String[]) items.toArray(new String[]{});
+        return items.toArray(new String[]{});
     }
 
     /**

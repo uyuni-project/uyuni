@@ -49,12 +49,12 @@ public class PaygAuthDataExtractor {
     private static final Path PAYG_INSTANCE_INFO_JSON = Path.of("/var/cache/rhn/payg.json");
     private static final int VALIDITY_MINUTES = 11;
 
-    private static final String CONNECTION_TIMEOUT_PROPEERRTY = "java.payg.connection_timeout";
-    private static final String WAIT_RESPONSE_TIMEOUT_PROPEERRTY = "java.payg.repsonse_timeout";
+    private static final String CONNECTION_TIMEOUT_PROPERTY = "java.payg.connection_timeout";
+    private static final String WAIT_RESPONSE_TIMEOUT_PROPERTY = "java.payg.repsonse_timeout";
 
     // time in milliseconds
-    private static final int CONNECTION_TIMEOUT = Config.get().getInt(CONNECTION_TIMEOUT_PROPEERRTY, 5000);
-    private static final int RESPONSE_TIMEOUT = Config.get().getInt(WAIT_RESPONSE_TIMEOUT_PROPEERRTY, 20000);
+    private static final int CONNECTION_TIMEOUT = Config.get().getInt(CONNECTION_TIMEOUT_PROPERTY, 5000);
+    private static final int RESPONSE_TIMEOUT = Config.get().getInt(WAIT_RESPONSE_TIMEOUT_PROPERTY, 20000);
 
     private static final Logger LOG = LogManager.getLogger(PaygAuthDataExtractor.class);
 
@@ -65,9 +65,9 @@ public class PaygAuthDataExtractor {
         .create();
 
     public enum OsSpecificExtractor {
-        SLES_EXTRACTOR("SLE", "sudo python3", "script/payg_extract_repo_data.py"),
-        RHEL_EXTRACTOR("RHEL", "sudo /usr/libexec/platform-python", "script/rhui_extract_repo_data.py"),
-        RHEL7_EXTRACTOR("RHEL7", "sudo python", "script/rhui7_extract_repo_data.py");
+        SLES_EXTRACTOR("SLE", "/usr/bin/sudo /usr/bin/python3", "script/payg_extract_repo_data.py"),
+        RHEL_EXTRACTOR("RHEL", "/usr/bin/sudo /usr/libexec/platform-python", "script/rhui_extract_repo_data.py"),
+        RHEL7_EXTRACTOR("RHEL7", "/usr/bin/sudo /usr/bin/python", "script/rhui7_extract_repo_data.py");
 
         private final String osLabel;
         private final String scriptExecutor;
@@ -75,7 +75,7 @@ public class PaygAuthDataExtractor {
 
         /**
          * Constructor
-         * @param osLabelIn the lable
+         * @param osLabelIn the label
          * @param scriptExecutorIn the script executor
          * @param extractorScriptIn the script path
          */
@@ -276,7 +276,6 @@ public class PaygAuthDataExtractor {
             channel.setCommand("/bin/sh ");
             channel.setInputStream(PaygAuthDataExtractor.class.getResourceAsStream("script/detect_os.sh"));
 
-            //channel.setInputStream(null);
             InputStream stdout = channel.getInputStream();
             InputStream stderr = channel.getErrStream();
             channel.connect();

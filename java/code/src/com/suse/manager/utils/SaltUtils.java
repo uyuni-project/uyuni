@@ -15,48 +15,16 @@
 
 package com.suse.manager.utils;
 
-import static com.suse.manager.webui.services.SaltConstants.SALT_CP_PUSH_ROOT_PATH;
-import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
-import com.redhat.rhn.domain.action.ansible.InventoryAction;
-import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
-import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
-import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
-import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
-import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
-import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
-import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
-import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
-import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
-import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
-import com.redhat.rhn.domain.action.scap.ScapAction;
-import com.redhat.rhn.domain.action.script.ScriptResult;
-import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.config.ConfigRevision;
-import com.redhat.rhn.domain.image.ImageFile;
-import com.redhat.rhn.domain.image.ImageInfo;
-import com.redhat.rhn.domain.image.ImageInfoFactory;
-import com.redhat.rhn.domain.image.ImagePackage;
-import com.redhat.rhn.domain.image.ImageProfile;
-import com.redhat.rhn.domain.image.ImageProfileFactory;
-import com.redhat.rhn.domain.image.ImageRepoDigest;
-import com.redhat.rhn.domain.image.OSImageStoreUtils;
-import com.redhat.rhn.domain.notification.NotificationMessage;
-import com.redhat.rhn.domain.notification.UserNotificationFactory;
-import com.redhat.rhn.domain.notification.types.StateApplyFailed;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.Tuple2;
@@ -66,66 +34,27 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
-import com.redhat.rhn.domain.server.AnsibleFactory;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ansible.InventoryPath;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
-import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.attestation.AttestationManager;
-import com.suse.manager.model.attestation.CoCoAttestationStatus;
-import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
-import com.suse.manager.reactor.hardware.CpuArchUtil;
-import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
-import com.suse.manager.reactor.utils.RhelUtils;
-import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.saltboot.SaltbootUtils;
 import com.suse.manager.webui.controllers.bootstrap.BootstrapError;
 import com.suse.manager.webui.controllers.bootstrap.SaltBootstrapError;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
-import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.YamlHelper;
-import com.suse.manager.webui.utils.salt.custom.AppStreamsChangeSlsResult;
-import com.suse.manager.webui.utils.salt.custom.CoCoAttestationRequestData;
-import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
-import com.suse.manager.webui.utils.salt.custom.DistUpgradeOldSlsResult;
-import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
-import com.suse.manager.webui.utils.salt.custom.FilesDiffResult;
-import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.DirectoryResult;
-import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.FileResult;
-import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.SymLinkResult;
-import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
-import com.suse.manager.webui.utils.salt.custom.ImageChecksum;
-import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
-import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
-import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
-import com.suse.manager.webui.utils.salt.custom.OSImageBuildImageInfoResult;
-import com.suse.manager.webui.utils.salt.custom.OSImageBuildSlsResult;
-import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
-import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
-import com.suse.manager.webui.utils.salt.custom.RetOpt;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
-import com.suse.salt.netapi.calls.modules.Openscap;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Pkg.Info;
 import com.suse.salt.netapi.calls.modules.State;
@@ -134,8 +63,6 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.Change;
-import com.suse.salt.netapi.results.CmdResult;
-import com.suse.salt.netapi.results.ModuleRun;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.salt.netapi.results.StateApplyResult;
@@ -150,31 +77,21 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -206,11 +123,6 @@ public class SaltUtils {
     private final SystemQuery systemQuery;
     private final SaltApi saltApi;
 
-    private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
-
-    // SUSE OS family as defined in Salt grains
-    private static final String OS_FAMILY_SUSE = "Suse";
-
     private static final LocalizationService LOCALIZATION = LocalizationService.getInstance();
 
     /**
@@ -234,8 +146,8 @@ public class SaltUtils {
     /**
      * Constructor for testing purposes.
      *
-     * @param systemQueryIn
-     * @param saltApiIn
+     * @param systemQueryIn the system query
+     * @param saltApiIn the salt api
      */
     public SaltUtils(SystemQuery systemQueryIn, SaltApi saltApiIn) {
         this.saltApi = saltApiIn;
@@ -372,7 +284,6 @@ public class SaltUtils {
         }
     }
 
-
     /**
      * Applies a package changeset to a server.
      *
@@ -399,7 +310,7 @@ public class SaltUtils {
             String name = e.getKey();
             Change<List<Info>> change = e.getValue();
 
-            // Sometimes Salt lists the same NEVRA twice, only with different install timestamps.
+            // Sometimes Salt lists the same NEVRA twice, only with different installation timestamps.
             // Use a merge function is to ignore these duplicate entries.
             Map<String, Info> newPackages = change.getNewValue().stream()
                     .collect(Collectors.toMap(info -> packageToKey(name, info), Function.identity(), (a, b) -> a));
@@ -418,7 +329,7 @@ public class SaltUtils {
 
             Map<String, Tuple2<String, Info>> packagesToCreate = newPackages.values().stream()
                     .filter(info -> !currentPackages.containsKey(packageToKey(name, info)))
-                    .collect(Collectors.toMap(info -> packageToKey(name, info), info -> new Tuple2(name, info)));
+                    .collect(Collectors.toMap(info -> packageToKey(name, info), info -> new Tuple2<>(name, info)));
 
             packagesToAdd.addAll(createPackagesFromSalt(packagesToCreate, server));
             server.getPackages().addAll(packagesToAdd);
@@ -559,7 +470,7 @@ public class SaltUtils {
         // If the State was not executed due 'require' statement
         // we directly set the action to FAILED.
         if (jsonResult == null && function.isEmpty()) {
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setStatusFailed();
             serverAction.setResultMsg("Prerequisite failed");
             return;
         }
@@ -567,249 +478,26 @@ public class SaltUtils {
         // Determine the final status of the action
         if (actionFailed(function, jsonResult, success, retcode)) {
             LOG.debug("Status of action {} being set to Failed.", serverAction.getParentAction().getId());
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setStatusFailed();
             // check if the minion is locked (blackout mode)
             String output = getJsonResultWithPrettyPrint(jsonResult);
-            if (output.startsWith("\'ERROR") && output.contains("Minion in blackout mode")) {
+            if (output.startsWith("'ERROR") && output.contains("Minion in blackout mode")) {
                 serverAction.setResultMsg(output);
                 return;
             }
         }
         else {
-            serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+            serverAction.setStatusCompleted();
         }
+
+        Action.UpdateAuxArgs auxArgs = new Action.UpdateAuxArgs(retcode, success, jid, this,
+                saltApi, systemQuery);
 
         Action action = HibernateFactory.unproxy(serverAction.getParentAction());
-        if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
-            handleStateApplyData(serverAction, jsonResult, retcode, success);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
-            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                serverAction.setResultMsg("Failed to execute script. [jid=" + jid + "]");
-            }
-            else {
-                serverAction.setResultMsg("Script executed successfully. [jid=" +
-                        jid + "]");
-            }
-            Map<String, StateApplyResult<CmdResult>> stateApplyResult = Json.GSON.fromJson(jsonResult,
-                    new TypeToken<Map<String, StateApplyResult<CmdResult>>>() { }.getType());
-            CmdResult result = new CmdResult();
-            if (stateApplyResult != null) {
-                result = stateApplyResult.entrySet().stream()
-                        .findFirst().map(e -> e.getValue().getChanges())
-                        .orElseGet(CmdResult::new);
-            }
-            ScriptRunAction scriptAction = (ScriptRunAction) action;
-            ScriptResult scriptResult = Optional.ofNullable(
-                    scriptAction.getScriptActionDetails().getResults())
-                    .orElse(Collections.emptySet())
-                    .stream()
-                    .filter(res -> serverAction.getServerId().equals(res.getServerId()))
-                    .findFirst()
-                    .orElse(new ScriptResult());
 
-            scriptAction.getScriptActionDetails().addResult(scriptResult);
-            scriptResult.setActionScriptId(scriptAction.getScriptActionDetails().getId());
-            scriptResult.setServerId(serverAction.getServerId());
-            scriptResult.setReturnCode(retcode);
+        action.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
 
-            // Start and end dates
-            Date startDate = action.getCreated().before(action.getEarliestAction()) ?
-                    action.getEarliestAction() : action.getCreated();
-            scriptResult.setStartDate(startDate);
-            scriptResult.setStopDate(serverAction.getCompletionTime());
-
-            // Depending on the status show stdout or stderr in the output
-            scriptResult.setOutput(printStdMessages(result.getStderr(), result.getStdout()).getBytes());
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_IMAGE_BUILD)) {
-            handleImageBuildData(serverAction, jsonResult);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_IMAGE_INSPECT)) {
-            handleImageInspectData(serverAction, jsonResult);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST)) {
-            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                serverAction.setResultMsg("Failure");
-            }
-            else {
-                serverAction.setResultMsg("Success");
-            }
-            serverAction.getServer().asMinionServer()
-                    .ifPresent(minionServer -> handlePackageProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
-                    PkgProfileUpdateSlsResult.class)));
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
-            handlePackageLockData(serverAction, jsonResult, action);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_APPSTREAM_CONFIGURE)) {
-            handleAppStreamsChange(serverAction, jsonResult);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
-            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                serverAction.setResultMsg("Failure");
-            }
-            else {
-                serverAction.setResultMsg("Success");
-            }
-            serverAction.getServer().asMinionServer()
-                    .ifPresent(minionServer -> handleHardwareProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
-                    HwProfileUpdateSlsResult.class), serverAction));
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
-            DistUpgradeAction dupAction = (DistUpgradeAction) action;
-            DistUpgradeActionDetails actionDetails = dupAction.getDetails();
-            if (actionDetails.isDryRun()) {
-                Map<Boolean, List<Channel>> collect = actionDetails.getChannelTasks()
-                        .stream().collect(Collectors.partitioningBy(
-                                ct -> ct.getTask() == DistUpgradeChannelTask.SUBSCRIBE,
-                                Collectors.mapping(DistUpgradeChannelTask::getChannel,
-                                        Collectors.toList())
-                        ));
-                List<Channel> subbed = collect.get(true);
-                List<Channel> unsubbed = collect.get(false);
-                Set<Channel> currentChannels = serverAction.getServer().getChannels();
-                currentChannels.removeAll(subbed);
-                currentChannels.addAll(unsubbed);
-                ServerFactory.save(serverAction.getServer());
-                MessageQueue.publish(
-                        new ChannelsChangedEventMessage(serverAction.getServerId()));
-                MessageQueue.publish(
-                        new ApplyStatesEventMessage(serverAction.getServerId(), false,
-                                ApplyStatesEventMessage.CHANNELS));
-                String message = parseDryRunMessage(jsonResult);
-                serverAction.setResultMsg(message);
-            }
-            else {
-                String message = parseMigrationMessage(jsonResult);
-                serverAction.setResultMsg(message);
-
-                // Make sure grains are updated after dist upgrade
-                serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                    MinionList minionTarget = new MinionList(minionServer.getMinionId());
-                    saltApi.syncGrains(minionTarget);
-                });
-            }
-
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_SCAP_XCCDF_EVAL)) {
-            handleScapXccdfEval(serverAction, jsonResult, action);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
-            handleFilesDiff(jsonResult, action);
-            serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.diffed"));
-            /**
-             * For comparison we are simply using file.managed state in dry-run mode, Salt doesn't return
-             * 'result' attribute(actionFailed method check this attribute) when File(File, Dir, Symlink)
-             * already exist on the system and action is considered as Failed even though there was no error.
-             */
-            serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY)) {
-            if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-                serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.deployed"));
-            }
-            else {
-                serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
-            }
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS)) {
-            handleSubscribeChannels(serverAction, jsonResult, action);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_COCO_ATTESTATION)) {
-            handleCocoAttestationResult(action, serverAction, jsonResult);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_INVENTORY)) {
-                handleInventoryRefresh(action, serverAction, jsonResult);
-        }
-        else {
-           serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
-        }
         LOG.debug("Finished update server action for action {}", action.getId());
-    }
-
-
-    private void handleStateApplyData(ServerAction serverAction, JsonElement jsonResult, long retcode,
-            boolean success) {
-        ApplyStatesAction applyStatesAction =
-                (ApplyStatesAction)HibernateFactory.unproxy(serverAction.getParentAction());
-
-        // Revisit the action status if test=true
-        if (applyStatesAction.getDetails().isTest() && success && retcode == 0) {
-            serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
-        }
-
-        ApplyStatesActionResult statesResult = Optional.ofNullable(
-                applyStatesAction.getDetails().getResults())
-                .orElse(Collections.emptySet())
-                .stream()
-                .filter(result ->
-                        serverAction.getServerId().equals(result.getServerId()))
-                .findFirst()
-                .orElse(new ApplyStatesActionResult());
-        applyStatesAction.getDetails().addResult(statesResult);
-        statesResult.setActionApplyStatesId(applyStatesAction.getDetails().getId());
-        statesResult.setServerId(serverAction.getServerId());
-        statesResult.setReturnCode(retcode);
-
-        // Set the output to the result
-        statesResult.setOutput(getJsonResultWithPrettyPrint(jsonResult).getBytes());
-
-        // Create the result message depending on the action status
-        String states = applyStatesAction.getDetails().getMods().isEmpty() ?
-                "highstate" : applyStatesAction.getDetails().getMods().toString();
-        String message = "Successfully applied state(s): " + states;
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-            message = "Failed to apply state(s): " + states;
-
-            NotificationMessage nm = UserNotificationFactory.createNotificationMessage(
-                    new StateApplyFailed(serverAction.getServer().getName(),
-                            serverAction.getServerId(), serverAction.getParentAction().getId()));
-
-            Set<User> admins = new HashSet<>(ServerFactory.listAdministrators(serverAction.getServer()));
-            // TODO: are also org admins and the creator part of this list?
-            UserNotificationFactory.storeForUsers(nm, admins);
-        }
-        if (applyStatesAction.getDetails().isTest()) {
-            message += " (test-mode)";
-        }
-        serverAction.setResultMsg(message);
-
-        serverAction.getServer().asMinionServer().ifPresent(minion -> {
-            if (jsonResult.isJsonObject()) {
-                updateSystemInfo(jsonResult, minion);
-            }
-        });
-    }
-
-    private void handlePackageLockData(ServerAction serverAction, JsonElement jsonResult, Action action) {
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-            String msg = "Error while changing the lock status";
-            jsonEventToStateApplyResults(jsonResult).ifPresentOrElse(
-                    r -> {
-                        if (r.containsKey("pkg_|-pkg_locked_|-pkg_locked_|-held")) {
-                            serverAction.setResultMsg(msg + ":\n" +
-                                    r.get("pkg_|-pkg_locked_|-pkg_locked_|-held").getComment());
-                        }
-                        else {
-                            serverAction.setResultMsg(msg);
-                        }
-                    },
-                    () -> serverAction.setResultMsg(msg));
-            serverAction.getServer().asMinionServer()
-                    .ifPresent(minionServer -> PackageManager.syncLockedPackages(minionServer.getId(), action.getId()));
-        }
-        else {
-            String msg = "Successfully changed lock status";
-            jsonEventToStateApplyResults(jsonResult).ifPresentOrElse(
-                    r -> serverAction.setResultMsg(msg + ":\n" +
-                            r.get("pkg_|-pkg_locked_|-pkg_locked_|-held").getComment()),
-                    () -> serverAction.setResultMsg(msg));
-            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                PackageManager.updateLockedPackages(minionServer.getId(), action.getId());
-                PackageManager.updateUnlockedPackages(minionServer.getId(), action.getId());
-            });
-        }
     }
 
     /**
@@ -825,390 +513,10 @@ public class SaltUtils {
      * Get the raw json result with pretty-print. If json result will be longer than 1024, it will
      * be trimmed.
      * @param jsonResult json result with pretty print
+     * @return the pretty print
      */
-    private String  getJsonResultWithPrettyPrint(JsonElement jsonResult) {
+    public static String getJsonResultWithPrettyPrint(JsonElement jsonResult) {
         return YamlHelper.INSTANCE.dump(Json.GSON.fromJson(jsonResult, Object.class));
-    }
-
-    private void handleSubscribeChannels(ServerAction serverAction, JsonElement jsonResult, Action action) {
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-            serverAction.setResultMsg("Successfully applied state: " + ApplyStatesEventMessage.CHANNELS);
-        }
-        else {
-            serverAction.setResultMsg("Failed to apply state: " + ApplyStatesEventMessage.CHANNELS + ".\n" +
-                    getJsonResultWithPrettyPrint(jsonResult));
-        }
-    }
-
-    private String parseMigrationMessage(JsonElement jsonResult) {
-        try {
-            DistUpgradeSlsResult distUpgradeSlsResult = Json.GSON.fromJson(jsonResult, DistUpgradeSlsResult.class);
-            if (distUpgradeSlsResult.getSpmigration() != null) {
-                StateApplyResult<RetOpt<Map<String, Change<String>>>> spmig =
-                        distUpgradeSlsResult.getSpmigration();
-                String message = spmig.getComment();
-                if (spmig.isResult()) {
-                    message = spmig.getChanges().getRetOpt().map(ret -> ret.entrySet().stream().map(entry ->
-                            entry.getKey() + ":" + entry.getValue().getOldValue() +
-                                    "->" + entry.getValue().getNewValue()
-                    ).collect(Collectors.joining(","))).orElse(spmig.getComment());
-                }
-                return message;
-            }
-            else if (distUpgradeSlsResult.getLiberate() != null) {
-                StateApplyResult<CmdResult> liberate = distUpgradeSlsResult.getLiberate();
-                String message = getJsonResultWithPrettyPrint(jsonResult);
-                if (liberate.isResult()) {
-                    message = liberate.getChanges().getStdout();
-                }
-                return message;
-            }
-            return getJsonResultWithPrettyPrint(jsonResult);
-        }
-        catch (JsonSyntaxException e) {
-            try {
-                DistUpgradeOldSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
-                        jsonResult, DistUpgradeOldSlsResult.class);
-                return distUpgradeSlsResult.getSpmigration().getChanges()
-                        .getRetOpt().map(ret -> {
-                            if (ret.isResult()) {
-                                return ret.getChanges().entrySet().stream()
-                                        .map(entry -> entry.getKey() + ":" + entry.getValue().getOldValue() + "->" +
-                                                entry.getValue().getNewValue()).collect(Collectors.joining(","));
-                            }
-                            else {
-                                return ret.getComment();
-                            }
-                        }).orElse("");
-            }
-            catch (JsonSyntaxException ex) {
-                try {
-                    TypeToken<List<String>> typeToken = new TypeToken<>() {
-                    };
-                    List<String> saltError = Json.GSON.fromJson(jsonResult, typeToken.getType());
-                    return String.join("\n", saltError);
-                }
-                catch (JsonSyntaxException exc) {
-                    LOG.error("Unable to parse migration result", exc);
-                }
-            }
-        }
-        return "Unable to parse migration result";
-    }
-
-    private String parseDryRunMessage(JsonElement jsonResult) {
-        try {
-            DistUpgradeDryRunSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
-                    jsonResult, DistUpgradeDryRunSlsResult.class);
-            if (distUpgradeSlsResult.getSpmigration() != null) {
-                return String.join(" ",
-                                   distUpgradeSlsResult.getSpmigration().getChanges().getRetOpt().orElse(""),
-                                   distUpgradeSlsResult.getSpmigration().getComment());
-            }
-        }
-        catch (JsonSyntaxException e) {
-            try {
-                DistUpgradeOldSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
-                        jsonResult, DistUpgradeOldSlsResult.class);
-                return String.join(" ",
-                                   distUpgradeSlsResult.getSpmigration().getChanges().getRetOpt()
-                                           .map(ModuleRun::getComment).orElse(""),
-                                   distUpgradeSlsResult.getSpmigration().getComment());
-            }
-            catch (JsonSyntaxException ex) {
-                LOG.error("Unable to parse dry run result", ex);
-            }
-        }
-        return "Unable to parse dry run result";
-    }
-
-    /**
-     * Set the results based on the result from SALT
-     * @param jsonResult response from SALT master
-     * @param action main action
-     */
-    private void handleFilesDiff(JsonElement jsonResult, Action action) {
-        TypeToken<Map<String, FilesDiffResult>> typeToken = new TypeToken<>() {
-        };
-        Map<String, FilesDiffResult> results = Json.GSON.fromJson(jsonResult, typeToken.getType());
-        Map<String, FilesDiffResult> diffResults = new HashMap<>();
-        // We are only interested in results where files are different/new.
-        results.values().stream().filter(fdr -> !fdr.isResult())
-                .forEach(fdr -> diffResults.put(
-                        fdr.getName()
-                                .flatMap(x -> x.fold(arr -> Arrays.stream(arr).findFirst(), Optional::of))
-                                .orElse(null),
-                        fdr));
-
-        ConfigVerifyAction configAction = (ConfigVerifyAction) action;
-        configAction.getConfigRevisionActions().forEach(cra -> {
-            ConfigRevision cr = cra.getConfigRevision();
-            String fileName = cr.getConfigFile().getConfigFileName().getPath();
-            FilesDiffResult mapFileResult = diffResults.get(fileName);
-            boolean isNew = false;
-            if (mapFileResult != null) {
-                if (cr.isFile()) {
-                    FileResult filePchanges = mapFileResult.getPChanges(FileResult.class);
-                    isNew = filePchanges.getNewfile().isPresent();
-                }
-                else if (cr.isSymlink()) {
-                    SymLinkResult symLinkPchanges = mapFileResult.getPChanges(SymLinkResult.class);
-                    isNew = symLinkPchanges.getNewSymlink().isPresent();
-                }
-                else if (cr.isDirectory()) {
-                    TypeToken<Map<String, DirectoryResult>> typeTokenD =
-                            new TypeToken<>() {
-                            };
-                    DirectoryResult dirPchanges = mapFileResult.getPChanges(typeTokenD).get(fileName);
-                    isNew = dirPchanges.getDirectory().isPresent();
-                }
-                if (isNew) {
-                    cra.setFailureId(1L); // 1 is for missing file(Client does not have this file yet)
-                }
-                else {
-                    ConfigRevisionActionResult cresult = new ConfigRevisionActionResult();
-                    cresult.setConfigRevisionAction(cra);
-                    String result = StringEscapeUtils
-                            .unescapeJava(YamlHelper.INSTANCE.dump(mapFileResult.getPChanges()));
-                    cresult.setResult(result.getBytes());
-                    cresult.setCreated(new Date());
-                    cresult.setModified(new Date());
-                    cra.setConfigRevisionActionResult(cresult);
-                    SystemManager.updateSystemOverview(cra.getServer());
-                }
-            }
-        });
-    }
-
-    private void handleScapXccdfEval(ServerAction serverAction,
-                                     JsonElement jsonResult, Action action) {
-        ScapAction scapAction = (ScapAction)action;
-        Openscap.OpenscapResult openscapResult;
-        try {
-            TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>> typeToken =
-                    new TypeToken<>() {
-                    };
-            Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>> stateResult = Json.GSON.fromJson(
-                    jsonResult, typeToken.getType());
-            openscapResult = stateResult.entrySet().stream().findFirst().map(e -> e.getValue().getChanges().getRet())
-                    .orElseThrow(() -> new RuntimeException("missing scap result"));
-        }
-        catch (JsonSyntaxException e) {
-            serverAction.setResultMsg("Error parsing minion response: " + jsonResult);
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-            return;
-        }
-        if (openscapResult.isSuccess()) {
-            serverAction.getServer().asMinionServer().ifPresent(
-                    minion -> {
-                        try {
-                            Map<Boolean, String> moveRes = saltApi.storeMinionScapFiles(
-                                    minion, openscapResult.getUploadDir(), action.getId());
-                            moveRes.entrySet().stream().findFirst().ifPresent(moved -> {
-                                if (moved.getKey()) {
-                                    Path resultsFile = Paths.get(moved.getValue(),
-                                            "results.xml");
-                                    try (InputStream resultsFileIn =
-                                                 new FileInputStream(
-                                                         resultsFile.toFile())) {
-                                        ScapManager.xccdfEval(
-                                                minion, scapAction,
-                                                openscapResult.getReturnCode(),
-                                                openscapResult.getError(),
-                                                resultsFileIn,
-                                                new File(xccdfResumeXsl));
-                                        serverAction.setResultMsg("Success");
-                                    }
-                                    catch (Exception e) {
-                                        LOG.error("Error processing SCAP results file {}", resultsFile, e);
-                                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                                        serverAction.setResultMsg(
-                                                "Error processing SCAP results file " +
-                                                        resultsFile + ": " +
-                                                        e.getMessage());
-                                    }
-                                }
-                                else {
-                                    serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                                    serverAction.setResultMsg(
-                                            "Could not store SCAP files on server: " +
-                                                    moved.getValue());
-                                }
-                            });
-                        }
-                        catch (Exception e) {
-                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                            serverAction.setResultMsg(
-                                    "Error saving SCAP result: " + e.getMessage());
-                        }
-                    });
-        }
-        else {
-            serverAction.setResultMsg(openscapResult.getError());
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-        }
-    }
-
-    private void handleImageBuildLog(ImageInfo info, Action action) {
-        MinionServer buildHost = info.getBuildServer();
-        if (buildHost == null) {
-            return;
-        }
-
-        Path srcPath = Path.of(SALT_CP_PUSH_ROOT_PATH + buildHost.getMinionId() +
-                            "/files/image-build" + action.getId() + ".log");
-        Path tmpPath = Path.of(SALT_FILE_GENERATION_TEMP_PATH + "/image-build" + action.getId() + ".log");
-
-        try {
-            // copy the log to a directory readable by tomcat
-            saltApi.copyFile(srcPath, tmpPath)
-                        .orElseThrow(() -> new RuntimeException("Can't copy the build log file"));
-
-            String log = Files.readString(tmpPath);
-            info.setBuildLog(log);
-            saltApi.removeFile(srcPath);
-            saltApi.removeFile(tmpPath);
-        }
-        catch (Exception e) {
-            LOG.info("No build log for action {} {}", action.getId(), e);
-        }
-    }
-
-    private void handleImageBuildData(ServerAction serverAction, JsonElement jsonResult) {
-        Action action = serverAction.getParentAction();
-        ImageBuildAction ba = (ImageBuildAction) action;
-        ImageBuildActionDetails details = ba.getDetails();
-
-        serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
-
-        Optional<ImageInfo> infoOpt = ImageInfoFactory.lookupByBuildAction(ba);
-        if (infoOpt.isEmpty()) {
-            LOG.error("ImageInfo not found while performing: {} in handleImageBuildData", action.getName());
-            return;
-        }
-        ImageInfo info = infoOpt.get();
-
-        handleImageBuildLog(info, action);
-
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-            if (details == null) {
-                LOG.error("Details not found while performing: {} in handleImageBuildData", action.getName());
-                return;
-            }
-            Long imageProfileId = details.getImageProfileId();
-            if (imageProfileId == null) { // It happens when the image profile is deleted during a build action
-                LOG.error("Image Profile ID not found while performing: {} in handleImageBuildData", action.getName());
-                return;
-            }
-
-            boolean isKiwiProfile = false;
-            Optional<ImageProfile> profileOpt = ImageProfileFactory.lookupById(imageProfileId);
-            if (profileOpt.isPresent()) {
-                isKiwiProfile = profileOpt.get().asKiwiProfile().isPresent();
-            }
-            else {
-                LOG.warn("Could not find any profile for profile ID {}", imageProfileId);
-            }
-
-            if (isKiwiProfile) {
-                serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                    // Update the image info and download the built Kiwi image to SUSE Manager server
-                    OSImageBuildImageInfoResult buildInfo =
-                            Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
-                                    .getKiwiBuildInfo().getChanges().getRet();
-
-                    info.setChecksum(ImageInfoFactory.convertChecksum(buildInfo.getImage().getChecksum()));
-                    info.setName(buildInfo.getImage().getName());
-                    info.setVersion(buildInfo.getImage().getVersion());
-
-                    ImageInfoFactory.updateRevision(info);
-
-                    List<List<Object>> files = new ArrayList<>();
-                    String imageDir = info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
-                    if (!buildInfo.getBundles().isEmpty()) {
-                        buildInfo.getBundles().forEach(bundle -> files.add(List.of(bundle.getFilepath(),
-                                    imageDir + bundle.getFilename(), "bundle", bundle.getChecksum())));
-                    }
-                    else {
-                        files.add(List.of(buildInfo.getImage().getFilepath(),
-                                imageDir + buildInfo.getImage().getFilename(), "image",
-                                buildInfo.getImage().getChecksum()));
-                        buildInfo.getBootImage().ifPresent(f -> {
-                            files.add(List.of(f.getKernel().getFilepath(),
-                                    imageDir + f.getKernel().getFilename(), "kernel",
-                                    f.getKernel().getChecksum()));
-                            files.add(List.of(f.getInitrd().getFilepath(),
-                                    imageDir + f.getInitrd().getFilename(), "initrd",
-                                    f.getInitrd().getChecksum()));
-                        });
-                    }
-                    files.stream().forEach(file -> {
-                        String targetPath = OSImageStoreUtils.getOSImageStorePathForImage(info);
-                        targetPath += info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
-                        MgrUtilRunner.ExecResult collectResult = systemQuery
-                                .collectKiwiImage(minionServer, (String)file.get(0), targetPath)
-                                .orElseThrow(() -> new RuntimeException("Failed to download image."));
-
-                        if (collectResult.getReturnCode() != 0) {
-                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                            serverAction.setResultMsg(StringUtils
-                                    .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()),
-                                            1024));
-                        }
-                        else {
-                            ImageFile imagefile = new ImageFile();
-                            imagefile.setFile((String)file.get(1));
-                            imagefile.setType((String)file.get(2));
-                            imagefile.setChecksum(ImageInfoFactory.convertChecksum(
-                                    (ImageChecksum.Checksum)file.get(3)));
-                            imagefile.setImageInfo(info);
-                            info.getImageFiles().add(imagefile);
-                        }
-                    });
-                });
-            }
-            else {
-                ImageInfoFactory.updateRevision(info);
-                if (info.getImageType().equals(ImageProfile.TYPE_DOCKERFILE)) {
-                    ImageInfoFactory.obsoletePreviousRevisions(info);
-                }
-            }
-        }
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-            // both building and uploading results succeeded
-            info.setBuilt(true);
-
-            try {
-                ImageInfoFactory.scheduleInspect(info, Date.from(Instant.now()), action.getSchedulerUser());
-            }
-            catch (TaskomaticApiException e) {
-                LOG.error("Could not schedule image inspection ", e);
-            }
-        }
-        ImageInfoFactory.save(info);
-    }
-
-    private void handleImageInspectData(ServerAction serverAction,
-            JsonElement jsonResult) {
-        Action action = serverAction.getParentAction();
-        ImageInspectAction ia = (ImageInspectAction) action;
-        ImageInspectActionDetails details = ia.getDetails();
-        if (details == null) {
-            LOG.warn("Details not found while performing: {} in handleImageInspectData", action.getName());
-            return;
-        }
-        Long imageStoreId = details.getImageStoreId();
-        if (imageStoreId == null) { // It happens when the store is deleted during an inspect action
-            LOG.warn("Image Store ID not found while performing: {} in handleImageInspectData", action.getName());
-            return;
-        }
-        ImageInfoFactory
-                .lookupByInspectAction(ia)
-                .ifPresent(imageInfo -> serverAction.getServer().asMinionServer()
-                        .ifPresent(minionServer ->
-                                handleImagePackageProfileUpdate(imageInfo, Json.GSON.fromJson(jsonResult,
-                                                ImagesProfileUpdateSlsResult.class),
-                                        serverAction)));
     }
 
     /**
@@ -1235,423 +543,21 @@ public class SaltUtils {
      * Converts the json representation of an event to a map
      *
      * @param jsonResult json representation of an event
+     * @return state apply results
      */
-    private static Optional<Map<String, StateApplyResult<Map<String, Object>>>>
+    public static Optional<Map<String, StateApplyResult<Map<String, Object>>>>
     jsonEventToStateApplyResults(JsonElement jsonResult) {
-        TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
-                new TypeToken<>() {
-                };
-        Optional<Map<String, StateApplyResult<Map<String, Object>>>> results;
-        results = Optional.empty();
+        TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken = new TypeToken<>() { };
+        Optional<Map<String, StateApplyResult<Map<String, Object>>>> results = Optional.empty();
         try {
              results = Optional.ofNullable(
                 Json.GSON.fromJson(jsonResult, typeToken.getType()));
         }
         catch (JsonSyntaxException e) {
             LOG.error("JSON syntax error while decoding into a StateApplyResult:");
-            LOG.error(jsonResult.toString());
+            LOG.error(jsonResult == null ? "NULL" : jsonResult.toString());
         }
         return results;
-    }
-
-    /**
-     * Returns the root cause of a failed state.apply result by filtering out the subsequent failures.
-     * @param stateApplyResultMap the map of the state apply results
-     * @return the first failed state.apply result
-     * @param <R> the type of the state.apply result
-     */
-    private static <R> Optional<StateApplyResult<R>> getOriginalStateApplyError(
-            Map<String, StateApplyResult<R>> stateApplyResultMap) {
-        return stateApplyResultMap.values().stream()
-                .filter(r -> !r.getComment().startsWith("One or more requisite failed"))
-                .findFirst();
-    }
-
-    private void handleImagePackageProfileUpdate(ImageInfo imageInfo,
-            ImagesProfileUpdateSlsResult result, ServerAction serverAction) {
-        ActionStatus as = ActionFactory.STATUS_COMPLETED;
-        serverAction.setResultMsg("Success");
-        if (Optional.ofNullable(imageInfo.getProfile()).isEmpty() ||
-                imageInfo.getProfile().asDockerfileProfile().isPresent()) {
-            if (result.getDockerInspect().isResult()) {
-                ImageInspectSlsResult iret = result.getDockerInspect().getChanges().getRet();
-                imageInfo.setChecksum(ImageInfoFactory.convertChecksum(iret.getId()));
-                imageInfo.getRepoDigests().addAll(
-                        iret.getRepoDigests().stream().map(digest -> {
-                            ImageRepoDigest repoDigest = new ImageRepoDigest();
-                            repoDigest.setRepoDigest(digest);
-                            repoDigest.setImageInfo(imageInfo);
-                            return repoDigest;
-                        }).collect(Collectors.toSet()));
-            }
-            else {
-                serverAction.setResultMsg(result.getDockerInspect().getComment());
-                as = ActionFactory.STATUS_FAILED;
-            }
-
-            if (result.getDockerSlsBuild().isResult()) {
-                PkgProfileUpdateSlsResult ret =
-                        result.getDockerSlsBuild().getChanges().getRet();
-
-                Optional.of(ret.getInfoInstalled().getChanges().getRet())
-                        .map(saltPkgs -> saltPkgs.entrySet().stream()
-                                .flatMap(entry -> Opt.stream(entry.getValue().left())
-                                        .map(info -> createImagePackageFromSalt(entry.getKey(), info, imageInfo)))
-                                .collect(Collectors.toSet()));
-
-                Optional.of(ret.getInfoInstalled().getChanges().getRet())
-                        .map(saltPkgs -> saltPkgs.entrySet().stream()
-                                .flatMap(entry -> Opt.stream(entry.getValue().right())
-                                        .flatMap(Collection::stream)
-                                        .map(info -> createImagePackageFromSalt(entry.getKey(), info, imageInfo)))
-                                .collect(Collectors.toSet()));
-
-                Optional.ofNullable(ret.getListProducts())
-                        .map(products -> products.getChanges().getRet())
-                        .map(SaltUtils::getInstalledProducts)
-                        .ifPresent(imageInfo::setInstalledProducts);
-
-                Optional<String> rhelReleaseFile =
-                        Optional.ofNullable(ret.getRhelReleaseFile())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdResult::getStdout);
-                Optional<String> centosReleaseFile =
-                        Optional.ofNullable(ret.getCentosReleaseFile())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdResult::getStdout);
-                Optional<String> alibabaReleaseFile =
-                        Optional.ofNullable(ret.getAlibabaReleaseFile())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdResult::getStdout);
-                Optional<String> oracleReleaseFile =
-                        Optional.ofNullable(ret.getOracleReleaseFile())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdResult::getStdout);
-                Optional<String> almaReleaseFile =
-                        Optional.ofNullable(ret.getAlmaReleaseFile())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdResult::getStdout);
-                Optional<String> amazonReleaseFile =
-                        Optional.ofNullable(ret.getAmazonReleaseFile())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdResult::getStdout);
-                Optional<String> rockyReleaseFile =
-                        Optional.ofNullable(ret.getRockyReleaseFile())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdResult::getStdout);
-                Optional<String> resReleasePkg =
-                        Optional.ofNullable(ret.getWhatProvidesResReleasePkg())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdResult::getStdout);
-                Optional<String> sllReleasePkg =
-                        Optional.ofNullable(ret.getWhatProvidesSLLReleasePkg())
-                                .map(StateApplyResult::getChanges)
-                                .filter(res -> res.getStdout() != null)
-                                .map(CmdResult::getStdout);
-                if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
-                        oracleReleaseFile.isPresent() || alibabaReleaseFile.isPresent() ||
-                        almaReleaseFile.isPresent() || amazonReleaseFile.isPresent() ||
-                        rockyReleaseFile.isPresent() || resReleasePkg.isPresent()) {
-                    Set<InstalledProduct> products = getInstalledProductsForRhel(
-                            imageInfo, resReleasePkg, sllReleasePkg,
-                            rhelReleaseFile, centosReleaseFile, oracleReleaseFile, alibabaReleaseFile,
-                            almaReleaseFile, amazonReleaseFile, rockyReleaseFile);
-                    imageInfo.setInstalledProducts(products);
-                }
-            }
-            else {
-                // do not fail the action when no packages are returned
-                serverAction.setResultMsg(result.getDockerSlsBuild().getComment());
-            }
-        }
-        else {
-            if (result.getKiwiInspect().isResult()) {
-                Long instantNow = new Date().getTime() / 1000L;
-                OSImageInspectSlsResult ret = result.getKiwiInspect().getChanges().getRet();
-                List<OSImageInspectSlsResult.Package> packages = ret.getPackages();
-                packages.forEach(pkg -> createImagePackageFromSalt(pkg.getName(), Optional.of(pkg.getEpoch()),
-                        Optional.of(pkg.getRelease()), pkg.getVersion(), Optional.of(instantNow),
-                        Optional.of(pkg.getArch()), imageInfo));
-                if ("pxe".equals(ret.getImage().getType())) {
-                    SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(),
-                            ret.getBootImage(), imageInfo);
-                    if (ret.getBootImage().isPresent() && ret.getBundles().isEmpty()) {
-                        SaltbootUtils.createSaltbootDistro(imageInfo, ret.getBootImage().get());
-                    }
-                }
-            }
-            else {
-                serverAction.setResultMsg(result.getKiwiInspect().getComment());
-                as = ActionFactory.STATUS_FAILED;
-            }
-        }
-
-        serverAction.setStatus(as);
-        if (as.equals(ActionFactory.STATUS_COMPLETED)) {
-            imageInfo.setBuilt(true);
-        }
-        ImageInfoFactory.save(imageInfo);
-        ErrataManager.insertErrataCacheTask(imageInfo);
-    }
-
-    private void handleAppStreamsChange(ServerAction serverAction, JsonElement jsonResult) {
-        Optional<MinionServer> server = serverAction.getServer().asMinionServer();
-        if (server.isEmpty()) {
-            return;
-        }
-
-        if (ActionFactory.STATUS_FAILED.equals(serverAction.getStatus())) {
-            // Filter out the subsequent errors to find the root cause
-            var originalErrorMsg = jsonEventToStateApplyResults(jsonResult)
-                    .map(SaltUtils::getOriginalStateApplyError)
-                        .orElseThrow(() -> new RuntimeException("Failed to parse the state.apply error result"))
-                    .map(StateApplyResult::getComment)
-                    .map(msg -> msg.isEmpty() ? null : msg)
-                    .orElse("Error while configuring AppStreams on the system.\nGot no result from the system.");
-
-            serverAction.setResultMsg(originalErrorMsg);
-            return;
-        }
-
-        var currentlyEnabled = Json.GSON.fromJson(jsonResult, AppStreamsChangeSlsResult.class).getCurrentlyEnabled();
-        Set<ServerAppStream> enabledModules = currentlyEnabled.stream()
-            .map(nsvca -> new ServerAppStream(server.get(), nsvca))
-            .collect(Collectors.toSet());
-        server.get().getAppStreams().clear();
-        server.get().getAppStreams().addAll(enabledModules);
-        serverAction.setResultMsg("Successfully changed system AppStreams.");
-    }
-
-    /**
-     * Perform the actual update of the database based on given event data.
-     *
-     * @param server the minion server
-     * @param result the result of the call as parsed from event data
-     */
-    private void handlePackageProfileUpdate(MinionServer server,
-            PkgProfileUpdateSlsResult result) {
-        Instant start = Instant.now();
-
-        HibernateFactory.doWithoutAutoFlushing(() -> updatePackages(server, result));
-
-        Optional.ofNullable(result.getListProducts())
-                .map(products -> products.getChanges().getRet())
-                .map(SaltUtils::getInstalledProducts)
-                .ifPresent(server::setInstalledProducts);
-
-        Optional<String> rhelReleaseFile =
-                Optional.ofNullable(result.getRhelReleaseFile())
-                .map(StateApplyResult::getChanges)
-                .filter(ret -> ret.getStdout() != null)
-                .map(CmdResult::getStdout);
-        Optional<String> centosReleaseFile =
-                Optional.ofNullable(result.getCentosReleaseFile())
-                .map(StateApplyResult::getChanges)
-                .filter(ret -> ret.getStdout() != null)
-                .map(CmdResult::getStdout);
-        Optional<String> oracleReleaseFile =
-                Optional.ofNullable(result.getOracleReleaseFile())
-                .map(StateApplyResult::getChanges)
-                .filter(ret -> ret.getStdout() != null)
-                .map(CmdResult::getStdout);
-        Optional<String> alibabaReleaseFile =
-                Optional.ofNullable(result.getAlibabaReleaseFile())
-                .map(StateApplyResult::getChanges)
-                .filter(ret -> ret.getStdout() != null)
-                .map(CmdResult::getStdout);
-        Optional<String> almaReleaseFile =
-                Optional.ofNullable(result.getAlmaReleaseFile())
-                .map(StateApplyResult::getChanges)
-                .filter(ret -> ret.getStdout() != null)
-                .map(CmdResult::getStdout);
-        Optional<String> amazonReleaseFile =
-                Optional.ofNullable(result.getAmazonReleaseFile())
-                .map(StateApplyResult::getChanges)
-                .filter(ret -> ret.getStdout() != null)
-                .map(CmdResult::getStdout);
-        Optional<String> rockyReleaseFile =
-                Optional.ofNullable(result.getRockyReleaseFile())
-                .map(StateApplyResult::getChanges)
-                .filter(ret -> ret.getStdout() != null)
-                .map(CmdResult::getStdout);
-        Optional<String> resReleasePkg =
-                Optional.ofNullable(result.getWhatProvidesResReleasePkg())
-                .map(StateApplyResult::getChanges)
-                .filter(ret -> ret.getStdout() != null)
-                .map(CmdResult::getStdout);
-        Optional<String> sllReleasePkg =
-                Optional.ofNullable(result.getWhatProvidesSLLReleasePkg())
-                .map(StateApplyResult::getChanges)
-                .filter(ret -> ret.getStdout() != null)
-                .map(CmdResult::getStdout);
-
-        ValueMap grains = new ValueMap(result.getGrains());
-
-        if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
-                oracleReleaseFile.isPresent() || alibabaReleaseFile.isPresent() ||
-                almaReleaseFile.isPresent() || amazonReleaseFile.isPresent() ||
-                rockyReleaseFile.isPresent() || resReleasePkg.isPresent()) {
-            Set<InstalledProduct> products = getInstalledProductsForRhel(
-                    server, resReleasePkg, sllReleasePkg,
-                    rhelReleaseFile, centosReleaseFile, oracleReleaseFile, alibabaReleaseFile,
-                    almaReleaseFile, amazonReleaseFile, rockyReleaseFile);
-            server.setInstalledProducts(products);
-        }
-        else if ("ubuntu".equalsIgnoreCase(grains.getValueAsString("os"))) {
-            String osArch = grains.getValueAsString("osarch") + "-deb";
-            String osVersion = grains.getValueAsString("osrelease");
-            // Check if we have a product for the specific arch and version
-            SUSEProduct ubuntuProduct = SUSEProductFactory.findSUSEProduct("ubuntu-client", osVersion, null, osArch,
-                    false);
-            if (ubuntuProduct != null) {
-                InstalledProduct installedProduct = SUSEProductFactory.findInstalledProduct(ubuntuProduct)
-                        .orElse(new InstalledProduct(ubuntuProduct));
-                server.setInstalledProducts(Collections.singleton(installedProduct));
-            }
-        }
-        else if ("debian".equalsIgnoreCase(grains.getValueAsString("os"))) {
-            String osArch = grains.getValueAsString("osarch") + "-deb";
-            String osVersion = grains.getValueAsString("osmajorrelease");
-            // Check if we have a product for the specific arch and version
-            SUSEProduct debianProduct = SUSEProductFactory.findSUSEProduct("debian-client", osVersion, null, osArch,
-                    false);
-            if (debianProduct != null) {
-                InstalledProduct installedProduct = SUSEProductFactory.findInstalledProduct(debianProduct)
-                        .orElse(new InstalledProduct(debianProduct));
-                server.setInstalledProducts(Collections.singleton(installedProduct));
-            }
-        }
-
-        // Update last boot time
-        handleUptimeUpdate(server, result.getUpTime()
-                .map(ut -> (Number)ut.getChanges().getRet().get("seconds"))
-                .map(n -> n.longValue())
-                .orElse(null));
-
-        result.getRebootRequired()
-            .map(rr -> rr.getChanges().getRet())
-            .filter(Objects::nonNull)
-            .map(ret -> (Boolean) ret.get("reboot_required"))
-            .ifPresent(flag -> server.setRebootRequiredAfter(flag ? new Date() : null));
-
-        // Update live patching version
-        server.setKernelLiveVersion(result.getKernelLiveVersionInfo()
-                .map(klv -> klv.getChanges().getRet()).filter(Objects::nonNull)
-                .map(KernelLiveVersionInfo::getKernelLiveVersion).orElse(null));
-
-        // Update AppStream modules
-        Set<ServerAppStream> enabledAppStreams = result.getEnabledAppstreamModules()
-                .map(m -> m.getChanges().getRet())
-                .orElse(Collections.emptySet())
-                .stream()
-                .map(nsvca -> new ServerAppStream(server, nsvca))
-                .collect(Collectors.toSet());
-
-        server.getAppStreams().clear();
-        server.getAppStreams().addAll(enabledAppStreams);
-
-        // Update grains
-        if (!result.getGrains().isEmpty()) {
-            server.setOsFamily(grains.getValueAsString("os_family"));
-            server.setRunningKernel(grains.getValueAsString("kernelrelease"));
-            server.setOs(grains.getValueAsString("osfullname"));
-            server.setCpe(grains.getValueAsString("cpe"));
-
-            /** Release is set directly from grain information for SUSE systems only.
-                RH systems require some parsing on the grains to get the correct release
-                See RegisterMinionEventMessageAction#getOsRelease
-
-                However, release can change only after product migration and SUMA supports this only on SUSE systems.
-                Also, the getOsRelease method requires remote command execution and was therefore avoided for now.
-                If we decide to support RedHat distro/SP upgrades in the future, this code has to be reviewed.
-             */
-            if (server.getOsFamily().equals(OS_FAMILY_SUSE)) {
-                server.setRelease(grains.getValueAsString("osrelease"));
-            }
-        }
-
-        ServerFactory.save(server);
-        if (LOG.isDebugEnabled()) {
-            long duration = Duration.between(start, Instant.now()).getSeconds();
-            LOG.debug("Package profile updated for minion: {} ({} seconds)", server.getMinionId(), duration);
-        }
-
-        // Trigger update of errata cache for this server
-        ErrataManager.insertErrataCacheTask(server);
-    }
-
-    /**
-     * Updates a minion's packages with the result coming from Salt
-     *
-     * @param server a Server object corresponding to a minion
-     * @param result the result from the package profile update state
-     */
-    private static void updatePackages(MinionServer server,
-            PkgProfileUpdateSlsResult result) {
-        Set<InstalledPackage> packages = server.getPackages();
-
-        Map<String, InstalledPackage> oldPackageMap = packages.stream()
-            .collect(Collectors.toMap(
-                    SaltUtils::packageToKey,
-                    Function.identity()
-             ));
-
-        Map<String, Map.Entry<String, Pkg.Info>> newPackageMap =
-            result.getInfoInstalled().getChanges().getRet()
-                .entrySet().stream()
-                .flatMap(entry ->
-                   entry.getValue().fold(Stream::of, Collection::stream)
-                        .flatMap(x -> {
-                           Map<String, Info> infoTuple = new HashMap<>();
-                           infoTuple.put(entry.getKey(), x);
-                           return infoTuple.entrySet().stream();
-                        })
-                )
-                .collect(Collectors.toMap(
-                        SaltUtils::packageToKey,
-                        Function.identity(),
-                        SaltUtils::resolveDuplicatePackage
-                ));
-
-        Collection<InstalledPackage> unchanged = oldPackageMap.entrySet().stream().filter(
-            e -> newPackageMap.containsKey(e.getKey())
-        ).map(Map.Entry::getValue).collect(Collectors.toList());
-        packages.retainAll(unchanged);
-
-        Map<String, Tuple2<String, Pkg.Info>> packagesToAdd = newPackageMap.entrySet().stream().filter(
-                e -> !oldPackageMap.containsKey(e.getKey())
-        ).collect(Collectors.toMap(Map.Entry::getKey, e -> new Tuple2(e.getValue().getKey(), e.getValue().getValue())));
-
-        packages.addAll(createPackagesFromSalt(packagesToAdd, server));
-        SystemManager.updateSystemOverview(server.getId());
-    }
-
-    private static Map.Entry<String, Info> resolveDuplicatePackage(Map.Entry<String, Info> firstEntry,
-            Map.Entry<String, Info> secondEntry) {
-        Info first = firstEntry.getValue();
-        Info second = secondEntry.getValue();
-
-        if (first.getInstallDateUnixTime().isEmpty() && second.getInstallDateUnixTime().isEmpty()) {
-            LOG.warn("Got duplicate packages NEVRA and the install timestamp is missing." +
-                    " Taking the first one. First:  {}, second: {}", first, second);
-            return firstEntry;
-        }
-
-        // the later one wins
-        if (first.getInstallDateUnixTime().get() > second.getInstallDateUnixTime().get()) {
-            return firstEntry;
-        }
-        else {
-            return secondEntry;
-        }
     }
 
     /**
@@ -1662,21 +568,22 @@ public class SaltUtils {
      * @param server server this package will be added to
      * @return a list of {@link InstalledPackage}
      */
-    private static List<InstalledPackage> createPackagesFromSalt(
+    public static List<InstalledPackage> createPackagesFromSalt(
             Map<String, Tuple2<String, Pkg.Info>> packageInfoAndNameBySaltPackageKey, Server server) {
-        List<String> names = new ArrayList<>(packageInfoAndNameBySaltPackageKey.values().stream().map(Tuple2::getA)
-                .collect(Collectors.toSet()));
-        Collections.sort(names);
+        List<String> names = packageInfoAndNameBySaltPackageKey.values().stream()
+                .map(Tuple2::getA)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
 
         Map<String, PackageName> packageNames = names.stream().collect(Collectors.toMap(Function.identity(),
                 PackageFactory::lookupOrCreatePackageByName));
-
 
         Map<String, PackageEvr> packageEvrsBySaltPackageKey = packageInfoAndNameBySaltPackageKey.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey,
                         e -> {
                             Pkg.Info pkgInfo = e.getValue().getB();
-                            return parsePackageEvr(pkgInfo.getEpoch(), pkgInfo.getVersion().get(),
+                            return parsePackageEvr(pkgInfo.getEpoch(), pkgInfo.getVersion().orElseThrow(),
                                     pkgInfo.getRelease(), server.getPackageType());
                         }));
 
@@ -1707,7 +614,7 @@ public class SaltUtils {
         pkg.setServer(server);
 
         // Add -deb suffix to architectures for Debian systems
-        String pkgArch = pkgInfo.getArchitecture().get();
+        String pkgArch = pkgInfo.getArchitecture().orElseThrow();
         if (server.getPackageType() == PackageType.DEB) {
             pkgArch += "-deb";
         }
@@ -1751,13 +658,13 @@ public class SaltUtils {
         sb.append(
                 new PackageEvr(
                         info.getEpoch().orElse(null),
-                        info.getVersion().get(),
+                        info.getVersion().orElseThrow(),
                         info.getRelease().orElse("X"),
                         PackageType.RPM
                 ).toUniversalEvrString()
         );
         sb.append(".");
-        sb.append(info.getArchitecture().get());
+        sb.append(info.getArchitecture().orElseThrow());
 
         return sb.toString();
     }
@@ -1769,205 +676,24 @@ public class SaltUtils {
      * @param entry the package
      * @return the key
      */
-    private static String packageToKey(Map.Entry<String, Pkg.Info> entry) {
+    public static String packageToKey(Map.Entry<String, Pkg.Info> entry) {
         return packageToKey(entry.getKey(), entry.getValue());
     }
 
-    private void handleCocoAttestationResult(Action action, ServerAction serverAction, JsonElement jsonResult) {
-        AttestationManager mgr = new AttestationManager();
-
-        Optional<ServerCoCoAttestationReport> optReport =
-                mgr.lookupReportByServerAndAction(serverAction.getServer(), action);
-        if (optReport.isEmpty()) {
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-            serverAction.setResultMsg("Failed to find a report entry");
-            return;
-        }
-        ServerCoCoAttestationReport report = optReport.get();
-
-        if (jsonResult == null) {
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-            if (StringUtils.isBlank(serverAction.getResultMsg())) {
-                serverAction.setResultMsg("Error while request attestation data from target system:\n" +
-                       "Got no result from system");
-            }
-            return;
-        }
-
-        try {
-            CoCoAttestationRequestData requestData = Json.GSON.fromJson(jsonResult, CoCoAttestationRequestData.class);
-            report.setOutData(requestData.asMap());
-            mgr.initializeResults(report);
-        }
-        catch (JsonSyntaxException e) {
-            String msg = "Failed to parse the attestation result:\n";
-            msg += Optional.of(jsonResult)
-                    .map(JsonElement::toString)
-                    .orElse("Got no result");
-            LOG.error(msg);
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-            serverAction.setResultMsg(msg);
-            return;
-        }
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-            String msg = "Error while request attestation data from target system:\n";
-            msg += getJsonResultWithPrettyPrint(jsonResult);
-            serverAction.setResultMsg(msg);
-            if (report.getResults().isEmpty()) {
-                // results are not initialized yet. So we need to set the report status
-                // directly to failed.
-                report.setStatus(CoCoAttestationStatus.FAILED);
-            }
-        }
-        else {
-            serverAction.setResultMsg("Successfully collected attestation data");
-        }
-    }
-
     /**
-     * Update the hardware profile for a minion in the database from incoming
-     * event data.
-     *
-     * @param server the minion server
-     * @param result the result of the call as parsed from event data
-     * @param serverAction the server action
+     * @param epoch
+     * @param version
+     * @param release
+     * @param type
+     * @return PackageEvr
      */
-    private static void handleHardwareProfileUpdate(MinionServer server,
-            HwProfileUpdateSlsResult result, ServerAction serverAction) {
-        Instant start = Instant.now();
-
-        HardwareMapper hwMapper = new HardwareMapper(server,
-                new ValueMap(result.getGrains()));
-        hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo()));
-        server.setRam(hwMapper.getTotalMemory());
-        server.setSwap(hwMapper.getTotalSwapMemory());
-        if (CpuArchUtil.isDmiCapable(hwMapper.getCpuArch())) {
-            hwMapper.mapDmiInfo(
-                    result.getSmbiosRecordsBios().orElse(Collections.emptyMap()),
-                    result.getSmbiosRecordsSystem().orElse(Collections.emptyMap()),
-                    result.getSmbiosRecordsBaseboard().orElse(Collections.emptyMap()),
-                    result.getSmbiosRecordsChassis().orElse(Collections.emptyMap()));
-        }
-        hwMapper.mapDevices(result.getUdevdb());
-        if (CpuArchUtil.isS390(hwMapper.getCpuArch())) {
-            hwMapper.mapSysinfo(result.getMainframeSysinfo());
-        }
-        hwMapper.mapVirtualizationInfo(result.getSmbiosRecordsSystem());
-        hwMapper.mapNetworkInfo(result.getNetworkInterfaces(), Optional.of(result.getNetworkIPs()),
-                result.getNetworkModules(),
-                Stream.concat(
-                    Stream.concat(
-                        result.getFqdns().stream(),
-                        result.getDnsFqdns().stream()
-                    ),
-                    result.getCustomFqdns().stream()
-                ).distinct().collect(Collectors.toList())
-        );
-        server.setPayg(result.getInstanceFlavor().map(o -> o.equals("PAYG")).orElse(false));
-        server.setContainerRuntime(result.getContainerRuntime());
-        server.setUname(result.getUname());
-
-        var sapWorkloads = result.getSAPWorkloads()
-                .map(m -> m.getChanges().getRet())
-                .orElse(Collections.emptySet())
-                .stream()
-                .map(workload -> new SAPWorkload(
-                        server, workload.get("system_id"), workload.get("instance_type")
-                ))
-                .collect(Collectors.toSet());
-
-        server.getSapWorkloads().retainAll(sapWorkloads);
-        server.getSapWorkloads().addAll(sapWorkloads);
-
-        // Let the action fail in case there is error messages
-        if (!hwMapper.getErrors().isEmpty()) {
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-            serverAction.setResultMsg("Hardware list could not be refreshed completely:\n" +
-                    hwMapper.getErrors().stream().collect(Collectors.joining("\n")));
-            serverAction.setResultCode(-1L);
-        }
-
-        if (LOG.isDebugEnabled()) {
-            long duration = Duration.between(start, Instant.now()).getSeconds();
-            LOG.debug("Hardware profile updated for minion: {} ({} seconds)", server.getMinionId(), duration);
-        }
-    }
-
-    private void handleInventoryRefresh(Action action, ServerAction serverAction, JsonElement jsonResult) {
-        if (jsonResult == null) {
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-            serverAction.setResultMsg(
-                    "Error while requesting inventory data from target system: Got no result from system");
-            return;
-        }
-        String inventoryPath = ((InventoryAction) action).getDetails().getInventoryPath();
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-            try {
-                Set<String> inventorySystems = AnsibleManager.parseInventoryAndGetHostnames(
-                        Json.GSON.fromJson(jsonResult, Map.class));
-
-                InventoryPath inventory = AnsibleFactory.lookupAnsibleInventoryPath(
-                                serverAction.getServerId(), inventoryPath)
-                        .orElseThrow(() -> new LookupException("Unable to find Ansible inventory: " +
-                                inventoryPath + " for system " + serverAction.getServerId()));
-
-                Set<Server> systemsToAdd = inventorySystems.stream().map(s -> ServerFactory.findByFqdn(s)
-                        .orElse(null)).filter(Objects::nonNull).collect(Collectors.toSet());
-
-                AnsibleManager.handleInventoryRefresh(inventory, systemsToAdd);
-                AnsibleFactory.saveAnsiblePath(inventory);
-
-                serverAction.setResultMsg("Refreshed Ansible managed systems of inventory: '" + inventoryPath + "'");
-            }
-            catch (JsonSyntaxException e) {
-                LOG.error("Unable to parse Ansible hostnames from json: {}", e.getMessage());
-                serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                serverAction.setResultMsg("Unable to parse hostnames from inventory: " + inventoryPath);
-                }
-            catch (LookupException e) {
-                LOG.error(e.getMessage());
-                serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                serverAction.setResultMsg(e.getMessage());
-            }
-        }
-        else {
-            serverAction.setResultMsg(jsonResult.getAsString());
-        }
-    }
-
-    private static PackageEvr parsePackageEvr(Optional<String> epoch, String version, Optional<String> release,
+    public static PackageEvr parsePackageEvr(Optional<String> epoch, String version, Optional<String> release,
                                               PackageType type) {
-        switch (type) {
-            case DEB:
-                return PackageEvrFactory.lookupOrCreatePackageEvr(PackageEvr.parseDebian(version));
-            case RPM:
-                return PackageEvrFactory.lookupOrCreatePackageEvr(epoch.map(StringUtils::trimToNull).orElse(null),
-                        version, release.orElse("0"), PackageType.RPM);
-            default:
-                throw new RuntimeException("unreachable");
-        }
-    }
-
-    private static ImagePackage createImagePackageFromSalt(String name, Pkg.Info info, ImageInfo imageInfo) {
-        return createImagePackageFromSalt(name, info.getEpoch(), info.getRelease(), info.getVersion().get(),
-                info.getInstallDateUnixTime(), info.getArchitecture(), imageInfo);
-    }
-
-    private static ImagePackage createImagePackageFromSalt(String name, Optional<String> epoch,
-            Optional<String> release, String version, Optional<Long> installDateUnixTime, Optional<String> architecture,
-            ImageInfo imageInfo) {
-
-        PackageType packageType = imageInfo.getPackageType();
-        Optional<String> pkgArch = architecture.map(arch -> packageType == PackageType.DEB ? arch + "-deb" : arch);
-        PackageEvr evr = parsePackageEvr(epoch, version, release, packageType);
-        ImagePackage pkg = new ImagePackage();
-        pkg.setEvr(evr);
-        pkgArch.ifPresent(arch -> pkg.setArch(PackageFactory.lookupPackageArchByLabel(arch)));
-        installDateUnixTime.ifPresent(udut -> pkg.setInstallTime(new Date(udut * 1000)));
-        pkg.setName(PackageFactory.lookupOrCreatePackageByName(name));
-        pkg.setImageInfo(imageInfo);
-        ImageInfoFactory.save(pkg);
-        return pkg;
+        return switch (type) {
+            case DEB -> PackageEvrFactory.lookupOrCreatePackageEvr(PackageEvr.parseDebian(version));
+            case RPM -> PackageEvrFactory.lookupOrCreatePackageEvr(epoch.map(StringUtils::trimToNull).orElse(null),
+                    version, release.orElse("0"), PackageType.RPM);
+        };
     }
 
     /**
@@ -1977,7 +703,7 @@ public class SaltUtils {
      * @param productsIn list of products as received from Salt
      * @return set of installed products
      */
-    private static Set<InstalledProduct> getInstalledProducts(
+    public static Set<InstalledProduct> getInstalledProducts(
             List<ProductInfo> productsIn) {
         return productsIn.stream().flatMap(saltProduct -> {
             String name = saltProduct.getName();
@@ -1989,7 +715,7 @@ public class SaltUtils {
             // Find the corresponding SUSEProduct in the database, if any
             Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
                     .findSUSEProduct(name, version, release, arch, true));
-            if (!suseProduct.isPresent()) {
+            if (suseProduct.isEmpty()) {
                 LOG.warn(String.format("No product match found for: %s %s %s %s",
                         name, version, release, arch));
             }
@@ -2008,90 +734,6 @@ public class SaltUtils {
         }).collect(Collectors.toSet());
     }
 
-    private static Set<InstalledProduct> getInstalledProductsForRhel(
-           MinionServer server,
-           Optional<String> resPackage,
-           Optional<String> sllPackage,
-           Optional<String> rhelReleaseFile,
-           Optional<String> centosRelaseFile,
-           Optional<String> oracleReleaseFile,
-           Optional<String> alibabaReleaseFile,
-           Optional<String> almaReleaseFile,
-           Optional<String> amazonReleaseFile,
-           Optional<String> rockyReleaseFile) {
-
-        Optional<RhelUtils.RhelProduct> rhelProductInfo =
-                RhelUtils.detectRhelProduct(server, resPackage, sllPackage,
-                        rhelReleaseFile, centosRelaseFile, oracleReleaseFile,
-                        alibabaReleaseFile, almaReleaseFile, amazonReleaseFile,
-                        rockyReleaseFile);
-
-        if (!rhelProductInfo.isPresent()) {
-            LOG.warn("Could not determine RHEL product type for minion: {}", server.getMinionId());
-            return Collections.emptySet();
-        }
-
-        LOG.debug("Detected minion {} as a RedHat compatible system: {} {} {} {}",
-                server.getMinionId(),
-                rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
-                rhelProductInfo.get().getRelease(), server.getServerArch().getName());
-
-        return rhelProductInfo.get().getAllSuseProducts().stream().map(product -> {
-            String arch = server.getServerArch().getLabel().replace("-redhat-linux", "");
-
-            InstalledProduct installedProduct = new InstalledProduct();
-            installedProduct.setName(product.getName());
-            installedProduct.setVersion(product.getVersion());
-            installedProduct.setRelease(product.getRelease());
-            installedProduct.setArch(PackageFactory.lookupPackageArchByLabel(arch));
-            installedProduct.setBaseproduct(product.isBase());
-
-            return installedProduct;
-        }).collect(Collectors.toSet());
-    }
-
-    private static Set<InstalledProduct> getInstalledProductsForRhel(
-            ImageInfo image,
-            Optional<String> resPackage,
-            Optional<String> sllPackage,
-            Optional<String> rhelReleaseFile,
-            Optional<String> centosReleaseFile,
-            Optional<String> oracleReleaseFile,
-            Optional<String> alibabaReleaseFile,
-            Optional<String> almaReleaseFile,
-            Optional<String> amazonReleaseFile,
-            Optional<String> rockyReleaseFile) {
-
-         Optional<RhelUtils.RhelProduct> rhelProductInfo =
-                 RhelUtils.detectRhelProduct(image, resPackage, sllPackage,
-                         rhelReleaseFile, centosReleaseFile, oracleReleaseFile,
-                         alibabaReleaseFile, almaReleaseFile, amazonReleaseFile,
-                         rockyReleaseFile);
-
-         if (!rhelProductInfo.isPresent()) {
-             LOG.warn("Could not determine RHEL product type for image: {} {}", image.getName(), image.getVersion());
-             return Collections.emptySet();
-         }
-
-         LOG.debug("Detected image {}:{} as a RedHat compatible system: {} {} {} {}",
-                 image.getName(), image.getVersion(),
-                 rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
-                 rhelProductInfo.get().getRelease(), image.getImageArch().getName());
-
-         return rhelProductInfo.get().getAllSuseProducts().stream().map(product -> {
-             String arch = image.getImageArch().getLabel().replace("-redhat-linux", "");
-
-             InstalledProduct installedProduct = new InstalledProduct();
-             installedProduct.setName(product.getName());
-             installedProduct.setVersion(product.getVersion());
-             installedProduct.setRelease(product.getRelease());
-             installedProduct.setArch(PackageFactory.lookupPackageArchByLabel(arch));
-             installedProduct.setBaseproduct(true);
-
-             return installedProduct;
-         }).collect(Collectors.toSet());
-     }
-
     /**
      * Update the system info through grains and data returned by status.uptime
      *
@@ -2102,7 +744,6 @@ public class SaltUtils {
         SystemInfo systemInfo = Json.GSON.fromJson(jsonResult, SystemInfo.class);
         updateSystemInfo(systemInfo, minion);
     }
-
 
     /**
      * Update the minion connection path according to master/proxy hostname
@@ -2181,7 +822,7 @@ public class SaltUtils {
         int actionsChanged = 0;
         for (ServerAction sa : serverActions) {
             if (shouldCleanupAction(bootTime, sa)) {
-                sa.setStatus(ActionFactory.STATUS_COMPLETED);
+                sa.setStatusCompleted();
                 sa.setCompletionTime(new Date());
                 sa.setResultMsg("Reboot completed.");
                 sa.setResultCode(0L);
@@ -2194,18 +835,17 @@ public class SaltUtils {
         }
     }
 
-
     private static boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
         Action action = sa.getParentAction();
         boolean result = false;
         if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
-            if (sa.getStatus().equals(ActionFactory.STATUS_PICKED_UP) && sa.getPickupTime() != null) {
+            if (sa.isStatusPickedUp() && sa.getPickupTime() != null) {
                 result = bootTime.after(sa.getPickupTime());
             }
-            else if (sa.getStatus().equals(ActionFactory.STATUS_PICKED_UP) && sa.getPickupTime() == null) {
+            else if (sa.isStatusPickedUp() && sa.getPickupTime() == null) {
                 result = bootTime.after(action.getEarliestAction());
             }
-            else if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+            else if (sa.isStatusQueued()) {
                 if (action.getPrerequisite() != null) {
                     // queued reboot actions that do not complete in 12 hours will
                     // be cleaned up by MinionActionUtils.cleanupMinionActions()
@@ -2235,23 +875,14 @@ public class SaltUtils {
         if (action == null) {
             return false;
         }
-        if ((!prereqType.isPresent() || prereqType.get().equals(action.getActionType())) &&
+        if ((prereqType.isEmpty() || prereqType.get().equals(action.getActionType())) &&
                 action.getServerActions().stream()
                         .filter(sa -> sa.getServer().getId() == systemId)
-                        .filter(sa -> ActionFactory.STATUS_COMPLETED.equals(sa.getStatus()))
-                        .findFirst().isPresent()) {
+                        .anyMatch(ServerAction::isStatusCompleted)) {
             return true;
         }
         return prerequisiteIsCompleted(action.getPrerequisite(), prereqType, systemId);
     }
-
-    /**
-     * @param xccdfResumeXslIn to set
-     */
-    public void setXccdfResumeXsl(String xccdfResumeXslIn) {
-        this.xccdfResumeXsl = xccdfResumeXslIn;
-    }
-
 
     /**
      * Returns the same provided UUID string but representing the first

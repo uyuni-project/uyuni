@@ -17,8 +17,6 @@ package com.redhat.rhn.frontend.taglibs.list;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DynamicComparator;
-import com.redhat.rhn.common.util.MethodUtil;
-import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.frontend.html.HtmlTag;
 import com.redhat.rhn.frontend.struts.Expandable;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -28,11 +26,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -57,8 +53,6 @@ public class DataSetManipulator {
     private final HttpServletRequest request;
     private final String uniqueName;
     private int pageNumber = -1;
-    private String alphaCol;
-    private int alphaPosition = -1;
     private boolean ascending = true;
     private final int unfilteredDataSize;
     private final boolean parentIsAnElement;
@@ -260,10 +254,6 @@ public class DataSetManipulator {
      * @return The sort attribute name, or empty string
      */
     public String getActiveSortAttribute() {
-        if (AlphaBarHelper.getInstance().isSelected(uniqueName, request)) {
-            return alphaCol;
-        }
-
         String sortKey = ListTagUtil.makeSortByLabel(uniqueName);
         String sortAttribute = StringUtils.defaultString(request.getParameter(sortKey));
         return StringUtils.defaultIfEmpty(sortAttribute, defaultSortAttribute);
@@ -273,14 +263,10 @@ public class DataSetManipulator {
      * Gets the sort direction as specified in the request, or the default sort direction
      * otherwise
      *
-     * @see DataSetManipulator#getDefaultAscending
+     * @see DataSetManipulator
      * @return Active sort direction, or default direction
      */
     public String getActiveSortDirection() {
-        if (AlphaBarHelper.getInstance().isSelected(uniqueName, request)) {
-            return RequestContext.SORT_ASC;
-        }
-
         String sortDirectionKey = ListTagUtil.makeSortDirLabel(uniqueName);
         String sortDir = StringUtils.defaultString(request.getParameter(sortDirectionKey));
 
@@ -366,77 +352,6 @@ public class DataSetManipulator {
     }
 
     /**
-     * Gets the set of characters that will be active on the alpha bar
-     * @return the set of characters that are active
-     */
-    public Set<Character> getAlphaBarIndex() {
-        Set<Character> chars = new HashSet<>();
-        int i = 0;
-        for (Object inputRow : dataset) {
-            String value = getAlphaValue(inputRow);
-            if (!StringUtils.isBlank(value)) {
-                // Make sure that the alpha inputs are converted
-                // to uppercase
-                char val = value.charAt(0);
-                val = Character.toUpperCase(val);
-                if (!chars.contains(val)) {
-                    // add the character to the set
-                    chars.add(val);
-                }
-            }
-            i++;
-        }
-        return chars;
-    }
-
-    /**
-     * setter for the column that will be sorted when the alpha bar is used
-     * @param col the column to set
-     */
-    public void setAlphaColumn(String col) {
-        alphaCol = col;
-    }
-
-    /**
-     * Finds the first instance of an entry in DataSet that starts with the
-     * letter "alphaPosition"
-     * @return int the position within the DataSet of that entry
-     */
-    public int findAlphaPosition() {
-        AlphaBarHelper helper = AlphaBarHelper.getInstance();
-        if (helper.isSelected(uniqueName, request)) {
-            if (alphaPosition > -1) {
-                return alphaPosition;
-            }
-            char alpha = Character
-                    .toUpperCase(helper.getAlphaValue(uniqueName, request).charAt(0));
-            int i = 0;
-            for (Object inputRow : dataset) {
-                String value = getAlphaValue(inputRow);
-                if (!StringUtils.isBlank(value)) {
-                    char val = value.charAt(0);
-                    val = Character.toUpperCase(val);
-                    if (val == alpha) {
-                        alphaPosition = i;
-                        return i;
-                    }
-                }
-                i++;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Gets the default sort attribute name.
-     *
-     * @return The defualt sort attribute
-     */
-    public String getDefaultSortAttribute() {
-        return defaultSortAttribute;
-    }
-
-    /**
      * Sets the default sort attribute name.
      *
      * @param sortAttr The default sort attribute
@@ -452,15 +367,6 @@ public class DataSetManipulator {
      */
     public void setDefaultAscending(boolean asc) {
         ascending = asc;
-    }
-
-    /**
-     * Gets if the set should be sorted in ascending order by default.
-     *
-     * @return The sort order
-     */
-    public boolean getDefaultAscending() {
-        return ascending;
     }
 
     /**
@@ -490,18 +396,6 @@ public class DataSetManipulator {
             }
         }
         return null;
-    }
-
-    private String getAlphaValue(Object inputRow) {
-        String value;
-        if (inputRow instanceof Map) {
-            value = (String) ((Map) inputRow).get(alphaCol);
-        }
-        else {
-            value = (String) MethodUtil.callMethod(inputRow,
-                    StringUtil.beanify("get " + alphaCol), new Object[0]);
-        }
-        return value;
     }
 
     private List expand(List data) {
@@ -578,12 +472,6 @@ public class DataSetManipulator {
      * @return current page number
      */
     private int getCurrentPageNumber() {
-
-        if (AlphaBarHelper.getInstance().isSelected(uniqueName, request)) {
-            int pos = findAlphaPosition();
-            pageNumber = pos / pageSize;
-            return pageNumber;
-        }
 
         if (pageNumber == -1) {
             String param = null;

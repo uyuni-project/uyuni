@@ -36,7 +36,6 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
@@ -68,6 +67,7 @@ import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -135,7 +135,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -145,7 +147,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private static Logger log = LogManager.getLogger(ActionManagerTest.class);
     private static TaskomaticApi taskomaticApi;
     private final SystemQuery systemQuery = new TestSystemQuery();
-    private final SaltApi saltApi = new TestSaltApi();
+    private final SaltApi saltApi = new TestSaltApi() {
+        @Override
+        public void deleteKey(String minionId) {
+            // do not call API in a test
+        }
+    };
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
     );
@@ -197,7 +204,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         ServerAction serverAction = ServerActionTest.createServerAction(server, action);
-        serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+        serverAction.setStatusCompleted();
 
         action.addServerAction(serverAction);
         ActionManager.storeAction(action);
@@ -213,6 +220,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             fail("Must throw LookupException.");
         }
         catch (LookupException ignored) {
+            //should be here
         }
     }
 
@@ -222,7 +230,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Server server = ServerTestUtils.createTestSystem(user);
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         ServerAction serverAction = ServerActionTest.createServerAction(server, action);
-        serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+        serverAction.setStatusCompleted();
 
         action.addServerAction(serverAction);
         ActionManager.storeAction(action);
@@ -245,7 +253,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
                 .createTestServer(user), parent);
 
-        child.setStatus(ActionFactory.STATUS_FAILED);
+        child.setStatusFailed();
 
         parent.addServerAction(child);
         ActionFactory.save(parent);
@@ -262,7 +270,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
                 .createTestServer(user), parent);
 
-        child.setStatus(ActionFactory.STATUS_QUEUED);
+        child.setStatusQueued();
 
         parent.addServerAction(child);
         ActionFactory.save(parent);
@@ -286,7 +294,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             TestUtils.saveAndFlush(server);
 
             ServerAction child = ServerActionTest.createServerAction(server, parent);
-            child.setStatus(ActionFactory.STATUS_QUEUED);
+            child.setStatusQueued();
             TestUtils.saveAndFlush(child);
 
             parent.addServerAction(child);
@@ -295,9 +303,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         return parent;
     }
 
-    private Action createActionWithMinionServerActions(User user, ActionStatus status, int numServerActions)
+    private Action createActionWithMinionServerActions(User user, Consumer<ServerAction> statusSetter,
+                                                       int numServerActions)
             throws Exception {
-        return createActionWithMinionServerActions(user, status, numServerActions,
+        return createActionWithMinionServerActions(user, statusSetter, numServerActions,
                 i -> {
                     try {
                         return MinionServerFactoryTest.createTestMinionServer(user);
@@ -308,9 +317,9 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 });
     }
 
-    private Action createActionWithMinionServerActions(User user, ActionStatus status, int numServerActions,
-                                                       Function<Integer, ? extends Server> serverFactory
-                                                       )
+    private Action createActionWithMinionServerActions(User user, Consumer<ServerAction> statusSetter,
+                                                       int numServerActions,
+                                                       Function<Integer, ? extends Server> serverFactory)
             throws Exception {
         Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         Channel baseChannel = ChannelFactoryTest.createTestChannel(user);
@@ -321,7 +330,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             TestUtils.saveAndFlush(server);
 
             ServerAction child = ServerActionTest.createServerAction(server, parent);
-            child.setStatus(status);
+            statusSetter.accept(child);
             TestUtils.saveAndFlush(child);
 
             parent.addServerAction(child);
@@ -352,11 +361,11 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(expected, getServerActions(parentAction).size());
     }
 
-    private void assertServerActionStatus(Action parentAction, Server server, ActionStatus expectedStatus) {
+    private void assertServerActionStatus(Action parentAction, Server server, Predicate<ServerAction> statusPredicate) {
         boolean found = false;
         for (ServerAction sa : getServerActions(parentAction)) {
             if (server.equals(sa.getServer())) {
-                assertEquals(expectedStatus, sa.getStatus());
+                assertTrue(statusPredicate.test(sa));
                 found = true;
             }
         }
@@ -386,8 +395,15 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testSimpleCancelActions() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
         Action parent = createActionWithServerActions(user, 1);
-        List actionList = createActionList(user, new Action [] {parent});
+        List<Action> actionList = createActionList(user, parent);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).deleteScheduledActions(with(any(Map.class)));
+        } });
 
         assertServerActionCount(parent, 1);
         assertActionsForUser(user, 1);
@@ -398,7 +414,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testSimpleCancelMinionActions() throws Exception {
-        Action parent = createActionWithMinionServerActions(user, ActionFactory.STATUS_QUEUED, 3);
+        Action parent = createActionWithMinionServerActions(user, ServerAction::setStatusQueued, 3);
         List actionList = createActionList(user, new Action [] {parent});
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -438,18 +454,18 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testCancelMinionActionsMixedStatus() throws Exception {
-        Action action = createActionWithMinionServerActions(user, ActionFactory.STATUS_PICKED_UP, 3);
+        Action action = createActionWithMinionServerActions(user, ServerAction::setStatusPickedUp, 3);
 
         // Set first server action to COMPLETED
         Iterator<ServerAction> iterator = action.getServerActions().iterator();
         ServerAction completed = iterator.next();
         Server serverCompleted = completed.getServer();
-        completed.setStatus(ActionFactory.STATUS_COMPLETED);
+        completed.setStatusCompleted();
 
         // Set second server action to FAILED
         ServerAction failed = iterator.next();
         Server serverFailed = failed.getServer();
-        failed.setStatus(ActionFactory.STATUS_FAILED);
+        failed.setStatusFailed();
 
         // Third server action stays in PICKEDUP
         ServerAction pickedUp = iterator.next();
@@ -459,21 +475,22 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ActionManager.cancelActions(user, actionList);
 
         assertServerActionCount(action, 3);
-        assertServerActionStatus(action, serverCompleted, ActionFactory.STATUS_COMPLETED);
-        assertServerActionStatus(action, serverFailed, ActionFactory.STATUS_FAILED);
-        assertServerActionStatus(action, serverPickedUp, ActionFactory.STATUS_FAILED);
+        assertServerActionStatus(action, serverCompleted, ServerAction::isStatusCompleted);
+        assertServerActionStatus(action, serverFailed, ServerAction::isStatusFailed);
+        assertServerActionStatus(action, serverPickedUp, ServerAction::isStatusFailed);
     }
 
     @Test
     public void testSimpleCancelMixedActions() throws Exception {
-        Action parent = createActionWithMinionServerActions(user, ActionFactory.STATUS_QUEUED, 4,
+        Action parent = createActionWithMinionServerActions(user, ServerAction::setStatusQueued, 4,
                 i -> {
                     try {
                         if (i < 3) {
                             return MinionServerFactoryTest.createTestMinionServer(user);
                         }
                         else {
-                            return ServerFactoryTest.createTestServer(user, true);
+                            return ServerFactoryTest.createTestServer(user, true,
+                                    ServerConstants.getServerGroupTypeEnterpriseEntitled());
                         }
                     }
                     catch (Exception e) {
@@ -504,7 +521,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() { {
             allowing(taskomaticMock).deleteScheduledActions(with(equal(actionMap)));
         } });
-        Optional<ServerAction> traditionalServerAction = parent.getServerActions().stream()
+        parent.getServerActions().stream()
                 .filter(s -> !s.getServer().asMinionServer().isPresent())
                 .findFirst();
 
@@ -520,13 +537,20 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCancelActionWithChildren() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
         Action parent = createActionWithServerActions(user, 1);
         Action child = createActionWithServerActions(user, 1);
         child.setPrerequisite(parent);
-        List actionList = createActionList(user, new Action [] {parent});
+        List<Action> actionList = createActionList(user, parent);
 
         assertServerActionCount(parent, 1);
         assertActionsForUser(user, 2);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).deleteScheduledActions(with(any(Map.class)));
+        } });
+
         ActionManager.cancelActions(user, actionList);
         assertServerActionCount(parent, 0);
         assertActionsForUser(user, 2); // shouldn't have been deleted
@@ -534,6 +558,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCancelActionWithMultipleServerActions() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).deleteScheduledActions(with(any(Map.class)));
+        } });
+
         Action parent = createActionWithServerActions(user, 2);
         List<Action> actionList = Collections.singletonList(parent);
 
@@ -586,7 +616,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testCancelActionWithFailedPrerequisite() {
+    public void testCancelActionWithFailedPrerequisite() throws TaskomaticApiException {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
         Server first = ServerFactoryTest.createTestServer(user, true);
         Server second = ServerFactoryTest.createTestServer(user, true);
         List<Server> servers = List.of(first, second);
@@ -596,7 +629,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         servers.forEach(server -> {
             ServerAction serverAction = ActionFactoryTest.createServerAction(server, parent);
-            serverAction.setStatus(first.equals(server) ? ActionFactory.STATUS_FAILED : ActionFactory.STATUS_QUEUED);
+            if (first.equals(server)) {
+                serverAction.setStatusFailed();
+            }
+            else {
+                serverAction.setStatusQueued();
+            }
             parent.addServerAction(serverAction);
             ActionFactory.save(serverAction);
         });
@@ -607,7 +645,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         servers.forEach(server -> {
             ServerAction serverAction = ActionFactoryTest.createServerAction(server, child);
-            serverAction.setStatus(ActionFactory.STATUS_QUEUED);
+            serverAction.setStatusQueued();
             child.addServerAction(serverAction);
             ActionFactory.save(serverAction);
         });
@@ -617,6 +655,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Assertions.assertThrows(ActionIsChildException.class,
             () -> ActionManager.cancelActions(user, actionsToCancel)
         );
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).deleteScheduledActions(with(Map.of(actionsToCancel.get(0), Set.of(first))));
+        } });
 
         // Should cancel, first server has a failed prerequisite
         Assertions.assertDoesNotThrow(
@@ -647,6 +689,9 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testComplexHierarchy() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
         Action parent1 = createActionWithServerActions(user, 3);
         for (int i = 0; i < 9; i++) {
             Action child = createActionWithServerActions(user, 2);
@@ -659,11 +704,14 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         }
         assertServerActionCount(user, 42);
 
-        List actionList = createActionList(user, new Action [] {parent1, parent2});
+        List<Action> actionList = createActionList(user, parent1, parent2);
 
         assertServerActionCount(parent1, 3);
         assertActionsForUser(user, 20);
 
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).deleteScheduledActions(with(any(Map.class)));
+        } });
         ActionManager.cancelActions(user, actionList);
         assertServerActionCount(parent1, 0);
         assertActionsForUser(user, 20); // shouldn't have been deleted
@@ -673,6 +721,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCancelKickstartAction() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
         Session session = HibernateFactory.getSession();
         Action parentAction = createActionWithServerActions(user, 1);
         Server server = parentAction.getServerActions().iterator().next()
@@ -686,18 +736,21 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         TestUtils.saveAndFlush(ksSession);
         ksSession = reload(ksSession);
 
-        List actionList = createActionList(user, new Action [] {parentAction});
+        List<Action> actionList = createActionList(user, parentAction);
 
-        Query kickstartSessions = session.createQuery(
-                "from KickstartSession ks where ks.action = :action");
+        Query<KickstartSession> kickstartSessions = session.createQuery(
+                "from KickstartSession ks where ks.action = :action", KickstartSession.class);
         kickstartSessions.setParameter("action", parentAction);
-        List results = kickstartSessions.list();
+        List<KickstartSession> results = kickstartSessions.list();
         assertEquals(1, results.size());
 
         assertEquals(1, ksSession.getHistory().size());
-        KickstartSessionHistory history =
-            (KickstartSessionHistory)ksSession.getHistory().iterator().next();
+        KickstartSessionHistory history = ksSession.getHistory().iterator().next();
         assertEquals("created", history.getState().getLabel());
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).deleteScheduledActions(with(any(Map.class)));
+        } });
 
         ActionManager.cancelActions(user, actionList);
 
@@ -715,7 +768,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
                 .createTestServer(user), parent);
 
-        child.setStatus(ActionFactory.STATUS_COMPLETED);
+        child.setStatusCompleted();
 
         parent.addServerAction(child);
         ActionFactory.save(parent);
@@ -732,7 +785,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
                 .createTestServer(user), parent);
 
-        child.setStatus(ActionFactory.STATUS_COMPLETED);
+        child.setStatusCompleted();
         child.setCreated(new Date(System.currentTimeMillis()));
 
         parent.addServerAction(child);
@@ -766,13 +819,13 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
 
-        sa.setStatus(ActionFactory.STATUS_FAILED);
+        sa.setStatusFailed();
         sa.setRemainingTries(0L);
         ActionFactory.save(a1);
 
         ActionManager.rescheduleAction(a1);
         sa = (ServerAction) ActionFactory.reload(sa);
-        assertEquals(sa.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertTrue(sa.isStatusQueued());
         assertTrue(sa.getRemainingTries() > 0);
     }
 
@@ -781,7 +834,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatusQueued();
         ActionFactory.save(a1);
         DataResult<ActionedSystem> dr = ActionManager.inProgressSystems(user, a1, null);
         assertFalse(dr.isEmpty());
@@ -796,7 +849,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
-        sa.setStatus(ActionFactory.STATUS_FAILED);
+        sa.setStatusFailed();
         ActionFactory.save(a1);
 
         assertFalse(ActionManager.failedSystems(user, a1, null).isEmpty());
@@ -831,7 +884,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(a.getServerActions().size(), 1);
         Object[] array = a.getServerActions().toArray();
         ServerAction sa = (ServerAction)array[0];
-        assertEquals(sa.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertTrue(sa.isStatusQueued());
         assertEquals(sa.getServer(), s);
     }
 
@@ -1004,8 +1057,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 createPackageListItem("kernel-2.4.24-EL-mmccune", 500341));
         profileList.add(ProfileManagerTest.
                 createPackageListItem("kernel-2.4.25-EL-mmccune", 500341));
-        //profileList.add(ProfileManagerTest.
-        //        createPackageListItem("other-2.1.0-EL-mmccune", 500400));
 
         List<PackageListItem> systemList = new ArrayList<>();
         systemList.add(ProfileManagerTest.
@@ -1200,29 +1251,11 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             log.warn("pm [{}] compare [{}] release [{}]", pm.toString(), pm.getComparison(),
                     pm.getSystem() != null ? pm.getSystem().getRelease() : pm.getOther().getRelease());
         }
-//        assertEquals(1, diff.size());
-//        PackageMetadata pm = (PackageMetadata) diff.get(0);
-//        assertNotNull(pm);
-//        assertEquals(PackageMetadata.KEY_OTHER_NEWER, pm.getComparisonAsInt());
-//        assertEquals("kernel-2.4.22-27.EL-bretm", pm.getProfileEvr());
-//        assertEquals("kernel-2.4.21-27.EL", pm.getSystemEvr());
 
         Action action = ActionManager.schedulePackageRunTransaction(user, srvr, pkgs,
                 new Date());
         System.out.println("Action is an [" + action.getClass().getName() + "]");
-        //1005385254&set_label=packages_for_system_sync&prid=6110jjj
-        /*
-         * INSERT INTO rhnPackageDeltaElement
-  (package_delta_id, transaction_package_id)
-VALUES
-  (:delta_id,
-   lookup_transaction_package(:operation, :n, :e, :v, :r, :a))
-
-         */
     }
-
-    //schedulePackageDelta
-
 
     private TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {
         if (taskomaticApi == null) {

@@ -25,6 +25,11 @@ const opts = yargs(hideBin(process.argv))
     description: "Check whether the specfile is up to date with the latest licenses and committed on git",
     default: true,
   })
+  .option("force", {
+    type: "boolean",
+    description: "Force rebuild, ignore caches, ignore sanity checks",
+    default: false,
+  })
   .option("measure-performance", {
     type: "boolean",
     description: "Measure and output build performance statistics",
@@ -51,11 +56,11 @@ if (opts.verbose) {
 (async () => {
   try {
     if (opts.checkPackageJson) {
-      await checkPackage();
+      await checkPackage(opts);
     }
 
     if (opts.mode === "production") {
-      await aggregateLicenses();
+      await aggregateLicenses(opts);
     }
 
     webpack(config(process.env, opts), (err, stats) => {
@@ -114,8 +119,12 @@ if (opts.verbose) {
             console.error(`
                     It seems changes to license and/or spec files haven't been committed.
                     Please run "yarn build" again and commit the following files: ${uncommittedFiles.join(", ")}`);
-            process.exitCode = 1;
-            return;
+            if (opts.force) {
+              console.error(`WARN: Ignoring uncommitted spec changes because build was called with --force`);
+            } else {
+              process.exitCode = 1;
+              return;
+            }
           }
         }
       });

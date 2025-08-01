@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Form, Select, Text } from "components/input";
+import { DEPRECATED_Select, Form, Text } from "components/input";
 
 import { ProjectEnvironmentType } from "../../../type";
 
@@ -46,7 +46,7 @@ const EnvironmentForm = (props: Props) => (
       </div>
       {!props.editing && (
         <div className="row">
-          <Select
+          <DEPRECATED_Select
             name="predecessorLabel"
             label={t("Insert before")}
             labelClass="col-md-3"

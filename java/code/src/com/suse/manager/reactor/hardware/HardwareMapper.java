@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
@@ -43,6 +44,7 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltGrains;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.salt.netapi.calls.modules.Network;
+import com.suse.utils.Json;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -199,6 +201,14 @@ public class HardwareMapper {
         // On s390x this number of active and actual CPUs can be different.
         cpu.setNrCPU(grains.getValueAsLong("total_num_cpus").orElse(0L));
 
+        var archSpecs = grains.get("cpu_arch_specs")
+            .filter(v -> v instanceof Map)
+            .map(v -> (Map<?, ?>) v)
+            .filter(map -> !map.isEmpty())
+            .map(Json.GSON::toJson)
+            .orElse(null);
+        cpu.setArchSpecs(archSpecs);
+
         if (arch != null) {
             cpu.setServer(server);
             server.setCpu(cpu);
@@ -238,6 +248,8 @@ public class HardwareMapper {
         String systemSerial = system.getOptionalAsString("serial_number").orElse(null);
 
         String boardSerial = baseboard.getOptionalAsString("serial_number").orElse(null);
+        String boardName = baseboard.getOptionalAsString("product_name").orElse(null);
+        String boardManufacturer = baseboard.getOptionalAsString("manufacturer").orElse(null);
 
         String chassisSerial = chassis.getOptionalAsString("serial_number").orElse(null);
         String chassisTag = chassis.getOptionalAsString("asset_tag").orElse(null);
@@ -251,17 +263,27 @@ public class HardwareMapper {
             dmiSystem.append(productName);
         }
         if (StringUtils.isNotBlank(systemVersion)) {
-            if (dmiSystem.length() > 0) {
+            if (!dmiSystem.isEmpty()) {
                 dmiSystem.append(" ");
             }
             dmiSystem.append(systemVersion);
         }
-        dmi.setSystem(dmiSystem.length() > 0 ? dmiSystem.toString().trim() : null);
+        dmi.setSystem(dmiSystem.isEmpty() ? null : dmiSystem.toString().trim());
         dmi.setProduct(productName);
         if (biosVendor != null || biosVersion != null || biosReleseDate != null) {
             dmi.setBios(biosVendor, biosVersion, biosReleseDate);
         }
         dmi.setVendor(biosVendor);
+
+        StringBuilder board = new StringBuilder();
+        if (StringUtils.isNotBlank(boardManufacturer)) {
+            board.append(boardManufacturer.trim());
+            board.append(" ");
+        }
+        if (StringUtils.isNotBlank(boardName)) {
+            board.append(boardName.trim());
+        }
+        dmi.setBoard(board.isEmpty() ? null : board.toString().trim());
 
         dmi.setAsset(String.format("(chassis: %s) (chassis: %s) (board: %s) (system: %s)",
                 Objects.toString(chassisSerial, ""), Objects.toString(chassisTag, ""),
@@ -666,7 +688,7 @@ public class HardwareMapper {
             List<VirtualInstance> virtualInstances = VirtualInstanceFactory.getInstance()
                     .lookupVirtualInstanceByUuid(virtUuid);
 
-            if (grains.getValueAsString("os_family").contentEquals("Suse") &&
+            if (grains.getValueAsString("os_family").contentEquals(ServerConstants.OS_FAMILY_SUSE) &&
                     grains.getValueAsString("osrelease").startsWith("11") &&
                         StringUtils.isEmpty(instanceId)) {
                 virtUuid = fixAndReturnSle11Uuid(virtUuid);

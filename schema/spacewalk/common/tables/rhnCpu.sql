@@ -46,6 +46,7 @@ CREATE TABLE rhnCpu
     apic         VARCHAR(32),
     apmVersion   VARCHAR(32),
     chipset      VARCHAR(64),
+    arch_specs   JSONB,
     created      TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
     modified     TIMESTAMPTZ

@@ -3523,6 +3523,16 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.details.support' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/systems/details/support' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.details.support' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/systems/:sid/details/uploadSupportData' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'systems.software.refresh' AND ns.access_mode = 'W'
     AND ep.endpoint = '/systems/ssm/misc/SoftwareRefresh.do' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
@@ -9029,6 +9039,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.system.schedule_script_run' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/system/scheduleScriptRun' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.system.schedule_support_data_upload' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/system/scheduleSupportDataUpload' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep

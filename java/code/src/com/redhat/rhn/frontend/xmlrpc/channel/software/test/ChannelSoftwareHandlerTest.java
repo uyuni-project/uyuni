@@ -343,7 +343,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
         //NoSuchChannel
         try {
-            result = csh.listSubscribedSystems(admin, TestUtils.randomString());
+            csh.listSubscribedSystems(admin, TestUtils.randomString());
             fail("ChannelSoftwareHandler.listSubscribedSystemd didn't throw " +
                  "NoSuchChannelException.");
         }
@@ -913,7 +913,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
                 mergeTo.getLabel());
         assertEquals(mergeResult.length, fromList.size());
 
-        toList = handler.listErrata(admin, mergeTo.getLabel());
+        handler.listErrata(admin, mergeTo.getLabel());
         assertEquals(mergeResult.length, fromList.size());
     }
 
@@ -1003,7 +1003,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
                 mergeTo.getLabel(), "2008-09-30", "2030-09-30");
         assertEquals(mergeResult.length, fromList.size());
 
-        toList = handler.listErrata(admin, mergeTo.getLabel());
+        handler.listErrata(admin, mergeTo.getLabel());
         assertEquals(mergeResult.length, fromList.size());
 
         // perform a second merge on an interval where we know we don't have any

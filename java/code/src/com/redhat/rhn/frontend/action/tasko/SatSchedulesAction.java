@@ -28,8 +28,10 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,9 +58,16 @@ public class SatSchedulesAction extends RhnAction implements Listable<Map<String
     public List<Map<String, Object>> getResult(RequestContext contextIn) {
         User user =  contextIn.getCurrentUser();
         try {
-            List<Map<String, Object>> activeSchedules = new TaskomaticApi().findActiveSchedules(user);
-            activeSchedules.removeIf(s -> s.get("job_label").equals("payg-dimension-computation-default"));
-            return activeSchedules;
+            List<Map<String, Object>> allSchedules = new TaskomaticApi().findAllSatSchedules(user);
+            return allSchedules.stream()
+                    .filter(s -> !s.get("job_label").equals("payg-dimension-computation-default"))
+                    .filter(s -> s.get("cron_expr") != null)
+                    .map(s -> {
+                        Date till = (Date) s.get("active_till");
+                        s.put("active", (till == null || till.after(new Date())));
+                        return s;
+                    })
+                    .collect(Collectors.toList());
         }
         catch (TaskomaticApiException e) {
             createErrorMessage(contextIn.getRequest(),

@@ -10,123 +10,50 @@
  */
 package com.suse.manager.webui.services;
 
-import static com.redhat.rhn.common.hibernate.HibernateFactory.unproxy;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
-import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
-import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.mapping;
-import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.RhnRuntimeException;
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionStatus;
-import com.redhat.rhn.domain.action.ActionType;
-import com.redhat.rhn.domain.action.ansible.InventoryAction;
-import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
-import com.redhat.rhn.domain.action.ansible.PlaybookAction;
-import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
-import com.redhat.rhn.domain.action.appstream.AppStreamAction;
-import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
-import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
-import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
-import com.redhat.rhn.domain.action.config.ConfigAction;
-import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
-import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
-import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
-import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
-import com.redhat.rhn.domain.action.kickstart.KickstartInitiateAction;
-import com.redhat.rhn.domain.action.rhnpackage.PackageLockAction;
-import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
-import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
-import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
-import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
-import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
-import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
-import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
-import com.redhat.rhn.domain.action.scap.ScapAction;
-import com.redhat.rhn.domain.action.scap.ScapActionDetails;
-import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.image.DockerfileProfile;
-import com.redhat.rhn.domain.image.ImageProfile;
-import com.redhat.rhn.domain.image.ImageProfileFactory;
-import com.redhat.rhn.domain.image.ImageStore;
-import com.redhat.rhn.domain.image.ImageStoreFactory;
-import com.redhat.rhn.domain.image.KiwiProfile;
-import com.redhat.rhn.domain.image.ProfileCustomDataValue;
-import com.redhat.rhn.domain.kickstart.KickstartFactory;
-import com.redhat.rhn.domain.kickstart.KickstartableTree;
-import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductUpgrade;
-import com.redhat.rhn.domain.product.Tuple2;
-import com.redhat.rhn.domain.rhnpackage.PackageArch;
-import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.server.ErrataInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerGroupFactory;
-import com.redhat.rhn.domain.token.ActivationKey;
-import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
-import com.suse.manager.webui.utils.token.DownloadTokenBuilder;
-import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
-import com.suse.salt.netapi.calls.modules.TransactionalUpdate;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.GenericError;
 import com.suse.salt.netapi.exception.SaltException;
@@ -144,31 +71,11 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.cobbler.CobblerConnection;
-import org.cobbler.Distro;
-import org.cobbler.Profile;
-import org.cobbler.SystemRecord;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.FileAttribute;
-import java.nio.file.attribute.PosixFilePermission;
-import java.nio.file.attribute.PosixFilePermissions;
-import java.nio.file.attribute.UserPrincipal;
-import java.nio.file.attribute.UserPrincipalLookupService;
 import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.Instant;
@@ -189,12 +96,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -206,38 +111,6 @@ public class SaltServerActionService {
 
     /* Logger for this class */
     private static final Logger LOG = LogManager.getLogger(SaltServerActionService.class);
-    public static final String PACKAGES_PKGINSTALL = "packages.pkginstall";
-    public static final String PACKAGES_PKGUPDATE = "packages.pkgupdate";
-    private static final String PACKAGES_PKGDOWNLOAD = "packages.pkgdownload";
-    public static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
-    private static final String PACKAGES_PATCHDOWNLOAD = "packages.patchdownload";
-    private static final String PACKAGES_PKGREMOVE = "packages.pkgremove";
-    private static final String PACKAGES_PKGLOCK = "packages.pkglock";
-    private static final String CONFIG_DEPLOY_FILES = "configuration.deploy_files";
-    private static final String CONFIG_DIFF_FILES = "configuration.diff_files";
-    private static final String PARAM_PKGS = "param_pkgs";
-    private static final String PARAM_PATCHES = "param_patches";
-    private static final String PARAM_FILES = "param_files";
-    private static final String REMOTE_COMMANDS = "remotecommands";
-    private static final String SYSTEM_REBOOT = "system.reboot";
-    private static final String KICKSTART_INITIATE = "bootloader.autoinstall";
-    private static final String ANSIBLE_RUNPLAYBOOK = "ansible.runplaybook";
-    private static final String ANSIBLE_INVENTORIES = "ansible.targets";
-    private static final String COCOATTEST_REQUESTDATA = "cocoattest.requestdata";
-    public static final String APPSTREAMS_CONFIGURE = "appstreams.configure";
-    public static final String PARAM_APPSTREAMS_ENABLE = "param_appstreams_enable";
-    public static final String PARAM_APPSTREAMS_DISABLE = "param_appstreams_disable";
-
-    /** SLS pillar parameter name for the list of update stack patch names. */
-    public static final String PARAM_UPDATE_STACK_PATCHES = "param_update_stack_patches";
-
-    /** SLS pillar parameter name for the list of regular patch names. */
-    public static final String PARAM_REGULAR_PATCHES = "param_regular_patches";
-    public static final String ALLOW_VENDOR_CHANGE = "allow_vendor_change";
-    private static final String INVENTORY_PATH = "/etc/ansible/hosts";
-
-
-    private boolean commitTransaction = true;
 
     private SaltActionChainGeneratorService saltActionChainGeneratorService =
             SaltActionChainGeneratorService.INSTANCE;
@@ -246,7 +119,6 @@ public class SaltServerActionService {
     private final SaltSSHService saltSSHService = GlobalInstanceHolder.SALT_API.getSaltSSHService();
     private SaltUtils saltUtils;
     private final SaltKeyUtils saltKeyUtils;
-    private boolean skipCommandScriptPerms;
     private TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     /**
@@ -283,100 +155,7 @@ public class SaltServerActionService {
             return Collections.emptyMap();
         }
 
-        ActionType actionType = actionIn.getActionType();
-        actionIn = unproxy(actionIn);
-        if (ActionFactory.TYPE_ERRATA.equals(actionType)) {
-            ErrataAction errataAction = (ErrataAction) actionIn;
-            Set<Long> errataIds = errataAction.getErrata().stream()
-                    .map(Errata::getId).collect(Collectors.toSet());
-            return errataAction(minions, errataIds, errataAction.getDetails().getAllowVendorChange());
-        }
-        else if (ActionFactory.TYPE_PACKAGES_LOCK.equals(actionType)) {
-            return packagesLockAction(minions, (PackageLockAction) actionIn);
-        }
-        else if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(actionType)) {
-            return packagesUpdateAction(minions, (PackageUpdateAction) actionIn);
-        }
-        else if (ActionFactory.TYPE_PACKAGES_REMOVE.equals(actionType)) {
-            return packagesRemoveAction(minions, (PackageRemoveAction) actionIn);
-        }
-        else if (ActionFactory.TYPE_PACKAGES_REFRESH_LIST.equals(actionType)) {
-            return packagesRefreshListAction(minions);
-        }
-        else if (ActionFactory.TYPE_HARDWARE_REFRESH_LIST.equals(actionType)) {
-            return hardwareRefreshListAction(minions);
-        }
-        else if (ActionFactory.TYPE_REBOOT.equals(actionType)) {
-            return rebootAction(minions);
-        }
-        else if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.equals(actionType)) {
-            return deployFiles(minions, (ConfigAction) actionIn);
-        }
-        else if (ActionFactory.TYPE_CONFIGFILES_DIFF.equals(actionType)) {
-            return diffFiles(minions, (ConfigAction) actionIn);
-        }
-        else if (ActionFactory.TYPE_SCRIPT_RUN.equals(actionType)) {
-            return remoteCommandAction(minions, (ScriptAction) actionIn);
-        }
-        else if (ActionFactory.TYPE_APPLY_STATES.equals(actionType)) {
-            ApplyStatesActionDetails actionDetails = ((ApplyStatesAction) actionIn).getDetails();
-            return applyStatesAction(minions, actionDetails.getMods(),
-                                     actionDetails.getPillarsMap(), actionDetails.isTest());
-        }
-        else if (ActionFactory.TYPE_IMAGE_INSPECT.equals(actionType)) {
-            ImageInspectAction iia = (ImageInspectAction) actionIn;
-            ImageInspectActionDetails details = iia.getDetails();
-            if (details == null) {
-                return Collections.emptyMap();
-            }
-            return ImageStoreFactory.lookupById(details.getImageStoreId())
-                    .map(store -> imageInspectAction(minions, details, store))
-                    .orElseGet(Collections::emptyMap);
-        }
-        else if (ActionFactory.TYPE_IMAGE_BUILD.equals(actionType)) {
-            ImageBuildAction imageBuildAction = (ImageBuildAction) actionIn;
-           ImageBuildActionDetails details = imageBuildAction.getDetails();
-            if (details == null) {
-                return Collections.emptyMap();
-            }
-            return ImageProfileFactory.lookupById(details.getImageProfileId()).map(
-                    ip -> imageBuildAction(minions, Optional.ofNullable(details.getVersion()), ip,
-                            imageBuildAction.getId())
-            ).orElseGet(Collections::emptyMap);
-        }
-        else if (ActionFactory.TYPE_DIST_UPGRADE.equals(actionType)) {
-            return distUpgradeAction((DistUpgradeAction) actionIn, minions);
-        }
-        else if (ActionFactory.TYPE_SCAP_XCCDF_EVAL.equals(actionType)) {
-            ScapAction scapAction = (ScapAction)actionIn;
-            return scapXccdfEvalAction(minions, scapAction.getScapActionDetails());
-        }
-        else if (ActionFactory.TYPE_SUBSCRIBE_CHANNELS.equals(actionType)) {
-            SubscribeChannelsAction subscribeAction = (SubscribeChannelsAction)actionIn;
-            return subscribeChanelsAction(minions, subscribeAction.getDetails());
-        }
-        else if (ActionFactory.TYPE_KICKSTART_INITIATE.equals(actionType)) {
-            KickstartInitiateAction autoInitAction = (KickstartInitiateAction)actionIn;
-            return autoinstallInitAction(minions, autoInitAction);
-        }
-        else if (ActionFactory.TYPE_PLAYBOOK.equals(actionType)) {
-            return singletonMap(executePlaybookActionCall((PlaybookAction) actionIn), minions);
-        }
-        else if (ActionFactory.TYPE_INVENTORY.equals(actionType)) {
-            return singletonMap(executeInventoryActionCall((InventoryAction) actionIn), minions);
-        }
-        else if (ActionFactory.TYPE_COCO_ATTESTATION.equals(actionType)) {
-            return cocoAttestationAction(minions);
-        }
-        else if (ActionFactory.TYPE_APPSTREAM_CONFIGURE.equals(actionType)) {
-            return appStreamAction(minions, (AppStreamAction) actionIn);
-        }
-        else {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Action type {} is not supported with Salt", actionType != null ? actionType.getName() : "");
-            }
-            return Collections.emptyMap();
-        }
+        return actionIn.getSaltCalls(minions);
     }
 
     /**
@@ -442,7 +221,7 @@ public class SaltServerActionService {
                 actionIn.getServerActions().stream()
                         .filter(sa -> failedServerIds.contains(sa.getServer().getId()))
                         .forEach(sa -> {
-                            sa.setStatus(STATUS_FAILED);
+                            sa.setStatusFailed();
                             sa.setResultMsg("Error preparing salt call: " + e.getMessage());
                             sa.setCompletionTime(new Date());
                         });
@@ -656,7 +435,7 @@ public class SaltServerActionService {
                         // skip reboot, needs special handling
                         stateResult ->
                                 stateResult.getName().map(x -> x.fold(Arrays::asList, List::of)
-                                        .contains(SYSTEM_REBOOT)).orElse(false));
+                                        .contains(SaltParameters.SYSTEM_REBOOT)).orElse(false));
 
                 boolean refreshPkg = false;
                 Optional<User> scheduler = Optional.empty();
@@ -673,7 +452,7 @@ public class SaltServerActionService {
 
                         Action action = ActionFactory.lookupById(stateId.getActionId());
                         if (stateResult.getName().map(x -> x.fold(Arrays::asList, List::of)
-                                .contains(SYSTEM_REBOOT)).orElse(false) && stateResult.isResult() &&
+                                .contains(SaltParameters.SYSTEM_REBOOT)).orElse(false) && stateResult.isResult() &&
                                 action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
 
                             Optional<ServerAction> rebootServerAction =
@@ -683,12 +462,12 @@ public class SaltServerActionService {
                                             .findFirst();
                             rebootServerAction.ifPresentOrElse(
                                     ract -> {
-                                        if (ract.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+                                        if (ract.isStatusQueued()) {
                                             setActionAsPickedUp(ract);
                                         }
                                     },
                                     () -> LOG.error("Action of type {} found in action chain result but not " +
-                                            "in actions for minion {}", SYSTEM_REBOOT, minionId));
+                                            "in actions for minion {}", SaltParameters.SYSTEM_REBOOT, minionId));
                         }
 
                         if (stateResult.isResult() &&
@@ -949,7 +728,7 @@ public class SaltServerActionService {
                             !mods.isEmpty() ?
                                     singletonMap("mods", mods) : emptyMap(),
                             createStateApplyKwargs(kwargs));
-                case SYSTEM_REBOOT:
+                case SaltParameters.SYSTEM_REBOOT:
                     Integer time = (Integer)kwargs.get("at_time");
                     return new SaltSystemReboot(stateId,
                             serverAction.getParentAction().getId(), time);
@@ -972,827 +751,6 @@ public class SaltServerActionService {
         return applyKwargs;
     }
 
-
-    /**
-     * This function will return a map with list of minions grouped by the
-     * salt netapi local call that executes what needs to be executed on
-     * those minions for the given errata ids and minions.
-     *
-     * @param minionSummaries list of minion summaries to target
-     * @param errataIds list of errata ids
-     * @param allowVendorChange true if vendor change allowed
-     * @return minion summaries grouped by local call
-     */
-    public Map<LocalCall<?>, List<MinionSummary>> errataAction(List<MinionSummary> minionSummaries,
-            Set<Long> errataIds, boolean allowVendorChange) {
-        Map<Boolean, List<MinionSummary>> byUbuntu = minionSummaries.stream()
-                .collect(partitioningBy(m -> m.getOs().equals("Ubuntu")));
-
-        Map<LocalCall<Map<String, ApplyResult>>, List<MinionSummary>> ubuntuErrataInstallCalls =
-                errataToPackageInstallCalls(byUbuntu.get(true), errataIds);
-
-        Set<Long> minionServerIds = byUbuntu.get(false).stream()
-                .map(MinionSummary::getServerId)
-                .collect(Collectors.toSet());
-
-        Map<Long, Map<Long, Set<ErrataInfo>>> errataInfos = ServerFactory
-                .listErrataNamesForServers(minionServerIds, errataIds);
-
-        // Group targeted minions by errata names
-        Map<Set<ErrataInfo>, List<MinionSummary>> collect = byUbuntu.get(false).stream()
-                .collect(Collectors.groupingBy(minionId -> errataInfos.get(minionId.getServerId())
-                        .values().stream()
-                        .flatMap(Set::stream)
-                        .collect(Collectors.toSet())
-        ));
-
-        // Convert errata names to LocalCall objects of type State.apply
-        Map<LocalCall<?>, List<MinionSummary>> patchableCalls = collect.entrySet().stream()
-            .collect(Collectors.toMap(entry -> {
-                Map<String, Object> params = new HashMap<>();
-                params.put(PARAM_REGULAR_PATCHES,
-                    entry.getKey().stream()
-                        .filter(e -> !e.isUpdateStack())
-                        .map(ErrataInfo::getName)
-                        .sorted()
-                        .collect(toList())
-                );
-                params.put(ALLOW_VENDOR_CHANGE, allowVendorChange);
-                params.put(PARAM_UPDATE_STACK_PATCHES,
-                    entry.getKey().stream()
-                        .filter(ErrataInfo::isUpdateStack)
-                        .map(ErrataInfo::getName)
-                        .sorted()
-                        .collect(toList())
-                );
-                if (entry.getKey().stream().anyMatch(ErrataInfo::includeSalt)) {
-                    params.put("include_salt_upgrade", true);
-                }
-                return State.apply(
-                        List.of(PACKAGES_PATCHINSTALL),
-                        Optional.of(params)
-                );
-            },
-            Map.Entry::getValue));
-        patchableCalls.putAll(ubuntuErrataInstallCalls);
-        return patchableCalls;
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> packagesLockAction(
-            List<MinionSummary> minionSummaries, PackageLockAction action) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-
-        for (MinionSummary m : minionSummaries) {
-            DataResult<PackageListItem> setLockPkg = PackageManager.systemSetLockedPackages(
-                    m.getServerId(), action.getId(), null);
-            List<List<String>> pkgs = setLockPkg.stream().map(d -> Arrays.asList(d.getName(), d.getArch(),
-                    new PackageEvr(d.getEpoch(), d.getVersion(), d.getRelease(), d.getPackageType())
-                    .toUniversalEvrString())).toList();
-            LocalCall<Map<String, ApplyResult>> localCall =
-                    State.apply(List.of(PACKAGES_PKGLOCK), Optional.of(singletonMap(PARAM_PKGS, pkgs)));
-            List<MinionSummary> mSums = ret.getOrDefault(localCall, new ArrayList<>());
-            mSums.add(m);
-            ret.put(localCall, mSums);
-        }
-        return ret;
-    }
-
-    private Map<LocalCall<Map<String, ApplyResult>>, List<MinionSummary>> errataToPackageInstallCalls(
-            List<MinionSummary> minions,
-            Set<Long> errataIds) {
-        Set<Long> minionIds = minions.stream()
-                .map(MinionSummary::getServerId).collect(Collectors.toSet());
-        Map<Long, Map<String, Tuple2<String, String>>> longMapMap =
-                ServerFactory.listNewestPkgsForServerErrata(minionIds, errataIds);
-
-        // group minions by packages that need to be updated
-        Map<Map<String, Tuple2<String, String>>, List<MinionSummary>> nameArchVersionToMinions =
-                minions.stream().collect(
-                        Collectors.groupingBy(minion -> longMapMap.get(minion.getServerId()))
-                );
-
-        return nameArchVersionToMinions.entrySet().stream().collect(toMap(
-                entry -> State.apply(
-                        singletonList(PACKAGES_PKGINSTALL),
-                        Optional.of(singletonMap(PARAM_PKGS,
-                                entry.getKey().entrySet()
-                                        .stream()
-                                        .map(e -> List.of(
-                                                e.getKey(),
-                                                e.getValue().getA().replaceAll("-deb$", ""),
-                                                e.getValue().getB().endsWith("-X") ?
-                                                    e.getValue().getB().substring(0, e.getValue().getB().length() - 2) :
-                                                    e.getValue().getB()))
-                                        .collect(Collectors.toList())))
-                ),
-                Map.Entry::getValue
-        ));
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> packagesUpdateAction(
-            List<MinionSummary> minionSummaries, PackageUpdateAction action) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-
-        List<Long> sids = minionSummaries.stream().map(MinionSummary::getServerId).collect(toList());
-
-        List<String> nevraStrings = action.getDetails().stream().map(details -> {
-            PackageName name = details.getPackageName();
-            PackageEvr evr = details.getEvr();
-            PackageArch arch = details.getArch();
-            return name.getName() + "-" + evr.toUniversalEvrString() + "." + arch.getLabel();
-        }).collect(toList());
-
-        List<Tuple2<Long, Long>> retractedPidSidPairs = ErrataFactory.retractedPackagesByNevra(nevraStrings, sids);
-        Map<Long, List<Long>> retractedPidsBySid = retractedPidSidPairs.stream()
-                .collect(groupingBy(Tuple2::getB, mapping(Tuple2::getA, toList())));
-        action.getServerActions().forEach(sa -> {
-            List<Long> packageIds = retractedPidsBySid.get(sa.getServerId());
-            if (packageIds != null) {
-                sa.fail("contains retracted packages: " +
-                        packageIds.stream().map(Object::toString).collect(joining(",")));
-            }
-        });
-        List<MinionSummary> filteredMinions = minionSummaries.stream()
-                .filter(ms -> retractedPidsBySid.get(ms.getServerId()) == null ||
-                        retractedPidsBySid.get(ms.getServerId()).isEmpty())
-                .collect(toList());
-
-        List<List<String>> pkgs = action
-                .getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
-                        d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
-                .toList();
-        if (pkgs.isEmpty()) {
-            // Full system package update using update state
-            ret.put(State.apply(List.of(PACKAGES_PKGUPDATE), Optional.empty()), filteredMinions);
-        }
-        else {
-            ret.put(State.apply(List.of(PACKAGES_PKGINSTALL),
-                    Optional.of(singletonMap(PARAM_PKGS, pkgs))), filteredMinions);
-        }
-        return ret;
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> packagesRemoveAction(
-            List<MinionSummary> minionSummaries, PackageRemoveAction action) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        List<List<String>> pkgsAll = action
-                .getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
-                        d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
-                .toList();
-
-        List<List<String>> uniquePkgs = new ArrayList<>();
-        pkgsAll.forEach(d -> {
-                if (!uniquePkgs.stream().map(p -> p.get(0))
-                        .toList()
-                        .contains(d.get(0))) {
-                                uniquePkgs.add(d);
-                }
-        });
-        List<List<String>> duplicatedPkgs = pkgsAll.stream()
-                .filter(p -> !uniquePkgs.contains(p)).collect(Collectors.toList());
-
-        Map<String, Object> params = new HashMap<>();
-        params.put(PARAM_PKGS, uniquePkgs);
-        params.put("param_pkgs_duplicates", duplicatedPkgs);
-
-        ret.put(State.apply(List.of(PACKAGES_PKGREMOVE),
-                Optional.of(params)), minionSummaries);
-        return ret;
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> packagesRefreshListAction(
-            List<MinionSummary> minionSummaries) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        ret.put(State.apply(List.of(ApplyStatesEventMessage.PACKAGES_PROFILE_UPDATE),
-                Optional.empty()), minionSummaries);
-        return ret;
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> hardwareRefreshListAction(
-            List<MinionSummary> minionSummaries) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-
-        // salt-ssh minions in the 'true' partition
-        // regular minions in the 'false' partition
-        Map<Boolean, List<MinionSummary>> partitionBySSHPush = minionSummaries.stream()
-                .collect(Collectors.partitioningBy(MinionSummary::isSshPush));
-
-        // Separate SSH push minions from regular minions to apply different states
-        List<MinionSummary> sshPushMinions = partitionBySSHPush.get(true);
-        List<MinionSummary> regularMinions = partitionBySSHPush.get(false);
-
-        if (!sshPushMinions.isEmpty()) {
-            ret.put(State.apply(List.of(
-                            ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
-                    Optional.empty()), minionSummaries);
-        }
-        if (!regularMinions.isEmpty()) {
-            ret.put(State.apply(Arrays.asList(
-                    ApplyStatesEventMessage.SYNC_ALL,
-                    ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
-                    Optional.empty()), minionSummaries);
-        }
-
-        return ret;
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> rebootAction(List<MinionSummary> minionSummaries) {
-        int rebootDelay = ConfigDefaults.get().getRebootDelay();
-        return minionSummaries.stream().collect(
-            Collectors.groupingBy(
-                m -> m.isTransactionalUpdate() ? TransactionalUpdate.reboot() :
-                        com.suse.salt.netapi.calls.modules.System.reboot(Optional.of(rebootDelay))
-            )
-        );
-    }
-
-    /**
-     * Deploy files(files, directory, symlink) through state.apply
-     *
-     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @param action action which has all the revisions
-     * @return minion summaries grouped by local call
-     */
-    private Map<LocalCall<?>, List<MinionSummary>> deployFiles(List<MinionSummary> minionSummaries,
-            ConfigAction action) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-
-        Map<Long, MinionSummary> targetMap = minionSummaries.stream().
-                collect(Collectors.toMap(MinionSummary::getServerId, minionId-> minionId));
-
-        Map<MinionSummary, Set<ConfigRevision>> serverConfigMap = action.getConfigRevisionActions()
-                .stream()
-                .filter(cra -> targetMap.containsKey(cra.getServer().getId()))
-                .collect(Collectors.groupingBy(
-                        cra -> targetMap.get(cra.getServer().getId()),
-                        Collectors.mapping(ConfigRevisionAction::getConfigRevision, Collectors.toSet())));
-        Map<Set<ConfigRevision>, Set<MinionSummary>> revsServersMap = serverConfigMap.entrySet()
-                .stream()
-                .collect(Collectors.groupingBy(Map.Entry::getValue,
-                        Collectors.mapping(Map.Entry::getKey, Collectors.toSet())));
-        revsServersMap.forEach((configRevisions, selectedServers) -> {
-            List<Map<String, Object>> fileStates = configRevisions
-                    .stream()
-                    .map(revision -> ConfigChannelSaltManager.getInstance().getStateParameters(revision))
-                    .toList();
-            ret.put(State.apply(List.of(CONFIG_DEPLOY_FILES),
-                    Optional.of(Collections.singletonMap(PARAM_FILES, fileStates))),
-                    new ArrayList<>(selectedServers));
-        });
-        return ret;
-    }
-
-    /**
-     * Deploy files(files, directory, symlink) through state.apply
-     *
-     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @param action action which has all the revisions
-     * @return minion summaries grouped by local call
-     */
-    private Map<LocalCall<?>, List<MinionSummary>> diffFiles(List<MinionSummary> minionSummaries, ConfigAction action) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        List<Map<String, Object>> fileStates = action.getConfigRevisionActions().stream()
-                .map(ConfigRevisionAction::getConfigRevision)
-                .filter(revision -> revision.isFile() ||
-                        revision.isDirectory() ||
-                        revision.isSymlink())
-                .map(revision -> ConfigChannelSaltManager.getInstance().getStateParameters(revision))
-                .toList();
-        ret.put(com.suse.salt.netapi.calls.modules.State.apply(
-                List.of(CONFIG_DIFF_FILES),
-                Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
-                Optional.of(true), Optional.of(true)), minionSummaries);
-        return ret;
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> remoteCommandAction(
-            List<MinionSummary> minions, ScriptAction scriptAction) {
-        String script = scriptAction.getScriptActionDetails().getScriptContents();
-
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        // write script to /srv/susemanager/salt/scripts/script_<action_id>.sh
-        Path scriptFile = saltUtils.getScriptPath(scriptAction.getId());
-        try {
-            // make sure parent dir exists
-            if (!Files.exists(scriptFile) && !Files.exists(scriptFile.getParent())) {
-                FileAttribute<Set<PosixFilePermission>> dirAttributes =
-                        PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwxr-xr-x"));
-
-                Files.createDirectory(scriptFile.getParent(), dirAttributes);
-                // make sure correct user is set
-            }
-
-            if (!skipCommandScriptPerms) {
-                setFileOwner(scriptFile.getParent());
-            }
-
-            // In case of action retry, the files script files will be already created.
-            if (!Files.exists(scriptFile)) {
-                FileAttribute<Set<PosixFilePermission>> fileAttributes =
-                        PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-r--r--"));
-                Files.createFile(scriptFile, fileAttributes);
-                FileUtils.writeStringToFile(scriptFile.toFile(),
-                        script.replace("\r\n", "\n"), StandardCharsets.UTF_8);
-            }
-
-            if (!skipCommandScriptPerms) {
-                setFileOwner(scriptFile);
-            }
-
-            // state.apply remotecommands
-            Map<String, Object> pillar = new HashMap<>();
-            pillar.put("mgr_remote_cmd_script", SALT_FS_PREFIX + SCRIPTS_DIR + "/" + scriptFile.getFileName());
-            pillar.put("mgr_remote_cmd_runas", scriptAction.getScriptActionDetails().getUsername());
-            pillar.put("mgr_remote_cmd_timeout", scriptAction.getScriptActionDetails().getTimeout());
-            ret.put(State.apply(List.of(REMOTE_COMMANDS), Optional.of(pillar)), minions);
-        }
-        catch (IOException e) {
-            String errorMsg = "Could not write script to file " + scriptFile + " - " + e;
-            LOG.error(errorMsg, e);
-            scriptAction.getServerActions().stream()
-                    .filter(entry -> entry.getServer().asMinionServer()
-                            .map(minionServer -> minions.contains(new MinionSummary(minionServer)))
-                            .orElse(false))
-                    .forEach(sa -> {
-                        sa.fail("Error scheduling the action: " + errorMsg);
-                        ActionFactory.save(sa);
-            });
-        }
-        return ret;
-    }
-
-    private void setFileOwner(Path path) throws IOException {
-        FileSystem fileSystem = FileSystems.getDefault();
-        UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
-        UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
-
-        Files.setOwner(path, tomcatUser);
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> applyStatesAction(
-            List<MinionSummary> minionSummaries, List<String> mods,
-            Optional<Map<String, Object>> pillar, boolean test) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        ret.put(com.suse.salt.netapi.calls.modules.State.apply(mods, pillar, Optional.of(true),
-                test ? Optional.of(test) : Optional.empty()), minionSummaries);
-        return ret;
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> subscribeChanelsAction(
-            List<MinionSummary> minionSummaries, SubscribeChannelsActionDetails actionDetails) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        SystemManager sysMgr = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
-
-        List<MinionServer> minions = MinionServerFactory.lookupByMinionIds(
-                minionSummaries.stream().map(MinionSummary::getMinionId).collect(Collectors.toSet()));
-
-        minions.forEach(minion ->
-            // change channels in DB and execult the ChannelsChangedEventMessageAction
-            // which regenerate pillar and refresh Tokens but does not execute a "state.apply channels"
-            sysMgr.updateServerChannels(
-                    actionDetails.getParentAction().getSchedulerUser(),
-                    minion,
-                    Optional.ofNullable(actionDetails.getBaseChannel()),
-                    actionDetails.getChannels())
-        );
-        ret.put(State.apply(List.of(ApplyStatesEventMessage.CHANNELS), Optional.empty()),
-                minionSummaries);
-
-        return ret;
-    }
-
-    private static Map<String, Object> dockerRegPillar(List<ImageStore> stores) {
-        Map<String, Object> dockerRegistries = new HashMap<>();
-        stores.forEach(store -> Optional.ofNullable(store.getCreds())
-                .ifPresent(credentials -> {
-                    Map<String, Object> reg = new HashMap<>();
-                    reg.put("email", "tux@example.com");
-                    reg.put("password", credentials.getPassword());
-                    reg.put("username", credentials.getUsername());
-                    dockerRegistries.put(store.getUri(), reg);
-                }));
-        return dockerRegistries;
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> imageInspectAction(
-            List<MinionSummary> minions, ImageInspectActionDetails details, ImageStore store) {
-        Map<String, Object> pillar = new HashMap<>();
-        Map<LocalCall<?>, List<MinionSummary>> result = new HashMap<>();
-        if (ImageStoreFactory.TYPE_OS_IMAGE.equals(store.getStoreType())) {
-            pillar.put("build_id", "build" + details.getBuildActionId());
-            LocalCall<Map<String, ApplyResult>> apply = State.apply(
-                    Collections.singletonList("images.kiwi-image-inspect"),
-                    Optional.of(pillar));
-            result.put(apply, minions);
-            return result;
-        }
-        else {
-            List<ImageStore> imageStores = new LinkedList<>();
-            imageStores.add(store);
-            Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
-            pillar.put("docker-registries", dockerRegistries);
-            pillar.put("imagename", store.getUri() + "/" + details.getName() + ":" + details.getVersion());
-            pillar.put("build_id", "build" + details.getBuildActionId());
-            LocalCall<Map<String, ApplyResult>> apply = State.apply(
-                    Collections.singletonList("images.profileupdate"),
-                    Optional.of(pillar));
-            result.put(apply, minions);
-            return result;
-        }
-    }
-
-    private String getChannelUrl(MinionServer minion, String channelLabel) {
-        String token;
-
-        try {
-            token = new DownloadTokenBuilder(minion.getOrg().getId())
-                .usingServerSecret()
-                .expiringAfterMinutes(Config.get().getInt(ConfigDefaults.TEMP_TOKEN_LIFETIME))
-                .allowingOnlyChannels(Set.of(channelLabel))
-                .build()
-                .getSerializedForm();
-        }
-        catch (TokenBuildingException e) {
-            LOG.error("Could not generate token for {}", channelLabel, e);
-            token = "";
-        }
-
-        String host = minion.getChannelHost();
-
-        return "https://" + host + "/rhn/manager/download/" + channelLabel + "?" + token;
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> imageBuildAction(
-            List<MinionSummary> minionSummaries, Optional<String> version,
-            ImageProfile profile, Long actionId) {
-        List<ImageStore> imageStores = new LinkedList<>();
-        imageStores.add(profile.getTargetStore());
-
-        List<MinionServer> minions = MinionServerFactory.findMinionsByServerIds(
-                minionSummaries.stream().map(MinionSummary::getServerId).collect(Collectors.toList()));
-
-        //TODO: optimal scheduling would be to group by host and orgid
-        return minions.stream().collect(
-                Collectors.toMap(minion -> {
-                    Map<String, Object> pillar = new HashMap<>();
-
-                    profile.asDockerfileProfile().ifPresent(dockerfileProfile -> {
-                        Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
-                        pillar.put("docker-registries", dockerRegistries);
-
-                        String repoPath = Path.of(profile.getTargetStore().getUri(), profile.getLabel()).toString();
-                        String tag = version.orElse("");
-                        String certificate = "";
-                        // salt 2016.11 dockerng require imagename while salt 2018.3 docker requires it separate
-                        pillar.put("imagerepopath", repoPath);
-                        pillar.put("imagetag", tag);
-                        pillar.put("imagename", repoPath + ":" + tag);
-                        pillar.put("builddir", dockerfileProfile.getPath());
-                        pillar.put("build_id", "build" + actionId);
-                        try {
-                            //TODO: maybe from the database
-                            certificate = String.join("\n\n", Files.readAllLines(
-                                    Paths.get("/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT"),
-                                    Charset.defaultCharset()
-                            ));
-                        }
-                        catch (IOException e) {
-                            LOG.error("Could not read certificate", e);
-                        }
-                        pillar.put("cert", certificate);
-                        String repocontent = "";
-                        if (profile.getToken() != null) {
-                            repocontent = profile.getToken().getChannels().stream()
-                                .map(s -> "[susemanager:" + s.getLabel() + "]\n\n" +
-                                    "name=" + s.getName() + "\n\n" +
-                                    "enabled=1\n\n" +
-                                    "autorefresh=1\n\n" +
-                                    "baseurl=" + getChannelUrl(minion, s.getLabel()) + "\n\n" +
-                                    "type=rpm-md\n\n" +
-                                    "gpgcheck=0\n\n" // we use trusted content and SSL.
-                                ).collect(Collectors.joining("\n\n"));
-                        }
-                        pillar.put("repo", repocontent);
-
-                        // Add custom info values
-                        pillar.put("customvalues", profile.getCustomDataValues().stream()
-                                .collect(toMap(v -> v.getKey().getLabel(), ProfileCustomDataValue::getValue)));
-                    });
-
-                    profile.asKiwiProfile().ifPresent(kiwiProfile -> {
-                        pillar.put("source", kiwiProfile.getPath());
-                        pillar.put("build_id", "build" + actionId);
-                        pillar.put("kiwi_options", kiwiProfile.getKiwiOptions());
-                        List<String> repos = new ArrayList<>();
-                        final ActivationKey activationKey = ActivationKeyFactory.lookupByToken(profile.getToken());
-                        Set<Channel> channels = activationKey.getChannels();
-                        for (Channel channel: channels) {
-                            repos.add(getChannelUrl(minion, channel.getLabel()));
-                        }
-                        pillar.put("kiwi_repositories", repos);
-                        pillar.put("activation_key", activationKey.getKey());
-                    });
-
-                    String saltCall = "";
-                    if (profile instanceof DockerfileProfile) {
-                        saltCall = "images.docker";
-                    }
-                    else if (profile instanceof KiwiProfile) {
-                        saltCall = "images.kiwi-image-build";
-                    }
-
-                    return State.apply(
-                            Collections.singletonList(saltCall),
-                            Optional.of(pillar)
-                    );
-                },
-                m -> Collections.singletonList(new MinionSummary(m))
-        ));
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> distUpgradeAction(
-            DistUpgradeAction action,
-            List<MinionSummary> minionSummaries) {
-        Map<Boolean, List<Channel>> collect = action.getDetails().getChannelTasks()
-                .stream().collect(Collectors.partitioningBy(
-                        ct -> ct.getTask() == DistUpgradeChannelTask.SUBSCRIBE,
-                        Collectors.mapping(DistUpgradeChannelTask::getChannel,
-                                Collectors.toList())
-                        ));
-
-        List<Channel> subbed = collect.get(true);
-        List<Channel> unsubbed = collect.get(false);
-
-        action.getServerActions()
-        .stream()
-        .flatMap(s -> Opt.stream(s.getServer().asMinionServer()))
-        .forEach(minion -> {
-            Set<Channel> currentChannels = minion.getChannels();
-            unsubbed.forEach(currentChannels::remove);
-            currentChannels.addAll(subbed);
-            MinionPillarManager.INSTANCE.generatePillar(minion);
-            ServerFactory.save(minion);
-        });
-
-        Map<String, Object> pillar = new HashMap<>();
-        Map<String, Object> susemanager = new HashMap<>();
-        pillar.put("susemanager", susemanager);
-        Map<String, Object> distupgrade = new HashMap<>();
-        susemanager.put("distupgrade", distupgrade);
-        distupgrade.put("dryrun", action.getDetails().isDryRun());
-        distupgrade.put(ALLOW_VENDOR_CHANGE, action.getDetails().isAllowVendorChange());
-        distupgrade.put("channels", subbed.stream()
-                .sorted()
-                .map(c -> "susemanager:" + c.getLabel())
-                .collect(Collectors.toList()));
-        if (Objects.nonNull(action.getDetails().getMissingSuccessors())) {
-            pillar.put("missing_successors", Arrays.asList(action.getDetails().getMissingSuccessors().split(",")));
-        }
-        action.getDetails().getProductUpgrades().stream()
-                .map(SUSEProductUpgrade::getToProduct)
-                .filter(SUSEProduct::isBase)
-                .forEach(tgt -> {
-                    Map<String, String> baseproduct = new HashMap<>();
-                    baseproduct.put("name", tgt.getName());
-                    baseproduct.put("version", tgt.getVersion());
-                    baseproduct.put("arch", tgt.getArch().getLabel());
-                    distupgrade.put("targetbaseproduct", baseproduct);
-                });
-
-        if (commitTransaction) {
-            HibernateFactory.commitTransaction();
-        }
-
-        LocalCall<Map<String, ApplyResult>> distUpgrade = State.apply(
-                Collections.singletonList(ApplyStatesEventMessage.DISTUPGRADE),
-                Optional.of(pillar)
-                );
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        ret.put(distUpgrade, minionSummaries);
-
-        return ret;
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> scapXccdfEvalAction(
-            List<MinionSummary> minionSummaries, ScapActionDetails scapActionDetails) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        Map<String, Object> pillar = new HashMap<>();
-        Matcher profileMatcher = Pattern.compile("--profile (([\\w.-])+)")
-                .matcher(scapActionDetails.getParametersContents());
-        Matcher ruleMatcher = Pattern.compile("--rule (([\\w.-])+)")
-                .matcher(scapActionDetails.getParametersContents());
-        Matcher tailoringFileMatcher = Pattern.compile("--tailoring-file (([\\w./-])+)")
-                .matcher(scapActionDetails.getParametersContents());
-        Matcher tailoringIdMatcher = Pattern.compile("--tailoring-id (([\\w.-])+)")
-                .matcher(scapActionDetails.getParametersContents());
-
-        String oldParameters = "eval " +
-                scapActionDetails.getParametersContents() + " " + scapActionDetails.getPath();
-        pillar.put("old_parameters", oldParameters);
-
-        pillar.put("xccdffile", scapActionDetails.getPath());
-        if (scapActionDetails.getOvalfiles() != null) {
-            pillar.put("ovalfiles", Arrays.stream(scapActionDetails.getOvalfiles().split(","))
-                    .map(String::trim).collect(toList()));
-        }
-        if (profileMatcher.find()) {
-            pillar.put("profile", profileMatcher.group(1));
-        }
-        if (ruleMatcher.find()) {
-            pillar.put("rule", ruleMatcher.group(1));
-        }
-        if (tailoringFileMatcher.find()) {
-            pillar.put("tailoring_file", tailoringFileMatcher.group(1));
-        }
-        if (tailoringIdMatcher.find()) {
-            pillar.put("tailoring_id", tailoringIdMatcher.group(1));
-        }
-        if (scapActionDetails.getParametersContents().contains("--fetch-remote-resources")) {
-            pillar.put("fetch_remote_resources", true);
-        }
-        if (scapActionDetails.getParametersContents().contains("--remediate")) {
-            pillar.put("remediate", true);
-        }
-
-        ret.put(State.apply(singletonList("scap"),
-                Optional.of(singletonMap("mgr_scap_params", (Object)pillar))),
-                minionSummaries);
-        return ret;
-    }
-
-    private Map<String, String> prepareCobblerBoot(String kickstartHost,
-                                                   String cobblerSystem,
-                                                   boolean autoinstall) {
-        CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
-        SystemRecord system = SystemRecord.lookupByName(con, cobblerSystem);
-        Profile profile = system.getProfile();
-        Distro dist = profile.getDistro();
-        String kernel = dist.getKernel();
-        String initrd = dist.getInitrd();
-
-        List<String> nameParts = Arrays.asList(dist.getName().split(":"));
-        String saltFSKernel = Paths.get(nameParts.get(1), nameParts.get(0), new File(kernel).getName()).toString();
-        String saltFSInitrd = Paths.get(nameParts.get(1), nameParts.get(0), new File(initrd).getName()).toString();
-        KickstartableTree tree = KickstartFactory.lookupKickstartTreeByLabel(nameParts.get(0),
-                OrgFactory.lookupById(Long.valueOf(nameParts.get(1))));
-        tree.createOrUpdateSaltFS();
-        String kOpts = buildKernelOptions(system, kickstartHost, autoinstall);
-
-
-        Map<String, String> pillar = new HashMap<>();
-        pillar.put("kernel", saltFSKernel);
-        pillar.put("initrd", saltFSInitrd);
-        pillar.put("kopts", kOpts);
-
-        return pillar;
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> autoinstallInitAction(List<MinionSummary> minions,
-            KickstartInitiateAction autoInitAction) {
-
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        KickstartActionDetails ksActionDetails = autoInitAction.getKickstartActionDetails();
-        String cobblerSystem = ksActionDetails.getCobblerSystemName();
-        String host = ksActionDetails.getKickstartHost();
-        Map<String, String> bootParams = prepareCobblerBoot(host, cobblerSystem, true);
-        Map<String, Object> pillar = new HashMap<>(bootParams);
-        pillar.put("uyuni-reinstall-name", "reinstall-system");
-        String kOpts = bootParams.get("kopts");
-
-        if (kOpts.contains("autoupgrade=1") || kOpts.contains("uyuni_keep_saltkey=1")) {
-            ksActionDetails.setUpgrade(true);
-        }
-        ret.put(State.apply(List.of(KICKSTART_INITIATE), Optional.of(pillar)), minions);
-
-        return ret;
-    }
-
-    private String buildKernelOptions(SystemRecord sys, String host, boolean autoinstall) {
-        String breed = sys.getProfile().getDistro().getBreed();
-        Map<String, Object> kopts = sys.getResolvedKernelOptions();
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Resolved kernel options for {}: {}", sys.getName(), convertOptionsMap(kopts));
-        }
-        if (breed.equals("suse")) {
-            //SUSE is not using 'text'. Instead 'textmode' is used as kernel option.
-            if (kopts.containsKey("textmode")) {
-                kopts.remove("text");
-            }
-            else if (kopts.containsKey("text")) {
-                kopts.remove("text");
-                kopts.put("textmode", "1");
-            }
-        }
-        // no additional initrd parameter allowed
-        kopts.remove("initrd");
-        String kernelOptions = convertOptionsMap(kopts);
-        String autoinst = "http://" + host + "/cblr/svc/op/autoinstall/system/" + sys.getName();
-
-        if (StringUtils.isBlank(breed) || breed.equals("redhat")) {
-            if (sys.getProfile().getDistro().getOsVersion().equals("rhel6")) {
-                kernelOptions += " kssendmac ks=" + autoinst;
-            }
-            else {
-                kernelOptions += " inst.ks.sendmac ks=" + autoinst;
-            }
-        }
-        else if (breed.equals("suse")) {
-            kernelOptions += "autoyast=" + autoinst;
-        }
-        else if (breed.equals("debian") || breed.equals("ubuntu")) {
-            kernelOptions += "auto-install/enable=true priority=critical netcfg/choose_interface=auto url=" + autoinst;
-        }
-
-        if (autoinstall) {
-            String infoUrl = "http://" + host + "/cblr/svc/op/nopxe/system/" + sys.getName();
-            kernelOptions += " info=" + infoUrl;
-        }
-        return kernelOptions;
-    }
-
-    private String convertOptionsMap(Map<String, Object> map) {
-        StringBuilder string = new StringBuilder();
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            String key = entry.getKey();
-            List<String> keyList;
-            try {
-                 keyList = (List<String>)entry.getValue();
-            }
-            catch (ClassCastException e) {
-                keyList = new ArrayList<>();
-                keyList.add((String) entry.getValue());
-            }
-            string.append(key);
-            if (keyList.isEmpty()) {
-                string.append(" ");
-            }
-            else {
-                for (String value : keyList) {
-                    string.append("=").append(value).append(" ");
-                }
-            }
-        }
-        return string.toString();
-    }
-
-    private LocalCall<?> executePlaybookActionCall(PlaybookAction action) {
-        PlaybookActionDetails details = action.getDetails();
-
-        String playbookPath = details.getPlaybookPath();
-        String rundir = new File(playbookPath).getAbsoluteFile().getParent();
-        String inventoryPath = details.getInventoryPath();
-
-        if (StringUtils.isEmpty(inventoryPath)) {
-            inventoryPath = INVENTORY_PATH;
-        }
-
-        Map<String, Object> pillarData = new HashMap<>();
-        pillarData.put("playbook_path", playbookPath);
-        pillarData.put("inventory_path", inventoryPath);
-        pillarData.put("rundir", rundir);
-        pillarData.put("flush_cache", details.isFlushCache());
-        pillarData.put("extra_vars", details.getExtraVarsContents());
-        return State.apply(singletonList(ANSIBLE_RUNPLAYBOOK), Optional.of(pillarData), Optional.of(true),
-                Optional.of(details.isTestMode()));
-    }
-
-    private LocalCall<?> executeInventoryActionCall(InventoryAction action) {
-        InventoryActionDetails details = action.getDetails();
-        String inventoryPath = details.getInventoryPath();
-
-        return new LocalCall<>(ANSIBLE_INVENTORIES, empty(), of(Map.of("inventory", inventoryPath)),
-                new TypeToken<>() { });
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> cocoAttestationAction(List<MinionSummary> minionSummaries) {
-        return Map.of(
-                State.apply(Collections.singletonList(COCOATTEST_REQUESTDATA), Optional.empty()),
-                minionSummaries
-        );
-    }
-
-    private Map<LocalCall<?>, List<MinionSummary>> appStreamAction(
-            List<MinionSummary> minionSummaries, AppStreamAction action) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-
-        Map<Boolean, Set<AppStreamActionDetails>> details = action.getDetails().stream()
-            .collect(Collectors.partitioningBy(AppStreamActionDetails::isEnable, Collectors.toSet()));
-
-        var enableParams = details.get(true).stream()
-            .map(d -> d.getStream() == null ?
-                singletonList(d.getModuleName()) :
-                Arrays.asList(d.getModuleName(), d.getStream()))
-            .toList();
-        var disableParams = details.get(false).stream().map(AppStreamActionDetails::getModuleName).toList();
-
-        Optional<Map<String, Object>> params = Optional.of(Map.of(
-            PARAM_APPSTREAMS_ENABLE, enableParams,
-            PARAM_APPSTREAMS_DISABLE, disableParams
-        ));
-        ret.put(State.apply(List.of(APPSTREAMS_CONFIGURE), params), minionSummaries);
-        return ret;
-    }
-
     /**
      * Prepare to execute staging job via Salt
      * @param actionIn the action
@@ -1806,8 +764,8 @@ public class SaltServerActionService {
                     .getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
                             d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
                     .toList();
-            call = State.apply(List.of(PACKAGES_PKGDOWNLOAD),
-                    Optional.of(Collections.singletonMap(PARAM_PKGS, args)));
+            call = State.apply(List.of(SaltParameters.PACKAGES_PKGDOWNLOAD),
+                    Optional.of(Collections.singletonMap(SaltParameters.PARAM_PKGS, args)));
             LOG.info("Executing staging of packages");
         }
         if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
@@ -1824,8 +782,8 @@ public class SaltServerActionService {
                 )
                 .toList();
 
-            call = State.apply(List.of(PACKAGES_PATCHDOWNLOAD),
-                    Optional.of(Collections.singletonMap(PARAM_PATCHES, errataArgs)));
+            call = State.apply(List.of(SaltParameters.PACKAGES_PATCHDOWNLOAD),
+                    Optional.of(Collections.singletonMap(SaltParameters.PARAM_PATCHES, errataArgs)));
             LOG.info("Executing staging of patches");
         }
         return call;
@@ -1927,18 +885,18 @@ public class SaltServerActionService {
                 .filter(sa -> sa.getServerId().equals(minion.getId()))
                 .findFirst();
         serverAction.ifPresent(sa -> {
-            if (List.of(STATUS_FAILED, STATUS_COMPLETED).contains(sa.getStatus())) {
+            if (sa.isDone()) {
                 LOG.info("Action '{}' is completed or failed. Skipping.", action.getName());
                 return;
             }
 
-            if (prerequisiteInStatus(sa, ActionFactory.STATUS_QUEUED)) {
+            if (prerequisiteInStatus(sa, ServerAction::isStatusQueued)) {
                 LOG.info("Prerequisite of action '{}' is still queued. Skipping executing of the action.",
                         action.getName());
                 return;
             }
 
-            if (prerequisiteInStatus(sa, ActionFactory.STATUS_FAILED)) {
+            if (prerequisiteInStatus(sa, ServerAction::isStatusFailed)) {
                 LOG.info("Failing action '{}' as its prerequisite '{}' failed.", action.getName(),
                         action.getPrerequisite().getName());
                 sa.fail(-100L, "Prerequisite failed.");
@@ -1952,7 +910,7 @@ public class SaltServerActionService {
                 calls = callsForAction(action, List.of(new MinionSummary(minion)));
             }
             catch (RuntimeException e) {
-                sa.setStatus(STATUS_FAILED);
+                sa.setStatusFailed();
                 sa.setResultMsg("Error preparing salt call: " + e.getMessage());
                 sa.setCompletionTime(new Date());
                 return;
@@ -1967,7 +925,7 @@ public class SaltServerActionService {
                 catch (RuntimeException e) {
                     LOG.error("Error executing Salt call for action: {} on minion {}",
                             action.getName(), minion.getMinionId(), e);
-                    sa.setStatus(STATUS_FAILED);
+                    sa.setStatusFailed();
                     sa.setResultMsg("Error calling Salt: " + e.getMessage());
                     sa.setCompletionTime(new Date());
                     return;
@@ -1981,7 +939,7 @@ public class SaltServerActionService {
                         if (sa.getRemainingTries() > 0 && errorString.contains("System is going down")) {
                             // SSH login is blocked when a reboot is ongoing. Reschedule this action later again
                             LOG.info("System is going down. Configure re-try in 3 minutes");
-                            sa.setStatus(STATUS_QUEUED);
+                            sa.setStatusQueued();
                             sa.setRemainingTries((sa.getRemainingTries() - 1L));
                             sa.setPickupTime(null);
                             sa.setCompletionTime(null);
@@ -1995,13 +953,13 @@ public class SaltServerActionService {
                             }
                             catch (TaskomaticApiException e) {
                                 LOG.error("Unable to reschedule failed Salt SSH Action: {}", errorString, e);
-                                sa.setStatus(STATUS_FAILED);
+                                sa.setStatusFailed();
                                 sa.setResultMsg(errorString);
                                 sa.setCompletionTime(new Date());
                             }
                         }
                         else {
-                            sa.setStatus(STATUS_FAILED);
+                            sa.setStatusFailed();
                             sa.setResultMsg(error.fold(
                                     e -> "function " + e.getFunctionName() + " not available.",
                                     e -> "module " + e.getModuleName() + " not supported.",
@@ -2023,7 +981,7 @@ public class SaltServerActionService {
                                     Optional.of(Xor.right(function)), null);
                         }
 
-                        else if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+                        else if (sa.isStatusQueued()) {
                             setActionAsPickedUp(sa);
                         }
 
@@ -2047,7 +1005,7 @@ public class SaltServerActionService {
                 }, () -> {
                     LOG.error("Action '{}' failed. Got not result from Salt, probably minion is down or " +
                             "could not be contacted.", action.getName());
-                    sa.setStatus(STATUS_FAILED);
+                    sa.setStatusFailed();
                     sa.setResultMsg("Minion is down or could not be contacted.");
                     sa.setCompletionTime(new Date());
                 });
@@ -2059,11 +1017,11 @@ public class SaltServerActionService {
      * Checks whether the parent action of given server action contains a server action
      * that is in given state and is associated with the server of given server action.
      * @param serverAction server action
-     * @param state state
+     * @param statusComparison status
      * @return true if there exists a server action in given state associated with the same
      * server as serverAction and parent action of serverAction
      */
-    private boolean prerequisiteInStatus(ServerAction serverAction, ActionStatus state) {
+    private boolean prerequisiteInStatus(ServerAction serverAction, Predicate<ServerAction> statusComparison) {
         Optional<Stream<ServerAction>> prerequisites =
                 ofNullable(serverAction.getParentAction())
                         .map(Action::getPrerequisite)
@@ -2074,8 +1032,7 @@ public class SaltServerActionService {
                 .flatMap(serverActions ->
                         serverActions
                                 .filter(s ->
-                                        serverAction.getServer().equals(s.getServer()) &&
-                                                state.equals(s.getStatus()))
+                                        serverAction.getServer().equals(s.getServer()) && statusComparison.test(s))
                                 .findAny())
                 .isPresent();
     }
@@ -2095,8 +1052,8 @@ public class SaltServerActionService {
             Optional.ofNullable(action)
                     .flatMap(firstAction -> firstAction.getServerActions().stream()
                             .filter(sa -> sa.getServerId().equals(minion.get().getId()))
-                            .filter(sa -> !ActionFactory.STATUS_FAILED.equals(sa.getStatus()))
-                            .filter(sa -> !ActionFactory.STATUS_COMPLETED.equals(sa.getStatus()))
+                            .filter(sa -> !sa.isStatusFailed())
+                            .filter(sa -> !sa.isStatusCompleted())
                             .findFirst()).ifPresent(sa -> sa.fail(message.orElse("Prerequisite failed")));
 
             // walk dependent server actions recursively and set them to failed
@@ -2105,8 +1062,7 @@ public class SaltServerActionService {
             List<ServerAction> serverActions = Optional.ofNullable(action).
                     map(firstAction -> ActionFactory
                         .listServerActionsForServer(minion.get(),
-                                Arrays.asList(ActionFactory.STATUS_QUEUED, ActionFactory.STATUS_PICKED_UP,
-                                        ActionFactory.STATUS_FAILED), action.getCreated()))
+                                ActionFactory.ALL_STATUSES_BUT_COMPLETED, action.getCreated()))
                     .orElse(new ArrayList<>());
 
             while (!actionIdsDependencies.isEmpty()) {
@@ -2129,7 +1085,7 @@ public class SaltServerActionService {
      *
      */
     private void setActionAsPickedUp(ServerAction sa) {
-        sa.setStatus(ActionFactory.STATUS_PICKED_UP);
+        sa.setStatusPickedUp();
         sa.setPickupTime(new Date());
     }
 
@@ -2174,7 +1130,7 @@ public class SaltServerActionService {
                                 ActionFactory.TYPE_REBOOT) && success && retcode == 0) {
                             // Reboot has been scheduled so set reboot action to PICKED_UP.
                             // Wait until next "minion/start/event" to set it to COMPLETED.
-                            if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+                            if (sa.isStatusQueued()) {
                                 setActionAsPickedUp(sa);
                             }
                             return;
@@ -2390,16 +1346,6 @@ public class SaltServerActionService {
     }
 
     /**
-     * Whether to commit hibernate transaction or not. Default is commit.
-     * Only used in unit tests.
-     *
-     * @param commitTransactionIn flag to set
-     */
-    public void setCommitTransaction(boolean commitTransactionIn) {
-        this.commitTransaction = commitTransactionIn;
-    }
-
-    /**
      * Only used in unit tests.
      * @param saltUtilsIn to set
      */
@@ -2413,14 +1359,6 @@ public class SaltServerActionService {
      */
     public void setSaltApi(SaltApi saltApiIn) {
         this.saltApi = saltApiIn;
-    }
-
-    /**
-     * Only used in unit tests.
-     * @param skipCommandScriptPermsIn to set
-     */
-    public void setSkipCommandScriptPerms(boolean skipCommandScriptPermsIn) {
-        this.skipCommandScriptPerms = skipCommandScriptPermsIn;
     }
 
     /**

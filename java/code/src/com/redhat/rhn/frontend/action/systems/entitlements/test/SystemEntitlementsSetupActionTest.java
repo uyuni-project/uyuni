@@ -101,7 +101,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
                 .getAttribute(SystemEntitlementsSetupAction.BASE_ENTITLEMENT_COUNTS);
 
         assertEquals("1 system(s).",
-                baseEntitlementCounts.get(EntitlementManager.MANAGEMENT.getLabel()));
+                baseEntitlementCounts.get(EntitlementManager.SALT.getLabel()));
     }
 
     @Test
@@ -191,7 +191,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
      */
     @Test
     public void testManagementEntitledUser() {
-        Server server = ServerFactoryTest.createTestServer(user, true,
+        ServerFactoryTest.createTestServer(user, true,
                         ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
         UserFactory.save(user);

@@ -178,10 +178,11 @@ public class AjaxHandlerServlet extends HttpServlet {
             boolean isJsonResponse = JSON_RESULT_URLS.contains(url);
 
             String response = isJsonResponse ? gson.toJson(result) : result.toString();
-            String contentType = isJsonResponse ? "application/json" : "text/html";
+            String contentType = isJsonResponse ? "application/json; charset=UTF-8" : "text/html; charset=UTF-8";
             resp.setContentType(contentType);
-            resp.getOutputStream().print(response);
-            resp.getOutputStream().close();
+            resp.setCharacterEncoding("UTF-8");
+            resp.getWriter().print(response);
+            resp.getWriter().close();
         }
         catch (ServletException | IOException e) {
             logger.error("Error processing ajax request.", e);

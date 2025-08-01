@@ -5,6 +5,7 @@ import { AsDateTimePicker } from "./AsDateTimePicker";
 import { AsPassword } from "./AsPassword";
 import { AsRadio } from "./AsRadio";
 import { AsRange } from "./AsRange";
+import { AsSelect } from "./AsSelect";
 import { AsTextArea } from "./AsTextArea";
 import { FieldBase } from "./FieldBase";
 import { MultiField as MultiFieldBase } from "./MultiField";
@@ -16,6 +17,7 @@ const as = {
   TextArea: AsTextArea,
   Range: AsRange,
   Radio: AsRadio,
+  Select: AsSelect,
 };
 
 export type AsProps<T> = FieldInputProps<T>;

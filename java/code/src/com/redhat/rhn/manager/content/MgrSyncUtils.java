@@ -52,7 +52,6 @@ public class MgrSyncUtils {
 
     // Source URL handling
     private static final String OFFICIAL_NOVELL_UPDATE_HOST = "nu.novell.com";
-    public static final String OFFICIAL_UPDATE_HOST_DOMAIN = ".suse.com";
     private static final List<String> PRODUCT_ARCHS = Arrays.asList("i386", "i486", "i586", "i686", "ia64", "ppc64le",
             "ppc64", "ppc", "s390x", "s390", "x86_64", "aarch64", "amd64", "arm64");
 
@@ -280,7 +279,8 @@ public class MgrSyncUtils {
         File mirrorPath = new File(dataPath.getAbsolutePath(), host + File.separator + path);
 
         // Case 2
-        if (host.endsWith(OFFICIAL_UPDATE_HOST_DOMAIN) || host.equals(OFFICIAL_NOVELL_UPDATE_HOST)) {
+        if (host.endsWith(ConfigDefaults.get().getOfficialUpdateHostDomain()) ||
+                host.equals(OFFICIAL_NOVELL_UPDATE_HOST)) {
             mirrorPath = new File(dataPath.getAbsolutePath(), path);
             LOG.info("SCC mirrorpath: {}", mirrorPath);
         }

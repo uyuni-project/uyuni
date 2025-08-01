@@ -167,13 +167,13 @@
             "duration": 8.879,
             "__id__": "jmx_exporter_tomcat_yaml_config"
         },
-        "file_|-jmx_tomcat_config_|-/usr/lib/systemd/system/tomcat.service.d/jmx.conf_|-managed": {
+        "file_|-jmx_tomcat_config_|-/etc/sysconfig/tomcat/systemd/jmx.conf_|-managed": {
             "changes": {
                 "diff": "New file",
                 "mode": "0644"
             },
-            "comment": "File /usr/lib/systemd/system/tomcat.service.d/jmx.conf updated",
-            "name": "/usr/lib/systemd/system/tomcat.service.d/jmx.conf",
+            "comment": "File /etc/sysconfig/tomcat/systemd/jmx.conf updated",
+            "name": "/etc/sysconfig/tomcat/systemd/jmx.conf",
             "result": true,
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 13,
@@ -298,13 +298,13 @@
             "duration": 6.03,
             "__id__": "jmx_exporter_taskomatic_yaml_config"
         },
-        "file_|-jmx_taskomatic_config_|-/usr/lib/systemd/system/taskomatic.service.d/jmx.conf_|-managed": {
+        "file_|-jmx_taskomatic_config_|-/etc/sysconfig/taskomatic/systemd/jmx.conf_|-managed": {
             "changes": {
                 "diff": "New file",
                 "mode": "0644"
             },
-            "comment": "File /usr/lib/systemd/system/taskomatic.service.d/jmx.conf updated",
-            "name": "/usr/lib/systemd/system/taskomatic.service.d/jmx.conf",
+            "comment": "File /etc/sysconfig/taskomatic/systemd/jmx.conf updated",
+            "name": "/etc/sysconfig/taskomatic/systemd/jmx.conf",
             "result": true,
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 24,
@@ -336,8 +336,8 @@
             "duration": 54.386,
             "__id__": "jmx_exporter_taskomatic_service_cleanup"
         },
-        "cmd_|-mgr_enable_prometheus_self_monitoring_|-grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 1/' /etc/rhn/rhn.conf || echo 'prometheus_monitoring_enabled = 1' >> /etc/rhn/rhn.conf_|-run": {
-            "name": "grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 1/' /etc/rhn/rhn.conf || echo 'prometheus_monitoring_enabled = 1' >> /etc/rhn/rhn.conf",
+        "cmd_|-mgr_enable_prometheus_self_monitoring_|-/usr/bin/grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 1/' /etc/rhn/rhn.conf || echo 'prometheus_monitoring_enabled = 1' >> /etc/rhn/rhn.conf_|-run": {
+            "name": "/usr/bin/grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 1/' /etc/rhn/rhn.conf || echo 'prometheus_monitoring_enabled = 1' >> /etc/rhn/rhn.conf",
             "changes": {
                 "pid": 26910,
                 "retcode": 0,
@@ -345,15 +345,15 @@
                 "stderr": ""
             },
             "result": true,
-            "comment": "Command \"grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 1/' /etc/rhn/rhn.conf || echo 'prometheus_monitoring_enabled = 1' >> /etc/rhn/rhn.conf\" run",
+            "comment": "Command \"/usr/bin/grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 1/' /etc/rhn/rhn.conf || echo 'prometheus_monitoring_enabled = 1' >> /etc/rhn/rhn.conf\" run",
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 27,
             "start_time": "15:40:43.811997",
             "duration": 13.857,
             "__id__": "mgr_enable_prometheus_self_monitoring"
         },
-        "cmd_|-mgr_is_prometheus_self_monitoring_enabled_|-grep -qF 'prometheus_monitoring_enabled = 1' /etc/rhn/rhn.conf_|-run": {
-            "name": "grep -qF 'prometheus_monitoring_enabled = 1' /etc/rhn/rhn.conf",
+        "cmd_|-mgr_is_prometheus_self_monitoring_enabled_|-/usr/bin/grep -qF 'prometheus_monitoring_enabled = 1' /etc/rhn/rhn.conf_|-run": {
+            "name": "/usr/bin/grep -qF 'prometheus_monitoring_enabled = 1' /etc/rhn/rhn.conf",
             "changes": {
                 "pid": 26913,
                 "retcode": 0,
@@ -361,7 +361,7 @@
                 "stderr": ""
             },
             "result": true,
-            "comment": "Command \"grep -qF 'prometheus_monitoring_enabled = 1' /etc/rhn/rhn.conf\" run",
+            "comment": "Command \"/usr/bin/grep -qF 'prometheus_monitoring_enabled = 1' /etc/rhn/rhn.conf\" run",
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 28,
             "start_time": "15:40:43.826331",

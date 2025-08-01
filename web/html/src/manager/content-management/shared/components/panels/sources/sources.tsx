@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { isOrgAdmin } from "core/auth/auth.utils";
 import useRoles from "core/auth/use-roles";
 
-import { Select } from "components/input";
+import { DEPRECATED_Select } from "components/input";
 import CreatorPanel from "components/panels/CreatorPanel";
 import { Panel } from "components/panels/Panel";
 import { showErrorToastr, showSuccessToastr } from "components/toastr";
@@ -32,7 +32,7 @@ const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) =>
   return (
     <form className="form-horizontal">
       <div className="row">
-        <Select
+        <DEPRECATED_Select
           name="sourceType"
           label={t("Type")}
           labelClass="col-md-3"

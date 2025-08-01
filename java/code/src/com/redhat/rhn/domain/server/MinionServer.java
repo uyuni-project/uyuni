@@ -22,6 +22,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.configuration.SaltConfigSubscriptionService;
 import com.redhat.rhn.manager.configuration.SaltConfigurable;
 
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -43,7 +45,7 @@ public class MinionServer extends Server implements SaltConfigurable {
     private String kernelLiveVersion;
     private Integer sshPushPort;
     private Set<AccessToken> accessTokens = new HashSet<>();
-    private Set<Pillar> pillars = new HashSet<>();
+    private final Set<Pillar> pillars = new HashSet<>();
     private Date rebootRequiredAfter;
     private String containerRuntime;
     private String uname;
@@ -130,54 +132,7 @@ public class MinionServer extends Server implements SaltConfigurable {
     @Override
     public void setConfigChannels(List<ConfigChannel> configChannelList, User user) {
         super.setConfigChannels(configChannelList, user);
-        SaltConfigSubscriptionService.setConfigChannels(this, configChannelList, user);
-    }
-
-    /**
-     * Return <code>true</code> if OS on this system supports OS Image building,
-     * <code>false</code> otherwise.
-     *
-     * @return <code>true</code> if OS supports OS Image building
-     */
-    @Override
-    public boolean doesOsSupportsOSImageBuilding() {
-        return isSLES11() || isSLES12() || isSLES15() || isLeap15();
-    }
-
-    /**
-     * Return <code>true</code> if OS on this system supports Containerization,
-     * <code>false</code> otherwise.
-     * <p>
-     * Note: For SLES, we are only checking if it's not 10 nor 11.
-     * Older than SLES 10 are not being checked.
-     * </p>
-     *
-     * @return <code>true</code> if OS supports Containerization
-     */
-    @Override
-    public boolean doesOsSupportsContainerization() {
-        return !isSLES10() && !isSLES11();
-    }
-
-    /**
-     * Return <code>true</code> if OS on this system supports Transactional Update,
-     * <code>false</code> otherwise.
-     *
-     * @return <code>true</code> if OS supports Transactional Update
-     */
-    @Override
-    public boolean doesOsSupportsTransactionalUpdate() {
-        return isSLEMicro() || isLeapMicro() || isopenSUSEMicroOS();
-    }
-
-    @Override
-    public boolean doesOsSupportsMonitoring() {
-        return isSLES12() || isSLES15() || isLeap15() || isLeapMicro() ||
-                isSLEMicro5() || // Micro 6 miss the node exporter
-                isUbuntu1804() || isUbuntu2004() || isUbuntu2204() || isUbuntu2404() ||
-                isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || // isRedHat catch also Rocky and Alma
-                isAlibaba2() || isAmazon2() || isAmazon2023() ||
-                isDebian10() || isDebian11() || isDebian12();
+        SaltConfigSubscriptionService.setConfigChannels(this, getConfigChannels(), user);
     }
 
     /**
@@ -341,6 +296,12 @@ public class MinionServer extends Server implements SaltConfigurable {
                 }
         }
         return changed;
+    }
+
+    public boolean isSSHPush() {
+        return getContactMethodLabel()
+                .map(ContactMethodUtil::isSSHPushContactMethod)
+                .orElse(false);
     }
 
     public boolean isRebootNeeded() {

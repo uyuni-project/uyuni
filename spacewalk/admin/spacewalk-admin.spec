@@ -31,6 +31,14 @@ Requires:       procps
 Requires:       python3
 Requires:       spacewalk-base
 Requires:       perl(MIME::Base64)
+# Required by spacewalk-hostname-rename
+Requires:       postfix
+Requires:       cobbler
+Requires:       bash
+Requires:       spacewalk-certs-tools
+Requires:       spacewalk-backend-tools >= 2.2.27
+# Required by spacewalk-hostname-rename (provides /usr/bin/spacewalk-sql)
+Requires:       susemanager-schema-utility
 BuildRequires:  /usr/bin/pod2man
 BuildRequires:  make
 BuildRequires:  systemd
@@ -82,6 +90,7 @@ fi
 %{_bindir}/rhn-deploy-ca-cert.pl
 %{_bindir}/rhn-install-ssl-cert.pl
 %{_bindir}/salt-secrets-config.py
+%attr(755,root,root) %{_bindir}/spacewalk-hostname-rename
 %{_sbindir}/rhn-sat-restart-silent
 %{_sbindir}/mgr-monitoring-ctl
 %{_mandir}/man8/spacewalk-service.8*

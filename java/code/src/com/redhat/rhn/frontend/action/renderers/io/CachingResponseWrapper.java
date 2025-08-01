@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.renderers.io;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +31,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 public class CachingResponseWrapper extends HttpServletResponseWrapper {
 
     private CachingOutputStream stream = new CachingOutputStream();
-    private PrintWriter writer = new PrintWriter(stream);
+    private PrintWriter writer = new PrintWriter(stream, false, StandardCharsets.UTF_8);
 
     /**
      * constructor

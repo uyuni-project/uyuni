@@ -78,7 +78,6 @@ public class SchedulerKernel {
         String ds = dataSourcePrefix + "." + defaultDataSource;
         props.setProperty(ds + ".user", dbUser);
         props.setProperty(ds + ".password", dbPass);
-        // props.setProperty(ds + ".maxConnections", 30);
 
         props.setProperty("org.quartz.jobStore.driverDelegateClass", "org.quartz.impl.jdbcjobstore.PostgreSQLDelegate");
 
@@ -143,6 +142,7 @@ public class SchedulerKernel {
                     this.shutdownLock.wait();
                 }
                 catch (InterruptedException ignored) {
+                    //ignored
                 }
             }
         }

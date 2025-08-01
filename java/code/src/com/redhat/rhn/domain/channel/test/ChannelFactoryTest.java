@@ -169,8 +169,8 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     }
 
     public static Channel createTestChannel(Org org, ChannelFamily cfam) throws Exception {
-        String query = "ChannelArch.findById";
-        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheById(500L, query);
+        String query = "ChannelArch.findByLabel";
+        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheByLabel("channel-x86_64", query);
         return createTestChannel(org, arch, cfam);
     }
 

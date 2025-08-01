@@ -18,25 +18,38 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
+import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.websocket.WebSocketActionIdProvider;
+import com.suse.salt.netapi.calls.LocalCall;
+
+import com.google.gson.JsonElement;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * Action - Class representation of the table rhnAction.
  */
 public class Action extends BaseDomainHelper implements Serializable, WebSocketActionIdProvider {
+    private static final Logger LOG = LogManager.getLogger(Action.class);
 
     public static final Integer NAME_LENGTH_LIMIT = 128;
 
@@ -317,8 +330,8 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
         if (getServerActions() == null) {
             return true;
         }
-        return getServerActions().stream().allMatch(sa -> ActionFactory.STATUS_COMPLETED.equals(sa.getStatus()) ||
-                ActionFactory.STATUS_FAILED.equals(sa.getStatus()));
+        return getServerActions().stream().allMatch(sa -> sa.isStatusCompleted() ||
+                sa.isStatusFailed());
     }
 
     /**
@@ -398,4 +411,77 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     public String getWebSocketActionId() {
         return null;
     }
+
+
+    /**
+     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
+     * @return minion summaries grouped by local call
+     */
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Action type {} is not supported with Salt", actionType != null ? actionType.getName() : "");
+        }
+        return Collections.emptyMap();
+    }
+
+    public static class UpdateAuxArgs {
+        private final long retcode;
+        private final boolean success;
+        private final String jid;
+        private final SaltUtils saltUtils;
+        private final SaltApi saltApi;
+        private final SystemQuery systemQuery;
+
+        /**
+         * @param retcodeIn
+         * @param successIn
+         * @param jidIn
+         * @param saltUtilsIn
+         * @param saltApiIn
+         * @param systemQueryIn
+         */
+        public UpdateAuxArgs(long retcodeIn, boolean successIn, String jidIn, SaltUtils saltUtilsIn, SaltApi saltApiIn,
+                             SystemQuery systemQueryIn) {
+            retcode = retcodeIn;
+            success = successIn;
+            jid = jidIn;
+            saltUtils = saltUtilsIn;
+            saltApi = saltApiIn;
+            systemQuery = systemQueryIn;
+        }
+
+        public long getRetcode() {
+            return retcode;
+        }
+
+        public boolean getSuccess() {
+            return success;
+        }
+
+        public String getJid() {
+            return jid;
+        }
+
+        public SaltUtils getSaltUtils() {
+            return saltUtils;
+        }
+
+        public SaltApi getSaltApi() {
+            return saltApi;
+        }
+
+        public SystemQuery getSystemQuery() {
+            return systemQuery;
+        }
+    }
+
+    /**
+     * @param serverAction the server action to update
+     * @param jsonResult the action result
+     * @param auxArgs object containing auxiliary arguments to the call
+     */
+    public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
+        serverAction.setResultMsg(SaltUtils.getJsonResultWithPrettyPrint(jsonResult));
+    }
 }
+

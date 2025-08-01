@@ -60,7 +60,7 @@ public class LongConstraint extends RequiredIfConstraint {
 
         // Validate against range specifications
         try {
-            long longValue = Long.valueOf(value.toString());
+            long longValue = Long.parseLong(value.toString());
             // Now we know its a valid number
             if (longValue < getMinInclusive()) {
                 log.debug("Number too small ...");

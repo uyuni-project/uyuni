@@ -16,6 +16,7 @@ package com.suse.scc.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -42,6 +43,8 @@ public class SCCHwInfoJson {
     private String cloudProvider;
 
     private Set<SAPJson> sap;
+    @SerializedName("arch_specs")
+    private Map<String, Object> archSpecs;
 
     public int getCpus() {
         return cpus;
@@ -121,5 +124,12 @@ public class SCCHwInfoJson {
 
     public void setContainerRuntime(String containerRuntimeIn) {
         containerRuntime = containerRuntimeIn;
+    }
+    public Map<String, Object> getArchSpecs() {
+        return archSpecs;
+    }
+
+    public void setArchSpecs(Map<String, Object> archSpecsIn) {
+        archSpecs = archSpecsIn;
     }
 }

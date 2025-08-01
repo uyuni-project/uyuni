@@ -127,22 +127,27 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         action1.setOrg(user.getOrg());
         Server server1 = ServerFactoryTest.createTestServer(user);
 
-        ActionChainEntry entry1 = ActionChainFactory.queueActionChainEntry(action1,
-            actionChain1, server1);
+        ActionChainFactory.queueActionChainEntry(action1, actionChain1, server1);
 
         Action action2 = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
         action2.setOrg(user.getOrg());
 
-        ActionChainEntry entry2 = ActionChainFactory.queueActionChainEntry(action2,
-            actionChain2, server1);
+        ActionChainFactory.queueActionChainEntry(action2, actionChain2, server1);
 
         Action action3 = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
         action3.setOrg(user.getOrg());
         Server server2 = ServerFactoryTest.createTestServer(user);
 
-        ActionChainEntry entry3 = ActionChainFactory.queueActionChainEntry(action3,
-            actionChain3, server2);
+        ActionChainFactory.queueActionChainEntry(action3, actionChain3, server2);
 
+        TaskomaticApi taskomaticTestApi = new TaskomaticApi() {
+            @Override
+            public void scheduleActionChainExecution(ActionChain actionchain) {
+                // for testing only prevent contacting taskomatic API
+            }
+        };
+
+        ActionChainFactory.setTaskomaticApi(taskomaticTestApi);
         ActionChainFactory.schedule(actionChain1, new Date());
         ActionChainFactory.schedule(actionChain2, new Date());
         ActionChainFactory.schedule(actionChain3, new Date());
@@ -417,6 +422,14 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
             }
         }
 
+        TaskomaticApi taskomaticTestApi = new TaskomaticApi() {
+            @Override
+            public void scheduleActionChainExecution(ActionChain actionchain) {
+                // for testing only
+            }
+        };
+
+        ActionChainFactory.setTaskomaticApi(taskomaticTestApi);
         ActionChainFactory.schedule(actionChain, new Date());
 
         // check actions are scheduled in correct order
@@ -581,7 +594,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
         // Can someone else find our thing by-id?
         try {
-            ac = ActionChainFactory.getActionChain(other, acId);
+            ActionChainFactory.getActionChain(other, acId);
         }
         catch (ObjectNotFoundException onfe) {
             return;

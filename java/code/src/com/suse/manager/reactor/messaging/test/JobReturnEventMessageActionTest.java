@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -53,7 +54,6 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerFQDN;
@@ -86,7 +86,6 @@ import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
-import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Openscap;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.datatypes.Event;
@@ -233,12 +232,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(1, minion.getInstalledProducts().size());
 
         // Verify OS family
-        assertEquals("Suse", minion.getOsFamily());
+        assertTrue(minion.isOsFamilySuse());
 
         // Verify the action status
-        assertEquals(action.getServerActions().stream()
+        assertTrue(action.getServerActions().stream()
                 .filter(serverAction -> serverAction.getServer().equals(minion))
-                .findAny().get().getStatus(), ActionFactory.STATUS_COMPLETED);
+                .findAny().get().isStatusCompleted());
     }
 
     @Test
@@ -588,9 +587,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals("RedHat", minion.getOsFamily());
 
         // Verify the action status
-        assertEquals(action.getServerActions().stream()
+        assertTrue(action.getServerActions().stream()
                 .filter(serverAction -> serverAction.getServer().equals(minion))
-                .findAny().get().getStatus(), ActionFactory.STATUS_COMPLETED);
+                .findAny().get().isStatusCompleted());
     }
 
     /**
@@ -647,9 +646,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals("Debian", minion.getOsFamily());
 
         // Verify the action status
-        assertEquals(action.getServerActions().stream()
+        assertTrue(action.getServerActions().stream()
                 .filter(serverAction -> serverAction.getServer().equals(minion))
-                .findAny().get().getStatus(), ActionFactory.STATUS_COMPLETED);
+                .findAny().get().isStatusCompleted());
     }
 
     /**
@@ -707,9 +706,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals("Debian", minion.getOsFamily());
 
         // Verify the action status
-        assertEquals(action.getServerActions().stream()
+        assertTrue(action.getServerActions().stream()
                 .filter(serverAction -> serverAction.getServer().equals(minion))
-                .findAny().get().getStatus(), ActionFactory.STATUS_COMPLETED);
+                .findAny().get().isStatusCompleted());
     }
 
     @Test
@@ -1360,7 +1359,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             ).collect(java.util.stream.Collectors.toList()));
 
         // Verify the action status
-        assertEquals(ActionFactory.STATUS_FAILED, sa.getStatus());
+        assertTrue(sa.isStatusFailed());
         context().assertIsSatisfied();
     }
 
@@ -1418,10 +1417,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             will(returnValue(result));
         }});
 
-        saltUtils.setXccdfResumeXsl(resumeXsl);
+        ScapAction.setXccdfResumeXsl(resumeXsl);
         messageAction.execute(message);
 
-        assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
+        assertTrue(sa.isStatusCompleted());
     }
 
     /**
@@ -1868,8 +1867,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                         images.get("POS_Image_JeOS6").get("6.0.0-1").get("hash"));
         });
 
-        String category = "Image" + image.getId();
-
         HibernateFactory.getSession().flush();
 
         ImageInfoFactory.delete(image, saltServiceMock);
@@ -2074,7 +2071,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 new Date(),
                 null);
 
-        Action action = actions.stream().findFirst().get();
+        SubscribeChannelsAction action = (SubscribeChannelsAction) actions.stream().findFirst().get();
+        action.setSaltApi(saltService);
 
         ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
         action.addServerAction(sa);
@@ -2091,7 +2089,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
-        assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
+        assertTrue(sa.isStatusCompleted());
         assertEquals(0L, (long)sa.getResultCode());
         assertEquals(baseChannel.get().getId(), minion.getBaseChannel().getId());
         assertEquals(2, minion.getChildChannels().size());
@@ -2135,11 +2133,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 null);
 
         SubscribeChannelsAction action = (SubscribeChannelsAction) actions.stream().findFirst().get();
+        action.setSaltApi(saltServiceMock);
 
         ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
         action.addServerAction(sa);
 
-        Map<LocalCall<?>, List<MinionSummary>> calls = saltServerActionService.callsForAction(action);
+        saltServerActionService.callsForAction(action);
         HibernateFactory.getSession().flush();
 
         // artifically expire tokens
@@ -2177,7 +2176,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        applyStateAction.getServerActions().stream().findFirst().get().setStatus(ActionFactory.STATUS_FAILED);
+        applyStateAction.getServerActions().stream().findFirst().get().setStatusFailed();
 
         saltServerActionService.failDependentServerActions(applyStateAction.getId(),
                 minion.getMinionId(), Optional.empty());
@@ -2193,9 +2192,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ServerAction runScriptSeverAction = runScriptAction.getServerActions().stream()
                 .filter(sa -> sa.getServerId().equals(minion.getId())).findFirst().get();
 
-        assertEquals(ActionFactory.STATUS_FAILED, applyStateServerAction.getStatus());
-        assertEquals(ActionFactory.STATUS_FAILED, rebootSeverAction.getStatus());
-        assertEquals(ActionFactory.STATUS_FAILED, runScriptSeverAction.getStatus());
+        assertTrue(applyStateServerAction.isStatusFailed());
+        assertTrue(rebootSeverAction.isStatusFailed());
+        assertTrue(runScriptSeverAction.isStatusFailed());
 
         //Check the output of dependent actions
         assertEquals("Prerequisite failed", rebootSeverAction.getResultMsg());
@@ -2249,7 +2248,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         applyHighstate = (ApplyStatesAction)ActionFactory.lookupById(applyHighstate.getId());
         saHighstate = applyHighstate.getServerActions().stream().findFirst().get();
 
-        assertEquals(ActionFactory.STATUS_COMPLETED, saHighstate.getStatus());
+        assertTrue(saHighstate.isStatusCompleted());
         assertEquals(0L, (long)saHighstate.getResultCode());
         assertEquals(minion.getId(), saHighstate.getServer().getId());
         assertEquals("Successfully applied state(s): highstate", saHighstate.getResultMsg());
@@ -2257,7 +2256,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         runScript = (ScriptRunAction)ActionFactory.lookupById(runScript.getId());
         ServerAction saScript = runScript.getServerActions().stream().findFirst().get();
 
-        assertEquals(ActionFactory.STATUS_COMPLETED, saScript.getStatus());
+        assertTrue(saScript.isStatusCompleted());
         assertEquals(0L, (long)saScript.getResultCode());
         assertEquals(minion.getId(), saScript.getServer().getId());
         ScriptResult scriptResult = runScript.getScriptActionDetails().getResults()
@@ -2366,5 +2365,21 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertNotSame(runningKernel, minion.getRunningKernel());
         assertEquals("livepatch_2_2_3", minion.getKernelLiveVersion());
         assertNotSame(lastBoot, minion.getLastBoot());
+    }
+
+    @Test
+    public void testDummyConfigFilesDiff()  throws Exception {
+        Optional<Xor<String[], String>> dummyFunction = Optional.of(Xor.right("state.apply"));
+        JsonObject dummyObj = getJsonElement("hardware.profileupdate.primary_ips_empty_ssh.x86.json");
+        JsonElement dummyJsonResult = dummyObj.get("suma-ref31-min-centos7.mgr.suse.de");
+
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+
+        Action actionDiff = ActionFactoryTest.createAction(user, ActionFactory.TYPE_CONFIGFILES_DIFF);
+        ServerAction saDiff = ActionFactoryTest.createServerAction(server, actionDiff);
+        actionDiff.addServerAction(saDiff);
+
+        assertDoesNotThrow(() ->
+                saltUtils.updateServerAction(saDiff, 0L, true, "", dummyJsonResult, dummyFunction, null));
     }
 }

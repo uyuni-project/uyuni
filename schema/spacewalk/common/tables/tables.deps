@@ -261,6 +261,7 @@ susePackageState                   :: rhnPackageName rhnPackageEVR rhnPackageArc
 suseProducts                       :: rhnPackageArch rhnChannelFamily
 suseProductChannel                 :: suseProducts rhnChannel
 suseProductExtension               :: suseProducts
+suseSccProxy                       :: scc_proxy_status_t
 suseChannelTemplate                :: suseProducts suseSCCRepository
 suseSaltPillar                     :: rhnServer rhnServerGroup web_customer
 suseSCCOrderItem                   :: suseCredentials
@@ -299,6 +300,7 @@ suseRecurringAction                :: web_customer web_contact rhnServerGroup su
 suseAnsiblePath                    :: rhnServer
 rhnActionPlaybook                  :: rhnAction
 susePaygDimensionResult            :: billing_dimension_t susePaygDimensionComputation
+suseActionSupportDataDetails       :: upload_geo_t rhnAction
 suseAppstream                      :: rhnChannel
 suseAppstreamPackage               :: suseAppstream rhnPackage
 suseAppstreamApi                   :: suseAppstream

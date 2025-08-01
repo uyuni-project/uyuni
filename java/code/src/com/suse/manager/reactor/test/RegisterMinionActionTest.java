@@ -49,12 +49,14 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
+import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.StateFactory;
@@ -231,9 +233,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(machineId, minion.getMachineId());
         assertEquals("3.12.48-52.27-default", minion.getRunningKernel());
         assertEquals("SLES", minion.getOs());
-        assertEquals("12", minion.getRelease());
+        assertEquals("15", minion.getRelease());
         assertEquals("N", minion.getAutoUpdate());
-        assertEquals(489, minion.getRam());
+        assertEquals(1024, minion.getRam());
 
         assertEquals(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"),
                 minion.getServerArch());
@@ -250,7 +252,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             assertTrue(packageStates.isPresent());
             packageStates.ifPresent(states -> {
                 assertEquals(1, states.size());
-                states.stream().forEach(state -> {
+                states.forEach(state -> {
                     assertEquals(state.getName().getName(), "vim");
                     assertEquals(state.getPackageState(), PackageStates.INSTALLED);
                     assertEquals(state.getVersionConstraint(), VersionConstraints.ANY);
@@ -386,7 +388,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testReRegisterTraditionalAsMinion() throws Exception {
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        Server server = ServerTestUtils.createTestSystem(user);
+        Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
         server.setMachineId(MACHINE_ID);
         ServerFactory.save(server);
         SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
@@ -609,10 +611,14 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 null, DEFAULT_CONTACT_METHOD, Optional.of(minionStartUpGrains));
     }
 
+    /**
+     * Re-register traditional -> ssh minion
+     * @throws Exception
+     */
     @Test
     public void testChangeContactMethodRegisterMinion() throws Exception {
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        Server server = ServerTestUtils.createTestSystem(user);
+        Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
         server.setMachineId(MACHINE_ID);
         ServerFactory.save(server);
         SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
@@ -636,7 +642,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         // create machine in different organization
         Org otherOrg = UserTestUtils.createNewOrgFull("otherOrg");
         User otherUser = UserTestUtils.createUser("otheruser", otherOrg.getId());
-        Server server = ServerTestUtils.createTestSystem(otherUser);
+        Server server = ServerTestUtils.createTestSystem(otherUser,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         server.setMachineId(MACHINE_ID);
         ServerFactory.save(server);
 
@@ -670,7 +677,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testReRegisterMinionResetProxyPath() throws Exception {
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        MinionServer proxy = MinionServerFactoryTest.createTestMinionServer(user);
+        Server proxy = ServerFactoryTest.createTestProxyServer(user, false);
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMachineId(MACHINE_ID);
         minion.setMinionId(MINION_ID);
@@ -1472,7 +1479,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 user.getOrg());
 
         // create a proxy for minion with correct organization
-        MinionServer proxy = MinionServerFactoryTest.createTestMinionServer(user);
+        Server proxy = ServerFactoryTest.createTestProxyServer(user, false);
         // this proxy minion must have correct fqdn set equaling minions master
         String proxyFqdn = "proxy" + MINION_ID;
         proxy.addFqdn(proxyFqdn);
@@ -1571,7 +1578,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         Channel assignedChannel = ChannelTestUtils.createBaseChannel(user);
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        Server server = ServerTestUtils.createTestSystem(user);
+        Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
         server.setMachineId(MACHINE_ID);
         server.addChannel(assignedChannel);
         ServerFactory.save(server);
@@ -1621,7 +1628,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         TestUtils.saveAndFlush(assignedChildChannel);
 
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        Server server = ServerTestUtils.createTestSystem(user);
+        Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
         server.setMachineId(MACHINE_ID);
         server.addChannel(akBaseChannel);
         server.addChannel(assignedChildChannel);
@@ -1667,7 +1674,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         TestUtils.saveAndFlush(assignedChildChannel);
 
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        Server server = ServerTestUtils.createTestSystem(user);
+        Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
         server.setMachineId(MACHINE_ID);
         server.getChannels().clear();
         server.addChannel(assignedChannel);
@@ -1707,7 +1714,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         oldMinion.addChannel(assignedChildChannel);
         ServerFactory.save(oldMinion);
 
-        ChannelFamily channelFamily = createTestChannelFamily();
+        createTestChannelFamily();
         HibernateFactory.getSession().flush();
         executeTest(
                 (key) -> new Expectations() {{

@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.frontend.action.systems.sdc.SystemDetailsEditAction;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -73,7 +74,8 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         setRequestPathInfo("/systems/details/Edit");
         TestUtils.saveAndFlush(user.getOrg());
 
-        s = ServerTestUtils.createTestSystem(user);
+        // mocking JSP is hard, so let's test with traditional
+        s = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
         ChannelTestUtils.setupBaseChannelForVirtualization(user, s.getBaseChannel());
 
         UserTestUtils.addVirtualization(user.getOrg());

@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionResult;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
+import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AppStream;
@@ -164,6 +165,7 @@ import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
 
 import com.suse.cloud.domain.PaygDimensionComputation;
 import com.suse.cloud.domain.PaygDimensionResult;
+import com.suse.manager.errata.model.errata.ErrataAdvisoryMap;
 import com.suse.manager.model.attestation.CoCoAttestationResult;
 import com.suse.manager.model.attestation.CoCoEnvironmentTypeConverter;
 import com.suse.manager.model.attestation.CoCoResultTypeConverter;
@@ -175,6 +177,7 @@ import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssPeripheralChannels;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
+import com.suse.scc.proxy.SCCProxyRecord;
 
 import java.util.List;
 
@@ -230,6 +233,7 @@ public class AnnotationRegistry {
             DockerfileProfile.class,
             EntitlementServerGroup.class,
             EnvironmentTarget.class,
+            ErrataAdvisoryMap.class,
             ErrataFilter.class,
             GroupRecurringAction.class,
             HubSCCCredentials.class,
@@ -312,6 +316,7 @@ public class AnnotationRegistry {
             SAPWorkload.class,
             SCCCredentials.class,
             SCCOrderItem.class,
+            SCCProxyRecord.class,
             SCCRegCacheItem.class,
             SCCRepositoryAuth.class,
             SCCRepositoryBasicAuth.class,
@@ -338,6 +343,7 @@ public class AnnotationRegistry {
             SslCryptoKey.class,
             StateChange.class,
             StateRevision.class,
+            SupportDataActionDetails.class,
             SUSEProduct.class,
             Task.class,
             TaskoBunch.class,

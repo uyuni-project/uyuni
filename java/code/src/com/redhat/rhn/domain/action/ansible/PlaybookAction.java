@@ -14,15 +14,31 @@
  */
 package com.redhat.rhn.domain.action.ansible;
 
-import com.redhat.rhn.domain.action.Action;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
 
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.server.MinionSummary;
+
+import com.suse.manager.webui.services.SaltParameters;
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.State;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * PlaybookAction - Action class representing the execution of an Ansible playbook
  */
 public class PlaybookAction extends Action {
+    private static final String INVENTORY_PATH = "/etc/ansible/hosts";
 
     private PlaybookActionDetails details;
 
@@ -63,4 +79,33 @@ public class PlaybookAction extends Action {
                 .append(details)
                 .toHashCode();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
+        return singletonMap(executePlaybookActionCall(), minionSummaries);
+    }
+
+    private LocalCall<?> executePlaybookActionCall() {
+        String playbookPath = details.getPlaybookPath();
+        String rundir = new File(playbookPath).getAbsoluteFile().getParent();
+        String inventoryPath = details.getInventoryPath();
+
+        if (StringUtils.isEmpty(inventoryPath)) {
+            inventoryPath = INVENTORY_PATH;
+        }
+
+        Map<String, Object> pillarData = new HashMap<>();
+        pillarData.put("playbook_path", playbookPath);
+        pillarData.put("inventory_path", inventoryPath);
+        pillarData.put("rundir", rundir);
+        pillarData.put("flush_cache", details.isFlushCache());
+        pillarData.put("extra_vars", details.getExtraVarsContents());
+        return State.apply(singletonList(SaltParameters.ANSIBLE_RUNPLAYBOOK),
+                Optional.of(pillarData), Optional.of(true),
+                Optional.of(details.isTestMode()));
+    }
+
 }

@@ -25,7 +25,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.collections.IteratorUtils;
-import org.apache.struts.action.ActionForward;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -58,7 +57,6 @@ public class ErrataSearchActionTest extends RhnBaseTestCase {
         ah.getRequest().setupAddParameter(BaseSearchAction.FINE_GRAINED, "on");
         ah.getRequest().setupAddParameter(BaseSearchAction.FINE_GRAINED, "on");
 
-        // I *HATE* Mockobjects
         Map<String, String> paramnames = new HashMap<>();
         paramnames.put(BaseSearchAction.SEARCH_STR, name);
         paramnames.put(BaseSearchAction.VIEW_MODE, BaseSearchAction.OPT_ADVISORY);
@@ -69,7 +67,7 @@ public class ErrataSearchActionTest extends RhnBaseTestCase {
 
         ah.setupClampListBounds();
 
-        ActionForward af = ah.executeAction();
+        ah.executeAction();
     }
 }
 

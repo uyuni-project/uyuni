@@ -294,17 +294,17 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Server sys2 = MinionServerFactoryTest.createTestMinionServer(user);
 
         // assign an action not tied to maintenance mode
-        Action allowedAction = MaintenanceTestUtils.createActionForServerAt(
+        MaintenanceTestUtils.createActionForServerAt(
                         user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, sys1, "2020-04-13T08:15:00+02:00");
         assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false));
 
         // assign maintenance window affected action inside a maintenance window
-        Action insideAction = MaintenanceTestUtils
+        MaintenanceTestUtils
                 .createActionForServerAt(user, ActionFactory.TYPE_APPLY_STATES, sys1, "2020-07-27T09:00:00+02:00");
         assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false));
 
         // assign an offending action to one system
-        Action disallowedAction = MaintenanceTestUtils
+        MaintenanceTestUtils
                 .createActionForServerAt(user, ActionFactory.TYPE_APPLY_STATES, sys2, "2020-07-27T11:00:00+02:00");
 
         assertExceptionThrown(
@@ -378,7 +378,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         action.setEarliestAction(Date.from(start.toInstant()));
 
         ServerAction serverAction = ServerActionTest.createServerAction(server, action);
-        serverAction.setStatus(ActionFactory.STATUS_QUEUED);
+        serverAction.setStatusQueued();
 
         action.addServerAction(serverAction);
         ActionManager.storeAction(action);

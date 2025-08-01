@@ -77,7 +77,6 @@ public class RequireTag extends TagSupport {
      */
     public void setMixins(String mix) {
         mixins = mix;
-        //mixins = StringUtils.split(mix, ",");
     }
 
     /**
@@ -104,7 +103,7 @@ public class RequireTag extends TagSupport {
                                   mixins)) {
                 // acl methods must be in the following form
                 // aclXxxYyy(Object context, String[] params) and invoked
-                // xxx_yyy(param);
+                // xxx_yyy(param)
                 return (EVAL_BODY_INCLUDE);
             }
 

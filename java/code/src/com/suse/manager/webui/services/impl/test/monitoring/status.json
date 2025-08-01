@@ -52,8 +52,8 @@
             "duration": 1.858,
             "__id__": "jmx_taskomatic_java_config"
         },
-        "cmd_|-mgr_is_prometheus_self_monitoring_enabled_|-grep -q 'prometheus_monitoring_enabled\\s*=\\s*1\\s*$' /etc/rhn/rhn.conf_|-run": {
-            "name": "grep -q 'prometheus_monitoring_enabled\\s*=\\s*1\\s*$' /etc/rhn/rhn.conf",
+        "cmd_|-mgr_is_prometheus_self_monitoring_enabled_|-/usr/bin/grep -q 'prometheus_monitoring_enabled\\s*=\\s*1\\s*$' /etc/rhn/rhn.conf_|-run": {
+            "name": "/usr/bin/grep -q 'prometheus_monitoring_enabled\\s*=\\s*1\\s*$' /etc/rhn/rhn.conf",
             "changes": {
                 "pid": 11899,
                 "retcode": 0,
@@ -61,7 +61,7 @@
                 "stderr": ""
             },
             "result": true,
-            "comment": "Command \"grep -q 'prometheus_monitoring_enabled\\s*=\\s*1\\s*$' /etc/rhn/rhn.conf\" run",
+            "comment": "Command \"/usr/bin/grep -q 'prometheus_monitoring_enabled\\s*=\\s*1\\s*$' /etc/rhn/rhn.conf\" run",
             "__sls__": "srvmonitoring.status",
             "__run_num__": 6,
             "start_time": "18:49:35.773370",

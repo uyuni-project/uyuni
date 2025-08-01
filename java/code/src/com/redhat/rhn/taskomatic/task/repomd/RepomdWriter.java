@@ -90,8 +90,7 @@ public abstract class RepomdWriter {
         of.setPreserveSpace(true);
         of.setOmitXMLDeclaration(true);
         XMLSerializer tmpSerial = new XMLSerializer(st, of);
-        SimpleContentHandler tmpHandler = new SimpleContentHandler(tmpSerial);
-        return tmpHandler;
+        return new SimpleContentHandler(tmpSerial);
     }
 
 

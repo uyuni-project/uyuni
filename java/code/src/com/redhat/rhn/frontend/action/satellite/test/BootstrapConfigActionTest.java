@@ -61,8 +61,6 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
                 CACertPathUtil.processCACertPath());
         assertEquals(Boolean.TRUE,
                 form.get(BootstrapConfigAction.ENABLE_GPG));
-        assertEquals(Boolean.TRUE,
-                form.get(BootstrapConfigAction.SALT));
         assertEquals("", form.getString(BootstrapConfigAction.HTTP_PROXY));
         assertEquals("", form.getString(BootstrapConfigAction.HTTP_PROXY_USERNAME));
         assertEquals("", form.getString(BootstrapConfigAction.HTTP_PROXY_PASSWORD));
@@ -70,9 +68,6 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testSubmitExecute() {
-
-        String expectedHostname = ConfigDefaults.get().getHostname();
-
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(BootstrapConfigAction.HOSTNAME, "localhost");
         setRequestPathInfo("/admin/config/BootstrapConfig");

@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.client.ClientCertificate;
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -46,6 +47,8 @@ import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
+import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
+import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -202,7 +205,12 @@ import java.util.regex.Pattern;
 @ExtendWith(JUnit5Mockery.class)
 public class SystemHandlerTest extends BaseHandlerTestCase {
 
-    private TaskomaticApi taskomaticApi = new TaskomaticApi();
+    private TaskomaticApi taskomaticApi = new TaskomaticApi() {
+        @Override
+        public void scheduleActionExecution(Action action) {
+            // disable for testing
+        }
+    };
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
     private final CloudPaygManager paygManager = new TestCloudPaygManagerBuilder().build();
@@ -235,6 +243,31 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
+    }
+
+    @Test
+    public void testCreateSupportdataAction() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+
+        Config.get().setBoolean(ConfigDefaults.WEB_DISABLE_SUPPORTDATA_UPLOAD, "true");
+
+        assertThrows(UnsupportedOperationException.class, () -> handler.scheduleSupportDataUpload(
+                admin, server.getId().intValue(), "012345", "-i LVM", "EU", getNow()));
+
+        Config.get().setBoolean(ConfigDefaults.WEB_DISABLE_SUPPORTDATA_UPLOAD, "false");
+
+        Integer aid = handler.scheduleSupportDataUpload(admin, server.getId().intValue(),
+                "012345", "-i LVM", "EU", getNow());
+        assertNotNull(aid);
+
+        Action action = ActionFactory.lookupById(Long.valueOf(aid));
+        assertEquals(ActionFactory.TYPE_SUPPORTDATA_GET, action.getActionType());
+        assertEquals("Get and Upload Support data", action.getName());
+        SupportDataActionDetails details = ((SupportDataAction) action).getDetails();
+        assertNotNull(details);
+        assertEquals("012345", details.getCaseNumber());
+        assertEquals("-i LVM", details.getParameter());
+        assertEquals("EU", details.getGeoType().name());
     }
 
     @Test
@@ -339,7 +372,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SystemHandler mockedHandler = getMockedHandler();
         ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
         SaltServerActionService sa = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
-        sa.setCommitTransaction(false);
         sa.setSaltApi(saltApi);
         List<Long> finishedActions = new ArrayList<>();
 
@@ -371,6 +403,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        if (first.isPresent()) {
+            ((SubscribeChannelsAction) first.get()).setSaltApi(saltApi);
+        }
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
@@ -390,6 +425,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        if (first.isPresent()) {
+            ((SubscribeChannelsAction) first.get()).setSaltApi(saltApi);
+        }
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
@@ -456,7 +494,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SystemHandler mockedHandler = getMockedHandler();
         ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
         SaltServerActionService sa = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
-        sa.setCommitTransaction(false);
         sa.setSaltApi(saltApi);
         List<Long> finishedActions = new ArrayList<>();
 
@@ -493,6 +530,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        if (first.isPresent()) {
+            ((SubscribeChannelsAction) first.get()).setSaltApi(saltApi);
+        }
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
@@ -512,6 +552,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        if (first.isPresent()) {
+            ((SubscribeChannelsAction) first.get()).setSaltApi(saltApi);
+        }
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
@@ -582,7 +625,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SystemHandler mockedHandler = getMockedHandler();
         ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
         SaltServerActionService sa = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
-        sa.setCommitTransaction(false);
         sa.setSaltApi(saltApi);
         List<Long> finishedActions = new ArrayList<>();
 
@@ -605,6 +647,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        if (first.isPresent()) {
+            ((SubscribeChannelsAction) first.get()).setSaltApi(saltApi);
+        }
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
@@ -623,6 +668,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        if (first.isPresent()) {
+            ((SubscribeChannelsAction) first.get()).setSaltApi(saltApi);
+        }
         sa.execute(first.get(), false, false, Optional.empty());
 
         HibernateFactory.getSession().flush();
@@ -665,7 +713,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SystemHandler mockedHandler = getMockedHandler();
         ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
         SaltServerActionService sa = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
-        sa.setCommitTransaction(false);
         sa.setSaltApi(saltApi);
         List<Long> finishedActions = new ArrayList<>();
 
@@ -688,6 +735,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        if (first.isPresent()) {
+            ((SubscribeChannelsAction) first.get()).setSaltApi(saltApi);
+        }
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
@@ -706,6 +756,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        if (first.isPresent()) {
+            ((SubscribeChannelsAction) first.get()).setSaltApi(saltApi);
+        }
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
@@ -749,8 +802,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SystemHandler mockedHandler = getMockedHandler();
         ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
 
-        Server server1 = ServerFactoryTest.createTestServer(admin, true);
-        Server server2 = ServerFactoryTest.createTestServer(admin, true);
+        Server server1 = ServerFactoryTest.createTestServer(admin, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
+        Server server2 = ServerFactoryTest.createTestServer(admin, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         Channel child1 = ChannelFactoryTest.createTestChannel(admin);
         Channel child2 = ChannelFactoryTest.createTestChannel(admin);
         Channel parent = ChannelFactoryTest.createTestChannel(admin);
@@ -1046,7 +1101,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testDeleteSystemWithCert() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(admin, true);
+        Server server = ServerFactoryTest.createTestServer(admin, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         Long sid = server.getId();
         ClientCertificate cert = SystemManager.createClientCertificate(server);
         cert.validate(server.getSecret());
@@ -1628,7 +1684,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 Arrays.asList("channels", "packages"), new Date());
 
         final ServerAction serverAction = ServerActionTest.createServerAction(server, action);
-        serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
+        serverAction.setStatusPickedUp();
 
         ActionFactory.save(action);
         clearSession();
@@ -2199,9 +2255,13 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    /**
+     * System Lock works only for traditional systems
+     */
     @Test
     public void testSetLockStatus() {
-        Server server = ServerFactoryTest.createTestServer(admin, true);
+        Server server = ServerFactoryTest.createTestServer(admin, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
         //server unlocked by default
         assertNull(server.getLock());
@@ -2950,7 +3010,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         });
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         server.setServerArch(ServerFactory.lookupServerArchByName("x86_64"));
-        server.setOsFamily("Suse"); // SP Migration will only work for Minions with OS family `SUSE
+        server.setOsFamilySuse(); // SP Migration will only work for Minions with OS family `SUSE
 
         // Setup source products
         ChannelFamily family = createTestChannelFamily();
@@ -3055,7 +3115,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testListMigrationTargetWithAndWithoutSuccessor() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         server.setServerArch(ServerFactory.lookupServerArchByName("x86_64"));
-        server.setOsFamily("Suse"); // SP Migration will only work for Minions with OS family `SUSE
+        server.setOsFamilySuse(); // SP Migration will only work for Minions with OS family `SUSE
 
         // Setup source products
         ChannelFamily family = createTestChannelFamily();
@@ -3184,7 +3244,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testHighstateNoMinion() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(admin);
+        Server server = ServerFactoryTest.createTestServer(admin, false,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         try {
             getMockedHandler().scheduleApplyHighstate(
                     admin, server.getId().intValue(), new Date(), false);
@@ -3471,11 +3532,13 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     /**
      * Test the validation part of SystemHandler.updatePackageState
+     * Traditional Server should throw
      * @throws Exception
      */
     @Test
     public void testUpdatePackageValidation() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(admin);
+        Server server = ServerFactoryTest.createTestServer(admin, false,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         SystemHandler systemHandler = getMockedHandler();
 
         try {
@@ -3545,7 +3608,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testRefreshPillar() throws Exception {
         MinionServer server1 = MinionServerFactoryTest.createTestMinionServer(admin);
         MinionServer server2 = MinionServerFactoryTest.createTestMinionServer(admin);
-        Server server3 = ServerFactoryTest.createTestServer(admin);
+        Server server3 = ServerFactoryTest.createTestServer(admin, false,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
         SystemHandler systemHandler = getMockedHandler();
         List<Integer> skipped = systemHandler.refreshPillar(admin, "General",

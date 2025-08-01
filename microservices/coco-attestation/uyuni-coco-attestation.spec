@@ -25,7 +25,7 @@ Group:          System/Daemons
 URL:            https://www.uyuni-project.org
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  fdupes
-BuildRequires:  java-devel >= 11
+BuildRequires:  java-devel >= 17
 BuildRequires:  maven-local
 BuildRequires:  mvn(com.mchange:c3p0)
 BuildRequires:  mvn(com.mchange:mchange-commons-java)

@@ -46,26 +46,28 @@ import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
-import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCRegisterSystemItem;
 import com.suse.scc.model.SCCSystemCredentialsJson;
-import com.suse.scc.model.SCCUpdateSystemJson;
+import com.suse.scc.model.SCCUpdateSystemItem;
 import com.suse.scc.model.SCCVirtualizationHostJson;
 import com.suse.scc.model.SCCVirtualizationHostPropertiesJson;
+import com.suse.scc.proxy.SCCProxyFactory;
 
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
  * Tests for {@link SCCClient} methods.
  */
 public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
+    private SCCProxyFactory sccProxyFactory = new SCCProxyFactory();
 
     @Test
     public void testSCCSystemRegistrationLifecycle() throws Exception {
@@ -87,7 +89,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         SCCWebClient sccWebClient = new SCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-                    List<SCCRegisterSystemJson> systems, String username, String password) {
+                    List<SCCRegisterSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
                 assertNotEmpty(systems);
@@ -110,7 +112,8 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         SCCCachingFactory.initNewSystemsToForward();
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         List<SCCRegCacheItem> testSystems = allUnregistered.stream()
@@ -172,7 +175,8 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                 .createSCCConfig();
         SCCWebClient sccWebClient = new SCCWebClient(sccConfig);
 
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         SCCCachingFactory.initNewSystemsToForward();
 
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
@@ -208,7 +212,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         SCCWebClient sccWebClient = new SCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-                    List<SCCRegisterSystemJson> systems, String username, String password) {
+                    List<SCCRegisterSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
                 assertNotEmpty(systems);
@@ -231,14 +235,15 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
 
             @Override
-            public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password) {
+            public void updateBulkLastSeen(List<SCCUpdateSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
                 assertEquals(new Date(0), systems.get(0).getLastSeenAt());
             }
         };
 
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         SCCCachingFactory.initNewSystemsToForward();
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         List<SCCRegCacheItem> testSystems = allUnregistered.stream()
@@ -249,7 +254,8 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         CredentialsFactory.storeCredentials(credentials);
         sccSystemRegistrationManager.register(testSystems, credentials);
 
-        sccSystemRegistrationManager.updateLastSeen(credentials);
+        sccSystemRegistrationManager.updateLastSeen(SCCCachingFactory.listUpdateLastSeenItems(credentials),
+                credentials);
     }
 
     @Test
@@ -289,7 +295,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         TestSCCWebClient sccWebClient = new TestSCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-                    List<SCCRegisterSystemJson> systems, String username, String password) {
+                    List<SCCRegisterSystemItem> systems, String username, String password) {
                 return new SCCOrganizationSystemsUpdateResponse(
                         systems.stream()
                                 .map(system ->
@@ -300,7 +306,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
 
             @Override
-            public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password) {
+            public void updateBulkLastSeen(List<SCCUpdateSystemItem> systems, String username, String password) {
                 callCnt += 1;
                 assertTrue(callCnt <= 4, "more requests then expected");
                 if (callCnt < 4) {
@@ -312,7 +318,8 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         SCCCachingFactory.initNewSystemsToForward();
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         List<SCCRegCacheItem> testSystems = allUnregistered.stream()
@@ -323,7 +330,8 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         CredentialsFactory.storeCredentials(credentials);
         sccSystemRegistrationManager.register(testSystems, credentials);
 
-        sccSystemRegistrationManager.updateLastSeen(credentials);
+        sccSystemRegistrationManager.updateLastSeen(SCCCachingFactory.listUpdateLastSeenItems(credentials),
+                credentials);
     }
 
     @Test
@@ -341,7 +349,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 2, true, sysEntMgr);
         host.setHostname("LibVirtHost");
         host.setCpu(CPUTest.createTestCpu(host));
-        host.getGuests().stream()
+        host.getGuests()
                 .forEach(vi -> vi.setType(VirtualInstanceFactory.getInstance().getVirtualInstanceType("qemu")));
 
         SCCConfig sccConfig = new SCCConfigBuilder()
@@ -355,7 +363,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
 
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-                    List<SCCRegisterSystemJson> systems, String username, String password) {
+                    List<SCCRegisterSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
 
@@ -364,7 +372,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                                 .map(system -> new SCCSystemCredentialsJson(
                                         system.getLogin(),
                                         system.getPassword(),
-                                        new Random().nextLong())
+                                        new SecureRandom().nextLong())
                                 )
                                 .collect(Collectors.toList())
                 );
@@ -377,7 +385,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
 
             @Override
-            public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password) {
+            public void updateBulkLastSeen(List<SCCUpdateSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
             }
@@ -392,7 +400,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                 assertEquals(2, hostProps.getSockets());
                 assertEquals(20, hostProps.getCores());
                 assertEquals(40, hostProps.getThreads());
-                assertEquals("i386", hostProps.getArch());
+                assertEquals("x86_64", hostProps.getArch());
                 assertEquals("KVM", hostProps.getType());
                 assertEquals(1024, hostProps.getRamMb());
                 assertEquals(2, virtHostInfo.get(0).getSystems().size());
@@ -403,7 +411,8 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         credentials.setUrl("https://scc.suse.com");
         CredentialsFactory.storeCredentials(credentials);
 
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         SCCCachingFactory.initNewSystemsToForward();
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         List<SCCVirtualizationHostJson> virtHostsJson = SCCCachingFactory.listVirtualizationHosts();
@@ -428,7 +437,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         sysEntMgr.setBaseEntitlement(host, EntitlementManager.FOREIGN);
         host.setHostname("VMwareHost");
         host.setCpu(CPUTest.createTestCpu(host));
-        host.getGuests().stream()
+        host.getGuests()
                 .forEach(vi -> vi.setType(VirtualInstanceFactory.getInstance().getVirtualInstanceType("vmware")));
 
         SCCConfig sccConfig = new SCCConfigBuilder()
@@ -442,7 +451,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
 
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-                    List<SCCRegisterSystemJson> systems, String username, String password) {
+                    List<SCCRegisterSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
                 return new SCCOrganizationSystemsUpdateResponse(
@@ -450,7 +459,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                                 .map(system -> new SCCSystemCredentialsJson(
                                         system.getLogin(),
                                         system.getPassword(),
-                                        new Random().nextLong())
+                                        new SecureRandom().nextLong())
                                 )
                                 .collect(Collectors.toList())
                 );
@@ -463,7 +472,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
 
             @Override
-            public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password) {
+            public void updateBulkLastSeen(List<SCCUpdateSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
             }
@@ -478,7 +487,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                 assertEquals(2, hostProps.getSockets());
                 assertEquals(20, hostProps.getCores());
                 assertEquals(40, hostProps.getThreads());
-                assertEquals("i386", hostProps.getArch());
+                assertEquals("x86_64", hostProps.getArch());
                 assertEquals("VMware", hostProps.getType());
                 assertEquals(1024, hostProps.getRamMb());
                 assertEquals(2, virtHostInfo.get(0).getSystems().size());
@@ -489,7 +498,8 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         credentials.setUrl("https://scc.suse.com");
         CredentialsFactory.storeCredentials(credentials);
 
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         SCCCachingFactory.initNewSystemsToForward();
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         List<SCCVirtualizationHostJson> virtHostsJson = SCCCachingFactory.listVirtualizationHosts();
@@ -529,7 +539,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         cpu.setNrThread(0L);
         host.setCpu(cpu);
         host.setRam(0L);
-        host.getGuests().stream()
+        host.getGuests()
                 .forEach(vi -> vi.setType(VirtualInstanceFactory.getInstance().getVirtualInstanceType("aws_nitro")));
 
         SCCConfig sccConfig = new SCCConfigBuilder()
@@ -543,7 +553,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
 
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-                    List<SCCRegisterSystemJson> systems, String username, String password) {
+                    List<SCCRegisterSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
                 return new SCCOrganizationSystemsUpdateResponse(
@@ -551,7 +561,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                                 .map(system -> new SCCSystemCredentialsJson(
                                         system.getLogin(),
                                         system.getPassword(),
-                                        new Random().nextLong())
+                                        new SecureRandom().nextLong())
                                 )
                                 .collect(Collectors.toList())
                 );
@@ -564,7 +574,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
 
             @Override
-            public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password) {
+            public void updateBulkLastSeen(List<SCCUpdateSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
             }
@@ -579,7 +589,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                 assertEquals(0, hostProps.getSockets());
                 assertEquals(0, hostProps.getCores());
                 assertEquals(0, hostProps.getThreads());
-                assertEquals("i386", hostProps.getArch());
+                assertEquals("x86_64", hostProps.getArch());
                 assertEquals("Nitro", hostProps.getType());
                 assertEquals(0, hostProps.getRamMb());
                 assertEquals(2, virtHostInfo.get(0).getSystems().size());
@@ -590,7 +600,8 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         credentials.setUrl("https://scc.suse.com");
         CredentialsFactory.storeCredentials(credentials);
 
-        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient,
+                sccProxyFactory);
         SCCCachingFactory.initNewSystemsToForward();
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         List<SCCVirtualizationHostJson> virtHostsJson = SCCCachingFactory.listVirtualizationHosts();

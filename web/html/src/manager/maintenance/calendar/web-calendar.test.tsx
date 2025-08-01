@@ -75,7 +75,7 @@ describe("Web calendar", () => {
     });
 
     const nextButton = screen.getByTestId("next") as HTMLButtonElement;
-    click(nextButton);
+    await click(nextButton);
 
     await waitFor(() => {
       screen.getByText("August 2021");
@@ -114,7 +114,7 @@ describe("Web calendar", () => {
     });
 
     const nextButton = screen.getByTestId("back") as HTMLButtonElement;
-    click(nextButton);
+    await click(nextButton);
 
     await waitFor(() => {
       screen.getByText("June 2021");
@@ -153,7 +153,7 @@ describe("Web calendar", () => {
     });
 
     const nextButton = screen.getByTestId("skip-next") as HTMLButtonElement;
-    click(nextButton);
+    await click(nextButton);
 
     await waitFor(() => {
       screen.getByText("October 2021");
@@ -192,7 +192,7 @@ describe("Web calendar", () => {
     });
 
     const nextButton = screen.getByTestId("skip-back") as HTMLButtonElement;
-    click(nextButton);
+    await click(nextButton);
 
     await waitFor(() => {
       screen.getByText("April 2021");
@@ -232,14 +232,14 @@ describe("Web calendar", () => {
     });
 
     const nextButton = screen.getByTestId("next") as HTMLButtonElement;
-    click(nextButton);
+    await click(nextButton);
 
     await waitFor(() => {
       screen.getByText("August 2021");
     });
 
     const todayButton = screen.getByRole("button", { name: "Today" }) as HTMLButtonElement;
-    click(todayButton);
+    await click(todayButton);
 
     await waitFor(() => {
       screen.getByText("July 2021");
@@ -247,7 +247,7 @@ describe("Web calendar", () => {
     });
 
     const dayButton = screen.getByRole("button", { name: "Day" }) as HTMLButtonElement;
-    click(dayButton);
+    await click(dayButton);
 
     await waitFor(() => {
       screen.getByText("July 9, 2021");
@@ -283,14 +283,14 @@ describe("Web calendar", () => {
     });
 
     const dayButton = screen.getByRole("button", { name: "Day" }) as HTMLButtonElement;
-    click(dayButton);
+    await click(dayButton);
 
     await waitFor(() => {
       screen.getByText("July 9, 2021");
     });
 
     const monthButton = screen.getByRole("button", { name: "Month" }) as HTMLButtonElement;
-    click(monthButton);
+    await click(monthButton);
 
     await waitFor(() => {
       screen.getByText("July 2021", { exact: false });
