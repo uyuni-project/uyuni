@@ -19,21 +19,15 @@ type Organization = {
   label: string;
 };
 
-const options = [
-  { value: "Activation KeyAdmin", label: "ActivationKeyAdmin" },
-  { value: "Image Administrator", label: "ImageAdministrator" },
-  { value: "Configuration Administrator", label: "ConfigurationAdministrator" },
-  { value: "Channel Administrator", label: "ChannelAdministrator" },
-  { value: "System Group Administrator", label: "SystemGroupAdministrator" },
-  { value: "KeyAdmin", label: "KeyAdmin" },
-  { value: "Image and channel", label: "ImageChannelAdmi" },
-  { value: "Configurations", label: "ConfigurationAdmin" },
-  { value: "Channel readonly", label: "ChannelAReadOnly" },
-  { value: "SystemModify", label: "SystemModify" },
-];
+type SelectOption = {
+  value: number | string;
+  label: string;
+};
 
 const AccessGroupDetails = (props: Props) => {
   const [organizations, setOrganizations] = useState<Organization[]>([]);
+  const [accessGroups, setAccessGroups] = useState<SelectOption[]>([]);
+  const [isLoadingGroups, setIsLoadingGroups] = useState(false);
 
   useEffect(() => {
     getOrganizations();
@@ -51,8 +45,36 @@ const AccessGroupDetails = (props: Props) => {
     );
   };
 
+  useEffect(() => {
+    const getAccessGroups = (orgId: number) => {
+      setIsLoadingGroups(true);
+      const endpoint = `/rhn/manager/api/admin/access-group/organizations/${orgId}/access-groups`;
+      Network.get(endpoint)
+        .then((groups) => {
+          setAccessGroups(groups.map((group) => ({ value: group.id, label: group.description })));
+        })
+        .catch(props.errors) // TODO: Implement proper error handling
+        .finally(() => {
+          setIsLoadingGroups(false);
+        });
+    };
+
+    if (props.state.orgId) {
+      getAccessGroups(props.state.orgId);
+    } else {
+      setAccessGroups([]);
+    }
+  }, [props.state.orgId, props.errors]);
+
   const handleFormChange = (model) => {
-    props.onChange({ ...model, orgName: organizations.filter((org) => org.value === model.orgId)[0]?.label });
+    const selectedOrg = organizations.find((org) => org.value === model.orgId);
+
+    // When organization changes, clear the selected access groups
+    const updatedModel =
+      model.orgId !== props.state.orgId
+        ? { ...model, orgName: selectedOrg?.label || "", accessGroups: [] }
+        : { ...model, orgName: selectedOrg?.label || "" };
+    props.onChange(updatedModel);
   };
 
   return (
@@ -62,7 +84,7 @@ const AccessGroupDetails = (props: Props) => {
       // onChange={(model) => {
       //   props.onChange(model);
       // }}
-      onSubmit={() => {}}
+      onSubmit={() => { }}
       validate={handleFormChange}
     >
       <div className="row">
@@ -98,13 +120,14 @@ const AccessGroupDetails = (props: Props) => {
           <Field
             name="accessGroups"
             label={t("Copy Permissions From")}
-            options={options}
+            options={accessGroups}
             as={Field.Select}
             placeholder={t("Search for existing access groups...")}
             emptyText={t("No Access group")}
             labelClass="col-md-3"
             divClass="col-md-6"
             isMulti
+            isLoading={isLoadingGroups}
           />
           <div className="offset-md-3 col-md-6">
             {t(
