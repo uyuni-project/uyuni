@@ -107,14 +107,9 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
-import com.suse.manager.utils.SaltKeyUtils;
-import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltParameters;
-import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.salt.netapi.calls.LocalCall;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -145,16 +140,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public static final String RUNNING_KERNEL = "3.12.48-52.27-default";
     public static final String HOSTNAME = "foo.bar.com";
 
-    private static final SystemQuery SYSTEM_QUERY = new TestSystemQuery();
     private static final SaltApi SALT_API = new TestSaltApi();
     private static final ServerGroupManager SERVER_GROUP_MANAGER = new ServerGroupManager(SALT_API);
-    private static final SaltUtils SALT_UTILS = new SaltUtils(SYSTEM_QUERY, SALT_API);
-    private static final SaltKeyUtils SALT_KEY_UTILS = new SaltKeyUtils(SALT_API);
-    private static final SaltServerActionService SALT_SERVER_ACTION_SERVICE = new SaltServerActionService(
-            SALT_API,
-            SALT_UTILS,
-            SALT_KEY_UTILS
-    );
     private static final SystemEntitlementManager SYSTEM_ENTITLEMENT_MANAGER = new SystemEntitlementManager(
             new SystemUnentitler(SALT_API), new SystemEntitler(SALT_API)
     );
