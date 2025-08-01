@@ -21,10 +21,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
+import java.io.InvalidClassException;
 import java.nio.file.Path;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,7 +39,26 @@ class SNPGuestWrapperTest {
     @Mock
     private Runtime runtime;
 
-    private SNPGuestWrapper wrapper;
+    private SNPGuestWrapper wrapperVer07Below;
+    private SNPGuestWrapper wrapperVer09Above;
+    private enum SNPGuestWrapperType {
+        VER_07_BELOW,
+        VER_09_ABOVE
+    }
+
+    private SNPGuestWrapper getWrapperToTest(SNPGuestWrapperType type) throws InvalidClassException {
+        switch (type) {
+            case VER_07_BELOW -> {
+                return wrapperVer07Below;
+            }
+            case VER_09_ABOVE -> {
+                return wrapperVer09Above;
+            }
+            default -> {
+                throw new InvalidClassException("");
+            }
+        }
+    }
 
     @BeforeEach
     public void setup() throws Exception {
@@ -48,21 +70,34 @@ class SNPGuestWrapperTest {
         when(process.getErrorStream()).thenReturn(new ByteArrayInputStream(new byte[0]));
         when(process.waitFor()).thenReturn(0);
 
-        wrapper = new SNPGuestWrapper(runtime);
+        wrapperVer07Below = new SNPGuestWrapperVer07Below(runtime);
+        wrapperVer09Above = new SNPGuestWrapperVer09Above(runtime);
     }
 
+
     @Test
-    @DisplayName("Generates the correct command line for downloading VCEK")
-    void canDownloadCorrectVCEK() throws Exception {
-        wrapper.fetchVCEK(EpycGeneration.MILAN, Path.of("certs"), Path.of("report.bin"));
+    @DisplayName("Ver 0.7 and below: Generates the correct command line for downloading VCEK")
+    void canDownloadCorrectVCEKVer07Below() throws Exception {
+        wrapperVer07Below.fetchVCEK(EpycGeneration.MILAN, Path.of("certs"), Path.of("report.bin"));
 
         String expectedCommandLine = "/usr/bin/snpguest fetch vcek DER milan certs report.bin";
         verify(runtime).exec(expectedCommandLine.split(" "));
     }
 
     @Test
+    @DisplayName("Ver 0.9 and above: Generates the correct command line for downloading VCEK")
+    void canDownloadCorrectVCEKVer09Above() throws Exception {
+        wrapperVer09Above.fetchVCEK(EpycGeneration.GENOA, Path.of("certs"), Path.of("report.bin"));
+
+        String expectedCommandLine = "/usr/bin/snpguest fetch vcek -p genoa DER certs report.bin";
+        verify(runtime).exec(expectedCommandLine.split(" "));
+    }
+
+    @ParameterizedTest
+    @EnumSource(SNPGuestWrapperType.class)
     @DisplayName("Generates the correct command line for verifying certificates")
-    void canVerifyCertificates() throws Exception {
+    void canVerifyCertificates(SNPGuestWrapperType type) throws Exception {
+        SNPGuestWrapper wrapper = getWrapperToTest(type);
         wrapper.verifyCertificates(Path.of("/usr/share/certificates"));
 
         String expectedCommandLine = "/usr/bin/snpguest verify certs /usr/share/certificates";
@@ -70,17 +105,31 @@ class SNPGuestWrapperTest {
     }
 
     @Test
-    @DisplayName("Generates the correct command line for verifying an attestation report")
-    void canVerifyAttestation() throws Exception {
-        wrapper.verifyAttestation(Path.of("/srv/attestation/certs"), Path.of("/root/report.bin"));
+    @DisplayName("Ver 0.7 and below: Generates the correct command line for verifying an attestation report")
+    void canVerifyAttestationVer07Below() throws Exception {
+        wrapperVer07Below.verifyAttestation(EpycGeneration.BERGAMO, Path.of("/srv/attestation/certs"),
+                Path.of("/root/report.bin"));
 
         String expectedCommandLine = "/usr/bin/snpguest verify attestation /srv/attestation/certs /root/report.bin";
         verify(runtime).exec(expectedCommandLine.split(" "));
     }
 
     @Test
+    @DisplayName("Ver 0.9 and above: Generates the correct command line for verifying an attestation report")
+    void canVerifyAttestationVer09Above() throws Exception {
+        wrapperVer09Above.verifyAttestation(EpycGeneration.TURIN, Path.of("/srv/attestation/certs"),
+                Path.of("/root/report.bin"));
+
+        String expectedCommandLine = "/usr/bin/snpguest verify attestation -p turin /srv/attestation/certs " +
+                "/root/report.bin";
+        verify(runtime).exec(expectedCommandLine.split(" "));
+    }
+
+    @ParameterizedTest
+    @EnumSource(SNPGuestWrapperType.class)
     @DisplayName("Generates the correct command line for displaying an attestation report")
-    void canDisplayReport() throws Exception {
+    void canDisplayReport(SNPGuestWrapperType type) throws Exception {
+        SNPGuestWrapper wrapper = getWrapperToTest(type);
         wrapper.displayReport(Path.of("/root/report.bin"));
 
         String expectedCommandLine = "/usr/bin/snpguest display report /root/report.bin";

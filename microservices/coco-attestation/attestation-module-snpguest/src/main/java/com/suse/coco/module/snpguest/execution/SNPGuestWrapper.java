@@ -32,30 +32,31 @@ import java.util.concurrent.Executors;
 /**
  * Wrapper to execute the command line tool SNPGuest.
  */
-public class SNPGuestWrapper {
+public abstract class SNPGuestWrapper {
 
-    private static final Marker STDOUT_MARKER = MarkerManager.getMarker("stdout");
+    protected static final Marker STDOUT_MARKER = MarkerManager.getMarker("stdout");
 
-    private static final Marker STDERR_MARKER = MarkerManager.getMarker("stderr");
+    protected static final Marker STDERR_MARKER = MarkerManager.getMarker("stderr");
 
-    private static final Logger LOGGER = LogManager.getLogger(SNPGuestWrapper.class);
+    protected static final Logger LOGGER = LogManager.getLogger(SNPGuestWrapper.class);
 
-    private static final Path SNPGUEST = Path.of("/usr/bin/snpguest");
+    protected static final Path SNPGUEST = Path.of("/usr/bin/snpguest");
 
-    private final Runtime runtime;
+    protected final Runtime runtime;
 
     /**
      * Default constructor.
      */
-    public SNPGuestWrapper() {
+    protected SNPGuestWrapper() {
         this.runtime = Runtime.getRuntime();
     }
 
     /**
      * Constructor to specify a runtime. For unit testing.
+     *
      * @param runtimeIn the runtime used to execute processes
      */
-    SNPGuestWrapper(Runtime runtimeIn) {
+    protected SNPGuestWrapper(Runtime runtimeIn) {
         this.runtime = runtimeIn;
     }
 
@@ -67,17 +68,8 @@ public class SNPGuestWrapper {
      * @return the exit code of the fetching process
      * @throws ExecutionException when an error happens during the process execution
      */
-    public ProcessOutput fetchVCEK(EpycGeneration generation, Path certsDir, Path report) throws ExecutionException {
-        return executeProcess(
-            SNPGUEST.toString(),
-            "fetch",
-            "vcek",
-            "DER",
-            generation.name().toLowerCase(),
-            certsDir.toString(),
-            report.toString()
-        );
-    }
+    public abstract ProcessOutput fetchVCEK(EpycGeneration generation, Path certsDir, Path report)
+            throws ExecutionException;
 
     /**
      * Verify the certificate chain.
@@ -96,20 +88,14 @@ public class SNPGuestWrapper {
 
     /**
      * Verify the attestation report.
+     * @param generation Specify the processor model for the certificate chain.
      * @param certsDir Path to directory containing VCEK.
      * @param report Path to attestation report to use for validation.
      * @return the exit code of the verification process
      * @throws ExecutionException when an error happens during the process execution
      */
-    public ProcessOutput verifyAttestation(Path certsDir, Path report) throws ExecutionException {
-        return executeProcess(
-            SNPGUEST.toString(),
-            "verify",
-            "attestation",
-            certsDir.toString(),
-            report.toString()
-        );
-    }
+    public abstract ProcessOutput verifyAttestation(EpycGeneration generation, Path certsDir, Path report)
+            throws ExecutionException;
 
     /**
      * Display the attestation report.

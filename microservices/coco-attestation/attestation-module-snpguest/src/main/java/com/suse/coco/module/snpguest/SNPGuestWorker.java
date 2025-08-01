@@ -15,6 +15,7 @@ import com.suse.coco.model.AttestationResult;
 import com.suse.coco.module.AttestationWorker;
 import com.suse.coco.module.snpguest.execution.ProcessOutput;
 import com.suse.coco.module.snpguest.execution.SNPGuestWrapper;
+import com.suse.coco.module.snpguest.execution.SNPGuestWrapperCreator;
 import com.suse.coco.module.snpguest.io.VerificationDirectoryProvider;
 import com.suse.coco.module.snpguest.model.AttestationReport;
 import com.suse.coco.module.snpguest.model.EpycGeneration;
@@ -48,7 +49,8 @@ public class SNPGuestWorker implements AttestationWorker {
      * Default constructor.
      */
     public SNPGuestWorker() {
-        this(new VerificationDirectoryProvider(), new SNPGuestWrapper(), new ByteSequenceFinder());
+        this(new VerificationDirectoryProvider(), SNPGuestWrapperCreator.createSNPGuestWrapper(),
+                new ByteSequenceFinder());
     }
 
     /**
@@ -143,7 +145,7 @@ public class SNPGuestWorker implements AttestationWorker {
                 }
 
                 // Verify the actual attestation report
-                processOutput = snpGuest.verifyAttestation(certsPath, reportPath);
+                processOutput = snpGuest.verifyAttestation(report.getCpuGeneration(), certsPath, reportPath);
                 if (processOutput.getExitCode() != 0) {
                     appendError("Unable to verify the attestation report", processOutput);
                     return false;
