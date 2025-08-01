@@ -6,7 +6,6 @@ import { Button } from "components/buttons";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
-
 import { Utils } from "utils/functions";
 
 type Props = {
@@ -26,23 +25,26 @@ const AccessGroupPermissions = (props: Props) => {
 
   return (
     <div>
-      <div className="d-flex">
-        <div className="me-5">
-          <strong className="me-1">Name:</strong>
-          {props.state.name}
-        </div>
-        <div className="me-5">
-          <strong className="me-1">Description:</strong>
-          {props.state.description}
-        </div>
-        <div>
-          <strong className="me-1">Organization:</strong>
-          {props.state.orgName}
-        </div>
-      </div>
-      <hr></hr>
+       {!props.state.id ? (
+        <>
+          <div className="d-flex">
+            <div className="me-5">
+              <strong className="me-1">Name:</strong>
+              {props.state.name}
+            </div>
+            <div className="me-5">
+              <strong className="me-1">Description:</strong>
+              {props.state.description}
+            </div>
+            <div>
+              <strong className="me-1">Organization:</strong>
+              {props.state.orgName}
+            </div>
+          </div>
+          <hr></hr>
+        </>): null}
       <p>
-        Click <strong>Add Permissions</strong> to select the permissions you want to add to this custom Access group.
+        {t("Review and modify the permissions for this custom group as needed.")}
       </p>
       <div className="d-block mb-3">
         <Button className="btn-primary pull-right" text="Add Permissions" handler={() => {}} />
