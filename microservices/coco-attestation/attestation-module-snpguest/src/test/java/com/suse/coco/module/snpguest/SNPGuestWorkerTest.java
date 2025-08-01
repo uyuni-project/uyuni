@@ -491,7 +491,7 @@ class SNPGuestWorkerTest {
             .thenReturn(new ProcessOutput(0, "Certificate verify ok", ""));
 
         // Fail the attestation verification
-        when(snpWrapper.verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+        when(snpWrapper.verifyAttestation(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
             .thenReturn(new ProcessOutput(-1, "", "Attestation verify FAILED"));
 
         assertFalse(worker.process(session, result));
@@ -532,7 +532,7 @@ class SNPGuestWorkerTest {
         verify(snpWrapper).verifyCertificates(MOCK_CERTS_DIR);
 
         // Verify the attestation verification have happened
-        verify(snpWrapper).verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE);
+        verify(snpWrapper).verifyAttestation(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE);
     }
 
     @ParameterizedTest(name = TestHelper.CPU_USING_VLEK_NAME)
@@ -574,7 +574,7 @@ class SNPGuestWorkerTest {
                 """, ""));
 
         // Pass the attestation verification
-        when(snpWrapper.verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+        when(snpWrapper.verifyAttestation(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
             .thenReturn(new ProcessOutput(0, """
                 Verifying attestation status...
                 Attestation ok
@@ -623,7 +623,7 @@ class SNPGuestWorkerTest {
         verify(snpWrapper).verifyCertificates(MOCK_CERTS_DIR);
 
         // Verify the attestation verification have happened
-        verify(snpWrapper).verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE);
+        verify(snpWrapper).verifyAttestation(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE);
 
         // Verify the report display have happened
         verify(snpWrapper).displayReport(MOCK_REPORT_FILE);
