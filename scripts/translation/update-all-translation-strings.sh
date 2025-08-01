@@ -3,7 +3,7 @@
 set -x
 export LC_ALL=C
 
-SAFE_BRANCHNAMES=(master-weblate new-translation-strings)
+SAFE_BRANCHNAMES=(weblate-Manager-5.1 new-translation-strings)
 SAFE_BRANCHNAMES+=($ADDITIONAL_SAFE_BRANCHNAME)
 GIT_ROOT_DIR=$(git rev-parse --show-toplevel)
 
@@ -61,7 +61,7 @@ function update_xliff() {
     return 0
 }
 
-PO_DIRS=(python/spacewalk client/rhel/spacewalk-client-tools web susemanager spacecmd)
+PO_DIRS=(python/spacewalk client/rhel/spacewalk-client-tools web spacecmd)
 commits=0
 safe=0
 
