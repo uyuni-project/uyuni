@@ -1,7 +1,7 @@
 {
-  "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run": {
+  "cmd_|-respkgquery_|-/usr/bin/rpm -q --whatprovides 'sles_es-release-server'_|-run": {
     "comment": "onlyif execution failed",
-    "name": "rpm -q --whatprovides 'sles_es-release-server'",
+    "name": "/usr/bin/rpm -q --whatprovides 'sles_es-release-server'",
     "start_time": "14:04:57.901731",
     "skip_watch": true,
     "result": true,
@@ -9,9 +9,9 @@
     "__run_num__": 2,
     "changes": {}
   },
-  "cmd_|-sllpkgquery_|-rpm -q --whatprovides 'sll-release'_|-run": {
+  "cmd_|-sllpkgquery_|-/usr/bin/rpm -q --whatprovides 'sll-release'_|-run": {
     "comment": "onlyif execution failed",
-    "name": "rpm -q --whatprovides 'sll-release'",
+    "name": "/usr/bin/rpm -q --whatprovides 'sll-release'",
     "start_time": "14:04:57.901731",
     "skip_watch": true,
     "result": true,
@@ -19,9 +19,9 @@
     "__run_num__": 2,
     "changes": {}
   },
-  "cmd_|-centosrelease_|-cat /etc/centos-release_|-run": {
+  "cmd_|-centosrelease_|-/usr/bin/cat /etc/centos-release_|-run": {
     "comment": "onlyif execution failed",
-    "name": "cat /etc/centos-release",
+    "name": "/usr/bin/cat /etc/centos-release",
     "start_time": "14:04:57.667941",
     "skip_watch": true,
     "result": true,
@@ -29,9 +29,9 @@
     "__run_num__": 1,
     "changes": {}
   },
-  "cmd_|-oraclerelease_|-cat /etc/oracle-release_|-run": {
-    "comment": "Command \"cat /etc/oracle-release\" run",
-    "name": "cat /etc/oracle-release",
+  "cmd_|-oraclerelease_|-/usr/bin/cat /etc/oracle-release_|-run": {
+    "comment": "Command \"/usr/bin/cat /etc/oracle-release\" run",
+    "name": "/usr/bin/cat /etc/oracle-release",
     "start_time": "14:04:57.667941",
     "result": true,
     "duration": 233.474,
@@ -43,9 +43,9 @@
       "stdout": "Oracle Linux Server release 8.2"
     }
   },
-  "cmd_|-alibabarelease_|-cat /etc/alinux-release_|-run": {
-    "comment": "Command \"cat /etc/alinux-release\" run",
-    "name": "cat /etc/alinux-release",
+  "cmd_|-alibabarelease_|-/usr/bin/cat /etc/alinux-release_|-run": {
+    "comment": "Command \"/usr/bin/cat /etc/alinux-release\" run",
+    "name": "/usr/bin/cat /etc/alinux-release",
     "start_time": "14:04:57.667941",
     "skip_watch": true,
     "result": true,
@@ -53,9 +53,9 @@
     "__run_num__": 3,
     "changes": {}
   },
-  "cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run": {
-    "comment": "Command \"cat /etc/redhat-release\" run",
-    "name": "cat /etc/redhat-release",
+  "cmd_|-rhelrelease_|-/usr/bin/cat /etc/redhat-release_|-run": {
+    "comment": "Command \"/usr/bin/cat /etc/redhat-release\" run",
+    "name": "/usr/bin/cat /etc/redhat-release",
     "start_time": "14:04:57.435091",
     "result": true,
     "duration": 232.599,
@@ -67,9 +67,9 @@
       "stdout": "CentOS Linux release 7.2.1511 (Core)"
     }
   },
-  "cmd_|-almarelease_|-cat /etc/almalinux-release_|-run": {
-    "comment": "Command \"cat /etc/almalinux-release\" run",
-    "name": "cat /etc/almalinux-release",
+  "cmd_|-almarelease_|-/usr/bin/cat /etc/almalinux-release_|-run": {
+    "comment": "Command \"/usr/bin/cat /etc/almalinux-release\" run",
+    "name": "/usr/bin/cat /etc/almalinux-release",
     "start_time": "14:04:57.667941",
     "skip_watch": true,
     "result": true,
@@ -77,9 +77,9 @@
     "__run_num__": 3,
     "changes": {}
   },
-  "cmd_|-amazonrelease_|-cat /etc/system-release_|-run": {
-    "comment": "Command \"cat /etc/system-release\" run",
-    "name": "cat /etc/system-release",
+  "cmd_|-amazonrelease_|-/usr/bin/cat /etc/system-release_|-run": {
+    "comment": "Command \"/usr/bin/cat /etc/system-release\" run",
+    "name": "/usr/bin/cat /etc/system-release",
     "start_time": "14:04:57.667941",
     "skip_watch": true,
     "result": true,
@@ -87,9 +87,9 @@
     "__run_num__": 3,
     "changes": {}
   },
-  "cmd_|-rockyrelease_|-cat /etc/rocky-release_|-run": {
-    "comment": "Command \"cat /etc/rocky-release\" run",
-    "name": "cat /etc/rocky-release",
+  "cmd_|-rockyrelease_|-/usr/bin/cat /etc/rocky-release_|-run": {
+    "comment": "Command \"/usr/bin/cat /etc/rocky-release\" run",
+    "name": "/usr/bin/cat /etc/rocky-release",
     "start_time": "14:04:57.667941",
     "skip_watch": true,
     "result": true,

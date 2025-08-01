@@ -67,9 +67,9 @@
             },
             "__id__": "packages"
         },
-        "cmd_|-ubunturelease_|-cat /etc/os-release_|-run": {
-            "comment": "Command \"cat /etc/os-release\" run",
-            "name": "cat /etc/os-release",
+        "cmd_|-debianrelease_|-/usr/bin/cat /etc/os-release_|-run": {
+            "comment": "Command \"/usr/bin/cat /etc/os-release\" run",
+            "name": "/usr/bin/cat /etc/os-release",
             "start_time": "17:34:37.607547",
             "result": true,
             "duration": 37.363,
@@ -81,7 +81,7 @@
                 "stderr": "",
                 "stdout": "NAME=\"Ubuntu\"\nVERSION=\"18.04.1 LTS (Bionic Beaver)\"\nID=ubuntu\nID_LIKE=debian\nPRETTY_NAME=\"Ubuntu 18.04.1 LTS\"\nVERSION_ID=\"18.04\"\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nVERSION_CODENAME=bionic\nUBUNTU_CODENAME=bionic"
             },
-            "__id__": "ubunturelease"
+            "__id__": "debianrelease"
         },
         "mgrcompat_|-sync_grains_|-saltutil.sync_grains_|-module_run": {
             "comment": "Module function saltutil.sync_grains executed",
