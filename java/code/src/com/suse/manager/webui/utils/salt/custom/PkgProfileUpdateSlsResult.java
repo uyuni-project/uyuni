@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016--2021 SUSE LLC
+ * Copyright (c) 2016--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.utils.salt.custom;
 
@@ -36,23 +32,23 @@ import java.util.Set;
 public class PkgProfileUpdateSlsResult {
 
     public static final String PKG_PROFILE_REDHAT_RELEASE =
-            "cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run";
+            "cmd_|-rhelrelease_|-/usr/bin/cat /etc/redhat-release_|-run";
     public static final String PKG_PROFILE_CENTOS_RELEASE =
-            "cmd_|-centosrelease_|-cat /etc/centos-release_|-run";
+            "cmd_|-centosrelease_|-/usr/bin/cat /etc/centos-release_|-run";
     public static final String PKG_PROFILE_ORACLE_RELEASE =
-            "cmd_|-oraclerelease_|-cat /etc/oracle-release_|-run";
+            "cmd_|-oraclerelease_|-/usr/bin/cat /etc/oracle-release_|-run";
     public static final String PKG_PROFILE_ALIBABA_RELEASE =
-            "cmd_|-alibabarelease_|-cat /etc/alinux-release_|-run";
+            "cmd_|-alibabarelease_|-/usr/bin/cat /etc/alinux-release_|-run";
     public static final String PKG_PROFILE_ALMA_RELEASE =
-            "cmd_|-almarelease_|-cat /etc/almalinux-release_|-run";
+            "cmd_|-almarelease_|-/usr/bin/cat /etc/almalinux-release_|-run";
     public static final String PKG_PROFILE_AMAZON_RELEASE =
-            "cmd_|-amazonrelease_|-cat /etc/system-release_|-run";
+            "cmd_|-amazonrelease_|-/usr/bin/cat /etc/system-release_|-run";
     public static final String PKG_PROFILE_ROCKY_RELEASE =
-            "cmd_|-rockyrelease_|-cat /etc/rocky-release_|-run";
+            "cmd_|-rockyrelease_|-/usr/bin/cat /etc/rocky-release_|-run";
     public static final String PKG_PROFILE_WHATPROVIDES_SLES_RELEASE =
-            "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run";
+            "cmd_|-respkgquery_|-/usr/bin/rpm -q --whatprovides 'sles_es-release-server'_|-run";
     public static final String PKG_PROFILE_WHATPROVIDES_SLL_RELEASE =
-            "cmd_|-sllpkgquery_|-rpm -q --whatprovides 'sll-release'_|-run";
+            "cmd_|-sllpkgquery_|-/usr/bin/rpm -q --whatprovides 'sll-release'_|-run";
 
     @SerializedName("mgrcompat_|-status_uptime_|-status.uptime_|-module_run")
     private Optional<StateApplyResult<Ret<Map<String, Object>>>> upTime = Optional.empty();

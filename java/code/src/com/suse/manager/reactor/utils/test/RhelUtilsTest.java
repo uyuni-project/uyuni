@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016--2021 SUSE LLC
+ * Copyright (c) 2016--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.reactor.utils.test;
 
@@ -197,31 +193,32 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         Map<String, State.ApplyResult> map = new JsonParser<>(
                 State.apply(Collections.emptyList()).getReturnType()).parse(
                         TestUtils.readAll(TestUtils.findTestData(json)));
-        String centosReleaseContent = map.get("cmd_|-centosrelease_|-cat /etc/centos-release_|-run")
+        String centosReleaseContent = map.get("cmd_|-centosrelease_|-/usr/bin/cat /etc/centos-release_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
-        String alibabaReleaseContent = map.get("cmd_|-alibabarelease_|-cat /etc/alinux-release_|-run")
+        String alibabaReleaseContent = map.get("cmd_|-alibabarelease_|-/usr/bin/cat /etc/alinux-release_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
-        String oracleReleaseContent = map.get("cmd_|-oraclerelease_|-cat /etc/oracle-release_|-run")
+        String oracleReleaseContent = map.get("cmd_|-oraclerelease_|-/usr/bin/cat /etc/oracle-release_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
-        String almaReleaseContent = map.get("cmd_|-almarelease_|-cat /etc/almalinux-release_|-run")
+        String almaReleaseContent = map.get("cmd_|-almarelease_|-/usr/bin/cat /etc/almalinux-release_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
-        String amazonReleaseContent = map.get("cmd_|-amazonrelease_|-cat /etc/system-release_|-run")
+        String amazonReleaseContent = map.get("cmd_|-amazonrelease_|-/usr/bin/cat /etc/system-release_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
-        String rockyReleaseContent = map.get("cmd_|-rockyrelease_|-cat /etc/rocky-release_|-run")
+        String rockyReleaseContent = map.get("cmd_|-rockyrelease_|-/usr/bin/cat /etc/rocky-release_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
-        String rhelReleaseContent = map.get("cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run")
+        String rhelReleaseContent = map.get("cmd_|-rhelrelease_|-/usr/bin/cat /etc/redhat-release_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
-        String whatProvidesRes = map.get("cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run")
+        String whatProvidesRes = map
+                .get("cmd_|-respkgquery_|-/usr/bin/rpm -q --whatprovides 'sles_es-release-server'_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
-        String whatProvidesSLL = map.get("cmd_|-sllpkgquery_|-rpm -q --whatprovides 'sll-release'_|-run")
+        String whatProvidesSLL = map.get("cmd_|-sllpkgquery_|-/usr/bin/rpm -q --whatprovides 'sll-release'_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
         MinionServer minionServer = MinionServerFactoryTest.createTestMinionServer(user);

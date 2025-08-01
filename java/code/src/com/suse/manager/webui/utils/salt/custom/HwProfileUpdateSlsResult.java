@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.utils.salt.custom;
 
@@ -94,7 +90,7 @@ public class HwProfileUpdateSlsResult {
     @SerializedName("mgrcompat_|-container_runtime_|-container_runtime.get_container_runtime_|-module_run")
     private Optional<StateApplyResult<Ret<String>>> containerRuntime = Optional.empty();
 
-    @SerializedName("cmd_|-uname_|-uname -r -v_|-run")
+    @SerializedName("cmd_|-uname_|-/usr/bin/uname -r -v_|-run")
     private Optional<StateApplyResult<CmdResult>> uname = Optional.empty();
 
     /**
