@@ -56,6 +56,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -90,6 +91,8 @@ public class AccessGroupController {
                 asJson(withProductAdmin(AccessGroupController::listOrgUsers)));
         get("/manager/api/admin/access-group/organizations",
                 asJson(withProductAdmin(AccessGroupController::listOrganizations)));
+        get("/manager/api/admin/access-group/organizations/:id/access-groups",
+                asJson(withProductAdmin(AccessGroupController::listAccessGroups)));
         post("/manager/api/admin/access-group/save",
                 asJson(withProductAdmin(AccessGroupController::save)));
         delete("/manager/api/admin/access-group/delete/:id",
@@ -156,6 +159,31 @@ public class AccessGroupController {
         List<OrgInfoJson> organizations = OrgManager.allOrgs(user).stream().map(org ->
             new OrgInfoJson(org.getId(), org.getName())).toList();
         return json(GSON, response, organizations, new TypeToken<>() { });
+    }
+
+    /**
+     * Processes a GET request to get a list of all access groups for a specific organization
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the user
+     * @return the result JSON object
+     */
+    public static String listAccessGroups(Request request, Response response, User user) {
+        Long orgId = Long.parseLong(request.params("id"));
+        var org = OrgFactory.lookupById(orgId);
+        if (org == null) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND, GSON.toJson(
+                    ResultJson.error("Organization with id: " + orgId + " does not exist")));
+        }
+        var accessGroups = MANAGER.list(org).stream()
+                .sorted(Comparator.comparing(AccessGroup::getDescription)).
+                map(it -> Map.<String, Object>of(
+                        "id", it.getId(),
+                        "description", it.getDescription()
+                )).toList();
+
+        return json(GSON, response, accessGroups, new TypeToken<>() { });
     }
 
     /**
