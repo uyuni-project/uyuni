@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.manager.webui.utils.salt.custom;
@@ -29,10 +25,10 @@ import java.util.Optional;
  */
 public class CoCoAttestationRequestData {
 
-    @SerializedName("cmd_|-mgr_snpguest_report_|-cat /tmp/cocoattest/report.bin | base64_|-run")
+    @SerializedName("cmd_|-mgr_snpguest_report_|-/usr/bin/cat /tmp/cocoattest/report.bin | /usr/bin/base64_|-run")
     private StateApplyResult<CmdResult> snpguestResult;
 
-    @SerializedName("cmd_|-mgr_secureboot_enabled_|-mokutil --sb-state_|-run")
+    @SerializedName("cmd_|-mgr_secureboot_enabled_|-/usr/bin/mokutil --sb-state_|-run")
     private StateApplyResult<CmdResult> securebootResult;
 
     /**
