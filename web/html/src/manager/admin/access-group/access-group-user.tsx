@@ -83,6 +83,8 @@ const AccessGroupUsers = (props: Props) => {
 
   return (
     <div>
+      {!props.state.id ? (
+        <>
       <div className="d-flex">
         <div className="me-5">
           <strong className="me-1">Name:</strong>
@@ -97,7 +99,7 @@ const AccessGroupUsers = (props: Props) => {
           {props.state.orgName}
         </div>
       </div>
-      <hr></hr>
+      <hr></hr> </>): null}
       <Form
         initialValues={props.state.users}
         // TODO: Use onChange instead of validate to update access group details

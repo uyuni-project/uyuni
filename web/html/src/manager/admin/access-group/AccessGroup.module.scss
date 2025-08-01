@@ -1,0 +1,11 @@
+:global(.new-theme) {
+  .accessGroupWrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .accessGroupContainer {
+    flex-grow: 1;
+  }
+}

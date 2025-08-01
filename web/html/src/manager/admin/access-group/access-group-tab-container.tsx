@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Button, LinkButton } from "components/buttons";
 import { TabContainer } from "components/tab-container";
 
+import styles from "./AccessGroup.module.scss";
+
 type Tab = {
   title: string;
   content: React.ReactNode;
@@ -34,23 +36,19 @@ const AccessGroupTabContainer = (props: AccessGroupTabContainerProps) => {
   const tabs = props.tabs.map((tab) => tab.content);
 
   return (
-    <div>
-      <div className="main-content">
-        <div className="d-block mb-3">
-          <Button className="btn-primary pull-right" text={t("Update Access Group")} handler={onUpdate} />
-        </div>
-        <div className="content-section">
-          <TabContainer
-            labels={labels}
-            hashes={hashes}
-            tabs={tabs}
-            initialActiveTabHash={currentTab}
-            onTabHashChange={onTabHashChanged}
-          />
-        </div>
+    <div className={styles.accessGroupWrapper}>
+      <div className={styles.accessGroupContainer}>
+        <TabContainer
+          labels={labels}
+          hashes={hashes}
+          tabs={tabs}
+          initialActiveTabHash={currentTab}
+          onTabHashChange={onTabHashChanged}
+        />
       </div>
       <div className="progress-bar-footer">
         <LinkButton className="btn-default btn-sm pull-left" text={t("Cancel")} href={props.onCancel} />
+        <Button className="btn-primary pull-right" text={t("Update Access Group")} handler={onUpdate} />
       </div>
     </div>
   );
