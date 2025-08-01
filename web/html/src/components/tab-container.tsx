@@ -53,7 +53,7 @@ class TabContainer extends React.Component<Props> {
 
     return (
       <div>
-        <div className="spacewalk-content-nav">
+        <div className="spacewalk-content-nav mb-5">
           <ul className="nav nav-tabs">{labels}</ul>
         </div>
         {tab}
