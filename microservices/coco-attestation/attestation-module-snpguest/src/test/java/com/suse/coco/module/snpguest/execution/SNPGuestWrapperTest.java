@@ -41,12 +41,8 @@ class SNPGuestWrapperTest {
 
     private SNPGuestWrapper wrapperVer07Below;
     private SNPGuestWrapper wrapperVer09Above;
-    private enum SNPGuestWrapperType {
-        VER_07_BELOW,
-        VER_09_ABOVE
-    }
 
-    private SNPGuestWrapper getWrapperToTest(SNPGuestWrapperType type) throws InvalidClassException {
+    private SNPGuestWrapper getWrapperToTest(SNPGuestWrapperCreator.SNPGuestVersion type) throws InvalidClassException {
         switch (type) {
             case VER_07_BELOW -> {
                 return wrapperVer07Below;
@@ -74,6 +70,17 @@ class SNPGuestWrapperTest {
         wrapperVer09Above = new SNPGuestWrapperVer09Above(runtime);
     }
 
+    @ParameterizedTest
+    @EnumSource(SNPGuestWrapperCreator.SNPGuestVersion.class)
+    @DisplayName("Generates the correct command line for getting snpguest version")
+    void canRetrieveVersion(SNPGuestWrapperCreator.SNPGuestVersion type) throws Exception {
+        SNPGuestWrapper wrapper = getWrapperToTest(type);
+        wrapper.getVersion();
+
+        String expectedCommandLine = "/usr/bin/snpguest -V";
+        verify(runtime).exec(expectedCommandLine.split(" "));
+    }
+
 
     @Test
     @DisplayName("Ver 0.7 and below: Generates the correct command line for downloading VCEK")
@@ -94,9 +101,9 @@ class SNPGuestWrapperTest {
     }
 
     @ParameterizedTest
-    @EnumSource(SNPGuestWrapperType.class)
+    @EnumSource(SNPGuestWrapperCreator.SNPGuestVersion.class)
     @DisplayName("Generates the correct command line for verifying certificates")
-    void canVerifyCertificates(SNPGuestWrapperType type) throws Exception {
+    void canVerifyCertificates(SNPGuestWrapperCreator.SNPGuestVersion type) throws Exception {
         SNPGuestWrapper wrapper = getWrapperToTest(type);
         wrapper.verifyCertificates(Path.of("/usr/share/certificates"));
 
@@ -126,9 +133,9 @@ class SNPGuestWrapperTest {
     }
 
     @ParameterizedTest
-    @EnumSource(SNPGuestWrapperType.class)
+    @EnumSource(SNPGuestWrapperCreator.SNPGuestVersion.class)
     @DisplayName("Generates the correct command line for displaying an attestation report")
-    void canDisplayReport(SNPGuestWrapperType type) throws Exception {
+    void canDisplayReport(SNPGuestWrapperCreator.SNPGuestVersion type) throws Exception {
         SNPGuestWrapper wrapper = getWrapperToTest(type);
         wrapper.displayReport(Path.of("/root/report.bin"));
 
