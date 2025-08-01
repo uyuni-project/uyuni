@@ -61,6 +61,18 @@ public abstract class SNPGuestWrapper {
     }
 
     /**
+     * Get the snpguest tool version.
+     * @return the exit code of the fetching process
+     * @throws ExecutionException when an error happens during the process execution
+     */
+    public ProcessOutput getVersion() throws ExecutionException {
+        return executeProcess(
+                SNPGUEST.toString(),
+                "-V"
+        );
+    }
+
+    /**
      * Fetch the VCEK from the KDS.
      * @param generation Specify the processor model for the certificate chain.
      * @param certsDir Directory to store the certificates in
