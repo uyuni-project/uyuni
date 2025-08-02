@@ -4808,7 +4808,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="GS" xml:space="preserve">
         <source>S. Georgia &amp; S. Sandwich Isls.</source>
-        <target>Južná Georgia a Južné Sandwichove ostrovy</target>
+        <target state="translated">Južná Georgia a Južné Sandwichove ostrovy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
@@ -11857,49 +11857,49 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <source>Error when triggering the channels sync.</source>
         <target state="translated">Chyba pri spúšťaní synchronizácie kanálov.</target>
       </trans-unit>
-    <trans-unit id="supportdata.get" xml:space="preserve">
+      <trans-unit id="supportdata.get" xml:space="preserve">
         <source>Get and Upload Support data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="message.scheduleactivated" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.errata-advisory-map-sync" xml:space="preserve">
         <source>Update SUSE errata advisory map</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.errata-advisory-map-sync-bunch" xml:space="preserve">
         <source>Update SUSE errata advisory map to retrieve announcement ids and advisor URLs</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="supportdata.uploadGeoType.eu" xml:space="preserve">
         <source>EU</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="supportdata.uploadGeoType.us" xml:space="preserve">
         <source>US</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.details.support.invalid_case_number" xml:space="preserve">
         <source>The case number {0} is not valid.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.details.support.invalid_region" xml:space="preserve">
         <source>The region {0] is not valid.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.details.support.unable_to_schedule" xml:space="preserve">
         <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.details.support.unable_to_upload" xml:space="preserve">
         <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
     </body>
   </file>
 </xliff>
