@@ -4808,7 +4808,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="GS" xml:space="preserve">
         <source>S. Georgia &amp; S. Sandwich Isls.</source>
-        <target>Južná Georgia a Južné Sandwichove ostrovy</target>
+        <target state="translated">Južná Georgia a Južné Sandwichove ostrovy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
