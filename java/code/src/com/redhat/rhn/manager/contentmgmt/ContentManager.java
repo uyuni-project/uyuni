@@ -261,7 +261,7 @@ public class ContentManager {
                             ContentProjectFactory.lookupEnvironmentByLabelAndProject(pl, cp)
                                     .orElseThrow(() -> new EntityNotExistsException(ContentEnvironment.class, label)));
                     ContentProjectFactory.insertEnvironment(newEnv, predecessor);
-                    // TODO: for now only support populating non-first environments
+                    // INFO: for now only support populating non-first environments
                     // populating first environment will be implemented as soon as backward-promote is implemented
                     predecessor.ifPresent(p -> {
                         if (!p.getTargets().isEmpty()) {
@@ -449,7 +449,7 @@ public class ContentManager {
      *
      * @param user the User
      * @param project the Project
-     * @return a list of {@link SoftwareProjectSource}s that have patches needing resync
+     * @return a set of {@link SoftwareProjectSource}s that have patches needing resync
      */
     public static Set<SoftwareProjectSource> listActiveSwSourcesWithUnsyncedPatches(User user, ContentProject project) {
         if (project.getFirstEnvironmentOpt().isEmpty()) {
@@ -840,13 +840,13 @@ public class ContentManager {
         Set<Errata> excludedErrata = partErrata.getRight();
 
         Set<Errata> newErrataInTgt = includedErrata.stream()
-                .filter(e -> !oldTgtErrata.stream().map(Errata::getAdvisory).anyMatch(i -> i.endsWith(e.getAdvisory())))
+                .filter(e -> oldTgtErrata.stream().map(Errata::getAdvisory).noneMatch(i -> i.endsWith(e.getAdvisory())))
                 .collect(toSet());
         Set<Errata> removedErrataInTgt = oldTgtErrata.stream()
-                .filter(e -> !includedErrata.stream()
-                        .map(Errata::getAdvisory).anyMatch(i -> e.getAdvisory().endsWith(i)))
-                .filter(e -> !excludedErrata.stream()
-                        .map(Errata::getAdvisory).anyMatch(i -> e.getAdvisory().endsWith(i)))
+                .filter(e -> includedErrata.stream()
+                        .map(Errata::getAdvisory).noneMatch(i -> e.getAdvisory().endsWith(i)))
+                .filter(e -> excludedErrata.stream()
+                        .map(Errata::getAdvisory).noneMatch(i -> e.getAdvisory().endsWith(i)))
                 .collect(toSet());
         // newErrataInTgt : errata which will be added on next build/promote
         // excludedErrata : errata excluded by filter
@@ -861,8 +861,9 @@ public class ContentManager {
         );
         excludedErrata.forEach(e -> {
                     Pair<Long, EntryType> ident = Pair.of(e.getId(), EntryType.ERRATA);
-                    ContentEnvironmentDiff entry = new ContentEnvironmentDiff(project, env, channel, DiffAction.FILTERED,
-                            e.getId(), EntryType.ERRATA, e.getAdvisoryName(), e.getAdvisorySynopsis());
+                    ContentEnvironmentDiff entry = new ContentEnvironmentDiff(project, env, channel,
+                            DiffAction.FILTERED, e.getId(), EntryType.ERRATA, e.getAdvisoryName(),
+                            e.getAdvisorySynopsis());
                     diffMap.computeIfAbsent(ident, k -> entry).update(entry);
                     keep.add(ident);
                     e.getPackages().stream().map(p -> Pair.of(p.getId(), EntryType.PACKAGE))
@@ -920,21 +921,19 @@ public class ContentManager {
         Map<ProjectSource.State, List<ProjectSource>> sourcesToHandle = project.getSources().stream()
                 .collect(groupingBy(ProjectSource::getState));
         // newly attached sources get built
-        sourcesToHandle.getOrDefault(ATTACHED, emptyList()).stream()
-                .forEach(src -> src.setState(BUILT));
+        sourcesToHandle.getOrDefault(ATTACHED, emptyList()).forEach(src -> src.setState(BUILT));
         // remove the detached sources
-        sourcesToHandle.getOrDefault(DETACHED, emptyList()).stream()
-                .forEach(this::removeSource);
+        sourcesToHandle.getOrDefault(DETACHED, emptyList()).forEach(this::removeSource);
 
         Map<ContentProjectFilter.State, List<ContentProjectFilter>> filtersToHandle =
                 project.getProjectFilters().stream().collect(groupingBy(ContentProjectFilter::getState));
         // newly attached filters get built
-        filtersToHandle.getOrDefault(ContentProjectFilter.State.ATTACHED, emptyList()).stream()
+        filtersToHandle.getOrDefault(ContentProjectFilter.State.ATTACHED, emptyList())
                 .forEach(f -> f.setState(ContentProjectFilter.State.BUILT));
-        filtersToHandle.getOrDefault(ContentProjectFilter.State.EDITED, emptyList()).stream()
+        filtersToHandle.getOrDefault(ContentProjectFilter.State.EDITED, emptyList())
                 .forEach(f -> f.setState(ContentProjectFilter.State.BUILT));
         // remove the detached filters
-        filtersToHandle.getOrDefault(ContentProjectFilter.State.DETACHED, emptyList()).stream()
+        filtersToHandle.getOrDefault(ContentProjectFilter.State.DETACHED, emptyList())
                 .forEach(this::removeFilter);
 
     }
