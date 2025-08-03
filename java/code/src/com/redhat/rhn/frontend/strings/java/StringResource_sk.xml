@@ -9695,7 +9695,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been disabled.</source>
-        <target state="needs-adaptation">Plán &lt;strong&gt;{0}&lt;/strong&gt; bol vymazaný.</target>
+        <target state="translated">Plán &lt;strong&gt;{0}&lt;/strong&gt; bol zakázaný.</target>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
@@ -11002,7 +11002,7 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       </trans-unit>
       <trans-unit id="cveaudit.notfound" xml:space="preserve">
         <source>The specified CVE number was not found in our database.</source>
-        <target state="needs-adaptation">Zadané číslo CVE sa v našej databáze nenašlo. Ďalšie informácie o tomto CVE môžete získať z odkazov uvedených nižšie.</target>
+        <target state="translated">Zadané číslo CVE sa v našej databáze nenašlo.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
         <source>Error during applying the bootstrap state. Check the server logs.</source>
@@ -11862,43 +11862,43 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Získanie a nahranie podporných dát</target>
       </trans-unit>
       <trans-unit id="message.scheduleactivated" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
-        <target state="new"/>
+        <target state="translated">Plán &lt;strong&gt;{0}&lt;/strong&gt; bol aktivovaný.</target>
       </trans-unit>
       <trans-unit id="task.status.errata-advisory-map-sync" xml:space="preserve">
         <source>Update SUSE errata advisory map</source>
-        <target state="new"/>
+        <target state="translated">Aktualizácia mapy upozornení na opravy chýb SUSE</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.errata-advisory-map-sync-bunch" xml:space="preserve">
         <source>Update SUSE errata advisory map to retrieve announcement ids and advisor URLs</source>
-        <target state="new"/>
+        <target state="translated">Aktualizácia mapy upozornení na opravy chýb SUSE pre získanie id oznámení a URL poskytovateľa</target>
       </trans-unit>
       <trans-unit id="supportdata.uploadGeoType.eu" xml:space="preserve">
         <source>EU</source>
-        <target state="new"/>
+        <target state="translated">EU</target>
       </trans-unit>
       <trans-unit id="supportdata.uploadGeoType.us" xml:space="preserve">
         <source>US</source>
-        <target state="new"/>
+        <target state="translated">US</target>
       </trans-unit>
       <trans-unit id="system.details.support.invalid_case_number" xml:space="preserve">
         <source>The case number {0} is not valid.</source>
-        <target state="new"/>
+        <target state="translated">Číslo prípadu {0} nie je platné.</target>
       </trans-unit>
       <trans-unit id="system.details.support.invalid_region" xml:space="preserve">
         <source>The region {0] is not valid.</source>
-        <target state="new"/>
+        <target state="translated">Región {0] nie je platný.</target>
       </trans-unit>
       <trans-unit id="system.details.support.unable_to_schedule" xml:space="preserve">
         <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
-        <target state="new"/>
+        <target state="translated">Pri plánovaní generovania podporných dat došlo k neočakávanej chybe. Podrobné informácie nájdete v záznamoch servera.</target>
       </trans-unit>
       <trans-unit id="system.details.support.unable_to_upload" xml:space="preserve">
         <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
-        <target state="new"/>
+        <target state="translated">Nie je možné zhromaždiť a nahrať podporné dáta. Podrobné informácie nájdete v záznamoch servera.</target>
       </trans-unit>
     </body>
   </file>
