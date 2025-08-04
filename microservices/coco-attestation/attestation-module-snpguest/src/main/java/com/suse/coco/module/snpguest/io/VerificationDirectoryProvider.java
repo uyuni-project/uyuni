@@ -22,6 +22,10 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -120,10 +124,13 @@ public class VerificationDirectoryProvider {
     }
 
     private Path createTemporaryPath(String prefix) throws IOException {
+        FileAttribute<Set<PosixFilePermission>> attr =
+                PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwx------"));
+
         if (baseWorkingDir == null) {
-            return Files.createTempDirectory(prefix);
+            return Files.createTempDirectory(prefix, attr);
         }
 
-        return Files.createTempDirectory(baseWorkingDir, prefix);
+        return Files.createTempDirectory(baseWorkingDir, prefix, attr);
     }
 }
