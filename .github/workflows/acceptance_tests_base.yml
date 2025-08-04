@@ -19,7 +19,7 @@ on:
         type: string
 
 env:
-  UYUNI_PROJECT: uyuni-project
+  UYUNI_PROJECT: jordimassaguerpla
   UYUNI_VERSION: master
   NO_AUTH_REGISTRY: "noauthregistry.lab"
   PUBLISH_CUCUMBER_REPORT: true
