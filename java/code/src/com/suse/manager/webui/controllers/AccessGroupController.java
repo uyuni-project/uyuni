@@ -15,6 +15,7 @@
 
 package com.suse.manager.webui.controllers;
 
+import static com.redhat.rhn.GlobalInstanceHolder.ACCESS_CONTROL_NAMESPACE_TREE_HELPER;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
@@ -125,12 +126,8 @@ public class AccessGroupController {
      * @return the result JSON object
      */
     public static String listNamespaces(Request request, Response response, User user) {
-        PageControlHelper pageHelper = new PageControlHelper(request, "namespace");
-        PageControl pc = pageHelper.getPageControl();
-        DataResult<NamespaceJson> namespaces = MANAGER.listNamespaces(pc, PagedSqlQueryBuilder::parseFilterAsText);
-        TypeToken<PagedDataResultJson<NamespaceJson, Long>> type = new TypeToken<>() { };
-        return json(GSON, response, new PagedDataResultJson<>(namespaces, namespaces.getTotalSize(),
-                Collections.emptySet()), type);
+        var namespaces = ACCESS_CONTROL_NAMESPACE_TREE_HELPER.buildTree(NamespaceFactory.list());
+        return json(GSON, response, namespaces, new TypeToken<>() { });
     }
 
     /**
@@ -157,7 +154,7 @@ public class AccessGroupController {
      */
     public static String listOrganizations(Request request, Response response, User user) {
         List<OrgInfoJson> organizations = OrgManager.allOrgs(user).stream().map(org ->
-            new OrgInfoJson(org.getId(), org.getName())).toList();
+                new OrgInfoJson(org.getId(), org.getName())).toList();
         return json(GSON, response, organizations, new TypeToken<>() { });
     }
 
@@ -204,33 +201,33 @@ public class AccessGroupController {
             Spark.halt(HttpStatus.SC_BAD_REQUEST,
                     GSON.toJson(ResultJson.error("Access group description is required")));
         }
-            try {
-                AccessGroup accessGroup;
-                if (json.getId() == null) {
-                    Org org  = OrgFactory.lookupById(json.getOrgId());
-                    Set<AccessGroup> groups = json.getAccessGroups().stream()
-                            .map(group -> MANAGER.lookup(group, user.getOrg())
-                                    .orElseThrow(() -> new EntityNotExistsException(group)))
-                            .collect(Collectors.toUnmodifiableSet());
-                    accessGroup = MANAGER.create(json.getName(), json.getDescription(), org, groups);
-                }
-                else {
-                    accessGroup = MANAGER.lookupById(json.getId()).orElseThrow();
-                    accessGroup.setDescription(json.getDescription());
-                    if (!accessGroup.getLabel().equals(json.getName())) {
-                        if (MANAGER.lookup(json.getName(), accessGroup.getOrg()).isPresent()) {
-                            throw new EntityExistsException("Access Group: " + json.getName() +
-                                    " already exists on " + "organization: " + accessGroup.getOrg().getName() + ".");
-                        }
-                        accessGroup.setLabel(json.getName());
+        try {
+            AccessGroup accessGroup;
+            if (json.getId() == null) {
+                Org org = OrgFactory.lookupById(json.getOrgId());
+                Set<AccessGroup> groups = json.getAccessGroups().stream()
+                        .map(group -> MANAGER.lookup(group, user.getOrg())
+                                .orElseThrow(() -> new EntityNotExistsException(group)))
+                        .collect(Collectors.toUnmodifiableSet());
+                accessGroup = MANAGER.create(json.getName(), json.getDescription(), org, groups);
+            }
+            else {
+                accessGroup = MANAGER.lookupById(json.getId()).orElseThrow();
+                accessGroup.setDescription(json.getDescription());
+                if (!accessGroup.getLabel().equals(json.getName())) {
+                    if (MANAGER.lookup(json.getName(), accessGroup.getOrg()).isPresent()) {
+                        throw new EntityExistsException("Access Group: " + json.getName() +
+                                " already exists on " + "organization: " + accessGroup.getOrg().getName() + ".");
                     }
+                    accessGroup.setLabel(json.getName());
                 }
-                MANAGER.setAccess(accessGroup, getNamespacesFromPermissions(json.getPermissions()));
-                handleAccessGroupUsers(json, accessGroup);
             }
-            catch (Exception e) {
-                Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(e.getMessage())));
-            }
+            MANAGER.setAccess(accessGroup, getNamespacesFromPermissions(json.getPermissions()));
+            handleAccessGroupUsers(json, accessGroup);
+        }
+        catch (Exception e) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(e.getMessage())));
+        }
         return json(GSON, response, ResultJson.success(), new TypeToken<>() { });
     }
 
