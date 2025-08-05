@@ -47,7 +47,7 @@ Where:
 #### Test Runs' Cucumber Reports
 ![](images/pr_data_extract_test_runs_output.png)
 
-#### run_data.json
+#### run_data JSON file
 
 ![](images/pr_data_extract_run_data_json.png)
 
@@ -77,7 +77,7 @@ Where:
     - Finds all completed test runs during the PR's lifetime that include Cucumber reports (if none exist, the PR is skipped).
     - For each test run, it downloads all Cucumber JSON reports.
     - It creates a directory for each run and stores the secondary/recommended reports there.
-    - It also creates a `run_data.json` file in each run directory with metadata about the run (run GitHub ID, commit SHA, result (passed/failed), execution timestamp, and modified files).
+    - It also creates a run_data JSON file in each run directory with metadata about the run (run GitHub ID, commit SHA, result (passed/failed), execution timestamp, and modified files).
     - It identifies the files modified that triggered each test run.
     - It sets the modified files for the PR as the modified files in the first run.
     - Extracts the unique file extensions of the modified files.

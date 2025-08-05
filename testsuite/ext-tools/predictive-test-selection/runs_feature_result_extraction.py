@@ -11,7 +11,7 @@ Usage:
 
 - Run the PR data extraction script first, this script depends on its output.
 - Uses functions from cucumber_results_extraction.py for feature result extraction.
-- Creates run_feature_results.json files in each run folder with detailed feature data.
+- Creates a JSON file in each run folder with detailed feature results and data.
 """
 import csv
 import json
@@ -26,6 +26,7 @@ from config import (
     CUCUMBER_PASSED,
     CUCUMBER_FAILED,
     RUN_DATA_FILENAME,
+    RUN_FEATURE_RESULTS_FILENAME,
 )
 from cucumber_results_extraction import (
     extract_results_and_scenario_counts,
@@ -102,7 +103,7 @@ def save_run_results(run_folder_path: str, run_results: List[Dict[str, Any]]) ->
         run_folder_path: Path to the run folder where to save the JSON file.
         run_results: List of feature data dictionaries to save.
     """
-    output_file = os.path.join(run_folder_path, "run_feature_results.json")
+    output_file = os.path.join(run_folder_path, RUN_FEATURE_RESULTS_FILENAME)
 
     try:
         with open(output_file, "w", encoding="utf-8") as f:
@@ -113,14 +114,14 @@ def save_run_results(run_folder_path: str, run_results: List[Dict[str, Any]]) ->
 
 def update_run_data_result(run_folder_path: str, run_results: List[Dict[str, Any]]) -> None:
     """
-    Update the result in run_data.json based on the actual test feature results.
+    Update the result in run_data JSON file based on the actual test feature results.
     Sometimes a test run may be marked as failed due to reasons unrelated to the test outcomes 
     (e.g., infrastructure issues, timeouts). Since we only care whether the tests themselves passed, 
     a run should be considered "passed" if all features passed, even if the overall run result 
     was initially marked as "failed" due to other reasons.
 
     Args:
-        run_folder_path: Path to the run folder containing run_data.json.
+        run_folder_path: Path to the run folder containing the run_data JSON file.
         run_results: List of feature result dictionaries.
     """
     run_data_path = os.path.join(run_folder_path, RUN_DATA_FILENAME)
@@ -153,7 +154,7 @@ def update_run_data_result(run_folder_path: str, run_results: List[Dict[str, Any
             logger.debug("Result already correct ('%s') in: %s",
                         current_result, run_data_path)
     except (FileNotFoundError, json.JSONDecodeError) as e:
-        logger.error("Error updating run_data.json in %s: %s", run_folder_path, e)
+        logger.error("Error updating %s in %s: %s", RUN_DATA_FILENAME, run_folder_path, e)
 
 def process_pr_folder(pr_number: str) -> None:
     """
@@ -181,6 +182,19 @@ def process_pr_folder(pr_number: str) -> None:
                 update_run_data_result(run_folder_path, run_results)
             else:
                 logger.warning("No feature data extracted from %s", run_folder_path)
+                # Clean up any existing run feature results JSON file
+                cleanup_file = os.path.join(run_folder_path, RUN_FEATURE_RESULTS_FILENAME)
+                if os.path.exists(cleanup_file):
+                    try:
+                        os.remove(cleanup_file)
+                        logger.info(
+                            "Cleaned up existing %s from %s",
+                            RUN_FEATURE_RESULTS_FILENAME, run_folder_path
+                        )
+                    except OSError as e:
+                        logger.warning(
+                            "Failed to clean up %s from %s: %s",
+                            RUN_FEATURE_RESULTS_FILENAME, run_folder_path, e)
         except Exception as e:
             logger.error("Error processing run folder %s: %s", run_folder_path, e)
 

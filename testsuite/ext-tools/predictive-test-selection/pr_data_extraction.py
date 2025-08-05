@@ -13,7 +13,7 @@ For each PR (training mode, i.e., not a single PR):
   (if none exist, the PR is skipped).
 - For each test run, it downloads all Cucumber JSON reports.
 - It creates a directory for each run and stores the secondary/recommended reports there.
-- It also creates a `run_data.json` file in each run directory with metadata about the run.
+- It also creates a run_data JSON file in each run directory with metadata about the run.
 - It identifies the files modified that triggered each test run.
 - It sets the modified files for the PR as the modified files in the first run.
 - Extracts the unique file extensions of the modified files.
