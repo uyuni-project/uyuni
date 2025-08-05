@@ -1,12 +1,13 @@
 import * as React from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { AccessGroupState } from "manager/admin/access-group/access-group";
 
 import { Button } from "components/buttons";
 import { Column } from "components/table/Column";
-import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
-import { Utils } from "utils/functions";
+
+import Network from "utils/network";
 
 type Props = {
   state: AccessGroupState;
@@ -15,17 +16,64 @@ type Props = {
 };
 
 const AccessGroupPermissions = (props: Props) => {
-  const isChecked = (item, type) => {
-    const permission = props.state.permissions.filter((p) => p.namespace === item.namespace);
-    if (permission.length > 0) {
-      return type === "view" ? permission[0].view : permission[0].modify;
+  const [namespaces, setNamespaces] = useState([]);
+  const checkboxRefs = useRef({});
+
+  const handleChange = (item, type, forceValue = null) => {
+    if (item.children.length > 0) {
+      const newValue = forceValue !== null ? forceValue : getCheckState(item, type) !== "checked";
+      item.children.forEach((child) => {
+        if (child[type] !== newValue) {
+          handleChange(child, type, newValue);
+        }
+      });
+    } else {
+      props.onChange(item, type);
     }
-    return type === "view" ? item.view : item.modify;
   };
+
+  useEffect(() => {
+    Network.get("/rhn/manager/api/admin/access-group/namespaces")
+      .then((response) => {
+        setNamespaces(response);
+      })
+      .catch((error) => {
+        // TODO: Handle errors properly
+        console.error("Error fetching namespaces:", error);
+      });
+  }, []);
+
+  const getCheckState = (item, type) => {
+    if (item.children.length > 0) {
+      const childStates = item.children.map((child) => getCheckState(child, type));
+      if (childStates.every((s) => s === "checked")) return "checked";
+      if (childStates.every((s) => s === "unchecked")) return "unchecked";
+      return "partially";
+    }
+    const permission = props.state.permissions.find((p) => p.namespace === item.namespace);
+    const value = permission ? permission[type] : item[type];
+    return value ? "checked" : "unchecked";
+  };
+
+  useEffect(() => {
+    namespaces.forEach((item) => {
+      const updateRefsRecursively = (node) => {
+        const state = getCheckState(node, "modify");
+        const ref = checkboxRefs.current[node.namespace];
+        if (ref) {
+          ref.indeterminate = state === "partially";
+        }
+        if (node.children) {
+          node.children.forEach(updateRefsRecursively);
+        }
+      };
+      updateRefsRecursively(item);
+    });
+  }, [namespaces, props.state.permissions]);
 
   return (
     <div>
-       {!props.state.id ? (
+      {!props.state.id ? (
         <>
           <div className="d-flex">
             <div className="me-5">
@@ -42,59 +90,77 @@ const AccessGroupPermissions = (props: Props) => {
             </div>
           </div>
           <hr></hr>
-        </>): null}
-      <p>
-        {t("Review and modify the permissions for this custom group as needed.")}
-      </p>
+        </>
+      ) : null}
+      <p>{t("Review and modify the permissions for this custom group as needed.")}</p>
       <div className="d-block mb-3">
-        <Button className="btn-primary pull-right" text="Add Permissions" handler={() => {}} />
+        <Button className="btn-primary pull-right" text="Add Permissions" handler={() => { }} />
       </div>
-      <Table
-        data={"/rhn/manager/api/admin/access-group/namespaces"}
-        identifier={(item) => item.id}
-        initialSortColumnKey="namespace"
-        emptyText={t("No Permissions found.")}
-        searchField={<SearchField placeholder={t("Filter by name")} />}
-      >
+      <Table data={namespaces} identifier={(item) => `${item.namespace}-${item.isAPI ? "api" : "ui"}`} expandable>
         <Column
-          columnKey="namespace"
-          comparator={Utils.sortByText}
+          columnKey="name"
           header={t("Name")}
-          cell={(item) => item.namespace}
+          cell={(row, criteria, nestingLevel) => {
+            if (nestingLevel) {
+              return row.name;
+            }
+            return <b>{row.name}</b>;
+          }}
+          width="30%"
         />
         <Column
           columnKey="description"
-          comparator={Utils.sortByText}
           header={t("Description")}
-          cell={(item) => item.description}
+          cell={(row) => {
+            return row.description;
+          }}
+          width="50%"
         />
         <Column
           columnKey="view"
           header={t("View")}
-          cell={(item) => (
-            <input
-              name="view"
-              type="checkbox"
-              checked={isChecked(item, "view")}
-              disabled={!item.accessMode.includes("R")}
-              onChange={() => props.onChange(item, "view")}
-            />
-          )}
+          cell={(item) => {
+            const state = getCheckState(item, "view");
+            return (
+              <input
+                key={item.namespace}
+                name="view"
+                type="checkbox"
+                checked={state === "checked"}
+                ref={(el) => {
+                  if (el) el.indeterminate = state === "partially";
+                }}
+                disabled={item.children.length === 0 && !item.accessMode.includes("R")}
+                onChange={() => handleChange(item, "view")}
+              />
+            );
+          }}
+          width="10%"
         />
         <Column
           columnKey="modify"
           header={t("Modify")}
-          cell={(item) => (
-            <input
-              name="modify"
-              type="checkbox"
-              checked={isChecked(item, "modify")}
-              disabled={!item.accessMode.includes("W")}
-              onChange={() => props.onChange(item, "modify")}
-            />
-          )}
+          cell={(item) => {
+            const state = getCheckState(item, "modify");
+            return (
+              <input
+                key={item.namespace}
+                name="modify"
+                type="checkbox"
+                checked={state === "checked"}
+                ref={(el) => {
+                  if (el) {
+                    checkboxRefs.current[item.namespace] = el;
+                    el.indeterminate = state === "partially";
+                  }
+                }}
+                disabled={item.children.length === 0 && !item.accessMode.includes("W")}
+                onChange={() => handleChange(item, "modify")}
+              />
+            );
+          }}
+          width="10%"
         />
-        <Column columnKey="count" header={t("Count")} cell={(item) => item.permissions} />
       </Table>
     </div>
   );
