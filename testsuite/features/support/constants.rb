@@ -683,6 +683,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         managertools-beta-sle15-updates-x86_64-sp4
         sle-module-devtools15-sp4-updates-x86_64
         sle-module-devtools15-sp4-pool-x86_64
+        sle-module-python3-15-sp4-pool-x86_64
+        sle-module-python3-15-sp4-updates-x86_64
         sle-module-containers15-sp4-pool-x86_64
         sle-module-containers15-sp4-updates-x86_64
         sle-product-sles15-sp4-ltss-updates-x86_64
@@ -804,6 +806,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         managertools-beta-sle15-updates-x86_64-sp4
         sle-module-devtools15-sp4-updates-x86_64
         sle-module-devtools15-sp4-pool-x86_64
+        sle-module-python3-15-sp4-pool-x86_64
+        sle-module-python3-15-sp4-updates-x86_64
         sle-module-containers15-sp4-pool-x86_64
         sle-module-containers15-sp4-updates-x86_64
       ],
@@ -1548,6 +1552,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-public-cloud15-sp6-updates-x86_64' => 60,
   'sle-module-public-cloud15-sp7-pool-x86_64' => 60,
   'sle-module-public-cloud15-sp7-updates-x86_64' => 60,
+  'sle-module-python3-15-sp4-pool-x86_64' => 60,
+  'sle-module-python3-15-sp4-updates-x86_64' => 60,
   'sle-module-python3-15-sp5-pool-x86_64' => 60,
   'sle-module-python3-15-sp5-updates-x86_64' => 60,
   'sle-module-python3-15-sp6-pool-x86_64' => 60,
