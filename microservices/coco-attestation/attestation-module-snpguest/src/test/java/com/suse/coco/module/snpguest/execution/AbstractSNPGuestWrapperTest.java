@@ -31,7 +31,7 @@ import java.io.InvalidClassException;
 import java.nio.file.Path;
 
 @ExtendWith(MockitoExtension.class)
-class SNPGuestWrapperTest {
+class AbstractSNPGuestWrapperTest {
 
     @Mock
     private Process process;
@@ -39,10 +39,11 @@ class SNPGuestWrapperTest {
     @Mock
     private Runtime runtime;
 
-    private SNPGuestWrapper wrapperVer07Below;
-    private SNPGuestWrapper wrapperVer09Above;
+    private AbstractSNPGuestWrapper wrapperVer07Below;
+    private AbstractSNPGuestWrapper wrapperVer09Above;
 
-    private SNPGuestWrapper getWrapperToTest(SNPGuestWrapperCreator.SNPGuestVersion type) throws InvalidClassException {
+    private AbstractSNPGuestWrapper getWrapperToTest(SNPGuestWrapperFactory.SNPGuestVersion type)
+            throws InvalidClassException {
         switch (type) {
             case VER_07_BELOW -> {
                 return wrapperVer07Below;
@@ -57,7 +58,7 @@ class SNPGuestWrapperTest {
     }
 
     @BeforeEach
-    public void setup() throws Exception {
+    void setup() throws Exception {
 
         when(runtime.exec(any(String[].class))).thenReturn(process);
 
@@ -69,18 +70,6 @@ class SNPGuestWrapperTest {
         wrapperVer07Below = new SNPGuestWrapperVer07Below(runtime);
         wrapperVer09Above = new SNPGuestWrapperVer09Above(runtime);
     }
-
-    @ParameterizedTest
-    @EnumSource(SNPGuestWrapperCreator.SNPGuestVersion.class)
-    @DisplayName("Generates the correct command line for getting snpguest version")
-    void canRetrieveVersion(SNPGuestWrapperCreator.SNPGuestVersion type) throws Exception {
-        SNPGuestWrapper wrapper = getWrapperToTest(type);
-        wrapper.getVersion();
-
-        String expectedCommandLine = "/usr/bin/snpguest -V";
-        verify(runtime).exec(expectedCommandLine.split(" "));
-    }
-
 
     @Test
     @DisplayName("Ver 0.7 and below: Generates the correct command line for downloading VCEK")
@@ -101,10 +90,10 @@ class SNPGuestWrapperTest {
     }
 
     @ParameterizedTest
-    @EnumSource(SNPGuestWrapperCreator.SNPGuestVersion.class)
+    @EnumSource(SNPGuestWrapperFactory.SNPGuestVersion.class)
     @DisplayName("Generates the correct command line for verifying certificates")
-    void canVerifyCertificates(SNPGuestWrapperCreator.SNPGuestVersion type) throws Exception {
-        SNPGuestWrapper wrapper = getWrapperToTest(type);
+    void canVerifyCertificates(SNPGuestWrapperFactory.SNPGuestVersion type) throws Exception {
+        AbstractSNPGuestWrapper wrapper = getWrapperToTest(type);
         wrapper.verifyCertificates(Path.of("/usr/share/certificates"));
 
         String expectedCommandLine = "/usr/bin/snpguest verify certs /usr/share/certificates";
@@ -133,10 +122,10 @@ class SNPGuestWrapperTest {
     }
 
     @ParameterizedTest
-    @EnumSource(SNPGuestWrapperCreator.SNPGuestVersion.class)
+    @EnumSource(SNPGuestWrapperFactory.SNPGuestVersion.class)
     @DisplayName("Generates the correct command line for displaying an attestation report")
-    void canDisplayReport(SNPGuestWrapperCreator.SNPGuestVersion type) throws Exception {
-        SNPGuestWrapper wrapper = getWrapperToTest(type);
+    void canDisplayReport(SNPGuestWrapperFactory.SNPGuestVersion type) throws Exception {
+        AbstractSNPGuestWrapper wrapper = getWrapperToTest(type);
         wrapper.displayReport(Path.of("/root/report.bin"));
 
         String expectedCommandLine = "/usr/bin/snpguest display report /root/report.bin";

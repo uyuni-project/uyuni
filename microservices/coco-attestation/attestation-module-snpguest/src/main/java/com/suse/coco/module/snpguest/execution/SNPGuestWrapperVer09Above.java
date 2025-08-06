@@ -16,7 +16,7 @@ import com.suse.coco.module.snpguest.model.EpycGeneration;
 import java.nio.file.Path;
 import java.util.concurrent.ExecutionException;
 
-public class SNPGuestWrapperVer09Above extends SNPGuestWrapper {
+public class SNPGuestWrapperVer09Above extends AbstractSNPGuestWrapper {
     /**
      * Default constructor.
      */

@@ -13,9 +13,9 @@ package com.suse.coco.module.snpguest;
 
 import com.suse.coco.model.AttestationResult;
 import com.suse.coco.module.AttestationWorker;
+import com.suse.coco.module.snpguest.execution.AbstractSNPGuestWrapper;
 import com.suse.coco.module.snpguest.execution.ProcessOutput;
-import com.suse.coco.module.snpguest.execution.SNPGuestWrapper;
-import com.suse.coco.module.snpguest.execution.SNPGuestWrapperCreator;
+import com.suse.coco.module.snpguest.execution.SNPGuestWrapperFactory;
 import com.suse.coco.module.snpguest.io.VerificationDirectoryProvider;
 import com.suse.coco.module.snpguest.model.AttestationReport;
 import com.suse.coco.module.snpguest.model.EpycGeneration;
@@ -39,7 +39,7 @@ public class SNPGuestWorker implements AttestationWorker {
 
     private final VerificationDirectoryProvider directoryProvider;
 
-    private final SNPGuestWrapper snpGuest;
+    private final AbstractSNPGuestWrapper snpGuest;
 
     private final ByteSequenceFinder sequenceFinder;
 
@@ -49,20 +49,20 @@ public class SNPGuestWorker implements AttestationWorker {
      * Default constructor.
      */
     public SNPGuestWorker() {
-        this(new VerificationDirectoryProvider(), SNPGuestWrapperCreator.createSNPGuestWrapper(),
+        this(new VerificationDirectoryProvider(), SNPGuestWrapperFactory.createSNPGuestWrapper(),
                 new ByteSequenceFinder());
     }
 
     /**
      * Constructor with explicit dependencies, for unit test only.
      * @param directoryProviderIn the verification directory provider
-     * @param snpGuestWrapperIn the snpguest executor
+     * @param abstractSnpGuestWrapperIn the snpguest executor
      * @param sequenceFinderIn the byte sequence finder
      */
-    SNPGuestWorker(VerificationDirectoryProvider directoryProviderIn, SNPGuestWrapper snpGuestWrapperIn,
+    SNPGuestWorker(VerificationDirectoryProvider directoryProviderIn, AbstractSNPGuestWrapper abstractSnpGuestWrapperIn,
                    ByteSequenceFinder sequenceFinderIn) {
         this.directoryProvider = directoryProviderIn;
-        this.snpGuest = snpGuestWrapperIn;
+        this.snpGuest = abstractSnpGuestWrapperIn;
         this.sequenceFinder = sequenceFinderIn;
         this.outputBuilder = new StringBuilder();
     }

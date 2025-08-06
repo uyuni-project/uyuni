@@ -11,6 +11,7 @@
 
 package com.suse.coco.module.snpguest.io;
 
+import com.suse.coco.module.snpguest.execution.AbstractSNPGuestWrapper;
 import com.suse.coco.module.snpguest.model.AttestationReport;
 import com.suse.coco.module.snpguest.model.EpycGeneration;
 
@@ -32,7 +33,7 @@ import java.util.stream.Stream;
  * Creates {@link VerificationDirectory} used to store the data needed by the SNPGuest tool
  * to perform validation.
  *
- * @see com.suse.coco.module.snpguest.execution.SNPGuestWrapper
+ * @see AbstractSNPGuestWrapper
  */
 public class VerificationDirectoryProvider {
     public static final Path DEFAULT_CERTIFICATION_PATH = Path.of("/usr/share/coco-attestation/certs");
