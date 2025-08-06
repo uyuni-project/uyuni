@@ -32,13 +32,13 @@ import java.util.concurrent.Executors;
 /**
  * Wrapper to execute the command line tool SNPGuest.
  */
-public abstract class SNPGuestWrapper {
+public abstract class AbstractSNPGuestWrapper {
 
     protected static final Marker STDOUT_MARKER = MarkerManager.getMarker("stdout");
 
     protected static final Marker STDERR_MARKER = MarkerManager.getMarker("stderr");
 
-    protected static final Logger LOGGER = LogManager.getLogger(SNPGuestWrapper.class);
+    protected Logger LOGGER;
 
     protected static final Path SNPGUEST = Path.of("/usr/bin/snpguest");
 
@@ -47,8 +47,8 @@ public abstract class SNPGuestWrapper {
     /**
      * Default constructor.
      */
-    protected SNPGuestWrapper() {
-        this.runtime = Runtime.getRuntime();
+    protected AbstractSNPGuestWrapper() {
+        this(Runtime.getRuntime());
     }
 
     /**
@@ -56,20 +56,9 @@ public abstract class SNPGuestWrapper {
      *
      * @param runtimeIn the runtime used to execute processes
      */
-    protected SNPGuestWrapper(Runtime runtimeIn) {
+    protected AbstractSNPGuestWrapper(Runtime runtimeIn) {
         this.runtime = runtimeIn;
-    }
-
-    /**
-     * Get the snpguest tool version.
-     * @return the exit code of the fetching process
-     * @throws ExecutionException when an error happens during the process execution
-     */
-    public ProcessOutput getVersion() throws ExecutionException {
-        return executeProcess(
-                SNPGUEST.toString(),
-                "-V"
-        );
+        this.LOGGER = LogManager.getLogger(getClass());
     }
 
     /**
@@ -170,7 +159,7 @@ public abstract class SNPGuestWrapper {
         }
     }
 
-    private static String getOutput(InputStream stream, Marker logMarker) throws IOException {
+    private String getOutput(InputStream stream, Marker logMarker) throws IOException {
         StringWriter writer = new StringWriter();
 
         try (BufferedReader inErr = new BufferedReader(new InputStreamReader(stream))) {

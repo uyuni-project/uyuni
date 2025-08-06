@@ -29,7 +29,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -76,12 +75,8 @@ class VerificationDirectoryProviderTest {
         }
     }
 
-    private static Stream<Arguments> listCpuAndUsingVlek() {
-        return TestHelper.listCpuAndUsingVlek();
-    }
-
     @ParameterizedTest(name = TestHelper.CPU_USING_VLEK_NAME)
-    @MethodSource("listCpuAndUsingVlek")
+    @MethodSource("com.suse.coco.module.snpguest.TestHelper#listCpuAndUsingVlek")
     @DisplayName("Verification directory is created by the provider and destroyed on resource closure" +
             " for each cpu generation")
     void canCreateAndDestroyVerificationDirectory(EpycGeneration cpuGeneration, boolean usingVlek) throws IOException {

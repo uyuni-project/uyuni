@@ -22,8 +22,8 @@ import static org.mockito.Mockito.when;
 
 import com.suse.coco.model.AttestationResult;
 import com.suse.coco.model.AttestationStatus;
+import com.suse.coco.module.snpguest.execution.AbstractSNPGuestWrapper;
 import com.suse.coco.module.snpguest.execution.ProcessOutput;
-import com.suse.coco.module.snpguest.execution.SNPGuestWrapper;
 import com.suse.coco.module.snpguest.io.VerificationDirectory;
 import com.suse.coco.module.snpguest.io.VerificationDirectoryProvider;
 import com.suse.coco.module.snpguest.model.AttestationReport;
@@ -37,7 +37,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -46,7 +45,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Stream;
 
 @ExtendWith(MockitoExtension.class)
 class SNPGuestWorkerTest {
@@ -68,7 +66,7 @@ class SNPGuestWorkerTest {
     private VerificationDirectory directory;
 
     @Mock
-    private SNPGuestWrapper snpWrapper;
+    private AbstractSNPGuestWrapper snpWrapper;
 
     @Mock
     private ByteSequenceFinder sequenceFinder;
@@ -76,7 +74,7 @@ class SNPGuestWorkerTest {
     private SNPGuestWorker worker;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         result = new AttestationResult();
         result.setId(1L);
         result.setStatus(AttestationStatus.PENDING);
@@ -92,10 +90,6 @@ class SNPGuestWorkerTest {
         worker = new SNPGuestWorker(directoryProvider, snpWrapper, sequenceFinder);
     }
 
-    private static Stream<Arguments> listCpuAndUsingVlek() {
-        return TestHelper.listCpuAndUsingVlek();
-    }
-
     private String getCertificateSuccessfulFetchString(boolean usingVlek) {
 
         if (usingVlek) {
@@ -103,14 +97,13 @@ class SNPGuestWorkerTest {
                     - VLEK certification retrieved successfully
                     """;
         }
-        else {
-            return """
-                    - VCEK fetched successfully:
-                        - Standard output: >
-                            Attempting to fetch VCEK...
-                            Fetch ok
-                    """;
-        }
+
+        return """
+                - VCEK fetched successfully:
+                    - Standard output: >
+                        Attempting to fetch VCEK...
+                        Fetch ok
+                """;
     }
 
     @Test
@@ -384,7 +377,7 @@ class SNPGuestWorkerTest {
     }
 
     @ParameterizedTest(name = TestHelper.CPU_USING_VLEK_NAME)
-    @MethodSource("listCpuAndUsingVlek")
+    @MethodSource("com.suse.coco.module.snpguest.TestHelper#listCpuAndUsingVlek")
     @DisplayName("Rejects report if the certificate verification fails")
     void rejectsWhenCertificatesCannotBeVerified(EpycGeneration cpuGeneration, boolean usingVlek)
             throws IOException, ExecutionException {
@@ -456,7 +449,7 @@ class SNPGuestWorkerTest {
     }
 
     @ParameterizedTest(name = TestHelper.CPU_USING_VLEK_NAME)
-    @MethodSource("listCpuAndUsingVlek")
+    @MethodSource("com.suse.coco.module.snpguest.TestHelper#listCpuAndUsingVlek")
     @DisplayName("Rejects report if the attestation verification fails")
     void rejectsWhenAttestationCannotBeVerified(EpycGeneration cpuGeneration, boolean usingVlek)
             throws IOException, ExecutionException {
@@ -536,7 +529,7 @@ class SNPGuestWorkerTest {
     }
 
     @ParameterizedTest(name = TestHelper.CPU_USING_VLEK_NAME)
-    @MethodSource("listCpuAndUsingVlek")
+    @MethodSource("com.suse.coco.module.snpguest.TestHelper#listCpuAndUsingVlek")
     @DisplayName("Approves report if all checks pass")
     void approvesReportIfAllChecksPass(EpycGeneration cpuGeneration, boolean usingVlek)
             throws IOException, ExecutionException {
