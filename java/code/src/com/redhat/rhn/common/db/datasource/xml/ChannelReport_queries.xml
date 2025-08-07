@@ -160,4 +160,24 @@
     </query>
 </mode>
 
+<mode name="CLMEnvironmentDifference" class="">
+    <query params="diff_id, limit">
+        SELECT  suseContentEnvironmentDiff.id AS diff_id
+        , suseContentProject.label AS project_label
+        , suseContentEnvironment.label AS environment_label
+        , suseContentEnvironmentDiff.channel_id AS channel_id
+        , suseContentEnvironmentDiff.diff_action AS diff_action
+        , suseContentEnvironmentDiff.entry_id AS entry_id
+        , suseContentEnvironmentDiff.entry_type AS entry_type
+        , suseContentEnvironmentDiff.entry_name AS entry_name
+        , suseContentEnvironmentDiff.entry_description AS entry_description
+        FROM suseContentEnvironmentDiff
+        INNER JOIN suseContentProject ON suseContentEnvironmentDiff.project_id = suseContentProject.id
+        INNER JOIN suseContentEnvironment ON suseContentEnvironmentDiff.env_id = suseContentEnvironment.id
+        WHERE suseContentEnvironmentDiff.id &gt; :diff_id
+        ORDER BY diff_id
+        FECTH FIRST :limit ROWS WITH TIES
+    </query>
+</mode>
+
 </datasource_modes>
