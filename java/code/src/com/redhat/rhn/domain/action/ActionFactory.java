@@ -634,16 +634,7 @@ public class ActionFactory extends HibernateFactory {
          * the packageEvr stored proc is called first so that
          * the foreign key constraint holds.
          */
-        if (actionIn.getActionType().equals(TYPE_PACKAGES_AUTOUPDATE) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_DELTA) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_REFRESH_LIST) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_REMOVE) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_RUNTRANSACTION) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_UPDATE) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_VERIFY) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_LOCK)) {
-
-            PackageAction action = (PackageAction) actionIn;
+        if (actionIn instanceof PackageAction action) {
             Set<PackageActionDetails> details = action.getDetails();
             for (PackageActionDetails detail : details) {
                 PackageEvr evr = detail.getEvr();
