@@ -20,6 +20,7 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
@@ -32,10 +33,13 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * PackageUpdateAction
@@ -88,4 +92,41 @@ public class PackageUpdateAction extends PackageAction {
         return ret;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Map<String, String>> createActionSpecificDetails(ServerAction serverAction) {
+        return createPackageActionSpecificDetails();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalCall<?> prepareStagingTargets(List<MinionSummary> minionSummaries) {
+        List<List<String>> args = getDetails().stream()
+                .map(d -> Arrays.asList(d.getPackageName().getName(),
+                        d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
+                .toList();
+        LOG.info("Executing staging of packages");
+        return State.apply(List.of(SaltParameters.PACKAGES_PKGDOWNLOAD),
+                Optional.of(Collections.singletonMap(SaltParameters.PARAM_PKGS, args)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setRequestAttributeTypePackages(HttpServletRequest request) {
+        request.setAttribute("type", "packages");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean clientExecutionReturnsYamlFormat() {
+        return true;
+    }
 }

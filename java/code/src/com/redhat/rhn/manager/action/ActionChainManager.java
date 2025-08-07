@@ -262,7 +262,7 @@ public class ActionChainManager {
             ActionChain actionChain, Integer sortOrder, Set<Long> serverIds)
         throws TaskomaticApiException {
 
-        String name = ActionManager.getActionName(type);
+        String name = type.getPackageActionName();
 
         Set<Action> result = createActions(user, type, name, earliestAction,
             actionChain, sortOrder, serverIds);

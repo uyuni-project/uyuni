@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.action.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -66,7 +67,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
         ApplyStatesAction savedAction = (ApplyStatesAction) ActionFactory
                 .lookupByUserAndId(user, action.getId());
         assertNotNull(savedAction);
-        assertEquals(ActionFactory.TYPE_APPLY_STATES, savedAction.getActionType());
+        assertInstanceOf(ApplyStatesAction.class, savedAction);
         assertEquals(earliestAction, savedAction.getEarliestAction());
 
         // Verify the details
@@ -100,7 +101,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
         ApplyStatesAction savedAction = (ApplyStatesAction) ActionFactory
                 .lookupByUserAndId(user, action.getId());
         assertNotNull(savedAction);
-        assertEquals(ActionFactory.TYPE_APPLY_STATES, savedAction.getActionType());
+        assertInstanceOf(ApplyStatesAction.class, savedAction);
         assertEquals(earliestAction, savedAction.getEarliestAction());
 
         // Verify the details
@@ -130,7 +131,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
         // Look up the action and verify the details
         ApplyStatesAction savedAction = (ApplyStatesAction) ActionFactory.lookupByUserAndId(user, action.getId());
         assertNotNull(savedAction);
-        assertEquals(ActionFactory.TYPE_APPLY_STATES, savedAction.getActionType());
+        assertInstanceOf(ApplyStatesAction.class, savedAction);
         assertEquals(earliestAction, savedAction.getEarliestAction());
 
         ApplyStatesActionDetails details = savedAction.getDetails();
@@ -156,7 +157,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
         ApplyStatesAction savedAction = (ApplyStatesAction) ActionFactory
                 .lookupByUserAndId(user, action.getId());
         assertNotNull(savedAction);
-        assertEquals(ActionFactory.TYPE_APPLY_STATES, savedAction.getActionType());
+        assertInstanceOf(ApplyStatesAction.class, savedAction);
         assertEquals(earliestAction, savedAction.getEarliestAction());
 
         // Verify the details
@@ -182,7 +183,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
         // Look up the action and verify the details
         ApplyStatesAction savedAction = (ApplyStatesAction) ActionFactory.lookupByUserAndId(user, action.getId());
         assertNotNull(savedAction);
-        assertEquals(ActionFactory.TYPE_APPLY_STATES, savedAction.getActionType());
+        assertInstanceOf(ApplyStatesAction.class, savedAction);
         assertEquals(earliestAction, savedAction.getEarliestAction());
 
         ApplyStatesActionDetails details = savedAction.getDetails();
