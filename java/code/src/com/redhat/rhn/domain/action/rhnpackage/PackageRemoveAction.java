@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.action.rhnpackage;
 
 
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionSummary;
 
 import com.suse.manager.webui.services.SaltParameters;
@@ -63,6 +64,14 @@ public class PackageRemoveAction extends PackageAction {
         ret.put(State.apply(List.of(SaltParameters.PACKAGES_PKGREMOVE),
                 Optional.of(params)), minionSummaries);
         return ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Map<String, String>> createActionSpecificDetails(ServerAction serverAction) {
+        return createPackageActionSpecificDetails();
     }
 
 }

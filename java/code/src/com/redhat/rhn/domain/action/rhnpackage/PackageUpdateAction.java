@@ -20,6 +20,7 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
@@ -88,4 +89,11 @@ public class PackageUpdateAction extends PackageAction {
         return ret;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Map<String, String>> createActionSpecificDetails(ServerAction serverAction) {
+        return createPackageActionSpecificDetails();
+    }
 }
