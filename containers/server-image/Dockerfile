@@ -63,7 +63,8 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         virtual-host-gatherer-Nutanix \
         virtual-host-gatherer-VMware \
         virtual-host-gatherer-libcloud \
-        virtualization-formulas && \
+        virtualization-formulas \
+        zchunk && \
     systemctl enable prometheus-node_exporter && \
     systemctl enable sssd && \
     rm /etc/krb5.conf.d/crypto-policies && \
