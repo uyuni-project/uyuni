@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 version: 2
 updates:
   - package-ecosystem: "npm" # This value means either NPM or Yarn, Yarn doesn't have a separate value
@@ -8,11 +12,3 @@ updates:
     # This is currently bugged, see https://github.com/dependabot/dependabot-core/issues/2521
     allow:
       - dependency-type: "production"
-
-  - package-ecosystem: "github-actions" # Check for updates to GitHub Actions every weekday
-    directory: "/"
-    schedule: 
-      interval: "daily"
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-patch"]  # Ignore patch updates
