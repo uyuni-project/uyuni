@@ -14,10 +14,12 @@
  */
 package com.redhat.rhn.domain.action;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -31,6 +33,7 @@ import com.suse.salt.netapi.calls.LocalCall;
 
 import com.google.gson.JsonElement;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -44,6 +47,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Action - Class representation of the table rhnAction.
@@ -495,6 +499,48 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
      */
     public void removeInvalidResults() {
         //default does nothing
+    }
+
+    /**
+     * formatByosListToStringErrorMsg formats a list of MinionSummary to show it as error message.
+     * If there are 2 or less it will return the names of the BYOS instances. If more than two, it will return a
+     * String with two of the BYOS instances plus "... and X more" to avoid having endless error message.
+     * @param byosMinions
+     * @return the error message formated
+     */
+    private String formatByosListToStringErrorMsg(List<MinionSummary> byosMinions) {
+        if (byosMinions.size() <= 2) {
+            return byosMinions.stream()
+                    .map(MinionSummary::getMinionId)
+                    .collect(Collectors.joining(","));
+        }
+
+        String errorMsg = byosMinions.stream()
+                .map(MinionSummary::getMinionId)
+                .limit(2)
+                .collect(Collectors.joining(","));
+
+        int numberOfLeftByosServers = byosMinions.size() - 2;
+
+        return String.format("%s and %d more", errorMsg, numberOfLeftByosServers);
+    }
+
+    /**
+     * rejectScheduleActionIfByos rejects an action if any of the servers within it is byos
+     * @return true if the action was stopped due to byos servers within it, false otherwise
+     */
+    public boolean rejectScheduleActionIfByos() {
+        List<MinionSummary> byosMinions = MinionServerFactory.findByosServers(this);
+        if (CollectionUtils.isNotEmpty(byosMinions)) {
+            LOG.error("To manage BYOS or DC servers from SUSE Multi-Linux Manager PAYG, SCC credentials must be " +
+                    "in place.");
+            Object[] args = {formatByosListToStringErrorMsg(byosMinions)};
+            ActionFactory.rejectScheduledActions(List.of(getId()),
+                    LocalizationService.getInstance()
+                            .getMessage("task.action.rejection.notcompliantPaygByos", args));
+            return true;
+        }
+        return false;
     }
 }
 

@@ -71,7 +71,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
@@ -81,7 +80,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -935,54 +933,6 @@ public class ActionFactory extends HibernateFactory {
         );
 
         updatedServerIds.forEach(SystemManager::updateSystemOverview);
-    }
-
-    /**
-     * rejectScheduleActionIfByos rejects an action if any of the servers within it is byos
-     * @param action action to be checked
-     * @return true if the action was stopped due to byos servers within it, false otherwise
-     */
-    public static boolean rejectScheduleActionIfByos(Action action) {
-        if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
-            // Hardware refresh detect PAYG/BYOS type and refresh it. This should be possible also
-            // for BYOS systems in case the former detection failed. On error PAYG is set to false,
-            // and we need a way to repeat the detection.
-            return false;
-        }
-        List<MinionSummary> byosMinions = MinionServerFactory.findByosServers(action);
-        if (CollectionUtils.isNotEmpty(byosMinions)) {
-            LOG.error("To manage BYOS or DC servers from SUSE Multi-Linux Manager PAYG, SCC credentials must be " +
-                    "in place.");
-            Object[] args = {formatByosListToStringErrorMsg(byosMinions)};
-            rejectScheduledActions(List.of(action.getId()),
-                    LOCALIZATION.getMessage("task.action.rejection.notcompliantPaygByos", args));
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * formatByosListToStringErrorMsg formats a list of MinionSummary to show it as error message.
-     * If there are 2 or less it will return the names of the BYOS instances. If more than two, it will return a
-     * String with two of the BYOS instances plus "... and X more" to avoid having endless error message.
-     * @param byosMinions
-     * @return the error message formated
-     */
-    public static String formatByosListToStringErrorMsg(List<MinionSummary> byosMinions) {
-        if (byosMinions.size() <= 2) {
-            return byosMinions.stream()
-                    .map(MinionSummary::getMinionId)
-                    .collect(Collectors.joining(","));
-        }
-
-        String errorMsg = byosMinions.stream()
-                .map(MinionSummary::getMinionId)
-                .limit(2)
-                .collect(Collectors.joining(","));
-
-        int numberOfLeftByosServers = byosMinions.size() - 2;
-
-        return String.format("%s and %d more", errorMsg, numberOfLeftByosServers);
     }
 
     /**
