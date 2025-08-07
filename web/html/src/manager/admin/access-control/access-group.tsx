@@ -58,6 +58,10 @@ const AccessGroup = (props: AccessGroupProps) => {
       }
   );
 
+  const validateDetailsTab = () => {
+    return !!accessGroupState.name && !!accessGroupState.description && !!accessGroupState.orgId;
+  };
+
   const handleFormChange = (newAccessGroupState) => {
     /* TODO: using the validate prop to update the form change messes with setting the users to empty on org change
      **  that's why accessGroupState.users.length === 0 ? [] is needed here. Once onChange is used to update it it can be
@@ -143,7 +147,7 @@ const AccessGroup = (props: AccessGroupProps) => {
       content: (
         <AccessGroupDetails state={accessGroupState} onChange={handleFormChange} errors={accessGroupState.errors} />
       ),
-      validate: null,
+      validate: validateDetailsTab(),
     },
     {
       title: "Namespaces & Permissions",
