@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 
-# SPDX-FileCopyrightText: 2016-2025 SUSE LLC
+# SPDX-FileCopyrightText: 2025 SUSE LLC
 #
 # SPDX-License-Identifier: Apache-2.0
 
 """
-Utility module to backup Uyuni and SUSE Multi-Linux Manager RPM-based proxies
+Utility module to back up Uyuni and SUSE Multi-Linux Manager RPM-based proxies
 """
 
 from __future__ import absolute_import
 
 import configparser
 import logging
+import glob
 import os
 import re
 import shutil
@@ -24,6 +25,11 @@ from salt.exceptions import CommandExecutionError
 
 log = logging.getLogger(__name__)
 
+# PXE entries matchers. We keep grub and pxelinux entries identical.
+# Parse pxelinux.cfg entries as they are easier
+kernel_line_match = re.compile(r" *kernel (([^/]+).+)$")
+initrd_line_match = re.compile(r" *append initrd=([^ ]+)(.*)$")
+
 # Just for lint and static analysis, will be replaced by salt's loader
 __grains__ = {}
 __salt__ = {}
@@ -31,13 +37,18 @@ __salt__ = {}
 
 def _yaml_str_presenter(dumper, data):
     """configures yaml for dumping multiline strings
-    Ref: https://stackoverflow.com/questions/8640959/how-can-i-control-what-scalar-form-pyyaml-uses-for-my-data"""
+    Ref: https://stackoverflow.com/questions/8640959/how-can-i-control-what-scalar-form-pyyaml-uses-for-my-data
+    """
     if len(data.splitlines()) > 1:  # check for multiline string
-        return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
-    return dumper.represent_scalar('tag:yaml.org,2002:str', data)
+        return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
+    return dumper.represent_scalar("tag:yaml.org,2002:str", data)
+
 
 yaml.add_representer(str, _yaml_str_presenter)
-yaml.representer.SafeRepresenter.add_representer(str, _yaml_str_presenter) # to use with safe_dump
+yaml.representer.SafeRepresenter.add_representer(
+    str, _yaml_str_presenter
+)  # to use with safe_dump
+
 
 def backup():
     """
@@ -47,14 +58,18 @@ def backup():
         "/etc/rhn/rhn.conf",
         "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT",
         "/etc/squid/squid.conf",
-        "/etc/sysconfig/rhn/systemid",
         "/var/lib/spacewalk/mgrsshtunnel/.ssh/authorized_keys",
         "/var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push",
         "/var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push.pub",
     ]
-    missing_files =[path for path in required_files if not os.path.isfile(path)]
+
+    missing_files = [path for path in required_files if not os.path.isfile(path)]
     if any(missing_files):
-        raise CommandExecutionError("{0} files are not available".format(" ".join(missing_files)))
+        raise CommandExecutionError(
+            "{0} files are not available".format(" ".join(missing_files))
+        )
+
+    optional_pxe_files = _get_available_files(["/srv/saltboot/boot/pxelinux.cfg/01-*"])
 
     # Create temporary folder
     tmp_path = tempfile.mkdtemp()
@@ -66,6 +81,10 @@ def backup():
         err = _extract_config(config_path)
         if err:
             raise CommandExecutionError(err)
+
+        if len(optional_pxe_files) > 0:
+            # This is retail with Saltboot pxe entries
+            _extract_pxe_entries(optional_pxe_files, os.path.join(config_path, "pxe_entries.yaml"))
 
         # TODO Copy the squid config to temporary folder
         # Finding all squid config files can be done with:
@@ -82,8 +101,85 @@ def backup():
         __salt__["cp.push_dir"](tmp_path, upload_path="/")
         return [os.path.join("proxy_config", f) for f in os.listdir(config_path)]
     except Exception as e:
-        shutil.rmtree(tmp_path)
         raise CommandExecutionError(e)
+    finally:
+        shutil.rmtree(tmp_path)
+
+
+def _get_available_files(files):
+    """
+    Checks a list of file paths and glob patterns and returns a list
+    of all files that actually exist on the filesystem.
+
+    Returns:
+        list: A list of unique file paths for all files that were found.
+    """
+    found_files = set()
+    for item in files:
+        matches = glob.glob(item)
+        if matches:
+            found_files.update(matches)
+    return sorted(list(found_files))
+
+
+def _extract_pxe_entries(files, outfile):
+    """
+    Parses the PXE boot entries.
+
+    Creates a PXE entries YAML outfile file.
+    Raises an exception if parsing fails
+    """
+    entries = []
+    for f in files:
+        res = _parse_single_pxe(f)
+        entries.append(res)
+
+    with open(outfile, "x") as fd:
+        yaml.safe_dump(entries, fd, width=float("inf"))
+
+
+def _parse_single_pxe(filename):
+    """
+    Parses the content of a single PXE boot entry.
+
+    Returns:
+        A dictionary containing the parsed information with keys:
+        'mac', 'kernel', 'probable_boot_image', 'initrd', and 'args'.
+        Raises an exception if parsing fails
+    """
+    result = {}
+
+    # Extract the MAC address from the filename by removing the '01-' prefix.
+    base_filename = os.path.basename(filename)
+    if base_filename.startswith("01-"):
+        # Store the MAC in the cobbler format for easier matching later
+        result["mac"] = base_filename[3:].lower().replace("-", ":")
+    else:
+        raise ValueError("Not a valid PXE entry name")
+
+    content = _file_content(filename)
+    for line in content.splitlines():
+        line = line.strip()
+
+        # Find the line with the kernel information
+        if line.lower().startswith("kernel"):
+            kernel_match = kernel_line_match.match(line)
+            if kernel_match:
+                result["kernel"] = kernel_match.group(1)
+                result["probable_boot_image"] = kernel_match.group(2)
+            else:
+                raise ValueError("Not a valid kernel definition")
+
+        # Find the line with the append arguments
+        elif line.lower().startswith("append"):
+            initrd_match = initrd_line_match.match(line)
+            if initrd_match:
+                result["initrd"] = initrd_match.group(1)
+                result["args"] = initrd_match.group(2).strip()
+            else:
+                raise ValueError("Not a valid initrd definition")
+    return result
+
 
 def _extract_config(dest):
     """
@@ -117,7 +213,7 @@ def _extract_config(dest):
     config = {
         "server": default_section.get("proxy.rhn_parent"),
         "proxy_fqdn": __grains__["fqdn"],
-        "max_cache_size_mb": cache_size,
+        "max_cache_size_mb": int(cache_size),
         "ca_crt": ca_cert,
         "email": default_section.get("traceback_mail", ""),
         # Let the server_version be added by the server itself later when generating the new config
@@ -139,18 +235,25 @@ def _extract_config(dest):
 
     with open(os.path.join(dest, "httpd.yaml"), "w") as fd:
         yaml.safe_dump(httpd, fd, width=float("inf"))
-    
+
     # ssh.yaml
     ssh = {
-        "server_ssh_push_pub": _file_content("/var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push.pub"),
-        "server_ssh_push": _file_content("/var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push"),
-        "server_ssh_key_pub": _file_content("/var/lib/spacewalk/mgrsshtunnel/.ssh/authorized_keys"),
+        "server_ssh_push_pub": _file_content(
+            "/var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push.pub"
+        ),
+        "server_ssh_push": _file_content(
+            "/var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push"
+        ),
+        "server_ssh_key_pub": _file_content(
+            "/var/lib/spacewalk/mgrsshtunnel/.ssh/authorized_keys"
+        ),
     }
 
     with open(os.path.join(dest, "ssh.yaml"), "w") as fd:
         yaml.safe_dump(ssh, fd, width=float("inf"))
 
     return ""
+
 
 def _find_apache_cert_file(directive):
     """
@@ -166,6 +269,7 @@ def _find_apache_cert_file(directive):
     content = _file_content(path)
     return content
 
+
 def _file_content(path):
     """
     Return the content of the file at the given path.
@@ -176,15 +280,20 @@ def _file_content(path):
             content = fd.read()
     return content.strip()
 
+
 def info():
     """
     Return information on containerized proxy and its config.
     """
     err, out = subprocess.getstatusoutput("mgrpxy --version")
     proxy_dir = "/etc/uyuni/proxy"
-    conf_files = [f"{proxy_dir}/httpd.yaml", f"{proxy_dir}/ssh.yaml", f"{proxy_dir}/config.yaml"]
+    conf_files = [
+        f"{proxy_dir}/httpd.yaml",
+        f"{proxy_dir}/ssh.yaml",
+        f"{proxy_dir}/config.yaml",
+    ]
     has_config = all([os.path.isfile(conf) for conf in conf_files])
     return {
-            "mgrpxy_version": out if err == 0 else None,
-            "has_config": has_config,
+        "mgrpxy_version": out if err == 0 else None,
+        "has_config": has_config,
     }
