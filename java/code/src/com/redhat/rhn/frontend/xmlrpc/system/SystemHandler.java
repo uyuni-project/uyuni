@@ -2442,8 +2442,8 @@ public class SystemHandler extends BaseHandler {
             if (action.getFailedCount() != null) {
                 result.put("failed_count", action.getFailedCount());
             }
-            if (action.getActionType().getName() != null) {
-                result.put("action_type", action.getActionType().getName());
+            if (action.getActionTypeName() != null) {
+                result.put("action_type", action.getActionTypeName());
             }
             if (action.getSuccessfulCount() != null) {
                 result.put("successful_count", action.getSuccessfulCount());

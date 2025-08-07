@@ -132,7 +132,7 @@ public class ActionFormatter {
      */
     public String getName() {
         if (action.getName() == null) {
-            return action.getActionType().getName();
+            return action.getActionTypeName();
         }
         return action.getName();
     }
