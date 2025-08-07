@@ -489,5 +489,12 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
         serverAction.setResultMsg(SaltUtils.getJsonResultWithPrettyPrint(jsonResult));
     }
+
+    /**
+     * Removes results of queued action.
+     */
+    public void removeInvalidResults() {
+        //default does nothing
+    }
 }
 
