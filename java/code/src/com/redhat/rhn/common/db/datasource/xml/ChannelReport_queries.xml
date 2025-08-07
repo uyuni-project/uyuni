@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2022 SUSE LLC
+  ~ Copyright (c) 2022-2025 SUSE LLC
   ~
   ~ This software is licensed to you under the GNU General Public License,
   ~ version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -157,6 +157,26 @@
            WHERE rhncontentsource.id &gt; :repository_id
         ORDER BY repository_id
            FETCH FIRST :limit ROWS WITH TIES
+    </query>
+</mode>
+
+<mode name="CLMEnvironmentDifference" class="">
+    <query params="diff_id, limit">
+        SELECT  suseContentEnvironmentDiff.id AS diff_id
+        , suseContentProject.label AS project_label
+        , suseContentEnvironment.label AS environment_label
+        , suseContentEnvironmentDiff.channel_id AS channel_id
+        , suseContentEnvironmentDiff.diff_action AS diff_action
+        , suseContentEnvironmentDiff.entry_id AS entry_id
+        , suseContentEnvironmentDiff.entry_type AS entry_type
+        , suseContentEnvironmentDiff.entry_name AS entry_name
+        , suseContentEnvironmentDiff.entry_description AS entry_description
+        FROM suseContentEnvironmentDiff
+        INNER JOIN suseContentProject ON suseContentEnvironmentDiff.project_id = suseContentProject.id
+        INNER JOIN suseContentEnvironment ON suseContentEnvironmentDiff.env_id = suseContentEnvironment.id
+        WHERE suseContentEnvironmentDiff.id &gt; :diff_id
+        ORDER BY diff_id
+        FETCH FIRST :limit ROWS WITH TIES
     </query>
 </mode>
 
