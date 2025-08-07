@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 
-import { AccessGroupState } from "manager/admin/access-group/access-group";
+import { AccessGroupState } from "manager/admin/access-control/access-group";
 
 import { Button } from "components/buttons";
 import { Column } from "components/table/Column";

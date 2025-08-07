@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
-import { AccessGroupState } from "manager/admin/access-group/access-group";
+import { AccessGroupState } from "manager/admin/access-control/access-group";
 
 import { Form } from "components/formik";
 import { Field } from "components/formik/field";
