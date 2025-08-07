@@ -1,0 +1,84 @@
+---
+name: Uyuni release
+about: Use this template for Uyuni releases
+title: 'XXXX.YY Uyuni release'
+labels: ["vega-squad", "uyuni"]
+projects: ["SUSE/35"]
+assignees: ''
+
+---
+
+# Important changes, for the release notes
+
+- 
+
+# Procedure
+
+- Remember to make sure that `tito-wrapper`, `tito` and `uyuni-releng-tools` are updated
+- https://github.com/uyuni-project/uyuni/wiki/Releasing-Uyuni-versions
+
+# Needed issues or EPICs to be included in this version
+
+Add any additional bugzilla report, PR, or EPIC that must be included in this release.
+
+You can also create sub-issues if preferred, but the needed information must be mentioned in this section for having an overview of still pending changes that could block the release.
+
+# ToDo some days before
+
+Add more tasks if needed.
+
+- [ ] Check all the [tests](https://ci.suse.de/view/Manager/view/Uyuni/): everything should be green, in particular the acceptance testsuite or otherwise submission must be approved by QA.
+- [ ] Ask the Doc Squad:
+  - [ ] to submit an update of the doc package to [systemsmanagement:Uyuni:Master](https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Master)
+  - [ ] a PR for the main documention and ReportDB documentation at the [documentation repository, gh-pages branch](https://github.com/uyuni-project/uyuni-docs/tree/gh-pages)
+  - [ ] a PR for the [documentation API repository, gh-pages branch](https://github.com/uyuni-project/uyuni-docs-api/tree/gh-pages). 
+  - [ ] tell them which is going to be the Uyuni version to be released
+  - [ ] tell them if there is an API version change. Developers should inform relengs, but if it's not the case the `rel-eng/uyuni-check-version` at the Git repository will show the info
+- [ ] Confirm that the documentation is ready.
+- [ ] [Lock](https://github.com/uyuni-project/uyuni/settings/branch_protection_rules/2243617) the `uyuni-project/uyuni:master` branch (check the checkbox for `Restrict who can push to matching branches`)
+- [ ] [Lock](https://github.com/uyuni-project/uyuni-tools/settings/branch_protection_rules/37702039) the `uyuni-project/uyuni-tools:main` branch for the uyuni-tools as well (check the checkbox for `Restrict who can push to matching branches`)
+- [ ] Send an email to galaxy-devel@suse.de informing that the branches `uyuni-project/uyuni:master` and `uyuni-project/uyuni-tools:main` are locked, and adjust the topic on the slack [#team-multi-linux-manager](https://app.slack.com/client/T02863RC2AC/C02D78LLS04) channel
+- [ ] After the branch freeze, ask [Orion](https://suse.slack.com/archives/C02DDMY6R0R) to prepare the PR for the code translations. If nobody from Orion is available, ask @parlt91. They will add us as reviewers.
+  - [ ] from `master-weblate` to `uyuni-project/uyuni:master`
+  - [ ] from `weblate-main` to `uyuni-project/uyuni-tool:main`.
+- [ ] Merge the PR for the translations with the option `Merge pull request` (now should be the unique option available)
+- [ ] Quick review changelogs with `tito-wrapper`, and request changes if needed
+- [ ] Adjust the version number in `web/conf/rhn_web.conf` (`web.version.uyuni`)
+  - [ ] When SUSE Multi-Linux Manager is still under development and it uses the same `master` branch as Uyuni, check that the sed that replaces the default tag for SUSE Multi-Linux Manager in the [push.sh](https://github.com/uyuni-project/uyuni-tools/blob/main/push.sh) script in [uyuni-tools](https://github.com/SUSE/uyuni-tools) specifies the same SUSE Multi-Linux Manager version you added in `web.version`. If the value is outdated, update it with a PR for [uyuni-tools](https://github.com/SUSE/uyuni-tools). This is not required if the code of SUSE Multi-Linux Manager has been already branched.
+- [ ] Check if the migration paths exist for both the main database and report database, if they are needed (more at https://github.com/uyuni-project/uyuni/wiki/Releasing-Uyuni-versions)
+- [ ] Check if schema migration directories exist last SUSE Manager versions and Uyuni (more at https://github.com/uyuni-project/uyuni/wiki/Releasing-Uyuni-versions)
+- [ ] Check if any of the packages in the `microservices` folder need to be tagged. **[There's a specific procedure to follow](https://confluence.suse.com/display/SUSEMANAGER/How+to+tag+microservices+packages?src=contextnavpagetreemode)**
+- [ ] Tag everything in `uyuni-project/uyuni:master` with `tito tag --use-release=0` and push. Do NOT tag if the version has not been already bumped in `web/conf/rhn_web.conf` (`web.version.uyuni`), as requested in one of the previous points.
+- [ ] Tag everything in `uyuni-project/uyuni-tools:main` with `tito tag --use-release=0` and push.
+- [ ] Check that the job [uyuni-Master-releng-2obs](https://ci.suse.de/view/Manager/view/Uyuni/job/uyuni-Master-releng-2obs/) job has packaged the whole tagging and submitted the changes from `uyuni-project/uyuni:master` branch into https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Master (changes will propagate to the client tools for linked packages)
+- [ ] Check that the job [uyuni-tools-Master-2obs/](https://ci.suse.de/view/Manager/view/Uyuni/job/uyuni-tools-Master-2obs/) job has packaged the whole tagging and submitted the changes from `uyuni-project/uyuni-tools:master` branch into https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Master:ContainerUtils (changes will propagate to Uyuni:Master and the client tools for linked packages)
+- [ ] Run `rel-eng/uyuni-check-version` at the Git repository, to check what other packages need changes and adjust them.
+- [ ] Prepare the release notes PR, send it to be reviewed.
+  - [ ] Make sure to update the Uyuni version in the `<span style="display: none;" id="current_version">` of the `release-notes-uyuni-server.adoc` and `release-notes-uyuni-proxy.adoc` release notes. That value in the Server release notes is used by the "Update notification" feature.
+- [ ] Merge the release notes PR, submit the release notes to [systemsmanagement:Uyuni:Master](https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Master)
+- [ ] Prepare the PR for the [website repository, master branch](https://github.com/uyuni-project/uyuni-project.github.io), including announcement at the main page, updates to the stable page, news page, new doc folder (PDFs) with doc and release notes.
+- [ ] Prepare the email announcement and the X announcement, add them as comments to this card.
+- [ ] Prepare a new [snapshot](https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Snapshots) as OBS subproject of `systemsmanagement:Uyuni:Snapshots`, following the naming schema `systemsmanagement:Uyuni:Snapshots:YYYY.MM`. You can use [systemsmanagement:Uyuni:Snapshots:2025.07](https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Snapshots:2025.07) as base (even better if you use the snapshot for the most recent release), but make sure you adjust the meta configuration to match the version and the expect OS version used as base OS.
+- [ ] Modify the [meta configuration](https://build.opensuse.org/projects/systemsmanagement:Uyuni:Stable/meta) for `systemsmanagement:Uyuni:Stable`, so the promotion is done against the new Snapshot.
+
+# ToDo during release day
+
+Add more tasks if needed.
+
+- [ ] Check all the [tests](https://ci.suse.de/view/Manager/view/Uyuni/): everything should be green, or otherwise submission must be approved by QA.
+- [ ] Specifically, make sure everything is still [building](https://ci.suse.de/view/Manager/view/Uyuni/job/uyuni-Master-dev-at-obs/) and [server and proxy are installable](https://ci.suse.de/view/Manager/view/Uyuni/job/Uyuni-Master-releng-Media-Install-Test/).
+- [ ] Run `rel-eng/uyuni-check-version` at the Git repository, to make sure nothing is missing
+- [ ] Promote/Release following the instructions at [Releasing-Uyuni-versions](https://github.com/uyuni-project/uyuni/wiki/Releasing-Uyuni-versions#at-the-release-date)
+- [ ] Merge the PRs for the site, the main doc and ReportDB, and the API doc.
+- [ ] Review that the [site](https://github.com/uyuni-project/uyuni-project.github.io/actions/workflows/pages/pages-build-deployment), [main doc and ReportDB](https://github.com/uyuni-project/uyuni-docs/actions/workflows/pages/pages-build-deployment), and the [API doc](https://github.com/uyuni-project/uyuni-docs-api/actions/workflows/pages/pages-build-deployment) were published
+- [ ] Create a git branch and optionally a git tag at `uyuni-project/uyuni:master` and `uyuni-project/uyuni-tool:main` using the naming schema `Uyuni-XXXX.YY` and push.
+- [ ] Announce: mailing lists, X and Gitter (update the topic for the `users` channel)
+- [ ] Consider PRs for merge that became ready during the branch freeze looking for the ["merge-candidate" label on uyuni](https://github.com/uyuni-project/uyuni/pulls?q=is%3Apr+is%3Aopen+label%3Amerge-candidate) and the ["merge-candidate" label on uyuni-tools](https://github.com/uyuni-project/uyuni-tools/pulls?q=is%3Apr+is%3Aopen+label%3Amerge-candidate) or ping reviewers to take care of this.
+- [ ] [Unlock](https://github.com/uyuni-project/uyuni/settings/branch_protection_rules/2243617) the `uyuni-project/uyuni:master` branch (uncheck the checkbox for `Restrict who can push to matching branches`)
+- [ ] [Unlock](https://github.com/uyuni-project/uyuni-tools/settings/branch_protection_rules/37702039) the `uyuni-project/uyuni:main` branch (uncheck the checkbox for `Restrict who can push to matching branches`)
+- [ ] Send an email to `galaxy-devel@suse.de` informing that the branches `uyuni-project/uyuni:master` and `uyuni-project/uyuni:main` are unlocked, and adjust the topic on the slack [#team-multi-linux-manager](https://app.slack.com/client/T02863RC2AC/C02D78LLS04) channel
+
+## After the release
+- [ ] (Ping QE, and in particular Jordi): mention that Update the [test container images](https://github.com/uyuni-project/uyuni/wiki/Build-or-update-the-test-container-images)
+> :information_source: We wait 24h release to give time to the opensuse mirrors to be in sync.
+- [ ] Create the GitHub issues for the Uyuni release.

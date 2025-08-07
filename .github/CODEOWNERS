@@ -36,9 +36,10 @@
 .github/workflows @uyuni-project/workflows-reviewers
 
 # Release Engineering
-rel-eng/ @uyuni-project/release-engineering
-tito.props @uyuni-project/release-engineering
-web/conf/rhn_web.conf @uyuni-project/release-engineering
+.github/ISSUE_TEMPLATE/releng-*.md @SUSE/multi-linux-manager-releng
+rel-eng/ @SUSE/multi-linux-manager-releng
+tito.props @SUSE/multi-linux-manager-releng
+web/conf/rhn_web.conf @SUSE/multi-linux-manager-releng
 
 # Cobbler
 java/conf/cobbler/snippets/ @uyuni-project/python
@@ -63,19 +64,10 @@ branding/ @uyuni-project/frontend
 .yarnrc @uyuni-project/frontend
 
 # QE
-testsuite/ @uyuni-project/qe
-.github/scripts/test_covering_pr.js @uyuni-project/qe
-.github/workflows/rubocop.yml @uyuni-project/qe
-.github/workflows/acceptance_tests_base.yml @uyuni-project/qe
-.github/workflows/acceptance_tests_feedback.yml @uyuni-project/qe
-.github/workflows/acceptance_tests_parallel.yml @uyuni-project/qe
-.github/workflows/acceptance_tests_sequential.yml @uyuni-project/qe
-.github/workflows/acceptance_tests_scheduler.yml @uyuni-project/qe
-.github/workflows/acceptance_tests_coordinator.yml @uyuni-project/qe
-.github/workflows/recommended_tests.yml @uyuni-project/qe
-.github/workflows/build_containers.yml@uyuni-project/qe
-.github/workflows/test-covering-pr.yml @uyuni-project/qe
-.rubocop.yml @uyuni-project/qe
+testsuite/ @SUSE/multi-linux-manager-qe
+.github/ISSUE_TEMPLATE/qe-*.md @SUSE/multi-linux-manager-qe
+.github/scripts/test_covering_pr.js @SUSE/multi-linux-manager-qe
+.rubocop.yml @SUSE/multi-linux-manager-qe
 
 # mgr-libmod
 susemanager-utils/mgr-libmod/ @cbbayburt
