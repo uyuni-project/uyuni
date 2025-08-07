@@ -128,7 +128,7 @@ public class GathererJob extends RhnJavaJob {
 
             Action act = ActionFactory.createAction(ActionFactory.TYPE_VIRT_PROFILE_REFRESH);
             // set up needed fields for the action
-            act.setName(act.getActionType().getName());
+            act.setName(act.getActionTypeName());
             act.setOrg(org);
             ActionFactory.save(act);
 

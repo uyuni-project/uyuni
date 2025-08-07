@@ -412,6 +412,12 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
         return null;
     }
 
+    /**
+     * @return Returns the type name.
+     */
+    public String getActionTypeName() {
+        return this.actionType.getName();
+    }
 
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action

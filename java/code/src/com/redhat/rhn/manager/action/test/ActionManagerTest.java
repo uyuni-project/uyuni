@@ -1147,7 +1147,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 actionChain, user);
 
         assertNotNull(action);
-        assertEquals("Build an Image Profile", action.getActionType().getName());
+        assertEquals("Build an Image Profile", action.getActionTypeName());
     }
 
     @Test

@@ -567,7 +567,7 @@ public class ActionManager extends BaseManager {
                         ActionFactory.TYPE_CONFIGFILES_UPLOAD, earliest);
         a.setOrg(user.getOrg());
         a.setSchedulerUser(user);
-        a.setName(a.getActionType().getName());
+        a.setName(a.getActionTypeName());
         //put a single row into rhnActionConfigChannel
         a.addConfigChannelAndServer(channel, server);
         //put a single row into rhnServerAction
@@ -701,7 +701,7 @@ public class ActionManager extends BaseManager {
          *  converted to java, we should pass in a LS key and then simply do the lookup
          *  on display
          */
-        a.setName(a.getActionType().getName());
+        a.setName(a.getActionTypeName());
         a.setOrg(user.getOrg());
         a.setSchedulerUser(user);
         return a;
