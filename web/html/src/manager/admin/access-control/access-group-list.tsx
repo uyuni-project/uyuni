@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button, LinkButton } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
@@ -23,9 +23,38 @@ type AccessGroupListItem = {
 };
 
 const AccessGroupList = (props) => {
+  const [isLoadingRoles, setIsLoadingRoles] = useState(false);
+  const [accessGroups, setAccessGroups] = useState<AccessGroupListItem[]>([]);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [toDelete, setToDelete] = useState<AccessGroupListItem>();
   const tableRef = useRef(null);
+
+  const searchData = (item, criteria) => {
+    if (!criteria) {
+      return true;
+    }
+    const lowerCaseCriteria = criteria.trim().toLowerCase();
+    return (
+      item.name?.toLowerCase().includes(lowerCaseCriteria) ||
+      item.description?.toLowerCase().includes(lowerCaseCriteria)
+    );
+  };
+
+  useEffect(() => {
+    getRoles();
+  }, []);
+  const getRoles = () => {
+    setIsLoadingRoles(true);
+    const endpoint = "/rhn/manager/api/admin/access-group/roles";
+    Network.get(endpoint)
+      .then((groups) => {
+        setAccessGroups(groups);
+      })
+      .catch(props.errors) // TODO: Implement proper error handling
+      .finally(() => {
+        setIsLoadingRoles(false);
+      });
+  };
 
   const onDelete = (item, tableRef) => {
     return Network.del("/rhn/manager/api/admin/access-group/delete/" + item.id)
@@ -83,11 +112,11 @@ const AccessGroupList = (props) => {
     >
       <Messages items={messages} />
       <Table
-        data={"/rhn/manager/api/admin/access-group/roles"}
+        data={accessGroups}
         identifier={(item) => item.id}
         initialSortColumnKey="name"
         emptyText={t("No Access Group found.")}
-        searchField={<SearchField placeholder={t("Filter by name")} />}
+        searchField={<SearchField filter={searchData} placeholder={t("Filter by name or description")} />}
         ref={tableRef}
       >
         <Column columnKey="name" comparator={Utils.sortByText} header={t("Name")} cell={(item) => item.name} />
@@ -96,11 +125,6 @@ const AccessGroupList = (props) => {
           comparator={Utils.sortByText}
           header={t("Description")}
           cell={(item) => item.description}
-        />
-        <Column
-          columnKey="type"
-          header={t("Type")}
-          cell={(item) => (item.orgName === "-" ? t("Built-In") : t("Custom"))}
         />
 
         <Column

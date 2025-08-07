@@ -276,6 +276,7 @@ public class AdminViewsController {
     * @param request the request
     * @param response the response
     * @param user the logged-in user
+    * @return the access control jade view
      */
     public static ModelAndView accessControl(Request request, Response response, User user) {
         return new ModelAndView(new HashMap<>(), "controllers/admin/templates/access-control.jade");

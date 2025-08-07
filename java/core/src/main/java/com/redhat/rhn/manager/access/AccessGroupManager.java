@@ -124,17 +124,6 @@ public class AccessGroupManager {
     }
 
     /**
-     * Lists s paginated list of access groups
-     * @param pc the page control
-     * @param parser the parser for filters when building query
-     * @return the list of access groups
-     */
-    public DataResult<AccessGroupJson> list(
-            PageControl pc, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser) {
-        return AccessGroupFactory.listAll(pc, parser);
-    }
-
-    /**
      * Lists s paginated list of namespaces
      * @param pc the page control
      * @param parser the parser for filters when building query
@@ -161,6 +150,15 @@ public class AccessGroupManager {
      */
     public List<AccessGroup> list(Org org) {
         return AccessGroupFactory.list(org);
+    }
+
+    /**
+     * Lists all non-default access groups that are available to the given org.
+     * @param org the org to list access groups from
+     * @return a list of non-default access groups
+     */
+    public List<AccessGroupJson> listNonDefault(Org org) {
+        return AccessGroupFactory.listNonDefault(org);
     }
 
     /**

@@ -24,7 +24,6 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.access.Namespace;
@@ -33,19 +32,15 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.access.AccessGroupManager;
 import com.redhat.rhn.manager.org.OrgManager;
 
 import com.suse.manager.model.hub.OrgInfoJson;
-import com.suse.manager.utils.PagedSqlQueryBuilder;
-import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.AccessGroupJson;
 import com.suse.manager.webui.utils.gson.AccessGroupUserJson;
 import com.suse.manager.webui.utils.gson.NamespaceJson;
-import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.Gson;
@@ -53,10 +48,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -74,7 +66,6 @@ import spark.Spark;
  */
 public class AccessGroupController {
 
-    private static final Logger LOG = LogManager.getLogger(AccessGroupController.class);
     private static final Gson GSON = new GsonBuilder().create();
     private static final AccessGroupManager MANAGER = GlobalInstanceHolder.ACCESS_GROUP_MANAGER;
 
@@ -109,12 +100,8 @@ public class AccessGroupController {
      * @return the result JSON object
      */
     public static String listRoles(Request request, Response response, User user) {
-        PageControlHelper pageHelper = new PageControlHelper(request, "name");
-        PageControl pc = pageHelper.getPageControl();
-        DataResult<AccessGroupJson> roles = MANAGER.list(pc, PagedSqlQueryBuilder::parseFilterAsText);
-        TypeToken<PagedDataResultJson<AccessGroupJson, Long>> type = new TypeToken<>() { };
-        return json(GSON, response, new PagedDataResultJson<>(roles, roles.getTotalSize(),
-                Collections.emptySet()), type);
+        var roles = MANAGER.listNonDefault(user.getOrg());
+        return json(GSON, response, roles, new TypeToken<>() { });
     }
 
     /**
