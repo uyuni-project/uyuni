@@ -41,6 +41,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -541,6 +542,16 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
             return true;
         }
         return false;
+    }
+
+    /**
+     * depending on the event type, we need to retrieve additional information and store that information in the result
+     *
+     * @param serverAction the server action
+     * @return additionalInfo list of info items
+     */
+    public List<Map<String, String>> createActionSpecificDetails(ServerAction serverAction) {
+        return new ArrayList<>();
     }
 }
 
