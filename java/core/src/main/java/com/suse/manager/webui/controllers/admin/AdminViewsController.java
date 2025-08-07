@@ -98,8 +98,8 @@ public class AdminViewsController {
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
         get("/manager/admin/config/password-policy",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPasswordPolicy))), jade);
-        get("/manager/admin/access-group",
-                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::listAccessGroup))), jade);
+        get("/manager/admin/access-control",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::accessControl))), jade);
         get("/manager/admin/access-group/create",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::createAccessGroup))), jade);
         get("/manager/admin/access-group/show/:id",
@@ -272,14 +272,13 @@ public class AdminViewsController {
 
 
    /**
-     * show list of saved access group ssh connection data
-     * @param request
-     * @param response
-     * @param user
-     * @return list of access group ssh connection data
+    * Render the view for managing access control
+    * @param request the request
+    * @param response the response
+    * @param user the logged-in user
      */
-    public static ModelAndView listAccessGroup(Request request, Response response, User user) {
-        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/access-group.jade");
+    public static ModelAndView accessControl(Request request, Response response, User user) {
+        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/access-control.jade");
     }
 
      /**

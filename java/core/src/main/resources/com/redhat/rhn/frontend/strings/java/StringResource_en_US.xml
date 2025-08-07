@@ -670,8 +670,8 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Access Group" xml:space="preserve">
-        <source>Access Group</source>
+      <trans-unit id="Access Control" xml:space="preserve">
+        <source>Access Control</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>

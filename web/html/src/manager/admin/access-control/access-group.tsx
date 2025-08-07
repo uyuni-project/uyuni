@@ -3,7 +3,7 @@ import { hot } from "react-hot-loader/root";
 import * as React from "react";
 import { useState } from "react";
 
-import AccessGroupTabContainer from "manager/admin/access-group/access-group-tab-container";
+import AccessGroupTabContainer from "manager/admin/access-control/access-group-tab-container";
 
 import withPageWrapper from "components/general/with-page-wrapper";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
@@ -46,16 +46,16 @@ const AccessGroup = (props: AccessGroupProps) => {
     props.accessGroup
       ? props.accessGroup
       : {
-          id: undefined,
-          name: "",
-          description: "",
-          orgId: undefined,
-          orgName: "",
-          accessGroups: [],
-          permissions: [],
-          users: [],
-          errors: {},
-        }
+        id: undefined,
+        name: "",
+        description: "",
+        orgId: undefined,
+        orgName: "",
+        accessGroups: [],
+        permissions: [],
+        users: [],
+        errors: {},
+      }
   );
 
   const handleFormChange = (newAccessGroupState) => {
