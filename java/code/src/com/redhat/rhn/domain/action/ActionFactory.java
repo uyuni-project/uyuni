@@ -88,7 +88,6 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.hibernate.type.StandardBasicTypes;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -824,7 +823,7 @@ public class ActionFactory extends HibernateFactory {
         .setParameter("tries", tries)
         .setParameter("failed", ActionFactory.STATUS_FAILED)
         .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
-        removeInvalidResults(action);
+        action.removeInvalidResults();
         action.getServerActions().stream()
                 .filter(sa -> sa.isFailed())
                 .map(sa -> sa.getServerId())
@@ -842,7 +841,7 @@ public class ActionFactory extends HibernateFactory {
         .setParameter("action", action)
         .setParameter("tries", tries)
         .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
-        removeInvalidResults(action);
+        action.removeInvalidResults();
         action.getServerActions().stream()
                 .map(sa -> sa.getServerId())
                 .forEach(sid -> SystemManager.updateSystemOverview(sid));
@@ -870,7 +869,7 @@ public class ActionFactory extends HibernateFactory {
         .setParameter("tries", tries)
         .setParameter("queued", ActionFactory.STATUS_QUEUED)
         .setParameter("server", server).executeUpdate();
-        removeInvalidResults(action);
+        action.removeInvalidResults();
         SystemManager.updateSystemOverview(server);
     }
 
@@ -880,24 +879,6 @@ public class ActionFactory extends HibernateFactory {
      */
     public static ServerHistoryEvent lookupHistoryEventById(Long aid) {
         return singleton.lookupObjectByNamedQuery("ServerHistory.lookupById", Map.of("id", aid));
-    }
-
-    /**
-     * Removes results of queued action.
-     * @param action results of which action to remove
-     */
-    public static void removeInvalidResults(Action action) {
-        if (action.getActionType().equals(TYPE_SCRIPT_RUN)) {
-            HibernateFactory.getSession().createNativeQuery("""
-                  DELETE FROM rhnServerActionScriptResult sr WHERE sr.action_script_id = (
-                  SELECT as.id FROM rhnActionScript as WHERE as.action_id = :action)
-                  AND sr.server_id IN
-                  (SELECT sa.server_id FROM rhnServerAction sa WHERE sa.action_id = :action AND sa.status = :queued)
-                  """)
-            .setParameter("action", action.getId(), StandardBasicTypes.LONG)
-            .setParameter("queued", ActionFactory.STATUS_QUEUED.getId(), StandardBasicTypes.LONG)
-            .executeUpdate();
-        }
     }
 
     private static void updateActionEarliestDate(Action action) {

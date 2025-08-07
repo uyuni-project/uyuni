@@ -18,6 +18,7 @@ import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -41,6 +42,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -243,5 +245,21 @@ public class ScriptRunAction extends ScriptAction {
 
         // Depending on the status show stdout or stderr in the output
         scriptResult.setOutput(SaltUtils.printStdMessages(result.getStderr(), result.getStdout()).getBytes());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeInvalidResults() {
+        HibernateFactory.getSession().createNativeQuery("""
+                  DELETE FROM rhnServerActionScriptResult sr WHERE sr.action_script_id = (
+                  SELECT as.id FROM rhnActionScript as WHERE as.action_id = :action)
+                  AND sr.server_id IN
+                  (SELECT sa.server_id FROM rhnServerAction sa WHERE sa.action_id = :action AND sa.status = :queued)
+                  """)
+                .setParameter("action", getId(), StandardBasicTypes.LONG)
+                .setParameter("queued", ActionFactory.STATUS_QUEUED.getId(), StandardBasicTypes.LONG)
+                .executeUpdate();
     }
 }
