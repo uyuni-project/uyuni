@@ -1,32 +1,44 @@
 # Edit deb822 file such as ubuntu.sources
 # Example: awk -f edit-ubuntu-sources.awk \
-#              -v action=disable \
+#              -v action=enable \
 #              -v distro=noble \
 #              -v repo=universe \
 #              ubuntu.sources
 
-BEGIN             { suites = ""
-                    components = ""
-                  }
+#!/usr/bin/awk -f
 
-/^Suites: */      { suites = $0
-                    sub(/^Suites: */, "", suites)
-                  }
+BEGIN {
+    RS = "\n\n"
+    FS = "\n"
+    OFS = "\n"
+}
 
-/^Components: */  { components = $0
-                    sub(/^Components: */, "", components)
-                    if (match(suites " ", distro " ") != 0)
-                    { if (action == "enable")
-                      { if (match(components " ", repo " ") == 0)
-                          components = components " " repo
-                      }
-                      if (action == "disable")
-                      { sub(repo, "", components)
-                        sub(/  */, " ", components)
-                      }
-                    }
-                    print "Components: " components
-                  }
+{
+    current_record = $0
 
-!/^Components: */ { print $0
-                  }
+    for (i = 1; i <= NF; i++) {
+        if ($i ~ /^Enabled:/) {
+            enabled = tolower($i)
+            enabled_line = i
+        }
+        if ($i ~ /^Suites:/) {
+            suites = tolower($i)
+        }
+        if ($i ~ /^Components:/) {
+            components = tolower($i)
+        }
+        if ($i ~ /^Architectures:[[:space:]]*$/) {
+            $i = "Architectures: amd64"
+        }
+    }
+
+    if (suites ~ distro && components ~ repo) {
+        if (action == "enable" && enabled ~ /no|false/) {
+            $enabled_line = "Enabled: yes"
+        } else if (action == "disable" && enabled ~ /yes|true/) {
+            $enabled_line = "Enabled: no"
+        }
+    }
+
+    print $0 "\n"
+}
