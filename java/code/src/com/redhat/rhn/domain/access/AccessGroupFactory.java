@@ -11,14 +11,11 @@
 
 package com.redhat.rhn.domain.access;
 
-import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.frontend.listview.PageControl;
 
-import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.utils.gson.AccessGroupJson;
 import com.suse.manager.webui.utils.gson.AccessGroupUserJson;
 
@@ -26,11 +23,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.type.StandardBasicTypes;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 
 import javax.persistence.Tuple;
 
@@ -101,43 +96,41 @@ public class AccessGroupFactory extends HibernateFactory {
     }
 
     /**
-     * Lists s paginated list of access groups
-     * @param pc the page control
-     * @param parser the parser for filters when building query
-     * @return the list of access groups
+     * Lists all non-default access groups for a given org.
+     * @param org the org
+     * @return the list of non-default access groups
      */
-    public static DataResult<AccessGroupJson> listAll(
-            PageControl pc, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser) {
-        String from = "(select " +
-                "ag.id as id, " +
-                "ag.label as name, " +
-                "ag.description as description, " +
-                "ag.org_id as org_id, " +
-                "wc.name as org_name, " +
-                "case" +
-                "  when uag.users is not null then uag.users else 0 " +
-                "end as users, " +
-                "case" +
-                "  when agn.permissions is not null then agn.permissions else 0 " +
-                "end as permissions " +
-                "from access.accessgroup ag " +
-                "left join " +
-                "  (select group_id, count(group_id) users " +
-                "  from access.useraccessgroup group by group_id) uag " +
-                "on ag.id = uag.group_id " +
-                "left join " +
-                "  (select group_id, count(group_id) permissions " +
-                "  from access.accessgroupnamespace group by group_id) agn " +
-                "on ag.id = agn.group_id " +
-                "left join web_customer wc " +
-                "on wc.id = ag.org_id " +
-                ") ag ";
-
-        return new PagedSqlQueryBuilder("ag.id")
-                .select("ag.*")
-                .from(from)
-                .where("true")
-                .run(new HashMap<>(), pc, parser, AccessGroupJson.class);
+    public static List<AccessGroupJson> listNonDefault(Org org) {
+        String sql = """
+            SELECT
+                ag.id as id,
+                ag.label as name,
+                ag.description as description,
+                ag.org_id as org_id,
+                wc.name as org_name,
+                COALESCE(uag.users, 0) as users,
+                COALESCE(agn.permissions, 0) as permissions
+            FROM access.accessgroup ag
+            LEFT JOIN (
+                SELECT group_id, count(*) AS users
+                FROM access.useraccessgroup
+                GROUP BY group_id
+            ) uag ON ag.id = uag.group_id
+            LEFT JOIN (
+                SELECT group_id, count(*) AS permissions
+                FROM access.accessgroupnamespace
+                GROUP BY group_id
+            ) agn ON ag.id = agn.group_id
+            LEFT JOIN web_customer wc ON wc.id = ag.org_id
+            WHERE ag.org_id = :org_id
+        """;
+        return getSession()
+                .createNativeQuery(sql, Tuple.class)
+                .setParameter("org_id", org.getId())
+                .getResultList()
+                .stream()
+                .map(AccessGroupJson::new)
+                .toList();
     }
 
     /**
