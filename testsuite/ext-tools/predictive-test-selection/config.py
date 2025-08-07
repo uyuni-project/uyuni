@@ -18,7 +18,8 @@ DEBUG_MODE = 1
 REPO_FULL_NAME = "uyuni-project/uyuni"
 TEST_WORKFLOW_NAME = "TestFlow"
 # Time windows (in days) to track recent change frequency of PR modified files
-RECENT_DAYS = [3, 14, 56]
+MODIFIED_FILES_RECENT_DAYS = [3, 14, 56]
+FEATURE_FAILURE_RECENT_DAYS = [7, 14, 28, 56]
 # Oversample when fetching the latest N PRs to account for those missing Cucumber reports
 PR_OVERSAMPLE_MULTIPLIER = 4
 # Maximum number of consecutive PRs without Cucumber reports before aborting the extraction loop
@@ -42,3 +43,8 @@ CUCUMBER_FAILED = "failed"
 CUCUMBER_PASSED = "passed"
 CUCUMBER_SKIPPED = "skipped"
 CUCUMBER_RESULTS_COLUMNS = ["feature", "feature_category", "scenario_count", "result"]
+
+# ------------------------------
+# Training Data Generation
+# ------------------------------
+TRAINING_CSV_FILENAME = "training_data.csv"

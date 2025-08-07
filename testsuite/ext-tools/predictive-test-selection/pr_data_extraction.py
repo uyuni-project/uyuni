@@ -52,7 +52,7 @@ from config import (
     REPO_FULL_NAME,
     TEST_WORKFLOW_NAME,
     PR_FEATURES_CSV_FILENAME,
-    RECENT_DAYS,
+    MODIFIED_FILES_RECENT_DAYS,
     PR_OVERSAMPLE_MULTIPLIER,
     MAX_CONSECUTIVE_PRS_WITHOUT_CUCUMBER_REPORTS,
     CUCUMBER_REPORTS_PARENT_DIR,
@@ -403,7 +403,7 @@ def get_modified_files(repo, pr, test_run):
     comparison = repo.compare(base_commit_sha, test_run_commit_sha)
     return [f.filename for f in comparison.files if ".changes" not in f.filename]
 
-def get_files_change_history(repo, file_list, recent_days):
+def get_files_change_history(repo, file_list, recent_days, cache=None):
     """
     For each N in recent_days, return the total number of times the files in file_list
     were modified in the last N days.
@@ -412,31 +412,49 @@ def get_files_change_history(repo, file_list, recent_days):
         repo (github.Repository.Repository): Repository object.
         file_list (list): List of modified file paths.
         recent_days (list): List of integers representing "last N days".
+        cache (dict, optional): A cache to store and retrieve file change history.
 
     Returns:
         dict: Mapping each number of days to total number of changes across all files.
     """
+    if cache is None:
+        cache = {}
+
     now = datetime.datetime.now(datetime.timezone.utc)
-    earliest_date = now - datetime.timedelta(days=max(recent_days))
     day_thresholds = {days: now - datetime.timedelta(days=days) for days in recent_days}
-    change_history = {days: 0 for days in recent_days}
+
+    total_change_history = {days: 0 for days in recent_days}
 
     for file_path in file_list:
-        logger.debug("Processing change history of file %s", file_path)
-        try:
-            commits = repo.get_commits(path=file_path, since=earliest_date)
-            logger.debug("Edited in %s commits since %s days", len(list(commits)), max(recent_days))
-            for commit in commits:
-                logger.debug("File edited in commit %s", commit.sha)
-                commit_date = commit.commit.committer.date
-                for days, threshold_date in day_thresholds.items():
-                    if commit_date >= threshold_date:
-                        change_history[days] += 1
-                        logger.debug("Incremented modifications in the last %d days", days)
-        except Exception as e:
-            logger.warning("Could not retrieve commits for file %s: %s", file_path, e)
+        if file_path in cache:
+            file_change_history = cache[file_path]
+            logger.debug("Found history for %s in cache.", file_path)
+        else:
+            logger.debug("Obtaining change history of file %s", file_path)
+            file_change_history = {days: 0 for days in recent_days}
+            earliest_date = now - datetime.timedelta(days=max(recent_days))
+            try:
+                commits = list(repo.get_commits(path=file_path, since=earliest_date))
+                logger.debug(
+                    "File %s was edited in %d commits since %d days", 
+                    file_path, len(commits), max(recent_days)
+                )
+                for commit in commits:
+                    logger.debug("File edited in commit %s", commit.sha)
+                    commit_date = commit.commit.committer.date
+                    for days, threshold_date in day_thresholds.items():
+                        if commit_date >= threshold_date:
+                            file_change_history[days] += 1
+                cache[file_path] = file_change_history
+            except Exception as e:
+                logger.error("Could not retrieve commits for file %s: %s", file_path, e)
+                cache[file_path] = file_change_history
 
-    return change_history
+        for days in recent_days:
+            total_change_history[days] += file_change_history[days]
+
+    logger.debug("Total change history for files %s: %s", file_list, total_change_history)
+    return total_change_history
 
 def get_file_extensions(modified_files):
     """
@@ -642,7 +660,7 @@ def extract_and_write_pr_features(repo, modified_files, pr_number, csv_writer):
     logger.info("Files modified in PR: %s", modified_files)
     file_extensions = get_file_extensions(modified_files)
     logger.info("File extensions of files modified in PR: %s", file_extensions)
-    change_history = get_files_change_history(repo, modified_files, RECENT_DAYS)
+    change_history = get_files_change_history(repo, modified_files, MODIFIED_FILES_RECENT_DAYS)
     logger.info("Files Change History: %s", change_history)
     write_pr_features_to_csv(csv_writer, file_extensions, change_history, pr_number)
 
@@ -692,7 +710,7 @@ def main():
                 sys.exit(1)
 
     github_token = load_github_token()
-    csv_file, csv_writer = setup_output_csv(RECENT_DAYS)
+    csv_file, csv_writer = setup_output_csv(MODIFIED_FILES_RECENT_DAYS)
     try:
         extract_pr_data(
             REPO_FULL_NAME, n, github_token, csv_writer, single_pr_number, start_date
