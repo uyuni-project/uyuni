@@ -619,5 +619,13 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
         //default does nothing
     }
 
+    /**
+     * checks if client execution of action returns yaml formatted info
+     * @return true if client execution of action returns yaml formatted info
+     */
+    public boolean clientExecutionReturnsYamlFormat() {
+        return false; //default
+    }
+
 }
 

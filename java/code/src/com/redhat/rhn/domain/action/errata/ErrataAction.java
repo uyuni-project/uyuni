@@ -269,4 +269,12 @@ public class ErrataAction extends Action {
         return State.apply(List.of(SaltParameters.PACKAGES_PATCHDOWNLOAD),
                 Optional.of(Collections.singletonMap(SaltParameters.PARAM_PATCHES, errataArgs)));
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean clientExecutionReturnsYamlFormat() {
+        return true;
+    }
 }

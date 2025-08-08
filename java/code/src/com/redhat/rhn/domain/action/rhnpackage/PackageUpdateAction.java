@@ -121,4 +121,12 @@ public class PackageUpdateAction extends PackageAction {
     public void setRequestAttributeTypePackages(HttpServletRequest request) {
         request.setAttribute("type", "packages");
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean clientExecutionReturnsYamlFormat() {
+        return true;
+    }
 }
