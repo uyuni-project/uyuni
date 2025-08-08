@@ -15,6 +15,7 @@
 
     .list-group-item {
       border-bottom: 1px solid $eos-bc-gray-100;
+      text-align: left;
 
       &:last-child {
         border-bottom: none;
@@ -28,6 +29,10 @@
         background-color: $eos-bc-gray-50;
         text-decoration: none;
       }
+    }
+
+    .ui-sortable .list-group-item {
+      cursor: grab;
     }
   }
 
