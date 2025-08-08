@@ -18,11 +18,15 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 public enum CoCoEnvironmentType {
     NONE(0, List.of()),
     KVM_AMD_EPYC_MILAN(1, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
-    KVM_AMD_EPYC_GENOA(2, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT));
+    KVM_AMD_EPYC_GENOA(2, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
+    KVM_AMD_EPYC_BERGAMO(3, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
+    KVM_AMD_EPYC_SIENA(4, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
+    KVM_AMD_EPYC_TURIN(5, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT));
     // ATTENTION: KEEP CoCoAttestationReport_queries.xml up to date !
 
     private final long value;
@@ -68,9 +72,17 @@ public enum CoCoEnvironmentType {
     }
 
     /**
+     * @return returns an array containing the valid constants of CoCoEnvironmentType enum type,
+     * in the order they're declared
+     */
+    public static List<CoCoEnvironmentType> validValues() {
+        return Stream.of(CoCoEnvironmentType.values()).filter(e -> e != NONE).toList();
+    }
+
+    /**
      * @return returns if a nonce value is required
      */
     public boolean isNonceRequired() {
-        return List.of(KVM_AMD_EPYC_MILAN, KVM_AMD_EPYC_GENOA).contains(this);
+        return (NONE != this);
     }
 }
