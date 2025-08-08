@@ -18,6 +18,7 @@
 package com.redhat.rhn.domain.action.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -30,6 +31,8 @@ import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainEntryGroup;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.errata.ErrataAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
@@ -268,14 +271,16 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         List<ActionChainEntryGroup> result = ActionChainFactory
             .getActionChainEntryGroups(actionChain);
         ActionChainEntryGroup secondGroup = result.get(0);
-        assertEquals(ActionFactory.TYPE_ERRATA.getLabel(),
-            secondGroup.getActionTypeLabel());
+
+        assertInstanceOf(ErrataAction.class, ActionFactory.lookupById(secondGroup.getActionId()));
+
         assertEquals((Integer) 0, secondGroup.getSortOrder());
         assertEquals((Long) 5L, secondGroup.getSystemCount());
 
         ActionChainEntryGroup firstGroup = result.get(1);
-        assertEquals(ActionFactory.TYPE_PACKAGES_UPDATE.getLabel(),
-            firstGroup.getActionTypeLabel());
+
+        assertInstanceOf(PackageUpdateAction.class, ActionFactory.lookupById(firstGroup.getActionId()));
+
         assertEquals((Integer) 1, firstGroup.getSortOrder());
         assertEquals((Long) 5L, firstGroup.getSystemCount());
     }
