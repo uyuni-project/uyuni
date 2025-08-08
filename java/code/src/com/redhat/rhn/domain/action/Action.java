@@ -580,5 +580,13 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     public boolean canBeScheduledAnyway() {
         return false;
     }
+
+    /**
+     * Returns the pkg_parameter parameter to the schedule_action queries in Action_queries.xml
+     * @return a parameter value
+     */
+    public String getPackageParameter() {
+        return "upgrade";
+    }
 }
 

@@ -2008,7 +2008,7 @@ public class ActionManager extends BaseManager {
             }
             List<Map<String, Object>> paramList =
                 actions.stream().flatMap(action -> {
-                    String packageParameter = getPackageParameter(action);
+                    String packageParameter = action.getPackageParameter();
                     return pkgMaps.stream().map(packageMap -> {
                         Map<String, Object> params = new HashMap<>();
                         params.put("action_id", action.getId());
@@ -2025,19 +2025,6 @@ public class ActionManager extends BaseManager {
                 .executeUpdates(paramList);
     }
         }
-
-    /**
-     * Returns the pkg_parameter parameter to the schedule_action queries in
-     * Action_queries.xml
-     * @param action the action
-     * @return a parameter value
-     */
-    private static String getPackageParameter(Action action) {
-        if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
-            return "lock";
-        }
-        return "upgrade";
-    }
 
     /**
      * Returns a name string from an Action type
