@@ -20,6 +20,7 @@ import static com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleTyp
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -29,6 +30,8 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.HardwareRefreshAction;
+import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
@@ -574,14 +577,16 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
             assertTrue(r.isSuccess());
             if (r.getScheduleName().equals("SAP Maintenance Window")) {
                 r.getActionsServers().keySet().forEach(a -> {
-                    assertEquals(ActionFactory.TYPE_ERRATA, a.getActionType());
+                    assertInstanceOf(ErrataAction.class, a);
+
                     assertEquals(sapAction1, a);
                     r.getActionsServers().get(a).forEach(s -> assertEquals(sapServer.getId(), s.getId()));
                 });
             }
             else if (r.getScheduleName().equals("Core Server Window")) {
                 r.getActionsServers().keySet().forEach(a -> {
-                    assertEquals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST, a.getActionType());
+                    assertInstanceOf(HardwareRefreshAction.class, a);
+
                     assertEquals(coreAction3, a);
                     r.getActionsServers().get(a).forEach(s -> assertEquals(coreServer.getId(), s.getId()));
                 });

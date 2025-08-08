@@ -61,6 +61,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * DistUpgradeAction - Class representation of distribution upgrade action.
  */
@@ -270,4 +272,13 @@ public class DistUpgradeAction extends Action {
         return "Unable to parse migration result";
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean setRequestAttributeDryRun(HttpServletRequest request) {
+        boolean typeDistUpgradeDryRun = getDetails().isDryRun();
+        request.setAttribute("typeDistUpgradeDryRun", typeDistUpgradeDryRun);
+        return typeDistUpgradeDryRun;
+    }
 }

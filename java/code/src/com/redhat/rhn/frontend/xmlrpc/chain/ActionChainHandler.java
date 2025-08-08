@@ -131,11 +131,11 @@ public class ActionChainHandler extends BaseHandler {
                 Map<String, Object> info = new HashMap<>();
                 info.put("id", entry.getAction().getId());
                 info.put("label", StringUtil.nullOrValue(label) == null ?
-                                  entry.getAction().getActionType().getName() :
+                                  entry.getAction().getActionTypeName() :
                                   label);
                 info.put("created", entry.getAction().getCreated());
                 info.put("earliest", entry.getAction().getEarliestAction());
-                info.put("type", entry.getAction().getActionType().getName());
+                info.put("type", entry.getAction().getActionTypeName());
                 info.put("modified", entry.getAction().getModified());
                 info.put("cuid", entry.getAction().getSchedulerUser().getLogin());
                 entries.add(info);

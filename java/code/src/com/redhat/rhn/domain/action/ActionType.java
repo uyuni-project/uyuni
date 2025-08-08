@@ -157,4 +157,30 @@ public class ActionType implements Serializable {
                                     .append(isMaintenancemodeOnly())
                                     .toHashCode();
     }
+
+    /**
+     * Returns a name string from an Action type
+     * @return a name
+     */
+    public String getPackageActionName() {
+        if (equals(ActionFactory.TYPE_PACKAGES_REMOVE)) {
+            return "Package Removal";
+        }
+        else if (equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
+            return "Package Install/Upgrade";
+        }
+        else if (equals(ActionFactory.TYPE_PACKAGES_VERIFY)) {
+            return "Package Verify";
+        }
+        else if (equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST)) {
+            return "Package List Refresh";
+        }
+        else if (equals(ActionFactory.TYPE_PACKAGES_DELTA)) {
+            return "Package Synchronization";
+        }
+        else if (equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
+            return "Lock packages";
+        }
+        return "";
+    }
 }

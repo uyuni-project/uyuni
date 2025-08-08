@@ -20,6 +20,7 @@ package com.redhat.rhn.frontend.xmlrpc.chain.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -30,7 +31,12 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
-import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.RebootAction;
+import com.redhat.rhn.domain.action.config.ConfigDeployAction;
+import com.redhat.rhn.domain.action.errata.ErrataAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -199,9 +205,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
                 CHAIN_LABEL) > 0);
 
         assertEquals(1, actionChain.getEntries().size());
-        assertEquals(ActionFactory.TYPE_REBOOT,
-                     actionChain.getEntries().iterator().next()
-                             .getAction().getActionType());
+        assertInstanceOf(RebootAction.class, actionChain.getEntries().iterator().next().getAction());
     }
 
     /**
@@ -218,9 +222,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
                 CHAIN_LABEL) > 0);
 
         assertEquals(1, actionChain.getEntries().size());
-        assertEquals(ActionFactory.TYPE_ERRATA,
-                     actionChain.getEntries().iterator().next()
-                             .getAction().getActionType());
+        assertInstanceOf(ErrataAction.class, actionChain.getEntries().iterator().next().getAction());
 
         assertTrue(this.ach.addErrataUpdate(this.admin,
                 Arrays.asList(this.server.getId().intValue(), this.server2.getId().intValue()),
@@ -231,9 +233,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
          * the action will be 3
          */
         assertEquals(3, actionChain.getEntries().size());
-        assertEquals(ActionFactory.TYPE_ERRATA,
-                actionChain.getEntries().iterator().next()
-                            .getAction().getActionType());
+        assertInstanceOf(ErrataAction.class, actionChain.getEntries().iterator().next().getAction());
     }
 
     /**
@@ -248,9 +248,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
                 packages,
                 CHAIN_LABEL) > 0);
         assertEquals(1, actionChain.getEntries().size());
-        assertEquals(ActionFactory.TYPE_PACKAGES_UPDATE,
-                     actionChain.getEntries().iterator().next()
-                             .getAction().getActionType());
+        assertInstanceOf(PackageUpdateAction.class, actionChain.getEntries().iterator().next().getAction());
     }
 
     /**
@@ -284,9 +282,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
                 packagesToRemove,
                 CHAIN_LABEL) > 0);
         assertEquals(1, actionChain.getEntries().size());
-        assertEquals(ActionFactory.TYPE_PACKAGES_REMOVE,
-                     actionChain.getEntries().iterator().next()
-                             .getAction().getActionType());
+        assertInstanceOf(PackageRemoveAction.class, actionChain.getEntries().iterator().next().getAction());
     }
 
     /**
@@ -491,8 +487,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         assertFalse(this.ach.listChainActions(this.admin, CHAIN_LABEL).isEmpty());
 
         assertEquals(1, actionChain.getEntries().size());
-        assertEquals(ActionFactory.TYPE_PACKAGES_UPDATE, actionChain.getEntries()
-                .iterator().next().getAction().getActionType());
+        assertInstanceOf(PackageUpdateAction.class, actionChain.getEntries().iterator().next().getAction());
     }
 
     /**
@@ -596,7 +591,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
                 ActionChainHandlerTest.B64_SCRIPT_SAMPLE) > 0);
         assertEquals(1, actionChain.getEntries().size());
         Action action = actionChain.getEntries().iterator().next().getAction();
-        assertEquals(ActionFactory.TYPE_SCRIPT_RUN, action.getActionType());
+        assertInstanceOf(ScriptRunAction.class, action);
         assertEquals(ActionChainHandlerTest.SCRIPT_SAMPLE,
                 ((ScriptRunAction)action).getScriptActionDetails().getScriptContents());
     }
@@ -610,7 +605,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
                 ActionChainHandlerTest.B64_SCRIPT_SAMPLE) > 0);
         assertEquals(1, actionChain.getEntries().size());
         Action action = actionChain.getEntries().iterator().next().getAction();
-        assertEquals(ActionFactory.TYPE_SCRIPT_RUN, action.getActionType());
+        assertInstanceOf(ScriptRunAction.class, action);
         assertEquals(SCRIPT_LABEL, action.getName());
         assertEquals(ActionChainHandlerTest.SCRIPT_SAMPLE,
                 ((ScriptRunAction)action).getScriptActionDetails().getScriptContents());
@@ -680,8 +675,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         Set<ActionChainEntry> entries =
                 ActionChainFactory.getActionChain(this.admin, CHAIN_LABEL).getEntries();
         assertEquals(1, entries.size());
-        assertEquals(ActionFactory.TYPE_CONFIGFILES_DEPLOY,
-                entries.iterator().next().getAction().getActionType());
+        assertInstanceOf(ConfigDeployAction.class, entries.iterator().next().getAction());
 
     }
 
@@ -787,6 +781,6 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
                 CHAIN_LABEL) > 0);
         assertEquals(1, actionChain.getEntries().size());
         Action action = actionChain.getEntries().iterator().next().getAction();
-        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+        assertInstanceOf(ApplyStatesAction.class, action);
     }
 }
