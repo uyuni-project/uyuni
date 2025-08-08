@@ -60,8 +60,6 @@ class ChannelImport(Import):
         if "release" in channel and channel["release"] is not None:
             for release in channel["release"]:
                 self.arches[release["channel_arch"]] = None
-        if "receiving_updates" not in channel or channel["receiving_updates"] is None:
-            channel["receiving_updates"] = "N"
         # Yum repo checksum type
         if (
             channel["checksum_type"]

@@ -353,7 +353,6 @@ class Channel(Information):
         "installer_updates": StringType,
         "product_name_id": IntType,
         "channel_product_id": IntType,
-        "receiving_updates": StringType,
         "checksum_type": StringType,  # xml dumps >= 3.5
         "channel_access": StringType,
         # XXX Not really useful stuff

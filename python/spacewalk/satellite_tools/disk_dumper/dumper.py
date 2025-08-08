@@ -959,7 +959,6 @@ class ChannelsDumperEx(CachedDumper, exportLib.ChannelsDumper):
                cp.product channel_product,
                cp.version channel_product_version,
                cp.beta channel_product_beta,
-               c.receiving_updates,
                ct.label checksum_type,
                c.channel_access
           from rhnChannel c left outer join rhnChannel pc on c.parent_channel = pc.id
