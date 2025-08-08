@@ -678,6 +678,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
             cell={(row) => <FromNow value={row.modified} />}
           />
           <Column
+            columnKey="actions"
             width="10%"
             columnClass="text-right"
             headerClass="text-right"

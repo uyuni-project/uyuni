@@ -337,7 +337,7 @@ const PackageStates = ({ serverId }: PropsType) => {
         {headerTabs()}
         {view === "search" ? renderSearchBar() : null}
         <div className="row">
-          <table className="table table-striped">
+          <table className="table">
             <thead>
               <tr>
                 <th>{t("Package Name")}</th>
