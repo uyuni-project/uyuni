@@ -72,23 +72,32 @@ public class AccessControlNamespaceTreeHelper {
     private void handleApiNamespace(Namespace namespace, Map<Pair<String, Boolean>, NamespaceNodeJson> rootNodes) {
         String apiPath = namespace.getNamespace().substring(4);
         int lastDotIndex = apiPath.lastIndexOf('.');
+        Pair<String, Boolean> key;
 
         if (lastDotIndex == -1) {
-            rootNodes.computeIfAbsent(
-                Pair.of(apiPath, true),
-                key -> new NamespaceNodeJson(namespace, key.getLeft())
+            key = Pair.of(apiPath, true);
+            NamespaceNodeJson leafNode = rootNodes.computeIfAbsent(
+                key, k -> new NamespaceNodeJson(namespace, k.getLeft())
             );
+            leafNode.mergeAccessMode(namespace);
         }
         else {
             String parentName = apiPath.substring(0, lastDotIndex);
             String childName = apiPath.substring(lastDotIndex + 1);
 
+            key = Pair.of(parentName, true);
             NamespaceNodeJson parentNode = rootNodes.computeIfAbsent(
-                Pair.of(parentName, true),
-                key -> new NamespaceNodeJson(key.getLeft(), true)
+                key, k -> new NamespaceNodeJson(k.getLeft(), true)
             );
 
-            parentNode.addChild(new NamespaceNodeJson(namespace, childName));
+            NamespaceNodeJson childLeaf = parentNode.getChildLeaf(childName);
+            if (childLeaf == null) {
+                childLeaf = new NamespaceNodeJson(namespace, childName);
+                parentNode.getChildren().add(childLeaf);
+            }
+            else {
+                childLeaf.mergeAccessMode(namespace);
+            }
         }
     }
 
@@ -101,12 +110,12 @@ public class AccessControlNamespaceTreeHelper {
      */
     private void handleWebNamespace(Namespace namespace, Map<Pair<String, Boolean>, NamespaceNodeJson> rootNodes) {
         int firstDotIndex = namespace.getNamespace().indexOf('.');
-
         if (firstDotIndex == -1) {
-            rootNodes.computeIfAbsent(
-                Pair.of(namespace.getNamespace(), false),
-                key -> new NamespaceNodeJson(namespace, key.getLeft())
+            Pair<String, Boolean> key = Pair.of(namespace.getNamespace(), false);
+            NamespaceNodeJson leafNode = rootNodes.computeIfAbsent(
+                key, k -> new NamespaceNodeJson(namespace, k.getLeft())
             );
+            leafNode.mergeAccessMode(namespace);
             return;
         }
 
@@ -119,23 +128,29 @@ public class AccessControlNamespaceTreeHelper {
         int secondDotIndex = namespace.getNamespace().indexOf('.', firstDotIndex + 1);
         if (secondDotIndex == -1) {
             String childName = namespace.getNamespace().substring(firstDotIndex + 1);
-            if (parentNode.getChild(childName) == null) {
-                parentNode.addChild(new NamespaceNodeJson(namespace, childName));
+            NamespaceNodeJson existingLeaf = parentNode.getChildLeaf(childName);
+            if (existingLeaf == null) {
+                parentNode.getChildren().add(new NamespaceNodeJson(namespace, childName));
+            }
+            else {
+                existingLeaf.mergeAccessMode(namespace);
             }
         }
         else {
             String intermediateName = namespace.getNamespace().substring(firstDotIndex + 1, secondDotIndex);
-            NamespaceNodeJson intermediateNode = parentNode.getChild(intermediateName);
-
+            NamespaceNodeJson intermediateNode = parentNode.getChildBranch(intermediateName);
             if (intermediateNode == null) {
                 intermediateNode = new NamespaceNodeJson(intermediateName, false);
-                parentNode.addChild(intermediateNode);
+                parentNode.getChildren().add(intermediateNode);
             }
 
             String leafName = namespace.getNamespace().substring(secondDotIndex + 1);
-
-            if (intermediateNode.getChild(leafName) == null) {
-                intermediateNode.addChild(new NamespaceNodeJson(namespace, leafName));
+            NamespaceNodeJson finalLeaf = intermediateNode.getChildLeaf(leafName);
+            if (finalLeaf == null) {
+                intermediateNode.getChildren().add(new NamespaceNodeJson(namespace, leafName));
+            }
+            else {
+                finalLeaf.mergeAccessMode(namespace);
             }
         }
     }

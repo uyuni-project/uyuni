@@ -16,8 +16,6 @@ package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.domain.access.Namespace;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -26,11 +24,9 @@ public class NamespaceNodeJson implements Comparable<NamespaceNodeJson> {
     private final String namespace;
     private final String name;
     private final String description;
-    private final String accessMode;
+    private String accessMode;
     private final Set<NamespaceNodeJson> children = new TreeSet<>();
     private final boolean isAPI;
-
-    private final transient Map<String, NamespaceNodeJson> childrenMap = new HashMap<>();
 
     /**
      * Constructor to be used for non-leaf node namespaces
@@ -39,12 +35,12 @@ public class NamespaceNodeJson implements Comparable<NamespaceNodeJson> {
      * @param isAPIIn whether this is an API node
      */
     public NamespaceNodeJson(String nodeIn, boolean isAPIIn) {
+        this.id = null;
         this.name = nodeIn;
         this.namespace = nodeIn;
         this.description = "";
         this.accessMode = "";
         this.isAPI = isAPIIn;
-        this.id = null;
     }
 
     /**
@@ -62,32 +58,84 @@ public class NamespaceNodeJson implements Comparable<NamespaceNodeJson> {
         this.isAPI = namespaceIn.getNamespace().startsWith("api.");
     }
 
+    /**
+     * Finds a child node that is a BRANCH (placeholder with no ID).
+     *
+     * @param nameIn the name of the branch node to find
+     * @return the NamespaceNodeJson representing the branch, or null if not found
+     */
+    public NamespaceNodeJson getChildBranch(String nameIn) {
+        for (NamespaceNodeJson child : children) {
+            if (child.name.equals(nameIn) && child.id == null) {
+                return child;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Finds a child node that is a LEAF (has an ID).
+     * @param nameIn the name of the leaf node to find
+     * @return the NamespaceNodeJson representing the leaf, or null if not found
+     */
+    public NamespaceNodeJson getChildLeaf(String nameIn) {
+        for (NamespaceNodeJson child : children) {
+            if (child.name.equals(nameIn) && child.id != null) {
+                return child;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Merges the access mode for an existing leaf node (e.g., to handle R + W = RW).
+     * @param namespaceIn the Namespace object to merge access mode from
+     */
+    public void mergeAccessMode(Namespace namespaceIn) {
+        String newAccessMode = namespaceIn.getAccessMode().name();
+        if (!this.accessMode.equals(newAccessMode) && !"RW".equals(this.accessMode)) {
+            this.accessMode = "RW";
+        }
+    }
+
+    /**
+     * Gets the ID of this node.
+     * @return the ID, or null if this is a branch node
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Gets the namespace of this node.
+     * @return the namespace string
+     */
     public String getNamespace() {
         return namespace;
     }
 
     /**
-     * Adds a child node to this namespace node.
-     * @param child - the child namespace node to add
+     * Gets the access mode of this node.
+     * @return the access mode string
      */
-    public void addChild(NamespaceNodeJson child) {
-        if (!childrenMap.containsKey(child.getNamespace())) {
-            childrenMap.put(child.getNamespace(), child);
-            children.add(child);
-        }
+    public String getAccessMode() {
+        return accessMode;
     }
 
     /**
-     * Gets the child nodes of this namespace node.
-     * @param nameIn - the name of the child node to retrieve
-     * @return - the child namespace node
+     * Gets the children of this node.
+     * @return children nodes as a set
      */
-    public NamespaceNodeJson getChild(String nameIn) {
-        return childrenMap.get(nameIn);
+    public Set<NamespaceNodeJson> getChildren() {
+        return children;
     }
 
     @Override
     public int compareTo(NamespaceNodeJson other) {
-        return this.name.compareToIgnoreCase(other.name);
+        int nameCompare = this.name.compareToIgnoreCase(other.name);
+        if (nameCompare != 0) {
+            return nameCompare;
+        }
+        return this.namespace.compareTo(other.namespace);
     }
 }
