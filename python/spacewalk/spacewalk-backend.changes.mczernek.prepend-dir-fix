@@ -1,0 +1,2 @@
+- Fix PREPENDED_DIR error when importing
+  pkgs (gh#uyuni-project/uyuni#9613)
