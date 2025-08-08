@@ -33,6 +33,7 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,5 +96,19 @@ public class PackageUpdateAction extends PackageAction {
     @Override
     public List<Map<String, String>> createActionSpecificDetails(ServerAction serverAction) {
         return createPackageActionSpecificDetails();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalCall<?> prepareStagingTargets(List<MinionSummary> minionSummaries) {
+        List<List<String>> args = getDetails().stream()
+                .map(d -> Arrays.asList(d.getPackageName().getName(),
+                        d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
+                .toList();
+        LOG.info("Executing staging of packages");
+        return State.apply(List.of(SaltParameters.PACKAGES_PKGDOWNLOAD),
+                Optional.of(Collections.singletonMap(SaltParameters.PARAM_PKGS, args)));
     }
 }
