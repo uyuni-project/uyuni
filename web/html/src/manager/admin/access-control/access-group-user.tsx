@@ -85,27 +85,29 @@ const AccessGroupUsers = (props: Props) => {
     <div>
       {!props.state.id ? (
         <>
-      <div className="d-flex">
-        <div className="me-5">
-          <strong className="me-1">Name:</strong>
-          {props.state.name}
-        </div>
-        <div className="me-5">
-          <strong className="me-1">Description:</strong>
-          {props.state.description}
-        </div>
-        <div>
-          <strong className="me-1">Organization:</strong>
-          {props.state.orgName}
-        </div>
-      </div>
-      <hr></hr> </>): null}
+          <div className="d-flex">
+            <div className="me-5">
+              <strong className="me-1">Name:</strong>
+              {props.state.name}
+            </div>
+            <div className="me-5">
+              <strong className="me-1">Description:</strong>
+              {props.state.description}
+            </div>
+            <div>
+              <strong className="me-1">Organization:</strong>
+              {props.state.orgName}
+            </div>
+          </div>
+          <hr></hr>{" "}
+        </>
+      ) : null}
       <Form
         initialValues={props.state.users}
         // TODO: Use onChange instead of validate to update access group details
         // onChange={updateUserList}
         validate={updateUserList}
-        onSubmit={() => {}}
+        onSubmit={() => { }}
         divClass="col-md-12"
         formDirection="form-horizontal"
       >
@@ -132,12 +134,6 @@ const AccessGroupUsers = (props: Props) => {
         <Column columnKey="login" comparator={Utils.sortByText} header={t("Username")} cell={(item) => item.login} />
         <Column columnKey="email" comparator={Utils.sortByText} header={t("Email")} cell={(item) => item.email} />
         <Column columnKey="name" comparator={Utils.sortByText} header={t("Real Name")} cell={(item) => item.name} />
-        <Column
-          columnKey="orgName"
-          comparator={Utils.sortByText}
-          header={t("Organization")}
-          cell={(item) => item.orgName}
-        />
 
         <Column
           columnKey="action"
