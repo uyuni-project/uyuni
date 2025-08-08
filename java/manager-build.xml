@@ -36,6 +36,7 @@
     <property name="branding.src.dir" value="${basedir}/../branding/java/code/src"/>
     <property name="frontend.src.dir" value="${basedir}/../web/html/src"/>
     <property name="frontend.dist.dir" value="${basedir}/../web/html/src/dist"/>
+    <property name="schema.src.dir" value="${basedir}/../schema/spacewalk/upgrade"/>
 
     <property name="ssh.socket.file" value="${user.home}/.ssh/manager-build-tunnel-${deploy.host}-${deploy.user}"/>
     <property name="ssh.socket.option" value="-o ControlPath=${ssh.socket.file}"/>
@@ -119,27 +120,41 @@
     </condition>
 
     <!-- macros for deployment -->
-    <macrodef name="deploy-directory">
+    <macrodef name="deploy-to-temp-directory">
         <attribute name="source"/>
-        <attribute name="destination"/>
-        <attribute name="syncParameters" default=""/>
+        <element name="tasks" implicit="true" optional="true" />
         <sequential>
+            <echo message="Creating temp directory" level="verbose" />
             <!-- Define a temporary directory or fallback to /tmp/deploy-dir -->
             <local name="deploy.temp.dir" />
             <deploy-execute outputProperty="deploy.temp.dir" command="mktemp -d" />
             <property name="deploy.temp.dir" value="/tmp/deploy-temp-dir" />
-
-            <echo message="Deploying directory @{source} to @{destination} using ${deploy.temp.dir}" />
 
             <!-- Extract to the temporary directory -->
             <echo message="Executing sh -c &quot;tar c -C @{source} -f - . | ${deploy.executor.command} ${deploy.executor.parameters} 'tar xf - -C ${deploy.temp.dir}/'&quot;" level="verbose"/>
             <exec failonerror="true" executable="sh" logerror="true">
                 <arg line="-c &quot;tar c -C @{source} -f - . | ${deploy.executor.command} ${deploy.executor.parameters} 'tar xf - -C ${deploy.temp.dir}/ --no-same-owner --no-same-permissions'&quot;"/>
             </exec>
-            <!-- Use rsync to synchronize the folder -->
-            <deploy-execute command="rsync -a @{syncParameters} ${deploy.temp.dir}/ @{destination}" />
-            <!-- Remove the temporary stuff -->
+
+            <tasks/>
+
+            <echo message="Cleaning up temp directory ${deploy.temp.dir}" level="verbose" />
+            <!-- Cleanup -->
             <deploy-execute command="rm -rf ${deploy.temp.dir}" />
+        </sequential>
+    </macrodef>
+
+    <macrodef name="deploy-directory">
+        <attribute name="source"/>
+        <attribute name="destination"/>
+        <attribute name="syncParameters" default=""/>
+        <sequential>
+            <deploy-to-temp-directory source="@{source}">
+                <echo message="Deploying directory @{source} to @{destination} using ${deploy.temp.dir}" />
+
+                <!-- Use rsync to synchronize the folder -->
+                <deploy-execute command="rsync -a @{syncParameters} ${deploy.temp.dir}/ @{destination}" />
+            </deploy-to-temp-directory>
         </sequential>
     </macrodef>
 
@@ -644,5 +659,29 @@
     <target name="deploy-restart-container">
         <echo message="This target is obsolete and will be removed. Please use:" />
         <echo message="         ant -f manager-build.xml -Ddeploy.mode=container deploy-restart" />
+    </target>
+
+    <target name="apply-schema-migrations" depends="check-deploy-mode, ensure-server-access" description="Apply all available schema migrations">
+        <echo message="Applying all schema migrations..."/>
+        <sequential>
+            <deploy-to-temp-directory source="${schema.src.dir}">
+                <echo message="Stopping spacewalk-service..." />
+                <deploy-execute command="spacewalk-service stop" />
+
+                <property name="match" value="susemanager-schema-5.*" />
+                <property name="argline" value="-c &quot;${deploy.executor.command} ${deploy.executor.parameters} 'find ${deploy.temp.dir}/${match} -type f -name &quot;*.sql&quot; -exec spacewalk-sql --select-mode-direct {} \\\;'&quot;" />
+
+                <echo message="Finding and applying migrations with:" level="verbose" />
+                <echo message="${argline}" level="verbose" />
+                <local name="result" />
+                <exec failonerror="true" executable="sh" logerror="true" outputproperty="result">
+                    <arg line="${argline}"/>
+                </exec>
+                <echo message="${result}" />
+
+                <echo message="Starting spacewalk-service..." />
+                <deploy-execute command="spacewalk-service start" />
+            </deploy-to-temp-directory>
+        </sequential>
     </target>
 </project>
