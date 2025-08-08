@@ -18,6 +18,7 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -667,7 +668,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
                 user, server, targetSet, channelIDs, true, false, scheduleDate, false);
         // Get the scheduled action and check the contents
         DistUpgradeAction action = (DistUpgradeAction) ActionFactory.lookupById(actionID);
-        assertEquals(ActionFactory.TYPE_DIST_UPGRADE, action.getActionType());
+        assertInstanceOf(DistUpgradeAction.class, action);
+
         assertEquals(user, action.getSchedulerUser());
         assertEquals(scheduleDate, action.getEarliestAction());
         Set<ServerAction> serverActions = action.getServerActions();
