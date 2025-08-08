@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-certs-tools
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -18,6 +18,9 @@
 # needsbinariesforbuild
 
 
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
+
 %if 0%{?suse_version}
 %global pub_dir /srv/www/htdocs/pub
 %else
@@ -29,9 +32,9 @@
 %global __python %{_bindir}/python3
 
 Name:           spacewalk-certs-tools
-Version:        5.1.6
+Version:        5.2.0
 Release:        0
-Summary:        Spacewalk SSL Key/Cert Tool
+Summary:        %{productprettyname} SSL Key/Cert Tool
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
@@ -56,10 +59,10 @@ Requires:       susemanager-build-keys-web
 
 %description
 This package contains tools to generate the SSL certificates required by
-Spacewalk.
+%{productprettyname}.
 
 %package -n python3-%{name}
-Summary:        Spacewalk SSL Key/Cert Tool
+Summary:        %{productprettyname} SSL Key/Cert Tool
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 BuildRequires:  python3

@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-client-tools
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -16,6 +16,8 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
 
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8 || 0%{?mageia}
 %global build_py3   1
@@ -65,9 +67,9 @@
 %bcond_with    test
 
 Name:           spacewalk-client-tools
-Version:        5.1.6
+Version:        5.2.0
 Release:        0
-Summary:        Support programs and libraries for Spacewalk
+Summary:        Support programs and libraries for %{productprettyname}
 License:        GPL-2.0-only
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
@@ -151,11 +153,11 @@ Requires:       systemd
 
 %description
 Spacewalk Client Tools provides programs and libraries to allow your
-system to receive software updates from Spacewalk.
+system to receive software updates from %{productprettyname}.
 
 %if 0%{?build_py2}
 %package -n python2-%{name}
-Summary:        Support programs and libraries for Spacewalk
+Summary:        Support programs and libraries for %{productprettyname}
 %if "%{_vendor}" == "debbuild"
 Group:          python
 %else
@@ -198,7 +200,7 @@ Python 2 specific files of %{name}.
 
 %if 0%{?build_py3}
 %package -n python3-%{name}
-Summary:        Support programs and libraries for Spacewalk
+Summary:        Support programs and libraries for %{productprettyname}
 %if "%{_vendor}" == "debbuild"
 Group:          python
 %else

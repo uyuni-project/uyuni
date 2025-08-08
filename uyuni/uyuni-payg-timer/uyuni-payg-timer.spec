@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-payg-timer
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,6 +15,8 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
 
 %global debug_package %{nil}
 #Compat macro for new _fillupdir macro introduced in Nov 2017
@@ -22,9 +24,9 @@
   %define _fillupdir %{_localstatedir}/adm/fillup-templates
 %endif
 Name:           uyuni-payg-timer
-Version:        5.1.2
+Version:        5.2.0
 Release:        0
-Summary:        Uyuni PAYG Timer Package
+Summary:        %{productprettyname} PAYG Timer Package
 License:        GPL-2.0-only
 Group:          System/Fhs
 URL:            https://github.com/uyuni-project/uyuni
@@ -36,7 +38,7 @@ BuildArch:      noarch
 %systemd_requires
 
 %description
-Uyuni is a systems management application that will
+%{productprettyname} is a systems management application that will
 inventory, provision, update and control your Linux machines.
 This package provide a timer for Cloud PAYG usage.
 
@@ -54,7 +56,6 @@ install -m 644 uyuni-payg-timer.service  %{buildroot}%{_unitdir}/
 install -m 755 uyuni-payg-extract-data.py %{buildroot}%{_sbindir}/uyuni-payg-extract-data
 
 %files
-%defattr(-,root,root)
 %{!?_licensedir:%global license %doc}
 %license LICENSE
 %{_sbindir}/uyuni-payg-extract-data

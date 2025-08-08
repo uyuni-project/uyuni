@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-tftpsync-recv
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,11 +15,13 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           susemanager-tftpsync-recv
-Version:        5.1.2
+Version:        5.2.0
 Release:        0
-Summary:        Reciever for SUSE Manager tftp sync
+Summary:        Reciever for %{productprettyname} tftp sync
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
@@ -41,8 +43,8 @@ Requires(pre):  httpd
 %endif
 
 %description
-Use SUSE Manager Proxy as installation server. Provide the capability
-that cobbler on a SUSE Manager Server distribute PXE config and images
+Use %{productprettyname} Proxy as installation server. Provide the capability
+that Cobbler on a %{productprettyname} Server distribute PXE config and images
 to the proxies.
 
 %prep
@@ -67,7 +69,7 @@ fi
 if [ -f %{_sysconfdir}/apache2/conf.d/susemanager-tftpsync-recv.conf.rpmnew ]; then
     PARENT_FQDN=$( grep -E -m1 "^proxy.rhn_parent[[:space:]]*=" %{_sysconfdir}/rhn/rhn.conf | sed 's/^proxy.rhn_parent[[:space:]]*=[[:space:]]*\(.*\)/\1/' || echo "" )
     if [ -z "$PARENT_FQDN" ]; then
-            echo "Could not determine SUSE Manager Parent Hostname! Got /etc/rhn/rhn.conf vanished?" >&2;
+            echo "Could not determine %{productprettyname} Parent Hostname! Got /etc/rhn/rhn.conf vanished?" >&2;
             exit 1;
     fi;
 
@@ -84,7 +86,6 @@ fi
 %dir %{_var}/log/tftpsync
 %config(noreplace) %{_sysconfdir}/apache2/conf.d/susemanager-tftpsync-recv.conf
 
-%defattr(-,root,root,-)
 %license COPYING
 %doc answers.txt README
 %dir /srv/www/tftpsync

@@ -1,7 +1,7 @@
 #
 # spec file for package rhnlib
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -40,7 +40,7 @@
 %endif
 
 Name:           rhnlib
-Version:        5.1.2
+Version:        5.2.0
 Release:        0
 Summary:        Python libraries for the Spacewalk project
 License:        GPL-2.0-only

@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-search
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -27,7 +27,7 @@
 %define oro (oro or jakarta-oro)
 
 Name:           spacewalk-search
-Version:        5.1.4
+Version:        5.2.0
 Release:        0
 Summary:        Spacewalk Full Text Search Server
 License:        Apache-2.0 AND GPL-2.0-only

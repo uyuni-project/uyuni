@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-coco-attestation
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -16,10 +16,13 @@
 #
 
 
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
+
 Name:           uyuni-coco-attestation
-Version:        5.1.3
+Version:        5.2.0
 Release:        0
-Summary:        Uyuni utility for Confidential Computing Attestation
+Summary:        %{productprettyname} utility for Confidential Computing Attestation
 License:        GPL-2.0-only
 Group:          System/Daemons
 URL:            https://www.uyuni-project.org
@@ -39,29 +42,29 @@ BuildRequires:  mvn(org.uyuni-project:uyuni-java-common)
 BuildRequires:  mvn(org.uyuni-project:uyuni-java-parent:pom:)
 
 %description
-System daemon used by Uyuni to validate the results of confidential computing attestation.
+System daemon used by %{productprettyname} to validate the results of confidential computing attestation.
 
 %package core
-Summary:        Uyuni utility for Confidential Computing Attestation
+Summary:        %{productprettyname} utility for Confidential Computing Attestation
 BuildArch:      noarch
 
 %description core
-System daemon used by Uyuni to validate the results of confidential computing attestation.
+System daemon used by %{productprettyname} to validate the results of confidential computing attestation.
 
 %ifarch x86_64
 %package module-snpguest
-Summary:        Confidential computing SNPGuest attestation module for Uyuni
+Summary:        Confidential computing SNPGuest attestation module for %{productprettyname}
 Requires:       snpguest
 
 %description module-snpguest
-Module for the Uyuni Confidential Computing Attestation that uses SnpGuest.
+Module for the %{productprettyname} Confidential Computing Attestation that uses SnpGuest.
 %endif
 
 %package module-secureboot
-Summary:        Confidential computing SecureBoot attestation module for Uyuni
+Summary:        Confidential computing SecureBoot attestation module for %{productprettyname}
 
 %description module-secureboot
-Module for the Uyuni Confidential Computing Attestation for SecureBoot uses the output of mokutil.
+Module for the %{productprettyname} Confidential Computing Attestation for SecureBoot uses the output of mokutil.
 
 %package        javadoc
 Summary:        API documentation for %{name}
@@ -123,7 +126,6 @@ cd -
 %endif
 
 %files core -f .mfiles
-%defattr(-,root,root)
 %dir %{_datadir}/coco-attestation/
 %dir %{_datadir}/coco-attestation/conf/
 %dir %{_datadir}/coco-attestation/lib/
@@ -139,7 +141,6 @@ cd -
 
 %ifarch x86_64
 %files module-snpguest -f .mfiles-module-snpguest
-%defattr(-,root,root)
 %dir %{_datadir}/coco-attestation/certs/
 %{_datadir}/coco-attestation/lib/attestation-module-snpguest.jar
 %{_datadir}/coco-attestation/certs/*

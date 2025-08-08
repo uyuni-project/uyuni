@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-branding
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -16,6 +16,8 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
 
 %global debug_package %{nil}
 %global susemanager_shared_path  %{_datadir}/susemanager
@@ -23,9 +25,9 @@
 %global tomcat_path %{wwwroot}/tomcat
 %global wwwdocroot %{wwwroot}/htdocs
 Name:           spacewalk-branding
-Version:        5.1.1
+Version:        5.2.0
 Release:        0
-Summary:        Spacewalk branding data
+Summary:        %{productprettyname} branding data
 License:        GPL-2.0-only AND OFL-1.1
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
@@ -46,16 +48,16 @@ BuildRequires:  apache2
 %endif
 
 %description
-Spacewalk specific branding, CSS, and images.
+%{productprettyname} specific branding, CSS, and images.
 
 %package devel
-Summary:        Spacewalk LESS source files for development use
+Summary:        %{productprettyname} LESS source files for development use
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 Requires:       %{name} = %{version}-%{release}
 
 %description devel
-This package contains LESS source files corresponding to Spacewalk's
+This package contains LESS source files corresponding to %{productprettyname}'s
 CSS files.
 
 %prep

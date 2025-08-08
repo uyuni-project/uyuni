@@ -1,7 +1,7 @@
 #
 # spec file for package supportutils-plugin-susemanager
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,14 +15,14 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
 Name:           supportutils-plugin-susemanager
-Version:        5.1.4
+Version:        5.2.0
 Release:        0
-Summary:        Supportconfig Plugin for SUSE Manager
+Summary:        Supportconfig Plugin for %{productprettyname}
 License:        GPL-2.0-only
-# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
-Group:          Documentation/SuSE
+Group:          Documentation/SUSE
 Source:         %{name}-%{version}.tar.gz
 URL:            https://github.com/uyuni-project/uyuni
 Requires:       supportutils
@@ -33,7 +33,7 @@ BuildArch:      noarch
 
 %description
 Extends supportconfig functionality to include system information about
-SUSE Manager. The supportconfig saves the plugin output to plugin-susemanager.txt.
+%{productprettyname}. The supportconfig saves the plugin output to plugin-susemanager.txt.
 
 %prep
 %setup -q

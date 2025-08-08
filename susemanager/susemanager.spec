@@ -15,7 +15,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-## The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
 %{!?productprettyname: %global productprettyname Uyuni}
 
 %if 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
@@ -59,7 +59,7 @@
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        5.1.11
+Version:        5.2.0
 Release:        0
 Summary:        %{productprettyname} specific scripts
 License:        GPL-2.0-only

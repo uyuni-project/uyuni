@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-base
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,6 +15,8 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
 
 %global debug_package %{nil}
 #Compat macro for new _fillupdir macro introduced in Nov 2017
@@ -31,20 +33,20 @@
 %define apache_group apache
 %endif
 Name:           uyuni-base
-Version:        5.1.3
+Version:        5.2.0
 Release:        0
-Summary:        Uyuni Base Package
+Summary:        %{productprettyname} Base Package
 License:        GPL-2.0-only
 Group:          System/Fhs
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 
 %description
-Uyuni is a systems management application that will
+%{productprettyname} is a systems management application that will
 inventory, provision, update and control your Linux machines.
 
 %package common
-Summary:        Base structure for Uyuni server and proxy
+Summary:        Base structure for %{productprettyname} Server and Proxy
 Group:          System/Fhs
 %if 0%{?suse_version} >= 1500
 Requires(pre):  group(www)
@@ -54,11 +56,11 @@ Requires(pre):  httpd
 %endif
 
 %description common
-Basic filesystem hierarchy for Uyuni server and proxy.
+Basic filesystem hierarchy for %{productprettyname} Server and Proxy.
 
 %if 0%{?suse_version} >= 1500 || 0%{?rhel} >= 9
 %package server
-Summary:        Base structure for Uyuni server
+Summary:        Base structure for %{productprettyname} server
 Group:          System/Fhs
 Requires(pre):  %{_sbindir}/groupadd
 Requires(pre):  %{_sbindir}/usermod
@@ -74,16 +76,16 @@ Requires(pre):  httpd
 %endif
 
 %description server
-Basic filesystem hierarchy for Uyuni server.
+Basic filesystem hierarchy for %{productprettyname} Server.
 %endif
 
 %package proxy
-Summary:        Base structure for Uyuni proxy
+Summary:        Base structure for %{productprettyname} Proxy
 Group:          System/Fhs
 Requires(pre):  uyuni-base-common
 
 %description proxy
-Basic filesystem hierarchy for Uyuni proxy.
+Basic filesystem hierarchy for %{productprettyname} proxy.
 
 %prep
 %setup -q
@@ -111,7 +113,6 @@ getent passwd %{apache_user} >/dev/null && %{_sbindir}/usermod -a -G susemanager
 %endif
 
 %files common
-%defattr(-,root,root)
 %{!?_licensedir:%global license %doc}
 %license LICENSE
 %dir %attr(750,root,%{apache_group}) %{_sysconfdir}/rhn
@@ -120,7 +121,6 @@ getent passwd %{apache_user} >/dev/null && %{_sbindir}/usermod -a -G susemanager
 
 %if 0%{?suse_version} >= 1500 || 0%{?rhel} >= 9
 %files server
-%defattr(-,root,root)
 %dir %attr(775,%{apache_user}, root) %{_localstatedir}/spacewalk
 %dir %attr(775,%{apache_user}, %{apache_group}) %{_localstatedir}/spacewalk/systems
 %dir %attr(775,%{apache_user}, %{apache_group}) %{_localstatedir}/spacewalk/packages
@@ -128,7 +128,6 @@ getent passwd %{apache_user} >/dev/null && %{_sbindir}/usermod -a -G susemanager
 %endif
 
 %files proxy
-%defattr(-,root,root)
 %dir %{_datadir}/rhn/proxy
 
 %changelog
