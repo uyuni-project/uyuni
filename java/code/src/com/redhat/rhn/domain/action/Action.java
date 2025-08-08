@@ -562,5 +562,15 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     public LocalCall<?> prepareStagingTargets(List<MinionSummary> minionSummaries) {
         return null;
     }
+
+    /**
+     * cleanup old reboot actions
+     * @param bootTime date of boot time
+     * @param sa server action connected to this action
+     * @return true if should clean up old reboot actions
+     * */
+    public boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
+        return false;
+    }
 }
 
