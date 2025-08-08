@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-proxy-docs
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk-proxy-docs
-Version:        5.1.1
+Version:        5.2.0
 Release:        0
 Summary:        Spacewalk Proxy Server Documentation
 License:        OPL-1.0
@@ -58,7 +58,6 @@ install -m 644 LICENSE %{buildroot}/%{_defaultdocdir}/%{name}/
 install -m 644 squid.conf.sample %{buildroot}/%{_defaultdocdir}/%{name}/
 
 %files
-%defattr(-,root,root)
 %docdir %{_defaultdocdir}/%{name}
 %dir %{_defaultdocdir}/%{name}
 %{_defaultdocdir}/%{name}/*

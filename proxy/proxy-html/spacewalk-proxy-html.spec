@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-proxy-html
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -24,7 +24,7 @@
 %endif
 
 Name:           spacewalk-proxy-html
-Version:        5.1.2
+Version:        5.2.0
 Release:        0
 Summary:        The HTML component for Spacewalk Proxy
 License:        GPL-2.0-only
@@ -32,10 +32,10 @@ License:        GPL-2.0-only
 Group:          Applications/Internet
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildArch:      noarch
+Requires:       httpd
 Obsoletes:      rhns-proxy-html < 5.3.0
 Provides:       rhns-proxy-html = 5.3.0
-Requires:       httpd
+BuildArch:      noarch
 
 %description
 This package contains placeholder html pages, which the Spacewalk Server
@@ -65,7 +65,6 @@ cp -pR %{proxy_dir_name}/sources/img/* %{buildroot}%{htmldir}/sources/img/
 cp -pR %{proxy_dir_name}/*.html %{buildroot}%{htmldir}/
 
 %files
-%defattr(-,root,root)
 %dir %{htmldir}
 %{htmldir}/index.html
 %{htmldir}/sources

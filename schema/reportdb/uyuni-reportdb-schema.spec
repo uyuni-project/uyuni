@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-reportdb-schema
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -17,12 +17,15 @@
 #
 
 
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
+
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           uyuni-reportdb-schema
-Version:        5.1.4
+Version:        5.2.0
 Release:        0
-Summary:        Report DB SQL schema for Spacewalk server
+Summary:        Report DB SQL schema for %{productprettyname} server
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
@@ -48,7 +51,7 @@ Requires:       susemanager-schema-utility
 %define postgres %{rhnroot}/reportdb
 
 %description
-uyuni-reportdb-schema is the SQL schema for the SUSE Manager server.
+uyuni-reportdb-schema is the SQL schema for the %{productprettyname} server.
 
 %prep
 

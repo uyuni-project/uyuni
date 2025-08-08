@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-tftpsync
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -24,7 +24,7 @@
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 %define python_sitelib %(%{pythonX} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 Name:           susemanager-tftpsync
-Version:        5.1.1
+Version:        5.2.0
 Release:        0
 Summary:        Sync cobbler created tftp enviroment to SUSE Manager Proxies
 License:        LGPL-2.1-only
