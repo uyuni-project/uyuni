@@ -25,9 +25,11 @@ import com.redhat.rhn.common.util.test.TimeUtilsTest;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.HardwareRefreshAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigDateDetails;
 import com.redhat.rhn.domain.action.config.ConfigDateFileAction;
+import com.redhat.rhn.domain.action.config.ConfigDeployAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.ConfigUploadAction;
@@ -88,7 +90,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
     public void testLookup() throws Exception {
 
         Action a = createAction(user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
-        assertEquals(a.getActionType(), ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        assertInstanceOf(HardwareRefreshAction.class, a);
         Long id = a.getId();
         Action a2 = ActionFactory.lookupById(id);
         assertNotNull(a2);
@@ -102,7 +104,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testLookupLastCompletedAction() throws Exception {
         ConfigAction a = (ConfigAction) createAction(user, ActionFactory.TYPE_CONFIGFILES_DEPLOY);
-        assertEquals(a.getActionType(), ActionFactory.TYPE_CONFIGFILES_DEPLOY);
+        assertInstanceOf(ConfigDeployAction.class, a);
         //complete it
         assertNotNull(a.getServerActions());
         for (ServerAction next : a.getServerActions()) {
