@@ -49,7 +49,6 @@ export function AllSystems(props: Props) {
             id="addsystem"
             icon="fa-plus"
             className="btn btn-primary"
-            title={t("Add a system")}
             text={t("Add system")}
             href="/rhn/manager/systems/bootstrap"
           />

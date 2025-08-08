@@ -32,7 +32,13 @@ export function SsmCounter(props: Props) {
           </span>
         </div>
       </a>
-      <Button id="clear-ssm" title={t("Clear selected system set")} handler={ssm_clear} icon="fa-eraser" />
+      <Button
+        id="clear-ssm"
+        tooltipPlacement="bottom"
+        title={t("Clear selected system set")}
+        handler={ssm_clear}
+        icon="fa-eraser"
+      />
     </>
   );
 }
