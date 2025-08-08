@@ -125,7 +125,7 @@ Then(/^the list of packages of image "([^"]*)" with version "([^"]*)" is not emp
 
   image_details = $api_test.image.get_details(image_id)
   log "Image Details: #{image_details}"
-  raise ScriptError, 'the list of image packages is empty' if (image_details['installedPackages']).zero?
+  raise ScriptError, 'the list of image packages is empty' if image_details['installedPackages'].zero?
 end
 
 Then(/^the image "([^"]*)" with version "([^"]*)" doesn't exist via API calls$/) do |image_non_exist, version|
