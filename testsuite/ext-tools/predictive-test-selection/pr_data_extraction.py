@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 """
-pr_data_extraction.py
-
 Extracts data from the latest N pull requests (PRs) in the Uyuni repository that triggered 
 a GitHub Actions test workflow and generated Cucumber reports.
 
@@ -27,7 +25,7 @@ Requirements:
 Usage:
     python pr_data_extraction.py <N>
     python pr_data_extraction.py '#<PR_NUMBER>'
-    Where <N> is the number of latest Uyuni PRs (with Cucumber reports) to extract data from,
+    Where <N> is the number of latest Uyuni PRs (with Cucumber reports) to extract data from
     or '#<PR_NUMBER>' is a specific PR number to extract features for.
 """
 import os
@@ -49,38 +47,9 @@ from config import (
     MAX_CONSECUTIVE_PRS_WITHOUT_CUCUMBER_REPORTS,
     CUCUMBER_REPORTS_PARENT_DIR,
 )
+from utilities import setup_logging
 
-def setup_logging(level, log_file="script.log"):
-    """
-    Set up logging to both console and file.
-
-    Args:
-        level (int): Logging level (e.g., logging.DEBUG, logging.INFO).
-        log_file (str): Path to the file where logs will be written.
-
-    Returns:
-        logging.Logger: Configured logger instance.
-    """
-    if level == logging.DEBUG:
-        fmt = "%(levelname)s - %(filename)s:%(lineno)d - %(message)s"
-    else:
-        fmt = "%(levelname)s - %(message)s"
-    formatter = logging.Formatter(fmt)
-    my_logger = logging.getLogger(__name__)
-    my_logger.setLevel(level)
-    if not my_logger.handlers:
-        console_handler = logging.StreamHandler()
-        console_handler.setFormatter(formatter)
-        console_handler.setLevel(level)
-        my_logger.addHandler(console_handler)
-
-        file_handler = logging.FileHandler(log_file)
-        file_handler.setFormatter(formatter)
-        file_handler.setLevel(level)
-        my_logger.addHandler(file_handler)
-    return my_logger
-
-logger = setup_logging(logging.INFO)
+logger = setup_logging(logging.INFO, log_file="pr_data_extraction.log")
 
 def load_github_token():
     """
