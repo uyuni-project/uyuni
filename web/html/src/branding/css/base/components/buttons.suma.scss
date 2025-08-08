@@ -176,9 +176,8 @@
 
 .panel-heading,
 th {
-  .btn,
   .btn-link,
-  a {
+  a:not(.btn) {
     border: none;
     padding: 0;
     font-weight: 600 !important;

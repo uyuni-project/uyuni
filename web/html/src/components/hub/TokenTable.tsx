@@ -98,8 +98,8 @@ export class TokenTable extends React.Component<Props, State> {
         />
         {(this.props.allowDeletion || this.props.allowToggleValidity) && (
           <Column
-            columnClass="text-right"
-            headerClass="text-right"
+            columnClass="text-center"
+            headerClass="text-center"
             header={t("Actions")}
             cell={(row: AccessToken) => this.renderActions(row)}
           />
