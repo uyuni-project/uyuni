@@ -27,11 +27,13 @@
 
         <div class="text-right">
           <c:if test="${requestScope.key != null}">
-            <input type="submit" name="delete" class="btn"
-               value='<bean:message key="sdc.details.activation.deletekey"/>'/>
+            <button type="submit" name="delete" class="btn">
+               <bean:message key="sdc.details.activation.deletekey"/>
+            </button>
           </c:if>
-          <input type="submit" name="generate" class="btn btn-default"
-             value='<bean:message key="sdc.details.activation.generatekey"/>'/>
+          <button type="submit" name="generate" class="btn btn-default">
+            <bean:message key="sdc.details.activation.generatekey"/>
+          </button>
         </div>
     </html:form>
 

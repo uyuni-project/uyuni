@@ -32,8 +32,9 @@
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
                 <c:if test="${not empty packages}">
-                    <input type="submit" class="btn btn-danger" name="dispatch"
-                           value='<bean:message key="errata.edit.packages.list.removepackages"/>'/>
+                    <button type="submit" class="btn btn-danger" name="dispatch">
+                        <bean:message key="errata.edit.packages.list.removepackages"/>
+                    </button>
                 </c:if>
             </div>
         </div>
