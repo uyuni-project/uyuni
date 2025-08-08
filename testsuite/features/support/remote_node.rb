@@ -1,8 +1,9 @@
-# Copyright (c) 2024 SUSE LLC.
+# Copyright (c) 2025 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'timeout'
 require_relative 'network_utils'
+require_relative 'system'
 
 # The RemoteNode class represents a remote node.
 # It is used to interact with the remote node through SSH.
@@ -313,6 +314,14 @@ class RemoteNode
       sleep 1
     end
     $stdout.puts "Node #{hostname} is online."
+  end
+
+  def host
+    @host_system ||= System.new(local_os_family)
+  end
+
+  def container
+    @container_system ||= System.new(os_family)
   end
 
   private
