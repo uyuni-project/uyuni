@@ -33,7 +33,6 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.EntityExistsException;
-import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.access.AccessGroupManager;
 import com.redhat.rhn.manager.org.OrgManager;
 
@@ -49,6 +48,8 @@ import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -113,8 +114,20 @@ public class AccessGroupController {
      * @return the result JSON object
      */
     public static String listNamespaces(Request request, Response response, User user) {
+        String copyFromParam = request.queryParams("copyFrom");
+        List<Long> copyFromIds = Collections.emptyList();
+        if (copyFromParam != null && !copyFromParam.isBlank()) {
+            copyFromIds = Arrays.stream(copyFromParam.split(","))
+                    .map(String::trim)
+                    .map(Long::parseLong)
+                    .toList();
+        }
+        var copyFrom = copyFromIds.stream()
+            .flatMap(id -> NamespaceFactory.getAccessGroupNamespaces(id).stream())
+            .toList();
         var namespaces = ACCESS_CONTROL_NAMESPACE_TREE_HELPER.buildTree(NamespaceFactory.list());
-        return json(GSON, response, namespaces, new TypeToken<>() { });
+        var result = Map.of("namespaces", namespaces, "toCopy", copyFrom);
+        return json(GSON, response, result, new TypeToken<>() { });
     }
 
     /**
@@ -192,11 +205,7 @@ public class AccessGroupController {
             AccessGroup accessGroup;
             if (json.getId() == null) {
                 Org org = OrgFactory.lookupById(json.getOrgId());
-                Set<AccessGroup> groups = json.getAccessGroups().stream()
-                        .map(group -> MANAGER.lookup(group, user.getOrg())
-                                .orElseThrow(() -> new EntityNotExistsException(group)))
-                        .collect(Collectors.toUnmodifiableSet());
-                accessGroup = MANAGER.create(json.getName(), json.getDescription(), org, groups);
+                accessGroup = MANAGER.create(json.getName(), json.getDescription(), org, Collections.emptyList());
             }
             else {
                 accessGroup = MANAGER.lookupById(json.getId()).orElseThrow();
