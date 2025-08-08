@@ -1925,7 +1925,7 @@ public class ActionManager extends BaseManager {
             Date earliestAction, Set<Long> serverIds)
         throws TaskomaticApiException {
 
-        String name = getActionName(type);
+        String name = type.getPackageActionName();
 
         Action action = scheduleAction(scheduler, type, name, earliestAction, serverIds);
         ActionFactory.save(action);
@@ -2025,34 +2025,6 @@ public class ActionManager extends BaseManager {
                 .executeUpdates(paramList);
     }
         }
-
-    /**
-     * Returns a name string from an Action type
-     * @param type the type
-     * @return a name
-     */
-    public static String getActionName(ActionType type) {
-        String name = "";
-        if (type.equals(ActionFactory.TYPE_PACKAGES_REMOVE)) {
-            name = "Package Removal";
-        }
-        else if (type.equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
-            name = "Package Install/Upgrade";
-        }
-        else if (type.equals(ActionFactory.TYPE_PACKAGES_VERIFY)) {
-            name = "Package Verify";
-        }
-        else if (type.equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST)) {
-            name = "Package List Refresh";
-        }
-        else if (type.equals(ActionFactory.TYPE_PACKAGES_DELTA)) {
-            name = "Package Synchronization";
-        }
-        else if (type.equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
-            name = "Lock packages";
-        }
-        return name;
-    }
 
     /**
      * Schedules the appropriate package action
