@@ -61,10 +61,10 @@ const ChildChannel = (props: Props) => {
         <Highlight enabled={props.search?.length > 0} text={name} highlight={props.search}></Highlight>
       </label>
       <span>
-        {tooltip ? ( // eslint-disable-next-line jsx-a11y/anchor-is-valid
-          <a href="#">
+        {tooltip ? (
+          <span>
             <i className="fa fa-info-circle spacewalk-help-link" title={tooltip}></i>
-          </a>
+          </span>
         ) : null}
         {recommended ? (
           <span className="recommended-tag-base" title={t("This channel is recommended")}>

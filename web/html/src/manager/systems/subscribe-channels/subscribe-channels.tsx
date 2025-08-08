@@ -536,10 +536,9 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
           </label>{" "}
           &nbsp;
           {this.dependenciesTooltip(c.id) ? (
-            // eslint-disable-next-line jsx-a11y/anchor-is-valid
-            <a href="#">
+            <span>
               <i className="fa fa-info-circle spacewalk-help-link" title={this.dependenciesTooltip(c.id)}></i>
-            </a>
+            </span>
           ) : null}
           &nbsp;
           {c.recommended ? (

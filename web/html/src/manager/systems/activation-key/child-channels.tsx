@@ -133,10 +133,9 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
               </label>
               &nbsp;
               {toolTip ? (
-                // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                <a href="#">
+                <span>
                   <i className="fa fa-info-circle spacewalk-help-link" title={toolTip}></i>
-                </a>
+                </span>
               ) : null}
               &nbsp;
               {c.recommended ? (
