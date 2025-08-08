@@ -572,5 +572,13 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     public boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
         return false;
     }
+
+    /**
+     * Check if an action can be scheduled anyway at given date for given systems.
+     * @return true if an action can be scheduled anyway
+     */
+    public boolean canBeScheduledAnyway() {
+        return false;
+    }
 }
 
