@@ -54,7 +54,7 @@ import java.util.stream.Collectors;
  * Action - Class representation of the table rhnAction.
  */
 public class Action extends BaseDomainHelper implements Serializable, WebSocketActionIdProvider {
-    private static final Logger LOG = LogManager.getLogger(Action.class);
+    protected static final Logger LOG = LogManager.getLogger(Action.class);
 
     public static final Integer NAME_LENGTH_LIMIT = 128;
 
@@ -552,6 +552,15 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
      */
     public List<Map<String, String>> createActionSpecificDetails(ServerAction serverAction) {
         return new ArrayList<>();
+    }
+
+    /**
+     * Prepare to execute staging job via Salt
+     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
+     * @return a call with the impacted minions
+     */
+    public LocalCall<?> prepareStagingTargets(List<MinionSummary> minionSummaries) {
+        return null;
     }
 }
 

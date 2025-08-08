@@ -40,6 +40,7 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -244,5 +245,28 @@ public class ErrataAction extends Action {
         }
 
         return additionalInfo;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalCall<?> prepareStagingTargets(List<MinionSummary> minionSummaries) {
+        Set<Long> errataIds = getErrata().stream()
+                .map(Errata::getId).collect(Collectors.toSet());
+        Map<Long, Map<Long, Set<ErrataInfo>>> errataNames = ServerFactory
+                .listErrataNamesForServers(minionSummaries.stream().map(MinionSummary::getServerId)
+                        .collect(Collectors.toSet()), errataIds);
+        List<String> errataArgs = errataNames.entrySet().stream()
+                .flatMap(e -> e.getValue().entrySet().stream()
+                        .flatMap(f -> f.getValue().stream()
+                                .map(ErrataInfo::getName)
+                        )
+                )
+                .toList();
+
+        LOG.info("Executing staging of patches");
+        return State.apply(List.of(SaltParameters.PACKAGES_PATCHDOWNLOAD),
+                Optional.of(Collections.singletonMap(SaltParameters.PARAM_PATCHES, errataArgs)));
     }
 }
