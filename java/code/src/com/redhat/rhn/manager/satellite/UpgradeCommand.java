@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.manager.BaseTransactionCommand;
 import com.redhat.rhn.manager.kickstart.KickstartSessionCreateCommand;
 
+import com.suse.manager.saltboot.SaltbootUtils;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
@@ -86,6 +87,8 @@ public class UpgradeCommand extends BaseTransactionCommand {
             UPGRADE_TASK_NAME + "system_threshold_conf";
     public static final String ALL_SYSTEMS_SYNC_ALL =
             UPGRADE_TASK_NAME + "all_systems_sync_all";
+    public static final String MIGRATE_COBBLER =
+            UPGRADE_TASK_NAME + "migrate_cobbler";
 
     private final Path saltRootPath;
     private final Path legacyStatesBackupDirectory;
@@ -164,6 +167,9 @@ public class UpgradeCommand extends BaseTransactionCommand {
                     case ALL_SYSTEMS_SYNC_ALL:
                         allSystemsSyncAll();
                         break;
+                    case MIGRATE_COBBLER:
+                        migrateCobbler(t);
+                        return; // do not remove the task here, migrateCobbler handles it
                     default:
                 }
                 // always run this
@@ -407,5 +413,32 @@ public class UpgradeCommand extends BaseTransactionCommand {
         catch (Exception e) {
             log.error("Error running sync_all. Ignoring.", e);
         }
+    }
+
+    /**
+     * Migrate cobbler entries.
+     * The execution must be delayed, because cobbler auth needs a fully started tomcat.
+     */
+    private void migrateCobbler(Task t) {
+        new Thread(() -> {
+            try {
+                log.info("Cobbler migration: waiting");
+                Thread.sleep(60000);
+                log.info("Cobbler migration: started");
+                SaltbootUtils.migrateSaltboot();
+                TaskFactory.remove(t);
+                HibernateFactory.commitTransaction();
+                log.info("Cobbler migration: finished");
+            }
+            catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            catch (Exception e) {
+                log.error("Cobbler migration failed", e);
+            }
+            finally {
+                HibernateFactory.closeSession();
+            }
+        }).start();
     }
 }

@@ -40,6 +40,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.saltboot.PXEEvent;
 import com.suse.manager.saltboot.PXEEventMessage;
 import com.suse.manager.saltboot.PXEEventMessageAction;
+import com.suse.manager.saltboot.SaltbootUtils;
 import com.suse.salt.netapi.datatypes.Event;
 
 import org.cobbler.Distro;
@@ -79,16 +80,20 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
 
         // create cobbler distro and saltboot profile
         Distro distro = new Distro.Builder<String>()
-                .setName(user.getOrg().getId() + "-" + BOOT_IMAGE)
+                .setName(SaltbootUtils.makeCobblerName(user.getOrg(), BOOT_IMAGE))
                 .setKernel("kernel_file")
                 .setInitrd("initrd_file")
                 .setKernelOptions(Optional.of("panic=60 splash=silent"))
                 .build(cobblerMock);
         distro.save();
 
-        Profile imageProfile = Profile.create(cobblerMock, user.getOrg().getId() + "-" + BOOT_IMAGE, distro);
+        Profile imageProfile = Profile.create(cobblerMock,
+                                              SaltbootUtils.makeCobblerName(user.getOrg(), BOOT_IMAGE),
+                                              distro);
         imageProfile.save();
-        Profile profile = Profile.create(cobblerMock, user.getOrg().getId() + "-" + SALTBOOT_GROUP, distro);
+        Profile profile = Profile.create(cobblerMock,
+                                         SaltbootUtils.makeCobblerName(user.getOrg(), SALTBOOT_GROUP),
+                                         distro);
         profile.save();
     }
 
@@ -411,7 +416,8 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
 
         // System should be registered in cobbler
         assertNotNull(minion.getCobblerId());
-        assertNotNull(SystemRecord.lookupByName(cobblerMock, user.getOrg().getId() + "-" + minion.getMinionId()));
+        assertNotNull(SystemRecord.lookupByName(cobblerMock,
+                                                SaltbootUtils.makeCobblerName(user.getOrg(), minion.getMinionId())));
     }
 
     /**
@@ -481,7 +487,8 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         assertNull(repart);
 
         assertNotNull(minion.getCobblerId());
-        assertNotNull(SystemRecord.lookupByName(cobblerMock, user.getOrg().getId() + "-" + minion.getMinionId()));
+        assertNotNull(SystemRecord.lookupByName(cobblerMock,
+                                                SaltbootUtils.makeCobblerName(user.getOrg(), minion.getMinionId())));
     }
 
     /**
@@ -561,7 +568,8 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         assertNull(repart);
 
         assertNotNull(minion.getCobblerId());
-        assertNotNull(SystemRecord.lookupByName(cobblerMock, user.getOrg().getId() + "-" + minion.getMinionId()));
+        assertNotNull(SystemRecord.lookupByName(cobblerMock,
+                                                SaltbootUtils.makeCobblerName(user.getOrg(), minion.getMinionId())));
     }
 
     /**
@@ -632,6 +640,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         assertNull(repart);
 
         assertNotNull(minion.getCobblerId());
-        assertNotNull(SystemRecord.lookupByName(cobblerMock, user.getOrg().getId() + "-" + minion.getMinionId()));
+        assertNotNull(SystemRecord.lookupByName(cobblerMock,
+                                                SaltbootUtils.makeCobblerName(user.getOrg(), minion.getMinionId())));
     }
 }

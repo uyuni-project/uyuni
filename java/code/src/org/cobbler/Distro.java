@@ -71,7 +71,7 @@ public class Distro extends CobblerObject {
      * @return the distro that maps to the name or null
      */
     public static Distro lookupByName(CobblerConnection client, String name) {
-        return handleLookup(client, lookupDataMapByName(client, name, "get_distro"));
+        return handleLookup(client, lookupDataMapByName(client, name, "get_distro", false, false));
     }
 
     /**
@@ -98,7 +98,7 @@ public class Distro extends CobblerObject {
         if (distroMap != null) {
             Distro distro = new Distro(client);
             distro.dataMap = distroMap;
-            distro.dataMapResolved = (Map<String, Object>) client.invokeMethod(
+            distro.dataMapResolved = (Map<String, Object>) client.invokeTokenMethod(
                     "get_distro",
                     distro.getName(), // object name
                     false, // flatten
@@ -124,7 +124,7 @@ public class Distro extends CobblerObject {
         for (Map<String, Object> distroMap : cDistros) {
             Distro distro = new Distro(connection);
             distro.dataMap = distroMap;
-            distro.dataMapResolved = (Map<String, Object>) connection.invokeMethod(
+            distro.dataMapResolved = (Map<String, Object>) connection.invokeTokenMethod(
                     "get_distro",
                     distro.getName(), // object name
                     false, // flatten
