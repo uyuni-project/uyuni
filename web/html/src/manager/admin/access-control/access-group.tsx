@@ -24,13 +24,15 @@ export type AccessGroupState = {
   orgName: string;
   accessGroups: string[];
   permissions: {
-    id: number;
-    namespace: string;
-    description: string;
-    accessMode: string;
-    view: boolean;
-    modify: boolean;
-  }[];
+    [namespace: string]: {
+      id: number;
+      namespace: string;
+      description: string;
+      accessMode: string;
+      view: boolean;
+      modify: boolean;
+    };
+  };
   users: { id: number; username: string; email: string; orgId: string }[];
   errors: any;
 };
@@ -52,7 +54,7 @@ const AccessGroup = (props: AccessGroupProps) => {
         orgId: undefined,
         orgName: "",
         accessGroups: [],
-        permissions: [],
+        permissions: {},
         users: [],
         errors: {},
       }
@@ -80,38 +82,23 @@ const AccessGroup = (props: AccessGroupProps) => {
     }));
   };
 
-  const handleNamespace = (newname, type) => {
-    type === "view" ? (newname.view = !newname.view) : (newname.modify = !newname.modify);
+  const handlePermissionsChange = (changes: Record<string, AccessGroupState["permissions"][0] | undefined>) => {
     setAccessGroupState((prevState) => {
-      if (newname.view || newname.modify) {
-        let add = true;
-        // Modify existing item
-        prevState = {
-          ...prevState,
-          permissions: prevState.permissions.map((p) => {
-            if (p.namespace === newname.namespace) {
-              add = false;
-              return type === "view" ? { ...p, view: newname.view } : { ...p, modify: newname.modify };
-            } else {
-              return p;
-            }
-          }),
-        };
-        // Add new item
-        if (add) {
-          return {
-            ...prevState,
-            permissions: [...prevState.permissions, newname],
-          };
+      const newPermissions = { ...prevState.permissions };
+
+      for (const namespace in changes) {
+        const change = changes[namespace];
+        if (change) {
+          newPermissions[namespace] = change;
+        } else {
+          delete newPermissions[namespace];
         }
-        return prevState;
-        // Remove existing item
-      } else {
-        return {
-          ...prevState,
-          permissions: prevState.permissions.filter((p) => p.namespace !== newname.namespace),
-        };
       }
+
+      return {
+        ...prevState,
+        permissions: newPermissions,
+      };
     });
   };
 
@@ -133,7 +120,12 @@ const AccessGroup = (props: AccessGroupProps) => {
   };
 
   const handleSaveAccessGroup = () => {
-    Network.post("/rhn/manager/api/admin/access-group/save", accessGroupState)
+    const payload = {
+      ...accessGroupState,
+      permissions: Object.values(accessGroupState.permissions),
+    };
+
+    Network.post("/rhn/manager/api/admin/access-group/save", payload)
       .then((_) => {
         setMessages(MessagesUtils.info(t("Access Group successfully created.")));
         window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/access-group`);
@@ -152,7 +144,11 @@ const AccessGroup = (props: AccessGroupProps) => {
     {
       title: "Namespaces & Permissions",
       content: (
-        <AccessGroupPermissions state={accessGroupState} onChange={handleNamespace} errors={accessGroupState.errors} />
+        <AccessGroupPermissions
+          state={accessGroupState}
+          onChange={handlePermissionsChange}
+          errors={accessGroupState.errors}
+        />
       ),
       validate: null,
     },

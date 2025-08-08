@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { AccessGroupState } from "manager/admin/access-control/access-group";
 
@@ -19,41 +19,82 @@ const AccessGroupPermissions = (props: Props) => {
   const [namespaces, setNamespaces] = useState([]);
   const checkboxRefs = useRef({});
 
-  const handleChange = (item, type, forceValue = null) => {
-    if (item.children.length > 0) {
-      const newValue = forceValue !== null ? forceValue : getCheckState(item, type) !== "checked";
-      item.children.forEach((child) => {
-        if (child[type] !== newValue) {
-          handleChange(child, type, newValue);
+  const handleChange = (item, type) => {
+    const changes = {};
+
+    const collectChanges = (currentItem, forceValue = null) => {
+      const isParent = currentItem.children && currentItem.children.length > 0;
+
+      if (isParent) {
+        const newValue = forceValue !== null ? forceValue : getCheckState(currentItem, type) !== "checked";
+        currentItem.children.forEach((child) => collectChanges(child, newValue));
+      } else {
+        const existingPermission = props.state.permissions[currentItem.namespace];
+        const newPermission = {
+          ...(existingPermission || currentItem),
+          [type]: forceValue !== null ? forceValue : !(existingPermission && existingPermission[type]),
+        };
+
+        if (!newPermission.view && !newPermission.modify) {
+          changes[currentItem.namespace] = undefined;
+        } else {
+          changes[currentItem.namespace] = newPermission;
         }
-      });
-    } else {
-      props.onChange(item, type);
+      }
+    };
+
+    collectChanges(item);
+
+    if (Object.keys(changes).length > 0) {
+      props.onChange(changes);
     }
   };
 
   useEffect(() => {
-    Network.get("/rhn/manager/api/admin/access-group/namespaces")
+    let endpoint = "/rhn/manager/api/admin/access-group/namespaces";
+    const hasCopy = props.state.accessGroups && props.state.accessGroups.length > 0;
+    if (hasCopy) {
+      endpoint += `?copyFrom=${props.state.accessGroups.join(",")}`;
+    }
+
+    Network.get(endpoint)
       .then((response) => {
-        setNamespaces(response);
+        const namespacesToSet = response["namespaces"] || [];
+        setNamespaces(namespacesToSet);
+
+        if (hasCopy && response["toCopy"]) {
+          const itemsToCopy = response["toCopy"];
+          if (itemsToCopy.length > 0) {
+            const initialChanges = {};
+            itemsToCopy.forEach((item) => {
+              initialChanges[item.namespace] = {
+                ...item,
+                view: item.accessMode.includes("R"),
+                modify: item.accessMode.includes("W"),
+              };
+            });
+            props.onChange(initialChanges);
+          }
+        }
       })
       .catch((error) => {
-        // TODO: Handle errors properly
         console.error("Error fetching namespaces:", error);
       });
   }, []);
 
-  const getCheckState = (item, type) => {
-    if (item.children.length > 0) {
-      const childStates = item.children.map((child) => getCheckState(child, type));
-      if (childStates.every((s) => s === "checked")) return "checked";
-      if (childStates.every((s) => s === "unchecked")) return "unchecked";
-      return "partially";
-    }
-    const permission = props.state.permissions.find((p) => p.namespace === item.namespace);
-    const value = permission ? permission[type] : item[type];
-    return value ? "checked" : "unchecked";
-  };
+  const getCheckState = useCallback(
+    (item, type) => {
+      if (item.children && item.children.length > 0) {
+        const childStates = item.children.map((child) => getCheckState(child, type));
+        if (childStates.every((s) => s === "checked")) return "checked";
+        if (childStates.every((s) => s === "unchecked")) return "unchecked";
+        return "partially";
+      }
+      const permission = props.state.permissions[item.namespace];
+      return permission && permission[type] ? "checked" : "unchecked";
+    },
+    [props.state.permissions]
+  );
 
   useEffect(() => {
     namespaces.forEach((item) => {
