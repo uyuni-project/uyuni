@@ -39,6 +39,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * PackageUpdateAction
  */
@@ -110,5 +112,13 @@ public class PackageUpdateAction extends PackageAction {
         LOG.info("Executing staging of packages");
         return State.apply(List.of(SaltParameters.PACKAGES_PKGDOWNLOAD),
                 Optional.of(Collections.singletonMap(SaltParameters.PARAM_PKGS, args)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setRequestAttributeTypePackages(HttpServletRequest request) {
+        request.setAttribute("type", "packages");
     }
 }

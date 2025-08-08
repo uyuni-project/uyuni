@@ -16,9 +16,7 @@ package com.redhat.rhn.frontend.action.schedule;
 
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFormatter;
-import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -53,13 +51,7 @@ public class PackageListSetupAction extends RhnAction implements Listable<Row> {
         User user = requestContext.getCurrentUser();
         Action action = ActionManager.lookupAction(user, actionId);
 
-
-        ActionType type = action.getActionType();
-        if (type.equals(ActionFactory.TYPE_PACKAGES_UPDATE) ||
-                type.equals(ActionFactory.TYPE_PACKAGES_REMOVE)) {
-            request.setAttribute("type", "packages");
-        }
-
+        action.setRequestAttributeTypePackages(request);
 
         ListHelper helper = new ListHelper(this, request);
         helper.execute();

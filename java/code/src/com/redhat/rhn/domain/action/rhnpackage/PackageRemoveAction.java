@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * PackageRemoveAction
  */
@@ -74,4 +76,11 @@ public class PackageRemoveAction extends PackageAction {
         return createPackageActionSpecificDetails();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setRequestAttributeTypePackages(HttpServletRequest request) {
+        request.setAttribute("type", "packages");
+    }
 }

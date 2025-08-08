@@ -50,6 +50,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Action - Class representation of the table rhnAction.
  */
@@ -588,5 +590,34 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     public String getPackageParameter() {
         return "upgrade";
     }
+
+    /**
+     * sets the "dry run" attribute to a servlet request
+     * @param request servlet request where to set the attribute
+     * @return true if "dry run"
+     */
+    public boolean setRequestAttributeDryRun(HttpServletRequest request) {
+        request.setAttribute("typeDistUpgradeDryRun", false);
+        return false;
+    }
+
+    /**
+     * sets the "playbook" attribute to a servlet request
+     * @param request      servlet request where to set the attribute
+     * @param serverAction the server action to get a formatted list of inventory systems accessible to the user
+     * @param user         the current user
+     */
+    public void setRequestAttributePlaybook(HttpServletRequest request, ServerAction serverAction, User user) {
+        request.setAttribute("typePlaybook", false);
+    }
+
+    /**
+     * sets the "packages" attribute to a servlet request
+     * @param request servlet request where to set the attribute
+     */
+    public void setRequestAttributeTypePackages(HttpServletRequest request) {
+        //default does nothing
+    }
+
 }
 
