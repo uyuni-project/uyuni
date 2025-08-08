@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.salt.netapi.calls.LocalCall;
 
@@ -203,4 +204,14 @@ public class ApplyStatesAction extends Action {
 
         return additionalInfo;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canBeScheduledAnyway() {
+        // Special Case: we want to allow channel changing but it calls a state.apply
+        return (getDetails() != null && getDetails().getMods().equals(List.of(ApplyStatesEventMessage.CHANNELS)));
+    }
+
 }
