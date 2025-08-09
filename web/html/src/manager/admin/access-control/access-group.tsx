@@ -1,7 +1,7 @@
 import { hot } from "react-hot-loader/root";
 
 import * as React from "react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import AccessGroupTabContainer from "manager/admin/access-control/access-group-tab-container";
 
@@ -12,7 +12,7 @@ import { StepsProgressBar } from "components/steps-progress-bar";
 
 import Network from "utils/network";
 
-import AccessGroupDetails from "./access-group-details";
+import AccessGroupDetails, { AccessGroupDetailsHandle } from "./access-group-details";
 import AccessGroupPermissions from "./access-group-permissions";
 import AccessGroupUsers from "./access-group-user";
 
@@ -60,8 +60,13 @@ const AccessGroup = (props: AccessGroupProps) => {
       }
   );
 
-  const validateDetailsTab = () => {
-    return !!accessGroupState.name && !!accessGroupState.description && !!accessGroupState.orgId;
+  const detailsTabRef = useRef<AccessGroupDetailsHandle>(null);
+
+  const validateDetailsTab = async () => {
+    if (detailsTabRef.current) {
+      return await detailsTabRef.current.validate();
+    }
+    return false;
   };
 
   const handleFormChange = (newAccessGroupState) => {
@@ -137,9 +142,14 @@ const AccessGroup = (props: AccessGroupProps) => {
     {
       title: "Details",
       content: (
-        <AccessGroupDetails state={accessGroupState} onChange={handleFormChange} errors={accessGroupState.errors} />
+        <AccessGroupDetails
+          ref={detailsTabRef}
+          state={accessGroupState}
+          onChange={handleFormChange}
+          errors={accessGroupState.errors}
+        />
       ),
-      validate: validateDetailsTab(),
+      validate: validateDetailsTab,
     },
     {
       title: "Namespaces & Permissions",
