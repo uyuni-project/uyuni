@@ -3,6 +3,8 @@ import { hot } from "react-hot-loader/root";
 import * as React from "react";
 import { useRef, useState } from "react";
 
+import { access } from "fs";
+
 import AccessGroupTabContainer from "manager/admin/access-control/access-group-tab-container";
 
 import withPageWrapper from "components/general/with-page-wrapper";
@@ -16,48 +18,69 @@ import AccessGroupDetails, { AccessGroupDetailsHandle } from "./access-group-det
 import AccessGroupPermissions from "./access-group-permissions";
 import AccessGroupUsers from "./access-group-user";
 
-export type AccessGroupState = {
+type Permission = {
+  id: number;
+  namespace: string;
+  description: string;
+  accessMode: string;
+  view: boolean;
+  modify: boolean;
+};
+
+type User = { id: number; username: string; email: string; orgId: string };
+
+type AccessGroupType<P> = {
   id: number | undefined;
   name: string;
   description: string;
   orgId: number | undefined;
   orgName: string;
   accessGroups: string[];
-  permissions: {
-    [namespace: string]: {
-      id: number;
-      namespace: string;
-      description: string;
-      accessMode: string;
-      view: boolean;
-      modify: boolean;
-    };
-  };
-  users: { id: number; username: string; email: string; orgId: string }[];
+  permissions: P;
+  users: User[];
   errors: any;
 };
 
+type AccessGroupPropsType = AccessGroupType<Permission[]>;
+
+export type AccessGroupState = AccessGroupType<Record<string, Permission>>;
+
 type AccessGroupProps = {
-  accessGroup?: AccessGroupState;
+  accessGroup?: AccessGroupPropsType;
+};
+
+const defaultAccessGroupState: AccessGroupState = {
+  id: undefined,
+  name: "",
+  description: "",
+  orgId: undefined,
+  orgName: "",
+  accessGroups: [],
+  permissions: {},
+  users: [],
+  errors: {},
+};
+
+const parsePermissions = (accessGroupProps: AccessGroupPropsType): AccessGroupState => {
+  const newPermissions: AccessGroupState["permissions"] = accessGroupProps.permissions.reduce(
+    (accumulator, currentPermission) => {
+      accumulator[currentPermission.namespace] = currentPermission;
+      return accumulator;
+    },
+    {}
+  );
+
+  return {
+    ...accessGroupProps,
+    permissions: newPermissions,
+  };
 };
 
 const AccessGroup = (props: AccessGroupProps) => {
   // TODO: Handle displaying success messages on create / update on access-group-list
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [accessGroupState, setAccessGroupState] = useState<AccessGroupState>(
-    props.accessGroup
-      ? props.accessGroup
-      : {
-        id: undefined,
-        name: "",
-        description: "",
-        orgId: undefined,
-        orgName: "",
-        accessGroups: [],
-        permissions: {},
-        users: [],
-        errors: {},
-      }
+    props.accessGroup ? parsePermissions(props.accessGroup) : defaultAccessGroupState
   );
 
   const detailsTabRef = useRef<AccessGroupDetailsHandle>(null);
