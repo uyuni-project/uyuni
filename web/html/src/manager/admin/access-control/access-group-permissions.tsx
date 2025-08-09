@@ -19,15 +19,53 @@ const AccessGroupPermissions = (props: Props) => {
   const [namespaces, setNamespaces] = useState([]);
   const checkboxRefs = useRef({});
 
+  const isItemDisabled = useCallback((item, type) => {
+    const requiredAccessMode = type === "view" ? "R" : "W";
+
+    if (!item.children || item.children.length === 0) {
+      return !item.accessMode.includes(requiredAccessMode);
+    }
+
+    return item.children.every((child) => isItemDisabled(child, type));
+  }, []);
+
+  const getCheckState = useCallback(
+    (item, type) => {
+      if (item.children && item.children.length > 0) {
+        const enabledChildren = item.children.filter((child) => !isItemDisabled(child, type));
+
+        if (enabledChildren.length === 0) {
+          return "unchecked";
+        }
+
+        const childStates = enabledChildren.map((child) => getCheckState(child, type));
+        if (childStates.every((s) => s === "checked")) return "checked";
+        if (childStates.every((s) => s === "unchecked")) return "unchecked";
+        return "partially";
+      }
+      const permission = props.state.permissions[item.namespace];
+      return permission && permission[type] ? "checked" : "unchecked";
+    },
+    [props.state.permissions, isItemDisabled]
+  );
+
   const handleChange = (item, type) => {
     const changes = {};
 
-    const collectChanges = (currentItem, forceValue = null) => {
+    const collectChanges = (currentItem, forceValue: boolean | null = null) => {
+      if (isItemDisabled(currentItem, type)) {
+        return;
+      }
+
       const isParent = currentItem.children && currentItem.children.length > 0;
 
       if (isParent) {
         const newValue = forceValue !== null ? forceValue : getCheckState(currentItem, type) !== "checked";
-        currentItem.children.forEach((child) => collectChanges(child, newValue));
+        currentItem.children.forEach((child) => {
+          if (!isItemDisabled(child, type)) {
+            collectChanges(child, newValue);
+          }
+        });
       } else {
         const existingPermission = props.state.permissions[currentItem.namespace];
         const newPermission = {
@@ -82,20 +120,6 @@ const AccessGroupPermissions = (props: Props) => {
       });
   }, []);
 
-  const getCheckState = useCallback(
-    (item, type) => {
-      if (item.children && item.children.length > 0) {
-        const childStates = item.children.map((child) => getCheckState(child, type));
-        if (childStates.every((s) => s === "checked")) return "checked";
-        if (childStates.every((s) => s === "unchecked")) return "unchecked";
-        return "partially";
-      }
-      const permission = props.state.permissions[item.namespace];
-      return permission && permission[type] ? "checked" : "unchecked";
-    },
-    [props.state.permissions]
-  );
-
   useEffect(() => {
     namespaces.forEach((item) => {
       const updateRefsRecursively = (node) => {
@@ -110,7 +134,7 @@ const AccessGroupPermissions = (props: Props) => {
       };
       updateRefsRecursively(item);
     });
-  }, [namespaces, props.state.permissions]);
+  }, [namespaces, props.state.permissions, getCheckState]);
 
   return (
     <div>
@@ -171,7 +195,7 @@ const AccessGroupPermissions = (props: Props) => {
                 ref={(el) => {
                   if (el) el.indeterminate = state === "partially";
                 }}
-                disabled={item.children.length === 0 && !item.accessMode.includes("R")}
+                disabled={isItemDisabled(item, "view")}
                 onChange={() => handleChange(item, "view")}
               />
             );
@@ -195,7 +219,7 @@ const AccessGroupPermissions = (props: Props) => {
                     el.indeterminate = state === "partially";
                   }
                 }}
-                disabled={item.children.length === 0 && !item.accessMode.includes("W")}
+                disabled={isItemDisabled(item, "modify")}
                 onChange={() => handleChange(item, "modify")}
               />
             );
