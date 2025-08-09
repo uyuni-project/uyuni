@@ -9,7 +9,6 @@ import styles from "./AccessGroup.module.scss";
 type Tab = {
   title: string;
   content: React.ReactNode;
-  validate?: boolean | null;
 };
 
 type AccessGroupTabContainerProps = {

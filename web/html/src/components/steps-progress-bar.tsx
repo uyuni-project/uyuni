@@ -6,7 +6,7 @@ import { Button, LinkButton } from "./buttons";
 type Step = {
   title: string;
   content: React.ReactNode;
-  validate?: boolean | null;
+  validate?: (() => boolean) | (() => Promise<boolean>) | null;
 };
 
 type StepsProgressBarProps = {
@@ -19,9 +19,9 @@ type StepsProgressBarProps = {
 const StepsProgressBar = ({ steps, onCreate, onCancel }: StepsProgressBarProps) => {
   const [currentStep, setCurrentStep] = useState(0);
 
-  const nextStep = () => {
+  const nextStep = async () => {
     const isLastStep = currentStep === steps.length - 1;
-    const currentValidate = steps[currentStep].validate;
+    const currentValidate = steps[currentStep].validate ? await steps[currentStep].validate() : true;
 
     if ((currentValidate || currentValidate === null) && !isLastStep) {
       setCurrentStep((prevStep) => prevStep + 1);
