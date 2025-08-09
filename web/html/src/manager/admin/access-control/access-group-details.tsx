@@ -1,5 +1,7 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+
+import { FormikProps } from "formik";
 
 import { AccessGroupState } from "manager/admin/access-control/access-group";
 
@@ -7,6 +9,10 @@ import { Form } from "components/formik";
 import { Field } from "components/formik/field";
 
 import Network from "utils/network";
+
+export type AccessGroupDetailsHandle = {
+  validate: () => Promise<boolean>;
+};
 
 type Props = {
   state: AccessGroupState;
@@ -24,10 +30,12 @@ type SelectOption = {
   label: string;
 };
 
-const AccessGroupDetails = (props: Props) => {
+const AccessGroupDetails = forwardRef<AccessGroupDetailsHandle, Props>((props, ref) => {
   const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [accessGroups, setAccessGroups] = useState<SelectOption[]>([]);
   const [isLoadingGroups, setIsLoadingGroups] = useState(false);
+
+  const formikRef = useRef<FormikProps<AccessGroupState>>(null);
 
   useEffect(() => {
     getOrganizations();
@@ -66,6 +74,16 @@ const AccessGroupDetails = (props: Props) => {
     }
   }, [props.state.orgId, props.errors]);
 
+  useImperativeHandle(ref, () => ({
+    async validate() {
+      if (formikRef.current) {
+        await formikRef.current.submitForm();
+        return formikRef.current.isValid;
+      }
+      return true;
+    },
+  }));
+
   const handleFormChange = (model) => {
     const selectedOrg = organizations.find((org) => org.value === model.orgId);
 
@@ -79,6 +97,7 @@ const AccessGroupDetails = (props: Props) => {
 
   return (
     <Form
+      innerRef={formikRef}
       initialValues={props.state}
       // TODO: Use onChange instead of validate to update access group details
       // onChange={(model) => {
@@ -138,6 +157,6 @@ const AccessGroupDetails = (props: Props) => {
       ) : null}
     </Form>
   );
-};
+});
 
 export default AccessGroupDetails;
