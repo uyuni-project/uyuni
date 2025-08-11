@@ -1,55 +1,57 @@
+url: http://download.suse.de/ibs
+group: manager-51
+
 repositories:
-  Leap:
-    project: openSUSE:Leap:15.6
+  15_SP2_Update:
+    project: SUSE:SLE-15-SP2:Update
     repository: standard
-  Uyuni_Other:
-    project: systemsmanagement:Uyuni:Master:Other
-    repository: openSUSE_Leap_15.6
-  Uyuni:
-    project: systemsmanagement:Uyuni:Master
-    repository: openSUSE_Leap_15.6
-  Leap_sle:
-    url: https://download.opensuse.org/update/leap/15.6/sle
+  15_SP4_GA:
+    project: SUSE:SLE-15-SP4:GA
+    repository: standard
+  51_GA:
+    project: SUSE:SLE-15-SP7:Update:Products:MultiLinuxManager51
+    repository: standard
+
 artifacts:
   - artifact: simple-core
     # How comes that package is not noarch?
     arch: x86_64
-    repository: Uyuni_Other
+    repository: 51_GA
   - artifact: lucene-core
     jar: lucene-core
     package: lucene
-    repository: Uyuni_Other
+    repository: 51_GA
   - artifact: lucene-analyzers
     jar: lucene-analyzers
     package: lucene
-    repository: Uyuni_Other
+    repository: 51_GA
   - artifact: commons-lang3
     package: apache-commons-lang3
-    repository: Leap_sle
+    repository: 15_SP2_Update
   - artifact: commons-logging
     package: apache-commons-logging
     jar: apache-commons-logging\.jar
-    repository: Leap
+    repository: 15_SP2_Update
   - artifact: redstone-xmlrpc
     jar: redstone-xmlrpc-[0-9.]+
-    repository: Uyuni_Other
+    repository: 51_GA
   - artifact: mybatis
     package: mybatis
-    repository: Leap_sle
+    repository: 15_SP2_Update
   - artifact: quartz
-    repository: Uyuni_Other
+    repository: 51_GA
   - artifact: log4j-core
     jar: log4j-core.jar
     package: log4j
-    repository: Leap
+    repository: 15_SP2_Update
   - artifact: log4j-api
     jar: log4j-api.jar
     package: log4j
-    repository: Leap
+    repository: 15_SP2_Update
   - artifact: c3p0
-    repository: Leap
+    repository: 15_SP4_GA
   - artifact: mchange-commons-java
     package: mchange-commons
-    repository: Leap
+    repository: 15_SP4_GA
   - artifact: picocontainer
-    repository: Uyuni_Other
+    repository: 51_GA
