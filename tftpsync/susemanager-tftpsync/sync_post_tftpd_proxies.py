@@ -260,7 +260,7 @@ class ProxySync(threading.Thread):
                 "directory": path
             }
             try:
-                response = opener.open("http://%s/tftpsync/add/" % self.proxy, params, self.timeout)
+                response = opener.open("https://%s/tftpsync/add/" % self.proxy, params, self.timeout)
             except Exception as e:
                 ret = False
                 logger.error("uploading to proxy %s failed: %s", self.proxy, e)
