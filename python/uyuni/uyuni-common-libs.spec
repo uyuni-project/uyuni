@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-common-libs
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -45,7 +45,7 @@
 %global python2root %{python2_sitelib}/uyuni
 
 Name:           uyuni-common-libs
-Version:        5.1.4
+Version:        5.2.0
 Release:        0
 Summary:        Uyuni server and client libs
 License:        GPL-2.0-only

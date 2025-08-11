@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-config
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -16,6 +16,8 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
 
 %if 0%{?suse_version}
 %define apacheconfdir %{_sysconfdir}/apache2
@@ -28,9 +30,9 @@
 %endif
 
 Name:           spacewalk-config
-Version:        5.1.7
+Version:        5.2.0
 Release:        0
-Summary:        Spacewalk Configuration
+Summary:        %{productprettyname} Configuration
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
@@ -58,7 +60,7 @@ Requires:       diffutils
 Requires:       (apache2-mod_xsendfile or mod_xsendfile)
 
 %description
-Common Spacewalk configuration files and templates.
+Common %{productprettyname} configuration files and templates.
 
 %prep
 %setup -q

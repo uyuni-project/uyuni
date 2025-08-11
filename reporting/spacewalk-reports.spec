@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-reports
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -24,7 +24,7 @@
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
 Name:           spacewalk-reports
-Version:        5.1.2
+Version:        5.2.0
 Release:        0
 Summary:        Script based reporting
 License:        GPL-2.0-only

@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-utils
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -16,11 +16,13 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           spacewalk-utils
-Version:        5.1.6
+Version:        5.2.0
 Release:        0
-Summary:        Utilities that may be run against a SUSE Manager/Uyuni server
+Summary:        Utilities that may be run against a %{productprettyname} server
 License:        GPL-2.0-only AND GPL-3.0-or-later
 Group:          Productivity/Other
 URL:            https://github.com/uyuni-project/uyuni
@@ -60,7 +62,7 @@ Requires:       perl(:MODULE_COMPAT_%(eval "`perl -V:version`"; echo $version))
 %endif
 
 %description
-Utilities that may be run against a SUSE Manager server (supported) or an Uyuni server
+Utilities that may be run against a %{productprettyname} server
 
 %prep
 %setup -q
