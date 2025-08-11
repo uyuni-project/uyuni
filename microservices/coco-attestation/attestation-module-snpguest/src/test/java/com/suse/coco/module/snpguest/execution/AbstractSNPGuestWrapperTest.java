@@ -27,7 +27,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
-import java.io.InvalidClassException;
 import java.nio.file.Path;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,19 +41,11 @@ class AbstractSNPGuestWrapperTest {
     private AbstractSNPGuestWrapper wrapperVer07Below;
     private AbstractSNPGuestWrapper wrapperVer09Above;
 
-    private AbstractSNPGuestWrapper getWrapperToTest(SNPGuestWrapperFactory.SNPGuestVersion type)
-            throws InvalidClassException {
-        switch (type) {
-            case VER_07_BELOW -> {
-                return wrapperVer07Below;
-            }
-            case VER_09_ABOVE -> {
-                return wrapperVer09Above;
-            }
-            default -> {
-                throw new InvalidClassException("");
-            }
-        }
+    private AbstractSNPGuestWrapper getWrapperToTest(SNPGuestWrapperFactory.SNPGuestVersion type) {
+        return switch (type) {
+            case VER_07_BELOW -> wrapperVer07Below;
+            case VER_09_ABOVE -> wrapperVer09Above;
+        };
     }
 
     @BeforeEach
