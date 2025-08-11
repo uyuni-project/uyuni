@@ -28,6 +28,7 @@ except ImportError:
     #  python3
     import xmlrpc.client as xmlrpclib
 from rhn.rpclib import transports
+from defusedxml import xmlrpc as defused_xmlrpc
 
 # common modules
 from uyuni.common.usix import raise_with_tb
@@ -83,8 +84,11 @@ class apacheRequest:
         self.req = req
         # grab an Input object
         self.input = transports.Input(req.headers_in)
-        # make sure we have a parser and a decoder available
-        self.parser, self.decoder = xmlrpclib.getparser()
+
+        # Use defusedxml parser to protect against vulnerabilities
+        self.decoder = xmlrpclib.Unmarshaller()
+        self.parser = defused_xmlrpc.DefusedExpatParser(target=self.decoder)
+
         # Make sure the decoder doesn't assume UTF-8 data, that would break if
         # non-UTF-8 chars are sent (bug 139370)
         self.decoder._encoding = None
