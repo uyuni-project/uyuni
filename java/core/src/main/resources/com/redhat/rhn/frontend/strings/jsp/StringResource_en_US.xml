@@ -7284,6 +7284,12 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="pkg.lock.message.lockerror" xml:space="preserve">
+        <source>Failed to lock selected packages. Can't lock multiple versions of the same package.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="pkg.lock.message.unlocksuccess" xml:space="preserve">
         <source>Packages has been requested for being unlocked.</source>
         <context-group name="ctx">
