@@ -1564,7 +1564,7 @@ public class ActionManager extends BaseManager {
          *  sometimes hibernate is no fun
          */
         ActionType lookedUpType = ActionFactory.lookupActionTypeByLabel(type.getLabel());
-        Action action = createScheduledAction(user, lookedUpType, name, earliestAction);
+        Action action = ActionFactory.createAction(lookedUpType, user, name, earliestAction);
         ActionFactory.save(action);
         HibernateFactory.getSession().flush();
         return action;
@@ -1573,7 +1573,7 @@ public class ActionManager extends BaseManager {
     private static Action scheduleAction(User scheduler, Server srvr,
             ActionType type, String name, Date earliestAction) {
 
-        Action action = createScheduledAction(scheduler, type, name, earliestAction);
+        Action action = ActionFactory.createAction(type, scheduler, name, earliestAction);
 
         ServerAction sa = new ServerAction();
         sa.setStatusQueued();
@@ -1584,16 +1584,6 @@ public class ActionManager extends BaseManager {
         sa.setParentActionWithCheck(action);
 
         return action;
-    }
-
-    private static Action createScheduledAction(User scheduler, ActionType type,
-            String name, Date earliestAction) {
-        Action pa = ActionFactory.createAction(type);
-        pa.setName(name);
-        pa.setOrg(scheduler.getOrg());
-        pa.setSchedulerUser(scheduler);
-        pa.setEarliestAction(earliestAction);
-        return pa;
     }
 
     /**
