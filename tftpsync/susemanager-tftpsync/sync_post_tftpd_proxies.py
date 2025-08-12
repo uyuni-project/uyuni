@@ -26,6 +26,7 @@ import cobbler.MultipartPostHandler as MultipartPostHandler
 import json
 from concurrent import futures
 import threading
+import shlex
 
 try:
     from urllib.parse import urlencode
@@ -177,6 +178,10 @@ def check_push(fn, tftpbootdir, settings, lcache='/var/lib/cobbler'):
             db = json.load(open(dbfile, 'r'))
     except:
         pass
+
+    if fn != shlex.quote(fn):
+        logger.error("%s contains shell characters, skipping", fn)
+        return db
 
     count = 0
     while not os.path.exists(fn) and count < 10:
