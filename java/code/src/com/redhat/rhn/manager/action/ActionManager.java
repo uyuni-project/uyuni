@@ -1473,8 +1473,10 @@ public class ActionManager extends BaseManager {
 
         Set<Long> sidSet = new HashSet<>();
         sidSet.addAll(sids);
-        ScriptRunAction sra = (ScriptRunAction) scheduleAction(scheduler,
-                ActionFactory.TYPE_SCRIPT_RUN, name, earliest, sidSet);
+
+        ScriptRunAction sra = (ScriptRunAction) createAction(scheduler, ActionFactory.TYPE_SCRIPT_RUN, name, earliest);
+        scheduleForExecution(sra, sidSet);
+
         sra.setScriptActionDetails(script);
         ActionFactory.save(sra);
         taskomaticApi.scheduleActionExecution(sra);
@@ -1513,14 +1515,6 @@ public class ActionManager extends BaseManager {
 
         return ActionFactory.createScriptActionDetails(username, groupname,
                 timeout, script);
-    }
-
-    private static Action scheduleAction(User scheduler, ActionType type, String name,
-            Date earliestAction, Set<Long> serverIds) {
-        Action action = createAction(scheduler, type, name, earliestAction);
-        scheduleForExecution(action, serverIds);
-
-        return action;
     }
 
     /**
@@ -1742,9 +1736,11 @@ public class ActionManager extends BaseManager {
             Server s = SystemManager.lookupByIdAndUser(sid, scheduler);
             checkSaltOrManagementEntitlement(sid);
         }
-        return scheduleAction(scheduler, ActionFactory.TYPE_HARDWARE_REFRESH_LIST,
-                ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName(), earliestAction,
-                serverIds);
+
+        Action action = createAction(scheduler, ActionFactory.TYPE_HARDWARE_REFRESH_LIST,
+                ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName(), earliestAction);
+        scheduleForExecution(action, serverIds);
+        return action;
     }
 
     /**
@@ -1917,7 +1913,9 @@ public class ActionManager extends BaseManager {
 
         String name = type.getPackageActionName();
 
-        Action action = scheduleAction(scheduler, type, name, earliestAction, serverIds);
+        Action action = createAction(scheduler, type, name, earliestAction);
+        scheduleForExecution(action, serverIds);
+
         ActionFactory.save(action);
 
         addPackageActionDetails(List.of(action), pkgs);
@@ -2117,10 +2115,13 @@ public class ActionManager extends BaseManager {
         }
 
         ScapActionDetails scapDetails = new ScapActionDetails(path, parameters, ovalFiles);
-        ScapAction action = (ScapAction) scheduleAction(scheduler,
+
+        ScapAction action = (ScapAction) createAction(scheduler,
                 ActionFactory.TYPE_SCAP_XCCDF_EVAL,
                 ActionFactory.TYPE_SCAP_XCCDF_EVAL.getName(),
-                earliestAction, serverIds);
+                earliestAction);
+        scheduleForExecution(action, serverIds);
+
         action.setScapActionDetails(scapDetails);
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
