@@ -663,33 +663,36 @@
     <target name="apply-schema-migrations" depends="check-deploy-mode, ensure-server-access" description="Apply schema migrations">
         <echo message="Applying schema migrations..."/>
         <sequential>
-            <local name="schema.temp.dir" />
-            <exec failonerror="true" executable="mktemp" outputProperty="schema.temp.dir">
-                <arg line="-d" />
-            </exec>
             <!-- The default value is defined in schema/spacewalk/get-migrations.sh -->
             <property name="schema.version.min" value="" />
+
+            <local name="schema.temp.dir" />
+            <exec failonerror="true" executable="mktemp" outputProperty="schema.temp.dir">
+                <arg value="-d" />
+            </exec>
             <property name="schema.temp.dir" value="/tmp/schema-temp-dir" />
             <echo message="Using temp dir ${schema.temp.dir}" />
 
-            <exec executable="sh" output="${schema.temp.dir}/schema.sql" failonerror="true">
+            <local name="sql" />
+            <exec executable="sh" output="${schema.temp.dir}/schema.sql" outputProperty="sql" failonerror="true">
                 <arg value="${basedir}/../schema/spacewalk/get-migrations.sh"/>
                 <arg value="${schema.version.min}"/>
             </exec>
+            <!-- <echo message="${sql}" /> -->
 
             <deploy-to-temp-directory source="${schema.temp.dir}">
                 <echo message="Stopping spacewalk-service..." />
                 <deploy-execute command="spacewalk-service stop" />
 
                 <local name="result" />
-                <deploy-execute command="spacewalk-sql --verbose --select-mode ${deploy.temp.dir}/schema.sql" outputProperty="result" />
+                <deploy-execute command="spacewalk-sql ${deploy.temp.dir}/schema.sql" outputProperty="result" />
                 <echo message="${result}" />
 
                 <echo message="Starting spacewalk-service..." />
                 <deploy-execute command="spacewalk-service start" />
             </deploy-to-temp-directory>
 
-            <delete file="${schema.temp.dir}" quiet="false"/>
+            <delete file="${schema.temp.dir}" />
         </sequential>
     </target>
 </project>
