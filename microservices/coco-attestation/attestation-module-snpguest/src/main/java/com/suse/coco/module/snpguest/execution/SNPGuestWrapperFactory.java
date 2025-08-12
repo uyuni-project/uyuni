@@ -29,6 +29,16 @@ public class SNPGuestWrapperFactory {
 
     private static SNPGuestVersion theSnpguestVersion = null;
 
+    private static Runtime runtime = Runtime.getRuntime();
+
+    /**
+     * Method to specify a runtime. For unit testing.
+     * @param runtimeIn the runtime used to execute processes
+     */
+    public static void setRuntime(Runtime runtimeIn) {
+        runtime = runtimeIn;
+    }
+
     /**
      * Creates a SNPGuestWrapper instance with the right version
      *
@@ -67,7 +77,6 @@ public class SNPGuestWrapperFactory {
         try {
             // /usr/bin/rpm -q --queryformat '%{VERSION}\n' snpguest
 
-            Runtime runtime = Runtime.getRuntime();
             String[] versionCommand = {"/usr/bin/rpm", "-q", "--queryformat", "%{VERSION}", "snpguest"};
             Process process = runtime.exec(versionCommand);
             exitCode = process.waitFor();

@@ -38,7 +38,7 @@ public abstract class AbstractSNPGuestWrapper {
 
     protected static final Marker STDERR_MARKER = MarkerManager.getMarker("stderr");
 
-    protected Logger LOGGER;
+    protected final Logger logger;
 
     protected static final Path SNPGUEST = Path.of("/usr/bin/snpguest");
 
@@ -58,7 +58,7 @@ public abstract class AbstractSNPGuestWrapper {
      */
     protected AbstractSNPGuestWrapper(Runtime runtimeIn) {
         this.runtime = runtimeIn;
-        this.LOGGER = LogManager.getLogger(getClass());
+        this.logger = LogManager.getLogger(getClass());
     }
 
     /**
@@ -123,8 +123,8 @@ public abstract class AbstractSNPGuestWrapper {
         Process snpguestProcess;
 
         try {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Executing {}", Arrays.toString(command));
+            if (logger.isDebugEnabled()) {
+                logger.debug("Executing {}", Arrays.toString(command));
             }
 
             snpguestProcess = runtime.exec(command);
@@ -165,8 +165,8 @@ public abstract class AbstractSNPGuestWrapper {
         try (BufferedReader inErr = new BufferedReader(new InputStreamReader(stream))) {
             String line;
             while ((line = inErr.readLine()) != null) {
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug(logMarker, line);
+                if (logger.isDebugEnabled()) {
+                    logger.debug(logMarker, line);
                 }
 
                 writer.write(line);
