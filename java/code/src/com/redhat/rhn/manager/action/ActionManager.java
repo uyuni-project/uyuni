@@ -1223,9 +1223,8 @@ public class ActionManager extends BaseManager {
             return null;
         }
 
-        Action action = scheduleAction(scheduler, server,
-                ActionFactory.TYPE_PACKAGES_RUNTRANSACTION,
-                "Package Synchronization", new Date());
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_PACKAGES_RUNTRANSACTION, scheduler, new Date());
+        ActionFactory.createAddServerAction(server, action);
         action.setEarliestAction(earliest);
 
         if (!SystemManager.clientCapable(server.getId(),
@@ -1527,14 +1526,6 @@ public class ActionManager extends BaseManager {
         m.executeUpdate(params, sidList);
     }
 
-    private static Action scheduleAction(User scheduler, Server srvr,
-            ActionType type, String name, Date earliestAction) {
-
-        Action action = ActionFactory.createAction(type, scheduler, name, earliestAction);
-        ActionFactory.createAddServerAction(srvr, action);
-        return action;
-    }
-
     /**
      * Schedule a KickstartAction against a system
      * @param ksdata KickstartData to associate with this Action
@@ -1578,10 +1569,11 @@ public class ActionManager extends BaseManager {
                     scheduler, srvr, earliestAction, appendString, kickstartHost);
         }
 
-        KickstartAction ksaction = (KickstartAction) scheduleAction(scheduler, srvr,
-                ActionFactory.TYPE_KICKSTART_INITIATE,
-                ActionFactory.TYPE_KICKSTART_INITIATE.getName(),
+        KickstartAction ksaction = (KickstartAction) ActionFactory.createAction(ActionFactory.TYPE_KICKSTART_INITIATE,
+                scheduler,
                 earliestAction);
+        ActionFactory.createAddServerAction(srvr, ksaction);
+
         KickstartActionDetails kad = new KickstartActionDetails();
         kad.setAppendString(appendString);
         kad.setParentAction(ksaction);
@@ -1609,11 +1601,11 @@ public class ActionManager extends BaseManager {
             ) {
 
         KickstartGuestAction ksAction = (KickstartGuestAction)
-                scheduleAction(pcmd.getUser(),
-                        pcmd.getHostServer(),
-                        ActionFactory.TYPE_KICKSTART_INITIATE_GUEST,
-                        ActionFactory.TYPE_KICKSTART_INITIATE_GUEST.getName(),
+                ActionFactory.createAction(ActionFactory.TYPE_KICKSTART_INITIATE_GUEST,
+                        pcmd.getUser(),
                         pcmd.getScheduleDate());
+        ActionFactory.createAddServerAction(pcmd.getHostServer(), ksAction);
+
         KickstartGuestActionDetails kad = new KickstartGuestActionDetails();
         kad.setAppendString(pcmd.getExtraOptions());
         kad.setParentAction(ksAction);
@@ -1658,8 +1650,9 @@ public class ActionManager extends BaseManager {
      */
     public static Action scheduleRebootAction(User scheduler, Server srvr,
             Date earliestAction) {
-        return scheduleAction(scheduler, srvr, ActionFactory.TYPE_REBOOT,
-                ActionFactory.TYPE_REBOOT.getName(), earliestAction);
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_REBOOT, scheduler, earliestAction);
+        ActionFactory.createAddServerAction(srvr, action);
+        return action;
     }
 
     /**
@@ -1673,8 +1666,9 @@ public class ActionManager extends BaseManager {
     public static Action scheduleHardwareRefreshAction(User scheduler, Server srvr,
             Date earliestAction) {
         checkSaltOrManagementEntitlement(srvr.getId());
-        return scheduleAction(scheduler, srvr, ActionFactory.TYPE_HARDWARE_REFRESH_LIST,
-                ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName(), earliestAction);
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_HARDWARE_REFRESH_LIST, scheduler, earliestAction);
+        ActionFactory.createAddServerAction(srvr, action);
+        return action;
     }
 
     /**
@@ -2089,13 +2083,11 @@ public class ActionManager extends BaseManager {
      */
     public static Action scheduleReboot(User scheduler, Server server, Date earliestAction)
         throws TaskomaticApiException {
-        Action action = ActionManager.scheduleAction(scheduler,
-                                                     server,
-                                                     ActionFactory.TYPE_REBOOT,
-                                                     ActionFactory.TYPE_REBOOT.getName(),
-                                                     (earliestAction == null ?
-                                                      new Date() :
-                                                      earliestAction));
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_REBOOT,
+                scheduler,
+                earliestAction);
+        ActionFactory.createAddServerAction(server, action);
+
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
         return action;
@@ -2117,11 +2109,11 @@ public class ActionManager extends BaseManager {
             throw new MissingCapabilityException("spacewalk-client-cert", server);
         }
 
-        Action action = ActionManager.scheduleAction(scheduler,
-                        server,
-                        ActionFactory.TYPE_CLIENTCERT_UPDATE_CLIENT_CERT,
-                        ActionFactory.TYPE_CLIENTCERT_UPDATE_CLIENT_CERT.getName(),
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_CLIENTCERT_UPDATE_CLIENT_CERT,
+                        scheduler,
                         (earliestAction == null ? new Date() : earliestAction));
+        ActionFactory.createAddServerAction(server, action);
+
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
         return action;
@@ -2142,14 +2134,15 @@ public class ActionManager extends BaseManager {
             DistUpgradeActionDetails details, Date earliestAction)
         throws TaskomaticApiException {
         // Construct the action name
-        String name = ActionFactory.TYPE_DIST_UPGRADE.getName();
+        String actionName = ActionFactory.TYPE_DIST_UPGRADE.getName();
         if (details.isDryRun()) {
-            name += " (Dry Run)";
+            actionName += " (Dry Run)";
         }
 
         // Schedule the main action
-        DistUpgradeAction action = (DistUpgradeAction) scheduleAction(scheduler, server,
-                ActionFactory.TYPE_DIST_UPGRADE, name, earliestAction);
+        DistUpgradeAction action = (DistUpgradeAction) ActionFactory.createAction(ActionFactory.TYPE_DIST_UPGRADE,
+                scheduler, actionName, earliestAction);
+        ActionFactory.createAddServerAction(server, action);
 
         // Add the details and save
         action.setDetails(details);
