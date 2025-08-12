@@ -353,6 +353,30 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Creates, saves and returns a new Action
+     * @param typeIn the type of Action we want to create
+     * @param schedulerUser the user who created this action
+     * @param actionName the action name
+     * @param earliestAction the earliest execution date
+     * @return a saved Action
+     */
+    public static Action createAndSaveAction(ActionType typeIn, User schedulerUser, String actionName,
+                                             Date earliestAction) {
+        /**
+         * We have to relookup the type here, because most likely a static final variable
+         *  was passed in.  If we use this and the .reload() gets called below
+         *  if we try to save a new action the instace of the type in the cache
+         *  will be different than the final static variable
+         *  sometimes hibernate is no fun
+         */
+        ActionType lookedUpType = lookupActionTypeByLabel(typeIn.getLabel());
+        Action action = createAction(lookedUpType, schedulerUser, actionName, earliestAction);
+        save(action);
+        HibernateFactory.getSession().flush();
+        return action;
+    }
+
+    /**
      * Create a new Action from scratch.
      * @param typeIn the type of Action we want to create
      * @param schedulerUser the user who created this action

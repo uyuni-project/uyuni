@@ -647,7 +647,7 @@ public class ActionChainManager {
         Set<Action> result = new HashSet<>();
 
         if (actionChain == null) {
-            Action action = ActionManager.createAction(user, type, name, earliest);
+            Action action = ActionFactory.createAndSaveAction(type, user, name, earliest);
             ActionManager.scheduleForExecution(action, serverIds);
             result.add(action);
         }
@@ -657,7 +657,7 @@ public class ActionChainManager {
                 nextSortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
             }
             for (Long serverId : serverIds) {
-                Action action = ActionManager.createAction(user, type, name, earliest);
+                Action action = ActionFactory.createAndSaveAction(type, user, name, earliest);
                 ActionChainFactory.queueActionChainEntry(action, actionChain, serverId,
                     nextSortOrder);
                 result.add(action);

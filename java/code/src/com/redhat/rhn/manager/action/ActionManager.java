@@ -1474,7 +1474,8 @@ public class ActionManager extends BaseManager {
         Set<Long> sidSet = new HashSet<>();
         sidSet.addAll(sids);
 
-        ScriptRunAction sra = (ScriptRunAction) createAction(scheduler, ActionFactory.TYPE_SCRIPT_RUN, name, earliest);
+        ScriptRunAction sra = (ScriptRunAction) ActionFactory.createAndSaveAction(ActionFactory.TYPE_SCRIPT_RUN,
+                scheduler, name, earliest);
         scheduleForExecution(sra, sidSet);
 
         sra.setScriptActionDetails(script);
@@ -1538,30 +1539,6 @@ public class ActionManager extends BaseManager {
         List<Long> sidList = new ArrayList<>();
         sidList.addAll(serverIds);
         m.executeUpdate(params, sidList);
-    }
-
-    /**
-     * Creates, saves and returns a new Action
-     * @param user the user who created this action
-     * @param type the action type
-     * @param name the action name
-     * @param earliestAction the earliest execution date
-     * @return a saved Action
-     */
-    public static Action createAction(User user, ActionType type, String name,
-        Date earliestAction) {
-        /**
-         * We have to relookup the type here, because most likely a static final variable
-         *  was passed in.  If we use this and the .reload() gets called below
-         *  if we try to save a new action the instace of the type in the cache
-         *  will be different than the final static variable
-         *  sometimes hibernate is no fun
-         */
-        ActionType lookedUpType = ActionFactory.lookupActionTypeByLabel(type.getLabel());
-        Action action = ActionFactory.createAction(lookedUpType, user, name, earliestAction);
-        ActionFactory.save(action);
-        HibernateFactory.getSession().flush();
-        return action;
     }
 
     private static Action scheduleAction(User scheduler, Server srvr,
@@ -1737,7 +1714,7 @@ public class ActionManager extends BaseManager {
             checkSaltOrManagementEntitlement(sid);
         }
 
-        Action action = createAction(scheduler, ActionFactory.TYPE_HARDWARE_REFRESH_LIST,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_HARDWARE_REFRESH_LIST, scheduler,
                 ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName(), earliestAction);
         scheduleForExecution(action, serverIds);
         return action;
@@ -1913,7 +1890,7 @@ public class ActionManager extends BaseManager {
 
         String name = type.getPackageActionName();
 
-        Action action = createAction(scheduler, type, name, earliestAction);
+        Action action = ActionFactory.createAndSaveAction(type, scheduler, name, earliestAction);
         scheduleForExecution(action, serverIds);
 
         ActionFactory.save(action);
@@ -2116,8 +2093,8 @@ public class ActionManager extends BaseManager {
 
         ScapActionDetails scapDetails = new ScapActionDetails(path, parameters, ovalFiles);
 
-        ScapAction action = (ScapAction) createAction(scheduler,
-                ActionFactory.TYPE_SCAP_XCCDF_EVAL,
+        ScapAction action = (ScapAction) ActionFactory.createAndSaveAction(ActionFactory.TYPE_SCAP_XCCDF_EVAL,
+                scheduler,
                 ActionFactory.TYPE_SCAP_XCCDF_EVAL.getName(),
                 earliestAction);
         scheduleForExecution(action, serverIds);
