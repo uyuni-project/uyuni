@@ -73,8 +73,8 @@ assignees: ''
 ### Migration Tests
 
 - [ ] Product and Salt migration tests
-  - [ ] SLES15 SP3 minion → SP4
-  - [ ] SLES15 SP3 SSH minion → SP4
+  - [ ] SLES15 SP6 minion → SP7
+  - [ ] SLES15 SP6 SSH minion → SP7
   - [ ] SLE Micro 5.4 → 5.5
   - [ ] salt → salt bundle
 
