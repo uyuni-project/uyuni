@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-admin
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -16,11 +16,13 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           spacewalk-admin
-Version:        5.1.5
+Version:        5.2.0
 Release:        0
-Summary:        Various utility scripts and data files for Spacewalk installations
+Summary:        Various utility scripts and data files for %{productprettyname} installations
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
@@ -50,7 +52,7 @@ Requires:       uyuni-setup-reportdb
 BuildArch:      noarch
 
 %description
-Various utility scripts and data files for Spacewalk installations.
+Various utility scripts and data files for %{productprettyname} installations.
 
 %prep
 %setup -q

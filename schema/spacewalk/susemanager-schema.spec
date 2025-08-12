@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-schema
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -16,13 +16,15 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
 
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           susemanager-schema
-Version:        5.1.10
+Version:        5.2.0
 Release:        0
-Summary:        SQL schema for Spacewalk server
+Summary:        SQL schema for %{productprettyname} server
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
@@ -51,16 +53,16 @@ BuildRequires:  fdupes
 %define schema_upgrade_folder %{spacewalk_folder}/SchemaUpgrade
 
 %description
-susemanager-schema is the SQL schema for the SUSE Manager server.
+susemanager-schema is the SQL schema for the %{productprettyname} server.
 
 %package sanity
-Summary:        Schema source sanity check for Spacewalk database scripts
+Summary:        Schema source sanity check for %{productprettyname} database scripts
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 Requires:       perl(Digest::SHA)
 
 %package utility
-Summary:        Utility used by any DB schema in Spacewalk
+Summary:        Utility used by any DB schema in %{productprettyname}
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 

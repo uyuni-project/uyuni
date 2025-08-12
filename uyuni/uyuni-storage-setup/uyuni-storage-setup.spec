@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-storage-setup
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -14,22 +14,22 @@
 
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
-## The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
-%{!?productprettyname: %global productprettyname Uyuni}
 
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
 
 %global debug_package %{nil}
 Name:           uyuni-storage-setup
-Version:        5.1.3
+Version:        5.2.0
 Release:        0
-Summary:        Tools for managing storage on Uyuni
+Summary:        Tools for managing storage on %{productprettyname}
 License:        GPL-3.0-only
 Group:          System/Management
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 
 %description
-Tools for managing storage on Uyuni Server and Proxy
+Tools for managing storage on %{productprettyname} Server and Proxy
 
 %package server
 Summary:        Storage setup scripts for %{productprettyname} Server
@@ -71,14 +71,12 @@ install -m 755 scripts/mgr-storage-proxy %{buildroot}%{_bindir}/mgr-storage-prox
 install -m 755 scripts/susemanager-storage-setup-functions.sh %{buildroot}%{_usr}/lib/susemanager/
 
 %files server
-%defattr(-,root,root)
 %doc README.md
 %license LICENSE
 %{_bindir}/mgr-storage-server
 %{_usr}/lib/susemanager
 
 %files proxy
-%defattr(-,root,root)
 %doc README.md
 %license LICENSE
 %{_bindir}/mgr-storage-proxy

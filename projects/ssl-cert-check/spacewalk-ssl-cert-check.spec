@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-ssl-cert-check
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -22,7 +22,7 @@
 %endif
 
 Name:           spacewalk-ssl-cert-check
-Version:        5.1.2
+Version:        5.2.0
 Release:        0
 Summary:        Check ssl certs for impending expiration
 License:        GPL-2.0-only

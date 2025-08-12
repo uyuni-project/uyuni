@@ -16,7 +16,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-## The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
 %{!?productprettyname: %global productprettyname Uyuni}
 
 %{!?_unitdir: %global _unitdir /lib/systemd/system}
@@ -49,7 +49,7 @@
 %endif
 
 Name:           spacewalk-backend
-Version:        5.1.13
+Version:        5.2.0
 Release:        0
 Summary:        Common programs needed to be installed on the %{productprettyname} servers/proxies
 License:        GPL-2.0-only

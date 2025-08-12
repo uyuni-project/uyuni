@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-setup
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -16,6 +16,9 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
 
 %if 0%{?suse_version} > 1320 || 0%{?rhel} || 0%{?fedora}
 # SLE15 builds on Python 3
@@ -35,9 +38,9 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        5.1.5
+Version:        5.2.0
 Release:        0
-Summary:        Initial setup tools for Spacewalk
+Summary:        Initial setup tools for %{productprettyname}
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
@@ -121,7 +124,7 @@ Provides:       salt-formulas-configuration
 Conflicts:      otherproviders(salt-formulas-configuration)
 
 %description
-A collection of post-installation scripts for managing Spacewalk's initial
+A collection of post-installation scripts for managing %{productprettyname}'s initial
 setup tasks, re-installation, and upgrades.
 
 %prep
