@@ -150,7 +150,7 @@ public class SaltbootUtils {
      * @param imageInfo image info
      */
     public static void createSaltbootDistro(ImageInfo imageInfo) {
-        CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
+        CobblerConnection con = CobblerXMLRPCHelper.getUncachedAutomatedConnection();
         List<Distro> distros = Distro.list(con);
         try {
             con.transactionBegin();
@@ -235,7 +235,7 @@ public class SaltbootUtils {
      */
     public static void deleteSaltbootDistro(ImageInfo info) throws SaltbootException {
         Long orgId = info.getOrg().getId();
-        CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
+        CobblerConnection con = CobblerXMLRPCHelper.getUncachedAutomatedConnection();
         String nameVR = makeCobblerNameVR(info);
         String nameV = makeCobblerNameV(info);
         String name = makeCobblerName(info);
@@ -681,7 +681,7 @@ public class SaltbootUtils {
      * Migrate saltboot entries to the new naming scheme.
      */
     public static void migrateSaltboot() {
-        CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
+        CobblerConnection con = CobblerXMLRPCHelper.getUncachedAutomatedConnection();
         migrateSaltbootDistros(con);
         migrateSaltbootProfiles(con);
     }

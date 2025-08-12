@@ -101,6 +101,7 @@ public class MockConnection extends CobblerConnection {
     public MockConnection(String urlIn, String userIn, String passIn) {
         super();
         url = urlIn;
+        token = "token_is_not_empty";
     }
 
     /**
