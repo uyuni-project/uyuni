@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import org.quartz.JobExecutionContext;
@@ -77,7 +76,7 @@ public class SystemProfileRefreshTask extends RhnJavaJob {
             act.setOrg(org);
             ActionFactory.save(act);
 
-            ActionManager.scheduleForExecution(act, sids);
+            ActionFactory.scheduleForExecution(act, sids);
 
             log.info("  schedule HW refresh for {} systems in org {}", sids.size(), org.getName());
             actionsToSchedule.add(act);

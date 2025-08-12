@@ -40,7 +40,6 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -384,7 +383,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         serverAction.setStatusQueued();
 
         action.addServerAction(serverAction);
-        ActionManager.storeAction(action);
+        ActionFactory.save(action);
 
         StringReader sin = new StringReader(FileUtils.readStringFromFile(icalKde.getAbsolutePath()));
         CalendarBuilder builder = new CalendarBuilder();
@@ -395,7 +394,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         start = ZonedDateTime.parse("2020-04-20T09:00:00+02:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         action.setEarliestAction(Date.from(start.toInstant()));
-        ActionManager.storeAction(action);
+        ActionFactory.save(action);
         assertTrue(mm.isActionInMaintenanceWindow(action, ms, Optional.ofNullable(calendar)));
 
         // icalKde2 has an EXDATE 20200420 set

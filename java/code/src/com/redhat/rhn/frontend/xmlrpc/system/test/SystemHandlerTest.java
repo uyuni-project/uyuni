@@ -1239,7 +1239,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 Arrays.asList("channels", "packages"), new Date());
         ActionFactory.save(action);
 
-        action = ActionManager.schedulePackageRefresh(admin, server);
+        action = ActionManager.schedulePackageRefresh(admin, server, new Date());
         ActionFactory.save(action);
         commitAndCloseSession();
 
