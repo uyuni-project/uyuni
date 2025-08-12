@@ -27,7 +27,6 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
@@ -97,12 +96,10 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerVirtualSystemCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
@@ -132,26 +129,14 @@ import java.util.Set;
 
 /**
  * ActionManager - the singleton class used to provide Business Operations
- * on Actions where those operations interact with other top tier Business
- * Objects.
+ * on Actions where those operations interact with other top tier Business Objects.
  */
 public class ActionManager extends BaseManager {
     private static Logger log = LogManager.getLogger(ActionManager.class);
 
-    // List of package names that we want to make sure we dont
-    // remove when doing a package sync.  Never remove running kernel
-    // for instance.
+    // List of package names that we want to make sure we don't
+    // remove when doing a package sync.  Never remove running kernel for instance.
     public static final String[] PACKAGES_NOT_REMOVABLE = {"kernel"};
-
-    /**
-     * This was extracted to a constant from the
-     * {@link #scheduleAction(User, Server, ActionType, String, Date)} method. At the time
-     * it was in there, there was a comment "hmm 10?". Not sure what the hesitation is
-     * but I wanted to retain that comment with regard to this value.
-     */
-    private static final Long REMAINING_TRIES = 10L;
-
-    private static MaintenanceManager maintenanceManager = new MaintenanceManager();
 
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
@@ -161,6 +146,7 @@ public class ActionManager extends BaseManager {
 
     /**
      * Set the {@link TaskomaticApi} instance to use. Only needed for unit tests.
+     *
      * @param taskomaticApiIn the {@link TaskomaticApi}
      */
     public static void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
@@ -168,25 +154,12 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Removes a list of actions.
-     * @param actionIds actions to remove
-     * @return int the number of failed action removals
-     */
-    public static int removeActions(List actionIds) {
-        int failed = 0;
-        for (Object actionIdIn : actionIds) {
-            Long actionId = (Long) actionIdIn;
-            failed += ActionFactory.removeAction(actionId);
-        }
-        return failed;
-    }
-
-    /**
      * Mark action as failed for specified system
+     *
      * @param loggedInUser The user making the request.
-     * @param serverId server id
-     * @param actionId The id of the Action to be set as failed
-     * @param message Message from user, reason of this fail
+     * @param serverId     server id
+     * @param actionId     The id of the Action to be set as failed
+     * @param message      Message from user, reason of this fail
      * @return int 1 if succeed
      */
     public static int failSystemAction(User loggedInUser, Long serverId, Long actionId, String message) {
@@ -216,13 +189,12 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Retreive the specified Action, assuming that the User making the request
-     * has the required permissions.
+     * Retrieve the specified Action, assuming that the User making the request has the required permissions.
+     *
      * @param user The user making the lookup request.
-     * @param aid The id of the Action to lookup.
+     * @param aid  The id of the Action to lookup.
      * @return the specified Action.
-     * @throws com.redhat.rhn.common.hibernate.LookupException if the Action
-     * can't be looked up.
+     * @throws com.redhat.rhn.common.hibernate.LookupException if the Action can't be looked up.
      */
     public static Action lookupAction(User user, Long aid) {
         Action returnedAction;
@@ -246,43 +218,37 @@ public class ActionManager extends BaseManager {
         if (returnedAction == null) {
             LocalizationService ls = LocalizationService.getInstance();
             throw new LookupException("Could not find action with id: " + aid,
-                            ls.getMessage("lookup.jsp.title.action"),
-                            ls.getMessage("lookup.jsp.reason1.action"),
-                            ls.getMessage("lookup.jsp.reason2.action"));
+                    ls.getMessage("lookup.jsp.title.action"),
+                    ls.getMessage("lookup.jsp.reason1.action"),
+                    ls.getMessage("lookup.jsp.reason2.action"));
         }
 
         return returnedAction;
     }
 
 
-
     /**
-     * Lookup the last completed Action on a Server
-     *  given the user, action type and server.
-     * This is useful especially in cases where we want to
-     * find the last deployed config action ...
+     * Lookup the last completed Action on a Server given the user, action type and server.
+     * This is useful especially in cases where we want to find the last deployed config action
      *
-     * @param user the user doing the search (needed for permssion checking)
-     * @param type the action type of the action to be queried.
-     * @param server the server who's latest completed action is desired.
+     * @param user   the user doing the search (needed for permission checking)
+     * @param type   the action type of the action to be queried.
+     * @param server the server whose latest completed action is desired.
      * @return the Action found or null if none exists
      */
-    public static Action lookupLastCompletedAction(User user,
-            ActionType type,
-            Server server) {
+    public static Action lookupLastCompletedAction(User user, ActionType type, Server server) {
         // TODO: check on user visibility ??
-
         return ActionFactory.lookupLastCompletedAction(user, type, server);
     }
 
     /**
      * Deletes the action set with the given label.
-     * @param user User associated with the set of actions.
+     *
+     * @param user  User associated with the set of actions.
      * @param label Action label to be updated.
      */
     public static void deleteActions(User user, String label) {
-        WriteMode m = ModeFactory.getWriteMode("Action_queries",
-                "delete_actions");
+        WriteMode m = ModeFactory.getWriteMode("Action_queries", "delete_actions");
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
@@ -292,12 +258,12 @@ public class ActionManager extends BaseManager {
 
     /**
      * Deletes the action set by id and type.
-     * @param id Action ID
+     *
+     * @param id   Action ID
      * @param type Action Type
      */
     public static void deleteActionsByIdAndType(Long id, Integer type) {
-        WriteMode m = ModeFactory.getWriteMode("Action_queries",
-                "delete_actions_by_id_and_type");
+        WriteMode m = ModeFactory.getWriteMode("Action_queries", "delete_actions_by_id_and_type");
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         params.put("action_type", type);
@@ -306,12 +272,12 @@ public class ActionManager extends BaseManager {
 
     /**
      * Archives the action set with the given label.
-     * @param user User associated with the set of actions.
+     *
+     * @param user  User associated with the set of actions.
      * @param label Action label to be updated.
      */
     public static void archiveActions(User user, String label) {
-        WriteMode m = ModeFactory.getWriteMode("Action_queries",
-                "archive_actions");
+        WriteMode m = ModeFactory.getWriteMode("Action_queries", "archive_actions");
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
@@ -321,16 +287,12 @@ public class ActionManager extends BaseManager {
 
     /**
      * Cancels the server actions associated with a given action, and if
-     * required deals with associated pending kickstart actions and minion
-     * jobs.
+     * required deals with associated pending kickstart actions and minion jobs.
+     * Actions themselves are not deleted, only the ServerActions associated with them.
      *
-     * Actions themselves are not deleted, only the ServerActions associated
-     * with them.
-     *
-     * @param user User requesting the action be cancelled.
+     * @param user    User requesting the action be cancelled.
      * @param actions List of actions to be cancelled.
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
     public static void cancelActions(User user, Collection<Action> actions) throws TaskomaticApiException {
         cancelActions(user, actions, Collections.emptySet());
@@ -338,20 +300,16 @@ public class ActionManager extends BaseManager {
 
     /**
      * Cancels the server actions associated with a given action, and if
-     * required deals with associated pending kickstart actions and minion
-     * jobs.
+     * required deals with associated pending kickstart actions and minion jobs.
+     * Actions themselves are not deleted, only the ServerActions associated with them.
      *
-     * Actions themselves are not deleted, only the ServerActions associated
-     * with them.
-     *
-     * @param user User requesting the action be cancelled.
-     * @param actions List of actions to be cancelled.
+     * @param user      User requesting the action be cancelled.
+     * @param actions   List of actions to be cancelled.
      * @param serverIds If specified, only cancel ServerActions for a subset of system IDs
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
     public static void cancelActions(User user, Collection<Action> actions, Collection<Long> serverIds)
-        throws TaskomaticApiException {
+            throws TaskomaticApiException {
         if (log.isDebugEnabled()) {
             String actionIds = actions.stream().map(Action::getId).collect(toList()).toString();
             log.debug("Cancelling actions: {} for user: {}", actionIds, user.getLogin());
@@ -359,11 +317,11 @@ public class ActionManager extends BaseManager {
 
         // Can only cancel top level actions or actions that have failed prerequisite:
         boolean hasValidPrerequisite = actions.stream()
-                                              .map(Action::getPrerequisite)
-                                              .filter(Objects::nonNull)
-                                              .flatMap(p -> p.getServerActions().stream())
-                                              .filter(sa -> serverIds.isEmpty() || serverIds.contains(sa.getServerId()))
-                                              .anyMatch(sa -> !sa.isStatusFailed());
+                .map(Action::getPrerequisite)
+                .filter(Objects::nonNull)
+                .flatMap(p -> p.getServerActions().stream())
+                .filter(sa -> serverIds.isEmpty() || serverIds.contains(sa.getServerId()))
+                .anyMatch(sa -> !sa.isStatusFailed());
         if (hasValidPrerequisite) {
             StringBuilder message = new StringBuilder();
             for (Action a : actions) {
@@ -384,23 +342,23 @@ public class ActionManager extends BaseManager {
         }
 
         Set<Action> actionsToDelete = concat(
-            actions.stream(),
-            actions.stream().flatMap(ActionFactory::lookupDependentActions)
+                actions.stream(),
+                actions.stream().flatMap(ActionFactory::lookupDependentActions)
         ).collect(toSet());
 
         Set<Server> servers = new HashSet<>();
         Set<ServerAction> serverActions = new HashSet<>();
 
         actionsToDelete.stream()
-                       .flatMap(a -> a.getServerActions().stream())
-                       .filter(sa -> sa.isStatusQueued() || sa.isStatusPickedUp())
-                       // if serverIds is not specified, do not filter at all
-                       // if it is, only ServerActions that have server ids in the specified set can pass
-                       .filter(sa -> serverIds.isEmpty() || serverIds.contains(sa.getServerId()))
-                       .forEach(sa -> {
-                           serverActions.add(sa);
-                           servers.add(sa.getServer());
-                       });
+                .flatMap(a -> a.getServerActions().stream())
+                .filter(sa -> sa.isStatusQueued() || sa.isStatusPickedUp())
+                // if serverIds is not specified, do not filter at all
+                // if it is, only ServerActions that have server ids in the specified set can pass
+                .filter(sa -> serverIds.isEmpty() || serverIds.contains(sa.getServerId()))
+                .forEach(sa -> {
+                    serverActions.add(sa);
+                    servers.add(sa.getServer());
+                });
 
         // fail any Kickstart sessions for these actions and servers
         KickstartFactory.failKickstartSessions(actionsToDelete, servers);
@@ -408,14 +366,14 @@ public class ActionManager extends BaseManager {
         // cancel associated schedule in Taskomatic
         Map<Action, Set<Server>> actionMap = actionsToDelete.stream()
                 .map(a -> new ImmutablePair<>(
-                        a,
-                        a.getServerActions()
-                         .stream()
-                         .filter(sa -> sa.isStatusQueued())
-                         .map(ServerAction::getServer)
-                         .filter(server -> isMinionServer(server) && servers.contains(server))
-                         .collect(toSet())
-                    )
+                                a,
+                                a.getServerActions()
+                                        .stream()
+                                        .filter(sa -> sa.isStatusQueued())
+                                        .map(ServerAction::getServer)
+                                        .filter(server -> isMinionServer(server) && servers.contains(server))
+                                        .collect(toSet())
+                        )
                 )
                 .filter(p -> !p.getRight().isEmpty())
                 // select Actions that have no minions besides those in the specified set
@@ -426,8 +384,8 @@ public class ActionManager extends BaseManager {
                         .allMatch(s -> e.getValue().contains(s))
                 )
                 .collect(toMap(
-                    Pair::getLeft,
-                    Pair::getRight
+                        Pair::getLeft,
+                        Pair::getRight
                 ));
 
         if (!actionMap.isEmpty()) {
@@ -455,7 +413,7 @@ public class ActionManager extends BaseManager {
     /**
      * Deletes the archived actions
      *
-     * @param user User requesting the delete action
+     * @param user       User requesting the delete action
      * @param actionsIds List of action ids to be deleted
      */
     public static void deleteActionsById(User user, List actionsIds) {
@@ -482,96 +440,52 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Adds a server to an action
-     * @param sid The server id
-     * @param action The parent action
-     */
-    public static void addServerToAction(Long sid, Action action) {
-        ActionFactory.addServerToAction(sid, action);
-    }
-
-    /**
-     * Adds a server to an action
-     * @param server The server
-     * @param action The parent action
-     */
-    public static void addServerToAction(Server server, Action action) {
-        ActionFactory.addServerToAction(server, action);
-    }
-
-    /**
      * Creates an errata action with the specified Org
-     * @return The created action
-     * @param org The org that needs the errata.
+     *
+     * @param user   the user that is scheduling the action
+     * @param org    The org that needs the errata.
      * @param errata The errata pertaining to this action
-     */
-    public static ErrataAction createErrataAction(Org org, Errata errata) {
-        return createErrataAction(null, org, errata);
-    }
-
-    /**
-     * Creates an errata action
      * @return The created action
-     * @param user The user scheduling errata
-     * @param errata The errata pertaining to this action
      */
-    public static ErrataAction createErrataAction(User user, Errata errata) {
-        return createErrataAction(user, user.getOrg(), errata);
-    }
+    public static ErrataAction createErrataAction(User user, Org org, Errata errata) {
+        //<source>Patch Update: {0} - {1}</source>
+        String actionName = LocalizationService.getInstance().getMessage("action.name",
+                errata.getAdvisory(), errata.getSynopsis());
 
-    /**
-     * Creates an errata action with the specified Org
-     * @return The created action
-     * @param user the user that is scheduling the action
-     * @param org The org that needs the errata.
-     * @param errata The errata pertaining to this action
-     */
-    private static ErrataAction createErrataAction(User user, Org org, Errata errata) {
-        ErrataAction a = (ErrataAction) ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-        if (user != null) {
-            a.setSchedulerUser(user);
-        }
+        ErrataAction aa = (ErrataAction) ActionFactory.createAction(ActionFactory.TYPE_ERRATA, user, actionName, org,
+                new Date());
 
-        a.setOrg(org);
-        a.addErrata(errata);
-
-        Object[] args = new Object[2];
-        args[0] = errata.getAdvisory();
-        args[1] = errata.getSynopsis();
-        a.setName(LocalizationService.getInstance().getMessage("action.name", args));
-        return a;
+        aa.addErrata(errata);
+        return aa;
     }
 
     /**
      * Create a Config Upload action. This is a much different action from the
      * other config actions (doesn't involve revisions).
-     * @param user The scheduler for this config action.
+     *
+     * @param user      The scheduler for this config action.
      * @param filenames A set of config file name ids as Longs
-     * @param server The server for which to schedule this action.
-     * @param channel The config channel to which files will be uploaded.
-     * @param earliest The soonest time that this action could be executed.
+     * @param server    The server for which to schedule this action.
+     * @param channel   The config channel to which files will be uploaded.
+     * @param earliest  The soonest time that this action could be executed.
      * @return The created upload action
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
     public static Action createConfigUploadAction(User user, Set filenames, Server server,
-            ConfigChannel channel, Date earliest)
-        throws TaskomaticApiException {
+                                                  ConfigChannel channel, Date earliest)
+            throws TaskomaticApiException {
         //TODO: right now, our general rule is that upload actions will
         //always upload into the sandbox for a system. If we ever wish to
         //make that a strict business rule, here is where we can verify that
         //the given channel is the sandbox for the given server.
 
-        ConfigUploadAction a =
-                (ConfigUploadAction)ActionFactory.createAction(
-                        ActionFactory.TYPE_CONFIGFILES_UPLOAD, earliest);
-        a.setOrg(user.getOrg());
-        a.setSchedulerUser(user);
-        a.setName(a.getActionTypeName());
+        ConfigUploadAction a = (ConfigUploadAction) ActionFactory.createAction(ActionFactory.TYPE_CONFIGFILES_UPLOAD,
+                user, earliest);
+
         //put a single row into rhnActionConfigChannel
         a.addConfigChannelAndServer(channel, server);
         //put a single row into rhnServerAction
-        addServerToAction(server.getId(), a);
+        ActionFactory.addServerToAction(server.getId(), a);
 
         //now put a row into rhnActionConfigFileName for each path we have.
         for (Object filenameIn : filenames) {
@@ -600,16 +514,16 @@ public class ActionManager extends BaseManager {
 
     /**
      * Create a Config File Diff action.
-     * @param user The user scheduling a diff action.
+     *
+     * @param user      The user scheduling a diff action.
      * @param revisions A set of revision ids as Longs
      * @param serverIds A set of server ids as Longs
      * @return The created diff action
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
     public static Action createConfigDiffAction(User user,
-            Collection<Long> revisions,
-            Collection<Long> serverIds) throws TaskomaticApiException {
+                                                Collection<Long> revisions,
+                                                Collection<Long> serverIds) throws TaskomaticApiException {
         //diff actions are non-destructive, so there is no point to schedule them for any
         //later than now.
         return createConfigAction(user, revisions, serverIds,
@@ -618,20 +532,21 @@ public class ActionManager extends BaseManager {
 
     /**
      * Create a Config Action.
-     * @param user The user scheduling the action.
+     *
+     * @param user      The user scheduling the action.
      * @param revisions A set of revision ids as Longs
-     * @param servers A set of server objects
-     * @param type The type of config action
-     * @param earliest The earliest time this action could execute.
+     * @param servers   A set of server objects
+     * @param type      The type of config action
+     * @param earliest  The earliest time this action could execute.
      * @return The created config action
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
     public static Action createConfigActionForServers(User user,
-            Collection<Long> revisions,
-            Collection<Server> servers,
-            ActionType type, Date earliest) throws TaskomaticApiException {
-        ConfigAction a = createConfigAction(user, type, earliest);
+                                                      Collection<Long> revisions,
+                                                      Collection<Server> servers,
+                                                      ActionType type, Date earliest) throws TaskomaticApiException {
+        ConfigAction a = (ConfigAction) ActionFactory.createAction(type, user, earliest);
+
         for (Server server : servers) {
             checkConfigActionOnServer(type, server);
             ActionFactory.addServerToAction(server.getId(), a);
@@ -651,17 +566,18 @@ public class ActionManager extends BaseManager {
 
     /**
      * Adds configuration revisions to a ConfigurationAction object
-     * @param user the user scheduling the action
-     * @param revisions a set of revision ids as Longs
+     *
+     * @param user         the user scheduling the action
+     * @param revisions    a set of revision ids as Longs
      * @param configAction the action to add revisions to
-     * @param server a server object
+     * @param server       a server object
      */
-    public static void addConfigurationRevisionsToAction(User user,
-        Collection<Long> revisions, ConfigAction configAction, Server server) {
+    public static void addConfigurationRevisionsToAction(User user, Collection<Long> revisions,
+                                                         ConfigAction configAction, Server server) {
         for (Long revId : revisions) {
             try {
                 ConfigRevision rev = ConfigurationManager.getInstance()
-                    .lookupConfigRevision(user, revId);
+                        .lookupConfigRevision(user, revId);
                 ActionFactory.addConfigRevisionToAction(rev, server, configAction);
             }
             catch (LookupException e) {
@@ -672,103 +588,42 @@ public class ActionManager extends BaseManager {
 
     /**
      * Checks that a server can be the target of a ConfigAction
-     * @param type type of ConfigAction
+     *
+     * @param type   type of ConfigAction
      * @param server a server object
      * @throws MissingCapabilityException if server does not have needed capabilities
      */
     public static void checkConfigActionOnServer(ActionType type, Server server) {
         if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.equals(type) &&
-                !SystemManager.clientCapable(server.getId(),
-                        SystemManager.CAP_CONFIGFILES_DEPLOY)) {
-            throw new MissingCapabilityException(
-                    SystemManager.CAP_CONFIGFILES_DEPLOY, server);
+                !SystemManager.clientCapable(server.getId(), SystemManager.CAP_CONFIGFILES_DEPLOY)) {
+            throw new MissingCapabilityException(SystemManager.CAP_CONFIGFILES_DEPLOY, server);
         }
     }
 
     /**
-     * Returns a new ConfigAction object
-     * @param user the user scheduling the action
-     * @param type type of ConfigAction
-     * @param earliest earliest action scheduling date
-     * @return a ConfigAction
-     */
-    public static ConfigAction createConfigAction(User user, ActionType type,
-        Date earliest) {
-        ConfigAction a = (ConfigAction)ActionFactory.createAction(type, earliest);
-
-        /** This is not localized, because the perl that prints this when the action is
-         *  rescheduled doesn't do localization.  If the reschedule page ever get
-         *  converted to java, we should pass in a LS key and then simply do the lookup
-         *  on display
-         */
-        a.setName(a.getActionTypeName());
-        a.setOrg(user.getOrg());
-        a.setSchedulerUser(user);
-        return a;
-    }
-
-    /**
      * Create a Config Action.
-     * @param user The user scheduling the action.
+     *
+     * @param user      The user scheduling the action.
      * @param revisions A set of revision ids as Longs
      * @param serverIds A set of server ids as Longs
-     * @param type The type of config action
-     * @param earliest The earliest time this action could execute.
+     * @param type      The type of config action
+     * @param earliest  The earliest time this action could execute.
      * @return The created config action
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
     public static Action createConfigAction(User user, Collection<Long> revisions,
-            Collection<Long> serverIds, ActionType type, Date earliest)
-        throws TaskomaticApiException {
+                                            Collection<Long> serverIds, ActionType type, Date earliest)
+            throws TaskomaticApiException {
 
         List<Server> servers = SystemManager.hydrateServerFromIds(serverIds, user);
         return createConfigActionForServers(user, revisions, servers, type, earliest);
     }
 
     /**
-     *
-     * @param user   The user scheduling the action
-     * @param server The server the action is being scheduled for
-     * @param type   The type of the action
-     *
-     * @return The Action we have created
-     *
-     */
-    public static Action createBaseAction(User user, Server server, ActionType type) {
-
-        Action action =
-                ActionFactory.createAction(type);
-
-        action.setSchedulerUser(user);
-        action.setOrg(user.getOrg());
-
-        ServerAction sa = new ServerAction();
-        sa.setStatusQueued();
-        sa.setRemainingTries(5L);
-        sa.setServerWithCheck(server);
-
-        sa.setParentActionWithCheck(action);
-        action.addServerAction(sa);
-
-        return action;
-    }
-
-    /**
-     * Stores the action in the database through hibernate
-     * @param actionIn The action to be stored
-     * @return action
-     */
-    public static Action storeAction(Action actionIn) {
-        return ActionFactory.save(actionIn);
-    }
-
-    /**
      * Reschedule the action so it can be attempted again.
      *
      * @param action Action to reschedule
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
     public static void rescheduleAction(Action action) throws TaskomaticApiException {
         rescheduleAction(action, false);
@@ -777,13 +632,12 @@ public class ActionManager extends BaseManager {
     /**
      * Reschedule the action so it can be attempted again.
      *
-     * @param action Action to reschedule
+     * @param action     Action to reschedule
      * @param onlyFailed reschedule only the ServerActions w/failed status
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
     public static void rescheduleAction(Action action, boolean onlyFailed)
-        throws TaskomaticApiException {
+            throws TaskomaticApiException {
         //5 was hardcoded from perl :/
         if (onlyFailed) {
             ActionFactory.rescheduleFailedServerActions(action, 5L);
@@ -795,16 +649,14 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Retrieve the list of unarchived scheduled actions for the
-     * current user
+     * Retrieve the list of unarchived scheduled actions for the current user
+     *
      * @param user The user in question
-     * @param pc The details of which results to return
-     * @param age how many days old a system can be in order to count as a "recently"
-     * scheduled action
+     * @param pc   The details of which results to return
+     * @param age  how many days old a system can be in order to count as a "recently" scheduled action
      * @return A list containing the pending actions for the user
      */
-    public static DataResult<ScheduledAction> recentlyScheduledActions(User user, PageControl pc,
-            long age) {
+    public static DataResult<ScheduledAction> recentlyScheduledActions(User user, PageControl pc, long age) {
         SelectMode m = ModeFactory.getMode("Action_queries",
                 "recently_scheduled_action_list");
         Map<String, Object> params = new HashMap<>();
@@ -824,8 +676,9 @@ public class ActionManager extends BaseManager {
     /**
      * Retrieve the list of all actions for a particular user.
      * This includes pending, completed, failed and archived actions.
+     *
      * @param user The user in question
-     * @param pc The details of which results to return
+     * @param pc   The details of which results to return
      * @return A list containing the all actions for the user
      */
     public static DataResult<ScheduledAction> allActions(User user, PageControl pc) {
@@ -834,8 +687,9 @@ public class ActionManager extends BaseManager {
 
     /**
      * Retrieve the list of pending actions for a particular user
+     *
      * @param user The user in question
-     * @param pc The details of which results to return
+     * @param pc   The details of which results to return
      * @return A list containing the pending actions for the user
      */
     public static DataResult<ScheduledAction> pendingActions(User user, PageControl pc) {
@@ -845,30 +699,27 @@ public class ActionManager extends BaseManager {
     /**
      * Retrieve the list of pending actions for a particular user within the given set.
      *
-     * @param user The user in question
-     * @param pc The details of which results to return
+     * @param user     The user in question
+     * @param pc       The details of which results to return
      * @param setLabel Label of an RhnSet of actions IDs to limit the results to.
      * @return A list containing the pending actions for the user.
      */
-    public static DataResult<ScheduledAction> pendingActionsInSet(User user, PageControl pc,
-            String setLabel) {
-
+    public static DataResult<ScheduledAction> pendingActionsInSet(User user, PageControl pc, String setLabel) {
         return getActions(user, pc, "pending_actions_in_set", setLabel);
     }
 
     /**
      * Retrieve the list of pending actions for a particular user within the given set.
      *
-     * @param user The user in question
-     * @param pc The details of which results to return
+     * @param user     The user in question
+     * @param pc       The details of which results to return
      * @param setLabel Label of an RhnSet of actions IDs to limit the results to.
-     * @param sid Server id
+     * @param sid      Server id
      * @return A list containing the pending actions for the user.
      */
     public static DataResult<SystemPendingEventDto> pendingActionsToDeleteInSet(User user, PageControl pc,
-            String setLabel, Long sid) {
-        SelectMode m = ModeFactory.getMode("System_queries",
-                "pending_actions_to_delete_in_set");
+                                                                                String setLabel, Long sid) {
+        SelectMode m = ModeFactory.getMode("System_queries", "pending_actions_to_delete_in_set");
         Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         params.put("user_id", user.getId());
@@ -884,8 +735,9 @@ public class ActionManager extends BaseManager {
 
     /**
      * Retrieve the list of failed actions for a particular user
+     *
      * @param user The user in question
-     * @param pc The details of which results to return
+     * @param pc   The details of which results to return
      * @return A list containing the pending actions for the user
      */
     public static DataResult<ScheduledAction> failedActions(User user, PageControl pc) {
@@ -894,8 +746,9 @@ public class ActionManager extends BaseManager {
 
     /**
      * Retrieve the list of completed actions for a particular user
+     *
      * @param user The user in question
-     * @param pc The details of which results to return
+     * @param pc   The details of which results to return
      * @return A list containing the pending actions for the user
      */
     public static DataResult<ScheduledAction> completedActions(User user, PageControl pc) {
@@ -904,8 +757,9 @@ public class ActionManager extends BaseManager {
 
     /**
      * Retrieve the list of all completed actions for a particular user
+     *
      * @param user The user in question
-     * @param pc The details of which results to return
+     * @param pc   The details of which results to return
      * @return A list containing the pending actions for the user
      */
     public static DataResult<ScheduledAction> allCompletedActions(User user, PageControl pc) {
@@ -914,8 +768,9 @@ public class ActionManager extends BaseManager {
 
     /**
      * Retrieve the list of archived actions for a particular user
+     *
      * @param user The user in question
-     * @param pc The details of which results to return
+     * @param pc   The details of which results to return
      * @return A list containing the pending actions for the user
      */
     public static DataResult<ScheduledAction> archivedActions(User user, PageControl pc) {
@@ -924,8 +779,9 @@ public class ActionManager extends BaseManager {
 
     /**
      * Retrieve the list of all archived actions for a particular user
+     *
      * @param user The user in question
-     * @param pc The details of which results to return
+     * @param pc   The details of which results to return
      * @return A list containing the pending actions for the user
      */
     public static DataResult<ScheduledAction> allArchivedActions(User user, PageControl pc) {
@@ -933,16 +789,16 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Helper method that does the work of getting a specific
-     * DataResult for scheduled actions.
-     * @param user The user in question
-     * @param pc The details of which results to return
-     * @param mode The mode
+     * Helper method that does the work of getting a specific DataResult for scheduled actions.
+     *
+     * @param user    The user in question
+     * @param pc      The details of which results to return
+     * @param mode    The mode
      * @param noLimit Return all actions without limiting the results
      * @return Returns a list containing the actions for the user
      */
     private static DataResult<ScheduledAction> getActions(User user, PageControl pc, String mode,
-            String setLabel, boolean noLimit) {
+                                                          String setLabel, boolean noLimit) {
         SelectMode m = ModeFactory.getMode("Action_queries", mode);
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
@@ -967,23 +823,22 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Helper method that does the work of getting a specific
-     * DataResult for scheduled actions.
+     * Helper method that does the work of getting a specific DataResult for scheduled actions.
+     *
      * @param user The user in question
-     * @param pc The details of which results to return
+     * @param pc   The details of which results to return
      * @param mode The mode
      * @return Returns a list containing the actions for the user
      */
-    private static DataResult<ScheduledAction> getActions(User user, PageControl pc, String mode,
-            String setLabel) {
+    private static DataResult<ScheduledAction> getActions(User user, PageControl pc, String mode, String setLabel) {
         return getActions(user, pc, mode, setLabel, false);
     }
 
     /**
-     * Helper method that does the work of getting a specific
-     * DataResult for scheduled actions.
+     * Helper method that does the work of getting a specific DataResult for scheduled actions.
+     *
      * @param user The user in question
-     * @param pc The details of which results to return
+     * @param pc   The details of which results to return
      * @param mode The mode
      * @return Returns a list containing the actions for the user
      */
@@ -993,13 +848,13 @@ public class ActionManager extends BaseManager {
 
     /**
      * Returns the list of packages associated with a specific action.
+     *
      * @param aid The action id for the action in question
-     * @param pc The details of which results to return
+     * @param pc  The details of which results to return
      * @return Return a list containing the packages for the action.
      */
     public static DataResult<Row> getPackageList(Long aid, PageControl pc) {
-        SelectMode m = ModeFactory.getMode("Package_queries",
-                "packages_associated_with_action");
+        SelectMode m = ModeFactory.getMode("Package_queries", "packages_associated_with_action");
         Map<String, Object> params = new HashMap<>();
         params.put("aid", aid);
         if (pc != null) {
@@ -1012,12 +867,12 @@ public class ActionManager extends BaseManager {
 
     /**
      * Returns the list of errata associated with a specific action.
+     *
      * @param aid The action id for the action in question
      * @return Return a list containing the errata for the action.
      */
     public static DataResult<Row> getErrataList(Long aid) {
-        SelectMode m = ModeFactory.getMode("Errata_queries",
-                "errata_associated_with_action");
+        SelectMode m = ModeFactory.getMode("Errata_queries", "errata_associated_with_action");
 
         Map<String, Object> params = new HashMap<>();
         params.put("aid", aid);
@@ -1029,6 +884,7 @@ public class ActionManager extends BaseManager {
 
     /**
      * Returns the list of details associated with a config file upload action.
+     *
      * @param aid The action id for the action in question
      * @return Return a list containing the errata for the action.
      */
@@ -1045,6 +901,7 @@ public class ActionManager extends BaseManager {
 
     /**
      * Returns the list of details associated with a config file deploy action.
+     *
      * @param aid The action id for the action in question
      * @return Return a list containing the details for the action.
      */
@@ -1061,6 +918,7 @@ public class ActionManager extends BaseManager {
 
     /**
      * Returns the list of details associated with a config file diff action.
+     *
      * @param aid The action id for the action in question
      * @return Return a list containing the details for the action.
      */
@@ -1077,16 +935,14 @@ public class ActionManager extends BaseManager {
 
     /**
      * Retrieves the systems that have completed a given action
-     * @param user The user in question.
+     *
+     * @param user   The user in question.
      * @param action The Action.
-     * @param pc The PageControl.
-     * @param mode The DataSource mode to run
+     * @param pc     The PageControl.
+     * @param mode   The DataSource mode to run
      * @return Returns list containing the completed systems.
      */
-    private static DataResult<ActionedSystem> getActionSystems(User user,
-                                                               Action action,
-                                                               PageControl pc,
-                                                               String mode) {
+    private static DataResult<ActionedSystem> getActionSystems(User user, Action action, PageControl pc, String mode) {
 
         SelectMode m = ModeFactory.getMode("System_queries", mode);
         Map<String, Object> params = new HashMap<>();
@@ -1103,36 +959,34 @@ public class ActionManager extends BaseManager {
 
     /**
      * Retrieves the systems that have completed a given action
-     * @param user The user in question.
+     *
+     * @param user   The user in question.
      * @param action The Action.
-     * @param pc The PageControl.
+     * @param pc     The PageControl.
      * @return Returns list containing the completed systems.
      */
-    public static DataResult<ActionedSystem> completedSystems(User user, Action action,
-            PageControl pc) {
-
+    public static DataResult<ActionedSystem> completedSystems(User user, Action action, PageControl pc) {
         return getActionSystems(user, action, pc, "systems_completed_action");
     }
 
     /**
-     * Retrieves the systems that are in the process of completing
-     * a given action
-     * @param user The user in question.
+     * Retrieves the systems that are in the process of completing a given action
+     *
+     * @param user   The user in question.
      * @param action The Action.
-     * @param pc The PageControl.
+     * @param pc     The PageControl.
      * @return Returns list containing the completed systems.
      */
     public static DataResult<ActionedSystem> inProgressSystems(User user, Action action, PageControl pc) {
-
         return getActionSystems(user, action, pc, "systems_in_progress_action");
     }
 
     /**
-     * Retrieves the systems that failed completing
-     * a given action
-     * @param user The user in question.
+     * Retrieves the systems that failed completing a given action
+     *
+     * @param user   The user in question.
      * @param action The Action.
-     * @param pc The PageControl.
+     * @param pc     The PageControl.
      * @return Returns list containing the completed systems.
      */
     public static DataResult<ActionedSystem> failedSystems(User user, Action action, PageControl pc) {
@@ -1141,79 +995,42 @@ public class ActionManager extends BaseManager {
 
     /**
      * Schedules a package list refresh action for the given server.
+     *
      * @param scheduler User scheduling the action.
-     * @param server Server for which the action affects.
+     * @param server    Server for which the action affects.
+     * @param earliest  The earliest time this action should be run.
      * @return The scheduled PackageAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static PackageAction schedulePackageRefresh(User scheduler, Server server)
-        throws TaskomaticApiException {
-        return (schedulePackageRefresh(scheduler, server, new Date()));
-    }
-
-    /**
-     * Schedules a package list refresh action for the given server.
-     * @param scheduler User scheduling the action.
-     * @param server Server for which the action affects.
-     * @param earliest The earliest time this action should be run.
-     * @return The scheduled PackageAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      * @throws MissingEntitlementException if the server is not entitled
      */
-    public static PackageAction schedulePackageRefresh(User scheduler, Server server,
-            Date earliest) throws TaskomaticApiException {
+    public static PackageAction schedulePackageRefresh(User scheduler, Server server, Date earliest)
+            throws TaskomaticApiException {
         checkSaltOrManagementEntitlement(server.getId());
 
-        PackageAction pa = (PackageAction) schedulePackageAction(scheduler,
-                (List) null, ActionFactory.TYPE_PACKAGES_REFRESH_LIST, earliest, server);
-        storeAction(pa);
-        return pa;
+        Action action = schedulePackageAction(scheduler,
+                null, ActionFactory.TYPE_PACKAGES_REFRESH_LIST, earliest, server);
+
+        ActionFactory.save(action);
+        return (PackageAction) action;
     }
 
     /**
      * Schedule a package list refresh without a user.
      *
-     * @param user the user that scheduled the action
-     * @param server the server
-     * @return the scheduled PackageRefreshListAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static PackageAction schedulePackageRefresh(Optional<User> user, Server server)
-            throws TaskomaticApiException {
-        Date earliest = new Date();
-        return schedulePackageRefresh(user, server, earliest);
-    }
-
-    /**
-     * Schedule a package list refresh without a user.
-     *
-     * @param user the organization the server belongs to
-     * @param server the server
+     * @param user     the organization the server belongs to
+     * @param server   the server
      * @param earliest The earliest time this action should be run.
      * @return the scheduled PackageRefreshListAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
-    public static PackageAction schedulePackageRefresh(Optional<User> user, Server server,
-            Date earliest) throws TaskomaticApiException {
+    public static PackageAction schedulePackageRefresh(Optional<User> user, Server server, Date earliest)
+            throws TaskomaticApiException {
         checkSaltOrManagementEntitlement(server.getId());
 
-        Action action = ActionFactory.createAction(
-                ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
-        action.setName(ActionFactory.TYPE_PACKAGES_REFRESH_LIST.getName());
-        action.setOrg(server.getOrg());
-        action.setSchedulerUser(user.orElse(null));
-        action.setEarliestAction(earliest);
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_PACKAGES_REFRESH_LIST,
+                user.orElse(null), server.getOrg(), earliest);
 
-        ServerAction sa = new ServerAction();
-        sa.setStatusQueued();
-        sa.setRemainingTries(REMAINING_TRIES);
-        sa.setServerWithCheck(server);
-        action.addServerAction(sa);
-        sa.setParentActionWithCheck(action);
+        ActionFactory.createAddServerAction(server, action);
 
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
@@ -1221,25 +1038,25 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Schedules a package runtransaction action.
+     * Schedules a package runTransaction action.
+     *
      * @param scheduler User scheduling the action.
-     * @param server Server for which the action affects.
-     * @param pkgs List of PackageMetadata's to be run.
-     * @param earliest The earliest time this action should be run.
+     * @param server    Server for which the action affects.
+     * @param pkgs      List of PackageMetadata's to be run.
+     * @param earliest  The earliest time this action should be run.
      * @return The scheduled PackageAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
-    public static PackageAction schedulePackageRunTransaction(User scheduler,
-            Server server, List<PackageMetadata> pkgs, Date earliest) throws TaskomaticApiException {
+    public static PackageAction schedulePackageRunTransaction(User scheduler, Server server,
+                                                              List<PackageMetadata> pkgs, Date earliest)
+            throws TaskomaticApiException {
 
         if (pkgs == null || pkgs.isEmpty()) {
             return null;
         }
 
-        Action action = scheduleAction(scheduler, server,
-                ActionFactory.TYPE_PACKAGES_RUNTRANSACTION,
-                "Package Synchronization", new Date());
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_PACKAGES_RUNTRANSACTION, scheduler, new Date());
+        ActionFactory.createAddServerAction(server, action);
         action.setEarliestAction(earliest);
 
         if (!SystemManager.clientCapable(server.getId(),
@@ -1305,7 +1122,7 @@ public class ActionManager extends BaseManager {
 
                 if (log.isDebugEnabled()) {
                     log.debug("compare returned [KEY_THIS_NEWER OR KEY_OTHER_NEWER]; deleting package [{}-{}] " +
-                            "from system installing package [{}-{}] to system",
+                                    "from system installing package [{}-{}] to system",
                             pm.getName(), pm.getSystemEvr(), pm.getName(), pm.getOther().getEvr());
                 }
 
@@ -1356,83 +1173,17 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Schedules one or more package removal actions for the given server.
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
-     * @param pkgs The set of packages to be removed.
-     * @param earliestAction Date of earliest action to be executed
-     * @return Currently scheduled PackageAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static PackageAction schedulePackageRemoval(User scheduler,
-            Server srvr, RhnSet pkgs, Date earliestAction) throws TaskomaticApiException {
-        return (PackageAction) schedulePackageAction(scheduler, srvr, pkgs,
-                ActionFactory.TYPE_PACKAGES_REMOVE, earliestAction);
-    }
-
-    /**
-     * Schedules one or more package removal actions for the given server.
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
-     * @param pkgs The list of packages to be removed.
-     * @param earliestAction Date of earliest action to be executed
-     * @return Currently scheduled PackageAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static PackageAction schedulePackageRemoval(User scheduler, Server srvr,
-            List<Map<String, Long>> pkgs, Date earliestAction)
-        throws TaskomaticApiException {
-        return (PackageAction) schedulePackageAction(scheduler, pkgs,
-                ActionFactory.TYPE_PACKAGES_REMOVE, earliestAction, srvr);
-    }
-
-    /**
-     * Schedules one or more package installation actions for the given server.
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
-     * @param pkgs The set of packages to be removed.
-     * @param earliestAction Date of earliest action to be executed
-     * @return Currently scheduled PackageAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static PackageAction schedulePackageInstall(User scheduler,
-            Server srvr, List<Map<String, Long>> pkgs, Date earliestAction) throws TaskomaticApiException {
-        return (PackageAction) schedulePackageAction(scheduler, pkgs,
-                ActionFactory.TYPE_PACKAGES_UPDATE, earliestAction, srvr);
-    }
-
-    /**
-     * Schedules one or more package verification actions for the given server.
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
-     * @param pkgs The set of packages to be removed.
-     * @param earliest Earliest occurrence of the script.
-     * @return Currently scheduled PackageAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static PackageAction schedulePackageVerify(User scheduler,
-            Server srvr, RhnSet pkgs, Date earliest) throws TaskomaticApiException {
-        return (PackageAction) schedulePackageAction(scheduler, srvr, pkgs,
-                ActionFactory.TYPE_PACKAGES_VERIFY, earliest);
-    }
-
-    /**
      * Schedules one or more package lock actions for the given server.
+     *
      * @param scheduler the scheduler
-     * @param servers the servers
-     * @param packages set of packages
-     * @param earliest earliest occurrence of this action
+     * @param servers   the servers
+     * @param packages  set of packages
+     * @param earliest  earliest occurrence of this action
      * @return Currently scheduled PackageAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
-    public static Action schedulePackageLock(User scheduler,
-            Set<Package> packages, Date earliest, Server...servers)
-        throws TaskomaticApiException {
+    public static Action schedulePackageLock(User scheduler, Set<Package> packages, Date earliest, Server... servers)
+            throws TaskomaticApiException {
         List<Map<String, Long>> packagesList = new ArrayList<>();
         for (Package pkg : packages) {
             Map<String, Long> pkgMeta = new HashMap<>();
@@ -1443,11 +1194,11 @@ public class ActionManager extends BaseManager {
         }
 
         return ActionManager.schedulePackageAction(
-            scheduler,
-            packagesList,
-            ActionFactory.TYPE_PACKAGES_LOCK,
-            earliest,
-            servers
+                scheduler,
+                packagesList,
+                ActionFactory.TYPE_PACKAGES_LOCK,
+                earliest,
+                servers
         );
     }
 
@@ -1455,26 +1206,27 @@ public class ActionManager extends BaseManager {
      * Schedules a script action for the given servers
      *
      * @param scheduler User scheduling the action.
-     * @param sids Servers for which the action affects.
-     * @param script The set of packages to be removed.
-     * @param name Name of Script action.
-     * @param earliest Earliest occurrence of the script.
+     * @param sids      Servers for which the action affects.
+     * @param script    The set of packages to be removed.
+     * @param name      Name of Script action.
+     * @param earliest  Earliest occurrence of the script.
      * @return Currently scheduled ScriptRunAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     * @throws MissingCapabilityException if any server in the list is missing script.run;
-     *             schedule fails
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
+     * @throws MissingCapabilityException if any server in the list is missing script.run: schedule fails
      */
     public static ScriptRunAction scheduleScriptRun(User scheduler, List<Long> sids,
-            String name, ScriptActionDetails script, Date earliest)
-        throws TaskomaticApiException {
+                                                    String name, ScriptActionDetails script, Date earliest)
+            throws TaskomaticApiException {
 
         checkScriptingOnServers(sids);
 
         Set<Long> sidSet = new HashSet<>();
         sidSet.addAll(sids);
-        ScriptRunAction sra = (ScriptRunAction) scheduleAction(scheduler,
-                ActionFactory.TYPE_SCRIPT_RUN, name, earliest, sidSet);
+
+        ScriptRunAction sra = (ScriptRunAction) ActionFactory.createAndSaveAction(ActionFactory.TYPE_SCRIPT_RUN,
+                scheduler, name, earliest);
+        ActionFactory.scheduleForExecution(sra, sidSet);
+
         sra.setScriptActionDetails(script);
         ActionFactory.save(sra);
         taskomaticApi.scheduleActionExecution(sra);
@@ -1484,12 +1236,13 @@ public class ActionManager extends BaseManager {
     /**
      * Checks that ScriptRunActions can be run on the servers with specified
      * IDs.
+     *
      * @param sids servers' ids
-     * @throws MissingCapabilityException if scripts cannot be run
+     * @throws MissingCapabilityException  if scripts cannot be run
      * @throws MissingEntitlementException if the server is not entitled
      */
     public static void checkScriptingOnServers(List<Long> sids)
-        throws MissingCapabilityException {
+            throws MissingCapabilityException {
         for (Long sid : sids) {
             if (!SystemManager.clientCapable(sid, "script.run")) {
                 throw new MissingCapabilityException("script.run", sid);
@@ -1500,118 +1253,22 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Creates a ScriptActionDetails which contains an arbitrary script to be
-     * run by a ScriptRunAction.
-     * @param username Username of script
-     * @param groupname Group script runs as
-     * @param script Script contents
-     * @param timeout script timeout
-     * @return ScriptActionDetails containing script to be run by ScriptRunAction
-     */
-    public static ScriptActionDetails createScript(String username,
-            String groupname, Long timeout, String script) {
-
-        return ActionFactory.createScriptActionDetails(username, groupname,
-                timeout, script);
-    }
-
-    private static Action scheduleAction(User scheduler, ActionType type, String name,
-            Date earliestAction, Set<Long> serverIds) {
-        Action action = createAction(scheduler, type, name, earliestAction);
-        scheduleForExecution(action, serverIds);
-
-        return action;
-    }
-
-    /**
-     * Schedules an action for execution on one or more servers (adding rows to
-     * rhnServerAction)
-     *
-     * Also checks if the action scheduled date/time fit in systems maintenance schedules, if there are any assigned.
-     *
-     * @param action the action
-     * @param serverIds server IDs
-     */
-    public static void scheduleForExecution(Action action, Set<Long> serverIds) {
-        maintenanceManager.canActionBeScheduled(serverIds, action);
-
-        Map<String, Object> params = new HashMap<>();
-        params.put("status_id", ActionFactory.STATUS_QUEUED.getId());
-        params.put("tries", REMAINING_TRIES);
-        params.put("parent_id", action.getId());
-
-        WriteMode m = ModeFactory.getWriteMode("Action_queries", "insert_server_actions");
-        List<Long> sidList = new ArrayList<>();
-        sidList.addAll(serverIds);
-        m.executeUpdate(params, sidList);
-    }
-
-    /**
-     * Creates, saves and returns a new Action
-     * @param user the user who created this action
-     * @param type the action type
-     * @param name the action name
-     * @param earliestAction the earliest execution date
-     * @return a saved Action
-     */
-    public static Action createAction(User user, ActionType type, String name,
-        Date earliestAction) {
-        /**
-         * We have to relookup the type here, because most likely a static final variable
-         *  was passed in.  If we use this and the .reload() gets called below
-         *  if we try to save a new action the instace of the type in the cache
-         *  will be different than the final static variable
-         *  sometimes hibernate is no fun
-         */
-        ActionType lookedUpType = ActionFactory.lookupActionTypeByLabel(type.getLabel());
-        Action action = createScheduledAction(user, lookedUpType, name, earliestAction);
-        ActionFactory.save(action);
-        HibernateFactory.getSession().flush();
-        return action;
-    }
-
-    private static Action scheduleAction(User scheduler, Server srvr,
-            ActionType type, String name, Date earliestAction) {
-
-        Action action = createScheduledAction(scheduler, type, name, earliestAction);
-
-        ServerAction sa = new ServerAction();
-        sa.setStatusQueued();
-        sa.setRemainingTries(REMAINING_TRIES);
-        sa.setServerWithCheck(srvr);
-
-        action.addServerAction(sa);
-        sa.setParentActionWithCheck(action);
-
-        return action;
-    }
-
-    private static Action createScheduledAction(User scheduler, ActionType type,
-            String name, Date earliestAction) {
-        Action pa = ActionFactory.createAction(type);
-        pa.setName(name);
-        pa.setOrg(scheduler.getOrg());
-        pa.setSchedulerUser(scheduler);
-        pa.setEarliestAction(earliestAction);
-        return pa;
-    }
-
-    /**
      * Schedule a KickstartAction against a system
-     * @param ksdata KickstartData to associate with this Action
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
+     *
+     * @param ksdata         KickstartData to associate with this Action
+     * @param scheduler      User scheduling the action.
+     * @param srvr           Server for which the action affects.
      * @param earliestAction Date run the Action
-     * @param appendString extra options to add to the action.
-     * @param kickstartHost host that serves up the kickstart file.
+     * @param appendString   extra options to add to the action.
+     * @param kickstartHost  host that serves up the kickstart file.
      * @return Currently scheduled KickstartAction
      */
-    public static KickstartAction scheduleKickstartAction(
-            KickstartData ksdata, User scheduler, Server srvr,
-            Date earliestAction, String appendString, String kickstartHost) {
+    public static KickstartAction scheduleKickstartAction(KickstartData ksdata, User scheduler, Server srvr,
+                                                          Date earliestAction, String appendString,
+                                                          String kickstartHost) {
         if (log.isDebugEnabled()) {
             log.debug("scheduleKickstartAction(KickstartData ksdata={}, User scheduler={}, Server srvr={}, " +
-                    "Date earliestAction={}, String appendString={}, String kickstartHost={}) - start",
+                            "Date earliestAction={}, String appendString={}, String kickstartHost={}) - start",
                     ksdata, scheduler, srvr, earliestAction, appendString, kickstartHost);
         }
 
@@ -1622,27 +1279,29 @@ public class ActionManager extends BaseManager {
 
     /**
      * Schedule a KickstartAction against a system
-     * @param fileList file preservation lists to be included in the system records.
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
+     *
+     * @param fileList       file preservation lists to be included in the system records.
+     * @param scheduler      User scheduling the action.
+     * @param srvr           Server for which the action affects.
      * @param earliestAction Date run the Action
-     * @param appendString extra options to add to the action.
-     * @param kickstartHost host that serves up the kickstart file.
+     * @param appendString   extra options to add to the action.
+     * @param kickstartHost  host that serves up the kickstart file.
      * @return Currently scheduled KickstartAction
      */
-    public static KickstartAction scheduleKickstartAction(
-            Set<FileList> fileList, User scheduler, Server srvr,
-            Date earliestAction, String appendString, String kickstartHost) {
+    public static KickstartAction scheduleKickstartAction(Set<FileList> fileList, User scheduler, Server srvr,
+                                                          Date earliestAction, String appendString,
+                                                          String kickstartHost) {
         if (log.isDebugEnabled()) {
             log.debug("scheduleKickstartAction(, User scheduler={}, Server srvr={}, Date earliestAction={}, " +
-                    "String appendString={}, String kickstartHost={}) - start",
+                            "String appendString={}, String kickstartHost={}) - start",
                     scheduler, srvr, earliestAction, appendString, kickstartHost);
         }
 
-        KickstartAction ksaction = (KickstartAction) scheduleAction(scheduler, srvr,
-                ActionFactory.TYPE_KICKSTART_INITIATE,
-                ActionFactory.TYPE_KICKSTART_INITIATE.getName(),
+        KickstartAction ksaction = (KickstartAction) ActionFactory.createAction(ActionFactory.TYPE_KICKSTART_INITIATE,
+                scheduler,
                 earliestAction);
+        ActionFactory.createAddServerAction(srvr, ksaction);
+
         KickstartActionDetails kad = new KickstartActionDetails();
         kad.setAppendString(appendString);
         kad.setParentAction(ksaction);
@@ -1660,21 +1319,20 @@ public class ActionManager extends BaseManager {
 
     /**
      * Schedule a KickstartGuestAction against a system
-     * @param pcmd most information needed to create this action
+     *
+     * @param pcmd        most information needed to create this action
      * @param ksSessionId Kickstart Session ID to associate with this action
      * @return Currently scheduled KickstartAction
      */
-    public static KickstartGuestAction scheduleKickstartGuestAction(
-            ProvisionVirtualInstanceCommand pcmd,
-            Long ksSessionId
-            ) {
+    public static KickstartGuestAction scheduleKickstartGuestAction(ProvisionVirtualInstanceCommand pcmd,
+                                                                    Long ksSessionId) {
 
         KickstartGuestAction ksAction = (KickstartGuestAction)
-                scheduleAction(pcmd.getUser(),
-                        pcmd.getHostServer(),
-                        ActionFactory.TYPE_KICKSTART_INITIATE_GUEST,
-                        ActionFactory.TYPE_KICKSTART_INITIATE_GUEST.getName(),
+                ActionFactory.createAction(ActionFactory.TYPE_KICKSTART_INITIATE_GUEST,
+                        pcmd.getUser(),
                         pcmd.getScheduleDate());
+        ActionFactory.createAddServerAction(pcmd.getHostServer(), ksAction);
+
         KickstartGuestActionDetails kad = new KickstartGuestActionDetails();
         kad.setAppendString(pcmd.getExtraOptions());
         kad.setParentAction(ksAction);
@@ -1712,80 +1370,73 @@ public class ActionManager extends BaseManager {
 
     /**
      * Schedule a scheduleRebootAction against a system
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
+     *
+     * @param scheduler      User scheduling the action.
+     * @param srvr           Server for which the action affects.
      * @param earliestAction Date run the Action
      * @return Currently scheduled KickstartAction
      */
-    public static Action scheduleRebootAction(User scheduler, Server srvr,
-            Date earliestAction) {
-        return scheduleAction(scheduler, srvr, ActionFactory.TYPE_REBOOT,
-                ActionFactory.TYPE_REBOOT.getName(), earliestAction);
+    public static Action scheduleRebootAction(User scheduler, Server srvr, Date earliestAction) {
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_REBOOT, scheduler, earliestAction);
+        ActionFactory.createAddServerAction(srvr, action);
+        return action;
     }
 
     /**
      * Schedule a scheduleHardwareRefreshAction against a system
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
+     *
+     * @param scheduler      User scheduling the action.
+     * @param srvr           Server for which the action affects.
      * @param earliestAction Date run the Action
      * @return Currently scheduled KickstartAction
      * @throws MissingCapabilityException if scripts cannot be run
      */
-    public static Action scheduleHardwareRefreshAction(User scheduler, Server srvr,
-            Date earliestAction) {
+    public static Action scheduleHardwareRefreshAction(User scheduler, Server srvr, Date earliestAction) {
         checkSaltOrManagementEntitlement(srvr.getId());
-        return scheduleAction(scheduler, srvr, ActionFactory.TYPE_HARDWARE_REFRESH_LIST,
-                ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName(), earliestAction);
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_HARDWARE_REFRESH_LIST, scheduler, earliestAction);
+        ActionFactory.createAddServerAction(srvr, action);
+        return action;
     }
 
     /**
      * Schedule a scheduleHardwareRefreshAction against a system or systems
-     * @param scheduler User scheduling the action.
+     *
+     * @param scheduler      User scheduling the action.
      * @param earliestAction Date run the Action
-     * @param serverIds server ids meant for the action
+     * @param serverIds      server ids meant for the action
      * @return Currently scheduled KickstartAction
      * @throws MissingCapabilityException if scripts cannot be run
      */
-    public static Action scheduleHardwareRefreshAction(User scheduler, Date earliestAction,
-            Set<Long> serverIds) {
+    public static Action scheduleHardwareRefreshAction(User scheduler, Date earliestAction, Set<Long> serverIds) {
         for (Long sid : serverIds) {
             Server s = SystemManager.lookupByIdAndUser(sid, scheduler);
             checkSaltOrManagementEntitlement(sid);
         }
-        return scheduleAction(scheduler, ActionFactory.TYPE_HARDWARE_REFRESH_LIST,
-                ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName(), earliestAction,
-                serverIds);
+
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_HARDWARE_REFRESH_LIST, scheduler,
+                ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName(), earliestAction);
+        ActionFactory.scheduleForExecution(action, serverIds);
+        return action;
     }
 
     /**
      * Schedule a HardwareRefreshAction without a user.
-     * @param schedulerOrg the org scheduling the action.
-     * @param srvr Server for which the action affects.
+     *
+     * @param schedulerOrg   the org scheduling the action.
+     * @param srvr           Server for which the action affects.
      * @param earliestAction Date run the Action
      * @return Currently scheduled HardwareRefreshAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      * @throws MissingCapabilityException if scripts cannot be run
      */
-    public static Action scheduleHardwareRefreshAction(Org schedulerOrg, Server srvr,
-            Date earliestAction)
-        throws TaskomaticApiException {
+    public static Action scheduleHardwareRefreshAction(Org schedulerOrg, Server srvr, Date earliestAction)
+            throws TaskomaticApiException {
         checkSaltOrManagementEntitlement(srvr.getId());
 
-        Action action = ActionFactory
-                .createAction(ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
-        action.setName(ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName());
-        action.setOrg(schedulerOrg);
-        action.setSchedulerUser(null);
-        action.setEarliestAction(earliestAction);
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_HARDWARE_REFRESH_LIST,
+                null, schedulerOrg, earliestAction);
 
-        ServerAction sa = new ServerAction();
-        sa.setStatusQueued();
-        sa.setRemainingTries(REMAINING_TRIES);
-        sa.setServerWithCheck(srvr);
-
-        action.addServerAction(sa);
-        sa.setParentActionWithCheck(action);
+        ActionFactory.createAddServerAction(srvr, action);
 
         ActionFactory.save(action);
 
@@ -1799,21 +1450,21 @@ public class ActionManager extends BaseManager {
             log.error("Unable to run action on a system without either Salt or Management entitlement, id {}", sid);
             throw new MissingEntitlementException(
                     EntitlementManager.MANAGEMENT.getHumanReadableLabel() + " or " +
-                    EntitlementManager.SALT.getHumanReadableLabel()
+                            EntitlementManager.SALT.getHumanReadableLabel()
             );
         }
     }
 
     /**
      * Schedules all Errata for the given system.
+     *
      * @param scheduler Person scheduling the action.
-     * @param srvr Server whose errata is going to be scheduled.
-     * @param earliest Earliest possible time action will occur.
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @param srvr      Server whose errata is going to be scheduled.
+     * @param earliest  Earliest possible time action will occur.
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
-    public static void scheduleAllErrataUpdate(User scheduler, Server srvr,
-            Date earliest) throws TaskomaticApiException {
+    public static void scheduleAllErrataUpdate(User scheduler, Server srvr, Date earliest)
+            throws TaskomaticApiException {
         // Do not elaborate, we need only the IDs in here
         DataResult<Errata> errata = SystemManager.unscheduledErrata(scheduler,
                 srvr.getId(), null);
@@ -1826,79 +1477,21 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Schedules an install of a package
-     * @param scheduler The user scheduling the action.
-     * @param srvr The server that this action is for.
-     * @param nameId nameId rhnPackage.name_id
-     * @param evrId evrId of package
-     * @param archId archId of package
-     * @return The action that has been scheduled.
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static Action schedulePackageInstall(User scheduler, Server srvr,
-            Long nameId, Long evrId, Long archId) throws TaskomaticApiException {
-        List<Map<String, Long>> packages = new LinkedList<>();
-        Map<String, Long> row = new HashMap<>();
-        row.put("name_id", nameId);
-        row.put("evr_id", evrId);
-        row.put("arch_id", archId);
-        packages.add(row);
-        return schedulePackageInstall(scheduler, srvr, packages, new Date());
-    }
-
-    /**
-     * Schedules install of a packages on multiple servers
-     * @param scheduler The user scheduling the action.
-     * @param pkgs Set of packages to install
-     * @param server The server that this action is for.
-     * @param earliestAction The earliest time that this action could happen.
-     * @return The action that has been scheduled.
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static Action schedulePackageInstall(User scheduler, List<Package> pkgs,
-            Server server, Date earliestAction)
-        throws TaskomaticApiException {
-        if (pkgs.isEmpty()) {
-            return null;
-        }
-        List<Map<String, Long>> packages = new LinkedList<>();
-        for (Package pkg : pkgs) {
-            Map<String, Long> row = new HashMap<>();
-            row.put("name_id", pkg.getPackageName().getId());
-            row.put("evr_id", pkg.getPackageEvr().getId());
-            row.put("arch_id", pkg.getPackageArch().getId());
-            packages.add(row);
-        }
-        Set<Long> serverIds = new HashSet<>();
-        serverIds.add(server.getId());
-
-        packages = removeDuplicatedName(packages);
-
-        return schedulePackageAction(scheduler, packages,
-                ActionFactory.TYPE_PACKAGES_UPDATE, earliestAction, serverIds);
-    }
-
-    /**
      * Schedules a package action of the given type for the given server with the
      * packages given as a list.
-     * @param scheduler The user scheduling the action.
-     * @param pkgs A list of maps containing keys 'name_id', 'evr_id' and
-     *             optional 'arch_id' with Long values.
-     * @param type The type of the package action.  One of the static types found in
-     *             ActionFactory
+     *
+     * @param scheduler      The user scheduling the action.
+     * @param pkgs           A list of maps containing keys 'name_id', 'evr_id' and
+     *                       optional 'arch_id' with Long values.
+     * @param type           The type of the package action.  One of the static types found in
+     *                       ActionFactory
      * @param earliestAction The earliest time that this action could happen.
-     * @param servers The server(s) that this action is for.
+     * @param servers        The server(s) that this action is for.
      * @return The action that has been scheduled.
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
-    public static Action schedulePackageAction(User scheduler,
-            List<Map<String, Long>> pkgs,
-            ActionType type,
-            Date earliestAction,
-            Server...servers) throws TaskomaticApiException {
+    public static Action schedulePackageAction(User scheduler, List<Map<String, Long>> pkgs, ActionType type,
+                                               Date earliestAction, Server... servers) throws TaskomaticApiException {
         Set<Long> serverIds = new HashSet<>();
         for (Server s : servers) {
             serverIds.add(s.getId());
@@ -1910,24 +1503,26 @@ public class ActionManager extends BaseManager {
     /**
      * Schedules a package action of the given type for the given server with the
      * packages given as a list.
-     * @param scheduler The user scheduling the action.
-     * @param pkgs A list of maps containing keys 'name_id', 'evr_id' and
-     *             optional 'arch_id' with Long values.
-     * @param type The type of the package action.  One of the static types found in
-     *             ActionFactory
+     *
+     * @param scheduler      The user scheduling the action.
+     * @param pkgs           A list of maps containing keys 'name_id', 'evr_id' and
+     *                       optional 'arch_id' with Long values.
+     * @param type           The type of the package action.  One of the static types found in
+     *                       ActionFactory
      * @param earliestAction The earliest time that this action could happen.
-     * @param serverIds The server ids that this action is for.
+     * @param serverIds      The server ids that this action is for.
      * @return The action that has been scheduled.
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
     public static Action schedulePackageAction(User scheduler, List<Map<String, Long>> pkgs, ActionType type,
-            Date earliestAction, Set<Long> serverIds)
-        throws TaskomaticApiException {
+                                               Date earliestAction, Set<Long> serverIds)
+            throws TaskomaticApiException {
 
         String name = type.getPackageActionName();
 
-        Action action = scheduleAction(scheduler, type, name, earliestAction, serverIds);
+        Action action = ActionFactory.createAndSaveAction(type, scheduler, name, earliestAction);
+        ActionFactory.scheduleForExecution(action, serverIds);
+
         ActionFactory.save(action);
 
         addPackageActionDetails(List.of(action), pkgs);
@@ -1939,46 +1534,13 @@ public class ActionManager extends BaseManager {
         return action;
     }
 
-
-    private static List<Map<String, Long>> removeDuplicatedName(List<Map<String, Long>> packageMaps) {
-        Map<String, Map<String, Long>> packageMapsWithoutDuplicated = new HashMap<>();
-
-        for (Map<String, Long> map : packageMaps) {
-
-            Map<String, Long> previous = packageMapsWithoutDuplicated.put(
-                    map.get("name_id").toString(), map);
-
-            if (previous != null) {
-                String previousNevra = PackageManager.buildPackageNevra(
-                        previous.get("name_id"),
-                        previous.get("evr_id"),
-                        previous.get("arch_id"));
-
-                String currentNevra = PackageManager.buildPackageNevra(
-                        map.get("name_id"),
-                        map.get("evr_id"),
-                        map.get("arch_id"));
-
-                log.warn("Package {}, will be not be installed cause also {} has been " +
-                        "provided. This is because " +
-                        "salt fails installing to package with the same name. If the " +
-                        "installed package is not the one desired, " +
-                        "you can install it the correct one after."
-                        , previousNevra, currentNevra);
-
-            }
-        }
-        return new ArrayList<>(packageMapsWithoutDuplicated.values());
-
-    }
     /**
      * Adds package details to some Actions
-     * @param actions the actions
-     * @param packageMaps A list of maps containing keys 'name_id', 'evr_id' and
-     *            optional 'arch_id' with Long values.
+     *
+     * @param actions     the actions
+     * @param packageMaps A list of maps containing keys 'name_id', 'evr_id' and optional 'arch_id' with Long values.
      */
-    public static void addPackageActionDetails(Collection<Action> actions,
-            List<Map<String, Long>> packageMaps) {
+    public static void addPackageActionDetails(Collection<Action> actions, List<Map<String, Long>> packageMaps) {
         if (packageMaps != null) {
             List<Map<String, Long>> pkgMaps;
 
@@ -2007,40 +1569,32 @@ public class ActionManager extends BaseManager {
                 pkgMaps = new ArrayList<>(uPkgMap.values());
             }
             List<Map<String, Object>> paramList =
-                actions.stream().flatMap(action -> {
-                    String packageParameter = action.getPackageParameter();
-                    return pkgMaps.stream().map(packageMap -> {
-                        Map<String, Object> params = new HashMap<>();
-                        params.put("action_id", action.getId());
-                        params.put("name_id", packageMap.get("name_id"));
-                        params.put("evr_id", packageMap.get("evr_id"));
-                        params.put("arch_id", packageMap.get("arch_id"));
-                        params.put("pkg_parameter", packageParameter);
-                        return params;
-                    });
-                })
-                .collect(toList());
+                    actions.stream().flatMap(action -> {
+                                String packageParameter = action.getPackageParameter();
+                                return pkgMaps.stream().map(packageMap -> {
+                                    Map<String, Object> params = new HashMap<>();
+                                    params.put("action_id", action.getId());
+                                    params.put("name_id", packageMap.get("name_id"));
+                                    params.put("evr_id", packageMap.get("evr_id"));
+                                    params.put("arch_id", packageMap.get("arch_id"));
+                                    params.put("pkg_parameter", packageParameter);
+                                    return params;
+                                });
+                            })
+                            .collect(toList());
 
             ModeFactory.getWriteMode("Action_queries", "schedule_action")
-                .executeUpdates(paramList);
-    }
+                    .executeUpdates(paramList);
         }
+    }
 
     /**
-     * Schedules the appropriate package action
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
-     * @param pkgs The set of packages to be removed.
-     * @param type The Action Type
-     * @param earliestAction Date of earliest action to be executed
-     * @return scheduled Package Action
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * converts a RhnSet of packages to a List of Map(String, Long) structure
+     *
+     * @param pkgs The set of RhnSet packages to be converted.
+     * @return a structure List of Map(String, Long) of packages
      */
-    private static Action schedulePackageAction(User scheduler, Server srvr, RhnSet pkgs,
-            ActionType type, Date earliestAction)
-        throws TaskomaticApiException {
-
+    public static List<Map<String, Long>> convertPackagesFromRhnSetToListOfMaps(RhnSet pkgs) {
         List<Map<String, Long>> packages = new LinkedList<>();
         for (RhnSetElement rse : pkgs.getElements()) {
             Map<String, Long> row = new HashMap<>();
@@ -2050,40 +1604,41 @@ public class ActionManager extends BaseManager {
             // bugzilla: 191000, we forgot to populate the damn LinkedList :(
             packages.add(row);
         }
-        return schedulePackageAction(scheduler, packages, type, earliestAction, srvr
-                );
+
+        return packages;
     }
 
     /**
      * Schedules Xccdf evaluation.
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
-     * @param path Path for the Xccdf content.
-     * @param parameters Additional parameters for oscap tool.
+     *
+     * @param scheduler      User scheduling the action.
+     * @param srvr           Server for which the action affects.
+     * @param path           Path for the Xccdf content.
+     * @param parameters     Additional parameters for oscap tool.
      * @param earliestAction Date of earliest action to be executed.
      * @return scheduled Scap Action
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
     public static ScapAction scheduleXccdfEval(User scheduler, Server srvr, String path,
-            String parameters, Date earliestAction) throws TaskomaticApiException {
+                                               String parameters, Date earliestAction) throws TaskomaticApiException {
         return scheduleXccdfEval(scheduler, srvr, path, parameters, null, earliestAction);
     }
 
     /**
      * Schedules Xccdf evaluation.
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
-     * @param path Path for the Xccdf content.
-     * @param parameters Additional parameters for oscap tool.
-     * @param ovalFiles Optional OVAL files for oscap tool.
+     *
+     * @param scheduler      User scheduling the action.
+     * @param srvr           Server for which the action affects.
+     * @param path           Path for the Xccdf content.
+     * @param parameters     Additional parameters for oscap tool.
+     * @param ovalFiles      Optional OVAL files for oscap tool.
      * @param earliestAction Date of earliest action to be executed.
      * @return scheduled Scap Action
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
     public static ScapAction scheduleXccdfEval(User scheduler, Server srvr, String path,
-            String parameters, String ovalFiles, Date earliestAction) throws TaskomaticApiException {
+                                               String parameters, String ovalFiles, Date earliestAction)
+            throws TaskomaticApiException {
         Set<Long> serverIds = new HashSet<>();
         serverIds.add(srvr.getId());
         return scheduleXccdfEval(scheduler, serverIds, path, parameters, ovalFiles, earliestAction);
@@ -2091,20 +1646,20 @@ public class ActionManager extends BaseManager {
 
     /**
      * Schedules Xccdf evaluation.
-     * @param scheduler User scheduling the action.
-     * @param serverIds Set of server identifiers for which the action affects.
-     * @param path Path for the Xccdf content.
-     * @param parameters Additional parameters for oscap tool.
-     * @param ovalFiles Optional OVAL files for oscap tool.
+     *
+     * @param scheduler      User scheduling the action.
+     * @param serverIds      Set of server identifiers for which the action affects.
+     * @param path           Path for the Xccdf content.
+     * @param parameters     Additional parameters for oscap tool.
+     * @param ovalFiles      Optional OVAL files for oscap tool.
      * @param earliestAction Date of earliest action to be executed.
      * @return scheduled Scap Action
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      * @throws MissingCapabilityException if scripts cannot be run
      */
     public static ScapAction scheduleXccdfEval(User scheduler, Set<Long> serverIds,
-            String path, String parameters, String ovalFiles, Date earliestAction)
-        throws TaskomaticApiException {
+                                               String path, String parameters, String ovalFiles, Date earliestAction)
+            throws TaskomaticApiException {
         if (serverIds.isEmpty()) {
             return null;
         }
@@ -2127,10 +1682,13 @@ public class ActionManager extends BaseManager {
         }
 
         ScapActionDetails scapDetails = new ScapActionDetails(path, parameters, ovalFiles);
-        ScapAction action = (ScapAction) scheduleAction(scheduler,
-                ActionFactory.TYPE_SCAP_XCCDF_EVAL,
+
+        ScapAction action = (ScapAction) ActionFactory.createAndSaveAction(ActionFactory.TYPE_SCAP_XCCDF_EVAL,
+                scheduler,
                 ActionFactory.TYPE_SCAP_XCCDF_EVAL.getName(),
-                earliestAction, serverIds);
+                earliestAction);
+        ActionFactory.scheduleForExecution(action, serverIds);
+
         action.setScapActionDetails(scapDetails);
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
@@ -2140,22 +1698,19 @@ public class ActionManager extends BaseManager {
     /**
      * Schedule machine reboot.
      *
-     * @param scheduler Logged in user
-     * @param server Server, which is going to be rebooted
+     * @param scheduler      Logged in user
+     * @param server         Server, which is going to be rebooted
      * @param earliestAction Earliest date. If null, then date is current.
      * @return scheduled reboot action
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
     public static Action scheduleReboot(User scheduler, Server server, Date earliestAction)
-        throws TaskomaticApiException {
-        Action action = ActionManager.scheduleAction(scheduler,
-                                                     server,
-                                                     ActionFactory.TYPE_REBOOT,
-                                                     ActionFactory.TYPE_REBOOT.getName(),
-                                                     (earliestAction == null ?
-                                                      new Date() :
-                                                      earliestAction));
+            throws TaskomaticApiException {
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_REBOOT,
+                scheduler,
+                earliestAction);
+        ActionFactory.createAddServerAction(server, action);
+
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
         return action;
@@ -2163,25 +1718,25 @@ public class ActionManager extends BaseManager {
 
     /**
      * scheduleCertificateUpdate
-     * @param scheduler Logged in user
-     * @param server Server, to update the certificate for
+     *
+     * @param scheduler      Logged in user
+     * @param server         Server, to update the certificate for
      * @param earliestAction Earliest date. If null, use current date
      * @return scheduled certificate update action
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
     public static Action scheduleCertificateUpdate(User scheduler, Server server,
-            Date earliestAction)
-        throws TaskomaticApiException {
+                                                   Date earliestAction)
+            throws TaskomaticApiException {
         if (!SystemManager.clientCapable(server.getId(), "clientcert.update_client_cert")) {
             throw new MissingCapabilityException("spacewalk-client-cert", server);
         }
 
-        Action action = ActionManager.scheduleAction(scheduler,
-                        server,
-                        ActionFactory.TYPE_CLIENTCERT_UPDATE_CLIENT_CERT,
-                        ActionFactory.TYPE_CLIENTCERT_UPDATE_CLIENT_CERT.getName(),
-                        (earliestAction == null ? new Date() : earliestAction));
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_CLIENTCERT_UPDATE_CLIENT_CERT,
+                scheduler,
+                (earliestAction == null ? new Date() : earliestAction));
+        ActionFactory.createAddServerAction(server, action);
+
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
         return action;
@@ -2190,26 +1745,26 @@ public class ActionManager extends BaseManager {
     /**
      * Schedule a distribution upgrade.
      *
-     * @param scheduler user who scheduled this action
-     * @param server server
-     * @param details action details
+     * @param scheduler      user who scheduled this action
+     * @param server         server
+     * @param details        action details
      * @param earliestAction date of earliest action
      * @return the scheduled action
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
     public static DistUpgradeAction scheduleDistUpgrade(User scheduler, Server server,
-            DistUpgradeActionDetails details, Date earliestAction)
-        throws TaskomaticApiException {
+                                                        DistUpgradeActionDetails details, Date earliestAction)
+            throws TaskomaticApiException {
         // Construct the action name
-        String name = ActionFactory.TYPE_DIST_UPGRADE.getName();
+        String actionName = ActionFactory.TYPE_DIST_UPGRADE.getName();
         if (details.isDryRun()) {
-            name += " (Dry Run)";
+            actionName += " (Dry Run)";
         }
 
         // Schedule the main action
-        DistUpgradeAction action = (DistUpgradeAction) scheduleAction(scheduler, server,
-                ActionFactory.TYPE_DIST_UPGRADE, name, earliestAction);
+        DistUpgradeAction action = (DistUpgradeAction) ActionFactory.createAction(ActionFactory.TYPE_DIST_UPGRADE,
+                scheduler, actionName, earliestAction);
+        ActionFactory.createAddServerAction(server, action);
 
         // Add the details and save
         action.setDetails(details);
@@ -2217,13 +1772,14 @@ public class ActionManager extends BaseManager {
         taskomaticApi.scheduleActionExecution(action, !details.isDryRun());
         return action;
     }
+
     /**
      * Schedule an action for channel state on the specified list of servers
-     * @param user User with permission to schedule an action
-     * @param minionServers  servers where channel state should be applied to
+     *
+     * @param user          User with permission to schedule an action
+     * @param minionServers servers where channel state should be applied to
      * @return Set of scheduled Actions
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
     public static Action scheduleChannelState(User user, List<MinionServer> minionServers)
             throws TaskomaticApiException {
@@ -2233,17 +1789,18 @@ public class ActionManager extends BaseManager {
         taskomaticApi.scheduleActionExecution(action);
         return action;
     }
+
     /**
      * Schedule application of the highstate.
      *
      * @param scheduler the user who is scheduling
-     * @param sids list of server ids
-     * @param earliest action will not be executed before this date
-     * @param test run states in test-only mode
+     * @param sids      list of server ids
+     * @param earliest  action will not be executed before this date
+     * @param test      run states in test-only mode
      * @return the action object
      */
     public static ApplyStatesAction scheduleApplyHighstate(User scheduler, List<Long> sids, Date earliest,
-            Optional<Boolean> test) {
+                                                           Optional<Boolean> test) {
         return scheduleApplyStates(scheduler, sids, new ArrayList<>(), earliest, test);
     }
 
@@ -2252,13 +1809,13 @@ public class ActionManager extends BaseManager {
      * state modules is given.
      *
      * @param scheduler the user who is scheduling
-     * @param sids list of server ids
-     * @param mods list of state modules to be applied
-     * @param earliest action will not be executed before this date
+     * @param sids      list of server ids
+     * @param mods      list of state modules to be applied
+     * @param earliest  action will not be executed before this date
      * @return the action object
      */
     public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
-            Date earliest) {
+                                                        Date earliest) {
         return scheduleApplyStates(scheduler, sids, mods, earliest, Optional.empty());
     }
 
@@ -2267,14 +1824,14 @@ public class ActionManager extends BaseManager {
      * highstate if an empty list of state modules is given.
      *
      * @param scheduler the user who is scheduling
-     * @param sids list of server ids
-     * @param mods list of state modules to be applied
-     * @param earliest action will not be executed before this date
-     * @param test run states in test-only mode
+     * @param sids      list of server ids
+     * @param mods      list of state modules to be applied
+     * @param earliest  action will not be executed before this date
+     * @param test      run states in test-only mode
      * @return the action object
      */
     public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
-            Date earliest, Optional<Boolean> test) {
+                                                        Date earliest, Optional<Boolean> test) {
         return scheduleApplyStates(scheduler, sids, mods, Optional.empty(), earliest, test, false);
     }
 
@@ -2283,15 +1840,16 @@ public class ActionManager extends BaseManager {
      * highstate if an empty list of state modules is given.
      *
      * @param scheduler the user who is scheduling
-     * @param sids list of server ids
-     * @param mods list of state modules to be applied
-     * @param pillar optional pillar map
-     * @param earliest action will not be executed before this date
-     * @param test run states in test-only mode
+     * @param sids      list of server ids
+     * @param mods      list of state modules to be applied
+     * @param pillar    optional pillar map
+     * @param earliest  action will not be executed before this date
+     * @param test      run states in test-only mode
      * @return the action object
      */
     public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
-        Optional<Map<String, Object>> pillar, Date earliest, Optional<Boolean> test) {
+                                                        Optional<Map<String, Object>> pillar,
+                                                        Date earliest, Optional<Boolean> test) {
         return scheduleApplyStates(scheduler, sids, mods, pillar, earliest, test, false);
     }
 
@@ -2300,16 +1858,17 @@ public class ActionManager extends BaseManager {
      * highstate if an empty list of state modules is given.
      *
      * @param scheduler the user who is scheduling
-     * @param sids list of server ids
-     * @param mods list of state modules to be applied
-     * @param pillar optional pillar map
-     * @param earliest action will not be executed before this date
-     * @param test run states in test-only mode
+     * @param sids      list of server ids
+     * @param mods      list of state modules to be applied
+     * @param pillar    optional pillar map
+     * @param earliest  action will not be executed before this date
+     * @param test      run states in test-only mode
      * @param recurring whether the state is being applied recurring
      * @return the action object
      */
     public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
-            Optional<Map<String, Object>> pillar, Date earliest, Optional<Boolean> test, boolean recurring) {
+                                                        Optional<Map<String, Object>> pillar, Date earliest,
+                                                        Optional<Boolean> test, boolean recurring) {
         return scheduleApplyStates(scheduler, sids, mods, pillar, earliest, test, recurring, false);
     }
 
@@ -2318,24 +1877,23 @@ public class ActionManager extends BaseManager {
      * highstate if an empty list of state modules is given.
      *
      * @param scheduler the user who is scheduling
-     * @param sids list of server ids
-     * @param mods list of state modules to be applied
-     * @param pillar optional pillar map
-     * @param earliest action will not be executed before this date
-     * @param test run states in test-only mode
+     * @param sids      list of server ids
+     * @param mods      list of state modules to be applied
+     * @param pillar    optional pillar map
+     * @param earliest  action will not be executed before this date
+     * @param test      run states in test-only mode
      * @param recurring whether the state is being applied recurring
-     * @param direct  whenther the state should be executed as direct call
+     * @param direct    whenther the state should be executed as direct call
      * @return the action object
      */
     public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
                                                         Optional<Map<String, Object>> pillar, Date earliest,
                                                         Optional<Boolean> test, boolean recurring, boolean direct) {
-        ApplyStatesAction action = (ApplyStatesAction) ActionFactory
-                .createAction(ActionFactory.TYPE_APPLY_STATES, earliest);
-        action.setName(defineStatesActionName(mods, recurring));
-        action.setOrg(scheduler != null ?
-                scheduler.getOrg() : OrgFactory.getSatelliteOrg());
-        action.setSchedulerUser(scheduler);
+
+        ApplyStatesAction action = (ApplyStatesAction) ActionFactory.createAction(ActionFactory.TYPE_APPLY_STATES,
+                scheduler, defineStatesActionName(mods, recurring),
+                scheduler != null ? scheduler.getOrg() : OrgFactory.getSatelliteOrg(), earliest);
+
 
         ApplyStatesActionDetails actionDetails = new ApplyStatesActionDetails();
         actionDetails.setMods(mods);
@@ -2345,13 +1903,14 @@ public class ActionManager extends BaseManager {
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
-        scheduleForExecution(action, new HashSet<>(sids));
+        ActionFactory.scheduleForExecution(action, new HashSet<>(sids));
         return action;
     }
 
     /**
      * Define apply states action name.
-     * @param mods - the mods applied
+     *
+     * @param mods      - the mods applied
      * @param recurring - whether the states are being applied recurring
      * @return - the name of the action
      */
@@ -2375,13 +1934,11 @@ public class ActionManager extends BaseManager {
      * @return the image build action
      */
     public static ImageBuildAction scheduleImageBuild(User scheduler, List<Long> sids,
-            String version, ImageProfile profile, Date earliest) {
-        ImageBuildAction action = (ImageBuildAction) ActionFactory
-                .createAction(ActionFactory.TYPE_IMAGE_BUILD, earliest);
-        action.setName("Image Build " + profile.getLabel());
-        action.setOrg(scheduler != null ?
-                scheduler.getOrg() : OrgFactory.getSatelliteOrg());
-        action.setSchedulerUser(scheduler);
+                                                      String version, ImageProfile profile, Date earliest) {
+
+        ImageBuildAction action = (ImageBuildAction) ActionFactory.createAction(ActionFactory.TYPE_IMAGE_BUILD,
+                scheduler, "Image Build " + profile.getLabel(),
+                scheduler != null ? scheduler.getOrg() : OrgFactory.getSatelliteOrg(), earliest);
 
         ImageBuildActionDetails actionDetails = new ImageBuildActionDetails();
         actionDetails.setVersion(version);
@@ -2389,30 +1946,29 @@ public class ActionManager extends BaseManager {
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
-        scheduleForExecution(action, new HashSet<>(sids));
+        ActionFactory.scheduleForExecution(action, new HashSet<>(sids));
         return action;
     }
 
     /**
      *
-     * @param scheduler the scheduler
-     * @param sids      the sids
+     * @param scheduler     the scheduler
+     * @param sids          the sids
      * @param buildActionId the build actionId
-     * @param version   the image version
-     * @param name      the image name
-     * @param store     the image store
-     * @param earliest  the earliest
+     * @param version       the image version
+     * @param name          the image name
+     * @param store         the image store
+     * @param earliest      the earliest
      * @return the image inspect action
      */
     public static ImageInspectAction scheduleImageInspect(User scheduler, List<Long> sids,
                                                           Optional<Long> buildActionId, String version, String name,
                                                           ImageStore store, Date earliest) {
-        ImageInspectAction action = (ImageInspectAction) ActionFactory
-                .createAction(ActionFactory.TYPE_IMAGE_INSPECT, earliest);
-        action.setName("Image Inspect " + store.getUri() + "/" + name + ":" + version);
-        action.setOrg(scheduler != null ?
-                scheduler.getOrg() : OrgFactory.getSatelliteOrg());
-        action.setSchedulerUser(scheduler);
+
+        String actionName = "Image Inspect " + store.getUri() + "/" + name + ":" + version;
+        ImageInspectAction action = (ImageInspectAction) ActionFactory.createAction(ActionFactory.TYPE_IMAGE_INSPECT,
+                scheduler, actionName,
+                scheduler != null ? scheduler.getOrg() : OrgFactory.getSatelliteOrg(), earliest);
 
         ImageInspectActionDetails actionDetails = new ImageInspectActionDetails();
         actionDetails.setName(name);
@@ -2422,7 +1978,7 @@ public class ActionManager extends BaseManager {
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
-        scheduleForExecution(action, new HashSet<>(sids));
+        ActionFactory.scheduleForExecution(action, new HashSet<>(sids));
         return action;
     }
 
@@ -2430,22 +1986,22 @@ public class ActionManager extends BaseManager {
      * Connect given systems to another proxy.
      *
      * @param loggedInUser The current user
-     * @param sysids A list of systems ids
-     * @param proxyId Id of the proxy or 0 for direct connection to SUMA server
+     * @param sysids       A list of systems ids
+     * @param proxyId      Id of the proxy or 0 for direct connection to SUMA server
      * @return Returns a list of scheduled action ids
      *
      */
     public static List<Long> changeProxy(User loggedInUser, List<Long> sysids, Long proxyId)
-        throws TaskomaticApiException {
+            throws TaskomaticApiException {
         List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
-                    .map(Server::getId).collect(toList());
+                .map(Server::getId).collect(toList());
         if (!visible.containsAll(sysids)) {
             sysids.removeAll(visible);
             throw new UnsupportedOperationException("Some System not available or not managed with Salt: " + sysids);
         }
 
         List<MinionServer> minions = sysids.stream().map(
-            id -> SystemManager.lookupByIdAndUser(id, loggedInUser).asMinionServer().get()).collect(toList());
+                id -> SystemManager.lookupByIdAndUser(id, loggedInUser).asMinionServer().get()).collect(toList());
 
         List<Long> proxies = minions.stream().filter(Server::isProxy).map(Server::getId).collect(toList());
         if (!proxies.isEmpty()) {
@@ -2465,28 +2021,28 @@ public class ActionManager extends BaseManager {
         Optional<Long> proxyIdOpt = proxy.map(Server::getId);
 
         List<Long> sshIds = minions.stream()
-                            .filter(minion -> ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod()))
-                            .map(minion -> {
-            // handle SSH minions
-            minion.updateServerPaths(proxyIdOpt);
-            ServerFactory.save(minion);
+                .filter(minion -> ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod()))
+                .map(minion -> {
+                    // handle SSH minions
+                    minion.updateServerPaths(proxyIdOpt);
+                    ServerFactory.save(minion);
 
-            MinionPillarManager.INSTANCE.generatePillar(minion);
-            return minion.getId();
-        }).collect(toList());
+                    MinionPillarManager.INSTANCE.generatePillar(minion);
+                    return minion.getId();
+                }).collect(toList());
 
 
         List<Long> normalIds = minions.stream()
-                               .filter(minion -> !ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod()))
-                               .map(Server::getId)
-                               .collect(toList());
+                .filter(minion -> !ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod()))
+                .map(Server::getId)
+                .collect(toList());
 
         List<Long> ret = new ArrayList<>();
         if (!sshIds.isEmpty()) {
             // action for SSH minions - update channel configuration
             Action a = scheduleApplyStates(loggedInUser, sshIds,
-                       Collections.singletonList(ApplyStatesEventMessage.CHANNELS),
-                       new Date());
+                    Collections.singletonList(ApplyStatesEventMessage.CHANNELS),
+                    new Date());
             a = ActionFactory.save(a);
             taskomaticApi.scheduleActionExecution(a);
             ret.add(a.getId());
@@ -2498,8 +2054,8 @@ public class ActionManager extends BaseManager {
             pillar.put("mgr_server", proxy.map(Server::getHostname).orElse(ConfigDefaults.get().getJavaHostname()));
 
             Action a = scheduleApplyStates(loggedInUser, normalIds,
-                       Collections.singletonList(ApplyStatesEventMessage.SET_PROXY),
-                       Optional.of(pillar), new Date(), Optional.empty());
+                    Collections.singletonList(ApplyStatesEventMessage.SET_PROXY),
+                    Optional.of(pillar), new Date(), Optional.empty());
             a = ActionFactory.save(a);
             taskomaticApi.scheduleActionExecution(a);
             ret.add(a.getId());
@@ -2509,22 +2065,21 @@ public class ActionManager extends BaseManager {
 
     /**
      * Schedule Action to get and upload supportdata from the defined system to SCC.
-     * @param scheduler the scheduler of this action
-     * @param sid the system ID
-     * @param caseNumber the support case number
-     * @param parameter additional parameter for the tool which collect the data
+     *
+     * @param scheduler     the scheduler of this action
+     * @param sid           the system ID
+     * @param caseNumber    the support case number
+     * @param parameter     additional parameter for the tool which collect the data
      * @param uploadGeoType the uploadGeo Type
-     * @param earliest the date when this action should be executed
+     * @param earliest      the date when this action should be executed
      * @return the action
      */
     public static Action scheduleSupportDataAction(User scheduler, long sid, String caseNumber, String parameter,
                                                    UploadGeoType uploadGeoType, Date earliest) {
-        SupportDataAction action = (SupportDataAction) ActionFactory
-                .createAction(ActionFactory.TYPE_SUPPORTDATA_GET, earliest);
-        action.setName("Get and Upload Support data");
-        action.setOrg(scheduler != null ?
-                scheduler.getOrg() : OrgFactory.getSatelliteOrg());
-        action.setSchedulerUser(scheduler);
+
+        SupportDataAction action = (SupportDataAction) ActionFactory.createAction(ActionFactory.TYPE_SUPPORTDATA_GET,
+                scheduler, "Get and Upload Support data",
+                scheduler != null ? scheduler.getOrg() : OrgFactory.getSatelliteOrg(), earliest);
 
         SupportDataActionDetails actionDetails = new SupportDataActionDetails();
         actionDetails.setCaseNumber(caseNumber);
@@ -2535,58 +2090,44 @@ public class ActionManager extends BaseManager {
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
-        scheduleForExecution(action, Set.of(sid));
+        ActionFactory.scheduleForExecution(action, Set.of(sid));
         return action;
     }
 
     /**
      * Schedule an immediate Ansible inventory refresh without a user.
      *
-     * @param server the server
+     * @param server        the server
      * @param inventoryPath the Ansible inventory
      * @return the scheduled InventoryAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
-    public static Action scheduleInventoryRefresh(Server server, String inventoryPath)
-            throws TaskomaticApiException {
-        Date earliest = new Date();
-        return scheduleInventoryRefresh(Optional.empty(), server, inventoryPath, earliest);
+    public static Action scheduleInventoryRefresh(Server server, String inventoryPath) throws TaskomaticApiException {
+        return scheduleInventoryRefresh(Optional.empty(), server, inventoryPath, new Date());
     }
 
     /**
      * Schedule an Ansible inventory refresh.
      *
-     * @param user the user
-     * @param server the server
-     * @param earliest The earliest time this action should be run.
+     * @param user          the user
+     * @param server        the server
+     * @param earliest      The earliest time this action should be run.
      * @param inventoryPath the Ansible inventory
      * @return the scheduled InventoryAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
     public static Action scheduleInventoryRefresh(Optional<User> user, Server server, String inventoryPath,
-                                                       Date earliest) throws TaskomaticApiException {
+                                                  Date earliest) throws TaskomaticApiException {
         checkSaltOrManagementEntitlement(server.getId());
 
-        InventoryAction action = (InventoryAction) ActionFactory.createAction(
-                ActionFactory.TYPE_INVENTORY);
+        InventoryAction action = (InventoryAction) ActionFactory.createAction(ActionFactory.TYPE_INVENTORY,
+                user.orElse(null), server.getOrg(), earliest);
 
         InventoryActionDetails details = new InventoryActionDetails();
         details.setInventoryPath(inventoryPath);
-
-        action.setName(ActionFactory.TYPE_INVENTORY.getName());
-        action.setOrg(server.getOrg());
-        action.setSchedulerUser(user.orElse(null));
-        action.setEarliestAction(earliest);
         action.setDetails(details);
 
-        ServerAction sa = new ServerAction();
-        sa.setStatusQueued();
-        sa.setRemainingTries(REMAINING_TRIES);
-        sa.setServerWithCheck(server);
-        action.addServerAction(sa);
-        sa.setParentActionWithCheck(action);
+        ActionFactory.createAddServerAction(server, action);
 
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
@@ -2597,20 +2138,16 @@ public class ActionManager extends BaseManager {
      * Schedule proxy.apply_proxy_config salt state.
      *
      * @param loggedInUser The current user
-     * @param sysids A list of systems ids
-     * @param pillar The pillar passed to the salt state
+     * @param sysids       A list of systems ids
+     * @param pillar       The pillar passed to the salt state
      * @return the scheduled action
      *
      */
-    public static Action scheduleApplyProxyConfig(User loggedInUser,
-                                                  List<Long> sysids,
-                                                  Optional<Map<String, Object>> pillar)
-            throws TaskomaticApiException {
+    public static Action scheduleApplyProxyConfig(User loggedInUser, List<Long> sysids,
+                                                  Optional<Map<String, Object>> pillar) throws TaskomaticApiException {
         Date earliestAction = new Date();
-        Action action = scheduleApplyStates(loggedInUser, sysids,
-                Collections.singletonList("proxy.apply_proxy_config"),
-                pillar,
-                earliestAction, Optional.empty());
+        Action action = scheduleApplyStates(loggedInUser, sysids, Collections.singletonList("proxy.apply_proxy_config"),
+                pillar, earliestAction, Optional.empty());
         action = ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
         return action;
