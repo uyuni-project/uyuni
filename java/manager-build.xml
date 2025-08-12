@@ -119,27 +119,41 @@
     </condition>
 
     <!-- macros for deployment -->
-    <macrodef name="deploy-directory">
+    <macrodef name="deploy-to-temp-directory">
         <attribute name="source"/>
-        <attribute name="destination"/>
-        <attribute name="syncParameters" default=""/>
+        <element name="tasks" implicit="true" optional="true" />
         <sequential>
+            <echo message="Creating temp directory" level="verbose" />
             <!-- Define a temporary directory or fallback to /tmp/deploy-dir -->
             <local name="deploy.temp.dir" />
             <deploy-execute outputProperty="deploy.temp.dir" command="mktemp -d" />
             <property name="deploy.temp.dir" value="/tmp/deploy-temp-dir" />
-
-            <echo message="Deploying directory @{source} to @{destination} using ${deploy.temp.dir}" />
 
             <!-- Extract to the temporary directory -->
             <echo message="Executing sh -c &quot;tar c -C @{source} -f - . | ${deploy.executor.command} ${deploy.executor.parameters} 'tar xf - -C ${deploy.temp.dir}/'&quot;" level="verbose"/>
             <exec failonerror="true" executable="sh" logerror="true">
                 <arg line="-c &quot;tar c -C @{source} -f - . | ${deploy.executor.command} ${deploy.executor.parameters} 'tar xf - -C ${deploy.temp.dir}/ --no-same-owner --no-same-permissions'&quot;"/>
             </exec>
-            <!-- Use rsync to synchronize the folder -->
-            <deploy-execute command="rsync -a @{syncParameters} ${deploy.temp.dir}/ @{destination}" />
-            <!-- Remove the temporary stuff -->
+
+            <tasks/>
+
+            <echo message="Cleaning up temp directory ${deploy.temp.dir}" level="verbose" />
+            <!-- Cleanup -->
             <deploy-execute command="rm -rf ${deploy.temp.dir}" />
+        </sequential>
+    </macrodef>
+
+    <macrodef name="deploy-directory">
+        <attribute name="source"/>
+        <attribute name="destination"/>
+        <attribute name="syncParameters" default=""/>
+        <sequential>
+            <deploy-to-temp-directory source="@{source}">
+                <echo message="Deploying directory @{source} to @{destination} using ${deploy.temp.dir}" />
+
+                <!-- Use rsync to synchronize the folder -->
+                <deploy-execute command="rsync -a @{syncParameters} ${deploy.temp.dir}/ @{destination}" />
+            </deploy-to-temp-directory>
         </sequential>
     </macrodef>
 
@@ -644,5 +658,38 @@
     <target name="deploy-restart-container">
         <echo message="This target is obsolete and will be removed. Please use:" />
         <echo message="         ant -f manager-build.xml -Ddeploy.mode=container deploy-restart" />
+    </target>
+
+    <target name="apply-schema-migrations" depends="check-deploy-mode, ensure-server-access" description="Apply schema migrations">
+        <echo message="Applying schema migrations..."/>
+        <sequential>
+            <local name="schema.temp.dir" />
+            <exec failonerror="true" executable="mktemp" outputProperty="schema.temp.dir">
+                <arg line="-d" />
+            </exec>
+            <!-- The default value is defined in schema/spacewalk/get-migrations.sh -->
+            <property name="schema.version.min" value="" />
+            <property name="schema.temp.dir" value="/tmp/schema-temp-dir" />
+            <echo message="Using temp dir ${schema.temp.dir}" />
+
+            <exec executable="sh" output="${schema.temp.dir}/schema.sql" failonerror="true">
+                <arg value="${basedir}/../schema/spacewalk/get-migrations.sh"/>
+                <arg value="${schema.version.min}"/>
+            </exec>
+
+            <deploy-to-temp-directory source="${schema.temp.dir}">
+                <echo message="Stopping spacewalk-service..." />
+                <deploy-execute command="spacewalk-service stop" />
+
+                <local name="result" />
+                <deploy-execute command="spacewalk-sql --verbose --select-mode ${deploy.temp.dir}/schema.sql" outputProperty="result" />
+                <echo message="${result}" />
+
+                <echo message="Starting spacewalk-service..." />
+                <deploy-execute command="spacewalk-service start" />
+            </deploy-to-temp-directory>
+
+            <delete file="${schema.temp.dir}" quiet="false"/>
+        </sequential>
     </target>
 </project>
