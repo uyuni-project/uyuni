@@ -9,7 +9,7 @@ set -euo pipefail
 readonly script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly min_version="${1:-5.0}"
 
-echo "-- Using min_version ${min_version}\n"
+echo "-- Using min_version ${min_version}"
 
 cd "$script_dir/../.."
 
@@ -21,7 +21,7 @@ done |
 sort -V |
 awk -v min="$min_version" '$1 >= min { print $2 }' |
 while read -r file; do
-  echo "-- $file\n"
+  echo "-- $file"
   cat "$file"
   echo ""
 done
