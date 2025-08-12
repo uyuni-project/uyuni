@@ -113,6 +113,16 @@ public class ActionFactory extends HibernateFactory {
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
     private static final LocalizationService LOCALIZATION = LocalizationService.getInstance();
 
+    /**
+     * This was extracted to a constant from the
+     * ActionManager.scheduleAction(User, Server, ActionType, String, Date) method, then moved to
+     * ActionFactory.createAddServerAction(Server, Action);
+     * At the time it was in there, there was a comment "hmm 10?". Not sure what the hesitation is,
+     * but I wanted to retain that comment with regard to this value.
+     */
+    public static final Long REMAINING_TRIES = 10L;
+
+
     private ActionFactory() {
         super();
         setupActionArchTypes();
@@ -350,6 +360,23 @@ public class ActionFactory extends HibernateFactory {
             return list.get(0).getParentAction();
         }
         return null;
+    }
+
+    /**
+     * Creates and adds a ServerAction to an Action
+     * @param serverIn the Server associated with the created ServerAction
+     * @param actionIn the type of Action we want to create
+     */
+    public static void createAddServerAction(Server serverIn, Action actionIn) {
+
+        ServerAction sa = new ServerAction();
+        sa.setStatusQueued();
+        sa.setRemainingTries(REMAINING_TRIES);
+        sa.setServerWithCheck(serverIn);
+
+        actionIn.addServerAction(sa);
+        //probably not needed, already included in addServerAction?
+        sa.setParentActionWithCheck(actionIn);
     }
 
     /**

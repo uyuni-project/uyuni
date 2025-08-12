@@ -27,7 +27,6 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
@@ -142,14 +141,6 @@ public class ActionManager extends BaseManager {
     // remove when doing a package sync.  Never remove running kernel
     // for instance.
     public static final String[] PACKAGES_NOT_REMOVABLE = {"kernel"};
-
-    /**
-     * This was extracted to a constant from the
-     * {@link #scheduleAction(User, Server, ActionType, String, Date)} method. At the time
-     * it was in there, there was a comment "hmm 10?". Not sure what the hesitation is
-     * but I wanted to retain that comment with regard to this value.
-     */
-    private static final Long REMAINING_TRIES = 10L;
 
     private static MaintenanceManager maintenanceManager = new MaintenanceManager();
 
@@ -1208,12 +1199,7 @@ public class ActionManager extends BaseManager {
         action.setSchedulerUser(user.orElse(null));
         action.setEarliestAction(earliest);
 
-        ServerAction sa = new ServerAction();
-        sa.setStatusQueued();
-        sa.setRemainingTries(REMAINING_TRIES);
-        sa.setServerWithCheck(server);
-        action.addServerAction(sa);
-        sa.setParentActionWithCheck(action);
+        ActionFactory.createAddServerAction(server, action);
 
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
@@ -1532,7 +1518,7 @@ public class ActionManager extends BaseManager {
 
         Map<String, Object> params = new HashMap<>();
         params.put("status_id", ActionFactory.STATUS_QUEUED.getId());
-        params.put("tries", REMAINING_TRIES);
+        params.put("tries", ActionFactory.REMAINING_TRIES);
         params.put("parent_id", action.getId());
 
         WriteMode m = ModeFactory.getWriteMode("Action_queries", "insert_server_actions");
@@ -1545,15 +1531,7 @@ public class ActionManager extends BaseManager {
             ActionType type, String name, Date earliestAction) {
 
         Action action = ActionFactory.createAction(type, scheduler, name, earliestAction);
-
-        ServerAction sa = new ServerAction();
-        sa.setStatusQueued();
-        sa.setRemainingTries(REMAINING_TRIES);
-        sa.setServerWithCheck(srvr);
-
-        action.addServerAction(sa);
-        sa.setParentActionWithCheck(action);
-
+        ActionFactory.createAddServerAction(srvr, action);
         return action;
     }
 
@@ -1742,13 +1720,7 @@ public class ActionManager extends BaseManager {
         action.setSchedulerUser(null);
         action.setEarliestAction(earliestAction);
 
-        ServerAction sa = new ServerAction();
-        sa.setStatusQueued();
-        sa.setRemainingTries(REMAINING_TRIES);
-        sa.setServerWithCheck(srvr);
-
-        action.addServerAction(sa);
-        sa.setParentActionWithCheck(action);
+        ActionFactory.createAddServerAction(srvr, action);
 
         ActionFactory.save(action);
 
@@ -2549,12 +2521,7 @@ public class ActionManager extends BaseManager {
         action.setEarliestAction(earliest);
         action.setDetails(details);
 
-        ServerAction sa = new ServerAction();
-        sa.setStatusQueued();
-        sa.setRemainingTries(REMAINING_TRIES);
-        sa.setServerWithCheck(server);
-        action.addServerAction(sa);
-        sa.setParentActionWithCheck(action);
+        ActionFactory.createAddServerAction(server, action);
 
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
