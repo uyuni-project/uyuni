@@ -67,7 +67,7 @@ const AccessGroupDetails = forwardRef<AccessGroupDetailsHandle, Props>((props, r
         });
     };
 
-    if (props.state.orgId) {
+    if (props.state.orgId && !props.state.id) {
       getAccessGroups(props.state.orgId);
     } else {
       setAccessGroups([]);
