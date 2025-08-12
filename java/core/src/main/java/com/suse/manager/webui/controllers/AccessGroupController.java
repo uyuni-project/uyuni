@@ -56,6 +56,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import spark.Request;
@@ -124,6 +125,13 @@ public class AccessGroupController {
         }
         var copyFrom = copyFromIds.stream()
             .flatMap(id -> NamespaceFactory.getAccessGroupNamespaces(id).stream())
+            .collect(Collectors.toMap(
+                NamespaceJson::getId,
+                Function.identity(),
+                (existing, replacement) -> existing
+            ))
+            .values()
+            .stream()
             .toList();
         var namespaces = ACCESS_CONTROL_NAMESPACE_TREE_HELPER.buildTree(NamespaceFactory.list());
         var result = Map.of("namespaces", namespaces, "toCopy", copyFrom);
