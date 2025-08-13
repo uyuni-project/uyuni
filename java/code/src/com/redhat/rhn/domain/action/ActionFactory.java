@@ -68,6 +68,7 @@ import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
 import com.redhat.rhn.domain.config.ConfigRevision;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -416,13 +417,13 @@ public class ActionFactory extends HibernateFactory {
      */
     public static Action createAndSaveAction(ActionType typeIn, User schedulerUser, String actionName,
                                              Date earliestAction) {
-        /**
-         * We have to relookup the type here, because most likely a static final variable
-         *  was passed in.  If we use this and the .reload() gets called below
-         *  if we try to save a new action the instace of the type in the cache
-         *  will be different than the final static variable
-         *  sometimes hibernate is no fun
-         */
+        /*
+            We have to re-lookup the type here, because most likely a static final variable
+            was passed in.  If we use this and the .reload() gets called below
+            if we try to save a new action the instance of the type in the cache
+            will be different from the final static variable
+            sometimes hibernate is no fun
+        */
         ActionType lookedUpType = lookupActionTypeByLabel(typeIn.getLabel());
         Action action = createAction(lookedUpType, schedulerUser, actionName, earliestAction);
         save(action);
@@ -433,27 +434,56 @@ public class ActionFactory extends HibernateFactory {
     /**
      * Create a new Action from scratch.
      * @param typeIn the type of Action we want to create
-     * @param schedulerUser the user who created this action
-     * @param earliestAction the earliest execution date
+     * @param schedulerUserIn the user who created this action
+     * @param earliestIn the earliest execution date
      * @return the Action created
      */
-    public static Action createAction(ActionType typeIn, User schedulerUser, Date earliestAction) {
-        return createAction(typeIn, schedulerUser, typeIn.getName(), earliestAction);
+    public static Action createAction(ActionType typeIn, User schedulerUserIn,
+                                      Date earliestIn) {
+        return createAction(typeIn, schedulerUserIn, typeIn.getName(), schedulerUserIn.getOrg(), earliestIn);
     }
 
     /**
      * Create a new Action from scratch.
      * @param typeIn the type of Action we want to create
-     * @param schedulerUser the user who created this action
+     * @param schedulerUserIn the user who created this action
      * @param actionName the action name
-     * @param earliestAction the earliest execution date
+     * @param earliestIn the earliest execution date
      * @return the Action created
      */
-    public static Action createAction(ActionType typeIn, User schedulerUser, String actionName, Date earliestAction) {
-        Action pa = ActionFactory.createAction(typeIn, earliestAction);
-        pa.setName(actionName);
-        pa.setOrg(schedulerUser.getOrg());
-        pa.setSchedulerUser(schedulerUser);
+    public static Action createAction(ActionType typeIn, User schedulerUserIn, String actionName,
+                                      Date earliestIn) {
+        return createAction(typeIn, schedulerUserIn, actionName, schedulerUserIn.getOrg(), earliestIn);
+    }
+
+    /**
+     * Create a new Action from scratch.
+     * @param typeIn the type of Action we want to create
+     * @param schedulerUserIn the user who created this action
+     * @param orgIn the Org of this action
+     * @param earliestIn the earliest execution date
+     * @return the Action created
+     */
+    public static Action createAction(ActionType typeIn, User schedulerUserIn, Org orgIn,
+                                      Date earliestIn) {
+        return createAction(typeIn, schedulerUserIn, typeIn.getName(), orgIn, earliestIn);
+    }
+
+    /**
+     * Create a new Action from scratch.
+     * @param typeIn the type of Action we want to create
+     * @param schedulerUserIn the user who created this action
+     * @param actionNameIn the action name
+     * @param orgIn the Org of this action
+     * @param earliestIn the earliest execution date
+     * @return the Action created
+     */
+    public static Action createAction(ActionType typeIn, User schedulerUserIn, String actionNameIn, Org orgIn,
+                                      Date earliestIn) {
+        Action pa = createAction(typeIn, earliestIn);
+        pa.setName(actionNameIn);
+        pa.setOrg(orgIn);
+        pa.setSchedulerUser(schedulerUserIn);
         return pa;
     }
 
@@ -467,13 +497,12 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
-     * Create a new Action from scratch
-     * with the given earliest execution.
+     * Create a new Action from scratch with the given earliestIn execution time.
      * @param typeIn the type of Action we want to create
-     * @param earliest The earliest time that this action can occur.
+     * @param earliestIn The earliest time that this action can occur.
      * @return the Action created
      */
-    public static Action createAction(ActionType typeIn, Date earliest) {
+    public static Action createAction(ActionType typeIn, Date earliestIn) {
         Action retval;
 
         if (typeIn.equals(TYPE_PACKAGES_REFRESH_LIST)) {
@@ -610,10 +639,10 @@ public class ActionFactory extends HibernateFactory {
         retval.setActionType(typeIn);
         retval.setCreated(new Date());
         retval.setModified(new Date());
-        if (earliest == null) {
-            earliest = new Date();
+        if (earliestIn == null) {
+            earliestIn = new Date();
         }
-        retval.setEarliestAction(earliest);
+        retval.setEarliestAction(earliestIn);
         //in perl(modules/rhn/RHN/DB/Scheduler.pm) version is given a 2.
         //So that's what I did.
         retval.setVersion(2L);
