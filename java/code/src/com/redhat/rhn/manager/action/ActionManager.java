@@ -510,12 +510,9 @@ public class ActionManager extends BaseManager {
         //make that a strict business rule, here is where we can verify that
         //the given channel is the sandbox for the given server.
 
-        ConfigUploadAction a =
-                (ConfigUploadAction)ActionFactory.createAction(
-                        ActionFactory.TYPE_CONFIGFILES_UPLOAD, earliest);
-        a.setOrg(user.getOrg());
-        a.setSchedulerUser(user);
-        a.setName(a.getActionTypeName());
+        ConfigUploadAction a = (ConfigUploadAction) ActionFactory.createAction(ActionFactory.TYPE_CONFIGFILES_UPLOAD,
+                user, earliest);
+
         //put a single row into rhnActionConfigChannel
         a.addConfigChannelAndServer(channel, server);
         //put a single row into rhnServerAction
@@ -1981,12 +1978,11 @@ public class ActionManager extends BaseManager {
     public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
                                                         Optional<Map<String, Object>> pillar, Date earliest,
                                                         Optional<Boolean> test, boolean recurring, boolean direct) {
-        ApplyStatesAction action = (ApplyStatesAction) ActionFactory
-                .createAction(ActionFactory.TYPE_APPLY_STATES, earliest);
-        action.setName(defineStatesActionName(mods, recurring));
-        action.setOrg(scheduler != null ?
-                scheduler.getOrg() : OrgFactory.getSatelliteOrg());
-        action.setSchedulerUser(scheduler);
+
+        ApplyStatesAction action = (ApplyStatesAction) ActionFactory.createAction(ActionFactory.TYPE_APPLY_STATES,
+                scheduler, defineStatesActionName(mods, recurring),
+                scheduler != null ? scheduler.getOrg() : OrgFactory.getSatelliteOrg(), earliest);
+
 
         ApplyStatesActionDetails actionDetails = new ApplyStatesActionDetails();
         actionDetails.setMods(mods);
@@ -2027,12 +2023,10 @@ public class ActionManager extends BaseManager {
      */
     public static ImageBuildAction scheduleImageBuild(User scheduler, List<Long> sids,
             String version, ImageProfile profile, Date earliest) {
-        ImageBuildAction action = (ImageBuildAction) ActionFactory
-                .createAction(ActionFactory.TYPE_IMAGE_BUILD, earliest);
-        action.setName("Image Build " + profile.getLabel());
-        action.setOrg(scheduler != null ?
-                scheduler.getOrg() : OrgFactory.getSatelliteOrg());
-        action.setSchedulerUser(scheduler);
+
+        ImageBuildAction action = (ImageBuildAction) ActionFactory.createAction(ActionFactory.TYPE_IMAGE_BUILD,
+                scheduler, "Image Build " + profile.getLabel(),
+                scheduler != null ? scheduler.getOrg() : OrgFactory.getSatelliteOrg(), earliest);
 
         ImageBuildActionDetails actionDetails = new ImageBuildActionDetails();
         actionDetails.setVersion(version);
@@ -2058,12 +2052,11 @@ public class ActionManager extends BaseManager {
     public static ImageInspectAction scheduleImageInspect(User scheduler, List<Long> sids,
                                                           Optional<Long> buildActionId, String version, String name,
                                                           ImageStore store, Date earliest) {
-        ImageInspectAction action = (ImageInspectAction) ActionFactory
-                .createAction(ActionFactory.TYPE_IMAGE_INSPECT, earliest);
-        action.setName("Image Inspect " + store.getUri() + "/" + name + ":" + version);
-        action.setOrg(scheduler != null ?
-                scheduler.getOrg() : OrgFactory.getSatelliteOrg());
-        action.setSchedulerUser(scheduler);
+
+        String actionName = "Image Inspect " + store.getUri() + "/" + name + ":" + version;
+        ImageInspectAction action = (ImageInspectAction) ActionFactory.createAction(ActionFactory.TYPE_IMAGE_INSPECT,
+                scheduler, actionName,
+                scheduler != null ? scheduler.getOrg() : OrgFactory.getSatelliteOrg(), earliest);
 
         ImageInspectActionDetails actionDetails = new ImageInspectActionDetails();
         actionDetails.setName(name);
@@ -2170,12 +2163,10 @@ public class ActionManager extends BaseManager {
      */
     public static Action scheduleSupportDataAction(User scheduler, long sid, String caseNumber, String parameter,
                                                    UploadGeoType uploadGeoType, Date earliest) {
-        SupportDataAction action = (SupportDataAction) ActionFactory
-                .createAction(ActionFactory.TYPE_SUPPORTDATA_GET, earliest);
-        action.setName("Get and Upload Support data");
-        action.setOrg(scheduler != null ?
-                scheduler.getOrg() : OrgFactory.getSatelliteOrg());
-        action.setSchedulerUser(scheduler);
+
+        SupportDataAction action = (SupportDataAction) ActionFactory.createAction(ActionFactory.TYPE_SUPPORTDATA_GET,
+                scheduler, "Get and Upload Support data",
+                scheduler != null ? scheduler.getOrg() : OrgFactory.getSatelliteOrg(), earliest);
 
         SupportDataActionDetails actionDetails = new SupportDataActionDetails();
         actionDetails.setCaseNumber(caseNumber);
