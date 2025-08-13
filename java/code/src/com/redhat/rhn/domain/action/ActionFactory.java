@@ -22,6 +22,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -80,6 +81,8 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.maintenance.MaintenanceManager;
+
 import org.apache.commons.collections.ListUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -112,6 +115,7 @@ public class ActionFactory extends HibernateFactory {
     private static Set<String> actionArchTypes;
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
     private static final LocalizationService LOCALIZATION = LocalizationService.getInstance();
+    private static MaintenanceManager maintenanceManager = new MaintenanceManager();
 
     /**
      * This was extracted to a constant from the
@@ -360,6 +364,29 @@ public class ActionFactory extends HibernateFactory {
             return list.get(0).getParentAction();
         }
         return null;
+    }
+
+    /**
+     * Schedules an action for execution on one or more servers (adding rows to
+     * rhnServerAction)
+     *
+     * Also checks if the action scheduled date/time fit in systems maintenance schedules, if there are any assigned.
+     *
+     * @param action the action
+     * @param serverIds server IDs
+     */
+    public static void scheduleForExecution(Action action, Set<Long> serverIds) {
+        maintenanceManager.canActionBeScheduled(serverIds, action);
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("status_id", ActionFactory.STATUS_QUEUED.getId());
+        params.put("tries", ActionFactory.REMAINING_TRIES);
+        params.put("parent_id", action.getId());
+
+        WriteMode m = ModeFactory.getWriteMode("Action_queries", "insert_server_actions");
+        List<Long> sidList = new ArrayList<>();
+        sidList.addAll(serverIds);
+        m.executeUpdate(params, sidList);
     }
 
     /**

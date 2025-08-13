@@ -26,7 +26,6 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
-import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -148,7 +147,7 @@ public class AttestationManager {
         minionsSet.forEach(minionServer -> initializeReport(action, minionServer));
 
         Set<Long> minionIds = minionsSet.stream().map(Server::getId).collect(Collectors.toSet());
-        ActionManager.scheduleForExecution(action, minionIds);
+        ActionFactory.scheduleForExecution(action, minionIds);
 
         CoCoAttestationAction updated = (CoCoAttestationAction) ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(updated);

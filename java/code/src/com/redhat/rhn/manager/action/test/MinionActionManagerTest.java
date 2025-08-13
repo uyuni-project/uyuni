@@ -748,7 +748,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(executionTime.toInstant()));
-        ActionManager.scheduleForExecution(action,
+        ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
         ActionFactory.save(action);
 
@@ -801,7 +801,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(executionTime.toInstant()));
-        ActionManager.scheduleForExecution(action,
+        ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
         ActionFactory.save(action);
 
@@ -854,7 +854,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
-        ActionManager.scheduleForExecution(action,
+        ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
         ActionFactory.save(action);
 
@@ -907,7 +907,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
-        ActionManager.scheduleForExecution(action,
+        ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
         ActionFactory.save(action);
 
@@ -961,7 +961,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
-        ActionManager.scheduleForExecution(action,
+        ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
         ActionFactory.save(action);
 
@@ -1014,7 +1014,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
-        ActionManager.scheduleForExecution(action,
+        ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
         ActionFactory.save(action);
 
@@ -1067,7 +1067,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
-        ActionManager.scheduleForExecution(action,
+        ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(s1.getId(), s2.getId())));
         ActionFactory.save(action);
 

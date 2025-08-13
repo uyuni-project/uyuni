@@ -1461,7 +1461,7 @@ public class ActionManager extends BaseManager {
 
         ScriptRunAction sra = (ScriptRunAction) ActionFactory.createAndSaveAction(ActionFactory.TYPE_SCRIPT_RUN,
                 scheduler, name, earliest);
-        scheduleForExecution(sra, sidSet);
+        ActionFactory.scheduleForExecution(sra, sidSet);
 
         sra.setScriptActionDetails(script);
         ActionFactory.save(sra);
@@ -1501,29 +1501,6 @@ public class ActionManager extends BaseManager {
 
         return ActionFactory.createScriptActionDetails(username, groupname,
                 timeout, script);
-    }
-
-    /**
-     * Schedules an action for execution on one or more servers (adding rows to
-     * rhnServerAction)
-     *
-     * Also checks if the action scheduled date/time fit in systems maintenance schedules, if there are any assigned.
-     *
-     * @param action the action
-     * @param serverIds server IDs
-     */
-    public static void scheduleForExecution(Action action, Set<Long> serverIds) {
-        maintenanceManager.canActionBeScheduled(serverIds, action);
-
-        Map<String, Object> params = new HashMap<>();
-        params.put("status_id", ActionFactory.STATUS_QUEUED.getId());
-        params.put("tries", ActionFactory.REMAINING_TRIES);
-        params.put("parent_id", action.getId());
-
-        WriteMode m = ModeFactory.getWriteMode("Action_queries", "insert_server_actions");
-        List<Long> sidList = new ArrayList<>();
-        sidList.addAll(serverIds);
-        m.executeUpdate(params, sidList);
     }
 
     /**
@@ -1688,7 +1665,7 @@ public class ActionManager extends BaseManager {
 
         Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_HARDWARE_REFRESH_LIST, scheduler,
                 ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName(), earliestAction);
-        scheduleForExecution(action, serverIds);
+        ActionFactory.scheduleForExecution(action, serverIds);
         return action;
     }
 
@@ -1857,7 +1834,7 @@ public class ActionManager extends BaseManager {
         String name = type.getPackageActionName();
 
         Action action = ActionFactory.createAndSaveAction(type, scheduler, name, earliestAction);
-        scheduleForExecution(action, serverIds);
+        ActionFactory.scheduleForExecution(action, serverIds);
 
         ActionFactory.save(action);
 
@@ -2063,7 +2040,7 @@ public class ActionManager extends BaseManager {
                 scheduler,
                 ActionFactory.TYPE_SCAP_XCCDF_EVAL.getName(),
                 earliestAction);
-        scheduleForExecution(action, serverIds);
+        ActionFactory.scheduleForExecution(action, serverIds);
 
         action.setScapActionDetails(scapDetails);
         ActionFactory.save(action);
@@ -2278,7 +2255,7 @@ public class ActionManager extends BaseManager {
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
-        scheduleForExecution(action, new HashSet<>(sids));
+        ActionFactory.scheduleForExecution(action, new HashSet<>(sids));
         return action;
     }
 
@@ -2322,7 +2299,7 @@ public class ActionManager extends BaseManager {
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
-        scheduleForExecution(action, new HashSet<>(sids));
+        ActionFactory.scheduleForExecution(action, new HashSet<>(sids));
         return action;
     }
 
@@ -2355,7 +2332,7 @@ public class ActionManager extends BaseManager {
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
-        scheduleForExecution(action, new HashSet<>(sids));
+        ActionFactory.scheduleForExecution(action, new HashSet<>(sids));
         return action;
     }
 
@@ -2468,7 +2445,7 @@ public class ActionManager extends BaseManager {
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
-        scheduleForExecution(action, Set.of(sid));
+        ActionFactory.scheduleForExecution(action, Set.of(sid));
         return action;
     }
 
