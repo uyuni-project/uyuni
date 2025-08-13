@@ -349,7 +349,7 @@ export function ProxyConfig({
                   <Text
                     name="registryHttpdURL"
                     label={t("HTTPD URL")}
-                    placeholder={t("e.g., " + registryUrlExample + "/proxy-httpd")}
+                    placeholder={t("e.g., {registryUrlExample}/proxy-httpd", { registryUrlExample })}
                     required
                     labelClass="col-md-3"
                     divClass="col-md-6"
@@ -366,7 +366,7 @@ export function ProxyConfig({
                   <Text
                     name="registrySaltbrokerURL"
                     label={t("Salt Broker URL")}
-                    placeholder={t("e.g., " + registryUrlExample + "/proxy-salt-broker")}
+                    placeholder={t("e.g. {registryUrlExample}/proxy-salt-broker", { registryUrlExample })}
                     required
                     labelClass="col-md-3"
                     divClass="col-md-6"
@@ -383,7 +383,7 @@ export function ProxyConfig({
                   <Text
                     name="registrySquidURL"
                     label={t("Squid URL")}
-                    placeholder={t("e.g., " + registryUrlExample + "/proxy-squid")}
+                    placeholder={t("e.g. {registryUrlExample}/proxy-squid", { registryUrlExample })}
                     required
                     labelClass="col-md-3"
                     divClass="col-md-6"
@@ -400,7 +400,7 @@ export function ProxyConfig({
                   <Text
                     name="registrySshURL"
                     label={t("SSH URL")}
-                    placeholder={t("e.g., " + registryUrlExample + "/proxy-ssh")}
+                    placeholder={t("e.g. {registryUrlExample}/proxy-ssh", { registryUrlExample })}
                     required
                     labelClass="col-md-3"
                     divClass="col-md-6"
@@ -417,7 +417,7 @@ export function ProxyConfig({
                   <Text
                     name="registryTftpdURL"
                     label={t("TFTPD URL")}
-                    placeholder={t("e.g., " + registryUrlExample + "/proxy-tftpd")}
+                    placeholder={t("e.g. {registryUrlExample}/proxy-tftpd", { registryUrlExample })}
                     required
                     labelClass="col-md-3"
                     divClass="col-md-6"
