@@ -213,33 +213,8 @@ public class ActionChainManager {
     public static PackageAction schedulePackageVerify(User user, Server server,
             List<Map<String, Long>> packages, Date earliest, ActionChain actionChain)
         throws TaskomaticApiException {
-        return (PackageAction) schedulePackageAction(user, packages,
-            ActionFactory.TYPE_PACKAGES_VERIFY, earliest, actionChain, null, server);
-    }
-
-    /**
-     * Schedules a generic package action on a single server.
-     * @param user the user scheduling actions
-     * @param packages a list of "package maps"
-     * @param type the type
-     * @param earliest the earliest execution date
-     * @param actionChain the action chain or null
-     * @param sortOrder the sort order or null
-     * @param server the server
-     * @return scheduled action
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     * @see ActionManager#schedulePackageAction(User, List, ActionType, Date, Server...)
-     * @see ActionManager#addPackageActionDetails(Collection, List) for "package map"
-     */
-    private static Action schedulePackageAction(User user, List<Map<String, Long>> packages,
-            ActionType type, Date earliest, ActionChain actionChain, Integer sortOrder,
-            Server server)
-        throws TaskomaticApiException {
-        Set<Long> serverIds = new HashSet<>();
-        serverIds.add(server.getId());
-        return schedulePackageActions(user, packages, type, earliest, actionChain,
-            sortOrder, serverIds).iterator().next();
+        return (PackageAction) schedulePackageActions(user, packages,
+            ActionFactory.TYPE_PACKAGES_VERIFY, earliest, actionChain, null, Set.of(server.getId()));
     }
 
     /**
@@ -723,8 +698,8 @@ public class ActionChainManager {
     private static PackageAction schedulePackageActionByOs(User user, Server server,
         List<Map<String, Long>> packages, Date earliest, ActionChain actionChain,
             Integer sortOrder, ActionType linuxActionType) throws TaskomaticApiException {
-        return (PackageAction) schedulePackageAction(user, packages, linuxActionType,
-            earliest, actionChain, sortOrder, server);
+        return (PackageAction) schedulePackageActions(user, packages, linuxActionType,
+            earliest, actionChain, sortOrder, Set.of(server.getId()));
     }
 
     /**
