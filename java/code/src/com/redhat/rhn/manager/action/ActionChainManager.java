@@ -396,8 +396,7 @@ public class ActionChainManager {
         }
         else {
             for (Server server : servers) {
-                ConfigAction action = ActionManager
-                    .createConfigAction(user, type, earliest);
+                ConfigAction action = (ConfigAction) ActionFactory.createAction(type, user, earliest);
                 ActionManager.checkConfigActionOnServer(type, server);
                 ActionChainFactory.queueActionChainEntry(action, actionChain, server);
                 ActionManager.addConfigurationRevisionsToAction(user, revisions, action,
@@ -445,7 +444,7 @@ public class ActionChainManager {
         ActionType type, Date earliest, ActionChain actionChain) throws TaskomaticApiException {
         Set<Action> result = new HashSet<>();
         if (actionChain == null) {
-            ConfigAction action = ActionManager.createConfigAction(user, type, earliest);
+            ConfigAction action = (ConfigAction) ActionFactory.createAction(type, user, earliest);
             ActionFactory.save(action);
 
             for (Server server : servers) {
@@ -462,8 +461,7 @@ public class ActionChainManager {
         else {
             int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
             for (Server server : servers) {
-                ConfigAction action = ActionManager
-                    .createConfigAction(user, type, earliest);
+                ConfigAction action = (ConfigAction) ActionFactory.createAction(type, user, earliest);
                 ActionFactory.save(action);
                 result.add(action);
                 ActionManager.checkConfigActionOnServer(type, server);

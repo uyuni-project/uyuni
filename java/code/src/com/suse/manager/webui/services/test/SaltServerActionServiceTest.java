@@ -461,8 +461,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         MinionServer minion4 = MinionServerFactoryTest.createTestMinionServer(user);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        ConfigAction configAction = ActionManager.createConfigAction(user, ActionFactory.TYPE_CONFIGFILES_DEPLOY,
-                Date.from(now.toInstant()));
+        ConfigAction configAction = (ConfigAction) ActionFactory.createAction(ActionFactory.TYPE_CONFIGFILES_DEPLOY,
+                user, Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(minion1, configAction);
         ActionFactory.addServerToAction(minion2, configAction);

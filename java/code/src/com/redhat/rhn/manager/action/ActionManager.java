@@ -576,7 +576,8 @@ public class ActionManager extends BaseManager {
             Collection<Long> revisions,
             Collection<Server> servers,
             ActionType type, Date earliest) throws TaskomaticApiException {
-        ConfigAction a = createConfigAction(user, type, earliest);
+        ConfigAction a = (ConfigAction) ActionFactory.createAction(type, user, earliest);
+
         for (Server server : servers) {
             checkConfigActionOnServer(type, server);
             ActionFactory.addServerToAction(server.getId(), a);
@@ -628,28 +629,6 @@ public class ActionManager extends BaseManager {
             throw new MissingCapabilityException(
                     SystemManager.CAP_CONFIGFILES_DEPLOY, server);
         }
-    }
-
-    /**
-     * Returns a new ConfigAction object
-     * @param user the user scheduling the action
-     * @param type type of ConfigAction
-     * @param earliest earliest action scheduling date
-     * @return a ConfigAction
-     */
-    public static ConfigAction createConfigAction(User user, ActionType type,
-        Date earliest) {
-        ConfigAction a = (ConfigAction)ActionFactory.createAction(type, earliest);
-
-        /** This is not localized, because the perl that prints this when the action is
-         *  rescheduled doesn't do localization.  If the reschedule page ever get
-         *  converted to java, we should pass in a LS key and then simply do the lookup
-         *  on display
-         */
-        a.setName(a.getActionTypeName());
-        a.setOrg(user.getOrg());
-        a.setSchedulerUser(user);
-        return a;
     }
 
     /**
