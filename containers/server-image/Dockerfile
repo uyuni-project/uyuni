@@ -28,7 +28,6 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         grub2-arm64-efi \
         grub2-powerpc-ieee1275 \
         ed \
-        susemanager-tftpsync \
         golang-github-prometheus-node_exporter \
         prometheus-postgres_exporter \
         golang-github-QubitProducts-exporter_exporter \
