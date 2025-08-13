@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.action.ActionManager;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -52,7 +51,7 @@ public class MaintenanceTestUtils {
         serverAction.setStatusQueued();
 
         action.addServerAction(serverAction);
-        ActionManager.storeAction(action);
+        ActionFactory.save(action);
         return ActionFactory.lookupById(action.getId());
     }
 

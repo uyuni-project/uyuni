@@ -264,7 +264,7 @@ public class SystemOverviewAction extends RhnAction {
                                                       s,
                                                       ActionFactory
                                                       .TYPE_RHN_APPLET_USE_SATELLITE);
-            ActionManager.storeAction(a);
+            ActionFactory.save(a);
             createSuccessMessage(rctx.getRequest(),
                                  "sdc.details.overview.applet.scheduled",
                                  "/rhn/systems/details/history/Event.do?sid=" +

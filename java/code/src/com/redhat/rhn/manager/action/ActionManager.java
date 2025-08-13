@@ -720,15 +720,6 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Stores the action in the database through hibernate
-     * @param actionIn The action to be stored
-     * @return action
-     */
-    public static Action storeAction(Action actionIn) {
-        return ActionFactory.save(actionIn);
-    }
-
-    /**
      * Reschedule the action so it can be attempted again.
      *
      * @param action Action to reschedule
@@ -1133,7 +1124,7 @@ public class ActionManager extends BaseManager {
 
         PackageAction pa = (PackageAction) schedulePackageAction(scheduler,
                 (List) null, ActionFactory.TYPE_PACKAGES_REFRESH_LIST, earliest, server);
-        storeAction(pa);
+        ActionFactory.save(pa);
         return pa;
     }
 

@@ -193,7 +193,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         //Users must have access to a server for the action to lookup the action
         Server s = ServerFactoryTest.createTestServer(user, true);
         a1.addServerAction(ServerActionTest.createServerAction(s, a1));
-        ActionManager.storeAction(a1);
+        ActionFactory.save(a1);
 
         Action a2 = ActionManager.lookupAction(user, actionId);
         assertNotNull(a2);
@@ -208,7 +208,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         serverAction.setStatusCompleted();
 
         action.addServerAction(serverAction);
-        ActionManager.storeAction(action);
+        ActionFactory.save(action);
 
         Action result = ActionManager.lookupAction(user, action.getId());
         assertNotNull(result);
@@ -234,7 +234,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         serverAction.setStatusCompleted();
 
         action.addServerAction(serverAction);
-        ActionManager.storeAction(action);
+        ActionFactory.save(action);
 
         Action result = ActionManager.lookupAction(user, action.getId());
         assertNotNull(result);

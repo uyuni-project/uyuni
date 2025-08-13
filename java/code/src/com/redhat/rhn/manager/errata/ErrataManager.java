@@ -1908,7 +1908,7 @@ public class ErrataManager extends BaseManager {
             ActionPackageDetails details = ea.getDetails();
             details.setAllowVendorChange(allowVendorChange);
             ea.setDetails(details);
-            Action action = ActionManager.storeAction(ea);
+            Action action = ActionFactory.save(ea);
             actionIds.add(action.getId());
         });
 
@@ -1917,7 +1917,7 @@ public class ErrataManager extends BaseManager {
            ActionPackageDetails details = ea.getDetails();
            details.setAllowVendorChange(allowVendorChange);
            ea.setDetails(details);
-           Action action = ActionManager.storeAction(ea);
+           Action action = ActionFactory.save(ea);
            minionTaskoActions.add(action);
            actionIds.add(action.getId());
         });

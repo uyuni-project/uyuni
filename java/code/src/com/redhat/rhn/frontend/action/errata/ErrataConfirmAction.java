@@ -132,7 +132,7 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
 
             update.setEarliestAction(getStrutsDelegate().readScheduleDate(form, "date",
                     DatePicker.YEAR_RANGE_POSITIVE));
-            ActionManager.storeAction(update);
+            ActionFactory.save(update);
             try {
                 TASKOMATIC_API.scheduleActionExecution(update);
                 MinionActionManager.scheduleStagingJobsForMinions(singletonList(update), user.getOrg());
@@ -157,7 +157,7 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
             int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
             for (Object systemIn : systems) {
                 Action update = ActionManager.createErrataAction(user, currentErrata);
-                ActionManager.storeAction(update);
+                ActionFactory.save(update);
                 ActionChainFactory.queueActionChainEntry(update, actionChain,
                         ((SystemOverview) systemIn).getId(), sortOrder);
             }

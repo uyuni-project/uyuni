@@ -24,7 +24,6 @@ import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
-import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
 import org.junit.jupiter.api.Test;
@@ -43,7 +42,7 @@ public class PackageListSetupActionTest extends RhnMockStrutsTestCase {
         Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         Server server = ServerFactoryTest.createTestServer(user, true);
         ServerActionTest.createServerAction(server, a);
-        ActionManager.storeAction(a);
+        ActionFactory.save(a);
         addRequestParameter("aid", a.getId().toString());
         addRequestParameter("newset", (String)null);
         addRequestParameter("returnvisit", (String) null);
