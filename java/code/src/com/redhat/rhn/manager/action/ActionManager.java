@@ -2199,10 +2199,8 @@ public class ActionManager extends BaseManager {
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    public static Action scheduleInventoryRefresh(Server server, String inventoryPath)
-            throws TaskomaticApiException {
-        Date earliest = new Date();
-        return scheduleInventoryRefresh(Optional.empty(), server, inventoryPath, earliest);
+    public static Action scheduleInventoryRefresh(Server server, String inventoryPath) throws TaskomaticApiException {
+        return scheduleInventoryRefresh(Optional.empty(), server, inventoryPath, new Date());
     }
 
     /**
@@ -2220,16 +2218,11 @@ public class ActionManager extends BaseManager {
                                                        Date earliest) throws TaskomaticApiException {
         checkSaltOrManagementEntitlement(server.getId());
 
-        InventoryAction action = (InventoryAction) ActionFactory.createAction(
-                ActionFactory.TYPE_INVENTORY);
+        InventoryAction action = (InventoryAction) ActionFactory.createAction(ActionFactory.TYPE_INVENTORY,
+                user.orElse(null), server.getOrg(), earliest);
 
         InventoryActionDetails details = new InventoryActionDetails();
         details.setInventoryPath(inventoryPath);
-
-        action.setName(ActionFactory.TYPE_INVENTORY.getName());
-        action.setOrg(server.getOrg());
-        action.setSchedulerUser(user.orElse(null));
-        action.setEarliestAction(earliest);
         action.setDetails(details);
 
         ActionFactory.createAddServerAction(server, action);
