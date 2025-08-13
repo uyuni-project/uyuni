@@ -537,8 +537,8 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
                 PACKAGE_TO_REMOVE, hostServer);
         Action removal = null;
         if (!installed.isEmpty()) {
-            removal = ActionManager.schedulePackageRemoval(user, hostServer,
-                    installed, scheduleDate);
+            removal = ActionManager.schedulePackageAction(user, installed,
+                    ActionFactory.TYPE_PACKAGES_REMOVE, scheduleDate, hostServer);
         }
 
         // Install packages on the host server.

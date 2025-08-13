@@ -1305,23 +1305,6 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Schedules one or more package removal actions for the given server.
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
-     * @param pkgs The list of packages to be removed.
-     * @param earliestAction Date of earliest action to be executed
-     * @return Currently scheduled PackageAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static PackageAction schedulePackageRemoval(User scheduler, Server srvr,
-            List<Map<String, Long>> pkgs, Date earliestAction)
-        throws TaskomaticApiException {
-        return (PackageAction) schedulePackageAction(scheduler, pkgs,
-                ActionFactory.TYPE_PACKAGES_REMOVE, earliestAction, srvr);
-    }
-
-    /**
      * Schedules one or more package lock actions for the given server.
      * @param scheduler the scheduler
      * @param servers the servers
