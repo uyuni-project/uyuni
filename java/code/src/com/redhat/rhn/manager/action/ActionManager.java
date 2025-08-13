@@ -1523,17 +1523,12 @@ public class ActionManager extends BaseManager {
      * (typically: Taskomatic is down)
      * @throws MissingCapabilityException if scripts cannot be run
      */
-    public static Action scheduleHardwareRefreshAction(Org schedulerOrg, Server srvr,
-            Date earliestAction)
+    public static Action scheduleHardwareRefreshAction(Org schedulerOrg, Server srvr, Date earliestAction)
         throws TaskomaticApiException {
         checkSaltOrManagementEntitlement(srvr.getId());
 
-        Action action = ActionFactory
-                .createAction(ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
-        action.setName(ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName());
-        action.setOrg(schedulerOrg);
-        action.setSchedulerUser(null);
-        action.setEarliestAction(earliestAction);
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_HARDWARE_REFRESH_LIST,
+                null, schedulerOrg, earliestAction);
 
         ActionFactory.createAddServerAction(srvr, action);
 
