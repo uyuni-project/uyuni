@@ -608,7 +608,7 @@ public class ProxyHandler extends BaseHandler {
      *
      * @return 1 in case of success
      *
-     * @apidoc.doc Deploy a proxy container on given salt minion. Allows individual registry for each image.
+     * @apidoc.doc Backup the proxy configuration in order to migrate it later.
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "serverId", "The ID of the target server")
      * @apidoc.returntype #return_int_success()
@@ -616,10 +616,10 @@ public class ProxyHandler extends BaseHandler {
     public int backupConfiguration(User loggedInUser, Integer serverId) {
         try {
             Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, serverId);
-            server.asMinionServer().ifPresent(proxy -> systemManager.backupProxyConfig(proxy));
+            server.asMinionServer().ifPresent(systemManager::backupProxyConfig);
         }
         catch (RhnRuntimeException e) {
-            LOG.error("Failed to backup proxy configuration", e);
+            LOG.error("Failed to backup the proxy configuration", e);
             throw new SaltFaultException(e.getMessage());
         }
         return 1;
