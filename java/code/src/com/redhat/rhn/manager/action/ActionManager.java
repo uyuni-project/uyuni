@@ -1108,10 +1108,11 @@ public class ActionManager extends BaseManager {
             Date earliest) throws TaskomaticApiException {
         checkSaltOrManagementEntitlement(server.getId());
 
-        PackageAction pa = (PackageAction) schedulePackageAction(scheduler,
-                (List) null, ActionFactory.TYPE_PACKAGES_REFRESH_LIST, earliest, server);
-        ActionFactory.save(pa);
-        return pa;
+        Action action = schedulePackageAction(scheduler,
+                null, ActionFactory.TYPE_PACKAGES_REFRESH_LIST, earliest, server);
+
+        ActionFactory.save(action);
+        return (PackageAction) action;
     }
 
     /**
@@ -1128,12 +1129,8 @@ public class ActionManager extends BaseManager {
             Date earliest) throws TaskomaticApiException {
         checkSaltOrManagementEntitlement(server.getId());
 
-        Action action = ActionFactory.createAction(
-                ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
-        action.setName(ActionFactory.TYPE_PACKAGES_REFRESH_LIST.getName());
-        action.setOrg(server.getOrg());
-        action.setSchedulerUser(user.orElse(null));
-        action.setEarliestAction(earliest);
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_PACKAGES_REFRESH_LIST,
+                user.orElse(null), server.getOrg(), earliest);
 
         ActionFactory.createAddServerAction(server, action);
 
