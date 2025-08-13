@@ -1309,22 +1309,6 @@ public class ActionManager extends BaseManager {
      * Schedules one or more package removal actions for the given server.
      * @param scheduler User scheduling the action.
      * @param srvr Server for which the action affects.
-     * @param pkgs The set of packages to be removed.
-     * @param earliestAction Date of earliest action to be executed
-     * @return Currently scheduled PackageAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static PackageAction schedulePackageRemoval(User scheduler,
-            Server srvr, RhnSet pkgs, Date earliestAction) throws TaskomaticApiException {
-        return (PackageAction) schedulePackageAction(scheduler, srvr, pkgs,
-                ActionFactory.TYPE_PACKAGES_REMOVE, earliestAction);
-    }
-
-    /**
-     * Schedules one or more package removal actions for the given server.
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
      * @param pkgs The list of packages to be removed.
      * @param earliestAction Date of earliest action to be executed
      * @return Currently scheduled PackageAction
@@ -1352,22 +1336,6 @@ public class ActionManager extends BaseManager {
             Server srvr, List<Map<String, Long>> pkgs, Date earliestAction) throws TaskomaticApiException {
         return (PackageAction) schedulePackageAction(scheduler, pkgs,
                 ActionFactory.TYPE_PACKAGES_UPDATE, earliestAction, srvr);
-    }
-
-    /**
-     * Schedules one or more package verification actions for the given server.
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
-     * @param pkgs The set of packages to be removed.
-     * @param earliest Earliest occurrence of the script.
-     * @return Currently scheduled PackageAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static PackageAction schedulePackageVerify(User scheduler,
-            Server srvr, RhnSet pkgs, Date earliest) throws TaskomaticApiException {
-        return (PackageAction) schedulePackageAction(scheduler, srvr, pkgs,
-                ActionFactory.TYPE_PACKAGES_VERIFY, earliest);
     }
 
     /**
@@ -1765,11 +1733,8 @@ public class ActionManager extends BaseManager {
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    public static Action schedulePackageAction(User scheduler,
-            List<Map<String, Long>> pkgs,
-            ActionType type,
-            Date earliestAction,
-            Server...servers) throws TaskomaticApiException {
+    public static Action schedulePackageAction(User scheduler, List<Map<String, Long>> pkgs, ActionType type,
+            Date earliestAction, Server...servers) throws TaskomaticApiException {
         Set<Long> serverIds = new HashSet<>();
         for (Server s : servers) {
             serverIds.add(s.getId());
@@ -1900,19 +1865,11 @@ public class ActionManager extends BaseManager {
         }
 
     /**
-     * Schedules the appropriate package action
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
-     * @param pkgs The set of packages to be removed.
-     * @param type The Action Type
-     * @param earliestAction Date of earliest action to be executed
-     * @return scheduled Package Action
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * converts a RhnSet of packages to a List of Map(String, Long) structure
+     * @param pkgs The set of RhnSet packages to be converted.
+     * @return a structure List of Map(String, Long) of packages
      */
-    private static Action schedulePackageAction(User scheduler, Server srvr, RhnSet pkgs,
-            ActionType type, Date earliestAction)
-        throws TaskomaticApiException {
+    public static List<Map<String, Long>> convertPackagesFromRhnSetToListOfMaps(RhnSet pkgs) {
 
         List<Map<String, Long>> packages = new LinkedList<>();
         for (RhnSetElement rse : pkgs.getElements()) {
@@ -1923,8 +1880,8 @@ public class ActionManager extends BaseManager {
             // bugzilla: 191000, we forgot to populate the damn LinkedList :(
             packages.add(row);
         }
-        return schedulePackageAction(scheduler, packages, type, earliestAction, srvr
-                );
+
+        return packages;
     }
 
     /**

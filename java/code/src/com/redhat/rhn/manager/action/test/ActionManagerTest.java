@@ -904,8 +904,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 pkg.getPackageArch().getId());
         RhnSetManager.store(set);
 
-        PackageAction pa = ActionManager.schedulePackageRemoval(user, srvr,
-            set, new Date());
+        List<Map<String, Long>> packages = ActionManager.convertPackagesFromRhnSetToListOfMaps(set);
+        PackageAction pa = (PackageAction) ActionManager.schedulePackageAction(user, packages,
+                ActionFactory.TYPE_PACKAGES_REMOVE, new Date(), srvr);
+
         assertNotNull(pa);
         assertNotNull(pa.getId());
         PackageAction pa1 = (PackageAction) ActionManager.lookupAction(user, pa.getId());
@@ -928,7 +930,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 pkg.getPackageArch().getId());
         RhnSetManager.store(set);
 
-        PackageAction pa = ActionManager.schedulePackageVerify(user, srvr, set, new Date());
+        List<Map<String, Long>> packages = ActionManager.convertPackagesFromRhnSetToListOfMaps(set);
+        PackageAction pa = (PackageAction) ActionManager.schedulePackageAction(user, packages,
+                ActionFactory.TYPE_PACKAGES_VERIFY, new Date(), srvr);
+
         assertNotNull(pa);
         assertNotNull(pa.getId());
         PackageAction pa1 = (PackageAction) ActionManager.lookupAction(user, pa.getId());

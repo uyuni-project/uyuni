@@ -120,7 +120,6 @@ public class ActionChainManager {
      * @return scheduled action
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
-     * @see com.redhat.rhn.manager.action.ActionManager#schedulePackageRemoval
      */
     public static PackageAction schedulePackageRemoval(User user, Server server,
             List<Map<String, Long>> packages, Date earliest, ActionChain actionChain)
@@ -207,7 +206,6 @@ public class ActionChainManager {
      * @return scheduled action
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
-     * @see com.redhat.rhn.manager.action.ActionManager#schedulePackageVerify
      * @see ActionManager#addPackageActionDetails(Collection, List) for "package map"
      */
     public static PackageAction schedulePackageVerify(User user, Server server,
