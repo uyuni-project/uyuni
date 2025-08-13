@@ -693,8 +693,9 @@ public class ActionChainManager {
     private static PackageAction schedulePackageActionByOs(User user, Server server,
         List<Map<String, Long>> packages, Date earliest, ActionChain actionChain,
             Integer sortOrder, ActionType linuxActionType) throws TaskomaticApiException {
-        return (PackageAction) schedulePackageActions(user, packages, linuxActionType,
-            earliest, actionChain, sortOrder, Set.of(server.getId()));
+        Set<Action> actions = schedulePackageActions(user, packages, linuxActionType,
+                earliest, actionChain, sortOrder, Set.of(server.getId()));
+        return (PackageAction) actions.iterator().next();
     }
 
     /**
