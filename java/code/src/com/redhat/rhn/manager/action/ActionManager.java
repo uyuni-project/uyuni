@@ -710,20 +710,12 @@ public class ActionManager extends BaseManager {
      */
     public static Action createBaseAction(User user, Server server, ActionType type) {
 
-        Action action =
-                ActionFactory.createAction(type);
+        Action action = ActionFactory.createAction(type);
 
         action.setSchedulerUser(user);
         action.setOrg(user.getOrg());
 
-        ServerAction sa = new ServerAction();
-        sa.setStatusQueued();
-        sa.setRemainingTries(5L);
-        sa.setServerWithCheck(server);
-
-        sa.setParentActionWithCheck(action);
-        action.addServerAction(sa);
-
+        ActionFactory.createAddServerAction(server, action);
         return action;
     }
 
