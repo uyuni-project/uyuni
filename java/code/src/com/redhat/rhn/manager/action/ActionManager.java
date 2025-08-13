@@ -474,44 +474,20 @@ public class ActionManager extends BaseManager {
     /**
      * Creates an errata action with the specified Org
      * @return The created action
-     * @param org The org that needs the errata.
-     * @param errata The errata pertaining to this action
-     */
-    public static ErrataAction createErrataAction(Org org, Errata errata) {
-        return createErrataAction(null, org, errata);
-    }
-
-    /**
-     * Creates an errata action
-     * @return The created action
-     * @param user The user scheduling errata
-     * @param errata The errata pertaining to this action
-     */
-    public static ErrataAction createErrataAction(User user, Errata errata) {
-        return createErrataAction(user, user.getOrg(), errata);
-    }
-
-    /**
-     * Creates an errata action with the specified Org
-     * @return The created action
      * @param user the user that is scheduling the action
      * @param org The org that needs the errata.
      * @param errata The errata pertaining to this action
      */
-    private static ErrataAction createErrataAction(User user, Org org, Errata errata) {
-        ErrataAction a = (ErrataAction) ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-        if (user != null) {
-            a.setSchedulerUser(user);
-        }
+    public static ErrataAction createErrataAction(User user, Org org, Errata errata) {
+        //<source>Patch Update: {0} - {1}</source>
+        String actionName = LocalizationService.getInstance().getMessage("action.name",
+                errata.getAdvisory(), errata.getSynopsis());
 
-        a.setOrg(org);
-        a.addErrata(errata);
+        ErrataAction aa = (ErrataAction) ActionFactory.createAction(ActionFactory.TYPE_ERRATA, user, actionName, org,
+                new Date());
 
-        Object[] args = new Object[2];
-        args[0] = errata.getAdvisory();
-        args[1] = errata.getSynopsis();
-        a.setName(LocalizationService.getInstance().getMessage("action.name", args));
-        return a;
+        aa.addErrata(errata);
+        return aa;
     }
 
     /**

@@ -123,7 +123,7 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
         String messageKey = null;
 
         if (actionChain == null) {
-            Action update = ActionManager.createErrataAction(user, currentErrata);
+            Action update = ActionManager.createErrataAction(user, user.getOrg(), currentErrata);
             for (Object systemIn : systems) {
                 ActionFactory.addServerToAction(
                         ((SystemOverview) systemIn).getId(),
@@ -156,7 +156,7 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
         else {
             int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
             for (Object systemIn : systems) {
-                Action update = ActionManager.createErrataAction(user, currentErrata);
+                Action update = ActionManager.createErrataAction(user, user.getOrg(), currentErrata);
                 ActionFactory.save(update);
                 ActionChainFactory.queueActionChainEntry(update, actionChain,
                         ((SystemOverview) systemIn).getId(), sortOrder);

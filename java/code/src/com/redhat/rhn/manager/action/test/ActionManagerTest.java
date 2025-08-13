@@ -860,17 +860,31 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     public void testCreateErrataAction() throws Exception {
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
-        Action a = ActionManager.createErrataAction(user.getOrg(), errata);
+        Action a = ActionManager.createErrataAction(null, user.getOrg(), errata);
         assertNotNull(a);
         assertNull(a.getSchedulerUser());
         assertEquals(user.getOrg(), a.getOrg());
         assertInstanceOf(ErrataAction.class, a);
+        assertEquals("JAVA-Test-1000", errata.getAdvisory());
+        assertEquals("Test synopsis", errata.getSynopsis());
+        assertEquals("Patch Update: JAVA-Test-1000 - Test synopsis", a.getName());
+        assertNotNull(a.getEarliestAction());
+        ErrataAction ea = (ErrataAction) a;
+        assertEquals(1, ea.getErrata().size());
+        assertEquals(errata, ea.getErrata().iterator().next());
 
-        a = ActionManager.createErrataAction(user, errata);
+        a = ActionManager.createErrataAction(user, user.getOrg(), errata);
         assertNotNull(a);
         assertEquals(user, a.getSchedulerUser());
         assertEquals(user.getOrg(), a.getOrg());
         assertInstanceOf(ErrataAction.class, a);
+        assertEquals("JAVA-Test-1000", errata.getAdvisory());
+        assertEquals("Test synopsis", errata.getSynopsis());
+        assertEquals("Patch Update: JAVA-Test-1000 - Test synopsis", a.getName());
+        assertNotNull(a.getEarliestAction());
+        ea = (ErrataAction) a;
+        assertEquals(1, ea.getErrata().size());
+        assertEquals(errata, ea.getErrata().iterator().next());
     }
 
     @Test

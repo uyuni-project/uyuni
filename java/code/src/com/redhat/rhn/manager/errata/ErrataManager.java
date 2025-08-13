@@ -2007,7 +2007,7 @@ public class ErrataManager extends BaseManager {
         if (actionChain != null) {
             return servers.stream()
                 .map(server -> {
-                    ErrataAction errataUpdate = buildErrataAction(user, org, errata.get(0));
+                    ErrataAction errataUpdate = ActionManager.createErrataAction(user, org, errata.get(0));
                     errata.stream().skip(1).forEach(errataUpdate::addErrata);
 
                     if (earliest != null) {
@@ -2024,7 +2024,7 @@ public class ErrataManager extends BaseManager {
         }
 
         // otherwise, return one only Action
-        ErrataAction errataUpdate = buildErrataAction(user, org, errata.get(0));
+        ErrataAction errataUpdate = ActionManager.createErrataAction(user, org, errata.get(0));
         errata.stream()
             .skip(1)
             .forEach(errataUpdate::addErrata);
@@ -2038,14 +2038,6 @@ public class ErrataManager extends BaseManager {
         servers.forEach(s -> ActionFactory.addServerToAction(s, errataUpdate));
 
         return Stream.of(errataUpdate);
-    }
-
-    private static ErrataAction buildErrataAction(User user, Org org, Errata errata) {
-        if (user != null) {
-            return ActionManager.createErrataAction(user, errata);
-        }
-
-        return ActionManager.createErrataAction(org, errata);
     }
 
     /**
@@ -2089,7 +2081,7 @@ public class ErrataManager extends BaseManager {
     private static ErrataAction createErrataActionForNonZypperTradClient(User user, Org org, Errata erratum,
                                                                          Date earliest, ActionChain actionChain,
                                                                          Server server) {
-        ErrataAction errataUpdate = buildErrataAction(user, org, erratum);
+        ErrataAction errataUpdate = ActionManager.createErrataAction(user, org, erratum);
         if (earliest != null) {
             errataUpdate.setEarliestAction(earliest);
         }
