@@ -21,6 +21,7 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.SetLabels;
@@ -124,7 +125,7 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
         if (actionChain == null) {
             Action update = ActionManager.createErrataAction(user, currentErrata);
             for (Object systemIn : systems) {
-                ActionManager.addServerToAction(
+                ActionFactory.addServerToAction(
                         ((SystemOverview) systemIn).getId(),
                         update);
             }

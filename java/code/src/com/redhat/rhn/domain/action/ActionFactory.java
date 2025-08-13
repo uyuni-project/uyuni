@@ -254,31 +254,6 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
-     * Creates a ServerAction and adds it to an Action
-     * @param sid The server id
-     * @param parent The parent action
-     */
-    public static void addServerToAction(Long sid, Action parent) {
-        addServerToAction(ServerFactory.lookupByIdAndOrg(sid, parent.getOrg()), parent);
-    }
-
-    /**
-     * Creates a ServerAction and adds it to an Action
-     * @param server The server
-     * @param parent The parent action
-     */
-    public static void addServerToAction(Server server, Action parent) {
-        ServerAction sa = new ServerAction();
-        sa.setCreated(new Date());
-        sa.setModified(new Date());
-        sa.setStatusQueued();
-        sa.setServerWithCheck(server);
-        sa.setParentActionWithCheck(parent);
-        sa.setRemainingTries(5L); //arbitrary number from perl
-        parent.addServerAction(sa);
-    }
-
-    /**
      * Create a ConfigRevisionAction for the given server and add it to the parent action.
      * @param revision The config revision to add to the action.
      * @param server The server for the action
@@ -387,6 +362,31 @@ public class ActionFactory extends HibernateFactory {
         List<Long> sidList = new ArrayList<>();
         sidList.addAll(serverIds);
         m.executeUpdate(params, sidList);
+    }
+
+    /**
+     * Creates a ServerAction and adds it to an Action
+     * @param sid The server id
+     * @param parent The parent action
+     */
+    public static void addServerToAction(Long sid, Action parent) {
+        addServerToAction(ServerFactory.lookupByIdAndOrg(sid, parent.getOrg()), parent);
+    }
+
+    /**
+     * Creates a ServerAction and adds it to an Action
+     * @param server The server
+     * @param parent The parent action
+     */
+    public static void addServerToAction(Server server, Action parent) {
+        ServerAction sa = new ServerAction();
+        sa.setCreated(new Date());
+        sa.setModified(new Date());
+        sa.setStatusQueued();
+        sa.setServerWithCheck(server);
+        sa.setParentActionWithCheck(parent);
+        sa.setRemainingTries(5L); //arbitrary number from perl
+        parent.addServerAction(sa);
     }
 
     /**

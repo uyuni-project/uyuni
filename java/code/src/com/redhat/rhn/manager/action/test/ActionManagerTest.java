@@ -879,7 +879,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName()));
         Server s = ServerFactoryTest.createTestServer(usr);
         Action a = ActionFactoryTest.createAction(usr, ActionFactory.TYPE_ERRATA);
-        ActionManager.addServerToAction(s.getId(), a);
+        ActionFactory.addServerToAction(s.getId(), a);
 
         assertNotNull(a.getServerActions());
         assertEquals(a.getServerActions().size(), 1);

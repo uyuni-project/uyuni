@@ -473,24 +473,6 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Adds a server to an action
-     * @param sid The server id
-     * @param action The parent action
-     */
-    public static void addServerToAction(Long sid, Action action) {
-        ActionFactory.addServerToAction(sid, action);
-    }
-
-    /**
-     * Adds a server to an action
-     * @param server The server
-     * @param action The parent action
-     */
-    public static void addServerToAction(Server server, Action action) {
-        ActionFactory.addServerToAction(server, action);
-    }
-
-    /**
      * Creates an errata action with the specified Org
      * @return The created action
      * @param org The org that needs the errata.
@@ -562,7 +544,7 @@ public class ActionManager extends BaseManager {
         //put a single row into rhnActionConfigChannel
         a.addConfigChannelAndServer(channel, server);
         //put a single row into rhnServerAction
-        addServerToAction(server.getId(), a);
+        ActionFactory.addServerToAction(server.getId(), a);
 
         //now put a row into rhnActionConfigFileName for each path we have.
         for (Object filenameIn : filenames) {

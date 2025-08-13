@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.channel.Channel;
@@ -2034,7 +2035,7 @@ public class ErrataManager extends BaseManager {
 
         errataUpdate.setName(getErrataName(errata, updateStack));
 
-        servers.forEach(s -> ActionManager.addServerToAction(s, errataUpdate));
+        servers.forEach(s -> ActionFactory.addServerToAction(s, errataUpdate));
 
         return Stream.of(errataUpdate);
     }
@@ -2094,7 +2095,7 @@ public class ErrataManager extends BaseManager {
         }
 
         if (actionChain == null) {
-            ActionManager.addServerToAction(server, errataUpdate);
+            ActionFactory.addServerToAction(server, errataUpdate);
         }
         else {
             int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
