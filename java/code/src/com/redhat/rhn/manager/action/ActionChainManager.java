@@ -101,7 +101,6 @@ public class ActionChainManager {
      * @return scheduled action
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
-     * @see com.redhat.rhn.manager.action.ActionManager#schedulePackageInstall
      */
     public static PackageAction schedulePackageInstall(User user, Server server,
             List<Map<String, Long>> packages, Date earliest, ActionChain actionChain)

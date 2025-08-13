@@ -96,7 +96,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerVirtualSystemCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -1323,22 +1322,6 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Schedules one or more package installation actions for the given server.
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
-     * @param pkgs The set of packages to be removed.
-     * @param earliestAction Date of earliest action to be executed
-     * @return Currently scheduled PackageAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static PackageAction schedulePackageInstall(User scheduler,
-            Server srvr, List<Map<String, Long>> pkgs, Date earliestAction) throws TaskomaticApiException {
-        return (PackageAction) schedulePackageAction(scheduler, pkgs,
-                ActionFactory.TYPE_PACKAGES_UPDATE, earliestAction, srvr);
-    }
-
-    /**
      * Schedules one or more package lock actions for the given server.
      * @param scheduler the scheduler
      * @param servers the servers
@@ -1665,61 +1648,6 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Schedules an install of a package
-     * @param scheduler The user scheduling the action.
-     * @param srvr The server that this action is for.
-     * @param nameId nameId rhnPackage.name_id
-     * @param evrId evrId of package
-     * @param archId archId of package
-     * @return The action that has been scheduled.
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static Action schedulePackageInstall(User scheduler, Server srvr,
-            Long nameId, Long evrId, Long archId) throws TaskomaticApiException {
-        List<Map<String, Long>> packages = new LinkedList<>();
-        Map<String, Long> row = new HashMap<>();
-        row.put("name_id", nameId);
-        row.put("evr_id", evrId);
-        row.put("arch_id", archId);
-        packages.add(row);
-        return schedulePackageInstall(scheduler, srvr, packages, new Date());
-    }
-
-    /**
-     * Schedules install of a packages on multiple servers
-     * @param scheduler The user scheduling the action.
-     * @param pkgs Set of packages to install
-     * @param server The server that this action is for.
-     * @param earliestAction The earliest time that this action could happen.
-     * @return The action that has been scheduled.
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static Action schedulePackageInstall(User scheduler, List<Package> pkgs,
-            Server server, Date earliestAction)
-        throws TaskomaticApiException {
-        if (pkgs.isEmpty()) {
-            return null;
-        }
-        List<Map<String, Long>> packages = new LinkedList<>();
-        for (Package pkg : pkgs) {
-            Map<String, Long> row = new HashMap<>();
-            row.put("name_id", pkg.getPackageName().getId());
-            row.put("evr_id", pkg.getPackageEvr().getId());
-            row.put("arch_id", pkg.getPackageArch().getId());
-            packages.add(row);
-        }
-        Set<Long> serverIds = new HashSet<>();
-        serverIds.add(server.getId());
-
-        packages = removeDuplicatedName(packages);
-
-        return schedulePackageAction(scheduler, packages,
-                ActionFactory.TYPE_PACKAGES_UPDATE, earliestAction, serverIds);
-    }
-
-    /**
      * Schedules a package action of the given type for the given server with the
      * packages given as a list.
      * @param scheduler The user scheduling the action.
@@ -1777,38 +1705,6 @@ public class ActionManager extends BaseManager {
         return action;
     }
 
-
-    private static List<Map<String, Long>> removeDuplicatedName(List<Map<String, Long>> packageMaps) {
-        Map<String, Map<String, Long>> packageMapsWithoutDuplicated = new HashMap<>();
-
-        for (Map<String, Long> map : packageMaps) {
-
-            Map<String, Long> previous = packageMapsWithoutDuplicated.put(
-                    map.get("name_id").toString(), map);
-
-            if (previous != null) {
-                String previousNevra = PackageManager.buildPackageNevra(
-                        previous.get("name_id"),
-                        previous.get("evr_id"),
-                        previous.get("arch_id"));
-
-                String currentNevra = PackageManager.buildPackageNevra(
-                        map.get("name_id"),
-                        map.get("evr_id"),
-                        map.get("arch_id"));
-
-                log.warn("Package {}, will be not be installed cause also {} has been " +
-                        "provided. This is because " +
-                        "salt fails installing to package with the same name. If the " +
-                        "installed package is not the one desired, " +
-                        "you can install it the correct one after."
-                        , previousNevra, currentNevra);
-
-            }
-        }
-        return new ArrayList<>(packageMapsWithoutDuplicated.values());
-
-    }
     /**
      * Adds package details to some Actions
      * @param actions the actions

@@ -24,6 +24,7 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -544,8 +545,9 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         Action packageAction = null;
         if (!this.packagesToInstall.isEmpty()) {
             log.debug("** Creating packageAction");
-            packageAction = ActionManager.schedulePackageInstall(
-                    this.user, hostServer, this.packagesToInstall, scheduleDate);
+            packageAction = ActionManager.schedulePackageAction(this.user, this.packagesToInstall,
+                    ActionFactory.TYPE_PACKAGES_UPDATE, scheduleDate, hostServer);
+
             packageAction.setPrerequisite(removal);
             log.debug("** Created packageAction ? {}", packageAction.getId());
         }
