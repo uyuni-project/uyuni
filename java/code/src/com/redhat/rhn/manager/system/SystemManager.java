@@ -142,6 +142,7 @@ import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 import com.suse.proxy.ProxyConfigUtils;
+import com.suse.proxy.model.ProxyConfig;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Opt;
@@ -3942,12 +3943,12 @@ public class SystemManager extends BaseManager {
     /**
      * Run the proxy.backup state synchronously and copy the files as minion pillar for later use.
      *
-     * @param proxy the proxy minion to backup
+     * @param proxy the proxy minion to back up
      */
     public void backupProxyConfig(MinionServer proxy) {
         // Call proxy.backup salt module
         LocalCall<Xor<String, List<String>>> call = new LocalCall<>("proxy.backup", empty(), empty(),
-                new TypeToken<>(){});
+                new TypeToken<>() {  });
         Optional<List<String>> files = saltApi.callSync(call, proxy.getMinionId()).map(res -> res.fold(
                 error -> {
                     throw new RhnRuntimeException(error);
@@ -3969,21 +3970,23 @@ public class SystemManager extends BaseManager {
 
             // Copy the backup common files as pillar in the database
             Path configPath = copiedFiles.stream().filter(file -> file.endsWith("_config.yaml"))
-                    .findFirst().map(path -> tmpPath.resolve(path)).orElse(null);
+                    .findFirst().map(tmpPath::resolve).orElse(null);
             Path httpdPath = copiedFiles.stream().filter(file -> file.endsWith("_httpd.yaml"))
-                    .findFirst().map(path -> tmpPath.resolve(path)).orElse(null);
+                    .findFirst().map(tmpPath::resolve).orElse(null);
             Path sshPath = copiedFiles.stream().filter(file -> file.endsWith("_ssh.yaml"))
-                    .findFirst().map(path -> tmpPath.resolve(path)).orElse(null);
-            Map<String, Object> data = ProxyConfigUtils.loadFilesForPillar(configPath, httpdPath, sshPath);
+                    .findFirst().map(tmpPath::resolve).orElse(null);
 
-            if (!data.isEmpty()) {
-                Pillar pillar = proxy.getPillarByCategory(ProxyConfigUtils.PROXY_PILLAR_CATEGORY).orElseGet(() -> {
-                    Pillar newPillar = new Pillar(ProxyConfigUtils.PROXY_PILLAR_CATEGORY, new HashMap<>(), proxy);
-                    proxy.getPillars().add(newPillar);
-                    return newPillar;
-                });
-                pillar.setPillar(data);
-            }
+            ProxyConfig config = ProxyConfigUtils.loadFilesToProxyConfig(configPath, httpdPath, sshPath);
+            Pillar configPillar = ProxyConfigUtils.proxyConfigToPillar(config).setMinion(proxy);
+
+            proxy.getPillarByCategory(ProxyConfigUtils.PROXY_PILLAR_CATEGORY).ifPresentOrElse(
+                    pillar -> {
+                        proxy.getPillars().remove(pillar);
+                        proxy.addPillar(configPillar);
+                    },
+                    () -> {
+                        proxy.addPillar(configPillar);
+                    });
 
             // TODO create config channel for custom config files if needed
 

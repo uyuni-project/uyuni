@@ -114,7 +114,7 @@ public class SumaUtil {
     /**
      * The result of 'proxy.info' method.
      */
-    public static class ProxyInfo{
+    public static class ProxyInfo {
         @SerializedName("mgrpxy_version")
         private String version;
         @SerializedName("has_config")
