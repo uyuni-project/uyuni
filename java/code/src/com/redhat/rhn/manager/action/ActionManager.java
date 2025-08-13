@@ -672,26 +672,6 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     *
-     * @param user   The user scheduling the action
-     * @param server The server the action is being scheduled for
-     * @param type   The type of the action
-     *
-     * @return The Action we have created
-     *
-     */
-    public static Action createBaseAction(User user, Server server, ActionType type) {
-
-        Action action = ActionFactory.createAction(type);
-
-        action.setSchedulerUser(user);
-        action.setOrg(user.getOrg());
-
-        ActionFactory.createAddServerAction(server, action);
-        return action;
-    }
-
-    /**
      * Reschedule the action so it can be attempted again.
      *
      * @param action Action to reschedule

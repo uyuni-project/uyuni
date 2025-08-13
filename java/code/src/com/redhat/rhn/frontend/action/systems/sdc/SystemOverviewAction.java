@@ -260,10 +260,10 @@ public class SystemOverviewAction extends RhnAction {
         Long appValue = rctx.getParamAsLong("applet");
 
         if (appValue != null && appValue == 1) {
-            Action a = ActionManager.createBaseAction(user,
-                                                      s,
-                                                      ActionFactory
-                                                      .TYPE_RHN_APPLET_USE_SATELLITE);
+
+            Action a = ActionFactory.createAction(ActionFactory.TYPE_RHN_APPLET_USE_SATELLITE, user, new Date());
+            ActionFactory.createAddServerAction(s, a);
+
             ActionFactory.save(a);
             createSuccessMessage(rctx.getRequest(),
                                  "sdc.details.overview.applet.scheduled",
