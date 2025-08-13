@@ -1098,19 +1098,6 @@ public class ActionManager extends BaseManager {
      * Schedules a package list refresh action for the given server.
      * @param scheduler User scheduling the action.
      * @param server Server for which the action affects.
-     * @return The scheduled PackageAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static PackageAction schedulePackageRefresh(User scheduler, Server server)
-        throws TaskomaticApiException {
-        return (schedulePackageRefresh(scheduler, server, new Date()));
-    }
-
-    /**
-     * Schedules a package list refresh action for the given server.
-     * @param scheduler User scheduling the action.
-     * @param server Server for which the action affects.
      * @param earliest The earliest time this action should be run.
      * @return The scheduled PackageAction
      * @throws TaskomaticApiException if there was a Taskomatic error
@@ -1125,21 +1112,6 @@ public class ActionManager extends BaseManager {
                 (List) null, ActionFactory.TYPE_PACKAGES_REFRESH_LIST, earliest, server);
         ActionFactory.save(pa);
         return pa;
-    }
-
-    /**
-     * Schedule a package list refresh without a user.
-     *
-     * @param user the user that scheduled the action
-     * @param server the server
-     * @return the scheduled PackageRefreshListAction
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static PackageAction schedulePackageRefresh(Optional<User> user, Server server)
-            throws TaskomaticApiException {
-        Date earliest = new Date();
-        return schedulePackageRefresh(user, server, earliest);
     }
 
     /**
