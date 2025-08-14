@@ -1571,9 +1571,10 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     public void updateRepositories(String mirrorUrl) throws ContentSyncException {
-        TimeUtils.logTime(LOG, "updateRepositories", () ->
+        sccRefreshLock.withFileLock(
+                () -> TimeUtils.logTime(LOG, "updateRepositories", () ->
                 refreshRepositoriesAuthentication(mirrorUrl, false)
-        );
+        ));
     }
 
     /**

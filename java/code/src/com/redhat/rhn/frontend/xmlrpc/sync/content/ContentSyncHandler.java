@@ -173,10 +173,10 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeRepositories(User loggedInUser, String mirrorUrl) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
-            ContentSyncManager csm = new ContentSyncManager();
-            csm.updateRepositories(mirrorUrl);
-        });
+
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateRepositories(mirrorUrl);
+
         return BaseHandler.VALID;
     }
 
