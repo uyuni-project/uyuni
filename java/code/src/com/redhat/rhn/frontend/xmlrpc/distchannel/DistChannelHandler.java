@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.distchannel;
 
-import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -28,6 +27,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidChannelArchException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchDistChannelMapException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchOrgException;
+import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 
 import com.suse.manager.api.ReadOnly;
 
@@ -93,7 +93,7 @@ public class DistChannelHandler extends BaseHandler {
     @ReadOnly
     public Object[] listMapsForOrg(User loggedInUser, Integer orgId) {
         if (!loggedInUser.hasRole(RoleFactory.SAT_ADMIN)) {
-            throw new PermissionException(RoleFactory.SAT_ADMIN);
+            throw new PermissionCheckFailureException(RoleFactory.SAT_ADMIN);
         }
         Org org = OrgFactory.lookupById(Long.valueOf(orgId));
         if (org == null) {
@@ -125,7 +125,7 @@ public class DistChannelHandler extends BaseHandler {
     public int setMapForOrg(User loggedInUser, String os, String release,
                                             String archName, String channelLabel) {
         if (!loggedInUser.hasRole(RoleFactory.ORG_ADMIN)) {
-            throw new PermissionException(RoleFactory.ORG_ADMIN);
+            throw new PermissionCheckFailureException(RoleFactory.ORG_ADMIN);
         }
         Org org = loggedInUser.getOrg();
 

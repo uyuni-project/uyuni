@@ -28,7 +28,6 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -866,7 +865,7 @@ public class ErrataHandler extends BaseHandler {
 
             // check access to the original
             if (ChannelFactory.lookupByIdAndUser(original.getId(), loggedInUser) == null) {
-                throw new LookupException("User " + loggedInUser.getLogin() +
+                throw new PermissionCheckFailureException("User " + loggedInUser.getLogin() +
                         " does not have access to channel " + original.getLabel());
             }
         }
@@ -1257,7 +1256,7 @@ public class ErrataHandler extends BaseHandler {
             }
             // check access to the original
             if (ChannelFactory.lookupByIdAndUser(original.getId(), loggedInUser) == null) {
-                throw new LookupException("User " + loggedInUser.getLogin() +
+                throw new PermissionCheckFailureException("User " + loggedInUser.getLogin() +
                         " does not have access to channel " + original.getLabel());
             }
         }

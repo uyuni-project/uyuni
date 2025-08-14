@@ -3557,7 +3557,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                     admin, minionServer.getId().intValue(), "test-package", 3, 1);
             fail("Should throw IllegalArgumentException");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("Invalid package state", e.getMessage());
         }
         // IllegalArgumentException in case of invalid version constraint
@@ -3566,7 +3566,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                     admin, minionServer.getId().intValue(), "test-package", 2, 4);
             fail("Should throw IllegalArgumentException");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("Invalid version constraint", e.getMessage());
         }
 
@@ -3574,7 +3574,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             systemHandler.updatePackageState(admin, minionServer.getId().intValue(), "--", 2, 1);
             fail("Should throw IllegalArgumentException");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("No such package exists", e.getMessage());
         }
     }

@@ -79,10 +79,10 @@ public class VirtualHostManagerHandler extends BaseHandler {
             Map<String, String> parameters) {
         ensureOrgAdmin(loggedInUser);
         if (StringUtils.isEmpty(label)) {
-            throw new IllegalArgumentException("Label cannot not be empty.");
+            throw new InvalidParameterException("Label cannot not be empty.");
         }
         if (StringUtils.isEmpty(moduleName)) {
-            throw new IllegalArgumentException("Module name cannot not be empty.");
+            throw new InvalidParameterException("Module name cannot not be empty.");
         }
         if (parameters == null) {
             throw new InvalidParameterException("Parameters are missing name is missing.");
