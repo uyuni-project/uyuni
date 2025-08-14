@@ -158,9 +158,6 @@ const AccessGroupPermissions = (props: Props) => {
         </>
       ) : null}
       <p>{t("Review and modify the permissions for this custom group as needed.")}</p>
-      <div className="d-block mb-3">
-        <Button className="btn-primary pull-right" text="Add Permissions" handler={() => { }} />
-      </div>
       <Table data={namespaces} identifier={(item) => `${item.namespace}-${item.isAPI ? "api" : "ui"}`} expandable>
         <Column
           columnKey="name"
