@@ -59,6 +59,7 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
           }
         />
         <Column
+          columnKey="actions"
           columnClass="text-right"
           headerClass="text-right"
           header={t("Actions")}
