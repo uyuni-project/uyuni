@@ -32,7 +32,6 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchActionException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.configchannel.ConfigChannelHandler;
 import com.redhat.rhn.manager.action.ActionChainManager;
-import com.redhat.rhn.manager.action.ActionManager;
 
 import com.suse.manager.api.ReadOnly;
 
