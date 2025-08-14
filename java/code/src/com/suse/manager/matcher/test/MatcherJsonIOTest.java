@@ -623,7 +623,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
             SUSEProductTestUtils.createVendorSUSEProducts();
             SUSEProductTestUtils.createVendorEntitlementProducts();
 
-            ContentSyncManager cm = new ContentSyncManager();
+            ContentSyncManager cm = new SUSEProductTestUtils.TestContentSyncManager();
 
             // this will also refresh the DB cache of subscriptions
             Collection<SCCSubscriptionJson> s;
@@ -714,7 +714,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
 
             h1.setInstalledProducts(installedProducts);
 
-            ContentSyncManager cm = new ContentSyncManager();
+            ContentSyncManager cm = new SUSEProductTestUtils.TestContentSyncManager();
             Collection<SCCSubscriptionJson> s = cm.updateSubscriptions();
             HibernateFactory.getSession().flush();
 

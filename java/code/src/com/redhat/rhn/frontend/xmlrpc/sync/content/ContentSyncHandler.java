@@ -148,10 +148,10 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeSubscriptions(User loggedInUser) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
-            ContentSyncManager csm = new ContentSyncManager();
-            csm.updateSubscriptions();
-        });
+
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateSubscriptions();
+
         return BaseHandler.VALID;
     }
 

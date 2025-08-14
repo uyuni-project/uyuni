@@ -1467,15 +1467,18 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     public Collection<SCCSubscriptionJson> updateSubscriptions() throws ContentSyncException {
-        return TimeUtils.logTime(LOG, "updateSubscriptions", () -> {
-            List<ContentSyncSource> sources = filterCredentials();
-            List<SCCSubscriptionJson> subscriptions = sources.stream()
-                    .flatMap(source -> updateSubscriptions(source).stream())
-                    .collect(Collectors.toList());
+        return sccRefreshLock.withFileLock(
+                () -> TimeUtils.logTime(LOG, "updateSubscriptions",
+                        () -> {
+                            List<ContentSyncSource> sources = filterCredentials();
+                            List<SCCSubscriptionJson> subscriptions = sources.stream()
+                                    .flatMap(source -> updateSubscriptions(source).stream())
+                                    .collect(Collectors.toList());
 
-            LOG.debug("Found {} available subscriptions.", subscriptions.size());
-            return subscriptions;
-        });
+                            LOG.debug("Found {} available subscriptions.", subscriptions.size());
+                            return subscriptions;
+                        })
+        );
     }
 
     //Some old scc credentials are in reality OES credentials and don't work for SCC but only on the OES
