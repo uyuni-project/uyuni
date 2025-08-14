@@ -740,9 +740,7 @@ class ChannelDumper(_ChannelDumper):
         # pylint: disable-next=no-value-for-parameter
         arrayiterator = _ChannelDumper.set_iterator()
         arr = arrayiterator.get_array()
-        mappings = [
-            ("rhn-channel-receiving-updates", "receiving_updates"),
-        ]
+        mappings = []
         for k, v in mappings:
             arr.append(SimpleDumper(self._writer, k, self._row.get(v)))
 
