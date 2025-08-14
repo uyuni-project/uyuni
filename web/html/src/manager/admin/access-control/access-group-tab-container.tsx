@@ -14,7 +14,7 @@ type Tab = {
 type AccessGroupTabContainerProps = {
   tabs: Tab[];
   onUpdate?: Function;
-  onCancel?: string;
+  onCancelRedirectTo?: string;
 };
 
 const AccessGroupTabContainer = (props: AccessGroupTabContainerProps) => {
@@ -46,7 +46,7 @@ const AccessGroupTabContainer = (props: AccessGroupTabContainerProps) => {
         />
       </div>
       <div className="progress-bar-footer">
-        <LinkButton className="btn-default btn-sm pull-left" text={t("Cancel")} href={props.onCancel} />
+        <LinkButton className="btn-default btn-sm pull-left" text={t("Cancel")} href={props.onCancelRedirectTo} />
         <Button className="btn-primary pull-right" text={t("Update Access Group")} handler={onUpdate} />
       </div>
     </div>
