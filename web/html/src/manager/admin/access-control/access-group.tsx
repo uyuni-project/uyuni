@@ -74,6 +74,8 @@ const parsePermissions = (accessGroupProps: AccessGroupPropsType): AccessGroupSt
   };
 };
 
+const LIST_PAGE_URL = "/rhn/manager/admin/access-control";
+
 const AccessGroup = (props: AccessGroupProps) => {
   // TODO: Handle displaying success messages on create / update on access-group-list
   const [messages, setMessages] = useState<MessageType[]>([]);
@@ -91,9 +93,6 @@ const AccessGroup = (props: AccessGroupProps) => {
   };
 
   const handleFormChange = (newAccessGroupState) => {
-    /* TODO: using the validate prop to update the form change messes with setting the users to empty on org change
-     **  that's why accessGroupState.users.length === 0 ? [] is needed here. Once onChange is used to update it it can be
-     **  removed */
     setAccessGroupState((prevState) => ({
       ...prevState,
       name: newAccessGroupState.name,
@@ -154,14 +153,14 @@ const AccessGroup = (props: AccessGroupProps) => {
     Network.post("/rhn/manager/api/admin/access-group/save", payload)
       .then((_) => {
         setMessages(MessagesUtils.info(t("Access Group successfully created.")));
-        window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/access-group`);
+        window.pageRenderers?.spaengine?.navigate?.(LIST_PAGE_URL);
       })
       .catch((error) => setMessages(Network.responseErrorMessage(error)));
   };
 
   const steps = [
     {
-      title: "Details",
+      title: t("Details"),
       content: (
         <AccessGroupDetails
           ref={detailsTabRef}
@@ -173,7 +172,7 @@ const AccessGroup = (props: AccessGroupProps) => {
       validate: validateDetailsTab,
     },
     {
-      title: "Namespaces & Permissions",
+      title: t("Namespaces & Permissions"),
       content: (
         <AccessGroupPermissions
           state={accessGroupState}
@@ -184,7 +183,7 @@ const AccessGroup = (props: AccessGroupProps) => {
       validate: null,
     },
     {
-      title: "Users",
+      title: t("Users"),
       content: <AccessGroupUsers state={accessGroupState} onChange={handleUsers} errors={accessGroupState.errors} />,
       validate: null,
     },
@@ -194,20 +193,12 @@ const AccessGroup = (props: AccessGroupProps) => {
       {props.accessGroup && props.accessGroup.id ? (
         <TopPanel title={t("Access Group Details")}>
           <Messages items={messages} />
-          <AccessGroupTabContainer
-            tabs={steps}
-            onUpdate={handleSaveAccessGroup}
-            onCancel={"/rhn/manager/admin/access-group"}
-          />
+          <AccessGroupTabContainer tabs={steps} onUpdate={handleSaveAccessGroup} onCancelRedirectTo={LIST_PAGE_URL} />
         </TopPanel>
       ) : (
         <TopPanel title={t("Create: Access Group")}>
           <Messages items={messages} />
-          <StepsProgressBar
-            steps={steps}
-            onCreate={handleSaveAccessGroup}
-            onCancel={"/rhn/manager/admin/access-group"}
-          />
+          <StepsProgressBar steps={steps} onCreate={handleSaveAccessGroup} onCancel={LIST_PAGE_URL} />
         </TopPanel>
       )}
     </>
