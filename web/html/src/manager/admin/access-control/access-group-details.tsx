@@ -7,6 +7,7 @@ import { AccessGroupState } from "manager/admin/access-control/access-group";
 
 import { Form } from "components/formik";
 import { Field } from "components/formik/field";
+import { MessagesContainer, showErrorToastr } from "components/toastr";
 
 import Network from "utils/network";
 
@@ -43,14 +44,13 @@ const AccessGroupDetails = forwardRef<AccessGroupDetailsHandle, Props>((props, r
 
   const getOrganizations = () => {
     const endpoint = "/rhn/manager/api/admin/access-group/organizations";
-    return (
-      Network.get(endpoint)
-        .then((orgs) => {
-          setOrganizations(orgs.map((org) => ({ value: org.orgId, label: org.orgName })));
-        })
-        // TODO: Handle errors
-        .catch(props.errors)
-    );
+    return Network.get(endpoint)
+      .then((orgs) => {
+        setOrganizations(orgs.map((org) => ({ value: org.orgId, label: org.orgName })));
+      })
+      .catch(() => {
+        showErrorToastr(t("An unexpected error occurred while fetching organizations."));
+      });
   };
 
   useEffect(() => {
@@ -61,7 +61,9 @@ const AccessGroupDetails = forwardRef<AccessGroupDetailsHandle, Props>((props, r
         .then((groups) => {
           setAccessGroups(groups.map((group) => ({ value: group.id, label: group.description })));
         })
-        .catch(props.errors) // TODO: Implement proper error handling
+        .catch(() => {
+          showErrorToastr(t("An unexpected error occurred while fetching access groups."));
+        })
         .finally(() => {
           setIsLoadingGroups(false);
         });
@@ -96,66 +98,69 @@ const AccessGroupDetails = forwardRef<AccessGroupDetailsHandle, Props>((props, r
   };
 
   return (
-    <Form
-      innerRef={formikRef}
-      initialValues={props.state}
-      // TODO: Use onChange instead of validate to update access group details
-      // onChange={(model) => {
-      //   props.onChange(model);
-      // }}
-      onSubmit={() => { }}
-      validate={handleFormChange}
-    >
-      <div className="row">
-        <Field required name="name" label={t("Name")} labelClass="col-md-3" divClass="col-md-6" />
-      </div>
-      <div className="row">
-        <Field
-          required
-          name="description"
-          rows={10}
-          label={t("Description")}
-          as={Field.TextArea}
-          labelClass="col-md-3"
-          divClass="col-md-6"
-        />
-      </div>
-      <div className="row">
-        <Field
-          disabled={!!props.state.id}
-          required
-          name="orgId"
-          label={t("Organization")}
-          options={organizations}
-          as={Field.Select}
-          placeholder={t("Search for organizations...")}
-          emptyText={t("No Organizations Found")}
-          labelClass="col-md-3"
-          divClass="col-md-6"
-        />
-      </div>
-      {!props.state.id ? (
+    <>
+      <MessagesContainer />
+      <Form
+        innerRef={formikRef}
+        initialValues={props.state}
+        // TODO: Use onChange instead of validate to update access group details
+        // onChange={(model) => {
+        //   props.onChange(model);
+        // }}
+        onSubmit={() => { }}
+        validate={handleFormChange}
+      >
+        <div className="row">
+          <Field required name="name" label={t("Name")} labelClass="col-md-3" divClass="col-md-6" />
+        </div>
         <div className="row">
           <Field
-            name="accessGroups"
-            label={t("Copy Permissions From")}
-            options={accessGroups}
-            as={Field.Select}
-            placeholder={t("Search for existing access groups...")}
-            emptyText={t("No Access group")}
+            required
+            name="description"
+            rows={10}
+            label={t("Description")}
+            as={Field.TextArea}
             labelClass="col-md-3"
             divClass="col-md-6"
-            isMulti
-            isLoading={isLoadingGroups}
           />
-          <div className="offset-md-3 col-md-6">
-            {t(
-              "This action copy permissions from an existing access group to a new one. Once created, the new access group will function independently, unaffected by future updates to the original."
-            )}
-          </div>
         </div>
-      ) : null}
-    </Form>
+        <div className="row">
+          <Field
+            disabled={!!props.state.id}
+            required
+            name="orgId"
+            label={t("Organization")}
+            options={organizations}
+            as={Field.Select}
+            placeholder={t("Search for organizations...")}
+            emptyText={t("No Organizations Found")}
+            labelClass="col-md-3"
+            divClass="col-md-6"
+          />
+        </div>
+        {!props.state.id ? (
+          <div className="row">
+            <Field
+              name="accessGroups"
+              label={t("Copy Permissions From")}
+              options={accessGroups}
+              as={Field.Select}
+              placeholder={t("Search for existing access groups...")}
+              emptyText={t("No Access group")}
+              labelClass="col-md-3"
+              divClass="col-md-6"
+              isMulti
+              isLoading={isLoadingGroups}
+            />
+            <div className="offset-md-3 col-md-6">
+              {t(
+                "This action copy permissions from an existing access group to a new one. Once created, the new access group will function independently, unaffected by future updates to the original."
+              )}
+            </div>
+          </div>
+        ) : null}
+      </Form>
+    </>
   );
 });
 

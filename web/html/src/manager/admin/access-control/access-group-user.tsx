@@ -6,6 +6,7 @@ import { Form } from "components/formik";
 import { Field } from "components/formik/field";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
+import { MessagesContainer, showErrorToastr } from "components/toastr";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
@@ -37,17 +38,16 @@ const AccessGroupUsers = (props: Props) => {
 
   const getUserList = () => {
     const endpoint = "/rhn/manager/api/admin/access-group/users/" + props.state.orgId;
-    return (
-      Network.get(endpoint)
-        .then((users) => {
-          setListData((prevData) => ({
-            ...prevData,
-            items: users.filter((u) => !selectedUsers.find(({ id }) => u.id === id)),
-          }));
-        })
-        // TODO: Handle errors
-        .catch(props.errors)
-    );
+    return Network.get(endpoint)
+      .then((users) => {
+        setListData((prevData) => ({
+          ...prevData,
+          items: users.filter((u) => !selectedUsers.find(({ id }) => u.id === id)),
+        }));
+      })
+      .catch(() => {
+        showErrorToastr(t("An unexpected error occurred while fetching users."));
+      });
   };
 
   const updateUserList = (item) => {
@@ -83,6 +83,7 @@ const AccessGroupUsers = (props: Props) => {
 
   return (
     <div>
+      <MessagesContainer />
       {!props.state.id ? (
         <>
           <div className="d-flex">

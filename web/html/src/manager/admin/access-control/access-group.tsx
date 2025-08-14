@@ -39,7 +39,7 @@ type AccessGroupType<P> = {
   errors: any;
 };
 
-type AccessGroupPropsType = AccessGroupType<Permission[]>;
+export type AccessGroupPropsType = AccessGroupType<Permission[]>;
 
 export type AccessGroupState = AccessGroupType<Record<string, Permission>>;
 
