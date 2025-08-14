@@ -2069,14 +2069,15 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     public void updateSUSEProducts(List<SCCProductJson> products) throws ContentSyncException {
-        TimeUtils.logTime(LOG, "updateSUSEProducts", () ->
-                updateSUSEProducts(
-                        Stream.concat(
-                                products.stream(),
-                                getAdditionalProducts().stream()
-                        ).collect(Collectors.toList()),
-                        loadStaticTree(), getAdditionalRepositories())
-        );
+        sccRefreshLock.withFileLock(
+                () -> TimeUtils.logTime(LOG, "updateSUSEProducts", () ->
+                        updateSUSEProducts(
+                                Stream.concat(
+                                        products.stream(),
+                                        getAdditionalProducts().stream()
+                                ).collect(Collectors.toList()),
+                                loadStaticTree(), getAdditionalRepositories())
+                ));
     }
 
     /**

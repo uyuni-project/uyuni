@@ -125,10 +125,10 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeProducts(User loggedInUser) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
-            ContentSyncManager csm = new ContentSyncManager();
-            csm.updateSUSEProducts(csm.getProducts());
-        });
+
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateSUSEProducts(csm.getProducts());
+
         return BaseHandler.VALID;
     }
 
