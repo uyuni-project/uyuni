@@ -80,26 +80,13 @@ public class MgrSyncRefresh extends RhnJavaJob {
         }
 
         // Perform the refresh
-        FileLocks.SCC_REFRESH_LOCK.withTimeoutFileLock(() -> {
-            try {
-                ContentSyncManager csm = new ContentSyncManager();
-                csm.updateChannelFamilies(csm.readChannelFamilies());
-                HibernateFactory.commitTransaction();
-                HibernateFactory.closeSession();
-                csm.updateSUSEProducts(csm.getProducts());
-                HibernateFactory.commitTransaction();
-                HibernateFactory.closeSession();
-                csm.updateRepositories(null);
-                HibernateFactory.commitTransaction();
-                HibernateFactory.closeSession();
-                csm.updateSubscriptions();
-                HibernateFactory.commitTransaction();
-                HibernateFactory.closeSession();
-            }
-            catch (ContentSyncException e) {
-                log.error("Error during mgr-sync refresh", e);
-            }
-        }, 600);
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.syncRefresh(600);
+        }
+        catch (ContentSyncException e) {
+            log.error("Error during mgr-sync refresh", e);
+        }
 
         try {
             // Schedule sync of all vendor channels

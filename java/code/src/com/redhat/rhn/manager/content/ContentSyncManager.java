@@ -18,6 +18,7 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.FileLocks;
 import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -170,6 +171,8 @@ public class ContentSyncManager {
 
     private final Path tmpLoggingDir;
 
+    private FileLocks sccRefreshLock = FileLocks.SCC_REFRESH_LOCK;
+
     /**
      * Default constructor.
      */
@@ -194,6 +197,14 @@ public class ContentSyncManager {
             String betaClass = ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL + "-BETA";
             toolsChannelFamilies.add(betaClass);
         }
+    }
+
+    /**
+     * Needed for unit testing
+     * @param sccRefreshLockIn
+     */
+    public void setSccRefreshLock(FileLocks sccRefreshLockIn) {
+        this.sccRefreshLock = sccRefreshLockIn;
     }
 
     /**
@@ -2745,5 +2756,34 @@ public class ContentSyncManager {
                 .map(ChannelTemplate::getProduct)
                 .filter(p -> p.getChannelFamily() != null)
                 .anyMatch(p -> toolsChannelFamilies.contains(p.getChannelFamily().getLabel()));
+    }
+
+    /**
+     * Perform a data synchronization refresh on channels, products, repositories and subscriptions.
+     *
+     * @param timeoutSeconds max time in seconds waiting for the lock
+     */
+    public void syncRefresh(long timeoutSeconds) throws ContentSyncException {
+        // Perform the refresh
+        sccRefreshLock.withTimeoutFileLock(
+                () -> {
+                    updateChannelFamilies(readChannelFamilies());
+                    HibernateFactory.commitTransaction();
+                    HibernateFactory.closeSession();
+
+                    updateSUSEProducts(getProducts());
+                    HibernateFactory.commitTransaction();
+                    HibernateFactory.closeSession();
+
+                    updateRepositories(null);
+                    HibernateFactory.commitTransaction();
+                    HibernateFactory.closeSession();
+
+                    updateSubscriptions();
+                    HibernateFactory.commitTransaction();
+                    HibernateFactory.closeSession();
+                },
+                timeoutSeconds);
+
     }
 }
