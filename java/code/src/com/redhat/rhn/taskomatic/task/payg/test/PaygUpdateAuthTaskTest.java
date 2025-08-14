@@ -202,6 +202,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
         Path tmpLogDir = Files.createTempDirectory("scc-data");
         try {
             ContentSyncManager csm = new ContentSyncManager(tmpLogDir, mgr);
+            csm.setSccRefreshLock(new MockFileLocks());
             csm.updateSUSEProducts(csm.getProducts());
 
             WireMock.verify(WireMock.getRequestedFor(

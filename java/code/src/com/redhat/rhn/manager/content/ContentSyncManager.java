@@ -18,6 +18,7 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.FileLocks;
 import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -170,6 +171,8 @@ public class ContentSyncManager {
 
     private final Path tmpLoggingDir;
 
+    private FileLocks sccRefreshLock = FileLocks.SCC_REFRESH_LOCK;
+
     /**
      * Default constructor.
      */
@@ -194,6 +197,14 @@ public class ContentSyncManager {
             String betaClass = ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL + "-BETA";
             toolsChannelFamilies.add(betaClass);
         }
+    }
+
+    /**
+     * Needed for unit testing
+     * @param sccRefreshLockIn
+     */
+    public void setSccRefreshLock(FileLocks sccRefreshLockIn) {
+        this.sccRefreshLock = sccRefreshLockIn;
     }
 
     /**
@@ -1456,15 +1467,20 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     public Collection<SCCSubscriptionJson> updateSubscriptions() throws ContentSyncException {
-        return TimeUtils.logTime(LOG, "updateSubscriptions", () -> {
-            List<ContentSyncSource> sources = filterCredentials();
-            List<SCCSubscriptionJson> subscriptions = sources.stream()
-                    .flatMap(source -> updateSubscriptions(source).stream())
-                    .collect(Collectors.toList());
+        return sccRefreshLock.withFileLock(() -> updateSubscriptionsCore());
+    }
 
-            LOG.debug("Found {} available subscriptions.", subscriptions.size());
-            return subscriptions;
-        });
+    private Collection<SCCSubscriptionJson> updateSubscriptionsCore() throws ContentSyncException {
+        return TimeUtils.logTime(LOG, "updateSubscriptions",
+                () -> {
+                    List<ContentSyncSource> sources = filterCredentials();
+                    List<SCCSubscriptionJson> subscriptions = sources.stream()
+                            .flatMap(source -> updateSubscriptions(source).stream())
+                            .collect(Collectors.toList());
+
+                    LOG.debug("Found {} available subscriptions.", subscriptions.size());
+                    return subscriptions;
+                });
     }
 
     //Some old scc credentials are in reality OES credentials and don't work for SCC but only on the OES
@@ -1560,9 +1576,12 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     public void updateRepositories(String mirrorUrl) throws ContentSyncException {
+        sccRefreshLock.withFileLock(() -> updateRepositoriesCore(mirrorUrl));
+    }
+
+    private void updateRepositoriesCore(String mirrorUrl) throws ContentSyncException {
         TimeUtils.logTime(LOG, "updateRepositories", () ->
-                refreshRepositoriesAuthentication(mirrorUrl, false)
-        );
+                refreshRepositoriesAuthentication(mirrorUrl, false));
     }
 
     /**
@@ -1578,10 +1597,15 @@ public class ContentSyncManager {
 
     /**
      * Update channel families in DB with data from the channel_families.json file.
+     *
      * @param channelFamilies List of families.
      * @throws ContentSyncException in case of an error
      */
     public void updateChannelFamilies(Collection<ChannelFamilyJson> channelFamilies) throws ContentSyncException {
+        sccRefreshLock.withFileLock(() -> updateChannelFamiliesCore(channelFamilies));
+    }
+
+    private void updateChannelFamiliesCore(Collection<ChannelFamilyJson> channelFamilies) throws ContentSyncException {
         LOG.info("Sync started with updateChannelFamilies");
         List<String> suffixes = Arrays.asList("", "ALPHA", "BETA");
 
@@ -2054,14 +2078,17 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     public void updateSUSEProducts(List<SCCProductJson> products) throws ContentSyncException {
-        TimeUtils.logTime(LOG, "updateSUSEProducts", () ->
-                updateSUSEProducts(
+        sccRefreshLock.withFileLock(() -> updateSUSEProductsCore(products));
+    }
+
+    private void updateSUSEProductsCore(List<SCCProductJson> products) throws ContentSyncException {
+        TimeUtils.logTime(LOG, "updateSUSEProducts",
+                () -> updateSUSEProducts(
                         Stream.concat(
                                 products.stream(),
                                 getAdditionalProducts().stream()
                         ).collect(Collectors.toList()),
-                        loadStaticTree(), getAdditionalRepositories())
-        );
+                        loadStaticTree(), getAdditionalRepositories()));
     }
 
     /**
@@ -2745,5 +2772,34 @@ public class ContentSyncManager {
                 .map(ChannelTemplate::getProduct)
                 .filter(p -> p.getChannelFamily() != null)
                 .anyMatch(p -> toolsChannelFamilies.contains(p.getChannelFamily().getLabel()));
+    }
+
+    /**
+     * Perform a data synchronization refresh on channels, products, repositories and subscriptions.
+     *
+     * @param timeoutSeconds max time in seconds waiting for the lock
+     */
+    public void syncRefresh(long timeoutSeconds) throws ContentSyncException {
+        // Perform the refresh
+        sccRefreshLock.withTimeoutFileLock(
+                () -> {
+                    updateChannelFamiliesCore(readChannelFamilies());
+                    HibernateFactory.commitTransaction();
+                    HibernateFactory.closeSession();
+
+                    updateSUSEProductsCore(getProducts());
+                    HibernateFactory.commitTransaction();
+                    HibernateFactory.closeSession();
+
+                    updateRepositoriesCore(null);
+                    HibernateFactory.commitTransaction();
+                    HibernateFactory.closeSession();
+
+                    updateSubscriptionsCore();
+                    HibernateFactory.commitTransaction();
+                    HibernateFactory.closeSession();
+                },
+                timeoutSeconds);
+
     }
 }
