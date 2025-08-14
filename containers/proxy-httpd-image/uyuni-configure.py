@@ -85,26 +85,30 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
             )
             sys.exit(1)
 
-    # store the systemid content
-    with open("/etc/sysconfig/rhn/systemid", "w", encoding="utf-8") as file:
-        file.write(httpdConfig.get("system_id"))
+    # store the systemid content, but only if it does not exist already
+    if not os.path.exists("/etc/sysconfig/rhn/systemid"):
+        with open("/etc/sysconfig/rhn/systemid", "w", encoding="utf-8") as file:
+            file.write(httpdConfig.get("system_id"))
 
-    # store SSL CA certificate
-    with open(
-        "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT", "w", encoding="utf-8"
-    ) as file:
-        file.write(config.get("ca_crt"))
+    # store SSL CA certificate, if it does not exist already
+    if not os.path.exists("/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT"):
+        with open(
+            "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT", "w", encoding="utf-8"
+        ) as file:
+            file.write(config.get("ca_crt"))
+    # however always prepare link
     os.symlink(
         "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT",
         "/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT",
     )
     os.system("/usr/sbin/update-ca-certificates")
 
-    # store server certificate files
-    with open("/etc/apache2/ssl.crt/server.crt", "w", encoding="utf-8") as file:
-        file.write(httpdConfig.get("server_crt"))
-    with open("/etc/apache2/ssl.key/server.key", "w", encoding="utf-8") as file:
-        file.write(httpdConfig.get("server_key"))
+    # store server certificate files, if cert does not exist already
+    if not os.path.exists("/etc/apache2/ssl.crt/server.crt"):
+        with open("/etc/apache2/ssl.crt/server.crt", "w", encoding="utf-8") as file:
+            file.write(httpdConfig.get("server_crt"))
+        with open("/etc/apache2/ssl.key/server.key", "w", encoding="utf-8") as file:
+            file.write(httpdConfig.get("server_key"))
 
     with open("/etc/apache2/httpd.conf", "r+", encoding="utf-8") as file:
         file_content = file.read()
