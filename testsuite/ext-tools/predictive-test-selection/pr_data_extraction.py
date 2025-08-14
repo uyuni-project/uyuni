@@ -60,7 +60,7 @@ from config import (
 )
 from utilities import setup_logging
 
-logger = setup_logging(logging.INFO, log_file="pr_data_extraction.log")
+logger = setup_logging(logging.INFO, log_file="logs/pr_data_extraction.log")
 
 def load_github_token():
     """

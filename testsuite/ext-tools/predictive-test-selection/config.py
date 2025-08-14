@@ -5,8 +5,8 @@ Configuration constants for the project.
 # General
 # ------------------------------
 CUCUMBER_REPORTS_PARENT_DIR = "PRs-cucumber-reports"
-PR_FEATURES_CSV_FILENAME = "pr_features.csv"
-CUCUMBER_RESULTS_CSV_FILENAME = "pr_features_with_results.csv"
+PR_FEATURES_CSV_FILENAME = "CSVs/pr_features.csv"
+CUCUMBER_RESULTS_CSV_FILENAME = "CSVs/pr_features_with_results.csv"
 RUN_DATA_FILENAME = "run_data.json"
 RUN_FEATURE_RESULTS_FILENAME = "run_feature_results.json"
 # Debug mode: 1 = debugging, 0 = production
@@ -47,4 +47,4 @@ CUCUMBER_RESULTS_COLUMNS = ["feature", "feature_category", "scenario_count", "re
 # ------------------------------
 # Training Data Generation
 # ------------------------------
-TRAINING_CSV_FILENAME = "training_data.csv"
+TRAINING_CSV_FILENAME = "CSVs/training_data.csv"

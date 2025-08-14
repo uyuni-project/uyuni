@@ -37,7 +37,7 @@ from pr_data_extraction import (
 )
 from utilities import setup_logging
 
-logger = setup_logging(logging.INFO, "generate_training_data.log")
+logger = setup_logging(logging.INFO, "logs/generate_training_data.log")
 
 
 class DatabaseManager:

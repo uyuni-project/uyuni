@@ -31,7 +31,7 @@ from config import (
 )
 from utilities import setup_logging
 
-logger = setup_logging(logging.DEBUG, log_file="cucumber_results_extraction.log")
+logger = setup_logging(logging.DEBUG, log_file="logs/cucumber_results_extraction.log")
 
 def get_feature_name_from_uri(uri: str) -> str:
     """
