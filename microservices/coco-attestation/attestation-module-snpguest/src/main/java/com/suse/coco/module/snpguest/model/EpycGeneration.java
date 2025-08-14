@@ -17,6 +17,9 @@ package com.suse.coco.module.snpguest.model;
 public enum EpycGeneration {
     UNKNOWN,
     MILAN,
-    GENOA
+    GENOA,
+    BERGAMO,
+    SIENA,
+    TURIN
 }
 
