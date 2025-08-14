@@ -217,7 +217,7 @@ public class ProvisioningRemoteCommand extends RhnAction implements
             }
 
             if (formValid) {
-                ScriptActionDetails scriptActionDetails = ActionManager.createScript(
+                ScriptActionDetails scriptActionDetails = ActionFactory.createScriptActionDetails(
                         form.getString("uid"),
                         form.getString("gid"),
                         form.get("timeout") == null ? 300 : (Long) form.get("timeout"),

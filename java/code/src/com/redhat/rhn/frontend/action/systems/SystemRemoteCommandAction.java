@@ -23,6 +23,7 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.util.StringUtil.ScriptCheckResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
@@ -264,7 +265,7 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
                 user,
                 servers,
                 (label != null ? label : MessageFormat.format(msg, server.getName())),
-                ActionManager.createScript(form.getString(FormData.UID),
+                ActionFactory.createScriptActionDetails(form.getString(FormData.UID),
                         form.getString(FormData.GID),
                         form.get(FormData.TIMEOUT) == null ?
                                  FormData.DEFAULT_TIMEOUT :

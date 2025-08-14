@@ -1288,22 +1288,6 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Creates a ScriptActionDetails which contains an arbitrary script to be
-     * run by a ScriptRunAction.
-     * @param username Username of script
-     * @param groupname Group script runs as
-     * @param script Script contents
-     * @param timeout script timeout
-     * @return ScriptActionDetails containing script to be run by ScriptRunAction
-     */
-    public static ScriptActionDetails createScript(String username,
-            String groupname, Long timeout, String script) {
-
-        return ActionFactory.createScriptActionDetails(username, groupname,
-                timeout, script);
-    }
-
-    /**
      * Schedule a KickstartAction against a system
      * @param ksdata KickstartData to associate with this Action
      * @param scheduler User scheduling the action.

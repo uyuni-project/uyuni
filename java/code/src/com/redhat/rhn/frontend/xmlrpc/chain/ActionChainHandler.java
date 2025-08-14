@@ -538,7 +538,7 @@ public class ActionChainHandler extends BaseHandler {
         List<Long> systems = new ArrayList<>();
         systems.add((long) sid);
 
-        ScriptActionDetails script = ActionManager.createScript(
+        ScriptActionDetails script = ActionFactory.createScriptActionDetails(
                 uid, gid, (long) timeout, new String(
                         Base64.getDecoder().decode(scriptBody)));
         try {
