@@ -15,8 +15,6 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.util.FileLocks;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
