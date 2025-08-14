@@ -132,4 +132,13 @@ public class PackageAction extends Action {
 
         return additionalInfo;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPackageParameter() {
+        return "upgrade";
+    }
+
 }

@@ -588,7 +588,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
      * @return a parameter value
      */
     public String getPackageParameter() {
-        return "upgrade";
+        return "";
     }
 
     /**
