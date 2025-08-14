@@ -169,17 +169,15 @@ public class ProductsController {
      * @return a boolean flag of the success/failed result
      */
     public static boolean doSynchronizeProducts() {
-        return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
-            try {
-                ContentSyncManager csm = new ContentSyncManager();
-                csm.updateSUSEProducts(csm.getProducts());
-                return true;
-            }
-            catch (Exception e) {
-                log.fatal(e.getMessage(), e);
-                return false;
-            }
-        });
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateSUSEProducts(csm.getProducts());
+            return true;
+        }
+        catch (Exception e) {
+            log.fatal(e.getMessage(), e);
+            return false;
+        }
     }
 
     /**
@@ -200,17 +198,15 @@ public class ProductsController {
      * @return a boolean flag of the success/failed result
      */
     public static boolean doSynchronizeChannelFamilies() {
-        return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
-            try {
-                ContentSyncManager csm = new ContentSyncManager();
-                csm.updateChannelFamilies(csm.readChannelFamilies());
-                return true;
-            }
-            catch (Exception e) {
-                log.fatal(e.getMessage(), e);
-                return false;
-            }
-        });
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateChannelFamilies(csm.readChannelFamilies());
+            return true;
+        }
+        catch (Exception e) {
+            log.fatal(e.getMessage(), e);
+            return false;
+        }
     }
 
     /**
@@ -231,17 +227,15 @@ public class ProductsController {
      * @return a boolean flag of the success/failed result
      */
     public static boolean doSynchronizeRepositories() {
-        return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
-            try {
-                ContentSyncManager csm = new ContentSyncManager();
-                csm.updateRepositories(null);
-                return true;
-            }
-            catch (Exception e) {
-                log.fatal(e.getMessage(), e);
-                return false;
-            }
-        });
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateRepositories(null);
+            return true;
+        }
+        catch (Exception e) {
+            log.fatal(e.getMessage(), e);
+            return false;
+        }
     }
 
     /**
@@ -262,17 +256,15 @@ public class ProductsController {
      * @return a boolean flag of the success/failed result
      */
     public static boolean doSynchronizeSubscriptions() {
-        return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
-            try {
-                ContentSyncManager csm = new ContentSyncManager();
-                csm.updateSubscriptions();
-                return true;
-            }
-            catch (Exception e) {
-                log.fatal(e.getMessage(), e);
-                return false;
-            }
-        });
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateSubscriptions();
+            return true;
+        }
+        catch (Exception e) {
+            log.fatal(e.getMessage(), e);
+            return false;
+        }
     }
 
     /**

@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.frontend.xmlrpc.sync.content;
 
-import com.redhat.rhn.common.util.FileLocks;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.product.ChannelTemplate;
@@ -103,10 +102,10 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer synchronizeChannelFamilies(User loggedInUser)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
-                ContentSyncManager csm = new ContentSyncManager();
-                csm.updateChannelFamilies(csm.readChannelFamilies());
-        });
+
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateChannelFamilies(csm.readChannelFamilies());
+
         return BaseHandler.VALID;
     }
 
@@ -125,10 +124,10 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeProducts(User loggedInUser) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
-            ContentSyncManager csm = new ContentSyncManager();
-            csm.updateSUSEProducts(csm.getProducts());
-        });
+
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateSUSEProducts(csm.getProducts());
+
         return BaseHandler.VALID;
     }
 
@@ -148,10 +147,10 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeSubscriptions(User loggedInUser) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
-            ContentSyncManager csm = new ContentSyncManager();
-            csm.updateSubscriptions();
-        });
+
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateSubscriptions();
+
         return BaseHandler.VALID;
     }
 
@@ -173,10 +172,10 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeRepositories(User loggedInUser, String mirrorUrl) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
-            ContentSyncManager csm = new ContentSyncManager();
-            csm.updateRepositories(mirrorUrl);
-        });
+
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateRepositories(mirrorUrl);
+
         return BaseHandler.VALID;
     }
 

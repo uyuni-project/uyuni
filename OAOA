@@ -1,0 +1,84 @@
+[1mdiff --git a/java/code/src/com/redhat/rhn/manager/content/ContentSyncManager.java b/java/code/src/com/redhat/rhn/manager/content/ContentSyncManager.java[m
+[1mindex d500039ac25..67a576d78f7 100644[m
+[1m--- a/java/code/src/com/redhat/rhn/manager/content/ContentSyncManager.java[m
+[1m+++ b/java/code/src/com/redhat/rhn/manager/content/ContentSyncManager.java[m
+[36m@@ -18,6 +18,7 @@[m [mimport com.redhat.rhn.GlobalInstanceHolder;[m
+ import com.redhat.rhn.common.conf.Config;[m
+ import com.redhat.rhn.common.conf.ConfigDefaults;[m
+ import com.redhat.rhn.common.hibernate.HibernateFactory;[m
+[32m+[m[32mimport com.redhat.rhn.common.util.FileLocks;[m
+ import com.redhat.rhn.common.util.TimeUtils;[m
+ import com.redhat.rhn.domain.channel.Channel;[m
+ import com.redhat.rhn.domain.channel.ChannelFactory;[m
+[36m@@ -2746,4 +2747,33 @@[m [mpublic class ContentSyncManager {[m
+                 .filter(p -> p.getChannelFamily() != null)[m
+                 .anyMatch(p -> toolsChannelFamilies.contains(p.getChannelFamily().getLabel()));[m
+     }[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Perform a data synchronization refresh on channels, products, repositories and subscriptions.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param timeoutSeconds max time in seconds waiting for the lock[m
+[32m+[m[32m     */[m
+[32m+[m[32m    public void syncRefresh(long timeoutSeconds) throws ContentSyncException {[m
+[32m+[m[32m        // Perform the refresh[m
+[32m+[m[32m        FileLocks.SCC_REFRESH_LOCK.withTimeoutFileLock([m
+[32m+[m[32m                () -> {[m
+[32m+[m[32m                    updateChannelFamilies(readChannelFamilies());[m
+[32m+[m[32m                    HibernateFactory.commitTransaction();[m
+[32m+[m[32m                    HibernateFactory.closeSession();[m
+[32m+[m
+[32m+[m[32m                    updateSUSEProducts(getProducts());[m
+[32m+[m[32m                    HibernateFactory.commitTransaction();[m
+[32m+[m[32m                    HibernateFactory.closeSession();[m
+[32m+[m
+[32m+[m[32m                    updateRepositories(null);[m
+[32m+[m[32m                    HibernateFactory.commitTransaction();[m
+[32m+[m[32m                    HibernateFactory.closeSession();[m
+[32m+[m
+[32m+[m[32m                    updateSubscriptions();[m
+[32m+[m[32m                    HibernateFactory.commitTransaction();[m
+[32m+[m[32m                    HibernateFactory.closeSession();[m
+[32m+[m[32m                },[m
+[32m+[m[32m                timeoutSeconds);[m
+[32m+[m
+[32m+[m[32m    }[m
+ }[m
+[1mdiff --git a/java/code/src/com/redhat/rhn/taskomatic/task/MgrSyncRefresh.java b/java/code/src/com/redhat/rhn/taskomatic/task/MgrSyncRefresh.java[m
+[1mindex 245f9bec96b..948f59434ce 100644[m
+[1m--- a/java/code/src/com/redhat/rhn/taskomatic/task/MgrSyncRefresh.java[m
+[1m+++ b/java/code/src/com/redhat/rhn/taskomatic/task/MgrSyncRefresh.java[m
+[36m@@ -80,26 +80,13 @@[m [mpublic class MgrSyncRefresh extends RhnJavaJob {[m
+         }[m
+ [m
+         // Perform the refresh[m
+[31m-        FileLocks.SCC_REFRESH_LOCK.withTimeoutFileLock(() -> {[m
+[31m-            try {[m
+[31m-                ContentSyncManager csm = new ContentSyncManager();[m
+[31m-                csm.updateChannelFamilies(csm.readChannelFamilies());[m
+[31m-                HibernateFactory.commitTransaction();[m
+[31m-                HibernateFactory.closeSession();[m
+[31m-                csm.updateSUSEProducts(csm.getProducts());[m
+[31m-                HibernateFactory.commitTransaction();[m
+[31m-                HibernateFactory.closeSession();[m
+[31m-                csm.updateRepositories(null);[m
+[31m-                HibernateFactory.commitTransaction();[m
+[31m-                HibernateFactory.closeSession();[m
+[31m-                csm.updateSubscriptions();[m
+[31m-                HibernateFactory.commitTransaction();[m
+[31m-                HibernateFactory.closeSession();[m
+[31m-            }[m
+[31m-            catch (ContentSyncException e) {[m
+[31m-                log.error("Error during mgr-sync refresh", e);[m
+[31m-            }[m
+[31m-        }, 600);[m
+[32m+[m[32m        try {[m
+[32m+[m[32m            ContentSyncManager csm = new ContentSyncManager();[m
+[32m+[m[32m            csm.syncRefresh(600);[m
+[32m+[m[32m        }[m
+[32m+[m[32m        catch (ContentSyncException e) {[m
+[32m+[m[32m            log.error("Error during mgr-sync refresh", e);[m
+[32m+[m[32m        }[m
+ [m
+         try {[m
+             // Schedule sync of all vendor channels[m
