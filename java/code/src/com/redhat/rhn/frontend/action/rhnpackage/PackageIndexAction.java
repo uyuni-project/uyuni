@@ -36,6 +36,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.LookupDispatchAction;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,7 +75,7 @@ public class PackageIndexAction extends LookupDispatchAction {
         Server server = SystemManager.lookupByIdAndUser(sid, user);
 
         try {
-            PackageAction pa = ActionManager.schedulePackageRefresh(user, server);
+            PackageAction pa = ActionManager.schedulePackageRefresh(user, server, new Date());
 
             ActionMessages msg = new ActionMessages();
             Object[] args = new Object[3];

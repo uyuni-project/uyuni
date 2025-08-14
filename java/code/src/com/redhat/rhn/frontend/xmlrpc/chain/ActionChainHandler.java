@@ -32,7 +32,6 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchActionException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.configchannel.ConfigChannelHandler;
 import com.redhat.rhn.manager.action.ActionChainManager;
-import com.redhat.rhn.manager.action.ActionManager;
 
 import com.suse.manager.api.ReadOnly;
 
@@ -538,7 +537,7 @@ public class ActionChainHandler extends BaseHandler {
         List<Long> systems = new ArrayList<>();
         systems.add((long) sid);
 
-        ScriptActionDetails script = ActionManager.createScript(
+        ScriptActionDetails script = ActionFactory.createScriptActionDetails(
                 uid, gid, (long) timeout, new String(
                         Base64.getDecoder().decode(scriptBody)));
         try {

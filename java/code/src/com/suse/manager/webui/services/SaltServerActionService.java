@@ -479,7 +479,7 @@ public class SaltServerActionService {
                     minionServer.ifPresent(minion -> {
                         LOG.info("Scheduling a package profile update for minion {}", minionId);
                         try {
-                            ActionManager.schedulePackageRefresh(finalScheduler, minion);
+                            ActionManager.schedulePackageRefresh(finalScheduler, minion, new Date());
                         }
                         catch (TaskomaticApiException e) {
                             LOG.error("Could not schedule package refresh for minion: {}", minion.getMinionId(), e);
@@ -952,7 +952,7 @@ public class SaltServerActionService {
 
                             try {
                                 ActionManager.schedulePackageRefresh(
-                                        Optional.ofNullable(action.getSchedulerUser()), minion);
+                                        Optional.ofNullable(action.getSchedulerUser()), minion, new Date());
                             }
                             catch (TaskomaticApiException e) {
                                 LOG.error("Could not schedule package refresh for minion: {}", minion.getMinionId(), e);

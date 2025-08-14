@@ -5094,7 +5094,7 @@ public class SystemHandler extends BaseHandler {
             throw new PermissionCheckFailureException("Running remote scripts has been disabled");
         }
 
-        ScriptActionDetails scriptDetails = ActionManager.createScript(username, groupname,
+        ScriptActionDetails scriptDetails = ActionFactory.createScriptActionDetails(username, groupname,
                 timeout.longValue(), script);
         ScriptAction action = null;
 

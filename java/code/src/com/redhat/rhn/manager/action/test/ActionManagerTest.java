@@ -193,7 +193,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         //Users must have access to a server for the action to lookup the action
         Server s = ServerFactoryTest.createTestServer(user, true);
         a1.addServerAction(ServerActionTest.createServerAction(s, a1));
-        ActionManager.storeAction(a1);
+        ActionFactory.save(a1);
 
         Action a2 = ActionManager.lookupAction(user, actionId);
         assertNotNull(a2);
@@ -208,7 +208,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         serverAction.setStatusCompleted();
 
         action.addServerAction(serverAction);
-        ActionManager.storeAction(action);
+        ActionFactory.save(action);
 
         Action result = ActionManager.lookupAction(user, action.getId());
         assertNotNull(result);
@@ -234,7 +234,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         serverAction.setStatusCompleted();
 
         action.addServerAction(serverAction);
-        ActionManager.storeAction(action);
+        ActionFactory.save(action);
 
         Action result = ActionManager.lookupAction(user, action.getId());
         assertNotNull(result);
@@ -859,18 +859,32 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testCreateErrataAction() throws Exception {
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        assertEquals("JAVA-Test-", errata.getAdvisory().substring(0, 10));
+        assertEquals("Test synopsis", errata.getSynopsis());
 
-        Action a = ActionManager.createErrataAction(user.getOrg(), errata);
+        Action a = ActionManager.createErrataAction(null, user.getOrg(), errata);
         assertNotNull(a);
         assertNull(a.getSchedulerUser());
         assertEquals(user.getOrg(), a.getOrg());
         assertInstanceOf(ErrataAction.class, a);
+        assertTrue(a.getName().startsWith("Patch Update: JAVA-Test-"));
+        assertTrue(a.getName().endsWith(" - Test synopsis"));
+        assertNotNull(a.getEarliestAction());
+        ErrataAction ea = (ErrataAction) a;
+        assertEquals(1, ea.getErrata().size());
+        assertEquals(errata, ea.getErrata().iterator().next());
 
-        a = ActionManager.createErrataAction(user, errata);
+        a = ActionManager.createErrataAction(user, user.getOrg(), errata);
         assertNotNull(a);
         assertEquals(user, a.getSchedulerUser());
         assertEquals(user.getOrg(), a.getOrg());
         assertInstanceOf(ErrataAction.class, a);
+        assertTrue(a.getName().startsWith("Patch Update: JAVA-Test-"));
+        assertTrue(a.getName().endsWith(" - Test synopsis"));
+        assertNotNull(a.getEarliestAction());
+        ea = (ErrataAction) a;
+        assertEquals(1, ea.getErrata().size());
+        assertEquals(errata, ea.getErrata().iterator().next());
     }
 
     @Test
@@ -879,7 +893,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName()));
         Server s = ServerFactoryTest.createTestServer(usr);
         Action a = ActionFactoryTest.createAction(usr, ActionFactory.TYPE_ERRATA);
-        ActionManager.addServerToAction(s.getId(), a);
+        ActionFactory.addServerToAction(s.getId(), a);
 
         assertNotNull(a.getServerActions());
         assertEquals(a.getServerActions().size(), 1);
@@ -904,8 +918,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 pkg.getPackageArch().getId());
         RhnSetManager.store(set);
 
-        PackageAction pa = ActionManager.schedulePackageRemoval(user, srvr,
-            set, new Date());
+        List<Map<String, Long>> packages = ActionManager.convertPackagesFromRhnSetToListOfMaps(set);
+        PackageAction pa = (PackageAction) ActionManager.schedulePackageAction(user, packages,
+                ActionFactory.TYPE_PACKAGES_REMOVE, new Date(), srvr);
+
         assertNotNull(pa);
         assertNotNull(pa.getId());
         PackageAction pa1 = (PackageAction) ActionManager.lookupAction(user, pa.getId());
@@ -928,7 +944,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 pkg.getPackageArch().getId());
         RhnSetManager.store(set);
 
-        PackageAction pa = ActionManager.schedulePackageVerify(user, srvr, set, new Date());
+        List<Map<String, Long>> packages = ActionManager.convertPackagesFromRhnSetToListOfMaps(set);
+        PackageAction pa = (PackageAction) ActionManager.schedulePackageAction(user, packages,
+                ActionFactory.TYPE_PACKAGES_VERIFY, new Date(), srvr);
+
         assertNotNull(pa);
         assertNotNull(pa.getId());
         PackageAction pa1 = (PackageAction) ActionManager.lookupAction(user, pa.getId());

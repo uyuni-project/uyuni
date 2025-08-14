@@ -29,7 +29,6 @@ import com.redhat.rhn.domain.user.UserServerPreferenceId;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
@@ -260,11 +259,11 @@ public class SystemOverviewAction extends RhnAction {
         Long appValue = rctx.getParamAsLong("applet");
 
         if (appValue != null && appValue == 1) {
-            Action a = ActionManager.createBaseAction(user,
-                                                      s,
-                                                      ActionFactory
-                                                      .TYPE_RHN_APPLET_USE_SATELLITE);
-            ActionManager.storeAction(a);
+
+            Action a = ActionFactory.createAction(ActionFactory.TYPE_RHN_APPLET_USE_SATELLITE, user, new Date());
+            ActionFactory.createAddServerAction(s, a);
+
+            ActionFactory.save(a);
             createSuccessMessage(rctx.getRequest(),
                                  "sdc.details.overview.applet.scheduled",
                                  "/rhn/systems/details/history/Event.do?sid=" +

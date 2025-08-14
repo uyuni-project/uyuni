@@ -29,7 +29,6 @@ import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.schedule.ActionSystemsSetupAction;
 import com.redhat.rhn.frontend.action.schedule.InProgressSystemsSetupAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -69,7 +68,7 @@ public class ActionSystemsSetupActionTest extends RhnBaseTestCase {
                 ActionFactory.TYPE_CONFIGFILES_DEPLOY);
         Server server = ServerFactoryTest.createTestServer(sah.getUser(), true);
         ServerActionTest.createServerAction(server, a);
-        ActionManager.storeAction(a);
+        ActionFactory.save(a);
 
         sah.setupClampListBounds();
         sah.getRequest().setupAddParameter("aid", a.getId().toString());
