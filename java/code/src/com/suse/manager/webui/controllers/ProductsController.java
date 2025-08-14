@@ -200,17 +200,15 @@ public class ProductsController {
      * @return a boolean flag of the success/failed result
      */
     public static boolean doSynchronizeChannelFamilies() {
-        return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
-            try {
-                ContentSyncManager csm = new ContentSyncManager();
-                csm.updateChannelFamilies(csm.readChannelFamilies());
-                return true;
-            }
-            catch (Exception e) {
-                log.fatal(e.getMessage(), e);
-                return false;
-            }
-        });
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateChannelFamilies(csm.readChannelFamilies());
+            return true;
+        }
+        catch (Exception e) {
+            log.fatal(e.getMessage(), e);
+            return false;
+        }
     }
 
     /**

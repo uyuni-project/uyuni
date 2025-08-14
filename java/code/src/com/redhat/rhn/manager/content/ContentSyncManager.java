@@ -1589,28 +1589,32 @@ public class ContentSyncManager {
 
     /**
      * Update channel families in DB with data from the channel_families.json file.
+     *
      * @param channelFamilies List of families.
      * @throws ContentSyncException in case of an error
      */
     public void updateChannelFamilies(Collection<ChannelFamilyJson> channelFamilies) throws ContentSyncException {
-        LOG.info("Sync started with updateChannelFamilies");
-        List<String> suffixes = Arrays.asList("", "ALPHA", "BETA");
+        sccRefreshLock.withFileLock(
+                () -> {
+                    LOG.info("Sync started with updateChannelFamilies");
+                    List<String> suffixes = Arrays.asList("", "ALPHA", "BETA");
 
-        for (ChannelFamilyJson channelFamily : channelFamilies) {
-            for (String suffix : suffixes) {
-                ChannelFamily family = createOrUpdateChannelFamily(
-                        channelFamily.getLabel(), channelFamily.getName(), suffix);
-                // Create rhnPublicChannelFamily entry if it doesn't exist
-                if (family != null && family.getPublicChannelFamily() == null) {
-                    PublicChannelFamily pcf = new PublicChannelFamily();
+                    for (ChannelFamilyJson channelFamily : channelFamilies) {
+                        for (String suffix : suffixes) {
+                            ChannelFamily family = createOrUpdateChannelFamily(
+                                    channelFamily.getLabel(), channelFamily.getName(), suffix);
+                            // Create rhnPublicChannelFamily entry if it doesn't exist
+                            if (family != null && family.getPublicChannelFamily() == null) {
+                                PublicChannelFamily pcf = new PublicChannelFamily();
 
-                    // save the public channel family
-                    pcf.setChannelFamily(family);
-                    ChannelFamilyFactory.save(pcf);
-                    family.setPublicChannelFamily(pcf);
-                }
-            }
-        }
+                                // save the public channel family
+                                pcf.setChannelFamily(family);
+                                ChannelFamilyFactory.save(pcf);
+                                family.setPublicChannelFamily(pcf);
+                            }
+                        }
+                    }
+                });
     }
 
     /**

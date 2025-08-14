@@ -103,10 +103,10 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer synchronizeChannelFamilies(User loggedInUser)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
-                ContentSyncManager csm = new ContentSyncManager();
-                csm.updateChannelFamilies(csm.readChannelFamilies());
-        });
+
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateChannelFamilies(csm.readChannelFamilies());
+
         return BaseHandler.VALID;
     }
 
