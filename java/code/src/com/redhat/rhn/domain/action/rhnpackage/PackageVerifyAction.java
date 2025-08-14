@@ -15,9 +15,20 @@
 package com.redhat.rhn.domain.action.rhnpackage;
 
 
+import com.redhat.rhn.domain.action.server.ServerAction;
+
+import java.util.List;
+import java.util.Map;
+
 /**
  * PackageVerifyAction
  */
 public class PackageVerifyAction extends PackageAction {
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Map<String, String>> createActionSpecificDetails(ServerAction serverAction) {
+        return createPackageActionSpecificDetails();
+    }
 }

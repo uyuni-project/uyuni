@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.xmlrpc.system.config.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -556,7 +557,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
         // Look up the action and verify the details
         ApplyStatesAction action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actionId);
         assertNotNull(action);
-        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+        assertInstanceOf(ApplyStatesAction.class, action);
         assertEquals(scheduleDate, action.getEarliestAction());
 
         ApplyStatesActionDetails details = action.getDetails();

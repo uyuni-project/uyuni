@@ -24,17 +24,12 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
-import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.server.ErrataInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -237,7 +232,7 @@ public class SaltServerActionService {
                 targetMinions = new ArrayList<>();
                 stagingJobMinionServerId.flatMap(MinionServerFactory::lookupById)
                         .ifPresent(server -> targetMinions.add(new MinionSummary(server)));
-                call = prepareStagingTargets(actionIn, targetMinions);
+                call = actionIn.prepareStagingTargets(targetMinions);
             }
             else {
                 targetMinions = entry.getValue();
@@ -749,44 +744,6 @@ public class SaltServerActionService {
         }
         applyKwargs.put("queue", true);
         return applyKwargs;
-    }
-
-    /**
-     * Prepare to execute staging job via Salt
-     * @param actionIn the action
-     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
-     * @return a call with the impacted minions
-     */
-    private LocalCall<?> prepareStagingTargets(Action actionIn, List<MinionSummary> minionSummaries) {
-        LocalCall<?> call = null;
-        if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
-            List<List<String>> args = ((PackageUpdateAction) actionIn)
-                    .getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
-                            d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
-                    .toList();
-            call = State.apply(List.of(SaltParameters.PACKAGES_PKGDOWNLOAD),
-                    Optional.of(Collections.singletonMap(SaltParameters.PARAM_PKGS, args)));
-            LOG.info("Executing staging of packages");
-        }
-        if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
-            Set<Long> errataIds = ((ErrataAction) actionIn).getErrata().stream()
-                    .map(Errata::getId).collect(Collectors.toSet());
-            Map<Long, Map<Long, Set<ErrataInfo>>> errataNames = ServerFactory
-                    .listErrataNamesForServers(minionSummaries.stream().map(MinionSummary::getServerId)
-                            .collect(Collectors.toSet()), errataIds);
-            List<String> errataArgs = errataNames.entrySet().stream()
-                .flatMap(e -> e.getValue().entrySet().stream()
-                     .flatMap(f -> f.getValue().stream()
-                         .map(ErrataInfo::getName)
-                     )
-                )
-                .toList();
-
-            call = State.apply(List.of(SaltParameters.PACKAGES_PATCHDOWNLOAD),
-                    Optional.of(Collections.singletonMap(SaltParameters.PARAM_PATCHES, errataArgs)));
-            LOG.info("Executing staging of patches");
-        }
-        return call;
     }
 
     /**

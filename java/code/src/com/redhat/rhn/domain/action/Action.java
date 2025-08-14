@@ -14,10 +14,12 @@
  */
 package com.redhat.rhn.domain.action;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -31,6 +33,7 @@ import com.suse.salt.netapi.calls.LocalCall;
 
 import com.google.gson.JsonElement;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -38,18 +41,22 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Action - Class representation of the table rhnAction.
  */
 public class Action extends BaseDomainHelper implements Serializable, WebSocketActionIdProvider {
-    private static final Logger LOG = LogManager.getLogger(Action.class);
+    protected static final Logger LOG = LogManager.getLogger(Action.class);
 
     public static final Integer NAME_LENGTH_LIMIT = 128;
 
@@ -412,6 +419,12 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
         return null;
     }
 
+    /**
+     * @return Returns the type name.
+     */
+    public String getActionTypeName() {
+        return this.actionType.getName();
+    }
 
     /**
      * @param minionSummaries a list of minion summaries of the minions involved in the given Action
@@ -483,5 +496,136 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
         serverAction.setResultMsg(SaltUtils.getJsonResultWithPrettyPrint(jsonResult));
     }
+
+    /**
+     * Removes results of queued action.
+     */
+    public void removeInvalidResults() {
+        //default does nothing
+    }
+
+    /**
+     * formatByosListToStringErrorMsg formats a list of MinionSummary to show it as error message.
+     * If there are 2 or less it will return the names of the BYOS instances. If more than two, it will return a
+     * String with two of the BYOS instances plus "... and X more" to avoid having endless error message.
+     * @param byosMinions
+     * @return the error message formated
+     */
+    private String formatByosListToStringErrorMsg(List<MinionSummary> byosMinions) {
+        if (byosMinions.size() <= 2) {
+            return byosMinions.stream()
+                    .map(MinionSummary::getMinionId)
+                    .collect(Collectors.joining(","));
+        }
+
+        String errorMsg = byosMinions.stream()
+                .map(MinionSummary::getMinionId)
+                .limit(2)
+                .collect(Collectors.joining(","));
+
+        int numberOfLeftByosServers = byosMinions.size() - 2;
+
+        return String.format("%s and %d more", errorMsg, numberOfLeftByosServers);
+    }
+
+    /**
+     * rejectScheduleActionIfByos rejects an action if any of the servers within it is byos
+     * @return true if the action was stopped due to byos servers within it, false otherwise
+     */
+    public boolean rejectScheduleActionIfByos() {
+        List<MinionSummary> byosMinions = MinionServerFactory.findByosServers(this);
+        if (CollectionUtils.isNotEmpty(byosMinions)) {
+            LOG.error("To manage BYOS or DC servers from SUSE Multi-Linux Manager PAYG, SCC credentials must be " +
+                    "in place.");
+            Object[] args = {formatByosListToStringErrorMsg(byosMinions)};
+            ActionFactory.rejectScheduledActions(List.of(getId()),
+                    LocalizationService.getInstance()
+                            .getMessage("task.action.rejection.notcompliantPaygByos", args));
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * depending on the event type, we need to retrieve additional information and store that information in the result
+     *
+     * @param serverAction the server action
+     * @return additionalInfo list of info items
+     */
+    public List<Map<String, String>> createActionSpecificDetails(ServerAction serverAction) {
+        return new ArrayList<>();
+    }
+
+    /**
+     * Prepare to execute staging job via Salt
+     * @param minionSummaries a list of minion summaries of the minions involved in the given Action
+     * @return a call with the impacted minions
+     */
+    public LocalCall<?> prepareStagingTargets(List<MinionSummary> minionSummaries) {
+        return null;
+    }
+
+    /**
+     * cleanup old reboot actions
+     * @param bootTime date of boot time
+     * @param sa server action connected to this action
+     * @return true if should clean up old reboot actions
+     * */
+    public boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
+        return false;
+    }
+
+    /**
+     * Check if an action can be scheduled anyway at given date for given systems.
+     * @return true if an action can be scheduled anyway
+     */
+    public boolean canBeScheduledAnyway() {
+        return false;
+    }
+
+    /**
+     * Returns the pkg_parameter parameter to the schedule_action queries in Action_queries.xml
+     * @return a parameter value
+     */
+    public String getPackageParameter() {
+        return "";
+    }
+
+    /**
+     * sets the "dry run" attribute to a servlet request
+     * @param request servlet request where to set the attribute
+     * @return true if "dry run"
+     */
+    public boolean setRequestAttributeDryRun(HttpServletRequest request) {
+        request.setAttribute("typeDistUpgradeDryRun", false);
+        return false;
+    }
+
+    /**
+     * sets the "playbook" attribute to a servlet request
+     * @param request      servlet request where to set the attribute
+     * @param serverAction the server action to get a formatted list of inventory systems accessible to the user
+     * @param user         the current user
+     */
+    public void setRequestAttributePlaybook(HttpServletRequest request, ServerAction serverAction, User user) {
+        request.setAttribute("typePlaybook", false);
+    }
+
+    /**
+     * sets the "packages" attribute to a servlet request
+     * @param request servlet request where to set the attribute
+     */
+    public void setRequestAttributeTypePackages(HttpServletRequest request) {
+        //default does nothing
+    }
+
+    /**
+     * checks if client execution of action returns yaml formatted info
+     * @return true if client execution of action returns yaml formatted info
+     */
+    public boolean clientExecutionReturnsYamlFormat() {
+        return false; //default
+    }
+
 }
 

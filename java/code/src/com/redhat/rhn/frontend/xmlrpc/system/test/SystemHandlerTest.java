@@ -261,7 +261,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertNotNull(aid);
 
         Action action = ActionFactory.lookupById(Long.valueOf(aid));
-        assertEquals(ActionFactory.TYPE_SUPPORTDATA_GET, action.getActionType());
+        assertInstanceOf(SupportDataAction.class, action);
         assertEquals("Get and Upload Support data", action.getName());
         SupportDataActionDetails details = ((SupportDataAction) action).getDetails();
         assertNotNull(details);
@@ -3094,7 +3094,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 sp2BaseChannel.getLabel(), optionalChannels, true, false, true, new Date());
         // Get the scheduled action and check the contents
         DistUpgradeAction action = (DistUpgradeAction) ActionFactory.lookupById(actionID);
-        assertEquals(ActionFactory.TYPE_DIST_UPGRADE, action.getActionType());
+        assertInstanceOf(DistUpgradeAction.class, action);
         Set<ServerAction> serverActions = action.getServerActions();
         assertEquals(server, serverActions.iterator().next().getServer());
         DistUpgradeActionDetails details = action.getDetails();
@@ -3203,7 +3203,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // Look up the action and verify the details
         ApplyStatesAction action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actionId);
         assertNotNull(action);
-        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+        assertInstanceOf(ApplyStatesAction.class, action);
         assertEquals(scheduleDate, action.getEarliestAction());
 
         ApplyStatesActionDetails details = action.getDetails();
@@ -3232,7 +3232,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // Look up the action and verify the details
         ApplyStatesAction action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actionId);
         assertNotNull(action);
-        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+        assertInstanceOf(ApplyStatesAction.class, action);
         assertEquals(scheduleDate, action.getEarliestAction());
 
         ApplyStatesActionDetails details = action.getDetails();
@@ -3276,7 +3276,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // Look up the action and verify the details
         ApplyStatesAction action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actionId);
         assertNotNull(action);
-        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+        assertInstanceOf(ApplyStatesAction.class, action);
         assertEquals(scheduleDate, action.getEarliestAction());
 
         ApplyStatesActionDetails details = action.getDetails();
@@ -3716,7 +3716,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, actions.size());
         ApplyStatesAction action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actions.get(0));
         assertNotNull(action);
-        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+        assertInstanceOf(ApplyStatesAction.class, action);
 
         ApplyStatesActionDetails details = action.getDetails();
         assertNotNull(details);
@@ -3734,7 +3734,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, actions.size());
         action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actions.get(0));
         assertNotNull(action);
-        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+        assertInstanceOf(ApplyStatesAction.class, action);
         details = action.getDetails();
         assertNotNull(details);
         assertEquals(1, details.getMods().size());
@@ -3758,7 +3758,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, actions.size());
         action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actions.get(0));
         assertNotNull(action);
-        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+        assertInstanceOf(ApplyStatesAction.class, action);
 
         details = action.getDetails();
         assertNotNull(details);
@@ -3776,7 +3776,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, actions.size());
         action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actions.get(0));
         assertNotNull(action);
-        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+        assertInstanceOf(ApplyStatesAction.class, action);
         details = action.getDetails();
         assertNotNull(details);
         assertEquals(1, details.getMods().size());

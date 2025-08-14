@@ -567,7 +567,7 @@ public class ActionManager extends BaseManager {
                         ActionFactory.TYPE_CONFIGFILES_UPLOAD, earliest);
         a.setOrg(user.getOrg());
         a.setSchedulerUser(user);
-        a.setName(a.getActionType().getName());
+        a.setName(a.getActionTypeName());
         //put a single row into rhnActionConfigChannel
         a.addConfigChannelAndServer(channel, server);
         //put a single row into rhnServerAction
@@ -701,7 +701,7 @@ public class ActionManager extends BaseManager {
          *  converted to java, we should pass in a LS key and then simply do the lookup
          *  on display
          */
-        a.setName(a.getActionType().getName());
+        a.setName(a.getActionTypeName());
         a.setOrg(user.getOrg());
         a.setSchedulerUser(user);
         return a;
@@ -1925,7 +1925,7 @@ public class ActionManager extends BaseManager {
             Date earliestAction, Set<Long> serverIds)
         throws TaskomaticApiException {
 
-        String name = getActionName(type);
+        String name = type.getPackageActionName();
 
         Action action = scheduleAction(scheduler, type, name, earliestAction, serverIds);
         ActionFactory.save(action);
@@ -2008,7 +2008,7 @@ public class ActionManager extends BaseManager {
             }
             List<Map<String, Object>> paramList =
                 actions.stream().flatMap(action -> {
-                    String packageParameter = getPackageParameter(action);
+                    String packageParameter = action.getPackageParameter();
                     return pkgMaps.stream().map(packageMap -> {
                         Map<String, Object> params = new HashMap<>();
                         params.put("action_id", action.getId());
@@ -2025,47 +2025,6 @@ public class ActionManager extends BaseManager {
                 .executeUpdates(paramList);
     }
         }
-
-    /**
-     * Returns the pkg_parameter parameter to the schedule_action queries in
-     * Action_queries.xml
-     * @param action the action
-     * @return a parameter value
-     */
-    private static String getPackageParameter(Action action) {
-        if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
-            return "lock";
-        }
-        return "upgrade";
-    }
-
-    /**
-     * Returns a name string from an Action type
-     * @param type the type
-     * @return a name
-     */
-    public static String getActionName(ActionType type) {
-        String name = "";
-        if (type.equals(ActionFactory.TYPE_PACKAGES_REMOVE)) {
-            name = "Package Removal";
-        }
-        else if (type.equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
-            name = "Package Install/Upgrade";
-        }
-        else if (type.equals(ActionFactory.TYPE_PACKAGES_VERIFY)) {
-            name = "Package Verify";
-        }
-        else if (type.equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST)) {
-            name = "Package List Refresh";
-        }
-        else if (type.equals(ActionFactory.TYPE_PACKAGES_DELTA)) {
-            name = "Package Synchronization";
-        }
-        else if (type.equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
-            name = "Lock packages";
-        }
-        return name;
-    }
 
     /**
      * Schedules the appropriate package action

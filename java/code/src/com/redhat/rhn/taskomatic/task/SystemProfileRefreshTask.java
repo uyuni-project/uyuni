@@ -73,7 +73,7 @@ public class SystemProfileRefreshTask extends RhnJavaJob {
 
             Action act = ActionFactory.createAction(ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
             // set up needed fields for the action
-            act.setName(act.getActionType().getName());
+            act.setName(act.getActionTypeName());
             act.setOrg(org);
             ActionFactory.save(act);
 

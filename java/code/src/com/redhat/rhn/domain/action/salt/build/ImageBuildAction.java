@@ -379,4 +379,11 @@ public class ImageBuildAction extends Action {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean clientExecutionReturnsYamlFormat() {
+        return true;
+    }
 }
