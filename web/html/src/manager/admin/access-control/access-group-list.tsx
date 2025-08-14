@@ -23,7 +23,6 @@ type AccessGroupListItem = {
 };
 
 const AccessGroupList = (props) => {
-  const [isLoadingRoles, setIsLoadingRoles] = useState(false);
   const [accessGroups, setAccessGroups] = useState<AccessGroupListItem[]>([]);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [toDelete, setToDelete] = useState<AccessGroupListItem>();
@@ -44,15 +43,15 @@ const AccessGroupList = (props) => {
     getRoles();
   }, []);
   const getRoles = () => {
-    setIsLoadingRoles(true);
     const endpoint = "/rhn/manager/api/admin/access-group/roles";
     Network.get(endpoint)
       .then((groups) => {
         setAccessGroups(groups);
       })
-      .catch(props.errors) // TODO: Implement proper error handling
-      .finally(() => {
-        setIsLoadingRoles(false);
+      .catch(() => {
+        setMessages(
+          messages.concat(MessagesUtils.error(t("An unexpected error occurred while fetching access groups.")))
+        );
       });
   };
 
