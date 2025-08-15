@@ -15,6 +15,8 @@
 
 package com.redhat.satellite.search.rpc;
 
+import com.redhat.rhn.common.util.StringUtil;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -55,14 +57,18 @@ public class XmlRpcInvoker implements ProtocolHandler {
      */
     public void handle(Request request, Response response) {
         String uri = request.getURI();
-        log.info(uri);
+        InetAddress ip = request.getInetAddress();
+
         try {
             if (!uri.startsWith("/RPC2")) {
+                String url = StringUtil.htmlifyText(uri);
+
+                log.info("Invalid request from {} to {}", ip, uri);
                 response.setCode(404);
-                response.setText(uri);
+                response.setText(url);
                 PrintStream out = response.getPrintStream();
                 out.println("<html><body><title>Page not found</title>");
-                out.println("<b>" + uri + " not found</b>");
+                out.println("<b>" + url + " not found</b>");
                 out.println("</body></html>");
                 response.set("Content-Type", "text/html");
                 out.flush();
