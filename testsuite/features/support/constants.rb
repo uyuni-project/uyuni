@@ -1001,6 +1001,14 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       %w[
         suse-multi-linux-manager-retail-branch-server-5.1-x86_64
       ],
+    'suse-multi-linux-manager-proxy-52' =>
+      %w[
+        suse-multi-linux-manager-proxy-5.2-x86_64
+      ],
+    'suse-multi-linux-manager-retail-branch-server-52' =>
+      %w[
+        suse-multi-linux-manager-retail-branch-server-5.2-x86_64
+      ],
     # the following entries use convenience product names meant for the testsuite
     # these product names do not exist in sumatoolbox
     # (but the channel names do exist in sumatoolbox):
@@ -1025,6 +1033,18 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       %w[
         suse-multi-linux-manager-retail-branch-server-sle-5.1-pool-x86_64-sp7
         suse-multi-linux-manager-retail-branch-server-sle-5.1-updates-x86_64-sp7
+      ],
+    'suse-multi-linux-manager-proxy-52-sp7' =>
+      %w[
+        sle-module-containers15-sp7-pool-x86_64
+        sle-module-containers15-sp7-updates-x86_64
+        suse-multi-linux-manager-proxy-sle-5.2-pool-x86_64-sp7
+        suse-multi-linux-manager-proxy-sle-5.2-updates-x86_64-sp7
+      ],
+    'suse-multi-linux-manager-retail-branch-server-52-sp7' =>
+      %w[
+        suse-multi-linux-manager-retail-branch-server-sle-5.2-pool-x86_64-sp7
+        suse-multi-linux-manager-retail-branch-server-sle-5.2-updates-x86_64-sp7
       ]
   },
   'Uyuni' => {
@@ -1614,19 +1634,25 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-sl-micro-6.1-x86_64' => 60,
   'suse-manager-proxy-5.0-pool-x86_64' => 60,
   'suse-manager-proxy-5.0-pool-x86_64-sp6' => 60,
-  'suse-multi-linux-manager-proxy-5.1-x86_64' => 60, # for slmicro6.1
-  'suse-multi-linux-manager-proxy-sle-5.1-pool-x86_64-sp7' => 60, # for sles15sp7
   'suse-manager-proxy-5.0-updates-x86_64' => 60,
   'suse-manager-proxy-5.0-updates-x86_64-sp6' => 60,
-  'suse-multi-linux-manager-proxy-sle-5.1-updates-x86_64-sp7' => 60, # for sles15sp7
   'suse-manager-retail-branch-server-5.0-pool-x86_64' => 60,
   'suse-manager-retail-branch-server-5.0-pool-x86_64-sp6' => 60,
-  'suse-multi-linux-manager-retail-branch-server-5.1-x86_64' => 60, # for slmicro6.1
-  'suse-multi-linux-manager-retail-branch-server-sle-5.1-pool-x86_64-sp7' => 60, # for sles15sp7
   'suse-manager-retail-branch-server-5.0-updates-x86_64' => 60,
   'suse-manager-retail-branch-server-5.0-updates-x86_64-sp6' => 60,
-  'suse-multi-linux-manager-retail-branch-server-sle-5.1-updates-x86_64-sp7' => 60, # for sles15sp7
   'suse-microos-5.1-devel-uyuni-client-x86_64' => 120,
+  'suse-multi-linux-manager-proxy-5.1-x86_64' => 60, # for slmicro6.1
+  'suse-multi-linux-manager-proxy-5.2-x86_64' => 60, # for slmicro6.1
+  'suse-multi-linux-manager-proxy-sle-5.1-pool-x86_64-sp7' => 60, # for sles15sp7
+  'suse-multi-linux-manager-proxy-sle-5.1-updates-x86_64-sp7' => 60, # for sles15sp7
+  'suse-multi-linux-manager-proxy-sle-5.2-pool-x86_64-sp7' => 60, # for sles15sp7
+  'suse-multi-linux-manager-proxy-sle-5.2-updates-x86_64-sp7' => 60, # for sles15sp7
+  'suse-multi-linux-manager-retail-branch-server-5.1-x86_64' => 60, # for slmicro6.1
+  'suse-multi-linux-manager-retail-branch-server-5.2-x86_64' => 60, # for slmicro6.1
+  'suse-multi-linux-manager-retail-branch-server-sle-5.1-pool-x86_64-sp7' => 60, # for sles15sp7
+  'suse-multi-linux-manager-retail-branch-server-sle-5.1-updates-x86_64-sp7' => 60, # for sles15sp7
+  'suse-multi-linux-manager-retail-branch-server-sle-5.2-pool-x86_64-sp7' => 60, # for sles15sp7
+  'suse-multi-linux-manager-retail-branch-server-sle-5.2-updates-x86_64-sp7' => 60, # for sles15sp7
   'suse-microos-5.1-pool-x86_64' => 60,
   'suse-microos-5.1-updates-x86_64' => 540,
   'suse-microos-5.2-devel-uyuni-client-x86_64' => 120,
@@ -1674,7 +1700,9 @@ TIMEOUT_BY_CHANNEL_NAME = {
 
 EMPTY_CHANNELS = %w[
   suse-multi-linux-manager-proxy-sle-5.1-updates-x86_64-sp7
+  suse-multi-linux-manager-proxy-sle-5.2-updates-x86_64-sp7
   suse-multi-linux-manager-retail-branch-server-sle-5.1-updates-x86_64-sp7
+  suse-multi-linux-manager-retail-branch-server-sle-5.2-updates-x86_64-sp7
   managertools-sle15-updates-x86_64-sp7
   suse-manager-proxy-5.0-updates-x86_64
   suse-manager-retail-branch-server-5.0-updates-x86_64
