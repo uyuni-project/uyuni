@@ -63,7 +63,7 @@ public class XmlRpcInvoker implements ProtocolHandler {
             if (!uri.startsWith("/RPC2")) {
                 String url = StringUtil.htmlifyText(uri);
 
-                log.info("Invalid request from {} to {}", ip, url);
+                log.info("Invalid request from {} to {}", ip, uri);
                 response.setCode(404);
                 response.setText(url);
                 PrintStream out = response.getPrintStream();
