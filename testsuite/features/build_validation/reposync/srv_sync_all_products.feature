@@ -75,7 +75,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "Development Tools Module 15 SP4 x86_64" selected
     When I select "Containers Module 15 SP4 x86_64" as a product
     Then I should see the "Containers Module 15 SP4 x86_64" selected
-    When I select or deselect "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64 (BETA)" beta client tools
+    When I select or deselect "SUSE Multi-Linux Manager Beta Client Tools for SLE 15 x86_64 (BETA)" beta client tools
     And I select "SUSE Linux Enterprise Server LTSS 15 SP4 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP4 x86_64" selected
     When I click the Add Product button
@@ -367,7 +367,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "SUSE Linux Enterprise Micro 5.5 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.5 x86_64"
     And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" if present
-    And I select or deselect "SUSE Multi-Linux Manager Client Tools Beta for SLE Micro 5 x86_64 (BETA)" beta client tools
+    And I select or deselect "SUSE Multi-Linux Manager Beta Client Tools Beta for SLE Micro 5 x86_64 (BETA)" beta client tools
     And I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Micro 5.5 x86_64" product has been added
@@ -562,7 +562,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I select "SUSE Liberty Linux LTSS 7 x86_64" as a product
     Then I should see the "SUSE Liberty Linux LTSS 7 x86_64" selected
     When I open the sub-list of the product "SUSE Liberty Linux LTSS 7 x86_64"
-    And I should see the "SUSE Multi-Linux Manager Client Tools for SUSE Liberty Linux 7, RHEL and clones 7 x86_64 (BETA)" selected
+    And I should see the "SUSE Multi-Linux Manager Beta Client Tools for SUSE Liberty Linux 7, RHEL and clones 7 x86_64 (BETA)" selected
     When I click the Add Product button
     And I wait until I see "SUSE Liberty Linux LTSS 7 x86_64" product has been added
     And I wait until all synchronized channels for "sll-7-ltss" have finished
@@ -803,20 +803,20 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @proxy
 @transactional_server
-  Scenario: Add SUSE Manager Proxy Extension 5.1 on top of SUSE Linux Enterprise Micro 6.1
+  Scenario: Add SUSE Manager Proxy Extension 5.2 on top of SUSE Linux Enterprise Micro 6.1
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Multi-Linux Manager Proxy Extension 5.1" as the filtered product description
+    And I enter "SUSE Multi-Linux Manager Proxy Extension 5.2" as the filtered product description
     Then I should see the "SUSE Linux Micro 6.1 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Micro 6.1 x86_64"
-    And I select "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64 (BETA)" as a product
-    Then I should see the "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64 (BETA)" selected
+    And I select "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (BETA)" as a product
+    Then I should see the "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (BETA)" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64 (BETA)" product has been added
-    And I wait until all synchronized channels for "suse-multi-linux-manager-proxy-51" have finished
+    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (BETA)" product has been added
+    And I wait until all synchronized channels for "suse-multi-linux-manager-proxy-52" have finished
 
 @uyuni
 @proxy
@@ -827,58 +827,58 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @proxy
 @skip_if_transactional_server
-  Scenario: Add SUSE Multi-Linux Manager Proxy Extension 5.1 on top of SUSE Linux Enterprise Server 15 SP7
+  Scenario: Add SUSE Multi-Linux Manager Proxy Extension 5.2 on top of SUSE Linux Enterprise Server 15 SP7
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Multi-Linux Manager Proxy Extension for SLE 5.1 x86_64" as the filtered product description
+    And I enter "SUSE Multi-Linux Manager Proxy Extension for SLE 5.2 x86_64" as the filtered product description
     When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
     And I open the sub-list of the product "Basesystem Module 15 SP7 x86_64"
     And I select "Containers Module 15 SP7 x86_64" as a product
     Then I should see the "Containers Module 15 SP7 x86_64" selected
     When I open the sub-list of the product "Containers Module 15 SP7 x86_64"
-    And I select "SUSE Multi-Linux Manager Proxy Extension for SLE 5.1 x86_64" as a product
-    Then I should see the "SUSE Multi-Linux Manager Proxy Extension for SLE 5.1 x86_64" selected
+    And I select "SUSE Multi-Linux Manager Proxy Extension for SLE 5.2 x86_64" as a product
+    Then I should see the "SUSE Multi-Linux Manager Proxy Extension for SLE 5.2 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until all synchronized channels for "suse-multi-linux-manager-proxy-51-sp7" have finished
+    And I wait until all synchronized channels for "suse-multi-linux-manager-proxy-52-sp7" have finished
 
 @susemanager
 @proxy
 @transactional_server
-  Scenario: Add SUSE Manager Retail Branch Server Extension 5.1 on top of SUSE Linux Enterprise Micro 6.1
+  Scenario: Add SUSE Manager Retail Branch Server Extension 5.2 on top of SUSE Linux Enterprise Micro 6.1
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1" as the filtered product description
+    And I enter "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2" as the filtered product description
     Then I should see the "SUSE Linux Micro 6.1 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Micro 6.1 x86_64"
-    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64 (BETA)" as a product
-    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64 (BETA)" selected
+    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64 (BETA)" as a product
+    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64 (BETA)" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" product has been added
-    And I wait until all synchronized channels for "suse-multi-linux-manager-retail-branch-server-51" have finished
+    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64" product has been added
+    And I wait until all synchronized channels for "suse-multi-linux-manager-retail-branch-server-52" have finished
 
 @susemanager
 @proxy
 @skip_if_transactional_server
-  Scenario: Add SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 on top of SUSE Linux Enterprise Server 15 SP7
+  Scenario: Add SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 on top of SUSE Linux Enterprise Server 15 SP7
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Multi-Linux Manager Proxy Extension for SLE 5.1 x86_64" as the filtered product description
+    And I enter "SUSE Multi-Linux Manager Proxy Extension for SLE 5.2 x86_64" as the filtered product description
     When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
     And I open the sub-list of the product "Basesystem Module 15 SP7 x86_64"
     And I open the sub-list of the product "Containers Module 15 SP7 x86_64"
-    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension for SLE 5.1 x86_64 " as a product
-    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension for SLE 5.1 x86_64 " selected
+    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension for SLE 5.2 x86_64 " as a product
+    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension for SLE 5.2 x86_64 " selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until all synchronized channels for "suse-multi-linux-manager-retail-branch-server-51-sp7" have finished
+    And I wait until all synchronized channels for "suse-multi-linux-manager-retail-branch-server-52-sp7" have finished
 
 # There are no channels for Retail under Uyuni
 
