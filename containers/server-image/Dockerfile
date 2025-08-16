@@ -20,55 +20,51 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         ${EXTRAPACKAGES} \
         ${PRODUCT_PATTERN_PREFIX}_server \
         ${PRODUCT_PATTERN_PREFIX}_retail \
-        spacewalk-backend-sql-postgresql \
-        spacewalk-java-postgresql \
-        postgresql16 \
+        ${USEPYTHON}-pygit2 \
         billing-data-service \
-        grub2-x86_64-efi \
+        drbd-formula \
+        ed \
+        golang-github-QubitProducts-exporter_exporter \
+        golang-github-prometheus-node_exporter \
+        grafana-formula \
         grub2-arm64-efi \
         grub2-powerpc-ieee1275 \
-        ed \
-        susemanager-tftpsync \
-        golang-github-prometheus-node_exporter \
-        prometheus-postgres_exporter \
-        golang-github-QubitProducts-exporter_exporter \
-        prometheus-jmx_exporter \
-        prometheus-jmx_exporter-tomcat \
-        spacecmd \
-        grafana-formula \
+        grub2-x86_64-efi \
+        habootstrap-formula \
+        inter-server-sync \
+        ipmitool \
+        javamail \
         locale-formula \
+        postgresql16 \
         prometheus-exporters-formula \
         prometheus-formula \
+        prometheus-jmx_exporter \
+        prometheus-jmx_exporter-tomcat \
+        prometheus-postgres_exporter \
         registry-formula \
-        virtualization-formulas \
-        uyuni-config-formula \
-        saphanabootstrap-formula \
-        sapnwbootstrap-formula \
-        drbd-formula \
-        habootstrap-formula \
         saline-formula \
         salt-shaptools \
-        inter-server-sync \
-        golang-github-prometheus-node_exporter \
-        prometheus-postgres_exporter \
-        golang-github-QubitProducts-exporter_exporter \
-        prometheus-jmx_exporter \
+        saphanabootstrap-formula \
+        sapnwbootstrap-formula \
         spacecmd \
-        javamail \
-        virtual-host-gatherer-libcloud \
+        spacewalk-backend-sql-postgresql \
+        spacewalk-java-postgresql \
+        sssd \
+        sssd-ad \
+        sssd-dbus \
+        sssd-ipa \
+        sssd-krb5 \
+        sssd-ldap \
+        sssd-tools \
+        susemanager-tftpsync \
+        uyuni-config-formula \
+        vim \
         virtual-host-gatherer-Libvirt \
         virtual-host-gatherer-Nutanix \
         virtual-host-gatherer-VMware \
-        vim \
-        ${USEPYTHON}-pygit2 \
-        ipmitool \
-        sssd \
-        sssd-dbus \
-        sssd-ldap \
-        sssd-ad \
-        sssd-ipa \
-        sssd-krb5 \
-        sssd-tools && \
+        virtual-host-gatherer-libcloud \
+        virtualization-formulas \
+        zchunk && \
     systemctl enable prometheus-node_exporter && \
     systemctl enable sssd && \
     rm /etc/krb5.conf.d/crypto-policies && \
