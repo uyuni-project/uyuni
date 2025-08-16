@@ -75,6 +75,14 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * Save the Content Environment Difference
+     * @param envDiff the diff
+     */
+    public static void save(ContentEnvironmentDiff envDiff) {
+        INSTANCE.saveObject(envDiff);
+    }
+
+    /**
      * Remove a Content Project
      *
      * @param contentProject the Content Project to remove
@@ -82,6 +90,55 @@ public class ContentProjectFactory extends HibernateFactory {
      */
     public static int remove(ContentProject contentProject) {
         return INSTANCE.removeObject(contentProject);
+    }
+
+    /**
+     * Remove a Content Environment Difference
+     * @param envDiff the diff
+     * @return the number of objects affected
+     */
+    public static int remove(ContentEnvironmentDiff envDiff) {
+        return INSTANCE.removeObject(envDiff);
+    }
+
+    /**
+     * Lookup Environment differences by project, env and channel
+     * @param project the CML project
+     * @param environment the CML environment
+     * @param channel the channel
+     * @return return a list of differences
+     */
+    public static List<ContentEnvironmentDiff> lookupEnvDiffByProjectEnvChannel(ContentProject project,
+                                                                                ContentEnvironment environment,
+                                                                                Channel channel) {
+        return getSession().createQuery("""
+                FROM ContentEnvironmentDiff
+                 WHERE project = :project
+                  AND environment = :env
+                  AND channel = :channel""", ContentEnvironmentDiff.class)
+                .setParameter("project", project)
+                .setParameter("env", environment)
+                .setParameter("channel", channel)
+                .list();
+    }
+
+    /**
+     * Lookup Environment differences by project and environment
+     * @param project the CML project
+     * @param environment the CML environment
+     * @return return a list of differences
+     */
+    public static List<ContentEnvironmentDiff> lookupEnvDiffByProjectAndEnv(ContentProject project,
+                                                                            ContentEnvironment environment) {
+        return getSession().createQuery("""
+                FROM ContentEnvironmentDiff
+                 WHERE project = :project
+                  AND environment = :env
+                  ORDER BY entryType, action, entryId
+                """, ContentEnvironmentDiff.class)
+                .setParameter("project", project)
+                .setParameter("env", environment)
+                .list();
     }
 
     /**
