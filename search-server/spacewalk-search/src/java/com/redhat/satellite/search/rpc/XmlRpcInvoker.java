@@ -39,8 +39,8 @@ import simple.http.Response;
  */
 public class XmlRpcInvoker implements ProtocolHandler {
 
-    private static Logger log = LogManager.getLogger(XmlRpcInvoker.class);
-    private XmlRpcServer server;
+    private static final Logger LOG = LogManager.getLogger(XmlRpcInvoker.class);
+    private final XmlRpcServer server;
 
     /**
      * Constructor
@@ -63,7 +63,7 @@ public class XmlRpcInvoker implements ProtocolHandler {
             if (!uri.startsWith("/RPC2")) {
                 String url = StringEscapeUtils.escapeHtml4(uri);
 
-                log.info("Invalid request from {} to {}", ip, uri);
+                LOG.info("Invalid request from {} to {}", ip, uri);
                 response.setCode(404);
                 response.setText(url);
                 PrintStream out = response.getPrintStream();
@@ -75,7 +75,7 @@ public class XmlRpcInvoker implements ProtocolHandler {
                 out.close();
             }
             else {
-                log.info(uri);
+                LOG.info(uri);
                 InputStream in = request.getInputStream();
                 StringWriter writer = new StringWriter();
                 server.execute(in, writer);
@@ -88,17 +88,15 @@ public class XmlRpcInvoker implements ProtocolHandler {
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e, e);
         }
         finally {
             try {
                 response.commit();
             }
             catch (IOException e) {
-                e.printStackTrace();
+                LOG.error(e, e);
             }
         }
-
     }
-
 }
