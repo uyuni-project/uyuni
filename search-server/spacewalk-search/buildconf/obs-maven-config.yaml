@@ -26,6 +26,9 @@ artifacts:
   - artifact: commons-lang3
     package: apache-commons-lang3
     repository: Leap_sle
+  - artifact: commons-text
+    package: apache-commons-text
+    repository: Leap_sle
   - artifact: commons-logging
     package: apache-commons-logging
     jar: apache-commons-logging\.jar
