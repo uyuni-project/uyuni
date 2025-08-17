@@ -112,9 +112,9 @@ Additionally, the script can generate a complete code training dataset (as shown
 1. Set the `GITHUB_TOKEN` environment variable with a valid GitHub Access Token.
 2. Optionally, adjust PR Data Extraction constants in [config.py](config.py)
 3. The script supports three modes:
-    1. **Training mode (N)**: Collects data from the latest `N` PRs that had test runs. This includes downloading the Cucumber reports for secondary tests executed in each test run in each PR.
-    2. **Training mode (Date)**: Collects data from all PRs created since a specified date up to now. Like the N-based mode, this includes downloading Cucumber reports for training data preparation.
-    3. **Prediction mode**: Gathers data from a single PR. In this mode, Cucumber reports are not collected, as they are not available in production scenarios where the goal is to predict which tests are most likely to fail for a new PR.
+    1. Training mode (N): Collects data from the latest `N` PRs that had test runs. This includes downloading the Cucumber reports for secondary tests executed in each test run in each PR.
+    2. Training mode (Date): Collects data from all PRs created since a specified date up to now. Like the N-based mode, this includes downloading Cucumber reports for training data preparation.
+    3. Prediction mode: Gathers data from a single PR. In this mode, Cucumber reports are not collected, as they are not available in production scenarios where the goal is to predict which tests are most likely to fail for a new PR.
 ```
 python pr_data_extraction.py <N> | <YYYY-MM-DD> | '#<PR_NUMBER>'
 ```
@@ -128,10 +128,10 @@ Notice how for each PR, data is extracted for **each test run** that ran on this
 
 #### Run data JSON file
 
-![](images/pr_data_extract_run_data_json.png)
+<img src="images/pr_data_extract_run_data_json.png" style="width:80%;">
 
 #### CSV File
-![](images/pr_data_extract_output_csv.png)
+<img src="images/pr_data_extract_output_csv.png" style="width:80%;">
 
 > [!IMPORTANT]
 > - `Changes_last_X_days` indicate the number of changes/modifications that happened on the modified files over several recent days.
