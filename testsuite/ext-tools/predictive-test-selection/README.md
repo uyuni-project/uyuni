@@ -16,6 +16,8 @@ The project is composed of several interconnected parts. This README explains ea
   - [5. Insert Test Runs Into Database Script](#5-insert-test-runs-into-database-script)
   - [6. Generate Training Data Script](#6-generate-training-data-script)
 
+High-level diagram of this phase
+
 ![](images/gather_training_data_diagram.png)
 
 # Phase 1 - Gathering Training Data
@@ -133,10 +135,11 @@ Notice how for each PR, data is extracted for **each test run** that ran on this
 
 > [!IMPORTANT]
 > - `Changes_last_X_days` indicate the number of changes/modifications that happened on the modified files over several recent days.
-> - PR number won't be used during training AI models, it only helps the upcoming scripts identify the corresponding PR for each row.
 > - This CSV as a whole isn't the training data, as mentioned in [Storing Test Results](#1-storing-test-runs-test-results), all the training data will be obtained from the database, the current usage of this CSV is for the next scripts to know which PRs have had their test runs' data extracted so that they can process them and backfill them in the database.
 
-### Implementation Q&A
+### Q&A
+<details>
+<summary>Expand</summary>
 
 #### Why extract these specific PR features?
 
@@ -155,6 +158,7 @@ This value was chosen empirically to work well for small `N`. It can be adjusted
 #### Why is `RECENT_DAYS = [3, 14, 56]`?
 
 These time windows for modified file change history are based on the [Facebook paper](https://arxiv.org/pdf/1810.05286). We plan to experiment with different values to better suit Uyuni's codebase and improve prediction accuracy.
+</details>
 
 ## 3. Cucumber Results Extraction Script
 
@@ -170,9 +174,13 @@ Given a folder containing Cucumber reports, this function:
 - Accurately extracts the results of all features.
 - Counts the number of scenarios for each feature.
 
-The function is used in the `runs_feature_result_extraction.py` script.
+The function is used in the `runs_feature_result_extraction` script.
 
 ### How the Script Works
+
+<details>
+<summary>Expand</summary>
+<br>
 
 To determine the results of the features, we need to evaluate the results of the scenarios within these features, as well as the steps/hooks within these scenarios.
 
@@ -181,8 +189,12 @@ We determine the results of the Cucumber scenarios by checking all steps and hoo
 The different part is **how it determines the result of a feature**, a feature is similarly marked as failed, if any scenario has failed. But the different part is that I **mark it as passed, if any scenario has passed and none failed**, otherwise marked as skipped (when all scenarios are skipped). 
 
 The script also logs Cucumber statistics for verification and debugging purposes.
+</details>
 
 ### Q&A
+
+<details>
+<summary>Expand</summary>
 
 #### Why mark a feature as passed, although it had some scenarios that were skipped?
 
@@ -193,6 +205,8 @@ A direct example of this is `srv_users.feature`, in which always two scenarios a
 This can be shown in the below test statistic generated from a PR that had `srv_users` run on it as a recommended test. Here, the two scenarios were detected as skipped, but still, the feature was considered as passed.
 
 ![](images/cucumber_results_srv_users.png)
+
+</details>
 
 ## 4. Runs Feature Result Extraction Script
 
@@ -287,8 +301,13 @@ Each pull request is represented by **one test run**:
 
 ### Q&A
 
+<details>
+<summary>Expand</summary>
+
 #### Why represent PRs by the first failed test run or the first test run?
 
 My intuition is that we should focus on the first test run because it best reflects the real-world scenario we want to model: predicting test failures as soon as a new PR is opened, before any feedback or fixes have occurred. By using the initial test run, we capture the state of the code as it was originally submitted, ensuring our predictions are based on the same conditions developers face when their code is first tested. This approach avoids any bias introduced by subsequent test runs, which may include fixes or changes made in response to earlier failures.
 
 Additionally, failed features/tests are underrepresented in our data. To try to improve this imbalance, we prefer the first failed run if it exists, even if it's not the first run, as this increases the number of samples where failures occur. An alternative approach could be to represent PRs only by their first failed run (and ignore PRs without test failures), though this would reduce the overall dataset size.
+
+</details>
