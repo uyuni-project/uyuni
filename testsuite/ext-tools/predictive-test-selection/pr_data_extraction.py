@@ -8,23 +8,30 @@ The script can operate in one of three modes:
 2.  **Date-based**: Extracts data for all PRs created from a specified start date up to now.
 3.  **Single PR**: Extracts data for a specific PR by its number.
 
-For each PR (training mode, i.e., not a single PR):
-- Finds all completed test runs during the PR's lifetime that include Cucumber reports
-  (if none exist, the PR is skipped).
-- For each test run, it downloads all Cucumber JSON reports.
-- It creates a directory for each run and stores the secondary/recommended reports there.
-- It also creates a run_data JSON file in each run directory with metadata about the run.
-- It identifies the files modified that triggered each test run.
-- It sets the modified files for the PR as the modified files in the first run.
-- Extracts the unique file extensions of the modified files.
-- Retrieves the change history for those files over several recent time windows.
-- Outputs a CSV file containing PR features: file extensions, change history, and PR number.
-- If the script encounters a configurable number of consecutive PRs without Cucumber reports,
-  it will stop early and log a warning. This prevents unnecessary API calls when it is unlikely
-  that more qualifying PRs exist among the candidates.
+How the script works (training mode, i.e., not a single PR):
+1. For N-based mode: Retrieves the `N * PR_OVERSAMPLE_MULTIPLIER` most recently created PRs.
+   For date-based mode: Retrieves all PRs created since the specified date.
+2. For each PR:
+    - Finds all completed test runs during the PR's lifetime that include Cucumber reports
+    (if none exist, the PR is skipped).
+    - For each test run, it downloads all Cucumber JSON reports.
+    - It creates a directory for each run and stores the secondary/recommended reports there.
+    - It also creates a run_data JSON file in each run directory with metadata about the run.
+    (run GitHub ID, commit SHA, result (passed/failed), execution timestamp, and modified files).
+    - It identifies the files modified that triggered each test run.
+    - It sets the modified files for the PR as the modified files in the first run.
+    - Extracts the unique file extensions of the modified files.
+    - Retrieves the change history for those files over several recent time windows.
+    - Outputs a CSV file containing PR features: file extensions, change history, and PR number.
+    - If the script encounters a configurable number of consecutive PRs without Cucumber reports,
+    it will stop early and log a warning. This prevents unnecessary API calls when it is unlikely
+    that more qualifying PRs exist among the candidates.
 
 In prediction mode (single PR), only extracts modified files, their unique file extensions,
 and change history features for the PR. Cucumber reports are not downloaded or processed.
+
+Note:
+Changelog files (.changes) are ignored as modified files, as they are not relevant to the codebase.
 
 Requirements:
 - Environment variable GITHUB_TOKEN must be set with a GitHub Access Token.
