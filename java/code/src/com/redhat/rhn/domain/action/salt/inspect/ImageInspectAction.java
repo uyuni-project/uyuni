@@ -188,18 +188,20 @@ public class ImageInspectAction extends Action {
                 PkgProfileUpdateSlsResult ret =
                         result.getDockerSlsBuild().getChanges().getRet();
 
+                //getRet returns Map<String, Xor<Pkg.Info, List<Pkg.Info>>>
                 Optional.of(ret.getInfoInstalled().getChanges().getRet())
-                        .map(saltPkgs -> saltPkgs.entrySet().stream()
-                                .flatMap(entry -> Opt.stream(entry.getValue().left())
-                                        .map(info -> createImagePackageFromSalt(entry.getKey(), info, imageInfo)))
-                                .collect(Collectors.toSet()));
+                        .stream()
+                        .flatMap(saltPkgs -> saltPkgs.entrySet().stream())
+                        .forEach(entry -> entry.getValue().left()
+                                .ifPresent(info -> createImagePackageFromSalt(entry.getKey(), info, imageInfo)));
 
                 Optional.of(ret.getInfoInstalled().getChanges().getRet())
-                        .map(saltPkgs -> saltPkgs.entrySet().stream()
-                                .flatMap(entry -> Opt.stream(entry.getValue().right())
-                                        .flatMap(Collection::stream)
-                                        .map(info -> createImagePackageFromSalt(entry.getKey(), info, imageInfo)))
-                                .collect(Collectors.toSet()));
+                        .stream()
+                        .flatMap(saltPkgs -> saltPkgs.entrySet().stream())
+                        .forEach(entry -> Opt.stream(entry.getValue().right())
+                                .flatMap(Collection::stream)
+                                .forEach(info -> createImagePackageFromSalt(entry.getKey(), info, imageInfo)));
+
 
                 Optional.ofNullable(ret.getListProducts())
                         .map(products -> products.getChanges().getRet())
