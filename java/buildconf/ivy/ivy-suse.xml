@@ -26,7 +26,7 @@
         <dependency org="manager-51" name="commons-fileupload" rev="1.6.0" />
         <dependency org="manager-51" name="commons-io" rev="2.18.0" />
         <dependency org="manager-51" name="commons-jexl" rev="2.1.1" />
-        <dependency org="manager-51" name="commons-lang3" rev="3.16.0" />
+        <dependency org="manager-51" name="commons-lang3" rev="3.18.0" />
         <dependency org="manager-51" name="commons-logging" rev="1.3.4" />
         <dependency org="manager-51" name="commons-text" rev="1.10.0" />
         <dependency org="manager-51" name="commons-validator" rev="1.1.4" />
