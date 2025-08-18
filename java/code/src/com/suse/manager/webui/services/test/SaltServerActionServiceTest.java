@@ -174,7 +174,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         packageMaps.add(pkg64map);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(testMinionServer, action);
@@ -220,7 +220,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         packageMaps.add(pkg64map);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(testMinionServer, action);
@@ -269,7 +269,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         packageMaps.add(pkg64map);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(testMinionServer, action);
@@ -307,7 +307,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         pkgMap.put("arch_id", p.getPackageArch().getId());
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(testMinionServer, action);
@@ -361,7 +361,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         packageMaps.add(pkgMap);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(testMinionServer, action);
@@ -420,7 +420,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         packageMaps.add(p2map);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_REMOVE,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_REMOVE, user,
                 "test remove action", Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(testMinion, action);
@@ -461,8 +461,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         MinionServer minion4 = MinionServerFactoryTest.createTestMinionServer(user);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        ConfigAction configAction = ActionManager.createConfigAction(user, ActionFactory.TYPE_CONFIGFILES_DEPLOY,
-                Date.from(now.toInstant()));
+        ConfigAction configAction = (ConfigAction) ActionFactory.createAction(ActionFactory.TYPE_CONFIGFILES_DEPLOY,
+                user, Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(minion1, configAction);
         ActionFactory.addServerToAction(minion2, configAction);
@@ -609,8 +609,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        SubscribeChannelsAction action = (SubscribeChannelsAction) ActionManager.createAction(
-                user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS, "Subscribe to channels", Date.from(now.toInstant()));
+        SubscribeChannelsAction action = (SubscribeChannelsAction) ActionFactory.createAndSaveAction(
+                ActionFactory.TYPE_SUBSCRIBE_CHANNELS, user, "Subscribe to channels", Date.from(now.toInstant()));
         action.setSaltApi(saltService);
 
         SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
