@@ -24,6 +24,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentEnvironmentDiff;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
@@ -263,6 +264,25 @@ public class ContentManagementHandler extends BaseHandler {
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
         }
+    }
+
+    /**
+     * List the difference of a Project Environment compared to its original
+     * @param loggedInUser the logged-in user
+     * @param projectLabel the project label
+     * @param envLabel the environment label
+     * @return the list of differences of the selected project environment
+     *
+     * @apidoc.doc List the differences of a Project Environment compared to its original
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @apidoc.param #param_desc("string", "envLabel", "Content Environment label")
+     * @apidoc.returntype $ContentEnvironmentDifferenceSerializer
+     */
+    @ReadOnly
+    public List<ContentEnvironmentDiff> listEnvironmentDifference(User loggedInUser, String projectLabel,
+                                                                  String envLabel) {
+        return ContentManager.listEnvironmentDifference(loggedInUser, projectLabel, envLabel);
     }
 
     /**
@@ -926,6 +946,66 @@ public class ContentManagementHandler extends BaseHandler {
         }
         catch (ContentManagementException e) {
             throw new ContentManagementFaultException(e);
+        }
+        return 1;
+    }
+
+    /**
+     * Generate the difference for all environments in the given project
+     *
+     * @param loggedInUser the user
+     * @param projectLabel the Project label
+     * @return 1 if successful
+     *
+     * @apidoc.doc Generate the difference for all environments in the given project
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Project label")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int generateProjectDifference(User loggedInUser, String projectLabel) {
+        ensureOrgAdmin(loggedInUser);
+        // Validate the project for promote
+        ContentProject project = lookupProject(loggedInUser, projectLabel);
+        validateContentProject(project);
+
+        try {
+            contentManager.diffProject(project);
+        }
+        catch (ContentManagementException e) {
+            throw new ContentManagementFaultException(e);
+        }
+        return 1;
+    }
+
+    /**
+     * Generate the Environment difference for all channels of a given environment
+     *
+     * @param loggedInUser the user
+     * @param projectLabel the Project label
+     * @param environmentLabel the Environment Label
+     * @return 1 if successful
+     *
+     * @apidoc.doc Generate the Environment difference for all channels of a given environment
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Project label")
+     * @apidoc.param #param_desc("string", "environmentLabel", "Environment label")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int generateEnvironmentDifference(User loggedInUser, String projectLabel, String environmentLabel) {
+        ensureOrgAdmin(loggedInUser);
+        // Validate the project for promote
+        ContentProject project = lookupProject(loggedInUser, projectLabel);
+        validateContentProject(project);
+        ContentEnvironment env = lookupEnvironment(loggedInUser, projectLabel, environmentLabel);
+
+        try {
+            contentManager.diffEnvironment(project, env);
+        }
+        catch (ContentManagementException e) {
+            throw new ContentManagementFaultException(e);
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
         }
         return 1;
     }
