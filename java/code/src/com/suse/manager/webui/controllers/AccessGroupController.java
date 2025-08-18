@@ -77,32 +77,32 @@ public class AccessGroupController {
      * Invoked from Router. Initialize routes for Access Group management.
      */
     public static void initRoutes() {
-        get("/manager/api/admin/access-group/roles",
-                asJson(withProductAdmin(AccessGroupController::listRoles)));
-        get("/manager/api/admin/access-group/namespaces",
+        get("/manager/api/admin/access-control/access-group/list_custom",
+                asJson(withProductAdmin(AccessGroupController::listCustomAccessGroups)));
+        get("/manager/api/admin/access-control/access-group/list_namespaces",
                 asJson(withProductAdmin(AccessGroupController::listNamespaces)));
-        get("/manager/api/admin/access-group/users/:id",
+        get("/manager/api/admin/access-control/access-group/organizations/:orgId/users",
                 asJson(withProductAdmin(AccessGroupController::listOrgUsers)));
-        get("/manager/api/admin/access-group/organizations",
+        get("/manager/api/admin/access-control/access-group/organizations",
                 asJson(withProductAdmin(AccessGroupController::listOrganizations)));
-        get("/manager/api/admin/access-group/organizations/:id/access-groups",
+        get("/manager/api/admin/access-control/access-group/organizations/:orgId/access-groups",
                 asJson(withProductAdmin(AccessGroupController::listAccessGroups)));
-        post("/manager/api/admin/access-group/save",
+        post("/manager/api/admin/access-control/access-group/save",
                 asJson(withProductAdmin(AccessGroupController::save)));
-        delete("/manager/api/admin/access-group/delete/:id",
+        delete("/manager/api/admin/access-control/access-group/delete/:id",
                 asJson(withProductAdmin(AccessGroupController::remove)));
     }
 
     /**
-     * Processes a GET request to get a paginated list of access groups
+     * Processes a GET request to get a list of custom access groups
      *
      * @param request the request object
      * @param response the response object
      * @param user the user
      * @return the result JSON object
      */
-    public static String listRoles(Request request, Response response, User user) {
-        var roles = MANAGER.listNonDefault(user.getOrg());
+    public static String listCustomAccessGroups(Request request, Response response, User user) {
+        var roles = MANAGER.listCustom(user.getOrg());
         return json(GSON, response, roles, new TypeToken<>() { });
     }
 
@@ -147,7 +147,7 @@ public class AccessGroupController {
      * @return the result JSON object
      */
     public static String listOrgUsers(Request request, Response response, User user) {
-        Long orgId = Long.parseLong(request.params("id"));
+        Long orgId = Long.parseLong(request.params("orgId"));
         List<AccessGroupUserJson> users = MANAGER.listUsers(orgId);
         return json(GSON, response, users, new TypeToken<>() { });
     }
@@ -175,7 +175,7 @@ public class AccessGroupController {
      * @return the result JSON object
      */
     public static String listAccessGroups(Request request, Response response, User user) {
-        Long orgId = Long.parseLong(request.params("id"));
+        Long orgId = Long.parseLong(request.params("orgId"));
         var org = OrgFactory.lookupById(orgId);
         if (org == null) {
             Spark.halt(HttpStatus.SC_NOT_FOUND, GSON.toJson(

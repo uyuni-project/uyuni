@@ -43,7 +43,7 @@ const AccessGroupDetails = forwardRef<AccessGroupDetailsHandle, Props>((props, r
   }, []);
 
   const getOrganizations = () => {
-    const endpoint = "/rhn/manager/api/admin/access-group/organizations";
+    const endpoint = "/rhn/manager/api/admin/access-control/access-group/organizations";
     return Network.get(endpoint)
       .then((orgs) => {
         setOrganizations(orgs.map((org) => ({ value: org.orgId, label: org.orgName })));
@@ -56,7 +56,7 @@ const AccessGroupDetails = forwardRef<AccessGroupDetailsHandle, Props>((props, r
   useEffect(() => {
     const getAccessGroups = (orgId: number) => {
       setIsLoadingGroups(true);
-      const endpoint = `/rhn/manager/api/admin/access-group/organizations/${orgId}/access-groups`;
+      const endpoint = `/rhn/manager/api/admin/access-control/access-group/organizations/${orgId}/access-groups`;
       Network.get(endpoint)
         .then((groups) => {
           setAccessGroups(groups.map((group) => ({ value: group.id, label: group.description })));

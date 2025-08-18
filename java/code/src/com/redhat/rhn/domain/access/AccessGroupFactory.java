@@ -96,11 +96,11 @@ public class AccessGroupFactory extends HibernateFactory {
     }
 
     /**
-     * Lists all non-default access groups for a given org.
+     * Lists all custom access groups for a given org.
      * @param org the org
-     * @return the list of non-default access groups
+     * @return the list of custom access groups
      */
-    public static List<AccessGroupJson> listNonDefault(Org org) {
+    public static List<AccessGroupJson> listCustom(Org org) {
         String sql = """
             SELECT
                 ag.id as id,
