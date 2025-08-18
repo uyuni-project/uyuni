@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button, LinkButton } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
@@ -26,7 +26,6 @@ const AccessGroupList = (props) => {
   const [accessGroups, setAccessGroups] = useState<AccessGroupListItem[]>([]);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [toDelete, setToDelete] = useState<AccessGroupListItem>();
-  const tableRef = useRef(null);
 
   const searchData = (item, criteria) => {
     if (!criteria) {
@@ -43,7 +42,7 @@ const AccessGroupList = (props) => {
     getRoles();
   }, []);
   const getRoles = () => {
-    const endpoint = "/rhn/manager/api/admin/access-group/roles";
+    const endpoint = "/rhn/manager/api/admin/access-control/access-group/list_custom";
     Network.get(endpoint)
       .then((groups) => {
         setAccessGroups(groups);
@@ -55,13 +54,11 @@ const AccessGroupList = (props) => {
       });
   };
 
-  const onDelete = (item, tableRef) => {
-    return Network.del("/rhn/manager/api/admin/access-group/delete/" + item.id)
+  const onDelete = (item) => {
+    return Network.del("/rhn/manager/api/admin/access-control/access-group/delete/" + item.id)
       .then((_) => {
         setMessages(MessagesUtils.info("Access Group '" + item.name + "' has been deleted."));
-        if (tableRef) {
-          tableRef.current.refresh();
-        }
+        setAccessGroups(accessGroups.filter((g) => g.id !== item.id));
       })
       .catch((error) => setMessages(Network.responseErrorMessage(error)));
   };
@@ -80,7 +77,7 @@ const AccessGroupList = (props) => {
           <LinkButton
             className="btn-default btn-sm"
             icon="fa-pencil"
-            href={"/rhn/manager/admin/access-group/show/" + item.id}
+            href={`/rhn/manager/admin/access-control/show-access-group/${item.id}`}
           />
           <ModalButton
             className="btn-default btn-sm"
@@ -104,7 +101,7 @@ const AccessGroupList = (props) => {
             className="btn-primary"
             title={t("Create Access Group")}
             text={t("Create Access Group")}
-            href="/rhn/manager/admin/access-group/create"
+            href="/rhn/manager/admin/access-control/create-access-group"
           />
         </div>
       }
@@ -116,7 +113,6 @@ const AccessGroupList = (props) => {
         initialSortColumnKey="name"
         emptyText={t("No Access Group found.")}
         searchField={<SearchField filter={searchData} placeholder={t("Filter by name or description")} />}
-        ref={tableRef}
       >
         <Column columnKey="name" comparator={Utils.sortByText} header={t("Name")} cell={(item) => item.name} />
         <Column
@@ -147,7 +143,7 @@ const AccessGroupList = (props) => {
         id="delete-modal"
         title={t("Delete Access Group")}
         content={t("Are you sure you want to delete the selected Access Group?")}
-        onConfirm={() => onDelete(toDelete, tableRef)}
+        onConfirm={() => onDelete(toDelete)}
         onClosePopUp={() => setToDelete(undefined)}
       />
     </TopPanel>

@@ -37,7 +37,7 @@ const AccessGroupUsers = (props: Props) => {
   }, []);
 
   const getUserList = () => {
-    const endpoint = "/rhn/manager/api/admin/access-group/users/" + props.state.orgId;
+    const endpoint = `/rhn/manager/api/admin/access-control/access-group/organizations/${props.state.orgId}/users`;
     return Network.get(endpoint)
       .then((users) => {
         setListData((prevData) => ({
