@@ -9846,16 +9846,34 @@ For a detailed analysis, please refer to the log files.
         <source>None</source>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.description">
-        <source>KVM on AMD Epyc Processor, second generation (milan)</source>
+        <source>KVM on AMD Epyc Processor, third generation (milan)</source>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.label">
         <source>KVM on AMD Epyc - Milan</source>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description">
-        <source>KVM on AMD Epyc Processor, third generation (genoa)</source>
+        <source>KVM on AMD Epyc Processor, fourth generation (genoa)</source>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.label">
         <source>KVM on AMD Epyc - Genoa</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.description">
+        <source>KVM on AMD Epyc Processor, fourth generation (bergamo)</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.label">
+        <source>KVM on AMD Epyc - Bergamo</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_siena.description">
+        <source>KVM on AMD Epyc Processor, fourth generation (siena)</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_siena.label">
+        <source>KVM on AMD Epyc - Siena</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_turin.description">
+        <source>KVM on AMD Epyc Processor, fifth generation (turin)</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_turin.label">
+        <source>KVM on AMD Epyc - Turin</source>
       </trans-unit>
       <trans-unit id="coco.resultType.none.description">
         <source>Result Type not found</source>
