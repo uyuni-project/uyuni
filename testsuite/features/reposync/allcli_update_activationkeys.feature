@@ -152,20 +152,6 @@ Feature: Update activation keys
 
 @uyuni
 @proxy
-@cloud
-  Scenario: Update the openSUSE Leap proxy key with synced base product
-    When I follow the left menu "Systems > Activation Keys"
-    And I follow "Proxy Key x86_64" in the content area
-    And I wait for child channels to appear
-    And I select the parent channel for the "proxy_traditional" from "selectedBaseChannel"
-    And I wait for child channels to appear
-    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
-    And I check "Uyuni Proxy Devel for openSUSE Leap 15.6 (x86_64)"
-    And I click on "Update Activation Key"
-    Then I should see a "Activation key Proxy Key x86_64 has been modified" text
-
-@uyuni
-@proxy
 @containerized_server
 @skip_if_cloud
   Scenario: Update the openSUSE Leap Micro 5.5 Proxy Host key with synced base product
