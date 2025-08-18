@@ -100,9 +100,9 @@ public class AdminViewsController {
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPasswordPolicy))), jade);
         get("/manager/admin/access-control",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::accessControl))), jade);
-        get("/manager/admin/access-group/create",
+        get("/manager/admin/access-control/create-access-group",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::createAccessGroup))), jade);
-        get("/manager/admin/access-group/show/:id",
+        get("/manager/admin/access-control/show-access-group/:id",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showAccessGroup))), jade);
         get("/manager/admin/setup/payg",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::listPayg))), jade);
