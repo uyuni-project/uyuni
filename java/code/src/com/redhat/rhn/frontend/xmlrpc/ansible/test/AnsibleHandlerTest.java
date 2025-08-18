@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.xmlrpc.ansible.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -111,7 +112,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         // Look up the action and verify the details
         PlaybookAction action = (PlaybookAction) ActionFactory.lookupByUserAndId(admin, actionId);
         assertNotNull(action);
-        assertEquals(ActionFactory.TYPE_PLAYBOOK, action.getActionType());
+        assertInstanceOf(PlaybookAction.class, action);
         assertEquals(scheduleDate, action.getEarliestAction());
 
         PlaybookActionDetails details = action.getDetails();
@@ -139,7 +140,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         // Look up the action and verify the details
         PlaybookAction action = (PlaybookAction) ActionFactory.lookupByUserAndId(admin, actionId);
         assertNotNull(action);
-        assertEquals(ActionFactory.TYPE_PLAYBOOK, action.getActionType());
+        assertInstanceOf(PlaybookAction.class, action);
         assertEquals(scheduleDate, action.getEarliestAction());
 
         PlaybookActionDetails details = action.getDetails();

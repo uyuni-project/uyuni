@@ -70,7 +70,7 @@ public class CompareConfigFilesTask extends RhnJavaJob {
             Action act = ActionFactory.createAction(ActionFactory.TYPE_CONFIGFILES_DIFF);
             ConfigAction cfact = (ConfigAction) act;
             // set up needed fields for the action
-            act.setName(act.getActionType().getName());
+            act.setName(act.getActionTypeName());
             act.setOrg(server.getOrg());
 
             // add the server to the action

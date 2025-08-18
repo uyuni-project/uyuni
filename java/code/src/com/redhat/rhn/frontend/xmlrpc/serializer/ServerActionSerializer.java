@@ -74,7 +74,7 @@ public class ServerActionSerializer extends ApiResponseSerializer<ServerAction> 
                 .add("failed_count", act.getFailedCount())
                 .add("modified", act.getModified().toString())
                 .add("created", act.getCreated().toString())
-                .add("action_type", act.getActionType().getName())
+                .add("action_type", act.getActionTypeName())
                 .add("successful_count", act.getSuccessfulCount())
                 .add("earliest_action", act.getEarliestAction().toString())
                 .add("archived", act.getArchived())

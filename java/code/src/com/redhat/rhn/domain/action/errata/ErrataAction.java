@@ -20,9 +20,12 @@ import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFormatter;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.server.ErrataInfo;
@@ -30,11 +33,14 @@ import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.action.ActionManager;
 
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -218,5 +224,57 @@ public class ErrataAction extends Action {
                 ),
                 Map.Entry::getValue
         ));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Map<String, String>> createActionSpecificDetails(ServerAction serverAction) {
+        final List<Map<String, String>> additionalInfo = new ArrayList<>();
+
+        // retrieve the errata that were associated with the action...
+        DataResult<Row> errataList = ActionManager.getErrataList(getId());
+        for (Row erratum : errataList) {
+            String detail = (String) erratum.get("advisory");
+            detail += " (" + erratum.get("synopsis") + ")";
+
+            Map<String, String> info = new HashMap<>();
+            info.put("detail", detail);
+            additionalInfo.add(info);
+        }
+
+        return additionalInfo;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalCall<?> prepareStagingTargets(List<MinionSummary> minionSummaries) {
+        Set<Long> errataIds = getErrata().stream()
+                .map(Errata::getId).collect(Collectors.toSet());
+        Map<Long, Map<Long, Set<ErrataInfo>>> errataNames = ServerFactory
+                .listErrataNamesForServers(minionSummaries.stream().map(MinionSummary::getServerId)
+                        .collect(Collectors.toSet()), errataIds);
+        List<String> errataArgs = errataNames.entrySet().stream()
+                .flatMap(e -> e.getValue().entrySet().stream()
+                        .flatMap(f -> f.getValue().stream()
+                                .map(ErrataInfo::getName)
+                        )
+                )
+                .toList();
+
+        LOG.info("Executing staging of patches");
+        return State.apply(List.of(SaltParameters.PACKAGES_PATCHDOWNLOAD),
+                Optional.of(Collections.singletonMap(SaltParameters.PARAM_PATCHES, errataArgs)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean clientExecutionReturnsYamlFormat() {
+        return true;
     }
 }

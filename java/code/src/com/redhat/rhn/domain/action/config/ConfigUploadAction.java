@@ -14,14 +14,22 @@
  */
 package com.redhat.rhn.domain.action.config;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFormatter;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.manager.action.ActionManager;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -109,5 +117,25 @@ public class ConfigUploadAction extends Action {
             formatter = new ConfigUploadActionFormatter(this);
         }
         return formatter;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Map<String, String>> createActionSpecificDetails(ServerAction serverAction) {
+        final List<Map<String, String>> additionalInfo = new ArrayList<>();
+        // retrieve the details associated with the action...
+        DataResult<Row> files = ActionManager.getConfigFileUploadList(getId());
+        for (Row file : files) {
+            Map<String, String> info = new HashMap<>();
+            info.put("detail", (String) file.get("path"));
+            String error = (String) file.get("failure_reason");
+            if (error != null) {
+                info.put("result", error);
+            }
+            additionalInfo.add(info);
+        }
+        return additionalInfo;
     }
 }

@@ -24,7 +24,6 @@ import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
-import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
 import com.redhat.rhn.domain.action.ansible.PlaybookAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
@@ -71,7 +70,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
@@ -81,14 +79,12 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.hibernate.type.StandardBasicTypes;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -114,7 +110,6 @@ public class ActionFactory extends HibernateFactory {
     private static final Logger LOG = LogManager.getLogger(ActionFactory.class);
     private static Set<String> actionArchTypes;
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
-    private static final LocalizationService LOCALIZATION = LocalizationService.getInstance();
 
     private ActionFactory() {
         super();
@@ -634,16 +629,7 @@ public class ActionFactory extends HibernateFactory {
          * the packageEvr stored proc is called first so that
          * the foreign key constraint holds.
          */
-        if (actionIn.getActionType().equals(TYPE_PACKAGES_AUTOUPDATE) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_DELTA) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_REFRESH_LIST) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_REMOVE) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_RUNTRANSACTION) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_UPDATE) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_VERIFY) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_LOCK)) {
-
-            PackageAction action = (PackageAction) actionIn;
+        if (actionIn instanceof PackageAction action) {
             Set<PackageActionDetails> details = action.getDetails();
             for (PackageActionDetails detail : details) {
                 PackageEvr evr = detail.getEvr();
@@ -833,7 +819,7 @@ public class ActionFactory extends HibernateFactory {
         .setParameter("tries", tries)
         .setParameter("failed", ActionFactory.STATUS_FAILED)
         .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
-        removeInvalidResults(action);
+        action.removeInvalidResults();
         action.getServerActions().stream()
                 .filter(sa -> sa.isFailed())
                 .map(sa -> sa.getServerId())
@@ -851,7 +837,7 @@ public class ActionFactory extends HibernateFactory {
         .setParameter("action", action)
         .setParameter("tries", tries)
         .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
-        removeInvalidResults(action);
+        action.removeInvalidResults();
         action.getServerActions().stream()
                 .map(sa -> sa.getServerId())
                 .forEach(sid -> SystemManager.updateSystemOverview(sid));
@@ -879,7 +865,7 @@ public class ActionFactory extends HibernateFactory {
         .setParameter("tries", tries)
         .setParameter("queued", ActionFactory.STATUS_QUEUED)
         .setParameter("server", server).executeUpdate();
-        removeInvalidResults(action);
+        action.removeInvalidResults();
         SystemManager.updateSystemOverview(server);
     }
 
@@ -889,24 +875,6 @@ public class ActionFactory extends HibernateFactory {
      */
     public static ServerHistoryEvent lookupHistoryEventById(Long aid) {
         return singleton.lookupObjectByNamedQuery("ServerHistory.lookupById", Map.of("id", aid));
-    }
-
-    /**
-     * Removes results of queued action.
-     * @param action results of which action to remove
-     */
-    public static void removeInvalidResults(Action action) {
-        if (action.getActionType().equals(TYPE_SCRIPT_RUN)) {
-            HibernateFactory.getSession().createNativeQuery("""
-                  DELETE FROM rhnServerActionScriptResult sr WHERE sr.action_script_id = (
-                  SELECT as.id FROM rhnActionScript as WHERE as.action_id = :action)
-                  AND sr.server_id IN
-                  (SELECT sa.server_id FROM rhnServerAction sa WHERE sa.action_id = :action AND sa.status = :queued)
-                  """)
-            .setParameter("action", action.getId(), StandardBasicTypes.LONG)
-            .setParameter("queued", ActionFactory.STATUS_QUEUED.getId(), StandardBasicTypes.LONG)
-            .executeUpdate();
-        }
     }
 
     private static void updateActionEarliestDate(Action action) {
@@ -963,54 +931,6 @@ public class ActionFactory extends HibernateFactory {
         );
 
         updatedServerIds.forEach(SystemManager::updateSystemOverview);
-    }
-
-    /**
-     * rejectScheduleActionIfByos rejects an action if any of the servers within it is byos
-     * @param action action to be checked
-     * @return true if the action was stopped due to byos servers within it, false otherwise
-     */
-    public static boolean rejectScheduleActionIfByos(Action action) {
-        if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
-            // Hardware refresh detect PAYG/BYOS type and refresh it. This should be possible also
-            // for BYOS systems in case the former detection failed. On error PAYG is set to false,
-            // and we need a way to repeat the detection.
-            return false;
-        }
-        List<MinionSummary> byosMinions = MinionServerFactory.findByosServers(action);
-        if (CollectionUtils.isNotEmpty(byosMinions)) {
-            LOG.error("To manage BYOS or DC servers from SUSE Multi-Linux Manager PAYG, SCC credentials must be " +
-                    "in place.");
-            Object[] args = {formatByosListToStringErrorMsg(byosMinions)};
-            rejectScheduledActions(List.of(action.getId()),
-                    LOCALIZATION.getMessage("task.action.rejection.notcompliantPaygByos", args));
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * formatByosListToStringErrorMsg formats a list of MinionSummary to show it as error message.
-     * If there are 2 or less it will return the names of the BYOS instances. If more than two, it will return a
-     * String with two of the BYOS instances plus "... and X more" to avoid having endless error message.
-     * @param byosMinions
-     * @return the error message formated
-     */
-    public static String formatByosListToStringErrorMsg(List<MinionSummary> byosMinions) {
-        if (byosMinions.size() <= 2) {
-            return byosMinions.stream()
-                    .map(MinionSummary::getMinionId)
-                    .collect(Collectors.joining(","));
-        }
-
-        String errorMsg = byosMinions.stream()
-                .map(MinionSummary::getMinionId)
-                .limit(2)
-                .collect(Collectors.joining(","));
-
-        int numberOfLeftByosServers = byosMinions.size() - 2;
-
-        return String.format("%s and %d more", errorMsg, numberOfLeftByosServers);
     }
 
     /**

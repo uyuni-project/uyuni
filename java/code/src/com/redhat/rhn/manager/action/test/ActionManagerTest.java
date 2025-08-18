@@ -37,6 +37,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
+import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestAction;
@@ -863,13 +864,13 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(a);
         assertNull(a.getSchedulerUser());
         assertEquals(user.getOrg(), a.getOrg());
-        assertEquals(a.getActionType(), ActionFactory.TYPE_ERRATA);
+        assertInstanceOf(ErrataAction.class, a);
 
         a = ActionManager.createErrataAction(user, errata);
         assertNotNull(a);
         assertEquals(user, a.getSchedulerUser());
         assertEquals(user.getOrg(), a.getOrg());
-        assertEquals(a.getActionType(), ActionFactory.TYPE_ERRATA);
+        assertInstanceOf(ErrataAction.class, a);
     }
 
     @Test
@@ -1147,7 +1148,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 actionChain, user);
 
         assertNotNull(action);
-        assertEquals("Build an Image Profile", action.getActionType().getName());
+        assertEquals("Build an Image Profile", action.getActionTypeName());
     }
 
     @Test
