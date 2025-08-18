@@ -691,5 +691,3 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         return sa;
     }
 }
-
-
