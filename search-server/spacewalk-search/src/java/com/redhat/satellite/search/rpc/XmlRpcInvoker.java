@@ -15,8 +15,7 @@
 
 package com.redhat.satellite.search.rpc;
 
-import com.redhat.rhn.common.util.StringUtil;
-
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,6 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.StringWriter;
+import java.net.InetAddress;
 
 import redstone.xmlrpc.XmlRpcServer;
 import simple.http.ProtocolHandler;
@@ -39,8 +39,8 @@ import simple.http.Response;
  */
 public class XmlRpcInvoker implements ProtocolHandler {
 
-    private static Logger log = LogManager.getLogger(XmlRpcInvoker.class);
-    private XmlRpcServer server;
+    private static final Logger LOG = LogManager.getLogger(XmlRpcInvoker.class);
+    private final XmlRpcServer server;
 
     /**
      * Constructor
@@ -61,9 +61,9 @@ public class XmlRpcInvoker implements ProtocolHandler {
 
         try {
             if (!uri.startsWith("/RPC2")) {
-                String url = StringUtil.htmlifyText(uri);
+                String url = StringEscapeUtils.escapeHtml4(uri);
 
-                log.info("Invalid request from {} to {}", ip, uri);
+                LOG.info("Invalid request from {} to {}", ip, uri);
                 response.setCode(404);
                 response.setText(url);
                 PrintStream out = response.getPrintStream();
@@ -75,6 +75,7 @@ public class XmlRpcInvoker implements ProtocolHandler {
                 out.close();
             }
             else {
+                LOG.info(uri);
                 InputStream in = request.getInputStream();
                 StringWriter writer = new StringWriter();
                 server.execute(in, writer);
@@ -87,17 +88,15 @@ public class XmlRpcInvoker implements ProtocolHandler {
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e, e);
         }
         finally {
             try {
                 response.commit();
             }
             catch (IOException e) {
-                e.printStackTrace();
+                LOG.error(e, e);
             }
         }
-
     }
-
 }
