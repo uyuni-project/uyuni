@@ -150,7 +150,7 @@ const AccessGroup = (props: AccessGroupProps) => {
       permissions: Object.values(accessGroupState.permissions),
     };
 
-    Network.post("/rhn/manager/api/admin/access-group/save", payload)
+    Network.post("/rhn/manager/api/admin/access-control/access-group/save", payload)
       .then((_) => {
         setMessages(MessagesUtils.info(t("Access Group successfully created.")));
         window.pageRenderers?.spaengine?.navigate?.(LIST_PAGE_URL);

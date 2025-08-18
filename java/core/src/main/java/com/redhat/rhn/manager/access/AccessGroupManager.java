@@ -153,12 +153,12 @@ public class AccessGroupManager {
     }
 
     /**
-     * Lists all non-default access groups that are available to the given org.
+     * Lists all custom access groups that are available to the given org.
      * @param org the org to list access groups from
-     * @return a list of non-default access groups
+     * @return a list of custom access groups
      */
-    public List<AccessGroupJson> listNonDefault(Org org) {
-        return AccessGroupFactory.listNonDefault(org);
+    public List<AccessGroupJson> listCustom(Org org) {
+        return AccessGroupFactory.listCustom(org);
     }
 
     /**

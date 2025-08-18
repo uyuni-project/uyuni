@@ -3,7 +3,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { AccessGroupState } from "manager/admin/access-control/access-group";
 
-import { Button } from "components/buttons";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
@@ -89,7 +88,7 @@ const AccessGroupPermissions = (props: Props) => {
   };
 
   useEffect(() => {
-    let endpoint = "/rhn/manager/api/admin/access-group/namespaces";
+    let endpoint = "/rhn/manager/api/admin/access-control/access-group/list_namespaces";
     const hasCopy = props.state.accessGroups && props.state.accessGroups.length > 0;
     if (hasCopy) {
       endpoint += `?copyFrom=${props.state.accessGroups.join(",")}`;
@@ -166,7 +165,11 @@ const AccessGroupPermissions = (props: Props) => {
             if (nestingLevel) {
               return row.name;
             }
-            return <b>{row.name}</b>;
+            return (
+              <b>
+                {row.name} {row.isAPI ? "[API]" : ""}
+              </b>
+            );
           }}
           width="30%"
         />
