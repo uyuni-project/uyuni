@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.action.rhnpackage;
 
 
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionSummary;
 
 import com.suse.manager.webui.services.SaltParameters;
@@ -28,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * PackageRemoveAction
@@ -65,4 +68,19 @@ public class PackageRemoveAction extends PackageAction {
         return ret;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Map<String, String>> createActionSpecificDetails(ServerAction serverAction) {
+        return createPackageActionSpecificDetails();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setRequestAttributeTypePackages(HttpServletRequest request) {
+        request.setAttribute("type", "packages");
+    }
 }

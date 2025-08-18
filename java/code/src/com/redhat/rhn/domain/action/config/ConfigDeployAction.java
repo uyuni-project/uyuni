@@ -14,10 +14,13 @@
  */
 package com.redhat.rhn.domain.action.config;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.server.MinionSummary;
+import com.redhat.rhn.manager.action.ActionManager;
 
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
@@ -87,4 +90,28 @@ public class ConfigDeployAction extends ConfigAction {
         }
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Map<String, String>> createActionSpecificDetails(ServerAction serverAction) {
+        final List<Map<String, String>> additionalInfo = new ArrayList<>();
+
+        // retrieve the details associated with the action...
+        DataResult<Row> files = ActionManager.getConfigFileDeployList(getId());
+        for (Row file : files) {
+            Map<String, String> info = new HashMap<>();
+            String path = (String) file.get("path");
+            path += " (rev. " + file.get("revision") + ")";
+            info.put("detail", path);
+            String error = (String) file.get("failure_reason");
+            if (error != null) {
+                info.put("result", error);
+            }
+            additionalInfo.add(info);
+        }
+
+        return additionalInfo;
+    }
 }

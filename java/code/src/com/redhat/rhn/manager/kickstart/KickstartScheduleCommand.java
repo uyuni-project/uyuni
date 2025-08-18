@@ -811,7 +811,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         rebootAction.setPrerequisite(prereqAction);
         rebootAction.setEarliestAction(this.getScheduleDate());
         rebootAction.setOrg(this.getUser().getOrg());
-        rebootAction.setName(rebootAction.getActionType().getName());
+        rebootAction.setName(rebootAction.getActionTypeName());
         log.debug("** saving reboot action: {}", rebootAction.getName());
         ActionFactory.save(rebootAction);
         taskomaticApi.scheduleActionExecution(rebootAction);

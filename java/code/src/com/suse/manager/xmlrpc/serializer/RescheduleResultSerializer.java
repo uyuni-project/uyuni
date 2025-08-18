@@ -72,7 +72,7 @@ public class RescheduleResultSerializer extends ApiResponseSerializer<Reschedule
             Map<String, Object> a = new HashMap<>();
             a.put("id", action.getId());
             a.put("name", action.getName());
-            a.put("type", action.getActionType().getName());
+            a.put("type", action.getActionTypeName());
             a.put("scheduler", action.getSchedulerUser().getLogin());
             a.put("earliest", action.getEarliestAction());
             if (action.getPrerequisite() != null) {

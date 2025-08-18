@@ -119,4 +119,12 @@ public class PackageLockAction extends PackageAction {
             });
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPackageParameter() {
+        return "lock";
+    }
 }
