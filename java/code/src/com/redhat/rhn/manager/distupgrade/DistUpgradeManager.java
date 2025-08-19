@@ -50,6 +50,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.utils.Lists;
 import com.suse.utils.Opt;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -67,6 +68,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.function.Function;
 import java.util.function.LongFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -200,6 +202,19 @@ public class DistUpgradeManager extends BaseManager {
     public static final Comparator<SUSEProductSet> PRODUCT_SET_VERSION_COMPARATOR =
         Comparator.comparing(SUSEProductSet::getBaseProduct, PRODUCT_VERSION_COMPARATOR.reversed())
             .thenComparing(SUSEProductSet::getAddonProducts, PRODUCT_LIST_VERSION_COMPARATOR.reversed());
+
+    /**
+     * Calculate the valid migration targets for a given server
+     * @param server the server
+     * @param user the user
+     * @return valid migration targets
+     */
+    public static List<SUSEProductSet> getTargetProductSets(Server server, User user) {
+        Optional<SUSEProductSet> installedProductSet = server.getInstalledProductSet();
+        ChannelArch compatibleChannelArch = server.getServerArch().getCompatibleChannelArch();
+
+        return getTargetProductSets(installedProductSet, compatibleChannelArch, user);
+    }
 
     /**
      * Calculate the valid migration targets for a given product set.
@@ -905,5 +920,129 @@ public class DistUpgradeManager extends BaseManager {
             }
         }
         return migrationTargets;
+    }
+
+    /**
+     * Compute the most common base product among the given list of servers
+     *
+     * @param serverList the list of servers to evaluate
+     *
+     * @return the base product which has the most number of occurrences among the given servers
+     */
+    public static Optional<SUSEProductSet> getCommonSourceProduct(List<? extends Server> serverList) {
+        // No source if no servers are specified
+        if (CollectionUtils.isEmpty(serverList)) {
+            return Optional.empty();
+        }
+
+        // If the list is a singleton, the result matches with its installed product set
+        if (serverList.size() == 1) {
+            return serverList.get(0).getInstalledProductSet();
+        }
+
+        // Compute the frequency map of every base product
+        Map<SUSEProduct, Long> productSetFrequencyMap = serverList.stream()
+            .flatMap(server -> server.getInstalledProductSet().stream())
+            .map(SUSEProductSet::getBaseProduct)
+            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        // Extract the most common base product
+        Optional<SUSEProduct> mostCommonBaseProduct = productSetFrequencyMap.entrySet().stream()
+            .max(Map.Entry.comparingByValue())
+            .map(Map.Entry::getKey);
+
+        // Merge all the addons to build the "super" base that covers all systems
+        return mostCommonBaseProduct.map(
+            baseProduct -> serverList.stream()
+                .flatMap(server -> server.getInstalledProductSet().stream())
+                .filter(productSet -> baseProduct.equals(productSet.getBaseProduct()))
+                .reduce(new SUSEProductSet(baseProduct, new ArrayList<>()), SUSEProductSet::merge)
+        );
+    }
+
+    /**
+     * Compute all the possible targets for the migration of the given servers to the specified common source product.
+     *
+     * @param user the user attempting the migration
+     * @param serverList the list of servers to migrate
+     * @param sourceProductSet the common base product of all the systems
+     *
+     * @return all the possible targets for the migration. if the given servers do not share the same base product the
+     * list will be empty.
+     */
+    public static List<SUSEProductSet> getTargetProductSets(User user, List<? extends Server> serverList,
+                                                            Optional<SUSEProductSet> sourceProductSet) {
+        // Ensure the base product is available
+        SUSEProduct sourceBaseProduct = sourceProductSet.map(SUSEProductSet::getBaseProduct).orElse(null);
+        if (sourceBaseProduct == null) {
+            return List.of();
+        }
+
+        // Short-circuit the calculation if the list is a singleton
+        if (serverList.size() == 1) {
+            Server singletonServer = serverList.get(0);
+
+            // Ensure the given base product matches what's installed
+            if (!serverHasBaseProduct(singletonServer, sourceBaseProduct)) {
+                return List.of();
+            }
+
+            return getTargetProductSets(singletonServer, user);
+        }
+
+        // Compute the possible targets aggregating all the server targets
+        Map<SUSEProduct, SUSEProductSet> resultMap = serverList.stream()
+            // Consider only the systems with the correct base
+            .filter(server -> serverHasBaseProduct(server, sourceBaseProduct))
+            // Compute the target product sets for this server
+            .map(server -> DistUpgradeManager.getTargetProductSets(server, user))
+            // Build a map where the key is the target base product and the value is the full product set
+            .map(targetsList -> targetsList.stream()
+                .collect(Collectors.toMap(productSet -> productSet.getBaseProduct(), Function.identity()))
+            )
+            // Combine the maps in a single one, merging the addons products and the missing channels
+            .reduce(new HashMap<>(), (accumulatedMap, targetProductsMap) -> {
+                targetProductsMap.values().forEach(productSet ->
+                    accumulatedMap.merge(productSet.getBaseProduct(), productSet, SUSEProductSet::merge)
+                );
+
+                return accumulatedMap;
+            });
+
+        // Extract only the values to build the final result list
+        return resultMap.values().stream()
+            .sorted(DistUpgradeManager.PRODUCT_SET_VERSION_COMPARATOR)
+            .toList();
+    }
+
+    // Returns true if the given server has the specified base product installed
+    private static boolean serverHasBaseProduct(Server server, SUSEProduct sourceBaseProduct) {
+        return server.getInstalledProductSet()
+            .map(SUSEProductSet::getBaseProduct)
+            .filter(installedBaseProduct -> sourceBaseProduct.equals(installedBaseProduct))
+            .isPresent();
+    }
+
+    /**
+     * List all the products that are potentially going to be installed using the specified targets
+     * @param installedProductSet the currently installed product set
+     * @param migrationTargets all the possible migration targets
+     * @return the aggregated list of products that are not currently part of the installed product set and are going
+     * to be installed when migrating to one of the specified targets
+     */
+    public static Set<SUSEProduct> listInstalledTargetAddons(Optional<SUSEProductSet> installedProductSet,
+                                                             List<SUSEProductSet> migrationTargets) {
+
+        Set<SUSEProduct> result = new HashSet<>();
+        List<SUSEProduct> installedAddons = installedProductSet.map(SUSEProductSet::getAddonProducts).orElse(List.of());
+
+        for (SUSEProductSet target : migrationTargets) {
+            // Find all the targets that don't have a matching base
+            target.getAddonProducts().stream()
+                .filter(targetAddon -> DistUpgradeManager.findSource(targetAddon, installedAddons) == null)
+                .forEach(result::add);
+        }
+
+        return result;
     }
 }
