@@ -189,18 +189,16 @@ public class DistUpgradeManager extends BaseManager {
         return ret;
     }
 
-    public static final Comparator<SUSEProduct> PRODUCT_VERSION_COMPARATOR = (o1, o2) -> {
-        int result = new RpmVersionComparator().compare(
-                o1.getVersion(), o2.getVersion());
-        if (result != 0) {
-            return result;
-        }
-        return new RpmVersionComparator().compare(o1.getRelease(), o2.getRelease());
-    };
+    public static final Comparator<SUSEProduct> PRODUCT_VERSION_COMPARATOR =
+        Comparator.comparing(SUSEProduct::getVersion, new RpmVersionComparator())
+            .thenComparing(SUSEProduct::getRelease, new RpmVersionComparator());
 
     public static final Comparator<List<SUSEProduct>> PRODUCT_LIST_VERSION_COMPARATOR =
-            listOfListComparator(PRODUCT_VERSION_COMPARATOR);
+        listOfListComparator(PRODUCT_VERSION_COMPARATOR);
 
+    public static final Comparator<SUSEProductSet> PRODUCT_SET_VERSION_COMPARATOR =
+        Comparator.comparing(SUSEProductSet::getBaseProduct, PRODUCT_VERSION_COMPARATOR.reversed())
+            .thenComparing(SUSEProductSet::getAddonProducts, PRODUCT_LIST_VERSION_COMPARATOR.reversed());
 
     /**
      * Calculate the valid migration targets for a given product set.
@@ -213,15 +211,7 @@ public class DistUpgradeManager extends BaseManager {
     public static List<SUSEProductSet> getTargetProductSets(
             Optional<SUSEProductSet> installedProducts, ChannelArch arch, User user) {
         List<SUSEProductSet> migrationTargets = migrationTargets(installedProducts);
-        migrationTargets.sort((tgt1, tgt2) -> {
-            int i = PRODUCT_VERSION_COMPARATOR.compare(tgt2.getBaseProduct(), tgt1.getBaseProduct());
-            if (i != 0) {
-                return i;
-            }
-            else {
-                return PRODUCT_LIST_VERSION_COMPARATOR.compare(tgt2.getAddonProducts(), tgt1.getAddonProducts());
-            }
-        });
+        migrationTargets.sort(PRODUCT_SET_VERSION_COMPARATOR);
         return addMissingChannels(migrationTargets, arch, user);
     }
 
