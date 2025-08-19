@@ -779,6 +779,20 @@ public class SparkApplicationHelper {
      * Serialize the result and set the response content type to JSON
      * and the http status code to bad request.
      * @param response the http response
+     * @param httpErrorCode the http error code
+     * @param messages messages
+     * @return a JSON string
+     */
+    public static String error(Response response, int httpErrorCode, String... messages) {
+        response.type("application/json");
+        response.status(httpErrorCode);
+        return GSON.toJson(ResultJson.error(messages));
+    }
+
+    /**
+     * Serialize the result and set the response content type to JSON
+     * and the http status code to bad request.
+     * @param response the http response
      * @param messages messages
      * @return a JSON string
      */
