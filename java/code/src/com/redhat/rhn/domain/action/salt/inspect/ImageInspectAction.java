@@ -281,7 +281,7 @@ public class ImageInspectAction extends Action {
                     SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(),
                             ret.getBootImage(), imageInfo);
                     if (ret.getBootImage().isPresent() && ret.getBundles().isEmpty()) {
-                        SaltbootUtils.createSaltbootDistro(imageInfo, ret.getBootImage().get());
+                        SaltbootUtils.createSaltbootDistro(imageInfo);
                     }
                 }
             }

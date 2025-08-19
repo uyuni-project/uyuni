@@ -129,6 +129,25 @@ public class Profile extends CobblerObject {
     }
 
     /**
+     * Create a new child profile in cobbler
+     *
+     * @param client the xmlrpc client
+     * @param name   the profile name
+     * @param parent the parent profile name.
+     * @return the newly created profile
+     */
+    public static Profile create(CobblerConnection client,
+                                 String name, String parent) {
+        Profile profile = new Profile(client);
+        profile.handle = (String) client.invokeTokenMethod("new_profile");
+        profile.modify(NAME, name, false);
+        profile.modify(PARENT, parent, false);
+        profile.save();
+        profile = lookupByName(client, name);
+        return profile;
+    }
+
+    /**
      * Returns a kickstart profile matching the given name or null
      *
      * @param client the xmlrpc client
@@ -136,7 +155,7 @@ public class Profile extends CobblerObject {
      * @return the profile that maps to the name or null
      */
     public static Profile lookupByName(CobblerConnection client, String name) {
-        return handleLookup(client, lookupDataMapByName(client, name, "get_profile"));
+        return handleLookup(client, lookupDataMapByName(client, name, "get_profile", false, false));
     }
 
     /**
@@ -166,7 +185,7 @@ public class Profile extends CobblerObject {
         if (profileMap != null) {
             Profile profile = new Profile(client);
             profile.dataMap = profileMap;
-            profile.dataMapResolved = (Map<String, Object>) client.invokeMethod(
+            profile.dataMapResolved = (Map<String, Object>) client.invokeTokenMethod(
                     "get_profile",
                     profile.getName(), // object name
                     false, // flatten
@@ -522,7 +541,12 @@ public class Profile extends CobblerObject {
      * @param kickstartIn the Kickstart
      */
     public void setKickstart(String kickstartIn) {
-        modify(KICKSTART, "/" + getRelativeAutoinstallPath(kickstartIn));
+        if (kickstartIn.isEmpty()) {
+            modify(KICKSTART, "");
+        }
+        else {
+            modify(KICKSTART, "/" + getRelativeAutoinstallPath(kickstartIn));
+        }
     }
 
     /**
@@ -742,6 +766,9 @@ public class Profile extends CobblerObject {
      * @return The absolute path on the server
      */
     private String getFullAutoinstallPath(String pathIn) {
+        if (pathIn.isEmpty()) {
+            return "";
+        }
         String cobblerPath = ConfigDefaults.get().getKickstartConfigDir();
         if (pathIn.startsWith(cobblerPath)) {
             return pathIn;

@@ -101,6 +101,7 @@ public class MockConnection extends CobblerConnection {
     public MockConnection(String urlIn, String userIn, String passIn) {
         super();
         url = urlIn;
+        token = "token_is_not_empty";
     }
 
     /**
@@ -158,7 +159,7 @@ public class MockConnection extends CobblerConnection {
                 modifyItem(profiles, (String) args[0], (String) args[1], args[2]);
                 break;
             case "get_profile":
-                return getItem(profiles, (String) args[0], (args.length == 3 && (boolean) args[2]));
+                return getItem(profiles, (String) args[0], (args.length >= 3 && (boolean) args[2]));
             case "get_profile_handle":
                 return getItemHandle((String) args[0], profiles);
             case "remove_profile":
@@ -177,7 +178,7 @@ public class MockConnection extends CobblerConnection {
                 modifyItem(distros, (String) args[0], (String) args[1], args[2]);
                 break;
             case "get_distro":
-                return getItem(distros, (String) args[0], (args.length == 3 && (boolean) args[2]));
+                return getItem(distros, (String) args[0], (args.length >= 3 && (boolean) args[2]));
             case "rename_distro":
                 log.debug("DISTRO: Rename w/ handle{}", args[0]);
                 renameItem((String) args[0], (String) args[2], distros);
@@ -200,7 +201,7 @@ public class MockConnection extends CobblerConnection {
                 modifyItem(systems, (String) args[0], (String) args[1], args[2]);
                 break;
             case "get_system":
-                return getItem(systems, (String) args[0], (args.length == 3 && (boolean) args[2]));
+                return getItem(systems, (String) args[0], (args.length >= 3 && (boolean) args[2]));
             case "get_system_handle":
                 return getItemHandle((String) args[0], systems);
             case "remove_system":
@@ -246,7 +247,7 @@ public class MockConnection extends CobblerConnection {
                 renameItem((String) args[0], (String) args[2], images);
                 return "";
             case "get_image":
-                return getItem(images, (String) args[0], (args.length == 3 && (boolean) args[2]));
+                return getItem(images, (String) args[0], (args.length >= 3 && (boolean) args[2]));
             case "get_image_handle":
                 return getItemHandle((String) args[0], images);
             case "remove_image":
