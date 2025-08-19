@@ -13,10 +13,10 @@ import { Loading } from "components/utils/loading/Loading";
 import { VirtualList } from "components/virtual-list";
 
 import BaseChannel from "./base-channel";
+import ChannelProcessor from "./channel-processor";
 import { useChannelsWithMandatoryApi, useLoadSelectOptions } from "./channels-api";
 import ChannelsFilters from "./channels-filters";
 import { getInitialFiltersState } from "./channels-filters-state";
-import ChannelProcessor from "./channels-processor";
 import styles from "./channels-selection.module.scss";
 
 type PropsType = {
