@@ -8000,9 +8000,19 @@ public class SystemHandler extends BaseHandler {
                     for (EssentialChannelDto channel : channels) {
                         channelIDs.add(channel.getId());
                     }
-                    return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
-                            targetProducts, channelIDs, dryRun, allowVendorChange,
-                            earliestOccurrence, cloudPaygManager.isPaygInstance());
+
+                    var scheduledAction = DistUpgradeManager.scheduleDistUpgrade(
+                        loggedInUser,
+                        List.of(server),
+                        targetProducts,
+                        channelIDs,
+                        dryRun,
+                        allowVendorChange,
+                        cloudPaygManager.isPaygInstance(), earliestOccurrence,
+                        null
+                    );
+
+                    return scheduledAction.get(0).getId();
                 }
 
                 // Consider alternatives (cloned channel trees)
@@ -8011,9 +8021,19 @@ public class SystemHandler extends BaseHandler {
                 for (ClonedChannel clonedBaseChannel : alternatives.keySet()) {
                     if (clonedBaseChannel.getLabel().equals(baseChannelLabel)) {
                         channelIDs.addAll(alternatives.get(clonedBaseChannel));
-                        return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
-                                targetProducts, channelIDs, dryRun, allowVendorChange,
-                                earliestOccurrence, cloudPaygManager.isPaygInstance());
+
+                        var scheduledAction = DistUpgradeManager.scheduleDistUpgrade(
+                            loggedInUser,
+                            List.of(server),
+                            targetProducts,
+                            channelIDs,
+                            dryRun,
+                            allowVendorChange,
+                            cloudPaygManager.isPaygInstance(), earliestOccurrence,
+                            null
+                        );
+
+                        return scheduledAction.get(0).getId();
                     }
                 }
             }
@@ -8111,9 +8131,16 @@ public class SystemHandler extends BaseHandler {
         Set<Long> channelIDs = null;
         try {
             channelIDs = DistUpgradeManager.performChannelChecks(channels, loggedInUser);
-            return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server, null,
-                    channelIDs, dryRun, allowVendorChange,
-                    earliestOccurrence, cloudPaygManager.isPaygInstance());
+
+            var scheduledAction = DistUpgradeManager.scheduleDistUpgrade(
+                loggedInUser, List.of(server),
+                null,
+                channelIDs, dryRun, allowVendorChange,
+                cloudPaygManager.isPaygInstance(), earliestOccurrence,
+                null
+            );
+
+            return scheduledAction.get(0).getId();
         }
         catch (DistUpgradePaygException e) {
             // We forbid product migration in SUMA PAYG instance in certain situations
