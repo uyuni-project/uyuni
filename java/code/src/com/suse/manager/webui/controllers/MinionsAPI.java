@@ -29,8 +29,10 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.CoCoAttestationAction;
+import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.supportdata.UploadGeoType;
+import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -44,13 +46,20 @@ import com.redhat.rhn.frontend.struts.SessionSetHelper;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
+import com.redhat.rhn.manager.distupgrade.DistUpgradePaygException;
+import com.redhat.rhn.manager.distupgrade.NoInstalledProductException;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
+import com.suse.manager.model.products.migration.MigrationChannelsRequest;
+import com.suse.manager.model.products.migration.MigrationDataFactory;
+import com.suse.manager.model.products.migration.MigrationScheduleRequest;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.utils.SaltKeyUtils;
@@ -87,6 +96,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -99,6 +109,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Predicate;
@@ -126,6 +137,8 @@ public class MinionsAPI {
 
     private final TaskomaticApi taskomaticApi;
 
+    private final CloudPaygManager cloudPaygManager;
+
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .registerTypeAdapter(BootstrapHostsJson.AuthMethod.class, new AuthMethodAdapter())
@@ -144,16 +157,19 @@ public class MinionsAPI {
      * @param saltKeyUtilsIn salt key utils instance
      * @param attestationManagerIn the attestation manager
      * @param taskomaticApiIn the taskomatic api client
+     * @param cloudPaygManagerIn they payg manager
      */
     public MinionsAPI(SaltApi saltApiIn, SSHMinionBootstrapper sshMinionBootstrapperIn,
                       RegularMinionBootstrapper regularMinionBootstrapperIn, SaltKeyUtils saltKeyUtilsIn,
-                      AttestationManager attestationManagerIn, TaskomaticApi taskomaticApiIn) {
+                      AttestationManager attestationManagerIn, TaskomaticApi taskomaticApiIn,
+                      CloudPaygManager cloudPaygManagerIn) {
         this.saltApi = saltApiIn;
         this.sshMinionBootstrapper = sshMinionBootstrapperIn;
         this.regularMinionBootstrapper = regularMinionBootstrapperIn;
         this.saltKeyUtils = saltKeyUtilsIn;
         this.attestationManager = attestationManagerIn;
         this.taskomaticApi = taskomaticApiIn;
+        this.cloudPaygManager = cloudPaygManagerIn;
     }
 
     /**
@@ -166,6 +182,7 @@ public class MinionsAPI {
         initDetailsRoutes();
         initPTFRoutes();
         initCoCoRoutes();
+        initMigrationRoutes();
     }
 
     private void initBootstrapRoutes() {
@@ -213,6 +230,13 @@ public class MinionsAPI {
             asJson(withUser(this::setAllCoCoSettings)));
         post("/manager/api/systems/coco/scheduleAction",
             asJson(withUser(this::scheduleAllCoCoAttestation)));
+    }
+
+    private void initMigrationRoutes() {
+        post("/manager/api/systems/migration/computeChannels",
+            asJson(withUser(this::computeMigrationChannels)));
+        post("/manager/api/systems/migration/schedule",
+            asJson(withUser(this::scheduleMigration)));
     }
 
     /**
@@ -729,4 +753,90 @@ public class MinionsAPI {
 
         return json(GSON, response, result.longValue());
     }
+
+
+    private String computeMigrationChannels(Request request, Response response, User user) {
+        var dataFactory = new MigrationDataFactory();
+
+        var migrationChannelsRequest = GSON.fromJson(request.body(), MigrationChannelsRequest.class);
+
+        List<MinionServer> serverList;
+
+        SUSEProductSet source;
+        SUSEProductSet target;
+
+        try {
+            serverList = MinionServerFactory.lookupByIds(migrationChannelsRequest.serverIds())
+                .toList();
+            if (CollectionUtils.isEmpty(serverList)) {
+                throw new IllegalArgumentException(LOCAL.getMessage("system.migration.noServersSelected"));
+            }
+
+            // Extract the common base product to use as source of the migration, if possible
+            source = DistUpgradeManager.getCommonSourceProduct(serverList)
+                .orElseThrow(() -> new IllegalArgumentException(LOCAL.getMessage("system.migration.noCommonProduct")));
+
+            // Compute the targets from the common base, considering only the system with correct base installed
+            target = DistUpgradeManager.getTargetProductSets(user, serverList, Optional.of(source)).stream()
+                .filter(productSet -> migrationChannelsRequest.targetId().equals(productSet.getSerializedProductIDs()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(LOCAL.getMessage("system.migration.noTarget")));
+
+            var channelsData = dataFactory.toMigrationChannelsSelection(serverList, user, target, source);
+            return json(GSON, response, ResultJson.success(channelsData), new TypeToken<>() { });
+        }
+        catch (IllegalArgumentException ex) {
+            LOG.error("Unable to compute migration channels", ex);
+            return badRequest(response, ex.getMessage());
+        }
+        catch (RuntimeException ex) {
+            LOG.error("Unable to compute migration channels", ex);
+            return internalServerError(response, ex.getMessage());
+        }
+    }
+
+    private String scheduleMigration(Request request, Response response, User user) {
+        var dataFactory = new MigrationDataFactory();
+
+        MigrationScheduleRequest scheduleRequest;
+
+        try {
+            scheduleRequest = GSON.fromJson(request.body(), MigrationScheduleRequest.class);
+        }
+        catch (RuntimeException ex) {
+            LOG.error("Unable to schedule product migration action", ex);
+            return badRequest(response, ex.getMessage());
+        }
+
+
+        try {
+            List<Server> serverList = MinionServerFactory.lookupByIds(scheduleRequest.serverIds())
+                .map(Server.class::cast)
+                .toList();
+
+            SUSEProductSet targetProductSet = dataFactory.toSUSEProductSet(scheduleRequest.targetProduct());
+            List<Long> channelIds = dataFactory.toChannelIds(scheduleRequest.targetChannelTree());
+
+            boolean dryRun = scheduleRequest.dryRun();
+            boolean isPayg = cloudPaygManager.isPaygInstance();
+            boolean allowVendorChange = scheduleRequest.allowVendorChange();
+
+            Date earliestDate = scheduleRequest.getEarliestDate();
+            ActionChain actionChain = scheduleRequest.getActionChain(user);
+
+            List<DistUpgradeAction> scheduledActions = DistUpgradeManager.scheduleDistUpgrade(
+                user, serverList, targetProductSet, channelIds,
+                dryRun, allowVendorChange, isPayg,
+                earliestDate, actionChain
+            );
+
+            Long result = actionChain != null ? actionChain.getId() : scheduledActions.get(0).getId();
+            return success(response, ResultJson.success(result));
+        }
+        catch (RuntimeException | TaskomaticApiException | NoInstalledProductException | DistUpgradePaygException ex) {
+            LOG.error("Unable to schedule product migration action", ex);
+            return internalServerError(response, ex.getMessage());
+        }
+    }
+
 }

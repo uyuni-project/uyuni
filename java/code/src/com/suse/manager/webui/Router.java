@@ -136,7 +136,7 @@ public class Router implements SparkApplication {
         NotificationMessageController notificationMessageController =
                 new NotificationMessageController(systemQuery, saltApi, paygManager, attestationManager);
         MinionsAPI minionsAPI = new MinionsAPI(saltApi, sshMinionBootstrapper, regularMinionBootstrapper,
-                saltKeyUtils, attestationManager, taskomaticApi);
+                saltKeyUtils, attestationManager, taskomaticApi, paygManager);
         StatesAPI statesAPI = new StatesAPI(saltApi, taskomaticApi, serverGroupManager);
         FormulaController formulaController = new FormulaController(saltApi);
         HttpApiRegistry httpApiRegistry = new HttpApiRegistry();
