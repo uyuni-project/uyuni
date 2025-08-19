@@ -12,6 +12,9 @@
 package com.suse.manager.model.products.migration;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
+import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
+import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ClonedChannel;
@@ -24,6 +27,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
+import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
@@ -32,6 +36,7 @@ import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.utils.Lists;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -95,6 +100,69 @@ public class MigrationDataFactory {
             .toList();
 
         return new MigrationTargetSelection(allCompatible, migrationSource, migrationTargets, systemsData);
+    }
+
+    /**
+     * Builds a product migration data from the previous dry run action
+     * @param action the action
+     * @param user the user performing the migration
+     * @return an instance of {@link MigrationDryRunConfirmation}
+     */
+    public MigrationDryRunConfirmation toMigrationDryRunConfirmation(DistUpgradeAction action, User user) {
+
+        // Extract the server list from the action
+        List<MinionServer> serverList = action.getServerActions().stream()
+            .flatMap(serverAction -> serverAction.getServer().asMinionServer().stream())
+            .toList();
+
+        // List all the newly subscribed channels
+        Set<Channel> newChannels = action.getDetailsMap().values().stream()
+            .flatMap(detail -> detail.getChannelTasks().stream())
+            .filter(channelTask -> channelTask.getTask() == DistUpgradeChannelTask.SUBSCRIBE)
+            .map(DistUpgradeChannelTask::getChannel)
+            .collect(Collectors.toSet());
+
+        // AllowVendorChange should be the same for all details, ensure we compute the correct value anyway
+        boolean allowVendorChange = action.getDetailsMap().values().stream()
+            .map(DistUpgradeActionDetails::isAllowVendorChange)
+            .allMatch(BooleanUtils::isTrue);
+
+        Channel targetBaseChannel = findBaseChannel(newChannels);
+
+        // Get name of original base channel if channel is cloned
+        String originalName = ChannelManager.getOriginalChannel(targetBaseChannel).getName();
+        SUSEProduct targetBaseProduct = SUSEProductFactory.lookupByChannelName(originalName).get(0).getRootProduct();
+
+        // Extract the source product from the first system, they must be matching
+        var sourceSet = serverList.get(0).getInstalledProductSet();
+
+        // Compute the targets from the common base, considering only the one that matches the computed target
+        var targetSet = DistUpgradeManager.getTargetProductSets(user, serverList, sourceSet).stream()
+            .filter(productSet -> targetBaseProduct.getId() == productSet.getBaseProduct().getId())
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException(""));
+
+        var systemsData = serverList.stream()
+            .map(server -> toSystemData(server, sourceSet.map(SUSEProductSet::getBaseProduct), List.of(targetSet)))
+            .toList();
+
+        ChannelsJson selectedChannels = ChannelsJson.fromChannelSet(newChannels);
+
+        var targetProduct = toMigrationProduct(targetSet);
+
+        return new MigrationDryRunConfirmation(systemsData, targetProduct, selectedChannels, allowVendorChange);
+    }
+
+    private Channel findBaseChannel(Set<Channel> channels) {
+        Set<Channel> baseChannelSet = channels.stream()
+            .filter(Channel::isBaseChannel)
+            .collect(Collectors.toSet());
+
+        if (baseChannelSet.size() != 1) {
+            throw new IllegalStateException("Expected exactly one base channel. Got " + baseChannelSet.size());
+        }
+
+        return baseChannelSet.iterator().next();
     }
 
     /**

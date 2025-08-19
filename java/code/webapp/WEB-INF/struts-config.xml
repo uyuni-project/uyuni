@@ -3017,6 +3017,7 @@
                  path="/systems/details/history/History.do"/>
         <forward name="spmigration"
                  path="/systems/details/SPMigration.do"/>
+        <forward name="ssm-spmigration" path="/manager/systems/ssm/product-migration/dry-run" redirect="true" />
     </action>
 
     <action path="/systems/details/history/History"
