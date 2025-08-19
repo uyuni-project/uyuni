@@ -66,6 +66,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.function.LongFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -558,24 +559,41 @@ public class DistUpgradeManager extends BaseManager {
      * @param targets target products
      * @return matching target product
      */
-    public static SUSEProduct findMatch(SUSEProduct source, List<SUSEProduct> targets) {
-        SUSEProduct matchingProduct = null;
+    public static SUSEProduct findTarget(SUSEProduct source, List<SUSEProduct> targets) {
+        return findMatch(source, targets, DistUpgradeManager::findTargetProducts);
+    }
+
+    /**
+     * Look for the source of a given migration target within a list of products.
+     *
+     * @param target the target product
+     * @param sources all the sources of the migration
+     * @return matching source product
+     */
+    public static SUSEProduct findSource(SUSEProduct target, List<SUSEProduct> sources) {
+        return findMatch(target, sources, DistUpgradeManager::findSourceProducts);
+    }
+
+    private static SUSEProduct findMatch(SUSEProduct productToMatch, List<SUSEProduct> productPool,
+                                         LongFunction<List<SUSEProductDto>> matchingFunction) {
         // Match found if the targets contain the source product itself
-        if (targets.contains(source)) {
-            matchingProduct = source;
+        if (productPool.contains(productToMatch)) {
+            return productToMatch;
         }
-        else {
-            List<SUSEProductDto> results = findTargetProducts(source.getId());
-            for (SUSEProduct target : targets) {
-                for (SUSEProductDto result : results) {
-                    if (result.getId().equals(target.getId())) {
-                        // Found the matching product
-                        matchingProduct = target;
-                        break;
-                    }
+
+        List<SUSEProductDto> results = matchingFunction.apply(productToMatch.getId());
+        SUSEProduct matchingProduct = null;
+
+        for (SUSEProduct product : productPool) {
+            for (SUSEProductDto result : results) {
+                if (result.getId().equals(product.getId())) {
+                    // Found the matching product
+                    matchingProduct = product;
+                    break;
                 }
             }
         }
+
         return matchingProduct;
     }
 
@@ -703,10 +721,10 @@ public class DistUpgradeManager extends BaseManager {
 
             // Find matching targets for every addon
             for (SUSEProduct addon : installedProducts.getAddonProducts()) {
-                SUSEProduct match = DistUpgradeManager.findMatch(addon, targetSet.getAddonProducts());
+                SUSEProduct match = DistUpgradeManager.findTarget(addon, targetSet.getAddonProducts());
                 if (Objects.nonNull(match)) {
                     upgrade = new SUSEProductUpgrade(addon,
-                            DistUpgradeManager.findMatch(addon, targetSet.getAddonProducts()));
+                            DistUpgradeManager.findTarget(addon, targetSet.getAddonProducts()));
                     details.addProductUpgrade(upgrade);
                 }
                 else {
@@ -840,7 +858,7 @@ public class DistUpgradeManager extends BaseManager {
             }
             List<SUSEProduct> missingAddonSuccessors = installedProducts.orElse(new SUSEProductSet()).getAddonProducts()
                     .stream()
-                    .filter(addon -> DistUpgradeManager.findMatch(addon, t.getAddonProducts()) == null)
+                    .filter(addon -> DistUpgradeManager.findTarget(addon, t.getAddonProducts()) == null)
                     .toList();
 
             if (missingAddonSuccessors.isEmpty()) {
