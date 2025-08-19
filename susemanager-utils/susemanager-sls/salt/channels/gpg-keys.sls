@@ -37,7 +37,7 @@ mgr_deploy_suse_addon_key:
     - makedirs: True
     - mode: 644
 
-{%- if grains['os_family'] == 'Suse' %}
+{%- if grains['os_family'] == 'Suse' and grains.get('osarch').startswith('ppc') %}
 mgr_deploy_ibm_gpg_toolchain_key:
   file.managed:
     - name: /etc/pki/rpm-gpg/ibm-gpg-pubkey-6976a827.key
