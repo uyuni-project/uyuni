@@ -9,10 +9,15 @@ import { ChannelDependencyData, ChannelProcessor } from "./channel-processor";
 import styles from "./channels-selection.module.scss";
 
 type Props = {
-  definition: ChildChannelType;
-  search: string;
-  selectedRows: Set<number>;
+  /** The child channel */
+  channel: ChildChannelType;
+  /** The text currently used to filter the list of channels */
+  search?: string;
+  /** true if this channel is selected */
+  isSelected: boolean;
+  /** The channel processor used to retrieve the information about the channels */
   channelProcessor: Readonly<ChannelProcessor>;
+  /** Callback to invoke when a channel is selected/deselected */
   onToggleChannelSelect: (channel: BaseChannelType | ChildChannelType, toState?: boolean) => void;
 };
 
@@ -32,9 +37,8 @@ function getTooltip(channelDependencies: ChannelDependencyData): string {
   return tooltip;
 }
 
-const ChildChannel = (props: Props) => {
-  const { id, name, recommended, parent } = props.definition;
-  const isSelected = props.selectedRows.has(id);
+const ChildChannel: React.FC<Props> = (props: Props): React.ReactElement => {
+  const { id, name, recommended, parent } = props.channel;
   const identifier = "child_" + id;
 
   const tooltip = getTooltip(props.channelProcessor.getDependencyData(id));
@@ -55,12 +59,16 @@ const ChildChannel = (props: Props) => {
         id={identifier}
         name="childChannels"
         readOnly
-        checked={isSelected}
-        onClick={() => props.onToggleChannelSelect(props.definition)}
+        checked={props.isSelected}
+        onClick={() => props.onToggleChannelSelect(props.channel)}
         disabled={isRequiredBySelectedBaseChannel}
       />
       <label className={`${styles.collapsible} ${styles.child_name}`} title={tooltip || undefined} htmlFor={identifier}>
-        <Highlight enabled={props.search?.length > 0} text={name} highlight={props.search}></Highlight>
+        <Highlight
+          enabled={props.search !== undefined && props.search.length > 0}
+          text={name}
+          highlight={props.search}
+        ></Highlight>
       </label>
       <span>
         {tooltip ? ( // eslint-disable-next-line jsx-a11y/anchor-is-valid
@@ -82,6 +90,10 @@ const ChildChannel = (props: Props) => {
       </span>
     </div>
   );
+};
+
+ChildChannel.defaultProps = {
+  search: "",
 };
 
 export default ChildChannel;

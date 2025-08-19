@@ -139,11 +139,10 @@ const ChannelsSelection = (props: PropsType) => {
   const Row = (channel: ChannelTreeType) => {
     return (
       <BaseChannel
-        rowDefinition={channel}
+        channelTree={channel}
         search={search}
-        openRows={openRows}
-        selectedRows={selectedChannelIds}
-        selectedBaseChannelId={channelProcessor.getSelectedBaseChannelId()}
+        isOpen={openRows.has(channel.base.id)}
+        selectedChannelIds={selectedChannelIds}
         channelProcessor={channelProcessor}
         onToggleChannelSelect={(selfOrChild, toState) => onToggleChannelSelect(selfOrChild, toState)}
         onToggleChannelOpen={(channelId) => onToggleChannelOpen(channelId)}
