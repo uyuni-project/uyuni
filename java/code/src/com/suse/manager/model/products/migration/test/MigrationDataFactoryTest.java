@@ -22,6 +22,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import com.suse.manager.model.products.migration.MigrationDataFactory;
 import com.suse.manager.model.products.migration.MigrationProduct;
+import com.suse.manager.model.products.migration.MigrationTarget;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -70,6 +71,29 @@ public class MigrationDataFactoryTest extends RhnBaseTestCase {
         SUSEProductTestUtils.createTestSUSEExtension(serverApps, publicCloud, baseProduct);
 
         migrationDataFactory = new MigrationDataFactory();
+    }
+
+    @Test
+    @DisplayName("Convert a SUSEProductSet to a MigrationTarget")
+    public void canConvertToMigrationTarget() {
+        var productSet = new SUSEProductSet(baseProduct, List.of(baseSystem, containers));
+
+        productSet.addMissingChannels(List.of("containers-pool", "containers-updates"));
+
+        MigrationTarget migrationTarget = migrationDataFactory.toMigrationTarget(productSet);
+
+        assertEquals(productSet.getSerializedProductIDs(), migrationTarget.id());
+        assertEquals(List.of("containers-pool", "containers-updates"), migrationTarget.missingChannels());
+
+        assertEquals("SUSE Test product Base", migrationTarget.targetProduct().name());
+
+        List<MigrationProduct> extensions = migrationTarget.targetProduct().addons();
+        assertEquals(1, extensions.size());
+        assertEquals("SUSE Test product BaseSystem", extensions.get(0).name());
+
+        extensions = extensions.get(0).addons();
+        assertEquals(1, extensions.size());
+        assertEquals("SUSE Test product Containers", extensions.get(0).name());
     }
 
     @Test
