@@ -14,7 +14,6 @@ package com.redhat.rhn.manager.distupgrade;
 import static com.suse.utils.Lists.listOfListComparator;
 import static java.util.stream.Collectors.toList;
 
-import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -687,7 +686,7 @@ public class DistUpgradeManager extends BaseManager {
     private static Long scheduleDistUpgrade(User user, Server server,
                                             SUSEProductSet targetSet, Collection<Long> channelIDs,
                                             boolean dryRun, boolean allowVendorChange, Date earliest)
-            throws TaskomaticApiException {
+            throws TaskomaticApiException, NoInstalledProductException {
         // Create action details
         DistUpgradeActionDetails details = new DistUpgradeActionDetails();
         List<String>  missingSuccessors = new ArrayList<>();
@@ -695,8 +694,8 @@ public class DistUpgradeManager extends BaseManager {
         // Add product upgrades
         // Note: product upgrades are relevant for SLE 10 only!
         if (targetSet != null) {
-            SUSEProductSet installedProducts = server.getInstalledProductSet().orElseThrow(() ->
-                    new FaultException(-1, "listMigrationTargetError", "Server has no Products installed."));
+            SUSEProductSet installedProducts = server.getInstalledProductSet()
+                .orElseThrow(NoInstalledProductException::new);
 
             SUSEProductUpgrade upgrade = new SUSEProductUpgrade(
                     installedProducts.getBaseProduct(), targetSet.getBaseProduct());
@@ -767,7 +766,7 @@ public class DistUpgradeManager extends BaseManager {
                                            SUSEProductSet targetSet, Collection<Long> channelIDs,
                                            boolean dryRun, boolean allowVendorChange, Date earliest,
                                            boolean isPayg)
-            throws TaskomaticApiException, DistUpgradePaygException {
+            throws TaskomaticApiException, NoInstalledProductException, DistUpgradePaygException {
 
         if (isPayg) {
             /*
@@ -780,8 +779,8 @@ public class DistUpgradeManager extends BaseManager {
             */
             SUSEProduct installedBaseProduct = server.getInstalledProductSet()
                     .map(SUSEProductSet::getBaseProduct)
-                    .orElseThrow(() ->
-                            new FaultException(-1, "listMigrationTargetError", "Server has no Products installed."));
+                    .orElseThrow(NoInstalledProductException::new);
+
             if (targetSet != null) {
                 SUSEProduct targetBaseProduct = targetSet.getBaseProduct();
                 if (targetBaseProduct.getChannelFamily() == null ||
