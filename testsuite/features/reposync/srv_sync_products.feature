@@ -165,7 +165,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @proxy
 @susemanager
 @transactional_server
-  Scenario: Add SUSE MLM Proxy Extension 5.2 with SL Micro 6.1 as base OS
+  Scenario: Add SUSE MLM Proxy Extension 5.1 with SL Micro 6.1 as base OS
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
@@ -173,34 +173,34 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I enter "SUSE Linux Micro 6.1" as the filtered product description
     When I open the sub-list of the product "SUSE Linux Micro 6.1 x86_64"
     And I select "SUSE Linux Micro 6.1 x86_64" as a product
-    And I select "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (BETA)" as a product
-    Then I should see the "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (BETA)" selected
+    And I select "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" as a product
+    Then I should see the "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (BETA)" product has been added
-    And I wait until all synchronized channels for "suse-multi-linux-manager-proxy-52" have finished
+    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" product has been added
+    And I wait until all synchronized channels for "suse-multi-linux-manager-proxy-51" have finished
 
 @proxy
 @susemanager
 @skip_if_transactional_server
-  Scenario: Add SUSE MLM Proxy Extension 5.2 with SLES 15 SP7 as base OS
+  Scenario: Add SUSE MLM Proxy Extension 5.1 with SLES 15 SP7 as base OS
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP7" as the filtered product description
     When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
-    And I select "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (BETA)" as a product
-    Then I should see the "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (BETA)" selected
+    And I select "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" as a product
+    Then I should see the "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (BETA)" product has been added
-    And I wait until all synchronized channels for "suse-multi-linux-manager-proxy-52-sp7" have finished
+    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" product has been added
+    And I wait until all synchronized channels for "suse-multi-linux-manager-proxy-51-sp7" have finished
 
 @proxy
 @susemanager
 @transactional_server
-  Scenario: Add SUSE MLM Retail Branch Server Extension 5.2 with SL Micro 6.1 as base OS
+  Scenario: Add SUSE MLM Retail Branch Server Extension 5.1 with SL Micro 6.1 as base OS
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
@@ -208,29 +208,29 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I enter "SUSE Linux Micro 6.1" as the filtered product description
     When I open the sub-list of the product "SUSE Linux Micro 6.1 x86_64"
     And I select "SUSE Linux Micro 6.1 x86_64" as a product
-    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64 (BETA)" as a product
-    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64 (BETA)" selected
+    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64" as a product
+    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64 (BETA)" product has been added
-    And I wait until all synchronized channels for "suse-multi-linux-manager-retail-branch-server-52" have finished
+    And I wait until I see "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64" product has been added
+    And I wait until all synchronized channels for "suse-multi-linux-manager-retail-branch-server-51" have finished
 
 @proxy
 @susemanager
 @skip_if_transactional_server
-  Scenario: Add SUSE MLM Retail Branch Server Extension 5.2 with SLES 15 SP7 as base OS
+  Scenario: Add SUSE MLM Retail Branch Server Extension 5.1 with SLES 15 SP7 as base OS
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP7" as the filtered product description
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64 (BETA)"
-    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64" as a product
-    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
+    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64" as a product
+    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64" product has been added
-    And I wait until all synchronized channels for "suma-retail-branch-server-extension-52-sp7" have finished
+    And I wait until I see "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64" product has been added
+    And I wait until all synchronized channels for "suma-retail-branch-server-extension-51-sp7" have finished
 
 @scc_credentials
 @susemanager
