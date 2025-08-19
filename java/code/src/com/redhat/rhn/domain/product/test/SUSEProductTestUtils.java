@@ -46,6 +46,7 @@ import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.ProductTreeEntry;
 import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.MockFileLocks;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.salt.netapi.parser.JsonParser;
@@ -77,6 +78,13 @@ import java.util.stream.Collectors;
  * Utility methods for creating SUSE related test data.
  */
 public class SUSEProductTestUtils extends HibernateFactory {
+
+    public static class TestContentSyncManager extends ContentSyncManager {
+        public TestContentSyncManager() {
+            super();
+            setSccRefreshLock(new MockFileLocks());
+        }
+    }
 
     private static final Random RANDOM = new Random();
     private static Logger log = LogManager.getLogger(SUSEProductTestUtils.class);
@@ -565,7 +573,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         }
         repositories.addAll(addRepos);
 
-        ContentSyncManager csm = new ContentSyncManager() {
+        ContentSyncManager csm = new TestContentSyncManager() {
             @Override
             protected boolean accessibleUrl(String url, String user, String password) {
                 // allow all none SCC URLs
@@ -575,7 +583,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         ContentSyncSource contentSyncSource = null;
         if (fromdir) {
             Config.get().setString(ContentSyncManager.RESOURCE_PATH, "sumatest");
-            csm = new ContentSyncManager() {
+            csm = new TestContentSyncManager() {
                 @Override
                 protected boolean accessibleUrl(String url, String user, String password) {
                     // allow all none SCC URLs
@@ -605,7 +613,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
     }
 
     public static void addChannelsForProduct(SUSEProduct product) {
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new TestContentSyncManager();
         product.getChannelTemplates()
         .stream()
         .filter(ChannelTemplate::isMandatory)
@@ -633,7 +641,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
      */
     public static void addChannelsForProductAndParent(SUSEProduct product, SUSEProduct root,
             boolean mandatory, List<Long> optionalChannelIds) {
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new TestContentSyncManager();
         product.getChannelTemplates()
         .stream()
         .filter(pr -> pr.getRootProduct().equals(root))
