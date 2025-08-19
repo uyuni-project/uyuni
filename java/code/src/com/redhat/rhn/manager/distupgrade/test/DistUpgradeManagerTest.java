@@ -661,8 +661,11 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         channelIDs.add(channel1.getId());
         channelIDs.add(channel2.getId());
         Date scheduleDate = new Date();
+
         Long actionID = DistUpgradeManager.scheduleDistUpgrade(
-                user, server, targetSet, channelIDs, true, false, scheduleDate, false);
+            user, List.of(server), targetSet, channelIDs, true, false, false, scheduleDate, null
+        ).get(0).getId();
+
         // Get the scheduled action and check the contents
         DistUpgradeAction action = (DistUpgradeAction) ActionFactory.lookupById(actionID);
         assertInstanceOf(DistUpgradeAction.class, action);
@@ -671,7 +674,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         assertEquals(scheduleDate, action.getEarliestAction());
         Set<ServerAction> serverActions = action.getServerActions();
         assertEquals(server, serverActions.iterator().next().getServer());
-        DistUpgradeActionDetails details = action.getDetails();
+        DistUpgradeActionDetails details = action.getDetails(server.getId());
         assertTrue(details.isDryRun());
         assertFalse(details.isAllowVendorChange());
         //These products will be removed after migration
