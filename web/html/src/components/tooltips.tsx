@@ -5,9 +5,7 @@ export function initializeTooltips() {
   // Initialize tooltips on existing elements
 
   const initTooltips = () => {
-    const elements = document.querySelectorAll(
-      '[data-bs-toggle="tooltip"]:not([data-tooltip-initialized])'
-    );
+    const elements = document.querySelectorAll('[data-bs-toggle="tooltip"]:not([data-tooltip-initialized])');
 
     elements.forEach((el) => {
       Tooltip.getOrCreateInstance(el, {
@@ -16,7 +14,7 @@ export function initializeTooltips() {
       el.setAttribute("data-tooltip-initialized", "true");
     });
   };
-  
+
   initTooltips();
   if (isListening) return;
 
