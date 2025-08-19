@@ -13,4 +13,5 @@ export default {
   "systems/details/mgr-server-info": () => import("./details/mgr-server-info.renderer"),
   "systems/coco-settings": () => import("./coco/ssm-settings.renderer"),
   "systems/coco-schedule": () => import("./coco/ssm-schedule.renderer"),
+  "systems/product-migration": () => import("./product-migration/ssm-product-migration.renderer"),
 };
