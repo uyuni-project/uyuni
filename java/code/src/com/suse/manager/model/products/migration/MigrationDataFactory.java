@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.product.SUSEProductSet;
 
 import com.suse.utils.Lists;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -36,6 +37,21 @@ public class MigrationDataFactory {
      */
     public MigrationDataFactory() {
         this.productExtensions = SUSEProductFactory.findAllSUSEProductExtensions();
+    }
+
+    /**
+     * Create a {@link MigrationTarget} from a set of products and the servers involved in the migration.
+     * @param targetProductSet the product set
+     * @return an instance of {@link MigrationTarget}
+     */
+    public MigrationTarget toMigrationTarget(SUSEProductSet targetProductSet) {
+        MigrationProduct targetProduct = toMigrationProduct(targetProductSet);
+        List<String> missingChannels = Collections.unmodifiableList(targetProductSet.getMissingChannels());
+
+        // Get the unique serialized id of the product set
+        String serializedId = targetProductSet.getSerializedProductIDs();
+
+        return new MigrationTarget(serializedId, targetProduct, missingChannels);
     }
 
     /**
