@@ -165,6 +165,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeException;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradePaygException;
+import com.redhat.rhn.manager.distupgrade.NoInstalledProductException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.KickstartFormatter;
@@ -8022,6 +8023,9 @@ public class SystemHandler extends BaseHandler {
                 // We forbid product migration in SUMA PAYG instance in certain situations
                 throw new FaultException(-1, "productMigrationNotAllowedPayg", e.getMessage());
             }
+            catch (NoInstalledProductException e) {
+                throw new FaultException(-1, "listMigrationTargetError", e.getMessage());
+            }
         }
 
         // We didn't find target products if we are still here
@@ -8113,6 +8117,9 @@ public class SystemHandler extends BaseHandler {
         catch (DistUpgradePaygException e) {
             // We forbid product migration in SUMA PAYG instance in certain situations
             throw new FaultException(-1, "productMigrationNotAllowedPayg", e.getMessage());
+        }
+        catch (NoInstalledProductException e) {
+            throw new FaultException(-1, "listMigrationTargetError", e.getMessage());
         }
         catch (DistUpgradeException e) {
             throw new FaultException(-1, "distUpgradeChannelError", e.getMessage());
