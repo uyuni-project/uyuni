@@ -117,7 +117,14 @@ public class SystemHistoryEventAction extends RhnAction {
         }
         if (isSubmitted((DynaActionForm)formIn)) {
             if (serverAction.isStatusCompleted() && typeDistUpgradeDryRun) {
-                return mapping.findForward("spmigration");
+                // If there is only one server use the old UI
+                if (action.getServerActions().size() == 1) {
+                    return mapping.findForward("spmigration");
+                }
+
+                // Redirect to ssm product migration, using the configured value as template
+                ActionForward forward = mapping.findForward("ssm-spmigration");
+                return new ActionForward("%s/%d".formatted(forward.getPath(), aid), forward.getRedirect());
             }
             createMessage(request, "system.event.rescheduled", action.getName(),
                     action.getId().toString());

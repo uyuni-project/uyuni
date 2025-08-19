@@ -33,3 +33,20 @@ export interface MigrationTargetSelection {
   migrationTargets: MigrationTarget[];
   systemsData: MigrationSystemData[];
 }
+
+export interface MigrationDryRunConfirmation {
+  targetProduct: MigrationProduct;
+  selectedChannels: ChannelTreeType;
+  systemsData: MigrationSystemData[];
+  allowVendorChange: boolean;
+}
+
+export interface MigrationScheduleRequest {
+  serverIds: number[];
+  targetProduct: MigrationProduct;
+  targetChannelTree: ChannelTreeType;
+  dryRun: boolean;
+  allowVendorChange: boolean;
+  earliest: moment.Moment | null;
+  actionChain: string | null;
+}

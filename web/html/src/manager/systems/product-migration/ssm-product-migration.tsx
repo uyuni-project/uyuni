@@ -6,7 +6,6 @@ import { ChannelTreeType } from "core/channels/type/channels.type";
 import { ActionChain } from "components/action-schedule";
 import { LinkButton } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
-import { ActionChainLink, ActionLink } from "components/links";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels";
 import {
@@ -18,6 +17,7 @@ import {
   MigrationSystemData,
   MigrationTarget,
   MigrationTargetSelectorForm,
+  MigrationUtils,
 } from "components/product-migration";
 import { Column } from "components/table/Column";
 import { TargetSystems } from "components/target-systems";
@@ -73,27 +73,10 @@ export const SSMProductMigration: React.FC<Props> = ({
         dryRun: dryRun,
       };
 
-      const response = await Network.post("/rhn/manager/api/systems/migration/schedule", request);
+      const outcomeMessage = await MigrationUtils.performMigration(request);
 
       setMigrationStep(MigrationStep.Scheduled);
-      setMigrationOutcomeMessage(
-        MessagesUtils.info(
-          request.actionChain ? (
-            <span>
-              {t('Action has been successfully added to the action chain <link>"{name}"</link>.', {
-                name: request.actionChain,
-                link: (str) => <ActionChainLink id={response.data}>{str}</ActionChainLink>,
-              })}
-            </span>
-          ) : (
-            <span>
-              {t("The action has been <link>scheduled</link>.", {
-                link: (str) => <ActionLink id={response.data}>{str}</ActionLink>,
-              })}
-            </span>
-          )
-        )
-      );
+      setMigrationOutcomeMessage(outcomeMessage);
     } catch (err: any) {
       Network.showResponseErrorToastr(err);
     }

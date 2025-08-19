@@ -22,6 +22,9 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.supportdata.UploadGeoType;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
@@ -54,6 +57,9 @@ import com.suse.utils.Json;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -73,6 +79,8 @@ import spark.template.jade.JadeTemplateEngine;
  * Controller class providing backend code for the minions page.
  */
 public class MinionController {
+
+    private static final Logger LOGGER = LogManager.getLogger(MinionController.class);
 
     public static final Gson GSON = new GsonBuilder()
         .serializeNulls()
@@ -162,6 +170,8 @@ public class MinionController {
             withCsrfToken(withDocsLocale(withUser(MinionController::ssmCoCoSchedule))), jade);
         get("/manager/systems/ssm/product-migration",
             withCsrfToken(withDocsLocale(withUser(MinionController::productMigration))), jade);
+        get("/manager/systems/ssm/product-migration/dry-run/:actionId",
+            withCsrfToken(withDocsLocale(withUser(MinionController::productMigrationFromDryRun))), jade);
     }
 
     private static void initPTFRoutes(JadeTemplateEngine jade) {
@@ -794,5 +804,54 @@ public class MinionController {
         addActionChains(user, data);
 
         return new ModelAndView(data, "templates/ssm/product-migration.jade");
+    }
+
+    /**
+     * Handler for the product migration from a previous dry run
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView productMigrationFromDryRun(Request request, Response response, User user) {
+        var action = getActionFromPath(request.params("actionId"));
+        if (action == null) {
+            // Something wrong with the path parameter, fallback to standard SSM product migration
+            return productMigration(request, response, user);
+        }
+
+        var dataFactory = new MigrationDataFactory();
+        var migrationData = dataFactory.toMigrationDryRunConfirmation(action, user);
+
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("entityType", "SSM");
+        data.put("tabs", ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/ssm.xml"));
+        data.put("dataFromDryRun", GSON.toJson(migrationData));
+
+        addActionChains(user, data);
+
+        return new ModelAndView(data, "templates/ssm/migration-from-dry-run.jade");
+    }
+
+    private static DistUpgradeAction getActionFromPath(String parameter) {
+        if (parameter == null) {
+            LOGGER.warn("Invalid request, no action id parameter");
+            return null;
+        }
+
+        try {
+            Action action = ActionFactory.lookupById(Long.parseLong(parameter));
+            if (!(action instanceof DistUpgradeAction distUpgradeAction)) {
+                return null;
+            }
+
+            return distUpgradeAction;
+        }
+        catch (NumberFormatException ex) {
+            LOGGER.warn("Ignoring invalid parameter {} passed as action id", parameter, ex);
+            return null;
+        }
     }
 }
