@@ -7512,8 +7512,7 @@ public class SystemHandler extends BaseHandler {
         List<SUSEProductSet> migrationTargets = DistUpgradeManager.
                 getTargetProductSets(installedProducts, arch, loggedInUser);
         if (excludeTargetWhereMissingSuccessors) {
-            migrationTargets = DistUpgradeManager.removeIncompatibleTargets(
-                    installedProducts, migrationTargets,  Optional.empty());
+            migrationTargets = DistUpgradeManager.removeIncompatibleTargets(installedProducts, migrationTargets);
         }
         for (SUSEProductSet ps : migrationTargets) {
             if (!ps.getIsEveryChannelSynced()) {
@@ -7939,7 +7938,7 @@ public class SystemHandler extends BaseHandler {
         // Consider the targets where some extensions have missing successors but only if user explicitly mention
         // targetIdent && set the flag removeProductsWithNoSuccessorAfterMigration as true
         if (!removeProductsWithNoSuccessorAfterMigration || StringUtils.isBlank(targetIdent)) {
-            targets = DistUpgradeManager.removeIncompatibleTargets(installedProducts, targets, Optional.empty());
+            targets = DistUpgradeManager.removeIncompatibleTargets(installedProducts, targets);
         }
         if (!targets.isEmpty()) {
             SUSEProductSet targetProducts = null;

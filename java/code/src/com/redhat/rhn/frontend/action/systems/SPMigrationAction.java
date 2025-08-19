@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012--2020 SUSE LLC
+ * Copyright (c) 2012--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems;
 
@@ -451,10 +447,12 @@ public class SPMigrationAction extends RhnAction {
      */
     private void setMissingSuccessorsInfo(HttpServletRequest request, Optional<SUSEProductSet> sourceProducts,
                                           List<SUSEProductSet> targetProducts) {
-        Optional<Set<String>> missingSuccessorExtensions = Optional.of(new HashSet<String>());
-        DistUpgradeManager.removeIncompatibleTargets(sourceProducts,
-                targetProducts, missingSuccessorExtensions);
-        request.setAttribute(MISSING_SUCCESSOR_EXTENSIONS, missingSuccessorExtensions.orElse(new HashSet<>()));
+        Set<SUSEProduct> missingSuccessors = new HashSet<>();
+
+        DistUpgradeManager.removeIncompatibleTargets(sourceProducts, targetProducts, missingSuccessors);
+        request.setAttribute(MISSING_SUCCESSOR_EXTENSIONS, missingSuccessors.stream()
+            .map(SUSEProduct::getFriendlyName)
+            .toList());
     }
 
     /**
