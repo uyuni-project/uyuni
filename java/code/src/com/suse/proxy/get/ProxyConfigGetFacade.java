@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.proxy.model.ProxyConfig;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,13 +41,5 @@ public interface ProxyConfigGetFacade {
      * @return the form data
      */
     Map<String, Object> getFormData(User user, Server server);
-
-    /**
-     * Retrieves the tags from a given registry URL.
-     * @param registryUrl the registry URL
-     * @param isExact flag indicating if the URL is exact (in opposition to a base url)
-     * @return the tags retrieved from registry
-     */
-    List<String> getRegistryUrlTags(String registryUrl, boolean isExact);
 
 }
