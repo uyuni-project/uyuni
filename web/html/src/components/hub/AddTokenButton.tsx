@@ -86,22 +86,22 @@ export class AddTokenButton extends React.Component<Props, State> {
             title={t("Add a new access token")}
             className="btn-primary"
             items={[
-              <LinkButton
+              <Button
                 id="issue-btn-link"
+                className="dropdown-item"
                 key="issue"
-                className="btn-link"
-                text={t("Issue a new token")}
-                icon="fa-plus"
                 handler={() => this.setState({ createRequest: { type: TokenType.ISSUED } })}
-              />,
-              <LinkButton
+              >
+                {t("Issue a new token")}
+              </Button>,
+              <Button
                 id="store-btn-link"
+                className="dropdown-item"
                 key="store"
-                className="btn-link"
-                text={t("Store an external token")}
-                icon="fa-save"
                 handler={() => this.setState({ createRequest: { type: TokenType.CONSUMED } })}
-              />,
+              >
+                {t("Store an external token")}
+              </Button>,
             ]}
           />
         );
