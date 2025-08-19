@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -3097,7 +3098,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertInstanceOf(DistUpgradeAction.class, action);
         Set<ServerAction> serverActions = action.getServerActions();
         assertEquals(server, serverActions.iterator().next().getServer());
-        DistUpgradeActionDetails details = action.getDetails();
+        DistUpgradeActionDetails details = action.getDetails(server.getId());
         assertTrue(details.isDryRun());
         assertFalse(details.isAllowVendorChange());
         //These products will be removed after migration

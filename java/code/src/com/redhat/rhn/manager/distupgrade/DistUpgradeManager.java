@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 SUSE LLC
+ * Copyright (c) 2012--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.redhat.rhn.manager.distupgrade;
@@ -18,12 +14,13 @@ package com.redhat.rhn.manager.distupgrade;
 import static com.suse.utils.Lists.listOfListComparator;
 import static java.util.stream.Collectors.toList;
 
-import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.util.RpmVersionComparator;
+import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.channel.Channel;
@@ -53,6 +50,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.utils.Lists;
 import com.suse.utils.Opt;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -66,11 +64,12 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.function.Function;
+import java.util.function.LongFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -193,18 +192,29 @@ public class DistUpgradeManager extends BaseManager {
         return ret;
     }
 
-    public static final Comparator<SUSEProduct> PRODUCT_VERSION_COMPARATOR = (o1, o2) -> {
-        int result = new RpmVersionComparator().compare(
-                o1.getVersion(), o2.getVersion());
-        if (result != 0) {
-            return result;
-        }
-        return new RpmVersionComparator().compare(o1.getRelease(), o2.getRelease());
-    };
+    public static final Comparator<SUSEProduct> PRODUCT_VERSION_COMPARATOR =
+        Comparator.comparing(SUSEProduct::getVersion, new RpmVersionComparator())
+            .thenComparing(SUSEProduct::getRelease, new RpmVersionComparator());
 
     public static final Comparator<List<SUSEProduct>> PRODUCT_LIST_VERSION_COMPARATOR =
-            listOfListComparator(PRODUCT_VERSION_COMPARATOR);
+        listOfListComparator(PRODUCT_VERSION_COMPARATOR);
 
+    public static final Comparator<SUSEProductSet> PRODUCT_SET_VERSION_COMPARATOR =
+        Comparator.comparing(SUSEProductSet::getBaseProduct, PRODUCT_VERSION_COMPARATOR.reversed())
+            .thenComparing(SUSEProductSet::getAddonProducts, PRODUCT_LIST_VERSION_COMPARATOR.reversed());
+
+    /**
+     * Calculate the valid migration targets for a given server
+     * @param server the server
+     * @param user the user
+     * @return valid migration targets
+     */
+    public static List<SUSEProductSet> getTargetProductSets(Server server, User user) {
+        Optional<SUSEProductSet> installedProductSet = server.getInstalledProductSet();
+        ChannelArch compatibleChannelArch = server.getServerArch().getCompatibleChannelArch();
+
+        return getTargetProductSets(installedProductSet, compatibleChannelArch, user);
+    }
 
     /**
      * Calculate the valid migration targets for a given product set.
@@ -217,15 +227,7 @@ public class DistUpgradeManager extends BaseManager {
     public static List<SUSEProductSet> getTargetProductSets(
             Optional<SUSEProductSet> installedProducts, ChannelArch arch, User user) {
         List<SUSEProductSet> migrationTargets = migrationTargets(installedProducts);
-        migrationTargets.sort((tgt1, tgt2) -> {
-            int i = PRODUCT_VERSION_COMPARATOR.compare(tgt2.getBaseProduct(), tgt1.getBaseProduct());
-            if (i != 0) {
-                return i;
-            }
-            else {
-                return PRODUCT_LIST_VERSION_COMPARATOR.compare(tgt2.getAddonProducts(), tgt1.getAddonProducts());
-            }
-        });
+        migrationTargets.sort(PRODUCT_SET_VERSION_COMPARATOR);
         return addMissingChannels(migrationTargets, arch, user);
     }
 
@@ -563,24 +565,41 @@ public class DistUpgradeManager extends BaseManager {
      * @param targets target products
      * @return matching target product
      */
-    public static SUSEProduct findMatch(SUSEProduct source, List<SUSEProduct> targets) {
-        SUSEProduct matchingProduct = null;
+    public static SUSEProduct findTarget(SUSEProduct source, List<SUSEProduct> targets) {
+        return findMatch(source, targets, DistUpgradeManager::findTargetProducts);
+    }
+
+    /**
+     * Look for the source of a given migration target within a list of products.
+     *
+     * @param target the target product
+     * @param sources all the sources of the migration
+     * @return matching source product
+     */
+    public static SUSEProduct findSource(SUSEProduct target, List<SUSEProduct> sources) {
+        return findMatch(target, sources, DistUpgradeManager::findSourceProducts);
+    }
+
+    private static SUSEProduct findMatch(SUSEProduct productToMatch, List<SUSEProduct> productPool,
+                                         LongFunction<List<SUSEProductDto>> matchingFunction) {
         // Match found if the targets contain the source product itself
-        if (targets.contains(source)) {
-            matchingProduct = source;
+        if (productPool.contains(productToMatch)) {
+            return productToMatch;
         }
-        else {
-            List<SUSEProductDto> results = findTargetProducts(source.getId());
-            for (SUSEProduct target : targets) {
-                for (SUSEProductDto result : results) {
-                    if (result.getId().equals(target.getId())) {
-                        // Found the matching product
-                        matchingProduct = target;
-                        break;
-                    }
+
+        List<SUSEProductDto> results = matchingFunction.apply(productToMatch.getId());
+        SUSEProduct matchingProduct = null;
+
+        for (SUSEProduct product : productPool) {
+            for (SUSEProductDto result : results) {
+                if (result.getId().equals(product.getId())) {
+                    // Found the matching product
+                    matchingProduct = product;
+                    break;
                 }
             }
         }
+
         return matchingProduct;
     }
 
@@ -678,50 +697,92 @@ public class DistUpgradeManager extends BaseManager {
      * (private as it does not take PAYG into account)
      *
      * @param user the user who is scheduling
-     * @param server the server to migrate
+     * @param serverList the list of servers to migrate
      * @param targetSet set of target products (base product and addons)
      * @param channelIDs IDs of all channels to subscribe
      * @param dryRun perform a dry run
      * @param allowVendorChange allow vendor change during dist upgrade
      * @param earliest earliest schedule date
+     * @param chain the action chain
      * @return the action ID
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    private static Long scheduleDistUpgrade(User user, Server server,
-                                            SUSEProductSet targetSet, Collection<Long> channelIDs,
-                                            boolean dryRun, boolean allowVendorChange, Date earliest)
-            throws TaskomaticApiException {
-        // Create action details
+    private static List<DistUpgradeAction> scheduleDistUpgrade(User user, List<? extends Server> serverList,
+                                                               SUSEProductSet targetSet, Collection<Long> channelIDs,
+                                                               boolean dryRun, boolean allowVendorChange,
+                                                               Date earliest, ActionChain chain)
+            throws TaskomaticApiException, NoInstalledProductException {
+
+        Map<Long, DistUpgradeActionDetails> detailsMap = new HashMap<>();
+        for (Server server : serverList) {
+            // Create action details
+            var details = createDistUpgradeActionDetails(server, targetSet, channelIDs, allowVendorChange, dryRun);
+            detailsMap.put(server.getId(), details);
+        }
+
+        // Return the singleton list of the scheduled action
+        return ActionManager.scheduleDistUpgrade(user, earliest, chain, dryRun, detailsMap);
+    }
+
+    private static DistUpgradeActionDetails createDistUpgradeActionDetails(Server server, SUSEProductSet targetSet,
+                                                                           Collection<Long> channelIDs,
+                                                                           boolean allowVendorChange, boolean dryRun)
+        throws NoInstalledProductException {
+
         DistUpgradeActionDetails details = new DistUpgradeActionDetails();
-        List<String>  missingSuccessors = new ArrayList<>();
+
+        // Set additional attributes
+        details.setServer(server);
+        details.setDryRun(dryRun);
+        details.setAllowVendorChange(allowVendorChange);
+        details.setFullUpdate(true);
 
         // Add product upgrades
         // Note: product upgrades are relevant for SLE 10 only!
-        if (targetSet != null) {
-            SUSEProductSet installedProducts = server.getInstalledProductSet().orElseThrow(() ->
-                    new FaultException(-1, "listMigrationTargetError", "Server has no Products installed."));
+        List<String> missingSuccessors = new ArrayList<>();
+        SUSEProductSet installedProduct = server.getInstalledProductSet().orElseThrow(NoInstalledProductException::new);
+        List<SUSEProductUpgrade> productUpgrades = getProductUpgrades(installedProduct, targetSet, missingSuccessors);
 
-            SUSEProductUpgrade upgrade = new SUSEProductUpgrade(
-                    installedProducts.getBaseProduct(), targetSet.getBaseProduct());
-            details.addProductUpgrade(upgrade);
-
-            // Find matching targets for every addon
-            for (SUSEProduct addon : installedProducts.getAddonProducts()) {
-                SUSEProduct match = DistUpgradeManager.findMatch(addon, targetSet.getAddonProducts());
-                if (Objects.nonNull(match)) {
-                    upgrade = new SUSEProductUpgrade(addon,
-                            DistUpgradeManager.findMatch(addon, targetSet.getAddonProducts()));
-                    details.addProductUpgrade(upgrade);
-                }
-                else {
-                    missingSuccessors.add(addon.getName());
-                }
-            }
-            details.setMissingSuccessors(String.join(",", missingSuccessors));
-        }
+        productUpgrades.forEach(upgrade -> details.addProductUpgrade(upgrade));
+        details.setMissingSuccessors(String.join(",", missingSuccessors));
 
         // Add individual channel tasks
+        List<DistUpgradeChannelTask> channelTasks = getChannelTasks(server, channelIDs);
+        channelTasks.forEach(task -> details.addChannelTask(task));
+
+        return details;
+    }
+
+    private static List<SUSEProductUpgrade> getProductUpgrades(SUSEProductSet installedProduct,
+                                                               SUSEProductSet targetSet,
+                                                               List<String> missingSuccessors) {
+        if (targetSet == null) {
+            return List.of();
+        }
+
+        List<SUSEProductUpgrade> result = new ArrayList<>();
+
+        // Upgrade of the base product
+        result.add(new SUSEProductUpgrade(installedProduct.getBaseProduct(), targetSet.getBaseProduct()));
+
+        // Find matching targets for every addon
+        for (SUSEProduct addon : installedProduct.getAddonProducts()) {
+            SUSEProduct match = DistUpgradeManager.findTarget(addon, targetSet.getAddonProducts());
+            if (match != null) {
+                result.add(new SUSEProductUpgrade(addon, match));
+            }
+            else {
+                missingSuccessors.add(addon.getName());
+            }
+        }
+
+        return result;
+    }
+
+    private static List<DistUpgradeChannelTask> getChannelTasks(Server server, Collection<Long> channelIDs) {
+        List<DistUpgradeChannelTask> result = new ArrayList<>();
+
         for (Channel c : server.getChannels()) {
             // Remove channels we already subscribed
             if (channelIDs.contains(c.getId())) {
@@ -732,7 +793,7 @@ public class DistUpgradeManager extends BaseManager {
                 DistUpgradeChannelTask task = new DistUpgradeChannelTask();
                 task.setChannel(c);
                 task.setTask(DistUpgradeChannelTask.UNSUBSCRIBE);
-                details.addChannelTask(task);
+                result.add(task);
             }
         }
         // Subscribe to all the remaining channels
@@ -740,38 +801,32 @@ public class DistUpgradeManager extends BaseManager {
             DistUpgradeChannelTask task = new DistUpgradeChannelTask();
             task.setChannel(ChannelFactory.lookupById(cid));
             task.setTask(DistUpgradeChannelTask.SUBSCRIBE);
-            details.addChannelTask(task);
+            result.add(task);
         }
 
-        // Set additional attributes
-        details.setDryRun(dryRun);
-        details.setAllowVendorChange(allowVendorChange);
-        details.setFullUpdate(true);
-
-        // Return the ID of the scheduled action
-        return ActionManager.scheduleDistUpgrade(user, server, details, earliest).getId();
+        return result;
     }
 
     /**
      * Schedule a distribution upgrade for a given server, allowing passing the PAYG flag.
-     *
      * @param user the user who is scheduling
-     * @param server the server to migrate
+     * @param serverList the list of servers to migrate
      * @param targetSet set of target products (base product and addons)
      * @param channelIDs IDs of all channels to subscribe
      * @param dryRun perform a dry run
      * @param allowVendorChange allow vendor change during dist upgrade
-     * @param earliest earliest schedule date
      * @param isPayg tells the method how to behave if SUMA is PAYG
-     * @return the action ID
-     * @throws TaskomaticApiException if there was a Taskomatic error
+     * @param earliest earliest schedule date
+     * @param chain the action chain
+     * @return the list of scheduled actions
+     * @throws TaskomaticApiException   if there was a Taskomatic error
      * @throws DistUpgradePaygException if the SUSE Manager instance is PAYG.
      */
-    public static Long scheduleDistUpgrade(User user, Server server,
-                                           SUSEProductSet targetSet, Collection<Long> channelIDs,
-                                           boolean dryRun, boolean allowVendorChange, Date earliest,
-                                           boolean isPayg)
-            throws TaskomaticApiException, DistUpgradePaygException {
+    public static List<DistUpgradeAction> scheduleDistUpgrade(User user, List<? extends Server> serverList,
+                                                              SUSEProductSet targetSet, Collection<Long> channelIDs,
+                                                              boolean dryRun, boolean allowVendorChange, boolean isPayg,
+                                                              Date earliest, ActionChain chain)
+            throws TaskomaticApiException, NoInstalledProductException, DistUpgradePaygException {
 
         if (isPayg) {
             /*
@@ -782,17 +837,19 @@ public class DistUpgradeManager extends BaseManager {
             Only SP migrations should be possible.
             Also, individual assigning channels to perform a migration is forbidden
             */
-            SUSEProduct installedBaseProduct = server.getInstalledProductSet()
-                    .map(SUSEProductSet::getBaseProduct)
-                    .orElseThrow(() ->
-                            new FaultException(-1, "listMigrationTargetError", "Server has no Products installed."));
             if (targetSet != null) {
-                SUSEProduct targetBaseProduct = targetSet.getBaseProduct();
-                if (targetBaseProduct.getChannelFamily() == null ||
+                for (Server server : serverList) {
+                    SUSEProduct installedBaseProduct = server.getInstalledProductSet()
+                        .map(SUSEProductSet::getBaseProduct)
+                        .orElseThrow(NoInstalledProductException::new);
+
+                    SUSEProduct targetBaseProduct = targetSet.getBaseProduct();
+                    if (targetBaseProduct.getChannelFamily() == null ||
                         installedBaseProduct.getChannelFamily() == null ||
                         !targetBaseProduct.getChannelFamily().equals(installedBaseProduct.getChannelFamily())) {
-                    throw new DistUpgradePaygException(
+                        throw new DistUpgradePaygException(
                             "In PAYG SUMA instances, changing the product family is forbidden");
+                    }
                 }
             }
             else {
@@ -800,7 +857,7 @@ public class DistUpgradeManager extends BaseManager {
             }
         }
 
-        return scheduleDistUpgrade(user, server, targetSet, channelIDs, dryRun, allowVendorChange, earliest);
+        return scheduleDistUpgrade(user, serverList, targetSet, channelIDs, dryRun, allowVendorChange, earliest, chain);
     }
 
     /**
@@ -810,12 +867,32 @@ public class DistUpgradeManager extends BaseManager {
      *
      * @param installedProducts Optional set of the installed products
      * @param allMigrationTargets all calculated migration targets
-     * @param missingSuccessorExtensions OUT: info about installed extensions missing a successor
      * @return list of valid migration targets
      */
     public static List<SUSEProductSet> removeIncompatibleTargets(Optional<SUSEProductSet> installedProducts,
+                                                                  List<SUSEProductSet> allMigrationTargets) {
+        return removeIncompatibleTargets(installedProducts, allMigrationTargets, Optional.empty());
+    }
+
+    /**
+     * Remove incompatible migration targets compared to the installed products.
+     * Write the failed products in the missingSuccesorExtensions set in case it should
+     * be shown somewhere.
+     *
+     * @param installedProducts Optional set of the installed products
+     * @param allMigrationTargets all calculated migration targets
+     * @param missingSuccessors OUT: info about installed extensions missing a successor
+     * @return list of valid migration targets
+     */
+    public static List<SUSEProductSet> removeIncompatibleTargets(Optional<SUSEProductSet> installedProducts,
+                                                                  List<SUSEProductSet> allMigrationTargets,
+                                                                  Set<SUSEProduct> missingSuccessors) {
+        return removeIncompatibleTargets(installedProducts, allMigrationTargets, Optional.of(missingSuccessors));
+    }
+
+    private static List<SUSEProductSet> removeIncompatibleTargets(Optional<SUSEProductSet> installedProducts,
                                                                  List<SUSEProductSet> allMigrationTargets,
-                                                                 Optional<Set<String>> missingSuccessorExtensions) {
+                                                                 Optional<Set<SUSEProduct>> missingSuccessors) {
         List<SUSEProductSet> migrationTargets = new LinkedList<>();
         for (SUSEProductSet t : allMigrationTargets) {
             if (installedProducts.isPresent() && installedProducts.get().getAddonProducts().isEmpty()) {
@@ -825,7 +902,7 @@ public class DistUpgradeManager extends BaseManager {
             }
             List<SUSEProduct> missingAddonSuccessors = installedProducts.orElse(new SUSEProductSet()).getAddonProducts()
                     .stream()
-                    .filter(addon -> DistUpgradeManager.findMatch(addon, t.getAddonProducts()) == null)
+                    .filter(addon -> DistUpgradeManager.findTarget(addon, t.getAddonProducts()) == null)
                     .toList();
 
             if (missingAddonSuccessors.isEmpty()) {
@@ -833,14 +910,138 @@ public class DistUpgradeManager extends BaseManager {
                 migrationTargets.add(t);
             }
             else {
-                List<String> missing = missingAddonSuccessors.stream().map(SUSEProduct::getFriendlyName)
-                        .collect(Collectors.toList());
                 if (LOG.isWarnEnabled()) {
-                    LOG.warn("No migration target found for '{}'. Skipping", String.join(", ", missing));
+                    String missing = missingAddonSuccessors.stream()
+                        .map(SUSEProduct::getFriendlyName)
+                        .collect(Collectors.joining(", "));
+                    LOG.warn("No migration target found for '{}'. Skipping", missing);
                 }
-                missingSuccessorExtensions.ifPresent(l -> l.addAll(missing));
+                missingSuccessors.ifPresent(l -> l.addAll(missingAddonSuccessors));
             }
         }
         return migrationTargets;
+    }
+
+    /**
+     * Compute the most common base product among the given list of servers
+     *
+     * @param serverList the list of servers to evaluate
+     *
+     * @return the base product which has the most number of occurrences among the given servers
+     */
+    public static Optional<SUSEProductSet> getCommonSourceProduct(List<? extends Server> serverList) {
+        // No source if no servers are specified
+        if (CollectionUtils.isEmpty(serverList)) {
+            return Optional.empty();
+        }
+
+        // If the list is a singleton, the result matches with its installed product set
+        if (serverList.size() == 1) {
+            return serverList.get(0).getInstalledProductSet();
+        }
+
+        // Compute the frequency map of every base product
+        Map<SUSEProduct, Long> productSetFrequencyMap = serverList.stream()
+            .flatMap(server -> server.getInstalledProductSet().stream())
+            .map(SUSEProductSet::getBaseProduct)
+            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        // Extract the most common base product
+        Optional<SUSEProduct> mostCommonBaseProduct = productSetFrequencyMap.entrySet().stream()
+            .max(Map.Entry.comparingByValue())
+            .map(Map.Entry::getKey);
+
+        // Merge all the addons to build the "super" base that covers all systems
+        return mostCommonBaseProduct.map(
+            baseProduct -> serverList.stream()
+                .flatMap(server -> server.getInstalledProductSet().stream())
+                .filter(productSet -> baseProduct.equals(productSet.getBaseProduct()))
+                .reduce(new SUSEProductSet(baseProduct, new ArrayList<>()), SUSEProductSet::merge)
+        );
+    }
+
+    /**
+     * Compute all the possible targets for the migration of the given servers to the specified common source product.
+     *
+     * @param user the user attempting the migration
+     * @param serverList the list of servers to migrate
+     * @param sourceProductSet the common base product of all the systems
+     *
+     * @return all the possible targets for the migration. if the given servers do not share the same base product the
+     * list will be empty.
+     */
+    public static List<SUSEProductSet> getTargetProductSets(User user, List<? extends Server> serverList,
+                                                            Optional<SUSEProductSet> sourceProductSet) {
+        // Ensure the base product is available
+        SUSEProduct sourceBaseProduct = sourceProductSet.map(SUSEProductSet::getBaseProduct).orElse(null);
+        if (sourceBaseProduct == null) {
+            return List.of();
+        }
+
+        // Short-circuit the calculation if the list is a singleton
+        if (serverList.size() == 1) {
+            Server singletonServer = serverList.get(0);
+
+            // Ensure the given base product matches what's installed
+            if (!serverHasBaseProduct(singletonServer, sourceBaseProduct)) {
+                return List.of();
+            }
+
+            return getTargetProductSets(singletonServer, user);
+        }
+
+        // Compute the possible targets aggregating all the server targets
+        Map<SUSEProduct, SUSEProductSet> resultMap = serverList.stream()
+            // Consider only the systems with the correct base
+            .filter(server -> serverHasBaseProduct(server, sourceBaseProduct))
+            // Compute the target product sets for this server
+            .map(server -> DistUpgradeManager.getTargetProductSets(server, user))
+            // Build a map where the key is the target base product and the value is the full product set
+            .map(targetsList -> targetsList.stream()
+                .collect(Collectors.toMap(productSet -> productSet.getBaseProduct(), Function.identity()))
+            )
+            // Combine the maps in a single one, merging the addons products and the missing channels
+            .reduce(new HashMap<>(), (accumulatedMap, targetProductsMap) -> {
+                targetProductsMap.values().forEach(productSet ->
+                    accumulatedMap.merge(productSet.getBaseProduct(), productSet, SUSEProductSet::merge)
+                );
+
+                return accumulatedMap;
+            });
+
+        // Extract only the values to build the final result list
+        return resultMap.values().stream()
+            .sorted(DistUpgradeManager.PRODUCT_SET_VERSION_COMPARATOR)
+            .toList();
+    }
+
+    // Returns true if the given server has the specified base product installed
+    private static boolean serverHasBaseProduct(Server server, SUSEProduct sourceBaseProduct) {
+        return server.getInstalledProductSet()
+            .map(SUSEProductSet::getBaseProduct)
+            .filter(installedBaseProduct -> sourceBaseProduct.equals(installedBaseProduct))
+            .isPresent();
+    }
+
+    /**
+     * List all the products that are potentially going to be installed using the specified targets
+     * @param installedProductSet the currently installed product set
+     * @param migrationTargets all the possible migration targets
+     * @return the aggregated list of products that are not currently part of the installed product set and are going
+     * to be installed when migrating to one of the specified targets
+     */
+    public static Set<SUSEProduct> listInstalledTargetAddons(Optional<SUSEProductSet> installedProductSet,
+                                                             List<SUSEProductSet> migrationTargets) {
+
+        Set<SUSEProduct> result = new HashSet<>();
+        List<SUSEProduct> installedAddons = installedProductSet.map(SUSEProductSet::getAddonProducts).orElse(List.of());
+
+        // Find all the targets that don't have a matching base
+        migrationTargets.stream()
+            .flatMap(target -> target.getAddonProducts().stream())
+            .filter(targetAddon -> DistUpgradeManager.findSource(targetAddon, installedAddons) == null)
+            .forEach(result::add);
+
+        return result;
     }
 }

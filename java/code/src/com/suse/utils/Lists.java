@@ -13,9 +13,11 @@ package com.suse.utils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 
 /**
@@ -27,7 +29,7 @@ public class Lists {
     }
 
 
-    private static <T> List<List<T>>  combinations(List<List<T>> acc, List<T> list) {
+    private static <T> List<List<T>> combinations(List<List<T>> acc, List<T> list) {
         List<List<T>> result = new LinkedList<>();
         for (List<T> ts : acc) {
             for (T t : list) {
@@ -108,8 +110,38 @@ public class Lists {
      * @return      A new list containing all elements from both input lists.
      */
     public static <T> List<T> union(List<T> list1, List<T> list2) {
-        ArrayList<T> result = new ArrayList<>(Objects.requireNonNullElseGet(list1, () -> List.of()));
-        result.addAll(Objects.requireNonNullElseGet(list2, () -> List.of()));
+        ArrayList<T> result = new ArrayList<>(Objects.requireNonNullElseGet(list1, List::of));
+        result.addAll(Objects.requireNonNullElseGet(list2, List::of));
         return result;
+    }
+
+    /**
+     * Returns a new list containing all elements from the given lists, without duplicates
+     * If either list is null, it is treated as an empty list.
+     *
+     * @param <T>   The type of elements in the lists.
+     * @param list1 The first list. May be null.
+     * @param list2 The second list. May be null.
+     * @return      A new list containing all elements from both input lists, without duplicates.
+     */
+    public static <T> List<T> merge(List<T> list1, List<T> list2) {
+        Set<T> resultSet = new HashSet<>(Objects.requireNonNullElseGet(list1, List::of));
+        resultSet.addAll(Objects.requireNonNullElseGet(list2, List::of));
+        return new ArrayList<>(resultSet);
+    }
+
+    /**
+     * Returns a new list containing all the elements from list1 that are not present in list2, without duplicates.
+     * If either list is null, it is treated as an empty list.
+     *
+     * @param <T>   The type of elements in the lists.
+     * @param list1 The first list. May be null.
+     * @param list2 The second list. May be null.
+     * @return      A new list containing all the elements from list1 that are not present in list2, without duplicates
+     */
+    public static <T> List<T> subtract(List<T> list1, List<T> list2) {
+        Set<T> resultSet = new HashSet<>(Objects.requireNonNullElseGet(list1, List::of));
+        Objects.requireNonNullElseGet(list2, List::<T>of).forEach(resultSet::remove);
+        return new ArrayList<>(resultSet);
     }
 }

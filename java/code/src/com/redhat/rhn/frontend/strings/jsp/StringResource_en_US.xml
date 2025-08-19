@@ -2780,8 +2780,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
-        <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve">
+      <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve">
         <source>Confidential Computing Attestation</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="actionchain.jsp.distupgrade.upgrade" xml:space="preserve">
+        <source>Migrate the installed product on</source>
             <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
@@ -4755,6 +4761,12 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
+        </trans-unit>
+        <trans-unit id="ssm.overview.product_migration">
+            <source>Product Migration</source>
+        </trans-unit>
+        <trans-unit id="ssm.overview.product_migration.migrate">
+            <source>&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;Migrate the products&lt;/a&gt; installed on the selected systems</source>
         </trans-unit>
         <trans-unit id="ssm.overview.groups">
           <source>Groups</source>
