@@ -5,7 +5,7 @@ import { BaseChannelType, ChildChannelType } from "core/channels/type/channels.t
 import { ChannelAnchorLink } from "components/links";
 import { Highlight } from "components/table/Highlight";
 
-import ChannelProcessor from "./channel-processor";
+import { ChannelDependencyData, ChannelProcessor } from "./channel-processor";
 import styles from "./channels-selection.module.scss";
 
 type Props = {
@@ -16,31 +16,33 @@ type Props = {
   onToggleChannelSelect: (channel: BaseChannelType | ChildChannelType, toState?: boolean) => void;
 };
 
-const getTooltip = (tooltipData: ReturnType<ChannelProcessor["getTooltipData"]>) => {
+function getTooltip(channelDependencies: ChannelDependencyData): string {
   let tooltip = "";
-  if (tooltipData.requiresNames.length) {
-    tooltip += `${t("This channel requires:")}\n\n${tooltipData.requiresNames.join("\n")}`;
+  if (channelDependencies.requiresNames.length) {
+    const namesAsList = channelDependencies.requiresNames.map((name) => "  - " + name).join("\n");
+    tooltip += `${t("This channel requires:")}\n${namesAsList}`;
   }
   if (tooltip) {
     tooltip += "\n\n";
   }
-  if (tooltipData.requiredByNames.length) {
-    tooltip += `${t("This channel is required by:")}\n\n${tooltipData.requiredByNames.join("\n")}`;
+  if (channelDependencies.requiredByNames.length) {
+    const namesAsList = channelDependencies.requiredByNames.map((name) => "  - " + name).join("\n");
+    tooltip += `${t("This channel is required by:")}\n${namesAsList}`;
   }
   return tooltip;
-};
+}
 
 const ChildChannel = (props: Props) => {
   const { id, name, recommended, parent } = props.definition;
   const isSelected = props.selectedRows.has(id);
   const identifier = "child_" + id;
 
-  const tooltip = getTooltip(props.channelProcessor.getTooltipData(id));
-  const requiredBy = props.channelProcessor.requiredByMap.get(id);
+  const tooltip = getTooltip(props.channelProcessor.getDependencyData(id));
+  const requiredBy = props.channelProcessor.getRequiredBy(id);
 
-  const selectedBaseChannelId = props.channelProcessor.selectedBaseChannelId;
+  const selectedBaseChannelId = props.channelProcessor.getSelectedBaseChannelId();
   const selectedBaseChannel = selectedBaseChannelId
-    ? props.channelProcessor.channelIdToChannel(selectedBaseChannelId)
+    ? props.channelProcessor.getChannelById(selectedBaseChannelId)
     : undefined;
   const isRequiredBySelectedBaseChannel = Boolean(selectedBaseChannel && requiredBy?.has(selectedBaseChannel));
   const isReqiredByBase = requiredBy?.has(parent);

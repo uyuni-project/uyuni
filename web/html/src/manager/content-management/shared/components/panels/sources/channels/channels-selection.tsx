@@ -13,7 +13,7 @@ import { Loading } from "components/utils/loading/Loading";
 import { VirtualList } from "components/virtual-list";
 
 import BaseChannel from "./base-channel";
-import ChannelProcessor from "./channel-processor";
+import { ChannelProcessor } from "./channel-processor";
 import { useChannelsWithMandatoryApi, useLoadSelectOptions } from "./channels-api";
 import ChannelsFilters from "./channels-filters";
 import { getInitialFiltersState } from "./channels-filters-state";
@@ -70,7 +70,7 @@ const ChannelsSelection = (props: PropsType) => {
       }
 
       // Select the new base along with any recommended children
-      const channel = channelProcessor.channelIdToChannel(channelId);
+      const channel = channelProcessor.getChannelById(channelId);
       onToggleChannelSelect(channel, true);
       if (isBaseChannel(channel)) {
         onToggleChannelOpen(channel, true);
@@ -91,9 +91,12 @@ const ChannelsSelection = (props: PropsType) => {
         if (newSearch) {
           // Open all channels when search changes so visible child matches are also visible
           setOpenRows(new Set(newRows?.map((row) => row.base.id)));
-        } else if (channelProcessor.selectedBaseChannelId) {
+        } else {
           // When change is cleared, close all besides the selected base
-          setOpenRows(new Set([channelProcessor.selectedBaseChannelId]));
+          const selectedBaseChannelId = channelProcessor.getSelectedBaseChannelId();
+          if (selectedBaseChannelId) {
+            setOpenRows(new Set([selectedBaseChannelId]));
+          }
         }
       });
     }, 100),
@@ -106,18 +109,18 @@ const ChannelsSelection = (props: PropsType) => {
     }
     if (toState) {
       selectedChannelIds.add(channel.id);
-      const requires = channelProcessor.requiresMap.get(channel.id);
+      const requires = channelProcessor.getRequires(channel.id);
       requires?.forEach((item) => selectedChannelIds.add(item.id));
       setSelectedChannelIds(new Set([...selectedChannelIds]));
     } else {
       selectedChannelIds.delete(channel.id);
-      const requiredBy = channelProcessor.requiredByMap.get(channel.id);
+      const requiredBy = channelProcessor.getRequiredBy(channel.id);
       requiredBy?.forEach((item) => selectedChannelIds.delete(item.id));
       setSelectedChannelIds(new Set([...selectedChannelIds]));
     }
 
     // Propagate selection to parent views
-    const selectedChannelLabels = channelProcessor.channelIdsToLabels(Array.from(selectedChannelIds));
+    const selectedChannelLabels = channelProcessor.getChannelLabelsByIds(Array.from(selectedChannelIds));
     props.onChange(selectedChannelLabels);
   };
 
@@ -140,7 +143,7 @@ const ChannelsSelection = (props: PropsType) => {
         search={search}
         openRows={openRows}
         selectedRows={selectedChannelIds}
-        selectedBaseChannelId={channelProcessor.selectedBaseChannelId}
+        selectedBaseChannelId={channelProcessor.getSelectedBaseChannelId()}
         channelProcessor={channelProcessor}
         onToggleChannelSelect={(selfOrChild, toState) => onToggleChannelSelect(selfOrChild, toState)}
         onToggleChannelOpen={(channelId) => onToggleChannelOpen(channelId)}
