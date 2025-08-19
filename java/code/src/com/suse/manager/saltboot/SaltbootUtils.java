@@ -68,7 +68,7 @@ public class SaltbootUtils {
         String sep = ConfigDefaults.get().getCobblerNameSeparator();
         label = label.replace(' ', '_').replaceAll("[^a-zA-Z0-9_.-]", "");
 
-        String orgName = org.getName().replaceAll("[^a-zA-Z0-9_-]", "").replace(' ', '_');
+        String orgName = org.getName().replaceAll("[^a-zA-Z0-9_-]", "");
         // mark the saltboot entries with 'S' so the namespaces do not conflict
         String format = "%s" + sep + "S" + sep + "%s" + sep + "%s";
         return String.format(format, label, org.getId(), orgName);
@@ -78,7 +78,7 @@ public class SaltbootUtils {
         String sep = ConfigDefaults.get().getCobblerNameSeparator();
         String label = imageInfo.getName() + "-" + imageInfo.getVersion();
         label = label.replace(' ', '_').replaceAll("[^a-zA-Z0-9_.-]", "");
-        String orgName = imageInfo.getOrg().getName().replaceAll("[^a-zA-Z0-9_-]", "").replace(' ', '_');
+        String orgName = imageInfo.getOrg().getName().replaceAll("[^a-zA-Z0-9_-]", "");
         String suffix = sep + "S" + sep + imageInfo.getOrg().getId() + sep + orgName;
         return "^(" + Pattern.quote(label) + "-(\\d+))" + Pattern.quote(suffix) + "$";
     }
@@ -87,21 +87,21 @@ public class SaltbootUtils {
         String sep = ConfigDefaults.get().getCobblerNameSeparator();
         String label = imageInfo.getName();
         label = label.replace(' ', '_').replaceAll("[^a-zA-Z0-9_.-]", "");
-        String orgName = imageInfo.getOrg().getName().replaceAll("[^a-zA-Z0-9_-]", "").replace(' ', '_');
+        String orgName = imageInfo.getOrg().getName().replaceAll("[^a-zA-Z0-9_-]", "");
         String suffix = sep + "S" + sep + imageInfo.getOrg().getId() + sep + orgName;
         return "^(" + Pattern.quote(label) + "-\\d+\\.\\d+\\.\\d+-\\d+)" + Pattern.quote(suffix) + "$";
     }
 
     private static String makeCobblerFilterDefault(Org org) {
         String sep = ConfigDefaults.get().getCobblerNameSeparator();
-        String orgName = org.getName().replaceAll("[^a-zA-Z0-9_-]", "").replace(' ', '_');
+        String orgName = org.getName().replaceAll("[^a-zA-Z0-9_-]", "");
         String suffix = sep + "S" + sep + org.getId() + sep + orgName;
         return "^(.*-\\d+\\.\\d+\\.\\d+-\\d+)" + Pattern.quote(suffix) + "$";
     }
 
     private static String makeCobblerFilterSystem(Org org) {
         String sep = ConfigDefaults.get().getCobblerNameSeparator();
-        String orgName = org.getName().replaceAll("[^a-zA-Z0-9_-]", "").replace(' ', '_');
+        String orgName = org.getName().replaceAll("[^a-zA-Z0-9_-]", "");
         String suffix = sep + "S" + sep + org.getId() + sep + orgName;
         return "^[a-zA-Z0-9_.-]*" + Pattern.quote(suffix) + "$";
     }
