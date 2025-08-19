@@ -2,8 +2,8 @@ import { ChannelTreeType } from "core/channels/type/channels.type";
 
 import produce from "utils/produce";
 
+import ChannelProcessor from "./channel-processor";
 import { channelsFiltersAvailable } from "./channels-filters-state";
-import ChannelProcessor from "./channels-processor";
 
 export function getTooltipData(this: ChannelProcessor, channelId: number) {
   const [requiresNames, requiredByNames] = [this.requiresMap.get(channelId), this.requiredByMap.get(channelId)].map(

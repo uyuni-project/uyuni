@@ -5,7 +5,7 @@ import { BaseChannelType, ChildChannelType } from "core/channels/type/channels.t
 import { ChannelAnchorLink } from "components/links";
 import { Highlight } from "components/table/Highlight";
 
-import ChannelProcessor from "./channels-processor";
+import ChannelProcessor from "./channel-processor";
 import styles from "./channels-selection.module.scss";
 
 type Props = {
