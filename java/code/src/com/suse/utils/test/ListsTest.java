@@ -103,6 +103,15 @@ public class ListsTest  {
     }
 
     @Test
+    public void testEmptyMerge() {
+        List<Integer> result = Lists.merge(List.of(), List.of(2, 3, 3, 5));
+        assertEquals(List.of(2, 3, 5), result);
+
+        result = Lists.merge(List.of(1, 2, 3), List.of());
+        assertEquals(List.of(1, 2, 3), result);
+    }
+
+    @Test
     public void testSubtract() {
         List<Integer> result = Lists.subtract(List.of(1, 2, 3), List.of(2, 3, 5));
         assertEquals(List.of(1), result);
@@ -114,6 +123,15 @@ public class ListsTest  {
         assertEquals(List.of(), result);
 
         result = Lists.merge(List.of(1, 2, 3), null);
+        assertEquals(List.of(1, 2, 3), result);
+    }
+
+    @Test
+    public void testEmptySubtract() {
+        List<Integer> result = Lists.subtract(List.of(), List.of(2, 3, 3, 5));
+        assertEquals(List.of(), result);
+
+        result = Lists.merge(List.of(1, 2, 3), List.of());
         assertEquals(List.of(1, 2, 3), result);
     }
 }

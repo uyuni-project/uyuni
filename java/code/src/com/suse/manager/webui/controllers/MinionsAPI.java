@@ -139,6 +139,8 @@ public class MinionsAPI {
 
     private final CloudPaygManager cloudPaygManager;
 
+    private final MigrationDataFactory dataFactory;
+
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .registerTypeAdapter(BootstrapHostsJson.AuthMethod.class, new AuthMethodAdapter())
@@ -158,11 +160,12 @@ public class MinionsAPI {
      * @param attestationManagerIn the attestation manager
      * @param taskomaticApiIn the taskomatic api client
      * @param cloudPaygManagerIn they payg manager
+     * @param dataFactoryIn the migration data factory
      */
     public MinionsAPI(SaltApi saltApiIn, SSHMinionBootstrapper sshMinionBootstrapperIn,
                       RegularMinionBootstrapper regularMinionBootstrapperIn, SaltKeyUtils saltKeyUtilsIn,
                       AttestationManager attestationManagerIn, TaskomaticApi taskomaticApiIn,
-                      CloudPaygManager cloudPaygManagerIn) {
+                      CloudPaygManager cloudPaygManagerIn, MigrationDataFactory dataFactoryIn) {
         this.saltApi = saltApiIn;
         this.sshMinionBootstrapper = sshMinionBootstrapperIn;
         this.regularMinionBootstrapper = regularMinionBootstrapperIn;
@@ -170,6 +173,7 @@ public class MinionsAPI {
         this.attestationManager = attestationManagerIn;
         this.taskomaticApi = taskomaticApiIn;
         this.cloudPaygManager = cloudPaygManagerIn;
+        this.dataFactory = dataFactoryIn;
     }
 
     /**
@@ -756,28 +760,30 @@ public class MinionsAPI {
 
 
     private String computeMigrationChannels(Request request, Response response, User user) {
-        var dataFactory = new MigrationDataFactory();
-
-        var migrationChannelsRequest = GSON.fromJson(request.body(), MigrationChannelsRequest.class);
-
-        List<MinionServer> serverList;
-
-        SUSEProductSet source;
-        SUSEProductSet target;
+        MigrationChannelsRequest migrationChannelsRequest;
 
         try {
-            serverList = MinionServerFactory.lookupByIds(migrationChannelsRequest.serverIds())
+            migrationChannelsRequest = GSON.fromJson(request.body(), MigrationChannelsRequest.class);
+        }
+        catch (RuntimeException ex) {
+            LOG.error("Unable to compute channels for the product migration", ex);
+            return badRequest(response, ex.getMessage());
+        }
+
+        try {
+            List<MinionServer> serverList = MinionServerFactory.lookupByIds(migrationChannelsRequest.serverIds())
                 .toList();
             if (CollectionUtils.isEmpty(serverList)) {
                 throw new IllegalArgumentException(LOCAL.getMessage("system.migration.noServersSelected"));
             }
 
             // Extract the common base product to use as source of the migration, if possible
-            source = DistUpgradeManager.getCommonSourceProduct(serverList)
+            SUSEProductSet source = DistUpgradeManager.getCommonSourceProduct(serverList)
                 .orElseThrow(() -> new IllegalArgumentException(LOCAL.getMessage("system.migration.noCommonProduct")));
 
             // Compute the targets from the common base, considering only the system with correct base installed
-            target = DistUpgradeManager.getTargetProductSets(user, serverList, Optional.of(source)).stream()
+            SUSEProductSet target = DistUpgradeManager.getTargetProductSets(user, serverList, Optional.of(source))
+                .stream()
                 .filter(productSet -> migrationChannelsRequest.targetId().equals(productSet.getSerializedProductIDs()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(LOCAL.getMessage("system.migration.noTarget")));
@@ -796,8 +802,6 @@ public class MinionsAPI {
     }
 
     private String scheduleMigration(Request request, Response response, User user) {
-        var dataFactory = new MigrationDataFactory();
-
         MigrationScheduleRequest scheduleRequest;
 
         try {
@@ -807,7 +811,6 @@ public class MinionsAPI {
             LOG.error("Unable to schedule product migration action", ex);
             return badRequest(response, ex.getMessage());
         }
-
 
         try {
             List<Server> serverList = MinionServerFactory.lookupByIds(scheduleRequest.serverIds())
