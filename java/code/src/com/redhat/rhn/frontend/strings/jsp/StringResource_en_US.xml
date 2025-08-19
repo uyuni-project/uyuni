@@ -25023,6 +25023,9 @@ given channel.</source>
       <trans-unit id="spmigration.jsp.confirm.submit.dry-run" xml:space="preserve">
         <source>Dry Run</source>
       </trans-unit>
+      <trans-unit id="spmigration.jsp.dryrun.disabled.tooltip" xml:space="preserve">
+        <source>Dry run is not available for this product.</source>
+      </trans-unit>
       <trans-unit id="server.contact-method.label" xml:space="preserve">
         <source>Contact Method:</source>
       </trans-unit>

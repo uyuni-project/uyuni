@@ -107,18 +107,16 @@
                     </c:if>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">
-                    <bean:message key="spmigration.jsp.allow.vendor.change" />
-                </label>
-                <div class="col-sm-10">
-                    <ul class="form-control-static products-list">
-                        <li>
-                            <input  name="allowVendorChange" type="checkbox" />
-                        </li>
-                    </ul>
+            <c:if test="${!isRedHatMinion}">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        <bean:message key="spmigration.jsp.allow.vendor.change" />
+                    </label>
+                    <div class="col-sm-10 form-control-static products-list">
+                        <input name="allowVendorChange" type="checkbox" />
+                    </div>
                 </div>
-            </div>
+            </c:if>
             <div class="form-group">
                 <div class="col-sm-offset-2 offset-sm-2 col-sm-10">
                     <button type="submit" name="dispatch"
