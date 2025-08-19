@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  UYUNI_PROJECT: jordimassaguerpla
+  UYUNI_PROJECT: uyuni-project
   UYUNI_VERSION: master
 
 jobs:
