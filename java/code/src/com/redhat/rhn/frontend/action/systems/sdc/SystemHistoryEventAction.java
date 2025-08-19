@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2014--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
