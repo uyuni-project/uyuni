@@ -1036,12 +1036,11 @@ public class DistUpgradeManager extends BaseManager {
         Set<SUSEProduct> result = new HashSet<>();
         List<SUSEProduct> installedAddons = installedProductSet.map(SUSEProductSet::getAddonProducts).orElse(List.of());
 
-        for (SUSEProductSet target : migrationTargets) {
-            // Find all the targets that don't have a matching base
-            target.getAddonProducts().stream()
-                .filter(targetAddon -> DistUpgradeManager.findSource(targetAddon, installedAddons) == null)
-                .forEach(result::add);
-        }
+        // Find all the targets that don't have a matching base
+        migrationTargets.stream()
+            .flatMap(target -> target.getAddonProducts().stream())
+            .filter(targetAddon -> DistUpgradeManager.findSource(targetAddon, installedAddons) == null)
+            .forEach(result::add);
 
         return result;
     }

@@ -123,8 +123,8 @@ public class DistUpgradeAction extends Action {
                     Collectors.mapping(DistUpgradeChannelTask::getChannel, Collectors.toList())
                 ));
 
-            List<Channel> subbed = channelTaskMap.get(true);
-            List<Channel> unsubbed = channelTaskMap.get(false);
+            List<Channel> subscribedChannels = channelTaskMap.get(true);
+            List<Channel> unsubscribedChannels = channelTaskMap.get(false);
 
             getServerActions()
                 .stream()
@@ -132,8 +132,8 @@ public class DistUpgradeAction extends Action {
                 .flatMap(s -> s.getServer().asMinionServer().stream())
                 .forEach(minion -> {
                     Set<Channel> currentChannels = minion.getChannels();
-                    unsubbed.forEach(currentChannels::remove);
-                    currentChannels.addAll(subbed);
+                    unsubscribedChannels.forEach(currentChannels::remove);
+                    currentChannels.addAll(subscribedChannels);
                     MinionPillarManager.INSTANCE.generatePillar(minion);
                     ServerFactory.save(minion);
                 });
@@ -145,7 +145,7 @@ public class DistUpgradeAction extends Action {
             susemanager.put("distupgrade", distupgrade);
             distupgrade.put("dryrun", actionDetails.isDryRun());
             distupgrade.put(SaltParameters.ALLOW_VENDOR_CHANGE, actionDetails.isAllowVendorChange());
-            distupgrade.put("channels", subbed.stream()
+            distupgrade.put("channels", subscribedChannels.stream()
                 .sorted()
                 .map(c -> "susemanager:" + c.getLabel())
                 .collect(Collectors.toList()));
@@ -198,12 +198,12 @@ public class DistUpgradeAction extends Action {
                     Collectors.mapping(DistUpgradeChannelTask::getChannel, Collectors.toList())
                 ));
 
-            List<Channel> subbed = channelTaskMap.get(true);
-            List<Channel> unsubbed = channelTaskMap.get(false);
+            List<Channel> subscribedChannels = channelTaskMap.get(true);
+            List<Channel> unsubscribedChannels = channelTaskMap.get(false);
 
             Set<Channel> currentChannels = serverAction.getServer().getChannels();
-            subbed.forEach(currentChannels::remove);
-            currentChannels.addAll(unsubbed);
+            subscribedChannels.forEach(currentChannels::remove);
+            currentChannels.addAll(unsubscribedChannels);
             ServerFactory.save(serverAction.getServer());
 
             var channelsChangedEvent = new ChannelsChangedEventMessage(serverId);
