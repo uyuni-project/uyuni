@@ -4,7 +4,7 @@ import { BaseChannelType, ChannelTreeType, ChildChannelType } from "core/channel
 
 import { Highlight } from "components/table/Highlight";
 
-import ChannelProcessor from "./channels-processor";
+import ChannelProcessor from "./channel-processor";
 import styles from "./channels-selection.module.scss";
 import ChildChannel from "./child-channel";
 import EmptyChild from "./empty-child";
