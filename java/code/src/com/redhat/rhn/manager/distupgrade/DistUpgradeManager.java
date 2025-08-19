@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 SUSE LLC
+ * Copyright (c) 2012--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.redhat.rhn.manager.distupgrade;
@@ -810,12 +806,32 @@ public class DistUpgradeManager extends BaseManager {
      *
      * @param installedProducts Optional set of the installed products
      * @param allMigrationTargets all calculated migration targets
-     * @param missingSuccessorExtensions OUT: info about installed extensions missing a successor
      * @return list of valid migration targets
      */
     public static List<SUSEProductSet> removeIncompatibleTargets(Optional<SUSEProductSet> installedProducts,
+                                                                  List<SUSEProductSet> allMigrationTargets) {
+        return removeIncompatibleTargets(installedProducts, allMigrationTargets, Optional.empty());
+    }
+
+    /**
+     * Remove incompatible migration targets compared to the installed products.
+     * Write the failed products in the missingSuccesorExtensions set in case it should
+     * be shown somewhere.
+     *
+     * @param installedProducts Optional set of the installed products
+     * @param allMigrationTargets all calculated migration targets
+     * @param missingSuccessors OUT: info about installed extensions missing a successor
+     * @return list of valid migration targets
+     */
+    public static List<SUSEProductSet> removeIncompatibleTargets(Optional<SUSEProductSet> installedProducts,
+                                                                  List<SUSEProductSet> allMigrationTargets,
+                                                                  Set<SUSEProduct> missingSuccessors) {
+        return removeIncompatibleTargets(installedProducts, allMigrationTargets, Optional.of(missingSuccessors));
+    }
+
+    private static List<SUSEProductSet> removeIncompatibleTargets(Optional<SUSEProductSet> installedProducts,
                                                                  List<SUSEProductSet> allMigrationTargets,
-                                                                 Optional<Set<String>> missingSuccessorExtensions) {
+                                                                 Optional<Set<SUSEProduct>> missingSuccessors) {
         List<SUSEProductSet> migrationTargets = new LinkedList<>();
         for (SUSEProductSet t : allMigrationTargets) {
             if (installedProducts.isPresent() && installedProducts.get().getAddonProducts().isEmpty()) {
@@ -833,12 +849,13 @@ public class DistUpgradeManager extends BaseManager {
                 migrationTargets.add(t);
             }
             else {
-                List<String> missing = missingAddonSuccessors.stream().map(SUSEProduct::getFriendlyName)
-                        .collect(Collectors.toList());
                 if (LOG.isWarnEnabled()) {
-                    LOG.warn("No migration target found for '{}'. Skipping", String.join(", ", missing));
+                    String missing = missingAddonSuccessors.stream()
+                        .map(SUSEProduct::getFriendlyName)
+                        .collect(Collectors.joining(", "));
+                    LOG.warn("No migration target found for '{}'. Skipping", missing);
                 }
-                missingSuccessorExtensions.ifPresent(l -> l.addAll(missing));
+                missingSuccessors.ifPresent(l -> l.addAll(missingAddonSuccessors));
             }
         }
         return migrationTargets;
