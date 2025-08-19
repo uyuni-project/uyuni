@@ -20,7 +20,7 @@ interface Props {
   migrationTarget: MigrationProduct;
   migrationChannels: ChannelTreeType;
   allowVendorChange: boolean;
-  onBack: () => void;
+  onBack?: () => void;
   onConfirm: (dryRun: boolean, earliest: moment.Moment, actionChain?: ActionChain) => Promise<void>;
 }
 
@@ -106,13 +106,15 @@ export const MigrationConfirmScheduleForm: React.FC<Props> = ({
           )}
         />
         <div className="col-md-offset-3 offset-md-3 btn-group">
-          <Button
-            id="back-btn"
-            icon="fa-chevron-left"
-            className="btn-default"
-            text={t("Back to channel selection")}
-            handler={onBack}
-          />
+          {onBack !== undefined && (
+            <Button
+              id="back-btn"
+              icon="fa-chevron-left"
+              className="btn-default"
+              text={t("Back to channel selection")}
+              handler={onBack}
+            />
+          )}
           <AsyncButton
             id="dry-run-btn"
             className="btn-default"

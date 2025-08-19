@@ -6,7 +6,13 @@ import {
 import { BaseChannelType, ChannelTreeType, ChannelType, ChildChannelType } from "core/channels/type/channels.type";
 import { computeReverseDependencies } from "core/channels/utils/channels-dependencies.utils";
 
+import { ActionChainLink, ActionLink } from "components/links";
+import { MessageType, Utils as MessagesUtils } from "components/messages/messages";
+
 import { Utils } from "utils/functions";
+import Network from "utils/network";
+
+import { MigrationScheduleRequest } from "./types";
 
 /**
  * Process the channels and the mandatory data to extract the information needed by the frontend logic
@@ -99,4 +105,24 @@ function getAsChannelTree(baseChannel: BaseChannelType, children: Set<ChildChann
   };
 }
 
-export const MigrationUtils = { processChannelData, getAsChannelTree };
+async function performMigration(migrationRequest: MigrationScheduleRequest): Promise<MessageType[]> {
+  const response = await Network.post("/rhn/manager/api/systems/migration/schedule", migrationRequest);
+  return MessagesUtils.info(
+    migrationRequest.actionChain ? (
+      <span>
+        {t('Action has been successfully added to the action chain <link>"{name}"</link>.', {
+          name: migrationRequest.actionChain,
+          link: (str) => <ActionChainLink id={response.data}>{str}</ActionChainLink>,
+        })}
+      </span>
+    ) : (
+      <span>
+        {t("The action has been <link>scheduled</link>.", {
+          link: (str) => <ActionLink id={response.data}>{str}</ActionLink>,
+        })}
+      </span>
+    )
+  );
+}
+
+export const MigrationUtils = { processChannelData, getAsChannelTree, performMigration };
