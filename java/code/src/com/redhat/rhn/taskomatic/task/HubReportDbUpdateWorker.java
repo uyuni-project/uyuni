@@ -40,7 +40,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class HubReportDbUpdateWorker implements QueueWorker {
@@ -89,7 +89,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
         this.parentQueue = queue;
     }
 
-    private List<String> filterExistingTables(Session remoteSession, Long serverId) {
+    private Stream<String> filterExistingTables(Session remoteSession, Long serverId) {
         SelectMode query = dbHelper.generateExistingTables(remoteSession, TABLES);
         DataResult<Map<String, Object>> result = query.execute();
         Set<Map.Entry<String, Object>> tableEntry = result.get(0).entrySet();
@@ -102,7 +102,8 @@ public class HubReportDbUpdateWorker implements QueueWorker {
             return false;
         });
 
-        return tableEntry.stream().map(t -> String.valueOf(t.getValue())).collect(Collectors.toList());
+        return tableEntry.stream()
+            .map(t -> String.valueOf(t.getValue()));
     }
 
     private void updateRemoteData(Session remoteSession, Session localSession, String tableName, long mgmId) {
@@ -145,56 +146,72 @@ public class HubReportDbUpdateWorker implements QueueWorker {
         try {
             HubReportDbUpdateDriver.getCurrentMgrServerInfos().add(mgrServerInfo);
             parentQueue.workerStarting();
-            ConnectionManager localRcm = ConnectionManagerFactory.localReportingConnectionManager();
-            ReportDbHibernateFactory localRh = new ReportDbHibernateFactory(localRcm);
-            ReportDBCredentials credentials = mgrServerInfo.getReportDbCredentials();
-            ConnectionManager remoteDBCM = ConnectionManagerFactory.reportingConnectionManager(
-                    credentials.getUsername(), credentials.getPassword(),
-                    ConfigDefaults.get().remoteReportDBUrl(
-                            mgrServerInfo.getReportDbHost(),
-                            mgrServerInfo.getReportDbPort(),
-                            mgrServerInfo.getReportDbName())
-                    );
-            ReportDbHibernateFactory remoteDB = new ReportDbHibernateFactory(remoteDBCM);
-            try {
-                List<String> existingTables = filterExistingTables(remoteDB.getSession(), mgrServerInfo.getId());
-                existingTables.forEach(table -> {
-                    updateRemoteData(remoteDB.getSession(), localRh.getSession(), table, mgrServerInfo.getId());
-                });
-                dbHelper.analyzeReportDb(localRh.getSession());
-                Server mgrServer = ServerFactory.lookupById(mgrServerInfo.getId());
-                mgrServer.getMgrServerInfo().setReportDbLastSynced(new Date());
-                ServerFactory.save(mgrServer);
-                HibernateFactory.commitTransaction();
-                localRcm.commitTransaction();
-                log.info("Reporting db updated for server {} successfully.", mgrServerInfo.getServer().getId());
-            }
-            catch (RuntimeException ex) {
-                log.warn("Unable to update reporting db", ex);
 
-                try {
-                    localRcm.rollbackTransaction();
-                }
-                catch (RuntimeException rollbackException) {
-                    log.warn("Unable to rollback transaction", rollbackException);
-                }
-            }
-            finally {
-                remoteDB.closeSession();
-                remoteDB.closeSessionFactory();
-                localRcm.closeSession();
-                localRcm.close();
-            }
+            ReportDbHibernateFactory localDB = getLocalReportDbHibernateFactory();
+            ReportDbHibernateFactory remoteDB = getRemoteReportDbHibernateFactory();
+
+            extractDataFromRemoteDatabase(localDB, remoteDB);
         }
         catch (Exception e) {
             parentQueue.getQueueRun().failed();
             parentQueue.changeRun(null);
-            log.error(e.getMessage(), e);
+
+            log.error("Unable to update reporting db from {}", mgrServerInfo.getServer().getName(), e);
         }
         finally {
             parentQueue.workerDone();
             HibernateFactory.closeSession();
             HubReportDbUpdateDriver.getCurrentMgrServerInfos().remove(mgrServerInfo);
         }
+    }
+
+    private void extractDataFromRemoteDatabase(ReportDbHibernateFactory localDB, ReportDbHibernateFactory remoteDB) {
+        try {
+            Stream<String> existingTables = filterExistingTables(remoteDB.getSession(), mgrServerInfo.getId());
+            existingTables.forEach(table -> {
+                updateRemoteData(remoteDB.getSession(), localDB.getSession(), table, mgrServerInfo.getId());
+            });
+            dbHelper.analyzeReportDb(localDB.getSession());
+            Server mgrServer = ServerFactory.lookupById(mgrServerInfo.getId());
+            mgrServer.getMgrServerInfo().setReportDbLastSynced(new Date());
+            ServerFactory.save(mgrServer);
+            HibernateFactory.commitTransaction();
+            localDB.commitTransaction();
+            log.info("Reporting db updated for server {} successfully.", mgrServerInfo.getServer().getId());
+        }
+        catch (RuntimeException ex) {
+            try {
+                localDB.rollbackTransaction();
+            }
+            catch (RuntimeException rollbackException) {
+                log.warn("Unable to rollback transaction", rollbackException);
+            }
+
+            throw ex;
+        }
+        finally {
+            remoteDB.closeSession();
+            remoteDB.closeSessionFactory();
+            localDB.closeSession();
+            localDB.closeSessionFactory();
+        }
+    }
+
+    private ReportDbHibernateFactory getRemoteReportDbHibernateFactory() {
+        ReportDBCredentials credentials = mgrServerInfo.getReportDbCredentials();
+        ConnectionManager remoteConnectionManager = ConnectionManagerFactory.reportingConnectionManager(
+                credentials.getUsername(), credentials.getPassword(),
+                ConfigDefaults.get().remoteReportDBUrl(
+                        mgrServerInfo.getReportDbHost(),
+                        mgrServerInfo.getReportDbPort(),
+                        mgrServerInfo.getReportDbName())
+                );
+
+        return new ReportDbHibernateFactory(remoteConnectionManager);
+    }
+
+    private static ReportDbHibernateFactory getLocalReportDbHibernateFactory() {
+        ConnectionManager localConnectionManager = ConnectionManagerFactory.localReportingConnectionManager();
+        return new ReportDbHibernateFactory(localConnectionManager);
     }
 }
