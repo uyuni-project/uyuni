@@ -19,6 +19,7 @@ import static com.redhat.rhn.GlobalInstanceHolder.ACCESS_CONTROL_NAMESPACE_TREE_
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -78,19 +79,19 @@ public class AccessGroupController {
      */
     public static void initRoutes() {
         get("/manager/api/admin/access-control/access-group/list_custom",
-                asJson(withProductAdmin(AccessGroupController::listCustomAccessGroups)));
+                asJson(withUser(AccessGroupController::listCustomAccessGroups)));
         get("/manager/api/admin/access-control/access-group/list_namespaces",
-                asJson(withProductAdmin(AccessGroupController::listNamespaces)));
+                asJson(withUser(AccessGroupController::listNamespaces)));
         get("/manager/api/admin/access-control/access-group/organizations/:orgId/users",
-                asJson(withProductAdmin(AccessGroupController::listOrgUsers)));
+                asJson(withUser(AccessGroupController::listOrgUsers)));
         get("/manager/api/admin/access-control/access-group/organizations",
-                asJson(withProductAdmin(AccessGroupController::listOrganizations)));
+                asJson(withUser(AccessGroupController::listOrganizations)));
         get("/manager/api/admin/access-control/access-group/organizations/:orgId/access-groups",
-                asJson(withProductAdmin(AccessGroupController::listAccessGroups)));
+                asJson(withUser(AccessGroupController::listAccessGroups)));
         post("/manager/api/admin/access-control/access-group/save",
-                asJson(withProductAdmin(AccessGroupController::save)));
+                asJson(withUser(AccessGroupController::save)));
         delete("/manager/api/admin/access-control/access-group/delete/:id",
-                asJson(withProductAdmin(AccessGroupController::remove)));
+                asJson(withUser(AccessGroupController::remove)));
     }
 
     /**

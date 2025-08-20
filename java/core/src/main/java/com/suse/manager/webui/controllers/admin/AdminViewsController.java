@@ -14,6 +14,7 @@ package com.suse.manager.webui.controllers.admin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 
@@ -99,11 +100,11 @@ public class AdminViewsController {
         get("/manager/admin/config/password-policy",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPasswordPolicy))), jade);
         get("/manager/admin/access-control",
-                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::accessControl))), jade);
+                withUserPreferences(withCsrfToken(withUser(AdminViewsController::accessControl))), jade);
         get("/manager/admin/access-control/create-access-group",
-                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::createAccessGroup))), jade);
+                withUserPreferences(withCsrfToken(withUser(AdminViewsController::createAccessGroup))), jade);
         get("/manager/admin/access-control/show-access-group/:id",
-                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showAccessGroup))), jade);
+                withUserPreferences(withCsrfToken(withUser(AdminViewsController::showAccessGroup))), jade);
         get("/manager/admin/setup/payg",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::listPayg))), jade);
         get("/manager/admin/setup/payg/create",
