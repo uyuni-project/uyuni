@@ -15,6 +15,7 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -70,12 +71,10 @@ public class PackageCleanup extends RhnJavaJob {
             // Delete them from the filesystem
             for (Row row : candidates) {
                 String path = (String) row.get("path");
-                if (log.isDebugEnabled()) {
-                    log.debug("Deleting package {}", path);
-                }
                 if (path == null) {
                     continue;
                 }
+                log.info("Deleting package {}", path);
                 deletePackage(pkgDir, path);
             }
 
@@ -108,11 +107,22 @@ public class PackageCleanup extends RhnJavaJob {
     private void changeOrgForOrphanVendorPackages() {
         LocalTime now = LocalTime.now();
         if (now.isAfter(DAILY_JOB_START) && now.isBefore(DAILY_JOB_END)) {
+            SelectMode mode = ModeFactory.getMode(TaskConstants.MODE_NAME,
+                    TaskConstants.TASK_QUERY_PKGCLEANUP_FIND_ORPHAN_VENDOR_PACKAGES);
+            DataResult<Row> orphans = mode.execute();
+            if (orphans.isEmpty()) {
+                return;
+            }
+            log.info("Found orphan packages");
+            for (Row orphanPackage : orphans) {
+                log.info("- {} ({})", orphanPackage.get("nevra"), orphanPackage.get("id"));
+            }
+
             WriteMode update = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                     TaskConstants.TASK_QUERY_PKGCLEANUP_ORPHAN_VENDOR_PKG_CHANGE_ORG);
             int updates = update.executeUpdate(Map.of("org_id", OrgFactory.getSatelliteOrg().getId()));
             if (updates > 0) {
-                log.info("Found {} orphan vendor packages and moved them to the default organization.", updates);
+                log.info("Changed {} orphan vendor packages and moved them to the default organization.", updates);
             }
         }
     }
@@ -126,8 +136,7 @@ public class PackageCleanup extends RhnJavaJob {
     private void deletePackage(String pkgDir, String path) {
         File f = new File(pkgDir, path);
         if (f.exists() && f.canWrite() && !f.isDirectory()) {
-            f.delete();
-            if (log.isDebugEnabled()) {
+            if (f.delete()) {
                 log.debug("Deleting {}", f.getAbsoluteFile());
             }
 
