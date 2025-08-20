@@ -618,8 +618,8 @@ public class ProxyHandler extends BaseHandler {
             Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, serverId);
             server.asMinionServer().ifPresent(systemManager::backupProxyConfig);
         }
-        catch (RhnRuntimeException e) {
-            LOG.error("Failed to backup the proxy configuration", e);
+        catch (RhnRuntimeException | InvalidProxyVersionException e) {
+            LOG.error("Failed to backup a proxy configuration", e);
             throw new SaltFaultException(e.getMessage());
         }
         return 1;

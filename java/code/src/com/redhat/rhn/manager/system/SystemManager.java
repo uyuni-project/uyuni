@@ -16,7 +16,6 @@
 
 package com.redhat.rhn.manager.system;
 
-import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
@@ -68,7 +67,6 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
-import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -136,13 +134,10 @@ import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.controllers.StatesAPI;
-import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
-import com.suse.proxy.ProxyConfigUtils;
-import com.suse.proxy.model.ProxyConfig;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Opt;
@@ -157,8 +152,6 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.net.IDN;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.sql.Date;
 import java.sql.Types;
@@ -3945,7 +3938,13 @@ public class SystemManager extends BaseManager {
      *
      * @param proxy the proxy minion to back up
      */
-    public void backupProxyConfig(MinionServer proxy) {
+    public void backupProxyConfig(MinionServer proxy) throws InvalidProxyVersionException, RhnRuntimeException {
+        // Ensure server is 4.3 proxy server
+        if (!(proxy.isProxy() && proxy.getRelease().equals("15.4"))) {
+            throw new InvalidProxyVersionException("Proxy backup supports only non-containerized 4.3 proxies");
+        }
+
+        // TODO: call this async
         // Call proxy.backup salt module
         LocalCall<Xor<String, List<String>>> call = new LocalCall<>("proxy.backup", empty(), empty(),
                 new TypeToken<>() {  });
@@ -3955,42 +3954,5 @@ public class SystemManager extends BaseManager {
                 },
                 success -> success
         ));
-
-        Path base = Paths.get(SaltConstants.SALT_CP_PUSH_ROOT_PATH, proxy.getMinionId(), "files");
-        Path tmpPath = Path.of(SALT_FILE_GENERATION_TEMP_PATH);
-
-        files.ifPresent(configFiles -> {
-            // Move files where we can read them
-            List<String> copiedFiles = configFiles.stream().map(file -> {
-                String newPath = String.format("proxy-%s_%s", proxy.getId(), file.replace("/", "_"));
-                saltApi.copyFile(base.resolve(file), tmpPath.resolve(newPath), true, true);
-                saltApi.removeFile(base.resolve(file));
-                return newPath;
-            }).toList();
-
-            // Copy the backup common files as pillar in the database
-            Path configPath = copiedFiles.stream().filter(file -> file.endsWith("_config.yaml"))
-                    .findFirst().map(tmpPath::resolve).orElse(null);
-            Path httpdPath = copiedFiles.stream().filter(file -> file.endsWith("_httpd.yaml"))
-                    .findFirst().map(tmpPath::resolve).orElse(null);
-            Path sshPath = copiedFiles.stream().filter(file -> file.endsWith("_ssh.yaml"))
-                    .findFirst().map(tmpPath::resolve).orElse(null);
-
-            ProxyConfig config = ProxyConfigUtils.loadFilesToProxyConfig(configPath, httpdPath, sshPath);
-            Pillar configPillar = ProxyConfigUtils.proxyConfigToPillar(config).setMinion(proxy);
-
-            proxy.getPillarByCategory(ProxyConfigUtils.PROXY_PILLAR_CATEGORY).ifPresentOrElse(
-                    pillar -> {
-                        proxy.getPillars().remove(pillar);
-                        proxy.addPillar(configPillar);
-                    },
-                    () -> {
-                        proxy.addPillar(configPillar);
-                    });
-
-            // TODO create config channel for custom config files if needed
-
-            // TODO Remove the files in the temporary folder
-        });
     }
 }
