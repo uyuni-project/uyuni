@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.org.Org;
 
@@ -261,6 +262,36 @@ public class Pillar implements Identifiable, Serializable {
     }
 
     /**
+     * Get a single string value from the pillar
+     * The path consists of : separated components. An empty component takes the first item.
+     *
+     * @param path the path in the pillar
+     * @return the value
+     */
+    public String getPillarValue(String path) {
+        Object value = getPillar();
+        try {
+            for (String key: path.split(":")) {
+                Map<String, Object> entry = (Map<String, Object>)value;
+                if (key.isEmpty()) {
+                    value = entry.entrySet().iterator().next().getValue();
+                }
+                else {
+                    value = entry.get(key);
+                }
+            }
+        }
+        catch (NullPointerException e) {
+            throw new LookupException("The pillar path does not exist");
+        }
+        if (value == null) {
+            throw new LookupException("The pillar entry does not exist");
+        }
+
+        return (String)value;
+    }
+
+    /**
      * Set pillar value
      *
      * @param pillarIn pillar value in JSON format
@@ -303,6 +334,27 @@ public class Pillar implements Identifiable, Serializable {
      */
     public void add(String key, Object value) {
         getPillar().put(key, value);
+    }
+
+    /**
+     * Get a list of ServerGroups for a given category
+     *
+     * @param category the pillar category
+     * @return List of ServerGroups that have pillars with the given category
+     */
+    public static List<ServerGroup> getGroupsForCategory(String category) {
+        CriteriaBuilder criteriaBuilder = HibernateFactory.getSession().getCriteriaBuilder();
+        CriteriaQuery<ServerGroup> criteriaQuery = criteriaBuilder.createQuery(ServerGroup.class);
+        Root<Pillar> root = criteriaQuery.from(Pillar.class);
+
+        criteriaQuery.select(root.get("group"))
+                 .where(criteriaBuilder.and(
+                     criteriaBuilder.equal(root.get("category"), category),
+                     criteriaBuilder.isNotNull(root.get("group"))
+                 ))
+                 .distinct(true);
+
+        return HibernateFactory.getSession().createQuery(criteriaQuery).getResultList();
     }
 
     /**

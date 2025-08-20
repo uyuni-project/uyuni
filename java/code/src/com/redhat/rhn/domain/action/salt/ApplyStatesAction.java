@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.action.salt;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFormatter;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.notification.NotificationMessage;
@@ -26,18 +27,22 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.salt.netapi.calls.LocalCall;
 
 import com.google.gson.JsonElement;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -170,6 +175,43 @@ public class ApplyStatesAction extends Action {
                 auxArgs.getSaltUtils().updateSystemInfo(jsonResult, minion);
             }
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Map<String, String>> createActionSpecificDetails(ServerAction serverAction) {
+        final List<Map<String, String>> additionalInfo = new ArrayList<>();
+
+        final ApplyStatesActionDetails detail = ActionFactory.lookupApplyStatesActionDetails(getId());
+        if (detail != null) {
+            final Optional<ApplyStatesActionResult> serverResult = detail.getResult(serverAction.getServerId());
+
+            final String output = serverResult.flatMap(ApplyStatesActionResult::getResult)
+                    .orElse(Collections.emptyList())
+                    .stream()
+                    .sorted(Comparator.comparing(StateResult::getRunNum))
+                    .map(StateResult::toString)
+                    .collect(Collectors.joining());
+
+            final String returnCode = serverResult.map(ApplyStatesActionResult::getReturnCode)
+                    .map(Object::toString)
+                    .orElse("");
+
+            additionalInfo.add(Map.of("detail", output, "result", returnCode));
+        }
+
+        return additionalInfo;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canBeScheduledAnyway() {
+        // Special Case: we want to allow channel changing but it calls a state.apply
+        return (getDetails() != null && getDetails().getMods().equals(List.of(ApplyStatesEventMessage.CHANNELS)));
     }
 
 }

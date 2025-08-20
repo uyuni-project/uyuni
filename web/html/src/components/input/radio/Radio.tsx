@@ -6,15 +6,29 @@ import { FormContext } from "../form/Form";
 import { InputBase, InputBaseProps } from "../InputBase";
 import styles from "./Radio.module.scss";
 
+interface RadioOption {
+  /** The label of this option */
+  label: React.ReactNode;
+  /** The value to set when this option is selected */
+  value: string;
+  /** Specific title of this option */
+  title?: string;
+  /** true if this option is currently not selectable */
+  disabled?: boolean;
+}
+
 type Props = InputBaseProps & {
   /** Items to display in an array of objects with label and value properties. */
-  items: Array<{ label: React.ReactNode; value: string }>;
+  items: Array<RadioOption>;
 
   /** Show the choices in a line or not */
   inline?: boolean;
 
   /** Whether to let the user input another value than the proposed ones */
   openOption?: boolean;
+
+  /** CSS class for the <label> element wrapping the <input> */
+  customRadioClass?: string;
 
   /** CSS class for the <input> element */
   inputClass?: string;
@@ -26,7 +40,7 @@ type Props = InputBaseProps & {
 export function Radio(props: Props) {
   const [isPristine, setIsPristine] = useState(true);
 
-  const { items, inputClass, ...propsToPass } = props;
+  const { items, customRadioClass, inputClass, ...propsToPass } = props;
   const formContext = React.useContext(FormContext);
   return (
     <InputBase {...propsToPass}>
@@ -40,11 +54,15 @@ export function Radio(props: Props) {
         const isOpenOption =
           props.openOption && !props.items.some((item) => item.value === fieldValue) && (fieldValue || !isPristine);
 
-        const radioClass = props.inline ? "radio-inline" : "radio";
+        let radioClass = props.inline ? "radio-inline" : "radio";
+        if (customRadioClass !== undefined) {
+          radioClass = radioClass + " " + customRadioClass;
+        }
+
         return (
           <span className={styles.radio}>
-            {props.items.map(({ label, value }) => (
-              <label className={radioClass} key={`${props.name}_${value}`}>
+            {props.items.map(({ label, value, title, disabled }) => (
+              <label className={radioClass} key={`${props.name}_${value}`} title={title}>
                 <ControlledInput
                   type="radio"
                   name={props.name}
@@ -54,6 +72,7 @@ export function Radio(props: Props) {
                   className={inputClass}
                   onBlur={onBlur}
                   onChange={(event) => onChange(event.target.name, event.target.value)}
+                  disabled={disabled ?? false}
                 />
                 {label}
               </label>
@@ -91,6 +110,7 @@ export function Radio(props: Props) {
 Radio.defaultProps = {
   inline: false,
   openOption: false,
+  customRadioClass: undefined,
   inputClass: undefined,
   defaultValue: undefined,
   label: undefined,

@@ -11,6 +11,7 @@
 
 package com.suse.coco.module.snpguest.io;
 
+import com.suse.coco.module.snpguest.execution.AbstractSNPGuestWrapper;
 import com.suse.coco.module.snpguest.model.AttestationReport;
 import com.suse.coco.module.snpguest.model.EpycGeneration;
 
@@ -22,13 +23,17 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
  * Creates {@link VerificationDirectory} used to store the data needed by the SNPGuest tool
  * to perform validation.
  *
- * @see com.suse.coco.module.snpguest.execution.SNPGuestWrapper
+ * @see AbstractSNPGuestWrapper
  */
 public class VerificationDirectoryProvider {
     public static final Path DEFAULT_CERTIFICATION_PATH = Path.of("/usr/share/coco-attestation/certs");
@@ -98,6 +103,18 @@ public class VerificationDirectoryProvider {
             throw ex.getCause();
         }
 
+        // Retrieve and save VLEK certificate if needed
+        if (report.isUsingVlekAttestation()) {
+            String vlekCertificate = report.getVlekCertificate();
+
+            try {
+                Files.write(certs.resolve(VerificationDirectory.VLEK_FILE), vlekCertificate.getBytes());
+            }
+            catch (IOException ioEx) {
+                throw new UncheckedIOException(ioEx);
+            }
+        }
+
         // Store the report in the file report.bin
         Files.write(basePath.resolve("report.bin"), report.getReport());
 
@@ -108,10 +125,13 @@ public class VerificationDirectoryProvider {
     }
 
     private Path createTemporaryPath(String prefix) throws IOException {
+        FileAttribute<Set<PosixFilePermission>> attr =
+                PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwx------"));
+
         if (baseWorkingDir == null) {
-            return Files.createTempDirectory(prefix);
+            return Files.createTempDirectory(prefix, attr);
         }
 
-        return Files.createTempDirectory(baseWorkingDir, prefix);
+        return Files.createTempDirectory(baseWorkingDir, prefix, attr);
     }
 }

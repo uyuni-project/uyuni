@@ -16,11 +16,13 @@ package com.redhat.rhn.domain.action;
 
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionSummary;
 
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.TransactionalUpdate;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -44,4 +46,35 @@ public class RebootAction extends Action {
                 )
         );
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
+        boolean result = false;
+        if (sa.isStatusPickedUp() && sa.getPickupTime() != null) {
+            result = bootTime.after(sa.getPickupTime());
+        }
+        else if (sa.isStatusPickedUp() && sa.getPickupTime() == null) {
+            result = bootTime.after(getEarliestAction());
+        }
+        else if (sa.isStatusQueued()) {
+            if (getPrerequisite() != null) {
+                // queued reboot actions that do not complete in 12 hours will
+                // be cleaned up by MinionActionUtils.cleanupMinionActions()
+                result = false;
+            }
+            else {
+                result = bootTime.after(getEarliestAction());
+            }
+        }
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("shouldCleanupAction Server:{} Action: {} BootTime: {} PickupTime: {} EarliestAction {}" +
+                            " Result: {}", sa.getServer().getId(), getId(), bootTime,
+                    sa.getPickupTime(), getEarliestAction(), result);
+        }
+        return result;
+    }
+
 }

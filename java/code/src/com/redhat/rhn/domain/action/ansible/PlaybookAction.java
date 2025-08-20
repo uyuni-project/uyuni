@@ -18,7 +18,9 @@ import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionSummary;
+import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -33,6 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * PlaybookAction - Action class representing the execution of an Ansible playbook
@@ -108,4 +112,13 @@ public class PlaybookAction extends Action {
                 Optional.of(details.isTestMode()));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setRequestAttributePlaybook(HttpServletRequest request, ServerAction serverAction, User user) {
+        request.setAttribute("typePlaybook", true);
+        String inventory = new PlaybookActionFormatter(this).getTargetedSystems(serverAction, user);
+        request.setAttribute("inventory", inventory);
+    }
 }

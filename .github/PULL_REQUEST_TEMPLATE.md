@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2025 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 ## What does this PR change?
 
 **add description**
@@ -33,7 +39,7 @@ After:
 ## Links
 
 Issue(s): #
-Port(s): # **add downstream PR(s), if any**
+Port(s): # **add upstream PR(s), if any**
 
 - [ ] **DONE**
 
@@ -53,7 +59,9 @@ If you need to re-run a test, please mark the related checkbox, it will be unche
 
 - [ ] Re-run test "changelog_test"
 - [ ] Re-run test "backend_unittests_pgsql"
+- [ ] Re-run test "java_lint_checkstyle"
 - [ ] Re-run test "java_pgsql_tests"
+- [ ] Re-run test "ruby_rubocop"
 - [ ] Re-run test "schema_migration_test_pgsql"
 - [ ] Re-run test "susemanager_unittests"
 - [ ] Re-run test "javascript_lint"

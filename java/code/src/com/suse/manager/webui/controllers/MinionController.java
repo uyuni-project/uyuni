@@ -22,8 +22,12 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.supportdata.UploadGeoType;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -36,17 +40,25 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ShortSystemInfo;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import com.suse.manager.model.attestation.CoCoEnvironmentType;
+import com.suse.manager.model.products.migration.MigrationDataFactory;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.manager.webui.utils.gson.SimpleMinionJson;
 import com.suse.manager.webui.utils.gson.UploadRegion;
 import com.suse.utils.Json;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -54,9 +66,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -67,6 +79,12 @@ import spark.template.jade.JadeTemplateEngine;
  * Controller class providing backend code for the minions page.
  */
 public class MinionController {
+
+    private static final Logger LOGGER = LogManager.getLogger(MinionController.class);
+
+    public static final Gson GSON = new GsonBuilder()
+        .serializeNulls()
+        .create();
 
     private MinionController() { }
 
@@ -150,6 +168,10 @@ public class MinionController {
                 withCsrfToken(withDocsLocale(withUser(MinionController::ssmCoCoSettings))), jade);
         get("/manager/systems/ssm/coco/schedule",
             withCsrfToken(withDocsLocale(withUser(MinionController::ssmCoCoSchedule))), jade);
+        get("/manager/systems/ssm/product-migration",
+            withCsrfToken(withDocsLocale(withUser(MinionController::productMigration))), jade);
+        get("/manager/systems/ssm/product-migration/dry-run/:actionId",
+            withCsrfToken(withDocsLocale(withUser(MinionController::productMigrationFromDryRun))), jade);
     }
 
     private static void initPTFRoutes(JadeTemplateEngine jade) {
@@ -642,7 +664,7 @@ public class MinionController {
     private static void addCoCoMetadata(Map<String, Object> data) {
         // Confidential computing environment types. Using linked hash map to keep the enum order
         Map<String, String> environmentMap = new LinkedHashMap<>();
-        Stream.of(CoCoEnvironmentType.values())
+        CoCoEnvironmentType.validValues()
             .forEach(e -> environmentMap.put(e.name(), e.getDescription()));
 
         data.put("availableEnvironmentTypes", Json.GSON.toJson(environmentMap));
@@ -748,5 +770,88 @@ public class MinionController {
         addActionChains(user, data);
 
         return new ModelAndView(data, "templates/ssm/coco-ssm-schedule.jade");
+    }
+
+    /**
+     * Handler for the ssm product migration page
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView productMigration(Request request, Response response, User user) {
+        var dataFactory = new MigrationDataFactory();
+
+        // List all the systems in the SSM
+        List<MinionServer> serverList = MinionServerFactory.lookupByIds(SsmManager.listServerIds(user)).toList();
+
+        // Extract the common base product to use as source of the migration, if possible
+        Optional<SUSEProductSet> sourceSet = DistUpgradeManager.getCommonSourceProduct(serverList);
+
+        // Compute the targets from the common base, considering only the system with correct base installed
+        List<SUSEProductSet> targetSets = DistUpgradeManager.getTargetProductSets(user, serverList, sourceSet);
+
+        // Convert everything to the JSON format for the response
+        var productMigrationData = dataFactory.toMigrationTargetSelection(serverList, sourceSet, targetSets);
+
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("entityType", "SSM");
+        data.put("tabs", ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/ssm.xml"));
+        data.put("productMigrationData", GSON.toJson(productMigrationData));
+
+        addActionChains(user, data);
+
+        return new ModelAndView(data, "templates/ssm/product-migration.jade");
+    }
+
+    /**
+     * Handler for the product migration from a previous dry run
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView productMigrationFromDryRun(Request request, Response response, User user) {
+        var action = getActionFromPath(request.params("actionId"));
+        if (action == null) {
+            // Something wrong with the path parameter, fallback to standard SSM product migration
+            return productMigration(request, response, user);
+        }
+
+        var dataFactory = new MigrationDataFactory();
+        var migrationData = dataFactory.toMigrationDryRunConfirmation(action, user);
+
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("entityType", "SSM");
+        data.put("tabs", ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/ssm.xml"));
+        data.put("dataFromDryRun", GSON.toJson(migrationData));
+
+        addActionChains(user, data);
+
+        return new ModelAndView(data, "templates/ssm/migration-from-dry-run.jade");
+    }
+
+    private static DistUpgradeAction getActionFromPath(String parameter) {
+        if (parameter == null) {
+            LOGGER.warn("Invalid request, no action id parameter");
+            return null;
+        }
+
+        try {
+            Action action = ActionFactory.lookupById(Long.parseLong(parameter));
+            if (!(action instanceof DistUpgradeAction distUpgradeAction)) {
+                return null;
+            }
+
+            return distUpgradeAction;
+        }
+        catch (NumberFormatException ex) {
+            LOGGER.warn("Ignoring invalid parameter {} passed as action id", parameter, ex);
+            return null;
+        }
     }
 }

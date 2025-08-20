@@ -536,16 +536,17 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
                 PACKAGE_TO_REMOVE, hostServer);
         Action removal = null;
         if (!installed.isEmpty()) {
-            removal = ActionManager.schedulePackageRemoval(user, hostServer,
-                    installed, scheduleDate);
+            removal = ActionManager.schedulePackageAction(user, installed,
+                    ActionFactory.TYPE_PACKAGES_REMOVE, scheduleDate, hostServer);
         }
 
         // Install packages on the host server.
         Action packageAction = null;
         if (!this.packagesToInstall.isEmpty()) {
             log.debug("** Creating packageAction");
-            packageAction = ActionManager.schedulePackageInstall(
-                    this.user, hostServer, this.packagesToInstall, scheduleDate);
+            packageAction = ActionManager.schedulePackageAction(this.user, this.packagesToInstall,
+                    ActionFactory.TYPE_PACKAGES_UPDATE, scheduleDate, hostServer);
+
             packageAction.setPrerequisite(removal);
             log.debug("** Created packageAction ? {}", packageAction.getId());
         }
@@ -811,7 +812,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         rebootAction.setPrerequisite(prereqAction);
         rebootAction.setEarliestAction(this.getScheduleDate());
         rebootAction.setOrg(this.getUser().getOrg());
-        rebootAction.setName(rebootAction.getActionType().getName());
+        rebootAction.setName(rebootAction.getActionTypeName());
         log.debug("** saving reboot action: {}", rebootAction.getName());
         ActionFactory.save(rebootAction);
         taskomaticApi.scheduleActionExecution(rebootAction);

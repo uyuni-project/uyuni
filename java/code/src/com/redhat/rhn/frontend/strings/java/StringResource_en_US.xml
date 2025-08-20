@@ -9846,16 +9846,34 @@ For a detailed analysis, please refer to the log files.
         <source>None</source>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.description">
-        <source>KVM on AMD Epyc Processor, second generation (milan)</source>
+        <source>KVM on AMD Epyc Processor, third generation (milan)</source>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.label">
         <source>KVM on AMD Epyc - Milan</source>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description">
-        <source>KVM on AMD Epyc Processor, third generation (genoa)</source>
+        <source>KVM on AMD Epyc Processor, fourth generation (genoa)</source>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.label">
         <source>KVM on AMD Epyc - Genoa</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.description">
+        <source>KVM on AMD Epyc Processor, fourth generation (bergamo)</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.label">
+        <source>KVM on AMD Epyc - Bergamo</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_siena.description">
+        <source>KVM on AMD Epyc Processor, fourth generation (siena)</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_siena.label">
+        <source>KVM on AMD Epyc - Siena</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_turin.description">
+        <source>KVM on AMD Epyc Processor, fifth generation (turin)</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_turin.label">
+        <source>KVM on AMD Epyc - Turin</source>
       </trans-unit>
       <trans-unit id="coco.resultType.none.description">
         <source>Result Type not found</source>
@@ -9890,6 +9908,15 @@ For a detailed analysis, please refer to the log files.
       <trans-unit id="system.audit.coco.configNotUpdated">
         <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
       </trans-unit>
+      <trans-unit id="system.migration.noServersSelected">
+          <source>Unable to identify the selected systems for the migration.</source>
+      </trans-unit>
+      <trans-unit id="system.migration.noCommonProduct">
+          <source>The selected systems do not have a common base product.</source>
+      </trans-unit>
+      <trans-unit id="system.migration.noServersSelected">
+          <source>Unable to identify a valid migration target for the selected systems.</source>
+      </trans-unit>
       <trans-unit id="system.details.support.invalid_case_number">
         <source>The case number {0} is not valid.</source>
       </trans-unit>
@@ -9901,6 +9928,42 @@ For a detailed analysis, please refer to the log files.
       </trans-unit>
       <trans-unit id="system.details.support.unable_to_upload">
         <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
+      </trans-unit>
+      <trans-unit id="product_migration.os_not_supported">
+        <source>Product Migrations are not supported for the OS of this system.</source>
+      </trans-unit>
+      <trans-unit id="product_migration.source_unknown">
+        <source>The base product of this system is unknown.</source>
+      </trans-unit>
+      <trans-unit id="product_migration.source_mismatch">
+        <source>The base product of this system does not match.</source>
+      </trans-unit>
+      <trans-unit id="product_migration.salt_needs_update">
+        <source>Salt installed on this system is out of date.</source>
+      </trans-unit>
+      <trans-unit id="product_migration.salt_needs_update.details">
+        <source>The installed &lt;pre&gt;{0}&lt;/pre&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
+      </trans-unit>
+      <trans-unit id="product_migration.addons_affected">
+        <source>Some installed addons are going to be affect, depending on chosen target.</source>
+      </trans-unit>
+      <trans-unit id="product_migration.single.addons_affected">
+        <source>Some installed addons are going to be affect.</source>
+      </trans-unit>
+      <trans-unit id="product_migration.addons_affected.missing_successors">
+        <source>&lt;p&gt;Depending on chosen target, some or all of these products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
+      </trans-unit>
+      <trans-unit id="product_migration.single.addons_affected.missing_successors">
+        <source>&lt;p&gt;These products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
+      </trans-unit>
+      <trans-unit id="product_migration.addons_affected.installed_addons">
+        <source>&lt;p&gt;Depending on chosen target, some or all of these products will be installed:&lt;/p&gt;{0}</source>
+      </trans-unit>
+      <trans-unit id="product_migration.single.addons_affected.installed_addons">
+        <source>&lt;p&gt;These products will be installed:&lt;/p&gt;{0}</source>
+      </trans-unit>
+      <trans-unit id="product_migration.addon_or_higher">
+        <source>{0} or higher</source>
       </trans-unit>
     </body>
   </file>

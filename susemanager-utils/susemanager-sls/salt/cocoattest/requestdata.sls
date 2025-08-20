@@ -6,7 +6,7 @@ mgr_create_attestdir:
     - name: /tmp/cocoattest
     - dir_mode: 700
 
-{% if salt['pillar.get']('attestation_data:environment_type', 'NONE') in ['KVM_AMD_EPYC_MILAN', 'KVM_AMD_EPYC_GENOA'] %}
+{% if salt['pillar.get']('attestation_data:environment_type', 'NONE') not in ['NONE'] %}
 
 mgr_inst_snpguest:
   pkg.latest:
@@ -35,6 +35,19 @@ mgr_snpguest_report:
     - name: /usr/bin/cat /tmp/cocoattest/report.bin | /usr/bin/base64
     - require:
       - cmd: mgr_create_snpguest_report
+      - file: mgr_create_attestdir
+
+mgr_create_vlek_certificate:
+  cmd.run:
+    - name: /usr/bin/snpguest certificates PEM /tmp/cocoattest
+    - require:
+      - file: mgr_create_attestdir
+
+mgr_vlek_certificate:
+  cmd.run:
+    - name: /usr/bin/cat /tmp/cocoattest/vlek.pem
+    - require:
+      - cmd: mgr_create_vlek_certificate
       - file: mgr_create_attestdir
 
 mgr_secureboot_enabled:

@@ -112,6 +112,8 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
                 // Nothing to do
             }
         };
+        contentSyncManager.setSccRefreshLock(new MockFileLocks());
+
         PAYG_DATA_TASK.setContentSyncManager(contentSyncManager);
         PAYG_DATA_TASK.setSccRefreshLock(new MockFileLocks());
     }
@@ -164,6 +166,7 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
 
             // download the product data from Cloud RMT
             ContentSyncManager csm = new ContentSyncManager(tmpLogDir, mgr);
+            csm.setSccRefreshLock(new MockFileLocks());
             ContentSyncManager.setChannelFamiliesJson(new File(TestUtils.findTestData(CHANNEL_FAMILY).getPath()));
             ContentSyncManager.setAdditionalProductsJson(
                     new File(TestUtils.findTestData(ADDITIONAL_PRODUCTS).getPath()));

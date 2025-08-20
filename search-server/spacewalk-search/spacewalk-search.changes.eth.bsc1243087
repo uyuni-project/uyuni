@@ -1,0 +1,1 @@
+- Harden XML RPC server error handling (bsc#1243087)

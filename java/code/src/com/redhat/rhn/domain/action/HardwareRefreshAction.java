@@ -166,4 +166,15 @@ public class HardwareRefreshAction extends Action {
             LOG.debug("Hardware profile updated for minion: {} ({} seconds)", server.getMinionId(), duration);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean rejectScheduleActionIfByos() {
+        // Hardware refresh detect PAYG/BYOS type and refresh it. This should be possible also
+        // for BYOS systems in case the former detection failed. On error PAYG is set to false,
+        // and we need a way to repeat the detection.
+        return false;
+    }
 }

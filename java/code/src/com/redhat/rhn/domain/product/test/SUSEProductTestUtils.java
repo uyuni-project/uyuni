@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 SUSE LLC
+ * Copyright (c) 2014--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.domain.product.test;
 
@@ -31,6 +27,7 @@ import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
+import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
@@ -46,6 +43,7 @@ import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.ProductTreeEntry;
 import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.MockFileLocks;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.salt.netapi.parser.JsonParser;
@@ -77,6 +75,13 @@ import java.util.stream.Collectors;
  * Utility methods for creating SUSE related test data.
  */
 public class SUSEProductTestUtils extends HibernateFactory {
+
+    public static class TestContentSyncManager extends ContentSyncManager {
+        public TestContentSyncManager() {
+            super();
+            setSccRefreshLock(new MockFileLocks());
+        }
+    }
 
     private static final Random RANDOM = new Random();
     private static Logger log = LogManager.getLogger(SUSEProductTestUtils.class);
@@ -565,7 +570,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         }
         repositories.addAll(addRepos);
 
-        ContentSyncManager csm = new ContentSyncManager() {
+        ContentSyncManager csm = new TestContentSyncManager() {
             @Override
             protected boolean accessibleUrl(String url, String user, String password) {
                 // allow all none SCC URLs
@@ -575,7 +580,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         ContentSyncSource contentSyncSource = null;
         if (fromdir) {
             Config.get().setString(ContentSyncManager.RESOURCE_PATH, "sumatest");
-            csm = new ContentSyncManager() {
+            csm = new TestContentSyncManager() {
                 @Override
                 protected boolean accessibleUrl(String url, String user, String password) {
                     // allow all none SCC URLs
@@ -605,7 +610,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
     }
 
     public static void addChannelsForProduct(SUSEProduct product) {
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new TestContentSyncManager();
         product.getChannelTemplates()
         .stream()
         .filter(ChannelTemplate::isMandatory)
@@ -633,7 +638,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
      */
     public static void addChannelsForProductAndParent(SUSEProduct product, SUSEProduct root,
             boolean mandatory, List<Long> optionalChannelIds) {
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new TestContentSyncManager();
         product.getChannelTemplates()
         .stream()
         .filter(pr -> pr.getRootProduct().equals(root))
@@ -774,6 +779,12 @@ public class SUSEProductTestUtils extends HibernateFactory {
         credentials.setUser(user);
         CredentialsFactory.storeCredentials(credentials);
         return credentials;
+    }
+
+    public static SUSEProductExtension createTestSUSEExtension(SUSEProduct base, SUSEProduct extension,
+                                                               SUSEProduct root) {
+        SUSEProductExtension productExtension = new SUSEProductExtension(base, extension, root, false);
+        return TestUtils.saveAndReload(productExtension);
     }
 
     /**

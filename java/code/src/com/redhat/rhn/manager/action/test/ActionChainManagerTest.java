@@ -18,6 +18,7 @@ package com.redhat.rhn.manager.action.test;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -151,7 +152,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         PlaybookAction savedAction = (PlaybookAction) ActionFactory.lookupByUserAndId(user, action.getId());
         assertNotNull(savedAction);
         assertEquals("Execute playbook 'myplaybook.yml'", savedAction.getName());
-        assertEquals(ActionFactory.TYPE_PLAYBOOK, savedAction.getActionType());
+        assertInstanceOf(PlaybookAction.class, savedAction);
         assertEquals(earliestAction, savedAction.getEarliestAction());
 
         // Verify the details
@@ -180,7 +181,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         PlaybookAction savedAction = (PlaybookAction) ActionFactory.lookupByUserAndId(user, action.getId());
         assertNotNull(savedAction);
         assertEquals("Execute playbook 'myplaybook.yml'", savedAction.getName());
-        assertEquals(ActionFactory.TYPE_PLAYBOOK, savedAction.getActionType());
+        assertInstanceOf(PlaybookAction.class, savedAction);
         assertEquals(earliestAction, savedAction.getEarliestAction());
 
         // Verify the details

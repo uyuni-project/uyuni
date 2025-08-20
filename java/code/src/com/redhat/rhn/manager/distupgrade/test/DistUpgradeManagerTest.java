@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 SUSE LLC
+ * Copyright (c) 2013--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.manager.distupgrade.test;
 
@@ -18,6 +14,7 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -81,6 +78,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -156,7 +154,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
                 Optional.of(sourceProducts), arch, user);
         targetProductSets = DistUpgradeManager.removeIncompatibleTargets(Optional.of(sourceProducts),
-                targetProductSets, Optional.empty());
+                targetProductSets);
         assertNotNull(targetProductSets);
         assertTrue(targetProductSets.isEmpty());
     }
@@ -180,7 +178,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
                 Optional.of(sourceProducts), arch , user);
         targetProductSets = DistUpgradeManager.removeIncompatibleTargets(Optional.of(sourceProducts),
-                targetProductSets, Optional.empty());
+                targetProductSets);
         assertNotNull(targetProductSets);
         assertEquals(1, targetProductSets.size());
         assertEquals(targetProduct, targetProductSets.get(0).getBaseProduct());
@@ -203,7 +201,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
                 Optional.of(sourceProducts), arch, user);
         targetProductSets = DistUpgradeManager.removeIncompatibleTargets(Optional.of(sourceProducts),
-                targetProductSets, Optional.empty());
+                targetProductSets);
 
         assertNotNull(targetProductSets);
         assertTrue(targetProductSets.isEmpty());
@@ -269,7 +267,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
                 Optional.of(sourceProducts), arch, user);
 
         targetProductSets = DistUpgradeManager.removeIncompatibleTargets(
-                Optional.of(sourceProducts), targetProductSets, Optional.empty());
+                Optional.of(sourceProducts), targetProductSets);
 
         assertNotNull(targetProductSets);
         assertEquals(2, targetProductSets.size());
@@ -354,7 +352,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
                 DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
 
         targetProductSets = DistUpgradeManager.removeIncompatibleTargets(
-                Optional.of(sourceProducts), targetProductSets, Optional.empty());
+                Optional.of(sourceProducts), targetProductSets);
 
         assertNotNull(targetProductSets);
         assertEquals(2, targetProductSets.size());
@@ -444,7 +442,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
                 DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
 
         targetProductSets = DistUpgradeManager.removeIncompatibleTargets(
-                Optional.of(sourceProducts), targetProductSets, Optional.empty());
+                Optional.of(sourceProducts), targetProductSets);
 
         assertNotNull(targetProductSets);
         assertEquals(2, targetProductSets.size());
@@ -663,16 +661,20 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         channelIDs.add(channel1.getId());
         channelIDs.add(channel2.getId());
         Date scheduleDate = new Date();
+
         Long actionID = DistUpgradeManager.scheduleDistUpgrade(
-                user, server, targetSet, channelIDs, true, false, scheduleDate, false);
+            user, List.of(server), targetSet, channelIDs, true, false, false, scheduleDate, null
+        ).get(0).getId();
+
         // Get the scheduled action and check the contents
         DistUpgradeAction action = (DistUpgradeAction) ActionFactory.lookupById(actionID);
-        assertEquals(ActionFactory.TYPE_DIST_UPGRADE, action.getActionType());
+        assertInstanceOf(DistUpgradeAction.class, action);
+
         assertEquals(user, action.getSchedulerUser());
         assertEquals(scheduleDate, action.getEarliestAction());
         Set<ServerAction> serverActions = action.getServerActions();
         assertEquals(server, serverActions.iterator().next().getServer());
-        DistUpgradeActionDetails details = action.getDetails();
+        DistUpgradeActionDetails details = action.getDetails(server.getId());
         assertTrue(details.isDryRun());
         assertFalse(details.isAllowVendorChange());
         //These products will be removed after migration
@@ -742,13 +744,15 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         List<SUSEProductSet> targetProductSets =
                 DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
 
-        Set<String> msg = new HashSet<>();
+        Set<SUSEProduct> msg = new HashSet<>();
         targetProductSets = DistUpgradeManager.removeIncompatibleTargets(
-                Optional.of(sourceProducts), targetProductSets, Optional.of(msg));
+                Optional.of(sourceProducts), targetProductSets, msg);
 
         assertNotNull(targetProductSets);
         assertEquals(0, targetProductSets.size());
-        assert msg.contains(ltssSP1AddonProduct.getFriendlyName());
+        assertTrue(msg.stream().anyMatch(missingProduct ->
+            Objects.equals(missingProduct.getFriendlyName(), ltssSP1AddonProduct.getFriendlyName()))
+        );
 
         // Setup target ltss addon product + upgrade path
         SUSEProduct ltssSP2AddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
@@ -763,7 +767,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
                 ltssSP2AddonChannel, user);
         targetProductSets = DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
         targetProductSets = DistUpgradeManager.removeIncompatibleTargets(
-                Optional.of(sourceProducts), targetProductSets, Optional.empty());
+                Optional.of(sourceProducts), targetProductSets);
         // now the migration should be possible
         assertNotNull(targetProductSets);
         assertEquals(1, targetProductSets.size());
@@ -926,7 +930,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         }
 
         targetProductSets = DistUpgradeManager.removeIncompatibleTargets(
-                Optional.of(sourceProducts), targetProductSets, Optional.empty());
+                Optional.of(sourceProducts), targetProductSets);
 
         assertNotNull(targetProductSets);
         assertEquals(1, targetProductSets.size());
@@ -998,7 +1002,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         assertEquals(0, targetProductSets.size());
 
         targetProductSets = DistUpgradeManager.removeIncompatibleTargets(
-                Optional.of(sourceProducts), targetProductSets, Optional.empty());
+                Optional.of(sourceProducts), targetProductSets);
 
         assertNotNull(targetProductSets);
         assertEquals(0, targetProductSets.size());

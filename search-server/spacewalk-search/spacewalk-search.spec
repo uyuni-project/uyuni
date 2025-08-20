@@ -46,6 +46,7 @@ BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-lang3
 BuildRequires:  apache-commons-logging
+BuildRequires:  apache-commons-text
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
 BuildRequires:  javapackages-tools
@@ -73,6 +74,7 @@ Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
+Requires:       apache-commons-text
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       javapackages-tools

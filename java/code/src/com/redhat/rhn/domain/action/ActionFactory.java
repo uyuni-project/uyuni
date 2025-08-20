@@ -22,9 +22,9 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
-import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
 import com.redhat.rhn.domain.action.ansible.PlaybookAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
@@ -67,11 +67,11 @@ import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
 import com.redhat.rhn.domain.config.ConfigRevision;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
@@ -81,14 +81,14 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.commons.collections.CollectionUtils;
+import com.suse.manager.maintenance.MaintenanceManager;
+
 import org.apache.commons.collections.ListUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.hibernate.type.StandardBasicTypes;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -114,7 +114,17 @@ public class ActionFactory extends HibernateFactory {
     private static final Logger LOG = LogManager.getLogger(ActionFactory.class);
     private static Set<String> actionArchTypes;
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
-    private static final LocalizationService LOCALIZATION = LocalizationService.getInstance();
+    private static MaintenanceManager maintenanceManager = new MaintenanceManager();
+
+    /**
+     * This was extracted to a constant from the
+     * ActionManager.scheduleAction(User, Server, ActionType, String, Date) method, then moved to
+     * ActionFactory.createAddServerAction(Server, Action);
+     * At the time it was in there, there was a comment "hmm 10?". Not sure what the hesitation is,
+     * but I wanted to retain that comment with regard to this value.
+     */
+    public static final Long REMAINING_TRIES = 10L;
+
 
     private ActionFactory() {
         super();
@@ -243,31 +253,6 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
-     * Creates a ServerAction and adds it to an Action
-     * @param sid The server id
-     * @param parent The parent action
-     */
-    public static void addServerToAction(Long sid, Action parent) {
-        addServerToAction(ServerFactory.lookupByIdAndOrg(sid, parent.getOrg()), parent);
-    }
-
-    /**
-     * Creates a ServerAction and adds it to an Action
-     * @param server The server
-     * @param parent The parent action
-     */
-    public static void addServerToAction(Server server, Action parent) {
-        ServerAction sa = new ServerAction();
-        sa.setCreated(new Date());
-        sa.setModified(new Date());
-        sa.setStatusQueued();
-        sa.setServerWithCheck(server);
-        sa.setParentActionWithCheck(parent);
-        sa.setRemainingTries(5L); //arbitrary number from perl
-        parent.addServerAction(sa);
-    }
-
-    /**
      * Create a ConfigRevisionAction for the given server and add it to the parent action.
      * @param revision The config revision to add to the action.
      * @param server The server for the action
@@ -356,6 +341,151 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Schedules an action for execution on one or more servers (adding rows to
+     * rhnServerAction)
+     *
+     * Also checks if the action scheduled date/time fit in systems maintenance schedules, if there are any assigned.
+     *
+     * @param action the action
+     * @param serverIds server IDs
+     */
+    public static void scheduleForExecution(Action action, Set<Long> serverIds) {
+        maintenanceManager.canActionBeScheduled(serverIds, action);
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("status_id", ActionFactory.STATUS_QUEUED.getId());
+        params.put("tries", ActionFactory.REMAINING_TRIES);
+        params.put("parent_id", action.getId());
+
+        WriteMode m = ModeFactory.getWriteMode("Action_queries", "insert_server_actions");
+        List<Long> sidList = new ArrayList<>();
+        sidList.addAll(serverIds);
+        m.executeUpdate(params, sidList);
+    }
+
+    /**
+     * Creates a ServerAction and adds it to an Action
+     * @param sid The server id
+     * @param parent The parent action
+     */
+    public static void addServerToAction(Long sid, Action parent) {
+        addServerToAction(ServerFactory.lookupByIdAndOrg(sid, parent.getOrg()), parent);
+    }
+
+    /**
+     * Creates a ServerAction and adds it to an Action
+     * @param server The server
+     * @param parent The parent action
+     */
+    public static void addServerToAction(Server server, Action parent) {
+        ServerAction sa = new ServerAction();
+        sa.setCreated(new Date());
+        sa.setModified(new Date());
+        sa.setStatusQueued();
+        sa.setServerWithCheck(server);
+        sa.setParentActionWithCheck(parent);
+        sa.setRemainingTries(5L); //arbitrary number from perl
+        parent.addServerAction(sa);
+    }
+
+    /**
+     * Creates and adds a ServerAction to an Action
+     * @param serverIn the Server associated with the created ServerAction
+     * @param actionIn the type of Action we want to create
+     */
+    public static void createAddServerAction(Server serverIn, Action actionIn) {
+
+        ServerAction sa = new ServerAction();
+        sa.setStatusQueued();
+        sa.setRemainingTries(REMAINING_TRIES);
+        sa.setServerWithCheck(serverIn);
+
+        actionIn.addServerAction(sa);
+        //probably not needed, already included in addServerAction?
+        sa.setParentActionWithCheck(actionIn);
+    }
+
+    /**
+     * Creates, saves and returns a new Action
+     * @param typeIn the type of Action we want to create
+     * @param schedulerUser the user who created this action
+     * @param actionName the action name
+     * @param earliestAction the earliest execution date
+     * @return a saved Action
+     */
+    public static Action createAndSaveAction(ActionType typeIn, User schedulerUser, String actionName,
+                                             Date earliestAction) {
+        /*
+            We have to re-lookup the type here, because most likely a static final variable
+            was passed in.  If we use this and the .reload() gets called below
+            if we try to save a new action the instance of the type in the cache
+            will be different from the final static variable
+            sometimes hibernate is no fun
+        */
+        ActionType lookedUpType = lookupActionTypeByLabel(typeIn.getLabel());
+        Action action = createAction(lookedUpType, schedulerUser, actionName, earliestAction);
+        save(action);
+        HibernateFactory.getSession().flush();
+        return action;
+    }
+
+    /**
+     * Create a new Action from scratch.
+     * @param typeIn the type of Action we want to create
+     * @param schedulerUserIn the user who created this action
+     * @param earliestIn the earliest execution date
+     * @return the Action created
+     */
+    public static Action createAction(ActionType typeIn, User schedulerUserIn,
+                                      Date earliestIn) {
+        return createAction(typeIn, schedulerUserIn, typeIn.getName(), schedulerUserIn.getOrg(), earliestIn);
+    }
+
+    /**
+     * Create a new Action from scratch.
+     * @param typeIn the type of Action we want to create
+     * @param schedulerUserIn the user who created this action
+     * @param actionName the action name
+     * @param earliestIn the earliest execution date
+     * @return the Action created
+     */
+    public static Action createAction(ActionType typeIn, User schedulerUserIn, String actionName,
+                                      Date earliestIn) {
+        return createAction(typeIn, schedulerUserIn, actionName, schedulerUserIn.getOrg(), earliestIn);
+    }
+
+    /**
+     * Create a new Action from scratch.
+     * @param typeIn the type of Action we want to create
+     * @param schedulerUserIn the user who created this action
+     * @param orgIn the Org of this action
+     * @param earliestIn the earliest execution date
+     * @return the Action created
+     */
+    public static Action createAction(ActionType typeIn, User schedulerUserIn, Org orgIn,
+                                      Date earliestIn) {
+        return createAction(typeIn, schedulerUserIn, typeIn.getName(), orgIn, earliestIn);
+    }
+
+    /**
+     * Create a new Action from scratch.
+     * @param typeIn the type of Action we want to create
+     * @param schedulerUserIn the user who created this action
+     * @param actionNameIn the action name
+     * @param orgIn the Org of this action
+     * @param earliestIn the earliest execution date
+     * @return the Action created
+     */
+    public static Action createAction(ActionType typeIn, User schedulerUserIn, String actionNameIn, Org orgIn,
+                                      Date earliestIn) {
+        Action pa = createAction(typeIn, earliestIn);
+        pa.setName(actionNameIn);
+        pa.setOrg(orgIn);
+        pa.setSchedulerUser(schedulerUserIn);
+        return pa;
+    }
+
+    /**
      * Create a new Action from scratch.
      * @param typeIn the type of Action we want to create
      * @return the Action created
@@ -365,13 +495,12 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
-     * Create a new Action from scratch
-     * with the given earliest execution.
+     * Create a new Action from scratch with the given earliestIn execution time.
      * @param typeIn the type of Action we want to create
-     * @param earliest The earliest time that this action can occur.
+     * @param earliestIn The earliest time that this action can occur.
      * @return the Action created
      */
-    public static Action createAction(ActionType typeIn, Date earliest) {
+    public static Action createAction(ActionType typeIn, Date earliestIn) {
         Action retval;
 
         if (typeIn.equals(TYPE_PACKAGES_REFRESH_LIST)) {
@@ -508,10 +637,10 @@ public class ActionFactory extends HibernateFactory {
         retval.setActionType(typeIn);
         retval.setCreated(new Date());
         retval.setModified(new Date());
-        if (earliest == null) {
-            earliest = new Date();
+        if (earliestIn == null) {
+            earliestIn = new Date();
         }
-        retval.setEarliestAction(earliest);
+        retval.setEarliestAction(earliestIn);
         //in perl(modules/rhn/RHN/DB/Scheduler.pm) version is given a 2.
         //So that's what I did.
         retval.setVersion(2L);
@@ -634,16 +763,7 @@ public class ActionFactory extends HibernateFactory {
          * the packageEvr stored proc is called first so that
          * the foreign key constraint holds.
          */
-        if (actionIn.getActionType().equals(TYPE_PACKAGES_AUTOUPDATE) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_DELTA) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_REFRESH_LIST) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_REMOVE) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_RUNTRANSACTION) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_UPDATE) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_VERIFY) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_LOCK)) {
-
-            PackageAction action = (PackageAction) actionIn;
+        if (actionIn instanceof PackageAction action) {
             Set<PackageActionDetails> details = action.getDetails();
             for (PackageActionDetails detail : details) {
                 PackageEvr evr = detail.getEvr();
@@ -833,7 +953,7 @@ public class ActionFactory extends HibernateFactory {
         .setParameter("tries", tries)
         .setParameter("failed", ActionFactory.STATUS_FAILED)
         .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
-        removeInvalidResults(action);
+        action.removeInvalidResults();
         action.getServerActions().stream()
                 .filter(sa -> sa.isFailed())
                 .map(sa -> sa.getServerId())
@@ -851,7 +971,7 @@ public class ActionFactory extends HibernateFactory {
         .setParameter("action", action)
         .setParameter("tries", tries)
         .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
-        removeInvalidResults(action);
+        action.removeInvalidResults();
         action.getServerActions().stream()
                 .map(sa -> sa.getServerId())
                 .forEach(sid -> SystemManager.updateSystemOverview(sid));
@@ -879,7 +999,7 @@ public class ActionFactory extends HibernateFactory {
         .setParameter("tries", tries)
         .setParameter("queued", ActionFactory.STATUS_QUEUED)
         .setParameter("server", server).executeUpdate();
-        removeInvalidResults(action);
+        action.removeInvalidResults();
         SystemManager.updateSystemOverview(server);
     }
 
@@ -889,24 +1009,6 @@ public class ActionFactory extends HibernateFactory {
      */
     public static ServerHistoryEvent lookupHistoryEventById(Long aid) {
         return singleton.lookupObjectByNamedQuery("ServerHistory.lookupById", Map.of("id", aid));
-    }
-
-    /**
-     * Removes results of queued action.
-     * @param action results of which action to remove
-     */
-    public static void removeInvalidResults(Action action) {
-        if (action.getActionType().equals(TYPE_SCRIPT_RUN)) {
-            HibernateFactory.getSession().createNativeQuery("""
-                  DELETE FROM rhnServerActionScriptResult sr WHERE sr.action_script_id = (
-                  SELECT as.id FROM rhnActionScript as WHERE as.action_id = :action)
-                  AND sr.server_id IN
-                  (SELECT sa.server_id FROM rhnServerAction sa WHERE sa.action_id = :action AND sa.status = :queued)
-                  """)
-            .setParameter("action", action.getId(), StandardBasicTypes.LONG)
-            .setParameter("queued", ActionFactory.STATUS_QUEUED.getId(), StandardBasicTypes.LONG)
-            .executeUpdate();
-        }
     }
 
     private static void updateActionEarliestDate(Action action) {
@@ -963,54 +1065,6 @@ public class ActionFactory extends HibernateFactory {
         );
 
         updatedServerIds.forEach(SystemManager::updateSystemOverview);
-    }
-
-    /**
-     * rejectScheduleActionIfByos rejects an action if any of the servers within it is byos
-     * @param action action to be checked
-     * @return true if the action was stopped due to byos servers within it, false otherwise
-     */
-    public static boolean rejectScheduleActionIfByos(Action action) {
-        if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
-            // Hardware refresh detect PAYG/BYOS type and refresh it. This should be possible also
-            // for BYOS systems in case the former detection failed. On error PAYG is set to false,
-            // and we need a way to repeat the detection.
-            return false;
-        }
-        List<MinionSummary> byosMinions = MinionServerFactory.findByosServers(action);
-        if (CollectionUtils.isNotEmpty(byosMinions)) {
-            LOG.error("To manage BYOS or DC servers from SUSE Multi-Linux Manager PAYG, SCC credentials must be " +
-                    "in place.");
-            Object[] args = {formatByosListToStringErrorMsg(byosMinions)};
-            rejectScheduledActions(List.of(action.getId()),
-                    LOCALIZATION.getMessage("task.action.rejection.notcompliantPaygByos", args));
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * formatByosListToStringErrorMsg formats a list of MinionSummary to show it as error message.
-     * If there are 2 or less it will return the names of the BYOS instances. If more than two, it will return a
-     * String with two of the BYOS instances plus "... and X more" to avoid having endless error message.
-     * @param byosMinions
-     * @return the error message formated
-     */
-    public static String formatByosListToStringErrorMsg(List<MinionSummary> byosMinions) {
-        if (byosMinions.size() <= 2) {
-            return byosMinions.stream()
-                    .map(MinionSummary::getMinionId)
-                    .collect(Collectors.joining(","));
-        }
-
-        String errorMsg = byosMinions.stream()
-                .map(MinionSummary::getMinionId)
-                .limit(2)
-                .collect(Collectors.joining(","));
-
-        int numberOfLeftByosServers = byosMinions.size() - 2;
-
-        return String.format("%s and %d more", errorMsg, numberOfLeftByosServers);
     }
 
     /**

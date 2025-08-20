@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 SUSE LLC
+ * Copyright (c) 2022--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
@@ -28,6 +24,7 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.SPMigrationAction;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -45,6 +42,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 
 /**
  * Unit test for {@link SPMigrationAction}
@@ -61,6 +59,7 @@ public class SPMigrationActionTest {
 
     @BeforeEach
     public void setUp() throws Exception {
+        Context.getCurrentContext().setTimezone(TimeZone.getDefault());
         request = TestUtils.getRequestWithSessionAndUser();
         requestContext = new RequestContext(request);
         User user = requestContext.getCurrentUser();

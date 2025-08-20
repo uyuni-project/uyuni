@@ -21,6 +21,7 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.SetLabels;
@@ -122,16 +123,16 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
         String messageKey = null;
 
         if (actionChain == null) {
-            Action update = ActionManager.createErrataAction(user, currentErrata);
+            Action update = ActionManager.createErrataAction(user, user.getOrg(), currentErrata);
             for (Object systemIn : systems) {
-                ActionManager.addServerToAction(
+                ActionFactory.addServerToAction(
                         ((SystemOverview) systemIn).getId(),
                         update);
             }
 
             update.setEarliestAction(getStrutsDelegate().readScheduleDate(form, "date",
                     DatePicker.YEAR_RANGE_POSITIVE));
-            ActionManager.storeAction(update);
+            ActionFactory.save(update);
             try {
                 TASKOMATIC_API.scheduleActionExecution(update);
                 MinionActionManager.scheduleStagingJobsForMinions(singletonList(update), user.getOrg());
@@ -155,8 +156,8 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
         else {
             int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
             for (Object systemIn : systems) {
-                Action update = ActionManager.createErrataAction(user, currentErrata);
-                ActionManager.storeAction(update);
+                Action update = ActionManager.createErrataAction(user, user.getOrg(), currentErrata);
+                ActionFactory.save(update);
                 ActionChainFactory.queueActionChainEntry(update, actionChain,
                         ((SystemOverview) systemIn).getId(), sortOrder);
             }

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2014--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,8 +19,6 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFormatter;
-import com.redhat.rhn.domain.action.ansible.PlaybookActionFormatter;
-import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
@@ -105,16 +104,11 @@ public class SystemHistoryEventAction extends RhnAction {
                 serverAction.isStatusPickedUp());
         request.setAttribute("completed",
                 serverAction.isStatusCompleted());
-        boolean typeDistUpgradeDryRun = action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE) &&
-                        ((DistUpgradeAction) action).getDetails().isDryRun();
-        request.setAttribute("typeDistUpgradeDryRun", typeDistUpgradeDryRun);
-        boolean typePlaybook = action.getActionType().equals(ActionFactory.TYPE_PLAYBOOK);
-        request.setAttribute("typePlaybook", typePlaybook);
-        if (typePlaybook) {
-            String inventory = new PlaybookActionFormatter(action).getTargetedSystems(
-                    serverAction, requestContext.getCurrentUser());
-            request.setAttribute("inventory", inventory);
-        }
+
+        boolean typeDistUpgradeDryRun = action.setRequestAttributeDryRun(request);
+
+        action.setRequestAttributePlaybook(request, serverAction, requestContext.getCurrentUser());
+
         if (!serverAction.isStatusCompleted() &&
                 !serverAction.isStatusFailed()) {
             request.setAttribute("referrerLink", "Pending.do");
@@ -123,7 +117,14 @@ public class SystemHistoryEventAction extends RhnAction {
         }
         if (isSubmitted((DynaActionForm)formIn)) {
             if (serverAction.isStatusCompleted() && typeDistUpgradeDryRun) {
-                return mapping.findForward("spmigration");
+                // If there is only one server use the old UI
+                if (action.getServerActions().size() == 1) {
+                    return mapping.findForward("spmigration");
+                }
+
+                // Redirect to ssm product migration, using the configured value as template
+                ActionForward forward = mapping.findForward("ssm-spmigration");
+                return new ActionForward("%s/%d".formatted(forward.getPath(), aid), forward.getRedirect());
             }
             createMessage(request, "system.event.rescheduled", action.getName(),
                     action.getId().toString());

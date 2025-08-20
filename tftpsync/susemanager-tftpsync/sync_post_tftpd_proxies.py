@@ -26,6 +26,7 @@ import cobbler.MultipartPostHandler as MultipartPostHandler
 import json
 from concurrent import futures
 import threading
+import shlex
 
 try:
     from urllib.parse import urlencode
@@ -178,6 +179,10 @@ def check_push(fn, tftpbootdir, settings, lcache='/var/lib/cobbler'):
     except:
         pass
 
+    if fn != shlex.quote(fn):
+        logger.error("%s contains shell characters, skipping", fn)
+        return db
+
     count = 0
     while not os.path.exists(fn) and count < 10:
         count += 1
@@ -260,7 +265,7 @@ class ProxySync(threading.Thread):
                 "directory": path
             }
             try:
-                response = opener.open("http://%s/tftpsync/add/" % self.proxy, params, self.timeout)
+                response = opener.open("https://%s/tftpsync/add/" % self.proxy, params, self.timeout)
             except Exception as e:
                 ret = False
                 logger.error("uploading to proxy %s failed: %s", self.proxy, e)

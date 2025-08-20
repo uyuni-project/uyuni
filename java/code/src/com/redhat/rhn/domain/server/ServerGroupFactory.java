@@ -24,6 +24,7 @@ import com.redhat.rhn.common.hibernate.DuplicateObjectException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.dto.SystemGroupID;
 import com.redhat.rhn.domain.entitlement.Entitlement;
+import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 
@@ -37,6 +38,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -201,6 +203,9 @@ public class ServerGroupFactory extends HibernateFactory {
      */
     public static void remove(SaltApi saltApi, ServerGroup group) {
         if (group != null) {
+            // remove cobbler and monitoring configuration, which is connected with formulas
+            FormulaFactory.saveGroupFormulas(group, Collections.emptyList());
+
             List<String> minions = group.getServers().stream()
                     .map(Server::asMinionServer)
                     .flatMap(Opt::stream)

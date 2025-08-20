@@ -101,7 +101,6 @@ public class ActionChainManager {
      * @return scheduled action
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
-     * @see com.redhat.rhn.manager.action.ActionManager#schedulePackageInstall
      */
     public static PackageAction schedulePackageInstall(User user, Server server,
             List<Map<String, Long>> packages, Date earliest, ActionChain actionChain)
@@ -120,7 +119,6 @@ public class ActionChainManager {
      * @return scheduled action
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
-     * @see com.redhat.rhn.manager.action.ActionManager#schedulePackageRemoval
      */
     public static PackageAction schedulePackageRemoval(User user, Server server,
             List<Map<String, Long>> packages, Date earliest, ActionChain actionChain)
@@ -207,39 +205,13 @@ public class ActionChainManager {
      * @return scheduled action
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
-     * @see com.redhat.rhn.manager.action.ActionManager#schedulePackageVerify
      * @see ActionManager#addPackageActionDetails(Collection, List) for "package map"
      */
     public static PackageAction schedulePackageVerify(User user, Server server,
             List<Map<String, Long>> packages, Date earliest, ActionChain actionChain)
         throws TaskomaticApiException {
-        return (PackageAction) schedulePackageAction(user, packages,
-            ActionFactory.TYPE_PACKAGES_VERIFY, earliest, actionChain, null, server);
-    }
-
-    /**
-     * Schedules a generic package action on a single server.
-     * @param user the user scheduling actions
-     * @param packages a list of "package maps"
-     * @param type the type
-     * @param earliest the earliest execution date
-     * @param actionChain the action chain or null
-     * @param sortOrder the sort order or null
-     * @param server the server
-     * @return scheduled action
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     * @see ActionManager#schedulePackageAction(User, List, ActionType, Date, Server...)
-     * @see ActionManager#addPackageActionDetails(Collection, List) for "package map"
-     */
-    private static Action schedulePackageAction(User user, List<Map<String, Long>> packages,
-            ActionType type, Date earliest, ActionChain actionChain, Integer sortOrder,
-            Server server)
-        throws TaskomaticApiException {
-        Set<Long> serverIds = new HashSet<>();
-        serverIds.add(server.getId());
-        return schedulePackageActions(user, packages, type, earliest, actionChain,
-            sortOrder, serverIds).iterator().next();
+        return (PackageAction) schedulePackageActions(user, packages,
+            ActionFactory.TYPE_PACKAGES_VERIFY, earliest, actionChain, null, Set.of(server.getId()));
     }
 
     /**
@@ -262,7 +234,7 @@ public class ActionChainManager {
             ActionChain actionChain, Integer sortOrder, Set<Long> serverIds)
         throws TaskomaticApiException {
 
-        String name = ActionManager.getActionName(type);
+        String name = type.getPackageActionName();
 
         Set<Action> result = createActions(user, type, name, earliestAction,
             actionChain, sortOrder, serverIds);
@@ -424,8 +396,7 @@ public class ActionChainManager {
         }
         else {
             for (Server server : servers) {
-                ConfigAction action = ActionManager
-                    .createConfigAction(user, type, earliest);
+                ConfigAction action = (ConfigAction) ActionFactory.createAction(type, user, earliest);
                 ActionManager.checkConfigActionOnServer(type, server);
                 ActionChainFactory.queueActionChainEntry(action, actionChain, server);
                 ActionManager.addConfigurationRevisionsToAction(user, revisions, action,
@@ -473,7 +444,7 @@ public class ActionChainManager {
         ActionType type, Date earliest, ActionChain actionChain) throws TaskomaticApiException {
         Set<Action> result = new HashSet<>();
         if (actionChain == null) {
-            ConfigAction action = ActionManager.createConfigAction(user, type, earliest);
+            ConfigAction action = (ConfigAction) ActionFactory.createAction(type, user, earliest);
             ActionFactory.save(action);
 
             for (Server server : servers) {
@@ -490,8 +461,7 @@ public class ActionChainManager {
         else {
             int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
             for (Server server : servers) {
-                ConfigAction action = ActionManager
-                    .createConfigAction(user, type, earliest);
+                ConfigAction action = (ConfigAction) ActionFactory.createAction(type, user, earliest);
                 ActionFactory.save(action);
                 result.add(action);
                 ActionManager.checkConfigActionOnServer(type, server);
@@ -647,8 +617,8 @@ public class ActionChainManager {
         Set<Action> result = new HashSet<>();
 
         if (actionChain == null) {
-            Action action = ActionManager.createAction(user, type, name, earliest);
-            ActionManager.scheduleForExecution(action, serverIds);
+            Action action = ActionFactory.createAndSaveAction(type, user, name, earliest);
+            ActionFactory.scheduleForExecution(action, serverIds);
             result.add(action);
         }
         else {
@@ -657,7 +627,7 @@ public class ActionChainManager {
                 nextSortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
             }
             for (Long serverId : serverIds) {
-                Action action = ActionManager.createAction(user, type, name, earliest);
+                Action action = ActionFactory.createAndSaveAction(type, user, name, earliest);
                 ActionChainFactory.queueActionChainEntry(action, actionChain, serverId,
                     nextSortOrder);
                 result.add(action);
@@ -723,8 +693,9 @@ public class ActionChainManager {
     private static PackageAction schedulePackageActionByOs(User user, Server server,
         List<Map<String, Long>> packages, Date earliest, ActionChain actionChain,
             Integer sortOrder, ActionType linuxActionType) throws TaskomaticApiException {
-        return (PackageAction) schedulePackageAction(user, packages, linuxActionType,
-            earliest, actionChain, sortOrder, server);
+        Set<Action> actions = schedulePackageActions(user, packages, linuxActionType,
+                earliest, actionChain, sortOrder, Set.of(server.getId()));
+        return (PackageAction) actions.iterator().next();
     }
 
     /**

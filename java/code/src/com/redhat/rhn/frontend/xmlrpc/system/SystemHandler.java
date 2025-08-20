@@ -39,9 +39,6 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.CoCoAttestationAction;
-import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
-import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
-import com.redhat.rhn.domain.action.salt.StateResult;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
@@ -167,6 +164,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeException;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradePaygException;
+import com.redhat.rhn.manager.distupgrade.NoInstalledProductException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.KickstartFormatter;
@@ -218,7 +216,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -2442,8 +2439,8 @@ public class SystemHandler extends BaseHandler {
             if (action.getFailedCount() != null) {
                 result.put("failed_count", action.getFailedCount());
             }
-            if (action.getActionType().getName() != null) {
-                result.put("action_type", action.getActionType().getName());
+            if (action.getActionTypeName() != null) {
+                result.put("action_type", action.getActionTypeName());
             }
             if (action.getSuccessfulCount() != null) {
                 result.put("successful_count", action.getSuccessfulCount());
@@ -2495,7 +2492,7 @@ public class SystemHandler extends BaseHandler {
                 result.put("result_msg", sAction.getResultMsg());
             }
 
-            final List<Map<String, String>> additionalInfo = createActionSpecificDetails(action, sAction);
+            final List<Map<String, String>> additionalInfo = action.createActionSpecificDetails(sAction);
             if (!additionalInfo.isEmpty()) {
                 result.put("additional_info", additionalInfo);
             }
@@ -2503,119 +2500,6 @@ public class SystemHandler extends BaseHandler {
             results.add(result);
         }
         return results;
-    }
-
-    private List<Map<String, String>> createActionSpecificDetails(Action action, ServerAction serverAction) {
-        // depending on the event type, we need to retrieve additional information
-        // and store that information in the result
-        final ActionType type = action.getActionType();
-        final List<Map<String, String>> additionalInfo = new ArrayList<>();
-
-        if (type.equals(ActionFactory.TYPE_PACKAGES_REMOVE) ||
-                type.equals(ActionFactory.TYPE_PACKAGES_UPDATE) ||
-                type.equals(ActionFactory.TYPE_PACKAGES_VERIFY)) {
-
-            // retrieve the list of package names associated with the action...
-            DataResult<Row> pkgs = ActionManager.getPackageList(action.getId(), null);
-            for (Row pkg : pkgs) {
-                String detail = (String) pkg.get("nvre");
-
-                Map<String, String> info = new HashMap<>();
-                info.put("detail", detail);
-                additionalInfo.add(info);
-            }
-        }
-        else if (type.equals(ActionFactory.TYPE_ERRATA)) {
-
-            // retrieve the errata that were associated with the action...
-            DataResult<Row> errata = ActionManager.getErrataList(action.getId());
-            for (Row erratum : errata) {
-                String detail = (String) erratum.get("advisory");
-                detail += " (" + erratum.get("synopsis") + ")";
-
-                Map<String, String> info = new HashMap<>();
-                info.put("detail", detail);
-                additionalInfo.add(info);
-            }
-        }
-        else if (type.equals(ActionFactory.TYPE_CONFIGFILES_UPLOAD) ||
-                type.equals(ActionFactory.TYPE_CONFIGFILES_MTIME_UPLOAD)) {
-
-            // retrieve the details associated with the action...
-            DataResult<Row> files = ActionManager.getConfigFileUploadList(action.getId());
-            for (Row file : files) {
-                Map<String, String> info = new HashMap<>();
-                info.put("detail", (String) file.get("path"));
-                String error = (String) file.get("failure_reason");
-                if (error != null) {
-                    info.put("result", error);
-                }
-                additionalInfo.add(info);
-            }
-        }
-        else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY)) {
-
-            // retrieve the details associated with the action...
-            DataResult<Row> files = ActionManager.getConfigFileDeployList(action.getId());
-            for (Row file : files) {
-                Map<String, String> info = new HashMap<>();
-                String path = (String) file.get("path");
-                path += " (rev. " + file.get("revision") + ")";
-                info.put("detail", path);
-                String error = (String) file.get("failure_reason");
-                if (error != null) {
-                    info.put("result", error);
-                }
-                additionalInfo.add(info);
-            }
-        }
-        else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
-
-            // retrieve the details associated with the action...
-            DataResult<Row> files = ActionManager.getConfigFileDiffList(action.getId());
-            for (Row file : files) {
-                Map<String, String> info = new HashMap<>();
-                String path = (String) file.get("path");
-                path += " (rev. " + file.get("revision") + ")";
-                info.put("detail", path);
-
-                String error = (String) file.get("failure_reason");
-                if (error != null) {
-                    info.put("result", error);
-                }
-                else {
-                    // if there wasn't an error, check to see if there was a difference
-                    // detected...
-                    String diffString = HibernateFactory.getBlobContents(
-                            file.get("diff"));
-                    if (diffString != null) {
-                        info.put("result", diffString);
-                    }
-                }
-                additionalInfo.add(info);
-            }
-        }
-        else if (type.equals(ActionFactory.TYPE_APPLY_STATES)) {
-            final ApplyStatesActionDetails detail = ActionFactory.lookupApplyStatesActionDetails(action.getId());
-            if (detail != null) {
-                final Optional<ApplyStatesActionResult> serverResult = detail.getResult(serverAction.getServerId());
-
-                final String output = serverResult.flatMap(ApplyStatesActionResult::getResult)
-                                                  .orElse(Collections.emptyList())
-                                                  .stream()
-                                                  .sorted(Comparator.comparing(StateResult::getRunNum))
-                                                  .map(StateResult::toString)
-                                                  .collect(Collectors.joining());
-
-                final String returnCode = serverResult.map(ApplyStatesActionResult::getReturnCode)
-                                                      .map(Object::toString)
-                                                      .orElse("");
-
-                additionalInfo.add(Map.of("detail", output, "result", returnCode));
-            }
-        }
-
-        return additionalInfo;
     }
 
     /**
@@ -3653,7 +3537,7 @@ public class SystemHandler extends BaseHandler {
             eventDetail.setResultMsg(serverAction.getResultMsg());
             eventDetail.setResultCode(serverAction.getResultCode());
 
-            eventDetail.setAdditionalInfo(createActionSpecificDetails(action, serverAction));
+            eventDetail.setAdditionalInfo(action.createActionSpecificDetails(serverAction));
         }
 
         return eventDetail;
@@ -5211,7 +5095,7 @@ public class SystemHandler extends BaseHandler {
             throw new PermissionCheckFailureException("Running remote scripts has been disabled");
         }
 
-        ScriptActionDetails scriptDetails = ActionManager.createScript(username, groupname,
+        ScriptActionDetails scriptDetails = ActionFactory.createScriptActionDetails(username, groupname,
                 timeout.longValue(), script);
         ScriptAction action = null;
 
@@ -5435,9 +5319,11 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #param_desc("boolean", "enabled", "set the enabled state for Confidential Compute Attestation")
      * @apidoc.param #param_desc("string", "environmentType", "set the environment type of the system:")
      *   #options()
-     *     #item("NONE")
      *     #item("KVM_AMD_EPYC_MILAN")
      *     #item("KVM_AMD_EPYC_GENOA")
+     *     #item("KVM_AMD_EPYC_BERGAMO")
+     *     #item("KVM_AMD_EPYC_SIENA")
+     *     #item("KVM_AMD_EPYC_TURIN")
      *   #options_end()
      * @apidoc.param #param_desc("boolean", "attestOnBoot", "set if the attestation should be performed on system boot")
      * @apidoc.returntype #return_int_success()
@@ -7628,8 +7514,7 @@ public class SystemHandler extends BaseHandler {
         List<SUSEProductSet> migrationTargets = DistUpgradeManager.
                 getTargetProductSets(installedProducts, arch, loggedInUser);
         if (excludeTargetWhereMissingSuccessors) {
-            migrationTargets = DistUpgradeManager.removeIncompatibleTargets(
-                    installedProducts, migrationTargets,  Optional.empty());
+            migrationTargets = DistUpgradeManager.removeIncompatibleTargets(installedProducts, migrationTargets);
         }
         for (SUSEProductSet ps : migrationTargets) {
             if (!ps.getIsEveryChannelSynced()) {
@@ -8055,7 +7940,7 @@ public class SystemHandler extends BaseHandler {
         // Consider the targets where some extensions have missing successors but only if user explicitly mention
         // targetIdent && set the flag removeProductsWithNoSuccessorAfterMigration as true
         if (!removeProductsWithNoSuccessorAfterMigration || StringUtils.isBlank(targetIdent)) {
-            targets = DistUpgradeManager.removeIncompatibleTargets(installedProducts, targets, Optional.empty());
+            targets = DistUpgradeManager.removeIncompatibleTargets(installedProducts, targets);
         }
         if (!targets.isEmpty()) {
             SUSEProductSet targetProducts = null;
@@ -8115,9 +8000,19 @@ public class SystemHandler extends BaseHandler {
                     for (EssentialChannelDto channel : channels) {
                         channelIDs.add(channel.getId());
                     }
-                    return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
-                            targetProducts, channelIDs, dryRun, allowVendorChange,
-                            earliestOccurrence, cloudPaygManager.isPaygInstance());
+
+                    var scheduledAction = DistUpgradeManager.scheduleDistUpgrade(
+                        loggedInUser,
+                        List.of(server),
+                        targetProducts,
+                        channelIDs,
+                        dryRun,
+                        allowVendorChange,
+                        cloudPaygManager.isPaygInstance(), earliestOccurrence,
+                        null
+                    );
+
+                    return scheduledAction.get(0).getId();
                 }
 
                 // Consider alternatives (cloned channel trees)
@@ -8126,9 +8021,19 @@ public class SystemHandler extends BaseHandler {
                 for (ClonedChannel clonedBaseChannel : alternatives.keySet()) {
                     if (clonedBaseChannel.getLabel().equals(baseChannelLabel)) {
                         channelIDs.addAll(alternatives.get(clonedBaseChannel));
-                        return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
-                                targetProducts, channelIDs, dryRun, allowVendorChange,
-                                earliestOccurrence, cloudPaygManager.isPaygInstance());
+
+                        var scheduledAction = DistUpgradeManager.scheduleDistUpgrade(
+                            loggedInUser,
+                            List.of(server),
+                            targetProducts,
+                            channelIDs,
+                            dryRun,
+                            allowVendorChange,
+                            cloudPaygManager.isPaygInstance(), earliestOccurrence,
+                            null
+                        );
+
+                        return scheduledAction.get(0).getId();
                     }
                 }
             }
@@ -8138,6 +8043,9 @@ public class SystemHandler extends BaseHandler {
             catch (DistUpgradePaygException e) {
                 // We forbid product migration in SUMA PAYG instance in certain situations
                 throw new FaultException(-1, "productMigrationNotAllowedPayg", e.getMessage());
+            }
+            catch (NoInstalledProductException e) {
+                throw new FaultException(-1, "listMigrationTargetError", e.getMessage());
             }
         }
 
@@ -8223,13 +8131,23 @@ public class SystemHandler extends BaseHandler {
         Set<Long> channelIDs = null;
         try {
             channelIDs = DistUpgradeManager.performChannelChecks(channels, loggedInUser);
-            return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server, null,
-                    channelIDs, dryRun, allowVendorChange,
-                    earliestOccurrence, cloudPaygManager.isPaygInstance());
+
+            var scheduledAction = DistUpgradeManager.scheduleDistUpgrade(
+                loggedInUser, List.of(server),
+                null,
+                channelIDs, dryRun, allowVendorChange,
+                cloudPaygManager.isPaygInstance(), earliestOccurrence,
+                null
+            );
+
+            return scheduledAction.get(0).getId();
         }
         catch (DistUpgradePaygException e) {
             // We forbid product migration in SUMA PAYG instance in certain situations
             throw new FaultException(-1, "productMigrationNotAllowedPayg", e.getMessage());
+        }
+        catch (NoInstalledProductException e) {
+            throw new FaultException(-1, "listMigrationTargetError", e.getMessage());
         }
         catch (DistUpgradeException e) {
             throw new FaultException(-1, "distUpgradeChannelError", e.getMessage());

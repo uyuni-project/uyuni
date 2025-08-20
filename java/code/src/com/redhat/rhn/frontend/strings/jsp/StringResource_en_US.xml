@@ -2780,8 +2780,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
-        <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve">
+      <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve">
         <source>Confidential Computing Attestation</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="actionchain.jsp.distupgrade.upgrade" xml:space="preserve">
+        <source>Migrate the installed product on</source>
             <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
@@ -4755,6 +4761,12 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
+        </trans-unit>
+        <trans-unit id="ssm.overview.product_migration">
+            <source>Product Migration</source>
+        </trans-unit>
+        <trans-unit id="ssm.overview.product_migration.migrate">
+            <source>&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;Migrate the products&lt;/a&gt; installed on the selected systems</source>
         </trans-unit>
         <trans-unit id="ssm.overview.groups">
           <source>Groups</source>
@@ -23634,6 +23646,12 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="bunch.jsp.description.compare-task-bunch" xml:space="preserve">
+        <source>Schedules a generic comparison task</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.sync-probe-bunch" xml:space="preserve">
         <source>Synchronizes probe state</source>
         <context-group name="ctx">
@@ -24132,6 +24150,9 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.compare-config-files" xml:space="preserve">
         <source>Compare Config Files</source>
+      </trans-unit>
+      <trans-unit id="task.status.compare-task-files" xml:space="preserve">
+        <source>Compare Task</source>
       </trans-unit>
       <trans-unit id="task.status.sandbox-cleanup" xml:space="preserve">
         <source>Sandbox Cleanup</source>

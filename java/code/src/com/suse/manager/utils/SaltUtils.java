@@ -821,7 +821,8 @@ public class SaltUtils {
                 List.of(ActionFactory.TYPE_REBOOT));
         int actionsChanged = 0;
         for (ServerAction sa : serverActions) {
-            if (shouldCleanupAction(bootTime, sa)) {
+            Action action = sa.getParentAction();
+            if (action.shouldCleanupAction(bootTime, sa)) {
                 sa.setStatusCompleted();
                 sa.setCompletionTime(new Date());
                 sa.setResultMsg("Reboot completed.");
@@ -833,35 +834,6 @@ public class SaltUtils {
         if (actionsChanged > 0) {
             LOG.debug("{} reboot actions set to completed", actionsChanged);
         }
-    }
-
-    private static boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
-        Action action = sa.getParentAction();
-        boolean result = false;
-        if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
-            if (sa.isStatusPickedUp() && sa.getPickupTime() != null) {
-                result = bootTime.after(sa.getPickupTime());
-            }
-            else if (sa.isStatusPickedUp() && sa.getPickupTime() == null) {
-                result = bootTime.after(action.getEarliestAction());
-            }
-            else if (sa.isStatusQueued()) {
-                if (action.getPrerequisite() != null) {
-                    // queued reboot actions that do not complete in 12 hours will
-                    // be cleaned up by MinionActionUtils.cleanupMinionActions()
-                    result = false;
-                }
-                else {
-                    result = bootTime.after(sa.getParentAction().getEarliestAction());
-                }
-            }
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("shouldCleanupAction Server:{} Action: {} BootTime: {} PickupTime: {} EarliestAction {}" +
-                        " Result: {}", sa.getServer().getId(), sa.getParentAction().getId(), bootTime,
-                        sa.getPickupTime(), action.getEarliestAction(), result);
-            }
-        }
-        return result;
     }
 
     /**

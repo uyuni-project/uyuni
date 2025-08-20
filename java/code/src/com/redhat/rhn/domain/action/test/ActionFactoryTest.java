@@ -25,9 +25,12 @@ import com.redhat.rhn.common.util.test.TimeUtilsTest;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.HardwareRefreshAction;
+import com.redhat.rhn.domain.action.RebootAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigDateDetails;
 import com.redhat.rhn.domain.action.config.ConfigDateFileAction;
+import com.redhat.rhn.domain.action.config.ConfigDeployAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.ConfigUploadAction;
@@ -37,8 +40,17 @@ import com.redhat.rhn.domain.action.config.DaemonConfigDetails;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
+import com.redhat.rhn.domain.action.kickstart.KickstartInitiateAction;
+import com.redhat.rhn.domain.action.kickstart.KickstartScheduleSyncAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
+import com.redhat.rhn.domain.action.rhnpackage.PackageAutoUpdateAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageDeltaAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRefreshListAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRunTransactionAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageVerifyAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -88,7 +100,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
     public void testLookup() throws Exception {
 
         Action a = createAction(user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
-        assertEquals(a.getActionType(), ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        assertInstanceOf(HardwareRefreshAction.class, a);
         Long id = a.getId();
         Action a2 = ActionFactory.lookupById(id);
         assertNotNull(a2);
@@ -102,7 +114,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testLookupLastCompletedAction() throws Exception {
         ConfigAction a = (ConfigAction) createAction(user, ActionFactory.TYPE_CONFIGFILES_DEPLOY);
-        assertEquals(a.getActionType(), ActionFactory.TYPE_CONFIGFILES_DEPLOY);
+        assertInstanceOf(ConfigDeployAction.class, a);
         //complete it
         assertNotNull(a.getServerActions());
         for (ServerAction next : a.getServerActions()) {
@@ -438,135 +450,56 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         Action newA = ActionFactory.createAction(type);
         Long orgId = user.getOrg().getId();
         newA.setSchedulerUser(user);
-        if (type.equals(ActionFactory.TYPE_ERRATA)) {
-            Errata e1 = ErrataFactoryTest.createTestErrata(orgId);
-            Errata e2 = ErrataFactoryTest.createTestErrata(orgId);
-            // add the errata
-            ((ErrataAction) newA).addErrata(e1);
-            ((ErrataAction) newA).addErrata(e2);
+
+        if (newA instanceof ErrataAction newAction) {
+            setupTestErrataAction(newAction, orgId);
         }
-        else if (type.equals(ActionFactory.TYPE_CONFIGFILES_MTIME_UPLOAD)) {
-            ConfigUploadMtimeAction cua = (ConfigUploadMtimeAction) newA;
-            ConfigDateFileAction cfda = new ConfigDateFileAction();
-            cfda.setFileName("/tmp/rhn-java-" + TestUtils.randomString());
-            cfda.setFileType("W");
-            cfda.setCreated(new Date());
-            cfda.setModified(new Date());
-            cua.addConfigDateFileAction(cfda);
-
-            Server newS = ServerFactoryTest.createTestServer(user);
-            ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
-            cua.addConfigChannelAndServer(cr.getConfigFile().getConfigChannel(), newS);
-            // rhnActionConfigChannel requires a ServerAction to exist
-            cua.addServerAction(ServerActionTest.createServerAction(newS, newA));
-            ConfigDateDetails cdd = new ConfigDateDetails();
-            cdd.setCreated(new Date());
-            cdd.setModified(new Date());
-            cdd.setStartDate(new Date());
-            cdd.setImportContents("Y");
-            cdd.setParentAction(cua);
-            cua.setConfigDateDetails(cdd);
+        else if (newA instanceof ConfigUploadMtimeAction newAction) {
+            setupTestConfigUploadMtimeAction(newAction, user);
         }
-        else if (type.equals(ActionFactory.TYPE_CONFIGFILES_UPLOAD)) {
-            ConfigUploadAction cua = (ConfigUploadAction) newA;
-            Server newS = ServerFactoryTest.createTestServer(user);
-
-            ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
-            cua.addConfigChannelAndServer(cr.getConfigFile().getConfigChannel(), newS);
-            cua.addServerAction(ServerActionTest.createServerAction(newS, newA));
-
-            ConfigFileName name1 =
-                ConfigurationFactory.lookupOrInsertConfigFileName("/etc/foo");
-            ConfigFileName name2 =
-                ConfigurationFactory.lookupOrInsertConfigFileName("/etc/bar");
-            cua.addConfigFileName(name1, newS);
-            cua.addConfigFileName(name2, newS);
+        else if (newA instanceof ConfigUploadAction newAction) {
+            setupTestConfigUploadAction(newAction, user);
         }
-        else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY)) {
-            Server newS = ServerFactoryTest.createTestServer(user, true);
-            ConfigRevisionAction crad = new ConfigRevisionAction();
-            crad.setParentAction(newA);
-            crad.setServer(newS);
-            crad.setCreated(new Date());
-            crad.setModified(new Date());
-
-            // Setup the CRAResult
-            ConfigRevisionActionResult cresult = new ConfigRevisionActionResult();
-            cresult.setCreated(new Date());
-            cresult.setModified(new Date());
-            cresult.setConfigRevisionAction(crad);
-            crad.setConfigRevisionActionResult(cresult);
-            // Create ConfigRevision
-            ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
-            crad.setConfigRevision(cr);
-            ConfigAction ca = (ConfigAction) newA;
-            ca.addConfigRevisionAction(crad);
-            ca.addServerAction(createServerAction(newS, newA));
+        else if (newA instanceof ConfigDeployAction newAction) {
+            setupTestConfigDeployAction(newAction, user);
         }
-        else if (type.equals(ActionFactory.TYPE_SCRIPT_RUN)) {
-            ScriptActionDetails sad = new ScriptActionDetails();
-            sad.setUsername("AFTestTestUser");
-            sad.setGroupname("AFTestTestGroup");
-            String script = "#!/bin/csh\nls -al";
-            sad.setScript(script.getBytes(StandardCharsets.UTF_8));
-            sad.setTimeout(9999L);
-            sad.setParentAction(newA);
-            ((ScriptRunAction) newA).setScriptActionDetails(sad);
+        else if (newA instanceof ScriptRunAction newAction) {
+            setupTestScriptRunAction(newAction);
         }
-        else if (type.equals(ActionFactory.TYPE_KICKSTART_INITIATE) ||
-                type.equals(ActionFactory.TYPE_KICKSTART_SCHEDULE_SYNC)) {
-            KickstartActionDetails ksad = new KickstartActionDetails();
-            ksad.setStaticDevice("eth0");
-            ksad.setParentAction(newA);
-            ((KickstartAction) newA).setKickstartActionDetails(ksad);
+        else if (newA instanceof KickstartScheduleSyncAction newAction) {
+            setupTestKickstartAction(newAction);
         }
-        else if (type.equals(ActionFactory.TYPE_PACKAGES_AUTOUPDATE) ||
-                type.equals(ActionFactory.TYPE_PACKAGES_DELTA) ||
-                type.equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST) ||
-                type.equals(ActionFactory.TYPE_PACKAGES_REMOVE) ||
-                type.equals(ActionFactory.TYPE_PACKAGES_RUNTRANSACTION) ||
-                type.equals(ActionFactory.TYPE_PACKAGES_UPDATE) ||
-                type.equals(ActionFactory.TYPE_PACKAGES_VERIFY)) {
-
-            PackageActionDetails d = new PackageActionDetails();
-            String parameter = "upgrade";
-            d.setParameter(parameter);
-
-            //create packageArch
-            Long testid = 100L;
-            PackageArch arch = HibernateFactory.getSession().createNativeQuery("""
-                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
-                """, PackageArch.class).setParameter("id", testid).getSingleResult();
-
-            d.setArch(arch);
-
-            //create packageName
-            String testname = "Test Name " + TestUtils.randomString();
-            PackageName name = new PackageName();
-            name.setName(testname);
-            d.setPackageName(name);
-            TestUtils.saveAndFlush(name);
-
-            //create packageEvr
-            PackageEvr evr = PackageEvrFactory.lookupOrCreatePackageEvr("" +
-                    System.currentTimeMillis(), "2.0", "1.0", PackageType.RPM);
-            d.setEvr(evr);
-            ((PackageAction) newA).addDetail(d);
+        else if (newA instanceof KickstartInitiateAction newAction) {
+            setupTestKickstartAction(newAction);
+        }
+        else if (newA instanceof PackageAutoUpdateAction newAction) {
+            setupTestPackageAction(newAction);
+        }
+        else if (newA instanceof PackageDeltaAction newAction) {
+            setupTestPackageAction(newAction);
+        }
+        else if (newA instanceof PackageRefreshListAction newAction) {
+            setupTestPackageAction(newAction);
+        }
+        else if (newA instanceof PackageRemoveAction newAction) {
+            setupTestPackageAction(newAction);
+        }
+        else if (newA instanceof PackageRunTransactionAction newAction) {
+            setupTestPackageAction(newAction);
+        }
+        else if (newA instanceof PackageUpdateAction newAction) {
+            setupTestPackageAction(newAction);
+        }
+        else if (newA instanceof PackageVerifyAction newAction) {
+            setupTestPackageAction(newAction);
         }
         // Here we specifically want to test the addition of the ServerAction details
         // objects.
-        else if (type.equals(ActionFactory.TYPE_REBOOT)) {
-            user.addPermanentRole(RoleFactory.ORG_ADMIN);
-            addServerAction(user, newA, ServerAction::setStatusQueued);
+        else if (newA instanceof RebootAction newAction) {
+            setupTestRebootAction(newAction, user);
         }
-        else if (type.equals(ActionFactory.TYPE_DAEMON_CONFIG)) {
-            DaemonConfigDetails dcd = new DaemonConfigDetails();
-            dcd.setRestart("Y");
-            dcd.setInterval(1440L);
-            dcd.setDaemonConfigCreated(new Date());
-            dcd.setDaemonConfigModified(new Date());
-            dcd.setParentAction(newA);
-            ((DaemonConfigAction) newA).setDaemonConfigDetails(dcd);
+        else if (newA instanceof DaemonConfigAction newAction) {
+            setupTestDaemonConfigAction(newAction);
         }
 
         newA.setName("RHN-JAVA Test Action");
@@ -580,6 +513,134 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         ActionFactory.save(newA);
         return newA;
     }
+
+
+    private static void setupTestErrataAction(ErrataAction newA, Long orgId) throws Exception {
+        Errata e1 = ErrataFactoryTest.createTestErrata(orgId);
+        Errata e2 = ErrataFactoryTest.createTestErrata(orgId);
+        // add the errata
+        newA.addErrata(e1);
+        newA.addErrata(e2);
+    }
+
+    private static void setupTestConfigUploadMtimeAction(ConfigUploadMtimeAction cua, User user) {
+        ConfigDateFileAction cfda = new ConfigDateFileAction();
+        cfda.setFileName("/tmp/rhn-java-" + TestUtils.randomString());
+        cfda.setFileType("W");
+        cfda.setCreated(new Date());
+        cfda.setModified(new Date());
+        cua.addConfigDateFileAction(cfda);
+
+        Server newS = ServerFactoryTest.createTestServer(user);
+        ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
+        cua.addConfigChannelAndServer(cr.getConfigFile().getConfigChannel(), newS);
+        // rhnActionConfigChannel requires a ServerAction to exist
+        cua.addServerAction(ServerActionTest.createServerAction(newS, cua));
+        ConfigDateDetails cdd = new ConfigDateDetails();
+        cdd.setCreated(new Date());
+        cdd.setModified(new Date());
+        cdd.setStartDate(new Date());
+        cdd.setImportContents("Y");
+        cdd.setParentAction(cua);
+        cua.setConfigDateDetails(cdd);
+    }
+
+    private static void setupTestConfigUploadAction(ConfigUploadAction cua, User user) {
+        Server newS = ServerFactoryTest.createTestServer(user);
+
+        ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
+        cua.addConfigChannelAndServer(cr.getConfigFile().getConfigChannel(), newS);
+        cua.addServerAction(ServerActionTest.createServerAction(newS, cua));
+
+        ConfigFileName name1 =
+                ConfigurationFactory.lookupOrInsertConfigFileName("/etc/foo");
+        ConfigFileName name2 =
+                ConfigurationFactory.lookupOrInsertConfigFileName("/etc/bar");
+        cua.addConfigFileName(name1, newS);
+        cua.addConfigFileName(name2, newS);
+    }
+
+    private static void setupTestConfigDeployAction(ConfigDeployAction newA, User user) {
+        Server newS = ServerFactoryTest.createTestServer(user, true);
+        ConfigRevisionAction crad = new ConfigRevisionAction();
+        crad.setParentAction(newA);
+        crad.setServer(newS);
+        crad.setCreated(new Date());
+        crad.setModified(new Date());
+
+        // Setup the CRAResult
+        ConfigRevisionActionResult cresult = new ConfigRevisionActionResult();
+        cresult.setCreated(new Date());
+        cresult.setModified(new Date());
+        cresult.setConfigRevisionAction(crad);
+        crad.setConfigRevisionActionResult(cresult);
+        // Create ConfigRevision
+        ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
+        crad.setConfigRevision(cr);
+        newA.addConfigRevisionAction(crad);
+        newA.addServerAction(createServerAction(newS, newA));
+    }
+
+    private static void setupTestScriptRunAction(ScriptRunAction newA) {
+        ScriptActionDetails sad = new ScriptActionDetails();
+        sad.setUsername("AFTestTestUser");
+        sad.setGroupname("AFTestTestGroup");
+        String script = "#!/bin/csh\nls -al";
+        sad.setScript(script.getBytes(StandardCharsets.UTF_8));
+        sad.setTimeout(9999L);
+        sad.setParentAction(newA);
+        newA.setScriptActionDetails(sad);
+    }
+
+    private static void setupTestKickstartAction(KickstartAction newA) {
+        KickstartActionDetails ksad = new KickstartActionDetails();
+        ksad.setStaticDevice("eth0");
+        ksad.setParentAction(newA);
+        newA.setKickstartActionDetails(ksad);
+    }
+
+    private static void setupTestPackageAction(PackageAction newA) {
+        PackageActionDetails d = new PackageActionDetails();
+        String parameter = "upgrade";
+        d.setParameter(parameter);
+
+        //create packageArch
+        Long testid = 100L;
+        PackageArch arch = HibernateFactory.getSession().createNativeQuery("""
+                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
+                """, PackageArch.class).setParameter("id", testid).getSingleResult();
+
+        d.setArch(arch);
+
+        //create packageName
+        String testname = "Test Name " + TestUtils.randomString();
+        PackageName name = new PackageName();
+        name.setName(testname);
+        d.setPackageName(name);
+        TestUtils.saveAndFlush(name);
+
+        //create packageEvr
+        PackageEvr evr = PackageEvrFactory.lookupOrCreatePackageEvr("" +
+                System.currentTimeMillis(), "2.0", "1.0", PackageType.RPM);
+        d.setEvr(evr);
+        newA.addDetail(d);
+    }
+
+    private static void setupTestRebootAction(RebootAction newA, User user) {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        addServerAction(user, newA, ServerAction::setStatusQueued);
+    }
+
+    private static void setupTestDaemonConfigAction(DaemonConfigAction newA) {
+        DaemonConfigDetails dcd = new DaemonConfigDetails();
+        dcd.setRestart("Y");
+        dcd.setInterval(1440L);
+        dcd.setDaemonConfigCreated(new Date());
+        dcd.setDaemonConfigModified(new Date());
+        dcd.setParentAction(newA);
+        newA.setDaemonConfigDetails(dcd);
+    }
+
 
     public static ServerAction addServerAction(User user, Action newA, Consumer<ServerAction> statusSetter) {
         Server newS = ServerFactoryTest.createTestServer(user, true);
@@ -630,5 +691,3 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         return sa;
     }
 }
-
-

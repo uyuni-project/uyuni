@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.frontend.xmlrpc.sync.content;
 
-import com.redhat.rhn.common.util.FileLocks;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.product.ChannelTemplate;
@@ -62,8 +61,13 @@ public class ContentSyncHandler extends BaseHandler {
     public Collection<MgrSyncProductDto> listProducts(User loggedInUser)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        ContentSyncManager csm = new ContentSyncManager();
-        return csm.listProducts();
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            return csm.listProducts();
+        }
+        catch (com.redhat.rhn.manager.content.ContentSyncException e) {
+            throw new ContentSyncException(e);
+        }
     }
 
     /**
@@ -82,8 +86,13 @@ public class ContentSyncHandler extends BaseHandler {
     @ReadOnly
     public List<MgrSyncChannelDto> listChannels(User loggedInUser) {
         ensureSatAdmin(loggedInUser);
-        ContentSyncManager csm = new ContentSyncManager();
-        return csm.listChannels();
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            return csm.listChannels();
+        }
+        catch (com.redhat.rhn.manager.content.ContentSyncException e) {
+            throw new ContentSyncException(e);
+        }
     }
 
     /**
@@ -103,11 +112,14 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer synchronizeChannelFamilies(User loggedInUser)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
-                ContentSyncManager csm = new ContentSyncManager();
-                csm.updateChannelFamilies(csm.readChannelFamilies());
-        });
-        return BaseHandler.VALID;
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateChannelFamilies(csm.readChannelFamilies());
+            return BaseHandler.VALID;
+        }
+        catch (com.redhat.rhn.manager.content.ContentSyncException e) {
+            throw new ContentSyncException(e);
+        }
     }
 
     /**
@@ -125,11 +137,15 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeProducts(User loggedInUser) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
+        try {
             ContentSyncManager csm = new ContentSyncManager();
             csm.updateSUSEProducts(csm.getProducts());
-        });
-        return BaseHandler.VALID;
+
+            return BaseHandler.VALID;
+        }
+        catch (com.redhat.rhn.manager.content.ContentSyncException e) {
+            throw new ContentSyncException(e);
+        }
     }
 
     /**
@@ -148,11 +164,15 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeSubscriptions(User loggedInUser) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
+        try {
             ContentSyncManager csm = new ContentSyncManager();
             csm.updateSubscriptions();
-        });
-        return BaseHandler.VALID;
+
+            return BaseHandler.VALID;
+        }
+        catch (com.redhat.rhn.manager.content.ContentSyncException e) {
+            throw new ContentSyncException(e);
+        }
     }
 
     /**
@@ -173,11 +193,15 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeRepositories(User loggedInUser, String mirrorUrl) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
+        try {
             ContentSyncManager csm = new ContentSyncManager();
             csm.updateRepositories(mirrorUrl);
-        });
-        return BaseHandler.VALID;
+
+            return BaseHandler.VALID;
+        }
+        catch (com.redhat.rhn.manager.content.ContentSyncException e) {
+            throw new ContentSyncException(e);
+        }
     }
 
     /**
@@ -203,12 +227,17 @@ public class ContentSyncHandler extends BaseHandler {
             throw new ContentSyncException("This is an ISS Peripheral Server. " +
                     "Managing channels is disabled and can only be done from the Hub Server.");
         }
-        ContentSyncManager csm = new ContentSyncManager();
-        if (csm.isRefreshNeeded(mirrorUrl)) {
-            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            if (csm.isRefreshNeeded(mirrorUrl)) {
+                throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
+            }
+            csm.addChannel(channelLabel, mirrorUrl);
+            return BaseHandler.VALID;
         }
-        csm.addChannel(channelLabel, mirrorUrl);
-        return BaseHandler.VALID;
+        catch (com.redhat.rhn.manager.content.ContentSyncException e) {
+            throw new ContentSyncException(e);
+        }
     }
 
     /**
@@ -234,27 +263,32 @@ public class ContentSyncHandler extends BaseHandler {
             throw new ContentSyncException("This is an ISS Peripheral Server. " +
                     "Managing channels is disabled and can only be done from the Hub Server.");
         }
-        ContentSyncManager csm = new ContentSyncManager();
-        if (csm.isRefreshNeeded(mirrorUrl)) {
-            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            if (csm.isRefreshNeeded(mirrorUrl)) {
+                throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
+            }
+
+            List<String> mandatoryChannelLabels =
+                    SUSEProductFactory.findNotSyncedMandatoryChannels(channelLabel)
+                            .map(ChannelTemplate::getChannelLabel)
+                            .toList();
+
+            LinkedHashSet<String> channelLabelsToAdd = new LinkedHashSet<>(mandatoryChannelLabels);
+            channelLabelsToAdd.add(channelLabel);
+
+            for (String channel : channelLabelsToAdd) {
+                csm.addChannel(channel, mirrorUrl);
+            }
+
+            List<String> returnList = new ArrayList<>();
+            returnList.add(channelLabel);
+            returnList.addAll(mandatoryChannelLabels);
+            return returnList.toArray();
         }
-
-        List<String> mandatoryChannelLabels =
-                SUSEProductFactory.findNotSyncedMandatoryChannels(channelLabel)
-                        .map(ChannelTemplate::getChannelLabel)
-                        .toList();
-
-        LinkedHashSet<String> channelLabelsToAdd = new LinkedHashSet<>(mandatoryChannelLabels);
-        channelLabelsToAdd.add(channelLabel);
-
-        for (String channel : channelLabelsToAdd) {
-            csm.addChannel(channel, mirrorUrl);
+        catch (com.redhat.rhn.manager.content.ContentSyncException e) {
+            throw new ContentSyncException(e);
         }
-
-        List<String> returnList = new ArrayList<>();
-        returnList.add(channelLabel);
-        returnList.addAll(mandatoryChannelLabels);
-        return returnList.toArray();
     }
 
     /**
@@ -277,7 +311,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public Integer addCredentials(User loggedInUser, String username, String password,
-            boolean primary) throws ContentSyncException {
+                                  boolean primary) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
         HubFactory hubFactory = new HubFactory();
         if (hubFactory.isISSPeripheral()) {

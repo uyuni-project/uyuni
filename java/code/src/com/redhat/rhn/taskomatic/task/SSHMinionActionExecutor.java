@@ -95,7 +95,7 @@ public class SSHMinionActionExecutor extends RhnJavaJob {
         if (cloudPaygManager.isPaygInstance()) {
             cloudPaygManager.checkRefreshCache(true);
             if (!cloudPaygManager.hasSCCCredentials()) {
-                if (ActionFactory.rejectScheduleActionIfByos(action)) {
+                if (action.rejectScheduleActionIfByos()) {
                     return;
                 }
             }
