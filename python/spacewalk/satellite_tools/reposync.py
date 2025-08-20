@@ -869,6 +869,10 @@ class RepoSync(object):
                         package["checksum_type"],
                         package["checksum"],
                     ) not in self.all_packages:
+                        log(
+                            1,
+                            f'disassociate_package({package["id"]}, {package["checksum"]})',
+                        )
                         self.disassociate_package(
                             package["checksum_type"], package["checksum"]
                         )
