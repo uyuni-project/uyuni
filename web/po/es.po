@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-01 16:10+0200\n"
+"POT-Creation-Date: 2025-08-20 17:53+0200\n"
 "PO-Revision-Date: 2025-06-14 00:59+0000\n"
 "Last-Translator: Fran Serrador <serrador@proton.me>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -34,13 +34,14 @@ msgstr "No se admite el navegador Internet Explorer. Se recomienda Firefox, Chro
 
 #: ../html/src/components/CoCoScansList.tsx:75
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
+#: ../html/src/components/product-migration/utils.tsx:120
 #: ../html/src/manager/minion/details/support-data.tsx:75
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:65
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:75
 msgid "The action has been <link>scheduled</link>."
 msgstr "La acción se ha sido <link>planificada</link>."
 
 #: ../html/src/components/CoCoScansList.tsx:90
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:77
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:87
 msgid "Unable to schedule action. Please check the server logs for detailed information."
 msgstr "No se puede programar la acción. Por favor revise los registros del servidor para obtener información detallada."
 
@@ -57,7 +58,7 @@ msgstr "Confirmar eliminación"
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
 #: ../html/src/manager/minion/details/support-data.tsx:142
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:94
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:104
 msgid "Schedule"
 msgstr "Planificar"
 
@@ -198,6 +199,7 @@ msgstr "Última modificación"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:138
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:162
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:785
 #: ../html/src/manager/systems/virtual-list.tsx:82
 msgid "Status"
@@ -231,6 +233,7 @@ msgstr "Acciones"
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:205
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:376
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:160
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
 msgstr ""
@@ -1075,7 +1078,7 @@ msgstr "Sistema no registrado"
 #: ../html/src/manager/images/image-import.tsx:314
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:515
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:443
 #: ../html/src/manager/proxy/container-config.tsx:390
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:407
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
@@ -1359,16 +1362,20 @@ msgid "Valid"
 msgstr ""
 
 #: ../html/src/components/hub/TokenTable.tsx:76
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:87
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:123
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:38
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:123
 msgid "Yes"
 msgstr "Sí"
 
 #: ../html/src/components/hub/TokenTable.tsx:76
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:87
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:123
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:39
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:123
 #, fuzzy
 msgid "No"
 msgstr "Ninguna"
@@ -1753,6 +1760,113 @@ msgstr ""
 msgid "Select a Schedule"
 msgstr ""
 
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:165
+#: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:56
+#, fuzzy
+msgid "Source Product"
+msgstr "Productos"
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:172
+#, fuzzy
+msgid "Target Product"
+msgstr "Tipo de fuente"
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:179
+#, fuzzy
+msgid "Target base channel"
+msgstr "Canal de base nuevo"
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:193
+#, fuzzy
+#| msgid "Loading child channels.."
+msgid "Target child channels"
+msgstr "Cargando el programador.."
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:200
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:85
+msgid "Allow vendor change"
+msgstr ""
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:213
+#, fuzzy
+#| msgid "Back to sytem selection"
+msgid "Back to target selection"
+msgstr "Volver a la selección de sistema"
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:216
+#, fuzzy
+msgid "Schedule Migration"
+msgstr "Detalles del filtro"
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:41
+msgid "Please review your selection and confirm below to schedule the migration."
+msgstr ""
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:45
+#: ../html/src/manager/header/search/search.tsx:10
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
+msgid "Systems"
+msgstr "Sistemas"
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:60
+#, fuzzy
+#| msgid "Product Description"
+msgid "Product after migration"
+msgstr "Descripción de producto"
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:66
+#, fuzzy
+#| msgid "No subscriptions found."
+msgid "Channel subscriptions after migration"
+msgstr "No se encontró ninguna suscripción."
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:91
+msgid "Schedule action for no sooner than"
+msgstr ""
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:104
+msgid "In order to detect any possible problems it is recommended to always do a Dry Run before scheduling the actual Product Migration."
+msgstr ""
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:114
+#, fuzzy
+#| msgid "Back to sytem selection"
+msgid "Back to channel selection"
+msgstr "Volver a la selección de sistema"
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:121
+msgid "Dry run"
+msgstr ""
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:127
+#: ../html/src/manager/admin/hub/peripherals.tsx:39
+msgid "Migrate"
+msgstr ""
+
+#: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:44
+msgid ""
+"Target not available, the following channels are not synced:\n"
+"\n"
+"{missingChannels}"
+msgstr ""
+
+#: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:63
+#, fuzzy
+msgid "Product id"
+msgstr "Productos"
+
+#: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:64
+#, fuzzy
+#| msgid "Products"
+msgid "Target Products"
+msgstr "Productos"
+
+#: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:85
+#, fuzzy
+#| msgid "Base Channel"
+msgid "Select Channels"
+msgstr "Canal de base"
+
 #: ../html/src/components/ranking-table.tsx:20
 #: ../html/src/components/salt-state-popup.tsx:11
 #: ../html/src/components/states-picker.tsx:35
@@ -2041,12 +2155,12 @@ msgstr "Permitir"
 msgid "items per page"
 msgstr "elementos por página"
 
-#: ../html/src/components/target-systems.tsx:22
+#: ../html/src/components/target-systems.tsx:26
 #, fuzzy
 msgid "Target Systems"
 msgstr "Tipo de fuente"
 
-#: ../html/src/components/target-systems.tsx:28
+#: ../html/src/components/target-systems.tsx:32
 msgid "No systems specified."
 msgstr "Sistema bloqueado."
 
@@ -2388,10 +2502,6 @@ msgstr "Canales de configuración"
 msgid "Add Peripheral"
 msgstr ""
 
-#: ../html/src/manager/admin/hub/peripherals.tsx:39
-msgid "Migrate"
-msgstr ""
-
 #: ../html/src/manager/admin/hub/peripherals.tsx:41
 msgid "Migrate an existing configuration of a previous version of ISS"
 msgstr ""
@@ -2708,7 +2818,7 @@ msgid "This product is mirrored."
 msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.tsx:857
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:81
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:497
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:547
@@ -4111,49 +4221,49 @@ msgstr "mostrar más"
 msgid "Versions history"
 msgstr "Histórico de versiones"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:42
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:51
 #, fuzzy
 msgid "New base channel"
 msgstr "Canal de base nuevo"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:177
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:179
 msgid "New Base Channel"
 msgstr "Canal de base nuevo"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:180
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:182
 msgid "Choose the channel to be elected as the new base channel"
 msgstr "Elija el canal que se deberá utilizar como base"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:196
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:198
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:546
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:605
 msgid "Child Channels"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:219
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:221
 msgid "Clear Search"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:22
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:28
 #, fuzzy
 msgid "This channel requires:"
 msgstr "Este canal está recomendado"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:28
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:35
 #, fuzzy
 msgid "This channel is required by:"
 msgstr "Este canal está recomendado"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:70
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:80
 msgid "This channel is recommended"
 msgstr "Este canal está recomendado"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:75
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:85
 #, fuzzy
 msgid "This channel is mandatory"
 msgstr "Este canal está recomendado"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:76
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:86
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:149
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:552
 msgid "mandatory"
@@ -4243,11 +4353,6 @@ msgstr ""
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
 msgid "Formula saved. Apply the <link>Highstate</link> for the changes to take effect."
 msgstr "Se ha guardado la fórmula. No es necesario aplicar el <link>estado alto</link> en esta fórmula."
-
-#: ../html/src/manager/header/search/search.tsx:10
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
-msgid "Systems"
-msgstr "Sistemas"
 
 #: ../html/src/manager/header/search/search.tsx:14
 #: ../html/src/manager/images/image-view.tsx:668
@@ -5535,235 +5640,250 @@ msgstr "La acción se ha <link>programado</link>."
 msgid "Scheduling proxy configuration action..."
 msgstr "Buscar en canales de configuración"
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:114
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:89
 #: ../html/src/manager/proxy/container-config.tsx:142
 msgid "Request interrupted or invalid response received from the server."
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:179
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:138
 #, fuzzy
 msgid "Proxy Configuration"
 msgstr "Canales de configuración"
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:183
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:142
 msgid "Convert an already onboarded minion to a proxy or update the configuration of an existing proxy."
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:193
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:152
 msgid "Convert Minion to Proxy"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:198
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:156
 #: ../html/src/manager/proxy/container-config.tsx:210
 msgid "Parent FQDN"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:199
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:157
 #: ../html/src/manager/proxy/container-config.tsx:213
 msgid "The FQDN of the parent (server or proxy) to connect to."
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:201
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:159
 #: ../html/src/manager/proxy/container-config.tsx:212
 msgid "e.g., server.domain.com"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:209
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:167
 #: ../html/src/manager/proxy/container-config.tsx:221
 msgid "Proxy SSH port"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:210
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:168
 #: ../html/src/manager/proxy/container-config.tsx:222
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:499
 msgid "Port range: 1 - 65535"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:219
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:177
 #: ../html/src/manager/proxy/container-config.tsx:231
 msgid "Max Squid cache size"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:220
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:178
 msgid "The maximum value of the Squid cache in Gigabytes"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:223
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:181
 #, fuzzy
 msgid "e.g., 100"
 msgstr "p. ej., SLE12"
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:230
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:188
 #: ../html/src/manager/proxy/container-config.tsx:242
 msgid "Proxy admin email"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:231
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:189
 #: ../html/src/manager/proxy/container-config.tsx:243
 msgid "The container-based proxy administrator email address"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:232
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:190
 #: ../html/src/manager/proxy/container-config.tsx:244
 msgid "e.g., proxy.admin@mycompany.com"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:241
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:242
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:199
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:200
 msgid "Certificates"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:250
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:208
 msgid "Keep"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:251
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:209
 msgid "Replace"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:262
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:220
 msgid "Keeping the current certificates means no changes will be made to the Root CA, Intermediate CAs, Proxy certificate, or Proxy SSL private key."
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:273
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:231
 msgid "Root CA"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:274
-#: ../html/src/manager/proxy/container-config.tsx:269
-#: ../html/src/manager/proxy/container-config.tsx:278
-#: ../html/src/manager/proxy/container-config.tsx:335
-msgid "To sign the SSL certificate in PEM format"
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:232
+msgid "Certificate authority that issued the proxy certificate (PEM format)"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:283
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:241
 #: ../html/src/manager/proxy/container-config.tsx:344
 msgid "Intermediate CAs"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:293
-#: ../html/src/manager/proxy/container-config.tsx:354
-msgid "CA file in PEM format"
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:251
+msgid "An intermediate CA certificate (PEM format)"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:305
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:263
 #: ../html/src/manager/proxy/container-config.tsx:365
 msgid "Proxy certificate"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:306
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:315
-#: ../html/src/manager/proxy/container-config.tsx:366
-#: ../html/src/manager/proxy/container-config.tsx:375
-msgid "In PEM format"
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:264
+msgid "SSL certificate issued for the proxy system (PEM format)"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:314
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:272
 #: ../html/src/manager/proxy/container-config.tsx:374
 msgid "Proxy SSL private key"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:326
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:327
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:273
+msgid "SSL private key for the proxy system (PEM format)"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:284
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:285
 #, fuzzy
 msgid "Source"
 msgstr "Fuentes"
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:335
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:293
+msgid "RPM"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:294
 #, fuzzy
 msgid "Registry"
 msgstr "Sistema no registrado"
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:336
-msgid "RPM"
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:304
+msgid "The availability of container images depends on your environment’s connectivity. In air-gapped/restricted environments, using RPM as the source mode is recommended to ensure all required images are available locally. Selecting an incompatible source mode may result in deployment failures."
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:344
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:345
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:314
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:315
 #, fuzzy
 msgid "Registry Source"
 msgstr "Clave de activación"
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:352
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:322
 msgid "Simple"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:353
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:323
 msgid "Advanced"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:361
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:331
 #, fuzzy
 msgid "Registry URL"
 msgstr "Sistema no registrado"
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:362
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:389
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:413
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:437
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:461
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:485
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:332
 #, fuzzy
 msgid "e.g., "
 msgstr "p. ej., SLE12"
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:369
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:339
 #, fuzzy
 #| msgid "contains"
 msgid "Containers Tag"
 msgstr "contiene"
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:371
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:398
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:422
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:446
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:470
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:494
-#, fuzzy
-msgid "e.g., latest"
-msgstr "Actualizaciones"
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:340
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:360
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:377
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:394
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:411
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:428
+msgid "e.g. {registryTagExample}"
+msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:388
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:351
 msgid "HTTPD URL"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:396
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:352
+msgid "e.g., {registryUrlExample}/proxy-httpd"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:359
 msgid "HTTPD Tag"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:412
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:368
 msgid "Salt Broker URL"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:420
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:369
+msgid "e.g. {registryUrlExample}/proxy-salt-broker"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:376
 msgid "Salt Broker Tag"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:436
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:385
 msgid "Squid URL"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:444
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:386
+msgid "e.g. {registryUrlExample}/proxy-squid"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:393
 msgid "Squid Tag"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:460
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:402
 msgid "SSH URL"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:468
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:403
+msgid "e.g. {registryUrlExample}/proxy-ssh"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:410
 msgid "SSH Tag"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:484
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:419
 msgid "TFTPD URL"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:492
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:420
+msgid "e.g. {registryUrlExample}/proxy-tftpd"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:427
 msgid "TFTPD Tag"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:510
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:438
 msgid "Apply"
 msgstr "Aplicar"
 
@@ -5874,6 +5994,7 @@ msgid "Mark selected as read"
 msgstr "Marcar seleccionados como leídos"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:226
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:145
 msgid "show details"
 msgstr ""
 
@@ -6026,6 +6147,12 @@ msgstr ""
 msgid "CA certificate"
 msgstr ""
 
+#: ../html/src/manager/proxy/container-config.tsx:269
+#: ../html/src/manager/proxy/container-config.tsx:278
+#: ../html/src/manager/proxy/container-config.tsx:335
+msgid "To sign the SSL certificate in PEM format"
+msgstr ""
+
 #: ../html/src/manager/proxy/container-config.tsx:277
 #, fuzzy
 msgid "CA private key"
@@ -6082,6 +6209,15 @@ msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:334
 msgid "The root CA"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:354
+msgid "CA file in PEM format"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:366
+#: ../html/src/manager/proxy/container-config.tsx:375
+msgid "In PEM format"
 msgstr ""
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:95
@@ -6721,7 +6857,7 @@ msgstr ""
 msgid "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr "¿Confirma que quiere eliminar el perfil seleccionado?"
 
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:114
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:122
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:73
 msgid "Confidential Computing Capability"
 msgstr ""
@@ -6894,6 +7030,68 @@ msgstr ""
 #, fuzzy
 msgid "Virtual System"
 msgstr "Sistemas virtuales alojados"
+
+#: ../html/src/manager/systems/product-migration/migration-from-dry-run.tsx:59
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:97
+msgid "Product Migration - Schedule outcome"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/migration-from-dry-run.tsx:62
+#, fuzzy
+#| msgid "SUSE Manager Configuration - Monitoring"
+msgid "Product Migration - Confirm from dry run"
+msgstr "Configuración de SUSE Manager. Supervisión"
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:88
+msgid "Product Migration - Choose target product"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:91
+#, fuzzy
+msgid "Product Migration - Select channels"
+msgstr "Canales de configuración"
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:94
+msgid "Product Migration - Schedule"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:116
+#, fuzzy
+msgid "Show product details"
+msgstr "Detalles del filtro"
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:131
+msgid "The products installed on this system can be migrated"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:134
+msgid "The products installed on this system cannot be migrated"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:140
+msgid "The products installed on this system can be migrated."
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:159
+#, fuzzy
+msgid "Base Product"
+msgstr "Productos"
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:161
+msgid "Can be migrated?"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:213
+msgid "Product details for {system}"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:217
+msgid "These are the products currently installed on {system}:"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:228
+msgid "The systems currently selected cannot be migrated in batch."
+msgstr ""
 
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
@@ -7258,6 +7456,10 @@ msgid "HTTP Error code "
 msgstr ""
 
 #, fuzzy
+#~ msgid "e.g., latest"
+#~ msgstr "Actualizaciones"
+
+#, fuzzy
 #~ msgid "Subscription Warning"
 #~ msgstr "Suscripciones"
 
@@ -7300,10 +7502,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Unknown guest"
 #~ msgstr "Nombre de anfitrión del nodo"
-
-#, fuzzy
-#~ msgid "Target Host"
-#~ msgstr "Tipo de fuente"
 
 #~ msgid "Start / Resume"
 #~ msgstr "Iniciar/reanudar"
@@ -7602,10 +7800,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "states"
 #~ msgstr "Estado"
-
-#, fuzzy
-#~ msgid "configuration channels"
-#~ msgstr "Canales de configuración"
 
 #, fuzzy
 #~ msgid "Search in {0}"
