@@ -28021,6 +28021,32 @@ given channel.</source>
         </context-group>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="actionchain.jsp.distupgrade.upgrade" xml:space="preserve">
+        <source>Migrate the installed product on</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ssm.overview.product_migration" xml:space="preserve">
+            <source>Product Migration</source>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.overview.product_migration.migrate" xml:space="preserve">
+            <source>&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;Migrate the products&lt;/a&gt; installed on the selected systems</source>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="bunch.jsp.description.compare-task-bunch" xml:space="preserve">
+        <source>Schedules a generic comparison task</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.compare-task-files" xml:space="preserve">
+        <source>Compare Task</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
