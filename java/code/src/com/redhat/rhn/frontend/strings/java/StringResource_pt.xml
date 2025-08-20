@@ -11296,16 +11296,16 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       <target state="new"/>
   </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.description" xml:space="preserve">
-        <source>KVM on AMD Epyc Processor, second generation (milan)</source>
-      <target state="new"/>
+        <source>KVM on AMD Epyc Processor, third generation (milan)</source>
+      <target state="needs-adaptation"/>
   </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Milan</source>
       <target state="new"/>
   </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description" xml:space="preserve">
-        <source>KVM on AMD Epyc Processor, third generation (genoa)</source>
-      <target state="new"/>
+        <source>KVM on AMD Epyc Processor, fourth generation (genoa)</source>
+      <target state="needs-adaptation"/>
   </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Genoa</source>
@@ -11773,6 +11773,90 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
   </trans-unit>
       <trans-unit id="system.details.support.unable_to_upload" xml:space="preserve">
         <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
+      <target state="new"/>
+  </trans-unit>
+    <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, fourth generation (bergamo)</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Bergamo</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_siena.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, fourth generation (siena)</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_siena.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Siena</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_turin.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, fifth generation (turin)</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_turin.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Turin</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.migration.noServersSelected" xml:space="preserve">
+          <source>Unable to identify the selected systems for the migration.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.migration.noCommonProduct" xml:space="preserve">
+          <source>The selected systems do not have a common base product.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.migration.noServersSelected" xml:space="preserve">
+          <source>Unable to identify a valid migration target for the selected systems.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.os_not_supported" xml:space="preserve">
+        <source>Product Migrations are not supported for the OS of this system.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.source_unknown" xml:space="preserve">
+        <source>The base product of this system is unknown.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.source_mismatch" xml:space="preserve">
+        <source>The base product of this system does not match.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.salt_needs_update" xml:space="preserve">
+        <source>Salt installed on this system is out of date.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.salt_needs_update.details" xml:space="preserve">
+        <source>The installed &lt;pre&gt;{0}&lt;/pre&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.addons_affected" xml:space="preserve">
+        <source>Some installed addons are going to be affect, depending on chosen target.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.single.addons_affected" xml:space="preserve">
+        <source>Some installed addons are going to be affect.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.addons_affected.missing_successors" xml:space="preserve">
+        <source>&lt;p&gt;Depending on chosen target, some or all of these products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.single.addons_affected.missing_successors" xml:space="preserve">
+        <source>&lt;p&gt;These products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.addons_affected.installed_addons" xml:space="preserve">
+        <source>&lt;p&gt;Depending on chosen target, some or all of these products will be installed:&lt;/p&gt;{0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.single.addons_affected.installed_addons" xml:space="preserve">
+        <source>&lt;p&gt;These products will be installed:&lt;/p&gt;{0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.addon_or_higher" xml:space="preserve">
+        <source>{0} or higher</source>
       <target state="new"/>
   </trans-unit>
     </body>
