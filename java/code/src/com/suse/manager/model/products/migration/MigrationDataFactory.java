@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -60,14 +59,11 @@ public class MigrationDataFactory {
 
     private final LocalizationService localizer;
 
-    private final List<SUSEProductExtension> productExtensions;
-
     /**
      * Builds an instance of the factory.
      */
     public MigrationDataFactory() {
         this.localizer = LocalizationService.getInstance();
-        this.productExtensions = SUSEProductFactory.findAllSUSEProductExtensions();
     }
 
     /**
@@ -210,8 +206,8 @@ public class MigrationDataFactory {
      */
     public MigrationProduct toMigrationProduct(SUSEProductSet productSet) {
 
-        var extensionsMap = productExtensions.stream()
-            .filter(extension -> extension.getRootProduct().equals(productSet.getBaseProduct()))
+        var extensionsMap = SUSEProductFactory.allExtensionsOfRoot(productSet.getBaseProduct())
+            .stream()
             .collect(Collectors.toMap(
                 ext -> ext.getBaseProduct().getProductId(),
                 ext -> List.of(ext.getExtensionProduct().getProductId()),
