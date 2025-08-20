@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 SUSE LLC
+ * Copyright (c) 2022--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.taskomatic.task;
 
@@ -27,6 +23,10 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
 import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.credentials.ReportDBCredentials;
+import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.notification.types.NotificationData;
+import com.redhat.rhn.domain.notification.types.ReportDatabaseUpdateFailed;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -39,6 +39,7 @@ import org.hibernate.Session;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -155,6 +156,13 @@ public class HubReportDbUpdateWorker implements QueueWorker {
         catch (Exception e) {
             parentQueue.getQueueRun().failed();
             parentQueue.changeRun(null);
+
+            NotificationData messageData = new ReportDatabaseUpdateFailed(e, mgrServerInfo.getServer().getName());
+            UserNotificationFactory.storeNotificationMessageFor(
+                UserNotificationFactory.createNotificationMessage(messageData),
+                RoleFactory.SAT_ADMIN,
+                Optional.empty()
+            );
 
             log.error("Unable to update reporting db from {}", mgrServerInfo.getServer().getName(), e);
         }
