@@ -99,12 +99,15 @@ def backup():
 
         # Push the temporary folder to the server
         __salt__["cp.push_dir"](tmp_path, upload_path="/")
-        return [os.path.join("proxy_config", f) for f in os.listdir(config_path)]
+
+        uploaded_files = [os.path.join("proxy_config", f) for f in os.listdir(config_path)]
+        # Send event to the master about finished backup
+        __salt__["event.send"]("suse/proxy/backup_finished", {"files": uploaded_files})
+        return uploaded_files
     except Exception as e:
         raise CommandExecutionError(e)
     finally:
         shutil.rmtree(tmp_path)
-
 
 def _get_available_files(files):
     """
@@ -179,7 +182,6 @@ def _parse_single_pxe(filename):
             else:
                 raise ValueError("Not a valid initrd definition")
     return result
-
 
 def _extract_config(dest):
     """

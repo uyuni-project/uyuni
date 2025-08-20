@@ -180,8 +180,7 @@ public class ProxyConfigUtils {
      * @return the pillar object with stored proxyConfig
      */
     public static Pillar proxyConfigToPillar(ProxyConfig proxyConfig) {
-        Pillar pillar = new Pillar();
-        pillar.setCategory(ProxyConfigUtils.PROXY_PILLAR_CATEGORY);
+        Pillar pillar = new Pillar(ProxyConfigUtils.PROXY_PILLAR_CATEGORY, new HashMap<String, Object>());
 
         if (proxyConfig == null) {
             return pillar;
@@ -391,7 +390,7 @@ public class ProxyConfigUtils {
                 FileUtils.readStringFromFile(configPath.toString()), Map.class);
         proxyConfig.setRootCA(config.get("ca_crt").toString());
         proxyConfig.setEmail(config.get("email").toString());
-        proxyConfig.setMaxCache(Integer.getInteger(config.get("max_cache_size_mb").toString()));
+        proxyConfig.setMaxCache((Integer)config.get("max_cache_size_mb"));
         proxyConfig.setParentFqdn(config.get("server").toString());
         proxyConfig.setProxyFqdn(config.get("proxy_fqdn").toString());
         return proxyConfig;
