@@ -145,9 +145,16 @@ const AccessGroup = (props: AccessGroupProps) => {
   };
 
   const handleSaveAccessGroup = () => {
+    const permissions = Object.values(accessGroupState.permissions).map((permission) => ({
+      id: permission.id,
+      namespace: permission.namespace,
+      accessMode: permission.accessMode,
+      view: permission.view ?? false,
+      modify: permission.modify ?? false,
+    }));
     const payload = {
       ...accessGroupState,
-      permissions: Object.values(accessGroupState.permissions),
+      permissions: permissions,
     };
 
     Network.post("/rhn/manager/api/admin/access-control/access-group/save", payload)
