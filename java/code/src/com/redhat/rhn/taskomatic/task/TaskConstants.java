@@ -218,5 +218,8 @@ public class TaskConstants {
     public static final String TASK_QUERY_PKGCLEANUP_ORPHAN_VENDOR_PKG_CHANGE_ORG =
             "taskomatic_change_org_for_orphan_vendor_packages";
 
+    public static final String TASK_QUERY_PKGCLEANUP_FIND_ORPHAN_VENDOR_PACKAGES =
+            "pkgcleanup_find_orphan_vendor_packages";
+
     private TaskConstants() { }
 }
