@@ -1424,7 +1424,7 @@ Then(/^I should be able to connect to the ReportDB on the server$/) do
   raise SystemCallError, 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
 end
 
-Then(/^there should be a user allowed to create roles on the ReportDB $/) do
+Then(/^there should be a user allowed to create roles on the ReportDB$/) do
   users_and_permissions, return_code = get_target('server').run(reportdb_server_query('\\du'))
   raise SystemCallError, 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
 
