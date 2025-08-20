@@ -11,11 +11,12 @@
 
 package com.suse.manager.webui.controllers.admin.handlers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.badGateway;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.error;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.notFound;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.serviceUnavailable;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
 import static spark.Spark.delete;
@@ -68,7 +69,6 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.SchedulerException;
@@ -420,12 +420,12 @@ public class HubApiController {
         }
         catch (IOException ex) {
             LOGGER.error("Unable to deregister: error to connect with the remote server {}", server.getFqdn(), ex);
-            return error(response, HttpStatus.SC_SERVICE_UNAVAILABLE, LOC.getMessage("hub.unable_to_deregister"));
+            return serviceUnavailable(response, LOC.getMessage("hub.unable_to_deregister"));
         }
         catch (CertificateException ex) {
             LOGGER.error("Unable to deregister: error with Certificate when connecting to the remote server {}",
                     server.getFqdn(), ex);
-            return error(response, HttpStatus.SC_BAD_GATEWAY, LOC.getMessage("hub.unable_to_deregister"));
+            return badGateway(response, LOC.getMessage("hub.unable_to_deregister"));
         }
         return success(response);
     }

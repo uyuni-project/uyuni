@@ -1,1 +1,1 @@
-- ISS Server local deregister when not reachable
+- Added the possibility to deregister an unreachable ISS Hub or Peripheral server

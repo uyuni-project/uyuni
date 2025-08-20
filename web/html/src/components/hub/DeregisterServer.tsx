@@ -57,7 +57,7 @@ export class DeregisterServer extends React.Component<Props, State> {
           isOpen={this.state.showDeleteErrorModal}
           onConfirm={() => this.onConfirmDeregistration(true)}
           onClose={() => this.setState({ showDeleteErrorModal: false })}
-          submitText={"Deregister without cleanup"}
+          submitText={t("Deregister without cleanup")}
           submitIcon={"fa-trash"}
         />
       </>
@@ -65,7 +65,7 @@ export class DeregisterServer extends React.Component<Props, State> {
   }
 
   private renderDeregisterErrorModal() {
-    return <span>{t("Cleanup timed out. Please check if the machine is reachable")}</span>;
+    return <span>{t("Cleanup timed out. Please check if the machine is reachable.")}</span>;
   }
 
   private getConfirmationMessage(): string {
@@ -116,7 +116,6 @@ export class DeregisterServer extends React.Component<Props, State> {
 
   private onSuccessfullDeregister() {
     showInfoToastr(t("The server {fqdn} has been successfully deregistered.", { fqdn: this.props.fqdn }));
-    // Invoke the callback if present
     this.props.onDeregistered?.();
   }
 }
