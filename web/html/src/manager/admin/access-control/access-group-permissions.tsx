@@ -5,6 +5,7 @@ import { AccessGroupState } from "manager/admin/access-control/access-group";
 
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
+import { MessagesContainer, showErrorToastr } from "components/toastr";
 
 import Network from "utils/network";
 
@@ -114,8 +115,8 @@ const AccessGroupPermissions = (props: Props) => {
           }
         }
       })
-      .catch((error) => {
-        console.error("Error fetching namespaces:", error);
+      .catch(() => {
+        showErrorToastr(t("An unexpected error occurred while fetching namespaces."));
       });
   }, []);
 
@@ -137,19 +138,20 @@ const AccessGroupPermissions = (props: Props) => {
 
   return (
     <div>
+      <MessagesContainer />
       {!props.state.id ? (
         <>
           <div className="d-flex">
             <div className="me-5">
-              <strong className="me-1">Name:</strong>
+              <strong className="me-1">{t("Name:")}</strong>
               {props.state.name}
             </div>
             <div className="me-5">
-              <strong className="me-1">Description:</strong>
+              <strong className="me-1">{t("Description:")}</strong>
               {props.state.description}
             </div>
             <div>
-              <strong className="me-1">Organization:</strong>
+              <strong className="me-1">{t("Organization:")}</strong>
               {props.state.orgName}
             </div>
           </div>
