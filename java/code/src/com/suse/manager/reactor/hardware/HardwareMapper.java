@@ -953,10 +953,10 @@ public class HardwareMapper {
     }
 
     private boolean notLocalhost(NetworkInterface netIf) {
-        return !netIf.getIPv4Addresses().stream()
-                .anyMatch(addr -> "127.0.0.1".equals(addr.getAddress())) &&
-                !netIf.getIPv6Addresses().stream()
-                .anyMatch(addr -> "::1".equals(addr.getAddress()));
+        return netIf.getIPv4Addresses().stream()
+                .noneMatch(addr -> "127.0.0.1".equals(addr.getAddress())) &&
+                netIf.getIPv6Addresses().stream()
+                .noneMatch(addr -> "::1".equals(addr.getAddress()));
     }
 
     /**
