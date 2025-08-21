@@ -144,9 +144,6 @@ public class AuditChannelInfo {
             return false;
         }
         AuditChannelInfo other = (AuditChannelInfo) obj;
-        if (id != other.id) {
-            return false;
-        }
-        return true;
+        return id == other.id;
     }
 }
