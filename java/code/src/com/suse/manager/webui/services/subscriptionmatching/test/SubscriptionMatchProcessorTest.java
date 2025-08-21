@@ -325,7 +325,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testConfirmedPin() throws Exception {
+    public void testConfirmedPin() throws ParseException {
         // setup a confirmed match of one system and one subscription
         input.setSystems(Arrays.asList(new SystemJson(100L, "my system", 1, true, false,
                 new HashSet<>(), new HashSet<>())));
@@ -356,7 +356,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
 
 
     @Test
-    public void testUnsatisfiedPin() throws Exception {
+    public void testUnsatisfiedPin() throws ParseException {
         // setup a  of one system and one subscription
         input.setSystems(Arrays.asList(new SystemJson(100L, "my system", 1, true, false,
                 new HashSet<>(), new HashSet<>())));
@@ -434,7 +434,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         systems.add(new SystemJson(10L, "system 10", 1, true, false, new HashSet<>(),
                 Collections.singleton(1000L)));
 
-        Set prods = new HashSet<>();
+        Set<Long> prods = new HashSet<>();
         prods.add(1000L);
         prods.add(1004L);
         systems.add(new SystemJson(20L,
