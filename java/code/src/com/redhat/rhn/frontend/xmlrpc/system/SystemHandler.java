@@ -7501,7 +7501,7 @@ public class SystemHandler extends BaseHandler {
     @ReadOnly
     public List<Map<String, Object>> listMigrationTargets(User loggedInUser,
             Integer sid, boolean excludeTargetWhereMissingSuccessors) {
-        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> returnList = new ArrayList<>();
         Server server = lookupServer(loggedInUser, sid);
         Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
         if (!installedProducts.isPresent()) {
