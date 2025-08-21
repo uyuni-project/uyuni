@@ -18,7 +18,6 @@ package com.suse.manager.webui.controllers;
 import static com.redhat.rhn.GlobalInstanceHolder.ACCESS_CONTROL_NAMESPACE_TREE_HELPER;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.delete;
 import static spark.Spark.get;
@@ -149,6 +148,10 @@ public class AccessGroupController {
      */
     public static String listOrgUsers(Request request, Response response, User user) {
         Long orgId = Long.parseLong(request.params("orgId"));
+        if (OrgManager.visibleOrgs(user).stream().noneMatch(it -> it.getId().equals(orgId))) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND, GSON.toJson(
+                    ResultJson.error("Organization with id: " + orgId + " not found")));
+        }
         List<AccessGroupUserJson> users = MANAGER.listUsers(orgId);
         return json(GSON, response, users, new TypeToken<>() { });
     }
@@ -162,7 +165,7 @@ public class AccessGroupController {
      * @return the result JSON object
      */
     public static String listOrganizations(Request request, Response response, User user) {
-        List<OrgInfoJson> organizations = OrgManager.allOrgs(user).stream().map(org ->
+        List<OrgInfoJson> organizations = OrgManager.visibleOrgs(user).stream().map(org ->
                 new OrgInfoJson(org.getId(), org.getName())).toList();
         return json(GSON, response, organizations, new TypeToken<>() { });
     }
@@ -177,10 +180,10 @@ public class AccessGroupController {
      */
     public static String listAccessGroups(Request request, Response response, User user) {
         Long orgId = Long.parseLong(request.params("orgId"));
-        var org = OrgFactory.lookupById(orgId);
+        var org = OrgManager.visibleOrgs(user).stream().filter(it -> it.getId().equals(orgId)).findFirst().orElse(null);
         if (org == null) {
             Spark.halt(HttpStatus.SC_NOT_FOUND, GSON.toJson(
-                    ResultJson.error("Organization with id: " + orgId + " does not exist")));
+                    ResultJson.error("Organization with id: " + orgId + " not found")));
         }
         var accessGroups = MANAGER.list(org).stream()
                 .sorted(Comparator.comparing(AccessGroup::getDescription)).
