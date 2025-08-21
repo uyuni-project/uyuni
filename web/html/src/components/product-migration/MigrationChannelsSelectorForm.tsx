@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import BaseChannel from "manager/content-management/shared/components/panels/sources/channels/base-channel";
 import { ChannelProcessor } from "manager/content-management/shared/components/panels/sources/channels/channel-processor";
@@ -58,25 +58,25 @@ export const MigrationChannelsSelectorForm: React.FC<Props> = ({
     return processor;
   }, [baseChannel, channelTrees, channelsMap, requiresMap, requiredByMap]);
 
-  const getRequiredChannelsForBase = useCallback(
-    (base: BaseChannelType, additionalChildren?: ChildChannelType[]): Set<ChildChannelType> => {
-      const selectionSet: Set<ChildChannelType> = new Set();
+  function getRequiredChannelsForBase(
+    base: BaseChannelType,
+    additionalChildren?: ChildChannelType[]
+  ): Set<ChildChannelType> {
+    const selectionSet: Set<ChildChannelType> = new Set();
 
-      channelProcessor.getRequires(base.id)?.forEach((item) => {
-        if (isChildChannel(item)) {
-          selectionSet.add(item);
-        }
-      });
+    channelProcessor.getRequires(base.id)?.forEach((item) => {
+      if (isChildChannel(item)) {
+        selectionSet.add(item);
+      }
+    });
 
-      // Ensure we get the correct instance from the channel processor, otherwise the set won't behave as expected
-      additionalChildren?.forEach((child) =>
-        selectionSet.add(channelProcessor.getChannelById(child.id) as ChildChannelType)
-      );
+    // Ensure we get the correct instance from the channel processor, otherwise the set won't behave as expected
+    additionalChildren?.forEach((child) =>
+      selectionSet.add(channelProcessor.getChannelById(child.id) as ChildChannelType)
+    );
 
-      return new Set(selectionSet.values());
-    },
-    [channelProcessor]
-  );
+    return new Set(selectionSet.values());
+  }
 
   const [selectedBaseChannel, setSelectedBaseChannel] = useState(baseChannel ?? baseChannels[0]);
   const [selectedChildChannels, setSelectedChildChannels] = useState(() =>
@@ -94,51 +94,45 @@ export const MigrationChannelsSelectorForm: React.FC<Props> = ({
     [selectedChildChannels]
   );
 
-  const onToggleChannelSelect = useCallback(
-    (channel: ChannelType, toState?: boolean) => {
-      // Ignore any updates for base channels, the UI uses the dropdown to choose it
-      if (!isChildChannel(channel)) {
-        return;
-      }
+  function onToggleChannelSelect(channel: ChannelType, toState?: boolean): void {
+    // Ignore any updates for base channels, the UI uses the dropdown to choose it
+    if (!isChildChannel(channel)) {
+      return;
+    }
 
-      const updatedSet = new Set([...selectedChildChannels]);
-      const isAddition = toState ?? !updatedSet.has(channel);
+    const updatedSet = new Set([...selectedChildChannels]);
+    const isAddition = toState ?? !updatedSet.has(channel);
 
-      const updateAction = isAddition ? updatedSet.add.bind(updatedSet) : updatedSet.delete.bind(updatedSet);
-      const relatedChannels = isAddition
-        ? channelProcessor.getRequires(channel.id)
-        : channelProcessor.getRequiredBy(channel.id);
+    const updateAction = isAddition ? updatedSet.add.bind(updatedSet) : updatedSet.delete.bind(updatedSet);
+    const relatedChannels = isAddition
+      ? channelProcessor.getRequires(channel.id)
+      : channelProcessor.getRequiredBy(channel.id);
 
-      [channel, ...(relatedChannels ?? new Set())]
-        .filter((item) => isChildChannel(item))
-        .forEach((item) => updateAction(item));
+    [channel, ...(relatedChannels ?? new Set())]
+      .filter((item) => isChildChannel(item))
+      .forEach((item) => updateAction(item));
 
-      setSelectedChildChannels(updatedSet);
-    },
-    [channelProcessor, selectedChildChannels]
-  );
+    setSelectedChildChannels(updatedSet);
+  }
 
-  const onChangeBase = useCallback(
-    (value: string) => {
-      if (value === selectedBaseChannel.id.toString()) {
-        return;
-      }
+  function onChangeBase(value: string): void {
+    if (value === selectedBaseChannel.id.toString()) {
+      return;
+    }
 
-      const newBase = baseChannels.find((base) => base.id.toString() === value);
-      if (newBase !== undefined) {
-        channelProcessor.setSelectedBaseChannelId(newBase.id).then((_channelTree) => {
-          setSelectedBaseChannel(newBase);
-          setSelectedChildChannels(getRequiredChannelsForBase(newBase));
-        });
-      }
-    },
-    [selectedBaseChannel, baseChannels, channelProcessor, getRequiredChannelsForBase]
-  );
+    const newBase = baseChannels.find((base) => base.id.toString() === value);
+    if (newBase !== undefined) {
+      channelProcessor.setSelectedBaseChannelId(newBase.id).then((_channelTree) => {
+        setSelectedBaseChannel(newBase);
+        setSelectedChildChannels(getRequiredChannelsForBase(newBase));
+      });
+    }
+  }
 
-  const onSubmit = useCallback(() => {
+  function onSubmit(): void {
     const channelTree = MigrationUtils.getAsChannelTree(selectedBaseChannel, selectedChildChannels);
     onChannelSelection(channelTree, selectedAllowVendorChange);
-  }, [selectedBaseChannel, selectedChildChannels, selectedAllowVendorChange, onChannelSelection]);
+  }
 
   function renderChildren(): React.ReactNode {
     if (selectedChannelTree === undefined) {

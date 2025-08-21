@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
 import { AsyncButton } from "components/buttons";
 import { IconTag } from "components/icontag";
@@ -30,11 +30,11 @@ export const MigrationTargetSelectorForm: React.FC<Props> = ({
     firstSelectableTarget !== undefined ? { selectedTarget: targetId ?? firstSelectableTarget.id } : {}
   );
 
-  const onSubmit = useCallback(async (): Promise<void> => {
+  async function onSubmit(): Promise<void> {
     if (formModel.selectedTarget !== undefined) {
       await onTargetChange(formModel.selectedTarget);
     }
-  }, [formModel, onTargetChange]);
+  }
 
   function getToolTipForTarget(target: MigrationTarget): string | undefined {
     if (target.missingChannels.length === 0) {
