@@ -4808,7 +4808,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="GS" xml:space="preserve">
         <source>S. Georgia &amp; S. Sandwich Isls.</source>
-        <target>Južná Georgia a Južné Sandwichove ostrovy</target>
+        <target state="translated">Južná Georgia a Južné Sandwichove ostrovy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
@@ -9695,7 +9695,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been disabled.</source>
-        <target state="needs-adaptation">Plán &lt;strong&gt;{0}&lt;/strong&gt; bol vymazaný.</target>
+        <target state="translated">Plán &lt;strong&gt;{0}&lt;/strong&gt; bol zakázaný.</target>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
@@ -11002,7 +11002,7 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       </trans-unit>
       <trans-unit id="cveaudit.notfound" xml:space="preserve">
         <source>The specified CVE number was not found in our database.</source>
-        <target state="needs-adaptation">Zadané číslo CVE sa v našej databáze nenašlo. Ďalšie informácie o tomto CVE môžete získať z odkazov uvedených nižšie.</target>
+        <target state="translated">Zadané číslo CVE sa v našej databáze nenašlo.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
         <source>Error during applying the bootstrap state. Check the server logs.</source>
@@ -11417,16 +11417,16 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <target state="translated">Žiadne</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.description" xml:space="preserve">
-        <source>KVM on AMD Epyc Processor, second generation (milan)</source>
-        <target state="translated">KVM na procesore AMD Epyc, druhá generácia (milan)</target>
+        <source>KVM on AMD Epyc Processor, third generation (milan)</source>
+        <target state="needs-adaptation">KVM na procesore AMD Epyc, druhá generácia (milan)</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Milan</source>
         <target state="translated">KVM na AMD Epyc - Milan</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description" xml:space="preserve">
-        <source>KVM on AMD Epyc Processor, third generation (genoa)</source>
-        <target state="translated">KVM na procesore AMD Epyc, tretia generácia (genoa)</target>
+        <source>KVM on AMD Epyc Processor, fourth generation (genoa)</source>
+        <target state="needs-adaptation">KVM na procesore AMD Epyc, tretia generácia (genoa)</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Genoa</source>
@@ -11857,47 +11857,131 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <source>Error when triggering the channels sync.</source>
         <target state="translated">Chyba pri spúšťaní synchronizácie kanálov.</target>
       </trans-unit>
-    <trans-unit id="supportdata.get" xml:space="preserve">
+      <trans-unit id="supportdata.get" xml:space="preserve">
         <source>Get and Upload Support data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Získanie a nahranie podporných dát</target>
+      </trans-unit>
       <trans-unit id="message.scheduleactivated" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Plán &lt;strong&gt;{0}&lt;/strong&gt; bol aktivovaný.</target>
+      </trans-unit>
       <trans-unit id="task.status.errata-advisory-map-sync" xml:space="preserve">
         <source>Update SUSE errata advisory map</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Aktualizácia mapy upozornení na opravy chýb SUSE</target>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.errata-advisory-map-sync-bunch" xml:space="preserve">
         <source>Update SUSE errata advisory map to retrieve announcement ids and advisor URLs</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Aktualizácia mapy upozornení na opravy chýb SUSE pre získanie id oznámení a URL poskytovateľa</target>
+      </trans-unit>
       <trans-unit id="supportdata.uploadGeoType.eu" xml:space="preserve">
         <source>EU</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">EU</target>
+      </trans-unit>
       <trans-unit id="supportdata.uploadGeoType.us" xml:space="preserve">
         <source>US</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">US</target>
+      </trans-unit>
       <trans-unit id="system.details.support.invalid_case_number" xml:space="preserve">
         <source>The case number {0} is not valid.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Číslo prípadu {0} nie je platné.</target>
+      </trans-unit>
       <trans-unit id="system.details.support.invalid_region" xml:space="preserve">
         <source>The region {0] is not valid.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Región {0] nie je platný.</target>
+      </trans-unit>
       <trans-unit id="system.details.support.unable_to_schedule" xml:space="preserve">
         <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Pri plánovaní generovania podporných dat došlo k neočakávanej chybe. Podrobné informácie nájdete v záznamoch servera.</target>
+      </trans-unit>
       <trans-unit id="system.details.support.unable_to_upload" xml:space="preserve">
         <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
+        <target state="translated">Nie je možné zhromaždiť a nahrať podporné dáta. Podrobné informácie nájdete v záznamoch servera.</target>
+      </trans-unit>
+    <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, fourth generation (bergamo)</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Bergamo</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_siena.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, fourth generation (siena)</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_siena.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Siena</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_turin.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, fifth generation (turin)</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_turin.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Turin</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.migration.noServersSelected" xml:space="preserve">
+          <source>Unable to identify the selected systems for the migration.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.migration.noCommonProduct" xml:space="preserve">
+          <source>The selected systems do not have a common base product.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.migration.noServersSelected" xml:space="preserve">
+          <source>Unable to identify a valid migration target for the selected systems.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.os_not_supported" xml:space="preserve">
+        <source>Product Migrations are not supported for the OS of this system.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.source_unknown" xml:space="preserve">
+        <source>The base product of this system is unknown.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.source_mismatch" xml:space="preserve">
+        <source>The base product of this system does not match.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.salt_needs_update" xml:space="preserve">
+        <source>Salt installed on this system is out of date.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.salt_needs_update.details" xml:space="preserve">
+        <source>The installed &lt;pre&gt;{0}&lt;/pre&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.addons_affected" xml:space="preserve">
+        <source>Some installed addons are going to be affect, depending on chosen target.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.single.addons_affected" xml:space="preserve">
+        <source>Some installed addons are going to be affect.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.addons_affected.missing_successors" xml:space="preserve">
+        <source>&lt;p&gt;Depending on chosen target, some or all of these products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.single.addons_affected.missing_successors" xml:space="preserve">
+        <source>&lt;p&gt;These products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.addons_affected.installed_addons" xml:space="preserve">
+        <source>&lt;p&gt;Depending on chosen target, some or all of these products will be installed:&lt;/p&gt;{0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.single.addons_affected.installed_addons" xml:space="preserve">
+        <source>&lt;p&gt;These products will be installed:&lt;/p&gt;{0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="product_migration.addon_or_higher" xml:space="preserve">
+        <source>{0} or higher</source>
       <target state="new"/>
   </trans-unit>
     </body>

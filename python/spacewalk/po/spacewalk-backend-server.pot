@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-25 09:41+0200\n"
+"POT-Creation-Date: 2025-08-20 17:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,20 +31,20 @@ msgstr ""
 msgid "declined proxy authentication"
 msgstr ""
 
-#: ../server/apacheRequest.py:67
+#: ../server/apacheRequest.py:68
 #, python-format
 msgid "Invalid request received (%s)."
 msgstr ""
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:126
+#: ../server/apacheRequest.py:130
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
 "%s"
 msgstr ""
 
-#: ../server/apacheRequest.py:156
+#: ../server/apacheRequest.py:160
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -52,7 +52,7 @@ msgid ""
 msgstr ""
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:671
+#: ../server/apacheRequest.py:675
 #, python-format
 msgid "Invalid URI %s"
 msgstr ""
