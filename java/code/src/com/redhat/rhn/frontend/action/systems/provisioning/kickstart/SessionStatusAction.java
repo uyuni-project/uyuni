@@ -90,8 +90,8 @@ public class SessionStatusAction extends RhnAction {
                     kss.getModified().getTime();
                 long nowMillis = System.currentTimeMillis();
                 long timeoutMillis = GUEST_TIME_OUT_MINUTES * // minutes
-                                     60                     * // seconds
-                                     1000;                    // millis
+                                     60L                     * // seconds
+                                     1000L;                    // millis
 
                 // check timout and file requested time is current
                 long sinceLastFileRequestMillis = nowMillis - lastFileRequestMillis;

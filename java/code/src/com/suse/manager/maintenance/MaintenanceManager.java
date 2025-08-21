@@ -620,7 +620,7 @@ public class MaintenanceManager {
         }
         else {
             rangeStart = rangeStart.getDayOfWeek().equals(DayOfWeek.SUNDAY) ? rangeStart.minusDays(6) :
-                    rangeStart.minusDays(rangeStart.getDayOfWeek().getValue() - 1);
+                    rangeStart.minusDays((long)rangeStart.getDayOfWeek().getValue() - 1);
         }
 
         ZonedDateTime rangeEnd = rangeStart.plusDays(42);
