@@ -809,7 +809,7 @@ public class SparkApplicationHelper {
      * @return a JSON string
      */
     public static String unprocessableEntity(Response response, String... messages) {
-        response.type("application/json");
+        response.type(APPLICATION_JSON);
         response.status(HttpStatus.SC_UNPROCESSABLE_ENTITY);
         return GSON.toJson(ResultJson.error(messages).toSccResult());
     }
