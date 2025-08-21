@@ -69,7 +69,8 @@ const AccessGroupPermissions = (props: Props) => {
       } else {
         const existingPermission = props.state.permissions[currentItem.namespace];
         const newPermission = {
-          ...(existingPermission || currentItem),
+          ...existingPermission,
+          ...currentItem,
           [type]: forceValue !== null ? forceValue : !(existingPermission && existingPermission[type]),
         };
 
