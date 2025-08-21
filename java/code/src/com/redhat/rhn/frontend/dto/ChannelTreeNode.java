@@ -57,7 +57,7 @@ public class ChannelTreeNode extends BaseDto implements BaseListDto,
      */
     public static void processList(DataResult<ChannelTreeNode> result) {
         DataResult<ChannelTreeNode> toReturn =
-                new DataResult<ChannelTreeNode>(new ArrayList<>());
+                new DataResult<>(new ArrayList<>());
             toReturn.setFilter(true);
             toReturn.setFilterData(result.getFilterData());
 
