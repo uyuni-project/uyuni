@@ -114,7 +114,7 @@ public class CVEAuditController {
             this.target = targetIn;
         }
 
-        public EnumSet<PatchStatus> getStatuses() {
+        public Set<PatchStatus> getStatuses() {
             return statuses;
         }
 
