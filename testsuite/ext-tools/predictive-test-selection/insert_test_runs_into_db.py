@@ -7,7 +7,7 @@ uses run data and feature results from all run folders and inserts them into the
 
 Prerequisites:
     - Run runs_feature_result_extraction.py
-    - Environment variable DATABASE_CONNECTION_STRING must be set.
+    - Environment variable TEST_RUNS_DATABASE_CONNECTION_STRING must be set.
 
 The script works with any PostgreSQL database, and probably any relational database,
 but is tested with Neon Postgres.
@@ -415,11 +415,11 @@ class TestRunInserter:
 
 def get_database_connection_string() -> str:
     """Get database connection string from environment variable"""
-    database_connection_string = os.getenv('DATABASE_CONNECTION_STRING')
+    database_connection_string = os.getenv('TEST_RUNS_DATABASE_CONNECTION_STRING')
     if not database_connection_string:
         logger.critical(
-            "DATABASE_CONNECTION_STRING not set in environment.\n"
-            "export DATABASE_CONNECTION_STRING='database_connection_string' and rerun the script"
+            "TEST_RUNS_DATABASE_CONNECTION_STRING not set in environment.\n"
+            "export TEST_RUNS_DATABASE_CONNECTION_STRING='connection_string' and rerun the script"
         )
         sys.exit(1)
     return database_connection_string

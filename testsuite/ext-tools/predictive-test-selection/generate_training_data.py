@@ -6,7 +6,7 @@ This script connects to the database, preprocesses feature data, and loops over 
 test runs to create a training CSV file.
 
 Prerequisites:
-    - Environment variable DATABASE_CONNECTION_STRING must be set.
+    - Environment variable TEST_RUNS_DATABASE_CONNECTION_STRING must be set.
     - Environment variable GITHUB_TOKEN must be set with a GitHub Access Token.
 
 Usage:

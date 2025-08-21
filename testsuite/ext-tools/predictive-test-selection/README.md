@@ -261,7 +261,7 @@ This script is responsible for backfilling test runs into the database.
 ### How to Use the Script
 
 1. Ensure all prerequisite scripts have been executed. (`pr_data_extraction.py`, `runs_feature_result_extraction.py`)
-2. Set the `DATABASE_CONNECTION_STRING` environment variable.
+2. Set the `TEST_RUNS_DATABASE_CONNECTION_STRING` environment variable.
 3. Run the script.
 
 ### Example Output
@@ -287,7 +287,7 @@ Each pull request is represented by **one test run**:
 ### How to Use the Script
 
 1. Set the `GITHUB_TOKEN` environment variable with a GitHub Access Token. (The script needs it to connect to GitHub API since it uses `get_files_change_history` method from `pr_data_extraction.py`)
-2. Set the `DATABASE_CONNECTION_STRING` environment variable.
+2. Set the `TEST_RUNS_DATABASE_CONNECTION_STRING` environment variable.
 3. Run the script.
 
 ### Example Output
