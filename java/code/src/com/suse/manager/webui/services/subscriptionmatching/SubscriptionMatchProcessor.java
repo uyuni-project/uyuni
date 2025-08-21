@@ -45,7 +45,7 @@ import java.util.Set;
 
 /**
  * Processes data from the matcher to a form that's displayable by the UI.
- * todo consider caching immediate lookup values to maps to improve performance
+ * consider caching immediate lookup values to maps to improve performance
  */
 public class SubscriptionMatchProcessor {
 
@@ -65,7 +65,7 @@ public class SubscriptionMatchProcessor {
             return new MatcherUiData(true,
                     latestStart,
                     latestEnd,
-                    messages(input.get(), output.get()),
+                    messages(output.get()),
                     subscriptions(output.get()),
                     products,
                     unmatchedProductIds(products),
@@ -146,7 +146,7 @@ public class SubscriptionMatchProcessor {
         return "unsatisfied";
     }
 
-    private List<MessageJson> messages(InputJson input, OutputJson output) {
+    private List<MessageJson> messages(OutputJson output) {
         return output.getMessages().stream()
                 .filter(m -> !m.getType().equals("unsatisfied_pinned_match"))
                 .map(m -> new MessageJson(m.getType(), m.getData())) .collect(toList());
