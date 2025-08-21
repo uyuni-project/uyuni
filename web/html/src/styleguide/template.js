@@ -31,7 +31,6 @@ module.exports = {
       `/javascript/spacewalk-checkall.js?cb=${noCache}`,
       `/javascript/legacy/jquery.timepicker.js?cb=${noCache}`,
       `/javascript/bootstrap-datepicker.js?cb=${noCache}`,
-      `/javascript/momentjs/moment-with-langs.min.js?cb=${noCache}`,
     ]
       .map(relativeToProxyUrl)
       .map((url) => ({

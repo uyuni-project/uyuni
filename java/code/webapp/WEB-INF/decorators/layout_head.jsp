@@ -70,4 +70,3 @@
     <script src="/javascript/bootstrap-datepicker.js?cb=${cb_version}"></script>
 
     <script src='/javascript/manager/main.js?cb=${cb_version}'></script>
-    <script src='/javascript/momentjs/moment-with-langs.min.js?cb=${cb_version}' type='text/javascript'></script>

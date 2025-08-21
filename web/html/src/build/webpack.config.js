@@ -48,6 +48,7 @@ module.exports = (env, opts) => {
         from: path.resolve(__dirname, "../node_modules/jquery/dist/jquery.min.js"),
         to: path.resolve(__dirname, "../dist/javascript/legacy"),
       },
+      // TODO: This overlaps with susemanager-frontend-libs
       {
         from: path.resolve(__dirname, "../node_modules/jquery-ui/jquery-ui.js"),
         to: path.resolve(__dirname, "../dist/javascript/legacy"),

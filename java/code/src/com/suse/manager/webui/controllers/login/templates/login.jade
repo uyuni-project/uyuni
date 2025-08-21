@@ -18,9 +18,7 @@ html(lang=window.preferredLocale.replace("_", "-"))
             window.preferredLocale = "#{preferredLocale}";
             window.docsLocale = "#{docsLocale}";
             window.isUyuni = #{isUyuni};
-        script(src='/javascript/jquery.js?cb=#{webBuildtimestamp}')
-        script(src='/javascript/login.js?cb=#{webBuildtimestamp}')
-        script(src='/javascript/bootstrap.js?cb=#{webBuildtimestamp}')
+        script(src='/javascript/legacy/jquery.min.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/manager/main.js?cb=#{webBuildtimestamp}')
         noscript
             .alert.alert-danger
@@ -60,5 +58,4 @@ html(lang=window.preferredLocale.replace("_", "-"))
                           sccForwardWarning: JSON.parse('#{sccForwardWarning}'),
                       }
                     )
-                    validate();
                 });

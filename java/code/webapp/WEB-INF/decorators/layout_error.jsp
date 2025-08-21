@@ -43,13 +43,11 @@
     <c:set var="docsLocale" value="${ConfigDefaults.get().getDefaultDocsLocale()}"/>
     <script>window.docsLocale='${docsLocale}'</script>
 
-    <script src="/javascript/jquery.js?cb=${cb_version}"></script>
-    <script src="/javascript/bootstrap.js?cb=${cb_version}"></script>
+    <script src="/javascript/legacy/jquery.min.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-essentials.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-checkall.js?cb=${cb_version}"></script>
 
     <script src='/javascript/manager/main.js?cb=${cb_version}'></script>
-    <script src='/javascript/momentjs/moment-with-langs.min.js?cb=${cb_version}' type='text/javascript'></script>
     <decorator:head />
   </head>
   <c:set var="webTheme" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentWebTheme(pageContext)}"/>
