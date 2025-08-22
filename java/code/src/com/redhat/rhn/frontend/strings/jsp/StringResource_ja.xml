@@ -9796,13 +9796,6 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         <target>SSL 証明書の場所</target>
       </trans-unit>
-      <trans-unit id="bootstrap.jsp.salt" xml:space="preserve">
-        <source>Bootstrap using Salt</source>
-        <target>Salt を使用するブートストラップ</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="bootstrap.jsp.gpg" xml:space="preserve">
         <source>Enable Client GPG checking</source>
         <context-group name="ctx">
@@ -21118,8 +21111,8 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.operations.provisioning.remotecommand.form.queue.succeed" xml:space="preserve">
-        <source>Task "{0}" has been successfully added to Action Chain {1}.</source>
-        <target>タスク "{0}" が動作チェーン {1} に正しく追加されました。</target>
+        <source>Task "{0}" has been successfully added to Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
+        <target state="needs-adaptation">タスク "{0}" が動作チェーン {1} に正しく追加されました。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -27313,11 +27306,11 @@ given channel.</source>
         <target>選択しているバンチのスケジュールはここで設定できます。</target>
       </trans-unit>
       <trans-unit approved="yes" id="schedule.delete.jsp.introparagraph" xml:space="preserve">
-        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
+        <source>Are you sure you want to disable the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target state="final">本当にスケジュールを削除してもよいですか? 関連付けられているバンチがスケジュールされなくなります。これにより@@PRODUCT_NAME@@の機能性に多大な影響を及ぼす可能性があります。削除による影響をよく理解した上で続行してください。</target>
+        <target state="needs-adaptation">本当にスケジュールを削除してもよいですか? 関連付けられているバンチがスケジュールされなくなります。これにより@@PRODUCT_NAME@@の機能性に多大な影響を及ぼす可能性があります。削除による影響をよく理解した上で続行してください。</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.schedulenameinuse" xml:space="preserve">
         <source>Schedule name {0} is already in use. Please choose another one.</source>
@@ -27355,11 +27348,11 @@ given channel.</source>
         <target>スケジュールの作成</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.schedule" xml:space="preserve">
-        <source>delete schedule</source>
+        <source>disable schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>スケジュールの削除</target>
+        <target state="needs-adaptation">スケジュールの削除</target>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.satschedules" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Schedules</source>
@@ -27435,11 +27428,11 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.deleteschedule" xml:space="preserve">
-        <source>Delete Schedule</source>
+        <source>Disable Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target>スケジュールの削除</target>
+        <target state="needs-adaptation">スケジュールの削除</target>
       </trans-unit>
       <trans-unit id="task.edit.jsp.name" xml:space="preserve">
         <source>Task Name</source>
@@ -29830,6 +29823,35 @@ given channel.</source>
           &lt;a href="{0}"&gt;ログアウト&lt;/a&gt;することも、前のページに &lt;a href="javascript:history.back()"&gt;戻る&lt;/a&gt;こともできます。
         </target>
       </trans-unit>
-    </body>
+    <trans-unit id="userdetails.jsp.adminroles" xml:space="preserve">
+        <source>Administrative Roles</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserDetails</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.compare-task-bunch" xml:space="preserve">
+        <source>Schedules a generic comparison task</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="schedule.edit.jsp.activateschedule" xml:space="preserve">
+        <source>Activate Schedule</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.compare-task-files" xml:space="preserve">
+        <source>Compare Task</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="spmigration.jsp.dryrun.disabled.tooltip" xml:space="preserve">
+        <source>Dry run is not available for this product.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
