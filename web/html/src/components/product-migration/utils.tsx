@@ -1,8 +1,3 @@
-import {
-  canonicalizeBase,
-  canonicalizeChild,
-} from "manager/content-management/shared/components/panels/sources/channels/channels-api-transforms";
-
 import { BaseChannelType, ChannelTreeType, ChannelType, ChildChannelType } from "core/channels/type/channels.type";
 import { computeReverseDependencies } from "core/channels/utils/channels-dependencies.utils";
 
@@ -33,21 +28,12 @@ function processChannelData(baseChannelTrees: ChannelTreeType[], mandatoryMap: R
   const channelTrees: ChannelTreeType[] = baseChannelTrees.map((channelTree) => {
     const updatedBase: BaseChannelType = Utils.deepCopy(channelTree.base);
 
-    // Compute the base specific properties
-    canonicalizeBase(updatedBase);
     // Add to the channels map
     channelsMap.set(updatedBase.id, updatedBase);
     baseChannels.push(updatedBase);
 
     const updatedChildren = channelTree.children.map((child) => {
       const updateChild: ChildChannelType = Utils.deepCopy(child);
-      // Compute the children specific properties
-      canonicalizeChild(updateChild, updatedBase);
-      // If it's a reccomended child update the base
-      if (updateChild.recommended) {
-        updatedBase.recommendedChildrenIds.push(updateChild.id);
-      }
-
       // Add to the channels map
       channelsMap.set(updateChild.id, updateChild);
 
