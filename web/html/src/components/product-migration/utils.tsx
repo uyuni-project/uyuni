@@ -3,7 +3,6 @@ import { BaseChannelType, ChannelTreeType, ChannelType, ChildChannelType } from 
 import { ActionChainLink, ActionLink } from "components/links";
 import { MessageType, Utils as MessagesUtils } from "components/messages/messages";
 
-import { Utils } from "utils/functions";
 import Network from "utils/network";
 
 import { MigrationScheduleRequest } from "./types";
@@ -29,21 +28,20 @@ function processChannelData(
 
   // Process the base channel trees
   const channelTrees: ChannelTreeType[] = baseChannelTrees.map((channelTree) => {
-    const updatedBase: BaseChannelType = Utils.deepCopy(channelTree.base);
+    const base = channelTree.base;
 
     // Add to the channels map
-    channelsMap.set(updatedBase.id, updatedBase);
-    baseChannels.push(updatedBase);
+    channelsMap.set(base.id, base);
+    baseChannels.push(base);
 
-    const updatedChildren = channelTree.children.map((child) => {
-      const updateChild: ChildChannelType = Utils.deepCopy(child);
+    const children = channelTree.children.map((child) => {
       // Add to the channels map
-      channelsMap.set(updateChild.id, updateChild);
+      channelsMap.set(child.id, child);
 
-      return updateChild;
+      return child;
     });
 
-    return { base: updatedBase, children: updatedChildren };
+    return { base, children };
   });
 
   // Convert the Array<[number, number[]]> we receive from json to a Map<number, Set<ChannelType>>
