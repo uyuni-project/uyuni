@@ -147,4 +147,10 @@ VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'root-ca-cert-update-bunch',
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'custom-gpg-key-import-bunch', 'Import a customer GPG key into the keyring', null);
 
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'errata-advisory-map-sync-bunch', 'Update SUSE errata advisory map to retrieve announcement ids and advisor URLs.', null);
+
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'compare-task-bunch', 'Schedules a comparison tasks for the whole system', null);
+
 commit;

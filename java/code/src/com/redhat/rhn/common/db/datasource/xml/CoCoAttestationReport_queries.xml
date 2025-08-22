@@ -19,6 +19,9 @@
                           WHEN 0 THEN 'NONE'
                           WHEN 1 THEN 'KVM_AMD_EPYC_MILAN'
                           WHEN 2 THEN 'KVM_AMD_EPYC_GENOA'
+                          WHEN 3 THEN 'KVM_AMD_EPYC_BERGAMO'
+                          WHEN 4 THEN 'KVM_AMD_EPYC_SIENA'
+                          WHEN 5 THEN 'KVM_AMD_EPYC_TURIN'
                           ELSE NULL END) AS environment_type
                     , suseservercocoattestationreport.status
                     , suseservercocoattestationreport.created AS create_time

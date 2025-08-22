@@ -34,10 +34,10 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
-import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.DeleteUserException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidOperationException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.LookupServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchRoleException;
@@ -567,8 +567,8 @@ public class UserHandler extends BaseHandler {
                     errorString.append(" :: ");
                 }
             }
-            //Throw a BadParameterException with our message string
-            throw new BadParameterException(errorString.toString());
+            //Throw a InvalidParameterException with our message string
+            throw new InvalidParameterException(errorString.toString());
         }
 
         command.storeNewUser();
@@ -703,7 +703,7 @@ public class UserHandler extends BaseHandler {
 
     /**
      * Add ServerGroup to the list of Default System groups. The ServerGroup
-     * <strong>MUST</strong> exist otherwise a IllegalArgumentException is
+     * <strong>MUST</strong> exist otherwise a InvalidParameterException is
      * thrown.
      * @param loggedInUser The current user
      * in user.
@@ -726,7 +726,7 @@ public class UserHandler extends BaseHandler {
 
     /**
      * Add ServerGroups to the list of Default System groups. The ServerGroups
-     * <strong>MUST</strong> exist otherwise a IllegalArgumentException is
+     * <strong>MUST</strong> exist otherwise a InvalidParameterException is
      * thrown.
      * @param loggedInUser The current user
      * in user.
@@ -747,7 +747,7 @@ public class UserHandler extends BaseHandler {
                 loggedInUser, login);
 
         if (sgNames == null || sgNames.isEmpty()) {
-            throw new IllegalArgumentException("no servergroup names supplied");
+            throw new InvalidParameterException("no servergroup names supplied");
         }
 
         List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(target.getOrg());
@@ -782,7 +782,7 @@ public class UserHandler extends BaseHandler {
     /**
      * Remove ServerGroup from the list of Default System groups. The
      * ServerGroup <strong>MUST</strong> exist otherwise a
-     * IllegalArgumentException is thrown.
+     * InvalidParameterException is thrown.
      * @param loggedInUser The current user
      * in user.
      * @param login The login for the user whose Default ServerGroup list will
@@ -805,7 +805,7 @@ public class UserHandler extends BaseHandler {
     /**
      * Remove ServerGroups from the list of Default System groups. The
      * ServerGroups <strong>MUST</strong> exist otherwise a
-     * IllegalArgumentException is thrown.
+     * InvalidParameterException is thrown.
      * @param loggedInUser The current user
      * in user.
      * @param login The login for the user whose Default ServerGroup list will
@@ -825,7 +825,7 @@ public class UserHandler extends BaseHandler {
                 loggedInUser, login);
 
         if (sgNames == null || sgNames.isEmpty()) {
-            throw new IllegalArgumentException("no servergroup names supplied");
+            throw new InvalidParameterException("no servergroup names supplied");
         }
 
         List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(target.getOrg());
@@ -947,7 +947,7 @@ public class UserHandler extends BaseHandler {
             String login, List<String> sgNames, Boolean setDefault) {
         ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
 
-        if (setDefault) {
+        if (BooleanUtils.isTrue(setDefault)) {
             removeDefaultSystemGroups(loggedInUser, login, sgNames);
          }
 
@@ -1045,7 +1045,7 @@ public class UserHandler extends BaseHandler {
                 loggedInUser, login);
 
         if (sgNames == null || sgNames.isEmpty()) {
-            throw new IllegalArgumentException("no servergroup names supplied");
+            throw new InvalidParameterException("no servergroup names supplied");
         }
 
 
@@ -1070,7 +1070,7 @@ public class UserHandler extends BaseHandler {
         UserManager.grantServerGroupPermission(targetUser.getId(), groupIds);
 
         // Follow up with a call to addDefaultSystemGroups if setDefault is true:
-        if (setDefault) {
+        if (BooleanUtils.isTrue(setDefault)) {
             addDefaultSystemGroups(loggedInUser, login, sgNames);
         }
 
@@ -1153,12 +1153,12 @@ public class UserHandler extends BaseHandler {
                 loggedInUser, login);
 
         if (!targetUser.isReadOnly()) {
-            if (readOnly && targetUser.hasRole(RoleFactory.ORG_ADMIN) &&
+            if (BooleanUtils.isTrue(readOnly) && targetUser.hasRole(RoleFactory.ORG_ADMIN) &&
                     targetUser.getOrg().numActiveOrgAdmins() < 2) {
                 throw new InvalidOperationException("error.readonly_org_admin",
                         targetUser.getOrg().getName());
             }
-            if (readOnly && targetUser.hasRole(RoleFactory.SAT_ADMIN) &&
+            if (BooleanUtils.isTrue(readOnly) && targetUser.hasRole(RoleFactory.SAT_ADMIN) &&
                     SatManager.getActiveSatAdmins().size() < 2) {
                 throw new InvalidOperationException("error.readonly_sat_admin");
             }

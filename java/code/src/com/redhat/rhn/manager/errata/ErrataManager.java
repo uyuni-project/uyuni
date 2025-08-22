@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.channel.Channel;
@@ -91,6 +92,7 @@ import com.redhat.rhn.taskomatic.task.errata.ErrataCacheWorker;
 
 import com.suse.manager.utils.MinionServerUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -1906,7 +1908,7 @@ public class ErrataManager extends BaseManager {
             ActionPackageDetails details = ea.getDetails();
             details.setAllowVendorChange(allowVendorChange);
             ea.setDetails(details);
-            Action action = ActionManager.storeAction(ea);
+            Action action = ActionFactory.save(ea);
             actionIds.add(action.getId());
         });
 
@@ -1915,7 +1917,7 @@ public class ErrataManager extends BaseManager {
            ActionPackageDetails details = ea.getDetails();
            details.setAllowVendorChange(allowVendorChange);
            ea.setDetails(details);
-           Action action = ActionManager.storeAction(ea);
+           Action action = ActionFactory.save(ea);
            minionTaskoActions.add(action);
            actionIds.add(action.getId());
         });
@@ -2005,7 +2007,7 @@ public class ErrataManager extends BaseManager {
         if (actionChain != null) {
             return servers.stream()
                 .map(server -> {
-                    ErrataAction errataUpdate = buildErrataAction(user, org, errata.get(0));
+                    ErrataAction errataUpdate = ActionManager.createErrataAction(user, org, errata.get(0));
                     errata.stream().skip(1).forEach(errataUpdate::addErrata);
 
                     if (earliest != null) {
@@ -2022,7 +2024,7 @@ public class ErrataManager extends BaseManager {
         }
 
         // otherwise, return one only Action
-        ErrataAction errataUpdate = buildErrataAction(user, org, errata.get(0));
+        ErrataAction errataUpdate = ActionManager.createErrataAction(user, org, errata.get(0));
         errata.stream()
             .skip(1)
             .forEach(errataUpdate::addErrata);
@@ -2033,17 +2035,9 @@ public class ErrataManager extends BaseManager {
 
         errataUpdate.setName(getErrataName(errata, updateStack));
 
-        servers.forEach(s -> ActionManager.addServerToAction(s, errataUpdate));
+        servers.forEach(s -> ActionFactory.addServerToAction(s, errataUpdate));
 
         return Stream.of(errataUpdate);
-    }
-
-    private static ErrataAction buildErrataAction(User user, Org org, Errata errata) {
-        if (user != null) {
-            return ActionManager.createErrataAction(user, errata);
-        }
-
-        return ActionManager.createErrataAction(org, errata);
     }
 
     /**
@@ -2087,13 +2081,13 @@ public class ErrataManager extends BaseManager {
     private static ErrataAction createErrataActionForNonZypperTradClient(User user, Org org, Errata erratum,
                                                                          Date earliest, ActionChain actionChain,
                                                                          Server server) {
-        ErrataAction errataUpdate = buildErrataAction(user, org, erratum);
+        ErrataAction errataUpdate = ActionManager.createErrataAction(user, org, erratum);
         if (earliest != null) {
             errataUpdate.setEarliestAction(earliest);
         }
 
         if (actionChain == null) {
-            ActionManager.addServerToAction(server, errataUpdate);
+            ActionFactory.addServerToAction(server, errataUpdate);
         }
         else {
             int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
@@ -2221,5 +2215,44 @@ public class ErrataManager extends BaseManager {
         params.put("server_id", serverId);
         WriteMode m = ModeFactory.getWriteMode(ERRATA_QUERIES, "delete_invalid_erratas_from_set");
         m.executeUpdate(params);
+    }
+
+    /**
+     * computes the patch id string, given an errata and a channel
+     *
+     * @param errata  the errata
+     * @param channel the channel
+     * @return the computed patch id
+     */
+    public static String getPatchId(Errata errata, Channel channel) {
+        if ((null == errata) || (null == channel)) {
+            return "";
+        }
+        return getPatchId(errata.getAdvisory(), channel);
+    }
+
+    /**
+     * computes the patch id string, given an errata and a channel
+     *
+     * @param errataAdvisory  the errata advisory string
+     * @param channel the channel
+     * @return the computed patch id
+     */
+    public static String getPatchId(String errataAdvisory, Channel channel) {
+        if (null == channel) {
+            return "";
+        }
+        String patchId = StringUtils.isEmpty(errataAdvisory) ? "" : errataAdvisory;
+        String updateTag = ChannelManager.findUpdateTag(channel);
+        if (!StringUtils.isEmpty(updateTag)) {
+            if (patchId.matches("^([C-Z][A-Z]-)*SUSE-(.*)$")) {
+                // SLE12 style where the update tag is not a prefix
+                patchId = patchId.replaceFirst("SUSE", "SUSE-" + updateTag);
+            }
+            else {
+                patchId = updateTag + "-" + patchId;
+            }
+        }
+        return patchId;
     }
 }

@@ -12,9 +12,9 @@ package com.redhat.rhn.frontend.xmlrpc.sync.content.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.frontend.xmlrpc.ContentSyncException;
 import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
-import com.redhat.rhn.manager.content.ContentSyncException;
 
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssHub;

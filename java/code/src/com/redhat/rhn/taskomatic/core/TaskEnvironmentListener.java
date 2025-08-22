@@ -33,7 +33,7 @@ public class TaskEnvironmentListener implements TriggerListener {
 
     public static final String LISTENER_NAME = "TaskEnvironmentListener";
 
-    private static Logger logger = LogManager.getLogger(SchedulerKernel.class);
+    private static Logger logger = LogManager.getLogger(TaskEnvironmentListener.class);
 
     private Map<Integer, Boolean> vetoedJobs = new HashMap<>();
     /**

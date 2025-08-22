@@ -37,6 +37,10 @@ public abstract class TransactionHelper {
 
     private static Logger log = LogManager.getLogger(TransactionHelper.class);
 
+    private TransactionHelper() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * Runs the runnable and handles the closing of the transaction and Hibernate session upon completion,
      * rolling back in case of unexpected Exceptions.

@@ -17,7 +17,6 @@ package com.redhat.rhn.taskomatic.task.repomd;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.frontend.dto.Bug;
 import com.redhat.rhn.frontend.dto.CVE;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
@@ -116,17 +115,7 @@ public class UpdateInfoWriter extends RepomdWriter {
         attr.addAttribute("version", Long.toString(erratum.getAdvisoryRel()));
         handler.startElement("update", attr);
 
-        String id = erratum.getAdvisoryName();
-        String updateTag = findUpdateTag(channel);
-        if (updateTag != null) {
-            if (id.matches("^([C-Z][A-Z]-)*SUSE-(.*)$")) {
-                // SLE12 style where the update tag is not a prefix
-                id = id.replaceFirst("SUSE", "SUSE-" + updateTag);
-            }
-            else {
-                id = updateTag + "-" + id;
-            }
-        }
+        String id = ErrataManager.getPatchId(erratum.getAdvisoryName(), channel);
 
         handler.addElementWithCharacters("id", sanitize(0L, id));
         handler.addElementWithCharacters("title", sanitize(0L, erratum.getAdvisorySynopsis()));
@@ -269,26 +258,5 @@ public class UpdateInfoWriter extends RepomdWriter {
         else {
             return "errata";
         }
-    }
-
-    /**
-     * Find the update tag for a given channel looking also at original channels
-     * in case the given channel is a clone.
-     * @param channel channel
-     * @return update tag or null
-     */
-    private String findUpdateTag(Channel channel) {
-        String updateTag = channel.getUpdateTag();
-        if (updateTag == null || updateTag.isEmpty()) {
-            Channel current = channel;
-            while (current.isCloned()) {
-                current = current.asCloned().map(ClonedChannel::getOriginal).orElseThrow();
-                updateTag = current.getUpdateTag();
-                if (updateTag != null && !updateTag.isEmpty()) {
-                    break;
-                }
-            }
-        }
-        return updateTag;
     }
 }

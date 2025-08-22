@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2022 SUSE LLC
+-- Copyright (c) 2022--2025 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -41,6 +41,7 @@ CREATE OR REPLACE VIEW InventoryReport AS
               , System.registered_by
               , System.registration_time
               , System.last_checkin_time
+              , System.last_boot_time
               , System.kernel_version
               , System.organization
               , System.architecture
@@ -53,11 +54,13 @@ CREATE OR REPLACE VIEW InventoryReport AS
               , Entitlements.entitlements
               , Groups.system_groups
               , SystemVirtualdata.host_system_id AS virtual_host
-              , SystemVirtualdata.virtual_system_id IS NULL AS is_virtualized
+              , SystemVirtualdata.virtual_system_id IS NOT NULL AS is_virtualized
               , SystemVirtualdata.instance_type_name AS virt_type
               , Channels.software_channels
               , COALESCE(SystemOutdated.packages_out_of_date, (0)::bigint) AS packages_out_of_date
               , COALESCE(SystemOutdated.errata_out_of_date, (0)::bigint) AS errata_out_of_date
+              , COALESCE(SystemOutdated.extra_pkg_count, (0)::bigint) AS extra_pkg_count
+              , SystemOutdated.status AS status
               , System.synced_date
       FROM System
               LEFT JOIN SystemVirtualdata ON ( System.mgm_id = SystemVirtualdata.mgm_id AND System.system_id = SystemVirtualdata.virtual_system_id )

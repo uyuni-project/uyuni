@@ -15,14 +15,14 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-## The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
 %{!?productprettyname: %global productprettyname Uyuni}
 
 %global susemanager_shared_path %{_datadir}/susemanager
 %global wwwroot %{susemanager_shared_path}/www
 %global wwwdocroot %{wwwroot}/htdocs
 Name:           susemanager-branding-oss
-Version:        5.1.2
+Version:        5.2.0
 Release:        0
 Summary:        %{productprettyname} branding oss specific files
 License:        GPL-2.0-only
@@ -32,8 +32,8 @@ URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  skelcd-EULA-multi-linux-manager-server
 Requires:       skelcd-EULA-multi-linux-manager-server
-Conflicts:      skelcd-EULA-suse-manager-server-container
 Conflicts:      oracle-server
+Conflicts:      skelcd-EULA-suse-manager-server-container
 Conflicts:      susemanager-branding
 Provides:       susemanager-branding = %{version}
 BuildArch:      noarch
@@ -64,7 +64,6 @@ install -m 644 eula.html %{buildroot}%{wwwdocroot}/help/
 install -m 644 license.txt %{buildroot}/%{_defaultdocdir}/susemanager/
 
 %files
-%defattr(-,root,root,-)
 %docdir %{_defaultdocdir}/susemanager
 %dir %{_defaultdocdir}/susemanager
 %{_defaultdocdir}/susemanager/license.txt

@@ -1,3 +1,3 @@
 mgr_reboot:
   cmd.run:
-    - name: shutdown -r +5
+    - name: /usr/sbin/shutdown -r +5

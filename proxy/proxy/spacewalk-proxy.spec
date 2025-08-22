@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-proxy
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -16,11 +16,10 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 
 Name:           spacewalk-proxy
-Version:        5.1.5
+Version:        5.2.0
 Release:        0
 Summary:        Spacewalk Proxy Server
 License:        GPL-2.0-only
@@ -419,6 +418,7 @@ fi
 %attr(640,root,%{apache_group}) %config(noreplace) %{rhnconf}/rhn.conf
 %attr(644,root,%{apache_group}) %{_datadir}/rhn/config-defaults/rhn_proxy.conf
 %attr(644,root,%{apache_group}) %config %{httpdconf}/spacewalk-proxy.conf
+%attr(644,root,%{apache_group}) %config %{httpdconf}/smlm-proxy-forwards.conf
 # this file is created by either cli or webui installer
 %ghost %config %{httpdconf}/cobbler-proxy.conf
 %attr(644,root,%{apache_group}) %config %{httpdconf}/spacewalk-proxy-wsgi.conf
@@ -461,7 +461,7 @@ fi
 %attr(755,root,root) %{_sbindir}/rhn-proxy
 %{_sbindir}/spacewalk-proxy
 # mans
-%{_mandir}/man8/rhn-proxy.8*
+%{_mandir}/man8/rhn-proxy.8%{?ext_man}
 %dir %{_datadir}/rhn
 %dir %{_sysconfdir}/slp.reg.d
 %config %{_sysconfdir}/slp.reg.d/susemanagerproxy.reg

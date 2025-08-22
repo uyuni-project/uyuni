@@ -46,6 +46,7 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.suse.manager.utils.DiskCheckHelper;
 import com.suse.manager.utils.DiskCheckSeverity;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
@@ -136,7 +137,7 @@ public class LoginHelper {
                 RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
                 Boolean useOrgUnit =
                         factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT).getValue();
-                if (useOrgUnit) {
+                if (BooleanUtils.isTrue(useOrgUnit)) {
                     String orgUnitString =
                             (String) request.getAttribute("REMOTE_USER_ORGUNIT");
                     newUserOrg = OrgFactory.lookupByName(orgUnitString);
@@ -413,7 +414,7 @@ public class LoginHelper {
 
     private static String getRpmSchemaVersion(String schemaName) {
         String[] rpmCommand = new String[4];
-        rpmCommand[0] = "rpm";
+        rpmCommand[0] = "/usr/bin/rpm";
         rpmCommand[1] = "-q";
         rpmCommand[2] = "--qf=%{VERSION}-%{RELEASE}";
         rpmCommand[3] = schemaName;

@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.FileListNotFoundException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidLocaleCodeException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchKickstartException;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.XmlRpcKickstartHelper;
 import com.redhat.rhn.manager.kickstart.KickstartCryptoKeyCommand;
@@ -38,6 +39,7 @@ import com.redhat.rhn.manager.kickstart.SystemDetailsCommand;
 
 import com.suse.manager.api.ReadOnly;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
@@ -293,7 +295,7 @@ public class SystemDetailsHandler extends BaseHandler {
         }
 
         command.setTimezone(locale);
-        if (useUtc) {
+        if (BooleanUtils.isTrue(useUtc)) {
             command.useUtc();
         }
         else {
@@ -402,10 +404,8 @@ public class SystemDetailsHandler extends BaseHandler {
     @ReadOnly
     public Set<CryptoKey> listKeys(User loggedInUser, String ksLabel) {
 
-        // TODO: Determine if null or empty set is returned when no keys associated
-
-        if (ksLabel == null) {
-            throw new IllegalArgumentException("kickstartLabel cannot be null");
+        if (ksLabel == null || ksLabel.isBlank()) {
+            throw new InvalidParameterException("kickstartLabel cannot be null");
         }
 
         Org org = loggedInUser.getOrg();
@@ -434,12 +434,12 @@ public class SystemDetailsHandler extends BaseHandler {
      */
     public int addKeys(User loggedInUser, String ksLabel, List<String> descriptions) {
 
-        if (ksLabel == null) {
-            throw new IllegalArgumentException("kickstartLabel cannot be null");
+        if (ksLabel == null || ksLabel.isBlank()) {
+            throw new InvalidParameterException("kickstartLabel cannot be null");
         }
 
         if (descriptions == null) {
-            throw new IllegalArgumentException("descriptions cannot be null");
+            throw new InvalidParameterException("descriptions cannot be null");
         }
 
         // Load the kickstart profile
@@ -479,12 +479,12 @@ public class SystemDetailsHandler extends BaseHandler {
      */
     public int removeKeys(User loggedInUser, String ksLabel, List<String> descriptions) {
 
-        if (ksLabel == null) {
-            throw new IllegalArgumentException("kickstartLabel cannot be null");
+        if (ksLabel == null || ksLabel.isBlank()) {
+            throw new InvalidParameterException("kickstartLabel cannot be null");
         }
 
         if (descriptions == null) {
-            throw new IllegalArgumentException("descriptions cannot be null");
+            throw new InvalidParameterException("descriptions cannot be null");
         }
 
         // Load the kickstart profile
@@ -527,8 +527,8 @@ public class SystemDetailsHandler extends BaseHandler {
     public Set<FileList> listFilePreservations(User loggedInUser, String ksLabel)
         throws FaultException {
 
-        if (ksLabel == null) {
-            throw new IllegalArgumentException("kickstartLabel cannot be null");
+        if (ksLabel == null || ksLabel.isBlank()) {
+            throw new InvalidParameterException("kickstartLabel cannot be null");
         }
 
         Org org = loggedInUser.getOrg();
@@ -562,12 +562,12 @@ public class SystemDetailsHandler extends BaseHandler {
     public int addFilePreservations(User loggedInUser, String ksLabel,
                              List<String> filePreservations) throws FaultException {
 
-        if (ksLabel == null) {
-            throw new IllegalArgumentException("kickstartLabel cannot be null");
+        if (ksLabel == null || ksLabel.isBlank()) {
+            throw new InvalidParameterException("kickstartLabel cannot be null");
         }
 
         if (filePreservations == null) {
-            throw new IllegalArgumentException("filePreservations cannot be null");
+            throw new InvalidParameterException("filePreservations cannot be null");
         }
 
         // Load the kickstart profile
@@ -623,12 +623,12 @@ public class SystemDetailsHandler extends BaseHandler {
     public int removeFilePreservations(User loggedInUser, String ksLabel, List<String> filePreservations)
             throws FaultException {
 
-        if (ksLabel == null) {
-            throw new IllegalArgumentException("kickstartLabel cannot be null");
+        if (ksLabel == null || ksLabel.isBlank()) {
+            throw new InvalidParameterException("kickstartLabel cannot be null");
         }
 
         if (filePreservations == null) {
-            throw new IllegalArgumentException("filePreservations cannot be null");
+            throw new InvalidParameterException("filePreservations cannot be null");
         }
 
         // Load the kickstart profile

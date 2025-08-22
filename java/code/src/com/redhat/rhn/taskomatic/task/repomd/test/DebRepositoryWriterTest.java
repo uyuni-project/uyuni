@@ -97,9 +97,6 @@ public class DebRepositoryWriterTest extends JMockBaseTestCaseWithUser {
         catch (IOException e) {
             fail(e.getMessage());
         }
-
-//        String releaseContent = FileUtils.readFileToString(channelRepodataDir.resolve("Release").toFile());
-//        System.out.println(releaseContent);
     }
 
     @Override

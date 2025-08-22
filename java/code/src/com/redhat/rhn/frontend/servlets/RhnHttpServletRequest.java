@@ -20,9 +20,10 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Locale;
-import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -34,7 +35,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
 
     private static final String ACTIVE_LANG_ATTR = "rhnActiveLang";
 
-    private Vector<Locale> locales = new Vector<>();
+    private ArrayList<Locale> locales = new ArrayList<>();
 
     /**
      * Constructs a new RhnHttpServletRequest based on the given parameters.
@@ -63,9 +64,8 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
     public StringBuffer getRequestURL() {
         try {
             URL u = new URL(super.getRequestURL().toString());
-            StringBuffer sb = new StringBuffer(new URL(getProtocol(),
+            return new StringBuffer(new URL(getProtocol(),
                     getServerName(), u.getPort(), u.getFile()).toExternalForm());
-            return sb;
         }
         catch (MalformedURLException e) {
             throw new IllegalArgumentException("Bad argument when creating URL");
@@ -183,7 +183,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
      */
     @Override
     public Enumeration<Locale> getLocales() {
-        return this.locales.elements();
+        return Collections.enumeration(this.locales);
     }
 
     /**
@@ -201,12 +201,12 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
      */
     @Override
     public Enumeration<String> getAttributeNames() {
-        Vector<String> tmp = new Vector<>();
+        ArrayList<String> tmp = new ArrayList<>();
         tmp.add(ACTIVE_LANG_ATTR);
         for (Enumeration<String> e = super.getAttributeNames(); e.hasMoreElements();) {
             tmp.add(e.nextElement());
         }
-        return tmp.elements();
+        return Collections.enumeration(tmp);
     }
     /**
      * {@inheritDoc}

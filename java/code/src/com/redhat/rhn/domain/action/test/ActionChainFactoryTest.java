@@ -18,6 +18,7 @@
 package com.redhat.rhn.domain.action.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -30,6 +31,8 @@ import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainEntryGroup;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.errata.ErrataAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
@@ -127,22 +130,27 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         action1.setOrg(user.getOrg());
         Server server1 = ServerFactoryTest.createTestServer(user);
 
-        ActionChainEntry entry1 = ActionChainFactory.queueActionChainEntry(action1,
-            actionChain1, server1);
+        ActionChainFactory.queueActionChainEntry(action1, actionChain1, server1);
 
         Action action2 = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
         action2.setOrg(user.getOrg());
 
-        ActionChainEntry entry2 = ActionChainFactory.queueActionChainEntry(action2,
-            actionChain2, server1);
+        ActionChainFactory.queueActionChainEntry(action2, actionChain2, server1);
 
         Action action3 = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
         action3.setOrg(user.getOrg());
         Server server2 = ServerFactoryTest.createTestServer(user);
 
-        ActionChainEntry entry3 = ActionChainFactory.queueActionChainEntry(action3,
-            actionChain3, server2);
+        ActionChainFactory.queueActionChainEntry(action3, actionChain3, server2);
 
+        TaskomaticApi taskomaticTestApi = new TaskomaticApi() {
+            @Override
+            public void scheduleActionChainExecution(ActionChain actionchain) {
+                // for testing only prevent contacting taskomatic API
+            }
+        };
+
+        ActionChainFactory.setTaskomaticApi(taskomaticTestApi);
         ActionChainFactory.schedule(actionChain1, new Date());
         ActionChainFactory.schedule(actionChain2, new Date());
         ActionChainFactory.schedule(actionChain3, new Date());
@@ -263,14 +271,16 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         List<ActionChainEntryGroup> result = ActionChainFactory
             .getActionChainEntryGroups(actionChain);
         ActionChainEntryGroup secondGroup = result.get(0);
-        assertEquals(ActionFactory.TYPE_ERRATA.getLabel(),
-            secondGroup.getActionTypeLabel());
+
+        assertInstanceOf(ErrataAction.class, ActionFactory.lookupById(secondGroup.getActionId()));
+
         assertEquals((Integer) 0, secondGroup.getSortOrder());
         assertEquals((Long) 5L, secondGroup.getSystemCount());
 
         ActionChainEntryGroup firstGroup = result.get(1);
-        assertEquals(ActionFactory.TYPE_PACKAGES_UPDATE.getLabel(),
-            firstGroup.getActionTypeLabel());
+
+        assertInstanceOf(PackageUpdateAction.class, ActionFactory.lookupById(firstGroup.getActionId()));
+
         assertEquals((Integer) 1, firstGroup.getSortOrder());
         assertEquals((Long) 5L, firstGroup.getSystemCount());
     }
@@ -417,6 +427,14 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
             }
         }
 
+        TaskomaticApi taskomaticTestApi = new TaskomaticApi() {
+            @Override
+            public void scheduleActionChainExecution(ActionChain actionchain) {
+                // for testing only
+            }
+        };
+
+        ActionChainFactory.setTaskomaticApi(taskomaticTestApi);
         ActionChainFactory.schedule(actionChain, new Date());
 
         // check actions are scheduled in correct order
@@ -581,7 +599,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
         // Can someone else find our thing by-id?
         try {
-            ac = ActionChainFactory.getActionChain(other, acId);
+            ActionChainFactory.getActionChain(other, acId);
         }
         catch (ObjectNotFoundException onfe) {
             return;

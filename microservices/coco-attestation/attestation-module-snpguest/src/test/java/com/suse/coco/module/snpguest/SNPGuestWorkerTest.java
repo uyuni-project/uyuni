@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.coco.module.snpguest;
@@ -26,8 +22,8 @@ import static org.mockito.Mockito.when;
 
 import com.suse.coco.model.AttestationResult;
 import com.suse.coco.model.AttestationStatus;
+import com.suse.coco.module.snpguest.execution.AbstractSNPGuestWrapper;
 import com.suse.coco.module.snpguest.execution.ProcessOutput;
-import com.suse.coco.module.snpguest.execution.SNPGuestWrapper;
 import com.suse.coco.module.snpguest.io.VerificationDirectory;
 import com.suse.coco.module.snpguest.io.VerificationDirectoryProvider;
 import com.suse.coco.module.snpguest.model.AttestationReport;
@@ -40,6 +36,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -68,7 +66,7 @@ class SNPGuestWorkerTest {
     private VerificationDirectory directory;
 
     @Mock
-    private SNPGuestWrapper snpWrapper;
+    private AbstractSNPGuestWrapper snpWrapper;
 
     @Mock
     private ByteSequenceFinder sequenceFinder;
@@ -76,7 +74,7 @@ class SNPGuestWorkerTest {
     private SNPGuestWorker worker;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         result = new AttestationResult();
         result.setId(1L);
         result.setStatus(AttestationStatus.PENDING);
@@ -84,11 +82,28 @@ class SNPGuestWorkerTest {
 
         report = new AttestationReport();
         report.setId(5L);
+        report.setVlekCertificate(null);
 
         // Common mocking
         when(session.selectOne("SNPGuestModule.retrieveReport", 5L)).thenReturn(report);
 
         worker = new SNPGuestWorker(directoryProvider, snpWrapper, sequenceFinder);
+    }
+
+    private String getCertificateSuccessfulFetchString(boolean usingVlek) {
+
+        if (usingVlek) {
+            return """
+                    - VLEK certification retrieved successfully
+                    """;
+        }
+
+        return """
+                - VCEK fetched successfully:
+                    - Standard output: >
+                        Attempting to fetch VCEK...
+                        Fetch ok
+                """;
     }
 
     @Test
@@ -99,11 +114,9 @@ class SNPGuestWorkerTest {
             .thenThrow(PersistenceException.class);
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- Unable to process attestation result: org.apache.ibatis.exceptions.PersistenceException",
-                ""
-            ),
+        assertEquals("""
+                - Unable to process attestation result: org.apache.ibatis.exceptions.PersistenceException
+                """,
             result.getProcessOutput()
         );
 
@@ -123,11 +136,9 @@ class SNPGuestWorkerTest {
             .thenReturn(null);
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- Unable to retrieve attestation report for result",
-                ""
-            ),
+        assertEquals("""
+                - Unable to retrieve attestation report for result
+                """,
             result.getProcessOutput()
         );
 
@@ -146,11 +157,9 @@ class SNPGuestWorkerTest {
         report.setCpuGeneration(EpycGeneration.UNKNOWN);
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- Unable to identify Epyc processor generation for attestation report",
-                ""
-            ),
+        assertEquals("""
+                - Unable to identify Epyc processor generation for attestation report
+                """,
             result.getProcessOutput()
         );
 
@@ -165,16 +174,13 @@ class SNPGuestWorkerTest {
     @Test
     @DisplayName("Rejects report if nonce is null")
     void rejectsWithNullNonce() {
-        // Set the model as UNKNOWN
         report.setRandomNonce(null);
         report.setReport("REPORT".getBytes(StandardCharsets.UTF_8));
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- Unable to verify: randomized nonce not found",
-                ""
-            ),
+        assertEquals("""
+                - Unable to verify: randomized nonce not found
+                """,
             result.getProcessOutput()
         );
 
@@ -189,16 +195,13 @@ class SNPGuestWorkerTest {
     @Test
     @DisplayName("Rejects report if nonce is empty")
     void rejectsWithEmptyNonce() {
-        // Set the model as UNKNOWN
         report.setRandomNonce(new byte[0]);
         report.setReport("REPORT".getBytes(StandardCharsets.UTF_8));
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- Unable to verify: randomized nonce not found",
-                ""
-            ),
+        assertEquals("""
+                - Unable to verify: randomized nonce not found
+                """,
             result.getProcessOutput()
         );
 
@@ -213,16 +216,13 @@ class SNPGuestWorkerTest {
     @Test
     @DisplayName("Rejects report if data is null")
     void rejectsWithNullReport() {
-        // Set the model as UNKNOWN
         report.setReport(null);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- Unable to verify: attestation report not found",
-                ""
-            ),
+        assertEquals("""
+                - Unable to verify: attestation report not found
+                """,
             result.getProcessOutput()
         );
 
@@ -237,16 +237,13 @@ class SNPGuestWorkerTest {
     @Test
     @DisplayName("Rejects report if data is empty")
     void rejectsWithEmptyReport() {
-        // Set the model as UNKNOWN
         report.setReport(new byte[0]);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- Unable to verify: attestation report not found",
-                ""
-            ),
+        assertEquals("""
+                - Unable to verify: attestation report not found
+                """,
             result.getProcessOutput()
         );
 
@@ -261,7 +258,6 @@ class SNPGuestWorkerTest {
     @Test
     @DisplayName("Rejects report if nonce is not found in sequence")
     void rejectsWithoutTheNonceInTheReport() throws IOException {
-        // Set the model as UNKNOWN
         report.setCpuGeneration(EpycGeneration.MILAN);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
         report.setReport("REPORT THAT DOES NOT CONTAIN THE RANDOM SEQUENCE".getBytes(StandardCharsets.UTF_8));
@@ -272,11 +268,9 @@ class SNPGuestWorkerTest {
         when(sequenceFinder.search(report.getReport())).thenReturn(-1);
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- The report does not contain the expected random nonce",
-                ""
-            ),
+        assertEquals("""
+                - The report does not contain the expected random nonce
+                """,
             result.getProcessOutput()
         );
 
@@ -295,7 +289,6 @@ class SNPGuestWorkerTest {
     @Test
     @DisplayName("Rejects report if the VCEK could not be retrieved")
     void rejectsWhenVECKIsNotRetrieved() throws IOException, ExecutionException {
-        // Set the model as UNKNOWN
         report.setCpuGeneration(EpycGeneration.MILAN);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
         report.setReport("REPORT WITH NONCE".getBytes(StandardCharsets.UTF_8));
@@ -313,15 +306,13 @@ class SNPGuestWorkerTest {
             .thenReturn(new ProcessOutput(-1, "", "Fetch FAILED"));
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- The report contains the expected random nonce",
-                "- Unable to retrieve VCEK file:",
-                "    - Exit code: -1",
-                "    - Standard error: >",
-                "        Fetch FAILED",
-                ""
-            ),
+        assertEquals("""
+                - The report contains the expected random nonce
+                - Unable to retrieve VCEK file:
+                    - Exit code: -1
+                    - Standard error: >
+                        Fetch FAILED
+                """,
             result.getProcessOutput()
         );
 
@@ -343,7 +334,6 @@ class SNPGuestWorkerTest {
     @Test
     @DisplayName("Rejects report if the VCEK is not readable")
     void rejectsWhenVECKIsNotReadable() throws IOException, ExecutionException {
-        // Set the model as UNKNOWN
         report.setCpuGeneration(EpycGeneration.MILAN);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
         report.setReport("REPORT WITH NONCE".getBytes(StandardCharsets.UTF_8));
@@ -362,14 +352,12 @@ class SNPGuestWorkerTest {
         when(directory.isVCEKAvailable()).thenReturn(false);
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- The report contains the expected random nonce",
-                "- Unable to retrieve VCEK file:",
-                "    - Standard output: >",
-                "        Fetch ok",
-                ""
-            ),
+        assertEquals("""
+                - The report contains the expected random nonce
+                - Unable to retrieve VCEK file:
+                    - Standard output: >
+                        Fetch ok
+                """,
             result.getProcessOutput()
         );
 
@@ -388,11 +376,12 @@ class SNPGuestWorkerTest {
         verifyNoMoreInteractions(snpWrapper);
     }
 
-    @Test
+    @ParameterizedTest(name = TestHelper.CPU_USING_VLEK_NAME)
+    @MethodSource("com.suse.coco.module.snpguest.TestHelper#listCpuAndUsingVlek")
     @DisplayName("Rejects report if the certificate verification fails")
-    void rejectsWhenCertificatesCannotBeVerified() throws IOException, ExecutionException {
-        // Set the model as UNKNOWN
-        report.setCpuGeneration(EpycGeneration.MILAN);
+    void rejectsWhenCertificatesCannotBeVerified(EpycGeneration cpuGeneration, boolean usingVlek)
+            throws IOException, ExecutionException {
+        report.setCpuGeneration(cpuGeneration);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
         report.setReport("REPORT WITH NONCE".getBytes(StandardCharsets.UTF_8));
 
@@ -404,29 +393,36 @@ class SNPGuestWorkerTest {
         // Pass nonce verification
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
-        // Pass fetching of the VECK
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
-            .thenReturn(new ProcessOutput(0, "Fetch ok", ""));
-        when(directory.isVCEKAvailable()).thenReturn(true);
+        if (usingVlek) {
+            report.setVlekCertificate("This is a dummy VLEK certificaate");
+            when(directory.isVLEKAvailable()).thenReturn(true);
+        }
+        else {
+            // Pass fetching of the VECK
+            when(snpWrapper.fetchVCEK(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+                    .thenReturn(new ProcessOutput(0, """
+                            Attempting to fetch VCEK...
+                            Fetch ok
+                            """, ""));
+            when(directory.isVCEKAvailable()).thenReturn(true);
+        }
 
         // Fail the certificate verification
         when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR))
             .thenReturn(new ProcessOutput(-1, "", "Certificate verify FAILED"));
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- The report contains the expected random nonce",
-                "- VCEK fetched successfully:",
-                "    - Standard output: >",
-                "        Fetch ok",
-                "- Unable to verify the validity of the certificates:",
-                "    - Exit code: -1",
-                "    - Standard error: >",
-                "        Certificate verify FAILED",
-                ""
-            ),
-            result.getProcessOutput()
+        assertEquals("""
+                        - The report contains the expected random nonce
+                        """ +
+                        getCertificateSuccessfulFetchString(usingVlek) +
+                        """
+                        - Unable to verify the validity of the certificates:
+                            - Exit code: -1
+                            - Standard error: >
+                                Certificate verify FAILED
+                        """,
+                result.getProcessOutput()
         );
 
         // Verify the required files have been created and deleted
@@ -437,9 +433,14 @@ class SNPGuestWorkerTest {
         verify(sequenceFinder).setSequence(report.getRandomNonce());
         verify(sequenceFinder).search(report.getReport());
 
-        // Verify the VCEK was fetched
-        verify(snpWrapper).fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE);
-        verify(directory).isVCEKAvailable();
+        if (usingVlek) {
+            verify(directory).isVLEKAvailable();
+        }
+        else {
+            // Verify the VCEK was fetched
+            verify(snpWrapper).fetchVCEK(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE);
+            verify(directory).isVCEKAvailable();
+        }
 
         // Verify the certificate verification have happened
         verify(snpWrapper).verifyCertificates(MOCK_CERTS_DIR);
@@ -447,11 +448,12 @@ class SNPGuestWorkerTest {
         verifyNoMoreInteractions(snpWrapper);
     }
 
-    @Test
+    @ParameterizedTest(name = TestHelper.CPU_USING_VLEK_NAME)
+    @MethodSource("com.suse.coco.module.snpguest.TestHelper#listCpuAndUsingVlek")
     @DisplayName("Rejects report if the attestation verification fails")
-    void rejectsWhenAttestationCannotBeVerified() throws IOException, ExecutionException {
-        // Set the model as UNKNOWN
-        report.setCpuGeneration(EpycGeneration.MILAN);
+    void rejectsWhenAttestationCannotBeVerified(EpycGeneration cpuGeneration, boolean usingVlek)
+            throws IOException, ExecutionException {
+        report.setCpuGeneration(cpuGeneration);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
         report.setReport("REPORT WITH NONCE".getBytes(StandardCharsets.UTF_8));
 
@@ -463,36 +465,43 @@ class SNPGuestWorkerTest {
         // Pass nonce verification
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
-        // Pass fetching of the VECK
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
-            .thenReturn(new ProcessOutput(0, "Fetch ok", ""));
-        when(directory.isVCEKAvailable()).thenReturn(true);
+        if (usingVlek) {
+            report.setVlekCertificate("This is a dummy VLEK certificaate");
+            when(directory.isVLEKAvailable()).thenReturn(true);
+        }
+        else {
+            // Pass fetching of the VECK
+            when(snpWrapper.fetchVCEK(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+                    .thenReturn(new ProcessOutput(0, """
+                            Attempting to fetch VCEK...
+                            Fetch ok
+                            """, ""));
+            when(directory.isVCEKAvailable()).thenReturn(true);
+        }
 
         // Pass the certificate verification
         when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR))
             .thenReturn(new ProcessOutput(0, "Certificate verify ok", ""));
 
         // Fail the attestation verification
-        when(snpWrapper.verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+        when(snpWrapper.verifyAttestation(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
             .thenReturn(new ProcessOutput(-1, "", "Attestation verify FAILED"));
 
         assertFalse(worker.process(session, result));
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- The report contains the expected random nonce",
-                "- VCEK fetched successfully:",
-                "    - Standard output: >",
-                "        Fetch ok",
-                "- Certification chain validated successfully:",
-                "    - Standard output: >",
-                "        Certificate verify ok",
-                "- Unable to verify the attestation report:",
-                "    - Exit code: -1",
-                "    - Standard error: >",
-                "        Attestation verify FAILED",
-                ""
-            ),
-            result.getProcessOutput()
+        assertEquals("""
+            - The report contains the expected random nonce
+            """ +
+            getCertificateSuccessfulFetchString(usingVlek) +
+            """
+            - Certification chain validated successfully:
+                - Standard output: >
+                    Certificate verify ok
+            - Unable to verify the attestation report:
+                - Exit code: -1
+                - Standard error: >
+                    Attestation verify FAILED
+            """,
+                result.getProcessOutput()
         );
 
         // Verify the required files have been created and deleted
@@ -503,22 +512,28 @@ class SNPGuestWorkerTest {
         verify(sequenceFinder).setSequence(report.getRandomNonce());
         verify(sequenceFinder).search(report.getReport());
 
-        // Verify the VCEK was fetched
-        verify(snpWrapper).fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE);
-        verify(directory).isVCEKAvailable();
+        if (usingVlek) {
+            verify(directory).isVLEKAvailable();
+        }
+        else {
+            // Verify the VCEK was fetched
+            verify(snpWrapper).fetchVCEK(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE);
+            verify(directory).isVCEKAvailable();
+        }
 
         // Verify the certificate verification have happened
         verify(snpWrapper).verifyCertificates(MOCK_CERTS_DIR);
 
         // Verify the attestation verification have happened
-        verify(snpWrapper).verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE);
+        verify(snpWrapper).verifyAttestation(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE);
     }
 
-    @Test
+    @ParameterizedTest(name = TestHelper.CPU_USING_VLEK_NAME)
+    @MethodSource("com.suse.coco.module.snpguest.TestHelper#listCpuAndUsingVlek")
     @DisplayName("Approves report if all checks pass")
-    void approvesReportIfAllChecksPass() throws IOException, ExecutionException {
-        // Set the model as UNKNOWN
-        report.setCpuGeneration(EpycGeneration.MILAN);
+    void approvesReportIfAllChecksPass(EpycGeneration cpuGeneration, boolean usingVlek)
+            throws IOException, ExecutionException {
+        report.setCpuGeneration(cpuGeneration);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
         report.setReport("REPORT WITH NONCE".getBytes(StandardCharsets.UTF_8));
 
@@ -530,39 +545,54 @@ class SNPGuestWorkerTest {
         // Pass nonce verification
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
-        // Pass fetching of the VECK
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
-            .thenReturn(new ProcessOutput(0, "Fetch ok", ""));
-        when(directory.isVCEKAvailable()).thenReturn(true);
+        if (usingVlek) {
+            report.setVlekCertificate("This is a dummy VLEK certificate");
+            when(directory.isVLEKAvailable()).thenReturn(true);
+        }
+        else {
+            // Pass fetching of the VECK
+            when(snpWrapper.fetchVCEK(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+                    .thenReturn(new ProcessOutput(0, """
+                            Attempting to fetch VCEK...
+                            Fetch ok
+                            """, ""));
+            when(directory.isVCEKAvailable()).thenReturn(true);
+        }
 
         // Pass the certificate verification
         when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR))
-            .thenReturn(new ProcessOutput(0, "Certificate verify ok", ""));
+            .thenReturn(new ProcessOutput(0, """
+                Verifying certificate chain validity...
+                Certificates ok
+                """, ""));
 
         // Pass the attestation verification
-        when(snpWrapper.verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE))
-            .thenReturn(new ProcessOutput(0, "Attestation verify ok", ""));
+        when(snpWrapper.verifyAttestation(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+            .thenReturn(new ProcessOutput(0, """
+                Verifying attestation status...
+                Attestation ok
+                """, ""));
 
         // Retrieve the report
         when(snpWrapper.displayReport(MOCK_REPORT_FILE)).thenReturn(new ProcessOutput(0, "dummy-report", ""));
 
         assertTrue(worker.process(session, result));
         assertEquals("dummy-report", result.getDetails());
-        assertEquals(
-            String.join(System.lineSeparator(),
-                "- The report contains the expected random nonce",
-                "- VCEK fetched successfully:",
-                "    - Standard output: >",
-                "        Fetch ok",
-                "- Certification chain validated successfully:",
-                "    - Standard output: >",
-                "        Certificate verify ok",
-                "- Attestation report correctly verified:",
-                "    - Standard output: >",
-                "        Attestation verify ok",
-                ""
-            ),
-            result.getProcessOutput()
+        assertEquals("""
+                        - The report contains the expected random nonce
+                        """ +
+                        getCertificateSuccessfulFetchString(usingVlek) +
+                        """
+                        - Certification chain validated successfully:
+                            - Standard output: >
+                                Verifying certificate chain validity...
+                                Certificates ok
+                        - Attestation report correctly verified:
+                            - Standard output: >
+                                Verifying attestation status...
+                                Attestation ok
+                        """,
+                result.getProcessOutput()
         );
 
         // Verify the required files have been created and deleted
@@ -573,15 +603,20 @@ class SNPGuestWorkerTest {
         verify(sequenceFinder).setSequence(report.getRandomNonce());
         verify(sequenceFinder).search(report.getReport());
 
-        // Verify the VCEK was fetched
-        verify(snpWrapper).fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE);
-        verify(directory).isVCEKAvailable();
+        if (usingVlek) {
+            verify(directory).isVLEKAvailable();
+        }
+        else {
+            // Verify the VCEK was fetched
+            verify(snpWrapper).fetchVCEK(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE);
+            verify(directory).isVCEKAvailable();
+        }
 
         // Verify the certificate verification have happened
         verify(snpWrapper).verifyCertificates(MOCK_CERTS_DIR);
 
         // Verify the attestation verification have happened
-        verify(snpWrapper).verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE);
+        verify(snpWrapper).verifyAttestation(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE);
 
         // Verify the report display have happened
         verify(snpWrapper).displayReport(MOCK_REPORT_FILE);

@@ -14,8 +14,8 @@
         ],
         "jid": "20180516175456187526",
         "return": {
-            "cmd_|-mgr_kiwi_cleanup_|-rm -rf '/var/lib/Kiwi/build24'_|-run": {
-                "comment": "Command \"rm -rf '/var/lib/Kiwi/build24'\" run",
+            "cmd_|-mgr_kiwi_cleanup_|-/usr/bin/rm -rf '/var/lib/Kiwi/build24'_|-run": {
+                "comment": "Command \"/usr/bin/rm -rf '/var/lib/Kiwi/build24'\" run",
                 "name": "rm -rf '/var/lib/Kiwi/build24'",
                 "start_time": "17:54:56.768943",
                 "result": true,

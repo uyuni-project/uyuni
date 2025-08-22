@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchRoleException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchUserException;
@@ -63,7 +64,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         //make sure we get a permission exception if a regular user tries to get the user
         //list.
         try {
-            result = handler.listUsers(regular);
+            handler.listUsers(regular);
             fail();
         }
         catch (PermissionCheckFailureException e) {
@@ -107,7 +108,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
         //regular looking up admin
         try {
-            result = handler.getDetails(regular, admin.getLogin());
+            handler.getDetails(regular, admin.getLogin());
             fail();
         }
         catch (PermissionCheckFailureException e) {
@@ -243,7 +244,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
                     "And Ted", "iron.maiden@rufus.com");
             fail();
         }
-        catch (BadParameterException e) {
+        catch (InvalidParameterException e) {
             // success
         }
     }
@@ -304,7 +305,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
             handler.create(admin, login, invalidPassword, firstName, lastName, email);
             fail();
         }
-        catch (BadParameterException e) {
+        catch (InvalidParameterException e) {
             //success
         }
 
@@ -441,7 +442,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
                     admin, admin.getLogin(), null);
             fail("null should be invalid");
         }
-        catch (IllegalArgumentException iae) {
+        catch (InvalidParameterException iae) {
             // expected exception
         }
 
@@ -451,7 +452,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
                     admin, admin.getLogin(), new LinkedList<>());
             fail("empty array should be invalid");
         }
-        catch (IllegalArgumentException iae) {
+        catch (InvalidParameterException iae) {
             // expected exception
         }
     }
@@ -703,7 +704,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
                     admin, admin.getLogin(), null);
             fail("null should be invalid");
         }
-        catch (IllegalArgumentException iae) {
+        catch (InvalidParameterException iae) {
             // expected exception
         }
 
@@ -713,12 +714,9 @@ public class UserHandlerTest extends BaseHandlerTestCase {
                     admin, admin.getLogin(), new LinkedList<>());
             fail("empty array should be invalid");
         }
-        catch (IllegalArgumentException iae) {
+        catch (InvalidParameterException iae) {
             // expected exception
         }
-
-
-
     }
 
     @Test

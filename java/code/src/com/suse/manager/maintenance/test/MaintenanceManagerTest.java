@@ -20,6 +20,7 @@ import static com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleTyp
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -29,6 +30,8 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.HardwareRefreshAction;
+import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
@@ -37,7 +40,6 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -294,17 +296,17 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Server sys2 = MinionServerFactoryTest.createTestMinionServer(user);
 
         // assign an action not tied to maintenance mode
-        Action allowedAction = MaintenanceTestUtils.createActionForServerAt(
+        MaintenanceTestUtils.createActionForServerAt(
                         user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, sys1, "2020-04-13T08:15:00+02:00");
         assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false));
 
         // assign maintenance window affected action inside a maintenance window
-        Action insideAction = MaintenanceTestUtils
+        MaintenanceTestUtils
                 .createActionForServerAt(user, ActionFactory.TYPE_APPLY_STATES, sys1, "2020-07-27T09:00:00+02:00");
         assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false));
 
         // assign an offending action to one system
-        Action disallowedAction = MaintenanceTestUtils
+        MaintenanceTestUtils
                 .createActionForServerAt(user, ActionFactory.TYPE_APPLY_STATES, sys2, "2020-07-27T11:00:00+02:00");
 
         assertExceptionThrown(
@@ -378,10 +380,10 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         action.setEarliestAction(Date.from(start.toInstant()));
 
         ServerAction serverAction = ServerActionTest.createServerAction(server, action);
-        serverAction.setStatus(ActionFactory.STATUS_QUEUED);
+        serverAction.setStatusQueued();
 
         action.addServerAction(serverAction);
-        ActionManager.storeAction(action);
+        ActionFactory.save(action);
 
         StringReader sin = new StringReader(FileUtils.readStringFromFile(icalKde.getAbsolutePath()));
         CalendarBuilder builder = new CalendarBuilder();
@@ -392,7 +394,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         start = ZonedDateTime.parse("2020-04-20T09:00:00+02:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         action.setEarliestAction(Date.from(start.toInstant()));
-        ActionManager.storeAction(action);
+        ActionFactory.save(action);
         assertTrue(mm.isActionInMaintenanceWindow(action, ms, Optional.ofNullable(calendar)));
 
         // icalKde2 has an EXDATE 20200420 set
@@ -574,14 +576,16 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
             assertTrue(r.isSuccess());
             if (r.getScheduleName().equals("SAP Maintenance Window")) {
                 r.getActionsServers().keySet().forEach(a -> {
-                    assertEquals(ActionFactory.TYPE_ERRATA, a.getActionType());
+                    assertInstanceOf(ErrataAction.class, a);
+
                     assertEquals(sapAction1, a);
                     r.getActionsServers().get(a).forEach(s -> assertEquals(sapServer.getId(), s.getId()));
                 });
             }
             else if (r.getScheduleName().equals("Core Server Window")) {
                 r.getActionsServers().keySet().forEach(a -> {
-                    assertEquals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST, a.getActionType());
+                    assertInstanceOf(HardwareRefreshAction.class, a);
+
                     assertEquals(coreAction3, a);
                     r.getActionsServers().get(a).forEach(s -> assertEquals(coreServer.getId(), s.getId()));
                 });

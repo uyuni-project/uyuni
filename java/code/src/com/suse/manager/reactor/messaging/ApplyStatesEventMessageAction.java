@@ -67,7 +67,9 @@ public class ApplyStatesEventMessageAction implements MessageAction {
                         Arrays.asList(server.getId()),
                         applyStatesEvent.getStateNames(),
                         applyStatesEvent.getPillar(),
-                        new Date(), Optional.of(false));
+                        applyStatesEvent.getEarliest().orElseGet(Date::new),
+                        Optional.of(false),
+                        false, applyStatesEvent.isDirectCall());
                 TASKOMATIC_API.scheduleActionExecution(action,
                         applyStatesEvent.isForcePackageListRefresh());
             }

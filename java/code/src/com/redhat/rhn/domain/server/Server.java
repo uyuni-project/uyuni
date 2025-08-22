@@ -2441,8 +2441,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return <code>true</code> if OS supports CoCo Attestation
      */
     public boolean doesOsSupportCoCoAttestation() {
-        return (isSLES15() && getRelease().equals("15.6")) ||
-            (isLeap15() && getRelease().equals("15.6"));
+        return (isSLES15() && (getRelease().equals("15.6") || getRelease().equals("15.7"))) ||
+                (isLeap15() && (getRelease().equals("15.6") || getRelease().equals("15.7")));
     }
 
     /**
@@ -2607,12 +2607,27 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * Predicate to check for Suse os family
+     * @return true is Suse os family
+     */
+    public boolean isOsFamilySuse() {
+        return this.osFamily.equals(ServerConstants.OS_FAMILY_SUSE);
+    }
+
+    /**
      * Setter for os family
      *
      * @param osFamilyIn to set
      */
     public void setOsFamily(String osFamilyIn) {
         this.osFamily = osFamilyIn;
+    }
+
+    /**
+     * Setter for Suse os family
+     */
+    public void setOsFamilySuse() {
+        this.osFamily = ServerConstants.OS_FAMILY_SUSE;
     }
 
     /**

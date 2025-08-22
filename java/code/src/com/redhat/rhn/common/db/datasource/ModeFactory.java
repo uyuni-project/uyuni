@@ -56,11 +56,13 @@ public class ModeFactory implements ManifestFactoryBuilder {
     @Override
     public Object createObject(Map params) {
         try {
-            if (parser == null) {
-                parser = XMLReaderFactory.createXMLReader(DEFAULT_PARSER_NAME);
+            synchronized (this) {
+                if (parser == null) {
+                    parser = XMLReaderFactory.createXMLReader(DEFAULT_PARSER_NAME);
 
-                ContentHandler handler = new DataSourceParserHelper();
-                parser.setContentHandler(handler);
+                    ContentHandler handler = new DataSourceParserHelper();
+                    parser.setContentHandler(handler);
+                }
             }
             String filename = (String)params.get("filename");
             if (filename == null) {

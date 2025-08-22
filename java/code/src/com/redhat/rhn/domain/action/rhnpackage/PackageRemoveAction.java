@@ -15,9 +15,72 @@
 package com.redhat.rhn.domain.action.rhnpackage;
 
 
+import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.server.MinionSummary;
+
+import com.suse.manager.webui.services.SaltParameters;
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.State;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * PackageRemoveAction
  */
 public class PackageRemoveAction extends PackageAction {
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+        List<List<String>> pkgsAll =
+                getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
+                        d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
+                .toList();
+
+        List<List<String>> uniquePkgs = new ArrayList<>();
+        pkgsAll.forEach(d -> {
+            if (!uniquePkgs.stream().map(p -> p.get(0))
+                    .toList()
+                    .contains(d.get(0))) {
+                uniquePkgs.add(d);
+            }
+        });
+        List<List<String>> duplicatedPkgs = pkgsAll.stream()
+                .filter(p -> !uniquePkgs.contains(p)).collect(Collectors.toList());
+
+        Map<String, Object> params = new HashMap<>();
+        params.put(SaltParameters.PARAM_PKGS, uniquePkgs);
+        params.put("param_pkgs_duplicates", duplicatedPkgs);
+
+        ret.put(State.apply(List.of(SaltParameters.PACKAGES_PKGREMOVE),
+                Optional.of(params)), minionSummaries);
+        return ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Map<String, String>> createActionSpecificDetails(ServerAction serverAction) {
+        return createPackageActionSpecificDetails();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setRequestAttributeTypePackages(HttpServletRequest request) {
+        request.setAttribute("type", "packages");
+    }
 }

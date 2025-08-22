@@ -364,6 +364,7 @@ public class VirtualInstanceManager extends BaseManager {
             }
         }
         catch (IllegalArgumentException ignored) {
+            //ignored
         }
         return uuid;
     }

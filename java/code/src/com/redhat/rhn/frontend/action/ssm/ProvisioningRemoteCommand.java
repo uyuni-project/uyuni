@@ -34,7 +34,6 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.action.ActionChainManager;
-import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -217,7 +216,7 @@ public class ProvisioningRemoteCommand extends RhnAction implements
             }
 
             if (formValid) {
-                ScriptActionDetails scriptActionDetails = ActionManager.createScript(
+                ScriptActionDetails scriptActionDetails = ActionFactory.createScriptActionDetails(
                         form.getString("uid"),
                         form.getString("gid"),
                         form.get("timeout") == null ? 300 : (Long) form.get("timeout"),
@@ -248,7 +247,7 @@ public class ProvisioningRemoteCommand extends RhnAction implements
                 else {
                     infoMessages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                         "ssm.operations.provisioning.remotecommand.form.queue.succeed",
-                        label, actionChain.getLabel()));
+                        label, actionChain.getId(), actionChain.getLabel()));
                 }
             }
             else {

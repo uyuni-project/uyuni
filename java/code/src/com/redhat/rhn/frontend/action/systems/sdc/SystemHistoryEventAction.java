@@ -18,8 +18,6 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFormatter;
-import com.redhat.rhn.domain.action.ansible.PlaybookActionFormatter;
-import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
@@ -100,29 +98,24 @@ public class SystemHistoryEventAction extends RhnAction {
         request.setAttribute("actionnotes", af.getDetails(server,
                 requestContext.getCurrentUser()));
         request.setAttribute("failed",
-                serverAction.getStatus().equals(ActionFactory.STATUS_FAILED));
+                serverAction.isStatusFailed());
         request.setAttribute("pickedup",
-                serverAction.getStatus().equals(ActionFactory.STATUS_PICKED_UP));
+                serverAction.isStatusPickedUp());
         request.setAttribute("completed",
-                serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED));
-        boolean typeDistUpgradeDryRun = action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE) &&
-                        ((DistUpgradeAction) action).getDetails().isDryRun();
-        request.setAttribute("typeDistUpgradeDryRun", typeDistUpgradeDryRun);
-        boolean typePlaybook = action.getActionType().equals(ActionFactory.TYPE_PLAYBOOK);
-        request.setAttribute("typePlaybook", typePlaybook);
-        if (typePlaybook) {
-            String inventory = new PlaybookActionFormatter(action).getTargetedSystems(
-                    serverAction, requestContext.getCurrentUser());
-            request.setAttribute("inventory", inventory);
-        }
-        if (!serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED) &&
-                !serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+                serverAction.isStatusCompleted());
+
+        boolean typeDistUpgradeDryRun = action.setRequestAttributeDryRun(request);
+
+        action.setRequestAttributePlaybook(request, serverAction, requestContext.getCurrentUser());
+
+        if (!serverAction.isStatusCompleted() &&
+                !serverAction.isStatusFailed()) {
             request.setAttribute("referrerLink", "Pending.do");
             request.setAttribute("linkLabel", "system.event.pendingReturn");
             request.setAttribute("headerLabel", "system.event.pendingHeader");
         }
         if (isSubmitted((DynaActionForm)formIn)) {
-            if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED) && typeDistUpgradeDryRun) {
+            if (serverAction.isStatusCompleted() && typeDistUpgradeDryRun) {
                 return mapping.findForward("spmigration");
             }
             createMessage(request, "system.event.rescheduled", action.getName(),

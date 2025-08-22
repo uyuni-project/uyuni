@@ -18,6 +18,7 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -52,6 +53,7 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -473,7 +475,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testCapabilityMissing() {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         try {
             DistUpgradeManager.performServerChecks(server.getId(), user);
             fail("Missing capability should make the server checks fail!");
@@ -490,7 +493,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testZyppPluginNotInstalled() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         SystemManagerTest.giveCapability(server.getId(), "distupgrade.upgrade", 1L);
         try {
             DistUpgradeManager.performServerChecks(server.getId(), user);
@@ -508,7 +512,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testDistUpgradeScheduled() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         SystemManagerTest.giveCapability(server.getId(), "distupgrade.upgrade", 1L);
 
         // Install the zypp-plugin-spacewalk package
@@ -663,7 +668,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
                 user, server, targetSet, channelIDs, true, false, scheduleDate, false);
         // Get the scheduled action and check the contents
         DistUpgradeAction action = (DistUpgradeAction) ActionFactory.lookupById(actionID);
-        assertEquals(ActionFactory.TYPE_DIST_UPGRADE, action.getActionType());
+        assertInstanceOf(DistUpgradeAction.class, action);
+
         assertEquals(user, action.getSchedulerUser());
         assertEquals(scheduleDate, action.getEarliestAction());
         Set<ServerAction> serverActions = action.getServerActions();

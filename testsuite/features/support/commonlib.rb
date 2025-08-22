@@ -75,11 +75,11 @@ end
 #       Refactoring all the code call it.
 # Determines whether to use the Salt bundle based on the product and product version.
 #
-# @return [Boolean] true if the product is 'Uyuni' or the product version is 'head', '5.0', '4.3', or '4.2'
+# @return [Boolean] true if the product is 'Uyuni' or the product version is 'head', '5.2', '5.1', '5.0', or '4.3'
 # - false otherwise
 def use_salt_bundle
-  # Use venv-salt-minion in Uyuni, or SUMA Head, 5.1, 5.0, 4.2 and 4.3
-  product == 'Uyuni' || %w[develHead 5.1 5.0 4.3 4.2].include?(product_version)
+  # Use venv-salt-minion in Uyuni, or SUMA Head, 5.2, 5.1, 5.0, and 4.3
+  product == 'Uyuni' || %w[develHead 5.2 5.1 5.0 4.3].include?(product_version)
 end
 
 # WARN: It's working for /24 mask, but couldn't not work properly with others
@@ -828,10 +828,23 @@ end
 # @return [String] The package string with the highest version and release
 def latest_package(packages)
   packages.max_by do |package|
-    if package =~ /^(.+)-(\d+\.\d+\.\d+)-(.+)$/
-      version = Regexp.last_match(2)
-      release = Regexp.last_match(3)
-      [Gem::Version.new(version), Gem::Version.new(release.gsub(/[^\d.]/, '.'))]
+    # Match something like 'bison-3.8.2-3.oe2403sp1'
+    if package =~ /^(.+)-(\d+(?:\.\d+)*?)-(.+)$/
+      version = Regexp.last_match(2)          # => "3.8.2"
+      release = Regexp.last_match(3)          # => "3.oe2403sp1"
+
+      begin
+        # extract numeric components like ["3", "2403", "1"]
+        numeric_parts = release.scan(/\d+/)
+        cleaned_release = numeric_parts.join('.')
+        [
+          Gem::Version.new(version),
+          Gem::Version.new(cleaned_release)
+        ]
+      rescue ArgumentError => e
+        puts "WARNING: Failed to parse version in package '#{package}': #{e.message}"
+        [Gem::Version.new('0.0.0'), Gem::Version.new('0')]
+      end
     else
       [Gem::Version.new('0.0.0'), Gem::Version.new('0')]
     end

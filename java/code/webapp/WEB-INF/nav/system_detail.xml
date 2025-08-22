@@ -29,6 +29,9 @@
     <rhn-tab name="Custom Info" acl="authorized_for(systems.details.custom_data); system_feature(ftr_custom_info)">
       <rhn-tab-url>/rhn/systems/details/ListCustomData.do</rhn-tab-url>
     </rhn-tab>
+    <rhn-tab name="Support" acl="authorized_for(systems.details.support); not is(java.disable_supportdata_upload)" url="/rhn/manager/systems/details/support">
+      <rhn-tab-url>/rhn/manager/systems/details/support</rhn-tab-url>
+    </rhn-tab>
   </rhn-tab>
 
   <rhn-tab name="Software" acl="authorized_for(systems.software); system_has_management_entitlement() or system_has_salt_entitlement()"  url="/rhn/systems/details/packages/Packages.do">
@@ -181,8 +184,8 @@
     <rhn-tab name="Join" acl="authorized_for(systems.groups.join);" url="/rhn/systems/details/groups/Add.do"/>
   </rhn-tab>
 
-  <rhn-tab name="Audit" acl="authorized_for(systems.audit); system_has_management_entitlement() or system_has_salt_entitlement_and_contact_method(default)" url="/rhn/systems/details/audit/ListScap.do">
-    <rhn-tab name="OpenSCAP" acl="authorized_for(systems.audit.openscap)" url="/rhn/systems/details/audit/ListScap.do">
+  <rhn-tab name="Audit" url="/rhn/manager/systems/details/coco/settings">
+    <rhn-tab name="OpenSCAP" acl="system_has_salt_entitlement_and_contact_method(default)" url="/rhn/systems/details/audit/ListScap.do">
       <rhn-tab-url>/rhn/systems/details/audit/ListScap.do</rhn-tab-url>
       <rhn-tab name="nav.system.audit.list_scans">
         <rhn-tab-url>/rhn/systems/details/audit/ListScap.do</rhn-tab-url>

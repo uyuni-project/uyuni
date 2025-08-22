@@ -43,7 +43,6 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
@@ -179,6 +178,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 
@@ -213,6 +213,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 allowing(taskomaticMock)
                     .scheduleActionExecution(with(any(Action.class)));
                 allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+                allowing(saltServiceMock).deleteKey(with(any(String.class)));
             }
         });
         SaltApi saltApi = new TestSaltApi();
@@ -261,7 +262,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         Long id = server.getId();
 
         assertTrue(SystemManager.serverHasFeature(id, "ftr_snapshotting"));
@@ -290,6 +292,12 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server s = ServerFactoryTest.createTestServer(user, true);
         Long id = s.getId();
+        context().checking(new Expectations() {
+            {
+                allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+                allowing(saltServiceMock).deleteKey(s.asMinionServer().map(MinionServer::getMinionId).orElseThrow());
+            }
+        });
 
         Server test = SystemManager.lookupByIdAndUser(id, user);
         assertNotNull(test);
@@ -602,7 +610,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         List<Entitlement> entitlements =
                 SystemManager.getServerEntitlements(server.getId());
         assertFalse(entitlements.isEmpty());
-        assertTrue(entitlements.contains(EntitlementManager.MANAGEMENT));
+        assertTrue(entitlements.contains(EntitlementManager.SALT));
     }
 
     @Test
@@ -1894,7 +1902,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         final Server server = ServerTestUtils.createTestSystem(user);
 
         Long historyEventId = createHistoryEntry(server, "Event 1");
-        Long actionEventId = createTestAction(server, ActionFactory.TYPE_APPLY_STATES, ActionFactory.STATUS_PICKED_UP);
+        Long actionEventId = createTestAction(server, ActionFactory.TYPE_APPLY_STATES, ServerAction::setStatusPickedUp);
 
         final Long sid = server.getId();
         final Long oid = user.getOrg().getId();
@@ -2121,15 +2129,16 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         return historyEvent.getId();
     }
 
-    private Long createTestAction(Server server, ActionType actionType) throws Exception {
-        return createTestAction(server, actionType, ActionFactory.STATUS_COMPLETED);
+    private void createTestAction(Server server, ActionType actionType) throws Exception {
+        createTestAction(server, actionType, ServerAction::setStatusCompleted);
     }
 
-    private Long createTestAction(Server server, ActionType actionType, ActionStatus actionStatus) throws Exception {
+    private Long createTestAction(Server server, ActionType actionType, Consumer<ServerAction> statusSetter)
+            throws Exception {
         final Action action = ActionFactoryTest.createAction(user, actionType);
         final ServerAction serverAction = ServerActionTest.createServerAction(server, action);
 
-        serverAction.setStatus(actionStatus);
+        statusSetter.accept(serverAction);
 
         ActionFactory.save(action);
 

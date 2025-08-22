@@ -126,7 +126,7 @@ def get_proxies(proxy, user, password):
     if user:
         auth = quote(user)
         if password:
-            auth += ":" + quote(password)
+            auth += ":" + quote(password, safe="")
         proto, rest = re.match(r"(\w+://)(.+)", proxy_string).groups()
         # pylint: disable-next=consider-using-f-string
         proxy_string = "%s%s@%s" % (proto, auth, rest)

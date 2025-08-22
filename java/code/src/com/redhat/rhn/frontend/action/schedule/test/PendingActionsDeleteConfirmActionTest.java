@@ -36,11 +36,11 @@ public class PendingActionsDeleteConfirmActionTest extends RhnMockStrutsTestCase
         Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         Server server = ServerFactoryTest.createTestServer(user, true);
         ServerAction saction = ServerActionTest.createServerAction(server, a);
-        saction.setStatus(ActionFactory.STATUS_QUEUED);
+        saction.setStatusQueued();
 
         Action b = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         ServerAction saction2 = ServerActionTest.createServerAction(server, b);
-        saction2.setStatus(ActionFactory.STATUS_QUEUED);
+        saction2.setStatusQueued();
 
         ActionFactory.save(a);
         ActionFactory.save(b);
@@ -50,7 +50,6 @@ public class PendingActionsDeleteConfirmActionTest extends RhnMockStrutsTestCase
         set.addElement(b.getId());
         RhnSetManager.store(set);
 
-        set = RhnSetDecl.ACTIONS_PENDING.get(user);
         addDispatchCall("actions.jsp.confirmcancelactions");
         setRequestPathInfo("/schedule/PendingActionsDeleteConfirm");
         actionPerform();

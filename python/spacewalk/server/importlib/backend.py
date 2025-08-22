@@ -2094,15 +2094,14 @@ class Backend:
             )
         if toinsert[0]:
             insert_pr.executemany(
-                id=toinsert[0],
-                product_id=toinsert[1],
-                root_id=toinsert[2],
-                repo_id=toinsert[3],
-                channel_label=toinsert[4],
-                parent_channel_label=toinsert[5],
-                channel_name=toinsert[6],
-                mandatory=toinsert[7],
-                update_tag=toinsert[8],
+                product_id=toinsert[0],
+                root_id=toinsert[1],
+                repo_id=toinsert[2],
+                channel_label=toinsert[3],
+                parent_channel_label=toinsert[4],
+                channel_name=toinsert[5],
+                mandatory=toinsert[6],
+                update_tag=toinsert[7],
             )
         if toupdate[0]:
             update_pr.executemany(

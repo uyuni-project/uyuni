@@ -16,7 +16,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-## The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
 %{!?productprettyname: %global productprettyname Uyuni}
 
 #!BuildIgnore:  udev-mini libudev-mini1
@@ -60,7 +60,7 @@
 %endif
 
 Name:           spacewalk-java
-Version:        5.1.15
+Version:        5.2.0
 Release:        0
 Summary:        Java web application files for %{productprettyname}
 License:        GPL-2.0-only
@@ -549,6 +549,8 @@ install -m 644 conf/rhn_java_sso.conf %{buildroot}%{_datadir}/rhn/config-default
 # Adjust product tree tag
 %if 0%{?is_opensuse}
 sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Uyuni/' %{buildroot}%{_datadir}/rhn/config-defaults/rhn_java.conf
+%else
+sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Beta/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
 %endif
 # Adjust languages
 sed -i -e '/# NOTE: for the RPMs this is defined at the SPEC!/d' %{buildroot}%{_datadir}/rhn/config-defaults/rhn_java.conf

@@ -16,10 +16,6 @@ package com.suse.manager.webui.services;
 
 import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
-import static com.suse.manager.webui.services.SaltServerActionService.PACKAGES_PATCHINSTALL;
-import static com.suse.manager.webui.services.SaltServerActionService.PACKAGES_PKGINSTALL;
-import static com.suse.manager.webui.services.SaltServerActionService.PARAM_REGULAR_PATCHES;
-import static com.suse.manager.webui.services.SaltServerActionService.PARAM_UPDATE_STACK_PATCHES;
 import static com.suse.manager.webui.services.impl.SaltSSHService.ACTION_STATES_LIST;
 import static com.suse.manager.webui.services.impl.SaltSSHService.DEFAULT_TOPS;
 
@@ -246,8 +242,7 @@ public class SaltActionChainGeneratorService {
                 args.put("current_action_id", actionId));
         rebootRequired.ifPresent(refs ->
                 args.put("reboot_required", refs));
-        SaltModuleRun modRun = new SaltModuleRun("schedule_next_chunk", "mgractionchains.clean", args);
-        return modRun;
+        return new SaltModuleRun("schedule_next_chunk", "mgractionchains.clean", args);
     }
 
     private SaltState stopIfPreviousFailed(Optional<Pair<String, String>> lastRef) {
@@ -259,10 +254,8 @@ public class SaltActionChainGeneratorService {
             onFailedList.add(onFailedEntry);
             args.put("onfail", onFailedList);
         });
-        SaltModuleRun modRun =
-                new SaltModuleRun("clean_action_chain_if_previous_failed",
+        return new SaltModuleRun("clean_action_chain_if_previous_failed",
                         "mgractionchains.clean", args);
-        return modRun;
     }
 
     private SaltState checkSaltUpgradeChunk(SaltState state) {
@@ -270,7 +263,7 @@ public class SaltActionChainGeneratorService {
         Optional<String> mods = getModsString(moduleRun);
         SaltState retState = null;
 
-        if (mods.isPresent() && mods.get().contains(PACKAGES_PKGINSTALL)) {
+        if (mods.isPresent() && mods.get().contains(SaltParameters.PACKAGES_PKGINSTALL)) {
             Map<String, List<List<String>>> paramPillar =
                     (Map<String, List<List<String>>>) moduleRun.getKwargs().get("pillar");
             SaltPkgInstalled pkgInstalled = new SaltPkgInstalled();
@@ -282,14 +275,14 @@ public class SaltActionChainGeneratorService {
                     });
             retState = pkgInstalled;
         }
-        else if (mods.isPresent() && mods.get().contains(PACKAGES_PATCHINSTALL)) {
+        else if (mods.isPresent() && mods.get().contains(SaltParameters.PACKAGES_PATCHINSTALL)) {
             Map<String, List<String>> paramPillar =
                     (Map<String, List<String>>) moduleRun.getKwargs().get("pillar");
             SaltPatchInstalled patchInstalled = new SaltPatchInstalled();
-            for (String patch : paramPillar.get(PARAM_UPDATE_STACK_PATCHES)) {
+            for (String patch : paramPillar.get(SaltParameters.PARAM_UPDATE_STACK_PATCHES)) {
                 patchInstalled.addPatch(patch);
             }
-            for (String patch : paramPillar.get(PARAM_REGULAR_PATCHES)) {
+            for (String patch : paramPillar.get(SaltParameters.PARAM_REGULAR_PATCHES)) {
                 patchInstalled.addPatch(patch);
             }
             retState = patchInstalled;
@@ -327,7 +320,7 @@ public class SaltActionChainGeneratorService {
         if (state instanceof SaltModuleRun moduleRun) {
             Optional<String> mods = getModsString(moduleRun);
 
-            if (mods.isPresent() && mods.get().contains(PACKAGES_PKGINSTALL)) {
+            if (mods.isPresent() && mods.get().contains(SaltParameters.PACKAGES_PKGINSTALL)) {
                 if (moduleRun.getKwargs() != null) {
                     Map<String, List<List<String>>> paramPillar =
                             (Map<String, List<List<String>>>) moduleRun.getKwargs().get("pillar");
@@ -338,7 +331,7 @@ public class SaltActionChainGeneratorService {
                     }
                 }
             }
-            else if (mods.isPresent() && mods.get().contains(PACKAGES_PATCHINSTALL)) {
+            else if (mods.isPresent() && mods.get().contains(SaltParameters.PACKAGES_PATCHINSTALL)) {
                 if (moduleRun.getKwargs() != null) {
                     Map<String, List<String>> paramPillar =
                             (Map<String, List<String>>) moduleRun.getKwargs().get("pillar");
@@ -368,13 +361,13 @@ public class SaltActionChainGeneratorService {
         if (state instanceof SaltModuleRun moduleRun) {
             Optional<String> mods = getModsString(moduleRun);
 
-            if (mods.isPresent() && mods.get().contains(PACKAGES_PKGINSTALL) &&
+            if (mods.isPresent() && mods.get().contains(SaltParameters.PACKAGES_PKGINSTALL) &&
                     isSaltUpgrade(state) && !minion.isSshPush()) {
                 // split only for regular minions, salt-ssh minions don't have a
                 // salt-minion process
                 return true;
             }
-            else if (mods.isPresent() && mods.get().contains(PACKAGES_PATCHINSTALL) &&
+            else if (mods.isPresent() && mods.get().contains(SaltParameters.PACKAGES_PATCHINSTALL) &&
                     isSaltUpgrade(state)) {
                 return true;
             }

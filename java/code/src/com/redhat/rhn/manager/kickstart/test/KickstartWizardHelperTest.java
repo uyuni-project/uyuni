@@ -49,7 +49,6 @@ public class KickstartWizardHelperTest extends BaseTestCaseWithUser {
             }
         }
         assertTrue(found);
-        found = false;
 
         Config.get().setString(ConfigDefaults.PRODUCT_NAME, origConfig);
     }

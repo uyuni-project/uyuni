@@ -6,7 +6,7 @@ NAME := spacewalk-utils
 SUBDIR  = utils
 
 FILES	= __init__ depsolver cloneByDate
-SCRIPTS = spacewalk-common-channels spacewalk-hostname-rename \
+SCRIPTS = spacewalk-common-channels  \
 	  spacewalk-clone-by-date spacewalk-manage-channel-lifecycle \
 	  taskotop spacewalk-watch-channel-sync.sh
 CONFIGS = spacewalk-common-channels.ini

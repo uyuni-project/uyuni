@@ -147,7 +147,7 @@ public class FailedSystemsAction extends RhnAction implements Listable<ActionedS
             ActionMessages msgs = new ActionMessages();
             msgs.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("message.actionrescheduled",
-                            action.getActionType().getName()));
+                            action.getActionTypeName()));
             getStrutsDelegate().saveMessages(request, msgs);
         }
         catch (TaskomaticApiException e) {

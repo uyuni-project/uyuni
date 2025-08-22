@@ -20,6 +20,7 @@ import com.redhat.rhn.common.messaging.EventDatabaseMessage;
 import org.hibernate.Transaction;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,6 +36,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     public static final String PACKAGES = "packages";
     public static final String PACKAGES_PROFILE_UPDATE = "packages.profileupdate";
     public static final String HARDWARE_PROFILE_UPDATE = "hardware.profileupdate";
+    public static final String VIRTUAL_PROFILE_UPDATE = "hardware.virtprofile";
     public static final String CHANNELS = "channels";
     public static final String SALT_MINION_SERVICE = "services.salt-minion";
     public static final String REPORTDB_USER = "services.reportdb-user";
@@ -51,6 +53,8 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     private final boolean forcePackageListRefresh;
     private final Transaction txn;
     private final Optional<Map<String, Object>> pillar;
+    private final Optional<Date> earliest;
+    private final boolean directCall;
 
     /**
      * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
@@ -87,7 +91,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
      */
     public ApplyStatesEventMessage(long serverIdIn, boolean forcePackageListRefreshIn,
             Map<String, Object> pillarIn, List<String> stateNamesIn) {
-        this(serverIdIn, null, forcePackageListRefreshIn, pillarIn,
+        this(serverIdIn, null, forcePackageListRefreshIn, pillarIn, null,
                 stateNamesIn.toArray(new String[stateNamesIn.size()]));
     }
 
@@ -115,7 +119,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
      */
     public ApplyStatesEventMessage(long serverIdIn, Long userIdIn,
             boolean forcePackageListRefreshIn, String... stateNamesIn) {
-        this(serverIdIn, userIdIn, forcePackageListRefreshIn, null, stateNamesIn);
+        this(serverIdIn, userIdIn, forcePackageListRefreshIn, null, null, stateNamesIn);
     }
 
     /**
@@ -126,16 +130,36 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
      * @param forcePackageListRefreshIn set true to request a package list refresh
      * @param pillarIn state specific pillar data
      * @param stateNamesIn state module names to be applied to the server
+     * @param earliestIn earliest date to execute the action
      */
     public ApplyStatesEventMessage(long serverIdIn, Long userIdIn,
             boolean forcePackageListRefreshIn, Map<String, Object> pillarIn,
-            String... stateNamesIn) {
+            Date earliestIn, String... stateNamesIn) {
+        this(serverIdIn, userIdIn, forcePackageListRefreshIn, pillarIn, earliestIn, false, stateNamesIn);
+    }
+
+    /**
+     * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
+     *
+     * @param serverIdIn the server id
+     * @param userIdIn the user id
+     * @param forcePackageListRefreshIn set true to request a package list refresh
+     * @param pillarIn state specific pillar data
+     * @param earliestIn earliest date to execute the action
+     * @param stateNamesIn state module names to be applied to the server
+     * @param directCallIn set true when the state.apply should be executed as direct call
+     */
+    public ApplyStatesEventMessage(long serverIdIn, Long userIdIn, boolean forcePackageListRefreshIn,
+                                   Map<String, Object> pillarIn, Date earliestIn, boolean directCallIn,
+                                   String... stateNamesIn) {
         serverId = serverIdIn;
         userId = userIdIn;
         stateNames = Arrays.asList(stateNamesIn);
         forcePackageListRefresh = forcePackageListRefreshIn;
         txn = HibernateFactory.getSession().getTransaction();
         pillar = Optional.ofNullable(pillarIn);
+        earliest = Optional.ofNullable(earliestIn);
+        directCall = directCallIn;
     }
 
     /**
@@ -166,12 +190,28 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     }
 
     /**
+     * Return earliest schedule date
+     * @return date
+     */
+    public Optional<Date> getEarliest() {
+        return earliest;
+    }
+
+    /**
      * Return true if a package list refresh is requested, otherwise false.
      *
      * @return true if a package list refresh is requested, otherwise false
      */
     public boolean isForcePackageListRefresh() {
         return forcePackageListRefresh;
+    }
+
+    /**
+     * Return true when this should be requested as salt direct call
+     * @return true on direct call
+     */
+    public boolean isDirectCall() {
+        return directCall;
     }
 
     @Override

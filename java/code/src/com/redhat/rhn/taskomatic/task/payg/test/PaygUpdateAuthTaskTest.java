@@ -202,6 +202,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
         Path tmpLogDir = Files.createTempDirectory("scc-data");
         try {
             ContentSyncManager csm = new ContentSyncManager(tmpLogDir, mgr);
+            csm.setSccRefreshLock(new MockFileLocks());
             csm.updateSUSEProducts(csm.getProducts());
 
             WireMock.verify(WireMock.getRequestedFor(
@@ -515,7 +516,6 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
         certs.put("/etc/pki/rhui/product/repo-2.crt", "CLIENT CERTIFICATE 2");
         certs.put("/etc/pki/rhui/repo-2.key", "CLIENT PRIVATE KEY 2");
 
-        PaygInstanceInfo info = new PaygInstanceInfo(headerAuth, certs, repositories);
-        return info;
+        return new PaygInstanceInfo(headerAuth, certs, repositories);
     }
 }

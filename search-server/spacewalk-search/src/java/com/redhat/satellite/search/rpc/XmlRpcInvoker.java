@@ -15,6 +15,7 @@
 
 package com.redhat.satellite.search.rpc;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,6 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.StringWriter;
+import java.net.InetAddress;
 
 import redstone.xmlrpc.XmlRpcServer;
 import simple.http.ProtocolHandler;
@@ -37,8 +39,8 @@ import simple.http.Response;
  */
 public class XmlRpcInvoker implements ProtocolHandler {
 
-    private static Logger log = LogManager.getLogger(XmlRpcInvoker.class);
-    private XmlRpcServer server;
+    private static final Logger LOG = LogManager.getLogger(XmlRpcInvoker.class);
+    private final XmlRpcServer server;
 
     /**
      * Constructor
@@ -55,20 +57,25 @@ public class XmlRpcInvoker implements ProtocolHandler {
      */
     public void handle(Request request, Response response) {
         String uri = request.getURI();
-        log.info(uri);
+        InetAddress ip = request.getInetAddress();
+
         try {
             if (!uri.startsWith("/RPC2")) {
+                String url = StringEscapeUtils.escapeHtml4(uri);
+
+                LOG.info("Invalid request from {} to {}", ip, uri);
                 response.setCode(404);
-                response.setText(uri);
+                response.setText(url);
                 PrintStream out = response.getPrintStream();
                 out.println("<html><body><title>Page not found</title>");
-                out.println("<b>" + uri + " not found</b>");
+                out.println("<b>" + url + " not found</b>");
                 out.println("</body></html>");
                 response.set("Content-Type", "text/html");
                 out.flush();
                 out.close();
             }
             else {
+                LOG.info(uri);
                 InputStream in = request.getInputStream();
                 StringWriter writer = new StringWriter();
                 server.execute(in, writer);
@@ -81,17 +88,15 @@ public class XmlRpcInvoker implements ProtocolHandler {
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e, e);
         }
         finally {
             try {
                 response.commit();
             }
             catch (IOException e) {
-                e.printStackTrace();
+                LOG.error(e, e);
             }
         }
-
     }
-
 }

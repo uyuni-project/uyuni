@@ -1,0 +1,41 @@
+name: Search server compile
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'search-server/spacewalk-search/**.java'
+      - 'search-server/spacewalk-search/**.xml'
+      - '.github/workflows/search-server-compile.yml'
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    paths:
+      - 'search-server/spacewalk-search/**.java'
+      - 'search-server/spacewalk-search/**.xml'
+      - '.github/workflows/search-server-compile.yml'
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    container: registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers/uyuni-master-pgsql:latest
+
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+
+    - name: Cache dependencies
+      id: cache-dependencies
+      uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf #v4.2.2
+      with:
+        path: search-server/spacewalk-search/buildconf
+        key: ${{ runner.os }}-spacewalk-search-buildconf-${{ hashFiles('search-server/spacewalk-search/buildconf/*.*') }}
+
+    - name: Resolve dependencies
+      if: steps.cache-dependencies.outputs.cache-hit != 'true'
+      run: ant -f search-server/spacewalk-search/build.xml resolve
+
+    - name: Compile
+      run: ant -f search-server/spacewalk-search/build.xml compile

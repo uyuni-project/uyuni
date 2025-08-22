@@ -14,7 +14,7 @@ jobs:
     steps:
       - id: generate-token
         name: Generate an access token
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ vars.EXTERNAL_PR_LABELER_APP_ID }}
           private-key: ${{ secrets.EXTERNAL_PR_LABELER_PK }}

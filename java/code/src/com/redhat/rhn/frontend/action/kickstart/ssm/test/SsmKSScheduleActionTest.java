@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.test.KickstartIpTest;
@@ -187,7 +186,7 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
         KickstartScheduleCommand command = KickstartScheduleCommandTest.scheduleAKickstart(
             server, kickstartData);
         command.setScheduleDate(new Date());
-        ValidatorError ve = command.store();
+        command.store();
 
         ServerTestUtils.addServersToSsm(user, server.getId());
 
@@ -203,8 +202,8 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
 
         assertEquals(302, getMockResponse().getStatusCode());
 
-        SystemRecord record = SystemRecord.lookupById(connection, server.getCobblerId());
-        assertNotNull(record);
-        assertNotSame(profile.getId(), record.getProfile().getId());
+        SystemRecord systemRecord = SystemRecord.lookupById(connection, server.getCobblerId());
+        assertNotNull(systemRecord);
+        assertNotSame(profile.getId(), systemRecord.getProfile().getId());
     }
 }

@@ -483,10 +483,9 @@ public class StatesAPI {
                     (serverId) -> {
                         MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(json.getTargetId()));
                         checkUserHasPermissionsOnServer(server, user);
-                        ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
+                        return ActionManager.scheduleApplyStates(user,
                                 Arrays.asList(json.getTargetId()), json.getStates(),
                                 getScheduleDate(json));
-                        return action;
                     },
                     (groupId) -> {
                         ServerGroup group = getEntityIfExists(
@@ -504,11 +503,10 @@ public class StatesAPI {
                             states = Arrays.asList(state);
                         }
 
-                        ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
+                        return ActionManager.scheduleApplyStates(user,
                                 minionServerIds, states,
                                 getScheduleDate(json));
 
-                        return action;
                     },
                     (orgId) -> {
                         Org org = getEntityIfExists(OrgFactory.lookupById(json.getTargetId()));
@@ -518,10 +516,8 @@ public class StatesAPI {
                                 .map(MinionServer::getId)
                                 .collect(Collectors.toList());
 
-                        ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
+                        return ActionManager.scheduleApplyStates(user,
                                 minionServerIds, json.getStates(), getScheduleDate(json));
-
-                        return action;
                     }
             );
 
@@ -618,7 +614,7 @@ public class StatesAPI {
         SaltPkgLatest pkgLatest = new SaltPkgLatest();
 
         MinionServerFactory.lookupById(server.getId()).ifPresent(minion -> {
-            if (minion.getOsFamily().equals("Suse")) {
+            if (minion.isOsFamilySuse()) {
                 pkgInstalled.addRequire("file", ZYPPER_SUMA_CHANNEL_REPO_FILE);
                 pkgRemoved.addRequire("file", ZYPPER_SUMA_CHANNEL_REPO_FILE);
                 pkgLatest.addRequire("file", ZYPPER_SUMA_CHANNEL_REPO_FILE);

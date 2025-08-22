@@ -5,7 +5,7 @@ import { default as ReactSelect } from "react-select";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { Button, SubmitButton } from "components/buttons";
-import { Select } from "components/input";
+import { DEPRECATED_Select } from "components/input";
 import { Form } from "components/input/form/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Label } from "components/input/Label";
@@ -272,7 +272,7 @@ class CreateImageProfile extends React.Component<Props, State> {
   renderTypeInputs(type) {
     // Type-dependent inputs
     const typeInputs = [
-      <Select
+      <DEPRECATED_Select
         key="imageStore"
         name="imageStore"
         label={t("Target Image Store")}
@@ -388,7 +388,7 @@ class CreateImageProfile extends React.Component<Props, State> {
       ));
 
     return (
-      <Select
+      <DEPRECATED_Select
         key="activationKey"
         name="activationKey"
         label={t("Activation Key")}
@@ -532,7 +532,7 @@ class CreateImageProfile extends React.Component<Props, State> {
             labelClass="col-md-3"
             divClass="col-md-6"
           />
-          <Select
+          <DEPRECATED_Select
             name="imageType"
             label={t("Image Type")}
             required

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 SUSE LLC
+ * Copyright (c) 2019--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.manager.webui.services.impl;
@@ -209,7 +205,7 @@ public class MonitoringService {
                 new Tuple2<>("taskomatic",
                         "mgrcompat_|-jmx_taskomatic_java_config_|-file.search_|-module_run"),
                 new Tuple2<>("self_monitoring",
-                        "cmd_|-mgr_is_prometheus_self_monitoring_enabled_|-grep*")
+                        "cmd_|-mgr_is_prometheus_self_monitoring_enabled_|-/usr/bin/grep*")
                 );
         return res.map(map -> {
             MonitoringStatus status = new MonitoringStatus();
@@ -290,12 +286,12 @@ public class MonitoringService {
                 new Tuple2<>("postgres",
                         "service_|-postgres_exporter_service_|-prometheus-postgres_exporter_|-running"),
                 new Tuple2<>("tomcat",
-                        "file_|-jmx_tomcat_config_|-/usr/lib/systemd/system/tomcat.service.d/jmx.conf_|-managed"),
+                        "file_|-jmx_tomcat_config_|-/etc/sysconfig/tomcat/systemd/jmx.conf_|-managed"),
                 new Tuple2<>("taskomatic",
-                        "file_|-jmx_taskomatic_config_|-/usr/lib/systemd/system/taskomatic.service.d/jmx.conf_|" +
+                        "file_|-jmx_taskomatic_config_|-/etc/sysconfig/taskomatic/systemd/jmx.conf_|" +
                         "-managed"),
                 new Tuple2<>("self_monitoring",
-                        "cmd_|-mgr_is_prometheus_self_monitoring_enabled_|-grep*")
+                        "cmd_|-mgr_is_prometheus_self_monitoring_enabled_|-/usr/bin/grep*")
         );
 
         return res.map(map -> {
@@ -329,12 +325,12 @@ public class MonitoringService {
                 new Tuple2<>("postgres",
                         "service_|-postgres_exporter_service_|-prometheus-postgres_exporter_|-dead"),
                 new Tuple2<>("tomcat",
-                        "file_|-jmx_tomcat_config_|-/usr/lib/systemd/system/tomcat.service.d/jmx.conf_|-absent"),
+                        "file_|-jmx_tomcat_config_|-/etc/sysconfig/tomcat/systemd/jmx.conf_|-absent"),
                 new Tuple2<>("taskomatic",
-                        "file_|-jmx_taskomatic_config_|-/usr/lib/systemd/system/taskomatic.service.d/jmx.conf_|" +
+                        "file_|-jmx_taskomatic_config_|-/etc/sysconfig/taskomatic/systemd/jmx.conf_|" +
                         "-absent"),
                 new Tuple2<>("self_monitoring",
-                        "cmd_|-mgr_is_prometheus_self_monitoring_disabled_|-grep*")
+                        "cmd_|-mgr_is_prometheus_self_monitoring_disabled_|-/usr/bin/grep*")
                 ).map(map -> {
                     // disabled successfully (true) -> service state (false - not running)
                     MonitoringStatus status = new MonitoringStatus();

@@ -29,7 +29,7 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.suse.scc.model.SAPJson;
 import com.suse.scc.model.SCCHwInfoJson;
 import com.suse.scc.model.SCCMinProductJson;
-import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCRegisterSystemItem;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -78,7 +78,7 @@ public class SCCSystemRegistrationSystemDataAcquisitor implements SCCSystemRegis
                 cacheItem.getOptServer().filter(Server::isPayg).isEmpty();
     }
 
-    private Optional<SCCRegisterSystemJson> getPayload(SCCRegCacheItem rci) {
+    private Optional<SCCRegisterSystemItem> getPayload(SCCRegCacheItem rci) {
         return rci.getOptServer().map(srv -> {
             List<SCCMinProductJson> products = srv.getInstalledProductSet().stream()
                     .flatMap(product -> {
@@ -97,6 +97,8 @@ public class SCCSystemRegistrationSystemDataAcquisitor implements SCCSystemRegis
             Optional<CPU> cpu = ofNullable(srv.getCpu());
             cpu.flatMap(c -> ofNullable(c.getNrCPU())).ifPresent(c -> hwInfo.setCpus(c.intValue()));
             cpu.flatMap(c -> ofNullable(c.getNrsocket())).ifPresent(c -> hwInfo.setSockets(c.intValue()));
+            cpu.map(CPU::getArchSpecsMap).filter(map -> !map.isEmpty()).ifPresent(hwInfo::setArchSpecs);
+
             hwInfo.setArch(srv.getServerArch().getLabel().split("-")[0]);
             if (srv.isVirtualGuest()) {
                 VirtualInstance virtualInstance = srv.getVirtualInstance();
@@ -146,9 +148,8 @@ public class SCCSystemRegistrationSystemDataAcquisitor implements SCCSystemRegis
                 return pw;
             });
 
-            return new SCCRegisterSystemJson(login, passwd, srv.getHostname(), hwInfo, products,
+            return new SCCRegisterSystemItem(login, passwd, srv.getHostname(), hwInfo, products,
                     srv.getServerInfo().getCheckin());
         });
     }
-
 }

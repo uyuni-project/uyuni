@@ -46,10 +46,6 @@ CREATE TABLE rhnChannel
     end_of_life         TIMESTAMPTZ,
     checksum_type_id    NUMERIC CONSTRAINT rhn_channel_checksum_fk
                                 REFERENCES rhnChecksumType(id),
-    receiving_updates   CHAR(1)
-                            DEFAULT ('Y') NOT NULL
-                            CONSTRAINT rhn_channel_ru_ck
-                                CHECK (receiving_updates in ('Y', 'N')),
     last_modified       TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL,
     last_synced         TIMESTAMPTZ,

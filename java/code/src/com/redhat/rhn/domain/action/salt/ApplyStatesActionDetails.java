@@ -39,6 +39,7 @@ public class ApplyStatesActionDetails extends ActionChild {
     private String pillars;
     private Set<ApplyStatesActionResult> results;
     private boolean test = false;
+    private boolean direct = false;
 
     /**
      * @return the id
@@ -208,5 +209,19 @@ public class ApplyStatesActionDetails extends ActionChild {
      */
     public void setTest(boolean testIn) {
         test = testIn;
+    }
+
+    /**
+     * @return is a direct Call or not
+     */
+    public boolean isDirect() {
+        return direct;
+    }
+
+    /**
+     * @param directIn set to direct call or not
+     */
+    public void setDirect(boolean directIn) {
+        direct = directIn;
     }
 }

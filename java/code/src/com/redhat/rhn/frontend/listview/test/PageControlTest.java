@@ -15,8 +15,9 @@
 
 package com.redhat.rhn.frontend.listview.test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -50,30 +51,9 @@ public class PageControlTest extends RhnBaseTestCase {
     @Test
     public void testIllegalArgument() {
         PageControl pc = new PageControl();
-        boolean noexception = false;
 
-        try {
-            pc.setStart(0);
-            noexception = true;
-        }
-        catch (IllegalArgumentException iae) {
-            assertFalse(noexception);
-        }
-
-        try {
-            pc.setStart(-10);
-            noexception = true;
-        }
-        catch (IllegalArgumentException iae) {
-            assertFalse(noexception);
-        }
-
-        try {
-            pc.setStart(10);
-            noexception = true;
-        }
-        catch (IllegalArgumentException iae) {
-            assertTrue(noexception);
-        }
+        assertThrows(IllegalArgumentException.class, () -> pc.setStart(0));
+        assertThrows(IllegalArgumentException.class, () -> pc.setStart(-10));
+        assertDoesNotThrow(() -> pc.setStart(10));
     }
 }

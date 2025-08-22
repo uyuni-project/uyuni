@@ -50,7 +50,7 @@ public abstract class RecurringStateConfig {
     /**
      * Standard constructor
      */
-    public RecurringStateConfig() {
+    protected RecurringStateConfig() {
     }
 
     /**
@@ -58,7 +58,7 @@ public abstract class RecurringStateConfig {
      *
      * @param positionIn the position
      */
-    public RecurringStateConfig(Long positionIn) {
+    protected RecurringStateConfig(Long positionIn) {
         this.position = positionIn;
     }
 

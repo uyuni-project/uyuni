@@ -32,7 +32,6 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchActionException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.configchannel.ConfigChannelHandler;
 import com.redhat.rhn.manager.action.ActionChainManager;
-import com.redhat.rhn.manager.action.ActionManager;
 
 import com.suse.manager.api.ReadOnly;
 
@@ -131,11 +130,11 @@ public class ActionChainHandler extends BaseHandler {
                 Map<String, Object> info = new HashMap<>();
                 info.put("id", entry.getAction().getId());
                 info.put("label", StringUtil.nullOrValue(label) == null ?
-                                  entry.getAction().getActionType().getName() :
+                                  entry.getAction().getActionTypeName() :
                                   label);
                 info.put("created", entry.getAction().getCreated());
                 info.put("earliest", entry.getAction().getEarliestAction());
-                info.put("type", entry.getAction().getActionType().getName());
+                info.put("type", entry.getAction().getActionTypeName());
                 info.put("modified", entry.getAction().getModified());
                 info.put("cuid", entry.getAction().getSchedulerUser().getLogin());
                 entries.add(info);
@@ -538,7 +537,7 @@ public class ActionChainHandler extends BaseHandler {
         List<Long> systems = new ArrayList<>();
         systems.add((long) sid);
 
-        ScriptActionDetails script = ActionManager.createScript(
+        ScriptActionDetails script = ActionFactory.createScriptActionDetails(
                 uid, gid, (long) timeout, new String(
                         Base64.getDecoder().decode(scriptBody)));
         try {

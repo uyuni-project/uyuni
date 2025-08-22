@@ -428,6 +428,11 @@ DATA = {
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/4/bootstrap/",
     },
+    "OES24.4": {
+        "PDID": -45,
+        "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/4/bootstrap/",
+    },
     "SLE-15-aarch64": {
         "PDID": [1589, 3052],
         "BETAPDID": [3056],
@@ -892,6 +897,16 @@ DATA = {
         "BASECHANNEL": "opensuse_micro6_1-aarch64",
         "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/opensusemicro/6/1/bootstrap/",
+    },
+    "openSUSE-Leap-Micro-6.2-x86_64-uyuni": {
+        "BASECHANNEL": "opensuse_micro6_2-x86_64",
+        "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensusemicro/6/2/bootstrap/",
+    },
+    "openSUSE-Leap-Micro-6.2-aarch64-uyuni": {
+        "BASECHANNEL": "opensuse_micro6_2-aarch64",
+        "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensusemicro/6/2/bootstrap/",
     },
     "openSUSE-MicroOS-x86_64-uyuni": {
         "BASECHANNEL": "opensuse_microos-x86_64",

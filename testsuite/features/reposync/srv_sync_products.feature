@@ -54,12 +54,12 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64 (BETA)" if present
     Then I should see that the "Basesystem Module 15 SP4 x86_64" product is "recommended"
     And I should see that the "Server Applications Module 15 SP4 x86_64" product is "recommended"
-    And I should see that the "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64 (BETA)" product is "recommended"
+    And I should see that the "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64" product is "recommended"
     When I select "SUSE Linux Enterprise Server 15 SP4 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server 15 SP4 x86_64" selected
     And I should see the "Basesystem Module 15 SP4 x86_64" selected
     And I should see the "Server Applications Module 15 SP4 x86_64" selected
-    And I should see the "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64 (BETA)" selected
+    And I should see the "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64" selected
     When I select "Desktop Applications Module 15 SP4 x86_64" as a product
     And I select "Development Tools Module 15 SP4 x86_64" as a product
     Then I should see the "Desktop Applications Module 15 SP4 x86_64" selected
@@ -173,11 +173,11 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I enter "SUSE Linux Micro 6.1" as the filtered product description
     When I open the sub-list of the product "SUSE Linux Micro 6.1 x86_64"
     And I select "SUSE Linux Micro 6.1 x86_64" as a product
-    And I select "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64 (BETA)" as a product
-    Then I should see the "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64 (BETA)" selected
+    And I select "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" as a product
+    Then I should see the "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64 (BETA)" product has been added
+    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" product has been added
     And I wait until all synchronized channels for "suse-multi-linux-manager-proxy-51" have finished
 
 @proxy
@@ -190,11 +190,11 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP7" as the filtered product description
     When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
-    And I select "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64 (BETA)" as a product
-    Then I should see the "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64 (BETA)" selected
+    And I select "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" as a product
+    Then I should see the "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64 (BETA)" product has been added
+    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" product has been added
     And I wait until all synchronized channels for "suse-multi-linux-manager-proxy-51-sp7" have finished
 
 @proxy
@@ -208,11 +208,11 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I enter "SUSE Linux Micro 6.1" as the filtered product description
     When I open the sub-list of the product "SUSE Linux Micro 6.1 x86_64"
     And I select "SUSE Linux Micro 6.1 x86_64" as a product
-    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64 (BETA)" as a product
-    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64 (BETA)" selected
+    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64" as a product
+    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64 (BETA)" product has been added
+    And I wait until I see "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64" product has been added
     And I wait until all synchronized channels for "suse-multi-linux-manager-retail-branch-server-51" have finished
 
 @proxy
@@ -224,7 +224,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP7" as the filtered product description
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64 (BETA)"
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
     And I select "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64" as a product
     Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64" selected
     When I click the Add Product button
