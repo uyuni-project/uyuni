@@ -179,6 +179,10 @@ export const SSMProductMigration: React.FC<Props> = ({
 
       setSelectedTarget(migrationTargets.find((target) => target.id === targetId));
       setChannelSelectionData(response.data as MigrationChannelsSelection);
+
+      // Reset the selection
+      setSelectedChannelTree(undefined);
+      setAllowVendorChange(false);
     } catch (err: any) {
       Network.showResponseErrorToastr(err);
     } finally {
