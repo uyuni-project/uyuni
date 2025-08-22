@@ -402,9 +402,11 @@ public interface SaltApi extends Serializable {
      * Returns the currently running jobs on the target
      *
      * @param target the target
-     * @return list of running jobs
+     * @param cancel the cancel condition
+     * @return map of running jobs
      */
-    Map<String, Result<List<SaltUtil.RunningInfo>>> running(MinionList target);
+    Map<String, CompletionStage<Result<List<SaltUtil.RunningInfo>>>> running(MinionList target,
+                                                                             CompletableFuture<GenericError> cancel);
 
     /**
      * Return the result for a jobId
