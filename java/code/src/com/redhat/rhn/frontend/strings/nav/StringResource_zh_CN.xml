@@ -1304,6 +1304,13 @@
         </context-group>
         <target state="final">查看排名</target>
       </trans-unit>
-    </body>
+    <trans-unit id="Support" xml:space="preserve">
+        <source>Support</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
