@@ -37,6 +37,7 @@ assignees: ''
 ---
 
 ## Legend
+
 - Selected checkbox means, we tested it
 - :white_check_mark: : Test/verification was successful
 - :x: : Test/verification was not successful
@@ -51,6 +52,16 @@ assignees: ''
 - [ ] Clean up the old environment
 - [ ] Update the mirror / check if it is up to date
 
+
+### Release notes and new features
+
+- [ ] Update and verify the release notes for server and proxy
+- [ ] ...
+
+### Fixed bugs to verify
+
+- [ ] ...
+
 ---
 
 ## Automated tests and tasks
@@ -61,7 +72,7 @@ assignees: ''
 
 ### Proxy and Monitoring
 
-- [ ] Bootstrap proxy setup
+- [ ] Proxy setup
 - [ ] Monitoring server setup
 
 ### Client Bootstrap and Smoke Tests
@@ -76,7 +87,7 @@ assignees: ''
   - [ ] SLES15 SP6 minion → SP7
   - [ ] SLES15 SP6 SSH minion → SP7
   - [ ] SLE Micro 5.4 → 5.5
-  - [ ] salt → salt bundle
+  - [ ] Salt → Salt Bundle
 
 ### Retail
 
@@ -85,23 +96,20 @@ assignees: ''
 
 ---
 
-## Release notes and new features
+## Approval
 
-- [ ] Update and verify the release notes for server and proxy
+- [ ] Ping our release engineers in Slack
+- [ ] Approve all related MUs in [IBS](https://smelt.suse.de/overview/?7=qam-manager#testing) or via the [command line](https://confluence.suse.com/display/SUSEMANAGER/QE+Build+Validation)
+
+---
+
+## Test suite issues or fixes
+
 - [ ] ...
 
 ---
 
-## Approval
-
-- [ ] Ping our release engineers in Slack
-- [ ] Approve all related MUs in the [IBS](https://smelt.suse.de/overview/?7=qam-manager#testing) or via the [command line](https://confluence.suse.com/display/SUSEMANAGER/QE+Build+Validation)
-
-## Test suite fixes
-
-- [ ] ...
-
-## Reported and found Bugs
+## Reported Bugs
 
 ### Non-blocker
 
