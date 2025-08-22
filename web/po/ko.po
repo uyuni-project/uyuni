@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:19+0200\n"
+"POT-Creation-Date: 2025-08-22 09:58+0200\n"
 "PO-Revision-Date: 2025-06-20 06:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -34,6 +34,7 @@ msgstr "Internet Explorer 브라우저는 지원되지 않습니다. Firefox, Ch
 
 #: ../html/src/components/CoCoScansList.tsx:75
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
+#: ../html/src/manager/minion/details/support-data.tsx:75
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:65
 msgid "The action has been <link>scheduled</link>."
 msgstr "작업이 <link>예약</link>되었습니다."
@@ -53,6 +54,7 @@ msgstr "증명 실행 확인"
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:128
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
+#: ../html/src/manager/minion/details/support-data.tsx:142
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:94
 msgid "Schedule"
@@ -277,10 +279,10 @@ msgstr "프로세스 출력"
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
 #: ../html/src/components/formula-selection.tsx:293
 #: ../html/src/components/hub/ModalEditButton.tsx:94
-#: ../html/src/components/large-text-attachment.tsx:184
+#: ../html/src/components/large-text-attachment.tsx:195
 #: ../html/src/components/panels/CreatorPanel.tsx:125
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:119
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:197
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:196
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:35
 #: ../html/src/manager/minion/packages/package-states.tsx:194
@@ -358,11 +360,11 @@ msgstr "선택한 {name}을(를) {action}하시겠습니까?({name} {count}개 �
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:252
 #: ../html/src/components/hub/ModalEditButton.tsx:87
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:372
-#: ../html/src/components/large-text-attachment.tsx:177
+#: ../html/src/components/large-text-attachment.tsx:188
 #: ../html/src/components/panels/CreatorPanel.tsx:114
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:56
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:34
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:184
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:183
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:129
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:108
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:109
@@ -382,13 +384,14 @@ msgstr "취소"
 #: ../html/src/components/hub/TokenTable.tsx:175
 #: ../html/src/components/hub/TokenTable.tsx:184
 #: ../html/src/components/hub/TokenTable.tsx:228
-#: ../html/src/components/large-text-attachment.tsx:195
-#: ../html/src/components/large-text-attachment.tsx:209
+#: ../html/src/components/large-text-attachment.tsx:206
+#: ../html/src/components/large-text-attachment.tsx:208
+#: ../html/src/components/large-text-attachment.tsx:221
 #: ../html/src/components/panels/CreatorPanel.tsx:97
 #: ../html/src/components/table/Table.tsx:139
 #: ../html/src/manager/admin/payg/payg.tsx:73
 #: ../html/src/manager/admin/payg/payg.tsx:74
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:165
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:164
 #: ../html/src/manager/content-management/project/project.tsx:109
 #: ../html/src/manager/images/image-profiles.tsx:136
 #: ../html/src/manager/images/image-profiles.tsx:210
@@ -422,11 +425,11 @@ msgstr "프로젝트 삭제"
 msgid "Are you sure you want to delete project "
 msgstr "프로젝트를 삭제하시겠습니까 "
 
-#: ../html/src/components/formik/Form.example.tsx:34
+#: ../html/src/components/formik/Form.example.tsx:35
 msgid "Field"
 msgstr "필드"
 
-#: ../html/src/components/formik/Form.example.tsx:36
+#: ../html/src/components/formik/Form.example.tsx:37
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
 #: ../html/src/components/input/InputBase.test.tsx:97
@@ -441,11 +444,11 @@ msgstr "필드"
 msgid "Minimum 2 characters"
 msgstr "2자 이상"
 
-#: ../html/src/components/formik/Form.example.tsx:39
+#: ../html/src/components/formik/Form.example.tsx:40
 msgid "Checkbox"
 msgstr "확인란"
 
-#: ../html/src/components/formik/Form.example.tsx:41
+#: ../html/src/components/formik/Form.example.tsx:42
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
 #: ../html/src/components/input/password/Password.example.tsx:23
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
@@ -459,39 +462,55 @@ msgstr "확인란"
 msgid "Password"
 msgstr "비밀번호"
 
-#: ../html/src/components/formik/Form.example.tsx:43
+#: ../html/src/components/formik/Form.example.tsx:44
 msgid "Datetime"
 msgstr "날짜/시간"
 
-#: ../html/src/components/formik/Form.example.tsx:45
+#: ../html/src/components/formik/Form.example.tsx:46
 msgid "Multiple values"
 msgstr "다중 값"
 
-#: ../html/src/components/formik/Form.example.tsx:47
+#: ../html/src/components/formik/Form.example.tsx:48
 msgid "Long text"
 msgstr "긴 텍스트"
 
-#: ../html/src/components/formik/Form.example.tsx:49
+#: ../html/src/components/formik/Form.example.tsx:50
 msgid "Range"
 msgstr "범위"
 
-#: ../html/src/components/formik/Form.example.tsx:53
+#: ../html/src/components/formik/Form.example.tsx:54
 msgid "Radio"
 msgstr "라디오"
 
-#: ../html/src/components/formik/Form.example.tsx:55
+#: ../html/src/components/formik/Form.example.tsx:56
 msgid "One"
 msgstr "1"
 
-#: ../html/src/components/formik/Form.example.tsx:56
+#: ../html/src/components/formik/Form.example.tsx:57
 msgid "Two"
 msgstr "2"
 
-#: ../html/src/components/formik/Form.example.tsx:57
+#: ../html/src/components/formik/Form.example.tsx:58
 msgid "Three"
 msgstr "3"
 
-#: ../html/src/components/formik/Form.example.tsx:62
+#: ../html/src/components/formik/Form.example.tsx:65
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:306
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:127
+msgid "Select"
+msgstr "선택"
+
+#: ../html/src/components/formik/Form.example.tsx:68
+#, fuzzy
+#| msgid "foo"
+msgid "Foo"
+msgstr "푸"
+
+#: ../html/src/components/formik/Form.example.tsx:72
+msgid "Bar"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:79
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:245
 #: ../html/src/components/input/check/Check.example.tsx:22
 #: ../html/src/components/input/datetime/DateTime.example.tsx:25
@@ -505,7 +524,6 @@ msgstr "3"
 #: ../html/src/components/input/radio/vertical-open.example.tsx:36
 #: ../html/src/components/input/radio/vertical.example.tsx:35
 #: ../html/src/components/input/range/Range.example.tsx:24
-#: ../html/src/components/input/select/simple.example.tsx:32
 #: ../html/src/components/input/text/Text.example.tsx:38
 msgid "Submit"
 msgstr "제출"
@@ -793,7 +811,7 @@ msgstr "액세스 토큰"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:237
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:337
-#: ../html/src/components/hub/ServerDetailsForm.tsx:103
+#: ../html/src/components/hub/ServerDetailsForm.tsx:107
 msgid "Root Certificate Authority"
 msgstr "루트 인증 기관"
 
@@ -810,8 +828,9 @@ msgid "Not defined"
 msgstr "정의되지 않음"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:294
-#: ../html/src/components/large-text-attachment.tsx:69
-#: ../html/src/components/large-text-attachment.tsx:110
+#: ../html/src/components/large-text-attachment.tsx:77
+#: ../html/src/components/large-text-attachment.tsx:120
+#: ../html/src/components/large-text-attachment.tsx:122
 #: ../html/src/components/salt-state-popup.tsx:60
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:60
 #: ../html/src/manager/images/image-profiles.tsx:204
@@ -969,7 +988,7 @@ msgid "The Root certificate authority of the remote server, that must be trusted
 msgstr "보안 연결을 설정하기 위해 신뢰할 수 있어야 하는 원격 서버의 루트 인증 기관입니다."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
-#: ../html/src/components/large-text-attachment.tsx:144
+#: ../html/src/components/large-text-attachment.tsx:155
 msgid "Upload a file"
 msgstr "파일 업로드"
 
@@ -1008,103 +1027,129 @@ msgstr "등록"
 msgid "Clear fields"
 msgstr "필드 지우기"
 
+#: ../html/src/components/hub/ServerDetailsForm.tsx:15
+#, fuzzy
+#| msgid "Server FQDN:"
+msgid "Hub server FQDN:"
+msgstr "서버 FQDN:"
+
 #: ../html/src/components/hub/ServerDetailsForm.tsx:16
+#, fuzzy
+#| msgid "Peripheral Server FQDN"
+msgid "Peripheral server FQDN:"
+msgstr "주변기기 서버 FQDN"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:20
 msgid "A customized Root Certificate Authority is currently configured for this hub."
 msgstr "현재 이 허브에 사용자 정의 루트 인증 기관이 구성되어 있습니다."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:17
+#: ../html/src/components/hub/ServerDetailsForm.tsx:21
 msgid "A customized Root Certificate Authority is currently configured for this peripheral."
 msgstr "현재 이 주변 장치에 사용자 정의 루트 인증 기관이 구성되어 있습니다."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:20
+#: ../html/src/components/hub/ServerDetailsForm.tsx:24
 msgid "This hub is currently using the default Root Certificate Authority."
 msgstr "이 허브는 현재 기본 루트 인증 기관을 사용하고 있습니다."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:21
+#: ../html/src/components/hub/ServerDetailsForm.tsx:25
 msgid "This peripheral is currently using the default Root Certificate Authority."
 msgstr "이 주변 장치는 현재 기본 루트 인증 기관을 사용하고 있습니다."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:25
+#: ../html/src/components/hub/ServerDetailsForm.tsx:29
 msgid "Ensure the certificate you are providing is correct before proceeding. A wrong value will break the connection with the hub."
 msgstr "계속 진행하기 전에 제공한 인증서가 올바른지 확인하십시오. 값이 잘못되면 허브와의 연결이 끊어집니다."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:28
+#: ../html/src/components/hub/ServerDetailsForm.tsx:32
 msgid "Ensure the certificate you are providing is correct before proceeding. A wrong value will break the connection with the peripheral."
 msgstr "계속 진행하기 전에 제공한 인증서가 올바른지 확인하십시오. 값이 잘못되면 주변 장치와의 연결이 끊어집니다."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:33
+#: ../html/src/components/hub/ServerDetailsForm.tsx:37
 msgid "Are you sure you want to delete the current Root Certificate Authority? This change may break the connection with the hub."
 msgstr "현재 루트 인증 기관을 삭제하시겠습니까? 이 변경으로 인해 허브와의 연결이 끊어질 수 있습니다."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:36
+#: ../html/src/components/hub/ServerDetailsForm.tsx:40
 msgid "Are you sure you want to delete the current Root Certificate Authority? This change may break the connection with the peripheral."
 msgstr "현재 루트 인증 기관을 삭제하시겠습니까? 이 변경으로 인해 주변 장치와의 연결이 끊어질 수 있습니다."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:67
-msgid "Server FQDN:"
-msgstr "서버 FQDN:"
-
-#: ../html/src/components/hub/ServerDetailsForm.tsx:75
+#: ../html/src/components/hub/ServerDetailsForm.tsx:79
 msgid "Registration date:"
 msgstr "등록 날짜:"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:85
+#: ../html/src/components/hub/ServerDetailsForm.tsx:89
 msgid "Last modified:"
 msgstr "마지막 수정:"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:95
+#: ../html/src/components/hub/ServerDetailsForm.tsx:99
 msgid "Root Certificate Authority:"
 msgstr "루트 인증 기관:"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:117
+#: ../html/src/components/hub/ServerDetailsForm.tsx:122
 msgid "GPG Public Key:"
 msgstr "GPG 공개키:"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:123
+#: ../html/src/components/hub/ServerDetailsForm.tsx:128
 msgid "A customized GPG key is currently configured for this hub."
 msgstr "현재 이 허브에 사용자 정의 GPG 키가 구성되어 있습니다."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:124
+#: ../html/src/components/hub/ServerDetailsForm.tsx:129
 msgid "This hub is currently not using a custom GPG key."
 msgstr "이 허브는 현재 사용자 정의 GPG 키를 사용하지 않습니다."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:134
+#: ../html/src/components/hub/ServerDetailsForm.tsx:140
 msgid "Mirror credentials:"
 msgstr "미러 자격 증명:"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:142
+#: ../html/src/components/hub/ServerDetailsForm.tsx:148
 msgid "Regenerate credentials"
 msgstr "자격 증명 재생성"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:155
+#: ../html/src/components/hub/ServerDetailsForm.tsx:161
 msgid "Synchronized channels:"
 msgstr "동기화된 채널:"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:163
+#: ../html/src/components/hub/ServerDetailsForm.tsx:169
 msgid "Edit channels"
 msgstr "채널 편집"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:185
-msgid "One syncronized channel"
+#: ../html/src/components/hub/ServerDetailsForm.tsx:191
+#, fuzzy
+#| msgid " channels synced"
+msgid "No channels synchronized."
+msgstr " 채널 동기화됨"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:195
+#, fuzzy
+#| msgid "One syncronized channel"
+msgid "One synchronized channel"
 msgstr "1개의 동기화된 채널"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:189
-msgid "{nSyncedChannels} syncronized channels, from one organization"
+#: ../html/src/components/hub/ServerDetailsForm.tsx:200
+#, fuzzy
+#| msgid "{nSyncedChannels} syncronized channels, from one organization"
+msgid "{nSyncedChannels} synchronized channels"
 msgstr "1개의 조직에서 {nSyncedChannels}개의 동기화된 채널"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:192
-msgid "{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different organizations"
+#: ../html/src/components/hub/ServerDetailsForm.tsx:204
+#, fuzzy
+#| msgid "{nSyncedChannels} syncronized channels, from one organization"
+msgid "{nSyncedChannels} synchronized channels, from one organization"
+msgstr "1개의 조직에서 {nSyncedChannels}개의 동기화된 채널"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:207
+#, fuzzy
+#| msgid "{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different organizations"
+msgid "{nSyncedChannels} synchronized channels, from {nSyncedOrgs} different organizations"
 msgstr "{nSyncedOrgs}개의 다른 조직에서 {nSyncedChannels}개의 동기화된 채널"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:198
+#: ../html/src/components/hub/ServerDetailsForm.tsx:213
 msgid "Root Certificate Authority successfully modified."
 msgstr "루트 인증 기관이 수정되었습니다."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:212
+#: ../html/src/components/hub/ServerDetailsForm.tsx:227
 msgid "Root Certificate Authority successfully updated."
 msgstr "루트 인증 기관을 업데이트했습니다."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:227
+#: ../html/src/components/hub/ServerDetailsForm.tsx:242
 msgid "Mirror credentials successfully regenerated."
 msgstr "미러 자격 증명이 다시 생성되었습니다."
 
@@ -1390,8 +1435,6 @@ msgstr "4자 이상"
 #: ../html/src/components/input/radio/horizontal.example.tsx:26
 #: ../html/src/components/input/radio/vertical-open.example.tsx:25
 #: ../html/src/components/input/radio/vertical.example.tsx:25
-#: ../html/src/components/input/select/async.example.tsx:44
-#: ../html/src/components/input/select/simple.example.tsx:26
 msgid "Level"
 msgstr "레벨"
 
@@ -1399,6 +1442,9 @@ msgstr "레벨"
 #: ../html/src/components/input/radio/horizontal.example.tsx:31
 #: ../html/src/components/input/radio/vertical-open.example.tsx:31
 #: ../html/src/components/input/radio/vertical.example.tsx:30
+#: ../html/src/components/input/select/custom-fields.example.tsx:9
+#: ../html/src/components/input/select/multiple.example.tsx:9
+#: ../html/src/components/input/select/simple.example.tsx:9
 msgid "Beginner"
 msgstr "초급자"
 
@@ -1406,6 +1452,9 @@ msgstr "초급자"
 #: ../html/src/components/input/radio/horizontal.example.tsx:32
 #: ../html/src/components/input/radio/vertical-open.example.tsx:32
 #: ../html/src/components/input/radio/vertical.example.tsx:31
+#: ../html/src/components/input/select/custom-fields.example.tsx:15
+#: ../html/src/components/input/select/multiple.example.tsx:13
+#: ../html/src/components/input/select/simple.example.tsx:13
 msgid "Normal"
 msgstr "일반"
 
@@ -1413,6 +1462,9 @@ msgstr "일반"
 #: ../html/src/components/input/radio/horizontal.example.tsx:33
 #: ../html/src/components/input/radio/vertical-open.example.tsx:33
 #: ../html/src/components/input/radio/vertical.example.tsx:32
+#: ../html/src/components/input/select/custom-fields.example.tsx:21
+#: ../html/src/components/input/select/multiple.example.tsx:17
+#: ../html/src/components/input/select/simple.example.tsx:17
 msgid "Expert"
 msgstr "전문가"
 
@@ -1424,65 +1476,68 @@ msgstr "포트 범위"
 msgid "Both values need to be positive integers"
 msgstr "두 값 모두 양의 정수여야 합니다."
 
-#: ../html/src/components/input/select/Select.test.tsx:58
-#: ../html/src/components/input/select/custom.example.tsx:34
-msgid "Start typing..."
-msgstr "입력 시작..."
+#: ../html/src/components/input/select/ClearIndicator.tsx:17
+#: ../html/src/components/table/SearchPanel.tsx:66
+#: ../html/src/manager/admin/setup/products/products.tsx:329
+msgid "Clear"
+msgstr "지우기"
 
-#: ../html/src/components/input/select/Select.test.tsx:59
-msgid "No flavor"
-msgstr "특징 없음"
-
-#: ../html/src/components/input/select/Select.tsx:255
+#: ../html/src/components/input/select/DEPRECATED_Select.tsx:259
+#: ../html/src/components/input/select/Select.tsx:13
 msgid "No options"
 msgstr "옵션 없음"
 
-#: ../html/src/components/input/select/custom.example.tsx:32
-msgid "Flavor"
-msgstr "특징"
+#: ../html/src/components/input/select/Select.tsx:12
+#: ../html/src/components/utils/loading/Loading.tsx:20
+#: ../html/src/manager/appstreams/appstream-packages.tsx:32
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:74
+#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:106
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:634
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:635
+msgid "Loading..."
+msgstr "로드하는 중..."
 
-#: ../html/src/components/input/select/custom.example.tsx:35
-msgid "No flavors"
-msgstr "특징 없음"
-
-#: ../html/src/components/large-text-attachment.tsx:67
+#: ../html/src/components/large-text-attachment.tsx:75
 msgid "Data is present."
 msgstr "데이터가 있습니다."
 
-#: ../html/src/components/large-text-attachment.tsx:68
+#: ../html/src/components/large-text-attachment.tsx:76
 msgid "Data is not present."
 msgstr "데이터가 없습니다."
 
-#: ../html/src/components/large-text-attachment.tsx:99
+#: ../html/src/components/large-text-attachment.tsx:108
+#: ../html/src/components/large-text-attachment.tsx:110
 msgid "Download"
 msgstr "다운로드"
 
-#: ../html/src/components/large-text-attachment.tsx:110
+#: ../html/src/components/large-text-attachment.tsx:120
+#: ../html/src/components/large-text-attachment.tsx:122
 msgid "Add"
 msgstr "추가"
 
-#: ../html/src/components/large-text-attachment.tsx:135
-#: ../html/src/components/large-text-attachment.tsx:136
+#: ../html/src/components/large-text-attachment.tsx:146
+#: ../html/src/components/large-text-attachment.tsx:147
 msgid "Edit method"
 msgstr "메소드 편집"
 
-#: ../html/src/components/large-text-attachment.tsx:137
+#: ../html/src/components/large-text-attachment.tsx:148
 msgid "Define how to provide the new value"
 msgstr "새로운 값 제공 방법 정의"
 
-#: ../html/src/components/large-text-attachment.tsx:145
+#: ../html/src/components/large-text-attachment.tsx:156
 msgid "Paste the new value"
 msgstr "새 값 붙여넣기"
 
-#: ../html/src/components/large-text-attachment.tsx:151
+#: ../html/src/components/large-text-attachment.tsx:162
 msgid "File"
 msgstr "파일"
 
-#: ../html/src/components/large-text-attachment.tsx:161
+#: ../html/src/components/large-text-attachment.tsx:172
 msgid "New value"
 msgstr "새 값"
 
-#: ../html/src/components/large-text-attachment.tsx:204
+#: ../html/src/components/large-text-attachment.tsx:216
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
 msgid "Confirm Deletion"
 msgstr "삭제 확인"
@@ -1839,7 +1894,7 @@ msgstr "다음보다 큼"
 msgid "not equal to"
 msgstr "다음과 같지 않음"
 
-#: ../html/src/components/table/NumericSearchField.tsx:47
+#: ../html/src/components/table/NumericSearchField.tsx:62
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:132
 msgid "Matcher"
 msgstr "선택기"
@@ -1861,11 +1916,6 @@ msgstr "항목 {from} - {to} / {total}"
 #: ../html/src/components/table/SearchPanel.tsx:64
 msgid "({selectedCount} selected)"
 msgstr "({selectedCount} 선택됨)"
-
-#: ../html/src/components/table/SearchPanel.tsx:66
-#: ../html/src/manager/admin/setup/products/products.tsx:329
-msgid "Clear"
-msgstr "지우기"
 
 #: ../html/src/components/table/SearchPanel.tsx:73
 msgid "Select All"
@@ -1904,16 +1954,6 @@ msgstr "마우스로 가리킬 때 표시되는 텍스트"
 msgid "Help"
 msgstr "도움말"
 
-#: ../html/src/components/utils/loading/Loading.tsx:20
-#: ../html/src/manager/appstreams/appstream-packages.tsx:32
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:74
-#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:106
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:634
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:635
-msgid "Loading..."
-msgstr "로드하는 중..."
-
 #: ../html/src/components/utils/loading/text-border.example.tsx:7
 #: ../html/src/components/utils/loading/text.example.tsx:7
 msgid "Loading text"
@@ -1949,6 +1989,10 @@ msgstr "없음"
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:26
 msgid "Require this channel"
 msgstr "이 채널 필요"
+
+#: ../html/src/core/intl/index.example.tsx:7
+msgid "Please see <link>Format.JS docs</link> for the message syntax."
+msgstr ""
 
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
@@ -2138,7 +2182,7 @@ msgstr "PAYG SSH 데이터 추가"
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:29
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:104
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:207
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:172
 msgid "Create"
 msgstr "만들기"
 
@@ -3126,11 +3170,6 @@ msgstr "단계 1/2: 테이블에서 고정할 시스템을 아래에서 선택�
 msgid "Socket/IFL count"
 msgstr "소켓/IFL 개수"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:306
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:127
-msgid "Select"
-msgstr "선택"
-
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:319
 msgid "Available Subscriptions for the Selected System"
 msgstr "선택한 시스템에서 사용할 수 있는 구독"
@@ -3296,15 +3335,15 @@ msgstr "필터 업데이트됨"
 msgid "Filter created successfully"
 msgstr "필터 생성됨"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:123
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:122
 msgid "Filter Details"
 msgstr "필터 세부사항"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:123
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:122
 msgid "Create a new filter"
 msgstr "새 필터 만들기"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:171
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:170
 msgid "Filter deleted successfully"
 msgstr "필터 삭제됨"
 
@@ -4931,7 +4970,15 @@ msgid "This will unassign all schedules from this calendar."
 msgstr "이 작업을 수행하면 이 달력에서 모든 일정의 할당이 해제됩니다."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:30
-msgid "Create a new maintenance schedule"
+#, fuzzy
+#| msgid "Create a new maintenance schedule"
+msgid "Create a new Maintenance Schedule"
+msgstr "새 유지보수 일정 만들기"
+
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:30
+#, fuzzy
+#| msgid "Create a new maintenance schedule"
+msgid "Create a new Maintenance Calendar"
 msgstr "새 유지보수 일정 만들기"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:41
@@ -5152,6 +5199,68 @@ msgstr "설정"
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:30
 msgid "Applying the config channels has been "
 msgstr "구성 채널 적용이 "
+
+#: ../html/src/manager/minion/details/support-data.tsx:51
+#, fuzzy
+#| msgid "The Salt version on this system does not support virtual network creating and editing"
+msgid "The OS of this system does not support the collection of support data."
+msgstr "이 시스템의 Salt 버전은 가상 네트워크 생성 및 편집을 지원하지 않습니다."
+
+#: ../html/src/manager/minion/details/support-data.tsx:90
+msgid "Upload Support Data"
+msgstr ""
+
+#: ../html/src/manager/minion/details/support-data.tsx:102
+#, fuzzy
+#| msgid "Report Database Name"
+msgid "Support Case Number"
+msgstr "데이터베이스 이름 보고"
+
+#: ../html/src/manager/minion/details/support-data.tsx:103
+msgid "The support case number to which this data will be attached."
+msgstr ""
+
+#: ../html/src/manager/minion/details/support-data.tsx:105
+#, fuzzy
+#| msgid "e.g., 2048"
+msgid "e.g. 12345"
+msgstr "예: 2048"
+
+#: ../html/src/manager/minion/details/support-data.tsx:109
+#, fuzzy
+#| msgid "Has to be a valid qualified host name"
+msgid "Has to be a valid support case number"
+msgstr "유효한 정규화된 호스트 이름이어야 합니다."
+
+#: ../html/src/manager/minion/details/support-data.tsx:113
+#, fuzzy
+#| msgid "Upload a file"
+msgid "Upload Region"
+msgstr "파일 업로드"
+
+#: ../html/src/manager/minion/details/support-data.tsx:114
+msgid "The location of the FTP server where the data is uploaded."
+msgstr ""
+
+#: ../html/src/manager/minion/details/support-data.tsx:124
+msgid "Command-line Arguments"
+msgstr ""
+
+#: ../html/src/manager/minion/details/support-data.tsx:125
+msgid "Optional command line arguments for the execution of <programName></programName>."
+msgstr ""
+
+#: ../html/src/manager/minion/details/support-data.tsx:133
+#, fuzzy
+#| msgid "Earliest:"
+msgid "Earliest"
+msgstr "가장 빠른 날짜:"
+
+#: ../html/src/manager/minion/details/support-data.tsx:134
+#, fuzzy
+#| msgid "There are no relevant actions that can be executed on this system."
+msgid "The earliest moment the action can be executed."
+msgstr "이 시스템에서 수행할 수 있는 관련 작업이 없습니다."
 
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:65
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:32
@@ -6804,43 +6913,47 @@ msgstr "Kubeconfig 파일"
 msgid "No Virtual Host Managers."
 msgstr "가상 호스트 관리자가 없습니다."
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:19
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:18
 msgid "File-based"
 msgstr "파일 기반"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:20
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:19
 msgid "VMWare-based"
 msgstr "VMWare 기반"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:21
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:20
 msgid "Kubernetes Cluster"
 msgstr "Kubernetes 클러스터"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:22
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:21
 msgid "Amazon EC2"
 msgstr "Amazon EC2"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:23
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:22
 msgid "Google Compute Engine"
 msgstr "Google Compute Engine"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:24
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:23
 msgid "Azure"
 msgstr "Azure"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:25
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:24
 msgid "Nutanix AHV"
 msgstr "Nutanix AHV"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:155
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:25
+msgid "Libvirt API"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:150
 msgid "Add a {type} Virtual Host Manager"
 msgstr "{type} 가상 호스트 관리자 추가"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:157
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:152
 msgid "Virtual Host Managers"
 msgstr "가상 호스트 관리자"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:168
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:174
 msgid "Add a virtual host manager"
 msgstr "가상 호스트 관리자 추가"
 
@@ -6859,6 +6972,18 @@ msgstr "리소스를 찾을 수 없음"
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "HTTP 오류 코드 "
+
+#~ msgid "Start typing..."
+#~ msgstr "입력 시작..."
+
+#~ msgid "No flavor"
+#~ msgstr "특징 없음"
+
+#~ msgid "Flavor"
+#~ msgstr "특징"
+
+#~ msgid "No flavors"
+#~ msgstr "특징 없음"
 
 #~ msgid "Hub Org"
 #~ msgstr "허브 조직"
@@ -7133,9 +7258,6 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "This is a list of virtual networks which are configured to run on this host."
 #~ msgstr "이 호스트에서 실행하도록 구성된 가상 네트워크 목록입니다."
 
-#~ msgid "The Salt version on this system does not support virtual network creating and editing"
-#~ msgstr "이 시스템의 Salt 버전은 가상 네트워크 생성 및 편집을 지원하지 않습니다."
-
 #~ msgid "Autostart"
 #~ msgstr "자동 시작"
 
@@ -7228,9 +7350,6 @@ msgstr "HTTP 오류 코드 "
 
 #~ msgid "DNS server address"
 #~ msgstr "DNS 서버 주소"
-
-#~ msgid "Has to be a valid qualified host name"
-#~ msgstr "유효한 정규화된 호스트 이름이어야 합니다."
 
 #~ msgid "Has to be an IP address"
 #~ msgstr "IP 주소여야 함"

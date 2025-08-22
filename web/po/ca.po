@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:19+0200\n"
+"POT-Creation-Date: 2025-08-22 09:58+0200\n"
 "PO-Revision-Date: 2025-07-10 09:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
@@ -34,6 +34,7 @@ msgstr "El navegador Internet Explorer no està suportat. Proveu d'utilitzar el 
 
 #: ../html/src/components/CoCoScansList.tsx:75
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
+#: ../html/src/manager/minion/details/support-data.tsx:75
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:65
 msgid "The action has been <link>scheduled</link>."
 msgstr "L'acció ha estat <link>programada</link>."
@@ -53,6 +54,7 @@ msgstr "Confirma l'execució de la prova"
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:128
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
+#: ../html/src/manager/minion/details/support-data.tsx:142
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:94
 msgid "Schedule"
@@ -277,10 +279,10 @@ msgstr "Processa la sortida"
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
 #: ../html/src/components/formula-selection.tsx:293
 #: ../html/src/components/hub/ModalEditButton.tsx:94
-#: ../html/src/components/large-text-attachment.tsx:184
+#: ../html/src/components/large-text-attachment.tsx:195
 #: ../html/src/components/panels/CreatorPanel.tsx:125
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:119
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:197
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:196
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:35
 #: ../html/src/manager/minion/packages/package-states.tsx:194
@@ -358,11 +360,11 @@ msgstr "Esteu segur que voleu {action} el {name} seleccionat? ({count} {name}s s
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:252
 #: ../html/src/components/hub/ModalEditButton.tsx:87
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:372
-#: ../html/src/components/large-text-attachment.tsx:177
+#: ../html/src/components/large-text-attachment.tsx:188
 #: ../html/src/components/panels/CreatorPanel.tsx:114
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:56
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:34
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:184
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:183
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:129
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:108
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:109
@@ -382,13 +384,14 @@ msgstr "Cancel·la"
 #: ../html/src/components/hub/TokenTable.tsx:175
 #: ../html/src/components/hub/TokenTable.tsx:184
 #: ../html/src/components/hub/TokenTable.tsx:228
-#: ../html/src/components/large-text-attachment.tsx:195
-#: ../html/src/components/large-text-attachment.tsx:209
+#: ../html/src/components/large-text-attachment.tsx:206
+#: ../html/src/components/large-text-attachment.tsx:208
+#: ../html/src/components/large-text-attachment.tsx:221
 #: ../html/src/components/panels/CreatorPanel.tsx:97
 #: ../html/src/components/table/Table.tsx:139
 #: ../html/src/manager/admin/payg/payg.tsx:73
 #: ../html/src/manager/admin/payg/payg.tsx:74
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:165
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:164
 #: ../html/src/manager/content-management/project/project.tsx:109
 #: ../html/src/manager/images/image-profiles.tsx:136
 #: ../html/src/manager/images/image-profiles.tsx:210
@@ -422,11 +425,11 @@ msgstr "Suprimeix el projecte"
 msgid "Are you sure you want to delete project "
 msgstr "Segur que voleu suprimir el projecte "
 
-#: ../html/src/components/formik/Form.example.tsx:34
+#: ../html/src/components/formik/Form.example.tsx:35
 msgid "Field"
 msgstr "Camp"
 
-#: ../html/src/components/formik/Form.example.tsx:36
+#: ../html/src/components/formik/Form.example.tsx:37
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
 #: ../html/src/components/input/InputBase.test.tsx:97
@@ -441,11 +444,11 @@ msgstr "Camp"
 msgid "Minimum 2 characters"
 msgstr "Mínim 2 caràcters"
 
-#: ../html/src/components/formik/Form.example.tsx:39
+#: ../html/src/components/formik/Form.example.tsx:40
 msgid "Checkbox"
 msgstr "Casella de selecció"
 
-#: ../html/src/components/formik/Form.example.tsx:41
+#: ../html/src/components/formik/Form.example.tsx:42
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
 #: ../html/src/components/input/password/Password.example.tsx:23
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
@@ -459,39 +462,55 @@ msgstr "Casella de selecció"
 msgid "Password"
 msgstr "Contrasenya"
 
-#: ../html/src/components/formik/Form.example.tsx:43
+#: ../html/src/components/formik/Form.example.tsx:44
 msgid "Datetime"
 msgstr "Data i hora"
 
-#: ../html/src/components/formik/Form.example.tsx:45
+#: ../html/src/components/formik/Form.example.tsx:46
 msgid "Multiple values"
 msgstr "Valors múltiples"
 
-#: ../html/src/components/formik/Form.example.tsx:47
+#: ../html/src/components/formik/Form.example.tsx:48
 msgid "Long text"
 msgstr "Text llarg"
 
-#: ../html/src/components/formik/Form.example.tsx:49
+#: ../html/src/components/formik/Form.example.tsx:50
 msgid "Range"
 msgstr "Interval"
 
-#: ../html/src/components/formik/Form.example.tsx:53
+#: ../html/src/components/formik/Form.example.tsx:54
 msgid "Radio"
 msgstr "Ràdio"
 
-#: ../html/src/components/formik/Form.example.tsx:55
+#: ../html/src/components/formik/Form.example.tsx:56
 msgid "One"
 msgstr "U"
 
-#: ../html/src/components/formik/Form.example.tsx:56
+#: ../html/src/components/formik/Form.example.tsx:57
 msgid "Two"
 msgstr "Dos"
 
-#: ../html/src/components/formik/Form.example.tsx:57
+#: ../html/src/components/formik/Form.example.tsx:58
 msgid "Three"
 msgstr "Tres"
 
-#: ../html/src/components/formik/Form.example.tsx:62
+#: ../html/src/components/formik/Form.example.tsx:65
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:306
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:127
+msgid "Select"
+msgstr "Selecciona"
+
+#: ../html/src/components/formik/Form.example.tsx:68
+#, fuzzy
+#| msgid "foo"
+msgid "Foo"
+msgstr "foo"
+
+#: ../html/src/components/formik/Form.example.tsx:72
+msgid "Bar"
+msgstr ""
+
+#: ../html/src/components/formik/Form.example.tsx:79
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:245
 #: ../html/src/components/input/check/Check.example.tsx:22
 #: ../html/src/components/input/datetime/DateTime.example.tsx:25
@@ -505,7 +524,6 @@ msgstr "Tres"
 #: ../html/src/components/input/radio/vertical-open.example.tsx:36
 #: ../html/src/components/input/radio/vertical.example.tsx:35
 #: ../html/src/components/input/range/Range.example.tsx:24
-#: ../html/src/components/input/select/simple.example.tsx:32
 #: ../html/src/components/input/text/Text.example.tsx:38
 msgid "Submit"
 msgstr "Envia"
@@ -791,7 +809,7 @@ msgstr "Testimoni d'accés"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:237
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:337
-#: ../html/src/components/hub/ServerDetailsForm.tsx:103
+#: ../html/src/components/hub/ServerDetailsForm.tsx:107
 msgid "Root Certificate Authority"
 msgstr "Autoritat del certificat arrel"
 
@@ -808,8 +826,9 @@ msgid "Not defined"
 msgstr "No definit"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:294
-#: ../html/src/components/large-text-attachment.tsx:69
-#: ../html/src/components/large-text-attachment.tsx:110
+#: ../html/src/components/large-text-attachment.tsx:77
+#: ../html/src/components/large-text-attachment.tsx:120
+#: ../html/src/components/large-text-attachment.tsx:122
 #: ../html/src/components/salt-state-popup.tsx:60
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:60
 #: ../html/src/manager/images/image-profiles.tsx:204
@@ -967,7 +986,7 @@ msgid "The Root certificate authority of the remote server, that must be trusted
 msgstr "L'autoritat del certificat Root del servidor remot, que s'ha de confiar per establir una connexió segura."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
-#: ../html/src/components/large-text-attachment.tsx:144
+#: ../html/src/components/large-text-attachment.tsx:155
 msgid "Upload a file"
 msgstr "Puja un fitxer"
 
@@ -1006,103 +1025,129 @@ msgstr "Registra"
 msgid "Clear fields"
 msgstr "Neteja els camps"
 
+#: ../html/src/components/hub/ServerDetailsForm.tsx:15
+#, fuzzy
+#| msgid "Server FQDN:"
+msgid "Hub server FQDN:"
+msgstr "Servidor FQDN:"
+
 #: ../html/src/components/hub/ServerDetailsForm.tsx:16
+#, fuzzy
+#| msgid "Peripheral Server FQDN"
+msgid "Peripheral server FQDN:"
+msgstr "Servidor Perifèric FQDN"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:20
 msgid "A customized Root Certificate Authority is currently configured for this hub."
 msgstr "Actualment hi ha configurada una Autoritat de Certificats Root personalitzada per a aquest hub."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:17
+#: ../html/src/components/hub/ServerDetailsForm.tsx:21
 msgid "A customized Root Certificate Authority is currently configured for this peripheral."
 msgstr "Actualment s'ha configurat una autoritat de certificació d'arrel personalitzada per a aquest perifèric."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:20
+#: ../html/src/components/hub/ServerDetailsForm.tsx:24
 msgid "This hub is currently using the default Root Certificate Authority."
 msgstr "Aquest centre està utilitzant l'autoritat de certificats Root per defecte."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:21
+#: ../html/src/components/hub/ServerDetailsForm.tsx:25
 msgid "This peripheral is currently using the default Root Certificate Authority."
 msgstr "Aquest perifèric usa actualment l'autoritat de certificació d'arrel predeterminada."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:25
+#: ../html/src/components/hub/ServerDetailsForm.tsx:29
 msgid "Ensure the certificate you are providing is correct before proceeding. A wrong value will break the connection with the hub."
 msgstr "Assegureu-vos que el certificat que proporcioneu sigui correcte abans de procedir. Un valor incorrecte trencarà la connexió amb el hub."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:28
+#: ../html/src/components/hub/ServerDetailsForm.tsx:32
 msgid "Ensure the certificate you are providing is correct before proceeding. A wrong value will break the connection with the peripheral."
 msgstr "Assegureu-vos que el certificat que proporcioneu és correcte abans de continuar. Un valor incorrecte trencarà la connexió amb el perifèric."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:33
+#: ../html/src/components/hub/ServerDetailsForm.tsx:37
 msgid "Are you sure you want to delete the current Root Certificate Authority? This change may break the connection with the hub."
 msgstr "Esteu segur que voleu suprimir l'actual Autoritat de Certificats Arrel? Aquest canvi pot trencar la connexió amb el hub."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:36
+#: ../html/src/components/hub/ServerDetailsForm.tsx:40
 msgid "Are you sure you want to delete the current Root Certificate Authority? This change may break the connection with the peripheral."
 msgstr "Assegureu-vos que el certificat que proporcioneu és correcte abans de continuar. Un valor incorrecte trencarà la connexió amb el perifèric."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:67
-msgid "Server FQDN:"
-msgstr "Servidor FQDN:"
-
-#: ../html/src/components/hub/ServerDetailsForm.tsx:75
+#: ../html/src/components/hub/ServerDetailsForm.tsx:79
 msgid "Registration date:"
 msgstr "Data d'inscripció:"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:85
+#: ../html/src/components/hub/ServerDetailsForm.tsx:89
 msgid "Last modified:"
 msgstr "Darrera modificació:"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:95
+#: ../html/src/components/hub/ServerDetailsForm.tsx:99
 msgid "Root Certificate Authority:"
 msgstr "Autoritat del certificat arrel:"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:117
+#: ../html/src/components/hub/ServerDetailsForm.tsx:122
 msgid "GPG Public Key:"
 msgstr "Clau pública del GPG:"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:123
+#: ../html/src/components/hub/ServerDetailsForm.tsx:128
 msgid "A customized GPG key is currently configured for this hub."
 msgstr "Actualment s'ha configurat una clau GPG personalitzada per a aquest hub."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:124
+#: ../html/src/components/hub/ServerDetailsForm.tsx:129
 msgid "This hub is currently not using a custom GPG key."
 msgstr "Aquest hub actualment no està utilitzant una clau GPG personalitzada."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:134
+#: ../html/src/components/hub/ServerDetailsForm.tsx:140
 msgid "Mirror credentials:"
 msgstr "Credencials del mirall:"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:142
+#: ../html/src/components/hub/ServerDetailsForm.tsx:148
 msgid "Regenerate credentials"
 msgstr "Regenera les credencials"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:155
+#: ../html/src/components/hub/ServerDetailsForm.tsx:161
 msgid "Synchronized channels:"
 msgstr "Canals sincronitzats:"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:163
+#: ../html/src/components/hub/ServerDetailsForm.tsx:169
 msgid "Edit channels"
 msgstr "Edita els canals"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:185
-msgid "One syncronized channel"
+#: ../html/src/components/hub/ServerDetailsForm.tsx:191
+#, fuzzy
+#| msgid " channels synced"
+msgid "No channels synchronized."
+msgstr " canals sincronitzats"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:195
+#, fuzzy
+#| msgid "One syncronized channel"
+msgid "One synchronized channel"
 msgstr "Un canal sincronitzat"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:189
-msgid "{nSyncedChannels} syncronized channels, from one organization"
+#: ../html/src/components/hub/ServerDetailsForm.tsx:200
+#, fuzzy
+#| msgid "{nSyncedChannels} syncronized channels, from one organization"
+msgid "{nSyncedChannels} synchronized channels"
 msgstr "{nSyncedChannels} canals sincronitzats, d'una organització"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:192
-msgid "{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different organizations"
+#: ../html/src/components/hub/ServerDetailsForm.tsx:204
+#, fuzzy
+#| msgid "{nSyncedChannels} syncronized channels, from one organization"
+msgid "{nSyncedChannels} synchronized channels, from one organization"
+msgstr "{nSyncedChannels} canals sincronitzats, d'una organització"
+
+#: ../html/src/components/hub/ServerDetailsForm.tsx:207
+#, fuzzy
+#| msgid "{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different organizations"
+msgid "{nSyncedChannels} synchronized channels, from {nSyncedOrgs} different organizations"
 msgstr "{nSyncedChannels} canals sincronitzats, de {nSyncedOrgs} organitzacions diferents"
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:198
+#: ../html/src/components/hub/ServerDetailsForm.tsx:213
 msgid "Root Certificate Authority successfully modified."
 msgstr "S'ha modificat correctament l'autoritat del certificat arrel."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:212
+#: ../html/src/components/hub/ServerDetailsForm.tsx:227
 msgid "Root Certificate Authority successfully updated."
 msgstr "S'ha actualitzat correctament l'autoritat de certificats arrel."
 
-#: ../html/src/components/hub/ServerDetailsForm.tsx:227
+#: ../html/src/components/hub/ServerDetailsForm.tsx:242
 msgid "Mirror credentials successfully regenerated."
 msgstr "Les credencials de rèplica s'han regenerat correctament."
 
@@ -1388,8 +1433,6 @@ msgstr "Ha de tenir un mínim de 4 caràcters"
 #: ../html/src/components/input/radio/horizontal.example.tsx:26
 #: ../html/src/components/input/radio/vertical-open.example.tsx:25
 #: ../html/src/components/input/radio/vertical.example.tsx:25
-#: ../html/src/components/input/select/async.example.tsx:44
-#: ../html/src/components/input/select/simple.example.tsx:26
 msgid "Level"
 msgstr "Nivell"
 
@@ -1397,6 +1440,9 @@ msgstr "Nivell"
 #: ../html/src/components/input/radio/horizontal.example.tsx:31
 #: ../html/src/components/input/radio/vertical-open.example.tsx:31
 #: ../html/src/components/input/radio/vertical.example.tsx:30
+#: ../html/src/components/input/select/custom-fields.example.tsx:9
+#: ../html/src/components/input/select/multiple.example.tsx:9
+#: ../html/src/components/input/select/simple.example.tsx:9
 msgid "Beginner"
 msgstr "Iniciador"
 
@@ -1404,6 +1450,9 @@ msgstr "Iniciador"
 #: ../html/src/components/input/radio/horizontal.example.tsx:32
 #: ../html/src/components/input/radio/vertical-open.example.tsx:32
 #: ../html/src/components/input/radio/vertical.example.tsx:31
+#: ../html/src/components/input/select/custom-fields.example.tsx:15
+#: ../html/src/components/input/select/multiple.example.tsx:13
+#: ../html/src/components/input/select/simple.example.tsx:13
 msgid "Normal"
 msgstr "Normal"
 
@@ -1411,6 +1460,9 @@ msgstr "Normal"
 #: ../html/src/components/input/radio/horizontal.example.tsx:33
 #: ../html/src/components/input/radio/vertical-open.example.tsx:33
 #: ../html/src/components/input/radio/vertical.example.tsx:32
+#: ../html/src/components/input/select/custom-fields.example.tsx:21
+#: ../html/src/components/input/select/multiple.example.tsx:17
+#: ../html/src/components/input/select/simple.example.tsx:17
 msgid "Expert"
 msgstr "Expert"
 
@@ -1422,65 +1474,68 @@ msgstr "Interval del port"
 msgid "Both values need to be positive integers"
 msgstr "Ambdós valors han de ser enters positius"
 
-#: ../html/src/components/input/select/Select.test.tsx:58
-#: ../html/src/components/input/select/custom.example.tsx:34
-msgid "Start typing..."
-msgstr "Comença a escriure..."
+#: ../html/src/components/input/select/ClearIndicator.tsx:17
+#: ../html/src/components/table/SearchPanel.tsx:66
+#: ../html/src/manager/admin/setup/products/products.tsx:329
+msgid "Clear"
+msgstr "Neteja"
 
-#: ../html/src/components/input/select/Select.test.tsx:59
-msgid "No flavor"
-msgstr "Sense sabor"
-
-#: ../html/src/components/input/select/Select.tsx:255
+#: ../html/src/components/input/select/DEPRECATED_Select.tsx:259
+#: ../html/src/components/input/select/Select.tsx:13
 msgid "No options"
 msgstr "Sense opcions"
 
-#: ../html/src/components/input/select/custom.example.tsx:32
-msgid "Flavor"
-msgstr "Sabor"
+#: ../html/src/components/input/select/Select.tsx:12
+#: ../html/src/components/utils/loading/Loading.tsx:20
+#: ../html/src/manager/appstreams/appstream-packages.tsx:32
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:74
+#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:106
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:634
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:635
+msgid "Loading..."
+msgstr "Carregant..."
 
-#: ../html/src/components/input/select/custom.example.tsx:35
-msgid "No flavors"
-msgstr "Sense sabors"
-
-#: ../html/src/components/large-text-attachment.tsx:67
+#: ../html/src/components/large-text-attachment.tsx:75
 msgid "Data is present."
 msgstr "Les dades estan presents."
 
-#: ../html/src/components/large-text-attachment.tsx:68
+#: ../html/src/components/large-text-attachment.tsx:76
 msgid "Data is not present."
 msgstr "Les dades no estan presents."
 
-#: ../html/src/components/large-text-attachment.tsx:99
+#: ../html/src/components/large-text-attachment.tsx:108
+#: ../html/src/components/large-text-attachment.tsx:110
 msgid "Download"
 msgstr "Baixa"
 
-#: ../html/src/components/large-text-attachment.tsx:110
+#: ../html/src/components/large-text-attachment.tsx:120
+#: ../html/src/components/large-text-attachment.tsx:122
 msgid "Add"
 msgstr "Afegeix"
 
-#: ../html/src/components/large-text-attachment.tsx:135
-#: ../html/src/components/large-text-attachment.tsx:136
+#: ../html/src/components/large-text-attachment.tsx:146
+#: ../html/src/components/large-text-attachment.tsx:147
 msgid "Edit method"
 msgstr "Mètode d'edició"
 
-#: ../html/src/components/large-text-attachment.tsx:137
+#: ../html/src/components/large-text-attachment.tsx:148
 msgid "Define how to provide the new value"
 msgstr "Defineix com proporcionar el nou valor"
 
-#: ../html/src/components/large-text-attachment.tsx:145
+#: ../html/src/components/large-text-attachment.tsx:156
 msgid "Paste the new value"
 msgstr "Enganxa el nou valor"
 
-#: ../html/src/components/large-text-attachment.tsx:151
+#: ../html/src/components/large-text-attachment.tsx:162
 msgid "File"
 msgstr "Fitxer"
 
-#: ../html/src/components/large-text-attachment.tsx:161
+#: ../html/src/components/large-text-attachment.tsx:172
 msgid "New value"
 msgstr "Valor nou"
 
-#: ../html/src/components/large-text-attachment.tsx:204
+#: ../html/src/components/large-text-attachment.tsx:216
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
 msgid "Confirm Deletion"
 msgstr "Confirma la supressió"
@@ -1837,7 +1892,7 @@ msgstr "més gran que"
 msgid "not equal to"
 msgstr "no és igual a"
 
-#: ../html/src/components/table/NumericSearchField.tsx:47
+#: ../html/src/components/table/NumericSearchField.tsx:62
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:132
 msgid "Matcher"
 msgstr "Aparella"
@@ -1859,11 +1914,6 @@ msgstr "Elements {from} - {to} de {total}"
 #: ../html/src/components/table/SearchPanel.tsx:64
 msgid "({selectedCount} selected)"
 msgstr "({selectedCount} seleccionat)"
-
-#: ../html/src/components/table/SearchPanel.tsx:66
-#: ../html/src/manager/admin/setup/products/products.tsx:329
-msgid "Clear"
-msgstr "Neteja"
 
 #: ../html/src/components/table/SearchPanel.tsx:73
 msgid "Select All"
@@ -1902,16 +1952,6 @@ msgstr "Text a mostrar en passar el ratolí per sobre"
 msgid "Help"
 msgstr "Ajuda"
 
-#: ../html/src/components/utils/loading/Loading.tsx:20
-#: ../html/src/manager/appstreams/appstream-packages.tsx:32
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:74
-#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:106
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:634
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:635
-msgid "Loading..."
-msgstr "Carregant..."
-
 #: ../html/src/components/utils/loading/text-border.example.tsx:7
 #: ../html/src/components/utils/loading/text.example.tsx:7
 msgid "Loading text"
@@ -1947,6 +1987,10 @@ msgstr "cap"
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:26
 msgid "Require this channel"
 msgstr "Requereix aquest canal"
+
+#: ../html/src/core/intl/index.example.tsx:7
+msgid "Please see <link>Format.JS docs</link> for the message syntax."
+msgstr ""
 
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
@@ -2136,7 +2180,7 @@ msgstr "Afegeix dades Ssh de PAYG"
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:29
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:104
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:207
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:172
 msgid "Create"
 msgstr "Crea"
 
@@ -3118,11 +3162,6 @@ msgstr "Pas 1/2: seleccioneu el sistema a fixar des de la taula de sota."
 msgid "Socket/IFL count"
 msgstr "Compte de sòcol/IFL"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:306
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:127
-msgid "Select"
-msgstr "Selecciona"
-
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:319
 msgid "Available Subscriptions for the Selected System"
 msgstr "Subscripcions disponibles per al sistema seleccionat"
@@ -3288,15 +3327,15 @@ msgstr "El filtre s'ha actualitzat correctament"
 msgid "Filter created successfully"
 msgstr "El filtre s'ha creat correctament"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:123
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:122
 msgid "Filter Details"
 msgstr "Detalls del filtre"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:123
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:122
 msgid "Create a new filter"
 msgstr "Crea un filtre nou"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:171
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:170
 msgid "Filter deleted successfully"
 msgstr "El filtre s'ha suprimit correctament"
 
@@ -4923,7 +4962,15 @@ msgid "This will unassign all schedules from this calendar."
 msgstr "Això desassignarà totes les planificacions d'aquest calendari."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:30
-msgid "Create a new maintenance schedule"
+#, fuzzy
+#| msgid "Create a new maintenance schedule"
+msgid "Create a new Maintenance Schedule"
+msgstr "Crea una nova planificació de manteniment"
+
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:30
+#, fuzzy
+#| msgid "Create a new maintenance schedule"
+msgid "Create a new Maintenance Calendar"
 msgstr "Crea una nova planificació de manteniment"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:41
@@ -5144,6 +5191,66 @@ msgstr "Configuració"
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:30
 msgid "Applying the config channels has been "
 msgstr "S'han aplicat els canals de configuració "
+
+#: ../html/src/manager/minion/details/support-data.tsx:51
+msgid "The OS of this system does not support the collection of support data."
+msgstr ""
+
+#: ../html/src/manager/minion/details/support-data.tsx:90
+msgid "Upload Support Data"
+msgstr ""
+
+#: ../html/src/manager/minion/details/support-data.tsx:102
+#, fuzzy
+#| msgid "Report Database Name"
+msgid "Support Case Number"
+msgstr "Nom de la base de dades de l'informe"
+
+#: ../html/src/manager/minion/details/support-data.tsx:103
+msgid "The support case number to which this data will be attached."
+msgstr ""
+
+#: ../html/src/manager/minion/details/support-data.tsx:105
+#, fuzzy
+#| msgid "e.g., 2048"
+msgid "e.g. 12345"
+msgstr "p. ex., 2048"
+
+#: ../html/src/manager/minion/details/support-data.tsx:109
+#, fuzzy
+#| msgid "Has to be a valid FQDN address"
+msgid "Has to be a valid support case number"
+msgstr "Ha de ser una adreça FQDN vàlida"
+
+#: ../html/src/manager/minion/details/support-data.tsx:113
+#, fuzzy
+#| msgid "Upload a file"
+msgid "Upload Region"
+msgstr "Puja un fitxer"
+
+#: ../html/src/manager/minion/details/support-data.tsx:114
+msgid "The location of the FTP server where the data is uploaded."
+msgstr ""
+
+#: ../html/src/manager/minion/details/support-data.tsx:124
+msgid "Command-line Arguments"
+msgstr ""
+
+#: ../html/src/manager/minion/details/support-data.tsx:125
+msgid "Optional command line arguments for the execution of <programName></programName>."
+msgstr ""
+
+#: ../html/src/manager/minion/details/support-data.tsx:133
+#, fuzzy
+#| msgid "Earliest:"
+msgid "Earliest"
+msgstr "Més primerenc:"
+
+#: ../html/src/manager/minion/details/support-data.tsx:134
+#, fuzzy
+#| msgid "There are no relevant actions that can be executed on this system."
+msgid "The earliest moment the action can be executed."
+msgstr "No hi ha accions rellevants que es puguin executar en aquest sistema."
 
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:65
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:32
@@ -6796,43 +6903,47 @@ msgstr "Fitxer Kubeconfig"
 msgid "No Virtual Host Managers."
 msgstr "No hi ha gestors de servidors virtuals."
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:19
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:18
 msgid "File-based"
 msgstr "Basat en fitxers"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:20
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:19
 msgid "VMWare-based"
 msgstr "VMWare basat"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:21
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:20
 msgid "Kubernetes Cluster"
 msgstr "Clúster de Kubernetes"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:22
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:21
 msgid "Amazon EC2"
 msgstr "Amazon EC2"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:23
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:22
 msgid "Google Compute Engine"
 msgstr "Motor de càlcul de Google"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:24
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:23
 msgid "Azure"
 msgstr "Azure"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:25
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:24
 msgid "Nutanix AHV"
 msgstr "Nutanix AHV"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:155
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:25
+msgid "Libvirt API"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:150
 msgid "Add a {type} Virtual Host Manager"
 msgstr "Afegeix un gestor d'amfitrions virtual {type}"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:157
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:152
 msgid "Virtual Host Managers"
 msgstr "Gestors de l'amfitrió virtual"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:168
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:174
 msgid "Add a virtual host manager"
 msgstr "Afegeix un gestor d'amfitrió virtual"
 
@@ -6851,6 +6962,18 @@ msgstr "No s'ha trobat el recurs."
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "Codi d'error HTTP "
+
+#~ msgid "Start typing..."
+#~ msgstr "Comença a escriure..."
+
+#~ msgid "No flavor"
+#~ msgstr "Sense sabor"
+
+#~ msgid "Flavor"
+#~ msgstr "Sabor"
+
+#~ msgid "No flavors"
+#~ msgstr "Sense sabors"
 
 #~ msgid "Hub Org"
 #~ msgstr "Concentrador d'Org"

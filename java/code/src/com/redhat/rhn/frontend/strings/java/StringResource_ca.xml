@@ -9617,8 +9617,8 @@ Seguiu aquesta url per veure la llista completa de sistemes inactius:
         <target state="translated">S'ha actualitzat la planificació lt;stronggt;{0}lt;/stronggt;.</target>
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
-        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target state="translated">S'ha suprimit la planificació lt;stronggt;{0}lt;/stronggt;.</target>
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been disabled.</source>
+        <target state="needs-adaptation">S'ha suprimit la planificació lt;stronggt;{0}lt;/stronggt;.</target>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
@@ -9935,10 +9935,6 @@ sobre com renovar el certificat del PRODUCTNAMEPRODUCTNAME..
 Gràcies per utilitzar el .PRODUCTNAME..
 --the PRODUCTNAMEPRODUCTNAME@@ Team
 </target>
-      </trans-unit>
-      <trans-unit id="alphabar.label" xml:space="preserve">
-        <source>Select first character</source>
-        <target state="translated">Selecciona el primer caràcter</target>
       </trans-unit>
       <trans-unit id="lookup.customkey.title" xml:space="preserve">
         <source>We're sorry, but the custom key could not be found.</source>
@@ -11005,8 +11001,8 @@ lt;stronggt;Note:lt;/stronggt; La documentació addicional sobre l'ús de l'ISO 
         <target state="translated">Error inesperat en afegir el producte.</target>
       </trans-unit>
       <trans-unit id="cveaudit.notfound" xml:space="preserve">
-        <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
-        <target state="translated">No s'ha trobat el número CVE especificat a la nostra base de dades. Podeu obtenir més informació sobre aquest CVE des dels enllaços que es mostren a continuació.</target>
+        <source>The specified CVE number was not found in our database.</source>
+        <target state="needs-adaptation">No s'ha trobat el número CVE especificat a la nostra base de dades. Podeu obtenir més informació sobre aquest CVE des dels enllaços que es mostren a continuació.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
         <source>Error during applying the bootstrap state. Check the server logs.</source>
@@ -11421,16 +11417,16 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
         <target state="translated">Cap</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.description" xml:space="preserve">
-        <source>KVM on AMD Epyc Processor, second generation (milan)</source>
-        <target state="translated">KVM en processador d'Epyc AMD, segona generació (milà)</target>
+        <source>KVM on AMD Epyc Processor, third generation (milan)</source>
+        <target state="needs-adaptation">KVM en processador d'Epyc AMD, segona generació (milà)</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Milan</source>
         <target state="translated">KVM en AMD Epyc - Milà</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description" xml:space="preserve">
-        <source>KVM on AMD Epyc Processor, third generation (genoa)</source>
-        <target state="translated">KVM en processador Epyc AMD, tercera generació (genoa)</target>
+        <source>KVM on AMD Epyc Processor, fourth generation (genoa)</source>
+        <target state="needs-adaptation">KVM en processador Epyc AMD, tercera generació (genoa)</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Genoa</source>
@@ -11861,6 +11857,73 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
         <source>Error when triggering the channels sync.</source>
         <target state="translated">Error en activar la sincronització de canals.</target>
       </trans-unit>
+    <trans-unit id="supportdata.get" xml:space="preserve">
+        <source>Get and Upload Support data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="message.scheduleactivated" xml:space="preserve">
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.errata-advisory-map-sync" xml:space="preserve">
+        <source>Update SUSE errata advisory map</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.errata-advisory-map-sync-bunch" xml:space="preserve">
+        <source>Update SUSE errata advisory map to retrieve announcement ids and advisor URLs</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="supportdata.uploadGeoType.eu" xml:space="preserve">
+        <source>EU</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="supportdata.uploadGeoType.us" xml:space="preserve">
+        <source>US</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, fourth generation (bergamo)</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Bergamo</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_siena.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, fourth generation (siena)</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_siena.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Siena</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_turin.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, fifth generation (turin)</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_turin.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Turin</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.details.support.invalid_case_number" xml:space="preserve">
+        <source>The case number {0} is not valid.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.details.support.invalid_region" xml:space="preserve">
+        <source>The region {0] is not valid.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.details.support.unable_to_schedule" xml:space="preserve">
+        <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.details.support.unable_to_upload" xml:space="preserve">
+        <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
+      <target state="new"/>
+  </trans-unit>
     </body>
   </file>
 </xliff>
