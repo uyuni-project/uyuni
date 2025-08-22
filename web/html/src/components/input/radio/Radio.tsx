@@ -27,9 +27,6 @@ type Props = InputBaseProps & {
   /** Whether to let the user input another value than the proposed ones */
   openOption?: boolean;
 
-  /** CSS class for the <label> element wrapping the <input> */
-  customRadioClass?: string;
-
   /** CSS class for the <input> element */
   inputClass?: string;
 
@@ -40,7 +37,7 @@ type Props = InputBaseProps & {
 export function Radio(props: Props) {
   const [isPristine, setIsPristine] = useState(true);
 
-  const { items, customRadioClass, inputClass, ...propsToPass } = props;
+  const { items, inputClass, ...propsToPass } = props;
   const formContext = React.useContext(FormContext);
   return (
     <InputBase {...propsToPass}>
@@ -54,11 +51,7 @@ export function Radio(props: Props) {
         const isOpenOption =
           props.openOption && !props.items.some((item) => item.value === fieldValue) && (fieldValue || !isPristine);
 
-        let radioClass = props.inline ? "radio-inline" : "radio";
-        if (customRadioClass !== undefined) {
-          radioClass = radioClass + " " + customRadioClass;
-        }
-
+        const radioClass = props.inline ? "radio-inline" : "radio";
         return (
           <span className={styles.radio}>
             {props.items.map(({ label, value, title, disabled }) => (

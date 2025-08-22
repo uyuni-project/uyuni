@@ -64,17 +64,16 @@ export const MigrationTargetSelectorForm: React.FC<Props> = ({
         label={t("Target Products")}
         labelClass="col-md-3"
         divClass="col-md-6"
-        customRadioClass="d-flex flex-row align-items-start"
         inputClass="mt-2"
         disabled
         items={migrationTargets.map((target) => ({
           label: (
-            <>
+            <div className="d-inline-flex">
               {target.missingChannels.length !== 0 && (
                 <IconTag className="mt-1 mt-1 help-block" type="header-info" title={getToolTipForTarget(target)} />
               )}
               <MigrationProductList product={target.targetProduct} />
-            </>
+            </div>
           ),
           value: target.id,
           title: getToolTipForTarget(target),
