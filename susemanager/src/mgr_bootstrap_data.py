@@ -66,17 +66,11 @@ PKGLIST15_PPC = [
 
 PKGLIST15_Z = []
 
-PKGLISTUBUNTU2004 = [
-    "venv-salt-minion",
-]
+PKGLISTUBUNTU2004 = ["venv-salt-minion", "logrotate"]
 
-PKGLISTUBUNTU2204 = [
-    "venv-salt-minion",
-]
+PKGLISTUBUNTU2204 = ["venv-salt-minion", "logrotate"]
 
-PKGLISTUBUNTU2404 = [
-    "venv-salt-minion",
-]
+PKGLISTUBUNTU2404 = ["venv-salt-minion", "logrotate"]
 
 PKGLISTDEBIAN11 = [
     # gnupg dependencies
