@@ -9722,8 +9722,8 @@ Follow this url to see the full list of inactive systems:
         <target/>
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
-        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target/>
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been disabled.</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
@@ -10024,10 +10024,6 @@ on how to renew your @@PRODUCT_NAME@@ Certificate.
 Thank you for using @@PRODUCT_NAME@@.
 --the @@PRODUCT_NAME@@ Team
 </source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="alphabar.label" xml:space="preserve">
-        <source>Select first character</source>
         <target/>
       </trans-unit>
       <trans-unit id="lookup.customkey.title" xml:space="preserve">
@@ -10516,8 +10512,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target/>
       </trans-unit>
       <trans-unit id="cveaudit.notfound" xml:space="preserve">
-        <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
-        <target/>
+        <source>The specified CVE number was not found in our database.</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="setup-wizard.next" xml:space="preserve">
         <source>Next</source>
@@ -11303,16 +11299,16 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <target state="new"/>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.description" xml:space="preserve">
-        <source>KVM on AMD Epyc Processor, second generation (milan)</source>
-        <target state="new"/>
+        <source>KVM on AMD Epyc Processor, third generation (milan)</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Milan</source>
         <target state="new"/>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description" xml:space="preserve">
-        <source>KVM on AMD Epyc Processor, third generation (genoa)</source>
-        <target state="new"/>
+        <source>KVM on AMD Epyc Processor, fourth generation (genoa)</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Genoa</source>
@@ -11739,6 +11735,73 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Error when triggering the channels sync.</source>
       <target state="new"/>
   </trans-unit>
-      </body>
+      <trans-unit id="supportdata.get" xml:space="preserve">
+        <source>Get and Upload Support data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="message.scheduleactivated" xml:space="preserve">
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.errata-advisory-map-sync" xml:space="preserve">
+        <source>Update SUSE errata advisory map</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.errata-advisory-map-sync-bunch" xml:space="preserve">
+        <source>Update SUSE errata advisory map to retrieve announcement ids and advisor URLs</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="supportdata.uploadGeoType.eu" xml:space="preserve">
+        <source>EU</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="supportdata.uploadGeoType.us" xml:space="preserve">
+        <source>US</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, fourth generation (bergamo)</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Bergamo</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_siena.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, fourth generation (siena)</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_siena.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Siena</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_turin.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, fifth generation (turin)</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_turin.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Turin</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.details.support.invalid_case_number" xml:space="preserve">
+        <source>The case number {0} is not valid.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.details.support.invalid_region" xml:space="preserve">
+        <source>The region {0] is not valid.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.details.support.unable_to_schedule" xml:space="preserve">
+        <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.details.support.unable_to_upload" xml:space="preserve">
+        <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
+      <target state="new"/>
+  </trans-unit>
+    </body>
   </file>
 </xliff>
