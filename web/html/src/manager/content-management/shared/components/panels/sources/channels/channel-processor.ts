@@ -1,4 +1,4 @@
-import { BaseChannelType, ChannelTreeType, ChildChannelType } from "core/channels/type/channels.type";
+import { ChannelTreeType, ChannelType } from "core/channels/type/channels.type";
 
 import { asyncIdleCallback } from "utils";
 import produce from "utils/produce";
@@ -9,11 +9,11 @@ type InternalProcessorState = {
   /** An array of all base channels after they've passed initial processing */
   channels: ChannelTreeType[] | undefined;
   /** A map from a channel id to any known channel */
-  channelsMap: Map<number, BaseChannelType | ChildChannelType>;
+  channelsMap: Map<number, ChannelType>;
   /** A map from a channel id to a set of channel ids this channel requires */
-  requiresMap: Map<number, Set<BaseChannelType | ChildChannelType> | undefined>;
+  requiresMap: Map<number, Set<ChannelType> | undefined>;
   /** A map from a channel id to a set of channels that require this channel */
-  requiredByMap: Map<number, Set<BaseChannelType | ChildChannelType> | undefined>;
+  requiredByMap: Map<number, Set<ChannelType> | undefined>;
   /** Currently selected base channel id */
   selectedBaseChannelId: number | undefined;
   /** User search string */
@@ -60,9 +60,9 @@ export class ChannelProcessor {
    */
   public setChannels(
     channels: ChannelTreeType[],
-    channelsMap: Map<number, BaseChannelType | ChildChannelType>,
-    requiresMap: Map<number, Set<BaseChannelType | ChildChannelType> | undefined>,
-    requiredByMap: Map<number, Set<BaseChannelType | ChildChannelType> | undefined>,
+    channelsMap: Map<number, ChannelType>,
+    requiresMap: Map<number, Set<ChannelType> | undefined>,
+    requiredByMap: Map<number, Set<ChannelType> | undefined>,
     selectedBaseChannelId: number | undefined
   ): Promise<ChannelTreeType[] | undefined> {
     return this.produceViewFrom({
@@ -116,7 +116,7 @@ export class ChannelProcessor {
    * @returns The `BaseChannelType` or `ChildChannelType` instance associated with the given id.
    * @throws {TypeError} If no channel is found for the specified `channelId`.
    */
-  public getChannelById(channelId: number): BaseChannelType | ChildChannelType {
+  public getChannelById(channelId: number): ChannelType {
     const channel = this.state.channelsMap.get(channelId);
     if (!channel) {
       throw new TypeError("Could not find channel");
@@ -163,7 +163,7 @@ export class ChannelProcessor {
    * @returns A Set containing instances of `BaseChannelType` or `ChildChannelType`, or `undefined` if
    * the channel is not found
    */
-  public getRequires(channelId: number): Set<BaseChannelType | ChildChannelType> | undefined {
+  public getRequires(channelId: number): Set<ChannelType> | undefined {
     return this.state.requiresMap.get(channelId);
   }
 
@@ -174,7 +174,7 @@ export class ChannelProcessor {
    * @returns A Set containing instances of `BaseChannelType` or `ChildChannelType`, or `undefined` if
    * the channel is not found
    */
-  public getRequiredBy(channelId: number): Set<BaseChannelType | ChildChannelType> | undefined {
+  public getRequiredBy(channelId: number): Set<ChannelType> | undefined {
     return this.state.requiredByMap.get(channelId);
   }
 

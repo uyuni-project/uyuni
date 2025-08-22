@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { BaseChannelType, ChannelTreeType, ChildChannelType } from "core/channels/type/channels.type";
+import { BaseChannelType, ChannelTreeType, ChannelType } from "core/channels/type/channels.type";
 
 import { asyncIdleCallback } from "utils";
 import Network, { JsonResult } from "utils/network";
@@ -27,9 +27,9 @@ type MandatoryChannelsResponse = {
 };
 type ChannelsWithMandatory = {
   channels: ChannelTreeType[];
-  channelsMap: Map<number, BaseChannelType | ChildChannelType>;
-  requiresMap: Map<number, Set<BaseChannelType | ChildChannelType> | undefined>;
-  requiredByMap: Map<number, Set<BaseChannelType | ChildChannelType> | undefined>;
+  channelsMap: Map<number, ChannelType>;
+  requiresMap: Map<number, Set<ChannelType> | undefined>;
+  requiredByMap: Map<number, Set<ChannelType> | undefined>;
 };
 
 export const useChannelsWithMandatoryApi = () => {
@@ -44,7 +44,7 @@ export const useChannelsWithMandatoryApi = () => {
     // Gather all channel ids for which we need requirement data
     const channelIds: number[] = [];
     // Keep track of all channels as we go
-    const channelsMap: Map<number, BaseChannelType | ChildChannelType> = new Map();
+    const channelsMap: Map<number, ChannelType> = new Map();
 
     await asyncIdleCallback(() => {
       // These are regular for-loops since we might be hauling through large volumes of data
