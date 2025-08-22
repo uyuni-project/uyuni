@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-22 09:58+0200\n"
-"PO-Revision-Date: 2025-06-15 15:59+0000\n"
+"PO-Revision-Date: 2025-08-22 16:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.13\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -501,14 +501,12 @@ msgid "Select"
 msgstr "Vybrať"
 
 #: ../html/src/components/formik/Form.example.tsx:68
-#, fuzzy
-#| msgid "foo"
 msgid "Foo"
-msgstr "foo"
+msgstr "Foo"
 
 #: ../html/src/components/formik/Form.example.tsx:72
 msgid "Bar"
-msgstr ""
+msgstr "Pruh"
 
 #: ../html/src/components/formik/Form.example.tsx:79
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:245
@@ -1026,16 +1024,12 @@ msgid "Clear fields"
 msgstr "Vymazať polia"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:15
-#, fuzzy
-#| msgid "Server FQDN:"
 msgid "Hub server FQDN:"
-msgstr "Server FQDN:"
+msgstr "Hub server FQDN:"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:16
-#, fuzzy
-#| msgid "Peripheral Server FQDN"
 msgid "Peripheral server FQDN:"
-msgstr "FQDN periférneho servera"
+msgstr "FQDN periférneho servera:"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:20
 msgid "A customized Root Certificate Authority is currently configured for this hub."
@@ -1110,32 +1104,22 @@ msgid "Edit channels"
 msgstr "Upraviť kanály"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:191
-#, fuzzy
-#| msgid " channels synced"
 msgid "No channels synchronized."
-msgstr " kanály synchronizované"
+msgstr "Žiadne kanály nie sú synchronizované."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:195
-#, fuzzy
-#| msgid "One syncronized channel"
 msgid "One synchronized channel"
 msgstr "Jeden synchronizovaný kanál"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:200
-#, fuzzy
-#| msgid "{nSyncedChannels} syncronized channels, from one organization"
 msgid "{nSyncedChannels} synchronized channels"
-msgstr "{nSyncedChannels} synchronizované kanály z jednej organizácie"
+msgstr "{nSyncedChannels} synchronizované kanály"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:204
-#, fuzzy
-#| msgid "{nSyncedChannels} syncronized channels, from one organization"
 msgid "{nSyncedChannels} synchronized channels, from one organization"
 msgstr "{nSyncedChannels} synchronizované kanály z jednej organizácie"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:207
-#, fuzzy
-#| msgid "{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different organizations"
 msgid "{nSyncedChannels} synchronized channels, from {nSyncedOrgs} different organizations"
 msgstr "{nSyncedChannels} synchronizované kanály z {nSyncedOrgs} rôznych organizácií"
 
@@ -1990,7 +1974,7 @@ msgstr "Vyžadovať tento kanál"
 
 #: ../html/src/core/intl/index.example.tsx:7
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
-msgstr ""
+msgstr "Syntax správy nájdete v <link>Format.JS docs</link>."
 
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
@@ -4962,16 +4946,12 @@ msgid "This will unassign all schedules from this calendar."
 msgstr "Týmto zrušíte priradenie všetkých plánov z tohto kalendára."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:30
-#, fuzzy
-#| msgid "Create a new maintenance schedule"
 msgid "Create a new Maintenance Schedule"
 msgstr "Vytvoriť nový plán údržby"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:30
-#, fuzzy
-#| msgid "Create a new maintenance schedule"
 msgid "Create a new Maintenance Calendar"
-msgstr "Vytvoriť nový plán údržby"
+msgstr "Vytvoriť nový kalendár údržby"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:41
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:17
@@ -5193,66 +5173,52 @@ msgid "Applying the config channels has been "
 msgstr "Použitie konfiguračných kanálov bolo "
 
 #: ../html/src/manager/minion/details/support-data.tsx:51
-#, fuzzy
-#| msgid "The Salt version on this system does not support virtual network creating and editing"
 msgid "The OS of this system does not support the collection of support data."
-msgstr "Verzia Salt v tomto systéme nepodporuje vytváranie a úpravy virtuálnych sietí"
+msgstr "OS tohto systému nepodporuje zber podporných dát."
 
 #: ../html/src/manager/minion/details/support-data.tsx:90
 msgid "Upload Support Data"
-msgstr ""
+msgstr "Nahrať podporné dáta"
 
 #: ../html/src/manager/minion/details/support-data.tsx:102
-#, fuzzy
-#| msgid "Report Database Name"
 msgid "Support Case Number"
-msgstr "Názov databázy správ"
+msgstr "Číslo prípadu podpory"
 
 #: ../html/src/manager/minion/details/support-data.tsx:103
 msgid "The support case number to which this data will be attached."
-msgstr ""
+msgstr "Číslo prípadu podpory, ku ktorému budú tieto dáta priložené."
 
 #: ../html/src/manager/minion/details/support-data.tsx:105
-#, fuzzy
-#| msgid "e.g., 2048"
 msgid "e.g. 12345"
-msgstr "napr. 2048"
+msgstr "napr. 12345"
 
 #: ../html/src/manager/minion/details/support-data.tsx:109
-#, fuzzy
-#| msgid "Has to be a valid qualified host name"
 msgid "Has to be a valid support case number"
-msgstr "Musí byť platný kvalifikovaný názov hostiteľa"
+msgstr "Musí byť platné číslo prípadu podpory"
 
 #: ../html/src/manager/minion/details/support-data.tsx:113
-#, fuzzy
-#| msgid "Upload a file"
 msgid "Upload Region"
-msgstr "Nahrať súbor"
+msgstr "Nahrať región"
 
 #: ../html/src/manager/minion/details/support-data.tsx:114
 msgid "The location of the FTP server where the data is uploaded."
-msgstr ""
+msgstr "Umiestnenie FTP servera, na ktorý sa dáta nahrajú."
 
 #: ../html/src/manager/minion/details/support-data.tsx:124
 msgid "Command-line Arguments"
-msgstr ""
+msgstr "Argumenty príkazového riadka"
 
 #: ../html/src/manager/minion/details/support-data.tsx:125
 msgid "Optional command line arguments for the execution of <programName></programName>."
-msgstr ""
+msgstr "Voliteľné argumenty príkazového riadku pre vykonanie <programName></programName>."
 
 #: ../html/src/manager/minion/details/support-data.tsx:133
-#, fuzzy
-#| msgid "Earliest:"
 msgid "Earliest"
-msgstr "Najskôr:"
+msgstr "Najskôr"
 
 #: ../html/src/manager/minion/details/support-data.tsx:134
-#, fuzzy
-#| msgid "There are no relevant actions that can be executed on this system."
 msgid "The earliest moment the action can be executed."
-msgstr "V tomto systéme nie je možné vykonať žiadne relevantné akcie."
+msgstr "Najskorší moment, kedy môže byť akcia vykonaná."
 
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:65
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:32
@@ -6935,7 +6901,7 @@ msgstr "Nutanix AHV"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:25
 msgid "Libvirt API"
-msgstr ""
+msgstr "Libvirt API"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:150
 msgid "Add a {type} Virtual Host Manager"
