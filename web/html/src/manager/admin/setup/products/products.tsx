@@ -8,7 +8,7 @@ import { AsyncButton, Button } from "components/buttons";
 import { CustomDiv } from "components/custom-objects";
 import { DangerDialog } from "components/dialog/DangerDialog";
 import { Dialog } from "components/dialog/Dialog";
-import { DEPRECATED_Select, Form, Select } from "components/input";
+import { DEPRECATED_Select, Form } from "components/input";
 import { ChannelLink } from "components/links";
 import { Messages, MessageType } from "components/messages/messages";
 import { Utils as MessagesUtils } from "components/messages/messages";
@@ -424,7 +424,7 @@ class Products extends React.Component<ProductsProps> {
     archCriteria: [] as any[],
     visibleSubList: [] as any[],
   };
-  
+
   getDistinctArchsFromData = (data: any[] = []) => {
     return Array.from(new Set(data.map((item) => item.arch)))
       .filter(Boolean) // Some items don't have an arch set so pick those out
@@ -446,6 +446,7 @@ class Products extends React.Component<ProductsProps> {
     const suseStr = "SUSE";
     const isProd1Suse = prod1.label.startsWith(suseStr);
     const isProd2Suse = prod2.label.startsWith(suseStr);
+
     // if one of the products is SUSE, it's lower in the ordering
     if (isProd1Suse && !isProd2Suse) {
       return -1;
@@ -475,26 +476,18 @@ class Products extends React.Component<ProductsProps> {
     }
     this.setState({ visibleSubList: arr });
   };
-  
-  render() {
-    const options = this.getDistinctArchsFromData(this.props.data).map((arch) => ({
-      label: arch,
-      value: arch,
-    }));
 
+  render() {
     const archFilter = (
       <div className="multiple-select-wrapper table-input-search">
         {/* TODO: Remove this <Form> wrapper once https://github.com/SUSE/spacewalk/issues/14250 is implemented */}
         <Form>
-          <Select
+          <DEPRECATED_Select
             name="product-arch-filter"
-            placeholder="Filter by architecture"
-            options={options}
+            placeholder={t("Filter by architecture")}
+            options={this.getDistinctArchsFromData(this.props.data)}
             isMulti
-            value={this.state.archCriteria}
-            onChange={(newValue) => {
-              this.setState({ archCriteria: newValue });
-            }}
+            onChange={(_, archCriteria) => this.setState({ archCriteria })}
           />
         </Form>
       </div>
