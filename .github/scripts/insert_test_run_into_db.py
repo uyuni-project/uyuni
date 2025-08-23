@@ -104,7 +104,7 @@ def main():
             return
 
         # Generate run feature results JSON file
-        results_dict = extract_run_results(str(TEST_RUN_FOLDER))
+        results_dict = extract_run_results(str(cucumber_reports_path))
         save_run_results(str(TEST_RUN_FOLDER), results_dict)
         update_run_data_result(str(TEST_RUN_FOLDER), results_dict)
         logging.info("Run feature results JSON file generated and run data result field updated.")
@@ -121,13 +121,16 @@ def main():
                 with session.begin():
                     run_number = get_next_run_number(session, args.pr_number)
                     inserter = TestRunInserter(db_manager)
-                    inserter.insert_run(
+                    success = inserter.insert_run(
                         session=session,
                         pr_number=args.pr_number,
                         run_number=run_number,
                         run_folder_path=str(TEST_RUN_FOLDER)
                     )
-                logging.info("Successfully inserted test run")
+                    if success:
+                        logging.info("Successfully inserted test run")
+                    else:
+                        logging.info("Failed to insert test run")
             except Exception:
                 logging.exception("Error inserting test run")
                 sys.exit(1)
