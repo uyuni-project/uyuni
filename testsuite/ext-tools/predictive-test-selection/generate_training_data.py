@@ -28,7 +28,7 @@ from config import (
     FEATURE_FAILURE_RECENT_DAYS,
     REPO_FULL_NAME
 )
-from insert_test_runs_into_db import (
+from backfill_test_runs_into_db import (
     Feature, FeatureCategory, FeatureResult, TestRun, RunModifiedFile, File,
     get_database_connection_string
 )

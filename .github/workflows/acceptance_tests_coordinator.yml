@@ -97,7 +97,7 @@ jobs:
     secrets: inherit
 
   insert-test-run-into-db:
-    name: Insert test run into database
+    name: Insert test run into DB
     runs-on: ubuntu-latest
     needs: [recommended-tests, acceptance-tests, additional-tests]
     if: ${{ !cancelled() }}

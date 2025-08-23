@@ -27,7 +27,7 @@ predictive_test_selection_dir = uyuni_dir / "testsuite/ext-tools/predictive-test
 sys.path.append(str(predictive_test_selection_dir))
 
 from config import RUN_DATA_FILENAME
-from insert_test_runs_into_db import DatabaseManager, TestRunInserter, TestRun
+from backfill_test_runs_into_db import DatabaseManager, TestRunInserter, TestRun
 from pr_data_extraction import delete_non_secondary_reports
 from runs_feature_result_extraction import (
     extract_run_results,
