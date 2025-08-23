@@ -1333,6 +1333,11 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sl-micro-6.1-pool-x86_64
         sl-micro-6.1-devel-uyuni-client-x86_64
       ],
+    'tumbleweed-client-tools-x86_64' => # CHECKED
+      %w[
+        opensuse_tumbleweed-uyuni-client-x86_64
+        opensuse_tumbleweed-uyuni-client-devel-x86_64
+      ],
     'ubuntu-2004' => # CHECKED
       %w[
         ubuntu-2004-pool-amd64-uyuni
@@ -1371,10 +1376,9 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       ],
     'uyuni-proxy' => # CHECKED
       %w[
-        opensuse_micro5_5-x86_64
-        opensuse_micro5_5-x86_64-sle-updates
-        opensuse_micro5_5-uyuni-client-x86_64
-        opensuse_micro5_5-uyuni-client-devel-x86_64
+        opensuse_tumbleweed-x86_64
+        opensuse_tumbleweed-uyuni-client-devel-x86_64
+        uyuni-proxy-devel-tumbleweed-x86_64
       ]
     # There are no channels for Retail under Uyuni
   }
