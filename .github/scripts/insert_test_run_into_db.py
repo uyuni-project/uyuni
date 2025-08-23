@@ -35,7 +35,9 @@ from runs_feature_result_extraction import (
     update_run_data_result,
 )
 
-logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.DEBUG, format="%(levelname)s - %(filename)s:%(lineno)d - %(message)s"
+)
 
 TEST_RUN_FOLDER = Path("test_run")
 

@@ -36,7 +36,7 @@ from config import (
 )
 from utilities import setup_logging
 
-logger = setup_logging(logging.INFO, "logs/insert_test_runs_into_db.log")
+logger = logging.getLogger(__name__)
 
 # SQLAlchemy setup
 Base = declarative_base()
@@ -458,4 +458,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    logger = setup_logging(logging.INFO, "logs/insert_test_runs_into_db.log")
     main()

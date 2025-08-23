@@ -37,7 +37,7 @@ from pr_data_extraction import (
 )
 from utilities import setup_logging
 
-logger = setup_logging(logging.INFO, "logs/generate_training_data.log")
+logger = logging.getLogger(__name__)
 
 
 class DatabaseManager:
@@ -230,4 +230,5 @@ def main():
 
 
 if __name__ == "__main__":
+    logger = setup_logging(logging.INFO, "logs/generate_training_data.log")
     main()

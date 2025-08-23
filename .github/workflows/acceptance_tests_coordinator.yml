@@ -127,9 +127,6 @@ jobs:
           path: cucumber-reports/
           pattern: cucumber_json_reports_*
           merge-multiple: true
-      
-      - name: Create logs directory
-        run: mkdir -p logs
 
       - name: Process test run data and insert it into database
         env:

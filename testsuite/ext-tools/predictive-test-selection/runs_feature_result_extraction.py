@@ -34,7 +34,7 @@ from cucumber_results_extraction import (
 )
 from utilities import setup_logging
 
-logger = setup_logging(logging.DEBUG, log_file="logs/runs_feature_result_extraction.log")
+logger = logging.getLogger(__name__)
 
 def get_run_folders(pr_folder_path: str) -> List[str]:
     """
@@ -226,4 +226,5 @@ def main() -> None:
         logger.critical("Traceback: %s", traceback.format_exc())
 
 if __name__ == "__main__":
+    logger = setup_logging(logging.DEBUG, log_file="logs/runs_feature_result_extraction.log")
     main()
