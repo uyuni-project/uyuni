@@ -20,7 +20,7 @@ postgres_reconfig() {
 # Get total memory in KB
 TOTAL_MEM_KB=$(sed -n -e '/MemTotal:/{s|MemTotal:[[:space:]]*\([0-9]*\).*|\1| p}' /proc/meminfo)
 
-# Check minimum memory requirement (255KB)
+# Check minimum memory requirement (255MB)
 if [ "$TOTAL_MEM_KB" -lt $((0xff * 1024)) ]; then
     echo "WARNING: low memory: $TOTAL_MEM_KB"
     TOTAL_MEM_KB=$((0xff * 1024))
