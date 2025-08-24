@@ -64,15 +64,6 @@ module.exports = (env, opts) => {
       },
       // TODO: Take only what we need after we've confirmed it works fine, otherwise there's a lot of fluff in this
       {
-        from: path.resolve(__dirname, "../node_modules/timepicker/jquery.timepicker.js"),
-        to: path.resolve(__dirname, "../dist/javascript/legacy"),
-      },
-      {
-        from: path.resolve(__dirname, "../node_modules/timepicker/jquery.timepicker.css"),
-        to: path.resolve(__dirname, "../dist/css/legacy"),
-      },
-      // TODO: Take only what we need after we've confirmed it works fine, otherwise there's a lot of fluff in this
-      {
         from: path.resolve(__dirname, "../node_modules/ace-builds/src-min-noconflict"),
         to: path.resolve(__dirname, "../dist/javascript/legacy/ace-editor"),
       },

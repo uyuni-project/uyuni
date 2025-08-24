@@ -6998,7 +6998,7 @@ jquery@3.5.1:
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.5.1.tgz#d7b4d08e1bfdb86ad2f1a3d039ea17304717abb5"
   integrity sha512-XwIBPqcMn57FxfT+Go5pzySnm4KWkT1Tv7gjrpT1srtf8Weynl6R273VJ5GjkRb51IzMp5nbaPjJXMWeju2MKg==
 
-jquery@>=1.7, jquery@>=1.7.0:
+jquery@>=1.7.0:
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.6.1.tgz#fab0408f8b45fc19f956205773b62b292c147a16"
   integrity sha512-opJeO4nCucVnsjiXOE+/PcCgYw9Gwpvs/a6B1LL/lQhwWwpbVEVYDZ1FokFr8PRc7ghYlrFPuyHuiiDNTQxmcw==
@@ -9826,13 +9826,6 @@ thunky@^1.0.2:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.1.0.tgz#5abaf714a9405db0504732bbccd2cedd9ef9537d"
   integrity sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==
-
-timepicker@1.11.14:
-  version "1.11.14"
-  resolved "https://registry.yarnpkg.com/timepicker/-/timepicker-1.11.14.tgz#a7b8202fabc4d83514e3f591edc108769f0f096b"
-  integrity sha512-EsI/rWNaY+XrdPro7qEFj/ITNLDb2GVHVrCWb4N+rQImo/hWrC4JctriL2oPAhTss8WD6meYePc5IyG9O9ANcA==
-  dependencies:
-    jquery ">=1.7"
 
 tiny-warning@^1.0.2:
   version "1.0.3"
