@@ -21,14 +21,18 @@ def setup_logging(level, log_file):
     formatter = logging.Formatter(fmt)
     my_logger = logging.getLogger(__name__)
     my_logger.setLevel(level)
-    if not my_logger.handlers:
-        console_handler = logging.StreamHandler()
-        console_handler.setFormatter(formatter)
-        console_handler.setLevel(level)
-        my_logger.addHandler(console_handler)
 
-        file_handler = logging.FileHandler(log_file)
-        file_handler.setFormatter(formatter)
-        file_handler.setLevel(level)
-        my_logger.addHandler(file_handler)
+    # Clear any existing handlers to avoid conflicts
+    for handler in my_logger.handlers[:]:
+        my_logger.removeHandler(handler)
+
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(formatter)
+    console_handler.setLevel(level)
+    my_logger.addHandler(console_handler)
+
+    file_handler = logging.FileHandler(log_file)
+    file_handler.setFormatter(formatter)
+    file_handler.setLevel(level)
+    my_logger.addHandler(file_handler)
     return my_logger
