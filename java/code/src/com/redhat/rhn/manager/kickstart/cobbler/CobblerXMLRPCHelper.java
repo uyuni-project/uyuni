@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.kickstart.cobbler;
 
 import com.redhat.rhn.common.RhnRuntimeException;
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.domain.user.User;
@@ -111,5 +112,18 @@ public class CobblerXMLRPCHelper implements XMLRPCInvoker {
      */
     public static CobblerConnection getAutomatedConnection() {
         return getConnection(ConfigDefaults.get().getCobblerAutomatedUser());
+    }
+
+    /**
+     * Returns new cobbler anonymous/automated connection
+     * without caching. It always gets a new token.
+     * @return the cobbler connection..
+     */
+    public static CobblerConnection getUncachedAutomatedConnection() {
+        return (CobblerConnection)MethodUtil.getClassFromConfig(
+                                     CobblerConnection.class.getName(),
+                                     ConfigDefaults.get().getCobblerServerUrl(),
+                                     ConfigDefaults.get().getCobblerAutomatedUser(),
+                                     Config.get().getString(ConfigDefaults.WEB_SESSION_SECRET_1));
     }
 }
