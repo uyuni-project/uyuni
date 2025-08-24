@@ -69,6 +69,7 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         sssd-ipa \
         sssd-krb5 \
         sssd-tools && \
+    systemctl disable wickedd && \
     systemctl enable prometheus-node_exporter && \
     systemctl enable sssd && \
     rm /etc/krb5.conf.d/crypto-policies && \
