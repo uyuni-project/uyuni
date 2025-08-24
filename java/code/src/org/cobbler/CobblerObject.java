@@ -583,7 +583,7 @@ public abstract class CobblerObject {
      */
     public void setCreated(Date createdIn) {
         // cobbler deals with seconds since epoch, Date returns milliseconds. Convert.
-        modify(CTIME, (double) (createdIn.getTime() / 1000));
+        modify(CTIME, (double) (createdIn.getTime() / 1000F));
     }
 
     /**
@@ -604,7 +604,7 @@ public abstract class CobblerObject {
      */
     public void setModified(Date modifiedIn) {
         // cobbler deals with seconds since epoch, Date returns milliseconds. Convert.
-        modify(MTIME, (double) (modifiedIn.getTime() / 1000));
+        modify(MTIME, (double) (modifiedIn.getTime() / 1000F));
     }
 
     /**
