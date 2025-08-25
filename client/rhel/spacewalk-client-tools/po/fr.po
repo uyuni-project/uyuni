@@ -30,16 +30,15 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-11 13:25+0200\n"
-"PO-Revision-Date: 2018-03-16 11:00+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: French (http://www.transifex.com/projects/p/spacewalk/"
-"language/fr/)\n"
+"PO-Revision-Date: 2025-08-25 09:59+0000\n"
+"Last-Translator: David D <dadu042@mailo.com>\n"
+"Language-Team: French <https://l10n.opensuse.org/projects/uyuni/spacewalk-client-tools/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.13\n"
 
 #: ../src/up2date_client/config.py:162
 #, python-format
@@ -51,9 +50,8 @@ msgid "Error: Server Unavailable. Please try later."
 msgstr "Erreur : serveur non disponible. Merci de ré-essayer ultérieurement."
 
 #: ../src/up2date_client/rpcServer.py:181
-#, fuzzy
 msgid "ERROR: can not find server CA file"
-msgstr "ERREUR : Impossible de trouver le fichier RHNS CA"
+msgstr "ERREUR : impossible de trouver le fichier CA du serveur"
 
 #: ../src/up2date_client/up2dateErrors.py:47
 #: ../src/up2date_client/up2dateErrors.py:80
