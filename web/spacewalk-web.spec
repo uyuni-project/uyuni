@@ -239,8 +239,6 @@ sed -i -e 's/^web.theme_default =.*$/web.theme_default = suse-light/' %{buildroo
 %dir %{www_path}
 %dir %{www_path}/css
 %{www_path}/css/*.{css,js}
-%dir %{www_path}/css/legacy
-%{www_path}/css/legacy/*.css
 %dir %{www_path}/fonts
 %{www_path}/fonts/*
 %dir %{www_path}/img
