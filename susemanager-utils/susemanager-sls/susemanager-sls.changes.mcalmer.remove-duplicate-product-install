@@ -1,0 +1,2 @@
+- Remove product installation state from packages as it is
+  already available in the channels state
