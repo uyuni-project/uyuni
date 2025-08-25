@@ -26,10 +26,6 @@
     <!-- import custom fonts/icons styles -->
     <link rel="stylesheet" href="/fonts/font-spacewalk/css/spacewalk-font.css?cb=${cb_version}" />
 
-    <!-- import plugins styles -->
-    <link rel="stylesheet" href="/css/legacy/jquery.timepicker.css?cb=${cb_version}" />
-    <link rel="stylesheet" href="/css/bootstrap-datepicker.css?cb=${cb_version}" />
-
     <!-- import styles -->
     <c:set var="webTheme" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentWebTheme(pageContext)}"/>
     <link rel="stylesheet" href="/css/updated-${webTheme}.css?cb=${cb_version}" />
@@ -66,8 +62,4 @@
     <script src="/javascript/spacewalk-checkall.js?cb=${cb_version}"></script>
     <script src="/javascript/ajax.js?cb=${cb_version}"></script>
 
-    <script src="/javascript/legacy/jquery.timepicker.js?cb=${cb_version}"></script>
-    <script src="/javascript/bootstrap-datepicker.js?cb=${cb_version}"></script>
-
     <script src='/javascript/manager/main.js?cb=${cb_version}'></script>
-    <script src='/javascript/momentjs/moment-with-langs.min.js?cb=${cb_version}' type='text/javascript'></script>
