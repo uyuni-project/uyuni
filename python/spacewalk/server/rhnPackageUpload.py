@@ -21,7 +21,7 @@ import tempfile
 from uyuni.common.usix import raise_with_tb
 from uyuni.common import rhn_mpm, rhn_deb, rhn_pkg
 from spacewalk.common.rhnLog import log_debug
-from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.common.rhnException import rhnFault
 
 # pylint: disable-next=ungrouped-imports
@@ -69,8 +69,9 @@ def _authenticate(authobj, channels, null_org, force):
         if force:
             raise rhnFault(4, "Cannot force push nullorg content", explain=0)
 
-    if force and not CFG.FORCE_PACKAGE_UPLOAD:
-        raise rhnFault(55, "Package Upload Failed", explain=0)
+    with cfg_component("server.satellite") as CFG:
+        if force and not CFG.FORCE_PACKAGE_UPLOAD:
+            raise rhnFault(55, "Package Upload Failed", explain=0)
 
     authobj.authzOrg(params)
     if channels:
@@ -121,11 +122,15 @@ def relative_path_from_nevra(
     else:
         is_source = 0
     log_debug(4, nevra, is_source)
+
+    with cfg_component("server.satellite") as CFG:
+        prepend = CFG.PREPENDED_DIR
+
     return get_package_path(
         nevra,
         org_id=org_id,
         source=is_source,
-        prepend=CFG.PREPENDED_DIR,
+        prepend=prepend,
         omit_epoch=None,
         package_type=package_type,
         checksum_type=checksum_type,
@@ -140,8 +145,10 @@ def relative_path_from_nevra_without_package_name(
     nevra, org_id, checksum_type, checksum
 ):
     log_debug(4, nevra, "no package name")
+    with cfg_component("server.satellite") as CFG:
+        prepend = CFG.PREPENDED_DIR
     return get_package_path_without_package_name(
-        nevra, org_id, CFG.PREPENDED_DIR, checksum_type, checksum
+        nevra, org_id, prepend, checksum_type, checksum
     )
 
 
@@ -149,12 +156,15 @@ def relative_path_from_nevra_without_package_name(
 def push_package(a_pkg, org_id=None, force=None, channels=[], relative_path=None):
     """Uploads a package"""
 
+    with cfg_component("server.satellite") as CFG:
+        basedir = CFG.MOUNT_POINT
+
     if relative_path:
         # First write the package to the filesystem to final location
         try:
             importLib.move_package(
                 a_pkg.payload_stream.name,
-                basedir=CFG.MOUNT_POINT,
+                basedir=basedir,
                 relpath=relative_path,
                 checksum_type=a_pkg.checksum_type,
                 checksum=a_pkg.checksum,
@@ -218,7 +228,8 @@ def push_package(a_pkg, org_id=None, force=None, channels=[], relative_path=None
         )
         pdict = package.toDict()
         orig_path = package["path"]
-        orig_path = os.path.join(CFG.MOUNT_POINT, orig_path)
+        with cfg_component("server.satellite") as CFG:
+            orig_path = os.path.join(CFG.MOUNT_POINT, orig_path)
         log_debug(4, "Original package", orig_path)
 
         # MPMs do not store their headers on disk, so we must avoid performing
@@ -241,7 +252,8 @@ def push_package(a_pkg, org_id=None, force=None, channels=[], relative_path=None
         # file to file system
         # case4:no file exists on FS and no path in db .then we write both.
         orig_path = package["path"]
-        orig_path = os.path.join(CFG.MOUNT_POINT, orig_path)
+        with cfg_component("server.satellite") as CFG:
+            orig_path = os.path.join(CFG.MOUNT_POINT, orig_path)
         log_debug(3, "Original package", orig_path)
 
         # check included to query for source and binary rpms
@@ -331,7 +343,8 @@ def save_uploaded_package(
     a_pkg = rhn_pkg.package_from_stream(stream, packaging=packaging)
     a_pkg.read_header()
 
-    temp_dir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, org_id, "stage")
+    with cfg_component("server.satellite") as CFG:
+        temp_dir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, org_id, "stage")
     if not os.path.isdir(temp_dir):
         os.makedirs(temp_dir)
     temp_stream = tempfile.NamedTemporaryFile(
