@@ -20,9 +20,11 @@ import static com.suse.proxy.ProxyConfigUtils.REGISTRY_BASE_URL;
 import static com.suse.proxy.ProxyConfigUtils.REGISTRY_MODE;
 import static com.suse.proxy.ProxyConfigUtils.REGISTRY_MODE_SIMPLE;
 import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_FIELD;
-import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_REGISTRY;
+import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_RPM;
 import static com.suse.proxy.get.formdata.ProxyConfigGetFormDefaults.DEFAULT_UYUNI_REGISTRY_TAG;
 import static com.suse.proxy.get.formdata.ProxyConfigGetFormDefaults.DEFAULT_UYUNI_REGISTRY_URL;
+import static com.suse.proxy.get.formdata.ProxyConfigGetFormDefaults.MLM_REGISTRY_URL_EXAMPLE;
+import static com.suse.proxy.get.formdata.ProxyConfigGetFormDefaults.UYUNI_REGISTRY_URL_EXAMPLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -89,6 +91,8 @@ public class ProxyConfigGetFormDefaultsTest extends BaseTestCaseWithUser {
         context.checking(new Expectations() {{
             allowing(mockConfigDefaults).isUyuni();
             will(returnValue(true));
+            allowing(mockConfigDefaults).getProductVersion();
+            will(returnValue("2025.07"));
         }});
 
         setConfigDefaultsInstance(mockConfigDefaults);
@@ -101,19 +105,21 @@ public class ProxyConfigGetFormDefaultsTest extends BaseTestCaseWithUser {
         new ProxyConfigGetFormDefaults().handle(proxyConfigGetFormDataContext);
 
         Map<String, Object> actualProxyConfigAsMap = proxyConfigGetFormDataContext.getProxyConfigAsMap();
-        assertEquals(SOURCE_MODE_REGISTRY, actualProxyConfigAsMap.get(SOURCE_MODE_FIELD));
+        assertEquals(SOURCE_MODE_RPM, actualProxyConfigAsMap.get(SOURCE_MODE_FIELD));
         assertEquals(REGISTRY_MODE_SIMPLE, actualProxyConfigAsMap.get(REGISTRY_MODE));
         assertEquals(DEFAULT_UYUNI_REGISTRY_URL, actualProxyConfigAsMap.get(REGISTRY_BASE_URL));
         assertEquals(DEFAULT_UYUNI_REGISTRY_TAG, actualProxyConfigAsMap.get(REGISTRY_BASE_TAG));
+        assertEquals(UYUNI_REGISTRY_URL_EXAMPLE, proxyConfigGetFormDataContext.getRegistryUrlExample());
+        assertEquals(DEFAULT_UYUNI_REGISTRY_TAG, proxyConfigGetFormDataContext.getRegistryTagExample());
     }
 
     /**
-     * Test registry defaults when suma
+     * Test registry defaults when mlm
      */
     @Test
-    public void testDefaultsWhenSuma() throws NoSuchFieldException, IllegalAccessException {
+    public void testDefaultsWhenMLM() throws NoSuchFieldException, IllegalAccessException {
         //
-        final String expectedRegistryBaseUrl = "registry.suse.com/suse/manager/99.98/x86_64";
+        final String expectedRegistryBaseUrl = "registry.suse.com/suse/multi-linux-manager/99.98/x86_64";
         final String expectedRegistryBaseTag = "99.98.97";
 
         // mocking the ConfigDefaults
@@ -137,10 +143,13 @@ public class ProxyConfigGetFormDefaultsTest extends BaseTestCaseWithUser {
         new ProxyConfigGetFormDefaults().handle(proxyConfigGetFormDataContext);
 
         Map<String, Object> actualProxyConfigAsMap = proxyConfigGetFormDataContext.getProxyConfigAsMap();
-        assertEquals(SOURCE_MODE_REGISTRY, actualProxyConfigAsMap.get(SOURCE_MODE_FIELD));
+        assertEquals(SOURCE_MODE_RPM, actualProxyConfigAsMap.get(SOURCE_MODE_FIELD));
         assertEquals(REGISTRY_MODE_SIMPLE, actualProxyConfigAsMap.get(REGISTRY_MODE));
         assertEquals(expectedRegistryBaseUrl, actualProxyConfigAsMap.get(REGISTRY_BASE_URL));
         assertEquals(expectedRegistryBaseTag, actualProxyConfigAsMap.get(REGISTRY_BASE_TAG));
+        assertEquals(MLM_REGISTRY_URL_EXAMPLE, proxyConfigGetFormDataContext.getRegistryUrlExample());
+        assertEquals(expectedRegistryBaseTag, proxyConfigGetFormDataContext.getRegistryTagExample());
+
     }
 
     /**

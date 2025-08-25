@@ -2,6 +2,7 @@
 {%- set mgrpxy_status_output = salt['cmd.run']('mgrpxy status 2>&1', python_shell=True) %}
 {%- set mgrpxy_operation = 'install' if not mgrpxy_installed or 'Error: no installed proxy detected' in mgrpxy_status_output else 'upgrade' %}
 {%- set transactional = grains['transactional'] %}
+{%- set installPackages = not (pillar.get('registries') is mapping and pillar.get('registries') | length > 0) %}
 
 podman_installed:
   pkg.installed:
@@ -63,6 +64,20 @@ mgrpxy_installed:
           server_ssh_push_pub: |
             {{ pillar['ssh']['server_ssh_push_pub'] | replace('\\n', '\n') | indent(12) }}    
 
+{% if installPackages %}
+
+{%- set matched_pkgs_regex = salt['pkg.search']('suse-multi-linux-manager-*proxy*-image', regex=True) or {} %}
+{%- set pkg_names = matched_pkgs_regex.keys() | list %}
+
+install_proxy_packages:
+  pkg.installed:
+    - pkgs:
+      {%- for pkg in pkg_names %}
+      - {{ pkg }}
+      {%- endfor %}
+    - refresh: True
+
+{% endif %}
 
 {% set args = [] %}
 {% if salt['pillar.get']('registries:proxy-httpd:url') and salt['pillar.get']('registries:proxy-httpd:tag') %}

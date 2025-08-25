@@ -15,7 +15,9 @@
 
 package com.suse.proxy.get.formdata;
 
+import static com.suse.utils.Predicates.allProvided;
 import static com.suse.utils.Predicates.isAbsent;
+import static com.suse.utils.Predicates.isProvided;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -24,6 +26,7 @@ import com.redhat.rhn.frontend.dto.OrgProxyServer;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.proxy.ProxyConfigUtils;
+import com.suse.proxy.model.ProxyConfig;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,7 +43,13 @@ public class ProxyConfigGetFormDataAcquisitor implements ProxyConfigGetFormDataC
 
     @Override
     public void handle(ProxyConfigGetFormDataContext context) {
-        context.getProxyConfigAsMap().putAll(ProxyConfigUtils.dataMapFromProxyConfig(context.getProxyConfig()));
+        ProxyConfig proxyConfig = context.getProxyConfig();
+        context.setHasCertificates(isProvided(proxyConfig) && allProvided(
+                proxyConfig.getRootCA(),
+                proxyConfig.getProxyCert(),
+                proxyConfig.getProxyKey())
+        );
+        context.getProxyConfigAsMap().putAll(ProxyConfigUtils.dataMapFromProxyConfig(proxyConfig));
         retrieveElectableParentsFqdn(context);
     }
 
