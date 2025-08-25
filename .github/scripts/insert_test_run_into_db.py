@@ -68,6 +68,7 @@ def store_run_data(args: argparse.Namespace):
         args: The command-line arguments containing run data.
     """
     TEST_RUN_FOLDER.mkdir(exist_ok=True)
+    logging.debug("Modified files: %s", repr(args.modified_files))
     run_data = {
         "github_id": args.run_id,
         "commit_sha": args.commit_sha,
@@ -75,6 +76,7 @@ def store_run_data(args: argparse.Namespace):
         "execution_timestamp": datetime.now(timezone.utc).isoformat(),
         "modified_files": json.loads(args.modified_files),
     }
+    logging.debug("Run data: %s", run_data)
     run_data_path = TEST_RUN_FOLDER / RUN_DATA_FILENAME
     with open(run_data_path, "w", encoding="utf-8") as f:
         json.dump(run_data, f, indent=2)

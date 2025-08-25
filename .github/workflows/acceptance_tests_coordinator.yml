@@ -136,5 +136,5 @@ jobs:
             --run-id ${{ github.run_id }} \
             --pr-number ${{ github.event.pull_request.number }} \
             --commit-sha ${{ github.event.pull_request.head.sha }} \
-            --modified-files '${{ toJSON(steps.changed-files.outputs.all_modified_files) }}' \
+            --modified-files ${{ steps.changed-files.outputs.all_modified_files }} \
             --cucumber-reports-path "cucumber-reports/"
