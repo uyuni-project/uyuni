@@ -2,7 +2,7 @@
 """
 Py-test based unit tests for common/repo
 """
-from mock import MagicMock, patch
+from unittest.mock import MagicMock, patch
 from spacewalk.common.repo import DpkgRepo, GeneralRepoException
 import http
 import pytest
