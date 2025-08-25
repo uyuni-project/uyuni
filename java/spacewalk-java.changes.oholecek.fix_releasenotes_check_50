@@ -1,0 +1,2 @@
+- Fix release notes URL and use proxy aware downloader
+  (bsc#1247111)

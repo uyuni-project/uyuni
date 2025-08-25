@@ -13,9 +13,16 @@ package com.redhat.rhn.domain.notification.types;
 import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.download.DownloadException;
-import com.redhat.rhn.common.util.download.DownloadUtils;
+import com.redhat.rhn.common.util.http.HttpClientAdapter;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Notification data for an update being available for the server.
@@ -27,6 +34,10 @@ public class UpdateAvailable implements NotificationData, Serializable {
     private static final String VERSION_ELEMENT_START = "<span";
     private static final String VERSION_ELEMENT_ID_ATTRIBUTE = "id=\"current_version\"";
     private static final String VERSION_ELEMENT_END = "</span>";
+
+    private static final String RELEASE_NOTES_URL_UYUNI = "https://www.uyuni-project.org/pages/stable-version.html";
+    private static final String RELEASE_NOTES_URL_SUMA =
+            "https://www.suse.com/releasenotes/x86_64/multi-linux-manager/";
 
     private final ManagerVersion managerVersion = new ManagerVersion();
 
@@ -63,8 +74,26 @@ public class UpdateAvailable implements NotificationData, Serializable {
      *
      * @return the release notes
      */
-    public String getReleaseNotes() {
-        return DownloadUtils.downloadUrl(getReleaseNotesUrl());
+    public String getReleaseNotes() throws DownloadException {
+        HttpClientAdapter httpClient = new HttpClientAdapter();
+        String url = getReleaseNotesUrl();
+        HttpGet request = new HttpGet(url);
+        try {
+            HttpResponse res = httpClient.executeRequest(request);
+            int statusCode = res.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                throw new DownloadException(url, res.getStatusLine().getReasonPhrase(), statusCode);
+            }
+            return IOUtils.toString(
+                    res.getEntity().getContent(),
+                    StandardCharsets.UTF_8);
+        }
+        catch (IOException e) {
+            throw new DownloadException(url, e.getMessage(), 500);
+        }
+        finally {
+            request.releaseConnection();
+        }
     }
 
     /**
@@ -73,10 +102,9 @@ public class UpdateAvailable implements NotificationData, Serializable {
      * @return the URL to the release notes
      */
     public String getReleaseNotesUrl() {
-        return managerVersion.isUyuni() ? "https://www.uyuni-project.org/pages/stable-version.html" :
-                "https://www.suse.com/releasenotes/x86_64/multi-linux-manager/" +
-                        managerVersion.getMajor() + "." + managerVersion.getMinor() +
-                        "/index.html";
+        return managerVersion.isUyuni() ? RELEASE_NOTES_URL_UYUNI :
+                RELEASE_NOTES_URL_SUMA + managerVersion.getMajor() + "." +
+                managerVersion.getMinor() + "/index.html";
     }
 
     /**
