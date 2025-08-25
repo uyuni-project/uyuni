@@ -52,6 +52,11 @@ class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
     if (this.props.unmatchedProductIds.length > 0) {
       body = (
         <div>
+          <div className="spacewalk-section-toolbar">
+            <div className="action-button-wrapper">
+              <CsvLink name="unmatched_product_report.csv" />
+            </div>
+          </div>
           <Table data={this.buildData(this.props)} identifier={(row) => row.id} initialSortColumnKey="productName">
             <Column
               columnKey="productName"
@@ -77,8 +82,6 @@ class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
               )}
             />
           </Table>
-
-          <CsvLink name="unmatched_product_report.csv" />
 
           <UnmatchedSystemPopUp
             systems={this.props.systems}

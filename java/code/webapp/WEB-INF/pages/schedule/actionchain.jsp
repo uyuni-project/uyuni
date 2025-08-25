@@ -25,7 +25,10 @@
 
     <div class="spacewalk-toolbar-h1">
         <div class="spacewalk-toolbar">
-            <a data-bs-toggle="modal" href="#confirm-modal"><i class="fa fa-trash-o"></i>delete action chain</a>
+            <a class="btn btn-danger" data-bs-toggle="modal" href="#confirm-modal">
+                <i class="fa fa-trash-o"></i>
+                <bean:message key="actionchains.jsp.delete" />
+            </a>
         </div>
     </div>
 
@@ -75,7 +78,7 @@
                                 <div class="system-list" id="system-list-${group.sortOrder}"></div>
                             </td>
                             <td>
-                                <a class="delete-group" href="#"><i class="fa fa-trash-o"></i>delete action</a>
+                                <a class="delete-group" href="#"><i class="fa fa-trash-o"></i>Delete Action </a>
                             </td>
                         </tr>
                     </c:forEach>

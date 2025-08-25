@@ -20,7 +20,13 @@
 <rhn:csrf />
 
 <rhn:hidden name="cid" value="${cid}" />
-
+<div class="spacewalk-section-toolbar">
+      <div class="action-button-wrapper">
+        <rl:csv dataset="pageList"
+            name="systemList"
+            exportColumns="id, name,entitlementLevel" />
+      </div>
+</div>
         <rl:list dataset="pageList"
                         name="systemList"
                         decorator="SelectableDecorator"
@@ -60,10 +66,6 @@
 
 
         </rl:list>
-        <rl:csv dataset="pageList"
-                        name="systemList"
-                        exportColumns="id, name,entitlementLevel" />
-
                 <rhn:submitted/>
 
 

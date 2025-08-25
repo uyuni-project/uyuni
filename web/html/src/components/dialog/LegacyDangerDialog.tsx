@@ -5,7 +5,7 @@ import { Dialog, DialogProps } from "./LegacyDialog";
 
 type Props = DialogProps & {
   submitText: string;
-  submitIcon: string;
+  submitIcon?: string;
   btnClass?: string;
   item?: any;
   onConfirm?: (...args: any[]) => any;
@@ -23,6 +23,14 @@ export function DangerDialog(props: Props) {
   const btnClass = props.btnClass || "btn-danger";
   const buttons = (
     <div>
+      <Button
+        className="btn-default"
+        text={t("Cancel")}
+        title={t("Cancel")}
+        handler={() => {
+          jQuery("#" + props.id).modal("hide");
+        }}
+      />
       {props.onConfirmAsync ? (
         <AsyncButton
           text={props.submitText}
@@ -47,16 +55,6 @@ export function DangerDialog(props: Props) {
           }}
         />
       ) : null}
-
-      <Button
-        className="btn-default"
-        text={t("Cancel")}
-        title={t("Cancel")}
-        icon="fa-close"
-        handler={() => {
-          jQuery("#" + props.id).modal("hide");
-        }}
-      />
     </div>
   );
 
