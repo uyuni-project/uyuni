@@ -878,7 +878,7 @@ When(/^I (enable|disable) Debian-like "([^"]*)" repository on "([^"]*)"$/) do |a
 
   # edit ubuntu.sources with downloaded utility
   sources = '/etc/apt/sources.list.d/ubuntu.sources'
-  tmp = '/tmp//ubuntu.sources'
+  tmp = '/tmp/ubuntu.sources'
   node.run("awk -f #{dest} -v action=#{action} -v distro=$(lsb_release -sc) -v repo=#{repo} #{sources} > #{tmp} && mv #{tmp} #{sources}")
 end
 
