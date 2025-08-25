@@ -7,36 +7,33 @@ import { TopPanel } from "./panels/TopPanel";
 import { Column } from "./table/Column";
 import { Table } from "./table/Table";
 
-export type SystemData = {
+export interface SystemData {
   id: number;
   name: string;
-} & Record<string, any>;
+}
 
 type Props = {
-  systemsData: Array<SystemData>;
+  systemsData: SystemData[];
+  children?: React.ReactNode;
 };
 
-export class TargetSystems extends React.Component<Props> {
-  render(): React.ReactNode {
-    return (
-      <TopPanel title={t("Target Systems")}>
-        <Table
-          selectable={false}
-          data={this.props.systemsData}
-          identifier={(system: SystemData) => system.id}
-          initialItemsPerPage={pageSize}
-          emptyText={t("No systems specified.")}
-        >
-          <Column
-            columnClass="text-center"
-            headerClass="text-center"
-            columnKey="system"
-            header={t("System")}
-            cell={(system: SystemData) => <SystemLink id={system.id}>{system.name}</SystemLink>}
-          />
-          {this.props.children}
-        </Table>
-      </TopPanel>
-    );
+export const TargetSystems: React.FC<Props> = ({ systemsData, children }: Props): JSX.Element => {
+  function renderSystemLink(system: SystemData) {
+    return <SystemLink id={system.id}>{system.name}</SystemLink>;
   }
-}
+
+  return (
+    <TopPanel title={t("Target Systems")}>
+      <Table
+        selectable={false}
+        data={systemsData}
+        identifier={(system: SystemData) => system.id}
+        initialItemsPerPage={pageSize}
+        emptyText={t("No systems specified.")}
+      >
+        <Column columnKey="system" header={t("System")} cell={(system: SystemData) => renderSystemLink(system)} />
+        {children}
+      </Table>
+    </TopPanel>
+  );
+};

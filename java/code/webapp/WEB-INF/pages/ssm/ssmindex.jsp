@@ -65,6 +65,19 @@
                 </div>
             </li>
         </rhn:require>
+        <rhn:require acl="authorized_for(systems.software.migration); all_systems_in_set_have_feature(ftr_package_updates)">
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-sm-2">
+                      <rhn:icon type="header-channel" title="ssm.overview.product_migration" />
+                        <bean:message key="ssm.overview.product_migration"/>
+                    </div>
+                    <div class="col-sm-10">
+                        <bean:message key="ssm.overview.product_migration.migrate"/>
+                    </div>
+                </div>
+            </li>
+        </rhn:require>
         <rhn:require acl="any_system_with_salt_entitlement()">
             <li class="list-group-item">
                 <div class="row">

@@ -1189,7 +1189,8 @@ i.fa.pointer {
   display: inline-block;
 }
 
-input:disabled + label {
+input:disabled+label,
+label:has(input:disabled) {
   cursor: not-allowed;
   color: $gray;
 }

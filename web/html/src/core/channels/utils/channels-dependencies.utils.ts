@@ -65,4 +65,4 @@ function processChannelDependencies(requiredChannelsRaw): ChannelsDependencies {
   };
 }
 
-export { dependenciesTooltip, processChannelDependencies };
+export { computeReverseDependencies, dependenciesTooltip, processChannelDependencies };

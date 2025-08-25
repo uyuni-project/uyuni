@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.utils.salt.custom;
 
@@ -36,8 +32,7 @@ public class DistUpgradeOldSlsResult {
     *
     * @param s spmigration state apply result
     */
-   public DistUpgradeOldSlsResult(
-           StateApplyResult<RetOpt<ModuleRun<Map<String, Change<String>>>>> s) {
+   public DistUpgradeOldSlsResult(StateApplyResult<RetOpt<ModuleRun<Map<String, Change<String>>>>> s) {
       this.spmigration = s;
    }
 
@@ -46,8 +41,7 @@ public class DistUpgradeOldSlsResult {
     *
     * @return spmigration state apply result
     */
-   public StateApplyResult<RetOpt<ModuleRun<Map<String, Change<String>>>>>
-       getSpmigration() {
+   public StateApplyResult<RetOpt<ModuleRun<Map<String, Change<String>>>>> getSpmigration() {
        return spmigration;
    }
 }

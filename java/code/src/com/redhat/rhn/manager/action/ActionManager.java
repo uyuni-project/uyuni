@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -30,6 +31,8 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
@@ -1744,33 +1747,58 @@ public class ActionManager extends BaseManager {
 
     /**
      * Schedule a distribution upgrade.
-     *
-     * @param scheduler      user who scheduled this action
-     * @param server         server
-     * @param details        action details
+     * @param scheduler user who scheduled this action
      * @param earliestAction date of earliest action
+     * @param actionChain the action chain
+     * @param dryRun true if it's a dry run to test the migration
+     * @param detailsMap the action details map
      * @return the scheduled action
-     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     *                                (typically: Taskomatic is down)
      */
-    public static DistUpgradeAction scheduleDistUpgrade(User scheduler, Server server,
-                                                        DistUpgradeActionDetails details, Date earliestAction)
-            throws TaskomaticApiException {
+    public static List<DistUpgradeAction> scheduleDistUpgrade(User scheduler, Date earliestAction,
+                                                              ActionChain actionChain, boolean dryRun,
+                                                              Map<Long, DistUpgradeActionDetails> detailsMap)
+        throws TaskomaticApiException {
+        ActionType actionType = ActionFactory.TYPE_DIST_UPGRADE;
+
         // Construct the action name
         String actionName = ActionFactory.TYPE_DIST_UPGRADE.getName();
-        if (details.isDryRun()) {
+        if (dryRun) {
             actionName += " (Dry Run)";
         }
 
+        if (actionChain != null) {
+            int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
+
+            List<DistUpgradeAction> actionsList = new ArrayList<>();
+            for (DistUpgradeActionDetails details : detailsMap.values()) {
+                var action = (DistUpgradeAction) ActionFactory.createAndSaveAction(
+                    actionType, scheduler, actionName, earliestAction
+                );
+
+                action.setDetailsMap(Map.of(details.getServer().getId(), details));
+                ActionFactory.save(action);
+
+                ActionChainFactory.queueActionChainEntry(action, actionChain, details.getServer().getId(), sortOrder);
+                actionsList.add(action);
+            }
+
+            return actionsList;
+        }
+
         // Schedule the main action
-        DistUpgradeAction action = (DistUpgradeAction) ActionFactory.createAction(ActionFactory.TYPE_DIST_UPGRADE,
-                scheduler, actionName, earliestAction);
-        ActionFactory.createAddServerAction(server, action);
+        var action = (DistUpgradeAction) ActionFactory.createAction(actionType, scheduler, actionName, earliestAction);
+        detailsMap.values().stream()
+            .map(details -> details.getServer())
+            .forEach(server -> ActionFactory.createAddServerAction(server, action));
 
         // Add the details and save
-        action.setDetails(details);
+        action.setDetailsMap(detailsMap);
         ActionFactory.save(action);
-        taskomaticApi.scheduleActionExecution(action, !details.isDryRun());
-        return action;
+
+        taskomaticApi.scheduleActionExecution(action, !dryRun);
+        return List.of(action);
     }
 
     /**

@@ -12,6 +12,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <param name="increment_size">1</param>
       </generator>
     </id>
+    <many-to-one name="server" class="com.redhat.rhn.domain.server.Server" column="server_id" cascade="none" />
     <!-- Reference to the parent action -->
     <many-to-one name="parentAction" column="action_id"
                  class="com.redhat.rhn.domain.action.Action" outer-join="true"

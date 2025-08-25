@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 SUSE LLC
+ * Copyright (c) 2012--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,15 +7,12 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.domain.action.dup;
 
 import com.redhat.rhn.domain.action.ActionChild;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
+import com.redhat.rhn.domain.server.Server;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,6 +23,7 @@ import java.util.Set;
 public class DistUpgradeActionDetails extends ActionChild {
 
     private Long id;
+    private Server server;
     private boolean dryRun;
     private boolean allowVendorChange;
     private boolean fullUpdate;
@@ -54,6 +52,14 @@ public class DistUpgradeActionDetails extends ActionChild {
      */
     public void setId(Long idIn) {
         this.id = idIn;
+    }
+
+    public Server getServer() {
+        return server;
+    }
+
+    public void setServer(Server serverIn) {
+        this.server = serverIn;
     }
 
     /**
